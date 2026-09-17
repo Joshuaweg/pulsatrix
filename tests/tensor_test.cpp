@@ -145,11 +145,17 @@ TEST_F(TensorTest, AtAllowsMutation) {
 }
 
 TEST_F(TensorDeathTest, AtAbortsOnOutOfBoundsDimensionIndex) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
     Tensor t(Shape({2, 3}), &backend);
     EXPECT_DEATH({ (void)t.at({0, 5}); }, "EXAI_ASSERT failed");
 }
 
 TEST_F(TensorDeathTest, AtAbortsOnRankMismatch) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
     Tensor t(Shape({2, 3}), &backend);
     EXPECT_DEATH({ (void)t.at({0}); }, "EXAI_ASSERT failed");
 }

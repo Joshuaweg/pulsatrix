@@ -10,6 +10,9 @@ TEST(ExaiAssertTest, TrueConditionDoesNotAbort) {
 }
 
 TEST(ExaiAssertDeathTest, FalseConditionAborts) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
     EXPECT_DEATH({ EXAI_ASSERT(1 + 1 == 3); }, "EXAI_ASSERT failed");
 }
 
