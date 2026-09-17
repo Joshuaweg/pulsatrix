@@ -22,6 +22,19 @@ if(EXAI_ENABLE_PYTHON)
     message(STATUS "EXAI_ENABLE_PYTHON is ON but no bindings exist yet (Phase 5) — no-op for now")
 endif()
 
+find_package(Doxygen QUIET)
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_EXTRACT_ALL YES)
+    set(DOXYGEN_WARN_IF_UNDOCUMENTED YES)
+    set(DOXYGEN_WARN_NO_PARAMDOC YES)
+    doxygen_add_docs(docs
+        ${CMAKE_SOURCE_DIR}/include
+        COMMENT "Generating exai_dl_library API documentation"
+    )
+else()
+    message(STATUS "Doxygen not found -- 'docs' target unavailable")
+endif()
+
 if(EXAI_BUILD_TESTS)
     include(FetchContent)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
