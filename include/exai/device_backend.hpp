@@ -7,6 +7,18 @@
 
 namespace exai {
 
+/**
+ * @brief Which physical device a Tensor's buffer resides on.
+ * @note Only Cpu has a DeviceBackend implementation as of Phase 0. Cuda/Hip exist here now
+ *       so Tensor::to() has a stable enum to target starting Phase 1.5/1.6, without needing
+ *       to change Tensor's public signature when those backends are added.
+ */
+enum class DeviceType {
+    Cpu,
+    Cuda,
+    Hip
+};
+
 /** @brief Direction of a DeviceBackend::copy() call. */
 enum class CopyDirection {
     HostToDevice,
