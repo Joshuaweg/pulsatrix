@@ -1,5 +1,7 @@
 #include "exai/tensor.hpp"
 
+#include <stdexcept>
+
 #include "exai/assert.hpp"
 
 namespace exai {
@@ -66,6 +68,53 @@ Tensor& Tensor::operator=(Tensor&& other) noexcept {
     device_ = other.device_;
     other.data_ = nullptr;
     return *this;
+}
+
+int64_t Tensor::flat_index_of(std::initializer_list<int64_t> index) const {
+    EXAI_ASSERT(static_cast<int64_t>(index.size()) == rank());
+
+    int64_t flat = 0;
+    int64_t stride = 1;
+    // Walk dimensions right-to-left accumulating a row-major stride, matching index
+    // right-to-left in lockstep (both are the same length, checked above).
+    for (int64_t dim_pos = rank() - 1; dim_pos >= 0; --dim_pos) {
+        int64_t idx_at_dim = *(index.begin() + dim_pos);
+        EXAI_ASSERT(idx_at_dim >= 0 && idx_at_dim < shape_.dim(static_cast<size_t>(dim_pos)));
+        flat += idx_at_dim * stride;
+        stride *= shape_.dim(static_cast<size_t>(dim_pos));
+    }
+    return flat;
+}
+
+float& Tensor::at(std::initializer_list<int64_t> index) {
+    return data_[flat_index_of(index)];
+}
+
+const float& Tensor::at(std::initializer_list<int64_t> index) const {
+    return data_[flat_index_of(index)];
+}
+
+Tensor& Tensor::fill(float value) {
+    if (data_ != nullptr) {
+        backend_->fill(data_, value, static_cast<size_t>(numel()));
+    }
+    return *this;
+}
+
+Tensor& Tensor::reshape(Shape new_shape) {
+    if (!shape_.is_reshape_compatible(new_shape)) {
+        throw std::invalid_argument("Tensor::reshape: element count mismatch");
+    }
+    shape_ = std::move(new_shape);
+    return *this;
+}
+
+Tensor& Tensor::to(DeviceType target) {
+    if (target == device_) {
+        return *this;
+    }
+    throw std::runtime_error(
+        "Tensor::to: no DeviceBackend exists yet for the requested device (Phase 1.5/1.6)");
 }
 
 }  // namespace exai

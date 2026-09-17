@@ -146,12 +146,12 @@ TEST_F(TensorTest, AtAllowsMutation) {
 
 TEST_F(TensorDeathTest, AtAbortsOnOutOfBoundsDimensionIndex) {
     Tensor t(Shape({2, 3}), &backend);
-    EXPECT_DEATH({ t.at({0, 5}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)t.at({0, 5}); }, "EXAI_ASSERT failed");
 }
 
 TEST_F(TensorDeathTest, AtAbortsOnRankMismatch) {
     Tensor t(Shape({2, 3}), &backend);
-    EXPECT_DEATH({ t.at({0}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)t.at({0}); }, "EXAI_ASSERT failed");
 }
 
 TEST_F(TensorTest, OperatorBracketFlatIndexesRegardlessOfRank) {
