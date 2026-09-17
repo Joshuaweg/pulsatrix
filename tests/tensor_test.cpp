@@ -25,6 +25,10 @@ protected:
     CPUBackend backend;
 };
 
+// Separately-named suite for death tests, per cpp_style_guide convention -- keeps the
+// (slower, subprocess-forking) death tests excludable from the fast inner-loop run.
+using TensorDeathTest = TensorTest;
+
 TEST(TensorTypeTraits, MoveOperationsAreNoexcept) {
     static_assert(std::is_nothrow_move_constructible_v<Tensor>,
                   "Tensor move construction must be noexcept -- see cpp_style_guide error-handling table");
@@ -117,6 +121,87 @@ TEST_F(TensorTest, SelfCopyAssignmentIsSafe) {
     t = t;
     EXPECT_FLOAT_EQ(t.data()[0], 1.0f);
     EXPECT_FLOAT_EQ(t.data()[1], 2.0f);
+}
+
+TEST_F(TensorTest, AtReturnsElementAtMultiDimIndex) {
+    // Row-major 2x3: [[1,2,3],[4,5,6]]
+    Tensor t(Shape({2, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
+
+    EXPECT_FLOAT_EQ(t.at({0, 0}), 1.0f);
+    EXPECT_FLOAT_EQ(t.at({0, 2}), 3.0f);
+    EXPECT_FLOAT_EQ(t.at({1, 0}), 4.0f);
+    EXPECT_FLOAT_EQ(t.at({1, 2}), 6.0f);
+}
+
+TEST_F(TensorTest, AtOnConstTensorReturnsConstReference) {
+    const Tensor t(Shape({2}), &backend, {5.0f, 6.0f});
+    EXPECT_FLOAT_EQ(t.at({1}), 6.0f);
+}
+
+TEST_F(TensorTest, AtAllowsMutation) {
+    Tensor t(Shape({2}), &backend, {1.0f, 2.0f});
+    t.at({0}) = 9.0f;
+    EXPECT_FLOAT_EQ(t.data()[0], 9.0f);
+}
+
+TEST_F(TensorDeathTest, AtAbortsOnOutOfBoundsDimensionIndex) {
+    Tensor t(Shape({2, 3}), &backend);
+    EXPECT_DEATH({ t.at({0, 5}); }, "EXAI_ASSERT failed");
+}
+
+TEST_F(TensorDeathTest, AtAbortsOnRankMismatch) {
+    Tensor t(Shape({2, 3}), &backend);
+    EXPECT_DEATH({ t.at({0}); }, "EXAI_ASSERT failed");
+}
+
+TEST_F(TensorTest, OperatorBracketFlatIndexesRegardlessOfRank) {
+    Tensor t(Shape({2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    EXPECT_FLOAT_EQ(t[0], 1.0f);
+    EXPECT_FLOAT_EQ(t[3], 4.0f);
+    t[1] = 20.0f;
+    EXPECT_FLOAT_EQ(t.data()[1], 20.0f);
+}
+
+TEST_F(TensorTest, FillSetsEveryElement) {
+    Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor& ref = t.fill(7.0f);
+
+    EXPECT_EQ(&ref, &t);  // returns *this for chaining
+    for (int64_t i = 0; i < t.numel(); ++i) {
+        EXPECT_FLOAT_EQ(t.data()[i], 7.0f);
+    }
+}
+
+TEST_F(TensorTest, FillOnZeroElementTensorIsSafe) {
+    Tensor t(Shape({0}), &backend);
+    EXPECT_NO_THROW(t.fill(1.0f));
+}
+
+TEST_F(TensorTest, ReshapePreservesDataForCompatibleShape) {
+    Tensor t(Shape({2, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
+    t.reshape(Shape({3, 2}));
+
+    EXPECT_EQ(t.shape(), Shape({3, 2}));
+    EXPECT_FLOAT_EQ(t.at({0, 0}), 1.0f);
+    EXPECT_FLOAT_EQ(t.at({2, 1}), 6.0f);
+}
+
+TEST_F(TensorTest, ReshapeThrowsOnElementCountMismatch) {
+    Tensor t(Shape({2, 3}), &backend);
+    EXPECT_THROW(t.reshape(Shape({4, 4})), std::invalid_argument);
+}
+
+TEST_F(TensorTest, ToSameDeviceIsNoOp) {
+    Tensor t(Shape({2}), &backend, {1.0f, 2.0f});
+    const float* ptr_before = t.data();
+    t.to(DeviceType::Cpu);
+    EXPECT_EQ(t.data(), ptr_before);
+    EXPECT_FLOAT_EQ(t.data()[0], 1.0f);
+}
+
+TEST_F(TensorTest, ToDifferentDeviceThrowsUntilThatBackendExists) {
+    Tensor t(Shape({2}), &backend);
+    EXPECT_THROW(t.to(DeviceType::Cuda), std::runtime_error);
 }
 
 TEST(TensorDestructorTest, DestructorCallsBackendFreeExactlyOnce) {
