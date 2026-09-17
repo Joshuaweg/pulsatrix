@@ -3,6 +3,7 @@ add_executable(exai_tests
     cpu_backend_test.cpp
     shape_test.cpp
     assert_test.cpp
+    tensor_test.cpp
 )
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
