@@ -9,4 +9,10 @@ add_executable(exai_tests
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
 include(GoogleTest)
-gtest_discover_tests(exai_tests)
+# DISCOVERY_MODE PRE_TEST (CMake 3.18+): defers test discovery to ctest run-time instead of
+# CMake's default POST_BUILD mode, which hardcodes whichever config's binary happened to be
+# built most recently into the generated test commands -- under a multi-config generator
+# (Visual Studio), that means `ctest -C Debug` can silently run the *Release* binary if
+# Release was built more recently, with no error, just wrong results. PRE_TEST re-discovers
+# against the actual $<CONFIG> binary on every ctest invocation.
+gtest_discover_tests(exai_tests DISCOVERY_MODE PRE_TEST)
