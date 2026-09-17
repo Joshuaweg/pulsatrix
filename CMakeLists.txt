@@ -11,6 +11,7 @@ option(EXAI_BUILD_TESTS "Build the GoogleTest suite" ON)
 add_library(exai_core
     src/cpu_backend.cpp
     src/tensor.cpp
+    src/computation_graph.cpp
 )
 target_include_directories(exai_core PUBLIC include)
 target_compile_features(exai_core PUBLIC cxx_std_17)
