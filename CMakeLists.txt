@@ -14,6 +14,7 @@ add_library(exai_core
     src/computation_graph.cpp
     src/autograd.cpp
     src/linear_module.cpp
+    src/relu_module.cpp
 )
 target_include_directories(exai_core PUBLIC include)
 target_compile_features(exai_core PUBLIC cxx_std_17)
