@@ -123,5 +123,29 @@ TEST_F(AutogradTest, GradientsFromMultipleChildrenAccumulateOnSharedParent) {
     EXPECT_FLOAT_EQ(autograd.gradient(x_id).data()[1], 0.0f);
 }
 
+TEST_F(AutogradTest, SingleNodeGraphBackwardIsNoOp) {
+    NodeId root_id = graph.add_node(OpType::Elementwise, Shape({2}), "root");
+    // No backward function registered, no parents -- there is nothing to propagate to.
+
+    Tensor seed(Shape({2}), &backend, {3.0f, 4.0f});
+    EXPECT_NO_THROW(autograd.backward(graph, root_id, seed));
+
+    ASSERT_TRUE(autograd.has_gradient(root_id));
+    EXPECT_FLOAT_EQ(autograd.gradient(root_id).data()[0], 3.0f);
+    EXPECT_FLOAT_EQ(autograd.gradient(root_id).data()[1], 4.0f);
+}
+
+TEST_F(AutogradTest, NodeDisconnectedFromSeedNeverGetsAGradient) {
+    // Two independent, unconnected single-node graphs sharing one ComputationGraph.
+    NodeId reachable_id = graph.add_node(OpType::Elementwise, Shape({1}), "reachable");
+    NodeId unreachable_id = graph.add_node(OpType::Elementwise, Shape({1}), "unreachable");
+
+    Tensor seed(Shape({1}), &backend, {1.0f});
+    autograd.backward(graph, reachable_id, seed);
+
+    EXPECT_TRUE(autograd.has_gradient(reachable_id));
+    EXPECT_FALSE(autograd.has_gradient(unreachable_id));
+}
+
 }  // namespace
 }  // namespace exai

@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
+#include "exai/autograd.hpp"
 #include "exai/computation_graph.hpp"
+#include "exai/cpu_backend.hpp"
 
 // This is the mission's real acceptance criterion, deliberately kept in its own file so
 // it's immediately findable rather than folded quietly into computation_graph_test.cpp's
@@ -48,6 +50,42 @@ TEST(ComputationGraphPersistenceTest, GraphSurvivesReadHeavyTraversalUnchanged) 
     EXPECT_EQ(graph.node(a).children().size(), a_children_before);
     EXPECT_EQ(graph.node(b).parents().size(), b_parents_before);
     EXPECT_EQ(graph.node(c).parents().size(), c_parents_before);
+}
+
+// The definitive version of the Mission 2 test: exercises persistence against a genuine
+// Autograd::backward() call rather than a synthetic read-only traversal. This is the
+// charter's actual requirement -- "the graph structure survives past the backward pass" --
+// proven against the real mechanism, not a stand-in for it.
+TEST(ComputationGraphPersistenceTest, GraphSurvivesRealBackwardPassUnchanged) {
+    CPUBackend backend;
+    ComputationGraph graph;
+    Autograd autograd;
+
+    NodeId x_id = graph.add_node(OpType::Elementwise, Shape({2}), "x");
+    NodeId y_id = graph.add_node(OpType::Elementwise, Shape({2}), "neg", {x_id});
+
+    autograd.register_backward(y_id, [&backend](const Tensor& grad_output) {
+        Tensor grad_input(grad_output.shape(), &backend);
+        backend.elementwise(ElementwiseOp::Neg, grad_output.data(), grad_input.data(), grad_output.numel());
+        return grad_input;
+    });
+
+    const size_t node_count_before = graph.node_count();
+    const std::vector<NodeId> order_before = graph.topological_order();
+    const size_t x_children_before = graph.node(x_id).children().size();
+    const size_t y_parents_before = graph.node(y_id).parents().size();
+
+    Tensor seed(Shape({2}), &backend, {1.0f, 1.0f});
+    autograd.backward(graph, y_id, seed);
+
+    EXPECT_EQ(graph.node_count(), node_count_before);
+    EXPECT_EQ(graph.topological_order(), order_before);
+    EXPECT_EQ(graph.node(x_id).children().size(), x_children_before);
+    EXPECT_EQ(graph.node(y_id).parents().size(), y_parents_before);
+
+    // And the graph is still fully usable afterward -- walkable by a second explainer-style
+    // pass, which is the entire point of not discarding it.
+    EXPECT_EQ(graph.nodes_by_op_type(OpType::Elementwise).size(), 2u);
 }
 
 }  // namespace
