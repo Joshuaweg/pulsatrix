@@ -103,6 +103,21 @@ public:
      * @param n Number of elements.
      */
     virtual void elementwise(ElementwiseOp op, const float* in, float* out, size_t n) = 0;
+
+    /**
+     * @brief Elementwise binary addition: out[i] = a[i] + b[i] for i in [0, n).
+     * @param a First operand, must hold at least n floats.
+     * @param b Second operand, must hold at least n floats.
+     * @param out Output buffer, must hold at least n floats. May alias a or b for an
+     *        in-place accumulation.
+     * @param n Number of elements.
+     * @note A separate method from elementwise() rather than extending ElementwiseOp with
+     *       a binary case -- see ElementwiseOp's own @note. Added in Mission 3 (Phase 0
+     *       autograd) specifically because gradient accumulation (multiple children
+     *       contributing to a shared parent's gradient) needs it; this is the resolution
+     *       of the binary-op design decision deferred since Mission 0.
+     */
+    virtual void add(const float* a, const float* b, float* out, size_t n) = 0;
 };
 
 }  // namespace exai

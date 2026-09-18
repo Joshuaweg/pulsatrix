@@ -15,6 +15,7 @@ public:
     MOCK_METHOD(void, fill, (void* ptr, float value, size_t n), (override));
     MOCK_METHOD(void, gemm, (const float* a, const float* b, float* out, size_t m, size_t k, size_t n), (override));
     MOCK_METHOD(void, elementwise, (ElementwiseOp op, const float* in, float* out, size_t n), (override));
+    MOCK_METHOD(void, add, (const float* a, const float* b, float* out, size_t n), (override));
 };
 
 TEST(DeviceBackendInterface, HasVirtualDestructor) {
@@ -41,12 +42,14 @@ TEST(DeviceBackendInterface, EveryPureVirtualIsMockable) {
     EXPECT_CALL(mock, fill(::testing::_, 0.0f, 0)).Times(1);
     EXPECT_CALL(mock, gemm(::testing::_, ::testing::_, ::testing::_, 0, 0, 0)).Times(1);
     EXPECT_CALL(mock, elementwise(ElementwiseOp::Relu, ::testing::_, ::testing::_, 0)).Times(1);
+    EXPECT_CALL(mock, add(::testing::_, ::testing::_, ::testing::_, 0)).Times(1);
 
     mock.free(nullptr);
     mock.copy(nullptr, nullptr, 0, CopyDirection::HostToHost);
     mock.fill(nullptr, 0.0f, 0);
     mock.gemm(nullptr, nullptr, nullptr, 0, 0, 0);
     mock.elementwise(ElementwiseOp::Relu, nullptr, nullptr, 0);
+    mock.add(nullptr, nullptr, nullptr, 0);
 }
 
 }  // namespace
