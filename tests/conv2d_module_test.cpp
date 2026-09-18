@@ -50,5 +50,56 @@ TEST_F(Conv2DModuleTest, ForwardAddsBiasPerOutputChannel) {
     EXPECT_FLOAT_EQ(output.at({0, 1, 1}), 114.0f);  // 14 + 100
 }
 
+TEST_F(Conv2DModuleTest, BackwardComputesHandVerifiedGradients) {
+    // Same 1x1-channel, 3x3 input, 2x2 kernel setup as the forward test. grad_output = all
+    // ones -- deliberately chosen so grad_kernel[p] = sum over q of im2col[p][q], and
+    // grad_input becomes a pure "how many times was each input pixel touched, weighted by
+    // kernel value" map. The center input pixel (1,1) is touched by all 4 output positions
+    // (genuine overlap -- this is what col2im's summing exists to get right).
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    conv.set_kernel({1.0f, 0.0f, 0.0f, 1.0f});
+    conv.set_bias({0.0f});
+
+    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
+    (void)conv.forward(input);
+
+    Tensor grad_output(Shape({1, 2, 2}), &backend, {1.0f, 1.0f, 1.0f, 1.0f});
+    Tensor grad_input = conv.backward(grad_output);
+
+    // grad_kernel = sum over the 4 patches of each kernel position's contributing pixel.
+    EXPECT_FLOAT_EQ(conv.kernel_grad().data()[0], 12.0f);  // k00: 1+2+4+5
+    EXPECT_FLOAT_EQ(conv.kernel_grad().data()[1], 16.0f);  // k01: 2+3+5+6
+    EXPECT_FLOAT_EQ(conv.kernel_grad().data()[2], 24.0f);  // k10: 4+5+7+8
+    EXPECT_FLOAT_EQ(conv.kernel_grad().data()[3], 28.0f);  // k11: 5+6+8+9
+
+    EXPECT_FLOAT_EQ(conv.bias_grad().data()[0], 4.0f);  // sum of 4 output positions, all grad 1
+
+    EXPECT_EQ(grad_input.shape(), Shape({1, 3, 3}));
+    EXPECT_FLOAT_EQ(grad_input.at({0, 0, 0}), 1.0f);
+    EXPECT_FLOAT_EQ(grad_input.at({0, 0, 1}), 1.0f);
+    EXPECT_FLOAT_EQ(grad_input.at({0, 0, 2}), 0.0f);
+    EXPECT_FLOAT_EQ(grad_input.at({0, 1, 0}), 1.0f);
+    EXPECT_FLOAT_EQ(grad_input.at({0, 1, 1}), 2.0f);  // overlap: touched by all 4 patches
+    EXPECT_FLOAT_EQ(grad_input.at({0, 1, 2}), 1.0f);
+    EXPECT_FLOAT_EQ(grad_input.at({0, 2, 0}), 0.0f);
+    EXPECT_FLOAT_EQ(grad_input.at({0, 2, 1}), 1.0f);
+    EXPECT_FLOAT_EQ(grad_input.at({0, 2, 2}), 1.0f);
+}
+
+TEST_F(Conv2DModuleTest, BackwardAccumulatesGradientsAcrossTwoCalls) {
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    conv.set_kernel({1.0f, 0.0f, 0.0f, 1.0f});
+    conv.set_bias({0.0f});
+    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
+    Tensor grad_output(Shape({1, 2, 2}), &backend, {1.0f, 1.0f, 1.0f, 1.0f});
+
+    (void)conv.forward(input);
+    (void)conv.backward(grad_output);
+    (void)conv.forward(input);
+    (void)conv.backward(grad_output);
+
+    EXPECT_FLOAT_EQ(conv.bias_grad().data()[0], 8.0f);  // 4 + 4
+}
+
 }  // namespace
 }  // namespace exai
