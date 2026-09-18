@@ -2,6 +2,7 @@
 
 #include "exai/conv2d_module.hpp"
 #include "exai/cpu_backend.hpp"
+#include "exai/lrp_rule_config.hpp"
 
 namespace exai {
 namespace {
@@ -99,6 +100,32 @@ TEST_F(Conv2DModuleTest, BackwardAccumulatesGradientsAcrossTwoCalls) {
     (void)conv.backward(grad_output);
 
     EXPECT_FLOAT_EQ(conv.bias_grad().data()[0], 8.0f);  // 4 + 4
+}
+
+// Conservation is this mission's real acceptance criterion for the LRP half (see
+// mission_conv2d_losses.md's exit gate) -- the rule structurally reuses LinearModule's
+// epsilon rule per output position via the im2col representation, then col2im's the
+// per-position relevance contributions back to input space (summing overlaps, same
+// mechanism backward()'s col2im already proved correct in Objective 3).
+TEST_F(Conv2DModuleTest, PropagateRelevanceConservesTotalRelevance) {
+    Conv2DModule conv(1, 2, 2, 2, &backend);
+    conv.set_kernel({1.0f, -0.5f, 0.5f, 2.0f, -1.0f, 1.5f, 0.5f, -0.5f});
+    conv.set_bias({0.1f, -0.2f});
+
+    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
+    (void)conv.forward(input);
+
+    Tensor relevance_out(Shape({2, 2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.5f, 1.5f, 2.5f, 3.5f});
+    LRPRuleConfig config;  // default epsilon -- proves conservation holds in normal use
+
+    Tensor relevance_in = conv.propagate_relevance(relevance_out, config);
+
+    float sum_in = 0.0f;
+    for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+    float sum_out = 0.0f;
+    for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+
+    EXPECT_NEAR(sum_in, sum_out, 1e-2f);
 }
 
 }  // namespace
