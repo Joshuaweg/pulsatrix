@@ -26,7 +26,7 @@ TEST_F(AutogradTest, SingleOpBackwardComputesCorrectGradient) {
     });
 
     Tensor seed(Shape({3}), &backend, {1.0f, 1.0f, 1.0f});
-    autograd.backward(graph, y_id, seed, &backend);
+    autograd.backward(graph, y_id, seed);
 
     ASSERT_TRUE(autograd.has_gradient(x_id));
     const Tensor& grad_x = autograd.gradient(x_id);
@@ -45,7 +45,7 @@ TEST_F(AutogradTest, RootGradientIsTheSeedItself) {
     });
 
     Tensor seed(Shape({2}), &backend, {5.0f, 6.0f});
-    autograd.backward(graph, y_id, seed, &backend);
+    autograd.backward(graph, y_id, seed);
 
     ASSERT_TRUE(autograd.has_gradient(y_id));
     EXPECT_FLOAT_EQ(autograd.gradient(y_id).data()[0], 5.0f);
