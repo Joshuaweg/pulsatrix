@@ -2,6 +2,7 @@
 
 #include "exai/cpu_backend.hpp"
 #include "exai/linear_module.hpp"
+#include "exai/lrp_rule_config.hpp"
 
 namespace exai {
 namespace {
@@ -97,6 +98,48 @@ TEST_F(LinearModuleTest, GradientsAccumulateAcrossTwoBackwardCalls) {
 
     EXPECT_FLOAT_EQ(linear.weight_grad().data()[0], 4.0f);
     EXPECT_FLOAT_EQ(linear.bias_grad().data()[0], 2.0f);
+}
+
+// Bias is deliberately excluded from the LRP rule's z_j (the pre-bias linear output is
+// used, not the forward() return value) -- this is what makes exact conservation possible;
+// see this mission's Notes for the full rationale (bias has no associated input feature to
+// redistribute relevance to, a well-known LRP simplification).
+TEST_F(LinearModuleTest, PropagateRelevanceMatchesHandDerivedValues) {
+    // W = [[2],[3]] (2 in, 1 out). x = [1, 2]. z_0 (pre-bias) = 1*2 + 2*3 = 8.
+    LinearModule linear(2, 1, &backend);
+    linear.set_weight({2.0f, 3.0f});
+    linear.set_bias({100.0f});  // deliberately large/irrelevant -- must not affect the result
+
+    Tensor x(Shape({2}), &backend, {1.0f, 2.0f});
+    (void)linear.forward(x);
+
+    Tensor relevance_out(Shape({1}), &backend, {10.0f});
+    LRPRuleConfig config;
+    config.epsilon = 0.0f;  // exact -- no absorption term, isolates the rule's core correctness
+
+    Tensor relevance_in = linear.propagate_relevance(relevance_out, config);
+
+    EXPECT_FLOAT_EQ(relevance_in.data()[0], 2.5f);  // (1*2/8)*10
+    EXPECT_FLOAT_EQ(relevance_in.data()[1], 7.5f);  // (2*3/8)*10
+}
+
+TEST_F(LinearModuleTest, PropagateRelevanceConservesTotalRelevance) {
+    // The mission's real acceptance criterion for the LRP half -- see mission_module_linear.md.
+    LinearModule linear(3, 2, &backend);
+    linear.set_weight({1.0f, -2.0f, 3.0f, 0.5f, 2.5f, -1.0f});
+    linear.set_bias({0.1f, -0.2f});
+
+    Tensor x(Shape({3}), &backend, {1.0f, 2.0f, 0.5f});
+    (void)linear.forward(x);
+
+    Tensor relevance_out(Shape({2}), &backend, {4.0f, 6.0f});
+    LRPRuleConfig config;  // default epsilon (1e-6) -- proves conservation holds in normal use, not just the epsilon=0 special case
+
+    Tensor relevance_in = linear.propagate_relevance(relevance_out, config);
+
+    float sum_in = relevance_in.data()[0] + relevance_in.data()[1] + relevance_in.data()[2];
+    float sum_out = relevance_out.data()[0] + relevance_out.data()[1];
+    EXPECT_NEAR(sum_in, sum_out, 1e-3f);
 }
 
 }  // namespace
