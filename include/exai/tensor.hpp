@@ -95,6 +95,18 @@ public:
     Tensor& fill(float value);
 
     /**
+     * @brief In-place elementwise accumulation: this[i] += other[i] for every element.
+     * @param other Tensor to add into this one. Must have the same shape.
+     * @return *this, for chaining (e.g. grad.accumulate(a).accumulate(b)).
+     * @note Distinct from a general-purpose arithmetic operator+ -- that remains
+     *       deferred (see Mission 0/1 AAR) until Tensor's broader math API is designed
+     *       in Phase 1. This method exists specifically for gradient accumulation
+     *       (Mission 3 autograd), where the in-place, same-shape-only semantics are
+     *       exactly what's needed and nothing more.
+     */
+    Tensor& accumulate(const Tensor& other);
+
+    /**
      * @brief Reinterprets this tensor's dimensions in place -- same buffer, new shape.
      * @param new_shape Target shape. Must have the same numel() as the current shape.
      * @return *this, for chaining.
