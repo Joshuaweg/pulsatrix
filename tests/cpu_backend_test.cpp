@@ -129,5 +129,32 @@ TEST_F(CPUBackendTest, ElementwiseSupportsInPlaceAliasing) {
     EXPECT_FLOAT_EQ(buf[2], 0.0f);
 }
 
+TEST_F(CPUBackendTest, AddComputesElementwiseSum) {
+    std::vector<float> a = {1.0f, 2.0f, 3.0f};
+    std::vector<float> b = {10.0f, 20.0f, 30.0f};
+    std::vector<float> out(3, 0.0f);
+
+    backend.add(a.data(), b.data(), out.data(), 3);
+
+    EXPECT_FLOAT_EQ(out[0], 11.0f);
+    EXPECT_FLOAT_EQ(out[1], 22.0f);
+    EXPECT_FLOAT_EQ(out[2], 33.0f);
+}
+
+TEST_F(CPUBackendTest, AddSupportsInPlaceAccumulation) {
+    std::vector<float> acc = {1.0f, 2.0f, 3.0f};
+    std::vector<float> delta = {0.5f, 0.5f, 0.5f};
+
+    backend.add(acc.data(), delta.data(), acc.data(), 3);  // out aliases a
+
+    EXPECT_FLOAT_EQ(acc[0], 1.5f);
+    EXPECT_FLOAT_EQ(acc[1], 2.5f);
+    EXPECT_FLOAT_EQ(acc[2], 3.5f);
+}
+
+TEST_F(CPUBackendTest, AddHandlesZeroLengthGracefully) {
+    EXPECT_NO_THROW(backend.add(nullptr, nullptr, nullptr, 0));
+}
+
 }  // namespace
 }  // namespace exai
