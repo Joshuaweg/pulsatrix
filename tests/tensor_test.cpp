@@ -211,6 +211,39 @@ TEST_F(TensorTest, ToDifferentDeviceThrowsUntilThatBackendExists) {
     EXPECT_THROW(t.to(DeviceType::Cuda), std::runtime_error);
 }
 
+TEST_F(TensorTest, AccumulateAddsOtherIntoThisInPlace) {
+    Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor delta(Shape({3}), &backend, {0.5f, 0.5f, 0.5f});
+
+    Tensor& ref = t.accumulate(delta);
+
+    EXPECT_EQ(&ref, &t);  // returns *this for chaining
+    EXPECT_FLOAT_EQ(t.data()[0], 1.5f);
+    EXPECT_FLOAT_EQ(t.data()[1], 2.5f);
+    EXPECT_FLOAT_EQ(t.data()[2], 3.5f);
+    EXPECT_FLOAT_EQ(delta.data()[0], 0.5f);  // delta unaffected
+}
+
+TEST_F(TensorTest, AccumulateCalledTwiceSumsBothContributions) {
+    Tensor t(Shape({2}), &backend, {0.0f, 0.0f});
+    Tensor a(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor b(Shape({2}), &backend, {2.0f, 2.0f});
+
+    t.accumulate(a).accumulate(b);
+
+    EXPECT_FLOAT_EQ(t.data()[0], 3.0f);
+    EXPECT_FLOAT_EQ(t.data()[1], 3.0f);
+}
+
+TEST_F(TensorDeathTest, AccumulateAbortsOnShapeMismatch) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    Tensor t(Shape({3}), &backend);
+    Tensor mismatched(Shape({2}), &backend);
+    EXPECT_DEATH({ (void)t.accumulate(mismatched); }, "EXAI_ASSERT failed");
+}
+
 TEST(TensorDestructorTest, DestructorCallsBackendFreeExactlyOnce) {
     MockDeviceBackend mock;
     void* fake_ptr = reinterpret_cast<void*>(0x1234);
