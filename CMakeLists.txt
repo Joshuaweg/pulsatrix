@@ -16,6 +16,7 @@ add_library(exai_core
     src/linear_module.cpp
     src/relu_module.cpp
     src/conv2d_module.cpp
+    src/mse_loss.cpp
 )
 target_include_directories(exai_core PUBLIC include)
 target_compile_features(exai_core PUBLIC cxx_std_17)
