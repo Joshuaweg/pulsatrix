@@ -54,12 +54,16 @@ public:
     [[nodiscard]] const Tensor& bias_grad() const { return bias_grad_; }
 
     /**
-     * @brief Epsilon-rule LRP relevance propagation.
-     * @note TEMPORARY STUB as of Objective 3 -- throws. Real epsilon-rule implementation
-     *       lands in this same mission's Objective 4, test-first, before the mission
-     *       closes. This override exists only so LinearModule is concrete enough to
-     *       construct and test forward()/backward() in isolation; it is not the mission's
-     *       claim that LRP support is done.
+     * @brief Epsilon-rule LRP relevance propagation (Bach et al. 2015).
+     * @param relevance_out Relevance at this module's output. Must match out_features.
+     * @param config Selects epsilon. Larger epsilon trades a small amount of conservation
+     *        for numerical stability when a pre-bias output is near zero.
+     * @return Relevance at this module's input.
+     * @note Uses the pre-bias linear output (x @ W, not x @ W + b) as z_j -- bias has no
+     *       associated input feature to redistribute relevance to, so it is excluded from
+     *       the rule entirely rather than approximated. This is what makes relevance
+     *       conservation exact (up to the epsilon stabilizer) rather than merely
+     *       approximate. Must be called after forward() -- uses the cached pre-bias output.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
@@ -75,6 +79,7 @@ private:
     Tensor weight_grad_;
     Tensor bias_grad_;
     Tensor last_input_;
+    Tensor last_pre_bias_output_;
 };
 
 }  // namespace exai

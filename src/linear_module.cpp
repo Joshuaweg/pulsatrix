@@ -1,7 +1,5 @@
 #include "exai/linear_module.hpp"
 
-#include <stdexcept>
-
 namespace exai {
 
 namespace {
@@ -28,7 +26,8 @@ LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBack
       bias_(Shape({out_features}), backend),
       weight_grad_(Shape({in_features, out_features}), backend),
       bias_grad_(Shape({out_features}), backend),
-      last_input_(Shape({in_features}), backend) {}
+      last_input_(Shape({in_features}), backend),
+      last_pre_bias_output_(Shape({out_features}), backend) {}
 
 void LinearModule::set_weight(std::initializer_list<float> values) {
     weight_ = Tensor(weight_.shape(), backend_, values);
@@ -41,9 +40,12 @@ void LinearModule::set_bias(std::initializer_list<float> values) {
 Tensor LinearModule::forward_impl(const Tensor& input) {
     last_input_ = input;
 
-    Tensor output(Shape({out_features_}), backend_);
-    backend_->gemm(input.data(), weight_.data(), output.data(), 1, static_cast<size_t>(in_features_),
+    Tensor pre_bias(Shape({out_features_}), backend_);
+    backend_->gemm(input.data(), weight_.data(), pre_bias.data(), 1, static_cast<size_t>(in_features_),
                     static_cast<size_t>(out_features_));
+    last_pre_bias_output_ = pre_bias;  // cached for propagate_relevance's z_j
+
+    Tensor output(pre_bias);
     output.accumulate(bias_);
     return output;
 }
@@ -65,10 +67,24 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
     return grad_input;
 }
 
-Tensor LinearModule::propagate_relevance(const Tensor&, const LRPRuleConfig&) {
-    // Objective 4 (this mission) replaces this with the real epsilon-rule implementation,
-    // test-first, before the mission closes -- see the @note on the declaration.
-    throw std::logic_error("LinearModule::propagate_relevance: not yet implemented (Objective 4)");
+Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    Tensor relevance_in(Shape({in_features_}), backend_);
+    relevance_in.fill(0.0f);
+
+    for (int64_t j = 0; j < out_features_; ++j) {
+        float z_j = last_pre_bias_output_.data()[j];
+        float sign = (z_j >= 0.0f) ? 1.0f : -1.0f;
+        float denom = z_j + config.epsilon * sign;
+        float r_j = relevance_out.data()[j];
+
+        for (int64_t i = 0; i < in_features_; ++i) {
+            float w_ij = weight_.data()[i * out_features_ + j];
+            float x_i = last_input_.data()[i];
+            relevance_in.data()[i] += (x_i * w_ij / denom) * r_j;
+        }
+    }
+
+    return relevance_in;
 }
 
 }  // namespace exai
