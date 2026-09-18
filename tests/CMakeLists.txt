@@ -10,6 +10,7 @@ add_executable(exai_tests
     autograd_test.cpp
     module_test.cpp
     linear_module_test.cpp
+    relu_module_test.cpp
 )
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
