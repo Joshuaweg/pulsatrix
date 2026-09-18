@@ -1,7 +1,5 @@
 #include "exai/conv2d_module.hpp"
 
-#include <stdexcept>
-
 namespace exai {
 
 namespace {
@@ -166,9 +164,31 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     return col2im(grad_col, in_channels_, H, W, kernel_h_, kernel_w_, last_out_h_, last_out_w_, backend_);
 }
 
-Tensor Conv2DModule::propagate_relevance(const Tensor&, const LRPRuleConfig&) {
-    // Objective 4 (this mission) replaces this with the real epsilon-rule implementation.
-    throw std::logic_error("Conv2DModule::propagate_relevance: not yet implemented (Objective 4)");
+Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    int64_t P = in_channels_ * kernel_h_ * kernel_w_;
+    int64_t Q = last_out_h_ * last_out_w_;
+
+    Tensor relevance_col(Shape({P, Q}), backend_);
+    relevance_col.fill(0.0f);
+
+    for (int64_t q = 0; q < Q; ++q) {
+        for (int64_t oc = 0; oc < out_channels_; ++oc) {
+            float z = last_pre_bias_output_.data()[oc * Q + q];
+            float sign = (z >= 0.0f) ? 1.0f : -1.0f;
+            float denom = z + config.epsilon * sign;
+            float r = relevance_out.data()[oc * Q + q];
+
+            for (int64_t p = 0; p < P; ++p) {
+                float w = kernel_.data()[oc * P + p];
+                float a = last_im2col_.data()[p * Q + q];
+                relevance_col.data()[p * Q + q] += (a * w / denom) * r;
+            }
+        }
+    }
+
+    int64_t H = last_input_.shape().dim(1);
+    int64_t W = last_input_.shape().dim(2);
+    return col2im(relevance_col, in_channels_, H, W, kernel_h_, kernel_w_, last_out_h_, last_out_w_, backend_);
 }
 
 }  // namespace exai

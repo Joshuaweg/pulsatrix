@@ -53,8 +53,16 @@ public:
 
     /**
      * @brief Epsilon-rule LRP relevance propagation.
-     * @note TEMPORARY STUB as of Objective 2/3 -- throws. Real implementation lands in
-     *       this mission's Objective 4, test-first, before the mission closes.
+     * @param relevance_out Relevance at this module's output. Shape (out_channels, out_h, out_w).
+     * @param config Selects epsilon.
+     * @return Relevance at this module's input, shape (in_channels, H, W).
+     * @note Structurally the same rule as LinearModule's, applied independently per output
+     *       position via the im2col representation (each output position/channel pair is
+     *       a "virtual Linear neuron" over its own receptive-field patch), then col2im'd
+     *       back to input space -- which sums relevance from every output position that
+     *       touched a given input pixel, the same overlap-handling backward() already
+     *       needed for gradients. Bias is excluded from z, same rationale as LinearModule.
+     *       Must be called after forward().
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
