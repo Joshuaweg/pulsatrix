@@ -45,7 +45,7 @@ TEST_F(LinearModuleTest, BackwardComputesHandVerifiedInputGradient) {
     linear.set_bias({0.0f, 0.0f});
 
     Tensor x(Shape({2}), &backend, {1.0f, 1.0f});
-    linear.forward(x);  // must forward first -- backward needs the cached input
+    (void)linear.forward(x);  // must forward first -- backward needs the cached input
 
     Tensor grad_y(Shape({2}), &backend, {1.0f, 1.0f});
     Tensor grad_x = linear.backward(grad_y);
@@ -61,9 +61,9 @@ TEST_F(LinearModuleTest, BackwardAccumulatesWeightGradientAsOuterProduct) {
     linear.set_bias({0.0f, 0.0f});
 
     Tensor x(Shape({2}), &backend, {1.0f, 2.0f});
-    linear.forward(x);
+    (void)linear.forward(x);
     Tensor grad_y(Shape({2}), &backend, {3.0f, 4.0f});
-    linear.backward(grad_y);
+    (void)linear.backward(grad_y);
 
     EXPECT_FLOAT_EQ(linear.weight_grad().data()[0], 3.0f);  // W[0][0]
     EXPECT_FLOAT_EQ(linear.weight_grad().data()[1], 4.0f);  // W[0][1]
@@ -74,9 +74,9 @@ TEST_F(LinearModuleTest, BackwardAccumulatesWeightGradientAsOuterProduct) {
 TEST_F(LinearModuleTest, BackwardAccumulatesBiasGradientAsGradOutput) {
     LinearModule linear(2, 2, &backend);
     Tensor x(Shape({2}), &backend, {1.0f, 1.0f});
-    linear.forward(x);
+    (void)linear.forward(x);
     Tensor grad_y(Shape({2}), &backend, {2.5f, -1.5f});
-    linear.backward(grad_y);
+    (void)linear.backward(grad_y);
 
     EXPECT_FLOAT_EQ(linear.bias_grad().data()[0], 2.5f);
     EXPECT_FLOAT_EQ(linear.bias_grad().data()[1], -1.5f);
@@ -90,10 +90,10 @@ TEST_F(LinearModuleTest, GradientsAccumulateAcrossTwoBackwardCalls) {
     Tensor x(Shape({1}), &backend, {2.0f});
     Tensor grad_y(Shape({1}), &backend, {1.0f});
 
-    linear.forward(x);
-    linear.backward(grad_y);  // grad_W += 2*1 = 2
-    linear.forward(x);
-    linear.backward(grad_y);  // grad_W += 2*1 = 2 again -> total 4
+    (void)linear.forward(x);
+    (void)linear.backward(grad_y);  // grad_W += 2*1 = 2
+    (void)linear.forward(x);
+    (void)linear.backward(grad_y);  // grad_W += 2*1 = 2 again -> total 4
 
     EXPECT_FLOAT_EQ(linear.weight_grad().data()[0], 4.0f);
     EXPECT_FLOAT_EQ(linear.bias_grad().data()[0], 2.0f);
