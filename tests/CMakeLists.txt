@@ -8,6 +8,7 @@ add_executable(exai_tests
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
     autograd_test.cpp
+    module_test.cpp
 )
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
