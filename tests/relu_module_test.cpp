@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "exai/cpu_backend.hpp"
+#include "exai/lrp_rule_config.hpp"
 #include "exai/relu_module.hpp"
 
 namespace exai {
@@ -34,6 +35,23 @@ TEST_F(ReluModuleTest, BackwardPassesGradientThroughPositiveInputsOnly) {
     EXPECT_FLOAT_EQ(grad_x.data()[1], 0.0f);   // x=0: project convention -- treated as blocked, not passed
     EXPECT_FLOAT_EQ(grad_x.data()[2], 10.0f);  // x=1: passed through
     EXPECT_FLOAT_EQ(grad_x.data()[3], 10.0f);  // x=2: passed through
+}
+
+// Pass-through is a stronger claim than mere conservation-of-sum -- this asserts exact
+// per-element equality, not just that the totals match. See mission_activations.md's
+// exit gate for why this is the correct rule, not a placeholder.
+TEST_F(ReluModuleTest, PropagateRelevancePassesThroughUnchanged) {
+    Tensor x(Shape({3}), &backend, {-1.0f, 2.0f, 3.0f});
+    (void)relu.forward(x);
+
+    Tensor relevance_out(Shape({3}), &backend, {0.1f, 5.0f, -2.5f});
+    LRPRuleConfig config;  // epsilon is irrelevant to a pass-through rule -- default is fine
+
+    Tensor relevance_in = relu.propagate_relevance(relevance_out, config);
+
+    EXPECT_FLOAT_EQ(relevance_in.data()[0], relevance_out.data()[0]);
+    EXPECT_FLOAT_EQ(relevance_in.data()[1], relevance_out.data()[1]);
+    EXPECT_FLOAT_EQ(relevance_in.data()[2], relevance_out.data()[2]);
 }
 
 }  // namespace
