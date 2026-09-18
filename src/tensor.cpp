@@ -101,6 +101,14 @@ Tensor& Tensor::fill(float value) {
     return *this;
 }
 
+Tensor& Tensor::accumulate(const Tensor& other) {
+    EXAI_ASSERT(shape_ == other.shape_);
+    if (data_ != nullptr) {
+        backend_->add(data_, other.data_, data_, static_cast<size_t>(numel()));
+    }
+    return *this;
+}
+
 Tensor& Tensor::reshape(Shape new_shape) {
     if (!shape_.is_reshape_compatible(new_shape)) {
         throw std::invalid_argument("Tensor::reshape: element count mismatch");
