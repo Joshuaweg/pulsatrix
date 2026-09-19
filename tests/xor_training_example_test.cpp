@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <utility>
+#include <vector>
+
 #include "exai/adam_optimizer.hpp"
 #include "exai/cpu_backend.hpp"
 #include "exai/metrics_sink.hpp"
@@ -72,6 +75,51 @@ TEST_F(XorTrainingExampleTest, TrainStepLogsLossThroughMetricsSink) {
     EXPECT_EQ(sink.last_tag, "loss");
     EXPECT_EQ(sink.last_step, 7);
     EXPECT_NEAR(sink.last_value, static_cast<double>(loss), 1e-6);
+}
+
+// The mission's real acceptance criterion (see mission_training_loop.md's exit gate):
+// substantially decreased loss AND correct classification of all 4 XOR cases -- a
+// stronger, unambiguous claim than "loss went down somewhat."
+TEST_F(XorTrainingExampleTest, TrainingConvergesOnXOR) {
+    XorNetwork net(&backend);
+    AdamOptimizer optimizer(0.01f, &backend);
+    NoOpMetricsSink sink;
+
+    std::vector<std::pair<Tensor, Tensor>> dataset;
+    dataset.emplace_back(Tensor(Shape({2}), &backend, {0.0f, 0.0f}), Tensor(Shape({1}), &backend, {0.0f}));
+    dataset.emplace_back(Tensor(Shape({2}), &backend, {0.0f, 1.0f}), Tensor(Shape({1}), &backend, {1.0f}));
+    dataset.emplace_back(Tensor(Shape({2}), &backend, {1.0f, 0.0f}), Tensor(Shape({1}), &backend, {1.0f}));
+    dataset.emplace_back(Tensor(Shape({2}), &backend, {1.0f, 1.0f}), Tensor(Shape({1}), &backend, {0.0f}));
+
+    auto mean_loss = [&]() {
+        float total = 0.0f;
+        for (auto& [input, target] : dataset) {
+            Tensor pred = net.forward(input);
+            float diff = pred.data()[0] - target.data()[0];
+            total += diff * diff;
+        }
+        return total / static_cast<float>(dataset.size());
+    };
+
+    float initial_loss = mean_loss();
+
+    int step = 0;
+    for (int epoch = 0; epoch < 1000; ++epoch) {
+        for (auto& [input, target] : dataset) {
+            (void)net.train_step(input, target, optimizer, sink, step++);
+        }
+    }
+
+    float final_loss = mean_loss();
+    EXPECT_LT(final_loss, initial_loss * 0.1f) << "loss did not substantially decrease";
+
+    for (auto& [input, target] : dataset) {
+        Tensor pred = net.forward(input);
+        float rounded = (pred.data()[0] > 0.5f) ? 1.0f : 0.0f;
+        EXPECT_FLOAT_EQ(rounded, target.data()[0])
+            << "misclassified input (" << input.data()[0] << ", " << input.data()[1]
+            << ") -- raw output " << pred.data()[0];
+    }
 }
 
 }  // namespace

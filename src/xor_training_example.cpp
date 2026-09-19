@@ -4,12 +4,18 @@ namespace exai {
 
 XorNetwork::XorNetwork(DeviceBackend* backend)
     : backend_(backend), linear1_(2, 4, backend), relu_(backend), linear2_(4, 1, backend), loss_(backend) {
-    // Fixed, hand-picked, non-zero, sign-varied initial weights -- see the class-level
-    // @note for why zero-init doesn't work here.
-    linear1_.set_weight({0.5f, -0.5f, 0.3f, -0.3f, -0.4f, 0.4f, -0.2f, 0.2f});
-    linear1_.set_bias({0.1f, -0.1f, 0.1f, -0.1f});
-    linear2_.set_weight({0.5f, -0.5f, 0.3f, -0.3f});
-    linear2_.set_bias({0.0f});
+    // Fixed, hand-picked, non-zero, deliberately asymmetric initial weights -- see the
+    // class-level @note for why zero-init doesn't work here. An earlier sign-mirrored
+    // choice (row1 ~= -row0) was tried and rejected during this mission: it made the
+    // hidden layer's activation for input (1,1) an exact scalar multiple of its
+    // activation for (0,0) at initialization, a structural degeneracy that persisted
+    // through training and prevented the network from ever distinguishing those two
+    // inputs. This initialization was checked to have no such proportionality between any
+    // pair of the four XOR inputs' hidden activations before being used here.
+    linear1_.set_weight({0.6f, -0.3f, 0.4f, -0.7f, 0.2f, 0.5f, -0.6f, 0.1f});
+    linear1_.set_bias({0.05f, -0.05f, 0.02f, -0.08f});
+    linear2_.set_weight({0.4f, -0.6f, 0.5f, -0.3f});
+    linear2_.set_bias({0.1f});
 }
 
 Tensor XorNetwork::forward(const Tensor& input) {
@@ -20,6 +26,15 @@ Tensor XorNetwork::forward(const Tensor& input) {
 
 float XorNetwork::train_step(const Tensor& input, const Tensor& target, AdamOptimizer& optimizer, MetricsSink& sink,
                               int step) {
+    // Gradients accumulate (Tensor::accumulate) across backward() calls by design (Mission
+    // 3 -- needed for fan-out accumulation in general). A single train_step must zero them
+    // first, or every step's gradient silently adds onto every previous step's, growing
+    // unboundedly over a long training run. Found during this mission's own convergence
+    // testing: training was diverging with a suspiciously constant per-step update
+    // magnitude, traced to exactly this missing zero_grad() call.
+    optimizer.zero_grad(linear1_);
+    optimizer.zero_grad(linear2_);
+
     Tensor prediction = forward(input);
     float loss_value = loss_.forward(prediction, target);
 
