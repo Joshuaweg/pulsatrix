@@ -20,29 +20,36 @@ Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* bac
 }
 }  // namespace
 
-LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend)
+LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, DeviceType device)
     : in_features_(in_features),
       out_features_(out_features),
       backend_(backend),
-      weight_(Shape({in_features, out_features}), backend),
-      bias_(Shape({out_features}), backend),
-      weight_grad_(Shape({in_features, out_features}), backend),
-      bias_grad_(Shape({out_features}), backend),
-      last_input_(Shape({in_features}), backend),
-      last_pre_bias_output_(Shape({out_features}), backend) {}
+      weight_(Shape({in_features, out_features}), backend, device),
+      bias_(Shape({out_features}), backend, device),
+      weight_grad_(Shape({in_features, out_features}), backend, device),
+      bias_grad_(Shape({out_features}), backend, device),
+      last_input_(Shape({in_features}), backend, device),
+      last_pre_bias_output_(Shape({out_features}), backend, device) {}
 
 void LinearModule::set_weight(std::initializer_list<float> values) {
-    weight_ = Tensor(weight_.shape(), backend_, values);
+    // Preserve weight_'s existing device tag -- reconstructing with the default (Cpu)
+    // would pick the wrong CopyDirection for a non-Cpu module (see Tensor's own
+    // device-based CopyDirection dispatch, Phase 1.5 Mission 3 Objective 1).
+    weight_ = Tensor(weight_.shape(), backend_, values, weight_.device());
 }
 
 void LinearModule::set_bias(std::initializer_list<float> values) {
-    bias_ = Tensor(bias_.shape(), backend_, values);
+    bias_ = Tensor(bias_.shape(), backend_, values, bias_.device());
 }
 
 Tensor LinearModule::forward_impl(const Tensor& input) {
     last_input_ = input;
 
-    Tensor pre_bias(Shape({out_features_}), backend_);
+    // Tagged with weight_'s device (this module's configured device, immutable after
+    // construction) -- a fresh Tensor here defaults to Cpu otherwise, which would make the
+    // last_pre_bias_output_ = pre_bias assignment below pick the wrong CopyDirection on a
+    // non-Cpu module (Phase 1.5 Mission 3, Objective 2).
+    Tensor pre_bias(Shape({out_features_}), backend_, weight_.device());
     backend_->gemm(input.data(), weight_.data(), pre_bias.data(), 1, static_cast<size_t>(in_features_),
                     static_cast<size_t>(out_features_));
     last_pre_bias_output_ = pre_bias;  // cached for propagate_relevance's z_j
