@@ -20,6 +20,7 @@ add_executable(exai_tests
     xor_training_example_test.cpp
     attribution_test.cpp
     explainer_context_test.cpp
+    saliency_test.cpp
 )
 
 if(EXAI_ENABLE_CUDA)
