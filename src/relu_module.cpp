@@ -4,8 +4,8 @@
 
 namespace exai {
 
-ReluModule::ReluModule(DeviceBackend* backend)
-    : backend_(backend), last_input_(Shape({0}), backend) {}
+ReluModule::ReluModule(DeviceBackend* backend, DeviceType device)
+    : backend_(backend), last_input_(Shape({0}), backend, device) {}
 // last_input_ starts as a zero-element placeholder -- ReLU has no fixed shape (unlike
 // LinearModule's in_features/out_features), so the real shape is only known once
 // forward_impl() is first called and reassigns it wholesale.
@@ -13,7 +13,10 @@ ReluModule::ReluModule(DeviceBackend* backend)
 Tensor ReluModule::forward_impl(const Tensor& input) {
     last_input_ = input;
 
-    Tensor output(input.shape(), backend_);
+    // Tagged with input's own device, not a stored module-level device -- ReLU has no
+    // parameter Tensor to anchor one, and input.device() is always the correct, current
+    // source of truth. See mission_forward_pass_equivalence.md, Objective 3.
+    Tensor output(input.shape(), backend_, input.device());
     backend_->elementwise(ElementwiseOp::Relu, input.data(), output.data(), static_cast<size_t>(input.numel()));
     return output;
 }
