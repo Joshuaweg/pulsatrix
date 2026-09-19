@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "exai/autograd.hpp"
+#include "exai/computation_graph.hpp"
 #include "exai/cpu_backend.hpp"
 #include "exai/module.hpp"
 #include "exai/op_type.hpp"
@@ -82,6 +84,46 @@ TEST_F(ModuleTest, BackwardIsCallableThroughBasePointer) {
 TEST_F(ModuleTest, OpTypeIsCallableThroughBasePointer) {
     const Module& base = module;
     EXPECT_EQ(base.op_type(), OpType::Elementwise);
+}
+
+// Phase 2 Mission 0's actual deliverable: an opt-in path that builds a real
+// ComputationGraph node (correctly op-type-tagged, correctly parented) and registers a
+// real Autograd backward function, reusing the module's own backward() rather than
+// reimplementing gradient math. Every existing forward()/backward() call site is
+// unaffected -- this is a wholly separate, additive entry point.
+TEST_F(ModuleTest, ForwardTracedAddsOneNodeWithCorrectOpTypeAndParent) {
+    ComputationGraph graph;
+    Autograd autograd;
+    NodeId input_node = graph.add_node(OpType::Elementwise, Shape({3}), "input");
+
+    Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    auto [output, output_node] = module.forward_traced(input, input_node, graph, autograd);
+
+    EXPECT_EQ(graph.node_count(), 2u);
+    EXPECT_EQ(graph.node(output_node).op_type(), OpType::Elementwise);  // TestDoubleModule's op_type()
+    EXPECT_EQ(graph.node(output_node).shape(), output.shape());
+    ASSERT_EQ(graph.node(output_node).parents().size(), 1u);
+    EXPECT_EQ(graph.node(output_node).parents()[0]->id(), input_node);
+}
+
+TEST_F(ModuleTest, ForwardTracedRegisteredBackwardMatchesDirectBackward) {
+    ComputationGraph graph;
+    Autograd autograd;
+    NodeId input_node = graph.add_node(OpType::Elementwise, Shape({3}), "input");
+
+    Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    auto [output, output_node] = module.forward_traced(input, input_node, graph, autograd);
+    (void)output;
+
+    Tensor grad_output(Shape({3}), &backend, {10.0f, 20.0f, 30.0f});
+    autograd.backward(graph, output_node, grad_output);
+    Tensor direct_grad = module.backward(grad_output);
+
+    ASSERT_TRUE(autograd.has_gradient(input_node));
+    const Tensor& traced_grad = autograd.gradient(input_node);
+    for (int64_t i = 0; i < direct_grad.numel(); ++i) {
+        EXPECT_FLOAT_EQ(traced_grad.data()[i], direct_grad.data()[i]);
+    }
 }
 
 TEST_F(ModuleTest, DefaultParametersIsEmpty) {
