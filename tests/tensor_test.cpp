@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <cstdlib>
 #include <type_traits>
 
 #include "exai/cpu_backend.hpp"
@@ -54,6 +55,29 @@ TEST_F(TensorTest, ConstructionFromInitializerListCopiesData) {
     EXPECT_FLOAT_EQ(t.data()[3], 4.0f);
 }
 
+// The initializer-list ctor's source (std::initializer_list) always lives on the host;
+// its destination may not. CopyDirection must reflect device(), not be hardcoded --
+// otherwise a CUDA-backed Tensor would issue a HostToHost cudaMemcpy on what's actually a
+// host-to-device transfer. Phase 1.5 Mission 3 (mission_forward_pass_equivalence.md), Obj 1.
+// No real GPU needed: this only checks which CopyDirection enum value reaches the backend.
+TEST_F(TensorTest, ConstructionFromInitializerListUsesHostToHostForCpuTensor) {
+    ::testing::NiceMock<MockDeviceBackend> mock;
+    ON_CALL(mock, allocate(::testing::_)).WillByDefault(::testing::Invoke(&std::malloc));
+    ON_CALL(mock, free(::testing::_)).WillByDefault(::testing::Invoke([](void* p) { std::free(p); }));
+    EXPECT_CALL(mock, copy(::testing::_, ::testing::_, ::testing::_, CopyDirection::HostToHost)).Times(1);
+
+    Tensor t(Shape({2}), &mock, {1.0f, 2.0f});  // device defaults to Cpu
+}
+
+TEST_F(TensorTest, ConstructionFromInitializerListUsesHostToDeviceForNonCpuTensor) {
+    ::testing::NiceMock<MockDeviceBackend> mock;
+    ON_CALL(mock, allocate(::testing::_)).WillByDefault(::testing::Invoke(&std::malloc));
+    ON_CALL(mock, free(::testing::_)).WillByDefault(::testing::Invoke([](void* p) { std::free(p); }));
+    EXPECT_CALL(mock, copy(::testing::_, ::testing::_, ::testing::_, CopyDirection::HostToDevice)).Times(1);
+
+    Tensor t(Shape({2}), &mock, {1.0f, 2.0f}, DeviceType::Cuda);
+}
+
 TEST_F(TensorTest, RankZeroScalarConstructsWithOneElement) {
     Tensor t(Shape({}), &backend, {42.0f});
     EXPECT_EQ(t.numel(), 1);
@@ -104,6 +128,34 @@ TEST_F(TensorTest, CopyConstructorProducesIndependentBuffer) {
 
     copy.data()[0] = 9.0f;
     EXPECT_FLOAT_EQ(original.data()[0], 1.0f);  // original unaffected by mutating the copy
+}
+
+// Both sides of a copy ctor live on the SAME device (both buffers allocated by the same
+// backend_) -- CopyDirection must reflect device(), not be hardcoded to HostToHost, or a
+// CUDA-backed Tensor's copy ctor would issue cudaMemcpyHostToHost on two real device
+// pointers, which is undefined/unreliable. Phase 1.5 Mission 3, Objective 1.
+TEST_F(TensorTest, CopyConstructorUsesHostToHostForCpuTensor) {
+    ::testing::NiceMock<MockDeviceBackend> mock;
+    ON_CALL(mock, allocate(::testing::_)).WillByDefault(::testing::Invoke(&std::malloc));
+    ON_CALL(mock, free(::testing::_)).WillByDefault(::testing::Invoke([](void* p) { std::free(p); }));
+    ON_CALL(mock, copy(::testing::_, ::testing::_, ::testing::_, ::testing::_)).WillByDefault(::testing::Return());
+
+    Tensor other(Shape({2}), &mock, {1.0f, 2.0f});  // device defaults to Cpu
+
+    EXPECT_CALL(mock, copy(::testing::_, ::testing::_, ::testing::_, CopyDirection::HostToHost)).Times(1);
+    Tensor copy(other);
+}
+
+TEST_F(TensorTest, CopyConstructorUsesDeviceToDeviceForNonCpuTensor) {
+    ::testing::NiceMock<MockDeviceBackend> mock;
+    ON_CALL(mock, allocate(::testing::_)).WillByDefault(::testing::Invoke(&std::malloc));
+    ON_CALL(mock, free(::testing::_)).WillByDefault(::testing::Invoke([](void* p) { std::free(p); }));
+    ON_CALL(mock, copy(::testing::_, ::testing::_, ::testing::_, ::testing::_)).WillByDefault(::testing::Return());
+
+    Tensor other(Shape({2}), &mock, {1.0f, 2.0f}, DeviceType::Cuda);
+
+    EXPECT_CALL(mock, copy(::testing::_, ::testing::_, ::testing::_, CopyDirection::DeviceToDevice)).Times(1);
+    Tensor copy(other);
 }
 
 TEST_F(TensorTest, CopyAssignmentProducesIndependentBuffer) {
