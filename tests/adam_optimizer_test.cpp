@@ -87,5 +87,36 @@ TEST(AdamOptimizerTest, StepOnParameterlessModuleIsSafeNoOp) {
     EXPECT_NO_THROW(opt.zero_grad(m));
 }
 
+// step() dereferences Tensor::data() directly in a raw host loop -- undefined behavior on
+// a CUDA-backed Tensor. Phase 1.5 Mission 2 (mission_host_loop_guards.md) guards it with
+// EXAI_ASSERT. Same CudaParamModule test-double pattern as SGDOptimizerDeathTest (see that
+// file's comment for why LinearModule can't be reused here). zero_grad() is NOT guarded --
+// confirmed safe, it routes through Tensor::fill() -> DeviceBackend::fill().
+TEST(AdamOptimizerDeathTest, StepAbortsOnNonCpuParameter) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    class CudaParamModule : public Module {
+    public:
+        explicit CudaParamModule(DeviceBackend* backend)
+            : value_(Shape({1}), backend, {1.0f}, DeviceType::Cuda),
+              grad_(Shape({1}), backend, {1.0f}, DeviceType::Cuda) {}
+        Tensor propagate_relevance(const Tensor& r, const LRPRuleConfig&) override { return Tensor(r); }
+        std::vector<ParamRef> parameters() override { return {{&value_, &grad_}}; }
+
+    protected:
+        Tensor forward_impl(const Tensor& input) override { return Tensor(input); }
+
+    private:
+        Tensor value_;
+        Tensor grad_;
+    };
+
+    CPUBackend backend;
+    CudaParamModule m(&backend);
+    AdamOptimizer opt(0.1f, &backend);
+    EXPECT_DEATH({ opt.step(m); }, "EXAI_ASSERT failed");
+}
+
 }  // namespace
 }  // namespace exai
