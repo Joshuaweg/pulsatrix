@@ -75,6 +75,8 @@ TEST(AdamOptimizerTest, StepOnParameterlessModuleIsSafeNoOp) {
     class NoParamModule : public Module {
     public:
         Tensor propagate_relevance(const Tensor& r, const LRPRuleConfig&) override { return Tensor(r); }
+        Tensor backward(const Tensor& grad_output) override { return Tensor(grad_output); }
+        [[nodiscard]] OpType op_type() const override { return OpType::Elementwise; }
 
     protected:
         Tensor forward_impl(const Tensor& input) override { return Tensor(input); }
@@ -102,6 +104,8 @@ TEST(AdamOptimizerDeathTest, StepAbortsOnNonCpuParameter) {
             : value_(Shape({1}), backend, {1.0f}, DeviceType::Cuda),
               grad_(Shape({1}), backend, {1.0f}, DeviceType::Cuda) {}
         Tensor propagate_relevance(const Tensor& r, const LRPRuleConfig&) override { return Tensor(r); }
+        Tensor backward(const Tensor& grad_output) override { return Tensor(grad_output); }
+        [[nodiscard]] OpType op_type() const override { return OpType::Elementwise; }
         std::vector<ParamRef> parameters() override { return {{&value_, &grad_}}; }
 
     protected:

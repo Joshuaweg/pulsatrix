@@ -52,7 +52,10 @@ public:
      *       remove this guard without actually retrofitting the method to route through
      *       DeviceBackend.
      */
-    [[nodiscard]] Tensor backward(const Tensor& grad_output);
+    [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
+
+    /** @brief Linear per charter's closed OpType set. */
+    [[nodiscard]] OpType op_type() const override { return OpType::Linear; }
 
     /** @brief Overwrites the weight buffer -- test/initialization use only. */
     void set_weight(std::initializer_list<float> values);
