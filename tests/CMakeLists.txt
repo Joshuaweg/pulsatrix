@@ -16,6 +16,7 @@ add_executable(exai_tests
     sgd_optimizer_test.cpp
     adam_optimizer_test.cpp
     metrics_sink_test.cpp
+    xor_training_example_test.cpp
 )
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
