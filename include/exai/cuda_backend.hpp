@@ -3,6 +3,7 @@
  */
 #pragma once
 
+#include <cublas_v2.h>
 #include <cuda_runtime.h>
 
 #include "exai/device_backend.hpp"
@@ -11,10 +12,10 @@ namespace exai {
 
 /**
  * @brief CUDA-resident DeviceBackend implementation.
- * @note `allocate`/`free`/`copy`/`fill` are implemented (Phase 1.5 Mission 0). `gemm`/
- *       `elementwise`/`add` throw for now -- Mission 1 of this campaign replaces them with
- *       real cuBLAS/kernel implementations, test-first, before this mission closes. This
- *       class exists in this intermediate state only within Mission 0's own commits.
+ * @note `gemm` uses cuBLAS (`cublasSgemm`) with the column-major swap-and-transpose trick,
+ *       since cuBLAS assumes column-major storage and this project's `Tensor` is row-major
+ *       -- see `gpu_backend_programming/context_gpu_cublas_cudnn_integration.md`.
+ *       `elementwise`/`add` are hand-written kernels, one thread per element.
  * @note This is the first of two currently-supported concrete DeviceBackend
  *       implementations. Per the campaign's own scope decision
  *       (campaign_exai_dl_library_phase1_5_cuda_backend.md), only Tensor operations that
@@ -41,6 +42,7 @@ public:
 
 private:
     cudaStream_t stream_;
+    cublasHandle_t cublas_handle_;
 };
 
 }  // namespace exai
