@@ -3,11 +3,19 @@
  */
 #pragma once
 
+#include <vector>
+
 #include "exai/assert.hpp"
 #include "exai/lrp_rule_config.hpp"
 #include "exai/tensor.hpp"
 
 namespace exai {
+
+/** @brief A trainable parameter and its accumulated gradient, as owned by some Module. */
+struct ParamRef {
+    Tensor* value;
+    Tensor* grad;
+};
 
 /**
  * @brief Base class for every layer type (LinearModule, Conv2DModule, activations, ...).
@@ -44,6 +52,17 @@ public:
      * @return Relevance at this module's input.
      */
     [[nodiscard]] virtual Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) = 0;
+
+    /**
+     * @brief This module's trainable parameters and their gradients, for an optimizer to
+     *        update uniformly across module types.
+     * @return {value, grad} pairs pointing directly at this module's own members. Default:
+     *         empty (a parameterless module like ReluModule needs no override).
+     * @note Not pure-virtual -- unlike propagate_relevance, there is no charter
+     *       non-negotiable requiring every module to define this; "no parameters" is a
+     *       legitimate, common answer that shouldn't need restating per module type.
+     */
+    [[nodiscard]] virtual std::vector<ParamRef> parameters() { return {}; }
 
 protected:
     /** @brief The actual forward computation. Called by forward() after precondition checks. */
