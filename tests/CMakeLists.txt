@@ -15,6 +15,7 @@ add_executable(exai_tests
     mse_loss_test.cpp
     sgd_optimizer_test.cpp
     adam_optimizer_test.cpp
+    metrics_sink_test.cpp
 )
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
