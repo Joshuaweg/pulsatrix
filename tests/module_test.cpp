@@ -57,5 +57,11 @@ TEST_F(ModuleTest, PropagateRelevanceIsCallableThroughBasePointer) {
     EXPECT_FLOAT_EQ(relevance_in.data()[1], 0.5f);
 }
 
+TEST_F(ModuleTest, DefaultParametersIsEmpty) {
+    // TestDoubleModule doesn't override parameters() -- the base default (no parameters)
+    // is what a parameterless module type like ReluModule relies on too.
+    EXPECT_TRUE(module.parameters().empty());
+}
+
 }  // namespace
 }  // namespace exai

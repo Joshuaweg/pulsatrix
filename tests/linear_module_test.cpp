@@ -142,5 +142,26 @@ TEST_F(LinearModuleTest, PropagateRelevanceConservesTotalRelevance) {
     EXPECT_NEAR(sum_in, sum_out, 1e-3f);
 }
 
+TEST_F(LinearModuleTest, ParametersExposesWeightAndBiasByPointer) {
+    LinearModule linear(2, 2, &backend);
+    auto params = linear.parameters();
+
+    ASSERT_EQ(params.size(), 2u);
+    EXPECT_EQ(params[0].value, &linear.weight());
+    EXPECT_EQ(params[0].grad, &linear.weight_grad());
+    EXPECT_EQ(params[1].value, &linear.bias());
+    EXPECT_EQ(params[1].grad, &linear.bias_grad());
+}
+
+TEST_F(LinearModuleTest, MutatingThroughParametersChangesModuleState) {
+    LinearModule linear(1, 1, &backend);
+    linear.set_weight({5.0f});
+
+    auto params = linear.parameters();
+    params[0].value->data()[0] = 99.0f;  // mutate through the returned pointer
+
+    EXPECT_FLOAT_EQ(linear.weight().data()[0], 99.0f);  // module's own state reflects it
+}
+
 }  // namespace
 }  // namespace exai
