@@ -13,6 +13,16 @@ protected:
     ReluModule relu{&backend};
 };
 
+// last_input_ defaulted to DeviceType::Cpu regardless of the backend actually passed to
+// the constructor -- same gap as LinearModule (Phase 1.5 Mission 3, Objective 2), fixed
+// here for ReluModule (Objective 3). No real GPU needed for this specific check.
+TEST_F(ReluModuleTest, ConstructionThreadsExplicitDeviceForForwardOutput) {
+    ReluModule relu_cuda(&backend, DeviceType::Cuda);
+    Tensor x(Shape({3}), &backend, {-1.0f, 2.0f, 3.0f}, DeviceType::Cuda);
+    Tensor y = relu_cuda.forward(x);
+    EXPECT_EQ(y.device(), DeviceType::Cuda);
+}
+
 TEST_F(ReluModuleTest, ForwardClampsNegativeValuesToZero) {
     Tensor x(Shape({5}), &backend, {-2.0f, -0.5f, 0.0f, 0.5f, 2.0f});
     Tensor y = relu.forward(x);
