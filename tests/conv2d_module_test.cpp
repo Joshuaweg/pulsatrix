@@ -139,5 +139,48 @@ TEST_F(Conv2DModuleTest, ParametersExposesKernelAndBiasByPointer) {
     EXPECT_EQ(params[1].grad, &conv.bias_grad());
 }
 
+using Conv2DModuleDeathTest = Conv2DModuleTest;
+
+// Unlike LinearModule/ReluModule, ALL THREE of Conv2DModule's methods dereference
+// Tensor::data() in raw host loops (forward_impl's bias-add loop and its im2col() helper;
+// backward's transpose2d()/col2im(); propagate_relevance's own loop and col2im()) --
+// undefined behavior on a CUDA-backed Tensor. Phase 1.5 Mission 2
+// (mission_host_loop_guards.md) guards all three with EXAI_ASSERT. No real GPU needed: see
+// LinearModuleDeathTest for the mislabeled-Tensor testing pattern this reuses.
+TEST_F(Conv2DModuleDeathTest, ForwardAbortsOnNonCpuInput) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f},
+                 DeviceType::Cuda);
+    EXPECT_DEATH({ (void)conv.forward(input); }, "EXAI_ASSERT failed");
+}
+
+TEST_F(Conv2DModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
+    (void)conv.forward(input);
+
+    Tensor grad_output(Shape({1, 2, 2}), &backend, {1.0f, 1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
+    EXPECT_DEATH({ (void)conv.backward(grad_output); }, "EXAI_ASSERT failed");
+}
+
+TEST_F(Conv2DModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
+    (void)conv.forward(input);
+
+    Tensor relevance_out(Shape({1, 2, 2}), &backend, {1.0f, 1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
+    LRPRuleConfig config;
+    EXPECT_DEATH({ (void)conv.propagate_relevance(relevance_out, config); }, "EXAI_ASSERT failed");
+}
+
 }  // namespace
 }  // namespace exai
