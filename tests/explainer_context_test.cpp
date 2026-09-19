@@ -90,6 +90,36 @@ TEST_F(ExplainerContextTest, LayerLabelPassesThroughInputNodeLabel) {
     EXPECT_EQ(ctx.layer_label(input_node).value(), "input");
 }
 
+TEST_F(ExplainerContextTest, BackwardPassMatchesDirectChainedBackward) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
+    linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+
+    ReluModule relu(&backend);
+
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    (void)ctx.forward_pass(input);
+
+    Tensor grad_output(Shape({2}), &backend, {1.0f, -1.0f});
+    Tensor traced_grad_input = ctx.backward_pass(grad_output);
+
+    // Reference: the existing, already-proven-correct way to compute this gradient --
+    // direct chained backward() calls, the same oracle pattern as
+    // mission_module_graph_wiring.md's own integration test.
+    Tensor direct_grad_h2 = linear2.backward(grad_output);
+    Tensor direct_grad_h1 = relu.backward(direct_grad_h2);
+    Tensor direct_grad_input = linear1.backward(direct_grad_h1);
+
+    for (int64_t i = 0; i < direct_grad_input.numel(); ++i) {
+        EXPECT_FLOAT_EQ(traced_grad_input.data()[i], direct_grad_input.data()[i]) << "mismatch at index " << i;
+    }
+}
+
 TEST_F(ExplainerContextTest, RepeatedForwardPassDoesNotLeakStateFromPriorCall) {
     LinearModule linear(2, 2, &backend);
     linear.set_weight({1.0f, 0.0f, 0.0f, 1.0f});
