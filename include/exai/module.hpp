@@ -7,6 +7,7 @@
 
 #include "exai/assert.hpp"
 #include "exai/lrp_rule_config.hpp"
+#include "exai/op_type.hpp"
 #include "exai/tensor.hpp"
 
 namespace exai {
@@ -26,10 +27,12 @@ struct ParamRef {
  * @note `propagate_relevance` is pure-virtual -- charter non-negotiable #5. A module type
  *       without a defined LRP rule is a compile error, not a runtime "no default rule"
  *       exception (the Captum/Zennit failure mode this project exists to avoid).
- * @note A module does not know about ComputationGraph/Autograd -- graph node registration
- *       and backward-function wiring are the caller's responsibility (the training loop,
- *       Mission 4). A module exposes plain tensor-in/tensor-out operations; graph
- *       bookkeeping is a separate concern (single responsibility).
+ * @note A module does not build or own graph structure itself -- ComputationGraph node
+ *       registration and Autograd backward-function wiring are done generically by
+ *       whichever caller opts into the traced path (Phase 2 Mission 0's
+ *       Module::forward_traced), using backward()/op_type() below polymorphically. A
+ *       module exposes plain tensor-in/tensor-out operations plus these two facts about
+ *       itself; graph bookkeeping stays a separate concern (single responsibility).
  */
 class Module {
 public:
@@ -52,6 +55,27 @@ public:
      * @return Relevance at this module's input.
      */
     [[nodiscard]] virtual Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) = 0;
+
+    /**
+     * @brief Computes the gradient w.r.t. this module's input, given the gradient w.r.t.
+     *        its output. Must be called after forward() -- uses state cached from that call.
+     * @param grad_output Gradient w.r.t. this module's output.
+     * @return Gradient w.r.t. this module's input.
+     * @note Promoted to the base class in Phase 2 Mission 0 -- every existing subclass
+     *       (LinearModule/ReluModule/Conv2DModule) already implemented this exact
+     *       signature independently; making it virtual lets graph-wiring code
+     *       (Module::forward_traced) call it polymorphically through a Module* without
+     *       knowing the concrete subclass, the same way propagate_relevance already works.
+     */
+    [[nodiscard]] virtual Tensor backward(const Tensor& grad_output) = 0;
+
+    /**
+     * @brief This module's operation-category tag, for ComputationGraph node tagging.
+     * @return This module's OpType (see op_type.hpp's closed set).
+     * @note Added in Phase 2 Mission 0 alongside backward() -- lets graph-wiring code tag
+     *       nodes generically through a Module* rather than switching on concrete subclass.
+     */
+    [[nodiscard]] virtual OpType op_type() const = 0;
 
     /**
      * @brief This module's trainable parameters and their gradients, for an optimizer to
