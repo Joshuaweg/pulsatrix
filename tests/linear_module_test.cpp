@@ -18,6 +18,27 @@ TEST_F(LinearModuleTest, ConstructionSetsWeightAndBiasShapes) {
     EXPECT_EQ(linear.bias().shape(), Shape({2}));
 }
 
+// Every internally-constructed Tensor defaulted to DeviceType::Cpu regardless of the
+// backend actually passed to the constructor -- a real gap Phase 1.5 Mission 3 (Objective
+// 2) fixes by threading an explicit device parameter through. No real GPU needed for this
+// specific check: it only verifies which DeviceType tag lands on each member, using the
+// same mislabeled-Tensor trick as Mission 2's guard tests.
+TEST_F(LinearModuleTest, ConstructionDefaultsEveryTensorMemberToCpu) {
+    LinearModule linear(3, 2, &backend);
+    EXPECT_EQ(linear.weight().device(), DeviceType::Cpu);
+    EXPECT_EQ(linear.bias().device(), DeviceType::Cpu);
+    EXPECT_EQ(linear.weight_grad().device(), DeviceType::Cpu);
+    EXPECT_EQ(linear.bias_grad().device(), DeviceType::Cpu);
+}
+
+TEST_F(LinearModuleTest, ConstructionThreadsExplicitDeviceToEveryTensorMember) {
+    LinearModule linear(3, 2, &backend, DeviceType::Cuda);
+    EXPECT_EQ(linear.weight().device(), DeviceType::Cuda);
+    EXPECT_EQ(linear.bias().device(), DeviceType::Cuda);
+    EXPECT_EQ(linear.weight_grad().device(), DeviceType::Cuda);
+    EXPECT_EQ(linear.bias_grad().device(), DeviceType::Cuda);
+}
+
 TEST_F(LinearModuleTest, WeightAndBiasGradientsStartAtZero) {
     LinearModule linear(3, 2, &backend);
     EXPECT_FLOAT_EQ(linear.weight_grad().data()[0], 0.0f);
