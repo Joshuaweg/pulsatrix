@@ -9,6 +9,7 @@ add_executable(exai_tests
     computation_graph_persistence_test.cpp
     autograd_test.cpp
     module_test.cpp
+    module_graph_wiring_test.cpp
     linear_module_test.cpp
     relu_module_test.cpp
     conv2d_module_test.cpp
