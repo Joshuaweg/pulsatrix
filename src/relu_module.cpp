@@ -1,5 +1,7 @@
 #include "exai/relu_module.hpp"
 
+#include "exai/assert.hpp"
+
 namespace exai {
 
 ReluModule::ReluModule(DeviceBackend* backend)
@@ -17,6 +19,11 @@ Tensor ReluModule::forward_impl(const Tensor& input) {
 }
 
 Tensor ReluModule::backward(const Tensor& grad_output) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
+    // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
+    // mission_host_loop_guards.md.
+    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+
     Tensor grad_input(grad_output.shape(), backend_);
     for (int64_t i = 0; i < grad_output.numel(); ++i) {
         grad_input.data()[i] = (last_input_.data()[i] > 0.0f) ? grad_output.data()[i] : 0.0f;
