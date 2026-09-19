@@ -1,5 +1,7 @@
 #include "exai/conv2d_module.hpp"
 
+#include "exai/assert.hpp"
+
 namespace exai {
 
 namespace {
@@ -98,6 +100,11 @@ void Conv2DModule::set_bias(std::initializer_list<float> values) {
 }
 
 Tensor Conv2DModule::forward_impl(const Tensor& input) {
+    // Dereferences Tensor::data() directly (bias-add loop, plus im2col()) -- not yet
+    // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
+    // decision and mission_host_loop_guards.md.
+    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+
     int64_t H = input.shape().dim(1);
     int64_t W = input.shape().dim(2);
     int64_t out_h = H - kernel_h_ + 1;
@@ -128,6 +135,12 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
 }
 
 Tensor Conv2DModule::backward(const Tensor& grad_output) {
+    // Dereferences Tensor::data() directly (transpose2d()/col2im() helpers, plus its own
+    // bias-grad loop) -- not yet backend-generic. See
+    // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
+    // mission_host_loop_guards.md.
+    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+
     int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     int64_t Q = last_out_h_ * last_out_w_;
 
@@ -165,6 +178,11 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
 }
 
 Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    // Dereferences Tensor::data() directly (its own loop, plus col2im()) -- not yet
+    // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
+    // decision and mission_host_loop_guards.md.
+    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+
     int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     int64_t Q = last_out_h_ * last_out_w_;
 

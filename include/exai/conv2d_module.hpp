@@ -37,6 +37,12 @@ public:
      *        the most recent forward() call's output.
      * @return Gradient w.r.t. this module's input.
      * @note Must be called after forward() -- uses the input/im2col cached from that call.
+     * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host
+     *       loops (via transpose2d()/col2im() helpers). EXAI_ASSERT(grad_output.device() ==
+     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor; see
+     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
+     *       remove this guard without actually retrofitting the method to route through
+     *       DeviceBackend.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output);
 
@@ -63,6 +69,12 @@ public:
      *       touched a given input pixel, the same overlap-handling backward() already
      *       needed for gradients. Bias is excluded from z, same rationale as LinearModule.
      *       Must be called after forward().
+     * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host
+     *       loops (via col2im()). EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu)
+     *       guards against silent UB on a CUDA-backed Tensor; see
+     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
+     *       remove this guard without actually retrofitting the method to route through
+     *       DeviceBackend.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
@@ -71,6 +83,16 @@ public:
     }
 
 protected:
+    /**
+     * @brief The actual forward computation (im2col + gemm + per-channel bias add).
+     * @note Not yet backend-generic -- unlike LinearModule/ReluModule's forward_impl, this
+     *       one dereferences Tensor::data() directly (its bias-add loop, plus the im2col()
+     *       helper). EXAI_ASSERT(input.device() == DeviceType::Cpu) guards against silent
+     *       UB on a CUDA-backed Tensor; see
+     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
+     *       remove this guard without actually retrofitting the method to route through
+     *       DeviceBackend.
+     */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
 private:
