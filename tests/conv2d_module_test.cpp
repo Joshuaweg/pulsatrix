@@ -128,5 +128,16 @@ TEST_F(Conv2DModuleTest, PropagateRelevanceConservesTotalRelevance) {
     EXPECT_NEAR(sum_in, sum_out, 1e-2f);
 }
 
+TEST_F(Conv2DModuleTest, ParametersExposesKernelAndBiasByPointer) {
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    auto params = conv.parameters();
+
+    ASSERT_EQ(params.size(), 2u);
+    EXPECT_EQ(params[0].value, &conv.kernel());
+    EXPECT_EQ(params[0].grad, &conv.kernel_grad());
+    EXPECT_EQ(params[1].value, &conv.bias());
+    EXPECT_EQ(params[1].grad, &conv.bias_grad());
+}
+
 }  // namespace
 }  // namespace exai
