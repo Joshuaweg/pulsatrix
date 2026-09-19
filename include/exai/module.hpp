@@ -3,10 +3,15 @@
  */
 #pragma once
 
+#include <optional>
+#include <utility>
 #include <vector>
 
 #include "exai/assert.hpp"
+#include "exai/autograd.hpp"
+#include "exai/computation_graph.hpp"
 #include "exai/lrp_rule_config.hpp"
+#include "exai/node.hpp"
 #include "exai/op_type.hpp"
 #include "exai/tensor.hpp"
 
@@ -46,6 +51,32 @@ public:
     [[nodiscard]] Tensor forward(const Tensor& input) {
         EXAI_ASSERT(input.numel() > 0);
         return forward_impl(input);
+    }
+
+    /**
+     * @brief Runs forward() while also registering a ComputationGraph node (tagged with
+     *        this module's op_type(), parented to input_node) and wiring an Autograd
+     *        backward function that reuses this module's own backward() -- the opt-in
+     *        traced/explainable path, per Phase 2 Mission 0.
+     * @param input Input tensor. Must be non-empty (same precondition as forward()).
+     * @param input_node Id of the graph node producing input. Must already exist in graph.
+     * @param graph Graph to add this module's output node to. Must outlive the returned
+     *        node id's use (graph structure, per ComputationGraph's own design, persists
+     *        past this call and past any subsequent backward pass).
+     * @param autograd Autograd instance to register this node's backward function with.
+     * @return The output tensor (identical to what forward(input) alone would return) and
+     *         the new node's id, so a caller chaining multiple modules can thread node ids
+     *         the same way it already threads tensors.
+     * @note Strictly additive: forward()/backward() are completely unaffected by this
+     *       method's existence or use. Every graph-free call site (XorNetwork, every
+     *       Phase 0/1 test) needs no changes.
+     */
+    [[nodiscard]] std::pair<Tensor, NodeId> forward_traced(const Tensor& input, NodeId input_node,
+                                                             ComputationGraph& graph, Autograd& autograd) {
+        Tensor output = forward(input);
+        NodeId node_id = graph.add_node(op_type(), output.shape(), std::nullopt, {input_node});
+        autograd.register_backward(node_id, [this](const Tensor& grad_output) { return this->backward(grad_output); });
+        return {std::move(output), node_id};
     }
 
     /**
