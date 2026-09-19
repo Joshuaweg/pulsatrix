@@ -34,7 +34,9 @@ target_compile_features(exai_core PUBLIC cxx_std_17)
 
 if(EXAI_ENABLE_CUDA)
     target_sources(exai_core PRIVATE src/cuda_backend.cu)
-    set_target_properties(exai_core PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+    # No cross-TU __device__/__global__ calls yet -- relocatable device code (and its
+    # separate device-link step) isn't needed and was failing to link
+    # (__cudaRegisterLinkedBinary unresolved) when exai_tests linked the static lib.
     target_link_libraries(exai_core PUBLIC CUDA::cudart CUDA::cublas)
 endif()
 
