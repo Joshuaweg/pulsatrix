@@ -39,6 +39,12 @@ public:
      *        the most recent forward() call's output.
      * @return Gradient w.r.t. this module's input.
      * @note Must be called after forward() -- uses the input cached from that call.
+     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
+     *       loop (via an internal transpose() helper). EXAI_ASSERT(grad_output.device() ==
+     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor; see
+     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
+     *       remove this guard without actually retrofitting the method to route through
+     *       DeviceBackend.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output);
 
@@ -64,6 +70,12 @@ public:
      *       the rule entirely rather than approximated. This is what makes relevance
      *       conservation exact (up to the epsilon stabilizer) rather than merely
      *       approximate. Must be called after forward() -- uses the cached pre-bias output.
+     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
+     *       loop. EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu) guards against
+     *       silent UB on a CUDA-backed Tensor; see
+     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
+     *       remove this guard without actually retrofitting the method to route through
+     *       DeviceBackend.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 

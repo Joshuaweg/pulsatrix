@@ -1,5 +1,7 @@
 #include "exai/linear_module.hpp"
 
+#include "exai/assert.hpp"
+
 namespace exai {
 
 namespace {
@@ -51,6 +53,11 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
 }
 
 Tensor LinearModule::backward(const Tensor& grad_output) {
+    // Dereferences Tensor::data() directly (via transpose()) -- not yet backend-generic.
+    // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
+    // mission_host_loop_guards.md.
+    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+
     // grad_W = outer(last_input_, grad_output) = (in_features x 1) * (1 x out_features)
     Tensor local_weight_grad(Shape({in_features_, out_features_}), backend_);
     backend_->gemm(last_input_.data(), grad_output.data(), local_weight_grad.data(),
@@ -68,6 +75,11 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
 }
 
 Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
+    // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
+    // mission_host_loop_guards.md.
+    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+
     Tensor relevance_in(Shape({in_features_}), backend_);
     relevance_in.fill(0.0f);
 
