@@ -18,6 +18,11 @@ add_executable(exai_tests
     metrics_sink_test.cpp
     xor_training_example_test.cpp
 )
+
+if(EXAI_ENABLE_CUDA)
+    target_sources(exai_tests PRIVATE cuda_check_test.cpp cuda_backend_test.cpp)
+endif()
+
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
 include(GoogleTest)

@@ -8,6 +8,14 @@ option(EXAI_ENABLE_CUDA "Build the CUDA DeviceBackend" OFF)
 option(EXAI_ENABLE_PYTHON "Build Python bindings via pybind11" OFF)
 option(EXAI_BUILD_TESTS "Build the GoogleTest suite" ON)
 
+if(EXAI_ENABLE_CUDA)
+    enable_language(CUDA)
+    find_package(CUDAToolkit REQUIRED)
+    if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+        set(CMAKE_CUDA_ARCHITECTURES "native")  # build for the actual dev/CI GPU; override for multi-arch distribution
+    endif()
+endif()
+
 add_library(exai_core
     src/cpu_backend.cpp
     src/tensor.cpp
@@ -25,7 +33,9 @@ target_include_directories(exai_core PUBLIC include)
 target_compile_features(exai_core PUBLIC cxx_std_17)
 
 if(EXAI_ENABLE_CUDA)
-    message(STATUS "EXAI_ENABLE_CUDA is ON but no CUDA backend exists yet (Phase 1.5) — no-op for now")
+    target_sources(exai_core PRIVATE src/cuda_backend.cu)
+    set_target_properties(exai_core PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+    target_link_libraries(exai_core PUBLIC CUDA::cudart CUDA::cublas)
 endif()
 
 if(EXAI_ENABLE_PYTHON)
