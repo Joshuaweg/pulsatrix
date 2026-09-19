@@ -2,6 +2,7 @@
 
 #include "exai/cpu_backend.hpp"
 #include "exai/module.hpp"
+#include "exai/op_type.hpp"
 
 namespace exai {
 namespace {
@@ -14,6 +15,16 @@ public:
     Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) override {
         return Tensor(relevance_out);  // pass-through, not a real rule -- this is a test double
     }
+
+    // Identity, matching forward_impl()'s own identity behavior -- not a real gradient rule,
+    // this is a test double. Phase 2 Mission 0: backward() promoted to virtual on Module so
+    // graph-wiring code can call it polymorphically without knowing the concrete subclass.
+    Tensor backward(const Tensor& grad_output) override { return Tensor(grad_output); }
+
+    // Arbitrary but fixed choice for a test double -- Elementwise is as reasonable as any
+    // other tag for an identity op. Phase 2 Mission 0: op_type() lets ComputationGraph
+    // node-tagging work generically through a Module* without a per-subclass switch.
+    [[nodiscard]] OpType op_type() const override { return OpType::Elementwise; }
 
 protected:
     Tensor forward_impl(const Tensor& input) override {
@@ -55,6 +66,22 @@ TEST_F(ModuleTest, PropagateRelevanceIsCallableThroughBasePointer) {
 
     EXPECT_FLOAT_EQ(relevance_in.data()[0], 0.5f);
     EXPECT_FLOAT_EQ(relevance_in.data()[1], 0.5f);
+}
+
+TEST_F(ModuleTest, BackwardIsCallableThroughBasePointer) {
+    Module& base = module;
+    Tensor grad_output(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+
+    Tensor grad_input = base.backward(grad_output);
+
+    EXPECT_FLOAT_EQ(grad_input.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(grad_input.data()[1], 2.0f);
+    EXPECT_FLOAT_EQ(grad_input.data()[2], 3.0f);
+}
+
+TEST_F(ModuleTest, OpTypeIsCallableThroughBasePointer) {
+    const Module& base = module;
+    EXPECT_EQ(base.op_type(), OpType::Elementwise);
 }
 
 TEST_F(ModuleTest, DefaultParametersIsEmpty) {
