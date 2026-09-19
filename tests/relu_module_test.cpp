@@ -54,5 +54,24 @@ TEST_F(ReluModuleTest, PropagateRelevancePassesThroughUnchanged) {
     EXPECT_FLOAT_EQ(relevance_in.data()[2], relevance_out.data()[2]);
 }
 
+using ReluModuleDeathTest = ReluModuleTest;
+
+// backward() dereferences Tensor::data() directly in a raw host loop -- undefined behavior
+// on a CUDA-backed Tensor. Phase 1.5 Mission 2 (mission_host_loop_guards.md) guards it with
+// EXAI_ASSERT. No real GPU needed: DeviceType::Cuda over real CPUBackend memory triggers
+// the guard identically to a genuine CUDA tensor (see LinearModuleDeathTest for the same
+// pattern). propagate_relevance() is NOT guarded -- it's a plain Tensor copy, which routes
+// through DeviceBackend::copy() and is already backend-safe.
+TEST_F(ReluModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    Tensor x(Shape({4}), &backend, {-1.0f, 0.0f, 1.0f, 2.0f});
+    (void)relu.forward(x);
+
+    Tensor grad_y(Shape({4}), &backend, {10.0f, 10.0f, 10.0f, 10.0f}, DeviceType::Cuda);
+    EXPECT_DEATH({ (void)relu.backward(grad_y); }, "EXAI_ASSERT failed");
+}
+
 }  // namespace
 }  // namespace exai
