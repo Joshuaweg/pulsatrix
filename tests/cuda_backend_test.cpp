@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "exai/cuda_backend.hpp"
+#include "exai/tensor.hpp"
 
 // Mirrors CPUBackendTest's exact test shape (allocate/free round-trip, zero-byte
 // convention, copy round-trip, fill correctness) -- deliberate, so the two backends'
@@ -65,6 +66,33 @@ TEST_F(CUDABackendTest, FillSetsEveryElementToValue) {
 
 TEST_F(CUDABackendTest, FillOnZeroElementsIsSafe) {
     EXPECT_NO_THROW(backend.fill(nullptr, 1.0f, 0));
+}
+
+// Real-hardware proof that Tensor's initializer-list and copy constructors pick the right
+// CopyDirection against a genuine CUDABackend (device_backend_test.cpp's mock only checks
+// which enum value is chosen; this confirms the actual bytes round-trip correctly through
+// real cudaMemcpy calls). Phase 1.5 Mission 3, Objective 1.
+TEST_F(CUDABackendTest, TensorInitializerListConstructorRoundTripsThroughRealCUDA) {
+    Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f}, DeviceType::Cuda);
+
+    std::vector<float> host(3, 0.0f);
+    backend.copy(host.data(), t.data(), host.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(host[0], 1.0f);
+    EXPECT_FLOAT_EQ(host[1], 2.0f);
+    EXPECT_FLOAT_EQ(host[2], 3.0f);
+}
+
+TEST_F(CUDABackendTest, TensorCopyConstructorRoundTripsThroughRealCUDA) {
+    Tensor original(Shape({3}), &backend, {4.0f, 5.0f, 6.0f}, DeviceType::Cuda);
+    Tensor copy(original);
+
+    EXPECT_NE(copy.data(), original.data());  // independent device buffer
+
+    std::vector<float> host(3, 0.0f);
+    backend.copy(host.data(), copy.data(), host.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(host[0], 4.0f);
+    EXPECT_FLOAT_EQ(host[1], 5.0f);
+    EXPECT_FLOAT_EQ(host[2], 6.0f);
 }
 
 TEST_F(CUDABackendTest, GemmComputesHandVerified2x2Product) {

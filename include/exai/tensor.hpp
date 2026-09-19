@@ -37,12 +37,21 @@ public:
      * @param backend Backend to allocate/copy through.
      * @param values Initial values, in row-major order.
      * @param device Which device this tensor's buffer conceptually resides on.
+     * @note Copies via CopyDirection::HostToHost if device is Cpu, else HostToDevice --
+     *       values.begin() is always a genuine host pointer (std::initializer_list lives on
+     *       the host) regardless of the destination.
      */
     Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float> values,
            DeviceType device = DeviceType::Cpu);
 
     ~Tensor();
 
+    /**
+     * @brief Deep-copies another tensor's buffer.
+     * @note Copies via CopyDirection::HostToHost if device() is Cpu, else DeviceToDevice --
+     *       both this tensor's and other's buffers live on the same device, since both are
+     *       allocated by the same backend_.
+     */
     Tensor(const Tensor& other);
     Tensor& operator=(const Tensor& other);
     Tensor(Tensor&& other) noexcept;
