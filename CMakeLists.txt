@@ -19,6 +19,7 @@ add_library(exai_core
     src/mse_loss.cpp
     src/sgd_optimizer.cpp
     src/adam_optimizer.cpp
+    src/xor_training_example.cpp
 )
 target_include_directories(exai_core PUBLIC include)
 target_compile_features(exai_core PUBLIC cxx_std_17)
