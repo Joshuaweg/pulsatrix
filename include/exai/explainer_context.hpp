@@ -54,10 +54,11 @@ public:
         autograd_ = Autograd{};
         activations_.clear();
 
-        NodeId current_node = graph_.add_node(OpType::Elementwise, input.shape(), "input");
-        activations_.emplace(current_node, Tensor(input));
+        input_node_ = graph_.add_node(OpType::Elementwise, input.shape(), "input");
+        activations_.emplace(input_node_, Tensor(input));
 
         Tensor current = input;
+        NodeId current_node = input_node_;
         for (Module* module : modules_) {
             auto [output, node_id] = module->forward_traced(current, current_node, graph_, autograd_);
             activations_.emplace(node_id, Tensor(output));
@@ -74,7 +75,10 @@ public:
      * @return Gradient w.r.t. the chain's input.
      * @note Must be called after forward_pass().
      */
-    Tensor backward_pass(const Tensor& output_grad);
+    Tensor backward_pass(const Tensor& output_grad) {
+        autograd_.backward(graph_, output_node_, output_grad);
+        return Tensor(autograd_.gradient(input_node_));
+    }
 
     /** @brief The current graph (from the most recent forward_pass() call). */
     [[nodiscard]] const ComputationGraph& graph() const { return graph_; }
@@ -97,6 +101,7 @@ private:
     ComputationGraph graph_;
     Autograd autograd_;
     std::unordered_map<NodeId, Tensor> activations_;
+    NodeId input_node_ = 0;
     NodeId output_node_ = 0;
 };
 
