@@ -18,6 +18,7 @@ add_executable(exai_tests
     adam_optimizer_test.cpp
     metrics_sink_test.cpp
     xor_training_example_test.cpp
+    attribution_test.cpp
 )
 
 if(EXAI_ENABLE_CUDA)
