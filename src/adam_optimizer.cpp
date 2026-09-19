@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "exai/assert.hpp"
+
 namespace exai {
 
 AdamOptimizer::AdamOptimizer(float learning_rate, DeviceBackend* backend, float beta1, float beta2, float eps)
@@ -9,6 +11,12 @@ AdamOptimizer::AdamOptimizer(float learning_rate, DeviceBackend* backend, float 
 
 void AdamOptimizer::step(Module& module) {
     for (ParamRef p : module.parameters()) {
+        // Dereferences Tensor::data() directly in a raw host loop -- not yet
+        // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
+        // decision and mission_host_loop_guards.md.
+        EXAI_ASSERT(p.value->device() == DeviceType::Cpu);
+        EXAI_ASSERT(p.grad->device() == DeviceType::Cpu);
+
         auto it = state_.find(p.value);
         if (it == state_.end()) {
             AdamState fresh{Tensor(p.value->shape(), backend_), Tensor(p.value->shape(), backend_), 0};
