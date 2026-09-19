@@ -25,8 +25,10 @@ Tensor::Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float>
     EXAI_ASSERT(static_cast<int64_t>(values.size()) == shape_.numel());
     data_ = allocate_buffer(backend_, shape_.numel());
     if (data_ != nullptr) {
-        backend_->copy(data_, values.begin(), static_cast<size_t>(shape_.numel()) * sizeof(float),
-                        CopyDirection::HostToHost);
+        // values.begin() is always a genuine host pointer (std::initializer_list lives on
+        // the host); data_ may not be, depending on device_.
+        CopyDirection dir = (device_ == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::HostToDevice;
+        backend_->copy(data_, values.begin(), static_cast<size_t>(shape_.numel()) * sizeof(float), dir);
     }
 }
 
@@ -38,8 +40,10 @@ Tensor::Tensor(const Tensor& other)
     : data_(nullptr), shape_(other.shape_), backend_(other.backend_), device_(other.device_) {
     data_ = allocate_buffer(backend_, shape_.numel());
     if (data_ != nullptr) {
-        backend_->copy(data_, other.data_, static_cast<size_t>(shape_.numel()) * sizeof(float),
-                        CopyDirection::HostToHost);
+        // Both data_ and other.data_ live on the SAME device (both allocated by backend_).
+        CopyDirection dir =
+            (device_ == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::DeviceToDevice;
+        backend_->copy(data_, other.data_, static_cast<size_t>(shape_.numel()) * sizeof(float), dir);
     }
 }
 
