@@ -13,6 +13,7 @@ add_executable(exai_tests
     relu_module_test.cpp
     conv2d_module_test.cpp
     mse_loss_test.cpp
+    sgd_optimizer_test.cpp
 )
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 

@@ -1,0 +1,60 @@
+#include <gtest/gtest.h>
+
+#include "exai/cpu_backend.hpp"
+#include "exai/linear_module.hpp"
+#include "exai/sgd_optimizer.hpp"
+
+namespace exai {
+namespace {
+
+TEST(SGDOptimizerTest, StepUpdatesParametersByLearningRateTimesGradient) {
+    CPUBackend backend;
+    LinearModule linear(1, 1, &backend);
+    linear.set_weight({2.0f});
+    linear.set_bias({1.0f});
+
+    // Set gradients directly through parameters() rather than via forward()/backward(),
+    // to isolate the optimizer's own update logic from module-specific gradient math.
+    auto params = linear.parameters();
+    params[0].grad->data()[0] = 4.0f;  // weight_grad
+    params[1].grad->data()[0] = 2.0f;  // bias_grad
+
+    SGDOptimizer opt(0.1f);
+    opt.step(linear);
+
+    EXPECT_FLOAT_EQ(linear.weight().data()[0], 1.6f);  // 2.0 - 0.1*4.0
+    EXPECT_FLOAT_EQ(linear.bias().data()[0], 0.8f);    // 1.0 - 0.1*2.0
+}
+
+TEST(SGDOptimizerTest, ZeroGradResetsAllGradientsToZero) {
+    CPUBackend backend;
+    LinearModule linear(1, 1, &backend);
+    auto params = linear.parameters();
+    params[0].grad->data()[0] = 5.0f;
+    params[1].grad->data()[0] = 3.0f;
+
+    SGDOptimizer opt(0.1f);
+    opt.zero_grad(linear);
+
+    EXPECT_FLOAT_EQ(linear.weight_grad().data()[0], 0.0f);
+    EXPECT_FLOAT_EQ(linear.bias_grad().data()[0], 0.0f);
+}
+
+TEST(SGDOptimizerTest, StepOnParameterlessModuleIsSafeNoOp) {
+    // A module whose parameters() is the Module default (empty) must not crash.
+    class NoParamModule : public Module {
+    public:
+        Tensor propagate_relevance(const Tensor& r, const LRPRuleConfig&) override { return Tensor(r); }
+
+    protected:
+        Tensor forward_impl(const Tensor& input) override { return Tensor(input); }
+    };
+
+    NoParamModule m;
+    SGDOptimizer opt(0.1f);
+    EXPECT_NO_THROW(opt.step(m));
+    EXPECT_NO_THROW(opt.zero_grad(m));
+}
+
+}  // namespace
+}  // namespace exai
