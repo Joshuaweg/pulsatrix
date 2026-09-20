@@ -97,6 +97,14 @@ if(PULSATRIX_ENABLE_HIP)
                                        backend_equivalence_hip_test.cpp forward_pass_equivalence_hip_test.cpp)
 endif()
 
+# The direct CUDA<->HIP arm of the charter's three-way gate. Compiled only when both vendor
+# backends are on, which no machine available to this project can currently satisfy -- see
+# the file's own header. Guarded rather than omitted so the gate is satisfiable unchanged the
+# day a dual-vendor node exists.
+if(PULSATRIX_ENABLE_CUDA AND PULSATRIX_ENABLE_HIP)
+    target_sources(pulsatrix_tests PRIVATE three_way_equivalence_test.cpp)
+endif()
+
 target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_core GTest::gtest_main GTest::gmock)
 
 # ctest runs pulsatrix_tests with cwd = the build directory, not the source tree -- a relative
