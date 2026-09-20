@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(PULSATRIX_ENABLE_CUDA "Build the CUDA DeviceBackend" OFF)
+option(PULSATRIX_ENABLE_HIP "Build the HIP/ROCm DeviceBackend" OFF)
 option(PULSATRIX_ENABLE_PYTHON "Build Python bindings via pybind11" OFF)
 option(PULSATRIX_BUILD_TESTS "Build the GoogleTest suite" ON)
 option(PULSATRIX_BUILD_EXAMPLES "Build standalone example executables (examples/)" ON)
@@ -14,6 +15,32 @@ if(PULSATRIX_ENABLE_CUDA)
     find_package(CUDAToolkit REQUIRED)
     if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
         set(CMAKE_CUDA_ARCHITECTURES "native")  # build for the actual dev/CI GPU; override for multi-arch distribution
+    endif()
+endif()
+
+if(PULSATRIX_ENABLE_HIP)
+    # ROCm does not install its CMake package configs anywhere CMake searches by default
+    # (they live under <rocm>/lib/cmake/{hip,hipblas,...}), and unlike CUDA there is no
+    # FindHIPToolkit equivalent in CMake itself. This is the prefix-path setup AMD's own
+    # documentation prescribes: honor an explicit -DROCM_PATH, then $ROCM_PATH, then the
+    # conventional /opt/rocm. Nothing here is specific to a particular ROCm install.
+    if(NOT DEFINED ROCM_PATH)
+        if(DEFINED ENV{ROCM_PATH})
+            set(ROCM_PATH "$ENV{ROCM_PATH}")
+        else()
+            set(ROCM_PATH "/opt/rocm")
+        endif()
+    endif()
+    list(APPEND CMAKE_PREFIX_PATH "${ROCM_PATH}" "${ROCM_PATH}/lib/cmake")
+
+    enable_language(HIP)
+    find_package(hip REQUIRED)
+    find_package(hipblas REQUIRED)
+    if(NOT DEFINED CMAKE_HIP_ARCHITECTURES)
+        # This project's dev/CI AMD device. Unlike CUDA's "native", HIP has no portable
+        # auto-detect here -- rocm_agent_enumerator exists but isn't a CMake facility --
+        # so the target is named explicitly and overridden for multi-arch distribution.
+        set(CMAKE_HIP_ARCHITECTURES "gfx1151")
     endif()
 endif()
 
