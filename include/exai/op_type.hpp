@@ -20,7 +20,8 @@ enum class OpType {
     Conv,
     Activation,
     Elementwise,
-    Reduction
+    Reduction,
+    Normalization
 };
 
 }  // namespace exai
