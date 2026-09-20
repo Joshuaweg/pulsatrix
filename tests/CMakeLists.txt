@@ -40,7 +40,7 @@ endif()
 
 if(EXAI_ENABLE_HIP)
     target_sources(exai_tests PRIVATE hip_check_test.cpp hip_backend_test.cpp hipblas_check_test.cpp
-                                       backend_equivalence_hip_test.cpp)
+                                       backend_equivalence_hip_test.cpp forward_pass_equivalence_hip_test.cpp)
 endif()
 
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
