@@ -24,6 +24,7 @@ add_executable(exai_tests
     integrated_gradients_test.cpp
     flatten_module_test.cpp
     grad_cam_test.cpp
+    weighted_linear_regression_test.cpp
 )
 
 if(EXAI_ENABLE_CUDA)
