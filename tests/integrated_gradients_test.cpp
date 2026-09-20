@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
+
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
 #include "exai/integrated_gradients.hpp"
@@ -56,19 +58,27 @@ TEST_F(IntegratedGradientsTest, CompletenessAxiomHoldsWithinTolerance) {
         << "completeness axiom violated: sum(IG) should equal F(x) - F(baseline)";
 }
 
-using IntegratedGradientsDeathTest = IntegratedGradientsTest;
-
-TEST_F(IntegratedGradientsDeathTest, ZeroStepsIsRejected) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// escalated from EXAI_ASSERT (was a death test) to a real throw -- external boundary.
+TEST_F(IntegratedGradientsTest, ExplainThrowsOnZeroSteps) {
     LinearModule linear(2, 1, &backend);
     ExplainerContext ctx({&linear});
     Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
     Tensor baseline(Shape({2}), &backend, {0.0f, 0.0f});
 
     IntegratedGradients ig;
-    EXPECT_DEATH({ (void)ig.explain(ctx, input, baseline, 0, /*steps=*/0, &backend); }, "EXAI_ASSERT failed");
+    EXPECT_THROW({ (void)ig.explain(ctx, input, baseline, 0, /*steps=*/0, &backend); }, std::invalid_argument);
+}
+
+TEST_F(IntegratedGradientsTest, ExplainThrowsOnMismatchedInputAndBaselineShapes) {
+    LinearModule linear(2, 1, &backend);
+    ExplainerContext ctx({&linear});
+    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor mismatched_baseline(Shape({3}), &backend, {0.0f, 0.0f, 0.0f});
+
+    IntegratedGradients ig;
+    EXPECT_THROW({ (void)ig.explain(ctx, input, mismatched_baseline, 0, /*steps=*/10, &backend); },
+                 std::invalid_argument);
 }
 
 }  // namespace

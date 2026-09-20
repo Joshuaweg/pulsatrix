@@ -7,6 +7,7 @@
 #include <cmath>
 #include <functional>
 #include <random>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -50,12 +51,21 @@ public:
      * @param backend Backend to allocate intermediate tensors through.
      * @return An Attribution with method "lime", values = the local linear coefficients
      *         (same shape as input), and metadata recording the sampling parameters used.
+     * @throws std::invalid_argument if num_samples <= 0 or sigma <= 0 -- external boundary
+     *         (campaign_exai_dl_library_adversarial_hardening.md, Mission 2, finding 11):
+     *         escalated from EXAI_ASSERT-only, which in Release left num_samples<=0
+     *         reaching vector::reserve as a huge (wrapped) size_t, throwing an unhelpful
+     *         std::length_error instead of a clear, actionable error.
      */
     [[nodiscard]] Attribution explain(const std::function<Tensor(const Tensor&)>& predict, const Tensor& input,
                                        int64_t target_index, int64_t num_samples, float sigma, float l2_lambda,
                                        unsigned seed, DeviceBackend* backend) const {
-        EXAI_ASSERT(num_samples > 0);
-        EXAI_ASSERT(sigma > 0.0f);
+        if (num_samples <= 0) {
+            throw std::invalid_argument("LIME::explain: num_samples must be positive");
+        }
+        if (sigma <= 0.0f) {
+            throw std::invalid_argument("LIME::explain: sigma must be positive");
+        }
 
         Tensor base_output = predict(input);
         EXAI_ASSERT(target_index >= 0 && target_index < base_output.numel());

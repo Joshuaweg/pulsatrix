@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
+
 #include "exai/conv2d_module.hpp"
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
@@ -68,18 +70,17 @@ TEST_F(GradCAMTest, ComputesHandDerivedCAMForSimpleNetwork) {
     EXPECT_EQ(attr.metadata.at("target_index"), "0");
 }
 
-using GradCAMDeathTest = GradCAMTest;
-
-TEST_F(GradCAMDeathTest, AbortsWhenGraphHasNoConvLayer) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// escalated from EXAI_ASSERT (was a death test) to a real throw -- whether this
+// ExplainerContext was built with a Conv layer is a caller-configuration fact, not an
+// internal invariant.
+TEST_F(GradCAMTest, ExplainThrowsWhenGraphHasNoConvLayer) {
     LinearModule linear(2, 2, &backend);
     ExplainerContext ctx({&linear});
     Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
 
     GradCAM gradcam;
-    EXPECT_DEATH({ (void)gradcam.explain(ctx, input, 0, &backend); }, "EXAI_ASSERT failed");
+    EXPECT_THROW({ (void)gradcam.explain(ctx, input, 0, &backend); }, std::invalid_argument);
 }
 
 }  // namespace

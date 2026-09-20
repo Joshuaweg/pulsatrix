@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
+
 #include "exai/autograd.hpp"
 #include "exai/computation_graph.hpp"
 #include "exai/cpu_backend.hpp"
@@ -49,14 +51,13 @@ TEST_F(ModuleTest, ForwardDelegatesToForwardImpl) {
     EXPECT_FLOAT_EQ(output.data()[2], 3.0f);
 }
 
-using ModuleDeathTest = ModuleTest;
-
-TEST_F(ModuleDeathTest, ForwardAbortsOnEmptyInputEvenThoughForwardImplDoesNotCheck) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// escalated from EXAI_ASSERT (was a death test) to a real throw -- the single most
+// external-facing check in the whole system (every Module::forward() call, including
+// from Phase 5's Python bindings, passes through this NVI wrapper first).
+TEST_F(ModuleTest, ForwardThrowsOnEmptyInputEvenThoughForwardImplDoesNotCheck) {
     Tensor empty(Shape({0}), &backend);
-    EXPECT_DEATH({ (void)module.forward(empty); }, "EXAI_ASSERT failed");
+    EXPECT_THROW({ (void)module.forward(empty); }, std::invalid_argument);
 }
 
 TEST_F(ModuleTest, PropagateRelevanceIsCallableThroughBasePointer) {

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -40,8 +41,21 @@ public:
      * @brief Constructs a context over an ordered module chain.
      * @param modules The network, in forward-pass order. Not owned; each must outlive
      *        this ExplainerContext.
+     * @throws std::invalid_argument if modules is empty or contains a nullptr -- external
+     *         boundary (campaign_exai_dl_library_adversarial_hardening.md, Mission 2,
+     *         finding 5): without this check, a nullptr element was an unconditional
+     *         null-pointer dereference on the next forward_pass() call.
      */
-    explicit ExplainerContext(std::vector<Module*> modules) : modules_(std::move(modules)) {}
+    explicit ExplainerContext(std::vector<Module*> modules) : modules_(std::move(modules)) {
+        if (modules_.empty()) {
+            throw std::invalid_argument("ExplainerContext: modules must not be empty");
+        }
+        for (Module* m : modules_) {
+            if (m == nullptr) {
+                throw std::invalid_argument("ExplainerContext: modules must not contain a null pointer");
+            }
+        }
+    }
 
     /**
      * @brief Runs the full module chain forward, building a fresh graph and caching every

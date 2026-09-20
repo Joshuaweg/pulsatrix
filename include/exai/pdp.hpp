@@ -6,6 +6,7 @@
 #pragma once
 
 #include <functional>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -46,12 +47,18 @@ public:
      * @param backend Backend to allocate intermediate tensors through.
      * @return An Attribution with method "pdp", values = the grid_size-length PDP curve,
      *         and metadata recording the sweep parameters used.
+     * @throws std::invalid_argument if background is empty -- external boundary
+     *         (campaign_exai_dl_library_adversarial_hardening.md, Mission 2, finding 10):
+     *         escalated from EXAI_ASSERT-only, which left this a raw out-of-bounds
+     *         background[0] access in Release builds.
      */
     [[nodiscard]] Attribution explain(const std::function<Tensor(const Tensor&)>& predict,
                                        const std::vector<Tensor>& background, int64_t feature_index,
                                        int64_t target_index, float grid_min, float grid_max, int64_t grid_size,
                                        DeviceBackend* backend) const {
-        EXAI_ASSERT(!background.empty());
+        if (background.empty()) {
+            throw std::invalid_argument("PDP::explain: background must not be empty");
+        }
         EXAI_ASSERT(grid_size >= 1);
         EXAI_ASSERT(feature_index >= 0 && feature_index < background[0].numel());
 

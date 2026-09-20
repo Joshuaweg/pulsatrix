@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 #include "exai/assert.hpp"
@@ -48,8 +49,14 @@ public:
      */
     [[nodiscard]] Attribution explain(ExplainerContext& ctx, const Tensor& input, const Tensor& baseline,
                                        int64_t target_index, int64_t steps, DeviceBackend* backend) const {
-        EXAI_ASSERT(steps > 0);
-        EXAI_ASSERT(input.numel() == baseline.numel());
+        // External boundary (Mission 2, finding 15 systemic sweep) -- escalated from
+        // EXAI_ASSERT-only.
+        if (steps <= 0) {
+            throw std::invalid_argument("IntegratedGradients::explain: steps must be positive");
+        }
+        if (input.numel() != baseline.numel()) {
+            throw std::invalid_argument("IntegratedGradients::explain: input and baseline must have the same numel");
+        }
 
         Saliency saliency;
         Tensor accumulated_grad(input.shape(), backend);  // zero-initialized

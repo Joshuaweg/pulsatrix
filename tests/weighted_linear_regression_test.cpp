@@ -67,5 +67,29 @@ TEST(WeightedLinearRegressionTest, ThrowsOnNearSingularSystem) {
     EXPECT_THROW((void)fit_weighted_linear_regression(samples, targets, weights, 0.0f), std::runtime_error);
 }
 
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2,
+// finding 15 systemic sweep): escalated from EXAI_ASSERT-only to a real throw, for
+// consistency with this function's own near-singular-system check above.
+TEST(WeightedLinearRegressionTest, ThrowsOnEmptySamples) {
+    std::vector<std::vector<float>> samples;
+    std::vector<float> targets;
+    std::vector<float> weights;
+    EXPECT_THROW((void)fit_weighted_linear_regression(samples, targets, weights, 0.0f), std::invalid_argument);
+}
+
+TEST(WeightedLinearRegressionTest, ThrowsOnMismatchedTargetsSize) {
+    std::vector<std::vector<float>> samples = {{1.0f}, {2.0f}};
+    std::vector<float> targets = {2.0f};  // wrong size
+    std::vector<float> weights = {1.0f, 1.0f};
+    EXPECT_THROW((void)fit_weighted_linear_regression(samples, targets, weights, 0.0f), std::invalid_argument);
+}
+
+TEST(WeightedLinearRegressionTest, ThrowsOnInconsistentRowLengths) {
+    std::vector<std::vector<float>> samples = {{1.0f, 2.0f}, {1.0f}};  // ragged
+    std::vector<float> targets = {2.0f, 4.0f};
+    std::vector<float> weights = {1.0f, 1.0f};
+    EXPECT_THROW((void)fit_weighted_linear_regression(samples, targets, weights, 0.0f), std::invalid_argument);
+}
+
 }  // namespace
 }  // namespace exai
