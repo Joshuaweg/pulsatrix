@@ -45,6 +45,23 @@ def test_tensor_numpy_zero_copy():
     assert t.at([0]) == 5.0
 
 
+def test_tensor_at_raises_on_out_of_range_index():
+    t = exai_py.Tensor.zeros([3])
+    with pytest.raises(IndexError):
+        t.at([5])
+
+
+def test_tensor_at_raises_on_rank_mismatch():
+    t = exai_py.Tensor.zeros([2, 3])
+    with pytest.raises(ValueError):
+        t.at([0])
+
+
+def test_tensor_from_values_raises_on_size_mismatch():
+    with pytest.raises(ValueError):
+        exai_py.Tensor.from_values([2, 2], [1.0, 2.0])
+
+
 def test_tensor_numpy_multidim_shape_and_strides():
     t = exai_py.Tensor.from_values([2, 3], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
     arr = np.asarray(t)

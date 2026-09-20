@@ -8,6 +8,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include <stdexcept>
 #include <vector>
 
 #include "exai/assert.hpp"
@@ -64,11 +65,24 @@ std::vector<int64_t> dims_of(const exai::Tensor& t) {
 // has no portable public constructor from a runtime-sized buffer, so a Python-supplied,
 // dynamically-sized index list can't be forwarded to it. Same row-major convention
 // Tensor::at() itself uses internally.
+//
+// Genuine external boundary (campaign_exai_dl_library_adversarial_hardening.md's Mission
+// 0 classification, applied to the binding layer): index comes directly from Python, so
+// this throws on rank mismatch or an out-of-range index rather than EXAI_ASSERT-ing --
+// the binding-layer echo of Tensor::operator[]'s own internal-invariant/EXAI_ASSERT
+// choice, since here the caller genuinely isn't validated by construction.
 int64_t flat_index_of(const exai::Tensor& t, const std::vector<int64_t>& index) {
-    EXAI_ASSERT(static_cast<int64_t>(index.size()) == t.rank());
+    if (static_cast<int64_t>(index.size()) != t.rank()) {
+        throw std::invalid_argument("exai_py: index rank does not match tensor rank");
+    }
     int64_t flat = 0;
     for (int64_t i = 0; i < t.rank(); ++i) {
-        flat = flat * t.shape().dim(static_cast<size_t>(i)) + index[static_cast<size_t>(i)];
+        int64_t dim = t.shape().dim(static_cast<size_t>(i));
+        int64_t idx = index[static_cast<size_t>(i)];
+        if (idx < 0 || idx >= dim) {
+            throw std::out_of_range("exai_py: index out of range for tensor shape");
+        }
+        flat = flat * dim + idx;
     }
     return flat;
 }

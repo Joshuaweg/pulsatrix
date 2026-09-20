@@ -6,6 +6,7 @@
 #include <initializer_list>
 #include <vector>
 
+#include "exai/assert.hpp"
 #include "exai/device_backend.hpp"
 #include "exai/shape.hpp"
 
@@ -107,11 +108,24 @@ public:
     /** @brief Const overload of at(). */
     [[nodiscard]] const float& at(std::initializer_list<int64_t> index) const;
 
-    /** @brief Flat (rank-agnostic) element access by linear offset into the row-major buffer. */
-    [[nodiscard]] float& operator[](int64_t flat_index) { return data_[flat_index]; }
+    /**
+     * @brief Flat (rank-agnostic) element access by linear offset into the row-major buffer.
+     * @note EXAI_ASSERT-gated bounds check, not throw -- internal invariant per
+     *       campaign_exai_dl_library_adversarial_hardening.md's Mission 0 classification:
+     *       this is a hot path called internally (CPUBackend loops, module forward/backward)
+     *       with an already-computed, already-valid index, never directly from unvalidated
+     *       external input.
+     */
+    [[nodiscard]] float& operator[](int64_t flat_index) {
+        EXAI_ASSERT(flat_index >= 0 && flat_index < numel());
+        return data_[flat_index];
+    }
 
     /** @brief Const overload of operator[]. */
-    [[nodiscard]] const float& operator[](int64_t flat_index) const { return data_[flat_index]; }
+    [[nodiscard]] const float& operator[](int64_t flat_index) const {
+        EXAI_ASSERT(flat_index >= 0 && flat_index < numel());
+        return data_[flat_index];
+    }
 
     /**
      * @brief Sets every element to value. Safe no-op on a zero-element tensor.

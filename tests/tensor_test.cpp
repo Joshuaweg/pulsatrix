@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 #include <cstdlib>
+#include <stdexcept>
 #include <type_traits>
 #include <vector>
 
@@ -70,6 +71,19 @@ TEST_F(TensorTest, ConstructionFromVectorCopiesData) {
     EXPECT_FLOAT_EQ(t.data()[3], 4.0f);
 }
 
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):
+// values-constructors are an external boundary (Tensor::from_values in
+// bindings/exai_py.cpp passes an externally-supplied values list directly) -- escalated
+// from EXAI_ASSERT-only to a real throw per Mission 0's classification table.
+TEST_F(TensorTest, ConstructionFromInitializerListThrowsOnSizeMismatch) {
+    EXPECT_THROW((Tensor(Shape({2, 2}), &backend, {1.0f, 2.0f})), std::invalid_argument);
+}
+
+TEST_F(TensorTest, ConstructionFromVectorThrowsOnSizeMismatch) {
+    std::vector<float> values{1.0f, 2.0f};
+    EXPECT_THROW((Tensor(Shape({2, 2}), &backend, values)), std::invalid_argument);
+}
+
 // The initializer-list ctor's source (std::initializer_list) always lives on the host;
 // its destination may not. CopyDirection must reflect device(), not be hardcoded --
 // otherwise a CUDA-backed Tensor would issue a HostToHost cudaMemcpy on what's actually a
@@ -131,6 +145,26 @@ TEST_F(TensorTest, MoveAssignmentTransfersDataPointer) {
     EXPECT_EQ(b.data(), a_ptr);
     EXPECT_EQ(b.numel(), 2);
     EXPECT_EQ(a.data(), nullptr);
+}
+
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):
+// Tensor's own documented invariant is "data() == nullptr iff numel() == 0". Before this
+// fix, the moved-from Tensor's shape_ was left in std::move's unspecified-but-valid state
+// (an empty-dims Shape), which by the rank-0 scalar convention has numel() == 1 --
+// inconsistent with data() == nullptr, so a subsequent at()/operator[] call computed a
+// valid-looking flat index into a null buffer: an unconditional null-pointer dereference,
+// not just "undefined behavior" in the abstract.
+TEST_F(TensorTest, MoveConstructorLeavesSourceWithZeroNumel) {
+    Tensor original(Shape({2}), &backend, {1.0f, 2.0f});
+    Tensor moved(std::move(original));
+    EXPECT_EQ(original.numel(), 0);
+}
+
+TEST_F(TensorTest, MoveAssignmentLeavesSourceWithZeroNumel) {
+    Tensor a(Shape({2}), &backend, {1.0f, 2.0f});
+    Tensor b(Shape({3}), &backend, {9.0f, 9.0f, 9.0f});
+    b = std::move(a);
+    EXPECT_EQ(a.numel(), 0);
 }
 
 TEST_F(TensorTest, CopyConstructorProducesIndependentBuffer) {
@@ -228,6 +262,27 @@ TEST_F(TensorDeathTest, AtAbortsOnRankMismatch) {
     EXPECT_DEATH({ (void)t.at({0}); }, "EXAI_ASSERT failed");
 }
 
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):
+// operator[] previously had zero bounds checking, not even assert-gated -- raw
+// out-of-bounds buffer access, unconditional in every build. Internal invariant per
+// Mission 0's classification table (hot path, indices computed internally by
+// CPUBackend/module forward-backward loops) -- EXAI_ASSERT, not throw.
+TEST_F(TensorDeathTest, IndexOperatorAbortsOnOutOfRangeFlatIndex) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    EXPECT_DEATH({ (void)t[5]; }, "EXAI_ASSERT failed");
+}
+
+TEST_F(TensorDeathTest, IndexOperatorAbortsOnNegativeFlatIndex) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    EXPECT_DEATH({ (void)t[-1]; }, "EXAI_ASSERT failed");
+}
+
 TEST_F(TensorTest, OperatorBracketFlatIndexesRegardlessOfRank) {
     Tensor t(Shape({2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
     EXPECT_FLOAT_EQ(t[0], 1.0f);
@@ -278,6 +333,15 @@ TEST_F(TensorTest, ToDifferentDeviceThrowsUntilThatBackendExists) {
     EXPECT_THROW(t.to(DeviceType::Cuda), std::runtime_error);
 }
 
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):
+// escalated from EXAI_ASSERT-only to a real throw -- gradient-accumulation shapes trace
+// back to module construction parameters, which can originate from external configuration.
+TEST_F(TensorTest, AccumulateThrowsOnShapeMismatch) {
+    Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor wrong_shape(Shape({2}), &backend, {0.5f, 0.5f});
+    EXPECT_THROW(t.accumulate(wrong_shape), std::invalid_argument);
+}
+
 TEST_F(TensorTest, AccumulateAddsOtherIntoThisInPlace) {
     Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
     Tensor delta(Shape({3}), &backend, {0.5f, 0.5f, 0.5f});
@@ -302,14 +366,8 @@ TEST_F(TensorTest, AccumulateCalledTwiceSumsBothContributions) {
     EXPECT_FLOAT_EQ(t.data()[1], 3.0f);
 }
 
-TEST_F(TensorDeathTest, AccumulateAbortsOnShapeMismatch) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor t(Shape({3}), &backend);
-    Tensor mismatched(Shape({2}), &backend);
-    EXPECT_DEATH({ (void)t.accumulate(mismatched); }, "EXAI_ASSERT failed");
-}
+// Escalated from EXAI_ASSERT (death test) to a real throw -- see
+// TensorTest.AccumulateThrowsOnShapeMismatch above (Mission 0's classification table).
 
 TEST(TensorDestructorTest, DestructorCallsBackendFreeExactlyOnce) {
     MockDeviceBackend mock;
