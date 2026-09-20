@@ -5,6 +5,7 @@
 // binding-layer-specific design decisions this file embodies (default backend ownership,
 // buffer-protocol device guard) that are not changes to the core itself.
 
+#include <pybind11/functional.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -12,12 +13,21 @@
 #include <vector>
 
 #include "exai/assert.hpp"
+#include "exai/attribution.hpp"
 #include "exai/conv2d_module.hpp"
 #include "exai/cpu_backend.hpp"
+#include "exai/explainer_context.hpp"
 #include "exai/flatten_module.hpp"
+#include "exai/grad_cam.hpp"
+#include "exai/integrated_gradients.hpp"
+#include "exai/kernel_shap.hpp"
+#include "exai/lime.hpp"
 #include "exai/linear_module.hpp"
+#include "exai/metrics_sink.hpp"
 #include "exai/module.hpp"
+#include "exai/pdp.hpp"
 #include "exai/relu_module.hpp"
+#include "exai/saliency.hpp"
 #include "exai/shape.hpp"
 #include "exai/tensor.hpp"
 
@@ -86,6 +96,24 @@ int64_t flat_index_of(const exai::Tensor& t, const std::vector<int64_t>& index) 
     }
     return flat;
 }
+
+// Phase 5 Mission 1, Objective 4. MetricsSink is a genuine pure-virtual interface with an
+// explicit charter intent for Python-side concrete writers (TensorBoard/W&B/...) -- the
+// one class in this mission that actually needs a trampoline (context_pybind11_ownership_
+// gil.md's pattern). PYBIND11_OVERRIDE_PURE acquires the GIL internally before calling
+// into the Python override; no manual py::gil_scoped_acquire needed here.
+class PyMetricsSink : public exai::MetricsSink {
+public:
+    using exai::MetricsSink::MetricsSink;
+
+    void log_scalar(const std::string& tag, double value, int step) override {
+        PYBIND11_OVERRIDE_PURE(void, exai::MetricsSink, log_scalar, tag, value, step);
+    }
+
+    void log_histogram(const std::string& tag, const exai::Tensor& values, int step) override {
+        PYBIND11_OVERRIDE_PURE(void, exai::MetricsSink, log_histogram, tag, values, step);
+    }
+};
 
 }  // namespace
 
@@ -160,4 +188,116 @@ PYBIND11_MODULE(exai_py, m) {
              static_cast<void (exai::Conv2DModule::*)(const std::vector<float>&)>(&exai::Conv2DModule::set_kernel))
         .def("set_bias",
              static_cast<void (exai::Conv2DModule::*)(const std::vector<float>&)>(&exai::Conv2DModule::set_bias));
+
+    // Phase 5 Mission 1, Objective 1. Attribution has no default constructor (mirrors
+    // Tensor's own no-default-ctor design) -- bind a 3-arg constructor mirroring the
+    // aggregate's field order, and expose the fields read-only. Not how explainers build
+    // one internally (aggregate-init, per every explainer header's own note), but this is
+    // the Python-side entry point once Objective 2/3's explainers start returning them.
+    py::class_<exai::Attribution>(m, "Attribution")
+        .def(py::init([](std::string method, exai::Tensor values, std::unordered_map<std::string, std::string> metadata) {
+                 return exai::Attribution{std::move(method), std::move(values), std::move(metadata)};
+             }),
+             py::arg("method"), py::arg("values"), py::arg("metadata"))
+        .def_readonly("method", &exai::Attribution::method)
+        .def_readonly("values", &exai::Attribution::values)
+        .def_readonly("metadata", &exai::Attribution::metadata);
+
+    // Construction-only surface (Recon: forward_pass/backward_pass/graph()/activation()/
+    // gradient() stay C++-internal plumbing the explainers call themselves in Objective 2 --
+    // nothing in this mission's scope needs them exposed to Python directly). The
+    // std::invalid_argument the ctor throws on an empty or null-containing module vector
+    // (adversarial hardening, Mission 2, finding 5) maps to Python's ValueError
+    // automatically via pybind11's built-in std::invalid_argument translation.
+    py::class_<exai::ExplainerContext>(m, "ExplainerContext")
+        .def(py::init<std::vector<exai::Module*>>(), py::arg("modules"));
+
+    // Phase 5 Mission 1, Objective 2: graph-native explainers. Each C++ explain() takes
+    // a DeviceBackend* -- narrowed here to always pass default_backend(), the same
+    // binding-layer-only simplification Mission 0 already applied to every Module
+    // subclass constructor (Python callers have no CUDABackend concept exposed at all,
+    // so this parameter has exactly one reachable value from Python; not a core change,
+    // the C++ signature itself is untouched).
+    py::class_<exai::Saliency>(m, "Saliency")
+        .def(py::init<>())
+        .def(
+            "explain",
+            [](const exai::Saliency& self, exai::ExplainerContext& ctx, const exai::Tensor& input,
+               int64_t target_index) { return self.explain(ctx, input, target_index, &default_backend()); },
+            py::arg("ctx"), py::arg("input"), py::arg("target_index"));
+
+    py::class_<exai::IntegratedGradients>(m, "IntegratedGradients")
+        .def(py::init<>())
+        .def(
+            "explain",
+            [](const exai::IntegratedGradients& self, exai::ExplainerContext& ctx, const exai::Tensor& input,
+               const exai::Tensor& baseline, int64_t target_index, int64_t steps) {
+                return self.explain(ctx, input, baseline, target_index, steps, &default_backend());
+            },
+            py::arg("ctx"), py::arg("input"), py::arg("baseline"), py::arg("target_index"), py::arg("steps"));
+
+    py::class_<exai::GradCAM>(m, "GradCAM")
+        .def(py::init<>())
+        .def(
+            "explain",
+            [](const exai::GradCAM& self, exai::ExplainerContext& ctx, const exai::Tensor& input,
+               int64_t target_index) { return self.explain(ctx, input, target_index, &default_backend()); },
+            py::arg("ctx"), py::arg("input"), py::arg("target_index"));
+
+    // Phase 5 Mission 1, Objective 3: surrogate explainers. Graph-free -- take a Python
+    // callable (input Tensor -> output Tensor) directly via pybind11/functional.h's
+    // built-in std::function<Tensor(const Tensor&)> caster, no ExplainerContext involved
+    // at all. Same default_backend() narrowing as Objective 2's graph-native explainers.
+    py::class_<exai::LIME>(m, "LIME")
+        .def(py::init<>())
+        .def(
+            "explain",
+            [](const exai::LIME& self, const std::function<exai::Tensor(const exai::Tensor&)>& predict,
+               const exai::Tensor& input, int64_t target_index, int64_t num_samples, float sigma, float l2_lambda,
+               unsigned seed) {
+                return self.explain(predict, input, target_index, num_samples, sigma, l2_lambda, seed,
+                                     &default_backend());
+            },
+            py::arg("predict"), py::arg("input"), py::arg("target_index"), py::arg("num_samples"),
+            py::arg("sigma"), py::arg("l2_lambda"), py::arg("seed"));
+
+    py::class_<exai::KernelSHAP>(m, "KernelSHAP")
+        .def(py::init<>())
+        .def(
+            "explain",
+            [](const exai::KernelSHAP& self, const std::function<exai::Tensor(const exai::Tensor&)>& predict,
+               const exai::Tensor& input, const exai::Tensor& baseline, int64_t target_index) {
+                return self.explain(predict, input, baseline, target_index, &default_backend());
+            },
+            py::arg("predict"), py::arg("input"), py::arg("baseline"), py::arg("target_index"));
+
+    py::class_<exai::PDP>(m, "PDP")
+        .def(py::init<>())
+        .def(
+            "explain",
+            [](const exai::PDP& self, const std::function<exai::Tensor(const exai::Tensor&)>& predict,
+               const std::vector<exai::Tensor>& background, int64_t feature_index, int64_t target_index,
+               float grid_min, float grid_max, int64_t grid_size) {
+                return self.explain(predict, background, feature_index, target_index, grid_min, grid_max, grid_size,
+                                     &default_backend());
+            },
+            py::arg("predict"), py::arg("background"), py::arg("feature_index"), py::arg("target_index"),
+            py::arg("grid_min"), py::arg("grid_max"), py::arg("grid_size"));
+
+    // Phase 5 Mission 1, Objective 4. PyMetricsSink is the trampoline; NoOpMetricsSink is
+    // the one concrete C++ writer the charter ships (real writers are explicitly
+    // out-of-scope for the core project, Python-side is where they belong).
+    py::class_<exai::MetricsSink, PyMetricsSink>(m, "MetricsSink").def(py::init<>());
+
+    py::class_<exai::NoOpMetricsSink, exai::MetricsSink>(m, "NoOpMetricsSink").def(py::init<>());
+
+    // Binding-layer-only test helper: calls both MetricsSink methods through a base
+    // MetricsSink& the same way metrics_sink_test.cpp's own CallableThroughBasePointer
+    // test does in C++, proving PyMetricsSink's overrides are actually reachable from a
+    // real (non-Python) call site -- not a new production API.
+    m.def("_drive_metrics_sink_for_test", [](exai::MetricsSink& sink) {
+        exai::Tensor values(exai::Shape({2}), &default_backend(), {1.0f, 2.0f});
+        sink.log_scalar("loss", 0.5, 3);
+        sink.log_histogram("weights", values, 3);
+    });
 }
