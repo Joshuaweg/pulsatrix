@@ -55,9 +55,9 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           Conv2DModule conv(1, 2, 2, 2, &backend);
                           conv.set_kernel({1.0f, -0.5f, 0.5f, 2.0f, -1.0f, 1.5f, 0.5f, -0.5f});
                           conv.set_bias({0.1f, -0.2f});
-                          Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
+                          Tensor input(Shape({1, 1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
                           (void)conv.forward(input);
-                          Tensor relevance_out(Shape({2, 2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.5f, 1.5f, 2.5f, 3.5f});
+                          Tensor relevance_out(Shape({1, 2, 2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.5f, 1.5f, 2.5f, 3.5f});
                           LRPRuleConfig config;
                           Tensor relevance_in = conv.propagate_relevance(relevance_out, config);
                           float sum_in = 0.0f;
