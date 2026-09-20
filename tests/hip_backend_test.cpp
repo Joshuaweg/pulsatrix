@@ -127,5 +127,113 @@ TEST_F(HIPBackendTest, GemmHandlesNonSquareDimensions) {
     backend.free(device_out);
 }
 
+TEST_F(HIPBackendTest, ElementwiseReluClampsNegativeValuesToZero) {
+    std::vector<float> in = {-1.0f, -0.5f, 0.0f, 0.5f, 2.0f};
+    void* device_in = backend.allocate(in.size() * sizeof(float));
+    void* device_out = backend.allocate(in.size() * sizeof(float));
+    backend.copy(device_in, in.data(), in.size() * sizeof(float), CopyDirection::HostToDevice);
+
+    backend.elementwise(ElementwiseOp::Relu, static_cast<float*>(device_in), static_cast<float*>(device_out),
+                        in.size());
+
+    std::vector<float> out(in.size(), 0.0f);
+    backend.copy(out.data(), device_out, out.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(out[0], 0.0f);
+    EXPECT_FLOAT_EQ(out[1], 0.0f);
+    EXPECT_FLOAT_EQ(out[2], 0.0f);
+    EXPECT_FLOAT_EQ(out[3], 0.5f);
+    EXPECT_FLOAT_EQ(out[4], 2.0f);
+
+    backend.free(device_in);
+    backend.free(device_out);
+}
+
+TEST_F(HIPBackendTest, ElementwiseNegNegatesEveryElement) {
+    std::vector<float> in = {1.0f, -1.0f, 0.0f, 3.5f};
+    void* device_in = backend.allocate(in.size() * sizeof(float));
+    void* device_out = backend.allocate(in.size() * sizeof(float));
+    backend.copy(device_in, in.data(), in.size() * sizeof(float), CopyDirection::HostToDevice);
+
+    backend.elementwise(ElementwiseOp::Neg, static_cast<float*>(device_in), static_cast<float*>(device_out),
+                        in.size());
+
+    std::vector<float> out(in.size(), 0.0f);
+    backend.copy(out.data(), device_out, out.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(out[0], -1.0f);
+    EXPECT_FLOAT_EQ(out[1], 1.0f);
+    EXPECT_FLOAT_EQ(out[2], 0.0f);
+    EXPECT_FLOAT_EQ(out[3], -3.5f);
+
+    backend.free(device_in);
+    backend.free(device_out);
+}
+
+TEST_F(HIPBackendTest, ElementwiseHandlesZeroLengthGracefully) {
+    EXPECT_NO_THROW(backend.elementwise(ElementwiseOp::Relu, nullptr, nullptr, 0));
+}
+
+TEST_F(HIPBackendTest, ElementwiseSupportsInPlaceAliasing) {
+    std::vector<float> buf = {-1.0f, 2.0f, -3.0f};
+    void* device_buf = backend.allocate(buf.size() * sizeof(float));
+    backend.copy(device_buf, buf.data(), buf.size() * sizeof(float), CopyDirection::HostToDevice);
+
+    backend.elementwise(ElementwiseOp::Relu, static_cast<float*>(device_buf), static_cast<float*>(device_buf),
+                        buf.size());
+
+    backend.copy(buf.data(), device_buf, buf.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(buf[0], 0.0f);
+    EXPECT_FLOAT_EQ(buf[1], 2.0f);
+    EXPECT_FLOAT_EQ(buf[2], 0.0f);
+
+    backend.free(device_buf);
+}
+
+TEST_F(HIPBackendTest, AddComputesElementwiseSum) {
+    std::vector<float> a = {1.0f, 2.0f, 3.0f};
+    std::vector<float> b = {10.0f, 20.0f, 30.0f};
+    void* device_a = backend.allocate(a.size() * sizeof(float));
+    void* device_b = backend.allocate(b.size() * sizeof(float));
+    void* device_out = backend.allocate(a.size() * sizeof(float));
+    backend.copy(device_a, a.data(), a.size() * sizeof(float), CopyDirection::HostToDevice);
+    backend.copy(device_b, b.data(), b.size() * sizeof(float), CopyDirection::HostToDevice);
+
+    backend.add(static_cast<float*>(device_a), static_cast<float*>(device_b), static_cast<float*>(device_out),
+                a.size());
+
+    std::vector<float> out(3, 0.0f);
+    backend.copy(out.data(), device_out, out.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(out[0], 11.0f);
+    EXPECT_FLOAT_EQ(out[1], 22.0f);
+    EXPECT_FLOAT_EQ(out[2], 33.0f);
+
+    backend.free(device_a);
+    backend.free(device_b);
+    backend.free(device_out);
+}
+
+TEST_F(HIPBackendTest, AddSupportsInPlaceAccumulation) {
+    std::vector<float> acc = {1.0f, 2.0f, 3.0f};
+    std::vector<float> delta = {0.5f, 0.5f, 0.5f};
+    void* device_acc = backend.allocate(acc.size() * sizeof(float));
+    void* device_delta = backend.allocate(delta.size() * sizeof(float));
+    backend.copy(device_acc, acc.data(), acc.size() * sizeof(float), CopyDirection::HostToDevice);
+    backend.copy(device_delta, delta.data(), delta.size() * sizeof(float), CopyDirection::HostToDevice);
+
+    backend.add(static_cast<float*>(device_acc), static_cast<float*>(device_delta),
+                static_cast<float*>(device_acc), acc.size());  // out aliases a
+
+    backend.copy(acc.data(), device_acc, acc.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(acc[0], 1.5f);
+    EXPECT_FLOAT_EQ(acc[1], 2.5f);
+    EXPECT_FLOAT_EQ(acc[2], 3.5f);
+
+    backend.free(device_acc);
+    backend.free(device_delta);
+}
+
+TEST_F(HIPBackendTest, AddHandlesZeroLengthGracefully) {
+    EXPECT_NO_THROW(backend.add(nullptr, nullptr, nullptr, 0));
+}
+
 }  // namespace
 }  // namespace exai
