@@ -56,13 +56,13 @@ TEST_F(GradCAMTest, ComputesHandDerivedCAMForSimpleNetwork) {
     linear.set_bias({0.0f, 0.0f});
 
     ExplainerContext ctx({&conv, &relu, &flatten, &linear});
-    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.0f, 5.0f, 6.0f, 7.0f, 8.0f});
+    Tensor input(Shape({1, 1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.0f, 5.0f, 6.0f, 7.0f, 8.0f});
 
     GradCAM gradcam;
     Attribution attr = gradcam.explain(ctx, input, /*target_index=*/0, &backend);
 
     EXPECT_EQ(attr.method, "grad_cam");
-    EXPECT_EQ(attr.values.shape(), Shape({2, 2}));
+    EXPECT_EQ(attr.values.shape(), Shape({1, 2, 2}));
     EXPECT_FLOAT_EQ(attr.values.data()[0], 13.0f);
     EXPECT_FLOAT_EQ(attr.values.data()[1], 13.0f);
     EXPECT_FLOAT_EQ(attr.values.data()[2], 23.0f);

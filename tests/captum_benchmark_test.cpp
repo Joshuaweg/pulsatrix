@@ -34,7 +34,7 @@ TEST(CaptumBenchmarkTest, SaliencyMatchesCaptumOnLinearModel) {
     linear.set_weight({2.0f, -3.0f, 5.0f});
     linear.set_bias({100.0f});
     ExplainerContext ctx({&linear});
-    Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor input(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
 
     Saliency saliency;
     Attribution attr = saliency.explain(ctx, input, /*target_index=*/0, &backend);
@@ -58,7 +58,7 @@ TEST(CaptumBenchmarkTest, SaliencyMatchesCaptumOnNonlinearModel) {
     linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
     linear2.set_bias({0.05f, -0.05f});
     ExplainerContext ctx({&linear1, &relu, &linear2});
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
 
     Saliency saliency;
     Attribution attr = saliency.explain(ctx, input, /*target_index=*/0, &backend);
@@ -79,8 +79,8 @@ TEST(CaptumBenchmarkTest, IntegratedGradientsMatchesCaptumOnNonlinearModel) {
     linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
     linear2.set_bias({0.05f, -0.05f});
     ExplainerContext ctx({&linear1, &relu, &linear2});
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
-    Tensor baseline(Shape({3}), &backend, {0.0f, 0.0f, 0.0f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor baseline(Shape({1, 3}), &backend, {0.0f, 0.0f, 0.0f});
 
     IntegratedGradients ig;
     Attribution attr = ig.explain(ctx, input, baseline, /*target_index=*/0, /*steps=*/50, &backend);
@@ -104,17 +104,17 @@ TEST(CaptumBenchmarkTest, GradCAMMatchesCaptumLayerGradCam) {
     linear.set_weight({1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 2.0f, 0.0f, 2.0f, 0.0f, 2.0f, 0.0f, 2.0f, 0.0f});
     linear.set_bias({0.0f, 0.0f});
     ExplainerContext ctx({&conv, &relu, &flatten, &linear});
-    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.0f, 5.0f, 6.0f, 7.0f, 8.0f});
+    Tensor input(Shape({1, 1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.0f, 5.0f, 6.0f, 7.0f, 8.0f});
 
     GradCAM gradcam;
     Attribution attr = gradcam.explain(ctx, input, /*target_index=*/0, &backend);
 
     // Captum reference: LayerGradCam (pre-upsample): [[[[13.0, 13.0], [23.0, 32.0]]]]
     // (row-major over the 2x2 spatial map: (h0,w0), (h0,w1), (h1,w0), (h1,w1))
-    EXPECT_NEAR(attr.values.at({0, 0}), 13.0f, 1e-3f);
-    EXPECT_NEAR(attr.values.at({0, 1}), 13.0f, 1e-3f);
-    EXPECT_NEAR(attr.values.at({1, 0}), 23.0f, 1e-3f);
-    EXPECT_NEAR(attr.values.at({1, 1}), 32.0f, 1e-3f);
+    EXPECT_NEAR(attr.values.at({0, 0, 0}), 13.0f, 1e-3f);
+    EXPECT_NEAR(attr.values.at({0, 0, 1}), 13.0f, 1e-3f);
+    EXPECT_NEAR(attr.values.at({0, 1, 0}), 23.0f, 1e-3f);
+    EXPECT_NEAR(attr.values.at({0, 1, 1}), 32.0f, 1e-3f);
 }
 
 }  // namespace

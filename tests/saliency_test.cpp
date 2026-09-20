@@ -26,7 +26,7 @@ TEST_F(SaliencyTest, GradientMatchesWeightColumnForLinearOnlyNetwork) {
     linear.set_bias({100.0f, 100.0f});
 
     ExplainerContext ctx({&linear});
-    Tensor input(Shape({3}), &backend, {1.0f, 1.0f, 1.0f});
+    Tensor input(Shape({1, 3}), &backend, {1.0f, 1.0f, 1.0f});
 
     Saliency saliency;
     Attribution attr = saliency.explain(ctx, input, /*target_index=*/1, &backend);
@@ -44,7 +44,7 @@ TEST_F(SaliencyTest, DifferentTargetIndexSelectsDifferentWeightColumn) {
     linear.set_bias({0.0f, 0.0f});
 
     ExplainerContext ctx({&linear});
-    Tensor input(Shape({3}), &backend, {1.0f, 1.0f, 1.0f});
+    Tensor input(Shape({1, 3}), &backend, {1.0f, 1.0f, 1.0f});
 
     Saliency saliency;
     Attribution attr = saliency.explain(ctx, input, /*target_index=*/0, &backend);

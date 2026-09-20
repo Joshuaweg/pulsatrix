@@ -61,7 +61,7 @@ int main() {
 
     // Synthetic "hand-drawn digit"-shaped input: a filled circle on a 28x28 canvas -- not
     // real MNIST data.
-    Tensor input(Shape({1, kImageSize, kImageSize}), &backend);
+    Tensor input(Shape({1, 1, kImageSize, kImageSize}), &backend);
     constexpr float kCenter = static_cast<float>(kImageSize) / 2.0f;
     constexpr float kRadius = 8.0f;
     for (int64_t h = 0; h < kImageSize; ++h) {
@@ -69,7 +69,7 @@ int main() {
             float dy = static_cast<float>(h) - kCenter;
             float dw = static_cast<float>(w) - kCenter;
             float dist = std::sqrt(dy * dy + dw * dw);
-            input.at({0, h, w}) = (dist < kRadius) ? 1.0f : 0.0f;
+            input.at({0, 0, h, w}) = (dist < kRadius) ? 1.0f : 0.0f;
         }
     }
 
@@ -100,8 +100,8 @@ int main() {
     GradCAM gradcam;
     Attribution attr = gradcam.explain(ctx, input, predicted, &backend);
 
-    int64_t cam_h = attr.values.shape().dim(0);
-    int64_t cam_w = attr.values.shape().dim(1);
+    int64_t cam_h = attr.values.shape().dim(1);
+    int64_t cam_w = attr.values.shape().dim(2);
     std::printf("Grad-CAM heatmap (%lldx%lld, from the last conv layer), ASCII-scaled 0-9:\n",
                 static_cast<long long>(cam_h), static_cast<long long>(cam_w));
 
@@ -111,7 +111,7 @@ int main() {
     }
     for (int64_t h = 0; h < cam_h; ++h) {
         for (int64_t w = 0; w < cam_w; ++w) {
-            float v = attr.values.at({h, w});
+            float v = attr.values.at({0, h, w});
             int level = max_val > 0.0f ? static_cast<int>((v / max_val) * 9.0f) : 0;
             std::putchar(static_cast<char>('0' + level));
         }

@@ -29,7 +29,7 @@ TEST_F(LIMETest, ExplainThrowsOnNonPositiveNumSamples) {
     LinearModule linear(2, 1, &backend);
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
-    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
 
     LIME lime;
     EXPECT_THROW({ (void)lime.explain(predict, input, 0, /*num_samples=*/0, 1.0f, 0.0f, 42, &backend); },
@@ -40,7 +40,7 @@ TEST_F(LIMETest, ExplainThrowsOnNonPositiveSigma) {
     LinearModule linear(2, 1, &backend);
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
-    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
 
     LIME lime;
     EXPECT_THROW({ (void)lime.explain(predict, input, 0, /*num_samples=*/50, /*sigma=*/0.0f, 0.0f, 42, &backend); },
@@ -55,7 +55,7 @@ TEST_F(LIMETest, RecoversExactWeightColumnForLinearOnlyNetwork) {
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
-    Tensor input(Shape({3}), &backend, {1.0f, 1.0f, 1.0f});
+    Tensor input(Shape({1, 3}), &backend, {1.0f, 1.0f, 1.0f});
 
     LIME lime;
     Attribution attr =

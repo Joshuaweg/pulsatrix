@@ -35,8 +35,8 @@ TEST_F(IntegratedGradientsTest, CompletenessAxiomHoldsWithinTolerance) {
 
     ExplainerContext ctx({&linear1, &relu, &linear2});
 
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
-    Tensor baseline(Shape({3}), &backend, {0.0f, 0.0f, 0.0f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor baseline(Shape({1, 3}), &backend, {0.0f, 0.0f, 0.0f});
     constexpr int64_t target_index = 0;
 
     Tensor output_x = ctx.forward_pass(input);

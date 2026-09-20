@@ -43,9 +43,9 @@ TEST_F(PDPTest, CurveIsExactlyLinearWithTrueFeatureWeightAsSlope) {
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
     std::vector<Tensor> background;
-    background.emplace_back(Shape({3}), &backend, std::initializer_list<float>{1.0f, 1.0f, 1.0f});
-    background.emplace_back(Shape({3}), &backend, std::initializer_list<float>{5.0f, -2.0f, 0.0f});
-    background.emplace_back(Shape({3}), &backend, std::initializer_list<float>{-3.0f, 4.0f, 2.0f});
+    background.emplace_back(Shape({1, 3}), &backend, std::initializer_list<float>{1.0f, 1.0f, 1.0f});
+    background.emplace_back(Shape({1, 3}), &backend, std::initializer_list<float>{5.0f, -2.0f, 0.0f});
+    background.emplace_back(Shape({1, 3}), &backend, std::initializer_list<float>{-3.0f, 4.0f, 2.0f});
 
     PDP pdp;
     Attribution attr = pdp.explain(predict, background, /*feature_index=*/1, /*target_index=*/0, /*grid_min=*/-2.0f,
@@ -72,7 +72,7 @@ TEST_F(PDPTest, SingleBackgroundInstanceDegeneratesToPerInstanceLine) {
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
     std::vector<Tensor> background;
-    background.emplace_back(Shape({2}), &backend, std::initializer_list<float>{10.0f, 10.0f});
+    background.emplace_back(Shape({1, 2}), &backend, std::initializer_list<float>{10.0f, 10.0f});
 
     PDP pdp;
     Attribution attr =
@@ -95,7 +95,7 @@ TEST_F(PDPTest, GridSizeOneEvaluatesSinglePointCorrectly) {
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
     std::vector<Tensor> background;
-    background.emplace_back(Shape({1}), &backend, std::initializer_list<float>{0.0f});
+    background.emplace_back(Shape({1, 1}), &backend, std::initializer_list<float>{0.0f});
 
     PDP pdp;
     Attribution attr =

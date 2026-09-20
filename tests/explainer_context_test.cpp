@@ -42,7 +42,7 @@ TEST_F(ExplainerContextTest, ForwardPassSingleModuleMatchesDirectForward) {
     reference.set_bias({0.5f, -0.5f});
 
     ExplainerContext ctx({&linear});
-    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
 
     Tensor traced_output = ctx.forward_pass(input);
     Tensor direct_output = reference.forward(input);
@@ -58,7 +58,7 @@ TEST_F(ExplainerContextTest, ForwardPassBuildsCorrectGraphStructureForMultiModul
     LinearModule linear2(4, 2, &backend);
 
     ExplainerContext ctx({&linear1, &relu, &linear2});
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
     (void)ctx.forward_pass(input);
 
     // input node + 3 module nodes.
@@ -76,7 +76,7 @@ TEST_F(ExplainerContextTest, ActivationReturnsCachedValuePerNode) {
     linear.set_bias({0.0f, 0.0f});
 
     ExplainerContext ctx({&linear});
-    Tensor input(Shape({2}), &backend, {7.0f, 9.0f});
+    Tensor input(Shape({1, 2}), &backend, {7.0f, 9.0f});
     Tensor output = ctx.forward_pass(input);
 
     std::vector<NodeId> order = ctx.graph().topological_order();
@@ -96,7 +96,7 @@ TEST_F(ExplainerContextTest, ActivationReturnsCachedValuePerNode) {
 TEST_F(ExplainerContextTest, LayerLabelPassesThroughInputNodeLabel) {
     LinearModule linear(2, 2, &backend);
     ExplainerContext ctx({&linear});
-    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
     (void)ctx.forward_pass(input);
 
     std::vector<NodeId> order = ctx.graph().topological_order();
@@ -118,10 +118,10 @@ TEST_F(ExplainerContextTest, BackwardPassMatchesDirectChainedBackward) {
     linear2.set_bias({0.05f, -0.05f});
 
     ExplainerContext ctx({&linear1, &relu, &linear2});
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
     (void)ctx.forward_pass(input);
 
-    Tensor grad_output(Shape({2}), &backend, {1.0f, -1.0f});
+    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, -1.0f});
     Tensor traced_grad_input = ctx.backward_pass(grad_output);
 
     // Reference: the existing, already-proven-correct way to compute this gradient --
@@ -148,10 +148,10 @@ TEST_F(ExplainerContextTest, GradientReturnsCachedValuePerIntermediateNode) {
     linear2.set_bias({0.05f, -0.05f});
 
     ExplainerContext ctx({&linear1, &relu, &linear2});
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
     (void)ctx.forward_pass(input);
 
-    Tensor grad_output(Shape({2}), &backend, {1.0f, -1.0f});
+    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, -1.0f});
     (void)ctx.backward_pass(grad_output);
 
     // Reference: the same oracle Objective 3 of mission_module_graph_wiring.md and
@@ -183,11 +183,11 @@ TEST_F(ExplainerContextTest, RepeatedForwardPassDoesNotLeakStateFromPriorCall) {
 
     ExplainerContext ctx({&linear});
 
-    Tensor first_input(Shape({2}), &backend, {1.0f, 2.0f});
+    Tensor first_input(Shape({1, 2}), &backend, {1.0f, 2.0f});
     (void)ctx.forward_pass(first_input);
     EXPECT_EQ(ctx.graph().node_count(), 2u);
 
-    Tensor second_input(Shape({2}), &backend, {10.0f, 20.0f});
+    Tensor second_input(Shape({1, 2}), &backend, {10.0f, 20.0f});
     Tensor second_output = ctx.forward_pass(second_input);
 
     // Still exactly 2 nodes -- a fresh graph each call, not an ever-growing one.

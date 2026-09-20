@@ -61,7 +61,7 @@ TEST(StabilityTest, SaliencyIsDeterministic) {
     linear.set_weight({1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
     linear.set_bias({0.1f, -0.1f});
     ExplainerContext ctx({&linear});
-    Tensor input(Shape({3}), &backend, {1.0f, 1.0f, 1.0f});
+    Tensor input(Shape({1, 3}), &backend, {1.0f, 1.0f, 1.0f});
 
     Saliency saliency;
     std::vector<float> results;
@@ -83,8 +83,8 @@ TEST(StabilityTest, IntegratedGradientsIsDeterministic) {
     linear2.set_bias({0.05f, -0.05f});
     ExplainerContext ctx({&linear1, &relu, &linear2});
 
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
-    Tensor baseline(Shape({3}), &backend, {0.0f, 0.0f, 0.0f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor baseline(Shape({1, 3}), &backend, {0.0f, 0.0f, 0.0f});
 
     IntegratedGradients ig;
     std::vector<float> results;
@@ -106,7 +106,7 @@ TEST(StabilityTest, GradCAMIsDeterministic) {
     linear.set_weight({1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 2.0f, 0.0f, 2.0f, 0.0f, 2.0f, 0.0f, 2.0f, 0.0f});
     linear.set_bias({0.0f, 0.0f});
     ExplainerContext ctx({&conv, &relu, &flatten, &linear});
-    Tensor input(Shape({1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.0f, 5.0f, 6.0f, 7.0f, 8.0f});
+    Tensor input(Shape({1, 1, 3, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 0.0f, 5.0f, 6.0f, 7.0f, 8.0f});
 
     GradCAM gradcam;
     std::vector<float> results;
@@ -125,8 +125,8 @@ TEST(StabilityTest, KernelSHAPIsDeterministic) {
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
-    Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
-    Tensor baseline(Shape({3}), &backend, {0.0f, 0.0f, 0.0f});
+    Tensor input(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor baseline(Shape({1, 3}), &backend, {0.0f, 0.0f, 0.0f});
 
     KernelSHAP shap;
     std::vector<float> results;
@@ -146,8 +146,8 @@ TEST(StabilityTest, PDPIsDeterministic) {
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
     std::vector<Tensor> background;
-    background.emplace_back(Shape({3}), &backend, std::initializer_list<float>{1.0f, 1.0f, 1.0f});
-    background.emplace_back(Shape({3}), &backend, std::initializer_list<float>{5.0f, -2.0f, 0.0f});
+    background.emplace_back(Shape({1, 3}), &backend, std::initializer_list<float>{1.0f, 1.0f, 1.0f});
+    background.emplace_back(Shape({1, 3}), &backend, std::initializer_list<float>{5.0f, -2.0f, 0.0f});
 
     PDP pdp;
     std::vector<float> results;
@@ -179,7 +179,7 @@ TEST(StabilityTest, LIMEVariesAcrossIndependentSeeds) {
     ExplainerContext ctx({&linear1, &relu, &linear2});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
-    Tensor input(Shape({2}), &backend, {0.5f, 0.5f});
+    Tensor input(Shape({1, 2}), &backend, {0.5f, 0.5f});
 
     LIME lime;
     std::vector<float> results;
@@ -206,7 +206,7 @@ TEST(StabilityTest, LIMEIsDeterministicForAFixedSeed) {
     ExplainerContext ctx({&linear1, &relu, &linear2});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
-    Tensor input(Shape({2}), &backend, {0.5f, 0.5f});
+    Tensor input(Shape({1, 2}), &backend, {0.5f, 0.5f});
 
     LIME lime;
     std::vector<float> results;
