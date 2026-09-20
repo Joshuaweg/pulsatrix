@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
+
 #include "exai/shape.hpp"
 
 namespace exai {
@@ -61,6 +63,32 @@ TEST(ShapeTest, IsReshapeCompatibleFalseWhenNumelDiffers) {
     Shape a({2, 6});
     Shape b({3, 5});
     EXPECT_FALSE(a.is_reshape_compatible(b));
+}
+
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):
+// Shape is an external boundary -- Shape objects are built directly from Python-supplied
+// dimension lists in bindings/exai_py.cpp. A negative dimension must be rejected, not
+// silently accepted and propagated into every downstream numel()/allocation computation.
+TEST(ShapeTest, ConstructorThrowsOnNegativeDimension) {
+    EXPECT_THROW(Shape({2, -3, 4}), std::invalid_argument);
+}
+
+TEST(ShapeTest, NumelThrowsOnOverflow) {
+    // int64_t max is ~9.2e18; three dimensions of 3e6 each multiply to ~2.7e19, overflowing.
+    Shape s({3000000, 3000000, 3000000});
+    EXPECT_THROW({ (void)s.numel(); }, std::overflow_error);
+}
+
+// dim() previously had zero bounds checking, not even assert-gated -- raw out-of-bounds
+// std::vector access, unconditional in every build. Internal invariant (Mission 0's
+// classification table): an EXAI_ASSERT, not a throw, since every call site in this
+// codebase computes the index from an already-known-valid rank.
+TEST(ShapeDeathTest, DimAbortsOnOutOfRangeIndex) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    Shape s({2, 3});
+    EXPECT_DEATH({ (void)s.dim(2); }, "EXAI_ASSERT failed");
 }
 
 }  // namespace

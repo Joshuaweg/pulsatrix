@@ -22,7 +22,11 @@ Tensor::Tensor(Shape shape, DeviceBackend* backend, DeviceType device)
 
 Tensor::Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float> values, DeviceType device)
     : data_(nullptr), shape_(std::move(shape)), backend_(backend), device_(device) {
-    EXAI_ASSERT(static_cast<int64_t>(values.size()) == shape_.numel());
+    // External boundary (Mission 0 classification): values-constructors are called
+    // directly with externally-supplied data via bindings/exai_py.cpp's Tensor::from_values.
+    if (static_cast<int64_t>(values.size()) != shape_.numel()) {
+        throw std::invalid_argument("Tensor: values.size() does not match shape's element count");
+    }
     data_ = allocate_buffer(backend_, shape_.numel());
     if (data_ != nullptr) {
         // values.begin() is always a genuine host pointer (std::initializer_list lives on
@@ -34,7 +38,9 @@ Tensor::Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float>
 
 Tensor::Tensor(Shape shape, DeviceBackend* backend, const std::vector<float>& values, DeviceType device)
     : data_(nullptr), shape_(std::move(shape)), backend_(backend), device_(device) {
-    EXAI_ASSERT(static_cast<int64_t>(values.size()) == shape_.numel());
+    if (static_cast<int64_t>(values.size()) != shape_.numel()) {
+        throw std::invalid_argument("Tensor: values.size() does not match shape's element count");
+    }
     data_ = allocate_buffer(backend_, shape_.numel());
     if (data_ != nullptr) {
         CopyDirection dir = (device_ == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::HostToDevice;
@@ -69,6 +75,13 @@ Tensor& Tensor::operator=(const Tensor& other) {
 Tensor::Tensor(Tensor&& other) noexcept
     : data_(other.data_), shape_(std::move(other.shape_)), backend_(other.backend_), device_(other.device_) {
     other.data_ = nullptr;
+    // Restore the class's own documented invariant ("data() == nullptr iff numel() == 0")
+    // for the moved-from object. std::move on shape_ alone leaves an unspecified-but-valid
+    // Shape (typically empty dims -- rank 0, numel() == 1 by the scalar convention),
+    // inconsistent with data_ == nullptr: a subsequent at()/operator[] on the moved-from
+    // Tensor would compute a valid-looking index into a null buffer. See
+    // campaign_exai_dl_library_adversarial_hardening.md's Mission 0, finding 9.
+    other.shape_ = Shape({0});
 }
 
 Tensor& Tensor::operator=(Tensor&& other) noexcept {
@@ -81,6 +94,7 @@ Tensor& Tensor::operator=(Tensor&& other) noexcept {
     backend_ = other.backend_;
     device_ = other.device_;
     other.data_ = nullptr;
+    other.shape_ = Shape({0});  // see move ctor's note
     return *this;
 }
 
@@ -116,7 +130,12 @@ Tensor& Tensor::fill(float value) {
 }
 
 Tensor& Tensor::accumulate(const Tensor& other) {
-    EXAI_ASSERT(shape_ == other.shape_);
+    // External boundary (Mission 0 classification): gradient-accumulation shapes trace
+    // back to module construction parameters, which can originate from external
+    // configuration -- escalated from EXAI_ASSERT-only to a real throw.
+    if (!(shape_ == other.shape_)) {
+        throw std::invalid_argument("Tensor::accumulate: shape mismatch");
+    }
     if (data_ != nullptr) {
         backend_->add(data_, other.data_, data_, static_cast<size_t>(numel()));
     }
