@@ -71,7 +71,7 @@ demos (layers, sequence models, transformers, explainers, and five RL algorithms
 - [CMake](https://cmake.org/download/) 3.20 or newer
 - A C++17 compiler:
   - **Windows**: Visual Studio 2022 (MSVC 19.4x) — verified
-  - **Linux**: GCC 11+ or Clang 14+ — community-untested, not yet CI-verified
+  - **Linux**: GCC 11+ or Clang 14+ — exercised directly on GCC 15.2.0/CMake 4.2.3 and GCC 13.3.0/CMake 3.28.3 (not yet CI-verified)
   - **macOS**: Clang 14+ (Xcode 14+) — community-untested, not yet CI-verified
 - Network access at configure time (GoogleTest is fetched automatically via CMake `FetchContent`)
 
@@ -85,6 +85,10 @@ ctest --test-dir build -C Release --output-on-failure
 ```
 
 **Linux / macOS:**
+
+Unix Makefiles/Ninja are single-config generators, so Debug and Release live in separate
+build directories rather than one `-C <cfg>` selecting between them:
+
 ```
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
@@ -100,7 +104,23 @@ All default to the values shown; pass `-D<OPTION>=ON/OFF` at configure time to c
 | `PULSATRIX_BUILD_TESTS` | `ON` | Builds the GoogleTest suite (fetched automatically). |
 | `PULSATRIX_BUILD_EXAMPLES` | `ON` | Builds the demo executables in `examples/`. |
 | `PULSATRIX_ENABLE_CUDA` | `OFF` | Builds the CUDA `DeviceBackend`. Requires the CUDA Toolkit (`find_package(CUDAToolkit)` must succeed). Defaults to compiling for the local GPU's architecture (`CMAKE_CUDA_ARCHITECTURES=native`) — override that variable yourself if you need a binary that runs on a different GPU. |
+| `PULSATRIX_ENABLE_HIP` | `OFF` | Builds the HIP/ROCm `DeviceBackend`. Requires a ROCm toolchain (`find_package(hip)`/`find_package(hipblas)` must succeed) — see the "HIP/ROCm backend" section below. Defaults `CMAKE_HIP_ARCHITECTURES` to `gfx1151` (this project's verified dev device); override for another target. |
 | `PULSATRIX_ENABLE_PYTHON` | `OFF` | Builds the pybind11 Python bindings. **Requires** `-DPYTHON_EXECUTABLE=<path-to-python>` (or the `PULSATRIX_PYTHON_EXECUTABLE` environment variable) pointing at a Python install with dev headers. Note the variable name: pybind11 2.13.x reads the legacy `PYTHON_EXECUTABLE`, not `Python3_EXECUTABLE` — passing the latter alone is silently ignored and pybind11 falls back to whatever `python3` resolves to on `PATH`. |
+
+### HIP/ROCm backend (`PULSATRIX_ENABLE_HIP=ON`)
+
+Needs an AMD GPU and a ROCm toolchain. Use the pinned container — see the header of
+`docker/Dockerfile.rocm` for why the ROCm version is pinned and why installing ROCm from a
+distro package manager is not an equivalent substitute:
+
+```
+scripts/rocm-build.sh 'cmake -S . -B build-hip -DCMAKE_BUILD_TYPE=Debug -DPULSATRIX_ENABLE_HIP=ON'
+scripts/rocm-build.sh 'cmake --build build-hip -j"$(nproc)"'
+scripts/rocm-build.sh './build-hip/tests/pulsatrix_tests'
+```
+
+`ROCM_PATH` may be set if ROCm is not installed at `/opt/rocm`. Verified directly on real
+gfx1151 hardware — the HIP tests run against the actual device, there is no mocked path.
 
 ### Troubleshooting
 
@@ -108,6 +128,7 @@ All default to the values shown; pass `-D<OPTION>=ON/OFF` at configure time to c
 - **`PULSATRIX_ENABLE_PYTHON=ON` doesn't pick up your Python install** — make sure you're passing `-DPYTHON_EXECUTABLE=<path>`, not `-DPython3_EXECUTABLE=<path>`. See the build options table above.
 - **`mnist_training_demo`, `mnist_loader_test`, or `mnist_classifier_example_test` fail or find no data** — these need real MNIST files that aren't checked into the repo. Run `py -3.11 tools/fetch_mnist.py` once (requires `torchvision` installed in that Python environment) to populate `data/MNIST/raw/`, then rebuild/rerun. This is a one-time, offline data-acquisition step — nothing at C++ build or test time depends on Python afterward.
 - **CUDA build can't find the toolkit** — `PULSATRIX_ENABLE_CUDA=ON` requires a working CUDA Toolkit install discoverable by CMake's `find_package(CUDAToolkit)`; install the toolkit matching your driver version first.
+- **HIP build can't find `hip`/`hipblas` packages** — `PULSATRIX_ENABLE_HIP=ON` requires a ROCm install discoverable via `ROCM_PATH` (or the conventional `/opt/rocm`); see the "HIP/ROCm backend" section above.
 
 ## Documentation
 

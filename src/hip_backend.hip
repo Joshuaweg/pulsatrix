@@ -134,8 +134,8 @@ void HIPBackend::elementwise(ElementwiseOp op, const float* in, float* out, size
             neg_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
             break;
     }
-    EXAI_HIP_CHECK(hipGetLastError());
-    EXAI_HIP_CHECK(hipStreamSynchronize(stream_));
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
 }
 
 void HIPBackend::add(const float* a, const float* b, float* out, size_t n) {
@@ -145,8 +145,8 @@ void HIPBackend::add(const float* a, const float* b, float* out, size_t n) {
     constexpr int block_size = 256;
     int grid_size = static_cast<int>((n + block_size - 1) / block_size);
     add_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
-    EXAI_HIP_CHECK(hipGetLastError());
-    EXAI_HIP_CHECK(hipStreamSynchronize(stream_));
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
 }
 
 }  // namespace pulsatrix
