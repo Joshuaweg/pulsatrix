@@ -78,19 +78,30 @@ inline std::vector<float> SolveLinearSystem(std::vector<std::vector<float>> a, s
  *         convention).
  * @throws std::runtime_error if the normal-equations system is near-singular (e.g.
  *         degenerate/collinear samples).
+ * @throws std::invalid_argument if samples is empty, or targets/weights/any sample row's
+ *         length doesn't match -- external boundary (
+ *         campaign_exai_dl_library_adversarial_hardening.md, Mission 2, finding 15
+ *         systemic sweep). Escalated from EXAI_ASSERT-only for consistency with this
+ *         function's own near-singular-system check above, which already throws.
  * @note Gaussian elimination, scoped to the small, dense, well-conditioned systems this
  *       codebase's explainers actually produce -- not a general-purpose numerics library.
  */
 [[nodiscard]] inline std::vector<float> fit_weighted_linear_regression(
     const std::vector<std::vector<float>>& samples, const std::vector<float>& targets,
     const std::vector<float>& weights, float l2_lambda) {
-    EXAI_ASSERT(!samples.empty());
-    EXAI_ASSERT(samples.size() == targets.size());
-    EXAI_ASSERT(samples.size() == weights.size());
+    if (samples.empty()) {
+        throw std::invalid_argument("fit_weighted_linear_regression: samples must not be empty");
+    }
+    if (samples.size() != targets.size() || samples.size() != weights.size()) {
+        throw std::invalid_argument(
+            "fit_weighted_linear_regression: samples, targets, and weights must be the same size");
+    }
 
     const auto n_features = static_cast<int64_t>(samples[0].size());
     for (const auto& row : samples) {
-        EXAI_ASSERT(static_cast<int64_t>(row.size()) == n_features);
+        if (static_cast<int64_t>(row.size()) != n_features) {
+            throw std::invalid_argument("fit_weighted_linear_regression: every sample row must be the same length");
+        }
     }
 
     std::vector<std::vector<float>> a(static_cast<size_t>(n_features),

@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
+
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
 #include "exai/lime.hpp"
@@ -18,6 +20,32 @@ class LIMETest : public ::testing::Test {
 protected:
     CPUBackend backend;
 };
+
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// escalated from EXAI_ASSERT-only to a real throw -- num_samples originates from
+// caller-supplied data. In Release, num_samples<=0 previously cast to a huge size_t for
+// vector::reserve, throwing an unhelpful std::length_error instead of a clear error.
+TEST_F(LIMETest, ExplainThrowsOnNonPositiveNumSamples) {
+    LinearModule linear(2, 1, &backend);
+    ExplainerContext ctx({&linear});
+    auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
+    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
+
+    LIME lime;
+    EXPECT_THROW({ (void)lime.explain(predict, input, 0, /*num_samples=*/0, 1.0f, 0.0f, 42, &backend); },
+                 std::invalid_argument);
+}
+
+TEST_F(LIMETest, ExplainThrowsOnNonPositiveSigma) {
+    LinearModule linear(2, 1, &backend);
+    ExplainerContext ctx({&linear});
+    auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
+    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
+
+    LIME lime;
+    EXPECT_THROW({ (void)lime.explain(predict, input, 0, /*num_samples=*/50, /*sigma=*/0.0f, 0.0f, 42, &backend); },
+                 std::invalid_argument);
+}
 
 TEST_F(LIMETest, RecoversExactWeightColumnForLinearOnlyNetwork) {
     LinearModule linear(3, 2, &backend);
@@ -43,19 +71,9 @@ TEST_F(LIMETest, RecoversExactWeightColumnForLinearOnlyNetwork) {
 
 using LIMEDeathTest = LIMETest;
 
-TEST_F(LIMEDeathTest, ZeroSamplesIsRejected) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    LinearModule linear(2, 1, &backend);
-    ExplainerContext ctx({&linear});
-    auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
-    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
-
-    LIME lime;
-    EXPECT_DEATH({ (void)lime.explain(predict, input, 0, /*num_samples=*/0, 1.0f, 0.0f, 42, &backend); },
-                 "EXAI_ASSERT failed");
-}
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// escalated from EXAI_ASSERT (this death test) to a real throw -- see
+// LIMETest.ExplainThrowsOnNonPositiveNumSamples below.
 
 }  // namespace
 }  // namespace exai

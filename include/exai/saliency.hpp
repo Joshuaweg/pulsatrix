@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 #include "exai/assert.hpp"
@@ -41,7 +42,11 @@ public:
     [[nodiscard]] Attribution explain(ExplainerContext& ctx, const Tensor& input, int64_t target_index,
                                        DeviceBackend* backend) const {
         Tensor output = ctx.forward_pass(input);
-        EXAI_ASSERT(target_index >= 0 && target_index < output.numel());
+        // External boundary (Mission 2, finding 15 systemic sweep) -- escalated from
+        // EXAI_ASSERT-only.
+        if (target_index < 0 || target_index >= output.numel()) {
+            throw std::invalid_argument("Saliency::explain: target_index out of range");
+        }
 
         Tensor seed(output.shape(), backend);
         seed.at({target_index}) = 1.0f;

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <optional>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -47,9 +48,17 @@ public:
      * @brief Runs this module's forward computation.
      * @param input Input tensor. Must be non-empty.
      * @return The module's output.
+     * @throws std::invalid_argument if input is empty -- external boundary
+     *         (campaign_exai_dl_library_adversarial_hardening.md, Mission 2, finding 15
+     *         systemic sweep): the single most external-facing check in the whole system,
+     *         since every Module::forward() call -- including from Phase 5's Python
+     *         bindings -- passes through this NVI wrapper first. Escalated from
+     *         EXAI_ASSERT-only.
      */
     [[nodiscard]] Tensor forward(const Tensor& input) {
-        EXAI_ASSERT(input.numel() > 0);
+        if (input.numel() <= 0) {
+            throw std::invalid_argument("Module::forward: input must not be empty");
+        }
         return forward_impl(input);
     }
 

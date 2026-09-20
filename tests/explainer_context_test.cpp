@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
+
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
 #include "exai/linear_module.hpp"
@@ -15,6 +17,20 @@ class ExplainerContextTest : public ::testing::Test {
 protected:
     CPUBackend backend;
 };
+
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// the constructor previously had zero validation -- a nullptr in the module vector was
+// an unconditional null-pointer dereference on the very next forward_pass() call.
+// External boundary per Mission 0's classification table (this is what any future
+// Explainer-authoring Python binding, Phase 5 Mission 1, will construct directly).
+TEST_F(ExplainerContextTest, ConstructorThrowsOnEmptyModuleVector) {
+    EXPECT_THROW(ExplainerContext(std::vector<Module*>{}), std::invalid_argument);
+}
+
+TEST_F(ExplainerContextTest, ConstructorThrowsOnNullModulePointer) {
+    LinearModule linear(2, 2, &backend);
+    EXPECT_THROW(ExplainerContext({&linear, nullptr}), std::invalid_argument);
+}
 
 TEST_F(ExplainerContextTest, ForwardPassSingleModuleMatchesDirectForward) {
     LinearModule linear(2, 2, &backend);

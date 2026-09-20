@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -72,9 +73,15 @@ public:
      */
     [[nodiscard]] Attribution explain(const std::function<Tensor(const Tensor&)>& predict, const Tensor& input,
                                        const Tensor& baseline, int64_t target_index, DeviceBackend* backend) const {
-        EXAI_ASSERT(input.numel() == baseline.numel());
+        // External boundary (Mission 2, finding 15 systemic sweep) -- escalated from
+        // EXAI_ASSERT-only.
+        if (input.numel() != baseline.numel()) {
+            throw std::invalid_argument("KernelSHAP::explain: input and baseline must have the same numel");
+        }
         const int64_t n = input.numel();
-        EXAI_ASSERT(n >= 1 && n <= 20);  // full 2^n enumeration -- this campaign's small-n scope
+        if (n < 1 || n > 20) {  // full 2^n enumeration -- this campaign's small-n scope
+            throw std::invalid_argument("KernelSHAP::explain: input feature count must be in [1, 20]");
+        }
 
         auto coalition_value = [&](uint64_t mask) {
             Tensor z(input.shape(), backend);

@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
+
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
 #include "exai/linear_module.hpp"
@@ -17,6 +19,20 @@ class PDPTest : public ::testing::Test {
 protected:
     CPUBackend backend;
 };
+
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// escalated from EXAI_ASSERT-only to a real throw -- external boundary (background
+// originates from caller-supplied data).
+TEST_F(PDPTest, ExplainThrowsOnEmptyBackground) {
+    LinearModule linear(2, 1, &backend);
+    ExplainerContext ctx({&linear});
+    auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
+
+    std::vector<Tensor> empty_background;
+    PDP pdp;
+    EXPECT_THROW({ (void)pdp.explain(predict, empty_background, 0, 0, 0.0f, 1.0f, 5, &backend); },
+                 std::invalid_argument);
+}
 
 TEST_F(PDPTest, CurveIsExactlyLinearWithTrueFeatureWeightAsSlope) {
     LinearModule linear(3, 1, &backend);
@@ -92,19 +108,9 @@ TEST_F(PDPTest, GridSizeOneEvaluatesSinglePointCorrectly) {
 
 using PDPDeathTest = PDPTest;
 
-TEST_F(PDPDeathTest, AbortsOnEmptyBackground) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    LinearModule linear(2, 1, &backend);
-    ExplainerContext ctx({&linear});
-    auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
-
-    std::vector<Tensor> empty_background;
-    PDP pdp;
-    EXPECT_DEATH({ (void)pdp.explain(predict, empty_background, 0, 0, 0.0f, 1.0f, 5, &backend); },
-                 "EXAI_ASSERT failed");
-}
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// escalated from EXAI_ASSERT (this death test) to a real throw -- see
+// PDPTest.ExplainThrowsOnEmptyBackground below.
 
 }  // namespace
 }  // namespace exai

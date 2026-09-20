@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -47,14 +48,22 @@ public:
     [[nodiscard]] Attribution explain(ExplainerContext& ctx, const Tensor& input, int64_t target_index,
                                        DeviceBackend* backend) const {
         Tensor output = ctx.forward_pass(input);
-        EXAI_ASSERT(target_index >= 0 && target_index < output.numel());
+        // External boundary (Mission 2, finding 15 systemic sweep) -- escalated from
+        // EXAI_ASSERT-only.
+        if (target_index < 0 || target_index >= output.numel()) {
+            throw std::invalid_argument("GradCAM::explain: target_index out of range");
+        }
 
         Tensor seed(output.shape(), backend);
         seed.at({target_index}) = 1.0f;
         (void)ctx.backward_pass(seed);
 
         std::vector<NodeId> conv_nodes = ctx.graph().nodes_by_op_type(OpType::Conv);
-        EXAI_ASSERT(!conv_nodes.empty());
+        // External boundary -- whether this ExplainerContext was built with a Conv layer
+        // is a caller-configuration fact, not an internal invariant this library controls.
+        if (conv_nodes.empty()) {
+            throw std::invalid_argument("GradCAM::explain: graph has no Conv layer");
+        }
         NodeId target_node = conv_nodes.back();
 
         const Tensor& activation = ctx.activation(target_node);

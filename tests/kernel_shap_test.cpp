@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
+
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
 #include "exai/kernel_shap.hpp"
@@ -81,12 +83,9 @@ TEST_F(KernelSHAPTest, ThreeFeaturesMatchClosedFormAndSatisfyEfficiency) {
     EXPECT_NEAR(sum_phi, out_x.data()[0] - out_baseline.data()[0], 1e-3f);
 }
 
-using KernelSHAPDeathTest = KernelSHAPTest;
-
-TEST_F(KernelSHAPDeathTest, AbortsOnMismatchedInputAndBaselineShapes) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
+// escalated from EXAI_ASSERT (was a death test) to a real throw -- external boundary.
+TEST_F(KernelSHAPTest, ExplainThrowsOnMismatchedInputAndBaselineShapes) {
     LinearModule linear(2, 1, &backend);
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
@@ -95,7 +94,7 @@ TEST_F(KernelSHAPDeathTest, AbortsOnMismatchedInputAndBaselineShapes) {
     Tensor baseline(Shape({3}), &backend, {0.0f, 0.0f, 0.0f});
 
     KernelSHAP shap;
-    EXPECT_DEATH({ (void)shap.explain(predict, input, baseline, 0, &backend); }, "EXAI_ASSERT failed");
+    EXPECT_THROW({ (void)shap.explain(predict, input, baseline, 0, &backend); }, std::invalid_argument);
 }
 
 }  // namespace
