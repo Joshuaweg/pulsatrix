@@ -42,7 +42,7 @@ int main() {
     ExplainerContext ctx({&linear1, &relu, &linear2});
 
     // --- Graph structure (Mission 0/1) ---
-    Tensor probe_input(Shape({2}), &backend, {0.0f, 0.0f});
+    Tensor probe_input(Shape({1, 2}), &backend, {0.0f, 0.0f});
     (void)ctx.forward_pass(probe_input);
     std::printf("ExAI demo -- Linear(2,4)->ReLU->Linear(4,1)\n\n");
     std::printf("ComputationGraph: %zu nodes (1 input + 3 module outputs)\n", ctx.graph().node_count());
@@ -54,10 +54,10 @@ int main() {
     std::vector<std::pair<float, float>> inputs = {{0.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}};
     Saliency saliency;
     IntegratedGradients ig;
-    Tensor baseline(Shape({2}), &backend);  // zero-initialized -- the "no signal" baseline
+    Tensor baseline(Shape({1, 2}), &backend);  // zero-initialized -- the "no signal" baseline
 
     for (auto [a, b] : inputs) {
-        Tensor input(Shape({2}), &backend, {a, b});
+        Tensor input(Shape({1, 2}), &backend, {a, b});
         Tensor output = ctx.forward_pass(input);
         std::printf("input (%.0f, %.0f) -> output %.4f\n", a, b, output.data()[0]);
 

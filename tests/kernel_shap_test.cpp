@@ -29,8 +29,8 @@ TEST_F(KernelSHAPTest, SingleFeatureEqualsFullDifference) {
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
-    Tensor input(Shape({1}), &backend, {5.0f});
-    Tensor baseline(Shape({1}), &backend, {0.0f});
+    Tensor input(Shape({1, 1}), &backend, {5.0f});
+    Tensor baseline(Shape({1, 1}), &backend, {0.0f});
 
     KernelSHAP shap;
     Attribution attr = shap.explain(predict, input, baseline, /*target_index=*/0, &backend);
@@ -48,8 +48,8 @@ TEST_F(KernelSHAPTest, TwoFeaturesMatchClosedFormShapleyValues) {
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
-    Tensor input(Shape({2}), &backend, {1.0f, 2.0f});
-    Tensor baseline(Shape({2}), &backend, {0.0f, 0.0f});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 2.0f});
+    Tensor baseline(Shape({1, 2}), &backend, {0.0f, 0.0f});
 
     KernelSHAP shap;
     Attribution attr = shap.explain(predict, input, baseline, /*target_index=*/0, &backend);
@@ -67,8 +67,8 @@ TEST_F(KernelSHAPTest, ThreeFeaturesMatchClosedFormAndSatisfyEfficiency) {
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
-    Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
-    Tensor baseline(Shape({3}), &backend, {0.0f, 0.0f, 0.0f});
+    Tensor input(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor baseline(Shape({1, 3}), &backend, {0.0f, 0.0f, 0.0f});
 
     KernelSHAP shap;
     Attribution attr = shap.explain(predict, input, baseline, /*target_index=*/0, &backend);
@@ -90,8 +90,8 @@ TEST_F(KernelSHAPTest, ExplainThrowsOnMismatchedInputAndBaselineShapes) {
     ExplainerContext ctx({&linear});
     auto predict = [&ctx](const Tensor& x) { return ctx.forward_pass(x); };
 
-    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
-    Tensor baseline(Shape({3}), &backend, {0.0f, 0.0f, 0.0f});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
+    Tensor baseline(Shape({1, 3}), &backend, {0.0f, 0.0f, 0.0f});
 
     KernelSHAP shap;
     EXPECT_THROW({ (void)shap.explain(predict, input, baseline, 0, &backend); }, std::invalid_argument);

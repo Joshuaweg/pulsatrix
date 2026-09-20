@@ -33,23 +33,33 @@ public:
      * @param backend Backend to allocate the one-hot seed tensor through.
      * @return An Attribution with method "saliency", values = the input gradient, and
      *         metadata recording the target index used.
-     * @note Assumes a rank-1 network output (this codebase's current unbatched-output
-     *       scope everywhere) -- target_index is used as a single-dimension Tensor::at()
-     *       index. A rank>1 output (e.g. a Conv-only classifier with no flattening module)
-     *       would need a real multi-dimension target selector; not built until a real
-     *       network needs one.
+     * @note Assumes a rank-2 (N, num_classes) network output -- migrated by
+     *       campaign_exai_dl_library_batch_dimension_support from the original rank-1
+     *       assumption. target_index selects the same class for every example in the
+     *       batch (seeding a one-hot at [n, target_index] for every row n), not a
+     *       per-example target vector -- a deliberate scope boundary (this migration fixes
+     *       the shape contract, it doesn't add per-example target selection as a new
+     *       capability).
      */
     [[nodiscard]] Attribution explain(ExplainerContext& ctx, const Tensor& input, int64_t target_index,
                                        DeviceBackend* backend) const {
         Tensor output = ctx.forward_pass(input);
-        // External boundary (Mission 2, finding 15 systemic sweep) -- escalated from
+        // External boundary (Mission 2, finding 15 systemic sweep; rank check added by
+        // campaign_exai_dl_library_batch_dimension_support) -- escalated from
         // EXAI_ASSERT-only.
-        if (target_index < 0 || target_index >= output.numel()) {
+        if (output.rank() != 2) {
+            throw std::invalid_argument("Saliency::explain: network output must be rank-2 (N, num_classes)");
+        }
+        if (target_index < 0 || target_index >= output.shape().dim(1)) {
             throw std::invalid_argument("Saliency::explain: target_index out of range");
         }
+        int64_t N = output.shape().dim(0);
 
         Tensor seed(output.shape(), backend);
-        seed.at({target_index}) = 1.0f;
+        seed.fill(0.0f);
+        for (int64_t n = 0; n < N; ++n) {
+            seed.at({n, target_index}) = 1.0f;
+        }
 
         Tensor grad = ctx.backward_pass(seed);
 

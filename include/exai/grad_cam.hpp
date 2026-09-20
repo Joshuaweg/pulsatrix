@@ -41,21 +41,35 @@ public:
      * @param target_index Which output element (class score) to attribute (0-based, flat
      *        index into the network's final output).
      * @param backend Backend to allocate the one-hot seed and result tensors through.
-     * @return An Attribution with method "grad_cam", values = the H x W CAM (same spatial
-     *         size as the target conv layer's feature maps), and metadata recording the
-     *         target index and which node was used.
+     * @return An Attribution with method "grad_cam", values = the N x H x W CAM batch
+     *         (same spatial size as the target conv layer's feature maps, one map per
+     *         batch example), and metadata recording the target index and which node was
+     *         used.
+     * @note Assumes a rank-2 (N, num_classes) network output and a rank-4 (N, channels, H,
+     *       W) target conv layer activation -- migrated by
+     *       campaign_exai_dl_library_batch_dimension_support from the original rank-1/
+     *       rank-3 assumptions. Same single-shared-target_index scope boundary as
+     *       Saliency's identical migration.
      */
     [[nodiscard]] Attribution explain(ExplainerContext& ctx, const Tensor& input, int64_t target_index,
                                        DeviceBackend* backend) const {
         Tensor output = ctx.forward_pass(input);
-        // External boundary (Mission 2, finding 15 systemic sweep) -- escalated from
+        // External boundary (Mission 2, finding 15 systemic sweep; rank check added by
+        // campaign_exai_dl_library_batch_dimension_support) -- escalated from
         // EXAI_ASSERT-only.
-        if (target_index < 0 || target_index >= output.numel()) {
+        if (output.rank() != 2) {
+            throw std::invalid_argument("GradCAM::explain: network output must be rank-2 (N, num_classes)");
+        }
+        if (target_index < 0 || target_index >= output.shape().dim(1)) {
             throw std::invalid_argument("GradCAM::explain: target_index out of range");
         }
+        int64_t N = output.shape().dim(0);
 
         Tensor seed(output.shape(), backend);
-        seed.at({target_index}) = 1.0f;
+        seed.fill(0.0f);
+        for (int64_t n = 0; n < N; ++n) {
+            seed.at({n, target_index}) = 1.0f;
+        }
         (void)ctx.backward_pass(seed);
 
         std::vector<NodeId> conv_nodes = ctx.graph().nodes_by_op_type(OpType::Conv);
@@ -69,29 +83,31 @@ public:
         const Tensor& activation = ctx.activation(target_node);
         const Tensor& grad = ctx.gradient(target_node);
 
-        int64_t channels = activation.shape().dim(0);
-        int64_t height = activation.shape().dim(1);
-        int64_t width = activation.shape().dim(2);
+        int64_t channels = activation.shape().dim(1);
+        int64_t height = activation.shape().dim(2);
+        int64_t width = activation.shape().dim(3);
 
-        std::vector<float> alpha(static_cast<size_t>(channels), 0.0f);
-        for (int64_t c = 0; c < channels; ++c) {
-            float sum = 0.0f;
+        Tensor cam(Shape({N, height, width}), backend);
+        for (int64_t n = 0; n < N; ++n) {
+            std::vector<float> alpha(static_cast<size_t>(channels), 0.0f);
+            for (int64_t c = 0; c < channels; ++c) {
+                float sum = 0.0f;
+                for (int64_t h = 0; h < height; ++h) {
+                    for (int64_t w = 0; w < width; ++w) {
+                        sum += grad.at({n, c, h, w});
+                    }
+                }
+                alpha[static_cast<size_t>(c)] = sum / static_cast<float>(height * width);
+            }
+
             for (int64_t h = 0; h < height; ++h) {
                 for (int64_t w = 0; w < width; ++w) {
-                    sum += grad.at({c, h, w});
+                    float value = 0.0f;
+                    for (int64_t c = 0; c < channels; ++c) {
+                        value += alpha[static_cast<size_t>(c)] * activation.at({n, c, h, w});
+                    }
+                    cam.at({n, h, w}) = value > 0.0f ? value : 0.0f;
                 }
-            }
-            alpha[static_cast<size_t>(c)] = sum / static_cast<float>(height * width);
-        }
-
-        Tensor cam(Shape({height, width}), backend);
-        for (int64_t h = 0; h < height; ++h) {
-            for (int64_t w = 0; w < width; ++w) {
-                float value = 0.0f;
-                for (int64_t c = 0; c < channels; ++c) {
-                    value += alpha[static_cast<size_t>(c)] * activation.at({c, h, w});
-                }
-                cam.at({h, w}) = value > 0.0f ? value : 0.0f;
             }
         }
 
