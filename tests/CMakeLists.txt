@@ -38,6 +38,10 @@ if(EXAI_ENABLE_CUDA)
                                        backend_equivalence_test.cpp forward_pass_equivalence_test.cpp)
 endif()
 
+if(EXAI_ENABLE_HIP)
+    target_sources(exai_tests PRIVATE hip_check_test.cpp hip_backend_test.cpp)
+endif()
+
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
 include(GoogleTest)
