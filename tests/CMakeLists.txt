@@ -28,6 +28,7 @@ add_executable(exai_tests
     lime_test.cpp
     kernel_shap_test.cpp
     pdp_test.cpp
+    lrp_conservation_test.cpp
 )
 
 if(EXAI_ENABLE_CUDA)
