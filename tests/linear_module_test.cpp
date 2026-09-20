@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
 #include <vector>
 
 #include "exai/cpu_backend.hpp"
@@ -75,6 +76,37 @@ TEST_F(LinearModuleTest, ForwardComputesHandVerifiedOutput) {
 
     EXPECT_FLOAT_EQ(y.data()[0], 4.5f);
     EXPECT_FLOAT_EQ(y.data()[1], 5.5f);
+}
+
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 1):
+// forward_impl previously had zero input-shape validation -- a wrong-sized input fed
+// straight into gemm as if it had in_features_ elements, a real heap OOB read on the
+// input buffer if it was shorter. External boundary per Mission 0's classification
+// table (this input can originate from Phase 5's Python bindings) -- throw, not assert.
+TEST_F(LinearModuleTest, ForwardThrowsOnWrongNumel) {
+    LinearModule linear(3, 2, &backend);
+    Tensor wrong_size(Shape({2}), &backend, {1.0f, 2.0f});
+    EXPECT_THROW({ (void)linear.forward(wrong_size); }, std::invalid_argument);
+}
+
+TEST_F(LinearModuleTest, ForwardThrowsOnWrongRank) {
+    LinearModule linear(4, 2, &backend);
+    Tensor wrong_rank(Shape({2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    EXPECT_THROW({ (void)linear.forward(wrong_rank); }, std::invalid_argument);
+}
+
+// Finding 12: backward()/propagate_relevance() silently computed a meaningless answer
+// from zero-initialized cached state if called before any forward() -- now a real error.
+TEST_F(LinearModuleTest, BackwardThrowsIfCalledBeforeForward) {
+    LinearModule linear(2, 2, &backend);
+    Tensor grad(Shape({2}), &backend, {1.0f, 1.0f});
+    EXPECT_THROW({ (void)linear.backward(grad); }, std::logic_error);
+}
+
+TEST_F(LinearModuleTest, PropagateRelevanceThrowsIfCalledBeforeForward) {
+    LinearModule linear(2, 2, &backend);
+    Tensor relevance(Shape({2}), &backend, {1.0f, 1.0f});
+    EXPECT_THROW({ (void)linear.propagate_relevance(relevance, LRPRuleConfig{}); }, std::logic_error);
 }
 
 TEST_F(LinearModuleTest, BackwardComputesHandVerifiedInputGradient) {

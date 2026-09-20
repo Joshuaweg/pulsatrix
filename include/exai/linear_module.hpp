@@ -52,6 +52,8 @@ public:
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
      *       DeviceBackend.
+     * @throws std::logic_error if forward() has never been called -- see
+     *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -92,6 +94,8 @@ public:
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
      *       DeviceBackend.
+     * @throws std::logic_error if forward() has never been called -- see
+     *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
@@ -112,6 +116,7 @@ private:
     Tensor bias_grad_;
     Tensor last_input_;
     Tensor last_pre_bias_output_;
+    bool has_forwarded_ = false;
 };
 
 }  // namespace exai
