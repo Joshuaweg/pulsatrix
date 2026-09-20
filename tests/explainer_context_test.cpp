@@ -120,6 +120,46 @@ TEST_F(ExplainerContextTest, BackwardPassMatchesDirectChainedBackward) {
     }
 }
 
+TEST_F(ExplainerContextTest, GradientReturnsCachedValuePerIntermediateNode) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
+    linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+
+    ReluModule relu(&backend);
+
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    (void)ctx.forward_pass(input);
+
+    Tensor grad_output(Shape({2}), &backend, {1.0f, -1.0f});
+    (void)ctx.backward_pass(grad_output);
+
+    // Reference: the same oracle Objective 3 of mission_module_graph_wiring.md and
+    // Objective 3 of mission_explainer_context.md already used -- direct chained
+    // backward() calls.
+    Tensor direct_grad_h2 = linear2.backward(grad_output);
+    Tensor direct_grad_h1 = relu.backward(direct_grad_h2);
+
+    std::vector<NodeId> order = ctx.graph().topological_order();
+    ASSERT_EQ(order.size(), 4u);
+    NodeId h1_node = order[1];
+    NodeId h2_node = order[2];
+
+    const Tensor& traced_grad_h1 = ctx.gradient(h1_node);
+    for (int64_t i = 0; i < direct_grad_h1.numel(); ++i) {
+        EXPECT_FLOAT_EQ(traced_grad_h1.data()[i], direct_grad_h1.data()[i]) << "h1 mismatch at index " << i;
+    }
+
+    const Tensor& traced_grad_h2 = ctx.gradient(h2_node);
+    for (int64_t i = 0; i < direct_grad_h2.numel(); ++i) {
+        EXPECT_FLOAT_EQ(traced_grad_h2.data()[i], direct_grad_h2.data()[i]) << "h2 mismatch at index " << i;
+    }
+}
+
 TEST_F(ExplainerContextTest, RepeatedForwardPassDoesNotLeakStateFromPriorCall) {
     LinearModule linear(2, 2, &backend);
     linear.set_weight({1.0f, 0.0f, 0.0f, 1.0f});
