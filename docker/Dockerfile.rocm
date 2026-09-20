@@ -1,0 +1,23 @@
+# Build environment for the HIP/ROCm DeviceBackend (EXAI_ENABLE_HIP=ON).
+#
+# Base is AMD's own validated ROCm image. Two reasons it is pinned to 7.2.4 rather than
+# tracking latest or matching a distro package:
+#
+#  1. ROCm 7.1.x is broken on gfx1151 (Strix Halo). hipStreamCreate segfaults inside
+#     libhsa-runtime64.so.1 at HSA hardware-queue creation. Device enumeration, hipSetDevice
+#     and context init all succeed first, so it fails late and looks like application code.
+#     Memory, RLIMIT_MEMLOCK, device-node permissions and container confinement were each
+#     ruled out by test. 7.2.4 runs the same code correctly. Ubuntu's archive ships 7.1.x,
+#     so installing ROCm from the distro is NOT a working substitute for this image.
+#  2. The base image is Ubuntu 24.04, which is on AMD's supported OS matrix. Host distro
+#     then does not matter -- per ROCm 6.4+, driver and userspace are decoupled and the host
+#     carries only the amdgpu/amdkfd driver.
+#
+# Only two packages are added. The base image has neither, and the project needs both:
+# cmake is the build system, git is required by FetchContent for GoogleTest (and pybind11
+# under EXAI_ENABLE_PYTHON). Nothing about the ROCm stack itself is modified.
+FROM rocm/dev-ubuntu-24.04:7.2.4-complete
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends cmake git ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
