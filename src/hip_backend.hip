@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "exai/hip_check.hpp"
+#include "exai/hipblas_check.hpp"
 
 namespace exai {
 
@@ -19,9 +20,12 @@ __global__ void fill_kernel(float* ptr, float value, size_t n) {
 
 HIPBackend::HIPBackend() : stream_(nullptr), hipblas_handle_(nullptr) {
     EXAI_HIP_CHECK(hipStreamCreate(&stream_));
+    EXAI_HIPBLAS_CHECK(hipblasCreate(&hipblas_handle_));
+    EXAI_HIPBLAS_CHECK(hipblasSetStream(hipblas_handle_, stream_));
 }
 
 HIPBackend::~HIPBackend() {
+    static_cast<void>(hipblasDestroy(hipblas_handle_));
     // Discarded deliberately: a destructor cannot throw, and there is no recovery from a
     // failed teardown. HIP marks these [[nodiscard]] where the CUDA runtime does not, so
     // unlike CUDABackend the discard has to be explicit to keep the build warning-clean.
@@ -77,14 +81,28 @@ void HIPBackend::fill(void* ptr, float value, size_t n) {
     EXAI_HIP_CHECK(hipStreamSynchronize(stream_));
 }
 
-// gemm/elementwise/add are Objective 1.2 and 1.3's scope -- staged as throwing stubs rather
+void HIPBackend::gemm(const float* a, const float* b, float* out, size_t m, size_t k, size_t n) {
+    // Row-major A(m,k)*B(k,n)=C(m,n) via hipBLAS (column-major): compute C^T = B^T*A^T
+    // instead, which hipBLAS computes correctly as a column-major op, and a row-major
+    // C(m,n) buffer is the same bytes as a column-major C^T(n,m) buffer. See
+    // gpu_backend_programming/context_gpu_cublas_cudnn_integration.md's Column-Major Trap.
+    // Argument order is identical to CUDABackend::gemm's cublasSgemm call -- hipBLAS
+    // inherits cuBLAS's column-major convention and its parameter list, so this is the same
+    // transformation, not a re-derivation. Verified on hardware against a hand-computed
+    // non-square product, not just a square one, since a square case cannot distinguish a
+    // correct result from a transposed one.
+    const float alpha = 1.0f;
+    const float beta = 0.0f;
+    EXAI_HIPBLAS_CHECK(hipblasSgemm(hipblas_handle_, HIPBLAS_OP_N, HIPBLAS_OP_N, static_cast<int>(n),
+                                     static_cast<int>(m), static_cast<int>(k), &alpha, b,
+                                     static_cast<int>(n), a, static_cast<int>(k), &beta, out,
+                                     static_cast<int>(n)));
+}
+
+// elementwise/add are Objective 1.3's scope -- staged as throwing stubs rather
 // than silently returning, mirroring how Phase 1.5 Mission 0 staged CUDABackend's. A stub
 // that throws is the honest state: the method exists because DeviceBackend requires it, and
 // calling it before it is implemented is a loud failure, not wrong numbers.
-void HIPBackend::gemm(const float*, const float*, float*, size_t, size_t, size_t) {
-    throw std::runtime_error("HIPBackend::gemm: not implemented until Phase 1.6 Mission 1 Objective 2");
-}
-
 void HIPBackend::elementwise(ElementwiseOp, const float*, float*, size_t) {
     throw std::runtime_error(
         "HIPBackend::elementwise: not implemented until Phase 1.6 Mission 1 Objective 3");
