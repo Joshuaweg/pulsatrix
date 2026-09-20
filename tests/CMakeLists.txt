@@ -93,7 +93,8 @@ if(PULSATRIX_ENABLE_CUDA)
 endif()
 
 if(PULSATRIX_ENABLE_HIP)
-    target_sources(pulsatrix_tests PRIVATE hip_check_test.cpp hip_backend_test.cpp hipblas_check_test.cpp)
+    target_sources(pulsatrix_tests PRIVATE hip_check_test.cpp hip_backend_test.cpp hipblas_check_test.cpp
+                                       backend_equivalence_hip_test.cpp)
 endif()
 
 target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_core GTest::gtest_main GTest::gmock)
