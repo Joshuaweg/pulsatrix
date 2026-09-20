@@ -22,6 +22,7 @@ add_executable(exai_tests
     explainer_context_test.cpp
     saliency_test.cpp
     integrated_gradients_test.cpp
+    flatten_module_test.cpp
 )
 
 if(EXAI_ENABLE_CUDA)
