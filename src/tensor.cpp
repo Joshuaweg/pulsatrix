@@ -32,6 +32,16 @@ Tensor::Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float>
     }
 }
 
+Tensor::Tensor(Shape shape, DeviceBackend* backend, const std::vector<float>& values, DeviceType device)
+    : data_(nullptr), shape_(std::move(shape)), backend_(backend), device_(device) {
+    EXAI_ASSERT(static_cast<int64_t>(values.size()) == shape_.numel());
+    data_ = allocate_buffer(backend_, shape_.numel());
+    if (data_ != nullptr) {
+        CopyDirection dir = (device_ == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::HostToDevice;
+        backend_->copy(data_, values.data(), static_cast<size_t>(shape_.numel()) * sizeof(float), dir);
+    }
+}
+
 Tensor::~Tensor() {
     backend_->free(data_);
 }

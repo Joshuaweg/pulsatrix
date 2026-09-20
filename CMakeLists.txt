@@ -42,7 +42,42 @@ if(EXAI_ENABLE_CUDA)
 endif()
 
 if(EXAI_ENABLE_PYTHON)
-    message(STATUS "EXAI_ENABLE_PYTHON is ON but no bindings exist yet (Phase 5) — no-op for now")
+    # Multiple Python interpreters exist on a typical dev machine; the one on PATH is not
+    # guaranteed to be the one with dev headers/import libs and the packages the pytest
+    # suite needs. Pin explicitly rather than trusting the default PATH search -- see
+    # campaign_exai_dl_library_phase5_bindings.md's activation Recon.
+    # pybind11 v2.13.6 locates Python via the classic (deprecated but still what pybind11
+    # itself uses) find_package(PythonInterp)/find_package(PythonLibs) modules, which read
+    # PYTHON_EXECUTABLE -- NOT Python3_EXECUTABLE (the modern FindPython3 module's
+    # variable). Passing only -DPython3_EXECUTABLE=... silently has no effect and
+    # pybind11 falls back to whatever "python3" resolves to on PATH -- confirmed the hard
+    # way at this mission's first configure attempt. Set both so this doesn't regress if
+    # a future pybind11 upgrade switches modules.
+    if(NOT DEFINED PYTHON_EXECUTABLE)
+        set(PYTHON_EXECUTABLE "$ENV{EXAI_PYTHON_EXECUTABLE}")
+    endif()
+    if(NOT DEFINED Python3_EXECUTABLE)
+        set(Python3_EXECUTABLE "$ENV{EXAI_PYTHON_EXECUTABLE}")
+    endif()
+    if(NOT PYTHON_EXECUTABLE)
+        message(FATAL_ERROR "EXAI_ENABLE_PYTHON requires -DPYTHON_EXECUTABLE=<path> "
+                             "(or EXAI_PYTHON_EXECUTABLE env var) pointing at a Python "
+                             "install with dev headers -- do not rely on PATH resolution, "
+                             "multiple interpreters may be present.")
+    endif()
+
+    include(FetchContent)
+    FetchContent_Declare(
+        pybind11
+        GIT_REPOSITORY https://github.com/pybind/pybind11.git
+        GIT_TAG v2.13.6
+    )
+    FetchContent_MakeAvailable(pybind11)
+
+    pybind11_add_module(exai_py bindings/exai_py.cpp)
+    # exai_py depends ON exai_core; exai_core has zero dependency edge back onto this
+    # target or any pybind11 header -- non-negotiable #2.
+    target_link_libraries(exai_py PRIVATE exai_core)
 endif()
 
 find_package(Doxygen QUIET)

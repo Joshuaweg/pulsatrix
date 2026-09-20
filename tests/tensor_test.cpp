@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <type_traits>
+#include <vector>
 
 #include "exai/cpu_backend.hpp"
 #include "exai/device_backend.hpp"
@@ -49,6 +50,20 @@ TEST_F(TensorTest, ConstructionZeroInitializesBuffer) {
 
 TEST_F(TensorTest, ConstructionFromInitializerListCopiesData) {
     Tensor t(Shape({2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    EXPECT_FLOAT_EQ(t.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(t.data()[1], 2.0f);
+    EXPECT_FLOAT_EQ(t.data()[2], 3.0f);
+    EXPECT_FLOAT_EQ(t.data()[3], 4.0f);
+}
+
+// std::initializer_list can't be constructed from a runtime-sized buffer in standard
+// C++ (no portable public (ptr, size) constructor) -- any caller with runtime-sized data
+// (loading weights from a file, Phase 5's Python bindings marshalling a numpy array)
+// needs this overload. Same semantics as the initializer_list ctor, just a different
+// source container.
+TEST_F(TensorTest, ConstructionFromVectorCopiesData) {
+    std::vector<float> values{1.0f, 2.0f, 3.0f, 4.0f};
+    Tensor t(Shape({2, 2}), &backend, values);
     EXPECT_FLOAT_EQ(t.data()[0], 1.0f);
     EXPECT_FLOAT_EQ(t.data()[1], 2.0f);
     EXPECT_FLOAT_EQ(t.data()[2], 3.0f);

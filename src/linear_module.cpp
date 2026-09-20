@@ -42,6 +42,14 @@ void LinearModule::set_bias(std::initializer_list<float> values) {
     bias_ = Tensor(bias_.shape(), backend_, values, bias_.device());
 }
 
+void LinearModule::set_weight(const std::vector<float>& values) {
+    weight_ = Tensor(weight_.shape(), backend_, values, weight_.device());
+}
+
+void LinearModule::set_bias(const std::vector<float>& values) {
+    bias_ = Tensor(bias_.shape(), backend_, values, bias_.device());
+}
+
 Tensor LinearModule::forward_impl(const Tensor& input) {
     last_input_ = input;
 

@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <vector>
+
 #include "exai/conv2d_module.hpp"
 #include "exai/cpu_backend.hpp"
 #include "exai/lrp_rule_config.hpp"
@@ -16,6 +18,21 @@ TEST_F(Conv2DModuleTest, ConstructionSetsKernelAndBiasShapes) {
     Conv2DModule conv(1, 2, 2, 2, &backend);  // in=1, out=2, 2x2 kernel
     EXPECT_EQ(conv.kernel().shape(), Shape({2, 1, 2, 2}));
     EXPECT_EQ(conv.bias().shape(), Shape({2}));
+}
+
+// std::vector overloads exist alongside the initializer_list ones for runtime-sized
+// callers (Phase 5 Python bindings, or any C++ caller loading a kernel from a file).
+TEST_F(Conv2DModuleTest, SetKernelAcceptsVector) {
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    conv.set_kernel(std::vector<float>{1.0f, 0.0f, 0.0f, 1.0f});
+    EXPECT_FLOAT_EQ(conv.kernel().data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(conv.kernel().data()[3], 1.0f);
+}
+
+TEST_F(Conv2DModuleTest, SetBiasAcceptsVector) {
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    conv.set_bias(std::vector<float>{3.0f});
+    EXPECT_FLOAT_EQ(conv.bias().data()[0], 3.0f);
 }
 
 TEST_F(Conv2DModuleTest, ForwardComputesHandVerifiedOutput) {

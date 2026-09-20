@@ -4,6 +4,7 @@
 #pragma once
 
 #include <initializer_list>
+#include <vector>
 
 #include "exai/device_backend.hpp"
 #include "exai/shape.hpp"
@@ -42,6 +43,22 @@ public:
      *       the host) regardless of the destination.
      */
     Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float> values,
+           DeviceType device = DeviceType::Cpu);
+
+    /**
+     * @brief Constructs a tensor from explicit values, runtime-sized source.
+     * @param shape Tensor shape. values.size() must equal shape.numel().
+     * @param backend Backend to allocate/copy through.
+     * @param values Initial values, in row-major order.
+     * @param device Which device this tensor's buffer conceptually resides on.
+     * @note Same semantics as the std::initializer_list overload above -- exists because
+     *       std::initializer_list has no portable public constructor from a runtime-sized
+     *       buffer (pointer + size), so any caller with data whose size isn't known at the
+     *       call site (loading weights from a file, marshalling a numpy array across the
+     *       Phase 5 Python bindings) cannot use the initializer_list overload at all, not
+     *       just less conveniently.
+     */
+    Tensor(Shape shape, DeviceBackend* backend, const std::vector<float>& values,
            DeviceType device = DeviceType::Cpu);
 
     ~Tensor();

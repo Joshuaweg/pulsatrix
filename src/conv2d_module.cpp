@@ -99,6 +99,14 @@ void Conv2DModule::set_bias(std::initializer_list<float> values) {
     bias_ = Tensor(bias_.shape(), backend_, values);
 }
 
+void Conv2DModule::set_kernel(const std::vector<float>& values) {
+    kernel_ = Tensor(kernel_.shape(), backend_, values);
+}
+
+void Conv2DModule::set_bias(const std::vector<float>& values) {
+    bias_ = Tensor(bias_.shape(), backend_, values);
+}
+
 Tensor Conv2DModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly (bias-add loop, plus im2col()) -- not yet
     // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
