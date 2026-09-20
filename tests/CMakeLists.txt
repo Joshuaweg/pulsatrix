@@ -43,6 +43,14 @@ if(EXAI_ENABLE_HIP)
                                        backend_equivalence_hip_test.cpp forward_pass_equivalence_hip_test.cpp)
 endif()
 
+# The direct CUDA<->HIP arm of the charter's three-way gate. Compiled only when both vendor
+# backends are on, which no machine available to this project can currently satisfy -- see
+# the file's own header. Guarded rather than omitted so the gate is satisfiable unchanged the
+# day a dual-vendor node exists.
+if(EXAI_ENABLE_CUDA AND EXAI_ENABLE_HIP)
+    target_sources(exai_tests PRIVATE three_way_equivalence_test.cpp)
+endif()
+
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
 
 include(GoogleTest)
