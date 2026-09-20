@@ -13,6 +13,8 @@ add_executable(exai_tests
     linear_module_test.cpp
     relu_module_test.cpp
     conv2d_module_test.cpp
+    rms_norm_module_test.cpp
+    layer_norm_module_test.cpp
     mse_loss_test.cpp
     sgd_optimizer_test.cpp
     adam_optimizer_test.cpp
