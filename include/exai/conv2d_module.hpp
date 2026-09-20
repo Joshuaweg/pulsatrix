@@ -11,13 +11,20 @@
 namespace exai {
 
 /**
- * @brief 2D convolution, unbatched (input/output are rank-3: channels x H x W). Stride 1,
- *        no padding, no dilation -- deferred until a real use case needs them, same
- *        pattern as LinearModule's unbatched scope cut.
+ * @brief 2D convolution, batched (input/output are rank-4: N x channels x H x W) --
+ *        migrated from the original unbatched (rank-3) scope by
+ *        campaign_exai_dl_library_batch_dimension_support. Stride 1, no padding, no
+ *        dilation -- deferred until a real use case needs them, same pattern as
+ *        LinearModule's original unbatched scope cut.
  * @note Implemented via im2col + gemm per campaign Decision 3 (see
  *       campaign_exai_dl_library_phase1_core_layers_training.md) rather than a dedicated
  *       DeviceBackend::conv2d primitive -- Phase 1.5's cuDNN integration will need its own
  *       conv path anyway, so a CPU-side primitive now would likely be thrown away, not reused.
+ * @note Batching implemented as a per-example loop over the existing unbatched im2col/gemm/
+ *       col2im pipeline (each output column of the im2col matrix is independent of every
+ *       other, so this is exactly equivalent to a single larger gemm with the Q axis
+ *       extended to N*Q -- the per-example loop is the simpler, correctness-first choice;
+ *       see campaign recon's noted alternative), not a new backend primitive.
  */
 class Conv2DModule : public Module {
 public:
@@ -71,9 +78,9 @@ public:
 
     /**
      * @brief Epsilon-rule LRP relevance propagation.
-     * @param relevance_out Relevance at this module's output. Shape (out_channels, out_h, out_w).
+     * @param relevance_out Relevance at this module's output. Shape (N, out_channels, out_h, out_w).
      * @param config Selects epsilon.
-     * @return Relevance at this module's input, shape (in_channels, H, W).
+     * @return Relevance at this module's input, shape (N, in_channels, H, W).
      * @note Structurally the same rule as LinearModule's, applied independently per output
      *       position via the im2col representation (each output position/channel pair is
      *       a "virtual Linear neuron" over its own receptive-field patch), then col2im'd
@@ -106,10 +113,10 @@ protected:
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
      *       DeviceBackend.
-     * @throws std::invalid_argument if input isn't rank-3, its channel count doesn't
-     *         match in_channels_, or the kernel is larger than the input (kernel_h_ &gt; H
-     *         or kernel_w_ &gt; W) -- see campaign_exai_dl_library_adversarial_hardening.md,
-     *         findings 1 and 6.
+     * @throws std::invalid_argument if input isn't rank-4 (N, in_channels, H, W), its
+     *         channel count doesn't match in_channels_, or the kernel is larger than the
+     *         input (kernel_h_ &gt; H or kernel_w_ &gt; W) -- see
+     *         campaign_exai_dl_library_adversarial_hardening.md, findings 1 and 6.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
@@ -123,9 +130,9 @@ private:
     Tensor bias_;         // shape (out_channels,)
     Tensor kernel_grad_;
     Tensor bias_grad_;
-    Tensor last_input_;       // (in_channels, H, W)
-    Tensor last_im2col_;      // (patch_size, out_h*out_w), cached for backward
-    Tensor last_pre_bias_output_;  // (out_channels, out_h, out_w), cached for LRP
+    Tensor last_input_;       // (N, in_channels, H, W)
+    Tensor last_im2col_;      // (N, patch_size, out_h*out_w), cached for backward
+    Tensor last_pre_bias_output_;  // (N, out_channels, out_h, out_w), cached for LRP
     int64_t last_out_h_ = 0;
     int64_t last_out_w_ = 0;
     bool has_forwarded_ = false;
