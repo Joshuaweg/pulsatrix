@@ -11,8 +11,10 @@
 namespace exai {
 
 /**
- * @brief y_i = gamma_i * (x_i - mu)/std + beta_i, mu = mean(x), std = sqrt(var(x) + eps).
- *        Unbatched (rank-1), matching RMSNormModule/LinearModule's existing convention.
+ * @brief y_{n,i} = gamma_i * (x_{n,i} - mu_n)/std_n + beta_i, mu_n = mean_i(x_{n,i}),
+ *        std_n = sqrt(var_i(x_{n,i}) + eps), computed independently per batch row n.
+ *        Batched ((N, num_features)), migrated from the original unbatched (rank-1) scope
+ *        by campaign_exai_dl_library_batch_dimension_support.
  * @note propagate_relevance is an identity pass-through, cited to AttnLRP's
  *       normalization-layer treatment (Achtibat et al. 2024) -- identical rationale to
  *       RMSNormModule's own identical rule; see that class's Doxygen for the full citation
@@ -91,8 +93,7 @@ private:
     Tensor beta_grad_;
     Tensor last_input_;
     Tensor last_xhat_;
-    float last_mu_ = 0.0f;
-    float last_std_ = 0.0f;
+    std::vector<float> last_std_;  // one std per batch row
     bool has_forwarded_ = false;
 };
 

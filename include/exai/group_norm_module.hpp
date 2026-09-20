@@ -13,12 +13,14 @@ namespace exai {
 
 /**
  * @brief Splits num_channels into num_groups equal-size groups; each group's mean/std is
- *        computed over every (channel-in-group, H, W) element jointly, then
- *        y_{c,h,w} = gamma_c * (x_{c,h,w} - mu_g)/std_g + beta_c, gamma/beta per-channel
- *        (shape (num_channels,), not per-group). Unbatched -- input/output are rank-3
- *        (channels, H, W), the same convention Conv2DModule already establishes; H/W are
- *        not fixed at construction (only num_channels/num_groups are), so this module
- *        accepts any spatial size at forward() time, exactly like Conv2DModule does.
+ *        computed over every (channel-in-group, H, W) element jointly, per batch row n,
+ *        then y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_{n,g})/std_{n,g} + beta_c, gamma/beta
+ *        per-channel (shape (num_channels,), not per-group, not per-batch-row). Batched --
+ *        input/output are rank-4 (N, channels, H, W), migrated from the original unbatched
+ *        (rank-3) scope by campaign_exai_dl_library_batch_dimension_support, matching
+ *        Conv2DModule's own (not-yet-migrated) rank-3 convention plus a leading batch dim.
+ *        H/W are not fixed at construction (only num_groups/num_channels are), so this
+ *        module accepts any spatial size at forward() time, exactly like Conv2DModule does.
  * @note propagate_relevance is an identity pass-through, cited to AttnLRP's
  *       normalization-layer treatment (Achtibat et al. 2024) -- same rule, same citation,
  *       as RMSNormModule/LayerNormModule; GroupNorm is architecturally the same
@@ -103,9 +105,9 @@ private:
     Tensor beta_;        // shape (num_channels,)
     Tensor gamma_grad_;
     Tensor beta_grad_;
-    Tensor last_input_;      // (num_channels, H, W)
-    Tensor last_xhat_;       // (num_channels, H, W)
-    std::vector<float> last_group_std_;  // one std per group, cached for backward
+    Tensor last_input_;      // (N, num_channels, H, W)
+    Tensor last_xhat_;       // (N, num_channels, H, W)
+    std::vector<float> last_group_std_;  // N*num_groups entries, indexed n*num_groups+g
     int64_t last_h_ = 0;
     int64_t last_w_ = 0;
     bool has_forwarded_ = false;

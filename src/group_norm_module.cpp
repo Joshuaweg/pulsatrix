@@ -22,8 +22,8 @@ GroupNormModule::GroupNormModule(int64_t num_groups, int64_t num_channels, Devic
       beta_(Shape({safe_channels(num_channels)}), backend, device),
       gamma_grad_(Shape({safe_channels(num_channels)}), backend, device),
       beta_grad_(Shape({safe_channels(num_channels)}), backend, device),
-      last_input_(Shape({safe_channels(num_channels), 1, 1}), backend, device),
-      last_xhat_(Shape({safe_channels(num_channels), 1, 1}), backend, device) {
+      last_input_(Shape({1, safe_channels(num_channels), 1, 1}), backend, device),
+      last_xhat_(Shape({1, safe_channels(num_channels), 1, 1}), backend, device) {
     // External boundary (construction arguments can originate from Phase 5's Python
     // bindings with no upstream validation).
     if (num_groups <= 0) {
@@ -55,57 +55,67 @@ void GroupNormModule::set_beta(const std::vector<float>& values) {
 
 Tensor GroupNormModule::forward_impl(const Tensor& input) {
     // External boundary: input can originate from Phase 5's Python bindings with no
-    // upstream validation -- matches Conv2DModule::forward_impl's rank/channel check.
-    if (input.rank() != 3 || input.shape().dim(0) != num_channels_) {
+    // upstream validation -- shape generalized to (N, num_channels, H, W) by
+    // campaign_exai_dl_library_batch_dimension_support.
+    if (input.rank() != 4 || input.shape().dim(1) != num_channels_) {
         throw std::invalid_argument(
-            "GroupNormModule::forward: input must be rank-3 (num_channels, H, W)");
+            "GroupNormModule::forward: input must be rank-4 (N, num_channels, H, W)");
     }
 
-    const int64_t H = input.shape().dim(1);
-    const int64_t W = input.shape().dim(2);
+    const int64_t N = input.shape().dim(0);
+    const int64_t H = input.shape().dim(2);
+    const int64_t W = input.shape().dim(3);
     const int64_t spatial = H * W;
     const int64_t N_g = group_size_ * spatial;
+    const int64_t per_example = num_channels_ * spatial;
 
     last_input_ = input;
     last_h_ = H;
     last_w_ = W;
-
-    std::vector<float> group_mean(num_groups_, 0.0f);
-    std::vector<float> group_std(num_groups_, 0.0f);
-
-    for (int64_t g = 0; g < num_groups_; ++g) {
-        float sum = 0.0f;
-        int64_t c_start = g * group_size_;
-        int64_t c_end = c_start + group_size_;
-        for (int64_t c = c_start; c < c_end; ++c) {
-            for (int64_t s = 0; s < spatial; ++s) {
-                sum += input.data()[c * spatial + s];
-            }
-        }
-        float mu = sum / static_cast<float>(N_g);
-
-        float sum_sq_diff = 0.0f;
-        for (int64_t c = c_start; c < c_end; ++c) {
-            for (int64_t s = 0; s < spatial; ++s) {
-                float d = input.data()[c * spatial + s] - mu;
-                sum_sq_diff += d * d;
-            }
-        }
-        float var = sum_sq_diff / static_cast<float>(N_g);
-        group_mean[g] = mu;
-        group_std[g] = std::sqrt(var + eps_);
-    }
-    last_group_std_ = group_std;
+    last_group_std_.assign(static_cast<size_t>(N * num_groups_), 0.0f);
 
     Tensor xhat(input.shape(), backend_, gamma_.device());
     Tensor output(input.shape(), backend_, gamma_.device());
-    for (int64_t c = 0; c < num_channels_; ++c) {
-        int64_t g = c / group_size_;
-        for (int64_t s = 0; s < spatial; ++s) {
-            int64_t idx = c * spatial + s;
-            float xh = (input.data()[idx] - group_mean[g]) / group_std[g];
-            xhat.data()[idx] = xh;
-            output.data()[idx] = gamma_.data()[c] * xh + beta_.data()[c];
+
+    for (int64_t n = 0; n < N; ++n) {
+        const int64_t base = n * per_example;
+
+        std::vector<float> group_mean(static_cast<size_t>(num_groups_), 0.0f);
+        std::vector<float> group_std(static_cast<size_t>(num_groups_), 0.0f);
+
+        for (int64_t g = 0; g < num_groups_; ++g) {
+            float sum = 0.0f;
+            int64_t c_start = g * group_size_;
+            int64_t c_end = c_start + group_size_;
+            for (int64_t c = c_start; c < c_end; ++c) {
+                for (int64_t s = 0; s < spatial; ++s) {
+                    sum += input.data()[base + c * spatial + s];
+                }
+            }
+            float mu = sum / static_cast<float>(N_g);
+
+            float sum_sq_diff = 0.0f;
+            for (int64_t c = c_start; c < c_end; ++c) {
+                for (int64_t s = 0; s < spatial; ++s) {
+                    float d = input.data()[base + c * spatial + s] - mu;
+                    sum_sq_diff += d * d;
+                }
+            }
+            float var = sum_sq_diff / static_cast<float>(N_g);
+            group_mean[static_cast<size_t>(g)] = mu;
+            group_std[static_cast<size_t>(g)] = std::sqrt(var + eps_);
+            last_group_std_[static_cast<size_t>(n * num_groups_ + g)] = group_std[static_cast<size_t>(g)];
+        }
+
+        for (int64_t c = 0; c < num_channels_; ++c) {
+            int64_t g = c / group_size_;
+            for (int64_t s = 0; s < spatial; ++s) {
+                int64_t idx = base + c * spatial + s;
+                float xh = (input.data()[idx] - group_mean[static_cast<size_t>(g)]) /
+                           group_std[static_cast<size_t>(g)];
+                xhat.data()[idx] = xh;
+                output.data()[idx] = gamma_.data()[c] * xh + beta_.data()[c];
+            }
         }
     }
     last_xhat_ = xhat;
@@ -125,59 +135,67 @@ Tensor GroupNormModule::backward(const Tensor& grad_output) {
     // subclass's identical Phase 1.5 scope decision.
     EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
 
+    const int64_t N = last_input_.shape().dim(0);
     const int64_t H = last_h_;
     const int64_t W = last_w_;
     const int64_t spatial = H * W;
     const int64_t N_g = group_size_ * spatial;
+    const int64_t per_example = num_channels_ * spatial;
 
     Tensor local_gamma_grad(gamma_.shape(), backend_);
     Tensor local_beta_grad(beta_.shape(), backend_);
     local_gamma_grad.fill(0.0f);
     local_beta_grad.fill(0.0f);
 
-    // dL/dgamma_c = sum over spatial of dL/dy * xhat ; dL/dbeta_c = sum over spatial of dL/dy
-    for (int64_t c = 0; c < num_channels_; ++c) {
-        float gsum = 0.0f;
-        float bsum = 0.0f;
-        for (int64_t s = 0; s < spatial; ++s) {
-            int64_t idx = c * spatial + s;
-            gsum += grad_output.data()[idx] * last_xhat_.data()[idx];
-            bsum += grad_output.data()[idx];
+    Tensor grad_input(last_input_.shape(), backend_);
+
+    for (int64_t n = 0; n < N; ++n) {
+        const int64_t base = n * per_example;
+
+        // dL/dgamma_c = sum over batch,spatial of dL/dy * xhat ; dL/dbeta_c likewise of dL/dy
+        for (int64_t c = 0; c < num_channels_; ++c) {
+            float gsum = 0.0f;
+            float bsum = 0.0f;
+            for (int64_t s = 0; s < spatial; ++s) {
+                int64_t idx = base + c * spatial + s;
+                gsum += grad_output.data()[idx] * last_xhat_.data()[idx];
+                bsum += grad_output.data()[idx];
+            }
+            local_gamma_grad.data()[c] += gsum;
+            local_beta_grad.data()[c] += bsum;
         }
-        local_gamma_grad.data()[c] = gsum;
-        local_beta_grad.data()[c] = bsum;
+
+        for (int64_t g = 0; g < num_groups_; ++g) {
+            int64_t c_start = g * group_size_;
+            int64_t c_end = c_start + group_size_;
+            const float std_g = last_group_std_[static_cast<size_t>(n * num_groups_ + g)];
+
+            // dL/dxhat_i = dL/dy_i * gamma_{c(i)}
+            float sum_grad_xhat = 0.0f;
+            float sum_grad_xhat_xhat = 0.0f;
+            for (int64_t c = c_start; c < c_end; ++c) {
+                for (int64_t s = 0; s < spatial; ++s) {
+                    int64_t idx = base + c * spatial + s;
+                    float gxh = grad_output.data()[idx] * gamma_.data()[c];
+                    sum_grad_xhat += gxh;
+                    sum_grad_xhat_xhat += gxh * last_xhat_.data()[idx];
+                }
+            }
+
+            for (int64_t c = c_start; c < c_end; ++c) {
+                for (int64_t s = 0; s < spatial; ++s) {
+                    int64_t idx = base + c * spatial + s;
+                    float gxh = grad_output.data()[idx] * gamma_.data()[c];
+                    grad_input.data()[idx] = (static_cast<float>(N_g) * gxh - sum_grad_xhat -
+                                               last_xhat_.data()[idx] * sum_grad_xhat_xhat) /
+                                              (static_cast<float>(N_g) * std_g);
+                }
+            }
+        }
     }
+
     gamma_grad_.accumulate(local_gamma_grad);
     beta_grad_.accumulate(local_beta_grad);
-
-    Tensor grad_input(last_input_.shape(), backend_);
-    for (int64_t g = 0; g < num_groups_; ++g) {
-        int64_t c_start = g * group_size_;
-        int64_t c_end = c_start + group_size_;
-        const float std_g = last_group_std_[static_cast<size_t>(g)];
-
-        // dL/dxhat_i = dL/dy_i * gamma_{c(i)}
-        float sum_grad_xhat = 0.0f;
-        float sum_grad_xhat_xhat = 0.0f;
-        for (int64_t c = c_start; c < c_end; ++c) {
-            for (int64_t s = 0; s < spatial; ++s) {
-                int64_t idx = c * spatial + s;
-                float gxh = grad_output.data()[idx] * gamma_.data()[c];
-                sum_grad_xhat += gxh;
-                sum_grad_xhat_xhat += gxh * last_xhat_.data()[idx];
-            }
-        }
-
-        for (int64_t c = c_start; c < c_end; ++c) {
-            for (int64_t s = 0; s < spatial; ++s) {
-                int64_t idx = c * spatial + s;
-                float gxh = grad_output.data()[idx] * gamma_.data()[c];
-                grad_input.data()[idx] = (static_cast<float>(N_g) * gxh - sum_grad_xhat -
-                                           last_xhat_.data()[idx] * sum_grad_xhat_xhat) /
-                                          (static_cast<float>(N_g) * std_g);
-            }
-        }
-    }
 
     return grad_input;
 }
