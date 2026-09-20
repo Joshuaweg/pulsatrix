@@ -11,17 +11,27 @@
 namespace exai {
 
 /**
- * @brief y = x @ W + b, unbatched (x, y are rank-1 tensors; batching is Mission 4's
- *        concern, not built here -- see campaign Decision 1 in this mission's Notes).
+ * @brief y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) --
+ *        migrated from the original unbatched (rank-1) scope by
+ *        campaign_exai_dl_library_batch_dimension_support (breaking migration to
+ *        always-batched; a single example is N=1, not a structurally different case).
  * @note Weight layout is (in_features, out_features), not the more common
  *       (out_features, in_features) PyTorch convention -- chosen specifically so forward
- *       (x @ W) and the weight-gradient step (outer(x, grad_y)) both use
- *       DeviceBackend::gemm directly with no transpose. Only the input-gradient step
- *       (grad_y @ W^T) needs an actual transpose, handled internally.
+ *       (x @ W) and the weight-gradient step (X^T @ grad_Y) both use
+ *       DeviceBackend::gemm directly with no transpose of the *weight* operand. Only the
+ *       input-gradient step (grad_Y @ W^T) needs an actual transpose of W, and the
+ *       weight-gradient step needs an actual transpose of X (batched sum-of-outer-products
+ *       reduces to a single (in_features x N) @ (N x out_features) gemm via X^T) -- both
+ *       handled internally by the same transpose() helper.
  * @note Weights/biases are owned here as member Tensors, not ComputationGraph nodes.
  *       Parameter gradients accumulate via Tensor::accumulate() across backward() calls
- *       until something (Mission 3's optimizer) resets them -- there is no zero_grad()
- *       yet because nothing needs one until the optimizer exists.
+ *       until something (the optimizer) resets them. Batch-dimension gradient reduction
+ *       (summing weight/bias gradient contributions across the N examples in a batch)
+ *       needs no new Tensor primitive -- see
+ *       campaign_exai_dl_library_batch_dimension_support's mission_tensor_shape_foundation.md:
+ *       weight_grad's reduction falls out of gemm's own k-dimension summation; bias_grad's
+ *       reduction is a locally-built (out_features,) tensor via a raw host loop, then the
+ *       existing, unmodified accumulate().
  */
 class LinearModule : public Module {
 public:
@@ -41,19 +51,23 @@ public:
 
     /**
      * @brief Computes the gradient w.r.t. this module's input, and accumulates the
-     *        weight/bias gradients internally.
-     * @param grad_output Gradient w.r.t. this module's output. Must match the shape of
-     *        the most recent forward() call's output.
-     * @return Gradient w.r.t. this module's input.
+     *        weight/bias gradients internally (summed across the batch).
+     * @param grad_output Gradient w.r.t. this module's output. Must be (N, out_features),
+     *        with N matching the most recent forward() call's batch size.
+     * @return Gradient w.r.t. this module's input, shape (N, in_features).
      * @note Must be called after forward() -- uses the input cached from that call.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop (via an internal transpose() helper). EXAI_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor; see
+     * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host
+     *       loops (via an internal transpose() helper and the bias-gradient batch-reduction
+     *       loop). EXAI_ASSERT(grad_output.device() == DeviceType::Cpu) guards against
+     *       silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
      *       DeviceBackend.
      * @throws std::logic_error if forward() has never been called -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
+     * @throws std::invalid_argument if grad_output's rank/shape don't match (N, out_features)
+     *         for the cached N -- external boundary, batch-size-mismatch is a new adversarial
+     *         case this migration introduces (campaign_exai_dl_library_batch_dimension_support).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -78,11 +92,13 @@ public:
     [[nodiscard]] const Tensor& bias_grad() const { return bias_grad_; }
 
     /**
-     * @brief Epsilon-rule LRP relevance propagation (Bach et al. 2015).
-     * @param relevance_out Relevance at this module's output. Must match out_features.
+     * @brief Epsilon-rule LRP relevance propagation (Bach et al. 2015), applied
+     *        independently per example in the batch.
+     * @param relevance_out Relevance at this module's output. Must be (N, out_features),
+     *        matching the cached forward() batch size.
      * @param config Selects epsilon. Larger epsilon trades a small amount of conservation
      *        for numerical stability when a pre-bias output is near zero.
-     * @return Relevance at this module's input.
+     * @return Relevance at this module's input, shape (N, in_features).
      * @note Uses the pre-bias linear output (x @ W, not x @ W + b) as z_j -- bias has no
      *       associated input feature to redistribute relevance to, so it is excluded from
      *       the rule entirely rather than approximated. This is what makes relevance

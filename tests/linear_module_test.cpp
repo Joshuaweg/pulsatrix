@@ -64,18 +64,42 @@ TEST_F(LinearModuleTest, WeightAndBiasGradientsStartAtZero) {
     EXPECT_FLOAT_EQ(linear.bias_grad().data()[0], 0.0f);
 }
 
-TEST_F(LinearModuleTest, ForwardComputesHandVerifiedOutput) {
+// N=1 batch -- the mechanical batch-of-1 reshape of this module's original unbatched test
+// (campaign_exai_dl_library_batch_dimension_support: a single example is N=1, not a
+// structurally different case).
+TEST_F(LinearModuleTest, ForwardComputesHandVerifiedOutputForSingleExampleBatch) {
     // in_features=2, out_features=2. W = [[1,2],[3,4]] (in x out, row-major), b = [0.5, -0.5].
-    // x = [1, 1]. y = x @ W + b = [1*1+1*3, 1*2+1*4] + [0.5,-0.5] = [4,6] + [0.5,-0.5] = [4.5, 5.5]
+    // x = [[1, 1]]. y = x @ W + b = [1*1+1*3, 1*2+1*4] + [0.5,-0.5] = [4,6] + [0.5,-0.5] = [4.5, 5.5]
     LinearModule linear(2, 2, &backend);
     linear.set_weight({1.0f, 2.0f, 3.0f, 4.0f});
     linear.set_bias({0.5f, -0.5f});
 
-    Tensor x(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
     Tensor y = linear.forward(x);
 
+    EXPECT_EQ(y.shape(), Shape({1, 2}));
     EXPECT_FLOAT_EQ(y.data()[0], 4.5f);
     EXPECT_FLOAT_EQ(y.data()[1], 5.5f);
+}
+
+// The real acceptance criterion for the batch migration's forward pass -- N=2, two
+// distinct rows, proving each row is computed independently (not averaged/mixed) and the
+// output shape genuinely carries the batch dimension through.
+TEST_F(LinearModuleTest, ForwardComputesHandVerifiedOutputAcrossTwoExampleBatch) {
+    // Same W/b as above. Row 0: x=[1,1] -> y=[4.5,5.5] (as above). Row 1: x=[2,0] ->
+    // y = [2*1+0*3, 2*2+0*4] + [0.5,-0.5] = [2,4] + [0.5,-0.5] = [2.5, 3.5]
+    LinearModule linear(2, 2, &backend);
+    linear.set_weight({1.0f, 2.0f, 3.0f, 4.0f});
+    linear.set_bias({0.5f, -0.5f});
+
+    Tensor x(Shape({2, 2}), &backend, {1.0f, 1.0f, 2.0f, 0.0f});
+    Tensor y = linear.forward(x);
+
+    EXPECT_EQ(y.shape(), Shape({2, 2}));
+    EXPECT_FLOAT_EQ(y.data()[0], 4.5f);
+    EXPECT_FLOAT_EQ(y.data()[1], 5.5f);
+    EXPECT_FLOAT_EQ(y.data()[2], 2.5f);
+    EXPECT_FLOAT_EQ(y.data()[3], 3.5f);
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 1):
@@ -83,15 +107,15 @@ TEST_F(LinearModuleTest, ForwardComputesHandVerifiedOutput) {
 // straight into gemm as if it had in_features_ elements, a real heap OOB read on the
 // input buffer if it was shorter. External boundary per Mission 0's classification
 // table (this input can originate from Phase 5's Python bindings) -- throw, not assert.
-TEST_F(LinearModuleTest, ForwardThrowsOnWrongNumel) {
+TEST_F(LinearModuleTest, ForwardThrowsOnWrongFeatureCount) {
     LinearModule linear(3, 2, &backend);
-    Tensor wrong_size(Shape({2}), &backend, {1.0f, 2.0f});
+    Tensor wrong_size(Shape({1, 2}), &backend, {1.0f, 2.0f});
     EXPECT_THROW({ (void)linear.forward(wrong_size); }, std::invalid_argument);
 }
 
 TEST_F(LinearModuleTest, ForwardThrowsOnWrongRank) {
     LinearModule linear(4, 2, &backend);
-    Tensor wrong_rank(Shape({2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    Tensor wrong_rank(Shape({4}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
     EXPECT_THROW({ (void)linear.forward(wrong_rank); }, std::invalid_argument);
 }
 
@@ -99,42 +123,84 @@ TEST_F(LinearModuleTest, ForwardThrowsOnWrongRank) {
 // from zero-initialized cached state if called before any forward() -- now a real error.
 TEST_F(LinearModuleTest, BackwardThrowsIfCalledBeforeForward) {
     LinearModule linear(2, 2, &backend);
-    Tensor grad(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor grad(Shape({1, 2}), &backend, {1.0f, 1.0f});
     EXPECT_THROW({ (void)linear.backward(grad); }, std::logic_error);
 }
 
 TEST_F(LinearModuleTest, PropagateRelevanceThrowsIfCalledBeforeForward) {
     LinearModule linear(2, 2, &backend);
-    Tensor relevance(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor relevance(Shape({1, 2}), &backend, {1.0f, 1.0f});
     EXPECT_THROW({ (void)linear.propagate_relevance(relevance, LRPRuleConfig{}); }, std::logic_error);
 }
 
-TEST_F(LinearModuleTest, BackwardComputesHandVerifiedInputGradient) {
-    // Same W as above. grad_y = [1, 1]. grad_x = grad_y @ W^T.
+// New adversarial case introduced by the batch migration
+// (campaign_exai_dl_library_batch_dimension_support): grad_output's batch size must match
+// what forward() actually cached, not just have the right feature count.
+TEST_F(LinearModuleTest, BackwardThrowsOnBatchSizeMismatch) {
+    LinearModule linear(2, 2, &backend);
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
+    (void)linear.forward(x);
+    Tensor wrong_batch_grad(Shape({2, 2}), &backend, {1.0f, 1.0f, 1.0f, 1.0f});
+    EXPECT_THROW({ (void)linear.backward(wrong_batch_grad); }, std::invalid_argument);
+}
+
+TEST_F(LinearModuleTest, PropagateRelevanceThrowsOnBatchSizeMismatch) {
+    LinearModule linear(2, 2, &backend);
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
+    (void)linear.forward(x);
+    Tensor wrong_batch_relevance(Shape({2, 2}), &backend, {1.0f, 1.0f, 1.0f, 1.0f});
+    EXPECT_THROW({ (void)linear.propagate_relevance(wrong_batch_relevance, LRPRuleConfig{}); },
+                 std::invalid_argument);
+}
+
+TEST_F(LinearModuleTest, BackwardComputesHandVerifiedInputGradientForSingleExampleBatch) {
+    // Same W as above. grad_y = [[1, 1]]. grad_x = grad_y @ W^T.
     // W^T = [[1,3],[2,4]]. grad_x = [1*1+1*2, 1*3+1*4] = [3, 7]
     LinearModule linear(2, 2, &backend);
     linear.set_weight({1.0f, 2.0f, 3.0f, 4.0f});
     linear.set_bias({0.0f, 0.0f});
 
-    Tensor x(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
     (void)linear.forward(x);  // must forward first -- backward needs the cached input
 
-    Tensor grad_y(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor grad_y(Shape({1, 2}), &backend, {1.0f, 1.0f});
     Tensor grad_x = linear.backward(grad_y);
 
+    EXPECT_EQ(grad_x.shape(), Shape({1, 2}));
     EXPECT_FLOAT_EQ(grad_x.data()[0], 3.0f);
     EXPECT_FLOAT_EQ(grad_x.data()[1], 7.0f);
 }
 
-TEST_F(LinearModuleTest, BackwardAccumulatesWeightGradientAsOuterProduct) {
+// N=2: each row's input gradient computed independently from its own grad_output row --
+// proves backward() doesn't mix batch rows together in the grad_x computation.
+TEST_F(LinearModuleTest, BackwardComputesHandVerifiedInputGradientAcrossTwoExampleBatch) {
+    LinearModule linear(2, 2, &backend);
+    linear.set_weight({1.0f, 2.0f, 3.0f, 4.0f});
+    linear.set_bias({0.0f, 0.0f});
+
+    Tensor x(Shape({2, 2}), &backend, {1.0f, 1.0f, 0.0f, 0.0f});
+    (void)linear.forward(x);
+
+    // Row 0: grad_y=[1,1] -> grad_x=[3,7] (as above). Row 1: grad_y=[0,1] -> grad_x = [0*1+1*2, 0*3+1*4] = [2,4]
+    Tensor grad_y(Shape({2, 2}), &backend, {1.0f, 1.0f, 0.0f, 1.0f});
+    Tensor grad_x = linear.backward(grad_y);
+
+    EXPECT_EQ(grad_x.shape(), Shape({2, 2}));
+    EXPECT_FLOAT_EQ(grad_x.data()[0], 3.0f);
+    EXPECT_FLOAT_EQ(grad_x.data()[1], 7.0f);
+    EXPECT_FLOAT_EQ(grad_x.data()[2], 2.0f);
+    EXPECT_FLOAT_EQ(grad_x.data()[3], 4.0f);
+}
+
+TEST_F(LinearModuleTest, BackwardAccumulatesWeightGradientAsOuterProductForSingleExampleBatch) {
     // grad_W = outer(x, grad_y). x=[1,2], grad_y=[3,4] -> grad_W = [[1*3,1*4],[2*3,2*4]] = [[3,4],[6,8]]
     LinearModule linear(2, 2, &backend);
     linear.set_weight({0.0f, 0.0f, 0.0f, 0.0f});
     linear.set_bias({0.0f, 0.0f});
 
-    Tensor x(Shape({2}), &backend, {1.0f, 2.0f});
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 2.0f});
     (void)linear.forward(x);
-    Tensor grad_y(Shape({2}), &backend, {3.0f, 4.0f});
+    Tensor grad_y(Shape({1, 2}), &backend, {3.0f, 4.0f});
     (void)linear.backward(grad_y);
 
     EXPECT_FLOAT_EQ(linear.weight_grad().data()[0], 3.0f);  // W[0][0]
@@ -143,15 +209,49 @@ TEST_F(LinearModuleTest, BackwardAccumulatesWeightGradientAsOuterProduct) {
     EXPECT_FLOAT_EQ(linear.weight_grad().data()[3], 8.0f);  // W[1][1]
 }
 
-TEST_F(LinearModuleTest, BackwardAccumulatesBiasGradientAsGradOutput) {
+// The real acceptance criterion for the batch migration's weight-gradient reduction --
+// grad_W = X^T @ grad_Y, summing each row's outer-product contribution.
+TEST_F(LinearModuleTest, BackwardSumsWeightGradientAcrossTwoExampleBatch) {
+    // Row 0: x=[1,2], grad_y=[3,4] -> outer = [[3,4],[6,8]] (as above).
+    // Row 1: x=[1,0], grad_y=[1,1] -> outer = [[1,1],[0,0]].
+    // Sum: [[4,5],[6,8]]
     LinearModule linear(2, 2, &backend);
-    Tensor x(Shape({2}), &backend, {1.0f, 1.0f});
+    linear.set_weight({0.0f, 0.0f, 0.0f, 0.0f});
+    linear.set_bias({0.0f, 0.0f});
+
+    Tensor x(Shape({2, 2}), &backend, {1.0f, 2.0f, 1.0f, 0.0f});
     (void)linear.forward(x);
-    Tensor grad_y(Shape({2}), &backend, {2.5f, -1.5f});
+    Tensor grad_y(Shape({2, 2}), &backend, {3.0f, 4.0f, 1.0f, 1.0f});
+    (void)linear.backward(grad_y);
+
+    EXPECT_FLOAT_EQ(linear.weight_grad().data()[0], 4.0f);
+    EXPECT_FLOAT_EQ(linear.weight_grad().data()[1], 5.0f);
+    EXPECT_FLOAT_EQ(linear.weight_grad().data()[2], 6.0f);
+    EXPECT_FLOAT_EQ(linear.weight_grad().data()[3], 8.0f);
+}
+
+TEST_F(LinearModuleTest, BackwardAccumulatesBiasGradientAsGradOutputForSingleExampleBatch) {
+    LinearModule linear(2, 2, &backend);
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
+    (void)linear.forward(x);
+    Tensor grad_y(Shape({1, 2}), &backend, {2.5f, -1.5f});
     (void)linear.backward(grad_y);
 
     EXPECT_FLOAT_EQ(linear.bias_grad().data()[0], 2.5f);
     EXPECT_FLOAT_EQ(linear.bias_grad().data()[1], -1.5f);
+}
+
+// The real acceptance criterion for the batch migration's bias-gradient reduction -- sum
+// over the batch, per output feature.
+TEST_F(LinearModuleTest, BackwardSumsBiasGradientAcrossTwoExampleBatch) {
+    LinearModule linear(2, 2, &backend);
+    Tensor x(Shape({2, 2}), &backend, {1.0f, 1.0f, 0.0f, 0.0f});
+    (void)linear.forward(x);
+    Tensor grad_y(Shape({2, 2}), &backend, {2.5f, -1.5f, 1.0f, 0.5f});
+    (void)linear.backward(grad_y);
+
+    EXPECT_FLOAT_EQ(linear.bias_grad().data()[0], 3.5f);   // 2.5 + 1.0
+    EXPECT_FLOAT_EQ(linear.bias_grad().data()[1], -1.0f);  // -1.5 + 0.5
 }
 
 TEST_F(LinearModuleTest, GradientsAccumulateAcrossTwoBackwardCalls) {
@@ -159,8 +259,8 @@ TEST_F(LinearModuleTest, GradientsAccumulateAcrossTwoBackwardCalls) {
     linear.set_weight({1.0f});
     linear.set_bias({0.0f});
 
-    Tensor x(Shape({1}), &backend, {2.0f});
-    Tensor grad_y(Shape({1}), &backend, {1.0f});
+    Tensor x(Shape({1, 1}), &backend, {2.0f});
+    Tensor grad_y(Shape({1, 1}), &backend, {1.0f});
 
     (void)linear.forward(x);
     (void)linear.backward(grad_y);  // grad_W += 2*1 = 2
@@ -175,42 +275,72 @@ TEST_F(LinearModuleTest, GradientsAccumulateAcrossTwoBackwardCalls) {
 // used, not the forward() return value) -- this is what makes exact conservation possible;
 // see this mission's Notes for the full rationale (bias has no associated input feature to
 // redistribute relevance to, a well-known LRP simplification).
-TEST_F(LinearModuleTest, PropagateRelevanceMatchesHandDerivedValues) {
+TEST_F(LinearModuleTest, PropagateRelevanceMatchesHandDerivedValuesForSingleExampleBatch) {
     // W = [[2],[3]] (2 in, 1 out). x = [1, 2]. z_0 (pre-bias) = 1*2 + 2*3 = 8.
     LinearModule linear(2, 1, &backend);
     linear.set_weight({2.0f, 3.0f});
     linear.set_bias({100.0f});  // deliberately large/irrelevant -- must not affect the result
 
-    Tensor x(Shape({2}), &backend, {1.0f, 2.0f});
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 2.0f});
     (void)linear.forward(x);
 
-    Tensor relevance_out(Shape({1}), &backend, {10.0f});
+    Tensor relevance_out(Shape({1, 1}), &backend, {10.0f});
     LRPRuleConfig config;
     config.epsilon = 0.0f;  // exact -- no absorption term, isolates the rule's core correctness
 
     Tensor relevance_in = linear.propagate_relevance(relevance_out, config);
 
+    EXPECT_EQ(relevance_in.shape(), Shape({1, 2}));
     EXPECT_FLOAT_EQ(relevance_in.data()[0], 2.5f);  // (1*2/8)*10
     EXPECT_FLOAT_EQ(relevance_in.data()[1], 7.5f);  // (2*3/8)*10
 }
 
-TEST_F(LinearModuleTest, PropagateRelevanceConservesTotalRelevance) {
+// The real acceptance criterion for the batch migration's LRP rule -- each row's relevance
+// redistribution uses only that row's own z_j/x_i, no cross-example coupling.
+TEST_F(LinearModuleTest, PropagateRelevanceIsIndependentPerExampleAcrossTwoExampleBatch) {
+    LinearModule linear(2, 1, &backend);
+    linear.set_weight({2.0f, 3.0f});
+    linear.set_bias({100.0f});
+
+    // Row 0: x=[1,2], z_0=8 (as above). Row 1: x=[2,0], z_0=2*2+0*3=4.
+    Tensor x(Shape({2, 2}), &backend, {1.0f, 2.0f, 2.0f, 0.0f});
+    (void)linear.forward(x);
+
+    Tensor relevance_out(Shape({2, 1}), &backend, {10.0f, 20.0f});
+    LRPRuleConfig config;
+    config.epsilon = 0.0f;
+
+    Tensor relevance_in = linear.propagate_relevance(relevance_out, config);
+
+    EXPECT_EQ(relevance_in.shape(), Shape({2, 2}));
+    EXPECT_FLOAT_EQ(relevance_in.data()[0], 2.5f);   // row 0, matches single-example case
+    EXPECT_FLOAT_EQ(relevance_in.data()[1], 7.5f);
+    EXPECT_FLOAT_EQ(relevance_in.data()[2], 20.0f);  // row 1: (2*2/4)*20
+    EXPECT_FLOAT_EQ(relevance_in.data()[3], 0.0f);   // row 1: (0*3/4)*20
+}
+
+TEST_F(LinearModuleTest, PropagateRelevanceConservesTotalRelevancePerExample) {
     // The mission's real acceptance criterion for the LRP half -- see mission_module_linear.md.
+    // Checked per-example: conservation is a per-row property, not a whole-batch sum.
     LinearModule linear(3, 2, &backend);
     linear.set_weight({1.0f, -2.0f, 3.0f, 0.5f, 2.5f, -1.0f});
     linear.set_bias({0.1f, -0.2f});
 
-    Tensor x(Shape({3}), &backend, {1.0f, 2.0f, 0.5f});
+    Tensor x(Shape({2, 3}), &backend, {1.0f, 2.0f, 0.5f, 0.0f, 1.0f, -1.0f});
     (void)linear.forward(x);
 
-    Tensor relevance_out(Shape({2}), &backend, {4.0f, 6.0f});
+    Tensor relevance_out(Shape({2, 2}), &backend, {4.0f, 6.0f, -2.0f, 3.0f});
     LRPRuleConfig config;  // default epsilon (1e-6) -- proves conservation holds in normal use, not just the epsilon=0 special case
 
     Tensor relevance_in = linear.propagate_relevance(relevance_out, config);
 
-    float sum_in = relevance_in.data()[0] + relevance_in.data()[1] + relevance_in.data()[2];
-    float sum_out = relevance_out.data()[0] + relevance_out.data()[1];
-    EXPECT_NEAR(sum_in, sum_out, 1e-3f);
+    float sum_in_row0 = relevance_in.data()[0] + relevance_in.data()[1] + relevance_in.data()[2];
+    float sum_out_row0 = relevance_out.data()[0] + relevance_out.data()[1];
+    EXPECT_NEAR(sum_in_row0, sum_out_row0, 1e-3f);
+
+    float sum_in_row1 = relevance_in.data()[3] + relevance_in.data()[4] + relevance_in.data()[5];
+    float sum_out_row1 = relevance_out.data()[2] + relevance_out.data()[3];
+    EXPECT_NEAR(sum_in_row1, sum_out_row1, 1e-3f);
 }
 
 using LinearModuleDeathTest = LinearModuleTest;
@@ -227,10 +357,10 @@ TEST_F(LinearModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
     GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     LinearModule linear(2, 2, &backend);
-    Tensor x(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
     (void)linear.forward(x);
 
-    Tensor grad_output(Shape({2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
+    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
     EXPECT_DEATH({ (void)linear.backward(grad_output); }, "EXAI_ASSERT failed");
 }
 
@@ -239,10 +369,10 @@ TEST_F(LinearModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
     GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     LinearModule linear(2, 2, &backend);
-    Tensor x(Shape({2}), &backend, {1.0f, 1.0f});
+    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
     (void)linear.forward(x);
 
-    Tensor relevance_out(Shape({2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
+    Tensor relevance_out(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
     LRPRuleConfig config;
     EXPECT_DEATH({ (void)linear.propagate_relevance(relevance_out, config); }, "EXAI_ASSERT failed");
 }
