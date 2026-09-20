@@ -16,6 +16,7 @@ add_executable(exai_tests
     rms_norm_module_test.cpp
     layer_norm_module_test.cpp
     group_norm_module_test.cpp
+    batch_norm_module_test.cpp
     mse_loss_test.cpp
     sgd_optimizer_test.cpp
     adam_optimizer_test.cpp

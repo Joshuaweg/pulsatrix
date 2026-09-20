@@ -28,6 +28,7 @@ add_library(exai_core
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
     src/group_norm_module.cpp
+    src/batch_norm_module.cpp
     src/mse_loss.cpp
     src/sgd_optimizer.cpp
     src/adam_optimizer.cpp
