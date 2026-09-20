@@ -12,8 +12,10 @@
 namespace exai {
 
 /**
- * @brief y_i = gamma_i * x_i / rms(x), rms(x) = sqrt(mean(x_i^2) + eps). Unbatched
- *        (rank-1), matching LinearModule's existing convention -- no mean-centering, no
+ * @brief y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps),
+ *        computed independently per batch row n. Batched ((N, num_features)), migrated
+ *        from the original unbatched (rank-1) scope by
+ *        campaign_exai_dl_library_batch_dimension_support -- no mean-centering, no
  *        beta/bias term (RMSNorm's defining simplification vs. LayerNorm).
  * @note propagate_relevance is an identity pass-through, cited to AttnLRP's
  *       normalization-layer treatment (Achtibat et al. 2024, already named in this
@@ -91,7 +93,7 @@ private:
     Tensor gamma_;
     Tensor gamma_grad_;
     Tensor last_input_;
-    float last_rms_ = 0.0f;
+    std::vector<float> last_rms_;  // one rms per batch row
     bool has_forwarded_ = false;
 };
 
