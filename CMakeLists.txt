@@ -64,6 +64,9 @@ if(EXAI_BUILD_EXAMPLES)
 
     add_executable(explainer_demo examples/explainer_demo.cpp)
     target_link_libraries(explainer_demo PRIVATE exai_core)
+
+    add_executable(grad_cam_mnist_demo examples/grad_cam_mnist_demo.cpp)
+    target_link_libraries(grad_cam_mnist_demo PRIVATE exai_core)
 endif()
 
 if(EXAI_BUILD_TESTS)
