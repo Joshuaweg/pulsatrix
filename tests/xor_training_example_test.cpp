@@ -18,9 +18,9 @@ protected:
 
 TEST_F(XorTrainingExampleTest, ForwardProducesOneDimensionalOutput) {
     XorNetwork net(&backend);
-    Tensor input(Shape({2}), &backend, {0.0f, 1.0f});
+    Tensor input(Shape({1, 2}), &backend, {0.0f, 1.0f});
     Tensor output = net.forward(input);
-    EXPECT_EQ(output.shape(), Shape({1}));
+    EXPECT_EQ(output.shape(), Shape({1, 1}));
 }
 
 TEST_F(XorTrainingExampleTest, TrainStepChangesWeights) {
@@ -30,8 +30,8 @@ TEST_F(XorTrainingExampleTest, TrainStepChangesWeights) {
 
     Tensor w1_before(net.linear1_weight());  // copy, before training
 
-    Tensor input(Shape({2}), &backend, {0.0f, 1.0f});
-    Tensor target(Shape({1}), &backend, {1.0f});
+    Tensor input(Shape({1, 2}), &backend, {0.0f, 1.0f});
+    Tensor target(Shape({1, 1}), &backend, {1.0f});
     (void)net.train_step(input, target, optimizer, sink, 0);
 
     // At least one weight must have changed -- proves the full chain (forward, loss,
@@ -67,8 +67,8 @@ TEST_F(XorTrainingExampleTest, TrainStepLogsLossThroughMetricsSink) {
     AdamOptimizer optimizer(0.1f, &backend);
     CapturingSink sink;
 
-    Tensor input(Shape({2}), &backend, {1.0f, 1.0f});
-    Tensor target(Shape({1}), &backend, {0.0f});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
+    Tensor target(Shape({1, 1}), &backend, {0.0f});
     float loss = net.train_step(input, target, optimizer, sink, 7);
 
     EXPECT_EQ(sink.call_count, 1);
@@ -86,10 +86,10 @@ TEST_F(XorTrainingExampleTest, TrainingConvergesOnXOR) {
     NoOpMetricsSink sink;
 
     std::vector<std::pair<Tensor, Tensor>> dataset;
-    dataset.emplace_back(Tensor(Shape({2}), &backend, {0.0f, 0.0f}), Tensor(Shape({1}), &backend, {0.0f}));
-    dataset.emplace_back(Tensor(Shape({2}), &backend, {0.0f, 1.0f}), Tensor(Shape({1}), &backend, {1.0f}));
-    dataset.emplace_back(Tensor(Shape({2}), &backend, {1.0f, 0.0f}), Tensor(Shape({1}), &backend, {1.0f}));
-    dataset.emplace_back(Tensor(Shape({2}), &backend, {1.0f, 1.0f}), Tensor(Shape({1}), &backend, {0.0f}));
+    dataset.emplace_back(Tensor(Shape({1, 2}), &backend, {0.0f, 0.0f}), Tensor(Shape({1, 1}), &backend, {0.0f}));
+    dataset.emplace_back(Tensor(Shape({1, 2}), &backend, {0.0f, 1.0f}), Tensor(Shape({1, 1}), &backend, {1.0f}));
+    dataset.emplace_back(Tensor(Shape({1, 2}), &backend, {1.0f, 0.0f}), Tensor(Shape({1, 1}), &backend, {1.0f}));
+    dataset.emplace_back(Tensor(Shape({1, 2}), &backend, {1.0f, 1.0f}), Tensor(Shape({1, 1}), &backend, {0.0f}));
 
     auto mean_loss = [&]() {
         float total = 0.0f;

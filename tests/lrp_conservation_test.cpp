@@ -40,9 +40,9 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           LinearModule linear(3, 2, &backend);
                           linear.set_weight({1.0f, -2.0f, 3.0f, 0.5f, 2.5f, -1.0f});
                           linear.set_bias({0.1f, -0.2f});
-                          Tensor x(Shape({3}), &backend, {1.0f, 2.0f, 0.5f});
+                          Tensor x(Shape({1, 3}), &backend, {1.0f, 2.0f, 0.5f});
                           (void)linear.forward(x);
-                          Tensor relevance_out(Shape({2}), &backend, {4.0f, 6.0f});
+                          Tensor relevance_out(Shape({1, 2}), &backend, {4.0f, 6.0f});
                           LRPRuleConfig config;
                           Tensor relevance_in = linear.propagate_relevance(relevance_out, config);
                           float sum_in = relevance_in.data()[0] + relevance_in.data()[1] + relevance_in.data()[2];
@@ -122,12 +122,12 @@ TEST(LRPConservationEndToEndTest, ConservationHoldsAcrossFullNetworkChain) {
     linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
     linear2.set_bias({0.05f, -0.05f});
 
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
     Tensor h1 = linear1.forward(input);
     Tensor h2 = relu.forward(h1);
     (void)linear2.forward(h2);
 
-    Tensor relevance_seed(Shape({2}), &backend, {4.0f, 6.0f});
+    Tensor relevance_seed(Shape({1, 2}), &backend, {4.0f, 6.0f});
     LRPRuleConfig config;
 
     Tensor relevance_h2 = linear2.propagate_relevance(relevance_seed, config);

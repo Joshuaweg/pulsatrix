@@ -24,7 +24,7 @@ TEST(ModuleGraphWiringTest, ThreeModuleChainProducesExpectedGraphStructure) {
     ReluModule relu(&backend);
     LinearModule linear2(4, 2, &backend);
 
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
     NodeId input_node = graph.add_node(OpType::Elementwise, input.shape(), "input");
 
     auto [h1, h1_node] = linear1.forward_traced(input, input_node, graph, autograd);
@@ -76,7 +76,7 @@ TEST(ModuleGraphWiringTest, TracedBackwardMatchesDirectChainedBackwardAtEveryNod
     linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
     linear2.set_bias({0.05f, -0.05f});
 
-    Tensor input(Shape({3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
     NodeId input_node = graph.add_node(OpType::Elementwise, input.shape(), "input");
 
     auto [h1, h1_node] = linear1.forward_traced(input, input_node, graph, autograd);
@@ -84,7 +84,7 @@ TEST(ModuleGraphWiringTest, TracedBackwardMatchesDirectChainedBackwardAtEveryNod
     auto [out, out_node] = linear2.forward_traced(h2, h2_node, graph, autograd);
     (void)out;
 
-    Tensor grad_output(Shape({2}), &backend, {1.0f, -1.0f});
+    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, -1.0f});
     autograd.backward(graph, out_node, grad_output);
 
     // Reference: the existing, already-proven-correct way to compute these gradients --
