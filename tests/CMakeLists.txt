@@ -92,6 +92,10 @@ if(PULSATRIX_ENABLE_CUDA)
                                        backend_equivalence_test.cpp forward_pass_equivalence_test.cpp)
 endif()
 
+if(PULSATRIX_ENABLE_HIP)
+    target_sources(pulsatrix_tests PRIVATE hip_check_test.cpp hip_backend_test.cpp)
+endif()
+
 target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_core GTest::gtest_main GTest::gmock)
 
 # ctest runs pulsatrix_tests with cwd = the build directory, not the source tree -- a relative
