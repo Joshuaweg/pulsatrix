@@ -110,6 +110,23 @@ if(PULSATRIX_ENABLE_CUDA)
     target_link_libraries(pulsatrix_core PUBLIC CUDA::cudart CUDA::cublas)
 endif()
 
+if(PULSATRIX_ENABLE_HIP)
+    target_sources(pulsatrix_core PRIVATE src/hip_backend.hip)
+    # hip::host, not hip::device. hip::device carries --offload-arch as
+    # INTERFACE_COMPILE_OPTIONS, which CMake applies to every language, so linking it makes
+    # the plain C++ sources in this target (and in anything downstream) fail with
+    # "c++: error: unrecognized command-line option '--offload-arch=gfx1151'". The HIP
+    # language support enabled above already passes the architecture to the HIP compiler for
+    # .hip sources, which is the only place it belongs. hip::host supplies the headers and
+    # runtime without the device flags, and is PUBLIC because hip_backend.hpp is a public
+    # header that includes <hip/hip_runtime.h>.
+    target_link_libraries(pulsatrix_core PUBLIC hip::host roc::hipblas)
+    # Deliberately NOT setting HIP_SEPARABLE_COMPILATION, for the same reason
+    # CUDA_SEPARABLE_COMPILATION was removed above: there are no cross-TU
+    # __device__/__global__ calls, so the separate device-link step buys nothing and broke
+    # the link once a real device source existed.
+endif()
+
 if(PULSATRIX_ENABLE_PYTHON)
     # Multiple Python interpreters exist on a typical dev machine; the one on PATH is not
     # guaranteed to be the one with dev headers/import libs and the packages the pytest
