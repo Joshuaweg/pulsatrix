@@ -1,7 +1,7 @@
 /** @file flatten_module.hpp
- *  @brief Reshape-only Module -- flattens any-rank input to rank-1, for chaining
- *         Conv2DModule's rank-3 output into a LinearModule's rank-1 input (Phase 2
- *         Mission 3, the first classifier-head test network in this codebase).
+ *  @brief Reshape-only Module -- flattens every non-batch dim of a (N, ...) input to
+ *         (N, flattened_features), for chaining Conv2DModule's batched (N,C,H,W) output
+ *         into a LinearModule's batched (N, in_features) input.
  */
 #pragma once
 
@@ -10,7 +10,14 @@
 namespace exai {
 
 /**
- * @brief y = reshape(x, {x.numel()}). No parameters, no gradient math beyond reshaping.
+ * @brief y = reshape(x, {N, x.numel()/N}), N = x.shape().dim(0). No parameters, no
+ *        gradient math beyond reshaping.
+ * @note Migrated from the original fully-unbatched semantics (flatten to a single rank-1
+ *       vector, including what's now the batch dim) by
+ *       campaign_exai_dl_library_batch_dimension_support -- a genuine behavior change, not
+ *       just a shape-contract generalization like most other modules' migrations: the old
+ *       behavior would have flattened N together with the feature dims, which is wrong
+ *       once N carries real per-example batch semantics rather than always being 1.
  * @note op_type() returns OpType::Elementwise -- op_type.hpp's closed set has no
  *       dedicated Reshape tag, and Elementwise is the closest existing fit (identity over
  *       the same values, just re-viewed). A deliberate choice, not an ideal one; flagged
@@ -53,8 +60,9 @@ public:
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override {
         last_input_shape_ = input.shape();
+        int64_t N = input.shape().dim(0);
         Tensor output(input);
-        output.reshape(Shape({input.numel()}));
+        output.reshape(Shape({N, input.numel() / N}));
         return output;
     }
 

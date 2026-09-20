@@ -22,10 +22,10 @@ int main() {
     NoOpMetricsSink sink;
 
     std::vector<std::pair<Tensor, Tensor>> dataset;
-    dataset.emplace_back(Tensor(Shape({2}), &backend, {0.0f, 0.0f}), Tensor(Shape({1}), &backend, {0.0f}));
-    dataset.emplace_back(Tensor(Shape({2}), &backend, {0.0f, 1.0f}), Tensor(Shape({1}), &backend, {1.0f}));
-    dataset.emplace_back(Tensor(Shape({2}), &backend, {1.0f, 0.0f}), Tensor(Shape({1}), &backend, {1.0f}));
-    dataset.emplace_back(Tensor(Shape({2}), &backend, {1.0f, 1.0f}), Tensor(Shape({1}), &backend, {0.0f}));
+    dataset.emplace_back(Tensor(Shape({1, 2}), &backend, {0.0f, 0.0f}), Tensor(Shape({1, 1}), &backend, {0.0f}));
+    dataset.emplace_back(Tensor(Shape({1, 2}), &backend, {0.0f, 1.0f}), Tensor(Shape({1, 1}), &backend, {1.0f}));
+    dataset.emplace_back(Tensor(Shape({1, 2}), &backend, {1.0f, 0.0f}), Tensor(Shape({1, 1}), &backend, {1.0f}));
+    dataset.emplace_back(Tensor(Shape({1, 2}), &backend, {1.0f, 1.0f}), Tensor(Shape({1, 1}), &backend, {0.0f}));
 
     auto mean_loss = [&]() {
         float total = 0.0f;
