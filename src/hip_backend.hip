@@ -16,6 +16,27 @@ __global__ void fill_kernel(float* ptr, float value, size_t n) {
     }
 }
 
+__global__ void relu_kernel(const float* in, float* out, size_t n) {
+    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n) {
+        out[i] = in[i] > 0.0f ? in[i] : 0.0f;
+    }
+}
+
+__global__ void neg_kernel(const float* in, float* out, size_t n) {
+    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n) {
+        out[i] = -in[i];
+    }
+}
+
+__global__ void add_kernel(const float* a, const float* b, float* out, size_t n) {
+    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n) {
+        out[i] = a[i] + b[i];
+    }
+}
+
 }  // namespace
 
 HIPBackend::HIPBackend() : stream_(nullptr), hipblas_handle_(nullptr) {
@@ -99,17 +120,33 @@ void HIPBackend::gemm(const float* a, const float* b, float* out, size_t m, size
                                      static_cast<int>(n)));
 }
 
-// elementwise/add are Objective 1.3's scope -- staged as throwing stubs rather
-// than silently returning, mirroring how Phase 1.5 Mission 0 staged CUDABackend's. A stub
-// that throws is the honest state: the method exists because DeviceBackend requires it, and
-// calling it before it is implemented is a loud failure, not wrong numbers.
-void HIPBackend::elementwise(ElementwiseOp, const float*, float*, size_t) {
-    throw std::runtime_error(
-        "HIPBackend::elementwise: not implemented until Phase 1.6 Mission 1 Objective 3");
+void HIPBackend::elementwise(ElementwiseOp op, const float* in, float* out, size_t n) {
+    if (n == 0) {
+        return;
+    }
+    constexpr int block_size = 256;
+    int grid_size = static_cast<int>((n + block_size - 1) / block_size);
+    switch (op) {
+        case ElementwiseOp::Relu:
+            relu_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
+            break;
+        case ElementwiseOp::Neg:
+            neg_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
+            break;
+    }
+    EXAI_HIP_CHECK(hipGetLastError());
+    EXAI_HIP_CHECK(hipStreamSynchronize(stream_));
 }
 
-void HIPBackend::add(const float*, const float*, float*, size_t) {
-    throw std::runtime_error("HIPBackend::add: not implemented until Phase 1.6 Mission 1 Objective 3");
+void HIPBackend::add(const float* a, const float* b, float* out, size_t n) {
+    if (n == 0) {
+        return;
+    }
+    constexpr int block_size = 256;
+    int grid_size = static_cast<int>((n + block_size - 1) / block_size);
+    add_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
+    EXAI_HIP_CHECK(hipGetLastError());
+    EXAI_HIP_CHECK(hipStreamSynchronize(stream_));
 }
 
 }  // namespace exai
