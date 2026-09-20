@@ -26,6 +26,7 @@ add_executable(exai_tests
     grad_cam_test.cpp
     weighted_linear_regression_test.cpp
     lime_test.cpp
+    kernel_shap_test.cpp
 )
 
 if(EXAI_ENABLE_CUDA)
