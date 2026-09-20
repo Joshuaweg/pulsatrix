@@ -30,6 +30,7 @@ add_executable(exai_tests
     pdp_test.cpp
     lrp_conservation_test.cpp
     stability_test.cpp
+    captum_benchmark_test.cpp
 )
 
 if(EXAI_ENABLE_CUDA)
