@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <stdexcept>
 #include <vector>
 
 #include "exai/conv2d_module.hpp"
@@ -33,6 +34,50 @@ TEST_F(Conv2DModuleTest, SetBiasAcceptsVector) {
     Conv2DModule conv(1, 1, 2, 2, &backend);
     conv.set_bias(std::vector<float>{3.0f});
     EXPECT_FLOAT_EQ(conv.bias().data()[0], 3.0f);
+}
+
+// Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 1):
+// forward_impl previously had no rank/channel-count validation at all before calling
+// input.shape().dim(1)/dim(2) -- external boundary per Mission 0's classification table.
+TEST_F(Conv2DModuleTest, ForwardThrowsOnWrongRank) {
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    Tensor wrong_rank(Shape({3, 3}), &backend);
+    EXPECT_THROW({ (void)conv.forward(wrong_rank); }, std::invalid_argument);
+}
+
+TEST_F(Conv2DModuleTest, ForwardThrowsOnWrongChannelCount) {
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    Tensor wrong_channels(Shape({2, 3, 3}), &backend);
+    EXPECT_THROW({ (void)conv.forward(wrong_channels); }, std::invalid_argument);
+}
+
+// Finding 6: a kernel larger than the input previously drove out_h/out_w negative with
+// no check -- silently producing a wrong-but-valid-looking positive Q when both go
+// negative (e.g. out_h=-2, out_w=-3 -> Q=6), rather than erroring.
+TEST_F(Conv2DModuleTest, ForwardThrowsWhenKernelTallerThanInput) {
+    Conv2DModule conv(1, 1, 5, 2, &backend);
+    Tensor small_input(Shape({1, 3, 3}), &backend);
+    EXPECT_THROW({ (void)conv.forward(small_input); }, std::invalid_argument);
+}
+
+TEST_F(Conv2DModuleTest, ForwardThrowsWhenKernelWiderThanInput) {
+    Conv2DModule conv(1, 1, 2, 5, &backend);
+    Tensor small_input(Shape({1, 3, 3}), &backend);
+    EXPECT_THROW({ (void)conv.forward(small_input); }, std::invalid_argument);
+}
+
+// Finding 12: backward()/propagate_relevance() silently computed a meaningless answer
+// from zero-initialized cached state if called before any forward() -- now a real error.
+TEST_F(Conv2DModuleTest, BackwardThrowsIfCalledBeforeForward) {
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    Tensor grad(Shape({1, 2, 2}), &backend);
+    EXPECT_THROW({ (void)conv.backward(grad); }, std::logic_error);
+}
+
+TEST_F(Conv2DModuleTest, PropagateRelevanceThrowsIfCalledBeforeForward) {
+    Conv2DModule conv(1, 1, 2, 2, &backend);
+    Tensor relevance(Shape({1, 2, 2}), &backend);
+    EXPECT_THROW({ (void)conv.propagate_relevance(relevance, LRPRuleConfig{}); }, std::logic_error);
 }
 
 TEST_F(Conv2DModuleTest, ForwardComputesHandVerifiedOutput) {

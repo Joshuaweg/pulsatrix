@@ -1,5 +1,7 @@
 #include "exai/linear_module.hpp"
 
+#include <stdexcept>
+
 #include "exai/assert.hpp"
 
 namespace exai {
@@ -51,6 +53,14 @@ void LinearModule::set_bias(const std::vector<float>& values) {
 }
 
 Tensor LinearModule::forward_impl(const Tensor& input) {
+    // External boundary (campaign_exai_dl_library_adversarial_hardening.md, Mission 1,
+    // findings 3/12): input can originate from Phase 5's Python bindings with no upstream
+    // validation. Without this check, a wrong-sized input fed straight into gemm below is
+    // read as if it had in_features_ elements -- a real heap OOB read on a shorter buffer.
+    if (input.rank() != 1 || input.numel() != in_features_) {
+        throw std::invalid_argument("LinearModule::forward: input must be rank-1 with in_features elements");
+    }
+
     last_input_ = input;
 
     // Tagged with weight_'s device (this module's configured device, immutable after
@@ -64,10 +74,18 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
 
     Tensor output(pre_bias);
     output.accumulate(bias_);
+    has_forwarded_ = true;
     return output;
 }
 
 Tensor LinearModule::backward(const Tensor& grad_output) {
+    // Finding 12: calling backward() before any forward() previously silently computed a
+    // meaningless answer from zero-initialized cached state (last_input_) instead of
+    // erroring.
+    if (!has_forwarded_) {
+        throw std::logic_error("LinearModule::backward: called before any forward()");
+    }
+
     // Dereferences Tensor::data() directly (via transpose()) -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
@@ -90,6 +108,11 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
 }
 
 Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    // Finding 12: see backward()'s identical guard above.
+    if (!has_forwarded_) {
+        throw std::logic_error("LinearModule::propagate_relevance: called before any forward()");
+    }
+
     // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.

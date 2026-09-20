@@ -1,5 +1,7 @@
 #include "exai/conv2d_module.hpp"
 
+#include <stdexcept>
+
 #include "exai/assert.hpp"
 
 namespace exai {
@@ -113,8 +115,21 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
     // decision and mission_host_loop_guards.md.
     EXAI_ASSERT(input.device() == DeviceType::Cpu);
 
+    // External boundary (campaign_exai_dl_library_adversarial_hardening.md, Mission 1,
+    // findings 1/6): input can originate from Phase 5's Python bindings with no upstream
+    // validation. Without this check, input.shape().dim(1)/dim(2) below are called with no
+    // rank guarantee at all (a raw OOB Shape access before Mission 0's dim() assert could
+    // even help in Debug, and still unguarded in Release), and a kernel larger than the
+    // input drives out_h/out_w negative -- which can silently produce a wrong-but-valid-
+    // looking positive Q (e.g. out_h=-2, out_w=-3 -> Q=6) rather than erroring.
+    if (input.rank() != 3 || input.shape().dim(0) != in_channels_) {
+        throw std::invalid_argument("Conv2DModule::forward: input must be rank-3 with in_channels_ channels");
+    }
     int64_t H = input.shape().dim(1);
     int64_t W = input.shape().dim(2);
+    if (kernel_h_ > H || kernel_w_ > W) {
+        throw std::invalid_argument("Conv2DModule::forward: kernel is larger than the input");
+    }
     int64_t out_h = H - kernel_h_ + 1;
     int64_t out_w = W - kernel_w_ + 1;
     int64_t P = in_channels_ * kernel_h_ * kernel_w_;
@@ -139,10 +154,16 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
         }
     }
     output.reshape(Shape({out_channels_, out_h, out_w}));
+    has_forwarded_ = true;
     return output;
 }
 
 Tensor Conv2DModule::backward(const Tensor& grad_output) {
+    // Finding 12: calling backward() before any forward() previously silently computed a
+    // meaningless answer from zero-initialized cached state instead of erroring.
+    if (!has_forwarded_) {
+        throw std::logic_error("Conv2DModule::backward: called before any forward()");
+    }
     // Dereferences Tensor::data() directly (transpose2d()/col2im() helpers, plus its own
     // bias-grad loop) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
@@ -186,6 +207,11 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
 }
 
 Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    // Finding 12: see backward()'s identical guard above.
+    if (!has_forwarded_) {
+        throw std::logic_error("Conv2DModule::propagate_relevance: called before any forward()");
+    }
+
     // Dereferences Tensor::data() directly (its own loop, plus col2im()) -- not yet
     // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision and mission_host_loop_guards.md.

@@ -44,6 +44,8 @@ public:
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
      *       DeviceBackend.
+     * @throws std::logic_error if forward() has never been called -- see
+     *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -85,6 +87,8 @@ public:
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
      *       DeviceBackend.
+     * @throws std::logic_error if forward() has never been called -- see
+     *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
@@ -102,6 +106,10 @@ protected:
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
      *       DeviceBackend.
+     * @throws std::invalid_argument if input isn't rank-3, its channel count doesn't
+     *         match in_channels_, or the kernel is larger than the input (kernel_h_ &gt; H
+     *         or kernel_w_ &gt; W) -- see campaign_exai_dl_library_adversarial_hardening.md,
+     *         findings 1 and 6.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
@@ -120,6 +128,7 @@ private:
     Tensor last_pre_bias_output_;  // (out_channels, out_h, out_w), cached for LRP
     int64_t last_out_h_ = 0;
     int64_t last_out_w_ = 0;
+    bool has_forwarded_ = false;
 };
 
 }  // namespace exai
