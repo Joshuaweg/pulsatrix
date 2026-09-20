@@ -16,7 +16,7 @@ namespace {
 TEST(HipCheckTest, SuccessfulCallDoesNotThrow) {
     void* ptr = nullptr;
     EXPECT_NO_THROW(PULSATRIX_HIP_CHECK(hipMalloc(&ptr, 16)));
-    hipFree(ptr);
+    static_cast<void>(hipFree(ptr));  // HIP marks this [[nodiscard]]; cudaFree is not
 }
 
 TEST(HipCheckTest, FailedCallThrowsRuntimeErrorWithMessage) {
@@ -38,7 +38,7 @@ TEST(HipCheckTest, FailedCallThrowsRuntimeErrorWithMessage) {
     EXPECT_TRUE(threw);
 
     // Clear the sticky error state so it doesn't leak into the next test.
-    hipGetLastError();
+    static_cast<void>(hipGetLastError());
 }
 
 }  // namespace
