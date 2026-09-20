@@ -61,6 +61,9 @@ endif()
 if(EXAI_BUILD_EXAMPLES)
     add_executable(xor_demo examples/xor_demo.cpp)
     target_link_libraries(xor_demo PRIVATE exai_core)
+
+    add_executable(explainer_demo examples/explainer_demo.cpp)
+    target_link_libraries(explainer_demo PRIVATE exai_core)
 endif()
 
 if(EXAI_BUILD_TESTS)
