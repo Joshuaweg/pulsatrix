@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <vector>
+
 #include "exai/cpu_backend.hpp"
 #include "exai/linear_module.hpp"
 #include "exai/lrp_rule_config.hpp"
@@ -16,6 +18,22 @@ TEST_F(LinearModuleTest, ConstructionSetsWeightAndBiasShapes) {
     LinearModule linear(3, 2, &backend);
     EXPECT_EQ(linear.weight().shape(), Shape({3, 2}));
     EXPECT_EQ(linear.bias().shape(), Shape({2}));
+}
+
+// std::vector overloads exist alongside the initializer_list ones for runtime-sized
+// callers (Phase 5 Python bindings, or any C++ caller loading weights from a file) --
+// see tensor.hpp's vector-based constructor overload this delegates to.
+TEST_F(LinearModuleTest, SetWeightAcceptsVector) {
+    LinearModule linear(2, 1, &backend);
+    linear.set_weight(std::vector<float>{1.0f, 2.0f});
+    EXPECT_FLOAT_EQ(linear.weight().data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(linear.weight().data()[1], 2.0f);
+}
+
+TEST_F(LinearModuleTest, SetBiasAcceptsVector) {
+    LinearModule linear(2, 1, &backend);
+    linear.set_bias(std::vector<float>{5.0f});
+    EXPECT_FLOAT_EQ(linear.bias().data()[0], 5.0f);
 }
 
 // Every internally-constructed Tensor defaulted to DeviceType::Cpu regardless of the

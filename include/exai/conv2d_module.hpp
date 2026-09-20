@@ -4,6 +4,7 @@
 #pragma once
 
 #include <initializer_list>
+#include <vector>
 
 #include "exai/module.hpp"
 
@@ -54,6 +55,12 @@ public:
 
     /** @brief Overwrites the bias buffer -- test/initialization use only. */
     void set_bias(std::initializer_list<float> values);
+
+    /** @brief Vector overload for runtime-sized sources -- see Tensor's own vector ctor. */
+    void set_kernel(const std::vector<float>& values);
+
+    /** @brief Vector overload for runtime-sized sources -- see Tensor's own vector ctor. */
+    void set_bias(const std::vector<float>& values);
 
     [[nodiscard]] const Tensor& kernel() const { return kernel_; }
     [[nodiscard]] const Tensor& bias() const { return bias_; }
