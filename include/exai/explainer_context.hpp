@@ -93,6 +93,18 @@ public:
         return it->second;
     }
 
+    /**
+     * @brief The cached gradient at a node, from the most recent backward_pass() call.
+     * @param id Node id. Must have accumulated a gradient during the most recent
+     *        backward_pass() call (i.e. lie on the path between the seeded output and
+     *        the input).
+     * @note Mirrors activation()'s shape -- Autograd::backward() already populates a
+     *       gradient at every node it walks through, not just the input node
+     *       backward_pass() itself returns; this exposes that directly, needed for
+     *       Grad-CAM's target-conv-layer gradient (Phase 2 Mission 3).
+     */
+    [[nodiscard]] const Tensor& gradient(NodeId id) const { return autograd_.gradient(id); }
+
     /** @brief Passthrough to Node::label() -- e.g. a layer name, for debugging/display. */
     [[nodiscard]] std::optional<std::string> layer_label(NodeId id) const { return graph_.node(id).label(); }
 
