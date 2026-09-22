@@ -22,7 +22,8 @@ enum class OpType {
     Elementwise,
     Reduction,
     Normalization,
-    Pooling
+    Pooling,
+    Embedding
 };
 
 }  // namespace exai
