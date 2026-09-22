@@ -33,10 +33,18 @@ enum class CopyDirection {
  *       interface — Tensor's arithmetic operators are designed in Mission 1
  *       (Shape & Tensor Core), and a binary-op signature added speculatively now
  *       would likely need to change once that design exists.
+ * @note Every op here computes the *forward* value only -- no derivative variant exists in
+ *       this interface. A module that needs an activation's derivative (ReluModule,
+ *       RNNModule, LSTMModule, GRUModule) computes it locally from its own cached forward
+ *       output, which is why adding Tanh/Sigmoid/Silu here removes those modules' raw
+ *       forward loops but not their backward/LRP derivative math.
  */
 enum class ElementwiseOp {
     Relu,
-    Neg
+    Neg,
+    Tanh,     ///< tanh(x)
+    Sigmoid,  ///< 1 / (1 + exp(-x))
+    Silu      ///< x * sigmoid(x) -- a.k.a. swish; the gate half of SwiGLU
 };
 
 /**

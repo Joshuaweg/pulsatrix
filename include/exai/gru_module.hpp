@@ -25,16 +25,13 @@ namespace exai {
  *        Input (N, L, input_size) -> output (N, L, hidden_size), the full hidden-state
  *        sequence (matches RNNModule's/LSTMModule's convention). Single layer, no
  *        bidirectional/multi-layer/variable-length support.
- * @note No DeviceBackend::Sigmoid primitive -- ElementwiseOp has only Relu/Neg. sigmoid,
- *       tanh and their derivatives are computed via raw host loops, EXAI_ASSERT-guarded
- *       like every other not-yet-backend-generic method in this codebase. This is the
- *       **third** occurrence of that workaround (RNNModule's tanh was first, LSTMModule's
- *       sigmoid+tanh second), i.e. the Risk Register's "don't repeat without evaluating"
- *       threshold. It was evaluated at this mission's activation and deliberately deferred:
- *       introducing real ElementwiseOp primitives would require touching both CPUBackend
- *       and CUDABackend *and* refactoring the two already-shipped recurrent modules, which
- *       would grow this diff with an unrelated refactor rather than shrink it. The next
- *       consumer (Phase 3's attention/softmax) is the point to revisit it for real.
+ * @note forward() computes its sigmoid/tanh activations through
+ *       DeviceBackend::elementwise (ElementwiseOp::Sigmoid / ::Tanh), not a raw host loop --
+ *       the deferred primitive this class's note used to describe now exists. Their
+ *       *derivatives* are still raw host loops in backward()/propagate_relevance(),
+ *       EXAI_ASSERT-guarded like every other not-yet-backend-generic method here:
+ *       DeviceBackend::elementwise has no derivative variant for any op, so each module
+ *       computes its own from its cached forward output (ReluModule included).
  * @note LRP rule (gate-signal principle of Arras et al. 2019, "Explaining Recurrent Neural
  *       Network Predictions in Sentiment Analysis", extended here to GRU's
  *       reset-gate-inside-the-preactivation structure -- Arras et al. cover LSTM explicitly,

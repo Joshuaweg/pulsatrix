@@ -16,11 +16,13 @@ namespace exai {
  *        below). Input (N, L, input_size) -> output (N, L, hidden_size), the full
  *        hidden-state sequence. Single layer, tanh only, no bidirectional/multi-layer/
  *        variable-length support.
- * @note No DeviceBackend::Tanh primitive -- ElementwiseOp has only Relu/Neg. tanh and its
- *       derivative are computed via a raw host loop, EXAI_ASSERT-guarded like every other
- *       not-yet-backend-generic method in this codebase; this is the first module needing
- *       a nonlinearity beyond ReLU, not yet the repeated-pattern threshold that would
- *       justify a new backend primitive.
+ * @note forward() computes tanh through DeviceBackend::elementwise
+ *       (ElementwiseOp::Tanh), not a raw host loop -- the primitive this class's note used
+ *       to ask for now exists. Its *derivative* is still a raw host loop in
+ *       backward()/propagate_relevance(), EXAI_ASSERT-guarded like every other
+ *       not-yet-backend-generic method here: DeviceBackend::elementwise has no derivative
+ *       variant for any op, so each module computes its own from its cached forward output
+ *       (ReluModule included).
  * @note LRP rule (Arras et al. 2017, already cited in this charter for RNN/LSTM):
  *       epsilon/z-rule generalized to two weighted sources sharing one pre-activation
  *       (x_t's branch and h_{t-1}'s branch), tanh treated as identity pass-through (same
