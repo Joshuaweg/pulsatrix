@@ -24,6 +24,7 @@ add_executable(exai_tests
     sequential_module_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
+    gru_module_test.cpp
     mse_loss_test.cpp
     cross_entropy_loss_test.cpp
     mnist_loader_test.cpp
