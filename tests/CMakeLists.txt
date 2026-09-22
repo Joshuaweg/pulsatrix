@@ -12,6 +12,7 @@ add_executable(exai_tests
     module_graph_wiring_test.cpp
     linear_module_test.cpp
     relu_module_test.cpp
+    softmax_module_test.cpp
     conv2d_module_test.cpp
     rms_norm_module_test.cpp
     layer_norm_module_test.cpp
