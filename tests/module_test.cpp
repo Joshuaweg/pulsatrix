@@ -133,5 +133,18 @@ TEST_F(ModuleTest, DefaultParametersIsEmpty) {
     EXPECT_TRUE(module.parameters().empty());
 }
 
+// Phase 6 Mission 5 (DropoutModule): plain, non-virtual training/eval toggle added to the
+// base Module class -- defaults to training, matching every mainstream framework's Module.
+TEST_F(ModuleTest, DefaultsToTrainingMode) {
+    EXPECT_TRUE(module.is_training());
+}
+
+TEST_F(ModuleTest, SetTrainingTogglesIsTraining) {
+    module.set_training(false);
+    EXPECT_FALSE(module.is_training());
+    module.set_training(true);
+    EXPECT_TRUE(module.is_training());
+}
+
 }  // namespace
 }  // namespace exai

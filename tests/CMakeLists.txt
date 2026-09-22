@@ -20,6 +20,7 @@ add_executable(exai_tests
     max_pool2d_module_test.cpp
     avg_pool2d_module_test.cpp
     embedding_module_test.cpp
+    dropout_module_test.cpp
     mse_loss_test.cpp
     sgd_optimizer_test.cpp
     adam_optimizer_test.cpp
