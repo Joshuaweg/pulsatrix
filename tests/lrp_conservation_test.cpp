@@ -16,6 +16,7 @@
 #include "exai/max_pool2d_module.hpp"
 #include "exai/relu_module.hpp"
 #include "exai/rnn_module.hpp"
+#include "exai/rope_module.hpp"
 #include "exai/sequential_module.hpp"
 
 // Phase 4 Mission 0: charter's "not just a spot-check on one architecture" LRP
@@ -240,6 +241,30 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           Tensor relevance_out(Shape({1, 3, 2}), &backend, {1.0f, 2.0f, 0.5f, -0.5f, 1.5f, 0.8f});
                           LRPRuleConfig config;
                           Tensor relevance_in = gru.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // RoPEModule is a fixed, bias-free linear map per feature pair propagated with the
+    // standard weighted-connection epsilon rule, so unlike SoftmaxModule (deliberately
+    // excluded -- AttnLRP Eq. 13 does not conserve) it belongs in this systematic sweep.
+    // Shape (1, 3, 4): one (L=3, head_dim=4) slice, i.e. 3 positions x 2 feature pairs,
+    // exercising both the pos=0 identity rotation and two genuinely rotated positions.
+    cases.push_back({"RoPEModule", [] {
+                          CPUBackend backend;
+                          RoPEModule rope(4, &backend);
+                          Tensor input(Shape({1, 3, 4}), &backend,
+                                       {0.5f, -1.2f, 2.0f, 0.1f, 0.7f, -0.3f, -0.9f, 1.4f, 0.25f, -0.6f, 1.1f,
+                                        0.05f});
+                          (void)rope.forward(input);
+                          Tensor relevance_out(Shape({1, 3, 4}), &backend,
+                                               {1.0f, 2.0f, 0.5f, -0.5f, 1.5f, 0.8f, -0.25f, 1.2f, 0.6f, 0.9f,
+                                                -1.1f, 0.4f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = rope.propagate_relevance(relevance_out, config);
                           float sum_in = 0.0f;
                           for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
                           float sum_out = 0.0f;
