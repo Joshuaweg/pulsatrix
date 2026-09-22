@@ -7,6 +7,7 @@
 #include "exai/avg_pool2d_module.hpp"
 #include "exai/conv2d_module.hpp"
 #include "exai/cpu_backend.hpp"
+#include "exai/embedding_module.hpp"
 #include "exai/flatten_module.hpp"
 #include "exai/linear_module.hpp"
 #include "exai/lrp_rule_config.hpp"
@@ -126,6 +127,22 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           Tensor relevance_out(Shape({1, 1, 2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
                           LRPRuleConfig config;
                           Tensor relevance_in = pool.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    cases.push_back({"EmbeddingModule", [] {
+                          CPUBackend backend;
+                          EmbeddingModule emb(3, 3, &backend);
+                          emb.set_weight({1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
+                          Tensor input(Shape({1, 2}), &backend, {0.0f, 2.0f});
+                          (void)emb.forward(input);
+                          Tensor relevance_out(Shape({1, 2, 3}), &backend, {1.0f, 2.0f, 3.0f, 0.5f, 0.5f, 1.0f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = emb.propagate_relevance(relevance_out, config);
                           float sum_in = 0.0f;
                           for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
                           float sum_out = 0.0f;

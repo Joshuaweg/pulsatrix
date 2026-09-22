@@ -19,6 +19,7 @@ add_executable(exai_tests
     batch_norm_module_test.cpp
     max_pool2d_module_test.cpp
     avg_pool2d_module_test.cpp
+    embedding_module_test.cpp
     mse_loss_test.cpp
     sgd_optimizer_test.cpp
     adam_optimizer_test.cpp
