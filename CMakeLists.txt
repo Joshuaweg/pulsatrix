@@ -29,6 +29,8 @@ add_library(exai_core
     src/layer_norm_module.cpp
     src/group_norm_module.cpp
     src/batch_norm_module.cpp
+    src/max_pool2d_module.cpp
+    src/avg_pool2d_module.cpp
     src/mse_loss.cpp
     src/sgd_optimizer.cpp
     src/adam_optimizer.cpp
