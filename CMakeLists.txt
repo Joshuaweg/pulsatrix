@@ -25,6 +25,7 @@ add_library(exai_core
     src/linear_module.cpp
     src/relu_module.cpp
     src/softmax_module.cpp
+    src/rope_module.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
