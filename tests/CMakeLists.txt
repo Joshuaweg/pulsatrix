@@ -24,6 +24,9 @@ add_executable(exai_tests
     sequential_module_test.cpp
     rnn_module_test.cpp
     mse_loss_test.cpp
+    cross_entropy_loss_test.cpp
+    mnist_loader_test.cpp
+    mnist_classifier_example_test.cpp
     sgd_optimizer_test.cpp
     adam_optimizer_test.cpp
     metrics_sink_test.cpp
@@ -49,6 +52,12 @@ if(EXAI_ENABLE_CUDA)
 endif()
 
 target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
+
+# ctest runs exai_tests with cwd = the build directory, not the source tree -- a relative
+# "data/MNIST/raw/..." path never resolves there. mnist_loader_test.cpp needs an absolute
+# path to the gitignored, fetch_mnist.py-populated data directory regardless of how/where
+# ctest is invoked from.
+target_compile_definitions(exai_tests PRIVATE EXAI_TEST_DATA_DIR="${CMAKE_SOURCE_DIR}/data")
 
 include(GoogleTest)
 # DISCOVERY_MODE PRE_TEST (CMake 3.18+): defers test discovery to ctest run-time instead of

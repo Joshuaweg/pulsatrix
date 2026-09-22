@@ -36,6 +36,9 @@ add_library(exai_core
     src/sequential_module.cpp
     src/rnn_module.cpp
     src/mse_loss.cpp
+    src/cross_entropy_loss.cpp
+    src/mnist_loader.cpp
+    src/mnist_classifier_example.cpp
     src/sgd_optimizer.cpp
     src/adam_optimizer.cpp
     src/xor_training_example.cpp
@@ -112,6 +115,9 @@ if(EXAI_BUILD_EXAMPLES)
 
     add_executable(grad_cam_mnist_demo examples/grad_cam_mnist_demo.cpp)
     target_link_libraries(grad_cam_mnist_demo PRIVATE exai_core)
+
+    add_executable(mnist_training_demo examples/mnist_training_demo.cpp)
+    target_link_libraries(mnist_training_demo PRIVATE exai_core)
 endif()
 
 if(EXAI_BUILD_TESTS)
