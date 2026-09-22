@@ -22,6 +22,7 @@ add_executable(exai_tests
     embedding_module_test.cpp
     dropout_module_test.cpp
     sequential_module_test.cpp
+    rnn_module_test.cpp
     mse_loss_test.cpp
     sgd_optimizer_test.cpp
     adam_optimizer_test.cpp

@@ -13,6 +13,7 @@
 #include "exai/lrp_rule_config.hpp"
 #include "exai/max_pool2d_module.hpp"
 #include "exai/relu_module.hpp"
+#include "exai/rnn_module.hpp"
 #include "exai/sequential_module.hpp"
 
 // Phase 4 Mission 0: charter's "not just a spot-check on one architecture" LRP
@@ -168,6 +169,24 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           Tensor relevance_out(Shape({1, 2}), &backend, {4.0f, 6.0f});
                           LRPRuleConfig config;
                           Tensor relevance_in = seq.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    cases.push_back({"RNNModule", [] {
+                          CPUBackend backend;
+                          RNNModule rnn(2, 2, &backend);
+                          rnn.set_weight_xh({0.1f, -0.2f, 0.3f, 0.15f});
+                          rnn.set_weight_hh({0.05f, -0.1f, 0.2f, 0.05f});
+                          rnn.set_bias({0.01f, -0.02f});
+                          Tensor input(Shape({1, 3, 2}), &backend, {0.3f, -0.2f, 0.6f, 0.1f, -0.4f, 0.5f});
+                          (void)rnn.forward(input);
+                          Tensor relevance_out(Shape({1, 3, 2}), &backend, {1.0f, 2.0f, 0.5f, -0.5f, 1.5f, 0.8f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = rnn.propagate_relevance(relevance_out, config);
                           float sum_in = 0.0f;
                           for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
                           float sum_out = 0.0f;

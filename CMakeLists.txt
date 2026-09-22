@@ -34,6 +34,7 @@ add_library(exai_core
     src/embedding_module.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
+    src/rnn_module.cpp
     src/mse_loss.cpp
     src/sgd_optimizer.cpp
     src/adam_optimizer.cpp

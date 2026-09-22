@@ -24,7 +24,8 @@ enum class OpType {
     Normalization,
     Pooling,
     Embedding,
-    Composite
+    Composite,
+    Recurrent
 };
 
 }  // namespace exai
