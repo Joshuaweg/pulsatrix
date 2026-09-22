@@ -120,6 +120,9 @@ if(EXAI_BUILD_EXAMPLES)
 
     add_executable(mnist_training_demo examples/mnist_training_demo.cpp)
     target_link_libraries(mnist_training_demo PRIVATE exai_core)
+
+    add_executable(sequence_model_demo examples/sequence_model_demo.cpp)
+    target_link_libraries(sequence_model_demo PRIVATE exai_core)
 endif()
 
 if(EXAI_BUILD_TESTS)
