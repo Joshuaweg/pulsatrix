@@ -11,6 +11,7 @@
 #include "exai/flatten_module.hpp"
 #include "exai/linear_module.hpp"
 #include "exai/lrp_rule_config.hpp"
+#include "exai/lstm_module.hpp"
 #include "exai/max_pool2d_module.hpp"
 #include "exai/relu_module.hpp"
 #include "exai/rnn_module.hpp"
@@ -187,6 +188,33 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           Tensor relevance_out(Shape({1, 3, 2}), &backend, {1.0f, 2.0f, 0.5f, -0.5f, 1.5f, 0.8f});
                           LRPRuleConfig config;
                           Tensor relevance_in = rnn.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    cases.push_back({"LSTMModule", [] {
+                          CPUBackend backend;
+                          LSTMModule lstm(2, 2, &backend);
+                          lstm.set_weight_xi({0.10f, -0.20f, 0.30f, 0.15f});
+                          lstm.set_weight_hi({0.05f, -0.10f, 0.20f, 0.05f});
+                          lstm.set_bias_i({0.01f, -0.02f});
+                          lstm.set_weight_xf({-0.25f, 0.35f, 0.05f, -0.15f});
+                          lstm.set_weight_hf({0.12f, 0.08f, -0.18f, 0.22f});
+                          lstm.set_bias_f({0.30f, -0.05f});
+                          lstm.set_weight_xg({0.40f, 0.10f, -0.30f, 0.25f});
+                          lstm.set_weight_hg({-0.07f, 0.14f, 0.09f, -0.11f});
+                          lstm.set_bias_g({-0.03f, 0.04f});
+                          lstm.set_weight_xo({0.22f, -0.33f, 0.18f, 0.27f});
+                          lstm.set_weight_ho({0.06f, 0.13f, -0.09f, 0.16f});
+                          lstm.set_bias_o({0.05f, 0.02f});
+                          Tensor input(Shape({1, 3, 2}), &backend, {0.3f, -0.2f, 0.6f, 0.1f, -0.4f, 0.5f});
+                          (void)lstm.forward(input);
+                          Tensor relevance_out(Shape({1, 3, 2}), &backend, {1.0f, 2.0f, 0.5f, -0.5f, 1.5f, 0.8f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = lstm.propagate_relevance(relevance_out, config);
                           float sum_in = 0.0f;
                           for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
                           float sum_out = 0.0f;

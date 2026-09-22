@@ -35,6 +35,7 @@ add_library(exai_core
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/rnn_module.cpp
+    src/lstm_module.cpp
     src/mse_loss.cpp
     src/cross_entropy_loss.cpp
     src/mnist_loader.cpp
