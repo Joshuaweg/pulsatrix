@@ -22,14 +22,13 @@ namespace exai {
  *        Input (N, L, input_size) -> output (N, L, hidden_size), the full hidden-state
  *        sequence (matches RNNModule's convention). Single layer, no bidirectional/
  *        multi-layer/variable-length/peephole support.
- * @note No DeviceBackend::Sigmoid primitive -- ElementwiseOp has only Relu/Neg. sigmoid,
- *       tanh and their derivatives are computed via raw host loops, EXAI_ASSERT-guarded
- *       like every other not-yet-backend-generic method in this codebase. This is the
- *       **second** occurrence of that workaround (RNNModule's tanh was the first). Per the
- *       Risk Register's standing guidance ("don't repeat the workaround a third/fourth time
- *       without evaluating"), a 2nd occurrence is still acceptable -- but whoever activates
- *       GRUModule next inherits the 3rd, which crosses the threshold and should trigger a
- *       real ElementwiseOp/backend-primitive evaluation before more raw loops are added.
+ * @note forward() computes its sigmoid/tanh activations through
+ *       DeviceBackend::elementwise (ElementwiseOp::Sigmoid / ::Tanh), not a raw host loop --
+ *       the primitive this class's note used to ask for now exists. Their *derivatives* are
+ *       still raw host loops in backward()/propagate_relevance(), EXAI_ASSERT-guarded like
+ *       every other not-yet-backend-generic method here: DeviceBackend::elementwise has no
+ *       derivative variant for any op, so each module computes its own from its cached
+ *       forward output (ReluModule included).
  * @note LRP rule (Arras et al. 2019, "Explaining Recurrent Neural Network Predictions in
  *       Sentiment Analysis"): the gates i_t, f_t, o_t are pure *conductors*, never relevance
  *       *recipients*. Every multiplicative interaction in the recurrence is an exact

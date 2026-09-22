@@ -1,6 +1,5 @@
 #include "exai/lstm_module.hpp"
 
-#include <cmath>
 #include <stdexcept>
 
 #include "exai/assert.hpp"
@@ -20,11 +19,6 @@ Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* bac
     }
     return out;
 }
-
-// No DeviceBackend::Sigmoid primitive exists (ElementwiseOp has only Relu/Neg) -- raw host
-// helper, exactly like RNNModule's use of std::tanh. Second occurrence of this workaround;
-// see the class-level note in lstm_module.hpp before adding a third.
-float sigmoid(float z) { return 1.0f / (1.0f + std::exp(-z)); }
 }  // namespace
 
 LSTMModule::LSTMModule(int64_t input_size, int64_t hidden_size, DeviceBackend* backend)
@@ -167,25 +161,59 @@ Tensor LSTMModule::forward_impl(const Tensor& input) {
         Tensor z_g = gate_preactivation(x_t, h_prev, weight_xg_, weight_hg_);
         Tensor z_o = gate_preactivation(x_t, h_prev, weight_xo_, weight_ho_);
 
+        // Adds the gate's bias into a fresh buffer, leaving the bias-free pre-activation
+        // (which the LRP epsilon-rule denominator needs) intact in z.
+        auto add_bias = [&](const Tensor& z, const Tensor& bias) {
+            Tensor pre(Shape({N, hidden_size_}), backend_);
+            for (int64_t n = 0; n < N; ++n) {
+                for (int64_t k = 0; k < hidden_size_; ++k) {
+                    pre.data()[n * hidden_size_ + k] = z.data()[n * hidden_size_ + k] + bias.data()[k];
+                }
+            }
+            return pre;
+        };
+
+        // Gate activations via the backend's Sigmoid/Tanh primitives (applied in place)
+        // rather than raw host loops. z_g EXCLUDING bias is what the LRP epsilon-rule
+        // denominator uses (cached below -- same convention as LinearModule/RNNModule: bias
+        // has no associated input feature to redistribute relevance to, so it's excluded
+        // from z entirely, which is what makes conservation exact rather than merely
+        // approximate). The actual tanh activation still needs the real bias-included
+        // pre-activation, which is what add_bias() builds.
+        const size_t gate_n = static_cast<size_t>(N * hidden_size_);
+        Tensor gate_i = add_bias(z_i, bias_i_);
+        Tensor gate_f = add_bias(z_f, bias_f_);
+        Tensor gate_g = add_bias(z_g, bias_g_);
+        Tensor gate_o = add_bias(z_o, bias_o_);
+        backend_->elementwise(ElementwiseOp::Sigmoid, gate_i.data(), gate_i.data(), gate_n);
+        backend_->elementwise(ElementwiseOp::Sigmoid, gate_f.data(), gate_f.data(), gate_n);
+        backend_->elementwise(ElementwiseOp::Tanh, gate_g.data(), gate_g.data(), gate_n);
+        backend_->elementwise(ElementwiseOp::Sigmoid, gate_o.data(), gate_o.data(), gate_n);
+
+        // c_t = f_t*c_{t-1} + i_t*g_t, then tanh(c_t) through the same backend primitive.
+        Tensor cell(Shape({N, hidden_size_}), backend_);
+        for (int64_t n = 0; n < N; ++n) {
+            for (int64_t k = 0; k < hidden_size_; ++k) {
+                const int64_t idx = n * hidden_size_ + k;
+                const float c_prev = last_cell_states_.data()[(n * (L + 1) + t) * hidden_size_ + k];
+                cell.data()[idx] = gate_f.data()[idx] * c_prev + gate_i.data()[idx] * gate_g.data()[idx];
+            }
+        }
+        Tensor cell_tanh(Shape({N, hidden_size_}), backend_);
+        backend_->elementwise(ElementwiseOp::Tanh, cell.data(), cell_tanh.data(), gate_n);
+
         for (int64_t n = 0; n < N; ++n) {
             for (int64_t k = 0; k < hidden_size_; ++k) {
                 const int64_t idx = n * hidden_size_ + k;
                 const int64_t seq_idx = (n * L + t) * hidden_size_ + k;
 
-                const float i_t = sigmoid(z_i.data()[idx] + bias_i_.data()[k]);
-                const float f_t = sigmoid(z_f.data()[idx] + bias_f_.data()[k]);
-                // z_g EXCLUDING bias is what the LRP epsilon-rule denominator uses (cached
-                // below -- same convention as LinearModule/RNNModule: bias has no associated
-                // input feature to redistribute relevance to, so it's excluded from z
-                // entirely, which is what makes conservation exact rather than merely
-                // approximate). The actual tanh activation still needs the real
-                // bias-included pre-activation.
-                const float g_t = std::tanh(z_g.data()[idx] + bias_g_.data()[k]);
-                const float o_t = sigmoid(z_o.data()[idx] + bias_o_.data()[k]);
+                const float i_t = gate_i.data()[idx];
+                const float f_t = gate_f.data()[idx];
+                const float g_t = gate_g.data()[idx];
+                const float o_t = gate_o.data()[idx];
 
-                const float c_prev = last_cell_states_.data()[(n * (L + 1) + t) * hidden_size_ + k];
-                const float c_t = f_t * c_prev + i_t * g_t;
-                const float tanh_c = std::tanh(c_t);
+                const float c_t = cell.data()[idx];
+                const float tanh_c = cell_tanh.data()[idx];
                 const float h_t = o_t * tanh_c;
 
                 last_gate_i_.data()[seq_idx] = i_t;

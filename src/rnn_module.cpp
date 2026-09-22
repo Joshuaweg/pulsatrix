@@ -1,6 +1,5 @@
 #include "exai/rnn_module.hpp"
 
-#include <cmath>
 #include <stdexcept>
 
 #include "exai/assert.hpp"
@@ -96,6 +95,7 @@ Tensor RNNModule::forward_impl(const Tensor& input) {
         backend_->gemm(h_prev.data(), weight_hh_.data(), z2.data(), static_cast<size_t>(N),
                         static_cast<size_t>(hidden_size_), static_cast<size_t>(hidden_size_));
 
+        Tensor pre_act(Shape({N, hidden_size_}), backend_);
         for (int64_t n = 0; n < N; ++n) {
             for (int64_t k = 0; k < hidden_size_; ++k) {
                 int64_t idx = n * hidden_size_ + k;
@@ -107,7 +107,18 @@ Tensor RNNModule::forward_impl(const Tensor& input) {
                 // real bias-included pre-activation.
                 float z_no_bias = z1.data()[idx] + z2.data()[idx];
                 last_pre_activation_.data()[(n * L + t) * hidden_size_ + k] = z_no_bias;
-                float h = std::tanh(z_no_bias + bias_.data()[k]);
+                pre_act.data()[idx] = z_no_bias + bias_.data()[k];
+            }
+        }
+
+        // h = tanh(pre_act), computed by the backend's Tanh primitive (in-place) rather than
+        // a raw host std::tanh loop.
+        backend_->elementwise(ElementwiseOp::Tanh, pre_act.data(), pre_act.data(),
+                              static_cast<size_t>(pre_act.numel()));
+
+        for (int64_t n = 0; n < N; ++n) {
+            for (int64_t k = 0; k < hidden_size_; ++k) {
+                float h = pre_act.data()[n * hidden_size_ + k];
                 last_hidden_states_.data()[(n * (L + 1) + t + 1) * hidden_size_ + k] = h;
                 output.data()[(n * L + t) * hidden_size_ + k] = h;
             }

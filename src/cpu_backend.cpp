@@ -1,12 +1,22 @@
 #include "exai/cpu_backend.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <cstring>
 #include <stdexcept>
 #include <string>
 
 namespace exai {
+
+namespace {
+// Single-precision logistic sigmoid. Kept as one definition so ElementwiseOp::Sigmoid and
+// ElementwiseOp::Silu are guaranteed bit-identical on their shared subexpression -- this is
+// also the exact expression LSTMModule/GRUModule used in their own host loops before those
+// were refactored onto this backend primitive, which is what makes that refactor
+// behavior-preserving.
+float sigmoid(float z) { return 1.0f / (1.0f + std::exp(-z)); }
+}  // namespace
 
 void* CPUBackend::allocate(size_t bytes) {
     if (bytes == 0) {
@@ -60,6 +70,21 @@ void CPUBackend::elementwise(ElementwiseOp op, const float* in, float* out, size
         case ElementwiseOp::Neg:
             for (size_t i = 0; i < n; ++i) {
                 out[i] = -in[i];
+            }
+            break;
+        case ElementwiseOp::Tanh:
+            for (size_t i = 0; i < n; ++i) {
+                out[i] = std::tanh(in[i]);
+            }
+            break;
+        case ElementwiseOp::Sigmoid:
+            for (size_t i = 0; i < n; ++i) {
+                out[i] = sigmoid(in[i]);
+            }
+            break;
+        case ElementwiseOp::Silu:
+            for (size_t i = 0; i < n; ++i) {
+                out[i] = in[i] * sigmoid(in[i]);
             }
             break;
     }

@@ -1,6 +1,5 @@
 #include "exai/gru_module.hpp"
 
-#include <cmath>
 #include <stdexcept>
 
 #include "exai/assert.hpp"
@@ -20,11 +19,6 @@ Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* bac
     }
     return out;
 }
-
-// No DeviceBackend::Sigmoid primitive exists (ElementwiseOp has only Relu/Neg) -- raw host
-// helper, exactly like LSTMModule's. Third occurrence of this workaround; see the
-// class-level note in gru_module.hpp for why it was evaluated and deliberately kept here.
-float sigmoid(float z) { return 1.0f / (1.0f + std::exp(-z)); }
 }  // namespace
 
 GRUModule::GRUModule(int64_t input_size, int64_t hidden_size, DeviceBackend* backend)
@@ -155,21 +149,55 @@ Tensor GRUModule::forward_impl(const Tensor& input) {
         backend_->gemm(h_prev.data(), weight_hn_.data(), hn_prev.data(), static_cast<size_t>(N),
                        static_cast<size_t>(hidden_size_), static_cast<size_t>(hidden_size_));
 
+        // Adds the gate's bias into a fresh buffer, leaving the bias-free pre-activation
+        // (which the LRP epsilon-rule denominator needs) intact in z.
+        auto add_bias = [&](const Tensor& z, const Tensor& bias) {
+            Tensor pre(Shape({N, hidden_size_}), backend_);
+            for (int64_t n = 0; n < N; ++n) {
+                for (int64_t k = 0; k < hidden_size_; ++k) {
+                    pre.data()[n * hidden_size_ + k] = z.data()[n * hidden_size_ + k] + bias.data()[k];
+                }
+            }
+            return pre;
+        };
+
+        // Update/reset gates via the backend's Sigmoid primitive (in place) rather than a
+        // raw host loop.
+        const size_t gate_n = static_cast<size_t>(N * hidden_size_);
+        Tensor gate_z = add_bias(z_z, bias_z_);
+        Tensor gate_r = add_bias(z_r, bias_r_);
+        backend_->elementwise(ElementwiseOp::Sigmoid, gate_z.data(), gate_z.data(), gate_n);
+        backend_->elementwise(ElementwiseOp::Sigmoid, gate_r.data(), gate_r.data(), gate_n);
+
+        // The candidate's pre-activation depends on the reset gate, so it can only be built
+        // once gate_r exists -- hence a second activation stage rather than one batched with
+        // the gates above. n_pre EXCLUDING bias is what the LRP epsilon-rule denominator uses
+        // (cached below -- same convention as LinearModule/RNNModule/LSTMModule: bias has no
+        // associated input feature to redistribute relevance to, so it's excluded from the
+        // denominator entirely). The actual tanh activation still needs the real
+        // bias-included pre-activation.
+        Tensor n_pre_no_bias_buf(Shape({N, hidden_size_}), backend_);
+        Tensor candidate(Shape({N, hidden_size_}), backend_);
+        for (int64_t n = 0; n < N; ++n) {
+            for (int64_t k = 0; k < hidden_size_; ++k) {
+                const int64_t idx = n * hidden_size_ + k;
+                const float n_pre_no_bias = xn.data()[idx] + gate_r.data()[idx] * hn_prev.data()[idx];
+                n_pre_no_bias_buf.data()[idx] = n_pre_no_bias;
+                candidate.data()[idx] = n_pre_no_bias + bias_n_.data()[k];
+            }
+        }
+        backend_->elementwise(ElementwiseOp::Tanh, candidate.data(), candidate.data(), gate_n);
+
         for (int64_t n = 0; n < N; ++n) {
             for (int64_t k = 0; k < hidden_size_; ++k) {
                 const int64_t idx = n * hidden_size_ + k;
                 const int64_t seq_idx = (n * L + t) * hidden_size_ + k;
 
-                const float z_t = sigmoid(z_z.data()[idx] + bias_z_.data()[k]);
-                const float r_t = sigmoid(z_r.data()[idx] + bias_r_.data()[k]);
+                const float z_t = gate_z.data()[idx];
+                const float r_t = gate_r.data()[idx];
                 const float hn_p = hn_prev.data()[idx];
-                // n_pre EXCLUDING bias is what the LRP epsilon-rule denominator uses (cached
-                // below -- same convention as LinearModule/RNNModule/LSTMModule: bias has no
-                // associated input feature to redistribute relevance to, so it's excluded
-                // from the denominator entirely). The actual tanh activation still needs the
-                // real bias-included pre-activation.
-                const float n_pre_no_bias = xn.data()[idx] + r_t * hn_p;
-                const float n_t = std::tanh(n_pre_no_bias + bias_n_.data()[k]);
+                const float n_pre_no_bias = n_pre_no_bias_buf.data()[idx];
+                const float n_t = candidate.data()[idx];
 
                 const float h_prev_v = h_prev.data()[idx];
                 const float h_t = (1.0f - z_t) * h_prev_v + z_t * n_t;

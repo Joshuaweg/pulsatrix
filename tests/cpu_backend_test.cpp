@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <cmath>
 #include <stdexcept>
 #include <vector>
 
@@ -114,6 +115,51 @@ TEST_F(CPUBackendTest, ElementwiseNegNegatesEveryElement) {
     EXPECT_FLOAT_EQ(out[1], 1.0f);
     EXPECT_FLOAT_EQ(out[2], 0.0f);
     EXPECT_FLOAT_EQ(out[3], -3.5f);
+}
+
+TEST_F(CPUBackendTest, ElementwiseTanhMatchesReferenceValues) {
+    std::vector<float> in = {-1.0f, 0.0f, 0.5f, 2.0f};
+    std::vector<float> out(in.size(), 0.0f);
+
+    backend.elementwise(ElementwiseOp::Tanh, in.data(), out.data(), in.size());
+
+    for (size_t i = 0; i < in.size(); ++i) {
+        EXPECT_FLOAT_EQ(out[i], std::tanh(in[i]));
+    }
+    // Odd symmetry and the saturating range are the properties recurrent modules rely on.
+    EXPECT_FLOAT_EQ(out[1], 0.0f);
+    EXPECT_FLOAT_EQ(out[0], -std::tanh(1.0f));
+    EXPECT_LT(out[3], 1.0f);
+}
+
+TEST_F(CPUBackendTest, ElementwiseSigmoidMatchesReferenceValues) {
+    std::vector<float> in = {-2.0f, 0.0f, 1.0f, 3.0f};
+    std::vector<float> out(in.size(), 0.0f);
+
+    backend.elementwise(ElementwiseOp::Sigmoid, in.data(), out.data(), in.size());
+
+    for (size_t i = 0; i < in.size(); ++i) {
+        EXPECT_FLOAT_EQ(out[i], 1.0f / (1.0f + std::exp(-in[i])));
+    }
+    EXPECT_FLOAT_EQ(out[1], 0.5f);  // sigmoid(0) is exactly 1/2
+    EXPECT_GT(out[0], 0.0f);
+    EXPECT_LT(out[3], 1.0f);
+}
+
+TEST_F(CPUBackendTest, ElementwiseSiluIsInputTimesSigmoid) {
+    std::vector<float> in = {-3.0f, -1.0f, 0.0f, 1.0f, 4.0f};
+    std::vector<float> sigmoid_out(in.size(), 0.0f);
+    std::vector<float> out(in.size(), 0.0f);
+
+    backend.elementwise(ElementwiseOp::Sigmoid, in.data(), sigmoid_out.data(), in.size());
+    backend.elementwise(ElementwiseOp::Silu, in.data(), out.data(), in.size());
+
+    // silu(x) == x * sigmoid(x) exactly (same shared sigmoid expression), not merely close.
+    for (size_t i = 0; i < in.size(); ++i) {
+        EXPECT_FLOAT_EQ(out[i], in[i] * sigmoid_out[i]);
+    }
+    EXPECT_FLOAT_EQ(out[2], 0.0f);  // silu(0) == 0
+    EXPECT_LT(out[1], 0.0f);        // non-monotonic: stays negative for small negative x
 }
 
 TEST_F(CPUBackendTest, ElementwiseHandlesZeroLengthGracefully) {
