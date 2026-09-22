@@ -165,5 +165,45 @@ TEST_F(EmbeddingModuleTest, PropagateRelevanceSumsOverEmbeddingDimensionAndConse
     EXPECT_FLOAT_EQ(sum_in, sum_out);
 }
 
+using EmbeddingModuleDeathTest = EmbeddingModuleTest;
+
+// forward_impl/backward/propagate_relevance all dereference Tensor::data() in raw host
+// loops -- undefined behavior on a CUDA-backed Tensor. See LinearModuleDeathTest for the
+// mislabeled-Tensor testing pattern this reuses. Logged as a coverage gap by the Phase 1
+// close-out review (campaign_exai_dl_library_phase6_modern_architectures.md, 2026-09-22)
+// -- remediated here.
+TEST_F(EmbeddingModuleDeathTest, ForwardAbortsOnNonCpuInput) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    EmbeddingModule emb(4, 3, &backend);
+    Tensor input(Shape({1, 1}), &backend, {0.0f}, DeviceType::Cuda);
+    EXPECT_DEATH({ (void)emb.forward(input); }, "EXAI_ASSERT failed");
+}
+
+TEST_F(EmbeddingModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    EmbeddingModule emb(4, 3, &backend);
+    Tensor input(Shape({1, 1}), &backend, {0.0f});
+    (void)emb.forward(input);
+
+    Tensor grad_output(Shape({1, 1, 3}), &backend, {1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
+    EXPECT_DEATH({ (void)emb.backward(grad_output); }, "EXAI_ASSERT failed");
+}
+
+TEST_F(EmbeddingModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    EmbeddingModule emb(4, 3, &backend);
+    Tensor input(Shape({1, 1}), &backend, {0.0f});
+    (void)emb.forward(input);
+
+    Tensor relevance_out(Shape({1, 1, 3}), &backend, {1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
+    EXPECT_DEATH({ (void)emb.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+}
+
 }  // namespace
 }  // namespace exai

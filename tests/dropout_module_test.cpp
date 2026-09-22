@@ -143,5 +143,34 @@ TEST_F(DropoutModuleTest, PropagateRelevanceIsUnconditionalIdentity) {
     }
 }
 
+using DropoutModuleDeathTest = DropoutModuleTest;
+
+// forward_impl/backward dereference Tensor::data() in raw host loops -- undefined
+// behavior on a CUDA-backed Tensor (propagate_relevance() has no such loop -- it returns
+// Tensor(relevance_out) directly, so it carries no device guard, unlike every other
+// module in this campaign). See LinearModuleDeathTest for the mislabeled-Tensor testing
+// pattern this reuses. Logged as a coverage gap by the Phase 1 close-out review
+// (campaign_exai_dl_library_phase6_modern_architectures.md, 2026-09-22) -- remediated here.
+TEST_F(DropoutModuleDeathTest, ForwardAbortsOnNonCpuInput) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    DropoutModule d(0.5f, &backend);
+    Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f}, DeviceType::Cuda);
+    EXPECT_DEATH({ (void)d.forward(input); }, "EXAI_ASSERT failed");
+}
+
+TEST_F(DropoutModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
+#ifdef NDEBUG
+    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+#endif
+    DropoutModule d(0.5f, &backend);
+    Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
+    (void)d.forward(input);
+
+    Tensor grad_output(Shape({3}), &backend, {1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
+    EXPECT_DEATH({ (void)d.backward(grad_output); }, "EXAI_ASSERT failed");
+}
+
 }  // namespace
 }  // namespace exai
