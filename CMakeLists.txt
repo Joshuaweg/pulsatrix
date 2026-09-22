@@ -32,6 +32,7 @@ add_library(exai_core
     src/max_pool2d_module.cpp
     src/avg_pool2d_module.cpp
     src/embedding_module.cpp
+    src/dropout_module.cpp
     src/mse_loss.cpp
     src/sgd_optimizer.cpp
     src/adam_optimizer.cpp

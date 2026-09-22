@@ -128,9 +128,30 @@ public:
      */
     [[nodiscard]] virtual std::vector<ParamRef> parameters() { return {}; }
 
+    /**
+     * @brief Sets this module's training/eval mode. Defaults to training (matches every
+     *        mainstream framework's Module default).
+     * @note Plain state, not virtual dispatch -- added for Phase 6 Mission 5 (Dropout),
+     *       the first module whose forward behavior genuinely differs between training and
+     *       inference. Not cascaded to sub-modules (no Sequential/composite container
+     *       exists yet to cascade through -- Decision Point 1); a caller composing multiple
+     *       modules sets each one's mode individually until that container exists.
+     * @note Deliberately NOT extended to BatchNormModule's running-mean/variance question
+     *       (flagged, still open) -- that is additive numerical-tracking state, a
+     *       genuinely different scope than this boolean toggle, and touching a closed
+     *       mission's module is its own decision, not bundled in here.
+     */
+    void set_training(bool training) { training_ = training; }
+
+    /** @brief Whether this module is currently in training mode. */
+    [[nodiscard]] bool is_training() const { return training_; }
+
 protected:
     /** @brief The actual forward computation. Called by forward() after precondition checks. */
     [[nodiscard]] virtual Tensor forward_impl(const Tensor& input) = 0;
+
+private:
+    bool training_ = true;
 };
 
 }  // namespace exai
