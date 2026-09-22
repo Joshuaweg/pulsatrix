@@ -13,6 +13,7 @@
 #include "exai/lrp_rule_config.hpp"
 #include "exai/max_pool2d_module.hpp"
 #include "exai/relu_module.hpp"
+#include "exai/sequential_module.hpp"
 
 // Phase 4 Mission 0: charter's "not just a spot-check on one architecture" LRP
 // completeness requirement, turned into a systematic TEST_P suite over every module type
@@ -143,6 +144,30 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           Tensor relevance_out(Shape({1, 2, 3}), &backend, {1.0f, 2.0f, 3.0f, 0.5f, 0.5f, 1.0f});
                           LRPRuleConfig config;
                           Tensor relevance_in = emb.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    cases.push_back({"SequentialModule", [] {
+                          CPUBackend backend;
+                          LinearModule linear1(3, 4, &backend);
+                          linear1.set_weight(
+                              {0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
+                          linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+                          ReluModule relu(&backend);
+                          LinearModule linear2(4, 2, &backend);
+                          linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+                          linear2.set_bias({0.05f, -0.05f});
+                          SequentialModule seq({&linear1, &relu, &linear2});
+
+                          Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+                          (void)seq.forward(input);
+                          Tensor relevance_out(Shape({1, 2}), &backend, {4.0f, 6.0f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = seq.propagate_relevance(relevance_out, config);
                           float sum_in = 0.0f;
                           for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
                           float sum_out = 0.0f;

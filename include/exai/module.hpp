@@ -131,17 +131,17 @@ public:
     /**
      * @brief Sets this module's training/eval mode. Defaults to training (matches every
      *        mainstream framework's Module default).
-     * @note Plain state, not virtual dispatch -- added for Phase 6 Mission 5 (Dropout),
-     *       the first module whose forward behavior genuinely differs between training and
-     *       inference. Not cascaded to sub-modules (no Sequential/composite container
-     *       exists yet to cascade through -- Decision Point 1); a caller composing multiple
-     *       modules sets each one's mode individually until that container exists.
+     * @note Virtual since Phase 6 Mission 6 (SequentialModule) -- Mission 5 originally
+     *       shipped this as plain non-virtual state ("no composite container exists yet to
+     *       cascade through"); SequentialModule overrides this to cascade to every
+     *       contained layer, and needs virtual dispatch to do so correctly even when
+     *       accessed through a Module* base pointer, not just its own concrete type.
      * @note Deliberately NOT extended to BatchNormModule's running-mean/variance question
      *       (flagged, still open) -- that is additive numerical-tracking state, a
      *       genuinely different scope than this boolean toggle, and touching a closed
      *       mission's module is its own decision, not bundled in here.
      */
-    void set_training(bool training) { training_ = training; }
+    virtual void set_training(bool training) { training_ = training; }
 
     /** @brief Whether this module is currently in training mode. */
     [[nodiscard]] bool is_training() const { return training_; }
