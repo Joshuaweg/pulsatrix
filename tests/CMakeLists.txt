@@ -53,6 +53,7 @@ add_executable(exai_tests
     gan_integration_test.cpp
     diffusion_integration_test.cpp
     dqn_cartpole_integration_test.cpp
+    reinforce_cartpole_integration_test.cpp
     mnist_loader_test.cpp
     mnist_classifier_example_test.cpp
     sgd_optimizer_test.cpp
