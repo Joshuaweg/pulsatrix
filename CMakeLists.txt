@@ -146,6 +146,9 @@ if(EXAI_BUILD_EXAMPLES)
 
     add_executable(transformer_block_demo examples/transformer_block_demo.cpp)
     target_link_libraries(transformer_block_demo PRIVATE exai_core)
+
+    add_executable(dqn_cartpole_demo examples/dqn_cartpole_demo.cpp)
+    target_link_libraries(dqn_cartpole_demo PRIVATE exai_core)
 endif()
 
 if(EXAI_BUILD_TESTS)
