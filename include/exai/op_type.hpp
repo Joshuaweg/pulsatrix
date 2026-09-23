@@ -25,7 +25,24 @@ enum class OpType {
     Pooling,
     Embedding,
     Composite,
-    Recurrent
+    Recurrent,
+    /**
+     * @brief Multi-head (scaled dot-product) attention -- Phase 3's MultiHeadAttentionModule.
+     * @note Justification for growing the enum here (contrast RoPEModule, which deliberately
+     *       reused `Elementwise`): attention is a genuinely new *operation category*, not a
+     *       new spelling of an existing one. It contracts two learned projections against
+     *       each other (`Q @ K^T`) and re-mixes a third along the sequence axis -- an
+     *       input-dependent, content-addressed mixing across positions that no existing
+     *       category describes. It is not `Linear` (the mixing weights are computed from the
+     *       input, not stored), not `Composite` (`Composite` means "a container of other
+     *       modules with no math of its own", which SequentialModule is and this is not --
+     *       this module owns the two batched matmuls, the scale and the bilinear LRP rule),
+     *       and not `Recurrent` (no state carried across steps; all positions are attended
+     *       in parallel). The charter's stated reason for the enum -- "find the last conv
+     *       layer"-style graph queries -- is exactly the use case that needs
+     *       "find the attention blocks" to be answerable.
+     */
+    Attention
 };
 
 }  // namespace exai

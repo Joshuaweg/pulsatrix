@@ -272,6 +272,22 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           return std::make_pair(sum_in, sum_out);
                       }});
 
+    // Deliberately NOT here: SoftmaxModule and MultiHeadAttentionModule.
+    //
+    // SoftmaxModule's rule is AttnLRP Eq. 13, a first-order DTD approximation with a known
+    // residual "hidden bias term" -- it does not conserve by construction (see
+    // softmax_module.hpp). MultiHeadAttentionModule composes that same softmax step into the
+    // middle of its pipeline, so it inherits the gap: measured at 2.3546 against a
+    // sum(R_out) of 4.75 (~50% of the output relevance) in
+    // multihead_attention_module_test.cpp's PropagateRelevanceConservationGapIsMeasuredNot-
+    // AssumedZero, which reports the number and decomposes it stage by stage. Every *other*
+    // stage of that module conserves -- including AttnLRP Eq. 15, whose factor-2 denominator
+    // makes each matmul's two operand shares sum back to R_O exactly.
+    //
+    // Adding either here would force this suite's 1e-2 tolerance up by two-plus orders of
+    // magnitude for every one of the twelve modules above that genuinely meets it, turning a
+    // real invariant into a rubber stamp. The per-module measurement tests are the right home
+    // for a rule that is known not to conserve; this suite stays the home for rules that do.
     return cases;
 }
 
