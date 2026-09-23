@@ -34,8 +34,11 @@ add_executable(exai_tests
     mamba_module_test.cpp
     rwkv_module_test.cpp
     retnet_module_test.cpp
+    reparameterize_test.cpp
     mse_loss_test.cpp
     cross_entropy_loss_test.cpp
+    kl_divergence_loss_test.cpp
+    vae_integration_test.cpp
     mnist_loader_test.cpp
     mnist_classifier_example_test.cpp
     sgd_optimizer_test.cpp
