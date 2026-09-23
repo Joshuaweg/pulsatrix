@@ -151,6 +151,9 @@ if(EXAI_BUILD_EXAMPLES)
 
     add_executable(dqn_cartpole_demo examples/dqn_cartpole_demo.cpp)
     target_link_libraries(dqn_cartpole_demo PRIVATE exai_core)
+
+    add_executable(reinforce_cartpole_demo examples/reinforce_cartpole_demo.cpp)
+    target_link_libraries(reinforce_cartpole_demo PRIVATE exai_core)
 endif()
 
 if(EXAI_BUILD_TESTS)
