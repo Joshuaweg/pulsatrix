@@ -63,6 +63,13 @@ __global__ void add_kernel(const float* a, const float* b, float* out, size_t n)
     }
 }
 
+__global__ void mul_kernel(const float* a, const float* b, float* out, size_t n) {
+    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n) {
+        out[i] = a[i] * b[i];
+    }
+}
+
 }  // namespace
 
 CUDABackend::CUDABackend() {
@@ -170,6 +177,17 @@ void CUDABackend::add(const float* a, const float* b, float* out, size_t n) {
     constexpr int block_size = 256;
     int grid_size = static_cast<int>((n + block_size - 1) / block_size);
     add_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
+    EXAI_CUDA_CHECK(cudaGetLastError());
+    EXAI_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::mul(const float* a, const float* b, float* out, size_t n) {
+    if (n == 0) {
+        return;
+    }
+    constexpr int block_size = 256;
+    int grid_size = static_cast<int>((n + block_size - 1) / block_size);
+    mul_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
     EXAI_CUDA_CHECK(cudaGetLastError());
     EXAI_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
