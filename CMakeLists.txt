@@ -128,6 +128,9 @@ if(EXAI_BUILD_EXAMPLES)
 
     add_executable(sequence_model_demo examples/sequence_model_demo.cpp)
     target_link_libraries(sequence_model_demo PRIVATE exai_core)
+
+    add_executable(transformer_block_demo examples/transformer_block_demo.cpp)
+    target_link_libraries(transformer_block_demo PRIVATE exai_core)
 endif()
 
 if(EXAI_BUILD_TESTS)
