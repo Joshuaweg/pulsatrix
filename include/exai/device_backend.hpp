@@ -126,6 +126,22 @@ public:
      *       of the binary-op design decision deferred since Mission 0.
      */
     virtual void add(const float* a, const float* b, float* out, size_t n) = 0;
+
+    /**
+     * @brief Elementwise binary (Hadamard) multiplication: out[i] = a[i] * b[i] for i in [0, n).
+     * @param a First operand, must hold at least n floats.
+     * @param b Second operand, must hold at least n floats.
+     * @param out Output buffer, must hold at least n floats. May alias a or b for an
+     *        in-place application.
+     * @param n Number of elements.
+     * @note Added in Phase 6's SwiGLU mission (mission_swiglu.md) -- the third consumer
+     *       needing a Hadamard product via a raw host loop (after LSTMModule's/GRUModule's
+     *       gate arithmetic), the trigger point the Risk Register named for finally adding
+     *       this primitive properly instead of a fourth raw loop. LSTMModule/GRUModule's
+     *       existing raw loops are not retrofitted to use it -- no behavior change needed
+     *       there, logged as a low-priority future cleanup only.
+     */
+    virtual void mul(const float* a, const float* b, float* out, size_t n) = 0;
 };
 
 }  // namespace exai

@@ -202,5 +202,32 @@ TEST_F(CPUBackendTest, AddHandlesZeroLengthGracefully) {
     EXPECT_NO_THROW(backend.add(nullptr, nullptr, nullptr, 0));
 }
 
+TEST_F(CPUBackendTest, MulComputesElementwiseProduct) {
+    std::vector<float> a = {1.0f, 2.0f, 3.0f};
+    std::vector<float> b = {10.0f, 20.0f, 30.0f};
+    std::vector<float> out(3, 0.0f);
+
+    backend.mul(a.data(), b.data(), out.data(), 3);
+
+    EXPECT_FLOAT_EQ(out[0], 10.0f);
+    EXPECT_FLOAT_EQ(out[1], 40.0f);
+    EXPECT_FLOAT_EQ(out[2], 90.0f);
+}
+
+TEST_F(CPUBackendTest, MulSupportsInPlaceApplication) {
+    std::vector<float> acc = {1.0f, 2.0f, 3.0f};
+    std::vector<float> factor = {2.0f, 2.0f, 2.0f};
+
+    backend.mul(acc.data(), factor.data(), acc.data(), 3);  // out aliases a
+
+    EXPECT_FLOAT_EQ(acc[0], 2.0f);
+    EXPECT_FLOAT_EQ(acc[1], 4.0f);
+    EXPECT_FLOAT_EQ(acc[2], 6.0f);
+}
+
+TEST_F(CPUBackendTest, MulHandlesZeroLengthGracefully) {
+    EXPECT_NO_THROW(backend.mul(nullptr, nullptr, nullptr, 0));
+}
+
 }  // namespace
 }  // namespace exai

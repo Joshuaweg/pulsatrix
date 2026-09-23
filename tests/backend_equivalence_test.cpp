@@ -135,5 +135,30 @@ TEST_F(BackendEquivalenceTest, AddMatchesCPUBackendOnRandomInput) {
     cuda.free(device_out);
 }
 
+TEST_F(BackendEquivalenceTest, MulMatchesCPUBackendOnRandomInput) {
+    std::vector<float> a = RandomVector(1000, /*seed=*/7);
+    std::vector<float> b = RandomVector(1000, /*seed=*/8);
+
+    std::vector<float> cpu_out(a.size(), 0.0f);
+    cpu.mul(a.data(), b.data(), cpu_out.data(), a.size());
+
+    void* device_a = cuda.allocate(a.size() * sizeof(float));
+    void* device_b = cuda.allocate(b.size() * sizeof(float));
+    void* device_out = cuda.allocate(a.size() * sizeof(float));
+    cuda.copy(device_a, a.data(), a.size() * sizeof(float), CopyDirection::HostToDevice);
+    cuda.copy(device_b, b.data(), b.size() * sizeof(float), CopyDirection::HostToDevice);
+    cuda.mul(static_cast<float*>(device_a), static_cast<float*>(device_b), static_cast<float*>(device_out), a.size());
+    std::vector<float> cuda_out(a.size(), 0.0f);
+    cuda.copy(cuda_out.data(), device_out, cuda_out.size() * sizeof(float), CopyDirection::DeviceToHost);
+
+    for (size_t i = 0; i < cpu_out.size(); ++i) {
+        EXPECT_NEAR(cpu_out[i], cuda_out[i], kBackendEquivalenceTolerance) << "mismatch at flat index " << i;
+    }
+
+    cuda.free(device_a);
+    cuda.free(device_b);
+    cuda.free(device_out);
+}
+
 }  // namespace
 }  // namespace exai

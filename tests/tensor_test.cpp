@@ -22,6 +22,7 @@ public:
     MOCK_METHOD(void, gemm, (const float* a, const float* b, float* out, size_t m, size_t k, size_t n), (override));
     MOCK_METHOD(void, elementwise, (ElementwiseOp op, const float* in, float* out, size_t n), (override));
     MOCK_METHOD(void, add, (const float* a, const float* b, float* out, size_t n), (override));
+    MOCK_METHOD(void, mul, (const float* a, const float* b, float* out, size_t n), (override));
 };
 
 class TensorTest : public ::testing::Test {

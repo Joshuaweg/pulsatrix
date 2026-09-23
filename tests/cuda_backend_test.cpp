@@ -258,5 +258,32 @@ TEST_F(CUDABackendTest, AddHandlesZeroLengthGracefully) {
     EXPECT_NO_THROW(backend.add(nullptr, nullptr, nullptr, 0));
 }
 
+TEST_F(CUDABackendTest, MulComputesElementwiseProduct) {
+    std::vector<float> a = {1.0f, 2.0f, 3.0f};
+    std::vector<float> b = {10.0f, 20.0f, 30.0f};
+    void* device_a = backend.allocate(a.size() * sizeof(float));
+    void* device_b = backend.allocate(b.size() * sizeof(float));
+    void* device_out = backend.allocate(a.size() * sizeof(float));
+    backend.copy(device_a, a.data(), a.size() * sizeof(float), CopyDirection::HostToDevice);
+    backend.copy(device_b, b.data(), b.size() * sizeof(float), CopyDirection::HostToDevice);
+
+    backend.mul(static_cast<float*>(device_a), static_cast<float*>(device_b), static_cast<float*>(device_out),
+                a.size());
+
+    std::vector<float> out(3, 0.0f);
+    backend.copy(out.data(), device_out, out.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(out[0], 10.0f);
+    EXPECT_FLOAT_EQ(out[1], 40.0f);
+    EXPECT_FLOAT_EQ(out[2], 90.0f);
+
+    backend.free(device_a);
+    backend.free(device_b);
+    backend.free(device_out);
+}
+
+TEST_F(CUDABackendTest, MulHandlesZeroLengthGracefully) {
+    EXPECT_NO_THROW(backend.mul(nullptr, nullptr, nullptr, 0));
+}
+
 }  // namespace
 }  // namespace exai
