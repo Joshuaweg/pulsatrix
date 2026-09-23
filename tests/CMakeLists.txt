@@ -17,6 +17,7 @@ add_executable(exai_tests
     multihead_attention_module_test.cpp
     swiglu_module_test.cpp
     transformer_block_test.cpp
+    residual_module_test.cpp
     conv2d_module_test.cpp
     rms_norm_module_test.cpp
     layer_norm_module_test.cpp
