@@ -39,6 +39,7 @@ add_executable(exai_tests
     sinusoidal_timestep_embedding_test.cpp
     cartpole_env_test.cpp
     replay_buffer_test.cpp
+    rollout_buffer_test.cpp
     mse_loss_test.cpp
     cross_entropy_loss_test.cpp
     kl_divergence_loss_test.cpp
