@@ -51,6 +51,7 @@ add_library(exai_core
     src/sinusoidal_timestep_embedding.cpp
     src/cartpole_env.cpp
     src/replay_buffer.cpp
+    src/rollout_buffer.cpp
     src/mse_loss.cpp
     src/cross_entropy_loss.cpp
     src/kl_divergence_loss.cpp
