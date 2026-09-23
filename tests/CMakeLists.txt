@@ -40,6 +40,9 @@ add_executable(exai_tests
     cartpole_env_test.cpp
     replay_buffer_test.cpp
     rollout_buffer_test.cpp
+    dqn_loss_test.cpp
+    dqn_target_test.cpp
+    dqn_agent_test.cpp
     mse_loss_test.cpp
     cross_entropy_loss_test.cpp
     kl_divergence_loss_test.cpp
