@@ -47,6 +47,8 @@ add_library(exai_core
     src/rwkv_module.cpp
     src/retnet_module.cpp
     src/reparameterize.cpp
+    src/noise_schedule.cpp
+    src/sinusoidal_timestep_embedding.cpp
     src/mse_loss.cpp
     src/cross_entropy_loss.cpp
     src/kl_divergence_loss.cpp
