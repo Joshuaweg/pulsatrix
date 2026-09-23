@@ -13,6 +13,7 @@
 #include "exai/linear_module.hpp"
 #include "exai/lrp_rule_config.hpp"
 #include "exai/lstm_module.hpp"
+#include "exai/mamba_module.hpp"
 #include "exai/max_pool2d_module.hpp"
 #include "exai/relu_module.hpp"
 #include "exai/rnn_module.hpp"
@@ -272,6 +273,33 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           return std::make_pair(sum_in, sum_out);
                       }});
 
+    // MambaModule's MambaLRP rule detaches Abar_t/Bbar_t/C_t and redistributes over plain
+    // weighted sums, so (with h_0 == 0) it conserves up to the epsilon stabilizers only --
+    // measured gap 2.5e-5 against a sum(R_out) of 5.3 in mamba_module_test.cpp's
+    // PropagateRelevanceConservationGapIsMeasuredNotAssumed, comfortably inside this
+    // suite's 1e-2 tolerance, so it belongs in the systematic sweep rather than getting
+    // SoftmaxModule's dedicated-measurement-test treatment.
+    cases.push_back({"MambaModule", [] {
+                          CPUBackend backend;
+                          MambaModule mamba(2, 2, &backend);
+                          mamba.set_W_delta({0.37f, -0.62f, 0.18f, 0.45f});
+                          mamba.set_bias_delta({-0.21f, 0.33f});
+                          mamba.set_W_B({0.54f, -0.28f, 0.41f, 0.66f});
+                          mamba.set_W_C({-0.35f, 0.72f, 0.59f, -0.16f});
+                          mamba.set_A({-0.85f, -0.30f, -0.55f, -1.20f});
+                          mamba.set_D({0.62f, -0.41f});
+                          Tensor input(Shape({1, 3, 2}), &backend, {0.30f, -0.20f, 0.60f, 0.10f, -0.40f, 0.50f});
+                          (void)mamba.forward(input);
+                          Tensor relevance_out(Shape({1, 3, 2}), &backend, {1.0f, 2.0f, 0.5f, -0.5f, 1.5f, 0.8f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = mamba.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
     // Deliberately NOT here: SoftmaxModule and MultiHeadAttentionModule.
     //
     // SoftmaxModule's rule is AttnLRP Eq. 13, a first-order DTD approximation with a known
@@ -285,7 +313,7 @@ std::vector<ConservationCase> AllModuleTypeCases() {
     // makes each matmul's two operand shares sum back to R_O exactly.
     //
     // Adding either here would force this suite's 1e-2 tolerance up by two-plus orders of
-    // magnitude for every one of the twelve modules above that genuinely meets it, turning a
+    // magnitude for every one of the thirteen modules above that genuinely meets it, turning a
     // real invariant into a rubber stamp. The per-module measurement tests are the right home
     // for a rule that is known not to conserve; this suite stays the home for rules that do.
     return cases;
