@@ -44,6 +44,7 @@ add_library(exai_core
     src/lstm_module.cpp
     src/gru_module.cpp
     src/mamba_module.cpp
+    src/rwkv_module.cpp
     src/mse_loss.cpp
     src/cross_entropy_loss.cpp
     src/mnist_loader.cpp
