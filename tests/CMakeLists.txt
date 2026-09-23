@@ -33,6 +33,7 @@ add_executable(exai_tests
     gru_module_test.cpp
     mamba_module_test.cpp
     rwkv_module_test.cpp
+    retnet_module_test.cpp
     mse_loss_test.cpp
     cross_entropy_loss_test.cpp
     mnist_loader_test.cpp
