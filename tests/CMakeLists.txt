@@ -38,7 +38,9 @@ add_executable(exai_tests
     mse_loss_test.cpp
     cross_entropy_loss_test.cpp
     kl_divergence_loss_test.cpp
+    bce_with_logits_loss_test.cpp
     vae_integration_test.cpp
+    gan_integration_test.cpp
     mnist_loader_test.cpp
     mnist_classifier_example_test.cpp
     sgd_optimizer_test.cpp

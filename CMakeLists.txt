@@ -50,6 +50,7 @@ add_library(exai_core
     src/mse_loss.cpp
     src/cross_entropy_loss.cpp
     src/kl_divergence_loss.cpp
+    src/bce_with_logits_loss.cpp
     src/mnist_loader.cpp
     src/mnist_classifier_example.cpp
     src/sgd_optimizer.cpp
