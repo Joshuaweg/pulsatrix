@@ -29,6 +29,7 @@ add_library(exai_core
     src/multihead_attention_module.cpp
     src/swiglu_module.cpp
     src/transformer_block.cpp
+    src/residual_module.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
