@@ -57,6 +57,8 @@ add_library(exai_core
     src/dqn_agent.cpp
     src/categorical_policy_agent.cpp
     src/policy_gradient_loss.cpp
+    src/gae.cpp
+    src/ppo_clipped_loss.cpp
     src/mse_loss.cpp
     src/cross_entropy_loss.cpp
     src/kl_divergence_loss.cpp

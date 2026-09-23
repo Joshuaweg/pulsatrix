@@ -45,6 +45,8 @@ add_executable(exai_tests
     dqn_agent_test.cpp
     categorical_policy_agent_test.cpp
     policy_gradient_loss_test.cpp
+    gae_test.cpp
+    ppo_clipped_loss_test.cpp
     mse_loss_test.cpp
     cross_entropy_loss_test.cpp
     kl_divergence_loss_test.cpp
