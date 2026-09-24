@@ -978,7 +978,7 @@ TEST_F(ExplainerContextTest, LogitLensThrowsOnAShapeIncompatibleNode) {
     // call must leave the context fully usable -- a subsequent normal forward_pass() and a
     // subsequent valid logit_lens() both still produce correct results.
     Tensor after = ctx.forward_pass(input);
-    EXPECT_EQ(ctx.graph().node_count(), 3u);
+    EXPECT_EQ(ctx.graph().node_count(), 4u);  // input + 3 modules
     ASSERT_EQ(after.numel(), reference_output.numel());
     for (int64_t i = 0; i < reference_output.numel(); ++i) {
         EXPECT_FLOAT_EQ(after.data()[i], reference_output.data()[i]) << "index " << i;
