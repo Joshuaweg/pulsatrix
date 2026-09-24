@@ -134,6 +134,25 @@ RolloutBatch RolloutBuffer::compute_returns(float gamma) const {
                         Tensor(Shape({size_, 1}), backend_, log_probs)};
 }
 
+Tensor RolloutBuffer::rewards() const {
+    // Straight prefix copy, for compute_returns()'s reason: rows [0, size_) of the storage
+    // block are already in stored order, and the never-written rows beyond size_ must not be
+    // handed back.
+    std::vector<float> values(static_cast<size_t>(size_));
+    for (int64_t t = 0; t < size_; ++t) {
+        values[static_cast<size_t>(t)] = rewards_.data()[t];
+    }
+    return Tensor(Shape({size_, 1}), backend_, values);
+}
+
+Tensor RolloutBuffer::dones() const {
+    std::vector<float> values(static_cast<size_t>(size_));
+    for (int64_t t = 0; t < size_; ++t) {
+        values[static_cast<size_t>(t)] = dones_.data()[t];
+    }
+    return Tensor(Shape({size_, 1}), backend_, values);
+}
+
 void RolloutBuffer::clear() {
     // Length only. Every read path (compute_returns, and add()'s write index) is bounded by
     // size_, so the stale rows beyond it are unreachable; zero-filling max_length rows on
