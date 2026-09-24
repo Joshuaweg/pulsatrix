@@ -489,6 +489,101 @@ TEST_F(ExplainerContextTest, ForwardPassWithPatchThrowsOnOutOfRangePatchNodeId) 
     EXPECT_FLOAT_EQ(after.data()[1], 2.0f);
 }
 
+// --- backward_pass() after a patched forward (Phase 4 Mission 2, Objective 2) ------
+//
+// A patched activation is a *constant substitution*, not a differentiable function of the
+// real input. Every module still registers its ordinary backward closure during
+// forward_pass_with_patch (forward_traced does that unconditionally), so Autograd::backward
+// would happily walk the chain and return a number -- a number computed through a link that
+// does not exist in the computation it claims to differentiate. Silently wrong gradients are
+// the worst failure mode this codebase can ship, so the sequencing is rejected outright,
+// following the same "turn silent UB into a loud failure" principle as Phase 1.5's device
+// guards. External boundary (a caller-sequencing mistake) -> throw, not EXAI_ASSERT, so the
+// behavior is identical in Debug and Release.
+
+TEST_F(ExplainerContextTest, BackwardPassThrowsAfterAPatchedForwardPass) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
+    linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+
+    ReluModule relu(&backend);
+
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor patch(Shape({1, 4}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, -1.0f});
+
+    (void)ctx.forward_pass_with_patch(input, /*patch_node_id=*/2, patch);
+
+    EXPECT_THROW((void)ctx.backward_pass(grad_output), std::logic_error);
+}
+
+// The guard is per-call history, not a one-way latch: an ordinary forward_pass() re-arms
+// backward_pass() completely. Verified against the same direct-chained-backward oracle
+// BackwardPassMatchesDirectChainedBackward uses, so this asserts the gradient is *right*,
+// not merely that no exception escaped.
+TEST_F(ExplainerContextTest, BackwardPassSucceedsAfterAnUnpatchedForwardPassFollowingAPatchedOne) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
+    linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+
+    ReluModule relu(&backend);
+
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+    Tensor patch(Shape({1, 4}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, -1.0f});
+
+    (void)ctx.forward_pass_with_patch(input, /*patch_node_id=*/2, patch);
+    (void)ctx.forward_pass(input);
+    Tensor traced_grad_input = ctx.backward_pass(grad_output);
+
+    Tensor direct_grad_h2 = linear2.backward(grad_output);
+    Tensor direct_grad_h1 = relu.backward(direct_grad_h2);
+    Tensor direct_grad_input = linear1.backward(direct_grad_h1);
+
+    ASSERT_EQ(traced_grad_input.numel(), direct_grad_input.numel());
+    for (int64_t i = 0; i < direct_grad_input.numel(); ++i) {
+        EXPECT_FLOAT_EQ(traced_grad_input.data()[i], direct_grad_input.data()[i]) << "mismatch at index " << i;
+    }
+}
+
+// Adversarial: a patched forward that *threw* still arms the guard, and deliberately so.
+// forward_pass_with_patch only commits its graph/autograd/activation state on success, so a
+// throw leaves those exactly as the prior forward_pass() left them -- but it cannot un-run
+// the modules that already executed, and Module::forward_traced's registered closure calls
+// module->backward(), which reads the module's *own* internal cache from its most recent
+// forward(). Those caches now belong to the aborted patched run. A backward through the
+// stale graph would therefore mix one run's topology with another run's cached operands.
+// Re-arming requires a real forward_pass(), which this test also confirms.
+TEST_F(ExplainerContextTest, BackwardPassThrowsAfterAPatchedForwardPassThatItselfThrew) {
+    LinearModule linear(2, 2, &backend);
+    linear.set_weight({1.0f, 0.0f, 0.0f, 1.0f});
+    linear.set_bias({0.0f, 0.0f});
+
+    ExplainerContext ctx({&linear});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 2.0f});
+    Tensor wrong_shape_patch(Shape({1, 3}), &backend, {0.0f, 0.0f, 0.0f});
+    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, -1.0f});
+
+    (void)ctx.forward_pass(input);
+    EXPECT_THROW((void)ctx.forward_pass_with_patch(input, /*patch_node_id=*/1, wrong_shape_patch),
+                 std::invalid_argument);
+
+    EXPECT_THROW((void)ctx.backward_pass(grad_output), std::logic_error);
+
+    (void)ctx.forward_pass(input);
+    EXPECT_NO_THROW((void)ctx.backward_pass(grad_output));
+}
+
 // --- Hand-derivable causal-effect verification (Phase 4 Mission 1, Objective 2) ---
 // The mission's actual acceptance criterion: not "patching changes the output," but
 // "patching produces the exact output causal-patching methodology predicts."
