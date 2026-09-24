@@ -345,5 +345,171 @@ TEST_F(SparseAutoencoderTest, ReconstructionErrorThrowsOnARankThreeBatch) {
     EXPECT_THROW((void)sae.reconstruction_error(batch), std::invalid_argument);
 }
 
+// =======================================================================================
+// Objective 2 -- paired penalty / no-penalty control.
+//
+// The mission's actual acceptance criterion. A trained SAE reporting a low mean hidden
+// activation proves nothing on its own: the penalty term could be numerically inert (wrong
+// sign, wrong scale, dropped by a `lambda > 0` branch, cancelled by the optimizer) and the
+// hidden layer would still land wherever reconstruction alone put it. "The SAE is sparse"
+// and "the L1 penalty made it sparse" are only the same statement if the *identical*
+// procedure, run with the penalty switched off, is shown to be measurably less sparse.
+//
+// Hence two SparseAutoencoders over the same data, the same dim/hidden_dim, the same weight
+// init seed, the same optimizer, the same learning rate and the same epoch count --
+// differing in exactly one thing: l1_lambda.
+//
+// Both are scored on a **held-out** split drawn from the same generator but never trained
+// on, following LinearProbe's precedent. For the fidelity half this is the meaningful
+// choice: an overcomplete autoencoder (32 hidden units for 8 input dimensions) has ample
+// freedom to memorize a training split, so a *training* reconstruction error would be
+// partly an artifact of capacity rather than a statement about the learned basis.
+//
+// Bounded claim, restated (campaign Decision Point 3): what this pair establishes is that
+// the penalty moves the metric it targets, at a quantified cost in reconstruction fidelity.
+// It establishes nothing about whether the sparser hidden units correspond to meaningful
+// features -- that would need Phase 4 (activation patching) evidence at minimum, and this
+// test is deliberately not built on ground-truth-recoverable synthetic data, which would
+// have smuggled in that stronger claim by construction.
+// =======================================================================================
+
+// Deterministic generator -- hand-rolled rather than std::normal_distribution for the same
+// reason linear_probe_test.cpp's copy is: the standard distributions' mappings from the
+// engine's output are implementation-defined, so identical seeds would not give identical
+// data across standard libraries, and the thresholds below are asserted on specific data.
+class TestRng {
+public:
+    explicit TestRng(uint64_t seed) : state_(seed) {}
+
+    /** @brief Uniform in [0, 1). */
+    float uniform() {
+        state_ = state_ * 6364136223846793005ULL + 1442695040888963407ULL;
+        const uint32_t bits = static_cast<uint32_t>(state_ >> 32);
+        return static_cast<float>(bits) / 4294967296.0f;
+    }
+
+    /** @brief Standard normal, via Box-Muller. */
+    float gaussian() {
+        const float u1 = std::fmax(uniform(), 1e-7f);
+        const float u2 = uniform();
+        return std::sqrt(-2.0f * std::log(u1)) * std::cos(6.2831853f * u2);
+    }
+
+private:
+    uint64_t state_;
+};
+
+constexpr int64_t kControlDim = 8;
+constexpr int64_t kControlHiddenDim = 32;  // overcomplete: 4x the input dimension
+constexpr int64_t kControlTrainSize = 256;
+constexpr int64_t kControlHeldoutSize = 256;
+constexpr int kControlEpochs = 400;
+constexpr float kControlLearningRate = 0.01f;
+constexpr unsigned kControlSeed = 11;
+constexpr float kControlPenalty = 0.05f;
+
+// Reconstruction-fidelity bound. The data is standard Gaussian, so the variance per element
+// is ~1 and the error a trivial "reconstruct the mean" baseline would achieve is ~1.0 --
+// this bound therefore says both runs explain at least 95% of the input variance. Chosen
+// from the measured numbers with roughly an order of magnitude of margin: the penalized
+// run, by far the looser of the two, measures 0.0056 and the unpenalized one 0.0013 (see
+// the mission file's Completion Summary). The point of the bound is that the penalty costs
+// *some* fidelity -- it costs 4.3x here, which is expected and fine -- but does not collapse
+// reconstruction altogether, which would make its sparsity vacuous: an SAE that outputs
+// zeros is perfectly sparse and perfectly useless.
+constexpr float kMaxReconstructionError = 0.05f;
+
+// Sparsity-gap bound. The penalized run's mean hidden activation must be no more than ~a
+// third of the unpenalized run's -- a gap far too large to attribute to run-to-run drift,
+// given that everything except l1_lambda is held identical (same seed, same data, same
+// optimizer, same epochs). Measured ratio is 0.0568 / 0.3701 = 0.153, so this bound carries
+// better than 2x margin while still being tight enough that a merely-nudged hidden layer
+// would fail it.
+constexpr float kMaxSparsityRatio = 0.35f;
+
+std::vector<float> make_gaussian_batch(TestRng& rng, int64_t n) {
+    std::vector<float> values;
+    values.reserve(static_cast<size_t>(n * kControlDim));
+    for (int64_t i = 0; i < n * kControlDim; ++i) {
+        values.push_back(rng.gaussian());
+    }
+    return values;
+}
+
+struct ControlResult {
+    float reconstruction_error = 0.0f;
+    float mean_hidden_activation = 0.0f;
+};
+
+// The single shared training procedure. Both controls call exactly this, and its only
+// parameter beyond the data is l1_lambda -- precisely so neither run can quietly be given
+// an advantage the other didn't get.
+ControlResult train_and_score_heldout(DeviceBackend* backend, const std::vector<float>& train_values,
+                                      const std::vector<float>& heldout_values, float l1_lambda) {
+    SparseAutoencoder sae(kControlDim, kControlHiddenDim, l1_lambda, backend, kControlSeed);
+    AdamOptimizer optimizer(kControlLearningRate, backend);
+
+    const Tensor train_batch(Shape({kControlTrainSize, kControlDim}), backend, train_values);
+    for (int epoch = 0; epoch < kControlEpochs; ++epoch) {
+        (void)sae.train_step(train_batch, optimizer);
+    }
+
+    const Tensor heldout_batch(Shape({kControlHeldoutSize, kControlDim}), backend, heldout_values);
+    return {sae.reconstruction_error(heldout_batch), sae.mean_hidden_activation(heldout_batch)};
+}
+
+class SparseAutoencoderControlTest : public ::testing::Test {
+protected:
+    CPUBackend backend;
+};
+
+TEST_F(SparseAutoencoderControlTest, TheL1PenaltyLowersHiddenActivationWithoutCollapsingReconstruction) {
+    TestRng rng(20260924u);
+    const std::vector<float> train_values = make_gaussian_batch(rng, kControlTrainSize);
+    const std::vector<float> heldout_values = make_gaussian_batch(rng, kControlHeldoutSize);
+
+    const ControlResult penalized = train_and_score_heldout(&backend, train_values, heldout_values, kControlPenalty);
+    const ControlResult unpenalized = train_and_score_heldout(&backend, train_values, heldout_values, 0.0f);
+
+    std::cout << "[SparseAutoencoder] penalized   (l1_lambda=" << kControlPenalty
+              << "): held-out reconstruction_error=" << penalized.reconstruction_error
+              << ", mean_hidden_activation=" << penalized.mean_hidden_activation << std::endl;
+    std::cout << "[SparseAutoencoder] unpenalized (l1_lambda=0): held-out reconstruction_error="
+              << unpenalized.reconstruction_error
+              << ", mean_hidden_activation=" << unpenalized.mean_hidden_activation << std::endl;
+
+    // (a) Neither run may collapse reconstruction -- the penalized one is the one at risk.
+    EXPECT_LT(unpenalized.reconstruction_error, kMaxReconstructionError)
+        << "held-out reconstruction error of the no-penalty control";
+    EXPECT_LT(penalized.reconstruction_error, kMaxReconstructionError)
+        << "held-out reconstruction error of the penalized run -- a penalty that destroys "
+           "reconstruction makes its own sparsity vacuous";
+
+    // (b) The penalty must be load-bearing on the metric it targets, not merely present.
+    EXPECT_LT(penalized.mean_hidden_activation, unpenalized.mean_hidden_activation * kMaxSparsityRatio)
+        << "penalized mean hidden activation vs. the identical run with l1_lambda = 0";
+}
+
+// The control above compares two *different* lambdas at one point. This one pins the
+// direction of the effect across a third setting, so the comparison cannot be an accident
+// of the single pair of values chosen: a larger penalty must not be less sparse than a
+// smaller one.
+TEST_F(SparseAutoencoderControlTest, SparsityIncreasesMonotonicallyWithThePenaltyCoefficient) {
+    TestRng rng(20260924u);
+    const std::vector<float> train_values = make_gaussian_batch(rng, kControlTrainSize);
+    const std::vector<float> heldout_values = make_gaussian_batch(rng, kControlHeldoutSize);
+
+    const ControlResult none = train_and_score_heldout(&backend, train_values, heldout_values, 0.0f);
+    const ControlResult small = train_and_score_heldout(&backend, train_values, heldout_values, 0.01f);
+    const ControlResult large = train_and_score_heldout(&backend, train_values, heldout_values, 0.05f);
+
+    std::cout << "[SparseAutoencoder] mean_hidden_activation by l1_lambda: 0 -> " << none.mean_hidden_activation
+              << ", 0.01 -> " << small.mean_hidden_activation << ", 0.05 -> " << large.mean_hidden_activation
+              << std::endl;
+
+    EXPECT_LT(small.mean_hidden_activation, none.mean_hidden_activation);
+    EXPECT_LT(large.mean_hidden_activation, small.mean_hidden_activation);
+}
+
 }  // namespace
 }  // namespace exai
