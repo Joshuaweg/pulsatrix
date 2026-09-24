@@ -85,6 +85,70 @@ public:
     }
 
     /**
+     * @brief Runs the full module chain forward, substituting patch_value for the natural
+     *        output of the module that produces patch_node_id -- the causal-intervention
+     *        (activation patching) primitive.
+     * @param input Input to the first module in the chain.
+     * @param patch_node_id Node whose activation is overridden. Node ids are assigned
+     *        deterministically per forward pass: 0 is the input node, then one per module
+     *        in chain order, so a node id captured from an earlier pass over this same
+     *        context names the same logical layer here.
+     * @param patch_value Value substituted at that node. Must have the same shape as the
+     *        node's natural (unpatched) output.
+     * @return The chain's output, computed downstream from the substituted value. Patching
+     *         the output node returns patch_value itself -- nothing runs after it.
+     * @throws std::invalid_argument if patch_node_id exceeds the largest node id this
+     *         forward pass produces, or if patch_value's shape differs from the target
+     *         node's natural output shape -- both external boundaries (caller-supplied),
+     *         hence throw rather than EXAI_ASSERT, consistent with the constructor.
+     * @note Every module *before* the patch point is unaffected (a forward-only computation
+     *       has no upstream influence); every module *after* it computes from patch_value.
+     *       Patching the input node is a supported degenerate case, equivalent to
+     *       forward_pass(patch_value).
+     * @note Builds into local graph/autograd/activation state and only commits it on
+     *       success, so a throw leaves this context exactly as the previous forward_pass()
+     *       left it -- a failed patch attempt must not corrupt a usable context.
+     * @note Single-node patch per call by design (campaign
+     *       campaign_exai_dl_library_mechanistic_interpretability, Phase 4 Mission 1);
+     *       multi-node patching would be an explicit extension, not assumed here.
+     */
+    Tensor forward_pass_with_patch(const Tensor& input, NodeId patch_node_id, const Tensor& patch_value) {
+        if (patch_node_id > modules_.size()) {
+            throw std::invalid_argument("ExplainerContext::forward_pass_with_patch: patch_node_id out of range");
+        }
+
+        ComputationGraph graph;
+        Autograd autograd;
+        std::unordered_map<NodeId, Tensor> activations;
+
+        NodeId input_node = graph.add_node(OpType::Elementwise, input.shape(), "input");
+
+        Tensor current = input;
+        NodeId current_node = input_node;
+        if (patch_node_id == input_node) {
+            current = check_patch_shape(current, patch_value);
+        }
+        activations.emplace(input_node, Tensor(current));
+
+        for (Module* module : modules_) {
+            auto [output, node_id] = module->forward_traced(current, current_node, graph, autograd);
+            if (node_id == patch_node_id) {
+                output = check_patch_shape(output, patch_value);
+            }
+            activations.emplace(node_id, Tensor(output));
+            current = std::move(output);
+            current_node = node_id;
+        }
+
+        graph_ = std::move(graph);
+        autograd_ = std::move(autograd);
+        activations_ = std::move(activations);
+        input_node_ = input_node;
+        output_node_ = current_node;
+        return current;
+    }
+
+    /**
      * @brief Runs Autograd::backward from the most recent forward_pass()'s output node.
      * @param output_grad Gradient w.r.t. the chain's output.
      * @return Gradient w.r.t. the chain's input.
@@ -157,6 +221,24 @@ public:
     [[nodiscard]] std::optional<std::string> layer_label(NodeId id) const { return graph_.node(id).label(); }
 
 private:
+    /**
+     * @brief Validates a patch value against the natural output it replaces.
+     * @param natural The node's own (unpatched) output, whose shape is the contract.
+     * @param patch_value Caller-supplied replacement.
+     * @return A copy of patch_value, ready to substitute for natural.
+     * @throws std::invalid_argument if the shapes differ -- reported at the patch site,
+     *         where the mistake actually is, rather than as a downstream module's
+     *         shape-check failure several layers later.
+     */
+    [[nodiscard]] static Tensor check_patch_shape(const Tensor& natural, const Tensor& patch_value) {
+        if (!(patch_value.shape() == natural.shape())) {
+            throw std::invalid_argument(
+                "ExplainerContext::forward_pass_with_patch: patch_value shape must match the patched node's "
+                "natural output shape");
+        }
+        return Tensor(patch_value);
+    }
+
     std::vector<Module*> modules_;
     ComputationGraph graph_;
     Autograd autograd_;
