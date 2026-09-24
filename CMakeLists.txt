@@ -50,6 +50,7 @@ add_library(exai_core
     src/noise_schedule.cpp
     src/sinusoidal_timestep_embedding.cpp
     src/cartpole_env.cpp
+    src/continuous_cartpole_env.cpp
     src/replay_buffer.cpp
     src/rollout_buffer.cpp
     src/dqn_loss.cpp
