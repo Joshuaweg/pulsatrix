@@ -65,6 +65,7 @@ public:
      * @return The final module's output.
      */
     Tensor forward_pass(const Tensor& input) {
+        last_forward_was_patched_ = false;
         graph_ = ComputationGraph{};
         autograd_ = Autograd{};
         activations_.clear();
@@ -113,6 +114,7 @@ public:
      *       multi-node patching would be an explicit extension, not assumed here.
      */
     Tensor forward_pass_with_patch(const Tensor& input, NodeId patch_node_id, const Tensor& patch_value) {
+        last_forward_was_patched_ = true;
         if (patch_node_id > modules_.size()) {
             throw std::invalid_argument("ExplainerContext::forward_pass_with_patch: patch_node_id out of range");
         }
@@ -153,8 +155,26 @@ public:
      * @param output_grad Gradient w.r.t. the chain's output.
      * @return Gradient w.r.t. the chain's input.
      * @note Must be called after forward_pass().
+     * @throws std::logic_error if the most recent forward pass was a
+     *         forward_pass_with_patch() call. A patched activation is a *constant
+     *         substitution*, not a differentiable function of the input, yet
+     *         Module::forward_traced registers each module's ordinary backward closure
+     *         regardless -- so without this guard Autograd::backward() would return a
+     *         perfectly plausible gradient taken through a link that does not exist in the
+     *         computation it claims to differentiate. Rejected loudly rather than answered
+     *         wrongly, the same principle as Phase 1.5's device guards; classified external
+     *         boundary (a caller-sequencing mistake, like the constructor's checks) so it is
+     *         a throw and behaves identically in Debug and Release. Re-arm with an ordinary
+     *         forward_pass() -- the guard is per-call history, not a permanent latch.
      */
     Tensor backward_pass(const Tensor& output_grad) {
+        if (last_forward_was_patched_) {
+            throw std::logic_error(
+                "ExplainerContext::backward_pass: the most recent forward pass was "
+                "forward_pass_with_patch(); a patched activation is a constant substitution, not a "
+                "differentiable function of the input, so gradients through it would be silently wrong. "
+                "Run an unpatched forward_pass() before backward_pass().");
+        }
         autograd_.backward(graph_, output_node_, output_grad);
         return Tensor(autograd_.gradient(input_node_));
     }
@@ -245,6 +265,20 @@ private:
     std::unordered_map<NodeId, Tensor> activations_;
     NodeId input_node_ = 0;
     NodeId output_node_ = 0;
+    /**
+     * @brief Whether the most recent forward pass was a patched one -- backward_pass()'s
+     *        precondition (campaign_exai_dl_library_mechanistic_interpretability, Phase 4
+     *        Mission 2).
+     * @note Set at the *top* of forward_pass_with_patch(), not in its commit block, so that
+     *       a patch attempt which throws part-way still arms the guard. That is not an
+     *       oversight: the commit block protects graph_/autograd_/activations_, but nothing
+     *       can un-run the modules that already executed, and each Autograd closure calls
+     *       module->backward(), which reads that module's own cache from its most recent
+     *       forward(). After an aborted patched forward those caches belong to the aborted
+     *       run while the committed graph belongs to the previous one -- exactly the
+     *       cross-run mixture this guard exists to refuse.
+     */
+    bool last_forward_was_patched_ = false;
 };
 
 }  // namespace exai
