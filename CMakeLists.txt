@@ -165,6 +165,9 @@ if(EXAI_BUILD_EXAMPLES)
 
     add_executable(ppo_cartpole_demo examples/ppo_cartpole_demo.cpp)
     target_link_libraries(ppo_cartpole_demo PRIVATE exai_core)
+
+    add_executable(sac_continuous_cartpole_demo examples/sac_continuous_cartpole_demo.cpp)
+    target_link_libraries(sac_continuous_cartpole_demo PRIVATE exai_core)
 endif()
 
 if(EXAI_BUILD_TESTS)
