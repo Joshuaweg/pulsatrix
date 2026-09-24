@@ -489,5 +489,129 @@ TEST_F(ExplainerContextTest, ForwardPassWithPatchThrowsOnOutOfRangePatchNodeId) 
     EXPECT_FLOAT_EQ(after.data()[1], 2.0f);
 }
 
+// --- Hand-derivable causal-effect verification (Phase 4 Mission 1, Objective 2) ---
+// The mission's actual acceptance criterion: not "patching changes the output," but
+// "patching produces the exact output causal-patching methodology predicts."
+//
+// Fixed network, all 1x1 so every intermediate is a single number:
+//     Linear1: h_pre = x * 3.0 + (-1.0)
+//     Relu:    h     = max(h_pre, 0)
+//     Linear2: y     = h * 2.0 + 0.5
+namespace {
+
+constexpr float kW1 = 3.0f;
+constexpr float kB1 = -1.0f;
+constexpr float kW2 = 2.0f;
+constexpr float kB2 = 0.5f;
+
+}  // namespace
+
+// Arithmetic, derived by hand before the test was run:
+//   clean     x = 2.0   -> h_pre = 2.0*3 - 1 =  5.0 -> h =  5.0 -> y =  5.0*2 + 0.5 = 10.5
+//   corrupted x = 4.0   -> h_pre = 4.0*3 - 1 = 11.0 -> h = 11.0 -> y = 11.0*2 + 0.5 = 22.5
+//   clean run, hidden patched with the corrupted run's h = 11.0:
+//                          y = 11.0*2 + 0.5 = 22.5
+// The patched output equals the corrupted output exactly because the patched node is the
+// single bottleneck on the clean run's only path -- full causal-effect restoration.
+TEST_F(ExplainerContextTest, ForwardPassWithPatchReproducesHandDerivedCausalEffect) {
+    LinearModule linear1(1, 1, &backend);
+    linear1.set_weight({kW1});
+    linear1.set_bias({kB1});
+    ReluModule relu(&backend);
+    LinearModule linear2(1, 1, &backend);
+    linear2.set_weight({kW2});
+    linear2.set_bias({kB2});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor clean_input(Shape({1, 1}), &backend, {2.0f});
+    Tensor corrupted_input(Shape({1, 1}), &backend, {4.0f});
+
+    Tensor clean_output = ctx.forward_pass(clean_input);
+    ActivationSnapshot clean = ctx.activation_snapshot();
+    ASSERT_EQ(clean.node_ids().size(), 4u);
+    const NodeId hidden_node = clean.node_ids()[2];  // post-ReLU
+    EXPECT_FLOAT_EQ(clean.activation(hidden_node).data()[0], 5.0f);
+    EXPECT_FLOAT_EQ(clean_output.data()[0], 10.5f);
+
+    Tensor corrupted_output = ctx.forward_pass(corrupted_input);
+    ActivationSnapshot corrupted = ctx.activation_snapshot();
+    EXPECT_FLOAT_EQ(corrupted.activation(hidden_node).data()[0], 11.0f);
+    EXPECT_FLOAT_EQ(corrupted_output.data()[0], 22.5f);
+
+    // The intervention: clean run, hidden activation replaced by the corrupted run's.
+    Tensor patched_output = ctx.forward_pass_with_patch(clean_input, hidden_node, corrupted.activation(hidden_node));
+
+    EXPECT_FLOAT_EQ(patched_output.data()[0], 22.5f);
+    // Upstream is untouched: the clean run's own pre-ReLU value still stands.
+    EXPECT_FLOAT_EQ(ctx.activation(clean.node_ids()[1]).data()[0], 5.0f);
+    EXPECT_FLOAT_EQ(ctx.activation(clean.node_ids()[0]).data()[0], 2.0f);
+}
+
+// Second case, with the ReLU's zero-clamp engaged in the clean run but not the corrupted
+// one -- so the patch has to carry a value the clean run's own ReLU would never produce:
+//   clean     x = 0.25 -> h_pre = 0.25*3 - 1 = -0.25 -> h = 0.0 (clamped) -> y = 0.5
+//   corrupted x = 2.0  -> h_pre = 2.0*3  - 1 =  5.00 -> h = 5.0           -> y = 10.5
+//   clean run, hidden patched with 5.0 -> y = 5.0*2 + 0.5 = 10.5
+TEST_F(ExplainerContextTest, ForwardPassWithPatchSubstitutesPostReluValueWhenClampDiffers) {
+    LinearModule linear1(1, 1, &backend);
+    linear1.set_weight({kW1});
+    linear1.set_bias({kB1});
+    ReluModule relu(&backend);
+    LinearModule linear2(1, 1, &backend);
+    linear2.set_weight({kW2});
+    linear2.set_bias({kB2});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor clean_input(Shape({1, 1}), &backend, {0.25f});
+    Tensor corrupted_input(Shape({1, 1}), &backend, {2.0f});
+
+    Tensor clean_output = ctx.forward_pass(clean_input);
+    ActivationSnapshot clean = ctx.activation_snapshot();
+    const NodeId pre_relu_node = clean.node_ids()[1];
+    const NodeId hidden_node = clean.node_ids()[2];
+    EXPECT_FLOAT_EQ(clean.activation(pre_relu_node).data()[0], -0.25f);
+    EXPECT_FLOAT_EQ(clean.activation(hidden_node).data()[0], 0.0f);  // clamp engaged
+    EXPECT_FLOAT_EQ(clean_output.data()[0], 0.5f);
+
+    Tensor corrupted_output = ctx.forward_pass(corrupted_input);
+    ActivationSnapshot corrupted = ctx.activation_snapshot();
+    EXPECT_FLOAT_EQ(corrupted.activation(pre_relu_node).data()[0], 5.0f);
+    EXPECT_FLOAT_EQ(corrupted.activation(hidden_node).data()[0], 5.0f);  // clamp not engaged
+    EXPECT_FLOAT_EQ(corrupted_output.data()[0], 10.5f);
+
+    Tensor patched_output = ctx.forward_pass_with_patch(clean_input, hidden_node, corrupted.activation(hidden_node));
+    EXPECT_FLOAT_EQ(patched_output.data()[0], 10.5f);
+    // Upstream untouched: the clean run's pre-ReLU value is still its own negative value.
+    EXPECT_FLOAT_EQ(ctx.activation(pre_relu_node).data()[0], -0.25f);
+}
+
+// The decisive check that the patch substitutes the *post*-ReLU value rather than feeding
+// it back through ReLU a second time: patch the post-ReLU node with a NEGATIVE value, which
+// no ReLU output can ever be.
+//   patched h = -3.0 -> y = -3.0*2 + 0.5 = -5.5
+// If ReLU were (incorrectly) re-applied to the patched value, h would clamp to 0.0 and y
+// would be 0.5 -- a value this test explicitly rejects.
+TEST_F(ExplainerContextTest, ForwardPassWithPatchDoesNotReapplyReluToThePatchedValue) {
+    LinearModule linear1(1, 1, &backend);
+    linear1.set_weight({kW1});
+    linear1.set_bias({kB1});
+    ReluModule relu(&backend);
+    LinearModule linear2(1, 1, &backend);
+    linear2.set_weight({kW2});
+    linear2.set_bias({kB2});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({1, 1}), &backend, {2.0f});
+    (void)ctx.forward_pass(input);
+    const NodeId hidden_node = ctx.graph().topological_order()[2];
+
+    Tensor negative_patch(Shape({1, 1}), &backend, {-3.0f});
+    Tensor patched_output = ctx.forward_pass_with_patch(input, hidden_node, negative_patch);
+
+    EXPECT_FLOAT_EQ(patched_output.data()[0], -5.5f);
+    EXPECT_NE(patched_output.data()[0], 0.5f);  // what a re-applied ReLU would have produced
+    EXPECT_FLOAT_EQ(ctx.activation(hidden_node).data()[0], -3.0f);
+}
+
 }  // namespace
 }  // namespace exai
