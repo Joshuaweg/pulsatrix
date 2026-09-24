@@ -1,12 +1,16 @@
 #include <gtest/gtest.h>
 
+#include <cmath>
 #include <stdexcept>
+#include <vector>
 
 #include "exai/activation_snapshot.hpp"
+#include "exai/adam_optimizer.hpp"
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
 #include "exai/linear_module.hpp"
 #include "exai/relu_module.hpp"
+#include "exai/sparse_autoencoder.hpp"
 
 // ExplainerContext (charter Part 2 SS2) is what every explainer gets, regardless of type --
 // graph-native explainers (Missions 2-3) use graph()/backward_pass(); this mission ships
@@ -706,6 +710,117 @@ TEST_F(ExplainerContextTest, ForwardPassWithPatchDoesNotReapplyReluToThePatchedV
     EXPECT_FLOAT_EQ(patched_output.data()[0], -5.5f);
     EXPECT_NE(patched_output.data()[0], 0.5f);  // what a re-applied ReLU would have produced
     EXPECT_FLOAT_EQ(ctx.activation(hidden_node).data()[0], -3.0f);
+}
+
+// --- SAE-reconstruction patching, end to end ---------------------------------------
+//
+// campaign_exai_dl_library_mechanistic_interpretability, Phase 4 Mission 3 (follow-up
+// remediation 2). SparseAutoencoder::reconstruct() (Phase 4 Mission 2) and
+// forward_pass_with_patch() (Phase 4 Mission 1) were each proven correct in isolation;
+// nothing proved they compose, which is exactly what Phase 4's exit gate claims ("swap a
+// cached activation ... or substitute an SAE reconstruction ... and re-run the downstream
+// computation"). This is that proof: real network -> real cached hidden activation -> SAE
+// trained on activations from that same layer -> reconstruction patched back in.
+//
+// Deliberately *not* a hand-derived exact-value test, unlike the three above. Those fix
+// every weight to a round number precisely so the expected output can be computed on paper;
+// here the patched value comes out of a trained SAE, so the only honest assertions are
+// structural (shape, finiteness) and directional. The directional one is the load-bearing
+// check: a lossy-but-real reconstruction, patched in, must move the output *less* than a
+// garbage patch (an all-zero tensor of the same shape) does. That distinguishes "the
+// composition transports real information" from "the composition merely doesn't crash" --
+// a test that only asserted no-throw would pass just as happily if reconstruct() returned
+// noise.
+TEST_F(ExplainerContextTest, SaeReconstructionPatchedIntoAForwardPassStaysCloserThanAGarbagePatch) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.9f, -0.4f, 0.2f, 0.7f, -0.3f, 0.8f, 0.5f, -0.6f, 0.4f, 0.1f, -0.7f, 0.3f});
+    linear1.set_bias({0.1f, -0.2f, 0.3f, 0.0f});
+    ReluModule relu(&backend);
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({0.5f, -0.2f, -0.4f, 0.6f, 0.3f, 0.9f, 0.8f, -0.1f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+
+    // A small set of related inputs -- the SAE's training distribution is the hidden-layer
+    // activations this network actually produces, not synthetic data.
+    const std::vector<std::vector<float>> inputs = {{1.00f, 0.50f, -0.30f},  {0.90f, 0.60f, -0.20f},
+                                                    {1.10f, 0.40f, -0.35f},  {1.05f, 0.55f, -0.25f},
+                                                    {0.95f, 0.45f, -0.30f},  {1.00f, 0.50f, -0.28f}};
+
+    // Probe input: the run whose hidden activation is reconstructed and patched back in.
+    Tensor probe_input(Shape({1, 3}), &backend, inputs[0]);
+    Tensor unpatched_output = ctx.forward_pass(probe_input);
+    ASSERT_EQ(unpatched_output.shape(), Shape({1, 2}));
+
+    ASSERT_EQ(ctx.graph().topological_order().size(), 4u);
+    const NodeId hidden_node = ctx.graph().topological_order()[2];  // post-ReLU
+    const Tensor probe_activation(ctx.activation(hidden_node));
+    ASSERT_EQ(probe_activation.shape(), Shape({1, 4}));
+
+    // Collect one hidden activation per input into a single (N, 4) training batch. The
+    // copies matter: activation() reads a cache the next forward_pass() overwrites.
+    std::vector<float> batch_data;
+    for (const std::vector<float>& values : inputs) {
+        Tensor in(Shape({1, 3}), &backend, values);
+        (void)ctx.forward_pass(in);
+        const Tensor& hidden = ctx.activation(hidden_node);
+        for (int64_t i = 0; i < hidden.numel(); ++i) {
+            batch_data.push_back(hidden.data()[i]);
+        }
+    }
+    const int64_t batch_n = static_cast<int64_t>(inputs.size());
+    Tensor activation_batch(Shape({batch_n, 4}), &backend, batch_data);
+
+    // Overcomplete SAE sized to the hidden layer's width, trained briefly on those
+    // activations. Short training on purpose: the reconstruction should be lossy -- a
+    // perfect one would make the comparison below trivially true for the wrong reason.
+    SparseAutoencoder sae(/*dim=*/4, /*hidden_dim=*/16, /*l1_lambda=*/0.001f, &backend, /*seed=*/7);
+    AdamOptimizer optimizer(0.05f, &backend);
+    for (int epoch = 0; epoch < 200; ++epoch) {
+        (void)sae.train_step(activation_batch, optimizer);
+    }
+
+    const Tensor reconstruction = sae.reconstruct(probe_activation);
+    ASSERT_EQ(reconstruction.shape(), probe_activation.shape());
+    // Lossy, not bit-identical -- otherwise the comparison below is not testing anything.
+    bool differs_from_the_real_activation = false;
+    for (int64_t i = 0; i < reconstruction.numel(); ++i) {
+        ASSERT_TRUE(std::isfinite(reconstruction.data()[i]));
+        if (reconstruction.data()[i] != probe_activation.data()[i]) {
+            differs_from_the_real_activation = true;
+        }
+    }
+    EXPECT_TRUE(differs_from_the_real_activation);
+
+    // The composition itself: reconstruct -> patch -> re-run downstream.
+    Tensor reconstruction_patched_output = ctx.forward_pass_with_patch(probe_input, hidden_node, reconstruction);
+    EXPECT_EQ(reconstruction_patched_output.shape(), Shape({1, 2}));
+    for (int64_t i = 0; i < reconstruction_patched_output.numel(); ++i) {
+        EXPECT_TRUE(std::isfinite(reconstruction_patched_output.data()[i]));
+    }
+
+    // The control: a same-shaped patch carrying no information about this activation.
+    Tensor garbage_patch(probe_activation.shape(), &backend);
+    garbage_patch.fill(0.0f);
+    Tensor garbage_patched_output = ctx.forward_pass_with_patch(probe_input, hidden_node, garbage_patch);
+    ASSERT_EQ(garbage_patched_output.shape(), Shape({1, 2}));
+
+    float reconstruction_distance = 0.0f;
+    float garbage_distance = 0.0f;
+    for (int64_t i = 0; i < unpatched_output.numel(); ++i) {
+        const float reconstruction_diff = reconstruction_patched_output.data()[i] - unpatched_output.data()[i];
+        const float garbage_diff = garbage_patched_output.data()[i] - unpatched_output.data()[i];
+        reconstruction_distance += reconstruction_diff * reconstruction_diff;
+        garbage_distance += garbage_diff * garbage_diff;
+    }
+
+    EXPECT_LT(reconstruction_distance, garbage_distance)
+        << "reconstruction-patched distance " << reconstruction_distance << " vs. garbage-patched "
+        << garbage_distance;
+    // The reconstruction is lossy, so it must not land exactly on the unpatched output
+    // either -- the assertion above is a *bound*, not an equality in disguise.
+    EXPECT_GT(reconstruction_distance, 0.0f);
 }
 
 }  // namespace
