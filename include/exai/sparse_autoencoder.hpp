@@ -180,6 +180,30 @@ public:
     }
 
     /**
+     * @brief The SAE's reconstruction of a batch -- the encoder->ReLU->decoder forward path,
+     *        forward-only: no loss, no backward, no parameter update.
+     * @param input_batch Shape (N, dim), N > 0.
+     * @return Shape (N, dim) -- x_hat, the same tensor reconstruction_error() scores against
+     *         the input. Exposed as a value rather than only as a scalar error because the
+     *         reconstruction *itself* is what an activation-patching experiment substitutes
+     *         (campaign_exai_dl_library_mechanistic_interpretability, Phase 4's exit gate);
+     *         before this method the only way to obtain one was train_step(), which also
+     *         mutates the parameters -- an observation that changes what it observes.
+     * @throws std::invalid_argument on any malformed batch -- see validate_batch().
+     * @note `const` for the same reason reconstruction_error() is -- see its note. Third
+     *       instance of the mutable-members-for-a-const-scoring-path pattern.
+     * @note No new computation: reconstruction_error() is defined in terms of *this* method,
+     *       so the two can never report a reconstruction and an error computed from
+     *       different forward paths. Pinned by
+     *       ReconstructOutputAgreesWithReconstructionErrorsInternalComputation, which
+     *       recomputes the MSE by hand from this method's output and compares.
+     */
+    [[nodiscard]] Tensor reconstruct(const Tensor& input_batch) const {
+        validate_batch(input_batch, "SparseAutoencoder::reconstruct");
+        return decoder_.forward(encode(input_batch));
+    }
+
+    /**
      * @brief Mean squared reconstruction error over the batch -- forward-only, no backward,
      *        no parameter update.
      * @param input_batch Shape (N, dim), N > 0.
@@ -266,11 +290,9 @@ public:
     [[nodiscard]] const LinearModule& decoder() const { return decoder_; }
 
 private:
-    /** @brief Post-ReLU hidden activation for a batch. Forward-only. */
+    /** @brief Post-ReLU hidden activation for a batch. Forward-only, unvalidated (callers
+     *         are this class's own already-validated entry points). */
     [[nodiscard]] Tensor encode(const Tensor& input_batch) const { return relu_.forward(encoder_.forward(input_batch)); }
-
-    /** @brief Reconstruction for a batch. Forward-only. */
-    [[nodiscard]] Tensor reconstruct(const Tensor& input_batch) const { return decoder_.forward(encode(input_batch)); }
 
     /** @brief Fills one layer's weight and bias with uniform values in [-scale, scale). */
     static void init_layer(LinearModule& layer, std::mt19937& rng, float scale) {
