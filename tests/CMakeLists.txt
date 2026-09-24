@@ -72,6 +72,7 @@ add_executable(exai_tests
     explainer_context_test.cpp
     activation_snapshot_test.cpp
     linear_probe_test.cpp
+    sparse_autoencoder_test.cpp
     saliency_test.cpp
     integrated_gradients_test.cpp
     flatten_module_test.cpp
