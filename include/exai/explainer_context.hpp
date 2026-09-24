@@ -112,6 +112,15 @@ public:
      * @note Single-node patch per call by design (campaign
      *       campaign_exai_dl_library_mechanistic_interpretability, Phase 4 Mission 1);
      *       multi-node patching would be an explicit extension, not assumed here.
+     * @note backward_pass()'s guard against this method covers Autograd-based gradients
+     *       only. ExplainerContext exposes no LRP/propagate_relevance traversal of its own
+     *       to guard -- Module::propagate_relevance() is invoked directly by explainer code
+     *       outside this class (module.hpp), not through ExplainerContext. If a future
+     *       explainer manually chains propagate_relevance() calls across modules using
+     *       state left behind by a patched forward pass, the same causal-inconsistency
+     *       hazard backward_pass() guards against applies there too, unguarded -- that
+     *       explainer's own author is responsible for it, the same way any code bypassing
+     *       ExplainerContext's own accessors already is.
      */
     Tensor forward_pass_with_patch(const Tensor& input, NodeId patch_node_id, const Tensor& patch_value) {
         last_forward_was_patched_ = true;
