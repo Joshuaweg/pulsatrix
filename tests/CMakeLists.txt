@@ -70,6 +70,7 @@ add_executable(exai_tests
     xor_training_example_test.cpp
     attribution_test.cpp
     explainer_context_test.cpp
+    activation_snapshot_test.cpp
     saliency_test.cpp
     integrated_gradients_test.cpp
     flatten_module_test.cpp
