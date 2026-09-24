@@ -823,5 +823,199 @@ TEST_F(ExplainerContextTest, SaeReconstructionPatchedIntoAForwardPassStaysCloser
     EXPECT_GT(reconstruction_distance, 0.0f);
 }
 
+// --- ExplainerContext::logit_lens() (Phase 5 Mission 1, Objective 1) ----------------
+//
+// The logit lens: run the chain's *final* module (its read-out head) directly on an
+// intermediate cached activation, answering "what would the network predict if this
+// layer's representation were already final?" Data only -- a raw Tensor, no plotting.
+
+// The free, exact correctness oracle. The node immediately before the final module is,
+// by construction, exactly the input the final module actually received during the real
+// forward_pass(). So logit_lens() there is not an approximation of the real output -- it
+// is literally the same computation forward_pass() already performed, which makes this an
+// element-wise EXPECT_FLOAT_EQ with no tolerance, not a bound.
+TEST_F(ExplainerContextTest, LogitLensAtTheNodeBeforeTheFinalModuleReproducesTheRealOutputExactly) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
+    linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+
+    ReluModule relu(&backend);
+
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+
+    Tensor real_output = ctx.forward_pass(input);
+    const NodeId node_before_head = ctx.graph().topological_order()[2];  // post-ReLU, the head's input
+
+    Tensor lens = ctx.logit_lens(node_before_head);
+
+    ASSERT_EQ(lens.shape(), real_output.shape());
+    for (int64_t i = 0; i < real_output.numel(); ++i) {
+        EXPECT_FLOAT_EQ(lens.data()[i], real_output.data()[i]) << "index " << i;
+    }
+}
+
+// Degenerate single-module chain: the "node before the final module" is the input node
+// itself, and the same exact-oracle identity must hold there.
+TEST_F(ExplainerContextTest, LogitLensAtTheInputNodeOfASingleModuleChainReproducesTheRealOutputExactly) {
+    LinearModule linear(2, 2, &backend);
+    linear.set_weight({1.0f, 2.0f, 3.0f, 4.0f});
+    linear.set_bias({0.5f, -0.5f});
+
+    ExplainerContext ctx({&linear});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
+
+    Tensor real_output = ctx.forward_pass(input);
+    Tensor lens = ctx.logit_lens(ctx.graph().topological_order()[0]);
+
+    ASSERT_EQ(lens.shape(), real_output.shape());
+    for (int64_t i = 0; i < real_output.numel(); ++i) {
+        EXPECT_FLOAT_EQ(lens.data()[i], real_output.data()[i]) << "index " << i;
+    }
+}
+
+// The meaningful-divergence case, on a constant-hidden-width chain -- the structural
+// analogue of a transformer's fixed-width residual stream with an unembedding head, which
+// is what makes the logit lens interpretable at *every* depth rather than only at the end.
+//
+//   Linear1(2,2): W1 = [[1, 0], [0, 2]],      b1 = [ 0.5, -0.5]
+//   Relu
+//   Linear2(2,2): W2 = [[2, 0], [0, 1]],      b2 = [-1.0,  1.0]
+//   Relu
+//   Linear3(2,2): W3 = [[1, -1], [0.5, 2]],   b3 = [ 0.25, -0.25]    <- the read-out head
+// (weight layout is (in_features, out_features), row-major: y_j = sum_i x_i * W[i][j] + b_j)
+//
+// Hand-derived, before the test was run, for x = [1.0, 2.0]:
+//   h1_pre = [1*1 + 2*0 + 0.5,   1*0 + 2*2 - 0.5]   = [1.5, 3.5]
+//   h1     = relu(h1_pre)                            = [1.5, 3.5]   (no clamp)
+//   h2_pre = [1.5*2 + 3.5*0 - 1,  1.5*0 + 3.5*1 + 1] = [2.0, 4.5]
+//   h2     = relu(h2_pre)                            = [2.0, 4.5]   (no clamp)
+//   y      = [2.0*1 + 4.5*0.5 + 0.25,  2.0*-1 + 4.5*2 - 0.25]       = [4.50, 6.75]
+// Applying the head at earlier depths:
+//   lens(input = [1.0, 2.0]) = [1*1 + 2*0.5 + 0.25,  1*-1 + 2*2 - 0.25]     = [2.25, 2.75]
+//   lens(h1    = [1.5, 3.5]) = [1.5*1 + 3.5*0.5 + 0.25, 1.5*-1 + 3.5*2 - 0.25] = [3.50, 5.25]
+//   lens(h2    = [2.0, 4.5]) = the real output                                  = [4.50, 6.75]
+// Three genuinely different read-outs at three depths: the lens shows the prediction
+// *moving* through the network, it does not echo the final answer everywhere.
+TEST_F(ExplainerContextTest, LogitLensAtEarlierHiddenNodesDivergesFromTheRealOutputByHandDerivedAmounts) {
+    LinearModule linear1(2, 2, &backend);
+    linear1.set_weight({1.0f, 0.0f, 0.0f, 2.0f});
+    linear1.set_bias({0.5f, -0.5f});
+    ReluModule relu1(&backend);
+    LinearModule linear2(2, 2, &backend);
+    linear2.set_weight({2.0f, 0.0f, 0.0f, 1.0f});
+    linear2.set_bias({-1.0f, 1.0f});
+    ReluModule relu2(&backend);
+    LinearModule head(2, 2, &backend);
+    head.set_weight({1.0f, -1.0f, 0.5f, 2.0f});
+    head.set_bias({0.25f, -0.25f});
+
+    ExplainerContext ctx({&linear1, &relu1, &linear2, &relu2, &head});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 2.0f});
+
+    Tensor real_output = ctx.forward_pass(input);
+    const std::vector<NodeId> nodes = ctx.graph().topological_order();
+    ASSERT_EQ(nodes.size(), 6u);
+    const NodeId input_node = nodes[0];
+    const NodeId h1_node = nodes[2];  // post-relu1
+    const NodeId h2_node = nodes[4];  // post-relu2, the head's actual input
+
+    // The forward pass itself matches the hand derivation.
+    EXPECT_FLOAT_EQ(ctx.activation(h1_node).data()[0], 1.5f);
+    EXPECT_FLOAT_EQ(ctx.activation(h1_node).data()[1], 3.5f);
+    EXPECT_FLOAT_EQ(ctx.activation(h2_node).data()[0], 2.0f);
+    EXPECT_FLOAT_EQ(ctx.activation(h2_node).data()[1], 4.5f);
+    EXPECT_FLOAT_EQ(real_output.data()[0], 4.5f);
+    EXPECT_FLOAT_EQ(real_output.data()[1], 6.75f);
+
+    Tensor lens_input = ctx.logit_lens(input_node);
+    EXPECT_FLOAT_EQ(lens_input.data()[0], 2.25f);
+    EXPECT_FLOAT_EQ(lens_input.data()[1], 2.75f);
+
+    Tensor lens_h1 = ctx.logit_lens(h1_node);
+    EXPECT_FLOAT_EQ(lens_h1.data()[0], 3.5f);
+    EXPECT_FLOAT_EQ(lens_h1.data()[1], 5.25f);
+
+    Tensor lens_h2 = ctx.logit_lens(h2_node);
+    EXPECT_FLOAT_EQ(lens_h2.data()[0], 4.5f);
+    EXPECT_FLOAT_EQ(lens_h2.data()[1], 6.75f);
+
+    // ...and those three read-outs are actually distinct, which is the whole point.
+    EXPECT_NE(lens_input.data()[0], lens_h1.data()[0]);
+    EXPECT_NE(lens_h1.data()[0], lens_h2.data()[0]);
+    EXPECT_NE(lens_input.data()[1], lens_h1.data()[1]);
+    EXPECT_NE(lens_h1.data()[1], lens_h2.data()[1]);
+}
+
+// Adversarial (external boundary -- node_id is caller-supplied): the probed node's cached
+// activation shape must match what the final module actually consumed. A shape-changing
+// first layer makes the raw input node incompatible with the head, which is a real, expected
+// failure mode of this technique, not an edge case to paper over. Checked up front, so the
+// caller gets a message naming the shape mismatch rather than a confusing failure from deep
+// inside the head's own gemm. Throw, not EXAI_ASSERT -- identical in Debug and Release.
+TEST_F(ExplainerContextTest, LogitLensThrowsOnAShapeIncompatibleNode) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
+    linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+    ReluModule relu(&backend);
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+
+    Tensor reference_output = ctx.forward_pass(input);
+    const NodeId input_node = ctx.graph().topological_order()[0];  // shape (1, 3); head wants (1, 4)
+
+    EXPECT_THROW((void)ctx.logit_lens(input_node), std::invalid_argument);
+
+    // Exception safety, mirroring forward_pass_with_patch's established pattern: the failed
+    // call must leave the context fully usable -- a subsequent normal forward_pass() and a
+    // subsequent valid logit_lens() both still produce correct results.
+    Tensor after = ctx.forward_pass(input);
+    EXPECT_EQ(ctx.graph().node_count(), 3u);
+    ASSERT_EQ(after.numel(), reference_output.numel());
+    for (int64_t i = 0; i < reference_output.numel(); ++i) {
+        EXPECT_FLOAT_EQ(after.data()[i], reference_output.data()[i]) << "index " << i;
+    }
+
+    Tensor lens = ctx.logit_lens(ctx.graph().topological_order()[2]);
+    ASSERT_EQ(lens.numel(), after.numel());
+    for (int64_t i = 0; i < after.numel(); ++i) {
+        EXPECT_FLOAT_EQ(lens.data()[i], after.data()[i]) << "index " << i;
+    }
+}
+
+// Adversarial (external boundary): a node id no forward pass ever produced, and the
+// called-before-any-forward-pass case. Both are well-defined throws rather than a
+// Debug-only EXAI_ASSERT on the activation cache (which would be UB in Release).
+TEST_F(ExplainerContextTest, LogitLensThrowsOnAnUnknownNodeIdOrBeforeAnyForwardPass) {
+    LinearModule linear(2, 2, &backend);
+    linear.set_weight({1.0f, 0.0f, 0.0f, 1.0f});
+    linear.set_bias({0.0f, 0.0f});
+
+    ExplainerContext ctx({&linear});
+
+    // No forward pass has run: nothing is cached at any node.
+    EXPECT_THROW((void)ctx.logit_lens(0), std::invalid_argument);
+
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 2.0f});
+    (void)ctx.forward_pass(input);
+
+    // Valid ids here are 0 (input) and 1 (the single module's output).
+    EXPECT_THROW((void)ctx.logit_lens(2), std::invalid_argument);
+    EXPECT_THROW((void)ctx.logit_lens(99), std::invalid_argument);
+
+    // Still usable afterwards.
+    Tensor lens = ctx.logit_lens(0);
+    EXPECT_FLOAT_EQ(lens.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(lens.data()[1], 2.0f);
+}
+
 }  // namespace
 }  // namespace exai
