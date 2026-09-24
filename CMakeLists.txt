@@ -60,6 +60,8 @@ add_library(exai_core
     src/policy_gradient_loss.cpp
     src/gae.cpp
     src/ppo_clipped_loss.cpp
+    src/tanh_gaussian_policy.cpp
+    src/polyak_update.cpp
     src/mse_loss.cpp
     src/cross_entropy_loss.cpp
     src/kl_divergence_loss.cpp
