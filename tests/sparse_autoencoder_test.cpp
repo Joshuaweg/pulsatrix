@@ -245,6 +245,110 @@ TEST_F(SparseAutoencoderTest, ScoringMethodsDoNotChangeTheParameters) {
 }
 
 // ---------------------------------------------------------------------------------------
+// reconstruct() -- the forward-only reconstruction accessor (Phase 4 Mission 2).
+//
+// reconstruction_error() reports a *scalar* against the input, which is enough to score an
+// SAE but not enough to use one: the campaign's Phase 4 exit-gate wording ("substitute an
+// SAE reconstruction" into a patched forward pass) needs the reconstruction Tensor itself.
+// Before this method the only way to obtain one was train_step(), which also mutates the
+// parameters -- an observation pass that changes what it observes.
+// ---------------------------------------------------------------------------------------
+
+TEST_F(SparseAutoencoderTest, ReconstructReturnsATensorShapedLikeItsInput) {
+    SparseAutoencoder sae(2, 5, 0.01f, &backend);
+    Tensor batch(Shape({3, 2}), &backend, {1.0f, -2.0f, 3.0f, 4.0f, -5.0f, -6.0f});
+
+    EXPECT_EQ(sae.reconstruct(batch).shape(), Shape({3, 2}));
+}
+
+// Same hand-computed fixture as ReconstructionErrorMatchesAHandComputedValue above, read one
+// level earlier: that test asserts the scalar 2; this one asserts the (1, 0) it is computed
+// from, so a reconstruction that happened to be wrong in a norm-preserving way could not
+// pass both.
+TEST_F(SparseAutoencoderTest, ReconstructMatchesAHandComputedValue) {
+    SparseAutoencoder sae(2, 3, 0.0f, &backend);
+    sae.encoder().set_weight({1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f});
+    sae.encoder().set_bias({0.0f, 0.0f, 0.0f});
+    sae.decoder().set_weight({1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f});
+    sae.decoder().set_bias({0.0f, 0.0f});
+    Tensor batch(Shape({1, 2}), &backend, {1.0f, -2.0f});
+
+    const Tensor reconstruction = sae.reconstruct(batch);
+
+    ASSERT_EQ(reconstruction.numel(), 2);
+    EXPECT_FLOAT_EQ(reconstruction.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(reconstruction.data()[1], 0.0f);
+}
+
+// Cross-check, not a duplicate assertion of one code path: the MSE is recomputed *here*,
+// by hand, from reconstruct()'s returned Tensor, and compared against the number
+// reconstruction_error() arrives at internally. If reconstruct() ever diverged from the
+// forward path reconstruction_error() scores -- a different ReLU placement, a stale cache, a
+// missing bias -- the two numbers would separate and this test would catch it. Run on an
+// un-hand-set, seeded SAE and a multi-example batch so the agreement isn't an artifact of a
+// degenerate identity-weight fixture.
+TEST_F(SparseAutoencoderTest, ReconstructOutputAgreesWithReconstructionErrorsInternalComputation) {
+    SparseAutoencoder sae(2, 6, 0.01f, &backend, /*seed=*/7);
+    Tensor batch(Shape({3, 2}), &backend, {1.0f, -2.0f, 3.0f, 4.0f, -5.0f, -6.0f});
+
+    const Tensor reconstruction = sae.reconstruct(batch);
+    ASSERT_EQ(reconstruction.numel(), batch.numel());
+
+    float sum_squared = 0.0f;
+    for (int64_t i = 0; i < reconstruction.numel(); ++i) {
+        const float diff = reconstruction.data()[i] - batch.data()[i];
+        sum_squared += diff * diff;
+    }
+    const float hand_computed_mse = sum_squared / static_cast<float>(reconstruction.numel());
+
+    EXPECT_FLOAT_EQ(hand_computed_mse, sae.reconstruction_error(batch));
+}
+
+// reconstruct() must reflect *learned* state, not be a fixed transform of its input: a
+// trained instance's reconstruction has to sit measurably closer to the data than a freshly
+// constructed one's, on the same data. Both start from the same seed, so the only difference
+// between them is the training.
+TEST_F(SparseAutoencoderTest, ReconstructIsCloserToTheInputAfterTrainingThanForAnUntrainedInstance) {
+    Tensor batch(Shape({2, 2}), &backend, {1.0f, -1.0f, 0.5f, 2.0f});
+    const SparseAutoencoder untrained(2, 8, 0.0f, &backend, /*seed=*/5);
+    SparseAutoencoder trained(2, 8, 0.0f, &backend, /*seed=*/5);
+    AdamOptimizer optimizer(0.05f, &backend);
+    for (int i = 0; i < 200; ++i) {
+        (void)trained.train_step(batch, optimizer);
+    }
+
+    const Tensor untrained_reconstruction = untrained.reconstruct(batch);
+    const Tensor trained_reconstruction = trained.reconstruct(batch);
+
+    float untrained_sse = 0.0f;
+    float trained_sse = 0.0f;
+    for (int64_t i = 0; i < batch.numel(); ++i) {
+        const float untrained_diff = untrained_reconstruction.data()[i] - batch.data()[i];
+        const float trained_diff = trained_reconstruction.data()[i] - batch.data()[i];
+        untrained_sse += untrained_diff * untrained_diff;
+        trained_sse += trained_diff * trained_diff;
+    }
+
+    EXPECT_LT(trained_sse, untrained_sse);
+}
+
+// Forward-only, like the other two scoring methods: observing a reconstruction must not
+// disturb the parameters that produced it. (This is what the `const` on the method claims;
+// this test is what makes the claim checkable rather than a comment.)
+TEST_F(SparseAutoencoderTest, ReconstructDoesNotChangeTheParameters) {
+    SparseAutoencoder sae(2, 4, 0.01f, &backend);
+    Tensor batch(Shape({2, 2}), &backend, {1.0f, -1.0f, 0.5f, 2.0f});
+    const std::vector<float> before(sae.encoder().weight().data(),
+                                    sae.encoder().weight().data() + sae.encoder().weight().numel());
+
+    (void)sae.reconstruct(batch);
+
+    for (size_t i = 0; i < before.size(); ++i) {
+        EXPECT_FLOAT_EQ(sae.encoder().weight()[static_cast<int64_t>(i)], before[i]);
+    }
+}
+
+// ---------------------------------------------------------------------------------------
 // Adversarial / boundary conditions.
 //
 // Every SparseAutoencoder entry point is classified **external boundary -> throw** per
@@ -336,6 +440,29 @@ TEST_F(SparseAutoencoderTest, TrainStepThrowsOnARankOneBatch) {
     Tensor batch(Shape({2}), &backend);
 
     EXPECT_THROW((void)sae.train_step(batch, optimizer), std::invalid_argument);
+}
+
+// reconstruct() is a public entry point like the other two, and validated at the same
+// boundary for the same reason -- a caller-assembled batch, ultimately from Python.
+TEST_F(SparseAutoencoderTest, ReconstructThrowsWhenTheBatchWidthDiffersFromDim) {
+    SparseAutoencoder sae(2, 4, 0.01f, &backend);
+    Tensor batch(Shape({2, 5}), &backend);
+
+    EXPECT_THROW((void)sae.reconstruct(batch), std::invalid_argument);
+}
+
+TEST_F(SparseAutoencoderTest, ReconstructThrowsOnAnEmptyBatch) {
+    SparseAutoencoder sae(2, 4, 0.01f, &backend);
+    Tensor batch(Shape({0, 2}), &backend);
+
+    EXPECT_THROW((void)sae.reconstruct(batch), std::invalid_argument);
+}
+
+TEST_F(SparseAutoencoderTest, ReconstructThrowsOnARankOneBatch) {
+    SparseAutoencoder sae(2, 4, 0.01f, &backend);
+    Tensor batch(Shape({2}), &backend);
+
+    EXPECT_THROW((void)sae.reconstruct(batch), std::invalid_argument);
 }
 
 TEST_F(SparseAutoencoderTest, ReconstructionErrorThrowsOnARankThreeBatch) {
