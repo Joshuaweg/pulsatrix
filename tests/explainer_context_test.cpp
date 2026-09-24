@@ -328,5 +328,166 @@ TEST_F(ExplainerContextTest, ActivationSnapshotBeforeAnyForwardPassIsEmpty) {
     EXPECT_TRUE(snapshot.node_ids().empty());
 }
 
+// --- ExplainerContext::forward_pass_with_patch() ---------------------------------
+// campaign_exai_dl_library_mechanistic_interpretability, Phase 4 Mission 1: the causal
+// intervention primitive. Runs the same forward loop as forward_pass(), but substitutes
+// patch_value for the natural output of the module producing patch_node_id -- everything
+// downstream computes from the substituted value, everything upstream is untouched.
+// Node ids are assigned deterministically: 0 = input, then one per module in order.
+
+TEST_F(ExplainerContextTest, ForwardPassWithPatchLeavesUpstreamActivationsUntouched) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
+    linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+
+    ReluModule relu(&backend);
+
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+
+    (void)ctx.forward_pass(input);
+    ActivationSnapshot clean = ctx.activation_snapshot();
+    ASSERT_EQ(clean.node_ids().size(), 4u);
+    const NodeId input_node = clean.node_ids()[0];
+    const NodeId h1_node = clean.node_ids()[1];   // linear1 output
+    const NodeId h2_node = clean.node_ids()[2];   // relu output (the patch target)
+    const NodeId out_node = clean.node_ids()[3];  // linear2 output
+
+    Tensor patch(Shape({1, 4}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    Tensor patched_output = ctx.forward_pass_with_patch(input, h2_node, patch);
+
+    // Upstream of the patch point: bit-identical to the unpatched run. A forward-only
+    // computation cannot be influenced downstream-to-upstream -- confirmed, not assumed.
+    for (NodeId id : {input_node, h1_node}) {
+        const Tensor& before = clean.activation(id);
+        const Tensor& after = ctx.activation(id);
+        ASSERT_EQ(after.numel(), before.numel()) << "numel mismatch at node " << id;
+        for (int64_t i = 0; i < before.numel(); ++i) {
+            EXPECT_FLOAT_EQ(after.data()[i], before.data()[i]) << "node " << id << " index " << i;
+        }
+    }
+
+    // The patched node caches the substituted value, not its natural output.
+    const Tensor& cached_patch = ctx.activation(h2_node);
+    ASSERT_EQ(cached_patch.numel(), 4);
+    for (int64_t i = 0; i < 4; ++i) {
+        EXPECT_FLOAT_EQ(cached_patch.data()[i], patch.data()[i]) << "index " << i;
+    }
+
+    // Downstream: linear2 applied to the patched value, not to the natural relu output.
+    LinearModule reference(4, 2, &backend);
+    reference.set_weight({0.5f, -0.3f, 0.2f, 0.4f, -0.1f, 0.6f, 0.3f, -0.5f});
+    reference.set_bias({0.05f, -0.05f});
+    Tensor expected = reference.forward(patch);
+    ASSERT_EQ(patched_output.numel(), expected.numel());
+    for (int64_t i = 0; i < expected.numel(); ++i) {
+        EXPECT_FLOAT_EQ(patched_output.data()[i], expected.data()[i]) << "index " << i;
+        EXPECT_FLOAT_EQ(ctx.activation(out_node).data()[i], expected.data()[i]) << "index " << i;
+    }
+}
+
+// Degenerate-but-coherent base case: patching the input node is just running the chain on
+// a different input. Explicitly supported, not an error (mission Exit Gate bullet 2).
+TEST_F(ExplainerContextTest, ForwardPassWithPatchAtInputNodeMatchesForwardPassOnThatInput) {
+    LinearModule linear1(2, 3, &backend);
+    linear1.set_weight({0.5f, -0.25f, 1.5f, 2.0f, 0.75f, -1.0f});
+    linear1.set_bias({0.1f, 0.2f, -0.3f});
+    ReluModule relu(&backend);
+
+    ExplainerContext ctx({&linear1, &relu});
+    Tensor original(Shape({1, 2}), &backend, {1.0f, -2.0f});
+    Tensor replacement(Shape({1, 2}), &backend, {3.0f, 0.5f});
+
+    Tensor reference_output = ctx.forward_pass(replacement);
+
+    std::vector<NodeId> order = ctx.graph().topological_order();
+    const NodeId input_node = order[0];
+
+    Tensor patched_output = ctx.forward_pass_with_patch(original, input_node, replacement);
+
+    ASSERT_EQ(patched_output.numel(), reference_output.numel());
+    for (int64_t i = 0; i < reference_output.numel(); ++i) {
+        EXPECT_FLOAT_EQ(patched_output.data()[i], reference_output.data()[i]) << "index " << i;
+    }
+    // The cached input activation is the replacement, not the original.
+    EXPECT_FLOAT_EQ(ctx.activation(input_node).data()[0], 3.0f);
+    EXPECT_FLOAT_EQ(ctx.activation(input_node).data()[1], 0.5f);
+}
+
+// Degenerate at the other end: nothing runs after the output node, so the patched value
+// is returned verbatim.
+TEST_F(ExplainerContextTest, ForwardPassWithPatchAtOutputNodeReturnsPatchValueExactly) {
+    LinearModule linear(2, 2, &backend);
+    linear.set_weight({1.0f, 0.0f, 0.0f, 1.0f});
+    linear.set_bias({0.0f, 0.0f});
+
+    ExplainerContext ctx({&linear});
+    Tensor input(Shape({1, 2}), &backend, {7.0f, 9.0f});
+    (void)ctx.forward_pass(input);
+    const NodeId output_node = ctx.graph().topological_order().back();
+
+    Tensor patch(Shape({1, 2}), &backend, {-1.5f, 4.25f});
+    Tensor patched_output = ctx.forward_pass_with_patch(input, output_node, patch);
+
+    ASSERT_EQ(patched_output.numel(), 2);
+    EXPECT_FLOAT_EQ(patched_output.data()[0], -1.5f);
+    EXPECT_FLOAT_EQ(patched_output.data()[1], 4.25f);
+    EXPECT_FLOAT_EQ(ctx.activation(output_node).data()[0], -1.5f);
+    EXPECT_FLOAT_EQ(ctx.activation(output_node).data()[1], 4.25f);
+}
+
+// Adversarial (external boundary -- patch_value is caller-supplied): a shape mismatch
+// against the target node's natural output shape throws at the patch site, rather than
+// failing confusingly deep inside some unrelated downstream module. Must pass identically
+// in Debug and Release (throw, not EXAI_ASSERT).
+TEST_F(ExplainerContextTest, ForwardPassWithPatchThrowsOnShapeMismatchedPatchValue) {
+    LinearModule linear1(2, 3, &backend);
+    linear1.set_weight({1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f});
+    linear1.set_bias({0.0f, 0.0f, 0.0f});
+    ReluModule relu(&backend);
+
+    ExplainerContext ctx({&linear1, &relu});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 2.0f});
+    Tensor reference_output = ctx.forward_pass(input);
+    const NodeId h1_node = ctx.graph().topological_order()[1];  // natural shape (1, 3)
+
+    Tensor wrong_shape(Shape({1, 2}), &backend, {1.0f, 1.0f});
+    EXPECT_THROW((void)ctx.forward_pass_with_patch(input, h1_node, wrong_shape), std::invalid_argument);
+
+    // The failed patch attempt must leave the context fully usable: a subsequent normal
+    // forward_pass() still produces the correct result and a correct graph.
+    Tensor after = ctx.forward_pass(input);
+    EXPECT_EQ(ctx.graph().node_count(), 3u);
+    ASSERT_EQ(after.numel(), reference_output.numel());
+    for (int64_t i = 0; i < reference_output.numel(); ++i) {
+        EXPECT_FLOAT_EQ(after.data()[i], reference_output.data()[i]) << "index " << i;
+    }
+}
+
+// Adversarial (external boundary): a node id larger than any node this forward pass will
+// produce. Node ids run 0 (input) .. modules.size().
+TEST_F(ExplainerContextTest, ForwardPassWithPatchThrowsOnOutOfRangePatchNodeId) {
+    LinearModule linear(2, 2, &backend);
+    linear.set_weight({1.0f, 0.0f, 0.0f, 1.0f});
+    linear.set_bias({0.0f, 0.0f});
+
+    ExplainerContext ctx({&linear});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 2.0f});
+    Tensor patch(Shape({1, 2}), &backend, {0.0f, 0.0f});
+
+    // Valid ids here are 0 (input) and 1 (the single module's output).
+    EXPECT_THROW((void)ctx.forward_pass_with_patch(input, 2, patch), std::invalid_argument);
+    EXPECT_THROW((void)ctx.forward_pass_with_patch(input, 99, patch), std::invalid_argument);
+
+    // Still usable afterwards.
+    Tensor after = ctx.forward_pass(input);
+    EXPECT_FLOAT_EQ(after.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(after.data()[1], 2.0f);
+}
+
 }  // namespace
 }  // namespace exai
