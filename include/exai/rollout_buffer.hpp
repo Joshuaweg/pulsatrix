@@ -130,6 +130,31 @@ public:
     [[nodiscard]] RolloutBatch compute_returns(float gamma) const;
 
     /**
+     * @brief The raw per-step rewards exactly as add()-ed, shape (size(), 1), in stored order.
+     * @return A fresh (size(), 1) Tensor; the buffer's own storage is not exposed.
+     * @note Added for PPO (Phase 3 Mission 4), and deliberately *not* speculative API surface.
+     *       The class note on RolloutBatch reasoned that once `returns` has been computed the
+     *       raw rewards/dones "carry no further information a REINFORCE/A2C/PPO update uses" --
+     *       true of REINFORCE and A2C, and false of PPO: ComputeGAE() performs its own,
+     *       differently-weighted reduction of the raw rewards/dones and never calls
+     *       compute_returns(). So this is not "re-deriving a reduction this buffer already
+     *       performed"; it is the input to a *different* reduction the buffer does not perform.
+     * @note Purely a read of already-stored state -- no new logic, and add()/compute_returns()/
+     *       clear()/RolloutBatch are all untouched by its addition.
+     */
+    [[nodiscard]] Tensor rewards() const;
+
+    /**
+     * @brief The raw per-step termination flags as 0.0f/1.0f floats, shape (size(), 1), in
+     *        stored order -- the same encoding ReplayBatch, ComputeDQNTarget and ComputeGAE use.
+     * @return A fresh (size(), 1) Tensor; the buffer's own storage is not exposed.
+     * @note Same rationale as rewards(): ComputeGAE() cuts both its bootstrap and its trace
+     *       recursion on these flags, so a PPO training loop needs them per step rather than
+     *       only as the episode segmentation compute_returns() already applied internally.
+     */
+    [[nodiscard]] Tensor dones() const;
+
+    /**
      * @brief Empties the rollout, making the buffer reusable for the next one.
      * @note Resets the length to 0 only. The storage Tensors stay allocated at max_length()
      *       capacity and their stale contents are simply unreachable, since every read path

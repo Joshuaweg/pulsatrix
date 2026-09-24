@@ -224,6 +224,102 @@ TEST_F(RolloutBufferTest, ComputeReturnsDoesNotConsumeTheRollout) {
     }
 }
 
+// ---------------------------------------------------------------------------------------
+// rewards() / dones() -- the two raw-storage accessors PPO's ComputeGAE() needs (Phase 3
+// Mission 4). Not new logic, just new visibility into state add() already stored, so these
+// tests assert exactly that: what went in comes back out, in order, at the right shape.
+// ---------------------------------------------------------------------------------------
+
+TEST_F(RolloutBufferTest, RewardsAndDonesReturnExactlyWhatWasAddedInStoredOrder) {
+    RolloutBuffer buffer(6, kObsDim, kActDim, &backend);
+    add_episode_steps(buffer, {1.0f, -2.5f, 3.25f, 0.0f, 7.5f}, {false, true, false, false, true});
+
+    const Tensor rewards = buffer.rewards();
+    const Tensor dones = buffer.dones();
+
+    ASSERT_EQ(rewards.numel(), 5);
+    ASSERT_EQ(dones.numel(), 5);
+    EXPECT_FLOAT_EQ(rewards.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(rewards.data()[1], -2.5f);
+    EXPECT_FLOAT_EQ(rewards.data()[2], 3.25f);
+    EXPECT_FLOAT_EQ(rewards.data()[3], 0.0f);
+    EXPECT_FLOAT_EQ(rewards.data()[4], 7.5f);
+
+    // 0.0f/1.0f floats, the encoding ReplayBatch/ComputeDQNTarget/ComputeGAE all share -- and
+    // ComputeGAE multiplies by (1 - dones[t]) rather than thresholding, so anything other than
+    // exactly 0 or 1 would silently scale its bootstrap.
+    EXPECT_FLOAT_EQ(dones.data()[0], 0.0f);
+    EXPECT_FLOAT_EQ(dones.data()[1], 1.0f);
+    EXPECT_FLOAT_EQ(dones.data()[2], 0.0f);
+    EXPECT_FLOAT_EQ(dones.data()[3], 0.0f);
+    EXPECT_FLOAT_EQ(dones.data()[4], 1.0f);
+}
+
+// Leading dimension is size(), not max_length(): a partially-filled rollout must not hand back
+// its never-written trailing slots, exactly as compute_returns() must not. Shape is (N, 1),
+// which is precisely what ComputeGAE's require_column() demands of both arguments.
+TEST_F(RolloutBufferTest, RewardsAndDonesAreColumnShapedAtTheCurrentSize) {
+    RolloutBuffer buffer(8, kObsDim, kActDim, &backend);
+    for (int i = 0; i < 3; ++i) {
+        add_marked(buffer, i);
+    }
+
+    const Tensor rewards = buffer.rewards();
+    const Tensor dones = buffer.dones();
+
+    ASSERT_EQ(rewards.rank(), 2);
+    EXPECT_EQ(rewards.shape().dim(0), 3);
+    EXPECT_EQ(rewards.shape().dim(1), 1);
+    ASSERT_EQ(dones.rank(), 2);
+    EXPECT_EQ(dones.shape().dim(0), 3);
+    EXPECT_EQ(dones.shape().dim(1), 1);
+
+    // Same leading dimension as the batch, so row t of each belongs to the same stored step --
+    // the invariant ComputeGAE relies on when it pairs rewards[t] with values[t].
+    const RolloutBatch batch = buffer.compute_returns(0.9f);
+    EXPECT_EQ(rewards.shape().dim(0), batch.returns.shape().dim(0));
+    EXPECT_EQ(dones.shape().dim(0), batch.observations.shape().dim(0));
+}
+
+// Like compute_returns(), these are const pure reads: they neither consume the rollout nor
+// leak the buffer's own storage (a caller writing into the returned tensor must not corrupt
+// the next epoch's read of the same rollout, which PPO performs repeatedly).
+TEST_F(RolloutBufferTest, RewardsAndDonesDoNotConsumeOrAliasTheRollout) {
+    RolloutBuffer buffer(3, kObsDim, kActDim, &backend);
+    add_episode_steps(buffer, {1.0f, 2.0f, 3.0f}, {false, false, true});
+
+    Tensor first = buffer.rewards();
+    first.data()[0] = -99.0f;
+
+    EXPECT_EQ(buffer.size(), 3) << "a read must not consume the rollout";
+    const Tensor second = buffer.rewards();
+    EXPECT_FLOAT_EQ(second.data()[0], 1.0f) << "the returned tensor aliased the buffer's storage";
+    EXPECT_FLOAT_EQ(second.data()[1], 2.0f);
+    EXPECT_FLOAT_EQ(second.data()[2], 3.0f);
+}
+
+// After clear() and a refill, the accessors must report the *second* rollout only -- the same
+// "stale rows beyond size_ are unreachable" property ClearMakesTheBufferGenuinelyReusable pins
+// for compute_returns(), now for the two raw accessors PPO reads on every rollout.
+TEST_F(RolloutBufferTest, RewardsAndDonesReflectOnlyTheCurrentRolloutAfterClear) {
+    RolloutBuffer buffer(3, kObsDim, kActDim, &backend);
+    add_episode_steps(buffer, {1.0f, 1.0f, 1.0f}, {true, true, true});
+
+    buffer.clear();
+    EXPECT_EQ(buffer.rewards().numel(), 0) << "a cleared buffer has no steps to report";
+    EXPECT_EQ(buffer.dones().numel(), 0);
+    EXPECT_EQ(buffer.rewards().shape().dim(1), 1) << "an empty read is still (0, 1), not degenerate";
+
+    add_episode_steps(buffer, {5.0f, 6.0f}, {false, true});
+    const Tensor rewards = buffer.rewards();
+    const Tensor dones = buffer.dones();
+    ASSERT_EQ(rewards.numel(), 2);
+    EXPECT_FLOAT_EQ(rewards.data()[0], 5.0f);
+    EXPECT_FLOAT_EQ(rewards.data()[1], 6.0f);
+    EXPECT_FLOAT_EQ(dones.data()[0], 0.0f);
+    EXPECT_FLOAT_EQ(dones.data()[1], 1.0f);
+}
+
 TEST_F(RolloutBufferTest, AddPastMaxLengthThrowsLogicError) {
     RolloutBuffer buffer(2, kObsDim, kActDim, &backend);
     add_marked(buffer, 0);
