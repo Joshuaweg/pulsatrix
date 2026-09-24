@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "exai/activation_snapshot.hpp"
 #include "exai/assert.hpp"
 #include "exai/autograd.hpp"
 #include "exai/computation_graph.hpp"
@@ -118,6 +119,39 @@ public:
      *       Grad-CAM's target-conv-layer gradient (Phase 2 Mission 3).
      */
     [[nodiscard]] const Tensor& gradient(NodeId id) const { return autograd_.gradient(id); }
+
+    /**
+     * @brief Captures the current activation cache into a self-contained ActivationSnapshot.
+     * @return A snapshot of every activation from the most recent forward_pass(), the node
+     *         ids in topological order, and each node's op_type/label -- all copied, with no
+     *         reference back to this context or its graph.
+     * @note Does not run (or require) a new forward pass; it reads what is already cached.
+     *       Called before any forward_pass(), it returns an empty snapshot -- there is
+     *       nothing cached yet, which is a well-defined state, not an error.
+     * @note This is the generalization of activation(): that method is a single-node lookup
+     *       into a cache the next forward_pass() overwrites in place, so two runs'
+     *       activations could never be held at once. A snapshot survives any number of
+     *       subsequent forward passes, which is what activation patching (campaign
+     *       campaign_exai_dl_library_mechanistic_interpretability, Phase 4) needs -- a
+     *       "clean" and a "corrupted" run alive simultaneously. Since modules_ is fixed for
+     *       this context's lifetime, snapshots from different forward passes are
+     *       NodeId-comparable.
+     */
+    [[nodiscard]] ActivationSnapshot activation_snapshot() const {
+        std::vector<NodeId> node_ids = graph_.topological_order();
+
+        std::unordered_map<NodeId, Tensor> activations;
+        std::unordered_map<NodeId, ActivationSnapshot::NodeMetadata> metadata;
+        for (NodeId id : node_ids) {
+            auto it = activations_.find(id);
+            EXAI_ASSERT(it != activations_.end());
+            activations.emplace(id, Tensor(it->second));
+            const Node& node = graph_.node(id);
+            metadata.emplace(id, ActivationSnapshot::NodeMetadata{node.op_type(), node.label()});
+        }
+
+        return ActivationSnapshot(std::move(activations), std::move(node_ids), std::move(metadata));
+    }
 
     /** @brief Passthrough to Node::label() -- e.g. a layer name, for debugging/display. */
     [[nodiscard]] std::optional<std::string> layer_label(NodeId id) const { return graph_.node(id).label(); }
