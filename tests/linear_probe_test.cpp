@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <cmath>
+#include <cstdint>
+#include <iostream>
 #include <stdexcept>
 #include <vector>
 
@@ -233,6 +236,145 @@ TEST_F(LinearProbeTest, AccuracyThrowsOnARankOneLabelBatch) {
     Tensor labels(Shape({2}), &backend);
 
     EXPECT_THROW((void)probe.accuracy(activations, labels), std::invalid_argument);
+}
+
+// =======================================================================================
+// Objective 2 -- positive and negative control.
+//
+// The mission's actual acceptance criterion. A probe that reaches high accuracy proves
+// nothing on its own: a classifier with enough freedom relative to the sample can fit
+// arbitrary labels, so "the probe succeeded" and "the concept is linearly represented" are
+// only the same statement if the same procedure is shown to *fail* when the concept
+// demonstrably isn't there. Hence two tests over the same feature distribution, the same
+// dimensionality, the same probe seed, the same optimizer, the same learning rate and the
+// same epoch count -- differing in exactly one thing: whether the labels are a linear
+// function of the features or independent of them.
+//
+// Both report accuracy on a **held-out** split drawn from the same generator but never
+// trained on (the mission's exit gate asks for this to be decided explicitly rather than
+// left implicit). Held-out is the stronger choice for the negative control in particular:
+// on the training split a linear model could in principle memorize some of the random
+// labels, so a low training accuracy would be partly an artifact of the model's capacity
+// being small relative to the sample, whereas held-out accuracy on independent labels is
+// chance for *any* model, which is exactly the property being asserted.
+// =======================================================================================
+
+// Deterministic generator, hand-rolled rather than std::normal_distribution / std::
+// uniform_real_distribution -- both have implementation-defined mappings from the engine's
+// output, so identical seeds would not give identical data across standard libraries, and
+// the accuracy thresholds below are asserted on specific data. This is the same
+// "hand-roll it at the call site" convention MnistConvNet's weight init already follows;
+// it deliberately does not add an RNG or a randn() to Tensor.
+class TestRng {
+public:
+    explicit TestRng(uint64_t seed) : state_(seed) {}
+
+    /** @brief Uniform in [0, 1). */
+    float uniform() {
+        state_ = state_ * 6364136223846793005ULL + 1442695040888963407ULL;
+        const uint32_t bits = static_cast<uint32_t>(state_ >> 32);
+        return static_cast<float>(bits) / 4294967296.0f;
+    }
+
+    /** @brief Standard normal, via Box-Muller. */
+    float gaussian() {
+        const float u1 = std::fmax(uniform(), 1e-7f);
+        const float u2 = uniform();
+        return std::sqrt(-2.0f * std::log(u1)) * std::cos(6.2831853f * u2);
+    }
+
+private:
+    uint64_t state_;
+};
+
+constexpr int64_t kDim = 8;
+constexpr int64_t kTrainSize = 256;
+constexpr int64_t kTestSize = 256;
+constexpr int kEpochs = 300;
+constexpr float kLearningRate = 0.05f;
+constexpr unsigned kProbeSeed = 7;
+
+struct Dataset {
+    std::vector<float> features;  // kDim floats per example, row-major
+    std::vector<float> labels;    // one float per example, 0 or 1
+    int64_t size = 0;
+};
+
+// Gaussian features. `separable == true` derives each label from a fixed direction w
+// (label = 1 iff w.x > 0), making the concept linearly decodable *by construction*;
+// `separable == false` draws each label by an independent coin flip, so no function of the
+// features -- linear or otherwise -- predicts it better than chance. Everything else about
+// the two datasets is identical, including the feature draw order.
+Dataset make_dataset(TestRng& rng, const std::vector<float>& w, int64_t n, bool separable) {
+    Dataset data;
+    data.size = n;
+    data.features.reserve(static_cast<size_t>(n * kDim));
+    data.labels.reserve(static_cast<size_t>(n));
+    for (int64_t i = 0; i < n; ++i) {
+        float dot = 0.0f;
+        for (int64_t j = 0; j < kDim; ++j) {
+            const float x = rng.gaussian();
+            data.features.push_back(x);
+            dot += w[static_cast<size_t>(j)] * x;
+        }
+        const float coin = rng.uniform();
+        data.labels.push_back(separable ? (dot > 0.0f ? 1.0f : 0.0f) : (coin < 0.5f ? 1.0f : 0.0f));
+    }
+    return data;
+}
+
+// The single shared training procedure. Both controls call exactly this -- it takes no
+// knobs, precisely so neither test can quietly be given an advantage the other didn't get.
+float train_probe_and_score_heldout(DeviceBackend* backend, const Dataset& train, const Dataset& heldout) {
+    LinearProbe probe(kDim, backend, kProbeSeed);
+    AdamOptimizer optimizer(kLearningRate, backend);
+
+    const Tensor train_x(Shape({train.size, kDim}), backend, train.features);
+    const Tensor train_y(Shape({train.size, 1}), backend, train.labels);
+    for (int epoch = 0; epoch < kEpochs; ++epoch) {
+        (void)probe.train_step(train_x, train_y, optimizer);
+    }
+
+    const Tensor heldout_x(Shape({heldout.size, kDim}), backend, heldout.features);
+    const Tensor heldout_y(Shape({heldout.size, 1}), backend, heldout.labels);
+    return probe.accuracy(heldout_x, heldout_y);
+}
+
+std::vector<float> make_concept_direction(TestRng& rng) {
+    std::vector<float> w(static_cast<size_t>(kDim));
+    for (float& value : w) {
+        value = rng.gaussian();
+    }
+    return w;
+}
+
+class LinearProbeControlTest : public ::testing::Test {
+protected:
+    CPUBackend backend;
+};
+
+TEST_F(LinearProbeControlTest, PositiveControlRecoversAConceptThatIsLinearlySeparableByConstruction) {
+    TestRng rng(20260923u);
+    const std::vector<float> w = make_concept_direction(rng);
+    const Dataset train = make_dataset(rng, w, kTrainSize, /*separable=*/true);
+    const Dataset heldout = make_dataset(rng, w, kTestSize, /*separable=*/true);
+
+    const float accuracy = train_probe_and_score_heldout(&backend, train, heldout);
+
+    std::cout << "[LinearProbe] positive control, held-out accuracy: " << accuracy << std::endl;
+    EXPECT_GE(accuracy, 0.95f) << "held-out accuracy on a by-construction linearly separable concept";
+}
+
+TEST_F(LinearProbeControlTest, NegativeControlFailsWhenLabelsAreIndependentOfTheFeatures) {
+    TestRng rng(20260923u);
+    const std::vector<float> w = make_concept_direction(rng);
+    const Dataset train = make_dataset(rng, w, kTrainSize, /*separable=*/false);
+    const Dataset heldout = make_dataset(rng, w, kTestSize, /*separable=*/false);
+
+    const float accuracy = train_probe_and_score_heldout(&backend, train, heldout);
+
+    std::cout << "[LinearProbe] negative control, held-out accuracy: " << accuracy << std::endl;
+    EXPECT_LT(accuracy, 0.65f) << "held-out accuracy on labels carrying no information about the features";
 }
 
 }  // namespace
