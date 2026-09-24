@@ -38,6 +38,7 @@ add_executable(exai_tests
     noise_schedule_test.cpp
     sinusoidal_timestep_embedding_test.cpp
     cartpole_env_test.cpp
+    continuous_cartpole_env_test.cpp
     replay_buffer_test.cpp
     rollout_buffer_test.cpp
     dqn_loss_test.cpp
