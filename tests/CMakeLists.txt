@@ -48,6 +48,8 @@ add_executable(exai_tests
     policy_gradient_loss_test.cpp
     gae_test.cpp
     ppo_clipped_loss_test.cpp
+    tanh_gaussian_policy_test.cpp
+    polyak_update_test.cpp
     mse_loss_test.cpp
     cross_entropy_loss_test.cpp
     kl_divergence_loss_test.cpp
