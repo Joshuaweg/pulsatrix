@@ -120,6 +120,8 @@ public:
      *         template rather than an `Optimizer&`).
      * @param input_batch Shape (N, dim), N > 0. Both the input and the reconstruction
      *        target -- an autoencoder's target *is* its input.
+     * @param optimizer Optimizer to update this SAE's encoder/decoder parameters with. Not
+     *        owned; its state persists across calls, which is the point of not owning it.
      * @return The **reconstruction** loss for this batch, measured *before* the update
      *         (mirroring LinearProbe/XorNetwork's train_step return contract). The L1
      *         penalty term is deliberately not folded into this number: the two quantities
