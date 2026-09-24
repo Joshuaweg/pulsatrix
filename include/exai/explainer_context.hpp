@@ -246,6 +246,70 @@ public:
         return ActivationSnapshot(std::move(activations), std::move(node_ids), std::move(metadata));
     }
 
+    /**
+     * @brief The "logit lens": runs the chain's *final* module -- its read-out head -- on the
+     *        cached activation at node_id, answering "what would the network predict if this
+     *        layer's representation were already final?"
+     * @param node_id Node whose cached activation is projected through the head. Must come
+     *        from the most recent forward pass, and its activation's shape must match what
+     *        the head actually consumed in that pass.
+     * @return The head's output for that intermediate representation. Raw data only -- no
+     *         softmax, no ranking, no plotting (campaign
+     *         campaign_exai_dl_library_mechanistic_interpretability, Phase 5 Mission 1, is
+     *         deliberately scoped data-only and takes no visualization dependency).
+     * @throws std::invalid_argument if node_id has no cached activation (an id no forward
+     *         pass produced, or no forward pass has run yet), or if that activation's shape
+     *         differs from the head's actual input shape in the most recent forward pass --
+     *         both external boundaries (caller-supplied node id), hence throw rather than
+     *         EXAI_ASSERT, matching forward_pass_with_patch and the constructor, and so the
+     *         behavior is identical in Debug and Release.
+     * @note The shape precondition is checked here, before the head runs, so the message
+     *       names the mismatch at the point the mistake was made rather than surfacing as a
+     *       confusing failure inside the head's own gemm. It is a real precondition of the
+     *       technique, not an assumption: only a chain whose hidden width stays constant up
+     *       to the head (the analogue of a transformer's fixed-width residual stream) has
+     *       compatible earlier nodes at all.
+     * @note The head's *expected* input shape is taken from the activation the head actually
+     *       received in the most recent forward pass (the node at index modules_.size() - 1),
+     *       not from any declared per-module input-shape accessor -- Module exposes no such
+     *       accessor, and inventing one across every subclass is far outside this mission.
+     * @note Applied to that same node, this returns the real forward pass's output exactly:
+     *       it is literally the computation forward_pass() already performed, which is this
+     *       method's zero-tolerance correctness oracle.
+     * @note const with respect to *this* -- no ExplainerContext state is read-modified. It
+     *       does run the head module's own forward(), which overwrites that module's internal
+     *       forward cache (so a subsequent head.backward() would refer to this call's input).
+     *       Same caveat this campaign's SparseAutoencoder::reconstruct() mission already
+     *       documented and accepted for read-only scoring paths.
+     * @note The head is the chain's literal last module, not a separately designated
+     *       "unembedding" -- this codebase has no such distinct concept. A caller-specifiable
+     *       head would be an explicit future extension, not assumed here.
+     */
+    [[nodiscard]] Tensor logit_lens(NodeId node_id) const {
+        auto it = activations_.find(node_id);
+        if (it == activations_.end()) {
+            throw std::invalid_argument(
+                "ExplainerContext::logit_lens: node_id has no cached activation from the most recent "
+                "forward pass");
+        }
+
+        const NodeId head_input_node = static_cast<NodeId>(modules_.size() - 1);
+        auto head_input = activations_.find(head_input_node);
+        if (head_input == activations_.end()) {
+            throw std::invalid_argument(
+                "ExplainerContext::logit_lens: no forward pass has run, so the final module's input "
+                "shape is unknown");
+        }
+        if (!(it->second.shape() == head_input->second.shape())) {
+            throw std::invalid_argument(
+                "ExplainerContext::logit_lens: the node's cached activation shape does not match the "
+                "final module's input shape from the most recent forward pass");
+        }
+
+        Module* head = modules_.back();
+        return head->forward(it->second);
+    }
+
     /** @brief Passthrough to Node::label() -- e.g. a layer name, for debugging/display. */
     [[nodiscard]] std::optional<std::string> layer_label(NodeId id) const { return graph_.node(id).label(); }
 
