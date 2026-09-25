@@ -15,6 +15,7 @@
 #include "exai/autograd.hpp"
 #include "exai/computation_graph.hpp"
 #include "exai/module.hpp"
+#include "exai/multihead_attention_module.hpp"
 #include "exai/tensor.hpp"
 
 namespace exai {
@@ -308,6 +309,53 @@ public:
 
         Module* head = modules_.back();
         return head->forward(it->second);
+    }
+
+    /**
+     * @brief The "attention lens": the per-head attention pattern produced by the attention
+     *        layer at node_id during the most recent forward pass -- "what did each head
+     *        attend to", keyed by node id rather than by a direct module reference.
+     * @param node_id Node whose attention pattern is returned. Must come from the most recent
+     *        forward pass and must name a node whose op_type() is OpType::Attention.
+     * @return That layer's (N, num_heads, L, L) softmax output, copied. Raw data only -- no
+     *         head aggregation, no ranking, no plotting (campaign
+     *         campaign_exai_dl_library_mechanistic_interpretability, Phase 5, is deliberately
+     *         scoped data-only and takes no visualization dependency).
+     * @throws std::invalid_argument if node_id lies outside the node range the most recent
+     *         forward pass produced (including the case where no forward pass has run yet, so
+     *         there are no nodes at all), or if it names a node that is not an attention layer
+     *         -- both external boundaries (caller-supplied node id), hence throw rather than
+     *         EXAI_ASSERT, matching logit_lens and forward_pass_with_patch rather than
+     *         activation()'s older pattern, so the behavior is identical in Debug and Release.
+     * @note Node id 0 is the input node, which is never an attention layer, so it falls into
+     *       the op-type throw rather than needing a case of its own.
+     * @note Uses the same node-to-module index correspondence forward_pass_with_patch and
+     *       logit_lens already rely on: forward_pass() assigns node id i+1 to modules_[i]'s
+     *       output, so modules_[node_id - 1] is the module that produced that node.
+     * @note The dynamic_cast is EXAI_ASSERTed, not thrown on: only MultiHeadAttentionModule
+     *       reports OpType::Attention anywhere in this codebase, so a failure here would mean
+     *       the op-type/module invariant itself broke -- an internal-consistency violation,
+     *       not a caller mistake. Checked rather than assumed, per the assert-vs-throw
+     *       classification in context_tdd_adversarial_boundary_testing.md.
+     * @note Reads the module's own cache, so it reflects that module's most recent forward()
+     *       -- which, for a module driven only through this context, is the most recent
+     *       forward_pass()/forward_pass_with_patch() call. A patched pass's pattern is the
+     *       real pattern that ran, which is exactly what a causal-intervention study wants.
+     */
+    [[nodiscard]] Tensor attention_weights(NodeId node_id) const {
+        if (node_id >= graph_.node_count() || node_id > modules_.size()) {
+            throw std::invalid_argument(
+                "ExplainerContext::attention_weights: node_id is outside the range of nodes the most "
+                "recent forward pass produced (or no forward pass has run yet)");
+        }
+        if (graph_.node(node_id).op_type() != OpType::Attention) {
+            throw std::invalid_argument(
+                "ExplainerContext::attention_weights: node_id does not name an attention layer");
+        }
+
+        auto* mha = dynamic_cast<MultiHeadAttentionModule*>(modules_[node_id - 1]);
+        EXAI_ASSERT(mha != nullptr);
+        return Tensor(mha->last_attention_weights());
     }
 
     /** @brief Passthrough to Node::label() -- e.g. a layer name, for debugging/display. */
