@@ -4,10 +4,10 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/kl_divergence_loss.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/kl_divergence_loss.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class KLDivergenceLossTest : public ::testing::Test {
@@ -199,7 +199,7 @@ TEST_F(KLDivergenceLossTest, BackwardGradLogSigmaMatchesFiniteDifference) {
 using KLDivergenceLossDeathTest = KLDivergenceLossTest;
 
 // forward() dereferences Tensor::data() directly in a raw host loop -- undefined behavior on
-// a CUDA-backed Tensor, so it is EXAI_ASSERT-guarded (mission_host_loop_guards.md). No real
+// a CUDA-backed Tensor, so it is PULSATRIX_ASSERT-guarded (mission_host_loop_guards.md). No real
 // GPU needed: see LinearModuleDeathTest for the mislabeled-Tensor testing pattern this reuses.
 //
 // backward() is NOT independently guarded: it has no parameters, it only ever reads
@@ -209,21 +209,21 @@ using KLDivergenceLossDeathTest = KLDivergenceLossTest;
 // dead code, not a real safety net. Identical to MSELoss::backward()'s precedent.
 TEST_F(KLDivergenceLossDeathTest, ForwardAbortsOnNonCpuMu) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor mu(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
     Tensor log_sigma(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    EXPECT_DEATH({ (void)loss.forward(mu, log_sigma); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)loss.forward(mu, log_sigma); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(KLDivergenceLossDeathTest, ForwardAbortsOnNonCpuLogSigma) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor mu(Shape({1, 2}), &backend, {1.0f, 2.0f});
     Tensor log_sigma(Shape({1, 2}), &backend, {0.0f, 0.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)loss.forward(mu, log_sigma); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)loss.forward(mu, log_sigma); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

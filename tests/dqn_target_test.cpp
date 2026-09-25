@@ -3,13 +3,13 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/dqn_target.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/sequential_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/dqn_target.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/sequential_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class DQNTargetTest : public ::testing::Test {
@@ -372,25 +372,25 @@ using DQNTargetDeathTest = DQNTargetTest;
 // dead code.
 TEST_F(DQNTargetDeathTest, ComputeDQNTargetAbortsOnNonCpuNextQTarget) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor cuda_q(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
     Tensor rewards(Shape({1, 1}), &backend, {0.0f});
     Tensor dones(Shape({1, 1}), &backend, {0.0f});
-    EXPECT_DEATH({ (void)ComputeDQNTarget(cuda_q, rewards, dones, 0.9f, &backend); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)ComputeDQNTarget(cuda_q, rewards, dones, 0.9f, &backend); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(DQNTargetDeathTest, ComputeDoubleDQNTargetAbortsOnNonCpuNextQOnline) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor cuda_q(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
     Tensor host_q(Shape({1, 2}), &backend, {1.0f, 2.0f});
     Tensor rewards(Shape({1, 1}), &backend, {0.0f});
     Tensor dones(Shape({1, 1}), &backend, {0.0f});
     EXPECT_DEATH({ (void)ComputeDoubleDQNTarget(cuda_q, host_q, rewards, dones, 0.9f, &backend); },
-                 "EXAI_ASSERT failed");
+                 "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

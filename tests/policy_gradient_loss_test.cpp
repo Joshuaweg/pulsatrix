@@ -3,10 +3,10 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/policy_gradient_loss.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/policy_gradient_loss.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Float32 softmax/log arithmetic is not exactly representable, so the numeric assertions below
@@ -289,7 +289,7 @@ TEST_F(PolicyGradientLossTest, SingleActionDimensionHasZeroLossAndZeroGradient) 
 using PolicyGradientLossDeathTest = PolicyGradientLossTest;
 
 // forward() reads all three tensors in raw host loops over Tensor::data() -- undefined behavior
-// on a CUDA-backed Tensor, so each is EXAI_ASSERT-guarded (mission_host_loop_guards.md). No
+// on a CUDA-backed Tensor, so each is PULSATRIX_ASSERT-guarded (mission_host_loop_guards.md). No
 // real GPU needed: this reuses LinearModuleDeathTest's mislabeled-Tensor pattern.
 //
 // One death test, not three -- byte-for-byte DQNLossDeathTest's own count decision and
@@ -302,12 +302,12 @@ using PolicyGradientLossDeathTest = PolicyGradientLossTest;
 // a new one.
 TEST_F(PolicyGradientLossDeathTest, ForwardAbortsOnNonCpuLogits) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     PolicyGradientLoss loss(&backend);
     Tensor cuda_logits(Shape({2, 3}), &backend, {1.0f, 2.0f, 3.0f, 1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)loss.forward(cuda_logits, actions(), returns()); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)loss.forward(cuda_logits, actions(), returns()); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

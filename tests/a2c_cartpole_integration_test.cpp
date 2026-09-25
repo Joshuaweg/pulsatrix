@@ -15,7 +15,7 @@
  *  PolicyGradientLoss -- unmodified, its third argument reinterpreted from "return" to
  *  "advantage" -- still yields a policy gradient that climbs.
  *
- *  @note The mission's Recon predicted A2C needs no new include/exai/ production class at all.
+ *  @note The mission's Recon predicted A2C needs no new include/pulsatrix/ production class at all.
  *        This file is part of the evidence that it was right: everything under test here was
  *        already committed before the mission started, and the only new code is the training
  *        loop in examples/a2c_cartpole_training.hpp.
@@ -34,7 +34,7 @@
 
 #include "../examples/a2c_cartpole_training.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace a2c_cartpole {
 namespace {
 
@@ -418,4 +418,4 @@ TEST(A2CNetworkIndependenceTest, CriticLearningRateDoesNotAlterTheActorsFirstUpd
 
 }  // namespace
 }  // namespace a2c_cartpole
-}  // namespace exai
+}  // namespace pulsatrix

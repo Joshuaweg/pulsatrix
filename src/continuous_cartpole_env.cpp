@@ -1,12 +1,12 @@
-#include "exai/continuous_cartpole_env.hpp"
+#include "pulsatrix/continuous_cartpole_env.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Standard CartPole-v1 constants (Barto, Sutton & Anderson 1983) -- byte-for-byte the values
@@ -60,7 +60,7 @@ Tensor ContinuousCartPoleEnv::reset(const Tensor& initial_state) {
     if (initial_state.rank() != 2 || initial_state.shape().dim(0) != 1 || initial_state.shape().dim(1) != 4) {
         throw std::invalid_argument("ContinuousCartPoleEnv::reset: initial_state must have shape (1, 4)");
     }
-    EXAI_ASSERT(initial_state.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(initial_state.device() == DeviceType::Cpu);
 
     x_ = static_cast<double>(initial_state.data()[0]);
     x_dot_ = static_cast<double>(initial_state.data()[1]);
@@ -74,7 +74,7 @@ Tensor ContinuousCartPoleEnv::reset(const Tensor& initial_state) {
 StepResult ContinuousCartPoleEnv::step(const Tensor& action) {
     // Raw host loop over Tensor::data() -- undefined behavior on a CUDA-backed Tensor.
     // See mission_host_loop_guards.md; same guard as CartPoleEnv and every prior module.
-    EXAI_ASSERT(action.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
 
     if (!has_reset_) {
         throw std::invalid_argument("ContinuousCartPoleEnv::step called before reset");
@@ -121,4 +121,4 @@ StepResult ContinuousCartPoleEnv::step(const Tensor& action) {
     return StepResult{observation(), 1.0f, done};
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

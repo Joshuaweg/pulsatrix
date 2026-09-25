@@ -1,10 +1,10 @@
-#include "exai/adam_optimizer.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
 
 #include <cmath>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 AdamOptimizer::AdamOptimizer(float learning_rate, DeviceBackend* backend, float beta1, float beta2, float eps)
     : learning_rate_(learning_rate), backend_(backend), beta1_(beta1), beta2_(beta2), eps_(eps) {}
@@ -14,8 +14,8 @@ void AdamOptimizer::step(Module& module) {
         // Dereferences Tensor::data() directly in a raw host loop -- not yet
         // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
         // decision and mission_host_loop_guards.md.
-        EXAI_ASSERT(p.value->device() == DeviceType::Cpu);
-        EXAI_ASSERT(p.grad->device() == DeviceType::Cpu);
+        PULSATRIX_ASSERT(p.value->device() == DeviceType::Cpu);
+        PULSATRIX_ASSERT(p.grad->device() == DeviceType::Cpu);
 
         auto it = state_.find(p.value);
         if (it == state_.end()) {
@@ -46,4 +46,4 @@ void AdamOptimizer::zero_grad(Module& module) {
     }
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

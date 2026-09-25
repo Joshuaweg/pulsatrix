@@ -2,7 +2,7 @@
  *  @brief The Double-DQN-on-CartPole training loop itself, shared verbatim by
  *         examples/dqn_cartpole_demo.cpp and tests/dqn_cartpole_integration_test.cpp.
  *
- *  @note Header-only, and deliberately *not* under include/exai/. This is not a new
+ *  @note Header-only, and deliberately *not* under include/pulsatrix/. This is not a new
  *        production class -- mission_dqn_cartpole_training.md's deliverable is explicitly a
  *        test/demo integration built out of the pieces Phase 1 and Phase 2 Mission 0 already
  *        shipped (CartPoleEnv, ReplayBuffer, DQNAgent, DQNLoss, ComputeDoubleDQNTarget,
@@ -24,19 +24,19 @@
 #include <functional>
 #include <vector>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cartpole_env.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/dqn_agent.hpp"
-#include "exai/dqn_loss.hpp"
-#include "exai/dqn_target.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/replay_buffer.hpp"
-#include "exai/sequential_module.hpp"
-#include "exai/tensor.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cartpole_env.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/dqn_agent.hpp"
+#include "pulsatrix/dqn_loss.hpp"
+#include "pulsatrix/dqn_target.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/replay_buffer.hpp"
+#include "pulsatrix/sequential_module.hpp"
+#include "pulsatrix/tensor.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace dqn_cartpole {
 
 /** @brief Episodes averaged at each end of training to form the performance comparison. */
@@ -277,4 +277,4 @@ inline TrainingResult RunTraining(const TrainingConfig& config,
 }
 
 }  // namespace dqn_cartpole
-}  // namespace exai
+}  // namespace pulsatrix

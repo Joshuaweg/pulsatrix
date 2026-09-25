@@ -3,14 +3,14 @@
 #include <cuda_runtime.h>
 #include <stdexcept>
 
-#include "exai/cuda_check.hpp"
+#include "pulsatrix/cuda_check.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 TEST(CudaCheckTest, SuccessfulCallDoesNotThrow) {
     void* ptr = nullptr;
-    EXPECT_NO_THROW(EXAI_CUDA_CHECK(cudaMalloc(&ptr, 16)));
+    EXPECT_NO_THROW(PULSATRIX_CUDA_CHECK(cudaMalloc(&ptr, 16)));
     cudaFree(ptr);
 }
 
@@ -22,7 +22,7 @@ TEST(CudaCheckTest, FailedCallThrowsRuntimeErrorWithMessage) {
 
     bool threw = false;
     try {
-        EXAI_CUDA_CHECK(cudaMalloc(&ptr, absurd_size));
+        PULSATRIX_CUDA_CHECK(cudaMalloc(&ptr, absurd_size));
     } catch (const std::runtime_error& e) {
         threw = true;
         std::string msg = e.what();
@@ -35,4 +35,4 @@ TEST(CudaCheckTest, FailedCallThrowsRuntimeErrorWithMessage) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

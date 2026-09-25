@@ -1,10 +1,10 @@
-#include "exai/retnet_module.hpp"
+#include "pulsatrix/retnet_module.hpp"
 
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 // Transposes a (rows x cols) row-major buffer into a (cols x rows) row-major buffer --
@@ -72,7 +72,7 @@ void RetNetModule::set_W_V(const std::vector<float>& values) {
 Tensor RetNetModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly for the state recurrence -- not yet
     // backend-generic.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("RetNetModule::forward: input must be rank-3 (N, L, d_model)");
@@ -154,7 +154,7 @@ Tensor RetNetModule::backward(const Tensor& grad_output) {
     }
     // Dereferences Tensor::data() directly for the state recurrence -- not yet
     // backend-generic.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     Tensor grad_input(last_input_.shape(), backend_);
     Tensor local_w_q_grad(w_q_.shape(), backend_);
@@ -272,11 +272,11 @@ Tensor RetNetModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     // The device guard is kept ahead of the throw so this entry point is consistent with
     // forward()/backward() and keeps firing under the death-test convention every module
     // here follows; it becomes load-bearing unchanged the moment a real rule lands.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
-    (void)relevance_out;  // NDEBUG builds compile EXAI_ASSERT away entirely.
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    (void)relevance_out;  // NDEBUG builds compile PULSATRIX_ASSERT away entirely.
     (void)config;
     throw std::logic_error(
         "RetNetModule::propagate_relevance: LRP rule not yet implemented -- see campaign Decision Point 2");
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

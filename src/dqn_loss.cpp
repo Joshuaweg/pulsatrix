@@ -1,13 +1,13 @@
-#include "exai/dqn_loss.hpp"
+#include "pulsatrix/dqn_loss.hpp"
 
 #include <cmath>
 #include <stdexcept>
 #include <string>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // How far a discrete action's float encoding may sit from a whole number before it is
@@ -37,9 +37,9 @@ float DQNLoss::forward(const Tensor& q_values, const Tensor& actions, const Tens
     // per-row gather at a data-dependent column has no DeviceBackend primitive). See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    EXAI_ASSERT(q_values.device() == DeviceType::Cpu);
-    EXAI_ASSERT(actions.device() == DeviceType::Cpu);
-    EXAI_ASSERT(targets.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(q_values.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(actions.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(targets.device() == DeviceType::Cpu);
 
     if (q_values.rank() != 2) {
         throw std::invalid_argument("DQNLoss::forward: q_values must have shape (N, action_dim)");
@@ -106,4 +106,4 @@ Tensor DQNLoss::backward() const {
     return grad;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

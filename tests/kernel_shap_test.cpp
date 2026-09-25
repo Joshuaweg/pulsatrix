@@ -2,16 +2,16 @@
 
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/kernel_shap.hpp"
-#include "exai/linear_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/kernel_shap.hpp"
+#include "pulsatrix/linear_module.hpp"
 
 // KernelSHAP (theory: xai_context.aDNA's technique_shap.md). Correctness oracle: for a
 // linear-only network, Shapley values have a known, exact closed form
 // phi_i = w_i * (x_i - baseline_i) -- a stronger, exact-not-just-axiom-approximate check
 // than Integrated Gradients' own tolerance-bounded completeness axiom.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class KernelSHAPTest : public ::testing::Test {
@@ -84,7 +84,7 @@ TEST_F(KernelSHAPTest, ThreeFeaturesMatchClosedFormAndSatisfyEfficiency) {
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
-// escalated from EXAI_ASSERT (was a death test) to a real throw -- external boundary.
+// escalated from PULSATRIX_ASSERT (was a death test) to a real throw -- external boundary.
 TEST_F(KernelSHAPTest, ExplainThrowsOnMismatchedInputAndBaselineShapes) {
     LinearModule linear(2, 1, &backend);
     ExplainerContext ctx({&linear});
@@ -98,4 +98,4 @@ TEST_F(KernelSHAPTest, ExplainThrowsOnMismatchedInputAndBaselineShapes) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

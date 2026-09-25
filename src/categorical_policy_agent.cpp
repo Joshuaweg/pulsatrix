@@ -1,14 +1,14 @@
-#include "exai/categorical_policy_agent.hpp"
+#include "pulsatrix/categorical_policy_agent.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <vector>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Validates the constructor's arguments and echoes action_dim back, so it can be called from
@@ -58,7 +58,7 @@ Tensor CategoricalPolicyAgent::act(const Tensor& observation) {
     // The softmax and the inverse-CDF scan below are raw host loops over Tensor::data(); the
     // network output inherits its device from this observation. Undefined behavior on a
     // CUDA-backed Tensor -- see mission_host_loop_guards.md.
-    EXAI_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
 
     const Tensor logits = policy_logits(observation);
 
@@ -106,7 +106,7 @@ Tensor CategoricalPolicyAgent::act(const Tensor& observation) {
 }
 
 Tensor CategoricalPolicyAgent::act_greedy(const Tensor& observation) {
-    EXAI_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
 
     const Tensor logits = policy_logits(observation);
 
@@ -130,4 +130,4 @@ float CategoricalPolicyAgent::log_prob() const {
     return last_log_prob_;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

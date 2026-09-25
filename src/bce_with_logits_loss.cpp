@@ -1,12 +1,12 @@
-#include "exai/bce_with_logits_loss.hpp"
+#include "pulsatrix/bce_with_logits_loss.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 /**
@@ -32,8 +32,8 @@ float BCEWithLogitsLoss::forward(const Tensor& logits, const Tensor& target) {
     // primitive) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    EXAI_ASSERT(logits.device() == DeviceType::Cpu);
-    EXAI_ASSERT(target.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(logits.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(target.device() == DeviceType::Cpu);
 
     if (!(logits.shape() == target.shape())) {
         throw std::invalid_argument("BCEWithLogitsLoss::forward: logits and target must have the same shape");
@@ -69,4 +69,4 @@ Tensor BCEWithLogitsLoss::backward() const {
     return grad;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

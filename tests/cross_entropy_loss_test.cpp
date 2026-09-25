@@ -2,10 +2,10 @@
 
 #include <cmath>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/cross_entropy_loss.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/cross_entropy_loss.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class CrossEntropyLossTest : public ::testing::Test {
@@ -76,19 +76,19 @@ using CrossEntropyLossDeathTest = CrossEntropyLossTest;
 // raw host loop, undefined behavior on a CUDA-backed Tensor.
 TEST_F(CrossEntropyLossDeathTest, ForwardAbortsOnNonCpuLogits) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor logits(Shape({3}), &backend, {1.0f, 2.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)loss.forward(logits, 1); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)loss.forward(logits, 1); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(CrossEntropyLossDeathTest, ForwardAbortsOnOutOfRangeTargetClass) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor logits(Shape({3}), &backend, {1.0f, 2.0f, 0.5f});
-    EXPECT_DEATH({ (void)loss.forward(logits, 3); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)loss.forward(logits, 3); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

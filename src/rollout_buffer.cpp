@@ -1,13 +1,13 @@
-#include "exai/rollout_buffer.hpp"
+#include "pulsatrix/rollout_buffer.hpp"
 
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Validates the three dimension arguments and echoes the first one back, so it can be called
@@ -62,8 +62,8 @@ RolloutBuffer::RolloutBuffer(int64_t max_length, int64_t observation_dim, int64_
 void RolloutBuffer::add(const Tensor& observation, const Tensor& action, float reward, float log_prob, bool done) {
     // Raw host-loop row copies over Tensor::data() -- undefined behavior on a CUDA-backed
     // Tensor. See mission_host_loop_guards.md; same guard as every prior host-loop site.
-    EXAI_ASSERT(observation.device() == DeviceType::Cpu);
-    EXAI_ASSERT(action.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
 
     // Before the shape checks, because it is the stronger statement: when the rollout is
     // full, *no* add() can be correct, whatever the argument shapes are. Reporting a shape
@@ -160,4 +160,4 @@ void RolloutBuffer::clear() {
     size_ = 0;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

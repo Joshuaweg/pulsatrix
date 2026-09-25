@@ -1,11 +1,11 @@
-#include "exai/mamba_module.hpp"
+#include "pulsatrix/mamba_module.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 // Transposes a (rows x cols) row-major buffer into a (cols x rows) row-major buffer --
@@ -24,7 +24,7 @@ Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* bac
 // softplus(z) = log(1 + exp(z)), in the numerically stable branch form: for large z the
 // naive exp(z) overflows while log1p(exp(z)) -> z to within float precision. No
 // DeviceBackend::elementwise op exists for this (first consumer -- see the class note),
-// so it is a raw host function, EXAI_ASSERT-guarded at every entry point that calls it.
+// so it is a raw host function, PULSATRIX_ASSERT-guarded at every entry point that calls it.
 float softplus(float z) {
     return (z > 20.0f) ? z : std::log1p(std::exp(z));
 }
@@ -119,7 +119,7 @@ void MambaModule::set_D(const std::vector<float>& values) {
 Tensor MambaModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly, and computes softplus/exp in raw host loops
     // (no DeviceBackend primitive exists for either) -- not yet backend-generic.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("MambaModule::forward: input must be rank-3 (N, L, d_model)");
@@ -218,7 +218,7 @@ Tensor MambaModule::backward(const Tensor& grad_output) {
     }
     // Dereferences Tensor::data() directly, and computes exp/sigmoid in raw host loops --
     // not yet backend-generic.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     Tensor grad_input(last_input_.shape(), backend_);
     Tensor local_w_delta_grad(w_delta_.shape(), backend_);
@@ -368,7 +368,7 @@ Tensor MambaModule::propagate_relevance(const Tensor& relevance_out, const LRPRu
             "forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
 
     Tensor relevance_in(last_input_.shape(), backend_);
 
@@ -428,4 +428,4 @@ Tensor MambaModule::propagate_relevance(const Tensor& relevance_out, const LRPRu
     return relevance_in;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

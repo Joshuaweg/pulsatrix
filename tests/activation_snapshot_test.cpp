@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "exai/activation_snapshot.hpp"
-#include "exai/cpu_backend.hpp"
+#include "pulsatrix/activation_snapshot.hpp"
+#include "pulsatrix/cpu_backend.hpp"
 
 // ActivationSnapshot (campaign_exai_dl_library_mechanistic_interpretability, Phase 1
 // Mission 1) is the self-contained, enumerable generalization of ExplainerContext's
@@ -16,7 +16,7 @@
 // ExplainerContext, so two snapshots from two different forward passes can be alive
 // (and correct) at the same time. This file covers the value type itself; the capture
 // path lives in explainer_context_test.cpp (Objective 2).
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class ActivationSnapshotTest : public ::testing::Test {
@@ -102,7 +102,7 @@ TEST_F(ActivationSnapshotTest, EmptySnapshotIsWellFormedAndHasNoNodeIds) {
 }
 
 // Adversarial/boundary, unknown-NodeId lookup. Classified internal-only invariant ->
-// EXAI_ASSERT (cpp_tdd/context_tdd_adversarial_boundary_testing.md's classification
+// PULSATRIX_ASSERT (cpp_tdd/context_tdd_adversarial_boundary_testing.md's classification
 // table): ActivationSnapshot is constructed only by ExplainerContext, and every id a
 // caller can legitimately pass comes from node_ids() -- the same already-validated
 // internal-call-chain origin as ExplainerContext::activation(), whose not-found
@@ -112,30 +112,30 @@ class ActivationSnapshotDeathTest : public ActivationSnapshotTest {};
 
 TEST_F(ActivationSnapshotDeathTest, ActivationAbortsOnUnknownNodeId) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #else
     ActivationSnapshot snapshot = make_snapshot();
-    ASSERT_DEATH((void)snapshot.activation(99u), "EXAI_ASSERT failed");
+    ASSERT_DEATH((void)snapshot.activation(99u), "PULSATRIX_ASSERT failed");
 #endif
 }
 
 TEST_F(ActivationSnapshotDeathTest, OpTypeAbortsOnUnknownNodeId) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #else
     ActivationSnapshot snapshot = make_snapshot();
-    ASSERT_DEATH((void)snapshot.op_type(99u), "EXAI_ASSERT failed");
+    ASSERT_DEATH((void)snapshot.op_type(99u), "PULSATRIX_ASSERT failed");
 #endif
 }
 
 TEST_F(ActivationSnapshotDeathTest, LabelAbortsOnUnknownNodeId) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #else
     ActivationSnapshot snapshot = make_snapshot();
-    ASSERT_DEATH((void)snapshot.label(99u), "EXAI_ASSERT failed");
+    ASSERT_DEATH((void)snapshot.label(99u), "PULSATRIX_ASSERT failed");
 #endif
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

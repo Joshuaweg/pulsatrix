@@ -41,7 +41,7 @@
 
 #include "../examples/ppo_cartpole_training.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace ppo_cartpole {
 namespace {
 
@@ -553,4 +553,4 @@ TEST(PPOCartPoleDeterminismTest, TwoRunsOfTheSameConfigurationAreIdentical) {
 
 }  // namespace
 }  // namespace ppo_cartpole
-}  // namespace exai
+}  // namespace pulsatrix

@@ -1,9 +1,9 @@
-#include "exai/mnist_classifier_example.hpp"
+#include "pulsatrix/mnist_classifier_example.hpp"
 
 #include <random>
 #include <vector>
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 constexpr int64_t kImageSize = 28;
@@ -87,4 +87,4 @@ float MnistConvNet::train_step(const Tensor& image, int64_t target_class, AdamOp
     return loss_value;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

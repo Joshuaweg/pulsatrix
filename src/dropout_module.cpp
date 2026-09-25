@@ -1,10 +1,10 @@
-#include "exai/dropout_module.hpp"
+#include "pulsatrix/dropout_module.hpp"
 
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 DropoutModule::DropoutModule(float p, DeviceBackend* backend, uint64_t seed)
     : p_(p), scale_(p < 1.0f ? 1.0f / (1.0f - p) : 1.0f), backend_(backend), rng_(seed) {
@@ -17,7 +17,7 @@ DropoutModule::DropoutModule(float p, DeviceBackend* backend, uint64_t seed)
 
 Tensor DropoutModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     const int64_t n = input.numel();
     last_shape_ = input.shape();
@@ -58,7 +58,7 @@ Tensor DropoutModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("DropoutModule::backward: grad_output must match the cached forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     Tensor grad_input(last_shape_, backend_);
     for (int64_t i = 0; i < grad_output.numel(); ++i) {
@@ -79,4 +79,4 @@ Tensor DropoutModule::propagate_relevance(const Tensor& relevance_out, const LRP
     return Tensor(relevance_out);
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

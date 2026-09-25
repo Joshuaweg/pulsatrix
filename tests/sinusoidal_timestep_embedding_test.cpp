@@ -11,10 +11,10 @@
 #include <cstdint>
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/sinusoidal_timestep_embedding.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/sinusoidal_timestep_embedding.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class SinusoidalTimestepEmbeddingTest : public ::testing::Test {
@@ -119,4 +119,4 @@ TEST_F(SinusoidalTimestepEmbeddingTest, ThrowsOnOddEmbeddingDim) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

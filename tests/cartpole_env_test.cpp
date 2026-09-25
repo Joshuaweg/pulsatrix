@@ -14,12 +14,12 @@
 #include <cstdint>
 #include <stdexcept>
 
-#include "exai/agent.hpp"
-#include "exai/cartpole_env.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/environment.hpp"
+#include "pulsatrix/agent.hpp"
+#include "pulsatrix/cartpole_env.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/environment.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 constexpr float kTol = 1e-5f;
@@ -322,12 +322,12 @@ using CartPoleEnvDeathTest = CartPoleEnvTest;
 // this suite (see RNNModuleDeathTest).
 TEST_F(CartPoleEnvDeathTest, StepAbortsOnNonCpuAction) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     CartPoleEnv env(&backend);
     (void)env.reset(state(0.0f, 0.0f, 0.0f, 0.0f));
     Tensor cuda_action(Shape({1, 1}), &backend, {1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)env.step(cuda_action); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)env.step(cuda_action); }, "PULSATRIX_ASSERT failed");
 }
 
 // ---------------------------------------------------------------------------------------
@@ -414,4 +414,4 @@ TEST_F(CartPoleEnvTest, EpisodeLoopWorksThroughBaseReferencesOnly) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

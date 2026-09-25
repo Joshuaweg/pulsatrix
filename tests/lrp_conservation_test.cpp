@@ -4,21 +4,21 @@
 #include <string>
 #include <utility>
 
-#include "exai/avg_pool2d_module.hpp"
-#include "exai/conv2d_module.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/embedding_module.hpp"
-#include "exai/flatten_module.hpp"
-#include "exai/gru_module.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/lstm_module.hpp"
-#include "exai/mamba_module.hpp"
-#include "exai/max_pool2d_module.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/rnn_module.hpp"
-#include "exai/rope_module.hpp"
-#include "exai/sequential_module.hpp"
+#include "pulsatrix/avg_pool2d_module.hpp"
+#include "pulsatrix/conv2d_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/embedding_module.hpp"
+#include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/gru_module.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/lstm_module.hpp"
+#include "pulsatrix/mamba_module.hpp"
+#include "pulsatrix/max_pool2d_module.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/rnn_module.hpp"
+#include "pulsatrix/rope_module.hpp"
+#include "pulsatrix/sequential_module.hpp"
 
 // Phase 4 Mission 0: charter's "not just a spot-check on one architecture" LRP
 // completeness requirement, turned into a systematic TEST_P suite over every module type
@@ -26,7 +26,7 @@
 // module's existing, already-proven-correct weight/input/relevance setups from Phase
 // 1-3's own per-module tests (LinearModuleTest, Conv2DModuleTest, ReluModuleTest,
 // FlattenModuleTest) -- this mission doesn't re-derive their math, it systematizes it.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 struct ConservationCase {
@@ -364,4 +364,4 @@ TEST(LRPConservationEndToEndTest, ConservationHoldsAcrossFullNetworkChain) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

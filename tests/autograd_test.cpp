@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "exai/autograd.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/computation_graph.hpp"
+#include "pulsatrix/autograd.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/computation_graph.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class AutogradTest : public ::testing::Test {
@@ -148,4 +148,4 @@ TEST_F(AutogradTest, NodeDisconnectedFromSeedNeverGetsAGradient) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

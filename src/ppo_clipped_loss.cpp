@@ -1,14 +1,14 @@
-#include "exai/ppo_clipped_loss.hpp"
+#include "pulsatrix/ppo_clipped_loss.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <string>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // How far a discrete action's float encoding may sit from a whole number before it is
@@ -35,10 +35,10 @@ float PPOClippedLoss::forward(const Tensor& new_logits, const Tensor& actions, c
     // Dereferences Tensor::data() directly in raw host loops -- not yet backend-generic (a
     // row-wise stabilized softmax and a per-row gather at a data-dependent column have no
     // DeviceBackend primitive). See mission_host_loop_guards.md.
-    EXAI_ASSERT(new_logits.device() == DeviceType::Cpu);
-    EXAI_ASSERT(actions.device() == DeviceType::Cpu);
-    EXAI_ASSERT(old_log_probs.device() == DeviceType::Cpu);
-    EXAI_ASSERT(advantages.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(new_logits.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(actions.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(old_log_probs.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(advantages.device() == DeviceType::Cpu);
 
     if (new_logits.rank() != 2) {
         throw std::invalid_argument("PPOClippedLoss::forward: new_logits must have shape (N, action_dim)");
@@ -163,4 +163,4 @@ Tensor PPOClippedLoss::backward() const {
     return grad;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

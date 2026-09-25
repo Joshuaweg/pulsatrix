@@ -6,11 +6,11 @@
 #include <string>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/mamba_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/mamba_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class MambaModuleTest : public ::testing::Test {
@@ -537,36 +537,36 @@ using MambaModuleDeathTest = MambaModuleTest;
 // this reuses. Written from the start of this mission, not deferred.
 TEST_F(MambaModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MambaModule mamba(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mamba.forward(input); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)mamba.forward(input); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(MambaModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MambaModule mamba(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
     (void)mamba.forward(input);
 
     Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mamba.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)mamba.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(MambaModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MambaModule mamba(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
     (void)mamba.forward(input);
 
     Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mamba.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)mamba.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

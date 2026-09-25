@@ -5,11 +5,11 @@
 #include <iostream>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/multihead_attention_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/multihead_attention_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // The shared "general case" configuration used by the reference-value, finite-difference,
@@ -621,36 +621,36 @@ using MultiHeadAttentionModuleDeathTest = MultiHeadAttentionModuleTest;
 // trips the guard with no GPU involved.
 TEST_F(MultiHeadAttentionModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MultiHeadAttentionModule mha(4, 2, &backend);
     Tensor x(Shape({1, 2, 4}), &backend, kX, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mha.forward(x); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)mha.forward(x); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(MultiHeadAttentionModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MultiHeadAttentionModule mha(4, 2, &backend);
     Tensor x(Shape({1, 2, 4}), &backend, kX);
     (void)mha.forward(x);
 
     Tensor grad_out(Shape({1, 2, 4}), &backend, kX, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mha.backward(grad_out); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)mha.backward(grad_out); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(MultiHeadAttentionModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MultiHeadAttentionModule mha(4, 2, &backend);
     Tensor x(Shape({1, 2, 4}), &backend, kX);
     (void)mha.forward(x);
 
     Tensor relevance_out(Shape({1, 2, 4}), &backend, kX, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mha.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)mha.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

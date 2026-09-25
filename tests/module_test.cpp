@@ -2,13 +2,13 @@
 
 #include <stdexcept>
 
-#include "exai/autograd.hpp"
-#include "exai/computation_graph.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/module.hpp"
-#include "exai/op_type.hpp"
+#include "pulsatrix/autograd.hpp"
+#include "pulsatrix/computation_graph.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/module.hpp"
+#include "pulsatrix/op_type.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Minimal concrete subclass -- Module is abstract. This deliberately does NOT itself
@@ -52,7 +52,7 @@ TEST_F(ModuleTest, ForwardDelegatesToForwardImpl) {
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
-// escalated from EXAI_ASSERT (was a death test) to a real throw -- the single most
+// escalated from PULSATRIX_ASSERT (was a death test) to a real throw -- the single most
 // external-facing check in the whole system (every Module::forward() call, including
 // from Phase 5's Python bindings, passes through this NVI wrapper first).
 TEST_F(ModuleTest, ForwardThrowsOnEmptyInputEvenThoughForwardImplDoesNotCheck) {
@@ -147,4 +147,4 @@ TEST_F(ModuleTest, SetTrainingTogglesIsTraining) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

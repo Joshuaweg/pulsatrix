@@ -15,7 +15,7 @@
 #include "dqn_cartpole_training.hpp"
 
 int main() {
-    using namespace exai::dqn_cartpole;
+    using namespace pulsatrix::dqn_cartpole;
 
     const TrainingConfig config;
 

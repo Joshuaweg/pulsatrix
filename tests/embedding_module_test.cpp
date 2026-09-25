@@ -2,11 +2,11 @@
 
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/embedding_module.hpp"
-#include "exai/lrp_rule_config.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/embedding_module.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class EmbeddingModuleTest : public ::testing::Test {
@@ -174,36 +174,36 @@ using EmbeddingModuleDeathTest = EmbeddingModuleTest;
 // -- remediated here.
 TEST_F(EmbeddingModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     EmbeddingModule emb(4, 3, &backend);
     Tensor input(Shape({1, 1}), &backend, {0.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)emb.forward(input); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)emb.forward(input); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(EmbeddingModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     EmbeddingModule emb(4, 3, &backend);
     Tensor input(Shape({1, 1}), &backend, {0.0f});
     (void)emb.forward(input);
 
     Tensor grad_output(Shape({1, 1, 3}), &backend, {1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)emb.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)emb.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(EmbeddingModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     EmbeddingModule emb(4, 3, &backend);
     Tensor input(Shape({1, 1}), &backend, {0.0f});
     (void)emb.forward(input);
 
     Tensor relevance_out(Shape({1, 1, 3}), &backend, {1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)emb.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)emb.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/metrics_sink.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/metrics_sink.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 TEST(NoOpMetricsSinkTest, LogScalarDoesNotThrow) {
@@ -25,4 +25,4 @@ TEST(NoOpMetricsSinkTest, CallableThroughBasePointer) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

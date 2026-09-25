@@ -1,10 +1,10 @@
-#include "exai/residual_module.hpp"
+#include "pulsatrix/residual_module.hpp"
 
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 /**
@@ -40,7 +40,7 @@ ResidualModule::ResidualModule(Module* inner, DeviceBackend* backend)
 Tensor ResidualModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in the residual-add raw host loop below -- not
     // backend-generic. See mission_host_loop_guards.md.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     Tensor f_x = inner_->forward(input);
 
@@ -62,7 +62,7 @@ Tensor ResidualModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("ResidualModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     Tensor grad_from_inner = inner_->backward(grad_output);
 
@@ -81,7 +81,7 @@ Tensor ResidualModule::propagate_relevance(const Tensor& relevance_out, const LR
             "ResidualModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
 
     Tensor r_x_direct(relevance_out.shape(), backend_);
     Tensor r_f_x(relevance_out.shape(), backend_);
@@ -102,4 +102,4 @@ void ResidualModule::set_training(bool training) {
     inner_->set_training(training);
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

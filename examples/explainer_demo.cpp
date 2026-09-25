@@ -12,16 +12,16 @@
 #include <utility>
 #include <vector>
 
-#include "exai/attribution.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/integrated_gradients.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/saliency.hpp"
+#include "pulsatrix/attribution.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/integrated_gradients.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/saliency.hpp"
 
 int main() {
-    using namespace exai;
+    using namespace pulsatrix;
 
     CPUBackend backend;
 

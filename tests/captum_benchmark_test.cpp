@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
 
-#include "exai/conv2d_module.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/flatten_module.hpp"
-#include "exai/grad_cam.hpp"
-#include "exai/integrated_gradients.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/saliency.hpp"
+#include "pulsatrix/conv2d_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/grad_cam.hpp"
+#include "pulsatrix/integrated_gradients.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/saliency.hpp"
 
 // Phase 4 Mission 2: charter's "Explanation fidelity" audit category checked against an
 // independent Python implementation (Captum), not just this project's own closed-form
@@ -23,7 +23,7 @@
 // (kernel_shap_test.cpp, lime_test.cpp). PDP has no Captum counterpart at all (global,
 // not per-instance) and keeps its own Phase 3 closed-form oracle. See
 // mission_benchmark_suite.md's Recon for the full story.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Model A: single Linear(3,1), weight {2,-3,5}, bias {100} -- same network as
@@ -118,4 +118,4 @@ TEST(CaptumBenchmarkTest, GradCAMMatchesCaptumLayerGradCam) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -3,11 +3,11 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/dropout_module.hpp"
-#include "exai/lrp_rule_config.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/dropout_module.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class DropoutModuleTest : public ::testing::Test {
@@ -153,24 +153,24 @@ using DropoutModuleDeathTest = DropoutModuleTest;
 // (campaign_exai_dl_library_phase6_modern_architectures.md, 2026-09-22) -- remediated here.
 TEST_F(DropoutModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     DropoutModule d(0.5f, &backend);
     Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)d.forward(input); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)d.forward(input); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(DropoutModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     DropoutModule d(0.5f, &backend);
     Tensor input(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
     (void)d.forward(input);
 
     Tensor grad_output(Shape({3}), &backend, {1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)d.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)d.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

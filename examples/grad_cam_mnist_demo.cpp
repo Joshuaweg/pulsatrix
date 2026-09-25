@@ -19,16 +19,16 @@
 #include <cstdio>
 #include <random>
 
-#include "exai/conv2d_module.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/flatten_module.hpp"
-#include "exai/grad_cam.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
+#include "pulsatrix/conv2d_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/grad_cam.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
 
 int main() {
-    using namespace exai;
+    using namespace pulsatrix;
 
     CPUBackend backend;
 

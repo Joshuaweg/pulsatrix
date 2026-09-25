@@ -1,11 +1,11 @@
-#include "exai/reparameterize.hpp"
+#include "pulsatrix/reparameterize.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 Reparameterize::Reparameterize(DeviceBackend* backend)
     : backend_(backend), last_log_sigma_(Shape({0}), backend), last_epsilon_(Shape({0}), backend) {}
@@ -15,9 +15,9 @@ Tensor Reparameterize::forward(const Tensor& mu, const Tensor& log_sigma, const 
     // primitive) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    EXAI_ASSERT(mu.device() == DeviceType::Cpu);
-    EXAI_ASSERT(log_sigma.device() == DeviceType::Cpu);
-    EXAI_ASSERT(epsilon.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(mu.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(log_sigma.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(epsilon.device() == DeviceType::Cpu);
 
     if (!(mu.shape() == log_sigma.shape()) || !(mu.shape() == epsilon.shape())) {
         throw std::invalid_argument("Reparameterize::forward: mu, log_sigma and epsilon must all have the same shape");
@@ -55,4 +55,4 @@ ReparamGrad Reparameterize::backward(const Tensor& grad_z) const {
     return ReparamGrad{std::move(grad_mu), std::move(grad_log_sigma)};
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

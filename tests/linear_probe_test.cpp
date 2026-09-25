@@ -6,9 +6,9 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_probe.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_probe.hpp"
 
 // LinearProbe (campaign_exai_dl_library_mechanistic_interpretability, Phase 2 Mission 1)
 // is the linear-probing utility: one LinearModule(activation_dim, 1) + BCEWithLogitsLoss,
@@ -23,7 +23,7 @@
 //                  negative control (labels independent of the features -> probe must
 //                  fail), run through the *identical* training procedure, so the contrast
 //                  proves the methodology rather than the probe's ability to fit anything.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class LinearProbeTest : public ::testing::Test {
@@ -378,4 +378,4 @@ TEST_F(LinearProbeControlTest, NegativeControlFailsWhenLabelsAreIndependentOfThe
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -1,15 +1,15 @@
 #include <gtest/gtest.h>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/saliency.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/saliency.hpp"
 
 // Saliency (charter Part 1: "raw gradient") is the campaign's first explainer that
 // actually produces an Attribution. It wraps ExplainerContext::forward_pass + a
 // one-hot-seeded backward_pass -- no new theory beyond what Autograd/ExplainerContext
 // already implement.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class SaliencyTest : public ::testing::Test {
@@ -56,4 +56,4 @@ TEST_F(SaliencyTest, DifferentTargetIndexSelectsDifferentWeightColumn) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

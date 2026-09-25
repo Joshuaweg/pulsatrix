@@ -9,13 +9,13 @@ Each model below reuses the exact architecture and hardcoded weights already use
 this project's own tests/stability_test.cpp, so the C++ side of the comparison is
 running literally the same network, not a similar one.
 
-IMPORTANT layout gotcha: exai's LinearModule stores weight as shape
+IMPORTANT layout gotcha: pulsatrix's LinearModule stores weight as shape
 (in_features, out_features), row-major -- the transpose of torch.nn.Linear's
 (out_features, in_features). Every weight literal below is reshaped as
 (in_features, out_features) and then .t()'d before being copied into the
 torch.nn.Linear, or the numbers silently describe a different matrix (caught
 the hard way: an earlier draft of this script skipped the transpose and produced
-reference values that looked plausible but didn't match exai's own, independently
+reference values that looked plausible but didn't match pulsatrix's own, independently
 hand-verified gradient computation for the ReLU-nonlinear model).
 
 Scoped to Saliency/IntegratedGradients/GradCAM only (pure-torch Captum methods).
@@ -34,8 +34,8 @@ from captum.attr import IntegratedGradients, LayerGradCam, Saliency
 torch.manual_seed(0)
 
 
-def exai_linear_weight(in_features, out_features, flat):
-    """Reinterprets an exai LinearModule::set_weight flat literal -- row-major over
+def pulsatrix_linear_weight(in_features, out_features, flat):
+    """Reinterprets an pulsatrix LinearModule::set_weight flat literal -- row-major over
     (in_features, out_features) -- as a torch.nn.Linear weight tensor, shape
     (out_features, in_features). See module docstring's layout gotcha."""
     return torch.tensor(flat).reshape(in_features, out_features).t().contiguous()
@@ -46,7 +46,7 @@ def model_a():
     KernelSHAPIsDeterministic / PDPIsDeterministic in stability_test.cpp."""
     m = nn.Linear(3, 1)
     with torch.no_grad():
-        m.weight.copy_(exai_linear_weight(3, 1, [2.0, -3.0, 5.0]))
+        m.weight.copy_(pulsatrix_linear_weight(3, 1, [2.0, -3.0, 5.0]))
         m.bias.copy_(torch.tensor([100.0]))
     return m
 
@@ -58,7 +58,7 @@ def model_b():
     l2 = nn.Linear(4, 2)
     with torch.no_grad():
         l1.weight.copy_(
-            exai_linear_weight(
+            pulsatrix_linear_weight(
                 3,
                 4,
                 [0.2, -0.4, 0.6, 0.1, -0.3, 0.5, 0.7, -0.2, 0.1, 0.4, -0.6, 0.3],
@@ -66,7 +66,7 @@ def model_b():
         )
         l1.bias.copy_(torch.tensor([0.1, -0.1, 0.2, 0.0]))
         l2.weight.copy_(
-            exai_linear_weight(
+            pulsatrix_linear_weight(
                 4,
                 2,
                 [0.5, -0.3, 0.2, 0.4, -0.1, 0.6, 0.3, -0.5],
@@ -103,7 +103,7 @@ class ModelC(nn.Module):
         self.linear = nn.Linear(8, 2)
         with torch.no_grad():
             self.linear.weight.copy_(
-                exai_linear_weight(
+                pulsatrix_linear_weight(
                     8,
                     2,
                     [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 2.0, 0.0, 2.0, 0.0, 2.0, 0.0, 2.0, 0.0],

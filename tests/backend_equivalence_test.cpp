@@ -3,9 +3,9 @@
 #include <random>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/cuda_backend.hpp"
-#include "exai/device_backend.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/cuda_backend.hpp"
+#include "pulsatrix/device_backend.hpp"
 
 // The literal Phase 1.5 exit gate: CPUBackend and CUDABackend must produce numerically
 // equivalent results on DeviceBackend's own primitives. Deterministic seeded pseudo-random
@@ -20,7 +20,7 @@
 // they're expected to match far more tightly than this bound requires; the single tolerance
 // is kept intentionally uniform across all four cases for simplicity, not tuned tighter
 // per-op, since none of these cases are anywhere near the bound in practice.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 constexpr float kBackendEquivalenceTolerance = 1e-4f;
@@ -161,4 +161,4 @@ TEST_F(BackendEquivalenceTest, MulMatchesCPUBackendOnRandomInput) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

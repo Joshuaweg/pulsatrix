@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "exai/node.hpp"
+#include "pulsatrix/node.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 TEST(NodeTest, ConstructionSetsOpTypeShapeAndId) {
@@ -50,4 +50,4 @@ TEST(NodeTest, AddChildAppendsToChildList) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -6,23 +6,23 @@
 import numpy as np
 import pytest
 
-import exai_py
+import pulsatrix_py
 
 
 def test_tensor_zeros_shape():
-    t = exai_py.Tensor.zeros([2, 3])
+    t = pulsatrix_py.Tensor.zeros([2, 3])
     assert t.shape() == [2, 3]
     assert t.numel() == 6
 
 
 def test_tensor_zeros_is_actually_zero():
-    t = exai_py.Tensor.zeros([4])
+    t = pulsatrix_py.Tensor.zeros([4])
     for i in range(4):
         assert t.at([i]) == 0.0
 
 
 def test_tensor_from_values_row_major():
-    t = exai_py.Tensor.from_values([2, 2], [1.0, 2.0, 3.0, 4.0])
+    t = pulsatrix_py.Tensor.from_values([2, 2], [1.0, 2.0, 3.0, 4.0])
     assert t.at([0, 0]) == 1.0
     assert t.at([0, 1]) == 2.0
     assert t.at([1, 0]) == 3.0
@@ -30,13 +30,13 @@ def test_tensor_from_values_row_major():
 
 
 def test_tensor_set_at_is_visible_via_at():
-    t = exai_py.Tensor.zeros([3])
+    t = pulsatrix_py.Tensor.zeros([3])
     t.set_at([1], 7.0)
     assert t.at([1]) == 7.0
 
 
 def test_tensor_numpy_zero_copy():
-    t = exai_py.Tensor.zeros([4])
+    t = pulsatrix_py.Tensor.zeros([4])
     arr = np.asarray(t)
     assert arr.shape == (4,)
     arr[0] = 5.0
@@ -46,24 +46,24 @@ def test_tensor_numpy_zero_copy():
 
 
 def test_tensor_at_raises_on_out_of_range_index():
-    t = exai_py.Tensor.zeros([3])
+    t = pulsatrix_py.Tensor.zeros([3])
     with pytest.raises(IndexError):
         t.at([5])
 
 
 def test_tensor_at_raises_on_rank_mismatch():
-    t = exai_py.Tensor.zeros([2, 3])
+    t = pulsatrix_py.Tensor.zeros([2, 3])
     with pytest.raises(ValueError):
         t.at([0])
 
 
 def test_tensor_from_values_raises_on_size_mismatch():
     with pytest.raises(ValueError):
-        exai_py.Tensor.from_values([2, 2], [1.0, 2.0])
+        pulsatrix_py.Tensor.from_values([2, 2], [1.0, 2.0])
 
 
 def test_tensor_numpy_multidim_shape_and_strides():
-    t = exai_py.Tensor.from_values([2, 3], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+    t = pulsatrix_py.Tensor.from_values([2, 3], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
     arr = np.asarray(t)
     assert arr.shape == (2, 3)
     np.testing.assert_array_equal(arr, np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], dtype=np.float32))

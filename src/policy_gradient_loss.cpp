@@ -1,14 +1,14 @@
-#include "exai/policy_gradient_loss.hpp"
+#include "pulsatrix/policy_gradient_loss.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <string>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // How far a discrete action's float encoding may sit from a whole number before it is
@@ -36,9 +36,9 @@ float PolicyGradientLoss::forward(const Tensor& logits, const Tensor& actions, c
     // row-wise stabilized softmax and a per-row gather at a data-dependent column have no
     // DeviceBackend primitive). See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision and mission_host_loop_guards.md.
-    EXAI_ASSERT(logits.device() == DeviceType::Cpu);
-    EXAI_ASSERT(actions.device() == DeviceType::Cpu);
-    EXAI_ASSERT(returns.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(logits.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(actions.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(returns.device() == DeviceType::Cpu);
 
     if (logits.rank() != 2) {
         throw std::invalid_argument("PolicyGradientLoss::forward: logits must have shape (N, action_dim)");
@@ -131,4 +131,4 @@ Tensor PolicyGradientLoss::backward() const {
     return grad;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

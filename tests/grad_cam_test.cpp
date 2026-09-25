@@ -2,20 +2,20 @@
 
 #include <stdexcept>
 
-#include "exai/conv2d_module.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/flatten_module.hpp"
-#include "exai/grad_cam.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
+#include "pulsatrix/conv2d_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/grad_cam.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
 
 // Grad-CAM (charter: "Grad-CAM analog for conv layers"; theory:
 // xai_context.aDNA's vision_gradcam.md). Baseline algorithm: find the last OpType::Conv
 // node, global-average-pool its gradient per channel to get alpha_k, weighted-sum its
 // activation channels, ReLU the result. Correctness verified by hand-derivation, per this
 // vault's TDD discipline -- not just "it runs".
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class GradCAMTest : public ::testing::Test {
@@ -71,7 +71,7 @@ TEST_F(GradCAMTest, ComputesHandDerivedCAMForSimpleNetwork) {
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
-// escalated from EXAI_ASSERT (was a death test) to a real throw -- whether this
+// escalated from PULSATRIX_ASSERT (was a death test) to a real throw -- whether this
 // ExplainerContext was built with a Conv layer is a caller-configuration fact, not an
 // internal invariant.
 TEST_F(GradCAMTest, ExplainThrowsWhenGraphHasNoConvLayer) {
@@ -84,4 +84,4 @@ TEST_F(GradCAMTest, ExplainThrowsWhenGraphHasNoConvLayer) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

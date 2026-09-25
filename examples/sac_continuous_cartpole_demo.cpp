@@ -21,7 +21,7 @@
 #include "sac_continuous_cartpole_training.hpp"
 
 int main() {
-    using namespace exai::sac_continuous_cartpole;
+    using namespace pulsatrix::sac_continuous_cartpole;
 
     const TrainingConfig config;
 

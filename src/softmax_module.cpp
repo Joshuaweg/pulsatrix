@@ -1,11 +1,11 @@
-#include "exai/softmax_module.hpp"
+#include "pulsatrix/softmax_module.hpp"
 
 #include <algorithm>
 #include <cmath>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 /**
@@ -21,9 +21,9 @@ struct RowLayout {
 };
 
 [[nodiscard]] RowLayout row_layout_of(const Shape& shape) {
-    EXAI_ASSERT(shape.rank() >= 1);
+    PULSATRIX_ASSERT(shape.rank() >= 1);
     const int64_t row_len = shape.dim(static_cast<size_t>(shape.rank() - 1));
-    EXAI_ASSERT(row_len > 0);
+    PULSATRIX_ASSERT(row_len > 0);
     return RowLayout{shape.numel() / row_len, row_len};
 }
 
@@ -40,7 +40,7 @@ Tensor SoftmaxModule::forward_impl(const Tensor& input) {
     // Raw host loop (std::exp per element) -- not backend-generic. There is no Exp
     // elementwise op and adding one is out of this mission's scope (CrossEntropyLoss
     // computes its softmax the same way). See mission_host_loop_guards.md for the guard.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     const RowLayout layout = row_layout_of(input.shape());
 
@@ -73,8 +73,8 @@ Tensor SoftmaxModule::forward_impl(const Tensor& input) {
 
 Tensor SoftmaxModule::backward(const Tensor& grad_output) {
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
-    EXAI_ASSERT(grad_output.shape() == last_output_.shape());
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.shape() == last_output_.shape());
 
     const RowLayout layout = row_layout_of(grad_output.shape());
 
@@ -96,8 +96,8 @@ Tensor SoftmaxModule::backward(const Tensor& grad_output) {
 
 Tensor SoftmaxModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
-    EXAI_ASSERT(relevance_out.shape() == last_output_.shape());
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.shape() == last_output_.shape());
 
     const RowLayout layout = row_layout_of(relevance_out.shape());
 
@@ -122,4 +122,4 @@ Tensor SoftmaxModule::propagate_relevance(const Tensor& relevance_out, const LRP
     return relevance_in;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

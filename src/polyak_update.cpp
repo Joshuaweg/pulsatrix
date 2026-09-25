@@ -1,14 +1,14 @@
-#include "exai/polyak_update.hpp"
+#include "pulsatrix/polyak_update.hpp"
 
 #include <cstdint>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include "exai/shape.hpp"
-#include "exai/tensor.hpp"
+#include "pulsatrix/shape.hpp"
+#include "pulsatrix/tensor.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Renders a Shape as "(a, b, ...)" for an error message. Deliberately duplicated from
@@ -66,4 +66,4 @@ void PolyakUpdate(Module& source, Module& destination, float tau) {
     }
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

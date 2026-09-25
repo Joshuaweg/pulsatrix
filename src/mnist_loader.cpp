@@ -1,11 +1,11 @@
-#include "exai/mnist_loader.hpp"
+#include "pulsatrix/mnist_loader.hpp"
 
 #include <algorithm>
 #include <cstdint>
 #include <fstream>
 #include <stdexcept>
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 constexpr uint32_t kImageMagic = 0x00000803;
@@ -94,4 +94,4 @@ MnistDataset MnistIdxLoader::Load(const std::string& images_path, const std::str
     return dataset;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

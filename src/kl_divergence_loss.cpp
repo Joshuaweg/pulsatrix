@@ -1,11 +1,11 @@
-#include "exai/kl_divergence_loss.hpp"
+#include "pulsatrix/kl_divergence_loss.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 KLDivergenceLoss::KLDivergenceLoss(DeviceBackend* backend)
     : backend_(backend), last_mu_(Shape({0}), backend), last_log_sigma_(Shape({0}), backend) {}
@@ -15,8 +15,8 @@ float KLDivergenceLoss::forward(const Tensor& mu, const Tensor& log_sigma) {
     // primitive) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    EXAI_ASSERT(mu.device() == DeviceType::Cpu);
-    EXAI_ASSERT(log_sigma.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(mu.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(log_sigma.device() == DeviceType::Cpu);
 
     if (mu.rank() != 2) {
         throw std::invalid_argument("KLDivergenceLoss::forward: mu must be rank-2 (N, latent_dim)");
@@ -57,4 +57,4 @@ ReparamGrad KLDivergenceLoss::backward() const {
     return ReparamGrad{std::move(grad_mu), std::move(grad_log_sigma)};
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

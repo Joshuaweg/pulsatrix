@@ -1,11 +1,11 @@
-#include "exai/swiglu_module.hpp"
+#include "pulsatrix/swiglu_module.hpp"
 
 #include <stdexcept>
 #include <vector>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 /**
@@ -14,8 +14,8 @@ namespace {
  *        Step 1 uses to feed rank-3 (N, L, d_model) input through a rank-2 LinearModule.
  */
 [[nodiscard]] int64_t flatten_leading_dims(const Shape& shape, int64_t feature_dim) {
-    EXAI_ASSERT(shape.rank() >= 2);
-    EXAI_ASSERT(shape.dim(static_cast<size_t>(shape.rank() - 1)) == feature_dim);
+    PULSATRIX_ASSERT(shape.rank() >= 2);
+    PULSATRIX_ASSERT(shape.dim(static_cast<size_t>(shape.rank() - 1)) == feature_dim);
     return shape.numel() / feature_dim;
 }
 
@@ -55,7 +55,7 @@ SwiGLUModule::SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend
 Tensor SwiGLUModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in raw host loops (the gate multiply below) --
     // not backend-generic. See mission_host_loop_guards.md.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     if (input.rank() < 2 || input.shape().dim(static_cast<size_t>(input.rank() - 1)) != d_model_) {
         throw std::invalid_argument("SwiGLUModule::forward: input must be rank >= 2 with final dimension d_model");
@@ -95,7 +95,7 @@ Tensor SwiGLUModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("SwiGLUModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loops -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     const Tensor grad_output_flat = reshaped(grad_output, Shape({last_n_flat_, d_model_}));
 
@@ -139,7 +139,7 @@ Tensor SwiGLUModule::propagate_relevance(const Tensor& relevance_out, const LRPR
             "SwiGLUModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
 
     const Tensor relevance_out_flat = reshaped(relevance_out, Shape({last_n_flat_, d_model_}));
 
@@ -181,4 +181,4 @@ std::vector<ParamRef> SwiGLUModule::parameters() {
     return params;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

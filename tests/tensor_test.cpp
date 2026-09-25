@@ -6,11 +6,11 @@
 #include <type_traits>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/device_backend.hpp"
-#include "exai/tensor.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/tensor.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class MockDeviceBackend : public DeviceBackend {
@@ -74,8 +74,8 @@ TEST_F(TensorTest, ConstructionFromVectorCopiesData) {
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):
 // values-constructors are an external boundary (Tensor::from_values in
-// bindings/exai_py.cpp passes an externally-supplied values list directly) -- escalated
-// from EXAI_ASSERT-only to a real throw per Mission 0's classification table.
+// bindings/pulsatrix_py.cpp passes an externally-supplied values list directly) -- escalated
+// from PULSATRIX_ASSERT-only to a real throw per Mission 0's classification table.
 TEST_F(TensorTest, ConstructionFromInitializerListThrowsOnSizeMismatch) {
     EXPECT_THROW((Tensor(Shape({2, 2}), &backend, {1.0f, 2.0f})), std::invalid_argument);
 }
@@ -249,39 +249,39 @@ TEST_F(TensorTest, AtAllowsMutation) {
 
 TEST_F(TensorDeathTest, AtAbortsOnOutOfBoundsDimensionIndex) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor t(Shape({2, 3}), &backend);
-    EXPECT_DEATH({ (void)t.at({0, 5}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)t.at({0, 5}); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(TensorDeathTest, AtAbortsOnRankMismatch) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor t(Shape({2, 3}), &backend);
-    EXPECT_DEATH({ (void)t.at({0}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)t.at({0}); }, "PULSATRIX_ASSERT failed");
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):
 // operator[] previously had zero bounds checking, not even assert-gated -- raw
 // out-of-bounds buffer access, unconditional in every build. Internal invariant per
 // Mission 0's classification table (hot path, indices computed internally by
-// CPUBackend/module forward-backward loops) -- EXAI_ASSERT, not throw.
+// CPUBackend/module forward-backward loops) -- PULSATRIX_ASSERT, not throw.
 TEST_F(TensorDeathTest, IndexOperatorAbortsOnOutOfRangeFlatIndex) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
-    EXPECT_DEATH({ (void)t[5]; }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)t[5]; }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(TensorDeathTest, IndexOperatorAbortsOnNegativeFlatIndex) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
-    EXPECT_DEATH({ (void)t[-1]; }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)t[-1]; }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(TensorTest, OperatorBracketFlatIndexesRegardlessOfRank) {
@@ -335,7 +335,7 @@ TEST_F(TensorTest, ToDifferentDeviceThrowsUntilThatBackendExists) {
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):
-// escalated from EXAI_ASSERT-only to a real throw -- gradient-accumulation shapes trace
+// escalated from PULSATRIX_ASSERT-only to a real throw -- gradient-accumulation shapes trace
 // back to module construction parameters, which can originate from external configuration.
 TEST_F(TensorTest, AccumulateThrowsOnShapeMismatch) {
     Tensor t(Shape({3}), &backend, {1.0f, 2.0f, 3.0f});
@@ -367,7 +367,7 @@ TEST_F(TensorTest, AccumulateCalledTwiceSumsBothContributions) {
     EXPECT_FLOAT_EQ(t.data()[1], 3.0f);
 }
 
-// Escalated from EXAI_ASSERT (death test) to a real throw -- see
+// Escalated from PULSATRIX_ASSERT (death test) to a real throw -- see
 // TensorTest.AccumulateThrowsOnShapeMismatch above (Mission 0's classification table).
 
 TEST(TensorDestructorTest, DestructorCallsBackendFreeExactlyOnce) {
@@ -381,4 +381,4 @@ TEST(TensorDestructorTest, DestructorCallsBackendFreeExactlyOnce) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

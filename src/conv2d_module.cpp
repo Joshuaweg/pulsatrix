@@ -1,10 +1,10 @@
-#include "exai/conv2d_module.hpp"
+#include "pulsatrix/conv2d_module.hpp"
 
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 
@@ -117,7 +117,7 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly (bias-add loop, plus im2col()) -- not yet
     // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision and mission_host_loop_guards.md.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     // External boundary (campaign_exai_dl_library_adversarial_hardening.md, Mission 1,
     // findings 1/6; shape generalized to (N, in_channels, H, W) by
@@ -196,7 +196,7 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     // own bias-grad loop) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     const int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     const int64_t Q = last_out_h_ * last_out_w_;
@@ -261,7 +261,7 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     // Dereferences Tensor::data() directly (its own loop, plus col2im_into()) -- not yet
     // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
 
     const int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     const int64_t Q = last_out_h_ * last_out_w_;
@@ -306,4 +306,4 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     return relevance_in;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

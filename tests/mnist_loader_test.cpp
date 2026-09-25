@@ -3,21 +3,21 @@
 #include <fstream>
 #include <string>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/mnist_loader.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/mnist_loader.hpp"
 
 // MnistIdxLoader parses real MNIST IDX files (tools/fetch_mnist.py, data/MNIST/raw/,
 // gitignored -- not part of this repo's tracked source). Every test here GTEST_SKIP()s
 // when that directory is absent, the same environment-conditional pattern Phase 1.5's
 // CUDA-hardware-gated tests already established -- skip, don't fail, when a real external
 // dependency isn't present on this machine.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
-const std::string kTrainImages = std::string(EXAI_TEST_DATA_DIR) + "/MNIST/raw/train-images-idx3-ubyte";
-const std::string kTrainLabels = std::string(EXAI_TEST_DATA_DIR) + "/MNIST/raw/train-labels-idx1-ubyte";
-const std::string kTestImages = std::string(EXAI_TEST_DATA_DIR) + "/MNIST/raw/t10k-images-idx3-ubyte";
-const std::string kTestLabels = std::string(EXAI_TEST_DATA_DIR) + "/MNIST/raw/t10k-labels-idx1-ubyte";
+const std::string kTrainImages = std::string(PULSATRIX_TEST_DATA_DIR) + "/MNIST/raw/train-images-idx3-ubyte";
+const std::string kTrainLabels = std::string(PULSATRIX_TEST_DATA_DIR) + "/MNIST/raw/train-labels-idx1-ubyte";
+const std::string kTestImages = std::string(PULSATRIX_TEST_DATA_DIR) + "/MNIST/raw/t10k-images-idx3-ubyte";
+const std::string kTestLabels = std::string(PULSATRIX_TEST_DATA_DIR) + "/MNIST/raw/t10k-labels-idx1-ubyte";
 
 bool RealMnistDataPresent() {
     std::ifstream f(kTrainImages, std::ios::binary);
@@ -75,4 +75,4 @@ TEST_F(MnistIdxLoaderTest, ThrowsOnMissingFile) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -29,7 +29,7 @@
 
 #include "../examples/dqn_cartpole_training.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace dqn_cartpole {
 namespace {
 
@@ -188,4 +188,4 @@ TEST(DQNCartPoleDeterminismTest, TwoRunsOfTheSameConfigurationAreIdentical) {
 
 }  // namespace
 }  // namespace dqn_cartpole
-}  // namespace exai
+}  // namespace pulsatrix

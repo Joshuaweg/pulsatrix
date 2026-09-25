@@ -1,20 +1,20 @@
 #include <gtest/gtest.h>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
-TEST(ExaiAssertTest, TrueConditionDoesNotAbort) {
-    EXPECT_NO_THROW(EXAI_ASSERT(1 + 1 == 2));
+TEST(PulsatrixAssertTest, TrueConditionDoesNotAbort) {
+    EXPECT_NO_THROW(PULSATRIX_ASSERT(1 + 1 == 2));
 }
 
-TEST(ExaiAssertDeathTest, FalseConditionAborts) {
+TEST(PulsatrixAssertDeathTest, FalseConditionAborts) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
-    EXPECT_DEATH({ EXAI_ASSERT(1 + 1 == 3); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ PULSATRIX_ASSERT(1 + 1 == 3); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

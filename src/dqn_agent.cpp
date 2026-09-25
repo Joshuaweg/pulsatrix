@@ -1,11 +1,11 @@
-#include "exai/dqn_agent.hpp"
+#include "pulsatrix/dqn_agent.hpp"
 
 #include <stdexcept>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Validates the constructor's scalar arguments and echoes action_dim back, so it can be
@@ -78,7 +78,7 @@ Tensor DQNAgent::act(const Tensor& observation) {
     // The argmax below is a raw host loop over Tensor::data(); the network output inherits
     // its device from this observation. Undefined behavior on a CUDA-backed Tensor -- see
     // mission_host_loop_guards.md.
-    EXAI_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
 
     // The coin flip is drawn unconditionally, before the branch, so the stream advances by a
     // known amount regardless of which way it goes.
@@ -90,7 +90,7 @@ Tensor DQNAgent::act(const Tensor& observation) {
 }
 
 Tensor DQNAgent::act_greedy(const Tensor& observation) {
-    EXAI_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
     return greedy_action(observation);
 }
 
@@ -101,4 +101,4 @@ void DQNAgent::set_epsilon(float epsilon) {
     epsilon_ = epsilon;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

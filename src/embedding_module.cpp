@@ -1,11 +1,11 @@
-#include "exai/embedding_module.hpp"
+#include "pulsatrix/embedding_module.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 EmbeddingModule::EmbeddingModule(int64_t num_embeddings, int64_t embedding_dim, DeviceBackend* backend)
     : num_embeddings_(num_embeddings),
@@ -33,7 +33,7 @@ void EmbeddingModule::set_weight(const std::vector<float>& values) {
 
 Tensor EmbeddingModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     if (input.rank() != 2) {
         throw std::invalid_argument("EmbeddingModule::forward: input must be rank-2 (N, L)");
@@ -80,7 +80,7 @@ Tensor EmbeddingModule::backward(const Tensor& grad_output) {
             "shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     const int64_t count = N * L;
     Tensor local_weight_grad(weight_.shape(), backend_);
@@ -118,7 +118,7 @@ Tensor EmbeddingModule::propagate_relevance(const Tensor& relevance_out, const L
             "EmbeddingModule::propagate_relevance: relevance_out must be (N, L, embedding_dim) matching the "
             "cached forward shape");
     }
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
 
     const int64_t count = N * L;
     Tensor relevance_in(last_input_shape_, backend_);
@@ -135,4 +135,4 @@ Tensor EmbeddingModule::propagate_relevance(const Tensor& relevance_out, const L
     return relevance_in;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

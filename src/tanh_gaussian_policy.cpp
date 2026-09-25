@@ -1,14 +1,14 @@
-#include "exai/tanh_gaussian_policy.hpp"
+#include "pulsatrix/tanh_gaussian_policy.hpp"
 
 #include <cmath>
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // 0.5 * log(2*pi), the Gaussian log-density's normalizing constant. Spelled as a literal
@@ -29,9 +29,9 @@ TanhGaussianSample TanhGaussianPolicy::forward(const Tensor& mean, const Tensor&
     // primitive) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    EXAI_ASSERT(mean.device() == DeviceType::Cpu);
-    EXAI_ASSERT(log_std.device() == DeviceType::Cpu);
-    EXAI_ASSERT(epsilon.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(mean.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(log_std.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(epsilon.device() == DeviceType::Cpu);
 
     if (mean.rank() != 2 || mean.shape().dim(0) < 1 || mean.shape().dim(1) < 1) {
         throw std::invalid_argument(
@@ -123,4 +123,4 @@ TanhGaussianGrad TanhGaussianPolicy::backward(const Tensor& grad_action, const T
     return TanhGaussianGrad{std::move(grad_mean), std::move(grad_log_std)};
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

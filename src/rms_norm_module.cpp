@@ -1,11 +1,11 @@
-#include "exai/rms_norm_module.hpp"
+#include "pulsatrix/rms_norm_module.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 RMSNormModule::RMSNormModule(int64_t num_features, DeviceBackend* backend, DeviceType device, float eps)
     : num_features_(num_features),
@@ -74,7 +74,7 @@ Tensor RMSNormModule::backward(const Tensor& grad_output) {
     }
     // Not yet backend-generic -- raw host loop below. See every existing Module
     // subclass's identical Phase 1.5 scope decision.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     const float D = static_cast<float>(num_features_);
 
@@ -117,4 +117,4 @@ Tensor RMSNormModule::propagate_relevance(const Tensor& relevance_out, const LRP
     return Tensor(relevance_out);
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

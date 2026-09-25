@@ -10,13 +10,13 @@
  */
 #include <cstdio>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/tensor.hpp"
-#include "exai/transformer_block.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/tensor.hpp"
+#include "pulsatrix/transformer_block.hpp"
 
 int main() {
-    using namespace exai;
+    using namespace pulsatrix;
 
     CPUBackend backend;
 

@@ -3,7 +3,7 @@
  *         examples/sac_continuous_cartpole_demo.cpp and
  *         tests/sac_continuous_cartpole_integration_test.cpp.
  *
- *  @note Header-only, and deliberately *not* under include/exai/, for exactly the reason
+ *  @note Header-only, and deliberately *not* under include/pulsatrix/, for exactly the reason
  *        examples/dqn_cartpole_training.hpp, examples/reinforce_cartpole_training.hpp,
  *        examples/a2c_cartpole_training.hpp and examples/ppo_cartpole_training.hpp are not:
  *        mission_sac_continuous_cartpole_training.md's deliverable is a test/demo integration
@@ -62,22 +62,22 @@
 #include <functional>
 #include <vector>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/continuous_cartpole_env.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/dqn_target.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/module.hpp"
-#include "exai/mse_loss.hpp"
-#include "exai/polyak_update.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/replay_buffer.hpp"
-#include "exai/sequential_module.hpp"
-#include "exai/shape.hpp"
-#include "exai/tanh_gaussian_policy.hpp"
-#include "exai/tensor.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/continuous_cartpole_env.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/dqn_target.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/module.hpp"
+#include "pulsatrix/mse_loss.hpp"
+#include "pulsatrix/polyak_update.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/replay_buffer.hpp"
+#include "pulsatrix/sequential_module.hpp"
+#include "pulsatrix/shape.hpp"
+#include "pulsatrix/tanh_gaussian_policy.hpp"
+#include "pulsatrix/tensor.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace sac_continuous_cartpole {
 
 /**
@@ -962,4 +962,4 @@ inline TrainingResult RunTraining(const TrainingConfig& config,
 //     place to look.
 
 }  // namespace sac_continuous_cartpole
-}  // namespace exai
+}  // namespace pulsatrix

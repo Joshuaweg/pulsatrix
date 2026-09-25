@@ -27,12 +27,12 @@
 #include <random>
 #include <vector>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/gru_module.hpp"
-#include "exai/lstm_module.hpp"
-#include "exai/mse_loss.hpp"
-#include "exai/rnn_module.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/gru_module.hpp"
+#include "pulsatrix/lstm_module.hpp"
+#include "pulsatrix/mse_loss.hpp"
+#include "pulsatrix/rnn_module.hpp"
 
 namespace {
 
@@ -80,17 +80,17 @@ private:
 };
 
 /** @brief Trains one recurrent module full-batch on the parity dataset and prints progress. */
-void train_and_report(const char* label, exai::Module& module, const exai::Tensor& input, const exai::Tensor& target,
-                      exai::DeviceBackend* backend, float learning_rate, const char* note) {
-    exai::AdamOptimizer optimizer(learning_rate, backend);
-    exai::MSELoss loss(backend);
+void train_and_report(const char* label, pulsatrix::Module& module, const pulsatrix::Tensor& input, const pulsatrix::Tensor& target,
+                      pulsatrix::DeviceBackend* backend, float learning_rate, const char* note) {
+    pulsatrix::AdamOptimizer optimizer(learning_rate, backend);
+    pulsatrix::MSELoss loss(backend);
 
     std::printf("\n=== %s (input_size=1, hidden_size=1, Adam lr=%.3f) ===\n", label, learning_rate);
 
     float final_loss = 0.0f;
     for (int epoch = 0; epoch <= kEpochs; ++epoch) {
         optimizer.zero_grad(module);
-        exai::Tensor prediction = module.forward(input);
+        pulsatrix::Tensor prediction = module.forward(input);
         final_loss = loss.forward(prediction, target);
         if (epoch % kReportEvery == 0) {
             std::printf("epoch %5d | mean loss %.6f\n", epoch, final_loss);
@@ -98,12 +98,12 @@ void train_and_report(const char* label, exai::Module& module, const exai::Tenso
         if (epoch == kEpochs) {
             break;
         }
-        exai::Tensor grad = loss.backward();
+        pulsatrix::Tensor grad = loss.backward();
         (void)module.backward(grad);
         optimizer.step(module);
     }
 
-    exai::Tensor prediction = module.forward(input);
+    pulsatrix::Tensor prediction = module.forward(input);
     int correct = 0;
     std::printf("Final predictions (bit -> rounded pred / target, '!' = wrong):\n");
     for (int n = 0; n < kNumSequences; ++n) {
@@ -128,7 +128,7 @@ void train_and_report(const char* label, exai::Module& module, const exai::Tenso
 }  // namespace
 
 int main() {
-    using namespace exai;
+    using namespace pulsatrix;
 
     CPUBackend backend;
     const ParityDataset data = make_dataset();

@@ -1,4 +1,4 @@
-add_executable(exai_tests
+add_executable(pulsatrix_tests
     device_backend_test.cpp
     cpu_backend_test.cpp
     shape_test.cpp
@@ -87,18 +87,18 @@ add_executable(exai_tests
     captum_benchmark_test.cpp
 )
 
-if(EXAI_ENABLE_CUDA)
-    target_sources(exai_tests PRIVATE cuda_check_test.cpp cuda_backend_test.cpp cublas_check_test.cpp
+if(PULSATRIX_ENABLE_CUDA)
+    target_sources(pulsatrix_tests PRIVATE cuda_check_test.cpp cuda_backend_test.cpp cublas_check_test.cpp
                                        backend_equivalence_test.cpp forward_pass_equivalence_test.cpp)
 endif()
 
-target_link_libraries(exai_tests PRIVATE exai_core GTest::gtest_main GTest::gmock)
+target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_core GTest::gtest_main GTest::gmock)
 
-# ctest runs exai_tests with cwd = the build directory, not the source tree -- a relative
+# ctest runs pulsatrix_tests with cwd = the build directory, not the source tree -- a relative
 # "data/MNIST/raw/..." path never resolves there. mnist_loader_test.cpp needs an absolute
 # path to the gitignored, fetch_mnist.py-populated data directory regardless of how/where
 # ctest is invoked from.
-target_compile_definitions(exai_tests PRIVATE EXAI_TEST_DATA_DIR="${CMAKE_SOURCE_DIR}/data")
+target_compile_definitions(pulsatrix_tests PRIVATE PULSATRIX_TEST_DATA_DIR="${CMAKE_SOURCE_DIR}/data")
 
 include(GoogleTest)
 # DISCOVERY_MODE PRE_TEST (CMake 3.18+): defers test discovery to ctest run-time instead of
@@ -107,4 +107,4 @@ include(GoogleTest)
 # (Visual Studio), that means `ctest -C Debug` can silently run the *Release* binary if
 # Release was built more recently, with no error, just wrong results. PRE_TEST re-discovers
 # against the actual $<CONFIG> binary on every ctest invocation.
-gtest_discover_tests(exai_tests DISCOVERY_MODE PRE_TEST)
+gtest_discover_tests(pulsatrix_tests DISCOVERY_MODE PRE_TEST)

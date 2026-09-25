@@ -16,15 +16,15 @@
 #include <iostream>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/kl_divergence_loss.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/mse_loss.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/reparameterize.hpp"
-#include "exai/sgd_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/kl_divergence_loss.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/mse_loss.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/reparameterize.hpp"
+#include "pulsatrix/sgd_optimizer.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 constexpr int64_t kBatch = 4;
@@ -253,4 +253,4 @@ TEST_F(VAEIntegrationTest, KLTermIsNonZeroAtInitAndShrinksWithTraining) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

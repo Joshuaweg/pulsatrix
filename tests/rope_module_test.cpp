@@ -4,11 +4,11 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/rope_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/rope_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class RoPEModuleTest : public ::testing::Test {
@@ -428,36 +428,36 @@ using RoPEModuleDeathTest = RoPEModuleTest;
 // CPUBackend memory trips the guard identically).
 TEST_F(RoPEModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     RoPEModule rope(2, &backend);
     Tensor x(Shape({1, 1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rope.forward(x); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)rope.forward(x); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(RoPEModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     RoPEModule rope(2, &backend);
     Tensor x(Shape({1, 1, 2}), &backend, {1.0f, 2.0f});
     (void)rope.forward(x);
 
     Tensor grad_output(Shape({1, 1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rope.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)rope.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(RoPEModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     RoPEModule rope(2, &backend);
     Tensor x(Shape({1, 1, 2}), &backend, {1.0f, 2.0f});
     (void)rope.forward(x);
 
     Tensor relevance_out(Shape({1, 1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rope.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)rope.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

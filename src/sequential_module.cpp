@@ -1,9 +1,9 @@
-#include "exai/sequential_module.hpp"
+#include "pulsatrix/sequential_module.hpp"
 
 #include <stdexcept>
 #include <utility>
 
-namespace exai {
+namespace pulsatrix {
 
 SequentialModule::SequentialModule(std::vector<Module*> layers) : layers_(std::move(layers)) {
     // External boundary (constructor arguments can originate from Phase 5's Python
@@ -67,4 +67,4 @@ void SequentialModule::set_training(bool training) {
     }
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

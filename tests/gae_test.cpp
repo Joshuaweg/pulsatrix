@@ -3,10 +3,10 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/gae.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/gae.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Every hand-derived quantity below is exactly representable in binary floating point (halves
@@ -194,7 +194,7 @@ TEST_F(GAETest, RejectsMalformedShapesAndOutOfRangeDiscounts) {
 using GAEDeathTest = GAETest;
 
 // ComputeGAE reads all three tensors in a raw host loop over Tensor::data() -- undefined
-// behavior on a CUDA-backed Tensor, so each is EXAI_ASSERT-guarded
+// behavior on a CUDA-backed Tensor, so each is PULSATRIX_ASSERT-guarded
 // (mission_host_loop_guards.md). No real GPU needed: this reuses LinearModuleDeathTest's
 // mislabeled-Tensor pattern.
 //
@@ -205,13 +205,13 @@ using GAEDeathTest = GAETest;
 // the same loop), so extra cases would re-cover a path rather than cover a new one.
 TEST_F(GAEDeathTest, ComputeGAEAbortsOnNonCpuRewards) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor cuda_rewards(Shape({1, 1}), &backend, {1.0f}, DeviceType::Cuda);
     Tensor d(Shape({1, 1}), &backend, {0.0f});
     Tensor v(Shape({1, 1}), &backend, {0.0f});
-    EXPECT_DEATH({ (void)ComputeGAE(cuda_rewards, d, v, 0.0f, 0.9f, 0.9f, &backend); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)ComputeGAE(cuda_rewards, d, v, 0.0f, 0.9f, 0.9f, &backend); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

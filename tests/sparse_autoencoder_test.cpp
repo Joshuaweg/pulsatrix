@@ -6,9 +6,9 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/sparse_autoencoder.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/sparse_autoencoder.hpp"
 
 // SparseAutoencoder (campaign_exai_dl_library_mechanistic_interpretability, Phase 3
 // Mission 1) is the sparse-autoencoder training utility: LinearModule(dim, hidden_dim) ->
@@ -28,7 +28,7 @@
 // that the hidden units the penalty produces correspond to semantically meaningful or
 // causally compositional features. That is a live debate in the field, and Phase 4
 // (activation patching) evidence would be the minimum prerequisite for even arguing it.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class SparseAutoencoderTest : public ::testing::Test {
@@ -639,4 +639,4 @@ TEST_F(SparseAutoencoderControlTest, SparsityIncreasesMonotonicallyWithThePenalt
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

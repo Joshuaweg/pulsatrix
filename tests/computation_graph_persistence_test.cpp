@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "exai/autograd.hpp"
-#include "exai/computation_graph.hpp"
-#include "exai/cpu_backend.hpp"
+#include "pulsatrix/autograd.hpp"
+#include "pulsatrix/computation_graph.hpp"
+#include "pulsatrix/cpu_backend.hpp"
 
 // This is the mission's real acceptance criterion, deliberately kept in its own file so
 // it's immediately findable rather than folded quietly into computation_graph_test.cpp's
@@ -15,7 +15,7 @@
 // against a *real* backward() call; this test proves the guarantee holds against the graph
 // structure alone, before autograd exists to complicate the picture.
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 TEST(ComputationGraphPersistenceTest, GraphSurvivesReadHeavyTraversalUnchanged) {
@@ -89,4 +89,4 @@ TEST(ComputationGraphPersistenceTest, GraphSurvivesRealBackwardPassUnchanged) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix
