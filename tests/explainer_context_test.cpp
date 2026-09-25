@@ -9,6 +9,7 @@
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
 #include "exai/linear_module.hpp"
+#include "exai/multihead_attention_module.hpp"
 #include "exai/relu_module.hpp"
 #include "exai/sparse_autoencoder.hpp"
 
@@ -1015,6 +1016,109 @@ TEST_F(ExplainerContextTest, LogitLensThrowsOnAnUnknownNodeIdOrBeforeAnyForwardP
     Tensor lens = ctx.logit_lens(0);
     EXPECT_FLOAT_EQ(lens.data()[0], 1.0f);
     EXPECT_FLOAT_EQ(lens.data()[1], 2.0f);
+}
+
+// --- ExplainerContext::attention_weights() (Phase 5 Mission 2, Objective 1) ------------
+//
+// The attention lens: retrieve an attention layer's per-head softmax pattern
+// (N, num_heads, L, L) -- "what did each head attend to" -- by NodeId, without needing a
+// direct reference to the concrete MultiHeadAttentionModule* instance.
+
+// The equivalence oracle, the same zero-tolerance shape Phase 1 Mission 1 used for
+// activation(): what comes back through the context's node-keyed accessor must be exactly
+// what the module itself reports, element for element -- the accessor is a routing
+// mechanism, not a recomputation, so any divergence at all is a defect.
+TEST_F(ExplainerContextTest, AttentionWeightsMatchesTheModulesOwnLastAttentionWeightsExactly) {
+    MultiHeadAttentionModule mha(4, 2, &backend, /*use_rope=*/false, /*use_qk_norm=*/false);
+    mha.q_proj().set_weight({0.10f, -0.20f, 0.30f, 0.40f, 0.50f, 0.60f, -0.70f, 0.80f, -0.90f, 1.00f, 0.11f,
+                             -0.12f, 0.13f, -0.14f, 0.15f, 0.16f});
+    mha.q_proj().set_bias({0.01f, -0.02f, 0.03f, -0.04f});
+    mha.k_proj().set_weight({0.20f, 0.10f, -0.30f, 0.15f, -0.25f, 0.35f, 0.05f, -0.45f, 0.55f, -0.65f, 0.75f,
+                             0.85f, -0.05f, 0.95f, -0.15f, 0.25f});
+    mha.k_proj().set_bias({-0.01f, 0.02f, -0.03f, 0.04f});
+    mha.v_proj().set_weight({0.30f, -0.40f, 0.50f, 0.60f, 0.70f, 0.80f, -0.90f, 0.21f, -0.31f, 0.41f, -0.51f,
+                             0.61f, 0.71f, -0.81f, 0.91f, -0.22f});
+    mha.v_proj().set_bias({0.05f, -0.05f, 0.10f, -0.10f});
+    mha.out_proj().set_weight({0.12f, 0.22f, -0.32f, 0.42f, -0.52f, 0.62f, 0.72f, -0.82f, 0.92f, -0.13f, 0.23f,
+                               0.33f, -0.43f, 0.53f, -0.63f, 0.73f});
+    mha.out_proj().set_bias({0.02f, 0.04f, -0.06f, 0.08f});
+
+    ReluModule relu(&backend);
+
+    ExplainerContext ctx({&mha, &relu});
+    Tensor input(Shape({1, 2, 4}), &backend, {0.5f, -1.2f, 2.0f, 0.1f, 0.7f, -0.3f, -0.9f, 1.4f});
+
+    (void)ctx.forward_pass(input);
+    const NodeId attention_node = ctx.graph().topological_order()[1];  // node 0 is the input node
+    ASSERT_EQ(ctx.graph().node(attention_node).op_type(), OpType::Attention);
+
+    Tensor weights = ctx.attention_weights(attention_node);
+    const Tensor& direct = mha.last_attention_weights();
+
+    ASSERT_EQ(weights.shape(), Shape({1, 2, 2, 2}));  // (N, num_heads, L, L)
+    ASSERT_EQ(weights.shape(), direct.shape());
+    for (int64_t i = 0; i < direct.numel(); ++i) {
+        EXPECT_FLOAT_EQ(weights.data()[i], direct.data()[i]) << "index " << i;
+    }
+
+    // Each (head, query-position) row is a softmax distribution -- a sanity check that what
+    // came back really is the attention pattern and not some other cached tensor of the
+    // same shape.
+    for (int64_t row = 0; row < weights.numel() / 2; ++row) {
+        EXPECT_NEAR(weights.data()[row * 2] + weights.data()[row * 2 + 1], 1.0f, 1e-6f) << "row " << row;
+    }
+}
+
+// Adversarial (external boundary -- node_id is caller-supplied): naming a node that is not
+// an attention layer is a caller mistake, not an internal invariant violation, so it throws
+// and behaves identically in Debug and Release, matching logit_lens() and
+// forward_pass_with_patch() rather than activation()'s older EXAI_ASSERT pattern.
+TEST_F(ExplainerContextTest, AttentionWeightsThrowsOnANonAttentionNode) {
+    MultiHeadAttentionModule mha(4, 2, &backend, /*use_rope=*/false, /*use_qk_norm=*/false);
+    ReluModule relu(&backend);
+
+    ExplainerContext ctx({&mha, &relu});
+    Tensor input(Shape({1, 2, 4}), &backend, {0.5f, -1.2f, 2.0f, 0.1f, 0.7f, -0.3f, -0.9f, 1.4f});
+    (void)ctx.forward_pass(input);
+
+    const std::vector<NodeId> nodes = ctx.graph().topological_order();
+    ASSERT_EQ(nodes.size(), 3u);
+    EXPECT_THROW((void)ctx.attention_weights(nodes[0]), std::invalid_argument);  // the input node
+    EXPECT_THROW((void)ctx.attention_weights(nodes[2]), std::invalid_argument);  // the ReLU node
+
+    // Exception safety, mirroring forward_pass_with_patch's and logit_lens's established
+    // pattern: the failed calls must leave the context fully usable.
+    Tensor weights = ctx.attention_weights(nodes[1]);
+    const Tensor& direct = mha.last_attention_weights();
+    ASSERT_EQ(weights.shape(), direct.shape());
+    for (int64_t i = 0; i < direct.numel(); ++i) {
+        EXPECT_FLOAT_EQ(weights.data()[i], direct.data()[i]) << "index " << i;
+    }
+}
+
+// Adversarial (external boundary): a node id no forward pass ever produced, and the
+// called-before-any-forward-pass case. Both are well-defined throws, never a Debug-only
+// assertion or an out-of-bounds modules_ index in Release.
+TEST_F(ExplainerContextTest, AttentionWeightsThrowsOnAnOutOfRangeNodeIdOrBeforeAnyForwardPass) {
+    MultiHeadAttentionModule mha(4, 2, &backend, /*use_rope=*/false, /*use_qk_norm=*/false);
+    ReluModule relu(&backend);
+
+    ExplainerContext ctx({&mha, &relu});
+
+    // No forward pass has run: no node exists at all, so even the eventually-valid id throws.
+    EXPECT_THROW((void)ctx.attention_weights(0), std::invalid_argument);
+    EXPECT_THROW((void)ctx.attention_weights(1), std::invalid_argument);
+
+    Tensor input(Shape({1, 2, 4}), &backend, {0.5f, -1.2f, 2.0f, 0.1f, 0.7f, -0.3f, -0.9f, 1.4f});
+    (void)ctx.forward_pass(input);
+
+    // Valid ids here are 0 (input), 1 (attention), 2 (relu).
+    EXPECT_THROW((void)ctx.attention_weights(3), std::invalid_argument);
+    EXPECT_THROW((void)ctx.attention_weights(99), std::invalid_argument);
+
+    // Still usable afterwards.
+    Tensor weights = ctx.attention_weights(1);
+    EXPECT_EQ(weights.shape(), Shape({1, 2, 2, 2}));
 }
 
 }  // namespace
