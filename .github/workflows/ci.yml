@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            generator: "Visual Studio 17 2022"
+            extra-configure-args: -A x64
+          - os: ubuntu-latest
+            generator: "Unix Makefiles"
+            extra-configure-args: -DCMAKE_BUILD_TYPE=Release
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -G "${{ matrix.generator }}" ${{ matrix.extra-configure-args }}
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      # mnist_loader_test / mnist_classifier_example_test need real MNIST files that
+      # tools/fetch_mnist.py populates manually (see that script's docstring: "Not run
+      # by CTest/CI -- this is a data-acquisition tool, not a test dependency"). Excluded
+      # here by design, not an oversight.
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure -E "Mnist"
