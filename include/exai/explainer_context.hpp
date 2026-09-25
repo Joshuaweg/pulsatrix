@@ -3,6 +3,8 @@
  */
 #pragma once
 
+#include <cmath>
+#include <cstddef>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -13,6 +15,7 @@
 #include "exai/activation_snapshot.hpp"
 #include "exai/assert.hpp"
 #include "exai/autograd.hpp"
+#include "exai/circuit_graph.hpp"
 #include "exai/computation_graph.hpp"
 #include "exai/module.hpp"
 #include "exai/multihead_attention_module.hpp"
@@ -358,6 +361,73 @@ public:
         return Tensor(mha->last_attention_weights());
     }
 
+    /**
+     * @brief Builds a CircuitGraph for this chain at the given input: every node scored by
+     *        how much zeroing it changes the network's output, plus the chain's edges.
+     * @param input Input the circuit is built at. A circuit graph is input-conditional --
+     *        ablation importance is "how much does this node matter *for this input*", not
+     *        a property of the weights alone.
+     * @return A self-contained CircuitGraph: one CircuitNode per graph node (in topological
+     *         order), and one CircuitEdge per adjacent pair. Raw data only -- rendering is
+     *         explicitly deferred (see circuit_graph.hpp's own note and campaign
+     *         campaign_exai_dl_library_mechanistic_interpretability, Phase 5 Mission 3).
+     * @note Scoring method: for each non-output node, forward_pass_with_patch() substitutes
+     *       a zero-Tensor of that node's own natural shape, and ablation_effect is the L2
+     *       distance between that patched output and the real, unpatched one -- the standard
+     *       "ablation importance" score, built entirely from Phase 4's patching primitive
+     *       with no new causal-inference machinery.
+     * @note The zero patch is a copy of the node's own cached activation, filled with 0.0f,
+     *       so it matches that node's natural shape, backend and device by construction --
+     *       Tensor exposes no backend() accessor to rebuild one from a Shape alone.
+     * @note The output node's ablation_effect is 0.0f **by convention, not by computation**:
+     *       forward_pass_with_patch() on the output node returns the patch value itself
+     *       (nothing runs after it), so self-patching it would score the arbitrary magnitude
+     *       of the real output rather than any causal quantity. It is still present in
+     *       nodes(), for structural completeness.
+     * @note Edges are the chain's inherent adjacency (i -> i+1), weighted by node i's own
+     *       ablation_effect. This is exact only because every graph this codebase builds is
+     *       a single-parent linear chain (forward_pass()'s loop); see CircuitEdge::weight.
+     * @note Cost is one forward pass per node plus two unpatched passes -- O(node_count)
+     *       forward passes. Fine for the small chains this codebase builds; a large network
+     *       would want a sampled or grouped variant, which is not built here.
+     * @note Runs an ordinary forward_pass(input) last, so the context is handed back exactly
+     *       as a plain forward pass would leave it: cached activations from the real run,
+     *       and backward_pass()'s patched-pass guard disarmed. Without that, every caller
+     *       would silently inherit the state of the final ablation run.
+     */
+    [[nodiscard]] CircuitGraph build_circuit_graph(const Tensor& input) {
+        const Tensor baseline = forward_pass(input);
+        const NodeId output_node = output_node_;
+        // Captured before any patching: every patched pass replaces graph_/activations_
+        // wholesale, so the baseline's shapes and per-node metadata are read from this
+        // self-contained copy rather than from state the loop itself overwrites.
+        const ActivationSnapshot clean = activation_snapshot();
+
+        std::vector<CircuitNode> nodes;
+        nodes.reserve(clean.node_ids().size());
+        for (NodeId id : clean.node_ids()) {
+            float ablation_effect = 0.0f;
+            if (id != output_node) {
+                Tensor zero_patch(clean.activation(id));
+                zero_patch.fill(0.0f);
+                const Tensor patched = forward_pass_with_patch(input, id, zero_patch);
+                ablation_effect = l2_distance(baseline, patched);
+            }
+            nodes.push_back(CircuitNode{id, clean.op_type(id), clean.label(id), ablation_effect});
+        }
+
+        std::vector<CircuitEdge> edges;
+        if (!nodes.empty()) {
+            edges.reserve(nodes.size() - 1);
+            for (size_t i = 0; i + 1 < nodes.size(); ++i) {
+                edges.push_back(CircuitEdge{nodes[i].id, nodes[i + 1].id, nodes[i].ablation_effect});
+            }
+        }
+
+        (void)forward_pass(input);
+        return CircuitGraph(std::move(nodes), std::move(edges));
+    }
+
     /** @brief Passthrough to Node::label() -- e.g. a layer name, for debugging/display. */
     [[nodiscard]] std::optional<std::string> layer_label(NodeId id) const { return graph_.node(id).label(); }
 
@@ -378,6 +448,26 @@ private:
                 "natural output shape");
         }
         return Tensor(patch_value);
+    }
+
+    /**
+     * @brief Euclidean distance between two same-shaped tensors, flattened.
+     * @param a First tensor.
+     * @param b Second tensor; must have the same element count as a.
+     * @return sqrt(sum((a_i - b_i)^2)), always >= 0.
+     * @note EXAI_ASSERT, not throw: the only caller is build_circuit_graph(), which
+     *       compares two outputs of the same module chain -- a size mismatch there is an
+     *       internal-consistency violation, not a caller mistake, per
+     *       cpp_tdd/context_tdd_adversarial_boundary_testing.md's classification.
+     */
+    [[nodiscard]] static float l2_distance(const Tensor& a, const Tensor& b) {
+        EXAI_ASSERT(a.numel() == b.numel());
+        float sum_of_squares = 0.0f;
+        for (int64_t i = 0; i < a.numel(); ++i) {
+            const float diff = a.data()[i] - b.data()[i];
+            sum_of_squares += diff * diff;
+        }
+        return std::sqrt(sum_of_squares);
     }
 
     std::vector<Module*> modules_;

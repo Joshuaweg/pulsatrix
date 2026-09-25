@@ -1254,9 +1254,10 @@ TEST_F(ExplainerContextTest, BuildCircuitGraphOnSingleModuleChainProducesMinimal
 
     // Only the input node is scorable; the output node keeps the 0.0f convention.
     EXPECT_FLOAT_EQ(circuit.nodes()[1].ablation_effect, 0.0f);
-    // Zeroing the input leaves the bias behind: output moves from (3.5, 6.5) to
-    // (0.5, -0.5), an L2 distance of sqrt(9 + 49) = sqrt(58).
-    EXPECT_NEAR(circuit.nodes()[0].ablation_effect, std::sqrt(58.0f), 1e-3f);
+    // Zeroing the input leaves only the bias behind. LinearModule stores its weight
+    // (in, out)-major, so W^T x for x = (1, 1) is (1 + 3, 2 + 4) = (4, 6): the output
+    // moves from (4.5, 5.5) to (0.5, -0.5), an L2 distance of sqrt(16 + 36) = sqrt(52).
+    EXPECT_NEAR(circuit.nodes()[0].ablation_effect, std::sqrt(52.0f), 1e-3f);
     EXPECT_FLOAT_EQ(circuit.edges()[0].weight, circuit.nodes()[0].ablation_effect);
 }
 
