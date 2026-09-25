@@ -4,11 +4,11 @@
 #include <iostream>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/softmax_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/softmax_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class SoftmaxModuleTest : public ::testing::Test {
@@ -273,33 +273,33 @@ using SoftmaxModuleDeathTest = SoftmaxModuleTest;
 // mission, per this campaign's standing adversarial discipline.
 TEST_F(SoftmaxModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor x(Shape({2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)softmax.forward(x); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)softmax.forward(x); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(SoftmaxModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor x(Shape({2}), &backend, {1.0f, 2.0f});
     (void)softmax.forward(x);
 
     Tensor grad_output(Shape({2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)softmax.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)softmax.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(SoftmaxModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor x(Shape({2}), &backend, {1.0f, 2.0f});
     (void)softmax.forward(x);
 
     Tensor relevance_out(Shape({2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)softmax.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)softmax.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

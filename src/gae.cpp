@@ -1,14 +1,14 @@
-#include "exai/gae.hpp"
+#include "pulsatrix/gae.hpp"
 
 #include <cstdint>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Validates a (N, 1) column of per-step scalars. Local to this TU, mirroring
@@ -33,9 +33,9 @@ GAEResult ComputeGAE(const Tensor& rewards, const Tensor& dones, const Tensor& v
                      float gamma, float lambda, DeviceBackend* backend) {
     // Raw host loop over Tensor::data() (a reverse-order recursion has no DeviceBackend
     // primitive) -- undefined behavior on a CUDA-backed Tensor. See mission_host_loop_guards.md.
-    EXAI_ASSERT(rewards.device() == DeviceType::Cpu);
-    EXAI_ASSERT(dones.device() == DeviceType::Cpu);
-    EXAI_ASSERT(values.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(rewards.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(dones.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(values.device() == DeviceType::Cpu);
 
     if (rewards.rank() != 2 || rewards.shape().dim(1) != 1) {
         throw std::invalid_argument("ComputeGAE: rewards must have shape (N, 1)");
@@ -76,4 +76,4 @@ GAEResult ComputeGAE(const Tensor& rewards, const Tensor& dones, const Tensor& v
                      Tensor(Shape({batch_size, 1}), backend, returns)};
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

@@ -1,11 +1,11 @@
-#include "exai/sinusoidal_timestep_embedding.hpp"
+#include "pulsatrix/sinusoidal_timestep_embedding.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/shape.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 Tensor SinusoidalTimestepEmbedding(int64_t t, int64_t embedding_dim, DeviceBackend* backend, float base) {
     if (embedding_dim <= 0) {
@@ -30,4 +30,4 @@ Tensor SinusoidalTimestepEmbedding(int64_t t, int64_t embedding_dim, DeviceBacke
     return embedding;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

@@ -1,4 +1,4 @@
-#include "exai/cpu_backend.hpp"
+#include "pulsatrix/cpu_backend.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 // Single-precision logistic sigmoid. Kept as one definition so ElementwiseOp::Sigmoid and
@@ -102,4 +102,4 @@ void CPUBackend::mul(const float* a, const float* b, float* out, size_t n) {
     }
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

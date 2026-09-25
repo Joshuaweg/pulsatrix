@@ -1,8 +1,8 @@
-#include "exai/autograd.hpp"
+#include "pulsatrix/autograd.hpp"
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 void Autograd::register_backward(NodeId id, BackwardFn fn) {
     backward_fns_[id] = std::move(fn);
@@ -38,7 +38,7 @@ void Autograd::backward(const ComputationGraph& graph, std::vector<std::pair<Nod
         }
 
         const Node& node = graph.node(id);
-        EXAI_ASSERT(node.parents().size() <= 1);  // single-parent scope -- see class-level @note
+        PULSATRIX_ASSERT(node.parents().size() <= 1);  // single-parent scope -- see class-level @note
         if (node.parents().empty()) {
             continue;
         }
@@ -56,8 +56,8 @@ void Autograd::backward(const ComputationGraph& graph, std::vector<std::pair<Nod
 }
 
 const Tensor& Autograd::gradient(NodeId id) const {
-    EXAI_ASSERT(has_gradient(id));
+    PULSATRIX_ASSERT(has_gradient(id));
     return gradients_.at(id);
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

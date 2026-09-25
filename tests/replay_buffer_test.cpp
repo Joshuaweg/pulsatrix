@@ -4,10 +4,10 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/replay_buffer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/replay_buffer.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 constexpr int64_t kObsDim = 2;
@@ -303,7 +303,7 @@ TEST_F(ReplayBufferTest, DoneIsStoredAsAFloatFlag) {
 using ReplayBufferDeathTest = ReplayBufferTest;
 
 // add() copies rows out of Tensor::data() in a raw host loop -- undefined behavior on a
-// CUDA-backed Tensor, so all three tensor arguments are EXAI_ASSERT-guarded
+// CUDA-backed Tensor, so all three tensor arguments are PULSATRIX_ASSERT-guarded
 // (mission_host_loop_guards.md). No real GPU needed: see LinearModuleDeathTest for the
 // mislabeled-Tensor testing pattern this reuses.
 //
@@ -316,25 +316,25 @@ using ReplayBufferDeathTest = ReplayBufferTest;
 // MSELoss's precedent agree on that reading.
 TEST_F(ReplayBufferDeathTest, AddAbortsOnNonCpuObservation) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     ReplayBuffer buffer(4, kObsDim, kActDim, &backend);
     Tensor observation(Shape({1, kObsDim}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
     Tensor action(Shape({1, kActDim}), &backend, {0.0f});
     Tensor next_observation(Shape({1, kObsDim}), &backend, {3.0f, 4.0f});
-    EXPECT_DEATH({ buffer.add(observation, action, 1.0f, next_observation, false); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ buffer.add(observation, action, 1.0f, next_observation, false); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(ReplayBufferDeathTest, AddAbortsOnNonCpuAction) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     ReplayBuffer buffer(4, kObsDim, kActDim, &backend);
     Tensor observation(Shape({1, kObsDim}), &backend, {1.0f, 2.0f});
     Tensor action(Shape({1, kActDim}), &backend, {0.0f}, DeviceType::Cuda);
     Tensor next_observation(Shape({1, kObsDim}), &backend, {3.0f, 4.0f});
-    EXPECT_DEATH({ buffer.add(observation, action, 1.0f, next_observation, false); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ buffer.add(observation, action, 1.0f, next_observation, false); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

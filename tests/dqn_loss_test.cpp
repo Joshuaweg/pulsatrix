@@ -2,10 +2,10 @@
 
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/dqn_loss.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/dqn_loss.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class DQNLossTest : public ::testing::Test {
@@ -184,7 +184,7 @@ TEST_F(DQNLossTest, SingleActionDimensionReducesToPlainMSE) {
 using DQNLossDeathTest = DQNLossTest;
 
 // forward() reads all three tensors in one raw host loop over Tensor::data() -- undefined
-// behavior on a CUDA-backed Tensor, so each is EXAI_ASSERT-guarded
+// behavior on a CUDA-backed Tensor, so each is PULSATRIX_ASSERT-guarded
 // (mission_host_loop_guards.md). No real GPU needed: this reuses LinearModuleDeathTest's
 // mislabeled-Tensor pattern.
 //
@@ -197,12 +197,12 @@ using DQNLossDeathTest = DQNLossTest;
 // path rather than cover a new one.
 TEST_F(DQNLossDeathTest, ForwardAbortsOnNonCpuQValues) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     DQNLoss loss(&backend);
     Tensor cuda_q(Shape({2, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)loss.forward(cuda_q, actions(), targets()); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)loss.forward(cuda_q, actions(), targets()); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

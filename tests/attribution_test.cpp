@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
 
-#include "exai/attribution.hpp"
-#include "exai/cpu_backend.hpp"
+#include "pulsatrix/attribution.hpp"
+#include "pulsatrix/cpu_backend.hpp"
 
 // Attribution is a first-class result type (charter Part 2 SS4) carrying an explanation's
 // raw values, the method that produced them, and any relevant metadata (baseline used for
 // IG, kernel width for LIME, etc.) -- so downstream code doesn't have to guess what
 // produced a number. Missions 2-3 (Saliency/IG/Grad-CAM) populate this; this mission ships
 // the type itself.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class AttributionTest : public ::testing::Test {
@@ -35,4 +35,4 @@ TEST_F(AttributionTest, MetadataDefaultsEmptyWhenNotProvided) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

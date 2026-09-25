@@ -4,11 +4,11 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/rnn_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/rnn_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class RNNModuleTest : public ::testing::Test {
@@ -249,36 +249,36 @@ using RNNModuleDeathTest = RNNModuleTest;
 // not deferred -- the exact discipline Mission 7's remediation established.
 TEST_F(RNNModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     RNNModule rnn(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rnn.forward(input); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)rnn.forward(input); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(RNNModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     RNNModule rnn(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
     (void)rnn.forward(input);
 
     Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rnn.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)rnn.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(RNNModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     RNNModule rnn(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
     (void)rnn.forward(input);
 
     Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rnn.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)rnn.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

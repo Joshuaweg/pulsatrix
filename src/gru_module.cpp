@@ -1,10 +1,10 @@
-#include "exai/gru_module.hpp"
+#include "pulsatrix/gru_module.hpp"
 
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 // Transposes a (rows x cols) row-major buffer into a (cols x rows) row-major buffer --
@@ -90,7 +90,7 @@ void GRUModule::set_bias_n(std::initializer_list<float> values) {
 
 Tensor GRUModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     if (input.rank() != 3 || input.shape().dim(2) != input_size_) {
         throw std::invalid_argument("GRUModule::forward: input must be rank-3 (N, L, input_size)");
@@ -229,7 +229,7 @@ Tensor GRUModule::backward(const Tensor& grad_output) {
             "GRUModule::backward: grad_output must be (N, L, hidden_size) matching the cached forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     Tensor grad_input(last_input_.shape(), backend_);
     grad_input.fill(0.0f);
@@ -397,7 +397,7 @@ Tensor GRUModule::propagate_relevance(const Tensor& relevance_out, const LRPRule
             "forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
 
     Tensor relevance_in(last_input_.shape(), backend_);
     relevance_in.fill(0.0f);
@@ -501,4 +501,4 @@ Tensor GRUModule::propagate_relevance(const Tensor& relevance_out, const LRPRule
     return relevance_in;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

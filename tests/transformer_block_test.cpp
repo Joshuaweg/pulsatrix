@@ -1,13 +1,13 @@
-#include "exai/transformer_block.hpp"
+#include "pulsatrix/transformer_block.hpp"
 
 #include <gtest/gtest.h>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/tensor.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/tensor.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class TransformerBlockTest : public ::testing::Test {
@@ -319,34 +319,34 @@ TEST_F(TransformerBlockTest, ValidatesAgainstIndependentAttnLRPReference) {
 
 TEST_F(TransformerBlockDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     TransformerBlock block(2, 1, 2, &backend);
     Tensor x(Shape({1, 1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)block.forward(x); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)block.forward(x); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(TransformerBlockDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     TransformerBlock block(2, 1, 2, &backend);
     Tensor x(Shape({1, 1, 2}), &backend, {1.0f, 2.0f});
     (void)block.forward(x);
     Tensor grad_out(Shape({1, 1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)block.backward(grad_out); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)block.backward(grad_out); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(TransformerBlockDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     TransformerBlock block(2, 1, 2, &backend);
     Tensor x(Shape({1, 1, 2}), &backend, {1.0f, 2.0f});
     (void)block.forward(x);
     Tensor relevance_out(Shape({1, 1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)block.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)block.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

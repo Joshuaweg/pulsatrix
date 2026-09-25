@@ -2,10 +2,10 @@
 
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/lime.hpp"
-#include "exai/linear_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/lime.hpp"
+#include "pulsatrix/linear_module.hpp"
 
 // LIME (theory: xai_context.aDNA's technique_lime.md). Correctness oracle: run against a
 // network that is already exactly linear (a bare LinearModule, no nonlinearity) --
@@ -13,7 +13,7 @@
 // regardless of sample count or kernel width, giving the same hand-verifiable rigor
 // Saliency's own test used (the same weight-column oracle), and cross-validating two
 // independently-designed explainers against the same ground truth.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class LIMETest : public ::testing::Test {
@@ -22,7 +22,7 @@ protected:
 };
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
-// escalated from EXAI_ASSERT-only to a real throw -- num_samples originates from
+// escalated from PULSATRIX_ASSERT-only to a real throw -- num_samples originates from
 // caller-supplied data. In Release, num_samples<=0 previously cast to a huge size_t for
 // vector::reserve, throwing an unhelpful std::length_error instead of a clear error.
 TEST_F(LIMETest, ExplainThrowsOnNonPositiveNumSamples) {
@@ -72,8 +72,8 @@ TEST_F(LIMETest, RecoversExactWeightColumnForLinearOnlyNetwork) {
 using LIMEDeathTest = LIMETest;
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
-// escalated from EXAI_ASSERT (this death test) to a real throw -- see
+// escalated from PULSATRIX_ASSERT (this death test) to a real throw -- see
 // LIMETest.ExplainThrowsOnNonPositiveNumSamples below.
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

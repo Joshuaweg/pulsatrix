@@ -3,13 +3,13 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/weighted_linear_regression.hpp"
+#include "pulsatrix/weighted_linear_regression.hpp"
 
 // fit_weighted_linear_regression is the shared utility Phase 3's explainers (LIME,
 // KernelSHAP) both need -- no linear-algebra solve exists anywhere else in this codebase.
 // Solves w* = argmin_w sum_i weight_i*(y_i - w^T x_i)^2 + lambda*||w||^2 via the normal
 // equations, small-n Gaussian elimination.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 TEST(WeightedLinearRegressionTest, RecoversExactCoefficientForNoiseFreeOneFeatureData) {
@@ -68,7 +68,7 @@ TEST(WeightedLinearRegressionTest, ThrowsOnNearSingularSystem) {
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2,
-// finding 15 systemic sweep): escalated from EXAI_ASSERT-only to a real throw, for
+// finding 15 systemic sweep): escalated from PULSATRIX_ASSERT-only to a real throw, for
 // consistency with this function's own near-singular-system check above.
 TEST(WeightedLinearRegressionTest, ThrowsOnEmptySamples) {
     std::vector<std::vector<float>> samples;
@@ -92,4 +92,4 @@ TEST(WeightedLinearRegressionTest, ThrowsOnInconsistentRowLengths) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

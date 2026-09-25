@@ -4,10 +4,10 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/tanh_gaussian_policy.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/tanh_gaussian_policy.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class TanhGaussianPolicyTest : public ::testing::Test {
@@ -468,7 +468,7 @@ using TanhGaussianPolicyDeathTest = TanhGaussianPolicyTest;
 
 // Exactly one death test, per the mission's Requirements section: forward() dereferences
 // Tensor::data() directly in a raw host loop (exp/tanh/log have no backend primitive), which is
-// undefined behavior on a CUDA-backed Tensor, and its three EXAI_ASSERTs are adjacent lines on
+// undefined behavior on a CUDA-backed Tensor, and its three PULSATRIX_ASSERTs are adjacent lines on
 // one entry path covering a single guarded-argument role -- one test covers that role (see
 // mission_host_loop_guards.md; LinearModuleDeathTest is the mislabeled-Tensor pattern reused
 // here, so no real GPU is needed).
@@ -480,13 +480,13 @@ using TanhGaussianPolicyDeathTest = TanhGaussianPolicyTest;
 // precedent.
 TEST_F(TanhGaussianPolicyDeathTest, ForwardAbortsOnNonCpuMean) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor mean(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
     Tensor log_std(Shape({1, 2}), &backend, {0.0f, 0.0f});
     Tensor epsilon(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    EXPECT_DEATH({ (void)policy.forward(mean, log_std, epsilon); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)policy.forward(mean, log_std, epsilon); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

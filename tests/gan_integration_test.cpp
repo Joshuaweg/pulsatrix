@@ -20,14 +20,14 @@
 #include <iostream>
 #include <vector>
 
-#include "exai/bce_with_logits_loss.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/sequential_module.hpp"
-#include "exai/sgd_optimizer.hpp"
+#include "pulsatrix/bce_with_logits_loss.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/sequential_module.hpp"
+#include "pulsatrix/sgd_optimizer.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 constexpr int64_t kBatch = 4;
@@ -410,4 +410,4 @@ TEST_F(GANIntegrationTest, SkippingDiscriminatorZeroGradAfterGeneratorStepCorrup
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -35,15 +35,15 @@
 #include <utility>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/mse_loss.hpp"
-#include "exai/noise_schedule.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/sgd_optimizer.hpp"
-#include "exai/sinusoidal_timestep_embedding.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/mse_loss.hpp"
+#include "pulsatrix/noise_schedule.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/sgd_optimizer.hpp"
+#include "pulsatrix/sinusoidal_timestep_embedding.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 constexpr int64_t kBatch = 4;
@@ -352,4 +352,4 @@ TEST_F(DiffusionIntegrationTest, ReverseSamplingIsDrivenByItsStartingPoint) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

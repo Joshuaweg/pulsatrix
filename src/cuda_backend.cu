@@ -1,11 +1,11 @@
-#include "exai/cuda_backend.hpp"
+#include "pulsatrix/cuda_backend.hpp"
 
 #include <stdexcept>
 
-#include "exai/cublas_check.hpp"
-#include "exai/cuda_check.hpp"
+#include "pulsatrix/cublas_check.hpp"
+#include "pulsatrix/cuda_check.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 
@@ -73,9 +73,9 @@ __global__ void mul_kernel(const float* a, const float* b, float* out, size_t n)
 }  // namespace
 
 CUDABackend::CUDABackend() {
-    EXAI_CUDA_CHECK(cudaStreamCreate(&stream_));
-    EXAI_CUBLAS_CHECK(cublasCreate(&cublas_handle_));
-    EXAI_CUBLAS_CHECK(cublasSetStream(cublas_handle_, stream_));
+    PULSATRIX_CUDA_CHECK(cudaStreamCreate(&stream_));
+    PULSATRIX_CUBLAS_CHECK(cublasCreate(&cublas_handle_));
+    PULSATRIX_CUBLAS_CHECK(cublasSetStream(cublas_handle_, stream_));
 }
 
 CUDABackend::~CUDABackend() {
@@ -88,7 +88,7 @@ void* CUDABackend::allocate(size_t bytes) {
         return nullptr;
     }
     void* ptr = nullptr;
-    EXAI_CUDA_CHECK(cudaMalloc(&ptr, bytes));
+    PULSATRIX_CUDA_CHECK(cudaMalloc(&ptr, bytes));
     return ptr;
 }
 
@@ -115,8 +115,8 @@ void CUDABackend::copy(void* dst, const void* src, size_t bytes, CopyDirection d
             kind = cudaMemcpyHostToHost;
             break;
     }
-    EXAI_CUDA_CHECK(cudaMemcpyAsync(dst, src, bytes, kind, stream_));
-    EXAI_CUDA_CHECK(cudaStreamSynchronize(stream_));
+    PULSATRIX_CUDA_CHECK(cudaMemcpyAsync(dst, src, bytes, kind, stream_));
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
 void CUDABackend::fill(void* ptr, float value, size_t n) {
@@ -126,8 +126,8 @@ void CUDABackend::fill(void* ptr, float value, size_t n) {
     constexpr int block_size = 256;
     int grid_size = static_cast<int>((n + block_size - 1) / block_size);
     fill_kernel<<<grid_size, block_size, 0, stream_>>>(static_cast<float*>(ptr), value, n);
-    EXAI_CUDA_CHECK(cudaGetLastError());
-    EXAI_CUDA_CHECK(cudaStreamSynchronize(stream_));
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
 void CUDABackend::gemm(const float* a, const float* b, float* out, size_t m, size_t k, size_t n) {
@@ -137,7 +137,7 @@ void CUDABackend::gemm(const float* a, const float* b, float* out, size_t m, siz
     // gpu_backend_programming/context_gpu_cublas_cudnn_integration.md's Column-Major Trap.
     const float alpha = 1.0f;
     const float beta = 0.0f;
-    EXAI_CUBLAS_CHECK(cublasSgemm(cublas_handle_, CUBLAS_OP_N, CUBLAS_OP_N, static_cast<int>(n),
+    PULSATRIX_CUBLAS_CHECK(cublasSgemm(cublas_handle_, CUBLAS_OP_N, CUBLAS_OP_N, static_cast<int>(n),
                                    static_cast<int>(m), static_cast<int>(k), &alpha, b,
                                    static_cast<int>(n), a, static_cast<int>(k), &beta, out,
                                    static_cast<int>(n)));
@@ -166,8 +166,8 @@ void CUDABackend::elementwise(ElementwiseOp op, const float* in, float* out, siz
             silu_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
             break;
     }
-    EXAI_CUDA_CHECK(cudaGetLastError());
-    EXAI_CUDA_CHECK(cudaStreamSynchronize(stream_));
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
 void CUDABackend::add(const float* a, const float* b, float* out, size_t n) {
@@ -177,8 +177,8 @@ void CUDABackend::add(const float* a, const float* b, float* out, size_t n) {
     constexpr int block_size = 256;
     int grid_size = static_cast<int>((n + block_size - 1) / block_size);
     add_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
-    EXAI_CUDA_CHECK(cudaGetLastError());
-    EXAI_CUDA_CHECK(cudaStreamSynchronize(stream_));
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
 void CUDABackend::mul(const float* a, const float* b, float* out, size_t n) {
@@ -188,8 +188,8 @@ void CUDABackend::mul(const float* a, const float* b, float* out, size_t n) {
     constexpr int block_size = 256;
     int grid_size = static_cast<int>((n + block_size - 1) / block_size);
     mul_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
-    EXAI_CUDA_CHECK(cudaGetLastError());
-    EXAI_CUDA_CHECK(cudaStreamSynchronize(stream_));
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

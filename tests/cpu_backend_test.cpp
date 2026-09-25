@@ -4,9 +4,9 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
+#include "pulsatrix/cpu_backend.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class CPUBackendTest : public ::testing::Test {
@@ -230,4 +230,4 @@ TEST_F(CPUBackendTest, MulHandlesZeroLengthGracefully) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

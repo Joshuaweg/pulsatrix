@@ -1,11 +1,11 @@
-#include "exai/rope_module.hpp"
+#include "pulsatrix/rope_module.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 /**
@@ -21,10 +21,10 @@ struct SliceLayout {
 };
 
 [[nodiscard]] SliceLayout slice_layout_of(const Shape& shape, int64_t head_dim) {
-    EXAI_ASSERT(shape.rank() >= 2);
+    PULSATRIX_ASSERT(shape.rank() >= 2);
     const int64_t seq_len = shape.dim(static_cast<size_t>(shape.rank() - 2));
-    EXAI_ASSERT(seq_len > 0);
-    EXAI_ASSERT(head_dim > 0);
+    PULSATRIX_ASSERT(seq_len > 0);
+    PULSATRIX_ASSERT(head_dim > 0);
     return SliceLayout{shape.numel() / (seq_len * head_dim), seq_len};
 }
 
@@ -66,7 +66,7 @@ RoPEModule::RoPEModule(int64_t head_dim, DeviceBackend* backend, float base)
 Tensor RoPEModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in a raw host loop -- not backend-generic.
     // See mission_host_loop_guards.md.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     if (input.rank() < 2 || input.shape().dim(static_cast<size_t>(input.rank() - 1)) != head_dim_) {
         throw std::invalid_argument("RoPEModule::forward: input must be rank >= 2 with shape (..., L, head_dim)");
@@ -106,7 +106,7 @@ Tensor RoPEModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("RoPEModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     const SliceLayout layout = slice_layout_of(grad_output.shape(), head_dim_);
     const int64_t half = head_dim_ / 2;
@@ -141,7 +141,7 @@ Tensor RoPEModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
             "RoPEModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
 
     const SliceLayout layout = slice_layout_of(relevance_out.shape(), head_dim_);
     const int64_t half = head_dim_ / 2;
@@ -194,4 +194,4 @@ Tensor RoPEModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
     return relevance_in;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

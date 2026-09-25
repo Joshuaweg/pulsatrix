@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/flatten_module.hpp"
-#include "exai/lrp_rule_config.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
 
 // FlattenModule (Phase 2 Mission 3) is a reshape-only Module -- needed to chain
 // Conv2DModule's batched (N,C,H,W) output into a LinearModule's batched (N, in_features)
@@ -13,7 +13,7 @@
 // campaign_exai_dl_library_batch_dimension_support -- a genuine behavior change (the old
 // semantics flattened the batch dim away too, which is wrong once N carries real
 // per-example meaning).
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class FlattenModuleTest : public ::testing::Test {
@@ -79,4 +79,4 @@ TEST_F(FlattenModuleTest, PropagateRelevanceReshapesBackToOriginalShapeUnchanged
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -1,10 +1,10 @@
-#include "exai/tensor.hpp"
+#include "pulsatrix/tensor.hpp"
 
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 [[nodiscard]] float* allocate_buffer(DeviceBackend* backend, int64_t numel) {
@@ -23,7 +23,7 @@ Tensor::Tensor(Shape shape, DeviceBackend* backend, DeviceType device)
 Tensor::Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float> values, DeviceType device)
     : data_(nullptr), shape_(std::move(shape)), backend_(backend), device_(device) {
     // External boundary (Mission 0 classification): values-constructors are called
-    // directly with externally-supplied data via bindings/exai_py.cpp's Tensor::from_values.
+    // directly with externally-supplied data via bindings/pulsatrix_py.cpp's Tensor::from_values.
     if (static_cast<int64_t>(values.size()) != shape_.numel()) {
         throw std::invalid_argument("Tensor: values.size() does not match shape's element count");
     }
@@ -99,7 +99,7 @@ Tensor& Tensor::operator=(Tensor&& other) noexcept {
 }
 
 int64_t Tensor::flat_index_of(std::initializer_list<int64_t> index) const {
-    EXAI_ASSERT(static_cast<int64_t>(index.size()) == rank());
+    PULSATRIX_ASSERT(static_cast<int64_t>(index.size()) == rank());
 
     int64_t flat = 0;
     int64_t stride = 1;
@@ -107,7 +107,7 @@ int64_t Tensor::flat_index_of(std::initializer_list<int64_t> index) const {
     // right-to-left in lockstep (both are the same length, checked above).
     for (int64_t dim_pos = rank() - 1; dim_pos >= 0; --dim_pos) {
         int64_t idx_at_dim = *(index.begin() + dim_pos);
-        EXAI_ASSERT(idx_at_dim >= 0 && idx_at_dim < shape_.dim(static_cast<size_t>(dim_pos)));
+        PULSATRIX_ASSERT(idx_at_dim >= 0 && idx_at_dim < shape_.dim(static_cast<size_t>(dim_pos)));
         flat += idx_at_dim * stride;
         stride *= shape_.dim(static_cast<size_t>(dim_pos));
     }
@@ -132,7 +132,7 @@ Tensor& Tensor::fill(float value) {
 Tensor& Tensor::accumulate(const Tensor& other) {
     // External boundary (Mission 0 classification): gradient-accumulation shapes trace
     // back to module construction parameters, which can originate from external
-    // configuration -- escalated from EXAI_ASSERT-only to a real throw.
+    // configuration -- escalated from PULSATRIX_ASSERT-only to a real throw.
     if (!(shape_ == other.shape_)) {
         throw std::invalid_argument("Tensor::accumulate: shape mismatch");
     }
@@ -158,4 +158,4 @@ Tensor& Tensor::to(DeviceType target) {
         "Tensor::to: no DeviceBackend exists yet for the requested device (Phase 1.5/1.6)");
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

@@ -4,11 +4,11 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/batch_norm_module.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
+#include "pulsatrix/batch_norm_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class BatchNormModuleTest : public ::testing::Test {
@@ -226,15 +226,15 @@ using BatchNormModuleDeathTest = BatchNormModuleTest;
 
 TEST_F(BatchNormModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     BatchNormModule norm(2, &backend);
     Tensor x(Shape({2, 2, 1, 1}), &backend, {1.0f, 0.0f, 3.0f, 4.0f});
     (void)norm.forward(x);
 
     Tensor grad_output(Shape({2, 2, 1, 1}), &backend, {1.0f, 1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)norm.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)norm.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

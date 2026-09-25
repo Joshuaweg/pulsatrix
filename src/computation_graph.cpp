@@ -1,8 +1,8 @@
-#include "exai/computation_graph.hpp"
+#include "pulsatrix/computation_graph.hpp"
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 NodeId ComputationGraph::add_node(OpType op_type, Shape shape, std::optional<std::string> label,
                                    std::vector<NodeId> parent_ids) {
@@ -11,7 +11,7 @@ NodeId ComputationGraph::add_node(OpType op_type, Shape shape, std::optional<std
     Node* new_node_ptr = new_node.get();
 
     for (NodeId parent_id : parent_ids) {
-        EXAI_ASSERT(parent_id < nodes_.size());
+        PULSATRIX_ASSERT(parent_id < nodes_.size());
         Node* parent_ptr = nodes_[parent_id].get();
         new_node_ptr->add_parent(parent_ptr);
         parent_ptr->add_child(new_node_ptr);
@@ -22,7 +22,7 @@ NodeId ComputationGraph::add_node(OpType op_type, Shape shape, std::optional<std
 }
 
 const Node& ComputationGraph::node(NodeId id) const {
-    EXAI_ASSERT(id < nodes_.size());
+    PULSATRIX_ASSERT(id < nodes_.size());
     return *nodes_[id];
 }
 
@@ -45,4 +45,4 @@ std::vector<NodeId> ComputationGraph::topological_order() const {
     return order;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

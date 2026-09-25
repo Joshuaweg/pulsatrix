@@ -31,7 +31,7 @@
 
 #include "../examples/reinforce_cartpole_training.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace reinforce_cartpole {
 namespace {
 
@@ -220,4 +220,4 @@ TEST(ReinforceCartPoleDeterminismTest, TwoRunsOfTheSameConfigurationAreIdentical
 
 }  // namespace
 }  // namespace reinforce_cartpole
-}  // namespace exai
+}  // namespace pulsatrix

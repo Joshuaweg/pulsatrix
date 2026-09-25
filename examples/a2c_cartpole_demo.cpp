@@ -16,7 +16,7 @@
 #include "a2c_cartpole_training.hpp"
 
 int main() {
-    using namespace exai::a2c_cartpole;
+    using namespace pulsatrix::a2c_cartpole;
 
     const TrainingConfig config;
     const int64_t window = window_size(config.num_episodes);

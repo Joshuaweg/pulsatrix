@@ -2,18 +2,18 @@
 
 #include <vector>
 
-#include "exai/conv2d_module.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/flatten_module.hpp"
-#include "exai/grad_cam.hpp"
-#include "exai/integrated_gradients.hpp"
-#include "exai/kernel_shap.hpp"
-#include "exai/lime.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/pdp.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/saliency.hpp"
+#include "pulsatrix/conv2d_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/grad_cam.hpp"
+#include "pulsatrix/integrated_gradients.hpp"
+#include "pulsatrix/kernel_shap.hpp"
+#include "pulsatrix/lime.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/pdp.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/saliency.hpp"
 
 // Phase 4 Mission 1: charter's "repeated-run variance measured and documented" audit
 // category, run for every explainer this project has shipped, not just LIME. Five of six
@@ -22,7 +22,7 @@
 // method; its stability test must vary the seed across repeated runs or it trivially shows
 // zero variance and fails to demonstrate the real, expected instability the charter wants
 // measured (see mission_stability_suite.md's Recon).
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 float ComputeVariance(const std::vector<float>& values) {
@@ -220,4 +220,4 @@ TEST(StabilityTest, LIMEIsDeterministicForAFixedSeed) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

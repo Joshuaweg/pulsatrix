@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.20)
-project(exai_dl_library CXX)
+project(pulsatrix CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-option(EXAI_ENABLE_CUDA "Build the CUDA DeviceBackend" OFF)
-option(EXAI_ENABLE_PYTHON "Build Python bindings via pybind11" OFF)
-option(EXAI_BUILD_TESTS "Build the GoogleTest suite" ON)
-option(EXAI_BUILD_EXAMPLES "Build standalone example executables (examples/)" ON)
+option(PULSATRIX_ENABLE_CUDA "Build the CUDA DeviceBackend" OFF)
+option(PULSATRIX_ENABLE_PYTHON "Build Python bindings via pybind11" OFF)
+option(PULSATRIX_BUILD_TESTS "Build the GoogleTest suite" ON)
+option(PULSATRIX_BUILD_EXAMPLES "Build standalone example executables (examples/)" ON)
 
-if(EXAI_ENABLE_CUDA)
+if(PULSATRIX_ENABLE_CUDA)
     enable_language(CUDA)
     find_package(CUDAToolkit REQUIRED)
     if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
@@ -17,7 +17,7 @@ if(EXAI_ENABLE_CUDA)
     endif()
 endif()
 
-add_library(exai_core
+add_library(pulsatrix_core
     src/cpu_backend.cpp
     src/tensor.cpp
     src/computation_graph.cpp
@@ -72,18 +72,18 @@ add_library(exai_core
     src/adam_optimizer.cpp
     src/xor_training_example.cpp
 )
-target_include_directories(exai_core PUBLIC include)
-target_compile_features(exai_core PUBLIC cxx_std_17)
+target_include_directories(pulsatrix_core PUBLIC include)
+target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
 
-if(EXAI_ENABLE_CUDA)
-    target_sources(exai_core PRIVATE src/cuda_backend.cu)
+if(PULSATRIX_ENABLE_CUDA)
+    target_sources(pulsatrix_core PRIVATE src/cuda_backend.cu)
     # No cross-TU __device__/__global__ calls yet -- relocatable device code (and its
     # separate device-link step) isn't needed and was failing to link
-    # (__cudaRegisterLinkedBinary unresolved) when exai_tests linked the static lib.
-    target_link_libraries(exai_core PUBLIC CUDA::cudart CUDA::cublas)
+    # (__cudaRegisterLinkedBinary unresolved) when pulsatrix_tests linked the static lib.
+    target_link_libraries(pulsatrix_core PUBLIC CUDA::cudart CUDA::cublas)
 endif()
 
-if(EXAI_ENABLE_PYTHON)
+if(PULSATRIX_ENABLE_PYTHON)
     # Multiple Python interpreters exist on a typical dev machine; the one on PATH is not
     # guaranteed to be the one with dev headers/import libs and the packages the pytest
     # suite needs. Pin explicitly rather than trusting the default PATH search -- see
@@ -96,14 +96,14 @@ if(EXAI_ENABLE_PYTHON)
     # way at this mission's first configure attempt. Set both so this doesn't regress if
     # a future pybind11 upgrade switches modules.
     if(NOT DEFINED PYTHON_EXECUTABLE)
-        set(PYTHON_EXECUTABLE "$ENV{EXAI_PYTHON_EXECUTABLE}")
+        set(PYTHON_EXECUTABLE "$ENV{PULSATRIX_PYTHON_EXECUTABLE}")
     endif()
     if(NOT DEFINED Python3_EXECUTABLE)
-        set(Python3_EXECUTABLE "$ENV{EXAI_PYTHON_EXECUTABLE}")
+        set(Python3_EXECUTABLE "$ENV{PULSATRIX_PYTHON_EXECUTABLE}")
     endif()
     if(NOT PYTHON_EXECUTABLE)
-        message(FATAL_ERROR "EXAI_ENABLE_PYTHON requires -DPYTHON_EXECUTABLE=<path> "
-                             "(or EXAI_PYTHON_EXECUTABLE env var) pointing at a Python "
+        message(FATAL_ERROR "PULSATRIX_ENABLE_PYTHON requires -DPYTHON_EXECUTABLE=<path> "
+                             "(or PULSATRIX_PYTHON_EXECUTABLE env var) pointing at a Python "
                              "install with dev headers -- do not rely on PATH resolution, "
                              "multiple interpreters may be present.")
     endif()
@@ -116,10 +116,10 @@ if(EXAI_ENABLE_PYTHON)
     )
     FetchContent_MakeAvailable(pybind11)
 
-    pybind11_add_module(exai_py bindings/exai_py.cpp)
-    # exai_py depends ON exai_core; exai_core has zero dependency edge back onto this
+    pybind11_add_module(pulsatrix_py bindings/pulsatrix_py.cpp)
+    # pulsatrix_py depends ON pulsatrix_core; pulsatrix_core has zero dependency edge back onto this
     # target or any pybind11 header -- non-negotiable #2.
-    target_link_libraries(exai_py PRIVATE exai_core)
+    target_link_libraries(pulsatrix_py PRIVATE pulsatrix_core)
 endif()
 
 find_package(Doxygen QUIET)
@@ -129,48 +129,48 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_WARN_NO_PARAMDOC YES)
     doxygen_add_docs(docs
         ${CMAKE_SOURCE_DIR}/include
-        COMMENT "Generating exai_dl_library API documentation"
+        COMMENT "Generating pulsatrix API documentation"
     )
 else()
     message(STATUS "Doxygen not found -- 'docs' target unavailable")
 endif()
 
-if(EXAI_BUILD_EXAMPLES)
+if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(xor_demo examples/xor_demo.cpp)
-    target_link_libraries(xor_demo PRIVATE exai_core)
+    target_link_libraries(xor_demo PRIVATE pulsatrix_core)
 
     add_executable(explainer_demo examples/explainer_demo.cpp)
-    target_link_libraries(explainer_demo PRIVATE exai_core)
+    target_link_libraries(explainer_demo PRIVATE pulsatrix_core)
 
     add_executable(grad_cam_mnist_demo examples/grad_cam_mnist_demo.cpp)
-    target_link_libraries(grad_cam_mnist_demo PRIVATE exai_core)
+    target_link_libraries(grad_cam_mnist_demo PRIVATE pulsatrix_core)
 
     add_executable(mnist_training_demo examples/mnist_training_demo.cpp)
-    target_link_libraries(mnist_training_demo PRIVATE exai_core)
+    target_link_libraries(mnist_training_demo PRIVATE pulsatrix_core)
 
     add_executable(sequence_model_demo examples/sequence_model_demo.cpp)
-    target_link_libraries(sequence_model_demo PRIVATE exai_core)
+    target_link_libraries(sequence_model_demo PRIVATE pulsatrix_core)
 
     add_executable(transformer_block_demo examples/transformer_block_demo.cpp)
-    target_link_libraries(transformer_block_demo PRIVATE exai_core)
+    target_link_libraries(transformer_block_demo PRIVATE pulsatrix_core)
 
     add_executable(dqn_cartpole_demo examples/dqn_cartpole_demo.cpp)
-    target_link_libraries(dqn_cartpole_demo PRIVATE exai_core)
+    target_link_libraries(dqn_cartpole_demo PRIVATE pulsatrix_core)
 
     add_executable(reinforce_cartpole_demo examples/reinforce_cartpole_demo.cpp)
-    target_link_libraries(reinforce_cartpole_demo PRIVATE exai_core)
+    target_link_libraries(reinforce_cartpole_demo PRIVATE pulsatrix_core)
 
     add_executable(a2c_cartpole_demo examples/a2c_cartpole_demo.cpp)
-    target_link_libraries(a2c_cartpole_demo PRIVATE exai_core)
+    target_link_libraries(a2c_cartpole_demo PRIVATE pulsatrix_core)
 
     add_executable(ppo_cartpole_demo examples/ppo_cartpole_demo.cpp)
-    target_link_libraries(ppo_cartpole_demo PRIVATE exai_core)
+    target_link_libraries(ppo_cartpole_demo PRIVATE pulsatrix_core)
 
     add_executable(sac_continuous_cartpole_demo examples/sac_continuous_cartpole_demo.cpp)
-    target_link_libraries(sac_continuous_cartpole_demo PRIVATE exai_core)
+    target_link_libraries(sac_continuous_cartpole_demo PRIVATE pulsatrix_core)
 endif()
 
-if(EXAI_BUILD_TESTS)
+if(PULSATRIX_BUILD_TESTS)
     include(FetchContent)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_Declare(

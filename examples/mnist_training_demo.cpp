@@ -13,14 +13,14 @@
 #include <cstdio>
 #include <stdexcept>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/metrics_sink.hpp"
-#include "exai/mnist_classifier_example.hpp"
-#include "exai/mnist_loader.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/metrics_sink.hpp"
+#include "pulsatrix/mnist_classifier_example.hpp"
+#include "pulsatrix/mnist_loader.hpp"
 
 int main() {
-    using namespace exai;
+    using namespace pulsatrix;
 
     CPUBackend backend;
 

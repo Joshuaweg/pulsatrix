@@ -2,17 +2,17 @@
 
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/pdp.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/pdp.hpp"
 
 // PDP -- the first genuinely global (not per-instance) technique this project has built.
 // Correctness oracle: for a linear-only network, the PDP curve is exactly linear in the
 // swept feature's value, with slope equal to that feature's weight, regardless of
 // background content -- a third independent cross-validation of the same weight-column
 // ground truth Saliency (Phase 2) and LIME (this campaign's Mission 0) already established.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class PDPTest : public ::testing::Test {
@@ -21,7 +21,7 @@ protected:
 };
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
-// escalated from EXAI_ASSERT-only to a real throw -- external boundary (background
+// escalated from PULSATRIX_ASSERT-only to a real throw -- external boundary (background
 // originates from caller-supplied data).
 TEST_F(PDPTest, ExplainThrowsOnEmptyBackground) {
     LinearModule linear(2, 1, &backend);
@@ -109,8 +109,8 @@ TEST_F(PDPTest, GridSizeOneEvaluatesSinglePointCorrectly) {
 using PDPDeathTest = PDPTest;
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
-// escalated from EXAI_ASSERT (this death test) to a real throw -- see
+// escalated from PULSATRIX_ASSERT (this death test) to a real throw -- see
 // PDPTest.ExplainThrowsOnEmptyBackground below.
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

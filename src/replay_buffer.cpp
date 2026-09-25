@@ -1,13 +1,13 @@
-#include "exai/replay_buffer.hpp"
+#include "pulsatrix/replay_buffer.hpp"
 
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include "exai/assert.hpp"
-#include "exai/shape.hpp"
+#include "pulsatrix/assert.hpp"
+#include "pulsatrix/shape.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Validates the three dimension arguments and echoes the first one back, so it can be
@@ -88,9 +88,9 @@ void ReplayBuffer::add(const Tensor& observation, const Tensor& action, float re
                        bool done) {
     // Raw host-loop row copies over Tensor::data() -- undefined behavior on a CUDA-backed
     // Tensor. See mission_host_loop_guards.md; same guard as every prior host-loop site.
-    EXAI_ASSERT(observation.device() == DeviceType::Cpu);
-    EXAI_ASSERT(action.device() == DeviceType::Cpu);
-    EXAI_ASSERT(next_observation.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(next_observation.device() == DeviceType::Cpu);
 
     require_row_shape(observation, observation_dim_, "observation");
     require_row_shape(action, action_dim_, "action");
@@ -143,4 +143,4 @@ ReplayBatch ReplayBuffer::sample(int64_t batch_size) {
                        Tensor(Shape({batch_size, 1}), backend_, dones)};
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

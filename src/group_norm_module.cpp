@@ -1,11 +1,11 @@
-#include "exai/group_norm_module.hpp"
+#include "pulsatrix/group_norm_module.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 int64_t safe_channels(int64_t num_channels) { return num_channels > 0 ? num_channels : 1; }
@@ -133,7 +133,7 @@ Tensor GroupNormModule::backward(const Tensor& grad_output) {
     }
     // Not yet backend-generic -- raw host loop below. See every existing Module
     // subclass's identical Phase 1.5 scope decision.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     const int64_t N = last_input_.shape().dim(0);
     const int64_t H = last_h_;
@@ -211,4 +211,4 @@ Tensor GroupNormModule::propagate_relevance(const Tensor& relevance_out, const L
     return Tensor(relevance_out);
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

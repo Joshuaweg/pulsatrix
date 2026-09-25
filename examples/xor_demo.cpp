@@ -8,13 +8,13 @@
 #include <utility>
 #include <vector>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/metrics_sink.hpp"
-#include "exai/xor_training_example.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/metrics_sink.hpp"
+#include "pulsatrix/xor_training_example.hpp"
 
 int main() {
-    using namespace exai;
+    using namespace pulsatrix;
 
     CPUBackend backend;
     XorNetwork net(&backend);

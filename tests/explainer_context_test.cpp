@@ -4,20 +4,20 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/activation_snapshot.hpp"
-#include "exai/adam_optimizer.hpp"
-#include "exai/circuit_graph.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/multihead_attention_module.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/sparse_autoencoder.hpp"
+#include "pulsatrix/activation_snapshot.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/circuit_graph.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/multihead_attention_module.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/sparse_autoencoder.hpp"
 
 // ExplainerContext (charter Part 2 SS2) is what every explainer gets, regardless of type --
 // graph-native explainers (Missions 2-3) use graph()/backward_pass(); this mission ships
 // the interface itself, built directly on Module::forward_traced (Mission 0).
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class ExplainerContextTest : public ::testing::Test {
@@ -449,7 +449,7 @@ TEST_F(ExplainerContextTest, ForwardPassWithPatchAtOutputNodeReturnsPatchValueEx
 // Adversarial (external boundary -- patch_value is caller-supplied): a shape mismatch
 // against the target node's natural output shape throws at the patch site, rather than
 // failing confusingly deep inside some unrelated downstream module. Must pass identically
-// in Debug and Release (throw, not EXAI_ASSERT).
+// in Debug and Release (throw, not PULSATRIX_ASSERT).
 TEST_F(ExplainerContextTest, ForwardPassWithPatchThrowsOnShapeMismatchedPatchValue) {
     LinearModule linear1(2, 3, &backend);
     linear1.set_weight({1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f});
@@ -504,7 +504,7 @@ TEST_F(ExplainerContextTest, ForwardPassWithPatchThrowsOnOutOfRangePatchNodeId) 
 // does not exist in the computation it claims to differentiate. Silently wrong gradients are
 // the worst failure mode this codebase can ship, so the sequencing is rejected outright,
 // following the same "turn silent UB into a loud failure" principle as Phase 1.5's device
-// guards. External boundary (a caller-sequencing mistake) -> throw, not EXAI_ASSERT, so the
+// guards. External boundary (a caller-sequencing mistake) -> throw, not PULSATRIX_ASSERT, so the
 // behavior is identical in Debug and Release.
 
 TEST_F(ExplainerContextTest, BackwardPassThrowsAfterAPatchedForwardPass) {
@@ -958,7 +958,7 @@ TEST_F(ExplainerContextTest, LogitLensAtEarlierHiddenNodesDivergesFromTheRealOut
 // first layer makes the raw input node incompatible with the head, which is a real, expected
 // failure mode of this technique, not an edge case to paper over. Checked up front, so the
 // caller gets a message naming the shape mismatch rather than a confusing failure from deep
-// inside the head's own gemm. Throw, not EXAI_ASSERT -- identical in Debug and Release.
+// inside the head's own gemm. Throw, not PULSATRIX_ASSERT -- identical in Debug and Release.
 TEST_F(ExplainerContextTest, LogitLensThrowsOnAShapeIncompatibleNode) {
     LinearModule linear1(3, 4, &backend);
     linear1.set_weight({0.2f, -0.4f, 0.6f, 0.1f, -0.3f, 0.5f, 0.7f, -0.2f, 0.1f, 0.4f, -0.6f, 0.3f});
@@ -995,7 +995,7 @@ TEST_F(ExplainerContextTest, LogitLensThrowsOnAShapeIncompatibleNode) {
 
 // Adversarial (external boundary): a node id no forward pass ever produced, and the
 // called-before-any-forward-pass case. Both are well-defined throws rather than a
-// Debug-only EXAI_ASSERT on the activation cache (which would be UB in Release).
+// Debug-only PULSATRIX_ASSERT on the activation cache (which would be UB in Release).
 TEST_F(ExplainerContextTest, LogitLensThrowsOnAnUnknownNodeIdOrBeforeAnyForwardPass) {
     LinearModule linear(2, 2, &backend);
     linear.set_weight({1.0f, 0.0f, 0.0f, 1.0f});
@@ -1073,7 +1073,7 @@ TEST_F(ExplainerContextTest, AttentionWeightsMatchesTheModulesOwnLastAttentionWe
 // Adversarial (external boundary -- node_id is caller-supplied): naming a node that is not
 // an attention layer is a caller mistake, not an internal invariant violation, so it throws
 // and behaves identically in Debug and Release, matching logit_lens() and
-// forward_pass_with_patch() rather than activation()'s older EXAI_ASSERT pattern.
+// forward_pass_with_patch() rather than activation()'s older PULSATRIX_ASSERT pattern.
 TEST_F(ExplainerContextTest, AttentionWeightsThrowsOnANonAttentionNode) {
     MultiHeadAttentionModule mha(4, 2, &backend, /*use_rope=*/false, /*use_qk_norm=*/false);
     ReluModule relu(&backend);
@@ -1293,4 +1293,4 @@ TEST_F(ExplainerContextTest, BuildCircuitGraphLeavesTheContextOnAnUnpatchedForwa
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

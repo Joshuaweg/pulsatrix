@@ -2,9 +2,9 @@
 
 #include <algorithm>
 
-#include "exai/computation_graph.hpp"
+#include "pulsatrix/computation_graph.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class ComputationGraphTest : public ::testing::Test {
@@ -94,10 +94,10 @@ TEST_F(ComputationGraphTest, TopologicalOrderPlacesEveryNodeAfterItsParents) {
 
 TEST_F(ComputationGraphDeathTest, NodeAccessorAbortsOnOutOfRangeId) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
-    EXPECT_DEATH({ (void)graph.node(999); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)graph.node(999); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

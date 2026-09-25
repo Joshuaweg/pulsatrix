@@ -2,15 +2,15 @@
 
 #include <vector>
 
-#include "exai/cuda_backend.hpp"
-#include "exai/tensor.hpp"
+#include "pulsatrix/cuda_backend.hpp"
+#include "pulsatrix/tensor.hpp"
 
 // Mirrors CPUBackendTest's exact test shape (allocate/free round-trip, zero-byte
 // convention, copy round-trip, fill correctness) -- deliberate, so the two backends'
 // test suites are structurally comparable, supporting Mission 1's numerical-equivalence
 // suite. Run against real hardware (RTX 3060), not mocked.
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class CUDABackendTest : public ::testing::Test {
@@ -286,4 +286,4 @@ TEST_F(CUDABackendTest, MulHandlesZeroLengthGracefully) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

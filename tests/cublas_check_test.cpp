@@ -4,14 +4,14 @@
 #include <stdexcept>
 #include <string>
 
-#include "exai/cublas_check.hpp"
+#include "pulsatrix/cublas_check.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 TEST(CublasCheckTest, SuccessfulCallDoesNotThrow) {
     cublasHandle_t handle = nullptr;
-    EXPECT_NO_THROW(EXAI_CUBLAS_CHECK(cublasCreate(&handle)));
+    EXPECT_NO_THROW(PULSATRIX_CUBLAS_CHECK(cublasCreate(&handle)));
     cublasDestroy(handle);
 }
 
@@ -26,7 +26,7 @@ TEST(CublasCheckTest, FailedCallThrowsRuntimeErrorWithMessage) {
 
     bool threw = false;
     try {
-        EXAI_CUBLAS_CHECK(cublasSgemm(uninitialized_handle, CUBLAS_OP_N, CUBLAS_OP_N, 1, 1, 1, &alpha,
+        PULSATRIX_CUBLAS_CHECK(cublasSgemm(uninitialized_handle, CUBLAS_OP_N, CUBLAS_OP_N, 1, 1, 1, &alpha,
                                        &dummy, 1, &dummy, 1, &beta, &dummy, 1));
     } catch (const std::runtime_error& e) {
         threw = true;
@@ -37,4 +37,4 @@ TEST(CublasCheckTest, FailedCallThrowsRuntimeErrorWithMessage) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

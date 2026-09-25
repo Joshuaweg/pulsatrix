@@ -1,10 +1,10 @@
-#include "exai/cross_entropy_loss.hpp"
+#include "pulsatrix/cross_entropy_loss.hpp"
 
 #include <cmath>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 CrossEntropyLoss::CrossEntropyLoss(DeviceBackend* backend) : backend_(backend), softmax_probs_(Shape({0}), backend) {}
 
@@ -12,8 +12,8 @@ float CrossEntropyLoss::forward(const Tensor& logits, int64_t target_class) {
     // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic,
     // same as MSELoss. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision and mission_host_loop_guards.md.
-    EXAI_ASSERT(logits.device() == DeviceType::Cpu);
-    EXAI_ASSERT(target_class >= 0 && target_class < logits.numel());
+    PULSATRIX_ASSERT(logits.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(target_class >= 0 && target_class < logits.numel());
 
     int64_t n = logits.numel();
 
@@ -47,4 +47,4 @@ Tensor CrossEntropyLoss::backward() const {
     return grad;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

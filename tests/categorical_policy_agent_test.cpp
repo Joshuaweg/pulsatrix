@@ -5,13 +5,13 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/categorical_policy_agent.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/sequential_module.hpp"
+#include "pulsatrix/categorical_policy_agent.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/sequential_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 constexpr int64_t kObsDim = 2;
@@ -393,12 +393,12 @@ using CategoricalPolicyAgentDeathTest = CategoricalPolicyAgentTest;
 // through the same helper, so a second case would re-cover a path rather than cover a new one.
 TEST_F(CategoricalPolicyAgentDeathTest, ActAbortsOnNonCpuObservation) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     CategoricalPolicyAgent agent(&policy_network, kActionDim, &backend);
     Tensor cuda_observation(Shape({1, kObsDim}), &backend, {0.3f, -0.7f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)agent.act(cuda_observation); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)agent.act(cuda_observation); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

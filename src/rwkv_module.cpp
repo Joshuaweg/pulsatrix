@@ -1,11 +1,11 @@
-#include "exai/rwkv_module.hpp"
+#include "pulsatrix/rwkv_module.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 namespace {
 // Transposes a (rows x cols) row-major buffer into a (cols x rows) row-major buffer --
@@ -23,7 +23,7 @@ Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* bac
 
 // The receptance gate's activation. No DeviceBackend::elementwise op exists for it
 // (MambaModule needed the same for softplus/exp), so it is a raw host function,
-// EXAI_ASSERT-guarded at every entry point that calls it.
+// PULSATRIX_ASSERT-guarded at every entry point that calls it.
 float sigmoid(float z) {
     return 1.0f / (1.0f + std::exp(-z));
 }
@@ -130,7 +130,7 @@ void RWKVModule::set_mu_v(const std::vector<float>& values) {
 Tensor RWKVModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly, and computes exp/sigmoid in raw host loops
     // (no DeviceBackend primitive exists for either) -- not yet backend-generic.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("RWKVModule::forward: input must be rank-3 (N, L, d_model)");
@@ -253,7 +253,7 @@ Tensor RWKVModule::backward(const Tensor& grad_output) {
     }
     // Dereferences Tensor::data() directly, and computes exp/sigmoid math in raw host loops
     // -- not yet backend-generic.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     Tensor grad_input(last_input_.shape(), backend_);
     Tensor local_w_r_grad(w_r_.shape(), backend_);
@@ -454,11 +454,11 @@ Tensor RWKVModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
     // The device guard is kept ahead of the throw so this entry point is consistent with
     // forward()/backward() and keeps firing under the death-test convention every module
     // here follows; it becomes load-bearing unchanged the moment a real rule lands.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
-    (void)relevance_out;  // NDEBUG builds compile EXAI_ASSERT away entirely.
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    (void)relevance_out;  // NDEBUG builds compile PULSATRIX_ASSERT away entirely.
     (void)config;
     throw std::logic_error(
         "RWKVModule::propagate_relevance: LRP rule not yet implemented -- see campaign Decision Point 2");
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

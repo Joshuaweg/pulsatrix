@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/sgd_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/sgd_optimizer.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 TEST(SGDOptimizerTest, StepUpdatesParametersByLearningRateTimesGradient) {
@@ -60,14 +60,14 @@ TEST(SGDOptimizerTest, StepOnParameterlessModuleIsSafeNoOp) {
 
 // step() dereferences Tensor::data() directly in a raw host loop -- undefined behavior on
 // a CUDA-backed Tensor. Phase 1.5 Mission 2 (mission_host_loop_guards.md) guards it with
-// EXAI_ASSERT. No real GPU needed: see LinearModuleDeathTest for the mislabeled-Tensor
+// PULSATRIX_ASSERT. No real GPU needed: see LinearModuleDeathTest for the mislabeled-Tensor
 // testing pattern this reuses. LinearModule can't be used here -- its parameters are always
 // constructed DeviceType::Cpu regardless of backend -- so this test defines its own minimal
 // Module double whose parameter is explicitly tagged Cuda. zero_grad() is NOT guarded --
 // confirmed safe, it routes through Tensor::fill() -> DeviceBackend::fill(), not a raw loop.
 TEST(SGDOptimizerDeathTest, StepAbortsOnNonCpuParameter) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     class CudaParamModule : public Module {
     public:
@@ -90,8 +90,8 @@ TEST(SGDOptimizerDeathTest, StepAbortsOnNonCpuParameter) {
     CPUBackend backend;
     CudaParamModule m(&backend);
     SGDOptimizer opt(0.1f);
-    EXPECT_DEATH({ opt.step(m); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ opt.step(m); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

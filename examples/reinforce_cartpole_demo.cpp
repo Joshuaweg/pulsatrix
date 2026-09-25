@@ -15,7 +15,7 @@
 #include "reinforce_cartpole_training.hpp"
 
 int main() {
-    using namespace exai::reinforce_cartpole;
+    using namespace pulsatrix::reinforce_cartpole;
 
     const TrainingConfig config;
     const int64_t window = window_size(config.num_episodes);

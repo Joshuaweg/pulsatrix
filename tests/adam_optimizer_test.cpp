@@ -2,11 +2,11 @@
 
 #include <cmath>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_module.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // At t=1, Adam's bias correction makes m_hat == grad and v_hat == grad^2 EXACTLY:
@@ -91,12 +91,12 @@ TEST(AdamOptimizerTest, StepOnParameterlessModuleIsSafeNoOp) {
 
 // step() dereferences Tensor::data() directly in a raw host loop -- undefined behavior on
 // a CUDA-backed Tensor. Phase 1.5 Mission 2 (mission_host_loop_guards.md) guards it with
-// EXAI_ASSERT. Same CudaParamModule test-double pattern as SGDOptimizerDeathTest (see that
+// PULSATRIX_ASSERT. Same CudaParamModule test-double pattern as SGDOptimizerDeathTest (see that
 // file's comment for why LinearModule can't be reused here). zero_grad() is NOT guarded --
 // confirmed safe, it routes through Tensor::fill() -> DeviceBackend::fill().
 TEST(AdamOptimizerDeathTest, StepAbortsOnNonCpuParameter) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     class CudaParamModule : public Module {
     public:
@@ -119,8 +119,8 @@ TEST(AdamOptimizerDeathTest, StepAbortsOnNonCpuParameter) {
     CPUBackend backend;
     CudaParamModule m(&backend);
     AdamOptimizer opt(0.1f, &backend);
-    EXPECT_DEATH({ opt.step(m); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ opt.step(m); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

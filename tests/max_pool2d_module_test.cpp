@@ -2,11 +2,11 @@
 
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/max_pool2d_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/max_pool2d_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class MaxPool2DModuleTest : public ::testing::Test {
@@ -171,17 +171,17 @@ using MaxPool2DModuleDeathTest = MaxPool2DModuleTest;
 // (campaign_exai_dl_library_phase6_modern_architectures.md, 2026-09-22) -- remediated here.
 TEST_F(MaxPool2DModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MaxPool2DModule pool(2, 2, &backend);
     Tensor input(Shape({1, 1, 4, 4}), &backend,
                  {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)pool.forward(input); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)pool.forward(input); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(MaxPool2DModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MaxPool2DModule pool(2, 2, &backend);
     Tensor input(Shape({1, 1, 4, 4}), &backend,
@@ -189,12 +189,12 @@ TEST_F(MaxPool2DModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
     (void)pool.forward(input);
 
     Tensor grad_output(Shape({1, 1, 2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)pool.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)pool.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(MaxPool2DModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     MaxPool2DModule pool(2, 2, &backend);
     Tensor input(Shape({1, 1, 4, 4}), &backend,
@@ -202,8 +202,8 @@ TEST_F(MaxPool2DModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
     (void)pool.forward(input);
 
     Tensor relevance_out(Shape({1, 1, 2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)pool.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)pool.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

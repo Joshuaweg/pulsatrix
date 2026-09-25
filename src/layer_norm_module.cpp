@@ -1,11 +1,11 @@
-#include "exai/layer_norm_module.hpp"
+#include "pulsatrix/layer_norm_module.hpp"
 
 #include <cmath>
 #include <stdexcept>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 LayerNormModule::LayerNormModule(int64_t num_features, DeviceBackend* backend, DeviceType device, float eps)
     : num_features_(num_features),
@@ -90,7 +90,7 @@ Tensor LayerNormModule::backward(const Tensor& grad_output) {
             "LayerNormModule::backward: grad_output must be rank-2 (N, num_features) matching the cached batch "
             "size");
     }
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     const float D = static_cast<float>(num_features_);
 
@@ -146,4 +146,4 @@ Tensor LayerNormModule::propagate_relevance(const Tensor& relevance_out, const L
     return Tensor(relevance_out);
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

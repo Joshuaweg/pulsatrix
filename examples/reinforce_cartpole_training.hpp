@@ -3,7 +3,7 @@
  *         examples/reinforce_cartpole_demo.cpp and
  *         tests/reinforce_cartpole_integration_test.cpp.
  *
- *  @note Header-only, and deliberately *not* under include/exai/, for exactly the reason
+ *  @note Header-only, and deliberately *not* under include/pulsatrix/, for exactly the reason
  *        examples/dqn_cartpole_training.hpp is not: mission_reinforce_cartpole_training.md's
  *        deliverable is a test/demo integration assembled out of pieces Phase 1 and Phase 3
  *        Mission 0 already shipped (CartPoleEnv, RolloutBuffer, CategoricalPolicyAgent,
@@ -28,19 +28,19 @@
 #include <functional>
 #include <vector>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cartpole_env.hpp"
-#include "exai/categorical_policy_agent.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/policy_gradient_loss.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/rollout_buffer.hpp"
-#include "exai/sequential_module.hpp"
-#include "exai/shape.hpp"
-#include "exai/tensor.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cartpole_env.hpp"
+#include "pulsatrix/categorical_policy_agent.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/policy_gradient_loss.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/rollout_buffer.hpp"
+#include "pulsatrix/sequential_module.hpp"
+#include "pulsatrix/shape.hpp"
+#include "pulsatrix/tensor.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace reinforce_cartpole {
 
 /**
@@ -371,4 +371,4 @@ inline TrainingResult RunTraining(const TrainingConfig& config,
 // at its best (lr=1.0) it is meaningfully worse than Adam at 1e-2. Adam it is.
 
 }  // namespace reinforce_cartpole
-}  // namespace exai
+}  // namespace pulsatrix

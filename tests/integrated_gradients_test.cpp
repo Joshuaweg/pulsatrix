@@ -2,11 +2,11 @@
 
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/explainer_context.hpp"
-#include "exai/integrated_gradients.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/integrated_gradients.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
 
 // Integrated Gradients (charter: "graph traversal + baseline interpolation" -- the real
 // test of whether Phase 0's graph design was done right). Theory:
@@ -14,7 +14,7 @@
 // (xai_context.aDNA). Correctness is the completeness axiom:
 // sum(IG(x)) == F(x) - F(baseline), not just "it runs" -- per this vault's TDD discipline
 // and the charter's Explanation Fidelity audit row.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class IntegratedGradientsTest : public ::testing::Test {
@@ -59,7 +59,7 @@ TEST_F(IntegratedGradientsTest, CompletenessAxiomHoldsWithinTolerance) {
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 2):
-// escalated from EXAI_ASSERT (was a death test) to a real throw -- external boundary.
+// escalated from PULSATRIX_ASSERT (was a death test) to a real throw -- external boundary.
 TEST_F(IntegratedGradientsTest, ExplainThrowsOnZeroSteps) {
     LinearModule linear(2, 1, &backend);
     ExplainerContext ctx({&linear});
@@ -82,4 +82,4 @@ TEST_F(IntegratedGradientsTest, ExplainThrowsOnMismatchedInputAndBaselineShapes)
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -3,15 +3,15 @@
 #include <random>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/cuda_backend.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/cuda_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
 
 // Phase 1.5's closing exit-gate item: LinearModule/ReluModule forward passes produce
 // numerically equivalent output on a CPU-backed vs. a genuinely CUDA-backed Tensor, on real
 // hardware. See mission_forward_pass_equivalence.md, Objective 4.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Same bound as Mission 1's backend_equivalence_test.cpp -- looser than exact equality to
@@ -105,4 +105,4 @@ TEST_F(ForwardPassEquivalenceTest, ReluModuleForwardMatchesCPUBackendOnRandomInp
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

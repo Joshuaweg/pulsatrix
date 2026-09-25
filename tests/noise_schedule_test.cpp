@@ -14,10 +14,10 @@
 #include <cstdint>
 #include <stdexcept>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/noise_schedule.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/noise_schedule.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class NoiseScheduleTest : public ::testing::Test {
@@ -276,7 +276,7 @@ TEST_F(NoiseScheduleTest, DenoiseStepThrowsOnOutOfRangeTimestep) {
 
 // ---------------------------------------------------------------------------------------
 // Device guards. Both methods dereference Tensor::data() directly in raw host loops --
-// undefined behavior on a CUDA-backed Tensor, so both are EXAI_ASSERT-guarded
+// undefined behavior on a CUDA-backed Tensor, so both are PULSATRIX_ASSERT-guarded
 // (mission_host_loop_guards.md). No real GPU needed: this reuses LinearModuleDeathTest's
 // mislabeled-Tensor pattern.
 // ---------------------------------------------------------------------------------------
@@ -285,22 +285,22 @@ using NoiseScheduleDeathTest = NoiseScheduleTest;
 
 TEST_F(NoiseScheduleDeathTest, AddNoiseAbortsOnNonCpuTensor) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor x0(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
     Tensor eps(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    EXPECT_DEATH({ (void)coarse.add_noise(x0, eps, 1); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)coarse.add_noise(x0, eps, 1); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(NoiseScheduleDeathTest, DenoiseStepAbortsOnNonCpuTensor) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     Tensor x_t(Shape({1, 2}), &backend, {1.0f, 2.0f});
     Tensor eps_theta(Shape({1, 2}), &backend, {0.0f, 0.0f});
     Tensor z(Shape({1, 2}), &backend, {0.0f, 0.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)coarse.denoise_step(x_t, eps_theta, z, 1); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)coarse.denoise_step(x_t, eps_theta, z, 1); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

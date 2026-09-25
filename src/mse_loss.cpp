@@ -1,8 +1,8 @@
-#include "exai/mse_loss.hpp"
+#include "pulsatrix/mse_loss.hpp"
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 MSELoss::MSELoss(DeviceBackend* backend)
     : backend_(backend), last_prediction_(Shape({0}), backend), last_target_(Shape({0}), backend) {}
@@ -11,8 +11,8 @@ float MSELoss::forward(const Tensor& prediction, const Tensor& target) {
     // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    EXAI_ASSERT(prediction.device() == DeviceType::Cpu);
-    EXAI_ASSERT(target.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(prediction.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(target.device() == DeviceType::Cpu);
 
     last_prediction_ = prediction;
     last_target_ = target;
@@ -35,4 +35,4 @@ Tensor MSELoss::backward() const {
     return grad;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

@@ -1,18 +1,18 @@
-#include "exai/residual_module.hpp"
+#include "pulsatrix/residual_module.hpp"
 
 #include <gtest/gtest.h>
 #include <memory>
 #include <vector>
 
-#include "exai/conv2d_module.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/sequential_module.hpp"
-#include "exai/tensor.hpp"
+#include "pulsatrix/conv2d_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/sequential_module.hpp"
+#include "pulsatrix/tensor.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class ResidualModuleTest : public ::testing::Test {
@@ -186,37 +186,37 @@ TEST_F(ResidualModuleTest, ParametersDelegatesToInner) {
 
 TEST_F(ResidualModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     LinearModule inner(2, 2, &backend);
     ResidualModule residual(&inner, &backend);
     Tensor x(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)residual.forward(x); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)residual.forward(x); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(ResidualModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     LinearModule inner(2, 2, &backend);
     ResidualModule residual(&inner, &backend);
     Tensor x(Shape({1, 2}), &backend, {1.0f, 2.0f});
     (void)residual.forward(x);
     Tensor grad_out(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)residual.backward(grad_out); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)residual.backward(grad_out); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(ResidualModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     LinearModule inner(2, 2, &backend);
     ResidualModule residual(&inner, &backend);
     Tensor x(Shape({1, 2}), &backend, {1.0f, 2.0f});
     (void)residual.forward(x);
     Tensor relevance_out(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)residual.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)residual.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

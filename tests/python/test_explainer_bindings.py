@@ -7,25 +7,25 @@
 # GradCAM/LIME/KernelSHAP/PDP) land in this same file under Objectives 2-3.
 import pytest
 
-import exai_py
+import pulsatrix_py
 
 
 def test_explainer_context_constructs_from_module_chain():
-    linear = exai_py.LinearModule(2, 2)
-    relu = exai_py.ReluModule()
+    linear = pulsatrix_py.LinearModule(2, 2)
+    relu = pulsatrix_py.ReluModule()
 
     # Must not raise -- a valid, non-empty module chain.
-    exai_py.ExplainerContext([linear, relu])
+    pulsatrix_py.ExplainerContext([linear, relu])
 
 
 def test_explainer_context_rejects_empty_module_list():
     with pytest.raises(ValueError):
-        exai_py.ExplainerContext([])
+        pulsatrix_py.ExplainerContext([])
 
 
 def test_attribution_exposes_method_values_metadata():
-    values = exai_py.Tensor.from_values([2], [1.0, 2.0])
-    attribution = exai_py.Attribution("saliency", values, {"target_index": "0"})
+    values = pulsatrix_py.Tensor.from_values([2], [1.0, 2.0])
+    attribution = pulsatrix_py.Attribution("saliency", values, {"target_index": "0"})
 
     assert attribution.method == "saliency"
     assert attribution.values.at([0]) == 1.0
@@ -42,14 +42,14 @@ def test_attribution_exposes_method_values_metadata():
 def test_saliency_gradient_matches_weight_column_for_linear_only_network():
     # (in=3, out=2), row-major. d(output[1])/d(input[i]) = weight[i][1] exactly; bias set
     # large to prove it has zero effect on the gradient.
-    linear = exai_py.LinearModule(3, 2)
+    linear = pulsatrix_py.LinearModule(3, 2)
     linear.set_weight([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
     linear.set_bias([100.0, 100.0])
 
-    ctx = exai_py.ExplainerContext([linear])
-    x = exai_py.Tensor.from_values([3], [1.0, 1.0, 1.0])
+    ctx = pulsatrix_py.ExplainerContext([linear])
+    x = pulsatrix_py.Tensor.from_values([3], [1.0, 1.0, 1.0])
 
-    saliency = exai_py.Saliency()
+    saliency = pulsatrix_py.Saliency()
     attr = saliency.explain(ctx, x, 1)
 
     assert attr.method == "saliency"
@@ -60,20 +60,20 @@ def test_saliency_gradient_matches_weight_column_for_linear_only_network():
 
 
 def test_integrated_gradients_completeness_axiom_holds_within_tolerance():
-    linear1 = exai_py.LinearModule(3, 4)
+    linear1 = pulsatrix_py.LinearModule(3, 4)
     linear1.set_weight([0.2, -0.4, 0.6, 0.1, -0.3, 0.5, 0.7, -0.2, 0.1, 0.4, -0.6, 0.3])
     linear1.set_bias([0.1, -0.1, 0.2, 0.0])
 
-    relu = exai_py.ReluModule()
+    relu = pulsatrix_py.ReluModule()
 
-    linear2 = exai_py.LinearModule(4, 2)
+    linear2 = pulsatrix_py.LinearModule(4, 2)
     linear2.set_weight([0.5, -0.3, 0.2, 0.4, -0.1, 0.6, 0.3, -0.5])
     linear2.set_bias([0.05, -0.05])
 
-    ctx = exai_py.ExplainerContext([linear1, relu, linear2])
+    ctx = pulsatrix_py.ExplainerContext([linear1, relu, linear2])
 
-    x = exai_py.Tensor.from_values([3], [0.5, -0.3, 1.2])
-    baseline = exai_py.Tensor.from_values([3], [0.0, 0.0, 0.0])
+    x = pulsatrix_py.Tensor.from_values([3], [0.5, -0.3, 1.2])
+    baseline = pulsatrix_py.Tensor.from_values([3], [0.0, 0.0, 0.0])
     target_index = 0
 
     # ExplainerContext.forward_pass() is deliberately not bound (Objective 1's Recon) --
@@ -81,7 +81,7 @@ def test_integrated_gradients_completeness_axiom_holds_within_tolerance():
     f_x = linear2.forward(relu.forward(linear1.forward(x))).at([target_index])
     f_baseline = linear2.forward(relu.forward(linear1.forward(baseline))).at([target_index])
 
-    ig = exai_py.IntegratedGradients()
+    ig = pulsatrix_py.IntegratedGradients()
     attr = ig.explain(ctx, x, baseline, target_index, 200)
 
     assert attr.method == "integrated_gradients"
@@ -92,21 +92,21 @@ def test_integrated_gradients_completeness_axiom_holds_within_tolerance():
 
 
 def test_grad_cam_computes_hand_derived_cam_for_simple_network():
-    conv = exai_py.Conv2DModule(1, 2, 2, 2)
+    conv = pulsatrix_py.Conv2DModule(1, 2, 2, 2)
     conv.set_kernel([1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0])
     conv.set_bias([0.0, 0.0])
 
-    relu = exai_py.ReluModule()
-    flatten = exai_py.FlattenModule()
+    relu = pulsatrix_py.ReluModule()
+    flatten = pulsatrix_py.FlattenModule()
 
-    linear = exai_py.LinearModule(8, 2)
+    linear = pulsatrix_py.LinearModule(8, 2)
     linear.set_weight([1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 2.0, 0.0, 2.0, 0.0, 2.0, 0.0, 2.0, 0.0])
     linear.set_bias([0.0, 0.0])
 
-    ctx = exai_py.ExplainerContext([conv, relu, flatten, linear])
-    x = exai_py.Tensor.from_values([1, 3, 3], [1.0, 2.0, 3.0, 4.0, 0.0, 5.0, 6.0, 7.0, 8.0])
+    ctx = pulsatrix_py.ExplainerContext([conv, relu, flatten, linear])
+    x = pulsatrix_py.Tensor.from_values([1, 3, 3], [1.0, 2.0, 3.0, 4.0, 0.0, 5.0, 6.0, 7.0, 8.0])
 
-    gradcam = exai_py.GradCAM()
+    gradcam = pulsatrix_py.GradCAM()
     attr = gradcam.explain(ctx, x, 0)
 
     assert attr.method == "grad_cam"
@@ -118,22 +118,22 @@ def test_grad_cam_computes_hand_derived_cam_for_simple_network():
 
 
 def test_grad_cam_raises_when_graph_has_no_conv_layer():
-    linear = exai_py.LinearModule(2, 2)
-    ctx = exai_py.ExplainerContext([linear])
-    x = exai_py.Tensor.from_values([2], [1.0, 1.0])
+    linear = pulsatrix_py.LinearModule(2, 2)
+    ctx = pulsatrix_py.ExplainerContext([linear])
+    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
 
-    gradcam = exai_py.GradCAM()
+    gradcam = pulsatrix_py.GradCAM()
     with pytest.raises(ValueError):
         gradcam.explain(ctx, x, 0)
 
 
 def test_integrated_gradients_raises_on_zero_steps():
-    linear = exai_py.LinearModule(2, 1)
-    ctx = exai_py.ExplainerContext([linear])
-    x = exai_py.Tensor.from_values([2], [1.0, 1.0])
-    baseline = exai_py.Tensor.from_values([2], [0.0, 0.0])
+    linear = pulsatrix_py.LinearModule(2, 1)
+    ctx = pulsatrix_py.ExplainerContext([linear])
+    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
+    baseline = pulsatrix_py.Tensor.from_values([2], [0.0, 0.0])
 
-    ig = exai_py.IntegratedGradients()
+    ig = pulsatrix_py.IntegratedGradients()
     with pytest.raises(ValueError):
         ig.explain(ctx, x, baseline, 0, 0)
 
@@ -145,14 +145,14 @@ def test_integrated_gradients_raises_on_zero_steps():
 
 
 def test_lime_recovers_exact_weight_column_for_linear_only_network():
-    linear = exai_py.LinearModule(3, 2)
+    linear = pulsatrix_py.LinearModule(3, 2)
     linear.set_weight([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
     linear.set_bias([100.0, 100.0])  # deliberately large/irrelevant
 
     predict = linear.forward
-    x = exai_py.Tensor.from_values([3], [1.0, 1.0, 1.0])
+    x = pulsatrix_py.Tensor.from_values([3], [1.0, 1.0, 1.0])
 
-    lime = exai_py.LIME()
+    lime = pulsatrix_py.LIME()
     attr = lime.explain(predict, x, target_index=1, num_samples=300, sigma=1.0, l2_lambda=0.0, seed=42)
 
     assert attr.method == "lime"
@@ -163,33 +163,33 @@ def test_lime_recovers_exact_weight_column_for_linear_only_network():
 
 
 def test_lime_raises_on_non_positive_num_samples():
-    linear = exai_py.LinearModule(2, 1)
-    x = exai_py.Tensor.from_values([2], [1.0, 1.0])
+    linear = pulsatrix_py.LinearModule(2, 1)
+    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
 
-    lime = exai_py.LIME()
+    lime = pulsatrix_py.LIME()
     with pytest.raises(ValueError):
         lime.explain(linear.forward, x, target_index=0, num_samples=0, sigma=1.0, l2_lambda=0.0, seed=42)
 
 
 def test_lime_raises_on_non_positive_sigma():
-    linear = exai_py.LinearModule(2, 1)
-    x = exai_py.Tensor.from_values([2], [1.0, 1.0])
+    linear = pulsatrix_py.LinearModule(2, 1)
+    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
 
-    lime = exai_py.LIME()
+    lime = pulsatrix_py.LIME()
     with pytest.raises(ValueError):
         lime.explain(linear.forward, x, target_index=0, num_samples=50, sigma=0.0, l2_lambda=0.0, seed=42)
 
 
 def test_kernel_shap_two_features_match_closed_form_shapley_values():
-    linear = exai_py.LinearModule(2, 1)
+    linear = pulsatrix_py.LinearModule(2, 1)
     linear.set_weight([2.0, -3.0])
     linear.set_bias([0.0])
 
     predict = linear.forward
-    x = exai_py.Tensor.from_values([2], [1.0, 2.0])
-    baseline = exai_py.Tensor.from_values([2], [0.0, 0.0])
+    x = pulsatrix_py.Tensor.from_values([2], [1.0, 2.0])
+    baseline = pulsatrix_py.Tensor.from_values([2], [0.0, 0.0])
 
-    shap = exai_py.KernelSHAP()
+    shap = pulsatrix_py.KernelSHAP()
     attr = shap.explain(predict, x, baseline, target_index=0)
 
     assert attr.method == "kernel_shap"
@@ -198,28 +198,28 @@ def test_kernel_shap_two_features_match_closed_form_shapley_values():
 
 
 def test_kernel_shap_raises_on_mismatched_input_and_baseline_shapes():
-    linear = exai_py.LinearModule(2, 1)
-    x = exai_py.Tensor.from_values([2], [1.0, 1.0])
-    mismatched_baseline = exai_py.Tensor.from_values([3], [0.0, 0.0, 0.0])
+    linear = pulsatrix_py.LinearModule(2, 1)
+    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
+    mismatched_baseline = pulsatrix_py.Tensor.from_values([3], [0.0, 0.0, 0.0])
 
-    shap = exai_py.KernelSHAP()
+    shap = pulsatrix_py.KernelSHAP()
     with pytest.raises(ValueError):
         shap.explain(linear.forward, x, mismatched_baseline, target_index=0)
 
 
 def test_pdp_curve_is_exactly_linear_with_true_feature_weight_as_slope():
-    linear = exai_py.LinearModule(3, 1)
+    linear = pulsatrix_py.LinearModule(3, 1)
     linear.set_weight([2.0, -3.0, 5.0])
     linear.set_bias([100.0])
 
     predict = linear.forward
     background = [
-        exai_py.Tensor.from_values([3], [1.0, 1.0, 1.0]),
-        exai_py.Tensor.from_values([3], [5.0, -2.0, 0.0]),
-        exai_py.Tensor.from_values([3], [-3.0, 4.0, 2.0]),
+        pulsatrix_py.Tensor.from_values([3], [1.0, 1.0, 1.0]),
+        pulsatrix_py.Tensor.from_values([3], [5.0, -2.0, 0.0]),
+        pulsatrix_py.Tensor.from_values([3], [-3.0, 4.0, 2.0]),
     ]
 
-    pdp = exai_py.PDP()
+    pdp = pulsatrix_py.PDP()
     attr = pdp.explain(predict, background, feature_index=1, target_index=0, grid_min=-2.0, grid_max=4.0, grid_size=7)
 
     assert attr.method == "pdp"
@@ -231,8 +231,8 @@ def test_pdp_curve_is_exactly_linear_with_true_feature_weight_as_slope():
 
 
 def test_pdp_raises_on_empty_background():
-    linear = exai_py.LinearModule(2, 1)
+    linear = pulsatrix_py.LinearModule(2, 1)
 
-    pdp = exai_py.PDP()
+    pdp = pulsatrix_py.PDP()
     with pytest.raises(ValueError):
         pdp.explain(linear.forward, [], feature_index=0, target_index=0, grid_min=0.0, grid_max=1.0, grid_size=5)

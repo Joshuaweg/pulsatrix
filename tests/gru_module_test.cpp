@@ -5,11 +5,11 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/gru_module.hpp"
-#include "exai/lrp_rule_config.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/gru_module.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 float sigmoid_ref(float z) { return 1.0f / (1.0f + std::exp(-z)); }
@@ -374,36 +374,36 @@ using GRUModuleDeathTest = GRUModuleTest;
 // Written from the start of this mission, not deferred.
 TEST_F(GRUModuleDeathTest, ForwardAbortsOnNonCpuInput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     GRUModule gru(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)gru.forward(input); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)gru.forward(input); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(GRUModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     GRUModule gru(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
     (void)gru.forward(input);
 
     Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)gru.backward(grad_output); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)gru.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
 TEST_F(GRUModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
-    GTEST_SKIP() << "EXAI_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
+    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
 #endif
     GRUModule gru(1, 1, &backend);
     Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
     (void)gru.forward(input);
 
     Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)gru.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "EXAI_ASSERT failed");
+    EXPECT_DEATH({ (void)gru.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -2,9 +2,9 @@
 #include <gtest/gtest.h>
 #include <type_traits>
 
-#include "exai/device_backend.hpp"
+#include "pulsatrix/device_backend.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class MockDeviceBackend : public DeviceBackend {
@@ -54,4 +54,4 @@ TEST(DeviceBackendInterface, EveryPureVirtualIsMockable) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

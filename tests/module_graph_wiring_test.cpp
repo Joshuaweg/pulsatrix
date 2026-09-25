@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "exai/autograd.hpp"
-#include "exai/computation_graph.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/relu_module.hpp"
+#include "pulsatrix/autograd.hpp"
+#include "pulsatrix/computation_graph.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
 
 // Phase 2 Mission 0's actual exit-gate proof: a real multi-module network built via
 // Module::forward_traced produces (a) a ComputationGraph whose structure matches
@@ -12,7 +12,7 @@
 // same network's gradients computed the existing way (direct chained backward() calls, as
 // XorNetwork's training loop already does) -- proving the traced path is a real
 // alternative route to the same math, not a divergent one.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 TEST(ModuleGraphWiringTest, ThreeModuleChainProducesExpectedGraphStructure) {
@@ -116,4 +116,4 @@ TEST(ModuleGraphWiringTest, TracedBackwardMatchesDirectChainedBackwardAtEveryNod
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

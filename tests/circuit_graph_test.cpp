@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "exai/circuit_graph.hpp"
+#include "pulsatrix/circuit_graph.hpp"
 
 // CircuitGraph (campaign_exai_dl_library_mechanistic_interpretability, Phase 5 Mission 3)
 // is the campaign's final output artifact: a plain, copyable value type holding a list of
@@ -14,7 +14,7 @@
 // computes the scores, ExplainerContext::build_circuit_graph(), lives in
 // explainer_context_test.cpp -- mirroring how activation_snapshot_test.cpp covers
 // ActivationSnapshot while its capture path is tested against the real context.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class CircuitGraphTest : public ::testing::Test {
@@ -109,4 +109,4 @@ TEST_F(CircuitGraphTest, SingleNodeZeroEdgeCircuitIsWellFormed) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

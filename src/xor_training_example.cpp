@@ -1,6 +1,6 @@
-#include "exai/xor_training_example.hpp"
+#include "pulsatrix/xor_training_example.hpp"
 
-namespace exai {
+namespace pulsatrix {
 
 XorNetwork::XorNetwork(DeviceBackend* backend)
     : backend_(backend), linear1_(2, 4, backend), relu_(backend), linear2_(4, 1, backend), loss_(backend) {
@@ -52,4 +52,4 @@ float XorNetwork::train_step(const Tensor& input, const Tensor& target, AdamOpti
     return loss_value;
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

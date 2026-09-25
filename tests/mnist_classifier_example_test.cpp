@@ -2,10 +2,10 @@
 
 #include <random>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/metrics_sink.hpp"
-#include "exai/mnist_classifier_example.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/metrics_sink.hpp"
+#include "pulsatrix/mnist_classifier_example.hpp"
 
 // Unit-level correctness for MnistConvNet's wiring (forward shape, weight updates, sink
 // logging, single-example overfitting) using synthetic-but-realistically-shaped
@@ -13,7 +13,7 @@
 // "trained on real data" acceptance criterion (real measured test-set accuracy well above
 // chance) is examples/mnist_training_demo.cpp's job (Objective 5), not this unit suite --
 // training on the real ~60k-image dataset here would make this test suite far too slow.
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 Tensor SyntheticImage(DeviceBackend* backend, unsigned seed) {
@@ -124,4 +124,4 @@ TEST_F(MnistConvNetTest, TrainStepOverfitsASingleExample) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

@@ -3,12 +3,12 @@
 #include <utility>
 #include <vector>
 
-#include "exai/adam_optimizer.hpp"
-#include "exai/cpu_backend.hpp"
-#include "exai/metrics_sink.hpp"
-#include "exai/xor_training_example.hpp"
+#include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/metrics_sink.hpp"
+#include "pulsatrix/xor_training_example.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class XorTrainingExampleTest : public ::testing::Test {
@@ -123,4 +123,4 @@ TEST_F(XorTrainingExampleTest, TrainingConvergesOnXOR) {
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

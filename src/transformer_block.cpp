@@ -1,17 +1,17 @@
-#include "exai/transformer_block.hpp"
+#include "pulsatrix/transformer_block.hpp"
 
 #include <stdexcept>
 #include <vector>
 
-#include "exai/assert.hpp"
+#include "pulsatrix/assert.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 /** @brief Same helper as multihead_attention_module.cpp/swiglu_module.cpp of the same name. */
 [[nodiscard]] int64_t flatten_leading_dims(const Shape& shape, int64_t feature_dim) {
-    EXAI_ASSERT(shape.rank() >= 2);
-    EXAI_ASSERT(shape.dim(static_cast<size_t>(shape.rank() - 1)) == feature_dim);
+    PULSATRIX_ASSERT(shape.rank() >= 2);
+    PULSATRIX_ASSERT(shape.dim(static_cast<size_t>(shape.rank() - 1)) == feature_dim);
     return shape.numel() / feature_dim;
 }
 
@@ -55,7 +55,7 @@ TransformerBlock::TransformerBlock(int64_t d_model, int64_t num_heads, int64_t d
 Tensor TransformerBlock::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in the residual-add raw host loop below -- not
     // backend-generic. See mission_host_loop_guards.md.
-    EXAI_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
 
     if (input.rank() < 2 || input.shape().dim(static_cast<size_t>(input.rank() - 1)) != d_model_) {
         throw std::invalid_argument(
@@ -96,7 +96,7 @@ Tensor TransformerBlock::backward(const Tensor& grad_output) {
         throw std::invalid_argument("TransformerBlock::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
 
     const int64_t n_flat = flatten_leading_dims(last_input_shape_, d_model_);
 
@@ -132,7 +132,7 @@ Tensor TransformerBlock::propagate_relevance(const Tensor& relevance_out, const 
             "TransformerBlock::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    EXAI_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
 
     const int64_t n_flat = flatten_leading_dims(last_input_shape_, d_model_);
 
@@ -183,4 +183,4 @@ void TransformerBlock::set_training(bool training) {
     swiglu_.set_training(training);
 }
 
-}  // namespace exai
+}  // namespace pulsatrix

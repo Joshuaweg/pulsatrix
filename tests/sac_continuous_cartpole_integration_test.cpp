@@ -28,7 +28,7 @@
  *        `SkippingDiscriminatorZeroGradAfterGeneratorStepCorruptsIt` used for the identical
  *        hazard.
  *
- *  @note This mission made **no** production change whatsoever -- no new `include/exai/` class and
+ *  @note This mission made **no** production change whatsoever -- no new `include/pulsatrix/` class and
  *        not even an additive accessor (contrast the PPO mission's two RolloutBuffer accessors).
  *        Everything under test here was committed before the mission started; the only new code
  *        is the training loop in examples/sac_continuous_cartpole_training.hpp.
@@ -51,7 +51,7 @@
 
 #include "../examples/sac_continuous_cartpole_training.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace sac_continuous_cartpole {
 namespace {
 
@@ -668,4 +668,4 @@ TEST(SACContinuousCartPoleDeterminismTest, TwoRunsOfTheSameConfigurationAreIdent
 
 }  // namespace
 }  // namespace sac_continuous_cartpole
-}  // namespace exai
+}  // namespace pulsatrix

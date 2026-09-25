@@ -3,16 +3,16 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/dropout_module.hpp"
-#include "exai/linear_module.hpp"
-#include "exai/lrp_rule_config.hpp"
-#include "exai/module.hpp"
-#include "exai/op_type.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/sequential_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/dropout_module.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
+#include "pulsatrix/module.hpp"
+#include "pulsatrix/op_type.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/sequential_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 class SequentialModuleTest : public ::testing::Test {
@@ -181,4 +181,4 @@ TEST_F(SequentialModuleTest, SetTrainingCascadesToContainedLayersThroughBasePoin
 }
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix

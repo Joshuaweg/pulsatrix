@@ -5,14 +5,14 @@
 #include <stdexcept>
 #include <vector>
 
-#include "exai/cpu_backend.hpp"
-#include "exai/dqn_target.hpp"  // SyncTargetNetwork -- the tau == 1 cross-check
-#include "exai/linear_module.hpp"
-#include "exai/polyak_update.hpp"
-#include "exai/relu_module.hpp"
-#include "exai/sequential_module.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/dqn_target.hpp"  // SyncTargetNetwork -- the tau == 1 cross-check
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/polyak_update.hpp"
+#include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/sequential_module.hpp"
 
-namespace exai {
+namespace pulsatrix {
 namespace {
 
 // Two structurally identical two-layer networks with *different, known, non-zero* weights on
@@ -273,8 +273,8 @@ TEST_F(PolyakUpdateTest, UpdatingAParameterlessModulePairIsALegalNoOp) {
 
 // No death test, by design and for the identical reason SyncTargetNetwork has none: PolyakUpdate
 // takes no caller-supplied Tensor, only Modules, whose parameter buffers were validated when
-// those Modules were constructed. There is no EXAI_ASSERT to trip and a guard here would be
+// those Modules were constructed. There is no PULSATRIX_ASSERT to trip and a guard here would be
 // untestable dead code, not a real safety net (mission_host_loop_guards.md).
 
 }  // namespace
-}  // namespace exai
+}  // namespace pulsatrix
