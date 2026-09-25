@@ -39,6 +39,7 @@ add_executable(pulsatrix_tests
     sinusoidal_timestep_embedding_test.cpp
     cartpole_env_test.cpp
     continuous_cartpole_env_test.cpp
+    hypergrid_env_test.cpp
     replay_buffer_test.cpp
     rollout_buffer_test.cpp
     dqn_loss_test.cpp
