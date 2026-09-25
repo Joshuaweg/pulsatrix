@@ -6,6 +6,7 @@
 
 #include "exai/activation_snapshot.hpp"
 #include "exai/adam_optimizer.hpp"
+#include "exai/circuit_graph.hpp"
 #include "exai/cpu_backend.hpp"
 #include "exai/explainer_context.hpp"
 #include "exai/linear_module.hpp"
@@ -1119,6 +1120,175 @@ TEST_F(ExplainerContextTest, AttentionWeightsThrowsOnAnOutOfRangeNodeIdOrBeforeA
     // Still usable afterwards.
     Tensor weights = ctx.attention_weights(1);
     EXPECT_EQ(weights.shape(), Shape({1, 2, 2, 2}));
+}
+
+// --- ExplainerContext::build_circuit_graph() (Phase 5 Mission 3, Objective 1) -------
+//
+// The campaign's final deliverable: a CircuitGraph -- nodes and edges, each carrying a
+// numeric importance score -- produced for a real network. Node scores are ablation
+// effects (L2 distance between the real output and the output obtained by patching that
+// node to zeros via forward_pass_with_patch), edges are the chain's own adjacency with
+// the source node's score as their weight. Raw data only; rendering is deferred.
+
+// Structural correctness on a real multi-layer chain: one CircuitNode per graph node, one
+// edge per adjacent pair, edges in order, metadata carried through, and the output node's
+// ablation_effect fixed at 0.0f by convention (patching the output node is a degenerate
+// no-op per forward_pass_with_patch's own documented behavior, not a meaningful score).
+TEST_F(ExplainerContextTest, BuildCircuitGraphProducesOneNodePerGraphNodeAndOneEdgePerAdjacentPair) {
+    LinearModule linear1(3, 4, &backend);
+    linear1.set_weight({0.5f, -0.2f, 0.9f, 0.1f, 0.3f, 0.7f, -0.4f, 0.6f, 0.2f, 0.8f, -0.1f, 0.4f});
+    linear1.set_bias({0.1f, -0.1f, 0.2f, 0.0f});
+    ReluModule relu(&backend);
+    LinearModule linear2(4, 2, &backend);
+    linear2.set_weight({1.0f, -0.5f, 0.25f, 0.75f, -0.3f, 0.6f, 0.2f, -0.8f});
+    linear2.set_bias({0.05f, -0.05f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({1, 3}), &backend, {0.5f, -0.3f, 1.2f});
+
+    const CircuitGraph circuit = ctx.build_circuit_graph(input);
+
+    // input node + 3 module nodes.
+    ASSERT_EQ(ctx.graph().node_count(), 4u);
+    ASSERT_EQ(circuit.nodes().size(), ctx.graph().node_count());
+    ASSERT_EQ(circuit.edges().size(), ctx.graph().node_count() - 1u);
+
+    for (size_t i = 0; i < circuit.nodes().size(); ++i) {
+        const CircuitNode& node = circuit.nodes()[i];
+        EXPECT_EQ(node.id, static_cast<NodeId>(i));
+        EXPECT_EQ(node.op_type, ctx.graph().node(node.id).op_type());
+        EXPECT_EQ(node.label, ctx.graph().node(node.id).label());
+        EXPECT_TRUE(std::isfinite(node.ablation_effect)) << "node " << i;
+        EXPECT_GE(node.ablation_effect, 0.0f) << "node " << i;
+    }
+
+    // The output node's score is the documented convention, not a computed number.
+    EXPECT_FLOAT_EQ(circuit.nodes().back().ablation_effect, 0.0f);
+
+    // Edges are the chain's own adjacency, i -> i+1, weighted by the source node's score.
+    for (size_t i = 0; i < circuit.edges().size(); ++i) {
+        const CircuitEdge& edge = circuit.edges()[i];
+        EXPECT_EQ(edge.from, static_cast<NodeId>(i));
+        EXPECT_EQ(edge.to, static_cast<NodeId>(i + 1));
+        EXPECT_FLOAT_EQ(edge.weight, circuit.nodes()[i].ablation_effect) << "edge " << i;
+    }
+}
+
+// The mission's actual acceptance criterion: not "produces numbers" but numbers that are
+// demonstrably right relative to each other *by construction*.
+//
+// Chain (all 1->1 Linear, input = [2.0]):
+//   node 0 (input)   = 2.0
+//   node 1 = L1(x)   = 1.0 * 2.0 + 0.0    = 2.0
+//   node 2 = L2(h)   = 0.001 * 2.0 + 10.0 = 10.002
+//   node 3 = L3(h)   = 1.0 * 10.002 + 0.0 = 10.002   <- the network's output
+//
+// Node 1 reaches the output only through L2's near-zero weight (0.001), so zeroing it
+// moves the output by 0.001 * 2.0 = 0.002. Node 2 reaches the output through L3's unit
+// weight, so zeroing it moves the output by the whole 10.002. Node 2 is therefore
+// provably ~5000x more consequential than node 1, and the CircuitGraph must say so.
+TEST_F(ExplainerContextTest, BuildCircuitGraphAblationEffectsReflectHandDerivedImportanceOrdering) {
+    LinearModule l1(1, 1, &backend);
+    l1.set_weight({1.0f});
+    l1.set_bias({0.0f});
+    LinearModule l2(1, 1, &backend);
+    l2.set_weight({0.001f});  // near-zero: node 1 barely matters downstream
+    l2.set_bias({10.0f});
+    LinearModule l3(1, 1, &backend);
+    l3.set_weight({1.0f});  // unit: node 2 passes straight through to the output
+    l3.set_bias({0.0f});
+
+    ExplainerContext ctx({&l1, &l2, &l3});
+    Tensor input(Shape({1, 1}), &backend, {2.0f});
+
+    // The hand-derived baseline, confirmed before scoring anything.
+    Tensor output = ctx.forward_pass(input);
+    ASSERT_EQ(output.numel(), 1);
+    ASSERT_NEAR(output.data()[0], 10.002f, 1e-4f);
+
+    const CircuitGraph circuit = ctx.build_circuit_graph(input);
+    ASSERT_EQ(circuit.nodes().size(), 4u);
+
+    const float input_effect = circuit.nodes()[0].ablation_effect;
+    const float node1_effect = circuit.nodes()[1].ablation_effect;
+    const float node2_effect = circuit.nodes()[2].ablation_effect;
+    const float output_effect = circuit.nodes()[3].ablation_effect;
+
+    // The ordering, which is the point of the test.
+    EXPECT_GT(node2_effect, node1_effect) << "node 2 effect " << node2_effect << " vs. node 1 effect "
+                                          << node1_effect;
+
+    // ...and the hand-derived magnitudes behind it.
+    EXPECT_NEAR(node1_effect, 0.002f, 1e-4f);
+    EXPECT_NEAR(node2_effect, 10.002f, 1e-3f);
+    // Zeroing the input propagates through L1 unchanged, so it costs exactly what
+    // zeroing node 1 costs.
+    EXPECT_NEAR(input_effect, 0.002f, 1e-4f);
+    EXPECT_FLOAT_EQ(output_effect, 0.0f);
+
+    // Edge weights carry the same ordering, per the chain-only simplification.
+    ASSERT_EQ(circuit.edges().size(), 3u);
+    EXPECT_GT(circuit.edges()[2].weight, circuit.edges()[1].weight);
+}
+
+// Adversarial (degenerate network): the minimal chain this class accepts -- a single
+// module, so the graph has only an input node and an output node and there is no interior
+// node to score at all. Must not crash, and must produce a structurally valid, minimal
+// CircuitGraph rather than an empty or malformed one.
+TEST_F(ExplainerContextTest, BuildCircuitGraphOnSingleModuleChainProducesMinimalValidCircuit) {
+    LinearModule linear(2, 2, &backend);
+    linear.set_weight({1.0f, 2.0f, 3.0f, 4.0f});
+    linear.set_bias({0.5f, -0.5f});
+
+    ExplainerContext ctx({&linear});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
+
+    const CircuitGraph circuit = ctx.build_circuit_graph(input);
+
+    ASSERT_EQ(circuit.nodes().size(), 2u);
+    ASSERT_EQ(circuit.edges().size(), 1u);
+    EXPECT_EQ(circuit.nodes()[0].id, 0u);
+    EXPECT_EQ(circuit.nodes()[1].id, 1u);
+    EXPECT_EQ(circuit.edges()[0].from, 0u);
+    EXPECT_EQ(circuit.edges()[0].to, 1u);
+
+    // Only the input node is scorable; the output node keeps the 0.0f convention.
+    EXPECT_FLOAT_EQ(circuit.nodes()[1].ablation_effect, 0.0f);
+    // Zeroing the input leaves the bias behind: output moves from (3.5, 6.5) to
+    // (0.5, -0.5), an L2 distance of sqrt(9 + 49) = sqrt(58).
+    EXPECT_NEAR(circuit.nodes()[0].ablation_effect, std::sqrt(58.0f), 1e-3f);
+    EXPECT_FLOAT_EQ(circuit.edges()[0].weight, circuit.nodes()[0].ablation_effect);
+}
+
+// build_circuit_graph() runs many patched forward passes internally, which would otherwise
+// leave backward_pass()'s patched-pass guard armed and the context's cached state belonging
+// to an ablation run rather than to the real one. It must hand the context back exactly as
+// an ordinary forward_pass(input) would leave it.
+TEST_F(ExplainerContextTest, BuildCircuitGraphLeavesTheContextOnAnUnpatchedForwardPass) {
+    LinearModule linear1(2, 2, &backend);
+    linear1.set_weight({1.0f, 2.0f, 3.0f, 4.0f});
+    linear1.set_bias({0.5f, -0.5f});
+    ReluModule relu(&backend);
+    LinearModule linear2(2, 1, &backend);
+    linear2.set_weight({0.5f, -0.25f});
+    linear2.set_bias({0.0f});
+
+    ExplainerContext ctx({&linear1, &relu, &linear2});
+    Tensor input(Shape({1, 2}), &backend, {1.0f, 1.0f});
+
+    Tensor expected = ctx.forward_pass(input);
+    (void)ctx.build_circuit_graph(input);
+
+    // The cached activations belong to the real, unpatched pass.
+    const Tensor& cached_output = ctx.activation(ctx.graph().node_count() - 1u);
+    ASSERT_EQ(cached_output.numel(), expected.numel());
+    for (int64_t i = 0; i < expected.numel(); ++i) {
+        EXPECT_FLOAT_EQ(cached_output.data()[i], expected.data()[i]) << "index " << i;
+    }
+
+    // ...and the patched-pass guard is not armed, so gradients are still available.
+    Tensor output_grad(Shape({1, 1}), &backend, {1.0f});
+    EXPECT_NO_THROW((void)ctx.backward_pass(output_grad));
 }
 
 }  // namespace
