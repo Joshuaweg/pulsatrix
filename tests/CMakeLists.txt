@@ -71,6 +71,7 @@ add_executable(exai_tests
     attribution_test.cpp
     explainer_context_test.cpp
     activation_snapshot_test.cpp
+    circuit_graph_test.cpp
     linear_probe_test.cpp
     sparse_autoencoder_test.cpp
     saliency_test.cpp
