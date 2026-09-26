@@ -179,12 +179,27 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_EXTRACT_ALL YES)
     set(DOXYGEN_WARN_IF_UNDOCUMENTED YES)
     set(DOXYGEN_WARN_NO_PARAMDOC YES)
-    # Retint Doxygen's built-in HTML theme to the Pulsatrix logo's palette (forest green,
-    # hue ~109) via Doxygen's own HTML_COLORSTYLE_* knobs rather than a custom stylesheet --
-    # built-in over custom, no new theme dependency for a single hue shift.
+    # doxygen-awesome-css (vendored, docs/doxygen-awesome/, v2.5.0, MIT) replaces Doxygen's
+    # default theme with a clean, modern light/dark layout that actually matches the MkDocs
+    # Material site's look (the earlier HTML_COLORSTYLE_HUE-only retint kept Doxygen's own
+    # default template, which reads as a completely different, dated site next to Material).
+    # pulsatrix-brand.css overrides its CSS custom properties to the same palette
+    # docs/stylesheets/extra.css uses for the MkDocs site. HTML_COLORSTYLE=LIGHT disables
+    # Doxygen's own separate built-in light/dark toggle (added ~1.9.5), since doxygen-awesome
+    # already handles theming via `prefers-color-scheme` -- the two would otherwise conflict.
+    # #projectlogo's own CSS caps the logo's display height regardless of the source image's
+    # actual resolution -- the default theme has no such rule, which is why the logo rendered
+    # far too large before this switch.
     set(DOXYGEN_PROJECT_LOGO ${CMAKE_SOURCE_DIR}/docs/assets/pulsatrix_icon.png)
-    set(DOXYGEN_HTML_COLORSTYLE_HUE 109)
-    set(DOXYGEN_HTML_COLORSTYLE_SAT 180)
+    set(DOXYGEN_HTML_COLORSTYLE LIGHT)
+    set(DOXYGEN_GENERATE_TREEVIEW YES)
+    set(DOXYGEN_DISABLE_INDEX NO)
+    set(DOXYGEN_FULL_SIDEBAR NO)
+    set(DOXYGEN_HTML_EXTRA_STYLESHEET
+        ${CMAKE_SOURCE_DIR}/docs/doxygen-awesome/doxygen-awesome.css
+        ${CMAKE_SOURCE_DIR}/docs/doxygen-awesome/doxygen-awesome-sidebar-only.css
+        ${CMAKE_SOURCE_DIR}/docs/doxygen-awesome/pulsatrix-brand.css
+    )
     doxygen_add_docs(docs
         ${CMAKE_SOURCE_DIR}/include
         COMMENT "Generating pulsatrix API documentation"
