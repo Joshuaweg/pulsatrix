@@ -39,6 +39,17 @@ add_executable(pulsatrix_tests
     sinusoidal_timestep_embedding_test.cpp
     cartpole_env_test.cpp
     continuous_cartpole_env_test.cpp
+    hypergrid_env_test.cpp
+    learnable_scalar_test.cpp
+    gflownet_forward_policy_test.cpp
+    trajectory_balance_loss_test.cpp
+    detailed_balance_loss_test.cpp
+    subtb_loss_test.cpp
+    subtb_integration_test.cpp
+    cross_objective_validation_test.cpp
+    detailed_balance_integration_test.cpp
+    gflownet_trajectory_test.cpp
+    trajectory_balance_integration_test.cpp
     replay_buffer_test.cpp
     rollout_buffer_test.cpp
     dqn_loss_test.cpp
@@ -51,6 +62,7 @@ add_executable(pulsatrix_tests
     tanh_gaussian_policy_test.cpp
     polyak_update_test.cpp
     mse_loss_test.cpp
+    calibration_loss_test.cpp
     cross_entropy_loss_test.cpp
     kl_divergence_loss_test.cpp
     bce_with_logits_loss_test.cpp
