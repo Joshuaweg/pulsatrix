@@ -1,0 +1,44 @@
+site_name: Pulsatrix
+site_description: ExAI-first C++ deep learning library
+site_url: https://joshuaweg.github.io/pulsatrix/
+repo_url: https://github.com/Joshuaweg/pulsatrix
+repo_name: Joshuaweg/pulsatrix
+
+theme:
+  name: material
+  logo: assets/pulsatrix_icon.png
+  favicon: assets/pulsatrix_icon.png
+  palette:
+    - scheme: default
+      primary: green
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: green
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - content.code.copy
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - API Reference: api/index.html

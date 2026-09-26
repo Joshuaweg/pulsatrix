@@ -1,0 +1,53 @@
+name: Docs
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "include/**"
+      - "README.md"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install MkDocs Material
+        run: pip install mkdocs-material
+
+      - name: Build MkDocs site
+        run: mkdocs build --site-dir site
+
+      - name: Install Doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+
+      - name: Configure (docs-only, no tests/examples)
+        run: cmake -S . -B build -DPULSATRIX_BUILD_TESTS=OFF -DPULSATRIX_BUILD_EXAMPLES=OFF
+
+      - name: Build Doxygen API reference
+        run: cmake --build build --target docs
+
+      # MkDocs' nav links to api/index.html -- Doxygen's own output lands there so the two
+      # sites are one combined deploy, not two separate GitHub Pages sources.
+      - name: Merge API reference into the MkDocs site
+        run: |
+          mkdir -p site/api
+          cp -r build/html/. site/api/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

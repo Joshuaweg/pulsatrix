@@ -2,6 +2,11 @@
   <img src="docs/assets/pulsatrix_lockup.png" alt="Pulsatrix" width="500">
 </p>
 
+<p align="center">
+  <a href="https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml"><img src="https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://joshuaweg.github.io/pulsatrix/"><img src="https://img.shields.io/badge/docs-mkdocs--material-306E22" alt="Docs"></a>
+</p>
+
 ExAI-first C++ deep learning library — explainability as a first-class property of the computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited, conservation-tested Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward math — never a placeholder or a post-hoc explainer bolted on afterward.
 
 ## What's here
@@ -22,13 +27,14 @@ ExAI-first C++ deep learning library — explainability as a first-class propert
 
 **Examples** (`examples/`): see [`examples/README.md`](examples/README.md) for what each one demonstrates and how to run it.
 
-1000+ tests, green in both Debug and Release.
+1250+ tests, green in both Debug and Release, on Windows (MSVC) and Linux (GCC) — see the
+[CI workflow](.github/workflows/ci.yml).
 
 ## Status / limitations
 
-- Verified build platform is Windows + MSVC; Linux/Mac build commands below are standard CMake and should work, but haven't been exercised in CI yet.
+- CI covers Windows (MSVC, Visual Studio generator auto-detected) and Linux (GCC, Unix
+  Makefiles) on every push to `master` and every pull request.
 - There's no `install()`/export step yet — the supported way to consume this library today is building it as part of your own CMake tree (e.g. `add_subdirectory`), not `find_package(pulsatrix)` against a system-installed copy.
-- No CI pipeline exists yet; the test suite is run locally before each commit.
 
 ## Getting started
 
