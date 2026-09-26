@@ -121,6 +121,7 @@ add_library(pulsatrix_core
     src/text_collate.cpp
     src/wav_reader.cpp
     src/audio_folder_dataset.cpp
+    src/audio_transforms.cpp
 )
 target_include_directories(pulsatrix_core PUBLIC include)
 target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
