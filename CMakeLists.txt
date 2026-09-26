@@ -51,6 +51,8 @@ add_library(pulsatrix_core
     src/collate.cpp
     src/data_thread_pool.cpp
     src/data_loader.cpp
+    src/csv_reader.cpp
+    src/csv_dataset.cpp
     src/computation_graph.cpp
     src/autograd.cpp
     src/linear_module.cpp
