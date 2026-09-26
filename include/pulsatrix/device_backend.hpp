@@ -1,5 +1,6 @@
 /** @file device_backend.hpp
  *  @brief Abstract interface isolating vendor-specific memory/compute operations from Tensor/ComputationGraph.
+ *  @ingroup dl_modules
  */
 #pragma once
 

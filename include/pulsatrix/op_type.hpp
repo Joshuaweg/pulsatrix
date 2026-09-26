@@ -1,5 +1,6 @@
 /** @file op_type.hpp
  *  @brief Closed set of operation categories every graph Node is tagged with.
+ *  @ingroup dl_modules
  */
 #pragma once
 

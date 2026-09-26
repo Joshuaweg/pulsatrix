@@ -1,5 +1,6 @@
 /** @file adam_optimizer.hpp
  *  @brief Adam optimizer -- operates uniformly across any Module's parameters().
+ *  @ingroup dl_modules
  */
 #pragma once
 

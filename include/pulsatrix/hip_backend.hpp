@@ -1,5 +1,6 @@
 /** @file hip_backend.hpp
  *  @brief HIP/ROCm implementation of DeviceBackend. Only compiled when PULSATRIX_ENABLE_HIP is set.
+ *  @ingroup dl_modules
  */
 #pragma once
 

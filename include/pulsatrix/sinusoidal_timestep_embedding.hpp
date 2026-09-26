@@ -1,5 +1,6 @@
 /** @file sinusoidal_timestep_embedding.hpp
  *  @brief Fixed sinusoidal encoding of a diffusion timestep, for conditioning a denoiser.
+ *  @ingroup dl_modules
  */
 #pragma once
 

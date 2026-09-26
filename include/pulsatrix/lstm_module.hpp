@@ -1,5 +1,6 @@
 /** @file lstm_module.hpp
  *  @brief Single-layer LSTM -- this codebase's first *gated* recurrent module.
+ *  @ingroup dl_modules
  */
 #pragma once
 

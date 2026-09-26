@@ -1,5 +1,6 @@
 /** @file avg_pool2d_module.hpp
  *  @brief 2D average pooling, non-overlapping windows (stride == kernel), no padding.
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -1,5 +1,6 @@
 /** @file policy_gradient_loss.hpp
  *  @brief REINFORCE's return-weighted negative log-likelihood loss over a batched rollout.
+ *  @ingroup rl
  */
 #pragma once
 

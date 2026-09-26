@@ -1,5 +1,6 @@
 /** @file mamba_module.hpp
  *  @brief Mamba/S6 selective-state-space recurrence with the MambaLRP relevance rule.
+ *  @ingroup dl_modules
  */
 #pragma once
 

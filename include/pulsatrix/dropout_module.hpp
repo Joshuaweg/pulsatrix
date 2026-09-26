@@ -1,6 +1,7 @@
 /** @file dropout_module.hpp
  *  @brief Inverted dropout -- the first module whose forward behavior genuinely differs
  *         between training and inference (Module::is_training()).
+ *  @ingroup dl_modules
  */
 #pragma once
 

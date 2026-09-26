@@ -1,6 +1,7 @@
 /** @file sparse_autoencoder.hpp
  *  @brief Sparse autoencoder -- reconstructs an activation through an overcomplete,
  *         L1-penalized hidden layer, decomposing it into a larger, sparser basis.
+ *  @ingroup mech_interp
  */
 #pragma once
 

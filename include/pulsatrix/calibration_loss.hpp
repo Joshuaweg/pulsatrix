@@ -1,5 +1,6 @@
 /** @file calibration_loss.hpp
  *  @brief Brier score -- a proper-scoring-rule calibration loss (Brier, 1950).
+ *  @ingroup dl_modules
  */
 #pragma once
 

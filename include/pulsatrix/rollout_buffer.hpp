@@ -1,5 +1,6 @@
 /** @file rollout_buffer.hpp
  *  @brief On-policy trajectory storage: fill-once fixed-length rollout + discounted returns.
+ *  @ingroup rl
  */
 #pragma once
 

@@ -1,5 +1,6 @@
 /** @file learnable_scalar.hpp
  *  @brief A single trainable float, updated by plain SGD -- not a Tensor/Module parameter.
+ *  @ingroup mech_interp
  */
 #pragma once
 

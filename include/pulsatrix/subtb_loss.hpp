@@ -1,6 +1,7 @@
 /** @file subtb_loss.hpp
  *  @brief GFlowNet SubTB(lambda) loss (Madan et al., "Learning GFlowNets from partial
  *         episodes for improved convergence and stability", arXiv:2209.12782).
+ *  @ingroup mech_interp
  */
 #pragma once
 

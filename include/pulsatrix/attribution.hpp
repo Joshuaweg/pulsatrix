@@ -1,5 +1,6 @@
 /** @file attribution.hpp
  *  @brief First-class explanation result type -- values, method, and metadata together.
+ *  @ingroup interpretability_dl
  */
 #pragma once
 

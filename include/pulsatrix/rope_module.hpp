@@ -1,5 +1,6 @@
 /** @file rope_module.hpp
  *  @brief Rotary Position Embedding -- fixed per-position pair rotation, epsilon-rule LRP.
+ *  @ingroup dl_modules
  */
 #pragma once
 

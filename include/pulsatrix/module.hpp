@@ -1,5 +1,6 @@
 /** @file module.hpp
  *  @brief Abstract base every layer subclasses -- NVI forward(), pure-virtual LRP contract.
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -1,6 +1,7 @@
 /** @file computation_graph.hpp
  *  @brief Owns and exposes graph structure -- the interpretability substrate every
  *         explainer (Phase 2+) walks.
+ *  @ingroup dl_modules
  */
 #pragma once
 

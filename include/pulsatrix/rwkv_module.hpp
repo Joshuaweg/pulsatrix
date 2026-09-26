@@ -1,6 +1,7 @@
 /** @file rwkv_module.hpp
  *  @brief RWKV-4 time-mixing (WKV linear-attention) recurrence. LRP rule deliberately
  *         deferred -- propagate_relevance throws, by design (see the class-level note).
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -13,6 +13,10 @@ cmake --build build --target <target_name> --config Release
 
 Then run the resulting binary (Windows: `build/Release/<target_name>.exe`; Linux/macOS: `build/<target_name>`).
 
+See also [`examples/recipes/`](recipes/) — smaller, more didactic programs than the demos
+below, each paired with a walkthrough page under
+[`docs/recipes/`](https://joshuaweg.github.io/pulsatrix/recipes/).
+
 ## Core / layers
 
 | Target | What it demonstrates |

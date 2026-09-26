@@ -1,6 +1,7 @@
 /** @file gflownet_forward_policy.hpp
  *  @brief Masked stochastic categorical policy over a logit-producing Module -- P_F for
  *         GFlowNet training objectives.
+ *  @ingroup mech_interp
  */
 #pragma once
 

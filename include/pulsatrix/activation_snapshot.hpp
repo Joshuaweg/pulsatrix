@@ -1,5 +1,6 @@
 /** @file activation_snapshot.hpp
  *  @brief Self-contained, enumerable copy of one forward pass's cached activations.
+ *  @ingroup mech_interp
  */
 #pragma once
 

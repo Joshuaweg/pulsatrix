@@ -1,5 +1,6 @@
 /** @file linear_module.hpp
  *  @brief Dense/fully-connected layer -- the reference Module implementation.
+ *  @ingroup dl_modules
  */
 #pragma once
 

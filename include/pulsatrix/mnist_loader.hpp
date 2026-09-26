@@ -1,6 +1,7 @@
 /** @file mnist_loader.hpp
  *  @brief Parses real MNIST IDX/ubyte files (fetched by tools/fetch_mnist.py) into Tensor
  *         images and integer labels.
+ *  @ingroup dl_modules
  */
 #pragma once
 

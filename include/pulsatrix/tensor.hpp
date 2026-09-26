@@ -1,5 +1,6 @@
 /** @file tensor.hpp
  *  @brief N-dimensional tensor -- owns a buffer via DeviceBackend*, RAII (Rule of Five).
+ *  @ingroup dl_modules
  */
 #pragma once
 

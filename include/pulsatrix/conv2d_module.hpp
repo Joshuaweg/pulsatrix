@@ -1,5 +1,6 @@
 /** @file conv2d_module.hpp
  *  @brief 2D convolution -- implemented via im2col + DeviceBackend::gemm (no new backend primitive).
+ *  @ingroup dl_modules
  */
 #pragma once
 

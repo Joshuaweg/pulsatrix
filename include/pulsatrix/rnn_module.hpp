@@ -1,5 +1,6 @@
 /** @file rnn_module.hpp
  *  @brief Vanilla (Elman) recurrent layer -- this codebase's first recurrent module.
+ *  @ingroup dl_modules
  */
 #pragma once
 

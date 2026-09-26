@@ -1,6 +1,7 @@
 /** @file swiglu_module.hpp
  *  @brief SwiGLU gated feedforward block -- second module composed from real `LinearModule`
  *         sub-objects, plus a diagonal specialization of AttnLRP's Eq. 15 bilinear rule.
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -1,5 +1,6 @@
 /** @file softmax_module.hpp
  *  @brief Rank-agnostic softmax over the last axis, with AttnLRP's Eq. 13 DTD relevance rule.
+ *  @ingroup dl_modules
  */
 #pragma once
 

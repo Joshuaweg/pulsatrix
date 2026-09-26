@@ -1,6 +1,7 @@
 /** @file retnet_module.hpp
  *  @brief RetNet retention mechanism (recurrent mode). LRP rule deliberately deferred --
  *         propagate_relevance throws, by design (see the class-level note).
+ *  @ingroup dl_modules
  */
 #pragma once
 

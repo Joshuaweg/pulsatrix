@@ -1,5 +1,6 @@
 /** @file environment.hpp
  *  @brief Abstract RL environment interface (gymnasium-shaped reset/step) + StepResult.
+ *  @ingroup rl
  */
 #pragma once
 

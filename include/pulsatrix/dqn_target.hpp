@@ -1,5 +1,6 @@
 /** @file dqn_target.hpp
  *  @brief DQN Bellman target computation (vanilla + Double DQN) and target-network hard sync.
+ *  @ingroup rl
  */
 #pragma once
 

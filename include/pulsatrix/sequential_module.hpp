@@ -1,5 +1,6 @@
 /** @file sequential_module.hpp
  *  @brief Model container -- chains a sequence of existing Modules.
+ *  @ingroup dl_modules
  */
 #pragma once
 

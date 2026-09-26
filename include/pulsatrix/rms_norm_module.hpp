@@ -1,6 +1,7 @@
 /** @file rms_norm_module.hpp
  *  @brief RMS normalization layer (Zhang & Sennrich, 2019) -- this codebase's first
  *         normalization Module, establishing the Tier 1 pattern for GroupNorm/LayerNorm.
+ *  @ingroup dl_modules
  */
 #pragma once
 

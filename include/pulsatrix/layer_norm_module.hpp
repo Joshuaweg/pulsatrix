@@ -1,5 +1,6 @@
 /** @file layer_norm_module.hpp
  *  @brief Layer normalization (Ba et al., 2016) -- mean-centered/scaled RMSNormModule sibling.
+ *  @ingroup dl_modules
  */
 #pragma once
 

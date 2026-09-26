@@ -1,5 +1,6 @@
 /** @file cuda_backend.hpp
  *  @brief CUDA implementation of DeviceBackend. Only compiled when PULSATRIX_ENABLE_CUDA is set.
+ *  @ingroup dl_modules
  */
 #pragma once
 

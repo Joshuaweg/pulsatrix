@@ -2,6 +2,7 @@
  *  @brief KernelSHAP -- model-agnostic Shapley value approximation via weighted linear
  *         regression (charter Part 1, Phase 3; theory: xai_context.aDNA's
  *         technique_shap.md).
+ *  @ingroup interpretability_agnostic
  */
 #pragma once
 

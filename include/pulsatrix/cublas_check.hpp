@@ -2,6 +2,7 @@
  *  @brief PULSATRIX_CUBLAS_CHECK -- converts a cuBLAS call failure into a thrown C++ exception,
  *         parallel to PULSATRIX_CUDA_CHECK (cuda_check.hpp). Only compiled when PULSATRIX_ENABLE_CUDA
  *         is set.
+ *  @ingroup dl_modules
  */
 #pragma once
 

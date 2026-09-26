@@ -3,6 +3,7 @@
  *         at the DeviceBackend boundary, per
  *         gpu_backend_programming/context_gpu_cuda_kernel_mechanics.md's Error Checking
  *         pattern. Only compiled when PULSATRIX_ENABLE_HIP is set.
+ *  @ingroup dl_modules
  */
 #pragma once
 

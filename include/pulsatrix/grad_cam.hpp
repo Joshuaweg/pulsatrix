@@ -1,6 +1,7 @@
 /** @file grad_cam.hpp
  *  @brief Grad-CAM -- gradient-weighted class activation mapping over the last conv layer
  *         (charter Part 1, Phase 2; theory: xai_context.aDNA's vision_gradcam.md).
+ *  @ingroup interpretability_dl
  */
 #pragma once
 

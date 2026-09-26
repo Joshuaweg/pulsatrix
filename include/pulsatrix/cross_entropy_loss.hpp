@@ -1,5 +1,6 @@
 /** @file cross_entropy_loss.hpp
  *  @brief Softmax + negative log-likelihood classification loss.
+ *  @ingroup dl_modules
  */
 #pragma once
 

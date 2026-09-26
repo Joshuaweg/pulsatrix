@@ -1,6 +1,7 @@
 /** @file group_norm_module.hpp
  *  @brief Group normalization (Wu & He, 2018) -- rank-3 (C, H, W), matching Conv2DModule's
  *         convention, unlike RMSNormModule/LayerNormModule's rank-1 feature-vector scope.
+ *  @ingroup dl_modules
  */
 #pragma once
 

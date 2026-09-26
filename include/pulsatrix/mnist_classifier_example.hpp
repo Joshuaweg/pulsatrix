@@ -2,6 +2,7 @@
  *  @brief Real MNIST classifier: Conv2DModule -> ReluModule -> FlattenModule ->
  *         LinearModule -> CrossEntropyLoss, mirroring XorNetwork's training-loop pattern
  *         and grad_cam_mnist_demo.cpp's network shape exactly.
+ *  @ingroup dl_modules
  */
 #pragma once
 

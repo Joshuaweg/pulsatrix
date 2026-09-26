@@ -1,5 +1,6 @@
 /** @file reparameterize.hpp
  *  @brief VAE reparameterization trick: z = mu + exp(log_sigma) * epsilon.
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -1,5 +1,6 @@
 /** @file cpu_backend.hpp
  *  @brief CPU implementation of DeviceBackend -- the first, reference DeviceBackend implementation.
+ *  @ingroup dl_modules
  */
 #pragma once
 

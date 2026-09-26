@@ -1,5 +1,6 @@
 /** @file categorical_policy_agent.hpp
  *  @brief Stochastic categorical (discrete-action) policy over a logit-producing Module.
+ *  @ingroup rl
  */
 #pragma once
 
