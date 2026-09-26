@@ -100,5 +100,33 @@ TEST_F(GFlowNetForwardPolicyTest, SameSeedProducesSameSequence) {
     }
 }
 
+TEST_F(GFlowNetForwardPolicyTest, MaskedProbsMatchesUniformDistributionOverValidActions) {
+    LinearModule net(2, 3, &backend);  // zero logits
+    GFlowNetForwardPolicy policy(&net, 3, &backend);
+    std::vector<bool> two_valid = {true, false, true};
+    std::vector<float> probs = policy.masked_probs(obs(0.0f, 0.0f), two_valid);
+    ASSERT_EQ(probs.size(), 3u);
+    EXPECT_NEAR(probs[0], 0.5f, 1e-5f);
+    EXPECT_NEAR(probs[1], 0.0f, 1e-5f);
+    EXPECT_NEAR(probs[2], 0.5f, 1e-5f);
+}
+
+TEST_F(GFlowNetForwardPolicyTest, MaskedProbsDoesNotConsumeTheLCG) {
+    // Two consecutive sample() calls after a masked_probs() call must match what two
+    // consecutive sample() calls without it would produce -- masked_probs draws nothing.
+    LinearModule net_a(2, 3, &backend);
+    LinearModule net_b(2, 3, &backend);
+    GFlowNetForwardPolicy policy_a(&net_a, 3, &backend, /*seed=*/55);
+    GFlowNetForwardPolicy policy_b(&net_b, 3, &backend, /*seed=*/55);
+    std::vector<bool> all_valid = {true, true, true};
+
+    (void)policy_a.masked_probs(obs(0.0f, 0.0f), all_valid);  // policy_a only: no LCG draw
+
+    GFlowNetSampledAction a = policy_a.sample(obs(0.0f, 0.0f), all_valid);
+    GFlowNetSampledAction b = policy_b.sample(obs(0.0f, 0.0f), all_valid);
+    EXPECT_FLOAT_EQ(a.action.data()[0], b.action.data()[0]);
+    EXPECT_FLOAT_EQ(a.log_prob, b.log_prob);
+}
+
 }  // namespace
 }  // namespace pulsatrix
