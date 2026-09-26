@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "pulsatrix", "index.html", [
+    [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -58,13 +59,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "activation__snapshot_8hpp.html",
-"classpulsatrix_1_1Conv2DModule.html#a1f43cc5a0389759a489f32b1e3a7fde2",
-"classpulsatrix_1_1GRUModule.html#af9f08f760db7029ddbdc55ca7a9e43e0",
-"classpulsatrix_1_1LinearModule.html#a79dde038410ec9f7988f068825e4b919",
-"classpulsatrix_1_1PPOClippedLoss.html#a148db05e7d87746ad4ef80b242265784",
-"classpulsatrix_1_1RoPEModule.html#a390143f11c239edbadbe22c7f794d32a",
-"classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06",
-"pdp_8hpp.html"
+"classpulsatrix_1_1Conv2DModule.html#a8bf7eccc3df66273dc7698b113c8ed18",
+"classpulsatrix_1_1GroupNormModule.html#a23c8ccff26e523fc5715f931eb015a12",
+"classpulsatrix_1_1LinearModule.html#ae14ee1e63296f573f6411a5f275b48ae",
+"classpulsatrix_1_1RMSNormModule.html",
+"classpulsatrix_1_1RolloutBuffer.html#a3dc449654414454f1e42bdebd795ce70",
+"device__backend_8hpp.html",
+"structpulsatrix_1_1ReparamGrad.html#ad3703e6310d7ca316764423baa89f332"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

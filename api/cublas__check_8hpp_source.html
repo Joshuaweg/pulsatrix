@@ -102,23 +102,23 @@ $(document).ready(function(){initNavTree('cublas__check_8hpp_source.html',''); i
 </div><!--header-->
 <div class="contents">
 <a href="cublas__check_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;cublas_v2.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="foldopen" id="foldopen00017" data-start="" data-end="">
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="cublas__check_8hpp.html#a8cbf876c58249a7f386c78f79287d933">   17</a></span><span class="preprocessor">#define PULSATRIX_CUBLAS_CHECK(call)                                                                   \</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">    do {                                                                                            \</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">        cublasStatus_t pulsatrix_cublas_check_result = (call);                                            \</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">        if (pulsatrix_cublas_check_result != CUBLAS_STATUS_SUCCESS) {                                      \</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">            throw std::runtime_error(std::string(&quot;cuBLAS error: &quot;) +                                   \</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">                                      cublasGetStatusString(pulsatrix_cublas_check_result) + &quot; at &quot; __FILE__ \</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">                                      + &quot;:&quot; + std::to_string(__LINE__));                                  \</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">        }                                                                                                   \</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">    } while (0)</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;cublas_v2.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="" data-end="">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="cublas__check_8hpp.html#a8cbf876c58249a7f386c78f79287d933">   18</a></span><span class="preprocessor">#define PULSATRIX_CUBLAS_CHECK(call)                                                                   \</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">    do {                                                                                            \</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">        cublasStatus_t pulsatrix_cublas_check_result = (call);                                            \</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">        if (pulsatrix_cublas_check_result != CUBLAS_STATUS_SUCCESS) {                                      \</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">            throw std::runtime_error(std::string(&quot;cuBLAS error: &quot;) +                                   \</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">                                      cublasGetStatusString(pulsatrix_cublas_check_result) + &quot; at &quot; __FILE__ \</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">                                      + &quot;:&quot; + std::to_string(__LINE__));                                  \</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">        }                                                                                                   \</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">    } while (0)</span></div>
 </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

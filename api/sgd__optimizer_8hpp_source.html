@@ -102,34 +102,34 @@ $(document).ready(function(){initNavTree('sgd__optimizer_8hpp_source.html',''); 
 </div><!--header-->
 <div class="contents">
 <a href="sgd__optimizer_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="module_8hpp.html">pulsatrix/module.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacepulsatrix.html">pulsatrix</a> {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="foldopen" id="foldopen00011" data-start="{" data-end="};">
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classpulsatrix_1_1SGDOptimizer.html">   11</a></span><span class="keyword">class </span><a class="code hl_class" href="classpulsatrix_1_1SGDOptimizer.html">SGDOptimizer</a> {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">   17</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">SGDOptimizer</a>(<span class="keywordtype">float</span> learning_rate) : learning_rate_(learning_rate) {}</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba">   29</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba">step</a>(<a class="code hl_class" href="classpulsatrix_1_1Module.html">Module</a>&amp; module);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classpulsatrix_1_1SGDOptimizer.html#acae45b0c72bf4c7a3ec17c8ad5f2bac6">   35</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classpulsatrix_1_1SGDOptimizer.html#acae45b0c72bf4c7a3ec17c8ad5f2bac6">zero_grad</a>(<a class="code hl_class" href="classpulsatrix_1_1Module.html">Module</a>&amp; module);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">float</span> learning_rate_;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>};</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="module_8hpp.html">pulsatrix/module.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacepulsatrix.html">pulsatrix</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classpulsatrix_1_1SGDOptimizer.html">   12</a></span><span class="keyword">class </span><a class="code hl_class" href="classpulsatrix_1_1SGDOptimizer.html">SGDOptimizer</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">   18</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">SGDOptimizer</a>(<span class="keywordtype">float</span> learning_rate) : learning_rate_(learning_rate) {}</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba">   30</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba">step</a>(<a class="code hl_class" href="classpulsatrix_1_1Module.html">Module</a>&amp; module);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classpulsatrix_1_1SGDOptimizer.html#acae45b0c72bf4c7a3ec17c8ad5f2bac6">   36</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classpulsatrix_1_1SGDOptimizer.html#acae45b0c72bf4c7a3ec17c8ad5f2bac6">zero_grad</a>(<a class="code hl_class" href="classpulsatrix_1_1Module.html">Module</a>&amp; module);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">float</span> learning_rate_;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>};</div>
 </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}  <span class="comment">// namespace pulsatrix</span></div>
-<div class="ttc" id="aclasspulsatrix_1_1Module_html"><div class="ttname"><a href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></div><div class="ttdoc">Base class for every layer type (LinearModule, Conv2DModule, activations, ...).</div><div class="ttdef"><b>Definition</b> module.hpp:43</div></div>
-<div class="ttc" id="aclasspulsatrix_1_1SGDOptimizer_html"><div class="ttname"><a href="classpulsatrix_1_1SGDOptimizer.html">pulsatrix::SGDOptimizer</a></div><div class="ttdoc">param -= learning_rate * grad, per parameter, for every parameter a Module exposes.</div><div class="ttdef"><b>Definition</b> sgd_optimizer.hpp:11</div></div>
-<div class="ttc" id="aclasspulsatrix_1_1SGDOptimizer_html_a9a9ad83442c30800d3ea68c8b00a143e"><div class="ttname"><a href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">pulsatrix::SGDOptimizer::SGDOptimizer</a></div><div class="ttdeci">SGDOptimizer(float learning_rate)</div><div class="ttdoc">Constructs an SGD optimizer.</div><div class="ttdef"><b>Definition</b> sgd_optimizer.hpp:17</div></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}  <span class="comment">// namespace pulsatrix</span></div>
+<div class="ttc" id="aclasspulsatrix_1_1Module_html"><div class="ttname"><a href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></div><div class="ttdoc">Base class for every layer type (LinearModule, Conv2DModule, activations, ...).</div><div class="ttdef"><b>Definition</b> module.hpp:44</div></div>
+<div class="ttc" id="aclasspulsatrix_1_1SGDOptimizer_html"><div class="ttname"><a href="classpulsatrix_1_1SGDOptimizer.html">pulsatrix::SGDOptimizer</a></div><div class="ttdoc">param -= learning_rate * grad, per parameter, for every parameter a Module exposes.</div><div class="ttdef"><b>Definition</b> sgd_optimizer.hpp:12</div></div>
+<div class="ttc" id="aclasspulsatrix_1_1SGDOptimizer_html_a9a9ad83442c30800d3ea68c8b00a143e"><div class="ttname"><a href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">pulsatrix::SGDOptimizer::SGDOptimizer</a></div><div class="ttdeci">SGDOptimizer(float learning_rate)</div><div class="ttdoc">Constructs an SGD optimizer.</div><div class="ttdef"><b>Definition</b> sgd_optimizer.hpp:18</div></div>
 <div class="ttc" id="aclasspulsatrix_1_1SGDOptimizer_html_abb568b004867804a44ad07a6d45f11ba"><div class="ttname"><a href="classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba">pulsatrix::SGDOptimizer::step</a></div><div class="ttdeci">void step(Module &amp;module)</div><div class="ttdoc">Applies one SGD update to every parameter the module exposes.</div></div>
 <div class="ttc" id="aclasspulsatrix_1_1SGDOptimizer_html_acae45b0c72bf4c7a3ec17c8ad5f2bac6"><div class="ttname"><a href="classpulsatrix_1_1SGDOptimizer.html#acae45b0c72bf4c7a3ec17c8ad5f2bac6">pulsatrix::SGDOptimizer::zero_grad</a></div><div class="ttdeci">void zero_grad(Module &amp;module)</div><div class="ttdoc">Resets every parameter's gradient to zero.</div></div>
 <div class="ttc" id="amodule_8hpp_html"><div class="ttname"><a href="module_8hpp.html">module.hpp</a></div><div class="ttdoc">Abstract base every layer subclasses – NVI forward(), pure-virtual LRP contract.</div></div>
-<div class="ttc" id="anamespacepulsatrix_html"><div class="ttname"><a href="namespacepulsatrix.html">pulsatrix</a></div><div class="ttdef"><b>Definition</b> activation_snapshot.hpp:17</div></div>
+<div class="ttc" id="anamespacepulsatrix_html"><div class="ttname"><a href="namespacepulsatrix.html">pulsatrix</a></div><div class="ttdef"><b>Definition</b> activation_snapshot.hpp:18</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
