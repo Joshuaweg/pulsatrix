@@ -125,6 +125,10 @@ float HyperGridEnv::backward_log_prob(const Tensor& state, int64_t action) const
     return -std::log(static_cast<float>(nonzero_count));
 }
 
+std::vector<bool> HyperGridEnv::valid_actions_mask(const Tensor&) const {
+    throw std::logic_error("HyperGridEnv::valid_actions_mask not yet implemented");
+}
+
 StepResult HyperGridEnv::step(const Tensor& action) {
     PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
 

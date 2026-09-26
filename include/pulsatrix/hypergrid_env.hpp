@@ -116,6 +116,20 @@ public:
      */
     [[nodiscard]] float backward_log_prob(const Tensor& state, int64_t action) const;
 
+    /**
+     * @brief Which actions are legal to take from an arbitrary valid state.
+     * @param state Grid coordinate, shape (1, ndim()), each entry an integer-valued float in
+     *        `[0, side_length()-1]`.
+     * @return A mask of size action_dim(): entry `i < ndim()` is true iff
+     *         `state[i] < side_length()-1` (incrementing that coordinate stays on the grid);
+     *         entry `ndim()` (`stop`) is always true.
+     * @throws std::invalid_argument if state is invalid -- same validation as reward().
+     * @note A pure function, like reward()/backward_log_prob() -- no precondition on reset()
+     *       having been called. `GFlowNetForwardPolicy::sample()` needs this mask to avoid
+     *       ever sampling an illegal increment that would make step() throw.
+     */
+    [[nodiscard]] std::vector<bool> valid_actions_mask(const Tensor& state) const;
+
     /** @brief Number of grid dimensions, as passed to the constructor. */
     [[nodiscard]] int64_t observation_dim() const override { return ndim_; }
 

@@ -176,6 +176,42 @@ TEST_F(HyperGridEnvTest, BackwardLogProbDoesNotRequireReset) {
 }
 
 // ---------------------------------------------------------------------------------------
+// valid_actions_mask()
+// ---------------------------------------------------------------------------------------
+
+TEST_F(HyperGridEnvTest, ValidActionsMaskAllValidAtInteriorState) {
+    HyperGridEnv env(&backend, 2, 8);
+    std::vector<bool> mask = env.valid_actions_mask(state2(3.0f, 4.0f));
+    ASSERT_EQ(mask.size(), 3u);
+    EXPECT_TRUE(mask[0]);
+    EXPECT_TRUE(mask[1]);
+    EXPECT_TRUE(mask[2]);  // stop always valid
+}
+
+TEST_F(HyperGridEnvTest, ValidActionsMaskInvalidatesSaturatedCoordinate) {
+    HyperGridEnv env(&backend, 2, 8);
+    std::vector<bool> mask = env.valid_actions_mask(state2(7.0f, 4.0f));  // dim 0 at side_length-1
+    ASSERT_EQ(mask.size(), 3u);
+    EXPECT_FALSE(mask[0]);
+    EXPECT_TRUE(mask[1]);
+    EXPECT_TRUE(mask[2]);
+}
+
+TEST_F(HyperGridEnvTest, ValidActionsMaskAllIncrementsInvalidAtOppositeCorner) {
+    HyperGridEnv env(&backend, 2, 8);
+    std::vector<bool> mask = env.valid_actions_mask(state2(7.0f, 7.0f));
+    ASSERT_EQ(mask.size(), 3u);
+    EXPECT_FALSE(mask[0]);
+    EXPECT_FALSE(mask[1]);
+    EXPECT_TRUE(mask[2]);  // stop is always valid, even here
+}
+
+TEST_F(HyperGridEnvTest, ValidActionsMaskThrowsOnInvalidState) {
+    HyperGridEnv env(&backend, 2, 8);
+    EXPECT_THROW({ (void)env.valid_actions_mask(state2(8.0f, 0.0f)); }, std::invalid_argument);
+}
+
+// ---------------------------------------------------------------------------------------
 // step()
 // ---------------------------------------------------------------------------------------
 
