@@ -107,4 +107,46 @@ GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
                                   log_softmax[static_cast<size_t>(action)]};
 }
 
+std::vector<float> GFlowNetForwardPolicy::masked_probs(const Tensor& observation,
+                                                        const std::vector<bool>& valid_actions) {
+    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+
+    if (static_cast<int64_t>(valid_actions.size()) != action_dim_) {
+        throw std::invalid_argument("GFlowNetForwardPolicy::masked_probs: valid_actions must have size action_dim()");
+    }
+    if (std::none_of(valid_actions.begin(), valid_actions.end(), [](bool v) { return v; })) {
+        throw std::invalid_argument(
+            "GFlowNetForwardPolicy::masked_probs: valid_actions must have at least one true entry");
+    }
+
+    const Tensor logits = policy_network_->forward(observation);
+    if (logits.rank() != 2 || logits.shape().dim(0) != 1 || logits.shape().dim(1) != action_dim_) {
+        throw std::invalid_argument("GFlowNetForwardPolicy: policy_network must produce output of shape "
+                                     "(1, action_dim)");
+    }
+
+    std::vector<float> masked_logits(static_cast<size_t>(action_dim_));
+    for (int64_t a = 0; a < action_dim_; ++a) {
+        masked_logits[static_cast<size_t>(a)] =
+            valid_actions[static_cast<size_t>(a)] ? logits.data()[a] : std::numeric_limits<float>::lowest();
+    }
+
+    float max_logit = masked_logits[0];
+    for (int64_t a = 1; a < action_dim_; ++a) {
+        max_logit = std::max(max_logit, masked_logits[static_cast<size_t>(a)]);
+    }
+    float exp_sum = 0.0f;
+    std::vector<float> exp_vals(static_cast<size_t>(action_dim_));
+    for (int64_t a = 0; a < action_dim_; ++a) {
+        exp_vals[static_cast<size_t>(a)] = std::exp(masked_logits[static_cast<size_t>(a)] - max_logit);
+        exp_sum += exp_vals[static_cast<size_t>(a)];
+    }
+
+    std::vector<float> probs(static_cast<size_t>(action_dim_));
+    for (int64_t a = 0; a < action_dim_; ++a) {
+        probs[static_cast<size_t>(a)] = exp_vals[static_cast<size_t>(a)] / exp_sum;
+    }
+    return probs;
+}
+
 }  // namespace pulsatrix

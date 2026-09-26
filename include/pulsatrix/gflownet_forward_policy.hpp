@@ -68,6 +68,19 @@ public:
      */
     [[nodiscard]] GFlowNetSampledAction sample(const Tensor& observation, const std::vector<bool>& valid_actions);
 
+    /**
+     * @brief The masked categorical distribution's probabilities, without sampling.
+     * @param observation Observation, shape (1, observation_dim).
+     * @param valid_actions Same mask contract as sample().
+     * @return `softmax(mask(policy_network(observation)))`, size action_dim().
+     * @throws Same conditions as sample(), except no LCG draw is consumed and nothing is
+     *         sampled -- a training loop's two-pass backward step (mission_trajectory_balance_loss.md's
+     *         Design section) needs to recompute the *exact* distribution sample() used, to
+     *         derive the softmax/log gradient identity, without perturbing the LCG stream a
+     *         second act() would.
+     */
+    [[nodiscard]] std::vector<float> masked_probs(const Tensor& observation, const std::vector<bool>& valid_actions);
+
     /** @brief Number of actions, as passed to the constructor. */
     [[nodiscard]] int64_t action_dim() const { return action_dim_; }
 
