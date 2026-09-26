@@ -113,6 +113,8 @@ add_library(pulsatrix_core
     src/adam_optimizer.cpp
     src/xor_training_example.cpp
     src/image_decoder.cpp
+    src/image_transforms.cpp
+    src/image_folder_dataset.cpp
 )
 target_include_directories(pulsatrix_core PUBLIC include)
 target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
