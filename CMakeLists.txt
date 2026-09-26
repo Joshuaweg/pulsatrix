@@ -83,6 +83,7 @@ add_library(pulsatrix_core
     src/gflownet_forward_policy.cpp
     src/trajectory_balance_loss.cpp
     src/detailed_balance_loss.cpp
+    src/subtb_loss.cpp
     src/gflownet_trajectory.cpp
     src/replay_buffer.cpp
     src/rollout_buffer.cpp
