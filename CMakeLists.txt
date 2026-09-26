@@ -49,6 +49,8 @@ add_library(pulsatrix_core
     src/tensor.cpp
     src/sampler.cpp
     src/collate.cpp
+    src/data_thread_pool.cpp
+    src/data_loader.cpp
     src/computation_graph.cpp
     src/autograd.cpp
     src/linear_module.cpp
@@ -111,6 +113,12 @@ add_library(pulsatrix_core
 )
 target_include_directories(pulsatrix_core PUBLIC include)
 target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
+
+# First consumer: DataThreadPool/BoundedQueue (campaign_exai_dl_library_data_pipeline,
+# Mission 2) -- pulsatrix's first std::thread-based code, needs the platform thread
+# library linked explicitly (not implicit via any other dependency).
+find_package(Threads REQUIRED)
+target_link_libraries(pulsatrix_core PUBLIC Threads::Threads)
 
 if(PULSATRIX_ENABLE_CUDA)
     target_sources(pulsatrix_core PRIVATE src/cuda_backend.cu)
