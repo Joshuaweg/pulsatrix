@@ -7,6 +7,8 @@ add_executable(pulsatrix_tests
     dataset_test.cpp
     iterable_dataset_test.cpp
     sampler_test.cpp
+    transform_test.cpp
+    collate_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
