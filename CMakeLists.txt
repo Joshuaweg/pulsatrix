@@ -117,6 +117,7 @@ add_library(pulsatrix_core
     src/image_folder_dataset.cpp
     src/tokenizer.cpp
     src/vocabulary.cpp
+    src/text_dataset.cpp
 )
 target_include_directories(pulsatrix_core PUBLIC include)
 target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
