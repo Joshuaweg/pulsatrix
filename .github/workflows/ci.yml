@@ -11,8 +11,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # No -G on Windows: windows-latest's bundled Visual Studio version is a moving
+          # target GitHub updates on its own schedule (it jumped from VS2022 to VS2026
+          # under this exact label, breaking a hardcoded "Visual Studio 17 2022" generator
+          # name with no code change on our side). Omitting -G lets CMake auto-detect
+          # whichever VS version is actually installed on the runner.
           - os: windows-latest
-            generator: "Visual Studio 17 2022"
+            generator: ""
             extra-configure-args: -A x64
           - os: ubuntu-latest
             generator: "Unix Makefiles"
@@ -22,7 +27,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Configure
-        run: cmake -S . -B build -G "${{ matrix.generator }}" ${{ matrix.extra-configure-args }}
+        shell: bash
+        run: |
+          if [ -n "${{ matrix.generator }}" ]; then
+            cmake -S . -B build -G "${{ matrix.generator }}" ${{ matrix.extra-configure-args }}
+          else
+            cmake -S . -B build ${{ matrix.extra-configure-args }}
+          fi
 
       - name: Build
         run: cmake --build build --config Release
