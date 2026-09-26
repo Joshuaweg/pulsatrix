@@ -8,8 +8,9 @@ var searchData=
   ['hip_5fcheck_2ehpp_5',['hip_check.hpp',['../hip__check_8hpp.html',1,'']]],
   ['hipbackend_6',['hipbackend',['../classpulsatrix_1_1HIPBackend.html',1,'pulsatrix::HIPBackend'],['../classpulsatrix_1_1HIPBackend.html#ab62ba66f083956b40cf612fd866cc2ac',1,'pulsatrix::HIPBackend::HIPBackend()'],['../classpulsatrix_1_1HIPBackend.html#a2b3cbaa24088f1b54bfd160b9f7e5d53',1,'pulsatrix::HIPBackend::HIPBackend(const HIPBackend &amp;)=delete']]],
   ['hipblas_5fcheck_2ehpp_7',['hipblas_check.hpp',['../hipblas__check_8hpp.html',1,'']]],
-  ['hosttodevice_8',['HostToDevice',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92',1,'pulsatrix']]],
-  ['hosttohost_9',['HostToHost',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6ba297d3681581537b0677cb9f2a3b9e589',1,'pulsatrix']]],
-  ['hypergrid_5fenv_2ehpp_10',['hypergrid_env.hpp',['../hypergrid__env_8hpp.html',1,'']]],
-  ['hypergridenv_11',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv'],['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()']]]
+  ['hoc_20interpretability_8',['Ad-hoc Interpretability',['../group__interpretability.html',1,'']]],
+  ['hosttodevice_9',['HostToDevice',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92',1,'pulsatrix']]],
+  ['hosttohost_10',['HostToHost',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6ba297d3681581537b0677cb9f2a3b9e589',1,'pulsatrix']]],
+  ['hypergrid_5fenv_2ehpp_11',['hypergrid_env.hpp',['../hypergrid__env_8hpp.html',1,'']]],
+  ['hypergridenv_12',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv'],['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()']]]
 ];

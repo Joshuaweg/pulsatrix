@@ -5,7 +5,8 @@ var searchData=
   ['inner_2',['inner',['../classpulsatrix_1_1ResidualModule.html#a5176ee3876dc7f536e1c785a42574328',1,'pulsatrix::ResidualModule']]],
   ['integrated_5fgradients_2ehpp_3',['integrated_gradients.hpp',['../integrated__gradients_8hpp.html',1,'']]],
   ['integratedgradients_4',['IntegratedGradients',['../classpulsatrix_1_1IntegratedGradients.html',1,'pulsatrix']]],
-  ['is_5fdiscrete_5',['is_discrete',['../classpulsatrix_1_1CartPoleEnv.html#a193b5e93c1a93b650f73e5f84cb40934',1,'pulsatrix::CartPoleEnv::is_discrete()'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a5c86895031203c20eac310c981a90012',1,'pulsatrix::ContinuousCartPoleEnv::is_discrete()'],['../classpulsatrix_1_1Environment.html#a36ca00c1b8ae9f3cd7870a41f06ce6b6',1,'pulsatrix::Environment::is_discrete()'],['../classpulsatrix_1_1HyperGridEnv.html#a0e92e59096b17fcbf3b349ad1b32ecaf',1,'pulsatrix::HyperGridEnv::is_discrete()']]],
-  ['is_5freshape_5fcompatible_6',['is_reshape_compatible',['../classpulsatrix_1_1Shape.html#a8d623d00d5f760cf2f218b8be91869ab',1,'pulsatrix::Shape']]],
-  ['is_5ftraining_7',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]]
+  ['interpretability_5',['interpretability',['../group__interpretability.html',1,'Ad-hoc Interpretability'],['../group__mech__interp.html',1,'Mechanistic Interpretability']]],
+  ['is_5fdiscrete_6',['is_discrete',['../classpulsatrix_1_1CartPoleEnv.html#a193b5e93c1a93b650f73e5f84cb40934',1,'pulsatrix::CartPoleEnv::is_discrete()'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a5c86895031203c20eac310c981a90012',1,'pulsatrix::ContinuousCartPoleEnv::is_discrete()'],['../classpulsatrix_1_1Environment.html#a36ca00c1b8ae9f3cd7870a41f06ce6b6',1,'pulsatrix::Environment::is_discrete()'],['../classpulsatrix_1_1HyperGridEnv.html#a0e92e59096b17fcbf3b349ad1b32ecaf',1,'pulsatrix::HyperGridEnv::is_discrete()']]],
+  ['is_5freshape_5fcompatible_7',['is_reshape_compatible',['../classpulsatrix_1_1Shape.html#a8d623d00d5f760cf2f218b8be91869ab',1,'pulsatrix::Shape']]],
+  ['is_5ftraining_8',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]]
 ];

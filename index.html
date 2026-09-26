@@ -381,6 +381,252 @@
   
   
     <li class="md-nav__item">
+      <a href="deep-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Learning Modules and Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ad-hoc Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ad-hoc Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="interpretability/model-agnostic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model-Agnostic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="interpretability/deep-learning-approaches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Learning Approaches
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanistic Interpretability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api/index.html" class="md-nav__link">
         
   
@@ -480,36 +726,36 @@ conservation-tested Layer-wise Relevance Propagation (LRP) rule alongside its fo
 math — never a placeholder or a post-hoc explainer bolted on afterward.</p>
 <p><a href="https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml/badge.svg" /></a></p>
 <h2 id="whats-here">What's here<a class="headerlink" href="#whats-here" title="Permanent link">&para;</a></h2>
-<p><strong>Core</strong>: <code>Tensor</code>/<code>Shape</code> (RAII), <code>DeviceBackend</code> (CPU + CUDA + HIP/ROCm),
-<code>ComputationGraph</code>/<code>Autograd</code>, <code>Module</code> (NVI forward, pure-virtual LRP contract),
-<code>SGDOptimizer</code>/<code>AdamOptimizer</code>.</p>
-<p><strong>Layers</strong>: <code>LinearModule</code>, <code>Conv2DModule</code>, <code>ReluModule</code>, <code>FlattenModule</code>, <code>SequentialModule</code>;
-normalization (<code>LayerNorm</code>/<code>RMSNorm</code>/<code>GroupNorm</code>/<code>BatchNorm</code>); pooling (<code>MaxPool2D</code>/<code>AvgPool2D</code>);
-<code>DropoutModule</code>, <code>EmbeddingModule</code>, <code>ResidualModule</code>.</p>
-<p><strong>Sequence &amp; attention</strong>: <code>RNNModule</code>/<code>LSTMModule</code>/<code>GRUModule</code> (Arras et al. LRP),
-<code>SoftmaxModule</code>, <code>RoPEModule</code>, <code>MultiHeadAttentionModule</code>, <code>SwiGLUModule</code>, <code>TransformerBlock</code>
-(AttnLRP, validated against an independent reference implementation), <code>MambaModule</code> (S6
-selective scan, MambaLRP).</p>
-<p><strong>Explainers</strong>: <code>Saliency</code>, <code>IntegratedGradients</code>, <code>GradCAM</code>, <code>LIME</code>, <code>KernelSHAP</code>, <code>PDP</code>.</p>
-<p><strong>Reinforcement learning</strong> (<code>Environment</code>/<code>Agent</code> interfaces, gymnasium-API-shaped):
-<code>CartPoleEnv</code>/<code>ContinuousCartPoleEnv</code>, <code>ReplayBuffer</code>/<code>RolloutBuffer</code>, DQN (+ Double DQN),
-REINFORCE, A2C, PPO, SAC — every algorithm trained end-to-end and verified against a fixed,
-pre-declared performance bar on a real environment.</p>
-<p><strong>GFlowNet &amp; calibration training objectives</strong>: <code>HyperGridEnv</code>, <code>TrajectoryBalanceLoss</code>,
-<code>DetailedBalanceLoss</code>, <code>SubTBLoss(λ)</code>, <code>CalibrationLoss</code> (Brier score) — non-goal-directed
-training objectives motivated by Bengio's Scientist AI / LawZero research direction.</p>
-<p><strong>Mechanistic interpretability</strong>: activation caching/snapshots, <code>LinearProbe</code>,
-<code>SparseAutoencoder</code>, activation patching, <code>logit_lens</code>, <code>attention_weights</code>, <code>CircuitGraph</code>.</p>
-<p><strong>Modern architectures with LRP explicitly deferred</strong> (real forward/backward,
-<code>propagate_relevance</code> throws rather than approximates): <code>RWKVModule</code>, <code>RetNetModule</code>; VAE
-(<code>Reparameterize</code>, <code>KLDivergenceLoss</code>); GAN (<code>BCEWithLogitsLoss</code>); Diffusion/DDPM
-(<code>NoiseSchedule</code>, <code>SinusoidalTimestepEmbedding</code>).</p>
+<p><strong><a href="deep-learning/">Deep Learning Modules and Layers</a></strong>: the <code>Tensor</code>/<code>Shape</code>/
+<code>DeviceBackend</code> (CPU + CUDA + HIP/ROCm) autograd core; layers from <code>LinearModule</code>/
+<code>Conv2DModule</code> through normalization, pooling, <code>RNNModule</code>/<code>LSTMModule</code>/<code>GRUModule</code>,
+attention (<code>MultiHeadAttentionModule</code>, <code>TransformerBlock</code>, <code>MambaModule</code>, <code>RWKVModule</code>,
+<code>RetNetModule</code>); <code>SGDOptimizer</code>/<code>AdamOptimizer</code>; losses including <code>CalibrationLoss</code>; and VAE/
+GAN/Diffusion building blocks (<code>Reparameterize</code>, <code>NoiseSchedule</code>,
+<code>SinusoidalTimestepEmbedding</code>). Modern architectures with LRP explicitly deferred
+(<code>propagate_relevance</code> throws rather than approximates) are noted per-layer.</p>
+<p><strong><a href="interpretability/">Ad-hoc Interpretability</a></strong>: post-hoc explainers, split into
+<strong>Model-Agnostic</strong> (<code>KernelSHAP</code>, <code>LIME</code>, <code>PDP</code>) and <strong>Deep Learning Approaches</strong>
+(<code>Saliency</code>, <code>IntegratedGradients</code>, <code>GradCAM</code>) — distinct from the per-layer LRP
+(Layer-wise Relevance Propagation) rule every relevance-bearing layer carries alongside its
+forward/backward math (Arras et al. for RNN/LSTM/GRU, AttnLRP for <code>TransformerBlock</code>,
+MambaLRP for <code>MambaModule</code> — every rule real, cited, and conservation-tested).</p>
+<p><strong><a href="reinforcement-learning/">Reinforcement Learning</a></strong>: gymnasium-API-shaped
+<code>Environment</code>/<code>Agent</code> interfaces, <code>CartPoleEnv</code>/<code>ContinuousCartPoleEnv</code>, <code>ReplayBuffer</code>/
+<code>RolloutBuffer</code>, DQN (+ Double DQN), REINFORCE, A2C, PPO, SAC — every algorithm trained
+end-to-end and verified against a fixed, pre-declared performance bar on a real environment.</p>
+<p><strong><a href="mechanistic-interpretability/">Mechanistic Interpretability</a></strong>: activation
+caching/snapshots, <code>LinearProbe</code>, <code>SparseAutoencoder</code>, <code>CircuitGraph</code>, plus the GFlowNet
+implementation (<code>HyperGridEnv</code>, <code>TrajectoryBalanceLoss</code>, <code>DetailedBalanceLoss</code>,
+<code>SubTBLoss(λ)</code>) — non-goal-directed training objectives motivated by Bengio's Scientist AI /
+LawZero research direction.</p>
 <p><strong>Bindings</strong>: pybind11 (<code>bindings/pulsatrix_py.cpp</code>) exposing <code>Tensor</code>, core modules, and the
 explainer suite to Python.</p>
 <p>1250+ tests, green in both Debug and Release, on Windows and Linux.</p>
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="getting-started/">Getting Started</a></strong> — build the library and run your first example.</li>
+<li><strong><a href="recipes/">Recipes</a></strong> — small, runnable programs demonstrating one tool at a time.</li>
 <li><strong><a href="api/index.html">API Reference</a></strong> — the full Doxygen-generated class/function reference.</li>
 <li><a href="https://github.com/Joshuaweg/pulsatrix/tree/master/examples">Examples</a> — 11 runnable demos on GitHub.</li>
 </ul>
