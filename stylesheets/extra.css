@@ -1,0 +1,16 @@
+/* Pulsatrix brand palette, sampled directly from the logo (docs/assets/pulsatrix_lockup.png):
+   forest green #306E22, dark teal #0E4A5C, pale blue #E3F4FC.
+   Overrides Material's built-in "green"/"teal" palette CSS custom properties with the exact
+   brand hex values -- built-in customization point, not a from-scratch theme. */
+:root {
+  --md-primary-fg-color: #306E22;
+  --md-primary-fg-color--light: #4a8f3a;
+  --md-primary-fg-color--dark: #244f19;
+  --md-accent-fg-color: #0e4a5c;
+  --md-accent-fg-color--transparent: #0e4a5c1a;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #4a8f3a;
+  --md-accent-fg-color: #4fa6bd;
+}
