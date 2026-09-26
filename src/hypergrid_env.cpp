@@ -104,8 +104,25 @@ float HyperGridEnv::reward(const Tensor& state) const {
     return r;
 }
 
-float HyperGridEnv::backward_log_prob(const Tensor&, int64_t) const {
-    throw std::logic_error("HyperGridEnv::backward_log_prob not yet implemented");
+float HyperGridEnv::backward_log_prob(const Tensor& state, int64_t action) const {
+    std::vector<int64_t> point;
+    decode_state(state, point);
+
+    if (action < 0 || action >= ndim_) {
+        throw std::invalid_argument("HyperGridEnv::backward_log_prob: action out of range [0, ndim())");
+    }
+    if (point[static_cast<size_t>(action)] == 0) {
+        throw std::invalid_argument("HyperGridEnv::backward_log_prob: action's coordinate is already 0 -- not a "
+                                     "valid parent transition");
+    }
+
+    int64_t nonzero_count = 0;
+    for (int64_t i = 0; i < ndim_; ++i) {
+        if (point[static_cast<size_t>(i)] != 0) {
+            ++nonzero_count;
+        }
+    }
+    return -std::log(static_cast<float>(nonzero_count));
 }
 
 StepResult HyperGridEnv::step(const Tensor& action) {
