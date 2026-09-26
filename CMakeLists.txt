@@ -47,6 +47,7 @@ endif()
 add_library(pulsatrix_core
     src/cpu_backend.cpp
     src/tensor.cpp
+    src/sampler.cpp
     src/computation_graph.cpp
     src/autograd.cpp
     src/linear_module.cpp
