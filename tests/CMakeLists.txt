@@ -44,6 +44,7 @@ add_executable(pulsatrix_tests
     gflownet_forward_policy_test.cpp
     trajectory_balance_loss_test.cpp
     detailed_balance_loss_test.cpp
+    detailed_balance_integration_test.cpp
     gflownet_trajectory_test.cpp
     trajectory_balance_integration_test.cpp
     replay_buffer_test.cpp

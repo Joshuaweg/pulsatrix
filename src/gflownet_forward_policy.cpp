@@ -94,10 +94,18 @@ GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
             break;
         }
     }
+    // Strict '>', not '>=': next_unit() can return exactly 0.0 (a real, reachable LCG draw,
+    // ~1-in-65536 odds) -- with '>=', a u of exactly 0.0 would satisfy `cumulative(0) >= 0` at
+    // the very *first* scanned action regardless of its probability, silently selecting a
+    // masked (probability ~0) action if it happens to be first. Found via a real training-run
+    // crash ("illegal off-grid increment"), not by inspection -- see
+    // mission_detailed_balance_loss.md's AAR. Safe to tighten (the pre-computed last-valid-action
+    // default above already covers the "cumulative sum never quite reaches 1.0" float-rounding
+    // case the original '>=' was chosen for).
     float cumulative = 0.0f;
     for (int64_t a = 0; a < action_dim_; ++a) {
         cumulative += std::exp(log_softmax[static_cast<size_t>(a)]);
-        if (cumulative >= u) {
+        if (cumulative > u) {
             action = a;
             break;
         }
