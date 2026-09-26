@@ -171,6 +171,12 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_EXTRACT_ALL YES)
     set(DOXYGEN_WARN_IF_UNDOCUMENTED YES)
     set(DOXYGEN_WARN_NO_PARAMDOC YES)
+    # Retint Doxygen's built-in HTML theme to the Pulsatrix logo's palette (forest green,
+    # hue ~109) via Doxygen's own HTML_COLORSTYLE_* knobs rather than a custom stylesheet --
+    # built-in over custom, no new theme dependency for a single hue shift.
+    set(DOXYGEN_PROJECT_LOGO ${CMAKE_SOURCE_DIR}/docs/assets/pulsatrix_icon.png)
+    set(DOXYGEN_HTML_COLORSTYLE_HUE 109)
+    set(DOXYGEN_HTML_COLORSTYLE_SAT 180)
     doxygen_add_docs(docs
         ${CMAKE_SOURCE_DIR}/include
         COMMENT "Generating pulsatrix API documentation"

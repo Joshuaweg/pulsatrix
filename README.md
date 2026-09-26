@@ -1,4 +1,6 @@
-# Pulsatrix
+<p align="center">
+  <img src="docs/assets/pulsatrix_lockup.png" alt="Pulsatrix" width="500">
+</p>
 
 ExAI-first C++ deep learning library — explainability as a first-class property of the computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited, conservation-tested Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward math — never a placeholder or a post-hoc explainer bolted on afterward.
 
