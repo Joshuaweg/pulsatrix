@@ -98,6 +98,24 @@ public:
      */
     [[nodiscard]] float reward(const Tensor& state) const;
 
+    /**
+     * @brief The closed-form uniform backward-policy log-probability P_B(a|state).
+     * @param state Grid coordinate, shape (1, ndim()), each entry an integer-valued float in
+     *        `[0, side_length()-1]`.
+     * @param action Dimension index `[0, ndim())` -- decrementing this coordinate must reach
+     *        a valid parent state.
+     * @return `log(1 / count_nonzero(state))` -- HyperGrid's action structure (exactly one
+     *         way to reach any non-origin state, by incrementing one coordinate) makes the
+     *         *correct* backward distribution uniform over `state`'s nonzero coordinates; see
+     *         mission_shared_gflownet_machinery.md's Recon for why this is closed-form rather
+     *         than a second learned policy.
+     * @throws std::invalid_argument if state is invalid (same validation as reward()), if
+     *         action is out of `[0, ndim())`, or if `state[action] == 0` (decrementing it
+     *         would leave the grid -- not a valid parent transition) -- all external boundary.
+     * @note A pure function, like reward() -- no precondition on reset() having been called.
+     */
+    [[nodiscard]] float backward_log_prob(const Tensor& state, int64_t action) const;
+
     /** @brief Number of grid dimensions, as passed to the constructor. */
     [[nodiscard]] int64_t observation_dim() const override { return ndim_; }
 

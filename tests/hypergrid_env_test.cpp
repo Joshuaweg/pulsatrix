@@ -8,6 +8,7 @@
  */
 #include <gtest/gtest.h>
 
+#include <cmath>
 #include <stdexcept>
 
 #include "pulsatrix/cpu_backend.hpp"
@@ -132,6 +133,46 @@ TEST_F(HyperGridEnvTest, RewardOfArbitraryStateDoesNotRequireReset) {
 TEST_F(HyperGridEnvTest, RewardThrowsOnInvalidState) {
     HyperGridEnv env(&backend, 2, 8);
     EXPECT_THROW({ (void)env.reward(state2(8.0f, 0.0f)); }, std::invalid_argument);
+}
+
+// ---------------------------------------------------------------------------------------
+// backward_log_prob() -- closed-form uniform P_B
+// ---------------------------------------------------------------------------------------
+
+TEST_F(HyperGridEnvTest, BackwardLogProbIsZeroWithOneNonzeroCoordinate) {
+    // (3, 0): only dim 0 is nonzero -> exactly one valid parent action -> P_B=1.0, log=0.
+    HyperGridEnv env(&backend, 2, 8);
+    EXPECT_NEAR(env.backward_log_prob(state2(3.0f, 0.0f), 0), 0.0f, 1e-6f);
+}
+
+TEST_F(HyperGridEnvTest, BackwardLogProbIsUniformOverAllNonzeroDims) {
+    // (3, 5): both dims nonzero -> P_B=0.5 for either -> log(0.5).
+    HyperGridEnv env(&backend, 2, 8);
+    const float expected = std::log(0.5f);
+    EXPECT_NEAR(env.backward_log_prob(state2(3.0f, 5.0f), 0), expected, 1e-6f);
+    EXPECT_NEAR(env.backward_log_prob(state2(3.0f, 5.0f), 1), expected, 1e-6f);
+}
+
+TEST_F(HyperGridEnvTest, BackwardLogProbThrowsOnZeroCoordinateAction) {
+    // (0, 5): dim 0 is already 0 -- decrementing it would leave the grid.
+    HyperGridEnv env(&backend, 2, 8);
+    EXPECT_THROW({ (void)env.backward_log_prob(state2(0.0f, 5.0f), 0); }, std::invalid_argument);
+}
+
+TEST_F(HyperGridEnvTest, BackwardLogProbThrowsOnOutOfRangeAction) {
+    HyperGridEnv env(&backend, 2, 8);
+    EXPECT_THROW({ (void)env.backward_log_prob(state2(3.0f, 5.0f), 2); }, std::invalid_argument);
+    EXPECT_THROW({ (void)env.backward_log_prob(state2(3.0f, 5.0f), -1); }, std::invalid_argument);
+}
+
+TEST_F(HyperGridEnvTest, BackwardLogProbThrowsOnInvalidState) {
+    HyperGridEnv env(&backend, 2, 8);
+    EXPECT_THROW({ (void)env.backward_log_prob(state2(8.0f, 0.0f), 0); }, std::invalid_argument);
+}
+
+TEST_F(HyperGridEnvTest, BackwardLogProbDoesNotRequireReset) {
+    HyperGridEnv env(&backend, 2, 8);
+    EXPECT_NEAR(env.backward_log_prob(state2(1.0f, 0.0f), 0), 0.0f, 1e-6f);
 }
 
 // ---------------------------------------------------------------------------------------

@@ -79,6 +79,8 @@ add_library(pulsatrix_core
     src/cartpole_env.cpp
     src/continuous_cartpole_env.cpp
     src/hypergrid_env.cpp
+    src/learnable_scalar.cpp
+    src/gflownet_forward_policy.cpp
     src/replay_buffer.cpp
     src/rollout_buffer.cpp
     src/dqn_loss.cpp
