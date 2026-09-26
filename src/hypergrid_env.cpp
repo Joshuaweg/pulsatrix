@@ -125,8 +125,16 @@ float HyperGridEnv::backward_log_prob(const Tensor& state, int64_t action) const
     return -std::log(static_cast<float>(nonzero_count));
 }
 
-std::vector<bool> HyperGridEnv::valid_actions_mask(const Tensor&) const {
-    throw std::logic_error("HyperGridEnv::valid_actions_mask not yet implemented");
+std::vector<bool> HyperGridEnv::valid_actions_mask(const Tensor& state) const {
+    std::vector<int64_t> point;
+    decode_state(state, point);
+
+    std::vector<bool> mask(static_cast<size_t>(action_dim()), false);
+    for (int64_t i = 0; i < ndim_; ++i) {
+        mask[static_cast<size_t>(i)] = point[static_cast<size_t>(i)] < side_length_ - 1;
+    }
+    mask[static_cast<size_t>(ndim_)] = true;  // stop is always valid
+    return mask;
 }
 
 StepResult HyperGridEnv::step(const Tensor& action) {
