@@ -15,6 +15,7 @@ add_executable(pulsatrix_tests
     csv_reader_test.cpp
     csv_dataset_test.cpp
     csv_dataloader_integration_test.cpp
+    mnist_dataset_adapter_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
