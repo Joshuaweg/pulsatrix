@@ -104,6 +104,10 @@ float HyperGridEnv::reward(const Tensor& state) const {
     return r;
 }
 
+float HyperGridEnv::backward_log_prob(const Tensor&, int64_t) const {
+    throw std::logic_error("HyperGridEnv::backward_log_prob not yet implemented");
+}
+
 StepResult HyperGridEnv::step(const Tensor& action) {
     PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
 

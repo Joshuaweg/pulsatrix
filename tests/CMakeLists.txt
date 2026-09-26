@@ -40,6 +40,8 @@ add_executable(pulsatrix_tests
     cartpole_env_test.cpp
     continuous_cartpole_env_test.cpp
     hypergrid_env_test.cpp
+    learnable_scalar_test.cpp
+    gflownet_forward_policy_test.cpp
     replay_buffer_test.cpp
     rollout_buffer_test.cpp
     dqn_loss_test.cpp
