@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['gamma_0',['gamma',['../classpulsatrix_1_1GroupNormModule.html#acf25b95c8dbdcb80435bd5ede45e12d2',1,'pulsatrix::GroupNormModule::gamma()'],['../classpulsatrix_1_1LayerNormModule.html#abce4b32af185fa542ad89c556ee17076',1,'pulsatrix::LayerNormModule::gamma()'],['../classpulsatrix_1_1RetNetModule.html#a62492d17ef3b95a50d56d1cca1b83158',1,'pulsatrix::RetNetModule::gamma()'],['../classpulsatrix_1_1RMSNormModule.html#af06d24d862e4b31909945018968fb29b',1,'pulsatrix::RMSNormModule::gamma()'],['../classpulsatrix_1_1BatchNormModule.html#aacd1ae0915213e8ae32dc634299e5949',1,'pulsatrix::BatchNormModule::gamma() const']]],
+  ['gamma_5fgrad_1',['gamma_grad',['../classpulsatrix_1_1BatchNormModule.html#a8b48ff415461030cc9e8e843e8f90999',1,'pulsatrix::BatchNormModule::gamma_grad()'],['../classpulsatrix_1_1GroupNormModule.html#aa6b63e961356227e77f878aa216a4f61',1,'pulsatrix::GroupNormModule::gamma_grad()'],['../classpulsatrix_1_1LayerNormModule.html#a3f935d8e708497ec33aea8656cc20a3f',1,'pulsatrix::LayerNormModule::gamma_grad()'],['../classpulsatrix_1_1RMSNormModule.html#af88db1f2da306fa931b21d8374751ef7',1,'pulsatrix::RMSNormModule::gamma_grad()']]],
+  ['gate_5fproj_2',['gate_proj',['../classpulsatrix_1_1SwiGLUModule.html#ad391b4cbc3d882dced14df62613412cb',1,'pulsatrix::SwiGLUModule']]],
+  ['gemm_3',['gemm',['../classpulsatrix_1_1CPUBackend.html#a2a4e21e556505a6477d9b859165309be',1,'pulsatrix::CPUBackend::gemm()'],['../classpulsatrix_1_1CUDABackend.html#af3b83c006aafa62eea5046cab2747e32',1,'pulsatrix::CUDABackend::gemm()'],['../classpulsatrix_1_1DeviceBackend.html#a171a50250bf4560d92c7e71da4cc1afa',1,'pulsatrix::DeviceBackend::gemm()'],['../classpulsatrix_1_1HIPBackend.html#a54ad0486db8c9625a75593004b8444fd',1,'pulsatrix::HIPBackend::gemm()']]],
+  ['gflownetforwardpolicy_4',['GFlowNetForwardPolicy',['../classpulsatrix_1_1GFlowNetForwardPolicy.html#a04cb59356e82f2a7ded381a98432d581',1,'pulsatrix::GFlowNetForwardPolicy']]],
+  ['grad_5',['grad',['../classpulsatrix_1_1LearnableScalar.html#ae606bcf5b6cdee8c873ef6939f3c677d',1,'pulsatrix::LearnableScalar']]],
+  ['grad_5flog_5fflow_5fi_6',['grad_log_flow_i',['../classpulsatrix_1_1SubTBLoss.html#ab0cf98de1fd6a82d2d31cc1baccbd85d',1,'pulsatrix::SubTBLoss']]],
+  ['grad_5flog_5fflow_5fj_7',['grad_log_flow_j',['../classpulsatrix_1_1SubTBLoss.html#aadf786e628b1f8929d24f0cc5b9e217c',1,'pulsatrix::SubTBLoss']]],
+  ['grad_5flog_5fflow_5fs_8',['grad_log_flow_s',['../classpulsatrix_1_1DetailedBalanceLoss.html#ac359531938fd5309ef492ba66736b0a3',1,'pulsatrix::DetailedBalanceLoss']]],
+  ['grad_5flog_5fflow_5fs_5fnext_9',['grad_log_flow_s_next',['../classpulsatrix_1_1DetailedBalanceLoss.html#adf00f62dd23568c3ca5ea066bb9a62c4',1,'pulsatrix::DetailedBalanceLoss']]],
+  ['grad_5flog_5fz_10',['grad_log_z',['../classpulsatrix_1_1TrajectoryBalanceLoss.html#a35b66820c5e8df41f5b913f9dc8f2bcb',1,'pulsatrix::TrajectoryBalanceLoss']]],
+  ['grad_5fweight_5ffor_5flog_5fpf_11',['grad_weight_for_log_pf',['../classpulsatrix_1_1DetailedBalanceLoss.html#af1c1847fc1fcf93a2c269b51ecf0197a',1,'pulsatrix::DetailedBalanceLoss::grad_weight_for_log_pf()'],['../classpulsatrix_1_1TrajectoryBalanceLoss.html#aae02ee35c9e13b1904a888ea55a87fbf',1,'pulsatrix::TrajectoryBalanceLoss::grad_weight_for_log_pf()']]],
+  ['grad_5fweight_5ffor_5flog_5fpf_5frange_12',['grad_weight_for_log_pf_range',['../classpulsatrix_1_1SubTBLoss.html#a32f60a55c0451235ce87c39457140ea0',1,'pulsatrix::SubTBLoss']]],
+  ['gradient_13',['gradient',['../classpulsatrix_1_1Autograd.html#a50638f940195c3282b79de862902d84f',1,'pulsatrix::Autograd::gradient()'],['../classpulsatrix_1_1ExplainerContext.html#a092855583e219e35269f06b916ac5c0c',1,'pulsatrix::ExplainerContext::gradient(NodeId id) const']]],
+  ['graph_14',['graph',['../classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088',1,'pulsatrix::ExplainerContext']]],
+  ['groupnormmodule_15',['GroupNormModule',['../classpulsatrix_1_1GroupNormModule.html#abc71a062657b4d6ce474262d3d0e1227',1,'pulsatrix::GroupNormModule']]],
+  ['grumodule_16',['GRUModule',['../classpulsatrix_1_1GRUModule.html#ae4d024b17c5ce6e82177750c1d6f4ce1',1,'pulsatrix::GRUModule']]]
+];
