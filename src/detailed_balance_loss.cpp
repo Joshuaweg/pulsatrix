@@ -4,28 +4,36 @@
 
 namespace pulsatrix {
 
-float DetailedBalanceLoss::forward(float, float, float, float) {
-    throw std::logic_error("DetailedBalanceLoss::forward not yet implemented");
+float DetailedBalanceLoss::forward(float log_flow_s, float log_pf, float log_flow_s_next, float log_pb) {
+    last_delta_ = log_flow_s + log_pf - log_flow_s_next - log_pb;
+    has_forwarded_ = true;
+    return last_delta_ * last_delta_;
 }
 
 void DetailedBalanceLoss::require_forwarded() const {
-    throw std::logic_error("DetailedBalanceLoss::require_forwarded not yet implemented");
+    if (!has_forwarded_) {
+        throw std::logic_error("DetailedBalanceLoss: called before forward");
+    }
 }
 
 float DetailedBalanceLoss::delta() const {
-    throw std::logic_error("DetailedBalanceLoss::delta not yet implemented");
+    require_forwarded();
+    return last_delta_;
 }
 
 float DetailedBalanceLoss::grad_log_flow_s() const {
-    throw std::logic_error("DetailedBalanceLoss::grad_log_flow_s not yet implemented");
+    require_forwarded();
+    return 2.0f * last_delta_;
 }
 
 float DetailedBalanceLoss::grad_log_flow_s_next() const {
-    throw std::logic_error("DetailedBalanceLoss::grad_log_flow_s_next not yet implemented");
+    require_forwarded();
+    return -2.0f * last_delta_;
 }
 
 float DetailedBalanceLoss::grad_weight_for_log_pf() const {
-    throw std::logic_error("DetailedBalanceLoss::grad_weight_for_log_pf not yet implemented");
+    require_forwarded();
+    return -2.0f * last_delta_;
 }
 
 }  // namespace pulsatrix
