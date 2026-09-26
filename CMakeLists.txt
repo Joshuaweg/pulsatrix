@@ -112,6 +112,7 @@ add_library(pulsatrix_core
     src/sgd_optimizer.cpp
     src/adam_optimizer.cpp
     src/xor_training_example.cpp
+    src/image_decoder.cpp
 )
 target_include_directories(pulsatrix_core PUBLIC include)
 target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
@@ -121,6 +122,21 @@ target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
 # library linked explicitly (not implicit via any other dependency).
 find_package(Threads REQUIRED)
 target_link_libraries(pulsatrix_core PUBLIC Threads::Threads)
+
+# stb_image (public-domain, single-header image decoder) -- campaign_exai_dl_library_data_pipeline
+# Phase 2 Decision Point 2: chosen over OpenCV (disproportionate build/dependency footprint
+# for "decode a file into pixel bytes") and over hand-rolling (a real JPEG/PNG codec is a
+# project-sized undertaking on its own). Fetched unconditionally, no PULSATRIX_ENABLE_*
+# option gate -- unlike CUDA/HIP/Python, it needs no real hardware/SDK/interpreter, just a
+# vendored header, so there is no real "opt out" case to support.
+include(FetchContent)
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG f0569113c93ad095470c54bf34a17b36646bbbb
+)
+FetchContent_MakeAvailable(stb)
+target_include_directories(pulsatrix_core PRIVATE ${stb_SOURCE_DIR})
 
 if(PULSATRIX_ENABLE_CUDA)
     target_sources(pulsatrix_core PRIVATE src/cuda_backend.cu)
