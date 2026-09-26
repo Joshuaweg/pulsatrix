@@ -1,0 +1,24 @@
+/* Pulsatrix brand override for doxygen-awesome-css (vendored v2.5.0) -- loaded after
+   doxygen-awesome.css/doxygen-awesome-sidebar-only.css so these variable redefinitions win.
+   Colors sampled directly from the logo (docs/assets/pulsatrix_lockup.png): forest green
+   #306E22, dark teal #0E4A5C -- the same palette the MkDocs Material site's
+   docs/stylesheets/extra.css uses, so the API reference and the narrative site match. */
+html:not(.dark-mode) {
+    --primary-color: #306e22;
+    --primary-dark-color: #1e4a15;
+    --primary-light-color: #5c9c4a;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not(.light-mode) {
+        --primary-color: #5c9c4a;
+        --primary-dark-color: #86c46f;
+        --primary-light-color: #3f7a30;
+    }
+}
+
+html.dark-mode {
+    --primary-color: #5c9c4a;
+    --primary-dark-color: #86c46f;
+    --primary-light-color: #3f7a30;
+}

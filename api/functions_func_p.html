@@ -9,10 +9,17 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="pulsatrix-brand.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -48,6 +55,22 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('functions_func_p.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -81,9 +104,12 @@ $(function() {
 <li>propagate_relevance()&#160;:&#160;<a class="el" href="classpulsatrix_1_1AvgPool2DModule.html#ac54e81ee70da4787d926ef9cd7dd9095">pulsatrix::AvgPool2DModule</a>, <a class="el" href="classpulsatrix_1_1BatchNormModule.html#afd6e4948d9781cf38124f32455789746">pulsatrix::BatchNormModule</a>, <a class="el" href="classpulsatrix_1_1Conv2DModule.html#a41522f320ef28037d27888d42160801c">pulsatrix::Conv2DModule</a>, <a class="el" href="classpulsatrix_1_1DropoutModule.html#abdaf96db84dc08abcd9f4745d46cad66">pulsatrix::DropoutModule</a>, <a class="el" href="classpulsatrix_1_1EmbeddingModule.html#a36e97f51ac2b0e4c79620456ff1f13c9">pulsatrix::EmbeddingModule</a>, <a class="el" href="classpulsatrix_1_1FlattenModule.html#a4b1ec302bf3ad424580551c292195819">pulsatrix::FlattenModule</a>, <a class="el" href="classpulsatrix_1_1GroupNormModule.html#a0508f844a42796f5d38fadff517e47fb">pulsatrix::GroupNormModule</a>, <a class="el" href="classpulsatrix_1_1GRUModule.html#ad3218c66d7bd021c36ef151c9b708ad9">pulsatrix::GRUModule</a>, <a class="el" href="classpulsatrix_1_1LayerNormModule.html#aa925d9184d24e72c93a990b35b33250a">pulsatrix::LayerNormModule</a>, <a class="el" href="classpulsatrix_1_1LinearModule.html#a171e265daec59933d3a066bd5f368316">pulsatrix::LinearModule</a>, <a class="el" href="classpulsatrix_1_1LSTMModule.html#a09f9989c8ffa4f9f7160d8cb37351228">pulsatrix::LSTMModule</a>, <a class="el" href="classpulsatrix_1_1MambaModule.html#ae2ec556755115310c1faab8caf649da3">pulsatrix::MambaModule</a>, <a class="el" href="classpulsatrix_1_1MaxPool2DModule.html#a0e06443eba099e140806ee32ff27183e">pulsatrix::MaxPool2DModule</a>, <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>, <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1">pulsatrix::MultiHeadAttentionModule</a>, <a class="el" href="classpulsatrix_1_1ReluModule.html#adf39306dcecae27a5e4e6a86a58da108">pulsatrix::ReluModule</a>, <a class="el" href="classpulsatrix_1_1ResidualModule.html#ac6ecb7aacdfdd5a827db5a76432b82a2">pulsatrix::ResidualModule</a>, <a class="el" href="classpulsatrix_1_1RetNetModule.html#aee87498dec9a66621bb79cbd8035ee27">pulsatrix::RetNetModule</a>, <a class="el" href="classpulsatrix_1_1RMSNormModule.html#a118b29388de9e763cdc090a665e83831">pulsatrix::RMSNormModule</a>, <a class="el" href="classpulsatrix_1_1RNNModule.html#a9748e457d163fdc0a12b66c8dd88c6e4">pulsatrix::RNNModule</a>, <a class="el" href="classpulsatrix_1_1RoPEModule.html#ad45fa29cefa434cfad4cb986e4c30158">pulsatrix::RoPEModule</a>, <a class="el" href="classpulsatrix_1_1RWKVModule.html#a9e5ec98bc554afe6a365289c9104fd57">pulsatrix::RWKVModule</a>, <a class="el" href="classpulsatrix_1_1SequentialModule.html#aa47cc87098f611d4f7222654b2f60f8c">pulsatrix::SequentialModule</a>, <a class="el" href="classpulsatrix_1_1SoftmaxModule.html#a7df95ddac5eabfdd475efe7f9e3f925f">pulsatrix::SoftmaxModule</a>, <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ab12c4cbb436937d6bd6dc966dccea298">pulsatrix::SwiGLUModule</a>, <a class="el" href="classpulsatrix_1_1TransformerBlock.html#ae6ce7ebbbcae1b88709d0e9058652529">pulsatrix::TransformerBlock</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
 </body>
 </html>
