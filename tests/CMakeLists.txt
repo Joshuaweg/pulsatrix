@@ -46,6 +46,7 @@ add_executable(pulsatrix_tests
     detailed_balance_loss_test.cpp
     subtb_loss_test.cpp
     subtb_integration_test.cpp
+    cross_objective_validation_test.cpp
     detailed_balance_integration_test.cpp
     gflownet_trajectory_test.cpp
     trajectory_balance_integration_test.cpp
