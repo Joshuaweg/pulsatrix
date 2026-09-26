@@ -62,6 +62,7 @@ add_executable(pulsatrix_tests
     tanh_gaussian_policy_test.cpp
     polyak_update_test.cpp
     mse_loss_test.cpp
+    calibration_loss_test.cpp
     cross_entropy_loss_test.cpp
     kl_divergence_loss_test.cpp
     bce_with_logits_loss_test.cpp

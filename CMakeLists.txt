@@ -97,6 +97,7 @@ add_library(pulsatrix_core
     src/tanh_gaussian_policy.cpp
     src/polyak_update.cpp
     src/mse_loss.cpp
+    src/calibration_loss.cpp
     src/cross_entropy_loss.cpp
     src/kl_divergence_loss.cpp
     src/bce_with_logits_loss.cpp
