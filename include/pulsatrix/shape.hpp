@@ -41,6 +41,23 @@ public:
         }
     }
 
+    /**
+     * @brief Constructs a shape from a runtime-sized dimension list.
+     * @throws std::invalid_argument if any dimension is negative.
+     * @note Same rationale as Tensor's std::vector<float> constructor overload
+     *       (tensor.hpp): std::initializer_list has no portable public constructor from a
+     *       runtime-sized buffer, so a caller computing a rank at runtime (e.g.
+     *       Tensor::Stack building an output shape whose rank matches its input tensors')
+     *       cannot use the initializer_list overload at all, not just less conveniently.
+     */
+    explicit Shape(const std::vector<int64_t>& dims) : dims_(dims) {
+        for (int64_t d : dims_) {
+            if (d < 0) {
+                throw std::invalid_argument("Shape: dimensions must be non-negative");
+            }
+        }
+    }
+
     /** @brief Number of dimensions. 0 for a scalar. */
     [[nodiscard]] int64_t rank() const { return static_cast<int64_t>(dims_.size()); }
 
