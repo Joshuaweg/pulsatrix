@@ -241,6 +241,42 @@ if(PULSATRIX_BUILD_EXAMPLES)
 
     add_executable(sac_continuous_cartpole_demo examples/sac_continuous_cartpole_demo.cpp)
     target_link_libraries(sac_continuous_cartpole_demo PRIVATE pulsatrix_core)
+
+    # Recipes (docs campaign) -- small, didactic, one-tool-at-a-time programs, each paired
+    # with a docs/recipes/<section>/<name>.md page. See docs/recipes/index.md.
+    add_executable(xor_training_recipe examples/recipes/xor_training.cpp)
+    target_link_libraries(xor_training_recipe PRIVATE pulsatrix_core)
+
+    add_executable(sequence_models_recipe examples/recipes/sequence_models_rnn_lstm_gru.cpp)
+    target_link_libraries(sequence_models_recipe PRIVATE pulsatrix_core)
+
+    add_executable(residual_and_norm_layers_recipe examples/recipes/residual_and_norm_layers.cpp)
+    target_link_libraries(residual_and_norm_layers_recipe PRIVATE pulsatrix_core)
+
+    add_executable(kernel_shap_basics_recipe examples/recipes/kernel_shap_basics.cpp)
+    target_link_libraries(kernel_shap_basics_recipe PRIVATE pulsatrix_core)
+
+    add_executable(lime_basics_recipe examples/recipes/lime_basics.cpp)
+    target_link_libraries(lime_basics_recipe PRIVATE pulsatrix_core)
+
+    add_executable(saliency_and_ig_recipe examples/recipes/saliency_and_integrated_gradients.cpp)
+    target_link_libraries(saliency_and_ig_recipe PRIVATE pulsatrix_core)
+
+    add_executable(grad_cam_walkthrough_recipe examples/recipes/grad_cam_walkthrough.cpp)
+    target_link_libraries(grad_cam_walkthrough_recipe PRIVATE pulsatrix_core)
+
+    add_executable(dqn_cartpole_recipe examples/recipes/dqn_cartpole.cpp)
+    target_include_directories(dqn_cartpole_recipe PRIVATE examples)
+    target_link_libraries(dqn_cartpole_recipe PRIVATE pulsatrix_core)
+
+    add_executable(gae_and_ppo_clipped_recipe examples/recipes/gae_and_ppo_clipped.cpp)
+    target_link_libraries(gae_and_ppo_clipped_recipe PRIVATE pulsatrix_core)
+
+    add_executable(sparse_autoencoder_probe_recipe examples/recipes/sparse_autoencoder_probe.cpp)
+    target_link_libraries(sparse_autoencoder_probe_recipe PRIVATE pulsatrix_core)
+
+    add_executable(gflownet_hypergrid_recipe examples/recipes/gflownet_hypergrid.cpp)
+    target_link_libraries(gflownet_hypergrid_recipe PRIVATE pulsatrix_core)
 endif()
 
 if(PULSATRIX_BUILD_TESTS)

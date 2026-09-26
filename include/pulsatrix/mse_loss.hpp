@@ -1,5 +1,6 @@
 /** @file mse_loss.hpp
  *  @brief Mean squared error loss.
+ *  @ingroup dl_modules
  */
 #pragma once
 

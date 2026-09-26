@@ -1,6 +1,7 @@
 /** @file autograd.hpp
  *  @brief Reverse-mode autodiff -- walks a ComputationGraph backward, accumulating
  *         gradients via per-node backward functions supplied by the caller.
+ *  @ingroup dl_modules
  */
 #pragma once
 

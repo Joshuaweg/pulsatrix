@@ -1,5 +1,6 @@
 /** @file relu_module.hpp
  *  @brief ReLU activation -- the second Module subclass, following LinearModule's pattern.
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -1,6 +1,7 @@
 /** @file lime.hpp
  *  @brief LIME -- local interpretable model-agnostic explanations (charter Part 1, Phase
  *         3; theory: xai_context.aDNA's technique_lime.md).
+ *  @ingroup interpretability_agnostic
  */
 #pragma once
 

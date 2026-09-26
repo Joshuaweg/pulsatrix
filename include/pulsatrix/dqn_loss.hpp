@@ -1,5 +1,6 @@
 /** @file dqn_loss.hpp
  *  @brief DQN's masked-MSE Bellman loss -- squared error on the taken action only.
+ *  @ingroup rl
  */
 #pragma once
 

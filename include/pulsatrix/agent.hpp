@@ -1,5 +1,6 @@
 /** @file agent.hpp
  *  @brief Abstract RL agent interface -- the inference-time policy contract, act() only.
+ *  @ingroup rl
  */
 #pragma once
 

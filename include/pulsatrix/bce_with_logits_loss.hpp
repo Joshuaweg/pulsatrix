@@ -1,5 +1,6 @@
 /** @file bce_with_logits_loss.hpp
  *  @brief Binary cross-entropy on raw logits -- combined sigmoid + BCE, numerically stable.
+ *  @ingroup dl_modules
  */
 #pragma once
 

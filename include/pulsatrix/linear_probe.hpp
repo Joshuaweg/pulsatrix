@@ -1,6 +1,7 @@
 /** @file linear_probe.hpp
  *  @brief Linear probe -- trains one linear classifier to decode a binary concept from a
  *         layer's activations, answering "is this concept linearly represented here?".
+ *  @ingroup mech_interp
  */
 #pragma once
 

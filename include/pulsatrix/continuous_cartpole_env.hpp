@@ -1,5 +1,6 @@
 /** @file continuous_cartpole_env.hpp
  *  @brief Continuous-action variant of CartPoleEnv -- identical physics, force is a fraction.
+ *  @ingroup rl
  */
 #pragma once
 

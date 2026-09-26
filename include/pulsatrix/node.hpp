@@ -1,5 +1,6 @@
 /** @file node.hpp
  *  @brief Computation graph node -- op type, shape, optional label, parent/child edges.
+ *  @ingroup dl_modules
  */
 #pragma once
 

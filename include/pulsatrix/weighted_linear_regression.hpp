@@ -1,6 +1,7 @@
 /** @file weighted_linear_regression.hpp
  *  @brief Weighted least squares via normal equations -- the shared fitting primitive
  *         Phase 3's LIME and KernelSHAP explainers both reduce to.
+ *  @ingroup interpretability_agnostic
  */
 #pragma once
 

@@ -2,6 +2,7 @@
  *  @brief Pre-LN transformer block -- Phase 3's literal exit-gate deliverable, third and
  *         last composition mission (RMSNorm x2, MultiHeadAttentionModule, SwiGLUModule,
  *         plus the resolved residual-split LRP rule).
+ *  @ingroup dl_modules
  */
 #pragma once
 

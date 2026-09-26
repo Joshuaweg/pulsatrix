@@ -1,6 +1,7 @@
 /** @file noise_schedule.hpp
  *  @brief DDPM linear noise schedule: precomputed beta/alpha/alpha_bar, forward noising and
  *         reverse sampling steps.
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -1,5 +1,6 @@
 /** @file detailed_balance_loss.hpp
  *  @brief GFlowNet Detailed Balance loss (Bengio et al., "GFlowNet Foundations", arXiv:2111.09266).
+ *  @ingroup mech_interp
  */
 #pragma once
 

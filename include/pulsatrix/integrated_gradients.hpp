@@ -1,6 +1,7 @@
 /** @file integrated_gradients.hpp
  *  @brief Integrated Gradients -- baseline-interpolated gradient integral (charter Part 1,
  *         Phase 2; theory: xai_context.aDNA's vision_integrated_gradients.md).
+ *  @ingroup interpretability_dl
  */
 #pragma once
 

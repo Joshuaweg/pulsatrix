@@ -1,5 +1,6 @@
 /** @file kl_divergence_loss.hpp
  *  @brief VAE KL-divergence-to-standard-normal loss term.
+ *  @ingroup dl_modules
  */
 #pragma once
 

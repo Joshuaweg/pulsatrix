@@ -1,6 +1,7 @@
 /** @file residual_module.hpp
  *  @brief Generic skip-connection wrapper -- Phase 4's only mission, the ResNet-style
  *         residual block generalized past a fixed Conv-BN-ReLU stack to any Module.
+ *  @ingroup dl_modules
  */
 #pragma once
 

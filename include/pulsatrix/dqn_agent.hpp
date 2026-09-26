@@ -1,5 +1,6 @@
 /** @file dqn_agent.hpp
  *  @brief Epsilon-greedy DQN policy over an arbitrary Q-network Module.
+ *  @ingroup rl
  */
 #pragma once
 

@@ -1,5 +1,6 @@
 /** @file xor_training_example.hpp
  *  @brief Phase 1's training-loop proof: Linear(2,4)->ReLU->Linear(4,1) learning XOR.
+ *  @ingroup dl_modules
  */
 #pragma once
 

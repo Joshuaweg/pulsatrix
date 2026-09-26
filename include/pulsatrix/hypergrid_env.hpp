@@ -1,5 +1,6 @@
 /** @file hypergrid_env.hpp
  *  @brief HyperGrid -- the standard minimal GFlowNet correctness-check environment.
+ *  @ingroup mech_interp
  */
 #pragma once
 

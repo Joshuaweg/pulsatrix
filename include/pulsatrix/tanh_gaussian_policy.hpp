@@ -1,5 +1,6 @@
 /** @file tanh_gaussian_policy.hpp
  *  @brief SAC's reparameterized, tanh-squashed Gaussian policy sampling (action + log-prob).
+ *  @ingroup rl
  */
 #pragma once
 

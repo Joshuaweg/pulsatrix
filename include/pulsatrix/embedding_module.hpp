@@ -1,5 +1,6 @@
 /** @file embedding_module.hpp
  *  @brief Lookup-table (row-select) layer -- y = W[index], batched (N, L) -> (N, L, embedding_dim).
+ *  @ingroup dl_modules
  */
 #pragma once
 

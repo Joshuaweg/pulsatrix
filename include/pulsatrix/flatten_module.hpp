@@ -2,6 +2,7 @@
  *  @brief Reshape-only Module -- flattens every non-batch dim of a (N, ...) input to
  *         (N, flattened_features), for chaining Conv2DModule's batched (N,C,H,W) output
  *         into a LinearModule's batched (N, in_features) input.
+ *  @ingroup dl_modules
  */
 #pragma once
 

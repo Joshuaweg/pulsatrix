@@ -1,5 +1,6 @@
 /** @file sgd_optimizer.hpp
  *  @brief Stochastic gradient descent -- operates uniformly across any Module's parameters().
+ *  @ingroup dl_modules
  */
 #pragma once
 

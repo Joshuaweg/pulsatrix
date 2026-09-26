@@ -1,5 +1,6 @@
 /** @file replay_buffer.hpp
  *  @brief Off-policy experience replay: fixed-capacity circular transition store + sampling.
+ *  @ingroup rl
  */
 #pragma once
 

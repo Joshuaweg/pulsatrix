@@ -1,5 +1,6 @@
 /** @file gflownet_trajectory.hpp
  *  @brief Rolls out one full HyperGrid episode under a GFlowNetForwardPolicy.
+ *  @ingroup mech_interp
  */
 #pragma once
 

@@ -13,37 +13,32 @@ math — never a placeholder or a post-hoc explainer bolted on afterward.
 
 ## What's here
 
-**Core**: `Tensor`/`Shape` (RAII), `DeviceBackend` (CPU + CUDA + HIP/ROCm),
-`ComputationGraph`/`Autograd`, `Module` (NVI forward, pure-virtual LRP contract),
-`SGDOptimizer`/`AdamOptimizer`.
+**[Deep Learning Modules and Layers](deep-learning/index.md)**: the `Tensor`/`Shape`/
+`DeviceBackend` (CPU + CUDA + HIP/ROCm) autograd core; layers from `LinearModule`/
+`Conv2DModule` through normalization, pooling, `RNNModule`/`LSTMModule`/`GRUModule`,
+attention (`MultiHeadAttentionModule`, `TransformerBlock`, `MambaModule`, `RWKVModule`,
+`RetNetModule`); `SGDOptimizer`/`AdamOptimizer`; losses including `CalibrationLoss`; and VAE/
+GAN/Diffusion building blocks (`Reparameterize`, `NoiseSchedule`,
+`SinusoidalTimestepEmbedding`). Modern architectures with LRP explicitly deferred
+(`propagate_relevance` throws rather than approximates) are noted per-layer.
 
-**Layers**: `LinearModule`, `Conv2DModule`, `ReluModule`, `FlattenModule`, `SequentialModule`;
-normalization (`LayerNorm`/`RMSNorm`/`GroupNorm`/`BatchNorm`); pooling (`MaxPool2D`/`AvgPool2D`);
-`DropoutModule`, `EmbeddingModule`, `ResidualModule`.
+**[Ad-hoc Interpretability](interpretability/index.md)**: post-hoc explainers, split into
+**Model-Agnostic** (`KernelSHAP`, `LIME`, `PDP`) and **Deep Learning Approaches**
+(`Saliency`, `IntegratedGradients`, `GradCAM`) — distinct from the per-layer LRP
+(Layer-wise Relevance Propagation) rule every relevance-bearing layer carries alongside its
+forward/backward math (Arras et al. for RNN/LSTM/GRU, AttnLRP for `TransformerBlock`,
+MambaLRP for `MambaModule` — every rule real, cited, and conservation-tested).
 
-**Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule` (Arras et al. LRP),
-`SoftmaxModule`, `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock`
-(AttnLRP, validated against an independent reference implementation), `MambaModule` (S6
-selective scan, MambaLRP).
+**[Reinforcement Learning](reinforcement-learning/index.md)**: gymnasium-API-shaped
+`Environment`/`Agent` interfaces, `CartPoleEnv`/`ContinuousCartPoleEnv`, `ReplayBuffer`/
+`RolloutBuffer`, DQN (+ Double DQN), REINFORCE, A2C, PPO, SAC — every algorithm trained
+end-to-end and verified against a fixed, pre-declared performance bar on a real environment.
 
-**Explainers**: `Saliency`, `IntegratedGradients`, `GradCAM`, `LIME`, `KernelSHAP`, `PDP`.
-
-**Reinforcement learning** (`Environment`/`Agent` interfaces, gymnasium-API-shaped):
-`CartPoleEnv`/`ContinuousCartPoleEnv`, `ReplayBuffer`/`RolloutBuffer`, DQN (+ Double DQN),
-REINFORCE, A2C, PPO, SAC — every algorithm trained end-to-end and verified against a fixed,
-pre-declared performance bar on a real environment.
-
-**GFlowNet & calibration training objectives**: `HyperGridEnv`, `TrajectoryBalanceLoss`,
-`DetailedBalanceLoss`, `SubTBLoss(λ)`, `CalibrationLoss` (Brier score) — non-goal-directed
-training objectives motivated by Bengio's Scientist AI / LawZero research direction.
-
-**Mechanistic interpretability**: activation caching/snapshots, `LinearProbe`,
-`SparseAutoencoder`, activation patching, `logit_lens`, `attention_weights`, `CircuitGraph`.
-
-**Modern architectures with LRP explicitly deferred** (real forward/backward,
-`propagate_relevance` throws rather than approximates): `RWKVModule`, `RetNetModule`; VAE
-(`Reparameterize`, `KLDivergenceLoss`); GAN (`BCEWithLogitsLoss`); Diffusion/DDPM
-(`NoiseSchedule`, `SinusoidalTimestepEmbedding`).
+**[Mechanistic Interpretability](mechanistic-interpretability/index.md)**: activation
+caching/snapshots, `LinearProbe`, `SparseAutoencoder`, `CircuitGraph`, plus the GFlowNet
+implementation (`HyperGridEnv`, `TrajectoryBalanceLoss`, `DetailedBalanceLoss`,
+`SubTBLoss(λ)`) — non-goal-directed training objectives motivated by Bengio's Scientist AI /
+LawZero research direction.
 
 **Bindings**: pybind11 (`bindings/pulsatrix_py.cpp`) exposing `Tensor`, core modules, and the
 explainer suite to Python.
@@ -53,5 +48,6 @@ explainer suite to Python.
 ## Where to go next
 
 - **[Getting Started](getting-started.md)** — build the library and run your first example.
+- **[Recipes](recipes/index.md)** — small, runnable programs demonstrating one tool at a time.
 - **[API Reference](api/index.html)** — the full Doxygen-generated class/function reference.
 - [Examples](https://github.com/Joshuaweg/pulsatrix/tree/master/examples) — 11 runnable demos on GitHub.

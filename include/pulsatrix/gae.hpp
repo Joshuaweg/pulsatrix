@@ -1,5 +1,6 @@
 /** @file gae.hpp
  *  @brief Generalized Advantage Estimation (Schulman et al. 2016) over a stored rollout.
+ *  @ingroup rl
  */
 #pragma once
 

@@ -1,5 +1,6 @@
 /** @file circuit_graph.hpp
  *  @brief Self-contained circuit-graph artifact -- scored nodes and weighted edges.
+ *  @ingroup mech_interp
  */
 #pragma once
 

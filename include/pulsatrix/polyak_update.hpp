@@ -1,5 +1,6 @@
 /** @file polyak_update.hpp
  *  @brief Soft (Polyak / exponential-moving-average) target-network update, as used by SAC.
+ *  @ingroup rl
  */
 #pragma once
 

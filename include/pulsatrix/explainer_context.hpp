@@ -1,5 +1,6 @@
 /** @file explainer_context.hpp
  *  @brief Stable interface every explainer gets, regardless of type (charter Part 2 SS2).
+ *  @ingroup interpretability_dl
  */
 #pragma once
 

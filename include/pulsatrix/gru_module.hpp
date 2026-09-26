@@ -1,5 +1,6 @@
 /** @file gru_module.hpp
  *  @brief Single-layer GRU -- gated recurrence with a reset-gated candidate.
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -2,6 +2,7 @@
  *  @brief Batch normalization (Ioffe & Szegedy, 2015) -- per-channel statistics computed
  *         across the batch and spatial dimensions jointly, unlike GroupNormModule's
  *         per-(batch-row, group) statistics.
+ *  @ingroup dl_modules
  */
 #pragma once
 

@@ -1,5 +1,6 @@
 /** @file ppo_clipped_loss.hpp
  *  @brief PPO's clipped surrogate objective (Schulman et al. 2017) over a batched rollout.
+ *  @ingroup rl
  */
 #pragma once
 

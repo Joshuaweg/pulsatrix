@@ -1,0 +1,39 @@
+/**
+ * @defgroup dl_modules Deep Learning Modules and Layers
+ * @brief Core tensor/graph infrastructure, layers, optimizers, losses, and device backends --
+ *        the building blocks every other group is composed from.
+ */
+
+/**
+ * @defgroup interpretability Ad-hoc Interpretability
+ * @brief Post-hoc explanation methods applied to an already-trained model, as opposed to
+ *        the LRP relevance propagation built into each layer in @ref dl_modules.
+ */
+
+/**
+ * @defgroup interpretability_agnostic Model-Agnostic
+ * @ingroup interpretability
+ * @brief Explainers that only need a model's input/output behavior (perturb-and-observe),
+ *        with no access to gradients or internal activations.
+ */
+
+/**
+ * @defgroup interpretability_dl Deep Learning Approaches
+ * @ingroup interpretability
+ * @brief Explainers that use a model's gradients, activations, or internal structure
+ *        directly.
+ */
+
+/**
+ * @defgroup rl Reinforcement Learning
+ * @brief Environments, agents, and training algorithms (DQN, REINFORCE, A2C, PPO, SAC) built
+ *        on the @ref dl_modules tensor/autograd core.
+ */
+
+/**
+ * @defgroup mech_interp Mechanistic Interpretability
+ * @brief Tools for inspecting and probing a model's internal computation directly --
+ *        activation caching, linear probes, sparse autoencoders, circuit graphs -- plus the
+ *        GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI
+ *        research direction.
+ */

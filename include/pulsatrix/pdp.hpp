@@ -2,6 +2,7 @@
  *  @brief Partial Dependence Plot -- a global marginal-effect technique, sweeping one
  *         feature's value while averaging the model's response over a background set
  *         (charter addition 2026-09-19, see charter Decisions Log).
+ *  @ingroup interpretability_agnostic
  */
 #pragma once
 

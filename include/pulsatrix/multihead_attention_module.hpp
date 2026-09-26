@@ -1,6 +1,7 @@
 /** @file multihead_attention_module.hpp
  *  @brief Multi-head scaled dot-product attention -- this codebase's first Module composed
  *         out of other real Modules, plus AttnLRP's Eq. 15 bilinear relevance rule.
+ *  @ingroup dl_modules
  */
 #pragma once
 

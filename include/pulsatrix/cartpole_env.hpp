@@ -1,5 +1,6 @@
 /** @file cartpole_env.hpp
  *  @brief CartPole-v1 environment -- classic cart-pole balancing physics, discrete actions.
+ *  @ingroup rl
  */
 #pragma once
 

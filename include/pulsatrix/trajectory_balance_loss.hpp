@@ -1,5 +1,6 @@
 /** @file trajectory_balance_loss.hpp
  *  @brief GFlowNet Trajectory Balance loss (Malkin et al. 2022, arXiv:2201.13259).
+ *  @ingroup mech_interp
  */
 #pragma once
 

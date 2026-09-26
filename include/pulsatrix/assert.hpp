@@ -2,6 +2,7 @@
  *  @brief PULSATRIX_ASSERT -- debug-only invariant check for programmer errors, distinct from
  *         throw (used for caller-facing contract violations). See
  *         cpp_style_guide/context_style_project_conventions.md's assert-vs-throw table.
+ *  @ingroup dl_modules
  */
 #pragma once
 

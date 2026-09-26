@@ -1,6 +1,7 @@
 /** @file metrics_sink.hpp
  *  @brief Keeps monitoring/visualization tools out of the training core -- same OCP/DIP
  *         pattern as DeviceBackend/ExplainerContext.
+ *  @ingroup dl_modules
  */
 #pragma once
 

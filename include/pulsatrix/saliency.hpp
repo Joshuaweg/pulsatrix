@@ -1,6 +1,7 @@
 /** @file saliency.hpp
  *  @brief Saliency maps -- raw gradient of a target output w.r.t. the input (charter
  *         Part 1, Phase 2).
+ *  @ingroup interpretability_dl
  */
 #pragma once
 

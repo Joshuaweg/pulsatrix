@@ -1,5 +1,6 @@
 /** @file shape.hpp
  *  @brief Tensor dimension arithmetic -- rank, element count, per-dimension access.
+ *  @ingroup dl_modules
  */
 #pragma once
 

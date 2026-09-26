@@ -2,6 +2,7 @@
  *  @brief PULSATRIX_HIPBLAS_CHECK -- converts a hipBLAS call failure into a thrown C++ exception,
  *         parallel to PULSATRIX_HIP_CHECK (hip_check.hpp). Only compiled when PULSATRIX_ENABLE_HIP
  *         is set.
+ *  @ingroup dl_modules
  */
 #pragma once
 
