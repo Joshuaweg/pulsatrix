@@ -28,6 +28,8 @@ add_executable(pulsatrix_tests
     wav_reader_test.cpp
     audio_folder_dataset_test.cpp
     audio_transforms_test.cpp
+    audio_collate_test.cpp
+    audio_dataloader_integration_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
