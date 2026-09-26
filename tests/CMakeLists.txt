@@ -23,6 +23,8 @@ add_executable(pulsatrix_tests
     tokenizer_test.cpp
     vocabulary_test.cpp
     text_dataset_test.cpp
+    text_collate_test.cpp
+    text_dataloader_integration_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
