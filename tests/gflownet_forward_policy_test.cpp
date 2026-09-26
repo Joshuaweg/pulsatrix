@@ -128,5 +128,20 @@ TEST_F(GFlowNetForwardPolicyTest, MaskedProbsDoesNotConsumeTheLCG) {
     EXPECT_FLOAT_EQ(a.log_prob, b.log_prob);
 }
 
+TEST_F(GFlowNetForwardPolicyTest, NeverSelectsAMaskedActionWhenTheDrawIsExactlyZero) {
+    // Regression test: seed 53184's first next_unit() draw is exactly 0.0f (verified
+    // independently of this implementation -- the LCG is a pure deterministic function of the
+    // seed). With the old `cumulative >= u` check, a u of exactly 0.0 satisfied
+    // `cumulative(0) >= 0` at the very first scanned action regardless of its probability,
+    // silently selecting action 0 even when masked out. Found via a real training-run crash
+    // ("HyperGridEnv::step: illegal off-grid increment"), not by inspection -- see
+    // mission_detailed_balance_loss.md's AAR.
+    LinearModule net(2, 3, &backend);
+    GFlowNetForwardPolicy policy(&net, 3, &backend, /*seed=*/53184);
+    std::vector<bool> action_zero_masked = {false, true, true};
+    GFlowNetSampledAction result = policy.sample(obs(0.0f, 0.0f), action_zero_masked);
+    EXPECT_NE(result.action.data()[0], 0.0f);
+}
+
 }  // namespace
 }  // namespace pulsatrix
