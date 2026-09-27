@@ -1,6 +1,7 @@
 #include "pulsatrix/retnet_module.hpp"
 
 #include <stdexcept>
+#include <vector>
 
 #include "pulsatrix/assert.hpp"
 
@@ -18,6 +19,35 @@ Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* bac
         }
     }
     return out;
+}
+
+// Same additive epsilon-rule stabilizer every propagate_relevance() in this codebase uses
+// (MambaModule's own local stabilize(), duplicated per the per-module-owns-its-helpers
+// convention).
+float stabilize(float value, float epsilon) {
+    return value + epsilon * ((value >= 0.0f) ? 1.0f : -1.0f);
+}
+
+// AttnLRP Eq. 15 (Achtibat et al. 2024) -- the bilinear/"uniform" rule for a matmul
+// O = A @ B where BOTH operands carry relevance, duplicated from
+// MultiHeadAttentionModule's own (private, anonymous-namespace) helper of the same name --
+// see that file's doc comment for the full derivation of the factor-2 denominator. a:
+// (M,P) row-major, b: (P,Q) row-major, o/r_o: (M,Q) row-major, r_a: (M,P), r_b: (P,Q),
+// both caller-zero-filled accumulators.
+void bilinear_lrp_eq15(const float* a, const float* b, const float* o, const float* r_o, float* r_a, float* r_b,
+                       int64_t M, int64_t P, int64_t Q, float eps) {
+    for (int64_t i = 0; i < M; ++i) {
+        for (int64_t k = 0; k < Q; ++k) {
+            const float o_ik = o[i * Q + k];
+            const float denom = 2.0f * o_ik + eps * ((o_ik >= 0.0f) ? 1.0f : -1.0f);
+            const float scaled_r = r_o[i * Q + k] / denom;
+            for (int64_t j = 0; j < P; ++j) {
+                const float contribution = a[i * P + j] * b[j * Q + k] * scaled_r;
+                r_a[i * P + j] += contribution;
+                r_b[j * Q + k] += contribution;
+            }
+        }
+    }
 }
 }  // namespace
 
@@ -264,19 +294,158 @@ Tensor RetNetModule::backward(const Tensor& grad_output) {
 }
 
 Tensor RetNetModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
-    // Deliberately NOT implemented -- see the class-level note and the campaign's logged
-    // Phase 5 charter deviation. This override exists so Module's pure-virtual LRP contract
-    // is satisfied honestly; it redistributes nothing, and must never be made to silently
-    // return zeros or a gradient-based substitute.
-    //
-    // The device guard is kept ahead of the throw so this entry point is consistent with
-    // forward()/backward() and keeps firing under the death-test convention every module
-    // here follows; it becomes load-bearing unchanged the moment a real rule lands.
+    if (!has_forwarded_) {
+        throw std::logic_error("RetNetModule::propagate_relevance: called before any forward()");
+    }
+    const int64_t N = last_input_.shape().dim(0);
+    const int64_t L = last_L_;
+    const int64_t D = d_model_;
+    const int64_t Kd = key_dim_;
+    if (relevance_out.rank() != 3 || relevance_out.shape().dim(0) != N || relevance_out.shape().dim(1) != L ||
+        relevance_out.shape().dim(2) != D) {
+        throw std::invalid_argument(
+            "RetNetModule::propagate_relevance: relevance_out must be (N, L, d_model) matching the cached "
+            "forward shape");
+    }
+    // Dereferences Tensor::data() directly in raw host loops -- not yet backend-generic,
+    // mirroring forward_impl()/backward().
     PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
-    (void)relevance_out;  // NDEBUG builds compile PULSATRIX_ASSERT away entirely.
-    (void)config;
-    throw std::logic_error(
-        "RetNetModule::propagate_relevance: LRP rule not yet implemented -- see campaign Decision Point 2");
+
+    const float eps = config.epsilon;
+    Tensor relevance_in(last_input_.shape(), backend_);
+
+    // Per batch row: reconstruct the causal, gamma-decay-gated "attention-like" matrix
+    // G[t,s] = gamma^(t-s)*(Q_t.K_s) for s <= t (0 above the diagonal -- see the header's
+    // derivation note for why this is exactly the module's own unrolled forward math, not a
+    // fresh approximation), then apply AttnLRP Eq. 15 twice -- once for Y = G @ V, once for
+    // QK = Q @ K^T -- with an exact constant-scale identity pass-through for gamma^(t-s) in
+    // between, composed the same way MultiHeadAttentionModule's own Eq. 15 chain composes
+    // across its Q@K^T -> softmax -> Attn@V pipeline (RetNet has no softmax in the middle,
+    // so there is one fewer stage and no non-conserving DTD approximation anywhere in it).
+    for (int64_t b = 0; b < N; ++b) {
+        std::vector<float> Q(static_cast<size_t>(L * Kd));
+        std::vector<float> K(static_cast<size_t>(L * Kd));
+        std::vector<float> V(static_cast<size_t>(L * D));
+        for (int64_t t = 0; t < L; ++t) {
+            for (int64_t i = 0; i < Kd; ++i) {
+                Q[static_cast<size_t>(t * Kd + i)] = last_q_.data()[(b * L + t) * Kd + i];
+                K[static_cast<size_t>(t * Kd + i)] = last_k_.data()[(b * L + t) * Kd + i];
+            }
+            for (int64_t j = 0; j < D; ++j) {
+                V[static_cast<size_t>(t * D + j)] = last_v_.data()[(b * L + t) * D + j];
+            }
+        }
+
+        // QK[t,s] = Q_t.K_s (all pairs; the s > t entries are never read for anything but
+        // the Eq. 15 denominator formula, which naturally produces 0 there since a[i,j] = G
+        // is exactly 0 there too). G[t,s] = gamma^(t-s)*QK[t,s] for s <= t, built by
+        // iterating s downward from t while multiplying by gamma each step (mirrors
+        // forward_impl()'s own incremental decay application; avoids std::pow entirely, so
+        // there is no risk of a negative-base/non-integer-exponent edge case even though
+        // gamma is deliberately unconstrained).
+        std::vector<float> QK(static_cast<size_t>(L * L), 0.0f);
+        std::vector<float> G(static_cast<size_t>(L * L), 0.0f);
+        for (int64_t t = 0; t < L; ++t) {
+            float decay = 1.0f;
+            for (int64_t s = t; s >= 0; --s) {
+                float dot = 0.0f;
+                for (int64_t i = 0; i < Kd; ++i) {
+                    dot += Q[static_cast<size_t>(t * Kd + i)] * K[static_cast<size_t>(s * Kd + i)];
+                }
+                QK[static_cast<size_t>(t * L + s)] = dot;
+                G[static_cast<size_t>(t * L + s)] = decay * dot;
+                decay *= gamma_;
+            }
+        }
+
+        // Y[t,j] = sum_{s<=t} G[t,s]*V[s,j] -- exactly forward_impl()'s own o_t, recomputed
+        // from the unrolled form rather than cached separately (see the header's derivation
+        // note: this equals the recurrence's output up to floating-point summation order).
+        std::vector<float> Y(static_cast<size_t>(L * D), 0.0f);
+        for (int64_t t = 0; t < L; ++t) {
+            for (int64_t j = 0; j < D; ++j) {
+                float acc = 0.0f;
+                for (int64_t s = 0; s <= t; ++s) {
+                    acc += G[static_cast<size_t>(t * L + s)] * V[static_cast<size_t>(s * D + j)];
+                }
+                Y[static_cast<size_t>(t * D + j)] = acc;
+            }
+        }
+
+        std::vector<float> r_y(static_cast<size_t>(L * D));
+        for (int64_t t = 0; t < L; ++t) {
+            for (int64_t j = 0; j < D; ++j) {
+                r_y[static_cast<size_t>(t * D + j)] = relevance_out.data()[(b * L + t) * D + j];
+            }
+        }
+
+        // Step 1: Eq. 15 on Y = G @ V -- gives r_g (relevance of the decay-gated scores)
+        // and r_v (relevance of V), each conserving exactly against r_y via the rule's
+        // factor-2 denominator.
+        std::vector<float> r_g(static_cast<size_t>(L * L), 0.0f);
+        std::vector<float> r_v(static_cast<size_t>(L * D), 0.0f);
+        bilinear_lrp_eq15(G.data(), V.data(), Y.data(), r_y.data(), r_g.data(), r_v.data(), L, L, D, eps);
+
+        // Step 2: gamma^(t-s) is a fixed, known scalar hyperparameter (not merely
+        // detached-as-if-constant, unlike Mamba's Abar/Bbar or RWKV's decay/kk) scaling
+        // QK[t,s] into G[t,s] -- a single-term rescaling under which the epsilon rule is
+        // exactly the identity (same reasoning as MultiHeadAttentionModule's own
+        // 1/sqrt(head_dim)-scale note): R(QK[t,s]) == R(G[t,s]) exactly. r_g is already
+        // exactly 0 wherever G is exactly 0 (including every s > t entry), so there is no
+        // 0/0 case to guard and no stabilizer is needed for this step at all.
+        const std::vector<float>& r_qk = r_g;
+
+        // Step 3: Eq. 15 on QK = Q @ K^T.
+        std::vector<float> K_T(static_cast<size_t>(Kd * L));
+        for (int64_t s = 0; s < L; ++s) {
+            for (int64_t i = 0; i < Kd; ++i) {
+                K_T[static_cast<size_t>(i * L + s)] = K[static_cast<size_t>(s * Kd + i)];
+            }
+        }
+        std::vector<float> r_q(static_cast<size_t>(L * Kd), 0.0f);
+        std::vector<float> r_kt(static_cast<size_t>(Kd * L), 0.0f);
+        bilinear_lrp_eq15(Q.data(), K_T.data(), QK.data(), r_qk.data(), r_q.data(), r_kt.data(), L, Kd, L, eps);
+        std::vector<float> r_k(static_cast<size_t>(L * Kd));
+        for (int64_t s = 0; s < L; ++s) {
+            for (int64_t i = 0; i < Kd; ++i) {
+                r_k[static_cast<size_t>(s * Kd + i)] = r_kt[static_cast<size_t>(i * L + s)];
+            }
+        }
+
+        // Step 4: the three no-bias linear projections Q_t = x_t@W_Q (and K_t/V_t alike) --
+        // the standard weighted-connection epsilon/z-rule, denominator the projection's own
+        // pre-output value (there is no bias to exclude, unlike LinearModule). All three
+        // land on the same relevance_in slot via fan-in accumulation, matching
+        // MultiHeadAttentionModule's own Step 1' treatment of its Q/K/V projections.
+        for (int64_t t = 0; t < L; ++t) {
+            const float* x_t = &last_input_.data()[(b * L + t) * D];
+            float* r_x = &relevance_in.data()[(b * L + t) * D];
+            for (int64_t i = 0; i < Kd; ++i) {
+                const float q_val = Q[static_cast<size_t>(t * Kd + i)];
+                const float denom_q = stabilize(q_val, eps);
+                const float rq = r_q[static_cast<size_t>(t * Kd + i)];
+                for (int64_t e = 0; e < D; ++e) {
+                    r_x[e] += (x_t[e] * w_q_.data()[e * Kd + i] / denom_q) * rq;
+                }
+                const float k_val = K[static_cast<size_t>(t * Kd + i)];
+                const float denom_k = stabilize(k_val, eps);
+                const float rk = r_k[static_cast<size_t>(t * Kd + i)];
+                for (int64_t e = 0; e < D; ++e) {
+                    r_x[e] += (x_t[e] * w_k_.data()[e * Kd + i] / denom_k) * rk;
+                }
+            }
+            for (int64_t j = 0; j < D; ++j) {
+                const float v_val = V[static_cast<size_t>(t * D + j)];
+                const float denom_v = stabilize(v_val, eps);
+                const float rv = r_v[static_cast<size_t>(t * D + j)];
+                for (int64_t e = 0; e < D; ++e) {
+                    r_x[e] += (x_t[e] * w_v_.data()[e * D + j] / denom_v) * rv;
+                }
+            }
+        }
+    }
+
+    return relevance_in;
 }
 
 }  // namespace pulsatrix
