@@ -129,6 +129,8 @@ add_executable(pulsatrix_tests
     acquisition_functions_test.cpp
     gp_bo_test.cpp
     gp_bo_xor_integration_test.cpp
+    tpe_test.cpp
+    tpe_xor_integration_test.cpp
     lime_test.cpp
     kernel_shap_test.cpp
     pdp_test.cpp
