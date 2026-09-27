@@ -57,6 +57,8 @@ add_executable(pulsatrix_tests
     fixed_topology_xor_network_test.cpp
     pbt_test.cpp
     pbt_xor_integration_test.cpp
+    generator_population_test.cpp
+    generator_population_gan_integration_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
