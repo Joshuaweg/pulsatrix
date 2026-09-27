@@ -85,6 +85,7 @@ add_executable(pulsatrix_tests
     datalog_term_test.cpp
     datalog_atom_test.cpp
     datalog_rule_test.cpp
+    datalog_fact_database_test.cpp
     conv2d_module_test.cpp
     rms_norm_module_test.cpp
     layer_norm_module_test.cpp

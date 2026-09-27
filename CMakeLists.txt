@@ -70,6 +70,7 @@ add_library(pulsatrix_core
     src/satisfaction_loss.cpp
     src/neuro_symbolic_toy_kb.cpp
     src/datalog_rule.cpp
+    src/datalog_fact_database.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
