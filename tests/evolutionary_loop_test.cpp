@@ -74,7 +74,7 @@ TEST(EvolutionaryLoopTest, SolvesOneMaxViaGenerationalReplacement) {
         }
 
         auto produce_offspring =
-            [&rng](const std::vector<Individual<std::vector<bool>, double>>& pop) {
+            [&rng, kGenomeLength](const std::vector<Individual<std::vector<bool>, double>>& pop) {
                 size_t i1 = TournamentSelect(pop, 3, rng);
                 size_t i2 = TournamentSelect(pop, 3, rng);
                 auto [child1, child2] = OnePointCrossover(pop[i1].genes, pop[i2].genes, rng);
