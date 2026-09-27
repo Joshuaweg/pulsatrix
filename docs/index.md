@@ -40,10 +40,22 @@ implementation (`HyperGridEnv`, `TrajectoryBalanceLoss`, `DetailedBalanceLoss`,
 `SubTBLoss(λ)`) — non-goal-directed training objectives motivated by Bengio's Scientist AI /
 LawZero research direction.
 
+**[Evolutionary Computation](evolutionary-computation/index.md)**: a from-scratch,
+DEAP-free genetic-algorithm core (population/fitness/selection/crossover/mutation, NSGA-II),
+neuroevolution (`NEATGenome`, Evolution Strategies), evolutionary hyperparameter optimization
+(`CMAES`), Population Based Training (`RunPBT`), and evolutionary generative-model training
+(`GeneratorPopulation`, E-GAN's `MutationObjective`s).
+
+**[Hyperparameter Optimization](hyperparameter-optimization/index.md)**: a typed
+`SearchSpace`/`Configuration`/`Trial` core, grid/random search, Bayesian optimization
+(`GaussianProcessRegressor`, TPE), and bandit-based early stopping (Successive Halving,
+Hyperband, ASHA) — every algorithm a from-scratch reimplementation, never a runtime
+dependency on a Python HPO library.
+
 **Bindings**: pybind11 (`bindings/pulsatrix_py.cpp`) exposing `Tensor`, core modules, and the
 explainer suite to Python.
 
-1250+ tests, green in both Debug and Release, on Windows and Linux.
+1700+ tests, green in both Debug and Release, on Windows and Linux.
 
 ## Where to go next
 

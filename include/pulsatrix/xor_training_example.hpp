@@ -60,6 +60,17 @@ public:
     /** @brief Test/inspection accessor. */
     [[nodiscard]] const Tensor& linear1_weight() const { return linear1_.weight(); }
 
+    /**
+     * @brief Mutable layer accessors -- Population Based Training's own exploit step needs to
+     *        read/write this network's live weights directly (to copy a top performer's
+     *        weights onto a bottom performer mid-training, via each LinearModule's own
+     *        parameters()), which no existing const-only accessor supports. Logged as a small
+     *        necessary scope addition, found by
+     *        campaign_exai_dl_library_evolutionary_deep_learning's Phase 4 Mission 0.
+     */
+    [[nodiscard]] LinearModule& linear1() { return linear1_; }
+    [[nodiscard]] LinearModule& linear2() { return linear2_; }
+
 private:
     DeviceBackend* backend_;
     LinearModule linear1_;
