@@ -44,6 +44,7 @@ add_executable(pulsatrix_tests
     trial_test.cpp
     hpo_sampling_test.cpp
     hpo_xor_tuning_integration_test.cpp
+    hpo_genotype_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
