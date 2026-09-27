@@ -99,6 +99,36 @@ NeuralPredicateQueryResult NeuralPredicateDatalogBridge::evaluate(const Tensor& 
     return NeuralPredicateQueryResult{query.value, query.grad};
 }
 
+NeuralPredicateRelevanceResult NeuralPredicateDatalogBridge::propagate_relevance(double relevance_seed,
+                                                                                   const LRPRuleConfig& config) {
+    if (!has_evaluated_) {
+        throw std::logic_error("NeuralPredicateDatalogBridge::propagate_relevance: evaluate() has not been called yet");
+    }
+
+    // datalog_lrp's rule operates on the plain real-valued (+, x) semiring's fixpoint, not the
+    // DualSemiring pass evaluate() used for the gradient -- re-run the ordinary weighted
+    // engine on the identical facts (same s value already cached from evaluate()).
+    const double s_value = static_cast<double>(last_s_.at({0, 0}));
+    WeightedFactDatabase<double> facts = constant_edge_facts();
+    facts.set(Atom("edge", {C("a"), C("b")}), s_value);
+    WeightedFactDatabase<double> fixpoint = naive_evaluate_weighted<RealSemiring<double>>(diamond_ancestor_program(), facts);
+
+    RelevanceResult datalog_relevance = propagate_relevance_weighted(
+        diamond_ancestor_program(), fixpoint, Atom("ancestor", {C("a"), C("d")}), relevance_seed,
+        static_cast<double>(config.epsilon));
+
+    const double r_s = datalog_relevance.base_facts.at(Atom("edge", {C("a"), C("b")}));
+
+    // Continue through the predicate's own chain: sigmoid pass-through (Phase 2 Mission 0's
+    // Sigmoid Design Decision precedent -- no gradient-shaped rule for a monotonic bijective
+    // single-input nonlinearity), then LinearModule's real, unmodified propagate_relevance().
+    Tensor r_z(last_s_.shape(), backend_, last_s_.device());
+    r_z.data()[0] = static_cast<float>(r_s);
+    Tensor r_x = predicate_.propagate_relevance(r_z, config);
+
+    return NeuralPredicateRelevanceResult{datalog_relevance.base_facts, r_x};
+}
+
 void NeuralPredicateDatalogBridge::backward() {
     if (!has_evaluated_) {
         throw std::logic_error("NeuralPredicateDatalogBridge::backward: evaluate() has not been called yet");

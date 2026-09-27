@@ -13,10 +13,12 @@
 #pragma once
 
 #include "pulsatrix/datalog_dual_semiring.hpp"
+#include "pulsatrix/datalog_lrp.hpp"
 #include "pulsatrix/datalog_rule.hpp"
 #include "pulsatrix/datalog_semiring.hpp"
 #include "pulsatrix/datalog_weighted_fact_database.hpp"
 #include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
 #include "pulsatrix/tensor.hpp"
 
 namespace pulsatrix::datalog {
@@ -30,6 +32,37 @@ namespace pulsatrix::datalog {
 struct NeuralPredicateQueryResult {
     double query_weight;             ///< ancestor(a,d)'s derived weight.
     double grad_wrt_predicate_output;  ///< d(query_weight) / d(edge(a,b)'s weight, i.e. the sigmoid output).
+};
+
+/**
+ * @brief The result of one `NeuralPredicateDatalogBridge::propagate_relevance()` call --
+ *        Phase 3 Mission 3's own deliverable (LRP for the Datalog/provenance-semiring
+ *        circuit), extended end-to-end through the neural predicate's own `Module` chain.
+ * @note **Relevance-termination decision (Stage 3 design question 2, Mission 3)**: relevance
+ *       does NOT stop at `edge(a,b)` (the neural-predicate-weighted base fact) -- it
+ *       continues into the predicate's own `LinearModule`+sigmoid chain via composition,
+ *       reusing Phase 1's existing `propagate_relevance` methods (no new rule): `datalog_lrp`'s
+ *       own `propagate_relevance_weighted` treats `edge(a,b)` as an ordinary leaf and reports
+ *       its relevance in `base_fact_relevance` exactly like every constant base fact; this
+ *       class then takes that one value, passes it through sigmoid unchanged (pass-through,
+ *       per Phase 2 Mission 0's own Sigmoid Design Decision precedent -- a monotonic bijective
+ *       single-input nonlinearity does not get its own gradient-shaped rule), and feeds it
+ *       into the predicate's real, unmodified `LinearModule::propagate_relevance()` to get
+ *       `relevance_wrt_x` -- a genuine end-to-end trace from a Datalog query back to the
+ *       neural predicate's raw input, composed from two already-proven-correct rules rather
+ *       than a new one invented for this seam.
+ */
+struct NeuralPredicateRelevanceResult {
+    /** @brief Relevance at every extensional/base fact in the diamond program, per
+     *         `RelevanceResult::base_facts` (datalog_lrp.hpp) -- includes `edge(a,b)`'s own
+     *         "Datalog-level" relevance (i.e. relevance w.r.t. the neural predicate's
+     *         sigmoid output `s`) before it is further propagated into the predicate's own
+     *         `Module` chain below. */
+    RelevanceMap base_fact_relevance;
+    /** @brief `edge(a,b)`'s relevance, continued through the predicate's own sigmoid
+     *         (pass-through) and `LinearModule::propagate_relevance()`, shape (1, 1) --
+     *         relevance at the predicate's raw input `x`. */
+    Tensor relevance_wrt_x;
 };
 
 /**
@@ -123,6 +156,23 @@ public:
      * @throws std::logic_error if called before evaluate().
      */
     void backward();
+
+    /**
+     * @brief Phase 3 Mission 3's own deliverable: propagates relevance from `ancestor(a,d)`'s
+     *        derived weight back through the diamond-graph derivation circuit (via
+     *        `datalog_lrp::propagate_relevance_weighted`, the hand-derived `(+, x)`-circuit
+     *        LRP rule) and, since `edge(a,b)` is this bridge's own neural-predicate-weighted
+     *        base fact, on through the predicate's own `Module` chain (sigmoid pass-through +
+     *        `LinearModule::propagate_relevance()`) -- giving relevance at the predicate's raw
+     *        input `x`, composed rather than a new rule (see `NeuralPredicateRelevanceResult`'s
+     *        own doc comment for the full rationale).
+     * @param relevance_seed Relevance seeded at `ancestor(a,d)`'s derived weight.
+     * @param config Epsilon for both the Datalog-level split and `LinearModule`'s own
+     *        epsilon rule.
+     * @throws std::logic_error if called before `evaluate()`.
+     */
+    [[nodiscard]] NeuralPredicateRelevanceResult propagate_relevance(double relevance_seed,
+                                                                       const LRPRuleConfig& config = LRPRuleConfig{});
 
     /** @brief The neural predicate's own `LinearModule` -- test/inspection accessor. */
     [[nodiscard]] LinearModule& predicate() { return predicate_; }
