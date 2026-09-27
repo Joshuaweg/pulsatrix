@@ -68,6 +68,7 @@ add_library(pulsatrix_core
     src/negation_module.cpp
     src/aggregator_module.cpp
     src/satisfaction_loss.cpp
+    src/neuro_symbolic_toy_kb.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
@@ -257,6 +258,9 @@ endif()
 if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(xor_demo examples/xor_demo.cpp)
     target_link_libraries(xor_demo PRIVATE pulsatrix_core)
+
+    add_executable(neuro_symbolic_toy_kb_demo examples/neuro_symbolic_toy_kb_demo.cpp)
+    target_link_libraries(neuro_symbolic_toy_kb_demo PRIVATE pulsatrix_core)
 
     add_executable(explainer_demo examples/explainer_demo.cpp)
     target_link_libraries(explainer_demo PRIVATE pulsatrix_core)
