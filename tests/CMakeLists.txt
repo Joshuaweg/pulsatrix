@@ -76,6 +76,9 @@ add_executable(pulsatrix_tests
     swiglu_module_test.cpp
     transformer_block_test.cpp
     residual_module_test.cpp
+    conjunction_module_test.cpp
+    disjunction_module_test.cpp
+    negation_module_test.cpp
     conv2d_module_test.cpp
     rms_norm_module_test.cpp
     layer_norm_module_test.cpp
