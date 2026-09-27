@@ -37,6 +37,8 @@ add_executable(pulsatrix_tests
     selection_test.cpp
     crossover_test.cpp
     mutation_test.cpp
+    survivor_selection_test.cpp
+    evolutionary_loop_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
