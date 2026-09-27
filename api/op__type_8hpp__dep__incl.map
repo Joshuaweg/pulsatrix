@@ -1,125 +1,130 @@
 <map id="include/pulsatrix/op_type.hpp" name="include/pulsatrix/op_type.hpp">
-<area shape="rect" id="Node000001" title="Closed set of operation categories every graph Node is tagged with." alt="" coords="375,5,525,45"/>
-<area shape="rect" id="Node000002" href="$activation__snapshot_8hpp.html" title="Self&#45;contained, enumerable copy of one forward pass&#39;s cached activations." alt="" coords="5,167,204,207"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="398,53,147,169,145,164,396,49"/>
-<area shape="rect" id="Node000007" href="$circuit__graph_8hpp.html" title="Self&#45;contained circuit&#45;graph artifact – scored nodes and weighted edges." alt="" coords="228,167,403,207"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="393,54,366,72,343,95,333,112,326,131,319,167,314,166,321,130,328,110,339,92,362,68,390,50"/>
-<area shape="rect" id="Node000008" href="$computation__graph_8hpp.html" title="Owns and exposes graph structure – the interpretability substrate every explainer (Phase 2+) walks." alt="" coords="478,167,694,207"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="510,50,538,68,561,92,572,110,580,130,587,166,582,167,575,131,568,112,557,95,534,72,507,54"/>
-<area shape="rect" id="Node000010" href="$module_8hpp.html" title="Abstract base every layer subclasses – NVI forward(), pure&#45;virtual LRP contract." alt="" coords="3007,328,3218,353"/>
-<area shape="poly" id="edge69_Node000001_Node000010" title=" " alt="" coords="540,34,3016,325,3016,331,539,40"/>
-<area shape="rect" id="Node000048" href="$node_8hpp.html" title="Computation graph node – op type, shape, optional label, parent/child edges." alt="" coords="353,93,547,119"/>
-<area shape="poly" id="edge70_Node000001_Node000048" title=" " alt="" coords="453,59,453,93,447,93,447,59"/>
-<area shape="rect" id="Node000003" href="$explainer__context_8hpp.html" title="Stable interface every explainer gets, regardless of type (charter Part 2 SS2)." alt="" coords="234,577,429,617"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="129,217,159,272,170,305,174,339,174,422,177,448,186,472,200,495,217,515,257,550,296,575,293,579,254,554,213,519,196,498,182,475,172,450,169,423,169,339,164,306,154,274,124,219"/>
-<area shape="rect" id="Node000004" href="$grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="37,665,199,705"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="273,625,166,668,164,663,271,620"/>
-<area shape="rect" id="Node000005" href="$integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="303,753,504,793"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="405,621,431,639,452,664,458,688,452,713,439,736,424,755,420,752,435,733,447,711,453,688,448,667,428,643,402,626"/>
-<area shape="rect" id="Node000006" href="$saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="224,673,439,698"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="334,631,334,672,329,672,329,631"/>
-<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="352,707,389,751,385,755,348,710"/>
-<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="298,220,271,274,262,307,258,339,258,422,264,467,280,510,300,547,319,575,314,578,295,550,275,512,259,469,253,423,253,339,257,305,266,273,293,218"/>
-<area shape="poly" id="edge67_Node000008_Node000003" title=" " alt="" coords="571,220,528,282,492,317,459,341,428,365,398,403,374,449,356,498,337,578,332,576,351,496,369,447,393,400,425,361,456,336,488,313,524,278,566,217"/>
-<area shape="rect" id="Node000009" href="$autograd_8hpp.html" title="Reverse&#45;mode autodiff – walks a ComputationGraph backward, accumulating gradients via per&#45;node backwa..." alt="" coords="293,255,513,280"/>
-<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="531,214,431,257,429,252,529,209"/>
-<area shape="poly" id="edge68_Node000008_Node000010" title=" " alt="" coords="708,195,1211,233,1861,277,2512,311,3007,333,3007,338,2512,317,1861,283,1210,239,708,200"/>
-<area shape="poly" id="edge11_Node000009_Node000003" title=" " alt="" coords="391,293,364,342,341,402,332,451,329,499,332,577,327,577,324,499,327,450,335,401,359,339,386,290"/>
-<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="527,269,3007,334,3007,339,527,275"/>
-<area shape="poly" id="edge25_Node000010_Node000003" title=" " alt="" coords="2993,346,2385,351,1541,363,784,380,537,391,465,397,434,404,418,416,408,429,398,458,392,492,378,531,347,579,343,576,373,528,387,490,393,457,404,427,415,413,432,399,464,392,537,386,783,375,1541,358,2385,346,2993,340"/>
-<area shape="rect" id="Node000011" href="$adam__optimizer_8hpp.html" title="Adam optimizer – operates uniformly across any Module&#39;s parameters()." alt="" coords="5789,401,5959,441"/>
-<area shape="poly" id="edge13_Node000010_Node000011" title=" " alt="" coords="3232,339,3748,341,4484,349,5230,367,5541,381,5777,399,5789,400,5788,405,5776,404,5541,386,5230,372,4484,354,3748,347,3232,345"/>
-<area shape="rect" id="Node000014" href="$avg__pool2d__module_8hpp.html" title="2D average pooling, non&#45;overlapping windows (stride == kernel), no padding." alt="" coords="445,401,604,441"/>
-<area shape="poly" id="edge16_Node000010_Node000014" title=" " alt="" coords="2994,345,2506,347,1820,355,1125,373,836,386,617,404,605,406,604,400,616,399,836,381,1125,367,1819,349,2506,341,2994,339"/>
-<area shape="rect" id="Node000015" href="$batch__norm__module_8hpp.html" title="Batch normalization (Ioffe &amp; Szegedy, 2015) – per&#45;channel statistics computed across the batch and sp..." alt="" coords="629,401,799,441"/>
-<area shape="poly" id="edge17_Node000010_Node000015" title=" " alt="" coords="2993,345,2541,349,1911,358,1277,376,1013,388,813,404,800,406,799,400,812,399,1013,383,1277,370,1911,353,2541,344,2993,340"/>
-<area shape="rect" id="Node000016" href="$categorical__policy__agent_8hpp.html" title="Stochastic categorical (discrete&#45;action) policy over a logit&#45;producing Module." alt="" coords="824,401,1031,441"/>
-<area shape="poly" id="edge18_Node000010_Node000016" title=" " alt="" coords="2993,346,2019,363,1456,380,1221,391,1044,404,1031,405,1031,400,1043,399,1221,386,1456,375,2019,358,2993,341"/>
-<area shape="rect" id="Node000017" href="$conv2d__module_8hpp.html" title="2D convolution – implemented via im2col + DeviceBackend::gemm (no new backend primitive)." alt="" coords="6183,401,6365,441"/>
-<area shape="poly" id="edge19_Node000010_Node000017" title=" " alt="" coords="3232,339,3815,340,4666,347,5113,354,5534,365,5897,379,6172,399,6183,400,6183,405,6171,404,5897,385,5534,370,5113,359,4666,352,3815,345,3232,344"/>
-<area shape="rect" id="Node000018" href="$dqn__agent_8hpp.html" title="Epsilon&#45;greedy DQN policy over an arbitrary Q&#45;network Module." alt="" coords="1055,401,1213,441"/>
-<area shape="poly" id="edge21_Node000010_Node000018" title=" " alt="" coords="2993,346,2615,351,2105,361,1597,379,1386,390,1226,404,1214,406,1213,400,1226,399,1386,385,1597,373,2104,356,2614,346,2993,340"/>
-<area shape="rect" id="Node000019" href="$dqn__target_8hpp.html" title="DQN Bellman target computation (vanilla + Double DQN) and target&#45;network hard sync." alt="" coords="1237,401,1396,441"/>
-<area shape="poly" id="edge22_Node000010_Node000019" title=" " alt="" coords="2994,346,2191,363,1739,380,1552,391,1409,404,1397,406,1396,400,1408,399,1551,386,1739,375,2191,358,2994,341"/>
-<area shape="rect" id="Node000020" href="$dropout__module_8hpp.html" title="Inverted dropout – the first module whose forward behavior genuinely differs between training and inf..." alt="" coords="1421,401,1605,441"/>
-<area shape="poly" id="edge23_Node000010_Node000020" title=" " alt="" coords="2994,344,2743,345,2402,353,2012,371,1813,386,1618,404,1605,406,1605,400,1618,399,1813,380,2012,366,2402,348,2743,340,2994,339"/>
-<area shape="rect" id="Node000021" href="$embedding__module_8hpp.html" title="Lookup&#45;table (row&#45;select) layer – y = W[index], batched (N, L) &#45;&gt; (N, L, embedding_dim)." alt="" coords="1629,401,1836,441"/>
-<area shape="poly" id="edge24_Node000010_Node000021" title=" " alt="" coords="2994,346,2779,350,2494,360,2173,377,1849,404,1837,405,1836,400,1848,399,2173,372,2494,354,2779,345,2994,340"/>
-<area shape="rect" id="Node000022" href="$flatten__module_8hpp.html" title="Reshape&#45;only Module – flattens every non&#45;batch dim of a (N, ...) input to (N, flattened_features),..." alt="" coords="5983,401,6159,441"/>
-<area shape="poly" id="edge26_Node000010_Node000022" title=" " alt="" coords="3232,339,3781,341,4574,348,4989,355,5380,366,5717,380,5972,399,5983,400,5983,405,5971,404,5716,385,5380,371,4989,361,4574,353,3781,346,3232,345"/>
-<area shape="rect" id="Node000023" href="$gflownet__forward__policy_8hpp.html" title="Masked stochastic categorical policy over a logit&#45;producing Module – P_F for GFlowNet training object..." alt="" coords="5080,401,5271,441"/>
-<area shape="poly" id="edge28_Node000010_Node000023" title=" " alt="" coords="3232,341,4149,359,4676,376,4895,387,5061,399,5080,401,5079,406,5060,404,4894,392,4675,381,4149,364,3232,346"/>
-<area shape="rect" id="Node000025" href="$group__norm__module_8hpp.html" title="Group normalization (Wu &amp; He, 2018) – rank&#45;3 (C, H, W), matching Conv2DModule&#39;s convention,..." alt="" coords="2071,401,2242,441"/>
-<area shape="poly" id="edge30_Node000010_Node000025" title=" " alt="" coords="2994,348,2660,366,2457,382,2254,404,2242,406,2242,400,2254,399,2457,376,2660,360,2993,343"/>
-<area shape="rect" id="Node000026" href="$gru__module_8hpp.html" title="Single&#45;layer GRU – gated recurrence with a reset&#45;gated candidate." alt="" coords="2266,401,2421,441"/>
-<area shape="poly" id="edge31_Node000010_Node000026" title=" " alt="" coords="2994,351,2736,370,2585,385,2434,404,2421,406,2420,401,2434,399,2584,380,2736,364,2993,346"/>
-<area shape="rect" id="Node000027" href="$layer__norm__module_8hpp.html" title="Layer normalization (Ba et al., 2016) – mean&#45;centered/scaled RMSNormModule sibling." alt="" coords="2445,401,2612,441"/>
-<area shape="poly" id="edge32_Node000010_Node000027" title=" " alt="" coords="2994,357,2819,377,2625,404,2613,406,2612,401,2624,399,2819,372,2993,351"/>
-<area shape="rect" id="Node000028" href="$linear__module_8hpp.html" title="Dense/fully&#45;connected layer – the reference Module implementation." alt="" coords="5401,401,5571,441"/>
-<area shape="poly" id="edge33_Node000010_Node000028" title=" " alt="" coords="3232,339,3587,340,4105,347,4710,365,5022,380,5328,399,5401,406,5400,411,5327,404,5021,385,4709,370,4104,352,3587,345,3232,344"/>
-<area shape="rect" id="Node000030" href="$multihead__attention__module_8hpp.html" title="Multi&#45;head scaled dot&#45;product attention – this codebase&#39;s first Module composed out of other real Mod..." alt="" coords="4639,489,4839,529"/>
-<area shape="poly" id="edge46_Node000010_Node000030" title=" " alt="" coords="3232,340,3566,343,3990,353,4375,370,4514,383,4563,390,4596,399,4613,407,4624,417,4648,439,4714,487,4711,491,4644,443,4620,421,4610,412,4594,404,4562,396,4514,388,4375,375,3990,358,3566,349,3232,345"/>
-<area shape="rect" id="Node000031" href="$transformer__block_8hpp.html" title="Pre&#45;LN transformer block – Phase 3&#39;s literal exit&#45;gate deliverable, third and last composition missio..." alt="" coords="4817,577,5027,617"/>
-<area shape="poly" id="edge66_Node000010_Node000031" title=" " alt="" coords="3232,341,4267,360,4783,377,4948,387,4997,393,5018,399,5025,410,5026,420,5019,442,5010,458,4999,468,4988,478,4976,491,4950,537,4932,578,4927,576,4945,535,4972,488,4984,474,4996,464,5006,455,5014,440,5021,420,5020,412,5015,403,4995,398,4948,392,4782,382,4267,365,3232,346"/>
-<area shape="rect" id="Node000033" href="$swiglu__module_8hpp.html" title="SwiGLU gated feedforward block – second module composed from real LinearModule sub&#45;objects,..." alt="" coords="5201,489,5377,529"/>
-<area shape="poly" id="edge65_Node000010_Node000033" title=" " alt="" coords="3232,340,3737,346,4412,358,5010,375,5203,386,5260,392,5285,399,5298,420,5303,445,5297,489,5292,489,5297,445,5293,422,5282,403,5259,397,5203,391,5010,380,4412,363,3737,352,3232,346"/>
-<area shape="rect" id="Node000034" href="$lstm__module_8hpp.html" title="Single&#45;layer LSTM – this codebase&#39;s first gated recurrent module." alt="" coords="2637,401,2799,441"/>
-<area shape="poly" id="edge43_Node000010_Node000034" title=" " alt="" coords="3042,359,2812,404,2800,406,2799,401,2811,399,3040,353"/>
-<area shape="rect" id="Node000035" href="$mamba__module_8hpp.html" title="Mamba/S6 selective&#45;state&#45;space recurrence with the MambaLRP relevance rule." alt="" coords="2823,401,3007,441"/>
-<area shape="poly" id="edge44_Node000010_Node000035" title=" " alt="" coords="3072,361,2964,404,2962,399,3070,356"/>
-<area shape="rect" id="Node000036" href="$max__pool2d__module_8hpp.html" title="2D max pooling, non&#45;overlapping windows (stride == kernel), no padding." alt="" coords="3031,401,3194,441"/>
-<area shape="poly" id="edge45_Node000010_Node000036" title=" " alt="" coords="3115,367,3115,401,3110,401,3110,367"/>
-<area shape="rect" id="Node000037" href="$polyak__update_8hpp.html" title="Soft (Polyak / exponential&#45;moving&#45;average) target&#45;network update, as used by SAC." alt="" coords="3218,401,3397,441"/>
-<area shape="poly" id="edge47_Node000010_Node000037" title=" " alt="" coords="3155,356,3262,399,3260,404,3153,361"/>
-<area shape="rect" id="Node000038" href="$relu__module_8hpp.html" title="ReLU activation – the second Module subclass, following LinearModule&#39;s pattern." alt="" coords="5605,401,5764,441"/>
-<area shape="poly" id="edge48_Node000010_Node000038" title=" " alt="" coords="3232,340,3715,343,4394,352,5080,369,5367,382,5584,399,5606,401,5605,407,5583,404,5366,388,5080,375,4394,357,3715,348,3232,345"/>
-<area shape="rect" id="Node000039" href="$residual__module_8hpp.html" title="Generic skip&#45;connection wrapper – Phase 4&#39;s only mission, the ResNet&#45;style residual block generalized..." alt="" coords="3421,401,3607,441"/>
-<area shape="poly" id="edge52_Node000010_Node000039" title=" " alt="" coords="3185,353,3421,399,3420,404,3184,359"/>
-<area shape="rect" id="Node000040" href="$retnet__module_8hpp.html" title="RetNet retention mechanism (recurrent mode). LRP rule deliberately deferred – propagate_relevance thr..." alt="" coords="3631,401,3805,441"/>
-<area shape="poly" id="edge53_Node000010_Node000040" title=" " alt="" coords="3232,351,3415,371,3620,399,3631,401,3630,406,3619,404,3414,376,3232,356"/>
-<area shape="rect" id="Node000041" href="$rms__norm__module_8hpp.html" title="RMS normalization layer (Zhang &amp; Sennrich, 2019) – this codebase&#39;s first normalization Module,..." alt="" coords="4845,401,5004,441"/>
-<area shape="poly" id="edge54_Node000010_Node000041" title=" " alt="" coords="3232,341,4042,358,4499,375,4689,386,4833,399,4845,400,4845,406,4832,404,4688,391,4499,380,4042,363,3232,346"/>
-<area shape="rect" id="Node000042" href="$rnn__module_8hpp.html" title="Vanilla (Elman) recurrent layer – this codebase&#39;s first recurrent module." alt="" coords="3829,401,3983,441"/>
-<area shape="poly" id="edge57_Node000010_Node000042" title=" " alt="" coords="3232,345,3500,363,3659,379,3817,399,3829,401,3828,406,3816,404,3659,384,3500,369,3232,350"/>
-<area shape="rect" id="Node000043" href="$rope__module_8hpp.html" title="Rotary Position Embedding – fixed per&#45;position pair rotation, epsilon&#45;rule LRP." alt="" coords="4658,401,4821,441"/>
-<area shape="poly" id="edge58_Node000010_Node000043" title=" " alt="" coords="3232,342,3950,361,4348,378,4514,388,4640,399,4658,401,4657,406,4639,404,4513,393,4348,383,3949,367,3232,347"/>
-<area shape="rect" id="Node000044" href="$rwkv__module_8hpp.html" title="RWKV&#45;4 time&#45;mixing (WKV linear&#45;attention) recurrence. LRP rule deliberately deferred – propagate_rele..." alt="" coords="4008,401,4175,441"/>
-<area shape="poly" id="edge60_Node000010_Node000044" title=" " alt="" coords="3232,343,3575,360,3785,376,3996,399,4008,400,4007,406,3995,404,3785,381,3575,365,3231,348"/>
-<area shape="rect" id="Node000045" href="$sequential__module_8hpp.html" title="Model container – chains a sequence of existing Modules." alt="" coords="4199,401,4402,441"/>
-<area shape="poly" id="edge61_Node000010_Node000045" title=" " alt="" coords="3232,342,3654,358,3920,374,4188,399,4199,400,4198,405,4187,404,3920,380,3654,363,3231,347"/>
-<area shape="rect" id="Node000046" href="$sgd__optimizer_8hpp.html" title="Stochastic gradient descent – operates uniformly across any Module&#39;s parameters()." alt="" coords="4426,401,4583,441"/>
-<area shape="poly" id="edge62_Node000010_Node000046" title=" " alt="" coords="3232,339,3452,340,3746,348,4079,366,4248,381,4414,399,4426,400,4425,406,4414,404,4248,386,4079,372,3746,354,3452,346,3231,344"/>
-<area shape="rect" id="Node000047" href="$softmax__module_8hpp.html" title="Rank&#45;agnostic softmax over the last axis, with AttnLRP&#39;s Eq. 13 DTD relevance rule." alt="" coords="1861,401,2047,441"/>
-<area shape="poly" id="edge63_Node000010_Node000047" title=" " alt="" coords="2994,347,2580,362,2320,379,2060,404,2048,405,2047,400,2059,399,2320,374,2579,357,2993,341"/>
-<area shape="rect" id="Node000012" href="$mnist__classifier__example_8hpp.html" title="Real MNIST classifier: Conv2DModule &#45;&gt; ReluModule &#45;&gt; FlattenModule &#45;&gt; LinearModule &#45;&gt; CrossEntropyLos..." alt="" coords="5993,489,6171,529"/>
-<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="5933,444,6037,487,6035,492,5931,449"/>
-<area shape="rect" id="Node000013" href="$xor__training__example_8hpp.html" title="Phase 1&#39;s training&#45;loop proof: Linear(2,4)&#45;&gt;ReLU&#45;&gt;Linear(4,1) learning XOR." alt="" coords="5798,489,5969,529"/>
-<area shape="poly" id="edge15_Node000011_Node000013" title=" " alt="" coords="5880,455,5884,489,5879,489,5875,455"/>
-<area shape="poly" id="edge20_Node000017_Node000012" title=" " alt="" coords="6220,449,6125,492,6123,487,6218,445"/>
-<area shape="poly" id="edge27_Node000022_Node000012" title=" " alt="" coords="6078,455,6082,489,6077,489,6073,455"/>
-<area shape="rect" id="Node000024" href="$gflownet__trajectory_8hpp.html" title="Rolls out one full HyperGrid episode under a GFlowNetForwardPolicy." alt="" coords="4985,489,5176,529"/>
-<area shape="poly" id="edge29_Node000023_Node000024" title=" " alt="" coords="5146,453,5103,491,5100,487,5142,449"/>
-<area shape="poly" id="edge35_Node000028_Node000012" title=" " alt="" coords="5585,437,5594,439,5788,462,5981,487,5993,489,5992,494,5980,492,5787,468,5594,444,5585,443"/>
-<area shape="poly" id="edge42_Node000028_Node000013" title=" " alt="" coords="5586,441,5798,487,5797,492,5584,447"/>
-<area shape="rect" id="Node000029" href="$linear__probe_8hpp.html" title="Linear probe – trains one linear classifier to decode a binary concept from a layer&#39;s activations,..." alt="" coords="5401,489,5571,529"/>
-<area shape="poly" id="edge34_Node000028_Node000029" title=" " alt="" coords="5489,455,5489,489,5483,489,5483,455"/>
-<area shape="poly" id="edge36_Node000028_Node000030" title=" " alt="" coords="5387,437,4840,499,4839,494,5387,431"/>
-<area shape="rect" id="Node000032" href="$sparse__autoencoder_8hpp.html" title="Sparse autoencoder – reconstructs an activation through an overcomplete, L1&#45;penalized hidden layer,..." alt="" coords="5596,489,5773,529"/>
-<area shape="poly" id="edge39_Node000028_Node000032" title=" " alt="" coords="5543,444,5642,487,5640,492,5541,449"/>
-<area shape="poly" id="edge40_Node000028_Node000033" title=" " alt="" coords="5431,449,5333,492,5331,487,5429,444"/>
-<area shape="poly" id="edge37_Node000030_Node000003" title=" " alt="" coords="4626,516,429,597,429,591,4626,510"/>
-<area shape="poly" id="edge38_Node000030_Node000031" title=" " alt="" coords="4793,533,4883,575,4881,580,4791,538"/>
-<area shape="poly" id="edge41_Node000033_Node000031" title=" " alt="" coords="5196,535,5003,580,5002,575,5194,530"/>
-<area shape="poly" id="edge49_Node000038_Node000012" title=" " alt="" coords="5778,440,5995,487,5994,492,5777,445"/>
-<area shape="poly" id="edge51_Node000038_Node000013" title=" " alt="" coords="5742,444,5841,487,5839,492,5740,449"/>
-<area shape="poly" id="edge50_Node000038_Node000032" title=" " alt="" coords="5687,455,5687,489,5682,489,5682,455"/>
-<area shape="poly" id="edge55_Node000041_Node000030" title=" " alt="" coords="4873,450,4781,492,4779,487,4870,445"/>
-<area shape="poly" id="edge56_Node000041_Node000031" title=" " alt="" coords="4927,455,4925,577,4920,577,4922,455"/>
-<area shape="poly" id="edge59_Node000043_Node000030" title=" " alt="" coords="4742,455,4742,489,4737,489,4737,455"/>
-<area shape="poly" id="edge64_Node000047_Node000030" title=" " alt="" coords="2061,439,2310,456,2633,471,3395,490,4135,501,4639,505,4639,510,4135,506,3395,496,2633,476,2309,462,2061,444"/>
-<area shape="poly" id="edge71_Node000048_Node000002" title=" " alt="" coords="387,124,188,169,187,164,386,119"/>
-<area shape="poly" id="edge73_Node000048_Node000007" title=" " alt="" coords="420,128,349,169,346,164,417,123"/>
-<area shape="poly" id="edge74_Node000048_Node000008" title=" " alt="" coords="483,123,555,164,552,169,480,128"/>
-<area shape="poly" id="edge72_Node000048_Node000009" title=" " alt="" coords="445,132,409,255,404,254,440,131"/>
-<area shape="poly" id="edge75_Node000048_Node000010" title=" " alt="" coords="562,114,3007,327,3007,333,561,120"/>
+<area shape="rect" id="Node000001" title="Closed set of operation categories every graph Node is tagged with." alt="" coords="364,5,515,45"/>
+<area shape="rect" id="Node000002" href="$activation__snapshot_8hpp.html" title="Self&#45;contained, enumerable copy of one forward pass&#39;s cached activations." alt="" coords="204,167,403,207"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="382,54,355,72,332,95,322,112,315,131,307,167,302,166,310,130,317,110,328,92,352,68,379,50"/>
+<area shape="rect" id="Node000007" href="$circuit__graph_8hpp.html" title="Self&#45;contained circuit&#45;graph artifact – scored nodes and weighted edges." alt="" coords="5,167,180,207"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="387,53,135,169,133,164,385,49"/>
+<area shape="rect" id="Node000008" href="$computation__graph_8hpp.html" title="Owns and exposes graph structure – the interpretability substrate every explainer (Phase 2+) walks." alt="" coords="477,167,693,207"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="498,50,526,68,551,92,572,129,584,166,579,167,567,132,547,95,522,72,495,54"/>
+<area shape="rect" id="Node000010" href="$module_8hpp.html" title="Abstract base every layer subclasses – NVI forward(), pure&#45;virtual LRP contract." alt="" coords="2959,328,3170,353"/>
+<area shape="poly" id="edge72_Node000001_Node000010" title=" " alt="" coords="529,35,2970,325,2969,331,528,40"/>
+<area shape="rect" id="Node000051" href="$node_8hpp.html" title="Computation graph node – op type, shape, optional label, parent/child edges." alt="" coords="342,93,537,119"/>
+<area shape="poly" id="edge73_Node000001_Node000051" title=" " alt="" coords="442,59,442,93,437,93,437,59"/>
+<area shape="rect" id="Node000003" href="$explainer__context_8hpp.html" title="Stable interface every explainer gets, regardless of type (charter Part 2 SS2)." alt="" coords="230,577,425,617"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="288,220,266,275,257,307,254,339,254,422,260,467,276,510,296,547,315,575,310,578,291,550,271,512,255,469,249,423,249,339,252,306,260,273,283,218"/>
+<area shape="rect" id="Node000004" href="$grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="33,665,195,705"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="269,625,162,668,160,663,267,620"/>
+<area shape="rect" id="Node000005" href="$integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="299,753,500,793"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="401,621,427,639,448,664,454,688,448,713,435,736,420,755,416,752,431,733,443,711,449,688,444,667,424,643,398,626"/>
+<area shape="rect" id="Node000006" href="$saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="220,673,435,698"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="330,631,330,672,325,672,325,631"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="348,707,385,751,381,755,344,710"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="119,216,151,271,163,304,167,339,167,422,171,448,180,473,194,495,211,515,252,550,291,575,289,580,249,554,207,519,190,498,175,475,165,450,162,423,162,340,157,306,146,273,114,219"/>
+<area shape="poly" id="edge70_Node000008_Node000003" title=" " alt="" coords="569,220,524,282,488,317,455,340,424,365,394,403,370,449,352,498,333,578,328,576,347,496,365,447,389,400,421,361,452,336,484,313,520,278,564,217"/>
+<area shape="rect" id="Node000009" href="$autograd_8hpp.html" title="Reverse&#45;mode autodiff – walks a ComputationGraph backward, accumulating gradients via per&#45;node backwa..." alt="" coords="289,255,509,280"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="529,214,428,257,426,252,527,209"/>
+<area shape="poly" id="edge71_Node000008_Node000010" title=" " alt="" coords="706,195,1199,234,1835,277,2473,311,2959,332,2959,338,2473,316,1835,283,1199,239,706,201"/>
+<area shape="poly" id="edge11_Node000009_Node000003" title=" " alt="" coords="387,293,360,342,337,402,328,451,325,499,328,577,323,577,320,499,323,450,331,401,355,339,382,290"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="523,269,2959,334,2959,339,523,275"/>
+<area shape="poly" id="edge27_Node000010_Node000003" title=" " alt="" coords="2946,346,2346,352,1517,363,773,381,531,392,460,398,430,404,414,416,404,429,394,458,388,492,374,531,343,579,339,576,369,528,383,490,389,457,400,427,411,413,428,399,460,392,531,386,773,375,1517,358,2346,346,2946,340"/>
+<area shape="rect" id="Node000011" href="$adam__optimizer_8hpp.html" title="Adam optimizer – operates uniformly across any Module&#39;s parameters()." alt="" coords="846,401,1017,441"/>
+<area shape="poly" id="edge13_Node000010_Node000011" title=" " alt="" coords="2945,346,2540,351,1987,361,1434,378,1205,390,1030,404,1017,406,1016,400,1030,399,1204,385,1434,373,1987,356,2540,345,2945,340"/>
+<area shape="rect" id="Node000014" href="$avg__pool2d__module_8hpp.html" title="2D average pooling, non&#45;overlapping windows (stride == kernel), no padding." alt="" coords="1817,401,1976,441"/>
+<area shape="poly" id="edge16_Node000010_Node000014" title=" " alt="" coords="2946,346,2761,350,2522,359,2256,377,1989,404,1977,406,1976,400,1988,399,2256,371,2522,354,2761,344,2946,340"/>
+<area shape="rect" id="Node000015" href="$batch__norm__module_8hpp.html" title="Batch normalization (Ioffe &amp; Szegedy, 2015) – per&#45;channel statistics computed across the batch and sp..." alt="" coords="2001,401,2171,441"/>
+<area shape="poly" id="edge17_Node000010_Node000015" title=" " alt="" coords="2946,348,2603,365,2394,381,2185,404,2172,406,2171,401,2184,399,2394,376,2603,360,2946,343"/>
+<area shape="rect" id="Node000016" href="$categorical__policy__agent_8hpp.html" title="Stochastic categorical (discrete&#45;action) policy over a logit&#45;producing Module." alt="" coords="2196,401,2403,441"/>
+<area shape="poly" id="edge18_Node000010_Node000016" title=" " alt="" coords="2946,353,2701,373,2416,404,2403,406,2403,400,2415,399,2701,368,2946,348"/>
+<area shape="rect" id="Node000017" href="$conv2d__module_8hpp.html" title="2D convolution – implemented via im2col + DeviceBackend::gemm (no new backend primitive)." alt="" coords="441,401,622,441"/>
+<area shape="poly" id="edge19_Node000010_Node000017" title=" " alt="" coords="2946,345,2470,349,1802,358,1128,375,847,388,634,404,623,405,622,400,634,399,847,383,1128,370,1802,352,2470,343,2946,340"/>
+<area shape="rect" id="Node000018" href="$dqn__agent_8hpp.html" title="Epsilon&#45;greedy DQN policy over an arbitrary Q&#45;network Module." alt="" coords="2427,401,2585,441"/>
+<area shape="poly" id="edge21_Node000010_Node000018" title=" " alt="" coords="2946,357,2781,377,2598,404,2586,406,2585,401,2598,399,2780,372,2945,352"/>
+<area shape="rect" id="Node000019" href="$dqn__target_8hpp.html" title="DQN Bellman target computation (vanilla + Double DQN) and target&#45;network hard sync." alt="" coords="2609,401,2768,441"/>
+<area shape="poly" id="edge22_Node000010_Node000019" title=" " alt="" coords="2997,359,2769,406,2767,401,2996,353"/>
+<area shape="rect" id="Node000020" href="$dropout__module_8hpp.html" title="Inverted dropout – the first module whose forward behavior genuinely differs between training and inf..." alt="" coords="2793,401,2977,441"/>
+<area shape="poly" id="edge23_Node000010_Node000020" title=" " alt="" coords="3027,361,2929,404,2927,399,3025,356"/>
+<area shape="rect" id="Node000021" href="$egan__mutation_8hpp.html" title="E&#45;GAN&#39;s own three named &quot;mutation&quot; objectives (Wang et al. 2019, &quot;Evolutionary &#160;&#160;&#160;&#160;&#160;&#160;&#160;Generative Adve..." alt="" coords="6325,401,6492,441"/>
+<area shape="poly" id="edge24_Node000010_Node000021" title=" " alt="" coords="3184,340,4835,359,5768,376,6110,387,6313,399,6325,400,6325,405,6312,404,6110,392,5768,381,4835,364,3184,346"/>
+<area shape="rect" id="Node000023" href="$embedding__module_8hpp.html" title="Lookup&#45;table (row&#45;select) layer – y = W[index], batched (N, L) &#45;&gt; (N, L, embedding_dim)." alt="" coords="3153,401,3360,441"/>
+<area shape="poly" id="edge26_Node000010_Node000023" title=" " alt="" coords="3106,356,3212,399,3210,404,3104,361"/>
+<area shape="rect" id="Node000024" href="$flatten__module_8hpp.html" title="Reshape&#45;only Module – flattens every non&#45;batch dim of a (N, ...) input to (N, flattened_features),..." alt="" coords="646,401,822,441"/>
+<area shape="poly" id="edge28_Node000010_Node000024" title=" " alt="" coords="2945,345,2504,349,1895,359,1283,377,1028,389,834,404,823,405,822,400,834,399,1027,384,1282,371,1895,354,2504,344,2945,340"/>
+<area shape="rect" id="Node000025" href="$generator__population_8hpp.html" title="E&#45;GAN&#39;s own population&#45;of&#45;generators infrastructure (Wang et al. 2019, &quot;Evolutionary &#160;&#160;&#160;&#160;&#160;&#160;&#160;Generativ..." alt="" coords="5922,401,6119,441"/>
+<area shape="poly" id="edge30_Node000010_Node000025" title=" " alt="" coords="3184,339,3731,342,4519,350,5321,368,5657,382,5910,399,5922,400,5922,405,5910,404,5656,387,5321,373,4519,356,3731,347,3184,345"/>
+<area shape="rect" id="Node000026" href="$gflownet__forward__policy_8hpp.html" title="Masked stochastic categorical policy over a logit&#45;producing Module – P_F for GFlowNet training object..." alt="" coords="6516,401,6707,441"/>
+<area shape="poly" id="edge32_Node000010_Node000026" title=" " alt="" coords="3184,339,3832,339,4793,344,5301,351,5780,362,6193,378,6505,399,6516,400,6515,405,6504,404,6193,383,5779,368,5301,357,4793,350,3832,344,3184,344"/>
+<area shape="rect" id="Node000028" href="$group__norm__module_8hpp.html" title="Group normalization (Wu &amp; He, 2018) – rank&#45;3 (C, H, W), matching Conv2DModule&#39;s convention,..." alt="" coords="3567,401,3738,441"/>
+<area shape="poly" id="edge34_Node000010_Node000028" title=" " alt="" coords="3184,351,3360,372,3556,399,3568,401,3567,406,3555,404,3359,377,3184,357"/>
+<area shape="rect" id="Node000029" href="$gru__module_8hpp.html" title="Single&#45;layer GRU – gated recurrence with a reset&#45;gated candidate." alt="" coords="3762,401,3917,441"/>
+<area shape="poly" id="edge35_Node000010_Node000029" title=" " alt="" coords="3184,345,3444,364,3598,379,3750,399,3762,401,3762,406,3750,404,3597,384,3444,369,3183,351"/>
+<area shape="rect" id="Node000030" href="$layer__norm__module_8hpp.html" title="Layer normalization (Ba et al., 2016) – mean&#45;centered/scaled RMSNormModule sibling." alt="" coords="3941,401,4108,441"/>
+<area shape="poly" id="edge36_Node000010_Node000030" title=" " alt="" coords="3184,343,3520,360,3724,376,3929,399,3941,400,3941,406,3928,404,3724,381,3520,365,3184,348"/>
+<area shape="rect" id="Node000031" href="$linear__module_8hpp.html" title="Dense/fully&#45;connected layer – the reference Module implementation." alt="" coords="1225,401,1395,441"/>
+<area shape="poly" id="edge37_Node000010_Node000031" title=" " alt="" coords="2946,347,2165,365,1727,382,1546,392,1408,404,1396,406,1395,400,1407,399,1545,387,1727,376,2165,359,2945,341"/>
+<area shape="rect" id="Node000033" href="$multihead__attention__module_8hpp.html" title="Multi&#45;head scaled dot&#45;product attention – this codebase&#39;s first Module composed out of other real Mod..." alt="" coords="2251,489,2451,529"/>
+<area shape="poly" id="edge49_Node000010_Node000033" title=" " alt="" coords="3067,367,3058,407,3049,427,3034,443,3003,457,2949,468,2793,486,2612,499,2452,507,2451,502,2611,494,2792,481,2948,462,3002,451,3031,439,3044,424,3053,405,3061,366"/>
+<area shape="rect" id="Node000034" href="$transformer__block_8hpp.html" title="Pre&#45;LN transformer block – Phase 3&#39;s literal exit&#45;gate deliverable, third and last composition missio..." alt="" coords="2627,577,2838,617"/>
+<area shape="poly" id="edge69_Node000010_Node000034" title=" " alt="" coords="3074,366,3077,404,3074,424,3066,443,3045,470,3020,494,2962,533,2899,561,2839,580,2837,575,2898,556,2960,528,3016,490,3041,467,3061,440,3069,423,3072,404,3069,367"/>
+<area shape="rect" id="Node000036" href="$swiglu__module_8hpp.html" title="SwiGLU gated feedforward block – second module composed from real LinearModule sub&#45;objects,..." alt="" coords="2051,489,2227,529"/>
+<area shape="poly" id="edge68_Node000010_Node000036" title=" " alt="" coords="3056,367,3030,408,3012,428,2990,444,2959,457,2922,468,2833,482,2731,488,2621,490,2406,487,2313,487,2240,492,2228,494,2227,488,2239,487,2313,482,2406,482,2621,484,2730,483,2832,476,2920,463,2957,452,2987,439,3008,424,3026,405,3052,365"/>
+<area shape="rect" id="Node000037" href="$lstm__module_8hpp.html" title="Single&#45;layer LSTM – this codebase&#39;s first gated recurrent module." alt="" coords="4133,401,4295,441"/>
+<area shape="poly" id="edge46_Node000010_Node000037" title=" " alt="" coords="3184,341,3365,345,3599,355,3859,372,4121,399,4133,400,4132,406,4120,404,3859,377,3599,360,3365,350,3184,346"/>
+<area shape="rect" id="Node000038" href="$mamba__module_8hpp.html" title="Mamba/S6 selective&#45;state&#45;space recurrence with the MambaLRP relevance rule." alt="" coords="4319,401,4503,441"/>
+<area shape="poly" id="edge47_Node000010_Node000038" title=" " alt="" coords="3184,340,3395,343,3675,353,3990,370,4308,399,4319,400,4319,405,4307,404,3990,376,3675,358,3395,349,3184,345"/>
+<area shape="rect" id="Node000039" href="$max__pool2d__module_8hpp.html" title="2D max pooling, non&#45;overlapping windows (stride == kernel), no padding." alt="" coords="4527,401,4690,441"/>
+<area shape="poly" id="edge48_Node000010_Node000039" title=" " alt="" coords="3184,342,3865,361,4241,378,4397,388,4516,399,4527,400,4526,406,4515,404,4396,393,4241,383,3865,367,3183,347"/>
+<area shape="rect" id="Node000040" href="$polyak__update_8hpp.html" title="Soft (Polyak / exponential&#45;moving&#45;average) target&#45;network update, as used by SAC." alt="" coords="4714,401,4893,441"/>
+<area shape="poly" id="edge50_Node000010_Node000040" title=" " alt="" coords="3184,341,3955,360,4387,377,4566,387,4702,399,4714,400,4714,405,4702,404,4565,393,4386,382,3955,366,3184,347"/>
+<area shape="rect" id="Node000041" href="$relu__module_8hpp.html" title="ReLU activation – the second Module subclass, following LinearModule&#39;s pattern." alt="" coords="1041,401,1200,441"/>
+<area shape="poly" id="edge51_Node000010_Node000041" title=" " alt="" coords="2945,346,2573,351,2073,362,1576,379,1370,390,1213,404,1201,406,1200,400,1212,399,1369,385,1576,374,2073,356,2573,346,2945,341"/>
+<area shape="rect" id="Node000042" href="$residual__module_8hpp.html" title="Generic skip&#45;connection wrapper – Phase 4&#39;s only mission, the ResNet&#45;style residual block generalized..." alt="" coords="4917,401,5103,441"/>
+<area shape="poly" id="edge54_Node000010_Node000042" title=" " alt="" coords="3184,341,4051,359,4544,376,4749,386,4905,399,4917,400,4916,405,4904,404,4749,392,4544,381,4051,364,3184,346"/>
+<area shape="rect" id="Node000043" href="$retnet__module_8hpp.html" title="RetNet retention mechanism (recurrent mode). LRP rule deliberately deferred – propagate_relevance thr..." alt="" coords="5127,401,5301,441"/>
+<area shape="poly" id="edge55_Node000010_Node000043" title=" " alt="" coords="3184,340,3593,345,4150,355,4708,373,4940,385,5116,399,5127,400,5127,405,5115,404,4939,390,4707,378,4150,361,3593,350,3184,346"/>
+<area shape="rect" id="Node000044" href="$rms__norm__module_8hpp.html" title="RMS normalization layer (Zhang &amp; Sennrich, 2019) – this codebase&#39;s first normalization Module,..." alt="" coords="3384,401,3543,441"/>
+<area shape="poly" id="edge56_Node000010_Node000044" title=" " alt="" coords="3139,353,3373,399,3384,401,3383,406,3372,404,3138,359"/>
+<area shape="rect" id="Node000045" href="$rnn__module_8hpp.html" title="Vanilla (Elman) recurrent layer – this codebase&#39;s first recurrent module." alt="" coords="5325,401,5479,441"/>
+<area shape="poly" id="edge59_Node000010_Node000045" title=" " alt="" coords="3184,340,3628,343,4243,351,4861,369,5118,382,5313,399,5325,400,5324,406,5312,404,5118,388,4860,374,4243,357,3628,348,3184,345"/>
+<area shape="rect" id="Node000046" href="$rope__module_8hpp.html" title="Rotary Position Embedding – fixed per&#45;position pair rotation, epsilon&#45;rule LRP." alt="" coords="1419,401,1582,441"/>
+<area shape="poly" id="edge60_Node000010_Node000046" title=" " alt="" coords="2945,347,2254,366,1873,383,1715,393,1594,404,1583,406,1582,400,1594,399,1714,388,1872,378,2254,361,2945,342"/>
+<area shape="rect" id="Node000047" href="$rwkv__module_8hpp.html" title="RWKV&#45;4 time&#45;mixing (WKV linear&#45;attention) recurrence. LRP rule deliberately deferred – propagate_rele..." alt="" coords="5504,401,5671,441"/>
+<area shape="poly" id="edge62_Node000010_Node000047" title=" " alt="" coords="3184,340,3659,342,4326,351,4998,369,5279,382,5492,399,5504,400,5503,406,5491,404,5279,387,4998,374,4325,356,3659,348,3184,345"/>
+<area shape="rect" id="Node000048" href="$sequential__module_8hpp.html" title="Model container – chains a sequence of existing Modules." alt="" coords="5695,401,5898,441"/>
+<area shape="poly" id="edge63_Node000010_Node000048" title=" " alt="" coords="3184,340,3692,343,4414,353,5146,370,5452,383,5684,399,5695,400,5695,405,5683,404,5452,388,5146,376,4414,358,3692,349,3183,345"/>
+<area shape="rect" id="Node000049" href="$sgd__optimizer_8hpp.html" title="Stochastic gradient descent – operates uniformly across any Module&#39;s parameters()." alt="" coords="6143,401,6301,441"/>
+<area shape="poly" id="edge64_Node000010_Node000049" title=" " alt="" coords="3184,340,4745,359,5620,376,5941,387,6132,399,6143,400,6143,405,6131,404,5941,392,5620,382,4745,364,3184,346"/>
+<area shape="rect" id="Node000050" href="$softmax__module_8hpp.html" title="Rank&#45;agnostic softmax over the last axis, with AttnLRP&#39;s Eq. 13 DTD relevance rule." alt="" coords="1606,401,1793,441"/>
+<area shape="poly" id="edge66_Node000010_Node000050" title=" " alt="" coords="2946,345,2732,349,2448,358,2129,376,1806,404,1793,406,1793,400,1806,399,2128,370,2448,353,2732,344,2946,340"/>
+<area shape="rect" id="Node000012" href="$mnist__classifier__example_8hpp.html" title="Real MNIST classifier: Conv2DModule &#45;&gt; ReluModule &#45;&gt; FlattenModule &#45;&gt; LinearModule &#45;&gt; CrossEntropyLos..." alt="" coords="833,489,1011,529"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="930,455,927,489,921,489,925,455"/>
+<area shape="rect" id="Node000013" href="$xor__training__example_8hpp.html" title="Phase 1&#39;s training&#45;loop proof: Linear(2,4)&#45;&gt;ReLU&#45;&gt;Linear(4,1) learning XOR." alt="" coords="1035,489,1206,529"/>
+<area shape="poly" id="edge15_Node000011_Node000013" title=" " alt="" coords="986,445,1080,487,1078,492,984,449"/>
+<area shape="poly" id="edge20_Node000017_Node000012" title=" " alt="" coords="631,442,837,487,836,492,630,447"/>
+<area shape="rect" id="Node000022" href="$egan__training_8hpp.html" title="E&#45;GAN&#39;s own full generational training loop (Wang et al. 2019): each generation, every population mem..." alt="" coords="6139,489,6305,529"/>
+<area shape="poly" id="edge25_Node000021_Node000022" title=" " alt="" coords="6357,449,6264,492,6262,487,6354,445"/>
+<area shape="poly" id="edge29_Node000024_Node000012" title=" " alt="" coords="789,445,882,487,880,492,786,449"/>
+<area shape="poly" id="edge31_Node000025_Node000022" title=" " alt="" coords="6079,444,6179,487,6177,492,6077,449"/>
+<area shape="rect" id="Node000027" href="$gflownet__trajectory_8hpp.html" title="Rolls out one full HyperGrid episode under a GFlowNetForwardPolicy." alt="" coords="6516,489,6707,529"/>
+<area shape="poly" id="edge33_Node000026_Node000027" title=" " alt="" coords="6614,455,6614,489,6609,489,6609,455"/>
+<area shape="poly" id="edge39_Node000031_Node000012" title=" " alt="" coords="1212,447,1008,492,1006,487,1211,442"/>
+<area shape="poly" id="edge45_Node000031_Node000013" title=" " alt="" coords="1257,449,1163,492,1161,487,1255,445"/>
+<area shape="rect" id="Node000032" href="$linear__probe_8hpp.html" title="Linear probe – trains one linear classifier to decode a binary concept from a layer&#39;s activations,..." alt="" coords="1230,489,1401,529"/>
+<area shape="poly" id="edge38_Node000031_Node000032" title=" " alt="" coords="1315,455,1317,489,1311,489,1309,455"/>
+<area shape="poly" id="edge40_Node000031_Node000033" title=" " alt="" coords="1409,439,1536,452,1643,459,1826,464,2008,468,2115,475,2240,487,2252,488,2251,493,2239,492,2114,480,2008,474,1826,470,1643,465,1535,457,1409,444"/>
+<area shape="poly" id="edge43_Node000031_Node000036" title=" " alt="" coords="1409,439,1591,461,1769,479,2051,500,2051,505,1769,484,1591,466,1408,444"/>
+<area shape="poly" id="edge41_Node000033_Node000003" title=" " alt="" coords="2238,532,2064,545,1840,557,1313,576,425,597,425,592,1313,570,1840,551,2064,540,2238,527"/>
+<area shape="poly" id="edge42_Node000033_Node000034" title=" " alt="" coords="2449,530,2650,575,2649,580,2448,535"/>
+<area shape="poly" id="edge44_Node000036_Node000034" title=" " alt="" coords="2241,527,2451,558,2627,581,2627,586,2450,563,2240,532"/>
+<area shape="poly" id="edge52_Node000041_Node000012" title=" " alt="" coords="1066,449,967,492,964,487,1063,444"/>
+<area shape="poly" id="edge53_Node000041_Node000013" title=" " alt="" coords="1123,455,1123,489,1118,489,1118,455"/>
+<area shape="poly" id="edge57_Node000044_Node000033" title=" " alt="" coords="3371,444,3108,473,2850,492,2623,503,2452,509,2451,503,2623,498,2850,486,3107,467,3370,439"/>
+<area shape="poly" id="edge58_Node000044_Node000034" title=" " alt="" coords="3402,449,3279,491,3135,532,2980,564,2839,585,2838,580,2979,558,3133,527,3277,485,3400,444"/>
+<area shape="poly" id="edge61_Node000046_Node000033" title=" " alt="" coords="1596,439,1777,458,1919,464,2060,470,2240,487,2252,488,2251,494,2239,492,2060,476,1919,470,1777,463,1595,444"/>
+<area shape="poly" id="edge65_Node000049_Node000022" title=" " alt="" coords="6225,455,6225,489,6219,489,6219,455"/>
+<area shape="poly" id="edge67_Node000050_Node000033" title=" " alt="" coords="1807,439,1930,454,2025,463,2240,487,2252,488,2251,494,2239,492,2025,468,1929,459,1806,444"/>
+<area shape="poly" id="edge74_Node000051_Node000002" title=" " alt="" coords="409,128,337,169,335,164,406,123"/>
+<area shape="poly" id="edge76_Node000051_Node000007" title=" " alt="" coords="376,124,176,169,175,164,375,119"/>
+<area shape="poly" id="edge77_Node000051_Node000008" title=" " alt="" coords="474,123,551,164,548,169,471,128"/>
+<area shape="poly" id="edge75_Node000051_Node000009" title=" " alt="" coords="436,132,405,255,400,254,431,131"/>
+<area shape="poly" id="edge78_Node000051_Node000010" title=" " alt="" coords="551,114,2959,327,2959,333,550,120"/>
 </map>

@@ -108,19 +108,19 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1TanhGaussianPolicy.h
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8f4476b41eb7138e50101c5fab288b87" id="r_a8f4476b41eb7138e50101c5fab288b87"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a8f4476b41eb7138e50101c5fab288b87">TanhGaussianPolicy</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *<a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">backend</a>)</td></tr>
+<tr class="memitem:a8f4476b41eb7138e50101c5fab288b87" id="r_a8f4476b41eb7138e50101c5fab288b87"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a8f4476b41eb7138e50101c5fab288b87">TanhGaussianPolicy</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a8f4476b41eb7138e50101c5fab288b87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a tanh-Gaussian policy sampling step.  <br /></td></tr>
 <tr class="separator:a8f4476b41eb7138e50101c5fab288b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a161dc7dc0ebfd3fad5514aeebd8baa1b" id="r_a161dc7dc0ebfd3fad5514aeebd8baa1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TanhGaussianSample.html">TanhGaussianSample</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">forward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;mean, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;log_std, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;epsilon)</td></tr>
 <tr class="memdesc:a161dc7dc0ebfd3fad5514aeebd8baa1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples <code>action = tanh(mean + exp(log_std)*epsilon)</code> and its corrected log-density, caching what <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a91c0bdf9f5c3a45065361f3f35706e09" title="Gradients w.r.t. mean and log_std, combining the two gradients that arrive at this step&#39;s two outputs...">backward()</a> needs.  <br /></td></tr>
 <tr class="separator:a161dc7dc0ebfd3fad5514aeebd8baa1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91c0bdf9f5c3a45065361f3f35706e09" id="r_a91c0bdf9f5c3a45065361f3f35706e09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TanhGaussianGrad.html">TanhGaussianGrad</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a91c0bdf9f5c3a45065361f3f35706e09">backward</a> (<a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">grad_action</a>, <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">grad_log_prob</a>) <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">const</a></td></tr>
+<tr class="memitem:a91c0bdf9f5c3a45065361f3f35706e09" id="r_a91c0bdf9f5c3a45065361f3f35706e09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TanhGaussianGrad.html">TanhGaussianGrad</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a91c0bdf9f5c3a45065361f3f35706e09">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_action, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_log_prob) const</td></tr>
 <tr class="memdesc:a91c0bdf9f5c3a45065361f3f35706e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradients w.r.t. mean and log_std, combining the two gradients that arrive at this step's two outputs.  <br /></td></tr>
 <tr class="separator:a91c0bdf9f5c3a45065361f3f35706e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a70e084dd37bfa0a8c7c9fe4f67a8d66d" id="r_a70e084dd37bfa0a8c7c9fe4f67a8d66d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">static</a> <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">constexpr</a> <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a70e084dd37bfa0a8c7c9fe4f67a8d66d">kLogProbStabilizer</a> = 1<a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">e</a>-6<a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">f</a></td></tr>
+<tr class="memitem:a70e084dd37bfa0a8c7c9fe4f67a8d66d" id="r_a70e084dd37bfa0a8c7c9fe4f67a8d66d"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a70e084dd37bfa0a8c7c9fe4f67a8d66d">kLogProbStabilizer</a> = 1e-6f</td></tr>
 <tr class="memdesc:a70e084dd37bfa0a8c7c9fe4f67a8d66d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fixed stabilizer added inside <code>log(1 - action^2 + eps_stab)</code>.  <br /></td></tr>
 <tr class="separator:a70e084dd37bfa0a8c7c9fe4f67a8d66d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -179,13 +179,13 @@ No LRP rule and nothing to stub: this is not a <a class="el" href="classpulsatri
         <tr>
           <td class="memname"><a class="el" href="structpulsatrix_1_1TanhGaussianGrad.html">TanhGaussianGrad</a> pulsatrix::TanhGaussianPolicy::backward </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>grad_action</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>grad_log_prob</em>&#160;</td>
         </tr>
         <tr>
@@ -288,7 +288,7 @@ Not backend-generic &ndash; exp/tanh/log have no <a class="el" href="classpulsat
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">constexpr</a> <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">float</a> pulsatrix::TanhGaussianPolicy::kLogProbStabilizer = 1<a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">e</a>-6<a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a161dc7dc0ebfd3fad5514aeebd8baa1b">f</a></td>
+          <td class="memname">constexpr float pulsatrix::TanhGaussianPolicy::kLogProbStabilizer = 1e-6f</td>
         </tr>
       </table>
   </td>

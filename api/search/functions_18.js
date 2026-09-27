@@ -10,8 +10,9 @@ var searchData=
   ['_7eiterabledataset_7',['~IterableDataset',['../classpulsatrix_1_1IterableDataset.html#a9c6792df2eecb7ee7685855fa54a800d',1,'pulsatrix::IterableDataset']]],
   ['_7emetricssink_8',['~MetricsSink',['../classpulsatrix_1_1MetricsSink.html#add45ab2d67ff49bb11f799833b17b6de',1,'pulsatrix::MetricsSink']]],
   ['_7emodule_9',['~Module',['../classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809',1,'pulsatrix::Module']]],
-  ['_7eresumabletrial_10',['~ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html#af932576b9615280b8fc7d253c366e864',1,'pulsatrix::ResumableTrial']]],
-  ['_7esampler_11',['~Sampler',['../classpulsatrix_1_1Sampler.html#ad66a2ce7685160289151eca01299eef7',1,'pulsatrix::Sampler']]],
-  ['_7etensor_12',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
-  ['_7etransform_13',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]]
+  ['_7epbtresumabletrial_10',['~PBTResumableTrial',['../classpulsatrix_1_1PBTResumableTrial.html#a954876f98f763fb8c542c7eb938e13e4',1,'pulsatrix::PBTResumableTrial']]],
+  ['_7eresumabletrial_11',['~ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html#af932576b9615280b8fc7d253c366e864',1,'pulsatrix::ResumableTrial']]],
+  ['_7esampler_12',['~Sampler',['../classpulsatrix_1_1Sampler.html#ad66a2ce7685160289151eca01299eef7',1,'pulsatrix::Sampler']]],
+  ['_7etensor_13',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
+  ['_7etransform_14',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]]
 ];

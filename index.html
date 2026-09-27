@@ -627,6 +627,60 @@
   
   
     <li class="md-nav__item">
+      <a href="evolutionary-computation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolutionary Computation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hyperparameter-optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hyperparameter Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="recipes/" class="md-nav__link">
         
   
@@ -776,9 +830,19 @@ caching/snapshots, <code>LinearProbe</code>, <code>SparseAutoencoder</code>, <co
 implementation (<code>HyperGridEnv</code>, <code>TrajectoryBalanceLoss</code>, <code>DetailedBalanceLoss</code>,
 <code>SubTBLoss(λ)</code>) — non-goal-directed training objectives motivated by Bengio's Scientist AI /
 LawZero research direction.</p>
+<p><strong><a href="evolutionary-computation/">Evolutionary Computation</a></strong>: a from-scratch,
+DEAP-free genetic-algorithm core (population/fitness/selection/crossover/mutation, NSGA-II),
+neuroevolution (<code>NEATGenome</code>, Evolution Strategies), evolutionary hyperparameter optimization
+(<code>CMAES</code>), Population Based Training (<code>RunPBT</code>), and evolutionary generative-model training
+(<code>GeneratorPopulation</code>, E-GAN's <code>MutationObjective</code>s).</p>
+<p><strong><a href="hyperparameter-optimization/">Hyperparameter Optimization</a></strong>: a typed
+<code>SearchSpace</code>/<code>Configuration</code>/<code>Trial</code> core, grid/random search, Bayesian optimization
+(<code>GaussianProcessRegressor</code>, TPE), and bandit-based early stopping (Successive Halving,
+Hyperband, ASHA) — every algorithm a from-scratch reimplementation, never a runtime
+dependency on a Python HPO library.</p>
 <p><strong>Bindings</strong>: pybind11 (<code>bindings/pulsatrix_py.cpp</code>) exposing <code>Tensor</code>, core modules, and the
 explainer suite to Python.</p>
-<p>1250+ tests, green in both Debug and Release, on Windows and Linux.</p>
+<p>1700+ tests, green in both Debug and Release, on Windows and Linux.</p>
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="getting-started/">Getting Started</a></strong> — build the library and run your first example.</li>

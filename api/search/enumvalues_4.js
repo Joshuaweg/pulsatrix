@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['hip_0',['Hip',['../namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92',1,'pulsatrix']]],
-  ['hosttodevice_1',['HostToDevice',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92',1,'pulsatrix']]],
-  ['hosttohost_2',['HostToHost',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6ba297d3681581537b0677cb9f2a3b9e589',1,'pulsatrix']]]
+  ['elementwise_0',['Elementwise',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbaab6e9fd932f9015e01b8813e750049ec',1,'pulsatrix']]],
+  ['embedding_1',['Embedding',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba9eda48a461ef93b34731b28fdd82a890',1,'pulsatrix']]],
+  ['expectedimprovement_2',['ExpectedImprovement',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192',1,'pulsatrix']]]
 ];

@@ -107,18 +107,23 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1XorNetwork.html','')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2968f5439d522cb89801f7f07199eef4" id="r_a2968f5439d522cb89801f7f07199eef4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#a2968f5439d522cb89801f7f07199eef4">XorNetwork</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *<a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">backend</a>)</td></tr>
+<tr class="memitem:a2968f5439d522cb89801f7f07199eef4" id="r_a2968f5439d522cb89801f7f07199eef4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#a2968f5439d522cb89801f7f07199eef4">XorNetwork</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a2968f5439d522cb89801f7f07199eef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the network with fixed, non-zero initial weights.  <br /></td></tr>
 <tr class="separator:a2968f5439d522cb89801f7f07199eef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4589e6c0b812cb3d6548a9da43aed06" id="r_ad4589e6c0b812cb3d6548a9da43aed06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">forward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)</td></tr>
 <tr class="memdesc:ad4589e6c0b812cb3d6548a9da43aed06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the network forward.  <br /></td></tr>
 <tr class="separator:ad4589e6c0b812cb3d6548a9da43aed06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee7f8d2e4756c13ebe39075b7f4c92cf" id="r_aee7f8d2e4756c13ebe39075b7f4c92cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#aee7f8d2e4756c13ebe39075b7f4c92cf">train_step</a> (<a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">input</a>, <a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">target</a>, <a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;<a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">optimizer</a>, <a class="el" href="classpulsatrix_1_1MetricsSink.html">MetricsSink</a> &amp;<a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">sink</a>, <a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">int</a> step)</td></tr>
+<tr class="memitem:aee7f8d2e4756c13ebe39075b7f4c92cf" id="r_aee7f8d2e4756c13ebe39075b7f4c92cf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#aee7f8d2e4756c13ebe39075b7f4c92cf">train_step</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;target, <a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;optimizer, <a class="el" href="classpulsatrix_1_1MetricsSink.html">MetricsSink</a> &amp;sink, int step)</td></tr>
 <tr class="memdesc:aee7f8d2e4756c13ebe39075b7f4c92cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one training step: forward, loss, backward through every layer, one Adam update per layer's parameters, and logs the loss.  <br /></td></tr>
 <tr class="separator:aee7f8d2e4756c13ebe39075b7f4c92cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada65cdc5d77e6dd24102008ab05004e0" id="r_ada65cdc5d77e6dd24102008ab05004e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ada65cdc5d77e6dd24102008ab05004e0">linear1_weight</a> () <a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">const</a></td></tr>
+<tr class="memitem:ada65cdc5d77e6dd24102008ab05004e0" id="r_ada65cdc5d77e6dd24102008ab05004e0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ada65cdc5d77e6dd24102008ab05004e0">linear1_weight</a> () const</td></tr>
 <tr class="memdesc:ada65cdc5d77e6dd24102008ab05004e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test/inspection accessor.  <br /></td></tr>
 <tr class="separator:ada65cdc5d77e6dd24102008ab05004e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea8944b7f9aa6259490ff2d4410b8dc1" id="r_aea8944b7f9aa6259490ff2d4410b8dc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#aea8944b7f9aa6259490ff2d4410b8dc1">linear1</a> ()</td></tr>
+<tr class="memdesc:aea8944b7f9aa6259490ff2d4410b8dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable layer accessors &ndash; Population Based Training's own exploit step needs to read/write this network's live weights directly (to copy a top performer's weights onto a bottom performer mid-training, via each <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s own parameters()), which no existing const-only accessor supports. Logged as a small necessary scope addition, found by campaign_exai_dl_library_evolutionary_deep_learning's Phase 4 Mission 0.  <br /></td></tr>
+<tr class="separator:aea8944b7f9aa6259490ff2d4410b8dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f219f9c5bf674697fd69f353aabbdc3" id="r_a5f219f9c5bf674697fd69f353aabbdc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html#a5f219f9c5bf674697fd69f353aabbdc3">linear2</a> ()</td></tr>
+<tr class="separator:a5f219f9c5bf674697fd69f353aabbdc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A tiny MLP (<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(2,4)</a> -&gt; ReLU -&gt; <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(4,1)</a>) trained on XOR &ndash; the canonical not-linearly-separable case, exactly representable by a small MLP, giving an unambiguous convergence target for Phase 1's "prove the training loop works" goal. </p>
@@ -188,6 +193,33 @@ Deterministic, hand-picked non-zero initial weights, NOT a general Xavier/He sch
 
 </div>
 </div>
+<a id="aea8944b7f9aa6259490ff2d4410b8dc1" name="aea8944b7f9aa6259490ff2d4410b8dc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea8944b7f9aa6259490ff2d4410b8dc1">&#9670;&#160;</a></span>linear1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp; pulsatrix::XorNetwork::linear1 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mutable layer accessors &ndash; Population Based Training's own exploit step needs to read/write this network's live weights directly (to copy a top performer's weights onto a bottom performer mid-training, via each <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s own parameters()), which no existing const-only accessor supports. Logged as a small necessary scope addition, found by campaign_exai_dl_library_evolutionary_deep_learning's Phase 4 Mission 0. </p>
+
+</div>
+</div>
 <a id="ada65cdc5d77e6dd24102008ab05004e0" name="ada65cdc5d77e6dd24102008ab05004e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada65cdc5d77e6dd24102008ab05004e0">&#9670;&#160;</a></span>linear1_weight()</h2>
 
@@ -198,7 +230,7 @@ Deterministic, hand-picked non-zero initial weights, NOT a general Xavier/He sch
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::XorNetwork::linear1_weight </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::XorNetwork::linear1_weight </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -215,6 +247,31 @@ Deterministic, hand-picked non-zero initial weights, NOT a general Xavier/He sch
 
 </div>
 </div>
+<a id="a5f219f9c5bf674697fd69f353aabbdc3" name="a5f219f9c5bf674697fd69f353aabbdc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f219f9c5bf674697fd69f353aabbdc3">&#9670;&#160;</a></span>linear2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp; pulsatrix::XorNetwork::linear2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aee7f8d2e4756c13ebe39075b7f4c92cf" name="aee7f8d2e4756c13ebe39075b7f4c92cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee7f8d2e4756c13ebe39075b7f4c92cf">&#9670;&#160;</a></span>train_step()</h2>
 
@@ -222,15 +279,15 @@ Deterministic, hand-picked non-zero initial weights, NOT a general Xavier/He sch
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">float</a> pulsatrix::XorNetwork::train_step </td>
+          <td class="memname">float pulsatrix::XorNetwork::train_step </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>target</em>, </td>
         </tr>
         <tr>
@@ -248,7 +305,7 @@ Deterministic, hand-picked non-zero initial weights, NOT a general Xavier/He sch
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06">int</a>&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>step</em>&#160;</td>
         </tr>
         <tr>

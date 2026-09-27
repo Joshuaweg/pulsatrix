@@ -11,8 +11,9 @@ var searchData=
   ['shufflesampler_8',['ShuffleSampler',['../classpulsatrix_1_1ShuffleSampler.html',1,'pulsatrix']]],
   ['softmaxmodule_9',['SoftmaxModule',['../classpulsatrix_1_1SoftmaxModule.html',1,'pulsatrix']]],
   ['sparseautoencoder_10',['SparseAutoencoder',['../classpulsatrix_1_1SparseAutoencoder.html',1,'pulsatrix']]],
-  ['stepresult_11',['StepResult',['../structpulsatrix_1_1StepResult.html',1,'pulsatrix']]],
-  ['subtbloss_12',['SubTBLoss',['../classpulsatrix_1_1SubTBLoss.html',1,'pulsatrix']]],
-  ['successivehalvingresult_13',['SuccessiveHalvingResult',['../structpulsatrix_1_1SuccessiveHalvingResult.html',1,'pulsatrix']]],
-  ['swiglumodule_14',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]]
+  ['speciesassignment_11',['SpeciesAssignment',['../structpulsatrix_1_1SpeciesAssignment.html',1,'pulsatrix']]],
+  ['stepresult_12',['StepResult',['../structpulsatrix_1_1StepResult.html',1,'pulsatrix']]],
+  ['subtbloss_13',['SubTBLoss',['../classpulsatrix_1_1SubTBLoss.html',1,'pulsatrix']]],
+  ['successivehalvingresult_14',['SuccessiveHalvingResult',['../structpulsatrix_1_1SuccessiveHalvingResult.html',1,'pulsatrix']]],
+  ['swiglumodule_15',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]]
 ];
