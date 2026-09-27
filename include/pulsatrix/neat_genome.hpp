@@ -134,6 +134,23 @@ public:
     [[nodiscard]] const std::vector<ConnectionGene>& connections() const { return connections_; }
 
     /**
+     * @brief Directly sets an existing connection's weight by innovation number -- needed
+     *        infrastructure found necessary by Phase 3 Mission 1 (deterministic phenotype-
+     *        evaluation tests need an exact, controllable weight; a future crossover mission
+     *        will need the same capability to copy weights between genomes), logged here as
+     *        a small scope addition beyond Mission 0's own original scope.
+     * @throws std::invalid_argument if no connection with that innovation number exists.
+     */
+    void SetConnectionWeight(int innovation, double weight) {
+        auto it = std::find_if(connections_.begin(), connections_.end(),
+                                [&](const ConnectionGene& c) { return c.innovation == innovation; });
+        if (it == connections_.end()) {
+            throw std::invalid_argument("NEATGenome::SetConnectionWeight: no connection with that innovation");
+        }
+        it->weight = weight;
+    }
+
+    /**
      * @brief Pure core: adds a new enabled connection gene (in_node, out_node, weight),
      *        assigning its innovation number via tracker (reused if this exact connection has
      *        already been created on any genome sharing the tracker).

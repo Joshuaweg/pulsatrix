@@ -49,6 +49,8 @@ add_executable(pulsatrix_tests
     cma_es_test.cpp
     cma_es_xor_integration_test.cpp
     neat_genome_test.cpp
+    neat_phenotype_test.cpp
+    neat_speciation_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
