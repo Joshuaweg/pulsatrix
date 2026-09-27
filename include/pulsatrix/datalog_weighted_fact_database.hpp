@@ -9,6 +9,7 @@
 #include <unordered_map>
 
 #include "pulsatrix/datalog_atom.hpp"
+#include "pulsatrix/datalog_dual_semiring.hpp"
 
 namespace pulsatrix::datalog {
 
@@ -20,6 +21,13 @@ using WeightedFactSet = std::unordered_map<Atom, T, AtomHash>;
  * @brief A weighted fact database: a map from ground atom to a semiring value type `T`
  *        (`bool` for the trivial/boolean instantiation, `double`/`float` for the real-valued
  *        `(+, x)` instantiation).
+ * @note Phase 3 Mission 2 additive extension: `T = DualNumber<double>` (see
+ *       datalog_dual_semiring.hpp) is a third instantiation, added alongside the original
+ *       `bool`/`double`/`float` set -- Mission 1's own Decision 3 rationale ("only a closed,
+ *       known set of Value types is ever needed") is a scoped, revisitable choice, not a
+ *       permanent ceiling; Mission 2's forward-mode-AD requirement is exactly the kind of
+ *       genuine new need Mission 1's own notes anticipated as a "contained, mechanical
+ *       follow-up." No existing instantiation's behavior changes.
  * @note Stage 3 design decision 1 (FactDatabase generalization shape): this is a **new
  *       templated type introduced alongside** Mission 0's `FactDatabase`, not a rewrite of it
  *       in place. Verified achievable (not assumed) by direct inspection of Mission 0's
@@ -79,5 +87,6 @@ private:
 extern template class WeightedFactDatabase<bool>;
 extern template class WeightedFactDatabase<double>;
 extern template class WeightedFactDatabase<float>;
+extern template class WeightedFactDatabase<DualNumber<double>>;
 
 }  // namespace pulsatrix::datalog

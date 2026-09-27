@@ -29,5 +29,6 @@ void WeightedFactDatabase<T>::set(Atom fact, T weight) {
 template class WeightedFactDatabase<bool>;
 template class WeightedFactDatabase<double>;
 template class WeightedFactDatabase<float>;
+template class WeightedFactDatabase<DualNumber<double>>;
 
 }  // namespace pulsatrix::datalog

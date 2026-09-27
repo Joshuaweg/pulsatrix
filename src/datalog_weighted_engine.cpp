@@ -191,4 +191,10 @@ template WeightedFactDatabase<bool> semi_naive_evaluate_weighted<BooleanSemiring
 template WeightedFactDatabase<double> semi_naive_evaluate_weighted<RealSemiring<double>>(
     const std::vector<Rule>&, const WeightedFactDatabase<double>&);
 
+// Phase 3 Mission 2 additive extension -- see datalog_weighted_engine.hpp's own note.
+template WeightedFactDatabase<DualNumber<double>> naive_evaluate_weighted<DualSemiring<double>>(
+    const std::vector<Rule>&, const WeightedFactDatabase<DualNumber<double>>&);
+template WeightedFactDatabase<DualNumber<double>> semi_naive_evaluate_weighted<DualSemiring<double>>(
+    const std::vector<Rule>&, const WeightedFactDatabase<DualNumber<double>>&);
+
 }  // namespace pulsatrix::datalog

@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "pulsatrix/datalog_dual_semiring.hpp"
 #include "pulsatrix/datalog_rule.hpp"
 #include "pulsatrix/datalog_semiring.hpp"
 #include "pulsatrix/datalog_weighted_fact_database.hpp"
@@ -99,7 +100,7 @@ template <typename Semiring>
     const std::vector<Rule>& rules, const WeightedFactDatabase<typename Semiring::Value>& initial_facts);
 
 // Explicit instantiation declarations -- definitions + explicit instantiations for the two
-// Semiring types this mission ships (BooleanSemiring, RealSemiring<double>) live in
+// Semiring types Mission 1 shipped (BooleanSemiring, RealSemiring<double>) live in
 // datalog_weighted_engine.cpp, mirroring datalog_weighted_fact_database.hpp/.cpp's own
 // declaration/definition split.
 extern template WeightedFactDatabase<bool> naive_evaluate_weighted<BooleanSemiring>(
@@ -110,5 +111,15 @@ extern template WeightedFactDatabase<bool> semi_naive_evaluate_weighted<BooleanS
     const std::vector<Rule>&, const WeightedFactDatabase<bool>&);
 extern template WeightedFactDatabase<double> semi_naive_evaluate_weighted<RealSemiring<double>>(
     const std::vector<Rule>&, const WeightedFactDatabase<double>&);
+
+// Phase 3 Mission 2 additive extension: a third Semiring instantiation, DualSemiring<double>
+// (see datalog_dual_semiring.hpp) -- the forward-mode-AD differentiable case. Zero changes to
+// naive_evaluate_weighted/semi_naive_evaluate_weighted's own template bodies; this is exactly
+// what Mission 1's Decision 3 (templates, not a virtual interface) was for -- a brand new
+// Semiring is "one more ordinary instantiation of one generic algorithm," not an engine change.
+extern template WeightedFactDatabase<DualNumber<double>> naive_evaluate_weighted<DualSemiring<double>>(
+    const std::vector<Rule>&, const WeightedFactDatabase<DualNumber<double>>&);
+extern template WeightedFactDatabase<DualNumber<double>> semi_naive_evaluate_weighted<DualSemiring<double>>(
+    const std::vector<Rule>&, const WeightedFactDatabase<DualNumber<double>>&);
 
 }  // namespace pulsatrix::datalog
