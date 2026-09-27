@@ -114,6 +114,8 @@ public:
      *       conserves. The composed block's actual measured gap is reported by
      *       tests/multihead_attention_module_test.cpp's dedicated measurement test rather
      *       than asserted away or forced into the shared tolerance.
+     * @see cpp_engineering.aDNA's what/context/cpp_tdd/context_tdd_lrp_rule_pattern_taxonomy.md,
+     *      "Known-Non-Conserving-by-Design Note".
      * @note The `1/sqrt(head_dim)` scale is a positive constant factor, under which the
      *       epsilon rule is exactly the identity (`x*c/(c*x) == 1`), so relevance at the
      *       scaled scores equals relevance at the raw product and Eq. 15 is applied against
