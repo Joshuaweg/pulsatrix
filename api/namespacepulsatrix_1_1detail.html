@@ -94,11 +94,17 @@ $(document).ready(function(){initNavTree('namespacepulsatrix_1_1detail.html','')
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::detail Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1detail_1_1ASHACandidate.html">ASHACandidate</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a085b925c9cceac3dcaeec1f0147baccf" id="r_a085b925c9cceac3dcaeec1f0147baccf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1detail.html#a085b925c9cceac3dcaeec1f0147baccf">BinomialCoefficient</a> (int64_t n, int64_t k)</td></tr>
@@ -107,9 +113,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a0653148532f797cbe23d39756cb97695" id="r_a0653148532f797cbe23d39756cb97695"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1detail.html#a0653148532f797cbe23d39756cb97695">ShapKernelWeight</a> (int64_t n, int64_t coalition_size)</td></tr>
 <tr class="memdesc:a0653148532f797cbe23d39756cb97695"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SHAP kernel pi(z') = (n-1) / [C(n,|z'|) * |z'| * (n-|z'|)], for 1 &lt;= |z'| &lt;= n-1.  <br /></td></tr>
 <tr class="separator:a0653148532f797cbe23d39756cb97695"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44e4e5ccbae72d2e92ae14552e4336af" id="r_a44e4e5ccbae72d2e92ae14552e4336af"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1detail.html#a44e4e5ccbae72d2e92ae14552e4336af">SolveLinearSystem</a> (std::vector&lt; std::vector&lt; float &gt; &gt; a, std::vector&lt; float &gt; b)</td></tr>
-<tr class="memdesc:a44e4e5ccbae72d2e92ae14552e4336af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A*x = b via Gaussian elimination with partial pivoting.  <br /></td></tr>
-<tr class="separator:a44e4e5ccbae72d2e92ae14552e4336af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a085b925c9cceac3dcaeec1f0147baccf" name="a085b925c9cceac3dcaeec1f0147baccf"></a>
@@ -186,51 +189,6 @@ Functions</h2></td></tr>
 
 <p>The SHAP kernel pi(z') = (n-1) / [C(n,|z'|) * |z'| * (n-|z'|)], for 1 &lt;= |z'| &lt;= n-1. </p>
 <dl class="section note"><dt>Note</dt><dd>Undefined (division by zero) at |z'|=0 and |z'|=n &ndash; those coalitions are handled separately (they anchor f(baseline) and f(x) exactly), never passed here. </dd></dl>
-
-</div>
-</div>
-<a id="a44e4e5ccbae72d2e92ae14552e4336af" name="a44e4e5ccbae72d2e92ae14552e4336af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44e4e5ccbae72d2e92ae14552e4336af">&#9670;&#160;</a></span>SolveLinearSystem()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; float &gt; pulsatrix::detail::SolveLinearSystem </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; std::vector&lt; float &gt; &gt;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; float &gt;&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Solves A*x = b via Gaussian elimination with partial pivoting. </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>if a pivot is too close to zero (a near-singular system) &ndash; a legitimate, caller-triggerable condition (e.g. degenerate perturbation sampling), not a programmer error, per this codebase's assert-vs-throw convention. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>A, b are taken by value &ndash; elimination is done in place on the local copies. </dd></dl>
 
 </div>
 </div>

@@ -58,15 +58,16 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"activation__snapshot_8hpp.html",
-"classpulsatrix_1_1ContinuousCartPoleEnv.html#a2e90ab6ee599aef003fed1961a07ee80",
-"classpulsatrix_1_1GFlowNetForwardPolicy.html#ad2d3e1b5a5251ac24a3288520e33593f",
-"classpulsatrix_1_1LSTMModule.html#a9e550d3b9e0024ab128c56355b5b45c4",
-"classpulsatrix_1_1Module.html#a64d2dd3268af1b112aaeb1c8286351a9",
-"classpulsatrix_1_1RWKVModule.html#ae20101e1d2053c34e38b5d891ac487fc",
-"classpulsatrix_1_1SparseAutoencoder.html#ace9b3723207021b67c6126f1c0d4f5c0",
-"functions_func_s.html",
-"structpulsatrix_1_1LRPRuleConfig.html"
+"acquisition__functions_8hpp.html",
+"classpulsatrix_1_1ComputationGraph.html#ae89e87cf4f94476c1eb5e277ca493619",
+"classpulsatrix_1_1FlattenModule.html#ab298b2b0c22d9e6e89c109d3444e6e5f",
+"classpulsatrix_1_1LSTMModule.html#a5f0a8ff5e3f6bfa8ea70dc81175f371c",
+"classpulsatrix_1_1MnistDatasetAdapter.html#a3ab68e0f9b0834e21a68026a0c470a5b",
+"classpulsatrix_1_1RWKVModule.html#aa61ea7f8400400566c16fe5ff6b5ad72",
+"classpulsatrix_1_1Shape.html#aae09637dcd892e4539dff5f6d94e8d89",
+"classpulsatrix_1_1XorNetwork.html#ada65cdc5d77e6dd24102008ab05004e0",
+"sampler_8hpp.html",
+"structpulsatrix_1_1ValidationIssue.html#a7e9ea9c75ba69a37b1b8121e4854d3fd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

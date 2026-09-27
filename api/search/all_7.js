@@ -13,6 +13,10 @@ var searchData=
   ['horizontalfliptransform_10',['HorizontalFlipTransform',['../classpulsatrix_1_1HorizontalFlipTransform.html',1,'pulsatrix']]],
   ['hosttodevice_11',['HostToDevice',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92',1,'pulsatrix']]],
   ['hosttohost_12',['HostToHost',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6ba297d3681581537b0677cb9f2a3b9e589',1,'pulsatrix']]],
-  ['hypergrid_5fenv_2ehpp_13',['hypergrid_env.hpp',['../hypergrid__env_8hpp.html',1,'']]],
-  ['hypergridenv_14',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()'],['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv']]]
+  ['hpo_5fsampling_2ehpp_13',['hpo_sampling.hpp',['../hpo__sampling_8hpp.html',1,'']]],
+  ['hyperband_2ehpp_14',['hyperband.hpp',['../hyperband_8hpp.html',1,'']]],
+  ['hyperbandbracket_15',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
+  ['hyperbandresult_16',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
+  ['hypergrid_5fenv_2ehpp_17',['hypergrid_env.hpp',['../hypergrid__env_8hpp.html',1,'']]],
+  ['hypergridenv_18',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv'],['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()']]]
 ];

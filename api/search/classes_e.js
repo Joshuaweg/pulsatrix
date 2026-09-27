@@ -8,11 +8,12 @@ var searchData=
   ['resampletransform_5',['ResampleTransform',['../classpulsatrix_1_1ResampleTransform.html',1,'pulsatrix']]],
   ['residualmodule_6',['ResidualModule',['../classpulsatrix_1_1ResidualModule.html',1,'pulsatrix']]],
   ['resizetransform_7',['ResizeTransform',['../classpulsatrix_1_1ResizeTransform.html',1,'pulsatrix']]],
-  ['retnetmodule_8',['RetNetModule',['../classpulsatrix_1_1RetNetModule.html',1,'pulsatrix']]],
-  ['rmsnormmodule_9',['RMSNormModule',['../classpulsatrix_1_1RMSNormModule.html',1,'pulsatrix']]],
-  ['rnnmodule_10',['RNNModule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix']]],
-  ['rolloutbatch_11',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
-  ['rolloutbuffer_12',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
-  ['ropemodule_13',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
-  ['rwkvmodule_14',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
+  ['resumabletrial_8',['ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html',1,'pulsatrix']]],
+  ['retnetmodule_9',['RetNetModule',['../classpulsatrix_1_1RetNetModule.html',1,'pulsatrix']]],
+  ['rmsnormmodule_10',['RMSNormModule',['../classpulsatrix_1_1RMSNormModule.html',1,'pulsatrix']]],
+  ['rnnmodule_11',['RNNModule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix']]],
+  ['rolloutbatch_12',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
+  ['rolloutbuffer_13',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
+  ['ropemodule_14',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
+  ['rwkvmodule_15',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
 ];

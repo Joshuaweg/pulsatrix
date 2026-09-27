@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['copydirection_0',['CopyDirection',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6b',1,'pulsatrix']]]
+  ['acquisitionkind_0',['AcquisitionKind',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8',1,'pulsatrix']]]
 ];

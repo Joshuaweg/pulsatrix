@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elementwiseop_0',['ElementwiseOp',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503',1,'pulsatrix']]]
+  ['devicetype_0',['DeviceType',['../namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e',1,'pulsatrix']]]
 ];
