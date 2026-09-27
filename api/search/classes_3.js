@@ -8,7 +8,10 @@ var searchData=
   ['datathreadpool_5',['DataThreadPool',['../classpulsatrix_1_1DataThreadPool.html',1,'pulsatrix']]],
   ['detailedbalanceloss_6',['DetailedBalanceLoss',['../classpulsatrix_1_1DetailedBalanceLoss.html',1,'pulsatrix']]],
   ['devicebackend_7',['DeviceBackend',['../classpulsatrix_1_1DeviceBackend.html',1,'pulsatrix']]],
-  ['dqnagent_8',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
-  ['dqnloss_9',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
-  ['dropoutmodule_10',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]]
+  ['disjunctionmodule_8',['DisjunctionModule',['../classpulsatrix_1_1DisjunctionModule.html',1,'pulsatrix']]],
+  ['dqnagent_9',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
+  ['dqnloss_10',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
+  ['dropoutmodule_11',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
+  ['dualnumber_12',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
+  ['dualsemiring_13',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
 ];

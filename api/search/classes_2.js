@@ -11,13 +11,14 @@ var searchData=
   ['cmaesstate_8',['CMAESState',['../structpulsatrix_1_1CMAESState.html',1,'pulsatrix']]],
   ['compose_9',['Compose',['../classpulsatrix_1_1Compose.html',1,'pulsatrix']]],
   ['computationgraph_10',['ComputationGraph',['../classpulsatrix_1_1ComputationGraph.html',1,'pulsatrix']]],
-  ['connectiongene_11',['ConnectionGene',['../structpulsatrix_1_1ConnectionGene.html',1,'pulsatrix']]],
-  ['continuouscartpoleenv_12',['ContinuousCartPoleEnv',['../classpulsatrix_1_1ContinuousCartPoleEnv.html',1,'pulsatrix']]],
-  ['conv2dmodule_13',['Conv2DModule',['../classpulsatrix_1_1Conv2DModule.html',1,'pulsatrix']]],
-  ['cpubackend_14',['CPUBackend',['../classpulsatrix_1_1CPUBackend.html',1,'pulsatrix']]],
-  ['crossentropyloss_15',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
-  ['csvdataset_16',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
-  ['csvreader_17',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
-  ['csvtable_18',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
-  ['cudabackend_19',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
+  ['conjunctionmodule_11',['ConjunctionModule',['../classpulsatrix_1_1ConjunctionModule.html',1,'pulsatrix']]],
+  ['connectiongene_12',['ConnectionGene',['../structpulsatrix_1_1ConnectionGene.html',1,'pulsatrix']]],
+  ['continuouscartpoleenv_13',['ContinuousCartPoleEnv',['../classpulsatrix_1_1ContinuousCartPoleEnv.html',1,'pulsatrix']]],
+  ['conv2dmodule_14',['Conv2DModule',['../classpulsatrix_1_1Conv2DModule.html',1,'pulsatrix']]],
+  ['cpubackend_15',['CPUBackend',['../classpulsatrix_1_1CPUBackend.html',1,'pulsatrix']]],
+  ['crossentropyloss_16',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
+  ['csvdataset_17',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
+  ['csvreader_18',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
+  ['csvtable_19',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
+  ['cudabackend_20',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
 ];
