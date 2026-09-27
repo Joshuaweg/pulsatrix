@@ -53,6 +53,8 @@ add_executable(pulsatrix_tests
     neat_speciation_test.cpp
     neat_xor_fitness_test.cpp
     neat_evolution_test.cpp
+    evolution_strategies_test.cpp
+    fixed_topology_xor_network_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
