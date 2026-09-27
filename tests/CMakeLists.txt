@@ -4,6 +4,35 @@ add_executable(pulsatrix_tests
     shape_test.cpp
     assert_test.cpp
     tensor_test.cpp
+    dataset_test.cpp
+    iterable_dataset_test.cpp
+    sampler_test.cpp
+    transform_test.cpp
+    collate_test.cpp
+    bounded_queue_test.cpp
+    data_thread_pool_test.cpp
+    data_loader_test.cpp
+    csv_reader_test.cpp
+    csv_dataset_test.cpp
+    csv_dataloader_integration_test.cpp
+    mnist_dataset_adapter_test.cpp
+    image_decoder_test.cpp
+    image_transforms_test.cpp
+    image_folder_dataset_test.cpp
+    dataloader_image_benchmark_test.cpp
+    tokenizer_test.cpp
+    vocabulary_test.cpp
+    text_dataset_test.cpp
+    text_collate_test.cpp
+    text_dataloader_integration_test.cpp
+    wav_reader_test.cpp
+    audio_folder_dataset_test.cpp
+    audio_transforms_test.cpp
+    audio_collate_test.cpp
+    audio_dataloader_integration_test.cpp
+    video_frame_directory_dataset_test.cpp
+    video_transforms_test.cpp
+    dataset_validator_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
@@ -124,6 +153,11 @@ target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_core GTest::gtest_main G
 # path to the gitignored, fetch_mnist.py-populated data directory regardless of how/where
 # ctest is invoked from.
 target_compile_definitions(pulsatrix_tests PRIVATE PULSATRIX_TEST_DATA_DIR="${CMAKE_SOURCE_DIR}/data")
+
+# Same rationale as PULSATRIX_TEST_DATA_DIR above, for small synthetic fixtures checked
+# directly into the repo (not gitignored/downloaded like MNIST) -- csv_reader_test.cpp /
+# csv_dataset_test.cpp (campaign_exai_dl_library_data_pipeline, Mission 3).
+target_compile_definitions(pulsatrix_tests PRIVATE PULSATRIX_TEST_FIXTURES_DIR="${CMAKE_SOURCE_DIR}/tests/fixtures")
 
 include(GoogleTest)
 # DISCOVERY_MODE PRE_TEST (CMake 3.18+): defers test discovery to ctest run-time instead of

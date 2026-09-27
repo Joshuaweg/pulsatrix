@@ -380,5 +380,63 @@ TEST(TensorDestructorTest, DestructorCallsBackendFreeExactlyOnce) {
     { Tensor t(Shape({2}), &mock); }  // destructor runs at scope exit
 }
 
+// campaign_exai_dl_library_data_pipeline, Mission 0: Tensor::Stack is the collate-time
+// primitive that turns N independently-loaded Dataset samples into one batch Tensor.
+// Three (1, 3) "rows" stacked into one (3, 3) batch, matching the batch-of-one-per-sample
+// convention MnistIdxLoader already uses.
+TEST_F(TensorTest, StackConcatenatesAlongLeadingDimension) {
+    Tensor a(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor b(Shape({1, 3}), &backend, {4.0f, 5.0f, 6.0f});
+    Tensor c(Shape({1, 3}), &backend, {7.0f, 8.0f, 9.0f});
+
+    Tensor batch = Tensor::Stack({a, b, c}, &backend);
+
+    EXPECT_EQ(batch.shape(), Shape({3, 3}));
+    for (int64_t i = 0; i < 9; ++i) {
+        EXPECT_FLOAT_EQ(batch.data()[i], static_cast<float>(i + 1));
+    }
+}
+
+TEST_F(TensorTest, StackSumsUnequalLeadingDimensions) {
+    Tensor a(Shape({2, 2}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    Tensor b(Shape({1, 2}), &backend, {5.0f, 6.0f});
+
+    Tensor batch = Tensor::Stack({a, b}, &backend);
+
+    EXPECT_EQ(batch.shape(), Shape({3, 2}));
+    EXPECT_FLOAT_EQ(batch.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(batch.data()[3], 4.0f);
+    EXPECT_FLOAT_EQ(batch.data()[4], 5.0f);
+    EXPECT_FLOAT_EQ(batch.data()[5], 6.0f);
+}
+
+TEST_F(TensorTest, StackThrowsOnEmptyInput) {
+    EXPECT_THROW(Tensor::Stack({}, &backend), std::invalid_argument);
+}
+
+TEST_F(TensorTest, StackThrowsOnRankMismatch) {
+    Tensor a(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor b(Shape({1, 3, 1}), &backend, {1.0f, 2.0f, 3.0f});
+    EXPECT_THROW(Tensor::Stack({a, b}, &backend), std::invalid_argument);
+}
+
+TEST_F(TensorTest, StackThrowsOnNonLeadingDimensionMismatch) {
+    Tensor a(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor b(Shape({1, 4}), &backend, {1.0f, 2.0f, 3.0f, 4.0f});
+    EXPECT_THROW(Tensor::Stack({a, b}, &backend), std::invalid_argument);
+}
+
+TEST_F(TensorTest, StackThrowsOnDeviceMismatch) {
+    Tensor a(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
+    Tensor b(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f}, DeviceType::Cuda);
+    EXPECT_THROW(Tensor::Stack({a, b}, &backend), std::invalid_argument);
+}
+
+TEST_F(TensorTest, StackThrowsOnRankZeroTensor) {
+    Tensor a(Shape({}), &backend, {1.0f});
+    Tensor b(Shape({}), &backend, {2.0f});
+    EXPECT_THROW(Tensor::Stack({a, b}, &backend), std::invalid_argument);
+}
+
 }  // namespace
 }  // namespace pulsatrix

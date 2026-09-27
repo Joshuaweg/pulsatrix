@@ -66,6 +66,24 @@ public:
     ~Tensor();
 
     /**
+     * @brief Concatenates N tensors along their leading dimension into one batch Tensor --
+     *        pulsatrix's collate-time primitive (campaign_exai_dl_library_data_pipeline,
+     *        Mission 0). E.g. stacking three (1, 28, 28) MNIST-style per-sample images
+     *        produces one (3, 28, 28) batch.
+     * @param tensors Non-empty list of tensors, each rank >= 1, each on the same device,
+     *        all identical in every dimension except the leading one.
+     * @param backend Backend to allocate the output buffer through. Not owned.
+     * @return A new Tensor whose leading dimension is the sum of every input tensor's
+     *         leading dimension, and whose remaining dimensions match the inputs'.
+     * @throws std::invalid_argument if tensors is empty, any tensor has rank 0, ranks
+     *         differ across tensors, non-leading dimensions differ across tensors, or
+     *         devices differ across tensors -- external boundary: the list of tensors to
+     *         stack is assembled by a DataLoader/collate function from independently
+     *         constructed Dataset samples, not a compile-time-known invariant.
+     */
+    [[nodiscard]] static Tensor Stack(const std::vector<Tensor>& tensors, DeviceBackend* backend);
+
+    /**
      * @brief Deep-copies another tensor's buffer.
      * @note Copies via CopyDirection::HostToHost if device() is Cpu, else DeviceToDevice --
      *       both this tensor's and other's buffers live on the same device, since both are

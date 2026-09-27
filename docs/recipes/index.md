@@ -20,6 +20,10 @@ for those) — the existing demos stay as-is and are cross-linked here where rel
 - [RNN vs. LSTM vs. GRU on a parity task](../recipes/deep-learning/sequence_models_rnn_lstm_gru.md)
 - [Residual connections and normalization layers](../recipes/deep-learning/residual_and_norm_layers.md)
 
+## Data Loading, Transformation & Validation
+
+- [CSV + DataLoader training](../recipes/data-pipeline/csv_dataloader_training.md)
+
 ## Ad-hoc Interpretability
 
 - [KernelSHAP basics](../recipes/interpretability/kernel_shap_basics.md)

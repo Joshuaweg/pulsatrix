@@ -37,3 +37,11 @@
  *        GFlowNet-based non-goal-directed training objectives motivated by the Scientist AI
  *        research direction.
  */
+
+/**
+ * @defgroup data_pipeline Data Loading, Transformation & Validation
+ * @brief Dataset/IterableDataset/DataLoader/Transform/Compose/CollateFn core, plus concrete
+ *        modality implementations (tabular CSV, image, text, audio, a reduced-scope video
+ *        frame-directory stub) and generic dataset validation (descriptive statistics,
+ *        missingness/outlier detection), all built on the @ref dl_modules Tensor.
+ */

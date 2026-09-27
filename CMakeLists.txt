@@ -47,6 +47,12 @@ endif()
 add_library(pulsatrix_core
     src/cpu_backend.cpp
     src/tensor.cpp
+    src/sampler.cpp
+    src/collate.cpp
+    src/data_thread_pool.cpp
+    src/data_loader.cpp
+    src/csv_reader.cpp
+    src/csv_dataset.cpp
     src/computation_graph.cpp
     src/autograd.cpp
     src/linear_module.cpp
@@ -106,9 +112,44 @@ add_library(pulsatrix_core
     src/sgd_optimizer.cpp
     src/adam_optimizer.cpp
     src/xor_training_example.cpp
+    src/image_decoder.cpp
+    src/image_transforms.cpp
+    src/image_folder_dataset.cpp
+    src/tokenizer.cpp
+    src/vocabulary.cpp
+    src/text_dataset.cpp
+    src/text_collate.cpp
+    src/wav_reader.cpp
+    src/audio_folder_dataset.cpp
+    src/audio_transforms.cpp
+    src/audio_collate.cpp
+    src/video_frame_directory_dataset.cpp
+    src/video_transforms.cpp
+    src/dataset_validator.cpp
 )
 target_include_directories(pulsatrix_core PUBLIC include)
 target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
+
+# First consumer: DataThreadPool/BoundedQueue (campaign_exai_dl_library_data_pipeline,
+# Mission 2) -- pulsatrix's first std::thread-based code, needs the platform thread
+# library linked explicitly (not implicit via any other dependency).
+find_package(Threads REQUIRED)
+target_link_libraries(pulsatrix_core PUBLIC Threads::Threads)
+
+# stb_image (public-domain, single-header image decoder) -- campaign_exai_dl_library_data_pipeline
+# Phase 2 Decision Point 2: chosen over OpenCV (disproportionate build/dependency footprint
+# for "decode a file into pixel bytes") and over hand-rolling (a real JPEG/PNG codec is a
+# project-sized undertaking on its own). Fetched unconditionally, no PULSATRIX_ENABLE_*
+# option gate -- unlike CUDA/HIP/Python, it needs no real hardware/SDK/interpreter, just a
+# vendored header, so there is no real "opt out" case to support.
+include(FetchContent)
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG f0569113c93ad095470c54bf34a17b36646bbbb
+)
+FetchContent_MakeAvailable(stb)
+target_include_directories(pulsatrix_core PRIVATE ${stb_SOURCE_DIR})
 
 if(PULSATRIX_ENABLE_CUDA)
     target_sources(pulsatrix_core PRIVATE src/cuda_backend.cu)
@@ -221,6 +262,9 @@ if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(mnist_training_demo examples/mnist_training_demo.cpp)
     target_link_libraries(mnist_training_demo PRIVATE pulsatrix_core)
 
+    add_executable(mnist_dataloader_demo examples/mnist_dataloader_demo.cpp)
+    target_link_libraries(mnist_dataloader_demo PRIVATE pulsatrix_core)
+
     add_executable(sequence_model_demo examples/sequence_model_demo.cpp)
     target_link_libraries(sequence_model_demo PRIVATE pulsatrix_core)
 
@@ -246,6 +290,9 @@ if(PULSATRIX_BUILD_EXAMPLES)
     # with a docs/recipes/<section>/<name>.md page. See docs/recipes/index.md.
     add_executable(xor_training_recipe examples/recipes/xor_training.cpp)
     target_link_libraries(xor_training_recipe PRIVATE pulsatrix_core)
+
+    add_executable(csv_dataloader_training_recipe examples/recipes/csv_dataloader_training.cpp)
+    target_link_libraries(csv_dataloader_training_recipe PRIVATE pulsatrix_core)
 
     add_executable(sequence_models_recipe examples/recipes/sequence_models_rnn_lstm_gru.cpp)
     target_link_libraries(sequence_models_recipe PRIVATE pulsatrix_core)
