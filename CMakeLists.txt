@@ -66,6 +66,8 @@ add_library(pulsatrix_core
     src/conjunction_module.cpp
     src/disjunction_module.cpp
     src/negation_module.cpp
+    src/aggregator_module.cpp
+    src/satisfaction_loss.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
