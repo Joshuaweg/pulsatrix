@@ -291,6 +291,9 @@ if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(xor_training_recipe examples/recipes/xor_training.cpp)
     target_link_libraries(xor_training_recipe PRIVATE pulsatrix_core)
 
+    add_executable(csv_dataloader_training_recipe examples/recipes/csv_dataloader_training.cpp)
+    target_link_libraries(csv_dataloader_training_recipe PRIVATE pulsatrix_core)
+
     add_executable(sequence_models_recipe examples/recipes/sequence_models_rnn_lstm_gru.cpp)
     target_link_libraries(sequence_models_recipe PRIVATE pulsatrix_core)
 

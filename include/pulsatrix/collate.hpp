@@ -1,6 +1,6 @@
 /** @file collate.hpp
  *  @brief Batch assembly -- Batch, CollateFn, DefaultCollate.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

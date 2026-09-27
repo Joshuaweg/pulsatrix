@@ -1,6 +1,6 @@
 /** @file data_thread_pool.hpp
  *  @brief Minimal generic thread pool for CPU-side data pipeline work.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

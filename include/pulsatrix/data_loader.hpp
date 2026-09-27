@@ -1,6 +1,6 @@
 /** @file data_loader.hpp
  *  @brief Orchestrates sampling, fetch, and collation into batches.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

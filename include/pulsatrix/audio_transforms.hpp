@@ -1,6 +1,6 @@
 /** @file audio_transforms.hpp
  *  @brief Sample-level audio Transforms -- linear-interpolation resampling.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

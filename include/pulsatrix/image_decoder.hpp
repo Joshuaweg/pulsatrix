@@ -1,6 +1,6 @@
 /** @file image_decoder.hpp
  *  @brief Decodes image files (PNG/JPEG/BMP/etc.) into Tensors via stb_image.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

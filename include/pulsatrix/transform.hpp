@@ -1,6 +1,6 @@
 /** @file transform.hpp
  *  @brief Sample-level preprocessing abstraction -- Transform, Compose, TransformDataset.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

@@ -1,6 +1,6 @@
 /** @file audio_collate.hpp
  *  @brief AudioPadCollate -- zero-pads variable-length waveforms into one batch Tensor.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

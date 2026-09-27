@@ -1,6 +1,6 @@
 /** @file tokenizer.hpp
  *  @brief Minimal deterministic whitespace/punctuation word-level tokenizer.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

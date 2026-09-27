@@ -33,6 +33,17 @@ below, each paired with a walkthrough page under
 | `grad_cam_mnist_demo` | Runs Grad-CAM through a `Conv2DModule` -> `ReluModule` -> `FlattenModule` -> `LinearModule` network shaped like MNIST (1x28x28, 10 classes). **Note:** this is a synthetic/pipeline demo, not a real digit classifier — the network has randomly-initialized (untrained) weights and the input is a hand-drawn-shaped synthetic blob, not a real digit. It demonstrates Grad-CAM's mechanics (graph wiring, activation/gradient caching, per-channel weighting), not a meaningful "what the model actually learned" heatmap. See `mnist_training_demo` below for a real trained model. |
 | `mnist_training_demo` | Trains `MnistConvNet` on **real** MNIST digit images and prints real measured test-set accuracy. **Prerequisite:** run `py -3.11 tools/fetch_mnist.py` once first (requires `torchvision` in that Python environment) to populate `data/MNIST/raw/` — this data is gitignored and not part of the repo. Nothing at C++ build/test time depends on Python; the fetch script is a one-time, offline step. |
 
+## Data pipeline
+
+| Target | What it demonstrates |
+|---|---|
+| `mnist_dataloader_demo` | Same network and hyperparameters as `mnist_training_demo`, but images/labels are pulled through `Dataset`/`DataLoader` (`MnistDatasetAdapter`) instead of iterating `MnistDataset`'s raw vectors directly — proves the data-loading pipeline end-to-end against real data. **Prerequisite:** same as `mnist_training_demo` (run `py -3.11 tools/fetch_mnist.py` once first). |
+
+See also [`examples/recipes/csv_dataloader_training.cpp`](recipes/csv_dataloader_training.cpp) —
+a smaller, self-contained recipe training a `LinearModule` regressor from a CSV file through
+`CsvDataset`/`DataLoader`, paired with its own
+[walkthrough page](https://joshuaweg.github.io/pulsatrix/recipes/data-pipeline/csv_dataloader_training/).
+
 ## Reinforcement learning
 
 All five RL demos train on `CartPoleEnv` / `ContinuousCartPoleEnv`, are fully deterministic

@@ -1,6 +1,6 @@
 /** @file video_transforms.hpp
  *  @brief Frame-sampling Transform -- selects a fixed number of evenly-spaced frames.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

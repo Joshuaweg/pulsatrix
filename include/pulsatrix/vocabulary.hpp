@@ -1,6 +1,6 @@
 /** @file vocabulary.hpp
  *  @brief Token<->index lookup with a reserved <unk> fallback, plus a frequency-ranked builder.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

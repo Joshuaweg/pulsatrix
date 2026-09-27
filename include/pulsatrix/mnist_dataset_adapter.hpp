@@ -1,6 +1,6 @@
 /** @file mnist_dataset_adapter.hpp
  *  @brief Adapts a pre-loaded MnistDataset onto the generic Dataset interface.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 
