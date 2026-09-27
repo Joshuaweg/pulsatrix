@@ -52,6 +52,61 @@ Tensor::~Tensor() {
     backend_->free(data_);
 }
 
+Tensor Tensor::Stack(const std::vector<Tensor>& tensors, DeviceBackend* backend) {
+    // External boundary (data-pipeline campaign, Mission 0 classification): the list of
+    // tensors to stack is assembled by a DataLoader/collate function from independently
+    // constructed Dataset samples, not a compile-time-known invariant.
+    if (tensors.empty()) {
+        throw std::invalid_argument("Tensor::Stack: tensors must not be empty");
+    }
+
+    const Shape& first_shape = tensors[0].shape();
+    int64_t rank = first_shape.rank();
+    if (rank < 1) {
+        throw std::invalid_argument("Tensor::Stack: tensors must have rank >= 1 (a leading batch dimension)");
+    }
+    DeviceType device = tensors[0].device();
+
+    int64_t total_leading = 0;
+    for (const Tensor& t : tensors) {
+        if (t.rank() != rank) {
+            throw std::invalid_argument("Tensor::Stack: all tensors must have the same rank");
+        }
+        if (t.device() != device) {
+            throw std::invalid_argument("Tensor::Stack: all tensors must be on the same device");
+        }
+        for (int64_t d = 1; d < rank; ++d) {
+            if (t.shape().dim(static_cast<size_t>(d)) != first_shape.dim(static_cast<size_t>(d))) {
+                throw std::invalid_argument("Tensor::Stack: all tensors must match on every non-leading dimension");
+            }
+        }
+        total_leading += t.shape().dim(0);
+    }
+
+    std::vector<int64_t> out_dims;
+    out_dims.reserve(static_cast<size_t>(rank));
+    out_dims.push_back(total_leading);
+    for (int64_t d = 1; d < rank; ++d) {
+        out_dims.push_back(first_shape.dim(static_cast<size_t>(d)));
+    }
+
+    Tensor result(Shape(out_dims), backend, device);
+    if (result.data() == nullptr) {
+        return result;
+    }
+
+    CopyDirection dir = (device == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::DeviceToDevice;
+    float* dst = result.data();
+    for (const Tensor& t : tensors) {
+        int64_t chunk_numel = t.numel();
+        if (chunk_numel > 0) {
+            backend->copy(dst, t.data(), static_cast<size_t>(chunk_numel) * sizeof(float), dir);
+            dst += chunk_numel;
+        }
+    }
+    return result;
+}
+
 Tensor::Tensor(const Tensor& other)
     : data_(nullptr), shape_(other.shape_), backend_(other.backend_), device_(other.device_) {
     data_ = allocate_buffer(backend_, shape_.numel());

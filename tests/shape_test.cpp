@@ -91,5 +91,23 @@ TEST(ShapeDeathTest, DimAbortsOnOutOfRangeIndex) {
     EXPECT_DEATH({ (void)s.dim(2); }, "PULSATRIX_ASSERT failed");
 }
 
+// campaign_exai_dl_library_data_pipeline, Mission 0: runtime-sized constructor needed by
+// Tensor::Stack, which computes an output rank/dims list at runtime.
+TEST(ShapeTest, VectorConstructorMatchesInitializerListConstructor) {
+    std::vector<int64_t> dims{5, 6, 7};
+    Shape s(dims);
+    EXPECT_EQ(s.rank(), 3);
+    EXPECT_EQ(s.numel(), 210);
+    EXPECT_EQ(s.dim(0), 5);
+    EXPECT_EQ(s.dim(1), 6);
+    EXPECT_EQ(s.dim(2), 7);
+    EXPECT_EQ(s, Shape({5, 6, 7}));
+}
+
+TEST(ShapeTest, VectorConstructorThrowsOnNegativeDimension) {
+    std::vector<int64_t> dims{2, -3, 4};
+    EXPECT_THROW(Shape s(dims), std::invalid_argument);
+}
+
 }  // namespace
 }  // namespace pulsatrix
