@@ -91,6 +91,7 @@ add_executable(pulsatrix_tests
     datalog_weighted_fact_database_test.cpp
     datalog_weighted_engine_test.cpp
     datalog_dual_semiring_test.cpp
+    neuro_symbolic_datalog_bridge_test.cpp
     conv2d_module_test.cpp
     rms_norm_module_test.cpp
     layer_norm_module_test.cpp
