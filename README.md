@@ -25,11 +25,15 @@ ExAI-first C++ deep learning library — explainability as a first-class propert
 
 **Reinforcement learning** (`Environment`/`Agent` interfaces, gymnasium-API-shaped): `CartPoleEnv`/`ContinuousCartPoleEnv`, `ReplayBuffer`/`RolloutBuffer`, DQN (+ Double DQN), REINFORCE, A2C, PPO (GAE + clipped surrogate objective), SAC (twin critics, reparameterized tanh-squashed policy, entropy regularization) — every algorithm trained end-to-end and verified against a fixed, pre-declared performance bar on a real environment, not just unit-tested in isolation.
 
+**Evolutionary computation** (see [docs](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/)): a from-scratch, DEAP-free genetic-algorithm core (population/fitness/selection/crossover/mutation, NSGA-II); neuroevolution (`NEATGenome` + structural mutation + speciation, and Evolution Strategies, zero RL dependency); evolutionary hyperparameter optimization (`CMAES`); Population Based Training (`RunPBT`); and evolutionary generative-model training (`GeneratorPopulation`, E-GAN's Minimax/Heuristic/LeastSquares mutation objectives).
+
+**Hyperparameter optimization** (see [docs](https://joshuaweg.github.io/pulsatrix/hyperparameter-optimization/)): a typed `SearchSpace`/`Configuration`/`Trial` core; grid/random search; Bayesian optimization (`GaussianProcessRegressor` + EI/PI/UCB acquisition functions, and TPE); bandit-based early stopping (Successive Halving, Hyperband, ASHA via a caller-owned `ResumableTrial` abstraction) — every algorithm a from-scratch reimplementation, never a runtime dependency on a Python HPO library.
+
 **Bindings**: pybind11 (`bindings/pulsatrix_py.cpp`) exposing `Tensor`, core modules, and the explainer suite to Python.
 
 **Examples** (`examples/`): see [`examples/README.md`](examples/README.md) for what each one demonstrates and how to run it.
 
-1400+ tests, green in both Debug and Release, on Windows (MSVC) and Linux (GCC) — see the
+1700+ tests, green in both Debug and Release, on Windows (MSVC) and Linux (GCC) — see the
 [CI workflow](.github/workflows/ci.yml).
 
 ## Status / limitations

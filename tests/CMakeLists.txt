@@ -33,10 +33,35 @@ add_executable(pulsatrix_tests
     video_frame_directory_dataset_test.cpp
     video_transforms_test.cpp
     dataset_validator_test.cpp
+    individual_test.cpp
+    selection_test.cpp
+    crossover_test.cpp
+    mutation_test.cpp
+    survivor_selection_test.cpp
+    evolutionary_loop_test.cpp
+    nsga2_test.cpp
     search_space_test.cpp
     trial_test.cpp
     hpo_sampling_test.cpp
     hpo_xor_tuning_integration_test.cpp
+    hpo_genotype_test.cpp
+    ga_hpo_xor_integration_test.cpp
+    cma_es_test.cpp
+    cma_es_xor_integration_test.cpp
+    neat_genome_test.cpp
+    neat_phenotype_test.cpp
+    neat_speciation_test.cpp
+    neat_xor_fitness_test.cpp
+    neat_evolution_test.cpp
+    evolution_strategies_test.cpp
+    fixed_topology_xor_network_test.cpp
+    pbt_test.cpp
+    pbt_xor_integration_test.cpp
+    generator_population_test.cpp
+    generator_population_gan_integration_test.cpp
+    egan_mutation_test.cpp
+    egan_training_test.cpp
+    egan_training_integration_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
