@@ -40,6 +40,10 @@ add_executable(pulsatrix_tests
     survivor_selection_test.cpp
     evolutionary_loop_test.cpp
     nsga2_test.cpp
+    search_space_test.cpp
+    trial_test.cpp
+    hpo_sampling_test.cpp
+    hpo_xor_tuning_integration_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
@@ -127,6 +131,19 @@ add_executable(pulsatrix_tests
     flatten_module_test.cpp
     grad_cam_test.cpp
     weighted_linear_regression_test.cpp
+    linear_algebra_test.cpp
+    gaussian_process_test.cpp
+    acquisition_functions_test.cpp
+    gp_bo_test.cpp
+    gp_bo_xor_integration_test.cpp
+    tpe_test.cpp
+    tpe_xor_integration_test.cpp
+    successive_halving_test.cpp
+    successive_halving_xor_integration_test.cpp
+    hyperband_test.cpp
+    hyperband_xor_integration_test.cpp
+    asha_test.cpp
+    asha_xor_integration_test.cpp
     lime_test.cpp
     kernel_shap_test.cpp
     pdp_test.cpp
