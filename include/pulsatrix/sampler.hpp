@@ -1,6 +1,6 @@
 /** @file sampler.hpp
  *  @brief Index-order abstraction for DataLoader -- SequentialSampler, ShuffleSampler.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

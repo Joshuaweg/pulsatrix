@@ -1,6 +1,6 @@
 /** @file image_folder_dataset.hpp
  *  @brief Directory-of-class-subfolders image Dataset, mirroring torchvision's ImageFolder.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

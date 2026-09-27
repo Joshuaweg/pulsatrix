@@ -1,6 +1,6 @@
 /** @file bounded_queue.hpp
  *  @brief Fixed-capacity thread-safe blocking queue -- the staged-pipeline backbone.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

@@ -1,6 +1,6 @@
 /** @file dataset.hpp
  *  @brief Random-access dataset abstraction -- Sample, Dataset (size()/get()).
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

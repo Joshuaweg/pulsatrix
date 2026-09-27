@@ -1,6 +1,6 @@
 /** @file iterable_dataset.hpp
  *  @brief Streaming dataset abstraction -- reset()/next() for sources with no random access.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

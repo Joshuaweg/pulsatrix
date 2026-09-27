@@ -1,6 +1,6 @@
 /** @file text_dataset.hpp
  *  @brief Line-delimited corpus Dataset -- tokenizes and indexes each line into a Tensor.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

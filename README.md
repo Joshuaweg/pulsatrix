@@ -21,13 +21,15 @@ ExAI-first C++ deep learning library — explainability as a first-class propert
 
 **Modern architectures with LRP explicitly deferred** (real forward/backward, `propagate_relevance` throws rather than approximates): `RWKVModule`, `RetNetModule`; VAE (`Reparameterize`, `KLDivergenceLoss`); GAN (`BCEWithLogitsLoss`); Diffusion/DDPM (`NoiseSchedule`, `SinusoidalTimestepEmbedding`).
 
+**Data pipeline**: `Dataset`/`IterableDataset`/`DataLoader`/`Transform`/`Compose`/`CollateFn` core, needing zero interface changes across every modality below; `CsvDataset` (tabular); `ImageDecoder`/`ImageFolderDataset`/image transforms (stb_image-backed); `Tokenizer`/`Vocabulary`/`TextDataset`/`PadCollate` (text); `WavReader`/`AudioFolderDataset`/`ResampleTransform`/`AudioPadCollate` (audio); `VideoFrameDirectoryDataset`/`UniformFrameSampleTransform` (video, reduced-scope pre-extracted-frames stub); `DatasetValidator` (descriptive statistics, missingness/outlier detection).
+
 **Reinforcement learning** (`Environment`/`Agent` interfaces, gymnasium-API-shaped): `CartPoleEnv`/`ContinuousCartPoleEnv`, `ReplayBuffer`/`RolloutBuffer`, DQN (+ Double DQN), REINFORCE, A2C, PPO (GAE + clipped surrogate objective), SAC (twin critics, reparameterized tanh-squashed policy, entropy regularization) — every algorithm trained end-to-end and verified against a fixed, pre-declared performance bar on a real environment, not just unit-tested in isolation.
 
 **Bindings**: pybind11 (`bindings/pulsatrix_py.cpp`) exposing `Tensor`, core modules, and the explainer suite to Python.
 
 **Examples** (`examples/`): see [`examples/README.md`](examples/README.md) for what each one demonstrates and how to run it.
 
-1250+ tests, green in both Debug and Release, on Windows (MSVC) and Linux (GCC) — see the
+1400+ tests, green in both Debug and Release, on Windows (MSVC) and Linux (GCC) — see the
 [CI workflow](.github/workflows/ci.yml).
 
 ## Status / limitations

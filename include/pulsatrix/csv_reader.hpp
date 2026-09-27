@@ -1,6 +1,6 @@
 /** @file csv_reader.hpp
  *  @brief Minimal hand-rolled CSV parser -- RFC-4180-ish, whole-file-at-once.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

@@ -1,6 +1,6 @@
 /** @file image_transforms.hpp
  *  @brief Sample-level image Transforms -- resize, center-crop, normalize, horizontal flip.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

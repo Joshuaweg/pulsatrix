@@ -1,6 +1,6 @@
 /** @file video_frame_directory_dataset.hpp
  *  @brief Directory-of-pre-extracted-frames video Dataset (reduced-scope stub, no codec decode).
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

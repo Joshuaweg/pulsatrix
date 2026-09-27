@@ -1,6 +1,6 @@
 /** @file dataset_validator.hpp
  *  @brief Generic per-field descriptive statistics + missingness/outlier detection over any Dataset.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

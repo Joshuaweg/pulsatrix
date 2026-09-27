@@ -1,6 +1,6 @@
 /** @file wav_reader.hpp
  *  @brief Hand-rolled 16-bit PCM WAV decoder.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

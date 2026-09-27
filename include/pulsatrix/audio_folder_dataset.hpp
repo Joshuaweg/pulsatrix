@@ -1,6 +1,6 @@
 /** @file audio_folder_dataset.hpp
  *  @brief Directory-of-class-subfolders audio Dataset, mirroring ImageFolderDataset.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

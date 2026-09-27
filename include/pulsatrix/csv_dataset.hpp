@@ -1,6 +1,6 @@
 /** @file csv_dataset.hpp
  *  @brief Dataset over a CSV file's numeric feature/label columns -- Phase 1's tabular reference case.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 

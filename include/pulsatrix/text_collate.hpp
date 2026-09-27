@@ -1,6 +1,6 @@
 /** @file text_collate.hpp
  *  @brief PadCollate -- right-pads variable-length token sequences into one batch Tensor.
- *  @ingroup dl_modules
+ *  @ingroup data_pipeline
  */
 #pragma once
 
