@@ -33,6 +33,8 @@ add_executable(pulsatrix_tests
     video_frame_directory_dataset_test.cpp
     video_transforms_test.cpp
     dataset_validator_test.cpp
+    search_space_test.cpp
+    trial_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp
