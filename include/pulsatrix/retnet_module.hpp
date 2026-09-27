@@ -1,6 +1,6 @@
 /** @file retnet_module.hpp
- *  @brief RetNet retention mechanism (recurrent mode). LRP rule deliberately deferred --
- *         propagate_relevance throws, by design (see the class-level note).
+ *  @brief RetNet retention mechanism (recurrent mode), with an original derived LRP rule
+ *         (no published rule exists for RetNet -- see the class-level note).
  *  @ingroup dl_modules
  */
 #pragma once
@@ -55,17 +55,30 @@ namespace pulsatrix {
  *       recurrence itself is still a raw host loop over Tensor::data(), so every entry point
  *       carries the PULSATRIX_ASSERT(... .device() == DeviceType::Cpu) guard the rest of the
  *       not-yet-backend-generic modules use.
- * @note **No LRP rule -- deliberate, logged charter deviation.** Per the Phase 5 amendment
- *       of campaign_exai_dl_library_phase6_modern_architectures (2026-09-23, operator-
- *       directed), this module ships its real forward()/backward() (full BPTT, finite-
- *       difference verified, same rigor as every prior module) but *no* relevance rule:
- *       propagate_relevance is a real override satisfying Module's pure-virtual contract
- *       whose body unconditionally throws std::logic_error. A loud, explicit throw is the
- *       honest signal; returning zeros, an approximation or a gradient-based substitute
- *       would be a silent wrong answer, which is exactly the Captum/Zennit failure mode this
- *       project exists to avoid. Consequently RetNetModule is deliberately absent from
- *       lrp_conservation_test.cpp's AllModuleTypeCases() -- there is no relevance to
- *       conserve. See the campaign's Decision Point 2.
+ * @note **LRP rule -- original derivation (2026-09-27, operator-directed follow-on to
+ *       campaign_exai_dl_library_phase6_modern_architectures's Decision Point 2, which found
+ *       no *published* citable rule for RetNet -- a literature-search result, not a
+ *       mathematical impossibility). Unrolling the recurrence: with S_0 = 0,
+ *       `S_t[b,i,j] = sum_{s=0}^{t} gamma^(t-s) * K_s[b,i]*V_s[b,j]`, so
+ *       `Y_t[b,j] = sum_i Q_t[b,i]*S_t[b,i,j] = sum_{s=0}^{t} gamma^(t-s) * (Q_t[b,:].K_s[b,:]) * V_s[b,j]`
+ *       -- a **causal, gamma-decay-gated, attention-shaped weighted sum**
+ *       `Y = G @ V` with `G[t,s] = gamma^(t-s)*(Q_t.K_s)` for `s <= t` (else 0). This is
+ *       structurally identical to MultiHeadAttentionModule's own `context = Attn @ V` /
+ *       `scores = Q @ K^T` shape, so propagate_relevance() reuses that module's AttnLRP
+ *       Eq. 15 bilinear-split rule (duplicated locally, same per-module-owns-its-helpers
+ *       convention as MambaModule's local stabilize()) twice -- once for `Y = G @ V`, once
+ *       for `QK = Q @ K^T` -- composed with one exact constant-scale identity pass-through
+ *       for the `gamma^(t-s)` factor (which, unlike Mamba's Abar/Bbar or RWKV's decay/kk,
+ *       is a genuine fixed constructor hyperparameter here, not detached-as-if-constant --
+ *       so this step introduces *zero* approximation, not even MambaLRP's kind). Verified
+ *       by hand on a worked `d_model=2, key_dim=2, L=3` example before implementation (see
+ *       the mission's Completion Summary and retnet_module_test.cpp's conservation test);
+ *       the three composed steps (two Eq. 15 splits, each conserving exactly via its
+ *       factor-2 denominator, plus the exact pass-through, plus the three no-bias linear
+ *       projections' own standard z-rule) conserve near-exactly, gated only by the usual
+ *       epsilon stabilizers -- so RetNetModule *is* in lrp_conservation_test.cpp's
+ *       AllModuleTypeCases(), unlike RWKVModule/SoftmaxModule/MultiHeadAttentionModule. See
+ *       the campaign's Decision Point 2 addendum for the full outcome.
  */
 class RetNetModule : public Module {
 public:
@@ -138,20 +151,28 @@ public:
     [[nodiscard]] float gamma() const { return gamma_; }
 
     /**
-     * @brief **Not implemented, by design.** Unconditionally throws -- this module ships
-     *        without an LRP rule under the campaign's logged Phase 5 charter deviation (see
-     *        the class-level note). The override exists so Module's pure-virtual contract is
-     *        satisfied honestly rather than weakened; its body redistributes nothing.
-     * @param relevance_out Relevance at this module's output. Only its device is inspected
-     *        (by the debug-only device guard); no relevance is read or redistributed.
-     * @param config Selects the LRP rule variant. Unused -- there is no rule to configure.
-     * @return Never returns.
-     * @throws std::logic_error always, with the message "RetNetModule::propagate_relevance:
-     *         LRP rule not yet implemented -- see campaign Decision Point 2".
-     * @note The PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu) device guard is kept
-     *       *ahead* of the throw so this entry point stays consistent with forward()/
-     *       backward() (and so it keeps firing for the death-test convention every module
-     *       here follows). It becomes load-bearing the moment a real rule lands.
+     * @brief The original derived LRP rule (see the class-level note): unrolls the
+     *        retention recurrence into `Y = G @ V` with `G[t,s] = gamma^(t-s)*(Q_t.K_s)`
+     *        for `s <= t` (0 above the diagonal -- no relevance ever reaches a future key),
+     *        applies AttnLRP Eq. 15's bilinear split twice (once for `Y = G @ V`, once for
+     *        `QK = Q @ K^T`) with an exact constant-scale pass-through for `gamma^(t-s)`
+     *        composed in between, then the three no-bias projections' standard
+     *        weighted-connection epsilon/z-rule.
+     * @param relevance_out Relevance at this module's output. Must be (N, L, d_model)
+     *        matching the most recent forward() call's output shape.
+     * @param config Supplies the epsilon stabilizer used throughout (both Eq. 15 calls and
+     *        the three projections' z-rule denominators).
+     * @return Relevance at this module's input, shape (N, L, d_model).
+     * @throws std::logic_error if forward() has never been called.
+     * @throws std::invalid_argument if relevance_out's shape doesn't match the cached
+     *         forward output shape.
+     * @note Not yet backend-generic -- raw host loops, mirroring forward_impl()/backward().
+     *       PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu) guards against silent
+     *       UB on a CUDA-backed Tensor.
+     * @note Conserves near-exactly (measured in retnet_module_test.cpp), gated only by the
+     *       usual epsilon stabilizers -- see the class-level note for why every composed
+     *       step is exact or near-exact. Unlike SoftmaxModule/MultiHeadAttentionModule/
+     *       RWKVModule, this rule is NOT a known non-conserving approximation.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
