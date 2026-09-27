@@ -124,6 +124,8 @@ add_executable(pulsatrix_tests
     flatten_module_test.cpp
     grad_cam_test.cpp
     weighted_linear_regression_test.cpp
+    linear_algebra_test.cpp
+    gaussian_process_test.cpp
     lime_test.cpp
     kernel_shap_test.cpp
     pdp_test.cpp
