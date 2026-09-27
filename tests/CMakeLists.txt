@@ -133,6 +133,8 @@ add_executable(pulsatrix_tests
     tpe_xor_integration_test.cpp
     successive_halving_test.cpp
     successive_halving_xor_integration_test.cpp
+    hyperband_test.cpp
+    hyperband_xor_integration_test.cpp
     lime_test.cpp
     kernel_shap_test.cpp
     pdp_test.cpp
