@@ -27,6 +27,13 @@ Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* bac
 float sigmoid(float z) {
     return 1.0f / (1.0f + std::exp(-z));
 }
+
+// Same additive epsilon-rule stabilizer every propagate_relevance() in this codebase uses
+// (MambaModule's own local stabilize(), duplicated per the per-module-owns-its-helpers
+// convention).
+float stabilize(float value, float epsilon) {
+    return value + epsilon * ((value >= 0.0f) ? 1.0f : -1.0f);
+}
 }  // namespace
 
 RWKVModule::RWKVModule(int64_t d_model, DeviceBackend* backend)
@@ -446,19 +453,155 @@ Tensor RWKVModule::backward(const Tensor& grad_output) {
 }
 
 Tensor RWKVModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
-    // Deliberately NOT implemented -- see the class-level note and the campaign's logged
-    // Phase 5 charter deviation. This override exists so Module's pure-virtual LRP contract
-    // is satisfied honestly; it redistributes nothing, and must never be made to silently
-    // return zeros or a gradient-based substitute.
-    //
-    // The device guard is kept ahead of the throw so this entry point is consistent with
-    // forward()/backward() and keeps firing under the death-test convention every module
-    // here follows; it becomes load-bearing unchanged the moment a real rule lands.
+    if (!has_forwarded_) {
+        throw std::logic_error("RWKVModule::propagate_relevance: called before any forward()");
+    }
+    const int64_t N = last_input_.shape().dim(0);
+    const int64_t L = last_L_;
+    const int64_t D = d_model_;
+    if (relevance_out.rank() != 3 || relevance_out.shape().dim(0) != N || relevance_out.shape().dim(1) != L ||
+        relevance_out.shape().dim(2) != D) {
+        throw std::invalid_argument(
+            "RWKVModule::propagate_relevance: relevance_out must be (N, L, d_model) matching the cached "
+            "forward shape");
+    }
+    // Dereferences Tensor::data() directly, and computes exp math in raw host loops -- not
+    // yet backend-generic.
     PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
-    (void)relevance_out;  // NDEBUG builds compile PULSATRIX_ASSERT away entirely.
-    (void)config;
-    throw std::logic_error(
-        "RWKVModule::propagate_relevance: LRP rule not yet implemented -- see campaign Decision Point 2");
+
+    const float eps = config.epsilon;
+    Tensor relevance_in(last_input_.shape(), backend_);
+    Tensor w_o_T = transpose(w_o_, D, D, backend_);
+    Tensor w_v_T = transpose(w_v_, D, D, backend_);
+
+    // R(A[t+1]) -- the WKV numerator state's total relevance, threaded backward from t+1 to
+    // t exactly the way MambaModule's own r_h_carry is threaded (see the header's
+    // derivation note: A[t] is used at BOTH num_t's readout split and A[t+1]'s own state
+    // split, the same dual-use shape as Mamba's h_t). Zero at t = L (nothing reads A[L]),
+    // and (by A[0] == 0) it carries nothing out past t = 0.
+    Tensor r_a_next(Shape({N, D}), backend_);
+
+    for (int64_t t = L - 1; t >= 0; --t) {
+        // --- Step 1' (output projection): standard no-bias weighted-connection z-rule,
+        // denominator o_t itself (recomputed here -- forward_impl() didn't cache it
+        // separately, only its own gated = r_t*wkv_t input). Gives r_gated, the relevance of
+        // "gated" = r_t*wkv_t.
+        Tensor gated(Shape({N, D}), backend_);
+        for (int64_t b = 0; b < N; ++b) {
+            for (int64_t e = 0; e < D; ++e) {
+                const int64_t idx = (b * L + t) * D + e;
+                gated.data()[b * D + e] = last_r_.data()[idx] * last_wkv_.data()[idx];
+            }
+        }
+        Tensor o_t(Shape({N, D}), backend_);
+        backend_->gemm(gated.data(), w_o_.data(), o_t.data(), static_cast<size_t>(N), static_cast<size_t>(D),
+                       static_cast<size_t>(D));
+        Tensor scaled_r_o(Shape({N, D}), backend_);
+        for (int64_t b = 0; b < N; ++b) {
+            for (int64_t d = 0; d < D; ++d) {
+                const float denom = stabilize(o_t.data()[b * D + d], eps);
+                scaled_r_o.data()[b * D + d] = relevance_out.data()[(b * L + t) * D + d] / denom;
+            }
+        }
+        Tensor r_gated_raw(Shape({N, D}), backend_);
+        backend_->gemm(scaled_r_o.data(), w_o_T.data(), r_gated_raw.data(), static_cast<size_t>(N),
+                       static_cast<size_t>(D), static_cast<size_t>(D));
+        Tensor r_gated(Shape({N, D}), backend_);
+        for (int64_t b = 0; b < N; ++b) {
+            for (int64_t e = 0; e < D; ++e) {
+                r_gated.data()[b * D + e] = gated.data()[b * D + e] * r_gated_raw.data()[b * D + e];
+            }
+        }
+
+        // --- Step 2' (receptance detach): r_t is a genuine data-dependent gate, detached
+        // as a constant (MambaLRP's own technique, applied here to r_t exactly as it is to
+        // Mamba's Abar/Bbar/C) -- a single-term rescaling under which R(wkv_t) == R(gated)
+        // directly, no formula needed (same reasoning as RetNetModule's gamma^(t-s)
+        // pass-through, except here the detachment IS the approximation, unlike RetNet's
+        // exact hyperparameter scaling).
+        //
+        // --- Step 3' (WKV quotient, MambaLRP-style detached weighted sum): wkv_t =
+        // num_t/den_t = (1/den_t)*A[t] + (e_t/den_t)*v_t, with e_t and den_t detached as
+        // constants -- the standard weighted-sum epsilon/z-rule, denominator wkv_t itself.
+        //
+        // --- Step 4' (state carry, same technique): A[t+1] = decay*A[t] + kk_t*v_t, with
+        // decay and kk_t detached -- the same weighted-sum rule, denominator A[t+1] itself,
+        // consuming r_a_next (R(A[t+1])) and producing this step's own R(A[t]).
+        Tensor v_relevance(Shape({N, D}), backend_);
+        Tensor r_a_cur(Shape({N, D}), backend_);
+        for (int64_t b = 0; b < N; ++b) {
+            for (int64_t d = 0; d < D; ++d) {
+                const int64_t idx = (b * L + t) * D + d;
+                const float r_wkv = r_gated.data()[b * D + d];
+                const float a_prev = last_a_.data()[(b * (L + 1) + t) * D + d];      // A[t]
+                const float a_next_val = last_a_.data()[(b * (L + 1) + t + 1) * D + d];  // A[t+1]
+                const float den = last_den_.data()[idx];
+                const float e_t = last_e_.data()[idx];
+                const float v_val = last_v_.data()[idx];
+                const float wkv_val = last_wkv_.data()[idx];
+                const float decay = std::exp(-w_.data()[d]);
+                const float kk_t = last_kk_.data()[idx];
+
+                const float denom_wkv = stabilize(wkv_val, eps);
+                const float contrib_At_readout = (a_prev / den / denom_wkv) * r_wkv;
+                const float contrib_vt_readout = (e_t * v_val / den / denom_wkv) * r_wkv;
+
+                const float r_a_next_val = r_a_next.data()[b * D + d];
+                const float denom_a_next = stabilize(a_next_val, eps);
+                const float contrib_At_state = (decay * a_prev / denom_a_next) * r_a_next_val;
+                const float contrib_vt_state = (kk_t * v_val / denom_a_next) * r_a_next_val;
+
+                r_a_cur.data()[b * D + d] = contrib_At_readout + contrib_At_state;
+                v_relevance.data()[b * D + d] = contrib_vt_readout + contrib_vt_state;
+            }
+        }
+        r_a_next = r_a_cur;
+
+        // --- Step 5' (value projection): standard no-bias weighted-connection z-rule,
+        // denominator v_t itself, following exactly LinearModule's own gemm-based backward
+        // shape (transpose W_v, scale relevance by 1/denom, gemm back through W_v^T,
+        // elementwise-multiply by the input).
+        Tensor scaled_r_v(Shape({N, D}), backend_);
+        for (int64_t b = 0; b < N; ++b) {
+            for (int64_t d = 0; d < D; ++d) {
+                const int64_t idx = (b * L + t) * D + d;
+                const float denom = stabilize(last_v_.data()[idx], eps);
+                scaled_r_v.data()[b * D + d] = v_relevance.data()[b * D + d] / denom;
+            }
+        }
+        Tensor r_xv_raw(Shape({N, D}), backend_);
+        backend_->gemm(scaled_r_v.data(), w_v_T.data(), r_xv_raw.data(), static_cast<size_t>(N),
+                       static_cast<size_t>(D), static_cast<size_t>(D));
+
+        // --- Step 6' (value token-shift): xv_t = mu_v*x_cur + (1-mu_v)*x_prev, a genuine
+        // (not detached -- mu_v is a real learned weight, treated normally) two-term
+        // weighted sum, denominator xv_t itself. w_r_/mu_r_/w_k_/mu_k_/u_ are deliberately
+        // never referenced anywhere in this function (only their cached, detached forward
+        // values last_r_/last_e_/last_kk_ are); w_ is referenced only to reconstruct the
+        // detached decay value above -- see the class-level note. Only w_v_/w_o_/mu_v_ (and
+        // w_ for decay) participate.
+        for (int64_t b = 0; b < N; ++b) {
+            for (int64_t e = 0; e < D; ++e) {
+                const float xv_val = last_xv_.data()[(b * L + t) * D + e];
+                // Step 5's z-rule is r_xv[e] = xv_t[e] * (W_v @ scaled_r)[e] -- r_xv_raw
+                // above is only the (W_v @ scaled_r)[e] factor; the elementwise multiply by
+                // the projection's own input (xv_t) -- exactly like Step 1's gated * (W_o @
+                // scaled_r) -- was missing here (caught by this test's non-conservation).
+                const float r_xv = xv_val * r_xv_raw.data()[b * D + e];
+                const float x_cur = last_input_.data()[(b * L + t) * D + e];
+                const float x_prev = (t > 0) ? last_input_.data()[(b * L + t - 1) * D + e] : 0.0f;
+                const float denom = stabilize(xv_val, eps);
+                const float mu = mu_v_.data()[e];
+
+                relevance_in.data()[(b * L + t) * D + e] += (mu * x_cur / denom) * r_xv;
+                if (t > 0) {
+                    relevance_in.data()[(b * L + t - 1) * D + e] += ((1.0f - mu) * x_prev / denom) * r_xv;
+                }
+            }
+        }
+    }
+
+    return relevance_in;
 }
 
 }  // namespace pulsatrix
