@@ -112,6 +112,20 @@ public:
     /** @brief Predicate B's own LinearModule -- test/inspection accessor. */
     [[nodiscard]] LinearModule& predicate_b() { return linear_b_; }
 
+    /** @brief Predicate A's own NegationModule (`not(A)`) -- test/inspection accessor,
+     *         added for Phase 2 Mission 0's end-to-end conservation test (needs to chain
+     *         propagate_relevance across the actual composed pipeline, not a reimplementation
+     *         of it). */
+    [[nodiscard]] NegationModule& negation_a() { return neg_a_; }
+
+    /** @brief Predicate B's own NegationModule (`not(B)`) -- test/inspection accessor, same
+     *         rationale as negation_a(). */
+    [[nodiscard]] NegationModule& negation_b() { return neg_b_; }
+
+    /** @brief The rule's own DisjunctionModule (`not(A) or not(B)`, Product) -- test/inspection
+     *         accessor, same rationale as negation_a(). */
+    [[nodiscard]] DisjunctionModule& disjunction() { return disj_; }
+
 private:
     DeviceBackend* backend_;
     LinearModule linear_a_;
