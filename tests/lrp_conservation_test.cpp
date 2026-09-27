@@ -17,8 +17,10 @@
 #include "pulsatrix/mamba_module.hpp"
 #include "pulsatrix/max_pool2d_module.hpp"
 #include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/retnet_module.hpp"
 #include "pulsatrix/rnn_module.hpp"
 #include "pulsatrix/rope_module.hpp"
+#include "pulsatrix/rwkv_module.hpp"
 #include "pulsatrix/sequential_module.hpp"
 
 // Phase 4 Mission 0: charter's "not just a spot-check on one architecture" LRP
@@ -294,6 +296,68 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           Tensor relevance_out(Shape({1, 3, 2}), &backend, {1.0f, 2.0f, 0.5f, -0.5f, 1.5f, 0.8f});
                           LRPRuleConfig config;
                           Tensor relevance_in = mamba.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // RetNetModule's original derived LRP rule (2026-09-27 follow-on to Decision Point 2 --
+    // see retnet_module.hpp's class-level note): the retention recurrence unrolls into a
+    // causal, gamma-decay-gated weighted sum Y = G @ V with G[t,s] = gamma^(t-s)*(Q_t.K_s),
+    // structurally identical to MultiHeadAttentionModule's own Q@K^T -> Attn@V shape but
+    // with NO softmax in the middle -- so unlike MultiHeadAttentionModule, every composed
+    // step (two AttnLRP Eq. 15 bilinear splits, one exact gamma-constant pass-through, three
+    // no-bias linear projections' own z-rule) conserves exactly or near-exactly, gated only
+    // by the usual epsilon stabilizers. It belongs in this systematic sweep, not in
+    // SoftmaxModule/MultiHeadAttentionModule's dedicated-measurement-test treatment.
+    cases.push_back({"RetNetModule", [] {
+                          CPUBackend backend;
+                          RetNetModule retnet(2, 3, 0.7f, &backend);
+                          retnet.set_W_Q({0.37f, -0.62f, 0.18f, 0.45f, 0.83f, -0.26f});
+                          retnet.set_W_K({0.54f, -0.28f, 0.41f, 0.66f, -0.73f, 0.19f});
+                          retnet.set_W_V({-0.35f, 0.72f, 0.59f, -0.16f});
+                          Tensor input(Shape({1, 4, 2}), &backend,
+                                       {0.80f, -0.60f, 1.20f, 0.50f, -0.90f, 1.10f, 0.40f, -1.30f});
+                          (void)retnet.forward(input);
+                          Tensor relevance_out(Shape({1, 4, 2}), &backend,
+                                               {1.00f, -0.50f, 0.30f, 0.80f, -0.20f, 0.90f, 0.70f, -0.40f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = retnet.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // RWKVModule's original derived LRP rule (2026-09-27 follow-on reassessment -- see
+    // rwkv_module.hpp's class-level note): the WKV quotient wkv_t = num_t/den_t unrolls
+    // into a two-term weighted sum of the carried state A[t] and v_t (weights 1/den_t and
+    // e_t/den_t, summing to exactly 1), structurally MambaModule's own Abar/Bbar shape, not
+    // softmax's cross-normalizing one -- so the SAME MambaLRP detach-the-gate technique
+    // applies (detaching r_t, e_t, kk_t, decay as constants) and the rule conserves
+    // near-exactly, unlike SoftmaxModule/MultiHeadAttentionModule.
+    cases.push_back({"RWKVModule", [] {
+                          CPUBackend backend;
+                          RWKVModule rwkv(2, &backend);
+                          rwkv.set_W_r({0.37f, -0.62f, 0.18f, 0.45f});
+                          rwkv.set_W_k({0.54f, -0.28f, 0.41f, 0.66f});
+                          rwkv.set_W_v({-0.35f, 0.72f, 0.59f, -0.16f});
+                          rwkv.set_W_o({0.62f, -0.41f, 0.25f, 0.88f});
+                          rwkv.set_w({0.30f, 0.75f});
+                          rwkv.set_u({-0.20f, 0.45f});
+                          rwkv.set_mu_r({0.65f, 0.35f});
+                          rwkv.set_mu_k({0.40f, 0.80f});
+                          rwkv.set_mu_v({0.55f, 0.25f});
+                          Tensor input(Shape({1, 4, 2}), &backend,
+                                       {0.80f, -0.60f, 1.20f, 0.50f, -0.90f, 1.10f, 0.40f, -1.30f});
+                          (void)rwkv.forward(input);
+                          Tensor relevance_out(Shape({1, 4, 2}), &backend,
+                                               {1.00f, -0.50f, 0.30f, 0.80f, -0.20f, 0.90f, 0.70f, -0.40f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = rwkv.propagate_relevance(relevance_out, config);
                           float sum_in = 0.0f;
                           for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
                           float sum_out = 0.0f;
