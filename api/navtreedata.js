@@ -61,16 +61,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1Compose.html#aab9105b53b81c8b97099ae201be50ede",
-"classpulsatrix_1_1FlattenModule.html",
-"classpulsatrix_1_1LSTMModule.html",
-"classpulsatrix_1_1MaxPool2DModule.html#a42fa958d92b379c5b5ca85629dab067c",
-"classpulsatrix_1_1RNNModule.html#a999317ad7224e1190aa2159e2b8f40a8",
-"classpulsatrix_1_1Saliency.html",
-"classpulsatrix_1_1TransformerBlock.html#a25965a91fbf957a98559125f731017fd",
-"namespacepulsatrix.html#a314a4a59c2e126269885c0c51ffbd6bc",
-"structpulsatrix_1_1DataLoaderOptions.html#adf09df853ba54564e67dfce8c56a78a6",
-"trajectory__balance__loss_8hpp.html"
+"classpulsatrix_1_1CenterCropTransform.html#a09de3ace3c0ae5d1f473d300208ecaec",
+"classpulsatrix_1_1EmbeddingModule.html#a14cc586412aaf44f2c6955ed5164a2c8",
+"classpulsatrix_1_1HyperGridEnv.html#a4eadf4f47584831c46e60698eccdd020",
+"classpulsatrix_1_1MambaModule.html#a482a76b0c6246791fba3c89a7f1add76",
+"classpulsatrix_1_1PBTResumableTrial.html#a2c0ae9a28572470ff11ed747784291cb",
+"classpulsatrix_1_1RetNetModule.html#a219b3a595774a80c644c77efd3b00673",
+"classpulsatrix_1_1Tensor.html#a033bbd8ea7cb7d80638849e0d327a551",
+"classpulsatrix_1_1datalog_1_1Term.html#a74dbe7366b2618ef4fe16ebe6e9da78e",
+"namespacepulsatrix.html#a5eb50e58a73bb7390b16c2318116da9d",
+"structpulsatrix_1_1FieldStatistics.html#a26910779103a3fd563541bdf0e40a5fc",
+"structpulsatrix_1_1datalog_1_1RealSemiring.html#a0bc467675571dbf7e928fc027aeaff40"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

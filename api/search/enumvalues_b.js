@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['pooling_0',['Pooling',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba43c8fdf1b340cd45e02e0b66ba2f81a7',1,'pulsatrix']]],
-  ['probabilityofimprovement_1',['ProbabilityOfImprovement',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9',1,'pulsatrix']]]
+  ['output_0',['Output',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a29c2c02a361c9d7028472e5d92cd4a54',1,'pulsatrix::NodeGene']]]
 ];

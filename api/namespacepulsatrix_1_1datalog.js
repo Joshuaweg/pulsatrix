@@ -1,0 +1,36 @@
+var namespacepulsatrix_1_1datalog =
+[
+    [ "Atom", "classpulsatrix_1_1datalog_1_1Atom.html", "classpulsatrix_1_1datalog_1_1Atom" ],
+    [ "AtomHash", "structpulsatrix_1_1datalog_1_1AtomHash.html", "structpulsatrix_1_1datalog_1_1AtomHash" ],
+    [ "BooleanSemiring", "structpulsatrix_1_1datalog_1_1BooleanSemiring.html", "structpulsatrix_1_1datalog_1_1BooleanSemiring" ],
+    [ "DualNumber", "structpulsatrix_1_1datalog_1_1DualNumber.html", "structpulsatrix_1_1datalog_1_1DualNumber" ],
+    [ "DualSemiring", "structpulsatrix_1_1datalog_1_1DualSemiring.html", "structpulsatrix_1_1datalog_1_1DualSemiring" ],
+    [ "FactDatabase", "classpulsatrix_1_1datalog_1_1FactDatabase.html", "classpulsatrix_1_1datalog_1_1FactDatabase" ],
+    [ "NeuralPredicateDatalogBridge", "classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html", "classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge" ],
+    [ "NeuralPredicateQueryResult", "structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html", "structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult" ],
+    [ "NeuralPredicateRelevanceResult", "structpulsatrix_1_1datalog_1_1NeuralPredicateRelevanceResult.html", "structpulsatrix_1_1datalog_1_1NeuralPredicateRelevanceResult" ],
+    [ "RealSemiring", "structpulsatrix_1_1datalog_1_1RealSemiring.html", "structpulsatrix_1_1datalog_1_1RealSemiring" ],
+    [ "RelevanceResult", "structpulsatrix_1_1datalog_1_1RelevanceResult.html", "structpulsatrix_1_1datalog_1_1RelevanceResult" ],
+    [ "Rule", "classpulsatrix_1_1datalog_1_1Rule.html", "classpulsatrix_1_1datalog_1_1Rule" ],
+    [ "Term", "classpulsatrix_1_1datalog_1_1Term.html", "classpulsatrix_1_1datalog_1_1Term" ],
+    [ "TermHash", "structpulsatrix_1_1datalog_1_1TermHash.html", "structpulsatrix_1_1datalog_1_1TermHash" ],
+    [ "WeightedFactDatabase", "classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html", "classpulsatrix_1_1datalog_1_1WeightedFactDatabase" ],
+    [ "FactSet", "namespacepulsatrix_1_1datalog.html#a78a6ac1e65d442d7762fd6a966c5c82b", null ],
+    [ "RelevanceMap", "namespacepulsatrix_1_1datalog.html#aa4585f5e8119b04b78302fbbedfb378d", null ],
+    [ "WeightedFactSet", "namespacepulsatrix_1_1datalog.html#af60e98e4e3ec0381120aa28f8d4953b9", null ],
+    [ "TermKind", "namespacepulsatrix_1_1datalog.html#a2da169a17d98ad7df523f8dcf24e1d38", [
+      [ "Constant", "namespacepulsatrix_1_1datalog.html#a2da169a17d98ad7df523f8dcf24e1d38acb17869fe51048b5a5c4c6106551a255", null ],
+      [ "Variable", "namespacepulsatrix_1_1datalog.html#a2da169a17d98ad7df523f8dcf24e1d38a47c14840d8e15331fa420b9b2f757cd9", null ]
+    ] ],
+    [ "naive_evaluate", "namespacepulsatrix_1_1datalog.html#adf743a4b7abc24d219d7118749d45a15", null ],
+    [ "naive_evaluate_weighted", "namespacepulsatrix_1_1datalog.html#a76bdf88fea8d5e10e87b382a70b99c44", null ],
+    [ "naive_evaluate_weighted< BooleanSemiring >", "namespacepulsatrix_1_1datalog.html#af8640dd1920d25178bc82de71d504123", null ],
+    [ "naive_evaluate_weighted< DualSemiring< double > >", "namespacepulsatrix_1_1datalog.html#a858ba966eda109a4139b6b4407fff1b5", null ],
+    [ "naive_evaluate_weighted< RealSemiring< double > >", "namespacepulsatrix_1_1datalog.html#a1ad549230c5c43e6a643fe4740cc5c72", null ],
+    [ "propagate_relevance_weighted", "namespacepulsatrix_1_1datalog.html#ad7e5699c2a30d4f759fac76ab92d1084", null ],
+    [ "semi_naive_evaluate", "namespacepulsatrix_1_1datalog.html#a22c143279a60970be45cf7a74b8e2b41", null ],
+    [ "semi_naive_evaluate_weighted", "namespacepulsatrix_1_1datalog.html#ab025f21dad42c7a8b02f72913cfee123", null ],
+    [ "semi_naive_evaluate_weighted< BooleanSemiring >", "namespacepulsatrix_1_1datalog.html#af9677be7eb8a4d62902dd51539773260", null ],
+    [ "semi_naive_evaluate_weighted< DualSemiring< double > >", "namespacepulsatrix_1_1datalog.html#ad0876d90c67970ca338b2b9316019b43", null ],
+    [ "semi_naive_evaluate_weighted< RealSemiring< double > >", "namespacepulsatrix_1_1datalog.html#a0854f4411fd0167576e73dbb4f0bebd9", null ]
+];

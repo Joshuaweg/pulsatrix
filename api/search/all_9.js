@@ -8,7 +8,7 @@ var searchData=
   ['kernel_5fshap_2ehpp_5',['kernel_shap.hpp',['../kernel__shap_8hpp.html',1,'']]],
   ['kernelshap_6',['KernelSHAP',['../classpulsatrix_1_1KernelSHAP.html',1,'pulsatrix']]],
   ['kfixedtopologyxornumparams_7',['kFixedTopologyXORNumParams',['../namespacepulsatrix.html#abdfe136720681063b92cf1cda99ccfa5',1,'pulsatrix']]],
-  ['kind_8',['kind',['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec']]],
+  ['kind_8',['kind',['../classpulsatrix_1_1datalog_1_1Term.html#a7863c28de0df284fc10fe6a001c0a82c',1,'pulsatrix::datalog::Term::kind()'],['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind']]],
   ['kl_5fdivergence_5floss_2ehpp_9',['kl_divergence_loss.hpp',['../kl__divergence__loss_8hpp.html',1,'']]],
   ['kldivergenceloss_10',['kldivergenceloss',['../classpulsatrix_1_1KLDivergenceLoss.html#a3482d2b0e38e3be249685506ddbcbc84',1,'pulsatrix::KLDivergenceLoss::KLDivergenceLoss()'],['../classpulsatrix_1_1KLDivergenceLoss.html',1,'pulsatrix::KLDivergenceLoss']]],
   ['klogprobstabilizer_11',['kLogProbStabilizer',['../classpulsatrix_1_1TanhGaussianPolicy.html#a70e084dd37bfa0a8c7c9fe4f67a8d66d',1,'pulsatrix::TanhGaussianPolicy']]],

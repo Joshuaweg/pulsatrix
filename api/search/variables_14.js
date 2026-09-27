@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['waveform_0',['waveform',['../structpulsatrix_1_1WavData.html#ab0bc71fa87327420ad00006c164a4ae8',1,'pulsatrix::WavData']]],
-  ['weight_1',['weight',['../structpulsatrix_1_1CircuitEdge.html#ade063ead933e872f0e6cd7cd052a1009',1,'pulsatrix::CircuitEdge::weight'],['../structpulsatrix_1_1ConnectionGene.html#ad1860121d7550f2a258c1d99b104cb03',1,'pulsatrix::ConnectionGene::weight']]]
+  ['value_0',['value',['../structpulsatrix_1_1datalog_1_1DualNumber.html#aab7060d771b9f612c58b1c43840e509a',1,'pulsatrix::datalog::DualNumber::value'],['../structpulsatrix_1_1ParamRef.html#ae13ad9c19380eb1f65d0b8287eb42e14',1,'pulsatrix::ParamRef::value'],['../structpulsatrix_1_1MetricRecord.html#a9a8505d3a28002bf7994a03b32740ccf',1,'pulsatrix::MetricRecord::value']]],
+  ['values_1',['values',['../structpulsatrix_1_1Attribution.html#a69fb3782c3b71d4d2781b0f9959a6641',1,'pulsatrix::Attribution']]],
+  ['variance_2',['variance',['../structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html#a6423c01999e2c60d7b6cf15881981ad7',1,'pulsatrix::GaussianProcessRegressor::Posterior']]],
+  ['variances_3',['variances',['../structpulsatrix_1_1CMAESState.html#a010c4a1c1906a3f6289924ddff27538f',1,'pulsatrix::CMAESState']]]
 ];

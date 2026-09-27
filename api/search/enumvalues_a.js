@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['output_0',['Output',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a29c2c02a361c9d7028472e5d92cd4a54',1,'pulsatrix::NodeGene']]]
+  ['neg_0',['Neg',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503afb278fa5defd7e699fcbc930c3e76ccd',1,'pulsatrix']]],
+  ['normalization_1',['Normalization',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbaac61f2e17250a818dee4d12b112aa88f',1,'pulsatrix']]]
 ];
