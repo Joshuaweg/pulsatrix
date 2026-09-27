@@ -126,6 +126,9 @@ add_executable(pulsatrix_tests
     weighted_linear_regression_test.cpp
     linear_algebra_test.cpp
     gaussian_process_test.cpp
+    acquisition_functions_test.cpp
+    gp_bo_test.cpp
+    gp_bo_xor_integration_test.cpp
     lime_test.cpp
     kernel_shap_test.cpp
     pdp_test.cpp
