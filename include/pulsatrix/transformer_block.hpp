@@ -42,6 +42,9 @@ namespace pulsatrix {
  *       argument as `SwiGLUModule`'s diagonal split) and by `SwiGLUModule`'s own near-exact
  *       contribution. Measured and decomposed stage-by-stage in
  *       tests/transformer_block_test.cpp, not assumed.
+ * @see cpp_engineering.aDNA's what/context/cpp_tdd/context_tdd_lrp_rule_pattern_taxonomy.md,
+ *      "Known-Non-Conserving-by-Design Note" -- this block's gap is inherited from
+ *      MultiHeadAttentionModule, not a new instance of the exception.
  */
 class TransformerBlock : public Module {
 public:

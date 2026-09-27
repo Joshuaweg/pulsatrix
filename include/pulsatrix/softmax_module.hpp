@@ -61,6 +61,9 @@ public:
      *       formula. This module is intentionally excluded from
      *       tests/lrp_conservation_test.cpp's AllModuleTypeCases(); its conservation gap is
      *       measured and reported in tests/softmax_module_test.cpp instead.
+     * @see cpp_engineering.aDNA's what/context/cpp_tdd/context_tdd_lrp_rule_pattern_taxonomy.md,
+     *      "Known-Non-Conserving-by-Design Note" -- this is the cited exception to rule
+     *      shape 2 (bilinear split), not a fifth rule shape.
      * @note Must be called after forward() -- uses both the input and the output cached from
      *       that call (the input is needed by the x[i] factor, which is why this module
      *       caches both).
