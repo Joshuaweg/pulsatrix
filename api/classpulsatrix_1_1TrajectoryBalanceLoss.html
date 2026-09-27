@@ -107,18 +107,18 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1TrajectoryBalanceLos
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a190b595dd1066d8491dcf231a2b94d3c" id="r_a190b595dd1066d8491dcf231a2b94d3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a190b595dd1066d8491dcf231a2b94d3c">TrajectoryBalanceLoss</a> ()=<a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">default</a></td></tr>
+<tr class="memitem:a190b595dd1066d8491dcf231a2b94d3c" id="r_a190b595dd1066d8491dcf231a2b94d3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a190b595dd1066d8491dcf231a2b94d3c">TrajectoryBalanceLoss</a> ()=default</td></tr>
 <tr class="separator:a190b595dd1066d8491dcf231a2b94d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07ba181e846383d28d8f1c9e3c0e96f9" id="r_a07ba181e846383d28d8f1c9e3c0e96f9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">forward</a> (float sum_log_pf, float sum_log_pb, float log_reward, float log_z)</td></tr>
 <tr class="memdesc:a07ba181e846383d28d8f1c9e3c0e96f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes <code>Δ(τ)</code> and the loss <code>Δ(τ)²</code>, caching <code>Δ</code> for the accessors below.  <br /></td></tr>
 <tr class="separator:a07ba181e846383d28d8f1c9e3c0e96f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa44a909933dc1856fed83ff570101aa1" id="r_aa44a909933dc1856fed83ff570101aa1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#aa44a909933dc1856fed83ff570101aa1">delta</a> () <a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">const</a></td></tr>
+<tr class="memitem:aa44a909933dc1856fed83ff570101aa1" id="r_aa44a909933dc1856fed83ff570101aa1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#aa44a909933dc1856fed83ff570101aa1">delta</a> () const</td></tr>
 <tr class="memdesc:aa44a909933dc1856fed83ff570101aa1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>Δ(τ)</code> from the most recent <a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9" title="Computes Δ(τ) and the loss Δ(τ)², caching Δ for the accessors below.">forward()</a> call.  <br /></td></tr>
 <tr class="separator:aa44a909933dc1856fed83ff570101aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35b66820c5e8df41f5b913f9dc8f2bcb" id="r_a35b66820c5e8df41f5b913f9dc8f2bcb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a35b66820c5e8df41f5b913f9dc8f2bcb">grad_log_z</a> () <a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">const</a></td></tr>
+<tr class="memitem:a35b66820c5e8df41f5b913f9dc8f2bcb" id="r_a35b66820c5e8df41f5b913f9dc8f2bcb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a35b66820c5e8df41f5b913f9dc8f2bcb">grad_log_z</a> () const</td></tr>
 <tr class="memdesc:a35b66820c5e8df41f5b913f9dc8f2bcb"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>d(loss)/d(log Z) = 2Δ</code> &ndash; feed directly into <code><a class="el" href="classpulsatrix_1_1LearnableScalar.html#af988771a15c0733b8e4250db6aa35e29" title="Adds to the accumulated gradient – mirrors Tensor::accumulate()&#39;s across-multiple-contributions conve...">LearnableScalar::accumulate_grad</a></code>.  <br /></td></tr>
 <tr class="separator:a35b66820c5e8df41f5b913f9dc8f2bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae02ee35c9e13b1904a888ea55a87fbf" id="r_aae02ee35c9e13b1904a888ea55a87fbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#aae02ee35c9e13b1904a888ea55a87fbf">grad_weight_for_log_pf</a> () <a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">const</a></td></tr>
+<tr class="memitem:aae02ee35c9e13b1904a888ea55a87fbf" id="r_aae02ee35c9e13b1904a888ea55a87fbf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#aae02ee35c9e13b1904a888ea55a87fbf">grad_weight_for_log_pf</a> () const</td></tr>
 <tr class="memdesc:aae02ee35c9e13b1904a888ea55a87fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The weight <code>w = -2Δ</code> such that the per-trajectory-step policy-network gradient is <code>w · (p[k] − 1{k==a_t})</code> &ndash; <code><a class="el" href="classpulsatrix_1_1PolicyGradientLoss.html" title="loss = mean_b( -log pi(a_b | s_b) * G_b ), where a_b is the action actually taken on step b of a roll...">PolicyGradientLoss</a></code>'s exact softmax/log gradient identity shape, with this trajectory's <code>Δ</code> playing the role of the per-step return.  <br /></td></tr>
 <tr class="separator:aae02ee35c9e13b1904a888ea55a87fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -161,7 +161,7 @@ Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">float</a> pulsatrix::TrajectoryBalanceLoss::delta </td>
+          <td class="memname">float pulsatrix::TrajectoryBalanceLoss::delta </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -232,7 +232,7 @@ Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">float</a> pulsatrix::TrajectoryBalanceLoss::grad_log_z </td>
+          <td class="memname">float pulsatrix::TrajectoryBalanceLoss::grad_log_z </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -251,7 +251,7 @@ Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html#a07ba181e846383d28d8f1c9e3c0e96f9">float</a> pulsatrix::TrajectoryBalanceLoss::grad_weight_for_log_pf </td>
+          <td class="memname">float pulsatrix::TrajectoryBalanceLoss::grad_weight_for_log_pf </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

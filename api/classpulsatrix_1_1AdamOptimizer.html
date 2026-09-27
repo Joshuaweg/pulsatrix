@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1AdamOptimizer.html',
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a813da28be37647cd1c8569c64cdb18bf" id="r_a813da28be37647cd1c8569c64cdb18bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a813da28be37647cd1c8569c64cdb18bf">AdamOptimizer</a> (float learning_rate, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float beta1=0.9f, float beta2=0.999f, float eps=1e-8f)</td></tr>
+<tr class="memitem:a813da28be37647cd1c8569c64cdb18bf" id="r_a813da28be37647cd1c8569c64cdb18bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a813da28be37647cd1c8569c64cdb18bf">AdamOptimizer</a> (float <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#aeb150c11772a1d4371bca596708a796f">learning_rate</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float beta1=0.9f, float beta2=0.999f, float eps=1e-8f)</td></tr>
 <tr class="memdesc:a813da28be37647cd1c8569c64cdb18bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an Adam optimizer.  <br /></td></tr>
 <tr class="separator:a813da28be37647cd1c8569c64cdb18bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ff67993845fb7d598acbcfc3678bfe4" id="r_a3ff67993845fb7d598acbcfc3678bfe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a3ff67993845fb7d598acbcfc3678bfe4">step</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)</td></tr>
@@ -117,6 +117,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ae29a0ec977e5c281c60c08c4c52450" id="r_a5ae29a0ec977e5c281c60c08c4c52450"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a5ae29a0ec977e5c281c60c08c4c52450">zero_grad</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)</td></tr>
 <tr class="memdesc:a5ae29a0ec977e5c281c60c08c4c52450"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets every parameter's gradient to zero. Does not reset Adam's moment state.  <br /></td></tr>
 <tr class="separator:a5ae29a0ec977e5c281c60c08c4c52450"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb150c11772a1d4371bca596708a796f" id="r_aeb150c11772a1d4371bca596708a796f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#aeb150c11772a1d4371bca596708a796f">learning_rate</a> () const</td></tr>
+<tr class="memdesc:aeb150c11772a1d4371bca596708a796f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current step size.  <br /></td></tr>
+<tr class="separator:aeb150c11772a1d4371bca596708a796f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7eb3bc56921a351290c838b1ac38abd3" id="r_a7eb3bc56921a351290c838b1ac38abd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a7eb3bc56921a351290c838b1ac38abd3">set_learning_rate</a> (float <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#aeb150c11772a1d4371bca596708a796f">learning_rate</a>)</td></tr>
+<tr class="memdesc:a7eb3bc56921a351290c838b1ac38abd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the step size used by every subsequent <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a3ff67993845fb7d598acbcfc3678bfe4" title="Applies one Adam update to every parameter the module exposes.">step()</a> call &ndash; necessary infrastructure for any mid-training hyperparameter schedule (e.g. Population Based Training's own explore step), found necessary by campaign_exai_dl_library_evolutionary_deep_learning's Phase 4 Mission 0, logged as a small addition beyond this class's original fixed-at-construction scope. Does not reset Adam's own moment state (m/v), matching <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a5ae29a0ec977e5c281c60c08c4c52450" title="Resets every parameter&#39;s gradient to zero. Does not reset Adam&#39;s moment state.">zero_grad()</a>'s own precedent that state and gradient are independent concerns.  <br /></td></tr>
+<tr class="separator:a7eb3bc56921a351290c838b1ac38abd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Adam (Kingma &amp; Ba, 2015): per-parameter moving averages of gradient (m) and squared gradient (v), with bias correction. </p>
@@ -189,6 +195,61 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aeb150c11772a1d4371bca596708a796f" name="aeb150c11772a1d4371bca596708a796f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb150c11772a1d4371bca596708a796f">&#9670;&#160;</a></span>learning_rate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::AdamOptimizer::learning_rate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current step size. </p>
+
+</div>
+</div>
+<a id="a7eb3bc56921a351290c838b1ac38abd3" name="a7eb3bc56921a351290c838b1ac38abd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eb3bc56921a351290c838b1ac38abd3">&#9670;&#160;</a></span>set_learning_rate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::AdamOptimizer::set_learning_rate </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>learning_rate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Overwrites the step size used by every subsequent <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a3ff67993845fb7d598acbcfc3678bfe4" title="Applies one Adam update to every parameter the module exposes.">step()</a> call &ndash; necessary infrastructure for any mid-training hyperparameter schedule (e.g. Population Based Training's own explore step), found necessary by campaign_exai_dl_library_evolutionary_deep_learning's Phase 4 Mission 0, logged as a small addition beyond this class's original fixed-at-construction scope. Does not reset Adam's own moment state (m/v), matching <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a5ae29a0ec977e5c281c60c08c4c52450" title="Resets every parameter&#39;s gradient to zero. Does not reset Adam&#39;s moment state.">zero_grad()</a>'s own precedent that state and gradient are independent concerns. </p>
+
+</div>
+</div>
 <a id="a3ff67993845fb7d598acbcfc3678bfe4" name="a3ff67993845fb7d598acbcfc3678bfe4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3ff67993845fb7d598acbcfc3678bfe4">&#9670;&#160;</a></span>step()</h2>
 

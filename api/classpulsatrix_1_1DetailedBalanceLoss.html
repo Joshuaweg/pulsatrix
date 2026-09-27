@@ -107,21 +107,21 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1DetailedBalanceLoss.
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a21856409925db0c71adbbdaddce0e504" id="r_a21856409925db0c71adbbdaddce0e504"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a21856409925db0c71adbbdaddce0e504">DetailedBalanceLoss</a> ()=<a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">default</a></td></tr>
+<tr class="memitem:a21856409925db0c71adbbdaddce0e504" id="r_a21856409925db0c71adbbdaddce0e504"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a21856409925db0c71adbbdaddce0e504">DetailedBalanceLoss</a> ()=default</td></tr>
 <tr class="separator:a21856409925db0c71adbbdaddce0e504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a136624e3cad793cca30ecf3d6319dd10" id="r_a136624e3cad793cca30ecf3d6319dd10"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">forward</a> (float log_flow_s, float log_pf, float log_flow_s_next, float log_pb)</td></tr>
 <tr class="memdesc:a136624e3cad793cca30ecf3d6319dd10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes &lsquo;Δ(s,s&rsquo;)<code>and the loss</code>Δ(s,s')²<code>, caching</code>Δ<code>for the accessors below. @param log_flow_s</code>log F_θ(s)<code>. @param log_pf</code>log P_F(s'|s)<code>(or</code>log P_F(stop|s)<code>for the exit transition). @param log_flow_s_next</code>log F_θ(s')<code>for a non-terminal</code>s'<code>, or</code>log R(x)<code>for the exit transition (</code>s' = x<code>, the trajectory's terminal state). @param log_pb</code>log P_B(s|s')<code>for a real transition, or</code>0.0<code>for the exit transition. @return The scalar loss,</code>Δ(s,s')²`.  <br /></td></tr>
 <tr class="separator:a136624e3cad793cca30ecf3d6319dd10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a643e0f63e74a8b2390e150e6e277c6b3" id="r_a643e0f63e74a8b2390e150e6e277c6b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a643e0f63e74a8b2390e150e6e277c6b3">delta</a> () <a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">const</a></td></tr>
+<tr class="memitem:a643e0f63e74a8b2390e150e6e277c6b3" id="r_a643e0f63e74a8b2390e150e6e277c6b3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a643e0f63e74a8b2390e150e6e277c6b3">delta</a> () const</td></tr>
 <tr class="memdesc:a643e0f63e74a8b2390e150e6e277c6b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lsquo;Δ(s,s&rsquo;)` from the most recent <a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10" title="Computes ‘Δ(s,s’)and the lossΔ(s,s&#39;)², cachingΔfor the accessors below. @param log_flow_slog F_θ(s)....">forward()</a> call.  <br /></td></tr>
 <tr class="separator:a643e0f63e74a8b2390e150e6e277c6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac359531938fd5309ef492ba66736b0a3" id="r_ac359531938fd5309ef492ba66736b0a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#ac359531938fd5309ef492ba66736b0a3">grad_log_flow_s</a> () <a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">const</a></td></tr>
+<tr class="memitem:ac359531938fd5309ef492ba66736b0a3" id="r_ac359531938fd5309ef492ba66736b0a3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#ac359531938fd5309ef492ba66736b0a3">grad_log_flow_s</a> () const</td></tr>
 <tr class="memdesc:ac359531938fd5309ef492ba66736b0a3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>d(loss)/d(log F(s)) = 2Δ</code>.  <br /></td></tr>
 <tr class="separator:ac359531938fd5309ef492ba66736b0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf00f62dd23568c3ca5ea066bb9a62c4" id="r_adf00f62dd23568c3ca5ea066bb9a62c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#adf00f62dd23568c3ca5ea066bb9a62c4">grad_log_flow_s_next</a> () <a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">const</a></td></tr>
+<tr class="memitem:adf00f62dd23568c3ca5ea066bb9a62c4" id="r_adf00f62dd23568c3ca5ea066bb9a62c4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#adf00f62dd23568c3ca5ea066bb9a62c4">grad_log_flow_s_next</a> () const</td></tr>
 <tr class="memdesc:adf00f62dd23568c3ca5ea066bb9a62c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lsquo;d(loss)/d(log F(s&rsquo;)) = -2Δ&lsquo;. Only meaningful when s&rsquo; is non-terminal (a real <code>F_θ</code> network call) &ndash; callers must not apply this to the exit transition's fixed <code>log R(x)</code> endpoint, which has no network to backprop into.  <br /></td></tr>
 <tr class="separator:adf00f62dd23568c3ca5ea066bb9a62c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1c1847fc1fcf93a2c269b51ecf0197a" id="r_af1c1847fc1fcf93a2c269b51ecf0197a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#af1c1847fc1fcf93a2c269b51ecf0197a">grad_weight_for_log_pf</a> () <a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">const</a></td></tr>
+<tr class="memitem:af1c1847fc1fcf93a2c269b51ecf0197a" id="r_af1c1847fc1fcf93a2c269b51ecf0197a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#af1c1847fc1fcf93a2c269b51ecf0197a">grad_weight_for_log_pf</a> () const</td></tr>
 <tr class="memdesc:af1c1847fc1fcf93a2c269b51ecf0197a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The weight <code>w = -2Δ</code> such that this transition's policy-network gradient is <code>w · (p[k] − 1{k==a})</code> &ndash; <code><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html" title="Δ(τ) = log Zθ + Σ log P_F(s_{t+1}|s_t) − log R(x) − Σ log P_B(s_t|s_{t+1}), loss = Δ(τ)².">TrajectoryBalanceLoss</a></code>/<code><a class="el" href="classpulsatrix_1_1PolicyGradientLoss.html" title="loss = mean_b( -log pi(a_b | s_b) * G_b ), where a_b is the action actually taken on step b of a roll...">PolicyGradientLoss</a></code>'s exact softmax/log gradient identity shape.  <br /></td></tr>
 <tr class="separator:af1c1847fc1fcf93a2c269b51ecf0197a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -166,7 +166,7 @@ Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">float</a> pulsatrix::DetailedBalanceLoss::delta </td>
+          <td class="memname">float pulsatrix::DetailedBalanceLoss::delta </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -227,7 +227,7 @@ Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">float</a> pulsatrix::DetailedBalanceLoss::grad_log_flow_s </td>
+          <td class="memname">float pulsatrix::DetailedBalanceLoss::grad_log_flow_s </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -246,7 +246,7 @@ Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">float</a> pulsatrix::DetailedBalanceLoss::grad_log_flow_s_next </td>
+          <td class="memname">float pulsatrix::DetailedBalanceLoss::grad_log_flow_s_next </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -265,7 +265,7 @@ Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html#a136624e3cad793cca30ecf3d6319dd10">float</a> pulsatrix::DetailedBalanceLoss::grad_weight_for_log_pf </td>
+          <td class="memname">float pulsatrix::DetailedBalanceLoss::grad_weight_for_log_pf </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['sigmoid_0',['Sigmoid',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4',1,'pulsatrix']]],
-  ['silu_1',['Silu',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf',1,'pulsatrix']]]
+  ['output_0',['Output',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a29c2c02a361c9d7028472e5d92cd4a54',1,'pulsatrix::NodeGene']]]
 ];

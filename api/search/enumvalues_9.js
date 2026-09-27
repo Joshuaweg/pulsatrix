@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['recurrent_0',['Recurrent',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba1e58fa41670a96a3ee2aa8007ce54dc6',1,'pulsatrix']]],
-  ['reduction_1',['Reduction',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba9e834f13e35e4edf64863ab414a6217a',1,'pulsatrix']]],
-  ['relu_2',['Relu',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a7bfde445daa113a9903d4eaa43b41e2b',1,'pulsatrix']]]
+  ['neg_0',['Neg',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503afb278fa5defd7e699fcbc930c3e76ccd',1,'pulsatrix']]],
+  ['normalization_1',['Normalization',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbaac61f2e17250a818dee4d12b112aa88f',1,'pulsatrix']]]
 ];

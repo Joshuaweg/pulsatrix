@@ -10,5 +10,6 @@ var searchData=
   ['mnistidxloader_7',['MnistIdxLoader',['../classpulsatrix_1_1MnistIdxLoader.html',1,'pulsatrix']]],
   ['module_8',['Module',['../classpulsatrix_1_1Module.html',1,'pulsatrix']]],
   ['mseloss_9',['MSELoss',['../classpulsatrix_1_1MSELoss.html',1,'pulsatrix']]],
-  ['multiheadattentionmodule_10',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]]
+  ['multiheadattentionmodule_10',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
+  ['mutationloss_11',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]]
 ];
