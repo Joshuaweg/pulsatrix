@@ -63,6 +63,19 @@ add_library(pulsatrix_core
     src/swiglu_module.cpp
     src/transformer_block.cpp
     src/residual_module.cpp
+    src/conjunction_module.cpp
+    src/disjunction_module.cpp
+    src/negation_module.cpp
+    src/aggregator_module.cpp
+    src/satisfaction_loss.cpp
+    src/neuro_symbolic_toy_kb.cpp
+    src/datalog_rule.cpp
+    src/datalog_fact_database.cpp
+    src/datalog_engine.cpp
+    src/datalog_weighted_fact_database.cpp
+    src/datalog_weighted_engine.cpp
+    src/neuro_symbolic_datalog_bridge.cpp
+    src/datalog_lrp.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
@@ -252,6 +265,9 @@ endif()
 if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(xor_demo examples/xor_demo.cpp)
     target_link_libraries(xor_demo PRIVATE pulsatrix_core)
+
+    add_executable(neuro_symbolic_toy_kb_demo examples/neuro_symbolic_toy_kb_demo.cpp)
+    target_link_libraries(neuro_symbolic_toy_kb_demo PRIVATE pulsatrix_core)
 
     add_executable(explainer_demo examples/explainer_demo.cpp)
     target_link_libraries(explainer_demo PRIVATE pulsatrix_core)
