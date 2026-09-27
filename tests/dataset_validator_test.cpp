@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 
+#include <limits>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "pulsatrix/cpu_backend.hpp"
@@ -78,6 +80,71 @@ TEST_F(DatasetValidatorTest, ThrowsOnSchemaMismatchAcrossSamples) {
 TEST_F(DatasetValidatorTest, ThrowsOnEmptyDataset) {
     InMemoryDataset dataset({});
     EXPECT_THROW(DatasetValidator::ComputeStatistics(dataset), std::invalid_argument);
+}
+
+TEST_F(DatasetValidatorTest, DetectIssuesStaysSilentOnACleanDataset) {
+    InMemoryDataset dataset({
+        Sample{{Tensor(Shape({1}), &backend, {10.0f})}},
+        Sample{{Tensor(Shape({1}), &backend, {11.0f})}},
+        Sample{{Tensor(Shape({1}), &backend, {9.0f})}},
+        Sample{{Tensor(Shape({1}), &backend, {10.5f})}},
+    });
+    DatasetStatistics stats = DatasetValidator::ComputeStatistics(dataset);
+
+    std::vector<ValidationIssue> issues = DatasetValidator::DetectIssues(dataset, stats);
+
+    EXPECT_TRUE(issues.empty());
+}
+
+TEST_F(DatasetValidatorTest, DetectIssuesFlagsNaNValues) {
+    InMemoryDataset dataset({
+        Sample{{Tensor(Shape({1}), &backend, {10.0f})}},
+        Sample{{Tensor(Shape({1}), &backend, {std::numeric_limits<float>::quiet_NaN()})}},
+        Sample{{Tensor(Shape({1}), &backend, {11.0f})}},
+    });
+    DatasetStatistics stats = DatasetValidator::ComputeStatistics(dataset);
+
+    std::vector<ValidationIssue> issues = DatasetValidator::DetectIssues(dataset, stats);
+
+    ASSERT_EQ(issues.size(), 1u);
+    EXPECT_EQ(issues[0].sample_index, 1);
+    EXPECT_EQ(issues[0].field_index, 0);
+    EXPECT_NE(issues[0].description.find("NaN"), std::string::npos);
+}
+
+TEST_F(DatasetValidatorTest, DetectIssuesFlagsPlantedOutlierOnly) {
+    // Ten "normal" samples at a constant value, plus one planted extreme outlier. For m
+    // identical points + 1 outlier (n = m+1 total), the outlier's population z-score is
+    // exactly sqrt(m) regardless of the actual values -- m=10 gives z = sqrt(10) ~= 3.16,
+    // comfortably above the default 3.0 threshold, while each normal point's z-score is
+    // correspondingly small.
+    std::vector<Sample> samples;
+    for (int i = 0; i < 10; ++i) {
+        samples.push_back(Sample{{Tensor(Shape({1}), &backend, {10.0f})}});
+    }
+    samples.push_back(Sample{{Tensor(Shape({1}), &backend, {10000.0f})}});
+    InMemoryDataset dataset(std::move(samples));
+    DatasetStatistics stats = DatasetValidator::ComputeStatistics(dataset);
+
+    std::vector<ValidationIssue> issues = DatasetValidator::DetectIssues(dataset, stats, /*z_score_threshold=*/3.0f);
+
+    ASSERT_EQ(issues.size(), 1u);
+    EXPECT_EQ(issues[0].sample_index, 10);
+    EXPECT_NE(issues[0].description.find("outlier"), std::string::npos);
+}
+
+TEST_F(DatasetValidatorTest, DetectIssuesSkipsConstantFieldWithZeroStdDev) {
+    InMemoryDataset dataset({
+        Sample{{Tensor(Shape({1}), &backend, {5.0f})}},
+        Sample{{Tensor(Shape({1}), &backend, {5.0f})}},
+        Sample{{Tensor(Shape({1}), &backend, {5.0f})}},
+    });
+    DatasetStatistics stats = DatasetValidator::ComputeStatistics(dataset);
+    ASSERT_FLOAT_EQ(stats.fields[0].std_dev, 0.0f);
+
+    std::vector<ValidationIssue> issues = DatasetValidator::DetectIssues(dataset, stats);
+
+    EXPECT_TRUE(issues.empty());
 }
 
 TEST_F(DatasetValidatorTest, WorksGenericallyAgainstARealCsvDataset) {
