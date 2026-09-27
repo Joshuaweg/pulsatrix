@@ -75,6 +75,7 @@ add_library(pulsatrix_core
     src/datalog_weighted_fact_database.cpp
     src/datalog_weighted_engine.cpp
     src/neuro_symbolic_datalog_bridge.cpp
+    src/datalog_lrp.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
