@@ -79,6 +79,8 @@ add_executable(pulsatrix_tests
     conjunction_module_test.cpp
     disjunction_module_test.cpp
     negation_module_test.cpp
+    aggregator_module_test.cpp
+    satisfaction_loss_test.cpp
     conv2d_module_test.cpp
     rms_norm_module_test.cpp
     layer_norm_module_test.cpp

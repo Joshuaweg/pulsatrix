@@ -4,6 +4,7 @@
 #include <string>
 #include <utility>
 
+#include "pulsatrix/aggregator_module.hpp"
 #include "pulsatrix/avg_pool2d_module.hpp"
 #include "pulsatrix/conv2d_module.hpp"
 #include "pulsatrix/cpu_backend.hpp"
@@ -297,6 +298,20 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
                           float sum_out = 0.0f;
                           for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    cases.push_back({"AggregatorModule", [] {
+                          CPUBackend backend;
+                          AggregatorModule agg(&backend, 2.0f);
+                          Tensor input(Shape({4}), &backend, {0.3f, 0.7f, 0.5f, 0.9f});
+                          Tensor output = agg.forward(input);
+                          Tensor relevance_out(Shape({}), &backend, {output.data()[0]});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = agg.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = relevance_out.data()[0];
                           return std::make_pair(sum_in, sum_out);
                       }});
 
