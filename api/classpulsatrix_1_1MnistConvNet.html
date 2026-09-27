@@ -107,19 +107,19 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1MnistConvNet.html','
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab875d757bc6fa5291918559a008c0ad9" id="r_ab875d757bc6fa5291918559a008c0ad9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#ab875d757bc6fa5291918559a008c0ad9">MnistConvNet</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, unsigned seed=42)</td></tr>
+<tr class="memitem:ab875d757bc6fa5291918559a008c0ad9" id="r_ab875d757bc6fa5291918559a008c0ad9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#ab875d757bc6fa5291918559a008c0ad9">MnistConvNet</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *<a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">backend</a>, <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">unsigned</a> <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">seed</a>=42)</td></tr>
 <tr class="memdesc:ab875d757bc6fa5291918559a008c0ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the network with randomly initialized weights.  <br /></td></tr>
 <tr class="separator:ab875d757bc6fa5291918559a008c0ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88565996b3ac10757aa1417bdc9fc8d5" id="r_a88565996b3ac10757aa1417bdc9fc8d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">forward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;image)</td></tr>
 <tr class="memdesc:a88565996b3ac10757aa1417bdc9fc8d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the network forward.  <br /></td></tr>
 <tr class="separator:a88565996b3ac10757aa1417bdc9fc8d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a046825443b04adfbf4eac4962552185c" id="r_a046825443b04adfbf4eac4962552185c"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a046825443b04adfbf4eac4962552185c">predict</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;image)</td></tr>
+<tr class="memitem:a046825443b04adfbf4eac4962552185c" id="r_a046825443b04adfbf4eac4962552185c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">int64_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a046825443b04adfbf4eac4962552185c">predict</a> (<a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">image</a>)</td></tr>
 <tr class="memdesc:a046825443b04adfbf4eac4962552185c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5" title="Runs the network forward.">forward()</a> plus argmax &ndash; the predicted class index.  <br /></td></tr>
 <tr class="separator:a046825443b04adfbf4eac4962552185c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a985a7b6504845708e4fe12795f17d3ec" id="r_a985a7b6504845708e4fe12795f17d3ec"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a985a7b6504845708e4fe12795f17d3ec">train_step</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;image, int64_t target_class, <a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;optimizer, <a class="el" href="classpulsatrix_1_1MetricsSink.html">MetricsSink</a> &amp;sink, int step)</td></tr>
+<tr class="memitem:a985a7b6504845708e4fe12795f17d3ec" id="r_a985a7b6504845708e4fe12795f17d3ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a985a7b6504845708e4fe12795f17d3ec">train_step</a> (<a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">image</a>, <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">int64_t</a> <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">target_class</a>, <a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;<a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">optimizer</a>, <a class="el" href="classpulsatrix_1_1MetricsSink.html">MetricsSink</a> &amp;<a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">sink</a>, <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">int</a> step)</td></tr>
 <tr class="memdesc:a985a7b6504845708e4fe12795f17d3ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one training step: forward, cross-entropy loss, backward through every layer, one Adam update per layer's parameters, and logs the loss.  <br /></td></tr>
 <tr class="separator:a985a7b6504845708e4fe12795f17d3ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59f018c5008b98d48f49d73c06f37f7e" id="r_a59f018c5008b98d48f49d73c06f37f7e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a59f018c5008b98d48f49d73c06f37f7e">classifier_weight</a> () const</td></tr>
+<tr class="memitem:a59f018c5008b98d48f49d73c06f37f7e" id="r_a59f018c5008b98d48f49d73c06f37f7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a59f018c5008b98d48f49d73c06f37f7e">classifier_weight</a> () <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">const</a></td></tr>
 <tr class="memdesc:a59f018c5008b98d48f49d73c06f37f7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test/inspection accessor.  <br /></td></tr>
 <tr class="separator:a59f018c5008b98d48f49d73c06f37f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -147,7 +147,7 @@ Random (not hand-picked) initial weights &ndash; unlike <a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">unsigned</a>&#160;</td>
           <td class="paramname"><em>seed</em> = <code>42</code>&#160;</td>
         </tr>
         <tr>
@@ -185,7 +185,7 @@ Random (not hand-picked) initial weights &ndash; unlike <a class="el" href="clas
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MnistConvNet::classifier_weight </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MnistConvNet::classifier_weight </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -236,9 +236,9 @@ Random (not hand-picked) initial weights &ndash; unlike <a class="el" href="clas
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int64_t pulsatrix::MnistConvNet::predict </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">int64_t</a> pulsatrix::MnistConvNet::predict </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>image</em></td><td>)</td>
           <td></td>
         </tr>
@@ -263,15 +263,15 @@ Random (not hand-picked) initial weights &ndash; unlike <a class="el" href="clas
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float pulsatrix::MnistConvNet::train_step </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">float</a> pulsatrix::MnistConvNet::train_step </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>image</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">int64_t</a>&#160;</td>
           <td class="paramname"><em>target_class</em>, </td>
         </tr>
         <tr>
@@ -289,7 +289,7 @@ Random (not hand-picked) initial weights &ndash; unlike <a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a88565996b3ac10757aa1417bdc9fc8d5">int</a>&#160;</td>
           <td class="paramname"><em>step</em>&#160;</td>
         </tr>
         <tr>

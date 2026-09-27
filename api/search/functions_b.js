@@ -8,13 +8,14 @@ var searchData=
   ['mean_5fhidden_5factivation_5',['mean_hidden_activation',['../classpulsatrix_1_1SparseAutoencoder.html#a42daeb83d40c52d948ce86a997210c2b',1,'pulsatrix::SparseAutoencoder']]],
   ['mha_6',['mha',['../classpulsatrix_1_1TransformerBlock.html#a42d7aeaf3e86cfca6c6ce539707be805',1,'pulsatrix::TransformerBlock']]],
   ['mnistconvnet_7',['MnistConvNet',['../classpulsatrix_1_1MnistConvNet.html#ab875d757bc6fa5291918559a008c0ad9',1,'pulsatrix::MnistConvNet']]],
-  ['mseloss_8',['MSELoss',['../classpulsatrix_1_1MSELoss.html#ac5f20c73b4057154df59e8428759f721',1,'pulsatrix::MSELoss']]],
-  ['mu_5fk_9',['mu_k',['../classpulsatrix_1_1RWKVModule.html#a748454131223b6d41b5fc68155d16352',1,'pulsatrix::RWKVModule']]],
-  ['mu_5fk_5fgrad_10',['mu_k_grad',['../classpulsatrix_1_1RWKVModule.html#a2b8f36ba6f3acdad3d3ca41a9b9bc6be',1,'pulsatrix::RWKVModule']]],
-  ['mu_5fr_11',['mu_r',['../classpulsatrix_1_1RWKVModule.html#a9de1c858f6b30a35bd6515bc9d09c249',1,'pulsatrix::RWKVModule']]],
-  ['mu_5fr_5fgrad_12',['mu_r_grad',['../classpulsatrix_1_1RWKVModule.html#a1a86dec75cfc7df68c147054bcefebee',1,'pulsatrix::RWKVModule']]],
-  ['mu_5fv_13',['mu_v',['../classpulsatrix_1_1RWKVModule.html#a88d85ab226f406887c3ec7593586bf44',1,'pulsatrix::RWKVModule']]],
-  ['mu_5fv_5fgrad_14',['mu_v_grad',['../classpulsatrix_1_1RWKVModule.html#ae309359e828234f472601bf3b7ac4a6f',1,'pulsatrix::RWKVModule']]],
-  ['mul_15',['mul',['../classpulsatrix_1_1CPUBackend.html#a19efc91d50ebf477bbc01af80cbada3d',1,'pulsatrix::CPUBackend::mul()'],['../classpulsatrix_1_1CUDABackend.html#aa91c1767a9c559e2fe39c2cd6971c7fa',1,'pulsatrix::CUDABackend::mul()'],['../classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d',1,'pulsatrix::DeviceBackend::mul()']]],
-  ['multiheadattentionmodule_16',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ae11c9bd2523df83bb01c90234a201f8d',1,'pulsatrix::MultiHeadAttentionModule']]]
+  ['mnistdatasetadapter_8',['MnistDatasetAdapter',['../classpulsatrix_1_1MnistDatasetAdapter.html#ac53eabd75ea8866f0b7dced74e148fd6',1,'pulsatrix::MnistDatasetAdapter']]],
+  ['mseloss_9',['MSELoss',['../classpulsatrix_1_1MSELoss.html#ac5f20c73b4057154df59e8428759f721',1,'pulsatrix::MSELoss']]],
+  ['mu_5fk_10',['mu_k',['../classpulsatrix_1_1RWKVModule.html#a748454131223b6d41b5fc68155d16352',1,'pulsatrix::RWKVModule']]],
+  ['mu_5fk_5fgrad_11',['mu_k_grad',['../classpulsatrix_1_1RWKVModule.html#a2b8f36ba6f3acdad3d3ca41a9b9bc6be',1,'pulsatrix::RWKVModule']]],
+  ['mu_5fr_12',['mu_r',['../classpulsatrix_1_1RWKVModule.html#a9de1c858f6b30a35bd6515bc9d09c249',1,'pulsatrix::RWKVModule']]],
+  ['mu_5fr_5fgrad_13',['mu_r_grad',['../classpulsatrix_1_1RWKVModule.html#a1a86dec75cfc7df68c147054bcefebee',1,'pulsatrix::RWKVModule']]],
+  ['mu_5fv_14',['mu_v',['../classpulsatrix_1_1RWKVModule.html#a88d85ab226f406887c3ec7593586bf44',1,'pulsatrix::RWKVModule']]],
+  ['mu_5fv_5fgrad_15',['mu_v_grad',['../classpulsatrix_1_1RWKVModule.html#ae309359e828234f472601bf3b7ac4a6f',1,'pulsatrix::RWKVModule']]],
+  ['mul_16',['mul',['../classpulsatrix_1_1CPUBackend.html#a19efc91d50ebf477bbc01af80cbada3d',1,'pulsatrix::CPUBackend::mul()'],['../classpulsatrix_1_1CUDABackend.html#aa91c1767a9c559e2fe39c2cd6971c7fa',1,'pulsatrix::CUDABackend::mul()'],['../classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d',1,'pulsatrix::DeviceBackend::mul()']]],
+  ['multiheadattentionmodule_17',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ae11c9bd2523df83bb01c90234a201f8d',1,'pulsatrix::MultiHeadAttentionModule']]]
 ];

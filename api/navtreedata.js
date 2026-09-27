@@ -59,13 +59,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "activation__snapshot_8hpp.html",
-"classpulsatrix_1_1Conv2DModule.html#a8bf7eccc3df66273dc7698b113c8ed18",
-"classpulsatrix_1_1GroupNormModule.html#a23c8ccff26e523fc5715f931eb015a12",
-"classpulsatrix_1_1LinearModule.html#ae14ee1e63296f573f6411a5f275b48ae",
-"classpulsatrix_1_1RMSNormModule.html",
-"classpulsatrix_1_1RolloutBuffer.html#a3dc449654414454f1e42bdebd795ce70",
-"device__backend_8hpp.html",
-"structpulsatrix_1_1ReparamGrad.html#ad3703e6310d7ca316764423baa89f332"
+"classpulsatrix_1_1ContinuousCartPoleEnv.html#a2e90ab6ee599aef003fed1961a07ee80",
+"classpulsatrix_1_1GFlowNetForwardPolicy.html#ad2d3e1b5a5251ac24a3288520e33593f",
+"classpulsatrix_1_1LSTMModule.html#a9e550d3b9e0024ab128c56355b5b45c4",
+"classpulsatrix_1_1Module.html#a64d2dd3268af1b112aaeb1c8286351a9",
+"classpulsatrix_1_1RWKVModule.html#ae20101e1d2053c34e38b5d891ac487fc",
+"classpulsatrix_1_1SparseAutoencoder.html#ace9b3723207021b67c6126f1c0d4f5c0",
+"functions_func_s.html",
+"structpulsatrix_1_1LRPRuleConfig.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
