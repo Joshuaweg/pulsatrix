@@ -72,6 +72,7 @@ add_library(pulsatrix_core
     src/datalog_rule.cpp
     src/datalog_fact_database.cpp
     src/datalog_engine.cpp
+    src/datalog_weighted_fact_database.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
