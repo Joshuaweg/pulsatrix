@@ -82,6 +82,8 @@ add_executable(pulsatrix_tests
     aggregator_module_test.cpp
     satisfaction_loss_test.cpp
     neuro_symbolic_toy_kb_test.cpp
+    datalog_term_test.cpp
+    datalog_atom_test.cpp
     conv2d_module_test.cpp
     rms_norm_module_test.cpp
     layer_norm_module_test.cpp
