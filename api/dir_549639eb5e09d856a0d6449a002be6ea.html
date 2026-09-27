@@ -108,6 +108,10 @@ Directory dependency graph for pulsatrix:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
 Files</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="acquisition__functions_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="acquisition__functions_8hpp.html">acquisition_functions.hpp</a></td></tr>
+<tr class="memdesc:acquisition__functions_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bayesian-Optimization acquisition functions over a GP posterior: Expected Improvement, Probability of Improvement, GP-Upper-Confidence-Bound (Snoek, Larochelle, Adams, "Practical Bayesian Optimization of Machine Learning
+       Algorithms," NeurIPS 2012). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="activation__snapshot_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="activation__snapshot_8hpp.html">activation_snapshot.hpp</a></td></tr>
 <tr class="memdesc:activation__snapshot_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Self-contained, enumerable copy of one forward pass's cached activations. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,6 +120,10 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="agent_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="agent_8hpp.html">agent.hpp</a></td></tr>
 <tr class="memdesc:agent_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract RL agent interface &ndash; the inference-time policy contract, act() only. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="asha_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="asha_8hpp.html">asha.hpp</a></td></tr>
+<tr class="memdesc:asha_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">ASHA (Asynchronous Successive Halving Algorithm; Li, Jamieson, Rostamizadeh, Gonina, Hardt, Recht, Talwalkar, "A System for Massively Parallel Hyperparameter
+       Tuning," MLSys 2020): unlike synchronous Successive Halving/Hyperband (which process one full rung across every candidate before any candidate advances to the next), ASHA promotes a candidate to the next rung as soon as it qualifies (its metric is in the top 1/eta fraction of every candidate that has <em>ever</em> completed that rung so far), never waiting on the rest of the current rung's population. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="assert_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assert_8hpp.html">assert.hpp</a></td></tr>
 <tr class="memdesc:assert_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">PULSATRIX_ASSERT &ndash; debug-only invariant check for programmer errors, distinct from throw (used for caller-facing contract violations). See cpp_style_guide/context_style_project_conventions.md's assert-vs-throw table. <br /></td></tr>
@@ -237,11 +245,18 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="gae_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gae_8hpp.html">gae.hpp</a></td></tr>
 <tr class="memdesc:gae_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generalized Advantage Estimation (Schulman et al. 2016) over a stored rollout. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="gaussian__process_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gaussian__process_8hpp.html">gaussian_process.hpp</a></td></tr>
+<tr class="memdesc:gaussian__process_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gaussian-Process regression surrogate for Bayesian Optimization &ndash; the "gaussian
+       bands" technique named at this campaign's own drafting (Snoek, Larochelle, Adams, "Practical Bayesian Optimization of Machine Learning Algorithms," NeurIPS 2012). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="gflownet__forward__policy_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gflownet__forward__policy_8hpp.html">gflownet_forward_policy.hpp</a></td></tr>
 <tr class="memdesc:gflownet__forward__policy_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masked stochastic categorical policy over a logit-producing Module &ndash; P_F for GFlowNet training objectives. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="gflownet__trajectory_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gflownet__trajectory_8hpp.html">gflownet_trajectory.hpp</a></td></tr>
 <tr class="memdesc:gflownet__trajectory_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rolls out one full HyperGrid episode under a GFlowNetForwardPolicy. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="gp__bo_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gp__bo_8hpp.html">gp_bo.hpp</a></td></tr>
+<tr class="memdesc:gp__bo_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GP-BO trial loop: random-initialize, then repeatedly fit a GP to every trial observed so far and propose the next point by maximizing an acquisition function over random candidates in the unit hypercube. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="grad__cam_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grad__cam_8hpp.html">grad_cam.hpp</a></td></tr>
 <tr class="memdesc:grad__cam_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grad-CAM &ndash; gradient-weighted class activation mapping over the last conv layer (charter Part 1, Phase 2; theory: xai_context.aDNA's vision_gradcam.md). <br /></td></tr>
@@ -260,6 +275,13 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="hipblas__check_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hipblas__check_8hpp.html">hipblas_check.hpp</a></td></tr>
 <tr class="memdesc:hipblas__check_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">PULSATRIX_HIPBLAS_CHECK &ndash; converts a hipBLAS call failure into a thrown C++ exception, parallel to PULSATRIX_HIP_CHECK (<a class="el" href="hip__check_8hpp.html" title="PULSATRIX_HIP_CHECK – converts a HIP runtime failure into a thrown C++ exception at the DeviceBackend...">hip_check.hpp</a>). Only compiled when PULSATRIX_ENABLE_HIP is set. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="hpo__sampling_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hpo__sampling_8hpp.html">hpo_sampling.hpp</a></td></tr>
+<tr class="memdesc:hpo__sampling_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grid search and random search over a SearchSpace: the two simplest, baseline hyperparameter-optimization algorithms, proving the SearchSpace/Trial abstraction's instantiate/train/read-back-metric loop end-to-end before Phase 2's GP-BO/TPE. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="hyperband_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyperband_8hpp.html">hyperband.hpp</a></td></tr>
+<tr class="memdesc:hyperband_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hyperband (Li, Jamieson, DeSalvo, Rostamizadeh, Talwalkar, JMLR 2018): runs several Successive Halving "brackets" with different (num_configs, initial_budget) trade-offs &ndash; covering the tension between "few configs trained long" and "many
+       configs trained short, halved down" that a single Successive Halving run commits to in advance &ndash; and returns the best result across every bracket. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="hypergrid__env_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hypergrid__env_8hpp.html">hypergrid_env.hpp</a></td></tr>
 <tr class="memdesc:hypergrid__env_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">HyperGrid &ndash; the standard minimal GFlowNet correctness-check environment. <br /></td></tr>
@@ -293,6 +315,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="lime_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lime_8hpp.html">lime.hpp</a></td></tr>
 <tr class="memdesc:lime_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">LIME &ndash; local interpretable model-agnostic explanations (charter Part 1, Phase 3; theory: xai_context.aDNA's technique_lime.md). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="linear__algebra_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="linear__algebra_8hpp.html">linear_algebra.hpp</a></td></tr>
+<tr class="memdesc:linear__algebra_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Small, dense linear-system solve &ndash; shared by <a class="el" href="weighted__linear__regression_8hpp.html" title="Weighted least squares via normal equations – the shared fitting primitive Phase 3&#39;s LIME and KernelS...">weighted_linear_regression.hpp</a> (Phase 3's LIME/KernelSHAP) and <a class="el" href="gaussian__process_8hpp.html" title="Gaussian-Process regression surrogate for Bayesian Optimization – the &quot;gaussian        bands&quot; techniq...">gaussian_process.hpp</a> (this campaign's GP-BO surrogate). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="linear__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="linear__module_8hpp.html">linear_module.hpp</a></td></tr>
 <tr class="memdesc:linear__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dense/fully-connected layer &ndash; the reference Module implementation. <br /></td></tr>
@@ -390,6 +415,9 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="sampler_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sampler_8hpp.html">sampler.hpp</a></td></tr>
 <tr class="memdesc:sampler_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index-order abstraction for DataLoader &ndash; SequentialSampler, ShuffleSampler. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="search__space_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="search__space_8hpp.html">search_space.hpp</a></td></tr>
+<tr class="memdesc:search__space_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typed hyperparameter search-space description: named parameters, each continuous, log-uniform, integer, or categorical. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="sequential__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sequential__module_8hpp.html">sequential_module.hpp</a></td></tr>
 <tr class="memdesc:sequential__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model container &ndash; chains a sequence of existing Modules. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -412,6 +440,10 @@ Files</h2></td></tr>
 <tr class="memdesc:subtb__loss_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">GFlowNet SubTB(lambda) loss (Madan et al., "Learning GFlowNets from partial
        episodes for improved convergence and stability", arXiv:2209.12782). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="successive__halving_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="successive__halving_8hpp.html">successive_halving.hpp</a></td></tr>
+<tr class="memdesc:successive__halving_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Successive Halving (the rung-based promotion mechanism underlying Hyperband and ASHA, Li, Jamieson, DeSalvo, Rostamizadeh, Talwalkar, "Hyperband: A Novel
+       Bandit-Based Approach to Hyperparameter Optimization," JMLR 2018): train a population of configurations for a small budget, keep the best fraction, repeat with a larger budget, until one survives. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="swiglu__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swiglu__module_8hpp.html">swiglu_module.hpp</a></td></tr>
 <tr class="memdesc:swiglu__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">SwiGLU gated feedforward block &ndash; second module composed from real <code>LinearModule</code> sub-objects, plus a diagonal specialization of AttnLRP's Eq. 15 bilinear rule. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -430,6 +462,10 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="tokenizer_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tokenizer_8hpp.html">tokenizer.hpp</a></td></tr>
 <tr class="memdesc:tokenizer_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimal deterministic whitespace/punctuation word-level tokenizer. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="tpe_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tpe_8hpp.html">tpe.hpp</a></td></tr>
+<tr class="memdesc:tpe_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree-structured Parzen Estimator (Bergstra, Bardenet, Bengio, Kegl, "Algorithms for
+       Hyper-Parameter Optimization," NeurIPS 2011) &ndash; a structurally distinct second surrogate family from GP-BO (<a class="el" href="gp__bo_8hpp.html" title="The GP-BO trial loop: random-initialize, then repeatedly fit a GP to every trial observed so far and ...">gp_bo.hpp</a>), handling mixed/categorical search spaces GP-BO's own vanilla kernel cannot (<a class="el" href="gp__bo_8hpp.html" title="The GP-BO trial loop: random-initialize, then repeatedly fit a GP to every trial observed so far and ...">gp_bo.hpp</a> restricts to Continuous/LogUniform; this file supports every ParameterKind). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="trajectory__balance__loss_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trajectory__balance__loss_8hpp.html">trajectory_balance_loss.hpp</a></td></tr>
 <tr class="memdesc:trajectory__balance__loss_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">GFlowNet Trajectory Balance loss (Malkin et al. 2022, arXiv:2201.13259). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -438,6 +474,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="transformer__block_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transformer__block_8hpp.html">transformer_block.hpp</a></td></tr>
 <tr class="memdesc:transformer__block_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre-LN transformer block &ndash; Phase 3's literal exit-gate deliverable, third and last composition mission (RMSNorm x2, MultiHeadAttentionModule, SwiGLUModule, plus the resolved residual-split LRP rule). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="trial_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trial_8hpp.html">trial.hpp</a></td></tr>
+<tr class="memdesc:trial_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single hyperparameter-optimization trial: the configuration tried, plus every metric value recorded against it. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="video__frame__directory__dataset_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__frame__directory__dataset_8hpp.html">video_frame_directory_dataset.hpp</a></td></tr>
 <tr class="memdesc:video__frame__directory__dataset_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Directory-of-pre-extracted-frames video Dataset (reduced-scope stub, no codec decode). <br /></td></tr>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['neg_0',['Neg',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503afb278fa5defd7e699fcbc930c3e76ccd',1,'pulsatrix']]],
-  ['normalization_1',['Normalization',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbaac61f2e17250a818dee4d12b112aa88f',1,'pulsatrix']]]
+  ['linear_0',['Linear',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix']]],
+  ['loguniform_1',['LogUniform',['../namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045',1,'pulsatrix']]]
 ];

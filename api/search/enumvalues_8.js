@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['recurrent_0',['Recurrent',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba1e58fa41670a96a3ee2aa8007ce54dc6',1,'pulsatrix']]],
-  ['reduction_1',['Reduction',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba9e834f13e35e4edf64863ab414a6217a',1,'pulsatrix']]],
-  ['relu_2',['Relu',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a7bfde445daa113a9903d4eaa43b41e2b',1,'pulsatrix']]]
+  ['pooling_0',['Pooling',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba43c8fdf1b340cd45e02e0b66ba2f81a7',1,'pulsatrix']]],
+  ['probabilityofimprovement_1',['ProbabilityOfImprovement',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9',1,'pulsatrix']]]
 ];

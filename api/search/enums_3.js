@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['optype_0',['OpType',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb',1,'pulsatrix']]]
+  ['elementwiseop_0',['ElementwiseOp',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503',1,'pulsatrix']]]
 ];

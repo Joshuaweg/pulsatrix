@@ -119,6 +119,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Agent.html">Agent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for anything that maps an observation to an action.  <a href="classpulsatrix_1_1Agent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The best configuration/metric found, the total epoch budget spent, and how many distinct configurations were ever started (as opposed to promoted).  <a href="structpulsatrix_1_1ASHAResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An explanation result: the raw attribution values, the method that produced them, and any relevant metadata (charter Part 2 SS4).  <a href="structpulsatrix_1_1Attribution.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -247,6 +250,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GAEResult.html">GAEResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a5e7eb5721b3a5ef9281c8ac3906d05b1" title="Generalized Advantage Estimation (Schulman et al. 2016, arXiv:1506.02438): the exponentially-weighted...">ComputeGAE()</a>'s two outputs: the advantage estimate per step and the critic's regression target per step.  <a href="structpulsatrix_1_1GAEResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GaussianProcessRegressor.html">GaussianProcessRegressor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A fitted (or queryable-before-fitting-throws) Gaussian Process regressor with a squared-exponential kernel: k(x, x') = sigma_f^2 * exp(-||x - x'||^2 / (2 * length_scale^2)), plus additive observation noise (a small noise_variance is also standard GP practice purely as numerical "jitter" to keep the kernel matrix well-conditioned, independent of whether the underlying objective is actually noisy).  <a href="classpulsatrix_1_1GaussianProcessRegressor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GFlowNetForwardPolicy.html">GFlowNetForwardPolicy</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples from <code>softmax(mask(policy_network(observation)))</code> &ndash; a categorical policy restricted to a caller-supplied set of valid actions at the current state.  <a href="classpulsatrix_1_1GFlowNetForwardPolicy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -270,6 +276,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HorizontalFlipTransform.html">HorizontalFlipTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mirrors the image left-right. In-place, no backend needed (same shape).  <a href="classpulsatrix_1_1HorizontalFlipTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HyperbandBracket.html">HyperbandBracket</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One bracket's own (num_configs, initial_budget) trade-off point; s is the bracket index (s_max = most configs/smallest budget, down to s=0 = fewest configs/largest budget, matching the original paper's own naming).  <a href="structpulsatrix_1_1HyperbandBracket.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HyperbandResult.html">HyperbandResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The best configuration/metric found across every bracket, and the total epoch budget spent summed across all of them.  <a href="structpulsatrix_1_1HyperbandResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HyperGridEnv.html">HyperGridEnv</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An n-dimensional grid: state is an integer coordinate in <code>[0, H-1]^ndim</code>, actions increment one coordinate or stop the episode, reward is concentrated near the grid's corners.  <a href="classpulsatrix_1_1HyperGridEnv.html#details">More...</a><br /></td></tr>
@@ -319,6 +331,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html">MaxPool2DModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; deferred until a real use case needs them, same minimal-cut discipline as <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s original stride-1/no-padding scope cut.  <a href="classpulsatrix_1_1MaxPool2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MetricRecord.html">MetricRecord</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One recorded metric value: a named tag, its value, and the training step it was logged at (mirrors <a class="el" href="classpulsatrix_1_1MetricsSink.html#a4f36d9ace9b87065fba013eaaed08906" title="Logs a scalar value (e.g. loss, accuracy).">MetricsSink::log_scalar</a>'s own (tag, value, step) shape).  <a href="structpulsatrix_1_1MetricRecord.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MetricsSink.html">MetricsSink</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event format, W&amp;B, CSV, ...) implement this; the training loop and Phase 4 validation harness only ever see <a class="el" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form...">MetricsSink</a>.  <a href="classpulsatrix_1_1MetricsSink.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -354,6 +369,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NormalizeTransform.html">NormalizeTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-channel normalization: pixel = (pixel - mean[c]) / std[c]. In-place, no backend needed (same shape in and out).  <a href="classpulsatrix_1_1NormalizeTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ParameterSpec.html">ParameterSpec</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One named parameter's description: its kind plus the bounds/categories that kind needs. Only the fields relevant to <code>kind</code> are meaningful (e.g. <code>categories</code> is empty/unused for <code>Continuous</code>) &ndash; this is a description, not a union, since a <code><a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a></code>'s own accessors (below) are the only place callers read it back.  <a href="structpulsatrix_1_1ParameterSpec.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A trainable parameter and its accumulated gradient, as owned by some <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>.  <a href="structpulsatrix_1_1ParamRef.html#details">More...</a><br /></td></tr>
@@ -392,6 +410,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResizeTransform.html">ResizeTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every transform in this file operates on sample.fields[0], assumed to be an image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> of shape (1, channels, height, width) &ndash; the convention <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>, <a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>, and <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a> all already share (image/features first, label last).  <a href="classpulsatrix_1_1ResizeTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResumableTrial.html">ResumableTrial</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single hyperparameter configuration's live, resumable training state &ndash; own whatever network/optimizer/dataset a concrete trial needs, and train it incrementally across multiple calls rather than all at once.  <a href="classpulsatrix_1_1ResumableTrial.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RetNetModule.html">RetNetModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N, L, d_model) -&gt; output (N, L, d_model).  <a href="classpulsatrix_1_1RetNetModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -422,6 +443,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Sampler.html">Sampler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces the order in which a <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> visits a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>'s indices for one epoch.  <a href="classpulsatrix_1_1Sampler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes a hyperparameter search space as an ordered list of named, typed parameters. Every HPO algorithm (grid/random search, GP-BO, TPE, Hyperband/ASHA) consumes a <code><a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a></code> to know what it may propose; this type itself has no sampling logic (that is each algorithm's own job, e.g. <code>RandomSample</code>/<code>GridSample</code>).  <a href="classpulsatrix_1_1SearchSpace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html">SequentialModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Composes layers_[0..n-1] in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> order; <a class="el" href="classpulsatrix_1_1SequentialModule.html#ab250da54700dc610741f81ecad38224e" title="Chains backward() across layers_ in reverse order.">backward()</a>/propagate_relevance() chain layers_[n-1..0] in reverse &ndash; correct reverse-mode composition order.  <a href="classpulsatrix_1_1SequentialModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -448,6 +472,10 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SubTBLoss.html">SubTBLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One sub-trajectory pair's contribution to the SubTB(λ) loss: <code>Δ(i,j) = log F(s_i) + Σ log P_F − log F(s_j) − Σ log P_B</code> (summed over the edges spanned by <code>[i,j)</code>), weighted by &lsquo;pair_weight_ratio = λ^{j-i} / Σ_{i&rsquo;&lt;j'} λ^{j'-i'}` (the pre-normalized share of the total weighted-average loss this specific pair contributes).  <a href="classpulsatrix_1_1SubTBLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SuccessiveHalvingResult.html">SuccessiveHalvingResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The winning configuration, its final metric, and the total epoch-budget actually spent across every trial/rung (the exit-gate's own "reduces total training
+       compute" measure).  <a href="structpulsatrix_1_1SuccessiveHalvingResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html">SwiGLUModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>down_proj(silu(gate_proj(x)) * up_proj(x))</code>, the gated feedforward block used in place of a plain two-linear-layer MLP in most modern transformers. Rank-agnostic over <code>(..., d_model) -&gt; (..., d_model)</code>, matching <code><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a></code>'s I/O contract so Phase 3 Mission 5 (<code><a class="el" href="classpulsatrix_1_1TransformerBlock.html" title="y1 = x + MHA(RMSNorm(x)), y2 = y1 + SwiGLU(RMSNorm(y1)). Shape (N, L, d_model) -&gt; (N,...">TransformerBlock</a></code>) can chain them directly.  <a href="classpulsatrix_1_1SwiGLUModule.html#details">More...</a><br /></td></tr>
@@ -482,6 +510,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y1 = x + MHA(RMSNorm(x))</code>, <code>y2 = y1 + SwiGLU(RMSNorm(y1))</code>. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(N, L, d_model) -&gt; (N, L, d_model)</code>.  <a href="classpulsatrix_1_1TransformerBlock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Trial.html">Trial</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A configuration paired with the metric history observed while evaluating it (instantiate a network under this configuration, train it, record whatever metrics the training loop reports). Deliberately decoupled from <a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a> &ndash; a <a class="el" href="classpulsatrix_1_1Trial.html" title="A configuration paired with the metric history observed while evaluating it (instantiate a network un...">Trial</a> records what actually happened, a <a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a> describes what could be proposed; neither needs to reference the other directly.  <a href="classpulsatrix_1_1Trial.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1UniformFrameSampleTransform.html">UniformFrameSampleTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples num_frames evenly-spaced frames from a clip <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> (sample.fields[0], shape (T, C, H, W) &ndash; <a class="el" href="classpulsatrix_1_1VideoFrameDirectoryDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;clip_name&gt;/&lt;sequentially-named-frame...">VideoFrameDirectoryDataset</a>'s convention), producing an (N, C, H, W) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> &ndash; deliberately identical in shape convention to Phase 2's image Dataset/Transform outputs (<a class="el" href="classpulsatrix_1_1ImageFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;image_file&gt;, mirroring torchvision&#39;s...">ImageFolderDataset</a>, <a class="el" href="classpulsatrix_1_1ResizeTransform.html" title="Every transform in this file operates on sample.fields[0], assumed to be an image Tensor of shape (1,...">ResizeTransform</a>, etc.): a video clip, once frame-sampled, is just a batch of images from this codebase's perspective.  <a href="classpulsatrix_1_1UniformFrameSampleTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -512,6 +543,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a2b8dc3d7d2cef35f192d191f09156e67" id="r_a2b8dc3d7d2cef35f192d191f09156e67"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> = size_t</td></tr>
 <tr class="memdesc:a2b8dc3d7d2cef35f192d191f09156e67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stable identifier for a <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> within its owning <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a>.  <br /></td></tr>
 <tr class="separator:a2b8dc3d7d2cef35f192d191f09156e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad466513340f64023a5c7749a62e4d66" id="r_aad466513340f64023a5c7749a62e4d66"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aad466513340f64023a5c7749a62e4d66">ConfigValue</a> = std::variant&lt; double, int64_t, std::string &gt;</td></tr>
+<tr class="memdesc:aad466513340f64023a5c7749a62e4d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concrete value for one parameter &ndash; a <code>double</code> (Continuous/LogUniform), an <code>int64_t</code> (Integer), or a <code>std::string</code> (Categorical, naming one of that parameter's categories).  <br /></td></tr>
+<tr class="separator:aad466513340f64023a5c7749a62e4d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58099b24d92ae2c4916748b60ecf36e3" id="r_a58099b24d92ae2c4916748b60ecf36e3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> = std::map&lt; std::string, <a class="el" href="namespacepulsatrix.html#aad466513340f64023a5c7749a62e4d66">ConfigValue</a> &gt;</td></tr>
+<tr class="memdesc:a58099b24d92ae2c4916748b60ecf36e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concrete hyperparameter configuration: parameter name -&gt; concrete value.  <br /></td></tr>
+<tr class="separator:a58099b24d92ae2c4916748b60ecf36e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bc143576cb71fab19f76a88330f5a4f" id="r_a6bc143576cb71fab19f76a88330f5a4f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> = std::function&lt; std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1ResumableTrial.html">ResumableTrial</a> &gt;(const <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &amp;)&gt;</td></tr>
+<tr class="memdesc:a6bc143576cb71fab19f76a88330f5a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a fresh <a class="el" href="classpulsatrix_1_1ResumableTrial.html" title="A single hyperparameter configuration&#39;s live, resumable training state – own whatever network/optimiz...">ResumableTrial</a> for a given configuration.  <br /></td></tr>
+<tr class="separator:a6bc143576cb71fab19f76a88330f5a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -539,6 +579,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afec27fa326532e4ad62b32d54558b503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary elementwise operations supported by DeviceBackend::elementwise().  <a href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">More...</a><br /></td></tr>
 <tr class="separator:afec27fa326532e4ad62b32d54558b503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf838275fc40b42d2c67d2772d64d1b8" id="r_aaf838275fc40b42d2c67d2772d64d1b8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8">AcquisitionKind</a> { <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192">ExpectedImprovement</a>
+, <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9">ProbabilityOfImprovement</a>
+, <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9">UpperConfidenceBound</a>
+ }</td></tr>
+<tr class="memdesc:aaf838275fc40b42d2c67d2772d64d1b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which acquisition function RunGPBOLoop maximizes over candidates each iteration.  <a href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8">More...</a><br /></td></tr>
+<tr class="separator:aaf838275fc40b42d2c67d2772d64d1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94d9ac6240473b5362d1e8e5c11157bb" id="r_a94d9ac6240473b5362d1e8e5c11157bb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a> { <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear</a>
 , <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbacc31a669f6d086f816852dda3290a3ef">Conv</a>
@@ -557,9 +603,38 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a94d9ac6240473b5362d1e8e5c11157bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The op-type tag a Node carries. Charter Part 2 §3: nodes are tagged by a small closed set of op types rather than by concrete layer class, so a query like "find the last conv layer's activations" (Grad-CAM) works by querying op type, not by string-matching a layer name.  <a href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">More...</a><br /></td></tr>
 <tr class="separator:a94d9ac6240473b5362d1e8e5c11157bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb575cb311c04812afe7f12350d86eec" id="r_abb575cb311c04812afe7f12350d86eec"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eec">ParameterKind</a> { <a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca535863a82f163709557e59e2eb8139a7">Continuous</a>
+, <a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045">LogUniform</a>
+, <a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044">Integer</a>
+, <a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c">Categorical</a>
+ }</td></tr>
+<tr class="memdesc:abb575cb311c04812afe7f12350d86eec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which family of values a named parameter draws from.  <a href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eec">More...</a><br /></td></tr>
+<tr class="separator:abb575cb311c04812afe7f12350d86eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a0f294eab23b3829d9f8b91426bf22222" id="r_a0f294eab23b3829d9f8b91426bf22222"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0f294eab23b3829d9f8b91426bf22222">StandardNormalPdf</a> (double z)</td></tr>
+<tr class="memdesc:a0f294eab23b3829d9f8b91426bf22222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard normal PDF, phi(z) = (1/sqrt(2*pi)) * exp(-z^2/2).  <br /></td></tr>
+<tr class="separator:a0f294eab23b3829d9f8b91426bf22222"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03f5550dab9961a6e7f1b6d5e7f5befd" id="r_a03f5550dab9961a6e7f1b6d5e7f5befd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a03f5550dab9961a6e7f1b6d5e7f5befd">StandardNormalCdf</a> (double z)</td></tr>
+<tr class="memdesc:a03f5550dab9961a6e7f1b6d5e7f5befd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard normal CDF, Phi(z) = 0.5 * (1 + erf(z / sqrt(2))).  <br /></td></tr>
+<tr class="separator:a03f5550dab9961a6e7f1b6d5e7f5befd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf980c4f81efaaafcbfd21722b3d7d3e" id="r_abf980c4f81efaaafcbfd21722b3d7d3e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abf980c4f81efaaafcbfd21722b3d7d3e">ExpectedImprovement</a> (double mean, double variance, double best_value, double xi=0.01)</td></tr>
+<tr class="memdesc:abf980c4f81efaaafcbfd21722b3d7d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expected Improvement: the expected amount by which a candidate exceeds best_value + xi, under the posterior N(mean, variance).  <br /></td></tr>
+<tr class="separator:abf980c4f81efaaafcbfd21722b3d7d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4588b52e5db8b067e5b3a86a3d66ddd0" id="r_a4588b52e5db8b067e5b3a86a3d66ddd0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4588b52e5db8b067e5b3a86a3d66ddd0">ProbabilityOfImprovement</a> (double mean, double variance, double best_value, double xi=0.01)</td></tr>
+<tr class="memdesc:a4588b52e5db8b067e5b3a86a3d66ddd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Probability of Improvement: P(candidate's value &gt; best_value + xi) under the posterior N(mean, variance).  <br /></td></tr>
+<tr class="separator:a4588b52e5db8b067e5b3a86a3d66ddd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3de09b80f2b9d5933d7f452615305b59" id="r_a3de09b80f2b9d5933d7f452615305b59"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3de09b80f2b9d5933d7f452615305b59">UpperConfidenceBound</a> (double mean, double variance, double kappa=2.0)</td></tr>
+<tr class="memdesc:a3de09b80f2b9d5933d7f452615305b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">GP-Upper-Confidence-Bound: mean + kappa * sqrt(variance).  <br /></td></tr>
+<tr class="separator:a3de09b80f2b9d5933d7f452615305b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a448cab9e47c5525c719965887897a03d" id="r_a448cab9e47c5525c719965887897a03d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a448cab9e47c5525c719965887897a03d">RunASHAOnConfigQueue</a> (std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; config_queue, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, int initial_epoch_budget, double eta, int num_rungs)</td></tr>
+<tr class="memdesc:a448cab9e47c5525c719965887897a03d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs ASHA, drawing new configurations from an explicit, ordered queue (rather than sampling indefinitely) &ndash; the pure, deterministic core; RunASHA (below) is the thin SearchSpace/RNG-sampling wrapper around it.  <br /></td></tr>
+<tr class="separator:a448cab9e47c5525c719965887897a03d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba99c25698e39330189ccaf49b9cd27a" id="r_aba99c25698e39330189ccaf49b9cd27a"><td class="memTemplParams" colspan="2">template&lt;typename RNG &gt; </td></tr>
+<tr class="memitem:aba99c25698e39330189ccaf49b9cd27a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aba99c25698e39330189ccaf49b9cd27a">RunASHA</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, size_t max_configs_started, int initial_epoch_budget, double eta, int num_rungs, RNG &amp;rng)</td></tr>
+<tr class="memdesc:aba99c25698e39330189ccaf49b9cd27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper: draws max_configs_started configurations from space via RandomSample to serve as the queue, then runs RunASHAOnConfigQueue.  <br /></td></tr>
+<tr class="separator:aba99c25698e39330189ccaf49b9cd27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e0cd79959b261c8b59f554451342d31" id="r_a6e0cd79959b261c8b59f554451342d31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6e0cd79959b261c8b59f554451342d31">AudioPadCollate</a> ()</td></tr>
 <tr class="memdesc:a6e0cd79959b261c8b59f554451342d31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that zero-pads (silence) variable-length waveforms (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/ <a class="el" href="classpulsatrix_1_1AudioFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;audio_file.wav&gt;, structurally identi...">AudioFolderDataset</a>'s convention) to the batch's own max sample count, producing one (N, channels, max_samples) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field. Phase 4's version of PadCollate (Phase 3, text) &ndash; a second proof that the CollateFn extension point handles ragged/variable-length modalities with zero Dataset/DataLoader/Batch interface changes.  <br /></td></tr>
 <tr class="separator:a6e0cd79959b261c8b59f554451342d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -581,15 +656,59 @@ Functions</h2></td></tr>
 <tr class="memitem:a2300465dae625e63a4c68b003cdcfc49" id="r_a2300465dae625e63a4c68b003cdcfc49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GFlowNetTrajectory.html">GFlowNetTrajectory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2300465dae625e63a4c68b003cdcfc49">sample_gflownet_trajectory</a> (<a class="el" href="classpulsatrix_1_1HyperGridEnv.html">HyperGridEnv</a> &amp;env, <a class="el" href="classpulsatrix_1_1GFlowNetForwardPolicy.html">GFlowNetForwardPolicy</a> &amp;forward_policy)</td></tr>
 <tr class="memdesc:a2300465dae625e63a4c68b003cdcfc49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples one full trajectory: resets env, then repeatedly samples a masked action from forward_policy and steps env until termination (an explicit <code>stop</code> or env's own max_steps cap).  <br /></td></tr>
 <tr class="separator:a2300465dae625e63a4c68b003cdcfc49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eb8e19a5d9ca776142a658c4e5adbb5" id="r_a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8eb8e19a5d9ca776142a658c4e5adbb5">UnitCubeToConfiguration</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const std::vector&lt; float &gt; &amp;t)</td></tr>
+<tr class="memdesc:a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a unit-hypercube point (one value per parameter, each in [0, 1]) to a Configuration, using space's own declared bounds.  <br /></td></tr>
+<tr class="separator:a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cd4253efc67ed0b57350408c92e535f" id="r_a4cd4253efc67ed0b57350408c92e535f"><td class="memTemplParams" colspan="2">template&lt;typename ObjectiveFn , typename RNG &gt; </td></tr>
+<tr class="memitem:a4cd4253efc67ed0b57350408c92e535f"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4cd4253efc67ed0b57350408c92e535f">RunGPBOLoop</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, ObjectiveFn objective_fn, size_t num_initial_random, size_t num_iterations, <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8">AcquisitionKind</a> acquisition, size_t num_candidates, RNG &amp;rng)</td></tr>
+<tr class="memdesc:a4cd4253efc67ed0b57350408c92e535f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs GP-BO: num_initial_random uniformly-random trials, then num_iterations trials each chosen by fitting a GP to every trial so far and maximizing acquisition over num_candidates random points in the unit hypercube.  <br /></td></tr>
+<tr class="separator:a4cd4253efc67ed0b57350408c92e535f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6ea52ad0a3275de0825182eac0b8660" id="r_aa6ea52ad0a3275de0825182eac0b8660"><td class="memTemplParams" colspan="2">template&lt;typename RNG &gt; </td></tr>
+<tr class="memitem:aa6ea52ad0a3275de0825182eac0b8660"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa6ea52ad0a3275de0825182eac0b8660">RandomSample</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, RNG &amp;rng)</td></tr>
+<tr class="memdesc:aa6ea52ad0a3275de0825182eac0b8660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws one configuration uniformly at random from space: Continuous parameters uniform over [lower, upper]; LogUniform parameters uniform in log-space (so e.g. [0.001, 1.0] gives 0.001-0.01, 0.01-0.1, and 0.1-1.0 equal probability, not the top decade 90% of the draws); Integer parameters uniform over the inclusive integer range; Categorical parameters uniform over the category list.  <br /></td></tr>
+<tr class="separator:aa6ea52ad0a3275de0825182eac0b8660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a856a540f60965e1c72c6462e63bdbe" id="r_a0a856a540f60965e1c72c6462e63bdbe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0a856a540f60965e1c72c6462e63bdbe">GridSample</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, size_t points_per_continuous_dimension)</td></tr>
+<tr class="memdesc:a0a856a540f60965e1c72c6462e63bdbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerates the full cartesian-product grid over space.  <br /></td></tr>
+<tr class="separator:a0a856a540f60965e1c72c6462e63bdbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ef8c99c323761b54d68cfc25b41c367" id="r_a5ef8c99c323761b54d68cfc25b41c367"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1HyperbandBracket.html">HyperbandBracket</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5ef8c99c323761b54d68cfc25b41c367">ComputeHyperbandBrackets</a> (int max_resource, double eta)</td></tr>
+<tr class="memdesc:a5ef8c99c323761b54d68cfc25b41c367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the classic Hyperband bracket schedule: s_max = floor(log_eta(max_resource)), B = (s_max + 1) * max_resource; for s from s_max down to 0, num_configs = ceil((B / max_resource) * (eta^s / (s + 1))), initial_budget = round(max_resource / eta^s) (each floored at 1).  <br /></td></tr>
+<tr class="separator:a5ef8c99c323761b54d68cfc25b41c367"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80f5f01c0855dedcca3d97c58a66c810" id="r_a80f5f01c0855dedcca3d97c58a66c810"><td class="memTemplParams" colspan="2">template&lt;typename RNG &gt; </td></tr>
+<tr class="memitem:a80f5f01c0855dedcca3d97c58a66c810"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HyperbandResult.html">HyperbandResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a80f5f01c0855dedcca3d97c58a66c810">RunHyperband</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, int max_resource, double eta, RNG &amp;rng)</td></tr>
+<tr class="memdesc:a80f5f01c0855dedcca3d97c58a66c810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one Successive Halving bracket (<a class="el" href="successive__halving_8hpp.html" title="Successive Halving (the rung-based promotion mechanism underlying Hyperband and ASHA,...">successive_halving.hpp</a>) per ComputeHyperbandBrackets(max_resource, eta), keeping the best result across all of them.  <br /></td></tr>
+<tr class="separator:a80f5f01c0855dedcca3d97c58a66c810"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc312204e032ea8f6f81f09aeae4d9e2" id="r_abc312204e032ea8f6f81f09aeae4d9e2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc312204e032ea8f6f81f09aeae4d9e2">SolveLinearSystem</a> (std::vector&lt; std::vector&lt; float &gt; &gt; a, std::vector&lt; float &gt; b)</td></tr>
+<tr class="memdesc:abc312204e032ea8f6f81f09aeae4d9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A*x = b via Gaussian elimination with partial pivoting.  <br /></td></tr>
+<tr class="separator:abc312204e032ea8f6f81f09aeae4d9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04988305f3fb93fa30aa30cfcbb09a6e" id="r_a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e">PolyakUpdate</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;source, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;destination, float tau)</td></tr>
 <tr class="memdesc:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Soft target-network update (Lillicrap et al. 2016 / Haarnoja et al. 2018): <code>destination_param[i] = tau * source_param[i] + (1 - tau) * destination_param[i]</code>, element-wise and in place.  <br /></td></tr>
 <tr class="separator:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9db00216eaf37da6e93cdbc40371c65e" id="r_a9db00216eaf37da6e93cdbc40371c65e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9db00216eaf37da6e93cdbc40371c65e">SinusoidalTimestepEmbedding</a> (int64_t t, int64_t embedding_dim, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float base=10000.0f)</td></tr>
 <tr class="memdesc:a9db00216eaf37da6e93cdbc40371c65e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard Transformer-style sinusoidal encoding of a diffusion timestep <code>t</code>: <code>emb[2i] = sin(t / base^(2i/embedding_dim))</code>, <code>emb[2i+1] = cos(t / base^(2i/embedding_dim))</code> for <code>i in [0, embedding_dim/2)</code>.  <br /></td></tr>
 <tr class="separator:a9db00216eaf37da6e93cdbc40371c65e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa54b946112a389becc102e114672dcbd" id="r_aa54b946112a389becc102e114672dcbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SuccessiveHalvingResult.html">SuccessiveHalvingResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa54b946112a389becc102e114672dcbd">RunSuccessiveHalvingOnConfigs</a> (std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; configs, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, int initial_epoch_budget, double eta)</td></tr>
+<tr class="memdesc:aa54b946112a389becc102e114672dcbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs Successive Halving over an explicit, caller-supplied list of configurations &ndash; the pure, deterministic core; RunSuccessiveHalving (below) is the thin SearchSpace/RNG-sampling wrapper around it.  <br /></td></tr>
+<tr class="separator:aa54b946112a389becc102e114672dcbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca7e1f167f27418f95b6a8dec4c51955" id="r_aca7e1f167f27418f95b6a8dec4c51955"><td class="memTemplParams" colspan="2">template&lt;typename RNG &gt; </td></tr>
+<tr class="memitem:aca7e1f167f27418f95b6a8dec4c51955"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SuccessiveHalvingResult.html">SuccessiveHalvingResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aca7e1f167f27418f95b6a8dec4c51955">RunSuccessiveHalving</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, size_t num_configs, int initial_epoch_budget, double eta, RNG &amp;rng)</td></tr>
+<tr class="memdesc:aca7e1f167f27418f95b6a8dec4c51955"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper: draws num_configs configurations from space via RandomSample, then runs RunSuccessiveHalvingOnConfigs.  <br /></td></tr>
+<tr class="separator:aca7e1f167f27418f95b6a8dec4c51955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afaf7be0b67a415f9361e7420a36b906e" id="r_afaf7be0b67a415f9361e7420a36b906e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afaf7be0b67a415f9361e7420a36b906e">PadCollate</a> (float pad_index=0.0f)</td></tr>
 <tr class="memdesc:afaf7be0b67a415f9361e7420a36b906e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that right-pads variable-length token sequences (sample.fields[0], shape (1, seq_len) &ndash; <a class="el" href="classpulsatrix_1_1TextDataset.html#adb902ad1d0b4e655003ce6fa720c421b">TextDataset::get()</a>'s output) to the batch's own max length, producing one (N, max_len) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field recording each sample's real (pre-padding) length. This is the CollateFn extension point Phase 1's architecture design reserved for ragged/variable-length modalities (PyTorch's collate_fn equivalent) &ndash; exercised here for the first time, with zero changes needed to Dataset/DataLoader/Batch themselves.  <br /></td></tr>
 <tr class="separator:afaf7be0b67a415f9361e7420a36b906e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1858561757f00aeb2d092ed10325f76" id="r_ab1858561757f00aeb2d092ed10325f76"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab1858561757f00aeb2d092ed10325f76">GaussianKdeDensity</a> (const std::vector&lt; double &gt; &amp;observations, double bandwidth, double x)</td></tr>
+<tr class="memdesc:ab1858561757f00aeb2d092ed10325f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-bandwidth Gaussian KDE: density(x) = mean over every observation o of N(x; o, bandwidth^2).  <br /></td></tr>
+<tr class="separator:ab1858561757f00aeb2d092ed10325f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5747459ab099cde6c83f25f09dcece7" id="r_ad5747459ab099cde6c83f25f09dcece7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad5747459ab099cde6c83f25f09dcece7">CategoricalDensity</a> (const std::vector&lt; std::string &gt; &amp;observations, size_t num_categories, const std::string &amp;category)</td></tr>
+<tr class="memdesc:ad5747459ab099cde6c83f25f09dcece7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Laplace(add-one)-smoothed empirical probability of category among observations.  <br /></td></tr>
+<tr class="separator:ad5747459ab099cde6c83f25f09dcece7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dc93a9c4c57419b49e054f2d6e8cd8e" id="r_a4dc93a9c4c57419b49e054f2d6e8cd8e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4dc93a9c4c57419b49e054f2d6e8cd8e">LogDensityRatio</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &amp;candidate, const std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; &amp;good_configs, const std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; &amp;bad_configs)</td></tr>
+<tr class="memdesc:a4dc93a9c4c57419b49e054f2d6e8cd8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">log(l(candidate)) - log(g(candidate)): the TPE scoring function, summed independently over every parameter in space (so a candidate's mixed continuous/categorical parameters each contribute their own term, composing naturally rather than needing a joint density over the whole space).  <br /></td></tr>
+<tr class="separator:a4dc93a9c4c57419b49e054f2d6e8cd8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d278aa15e82c07f12370078484d3e92" id="r_a2d278aa15e82c07f12370078484d3e92"><td class="memTemplParams" colspan="2">template&lt;typename ObjectiveFn , typename RNG &gt; </td></tr>
+<tr class="memitem:a2d278aa15e82c07f12370078484d3e92"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92">RunTPELoop</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, ObjectiveFn objective_fn, size_t num_initial_random, size_t num_iterations, double gamma, size_t num_candidates, RNG &amp;rng)</td></tr>
+<tr class="memdesc:a2d278aa15e82c07f12370078484d3e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs TPE: num_initial_random uniformly-random trials (RandomSample), then num_iterations trials each chosen by splitting all trials so far into good/bad by the gamma quantile (maximization convention: good = highest objective values) and picking, among num_candidates uniformly-random candidates, the one maximizing LogDensityRatio.  <br /></td></tr>
+<tr class="separator:a2d278aa15e82c07f12370078484d3e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -614,6 +733,38 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a58099b24d92ae2c4916748b60ecf36e3" name="a58099b24d92ae2c4916748b60ecf36e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58099b24d92ae2c4916748b60ecf36e3">&#9670;&#160;</a></span>Configuration</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">pulsatrix::Configuration</a> = typedef std::map&lt;std::string, <a class="el" href="namespacepulsatrix.html#aad466513340f64023a5c7749a62e4d66">ConfigValue</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A concrete hyperparameter configuration: parameter name -&gt; concrete value. </p>
+
+</div>
+</div>
+<a id="aad466513340f64023a5c7749a62e4d66" name="aad466513340f64023a5c7749a62e4d66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad466513340f64023a5c7749a62e4d66">&#9670;&#160;</a></span>ConfigValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#aad466513340f64023a5c7749a62e4d66">pulsatrix::ConfigValue</a> = typedef std::variant&lt;double, int64_t, std::string&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A concrete value for one parameter &ndash; a <code>double</code> (Continuous/LogUniform), an <code>int64_t</code> (Integer), or a <code>std::string</code> (Categorical, naming one of that parameter's categories). </p>
+
+</div>
+</div>
 <a id="a2b8dc3d7d2cef35f192d191f09156e67" name="a2b8dc3d7d2cef35f192d191f09156e67"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b8dc3d7d2cef35f192d191f09156e67">&#9670;&#160;</a></span>NodeId</h2>
 
@@ -630,7 +781,52 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a6bc143576cb71fab19f76a88330f5a4f" name="a6bc143576cb71fab19f76a88330f5a4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bc143576cb71fab19f76a88330f5a4f">&#9670;&#160;</a></span>TrialFactory</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">pulsatrix::TrialFactory</a> = typedef std::function&lt;std::unique_ptr&lt;<a class="el" href="classpulsatrix_1_1ResumableTrial.html">ResumableTrial</a>&gt;(const <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&amp;)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Builds a fresh <a class="el" href="classpulsatrix_1_1ResumableTrial.html" title="A single hyperparameter configuration&#39;s live, resumable training state – own whatever network/optimiz...">ResumableTrial</a> for a given configuration. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="aaf838275fc40b42d2c67d2772d64d1b8" name="aaf838275fc40b42d2c67d2772d64d1b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf838275fc40b42d2c67d2772d64d1b8">&#9670;&#160;</a></span>AcquisitionKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8">pulsatrix::AcquisitionKind</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which acquisition function RunGPBOLoop maximizes over candidates each iteration. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192" name="aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192"></a>ExpectedImprovement&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9" name="aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9"></a>ProbabilityOfImprovement&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9" name="aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9"></a>UpperConfidenceBound&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="a5d9adebabff0df0875f22a763d77ad6b" name="a5d9adebabff0df0875f22a763d77ad6b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d9adebabff0df0875f22a763d77ad6b">&#9670;&#160;</a></span>CopyDirection</h2>
 
@@ -770,6 +966,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
+<a id="abb575cb311c04812afe7f12350d86eec" name="abb575cb311c04812afe7f12350d86eec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb575cb311c04812afe7f12350d86eec">&#9670;&#160;</a></span>ParameterKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eec">pulsatrix::ParameterKind</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which family of values a named parameter draws from. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eeca535863a82f163709557e59e2eb8139a7" name="abb575cb311c04812afe7f12350d86eeca535863a82f163709557e59e2eb8139a7"></a>Continuous&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045" name="abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045"></a>LogUniform&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044" name="abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044"></a>Integer&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c" name="abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c"></a>Categorical&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a6e0cd79959b261c8b59f554451342d31" name="a6e0cd79959b261c8b59f554451342d31"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e0cd79959b261c8b59f554451342d31">&#9670;&#160;</a></span>AudioPadCollate()</h2>
@@ -832,6 +1058,57 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The built <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a>. An empty corpus produces a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> containing only &lt;unk&gt; (size() == 1) &ndash; not an error, just nothing to rank. </dd></dl>
+
+</div>
+</div>
+<a id="ad5747459ab099cde6c83f25f09dcece7" name="ad5747459ab099cde6c83f25f09dcece7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5747459ab099cde6c83f25f09dcece7">&#9670;&#160;</a></span>CategoricalDensity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::CategoricalDensity </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>observations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_categories</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>category</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Laplace(add-one)-smoothed empirical probability of category among observations. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if num_categories == 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>observations may be empty (probability reduces to the uniform prior 1/num_categories). </dd></dl>
 
 </div>
 </div>
@@ -1075,6 +1352,50 @@ Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face
 
 </div>
 </div>
+<a id="a5ef8c99c323761b54d68cfc25b41c367" name="a5ef8c99c323761b54d68cfc25b41c367"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ef8c99c323761b54d68cfc25b41c367">&#9670;&#160;</a></span>ComputeHyperbandBrackets()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1HyperbandBracket.html">HyperbandBracket</a> &gt; pulsatrix::ComputeHyperbandBrackets </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max_resource</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>eta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Computes the classic Hyperband bracket schedule: s_max = floor(log_eta(max_resource)), B = (s_max + 1) * max_resource; for s from s_max down to 0, num_configs = ceil((B / max_resource) * (eta^s / (s + 1))), initial_budget = round(max_resource / eta^s) (each floored at 1). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if max_resource &lt;= 0 or eta &lt;= 1.0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0034be345e6f18cfc824460160d5cdf5" name="a0034be345e6f18cfc824460160d5cdf5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0034be345e6f18cfc824460160d5cdf5">&#9670;&#160;</a></span>DefaultCollate()</h2>
 
@@ -1116,6 +1437,70 @@ Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="abf980c4f81efaaafcbfd21722b3d7d3e" name="abf980c4f81efaaafcbfd21722b3d7d3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf980c4f81efaaafcbfd21722b3d7d3e">&#9670;&#160;</a></span>ExpectedImprovement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::ExpectedImprovement </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>variance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>best_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>xi</em> = <code>0.01</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Expected Improvement: the expected amount by which a candidate exceeds best_value + xi, under the posterior N(mean, variance). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">variance</td><td>Posterior variance (not standard deviation) &ndash; must be non-negative. </td></tr>
+    <tr><td class="paramname">xi</td><td>Small exploration margin (default 0.01, a common practical default &ndash; without it, EI can collapse to pure exploitation once the posterior mean exceeds best_value by even a negligible amount). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if variance &lt; 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>If sigma (sqrt(variance)) is ~0 (a point the GP is fully confident about, e.g. exactly an already-observed point), EI is defined as exactly 0 &ndash; no uncertainty means no potential for improvement beyond what standard credit already reflects. </dd></dl>
 
 </div>
 </div>
@@ -1184,6 +1569,170 @@ Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Gaussian elimination, scoped to the small, dense, well-conditioned systems this codebase's explainers actually produce &ndash; not a general-purpose numerics library. </dd></dl>
+
+</div>
+</div>
+<a id="ab1858561757f00aeb2d092ed10325f76" name="ab1858561757f00aeb2d092ed10325f76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1858561757f00aeb2d092ed10325f76">&#9670;&#160;</a></span>GaussianKdeDensity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::GaussianKdeDensity </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>observations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>bandwidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fixed-bandwidth Gaussian KDE: density(x) = mean over every observation o of N(x; o, bandwidth^2). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if observations is empty or bandwidth &lt;= 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0a856a540f60965e1c72c6462e63bdbe" name="a0a856a540f60965e1c72c6462e63bdbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a856a540f60965e1c72c6462e63bdbe">&#9670;&#160;</a></span>GridSample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; pulsatrix::GridSample </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>points_per_continuous_dimension</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enumerates the full cartesian-product grid over space. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">points_per_continuous_dimension</td><td>Number of points (inclusive of both bounds) used for every Continuous (linearly spaced) and LogUniform (log-spaced) parameter. Integer parameters always enumerate every integer in [lower, upper]; Categorical parameters always enumerate every category &ndash; neither is affected by this parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if points_per_continuous_dimension &lt; 2 (fewer than 2 points cannot include both bounds). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Grid size is the product of every parameter's own point count &ndash; grows combinatorially with both the number of parameters and points_per_continuous_dimension; the caller's responsibility to keep the search space small enough for grid search specifically (this is grid search's own well-known scaling limit, not a bug). </dd></dl>
+
+</div>
+</div>
+<a id="a4dc93a9c4c57419b49e054f2d6e8cd8e" name="a4dc93a9c4c57419b49e054f2d6e8cd8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dc93a9c4c57419b49e054f2d6e8cd8e">&#9670;&#160;</a></span>LogDensityRatio()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::LogDensityRatio </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &amp;&#160;</td>
+          <td class="paramname"><em>candidate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>good_configs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bad_configs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>log(l(candidate)) - log(g(candidate)): the TPE scoring function, summed independently over every parameter in space (so a candidate's mixed continuous/categorical parameters each contribute their own term, composing naturally rather than needing a joint density over the whole space). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">good_configs,bad_configs</td><td>Observed configurations split by objective quantile (RunTPELoop's own job); every config must contain every parameter named in space. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if good_configs or bad_configs is empty. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Per-parameter bandwidth for Continuous is 0.2 * (upper - lower); for LogUniform, 0.2 * (log(upper) - log(lower)), applied after taking the log of both the bandwidth basis and every observed/candidate value (consistent with this campaign's own established log-space convention for LogUniform elsewhere &ndash; GridSample/RandomSample/ UnitCubeToConfiguration); for Integer, 0.2 * (upper - lower), floored at 1.0 (a sub-1.0 bandwidth over integer-valued data would make the KDE unreasonably peaked). </dd></dl>
 
 </div>
 </div>
@@ -1276,6 +1825,563 @@ Gradients are untouched. This is a pure value blend and has nothing to do with z
 No device guard of its own: it takes no caller-supplied <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, only Modules, whose parameters() buffers were validated when those Modules were constructed. A guard here would be untestable dead code &ndash; the same reasoning SyncTargetNetwork and <a class="el" href="classpulsatrix_1_1MSELoss.html#a6d5585d30079af244aaf7bf8202378ea" title="Computes the gradient w.r.t. the prediction: (2/n) * (prediction - target).">MSELoss::backward()</a> document (mission_host_loop_guards.md). </dd>
 <dd>
 A free function, not a class: there is no state to carry between calls (the state <em>is</em> the destination network's own parameters), matching SyncTargetNetwork's shape. </dd></dl>
+
+</div>
+</div>
+<a id="a4588b52e5db8b067e5b3a86a3d66ddd0" name="a4588b52e5db8b067e5b3a86a3d66ddd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4588b52e5db8b067e5b3a86a3d66ddd0">&#9670;&#160;</a></span>ProbabilityOfImprovement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::ProbabilityOfImprovement </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>variance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>best_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>xi</em> = <code>0.01</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Probability of Improvement: P(candidate's value &gt; best_value + xi) under the posterior N(mean, variance). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if variance &lt; 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>If sigma is ~0, PI is defined as the degenerate limit: 1 if mean already exceeds best_value + xi, else 0. </dd></dl>
+
+</div>
+</div>
+<a id="aa6ea52ad0a3275de0825182eac0b8660" name="aa6ea52ad0a3275de0825182eac0b8660"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6ea52ad0a3275de0825182eac0b8660">&#9670;&#160;</a></span>RandomSample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RNG &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> pulsatrix::RandomSample </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RNG &amp;&#160;</td>
+          <td class="paramname"><em>rng</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Draws one configuration uniformly at random from space: Continuous parameters uniform over [lower, upper]; LogUniform parameters uniform in log-space (so e.g. [0.001, 1.0] gives 0.001-0.01, 0.01-0.1, and 0.1-1.0 equal probability, not the top decade 90% of the draws); Integer parameters uniform over the inclusive integer range; Categorical parameters uniform over the category list. </p>
+
+</div>
+</div>
+<a id="aba99c25698e39330189ccaf49b9cd27a" name="aba99c25698e39330189ccaf49b9cd27a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba99c25698e39330189ccaf49b9cd27a">&#9670;&#160;</a></span>RunASHA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RNG &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a> pulsatrix::RunASHA </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;&#160;</td>
+          <td class="paramname"><em>make_trial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>max_configs_started</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>initial_epoch_budget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>eta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_rungs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RNG &amp;&#160;</td>
+          <td class="paramname"><em>rng</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RNG-driven wrapper: draws max_configs_started configurations from space via RandomSample to serve as the queue, then runs RunASHAOnConfigQueue. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if max_configs_started == 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a448cab9e47c5525c719965887897a03d" name="a448cab9e47c5525c719965887897a03d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a448cab9e47c5525c719965887897a03d">&#9670;&#160;</a></span>RunASHAOnConfigQueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a> pulsatrix::RunASHAOnConfigQueue </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt;&#160;</td>
+          <td class="paramname"><em>config_queue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;&#160;</td>
+          <td class="paramname"><em>make_trial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>initial_epoch_budget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>eta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_rungs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Runs ASHA, drawing new configurations from an explicit, ordered queue (rather than sampling indefinitely) &ndash; the pure, deterministic core; RunASHA (below) is the thin SearchSpace/RNG-sampling wrapper around it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initial_epoch_budget</td><td>Rung 0's epoch budget; rung k's budget is initial_epoch_budget * eta^k. </td></tr>
+    <tr><td class="paramname">num_rungs</td><td>Total number of rungs (&gt;= 2 &ndash; at least one promotion opportunity must exist). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Each step does exactly one of: (a) promote the single best-qualifying candidate at the highest rung with a promotable candidate (scanned top-down, so nearly-finished candidates are preferred over starting fresh ones &ndash; ASHA's own stated preference), or (b) if no promotion is possible, start the next queued configuration at rung 0. A rung only becomes eligible for promotion decisions once at least eta candidates have completed it (not enough data to identify a meaningful top fraction before that). </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if config_queue is empty, initial_epoch_budget &lt;= 0, eta &lt;= 1.0, or num_rungs &lt; 2. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4cd4253efc67ed0b57350408c92e535f" name="a4cd4253efc67ed0b57350408c92e535f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cd4253efc67ed0b57350408c92e535f">&#9670;&#160;</a></span>RunGPBOLoop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectiveFn , typename RNG &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt; pulsatrix::RunGPBOLoop </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ObjectiveFn&#160;</td>
+          <td class="paramname"><em>objective_fn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_initial_random</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_iterations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8">AcquisitionKind</a>&#160;</td>
+          <td class="paramname"><em>acquisition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_candidates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RNG &amp;&#160;</td>
+          <td class="paramname"><em>rng</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs GP-BO: num_initial_random uniformly-random trials, then num_iterations trials each chosen by fitting a GP to every trial so far and maximizing acquisition over num_candidates random points in the unit hypercube. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">objective_fn</td><td>Callable <code>double(const Configuration&amp;)</code> &ndash; the value to maximize (a caller minimizing a loss negates it first, per this file's maximization convention). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Every <a class="el" href="classpulsatrix_1_1Trial.html" title="A configuration paired with the metric history observed while evaluating it (instantiate a network un...">Trial</a> run, in order (the initial random trials first, then each GP-BO- proposed trial), each with one "objective" metric recorded. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if num_initial_random == 0, or (propagated from UnitCubeToConfiguration) space contains an Integer/Categorical parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a80f5f01c0855dedcca3d97c58a66c810" name="a80f5f01c0855dedcca3d97c58a66c810"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80f5f01c0855dedcca3d97c58a66c810">&#9670;&#160;</a></span>RunHyperband()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RNG &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HyperbandResult.html">HyperbandResult</a> pulsatrix::RunHyperband </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;&#160;</td>
+          <td class="paramname"><em>make_trial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max_resource</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>eta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RNG &amp;&#160;</td>
+          <td class="paramname"><em>rng</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs one Successive Halving bracket (<a class="el" href="successive__halving_8hpp.html" title="Successive Halving (the rung-based promotion mechanism underlying Hyperband and ASHA,...">successive_halving.hpp</a>) per ComputeHyperbandBrackets(max_resource, eta), keeping the best result across all of them. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>&ndash; propagated from ComputeHyperbandBrackets. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aca7e1f167f27418f95b6a8dec4c51955" name="aca7e1f167f27418f95b6a8dec4c51955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca7e1f167f27418f95b6a8dec4c51955">&#9670;&#160;</a></span>RunSuccessiveHalving()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RNG &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SuccessiveHalvingResult.html">SuccessiveHalvingResult</a> pulsatrix::RunSuccessiveHalving </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;&#160;</td>
+          <td class="paramname"><em>make_trial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_configs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>initial_epoch_budget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>eta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RNG &amp;&#160;</td>
+          <td class="paramname"><em>rng</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RNG-driven wrapper: draws num_configs configurations from space via RandomSample, then runs RunSuccessiveHalvingOnConfigs. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if num_configs == 0 &ndash; see RunSuccessiveHalvingOnConfigs for the other validated preconditions. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa54b946112a389becc102e114672dcbd" name="aa54b946112a389becc102e114672dcbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa54b946112a389becc102e114672dcbd">&#9670;&#160;</a></span>RunSuccessiveHalvingOnConfigs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SuccessiveHalvingResult.html">SuccessiveHalvingResult</a> pulsatrix::RunSuccessiveHalvingOnConfigs </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt;&#160;</td>
+          <td class="paramname"><em>configs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;&#160;</td>
+          <td class="paramname"><em>make_trial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>initial_epoch_budget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>eta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Runs Successive Halving over an explicit, caller-supplied list of configurations &ndash; the pure, deterministic core; RunSuccessiveHalving (below) is the thin SearchSpace/RNG-sampling wrapper around it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initial_epoch_budget</td><td>Epochs trained in the first rung. </td></tr>
+    <tr><td class="paramname">eta</td><td>Reduction factor: after each rung, floor(count / eta) configurations survive (at least 1), and the next rung's budget is the previous budget * eta. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if configs is empty, initial_epoch_budget &lt;= 0, or eta &lt;= 1.0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2d278aa15e82c07f12370078484d3e92" name="a2d278aa15e82c07f12370078484d3e92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d278aa15e82c07f12370078484d3e92">&#9670;&#160;</a></span>RunTPELoop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectiveFn , typename RNG &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt; pulsatrix::RunTPELoop </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ObjectiveFn&#160;</td>
+          <td class="paramname"><em>objective_fn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_initial_random</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_iterations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>gamma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num_candidates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RNG &amp;&#160;</td>
+          <td class="paramname"><em>rng</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs TPE: num_initial_random uniformly-random trials (RandomSample), then num_iterations trials each chosen by splitting all trials so far into good/bad by the gamma quantile (maximization convention: good = highest objective values) and picking, among num_candidates uniformly-random candidates, the one maximizing LogDensityRatio. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gamma</td><td>Fraction of trials-so-far classified "good" (e.g. 0.2 = top 20%); at least one trial is always classified good and at least one bad, regardless of gamma, once num_initial_random &gt;= 2. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if num_initial_random &lt; 2 (a quantile split needs at least one good and one bad observation), or gamma is outside (0, 1). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1379,6 +2485,109 @@ Writes through <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356
 
 </div>
 </div>
+<a id="abc312204e032ea8f6f81f09aeae4d9e2" name="abc312204e032ea8f6f81f09aeae4d9e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc312204e032ea8f6f81f09aeae4d9e2">&#9670;&#160;</a></span>SolveLinearSystem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::SolveLinearSystem </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; std::vector&lt; float &gt; &gt;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; float &gt;&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solves A*x = b via Gaussian elimination with partial pivoting. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if a pivot is too close to zero (a near-singular system) &ndash; a legitimate, caller-triggerable condition (e.g. degenerate/duplicate sample points), not a programmer error, per this codebase's assert-vs-throw convention. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>A, b are taken by value &ndash; elimination is done in place on the local copies. </dd>
+<dd>
+Scoped to the small, dense, well-conditioned systems this codebase's callers actually produce &ndash; not a general-purpose numerics library. </dd></dl>
+
+</div>
+</div>
+<a id="a03f5550dab9961a6e7f1b6d5e7f5befd" name="a03f5550dab9961a6e7f1b6d5e7f5befd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03f5550dab9961a6e7f1b6d5e7f5befd">&#9670;&#160;</a></span>StandardNormalCdf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::StandardNormalCdf </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Standard normal CDF, Phi(z) = 0.5 * (1 + erf(z / sqrt(2))). </p>
+
+</div>
+</div>
+<a id="a0f294eab23b3829d9f8b91426bf22222" name="a0f294eab23b3829d9f8b91426bf22222"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f294eab23b3829d9f8b91426bf22222">&#9670;&#160;</a></span>StandardNormalPdf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::StandardNormalPdf </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Standard normal PDF, phi(z) = (1/sqrt(2*pi)) * exp(-z^2/2). </p>
+
+</div>
+</div>
 <a id="a38de2549fafa7ece476360793b7b1ccb" name="a38de2549fafa7ece476360793b7b1ccb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a38de2549fafa7ece476360793b7b1ccb">&#9670;&#160;</a></span>SyncTargetNetwork()</h2>
 
@@ -1426,6 +2635,106 @@ The copy is element-wise into <code>destination</code>'s existing parameter buff
 Gradients are untouched. This is a pure value copy and has nothing to do with zero_grad(); a target network is never backpropagated through in DQN anyway. </dd>
 <dd>
 No device guard of its own: it takes no caller-supplied <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, only Modules, whose parameters() buffers were validated when those Modules were constructed. A guard here would be untestable dead code &ndash; the same reasoning <a class="el" href="classpulsatrix_1_1MSELoss.html#a6d5585d30079af244aaf7bf8202378ea" title="Computes the gradient w.r.t. the prediction: (2/n) * (prediction - target).">MSELoss::backward()</a> documents (mission_host_loop_guards.md). </dd></dl>
+
+</div>
+</div>
+<a id="a8eb8e19a5d9ca776142a658c4e5adbb5" name="a8eb8e19a5d9ca776142a658c4e5adbb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8eb8e19a5d9ca776142a658c4e5adbb5">&#9670;&#160;</a></span>UnitCubeToConfiguration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> pulsatrix::UnitCubeToConfiguration </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maps a unit-hypercube point (one value per parameter, each in [0, 1]) to a Configuration, using space's own declared bounds. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if t.size() != space.size(), any t[i] is outside [0, 1], or space contains a parameter kind other than Continuous/LogUniform. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3de09b80f2b9d5933d7f452615305b59" name="a3de09b80f2b9d5933d7f452615305b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3de09b80f2b9d5933d7f452615305b59">&#9670;&#160;</a></span>UpperConfidenceBound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::UpperConfidenceBound </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>variance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>kappa</em> = <code>2.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>GP-Upper-Confidence-Bound: mean + kappa * sqrt(variance). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kappa</td><td>Exploration weight (default 2.0, a common practical default &ndash; larger values favor exploring high-uncertainty regions over exploiting the current best mean). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if variance &lt; 0. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -9,5 +9,6 @@ var searchData=
   ['trajectorybalanceloss_6',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
   ['transform_7',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
   ['transformdataset_8',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
-  ['transformerblock_9',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]]
+  ['transformerblock_9',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
+  ['trial_10',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
 ];

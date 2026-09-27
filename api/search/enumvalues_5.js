@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['linear_0',['Linear',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix']]]
+  ['integer_0',['Integer',['../namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044',1,'pulsatrix']]]
 ];
