@@ -48,6 +48,20 @@ public:
      */
     void zero_grad(Module& module);
 
+    /** @brief Current step size. */
+    [[nodiscard]] float learning_rate() const { return learning_rate_; }
+
+    /**
+     * @brief Overwrites the step size used by every subsequent step() call -- necessary
+     *        infrastructure for any mid-training hyperparameter schedule (e.g. Population
+     *        Based Training's own explore step), found necessary by
+     *        campaign_exai_dl_library_evolutionary_deep_learning's Phase 4 Mission 0, logged
+     *        as a small addition beyond this class's original fixed-at-construction scope.
+     *        Does not reset Adam's own moment state (m/v), matching zero_grad()'s own
+     *        precedent that state and gradient are independent concerns.
+     */
+    void set_learning_rate(float learning_rate) { learning_rate_ = learning_rate; }
+
 private:
     struct AdamState {
         Tensor m;
