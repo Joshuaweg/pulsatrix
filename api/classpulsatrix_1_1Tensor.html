@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1Tensor.html',''); in
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classpulsatrix_1_1Tensor-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::Tensor Class Reference</div></div>
 </div><!--header-->
@@ -169,6 +170,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac6f088bd4ae54d5640d889a93fe362df" id="r_ac6f088bd4ae54d5640d889a93fe362df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#ac6f088bd4ae54d5640d889a93fe362df">to</a> (<a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> target)</td></tr>
 <tr class="memdesc:ac6f088bd4ae54d5640d889a93fe362df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfers this tensor to a different device.  <br /></td></tr>
 <tr class="separator:ac6f088bd4ae54d5640d889a93fe362df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a15c8264d40dc71b5a5295b1b78098496" id="r_a15c8264d40dc71b5a5295b1b78098496"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496">Stack</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;tensors, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a15c8264d40dc71b5a5295b1b78098496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenates N tensors along their leading dimension into one batch <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> &ndash; pulsatrix's collate-time primitive (campaign_exai_dl_library_data_pipeline, Mission 0). E.g. stacking three (1, 28, 28) MNIST-style per-sample images produces one (3, 28, 28) batch.  <br /></td></tr>
+<tr class="separator:a15c8264d40dc71b5a5295b1b78098496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) &ndash; the backend must outlive every <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> constructed against it, per cpp_style_guide/context_style_project_conventions.md's ownership table. </p>
@@ -791,6 +798,58 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>This tensor's shape. </p>
+
+</div>
+</div>
+<a id="a15c8264d40dc71b5a5295b1b78098496" name="a15c8264d40dc71b5a5295b1b78098496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15c8264d40dc71b5a5295b1b78098496">&#9670;&#160;</a></span>Stack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::Tensor::Stack </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tensors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Concatenates N tensors along their leading dimension into one batch <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> &ndash; pulsatrix's collate-time primitive (campaign_exai_dl_library_data_pipeline, Mission 0). E.g. stacking three (1, 28, 28) MNIST-style per-sample images produces one (3, 28, 28) batch. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tensors</td><td>Non-empty list of tensors, each rank &gt;= 1, each on the same device, all identical in every dimension except the leading one. </td></tr>
+    <tr><td class="paramname">backend</td><td>Backend to allocate the output buffer through. Not owned. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A new <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> whose leading dimension is the sum of every input tensor's leading dimension, and whose remaining dimensions match the inputs'. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if tensors is empty, any tensor has rank 0, ranks differ across tensors, non-leading dimensions differ across tensors, or devices differ across tensors &ndash; external boundary: the list of tensors to stack is assembled by a DataLoader/collate function from independently constructed <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> samples, not a compile-time-known invariant. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

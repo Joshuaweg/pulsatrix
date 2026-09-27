@@ -128,100 +128,100 @@ Collaboration diagram for pulsatrix::MambaModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a768bf98904fe2d2a1b2bf4c2e736f71c" id="r_a768bf98904fe2d2a1b2bf4c2e736f71c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a768bf98904fe2d2a1b2bf4c2e736f71c">MambaModule</a> (int64_t d_model, int64_t state_size, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memitem:a768bf98904fe2d2a1b2bf4c2e736f71c" id="r_a768bf98904fe2d2a1b2bf4c2e736f71c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a768bf98904fe2d2a1b2bf4c2e736f71c">MambaModule</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">int64_t</a> d_model, <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">int64_t</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">state_size</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">backend</a>)</td></tr>
 <tr class="memdesc:a768bf98904fe2d2a1b2bf4c2e736f71c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a selective-scan layer with zero-initialized parameters.  <br /></td></tr>
 <tr class="separator:a768bf98904fe2d2a1b2bf4c2e736f71c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b6a0b112fb00485fc433fa0fc0ba660" id="r_a7b6a0b112fb00485fc433fa0fc0ba660"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a7b6a0b112fb00485fc433fa0fc0ba660">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
+<tr class="memitem:a7b6a0b112fb00485fc433fa0fc0ba660" id="r_a7b6a0b112fb00485fc433fa0fc0ba660"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a7b6a0b112fb00485fc433fa0fc0ba660">backward</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">grad_output</a>) <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:a7b6a0b112fb00485fc433fa0fc0ba660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real backpropagation-through-time across the selective scan: accumulates W_delta/bias_delta/W_B/W_C/A/D gradients across every timestep into the same buffers via <a class="el" href="classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e" title="In-place elementwise accumulation: this[i] += other[i] for every element.">Tensor::accumulate()</a>. Unlike propagate_relevance, this is the genuine <em>undetached</em> gradient &ndash; it differentiates through Delta_t's softplus, through Abar_t = exp(Delta_t*A) and through all three selective projections.  <br /></td></tr>
 <tr class="separator:a7b6a0b112fb00485fc433fa0fc0ba660"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a482a76b0c6246791fba3c89a7f1add76" id="r_a482a76b0c6246791fba3c89a7f1add76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a482a76b0c6246791fba3c89a7f1add76">op_type</a> () const override</td></tr>
+<tr class="memitem:a482a76b0c6246791fba3c89a7f1add76" id="r_a482a76b0c6246791fba3c89a7f1add76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a482a76b0c6246791fba3c89a7f1add76">op_type</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:a482a76b0c6246791fba3c89a7f1add76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recurrent per charter's closed OpType set &ndash; a compound accumulate-over-time operation, shared with RNNModule/LSTMModule/GRUModule (no enum change).  <br /></td></tr>
 <tr class="separator:a482a76b0c6246791fba3c89a7f1add76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd448e1075ebe508906668fd3d933766" id="r_acd448e1075ebe508906668fd3d933766"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#acd448e1075ebe508906668fd3d933766">set_W_delta</a> (std::initializer_list&lt; float &gt; values)</td></tr>
+<tr class="memitem:acd448e1075ebe508906668fd3d933766" id="r_acd448e1075ebe508906668fd3d933766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#acd448e1075ebe508906668fd3d933766">set_W_delta</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; values)</td></tr>
 <tr class="memdesc:acd448e1075ebe508906668fd3d933766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the input-to-Delta projection weight (d_model, d_model) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:acd448e1075ebe508906668fd3d933766"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ad21b0b9a6ac3276e1a222dc5eade77" id="r_a4ad21b0b9a6ac3276e1a222dc5eade77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a4ad21b0b9a6ac3276e1a222dc5eade77">set_bias_delta</a> (std::initializer_list&lt; float &gt; values)</td></tr>
+<tr class="memitem:a4ad21b0b9a6ac3276e1a222dc5eade77" id="r_a4ad21b0b9a6ac3276e1a222dc5eade77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a4ad21b0b9a6ac3276e1a222dc5eade77">set_bias_delta</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; values)</td></tr>
 <tr class="memdesc:a4ad21b0b9a6ac3276e1a222dc5eade77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the Delta projection bias (d_model,) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a4ad21b0b9a6ac3276e1a222dc5eade77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad22b73779a1ffdd1a82f74e0e5946800" id="r_ad22b73779a1ffdd1a82f74e0e5946800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ad22b73779a1ffdd1a82f74e0e5946800">set_W_B</a> (std::initializer_list&lt; float &gt; values)</td></tr>
+<tr class="memitem:ad22b73779a1ffdd1a82f74e0e5946800" id="r_ad22b73779a1ffdd1a82f74e0e5946800"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ad22b73779a1ffdd1a82f74e0e5946800">set_W_B</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; values)</td></tr>
 <tr class="memdesc:ad22b73779a1ffdd1a82f74e0e5946800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the input-to-B projection weight (d_model, state_size) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:ad22b73779a1ffdd1a82f74e0e5946800"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af888e600d8ec07dfda23e004c1bf7aac" id="r_af888e600d8ec07dfda23e004c1bf7aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#af888e600d8ec07dfda23e004c1bf7aac">set_W_C</a> (std::initializer_list&lt; float &gt; values)</td></tr>
+<tr class="memitem:af888e600d8ec07dfda23e004c1bf7aac" id="r_af888e600d8ec07dfda23e004c1bf7aac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#af888e600d8ec07dfda23e004c1bf7aac">set_W_C</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; values)</td></tr>
 <tr class="memdesc:af888e600d8ec07dfda23e004c1bf7aac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the input-to-C projection weight (d_model, state_size) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:af888e600d8ec07dfda23e004c1bf7aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c3c31774589dbd2627a57b1b0e351e1" id="r_a5c3c31774589dbd2627a57b1b0e351e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a5c3c31774589dbd2627a57b1b0e351e1">set_A</a> (std::initializer_list&lt; float &gt; values)</td></tr>
+<tr class="memitem:a5c3c31774589dbd2627a57b1b0e351e1" id="r_a5c3c31774589dbd2627a57b1b0e351e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a5c3c31774589dbd2627a57b1b0e351e1">set_A</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; values)</td></tr>
 <tr class="memdesc:a5c3c31774589dbd2627a57b1b0e351e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the continuous state matrix A (d_model, state_size) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a5c3c31774589dbd2627a57b1b0e351e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8295492475d044012f6df01a2c1e21ad" id="r_a8295492475d044012f6df01a2c1e21ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a8295492475d044012f6df01a2c1e21ad">set_D</a> (std::initializer_list&lt; float &gt; values)</td></tr>
+<tr class="memitem:a8295492475d044012f6df01a2c1e21ad" id="r_a8295492475d044012f6df01a2c1e21ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a8295492475d044012f6df01a2c1e21ad">set_D</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; values)</td></tr>
 <tr class="memdesc:a8295492475d044012f6df01a2c1e21ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the skip/feedthrough vector D (d_model,) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a8295492475d044012f6df01a2c1e21ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6913d4c46dce704c006a16b5d5192f21" id="r_a6913d4c46dce704c006a16b5d5192f21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a6913d4c46dce704c006a16b5d5192f21">set_W_delta</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memitem:a6913d4c46dce704c006a16b5d5192f21" id="r_a6913d4c46dce704c006a16b5d5192f21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a6913d4c46dce704c006a16b5d5192f21">set_W_delta</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;values)</td></tr>
 <tr class="memdesc:a6913d4c46dce704c006a16b5d5192f21"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1MambaModule.html#acd448e1075ebe508906668fd3d933766" title="Overwrites the input-to-Delta projection weight (d_model, d_model) – test/initialization use only.">set_W_delta()</a> &ndash; for callers building values programmatically.  <br /></td></tr>
 <tr class="separator:a6913d4c46dce704c006a16b5d5192f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a9e44987277d98fc3520250107cd38c" id="r_a5a9e44987277d98fc3520250107cd38c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a5a9e44987277d98fc3520250107cd38c">set_bias_delta</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memitem:a5a9e44987277d98fc3520250107cd38c" id="r_a5a9e44987277d98fc3520250107cd38c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a5a9e44987277d98fc3520250107cd38c">set_bias_delta</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;values)</td></tr>
 <tr class="memdesc:a5a9e44987277d98fc3520250107cd38c"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1MambaModule.html#a4ad21b0b9a6ac3276e1a222dc5eade77" title="Overwrites the Delta projection bias (d_model,) – test/initialization use only.">set_bias_delta()</a>.  <br /></td></tr>
 <tr class="separator:a5a9e44987277d98fc3520250107cd38c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad13967db05ff1ba86de395243a7ded7d" id="r_ad13967db05ff1ba86de395243a7ded7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ad13967db05ff1ba86de395243a7ded7d">set_W_B</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memitem:ad13967db05ff1ba86de395243a7ded7d" id="r_ad13967db05ff1ba86de395243a7ded7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ad13967db05ff1ba86de395243a7ded7d">set_W_B</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;values)</td></tr>
 <tr class="memdesc:ad13967db05ff1ba86de395243a7ded7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1MambaModule.html#ad22b73779a1ffdd1a82f74e0e5946800" title="Overwrites the input-to-B projection weight (d_model, state_size) – test/initialization use only.">set_W_B()</a>.  <br /></td></tr>
 <tr class="separator:ad13967db05ff1ba86de395243a7ded7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a4f37a8569f499fda7768b7d425be7e" id="r_a6a4f37a8569f499fda7768b7d425be7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a6a4f37a8569f499fda7768b7d425be7e">set_W_C</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memitem:a6a4f37a8569f499fda7768b7d425be7e" id="r_a6a4f37a8569f499fda7768b7d425be7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a6a4f37a8569f499fda7768b7d425be7e">set_W_C</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;values)</td></tr>
 <tr class="memdesc:a6a4f37a8569f499fda7768b7d425be7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1MambaModule.html#af888e600d8ec07dfda23e004c1bf7aac" title="Overwrites the input-to-C projection weight (d_model, state_size) – test/initialization use only.">set_W_C()</a>.  <br /></td></tr>
 <tr class="separator:a6a4f37a8569f499fda7768b7d425be7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfec9191e095f7692a6b68618a027a52" id="r_adfec9191e095f7692a6b68618a027a52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#adfec9191e095f7692a6b68618a027a52">set_A</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memitem:adfec9191e095f7692a6b68618a027a52" id="r_adfec9191e095f7692a6b68618a027a52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#adfec9191e095f7692a6b68618a027a52">set_A</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;values)</td></tr>
 <tr class="memdesc:adfec9191e095f7692a6b68618a027a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1MambaModule.html#a5c3c31774589dbd2627a57b1b0e351e1" title="Overwrites the continuous state matrix A (d_model, state_size) – test/initialization use only.">set_A()</a>.  <br /></td></tr>
 <tr class="separator:adfec9191e095f7692a6b68618a027a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac257ce699966192d09d0a993a2bd20e7" id="r_ac257ce699966192d09d0a993a2bd20e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ac257ce699966192d09d0a993a2bd20e7">set_D</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memitem:ac257ce699966192d09d0a993a2bd20e7" id="r_ac257ce699966192d09d0a993a2bd20e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ac257ce699966192d09d0a993a2bd20e7">set_D</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;values)</td></tr>
 <tr class="memdesc:ac257ce699966192d09d0a993a2bd20e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1MambaModule.html#a8295492475d044012f6df01a2c1e21ad" title="Overwrites the skip/feedthrough vector D (d_model,) – test/initialization use only.">set_D()</a>.  <br /></td></tr>
 <tr class="separator:ac257ce699966192d09d0a993a2bd20e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75fe265be25f077b09dbb4c09f9cf12a" id="r_a75fe265be25f077b09dbb4c09f9cf12a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a75fe265be25f077b09dbb4c09f9cf12a">W_delta</a> () const</td></tr>
+<tr class="memitem:a75fe265be25f077b09dbb4c09f9cf12a" id="r_a75fe265be25f077b09dbb4c09f9cf12a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a75fe265be25f077b09dbb4c09f9cf12a">W_delta</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:a75fe265be25f077b09dbb4c09f9cf12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f6fe8f3522406f5bc1116e2eb0e48d1" id="r_a6f6fe8f3522406f5bc1116e2eb0e48d1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a6f6fe8f3522406f5bc1116e2eb0e48d1">bias_delta</a> () const</td></tr>
+<tr class="memitem:a6f6fe8f3522406f5bc1116e2eb0e48d1" id="r_a6f6fe8f3522406f5bc1116e2eb0e48d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a6f6fe8f3522406f5bc1116e2eb0e48d1">bias_delta</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:a6f6fe8f3522406f5bc1116e2eb0e48d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd6d7a687b40c616aeb7870449a85902" id="r_afd6d7a687b40c616aeb7870449a85902"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#afd6d7a687b40c616aeb7870449a85902">W_B</a> () const</td></tr>
+<tr class="memitem:afd6d7a687b40c616aeb7870449a85902" id="r_afd6d7a687b40c616aeb7870449a85902"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#afd6d7a687b40c616aeb7870449a85902">W_B</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:afd6d7a687b40c616aeb7870449a85902"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac21be6cf37cc2efa385234b705d9180f" id="r_ac21be6cf37cc2efa385234b705d9180f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ac21be6cf37cc2efa385234b705d9180f">W_C</a> () const</td></tr>
+<tr class="memitem:ac21be6cf37cc2efa385234b705d9180f" id="r_ac21be6cf37cc2efa385234b705d9180f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ac21be6cf37cc2efa385234b705d9180f">W_C</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:ac21be6cf37cc2efa385234b705d9180f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f150207c0d6f533a2fa4992652d8af9" id="r_a4f150207c0d6f533a2fa4992652d8af9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a4f150207c0d6f533a2fa4992652d8af9">A</a> () const</td></tr>
+<tr class="memitem:a4f150207c0d6f533a2fa4992652d8af9" id="r_a4f150207c0d6f533a2fa4992652d8af9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a4f150207c0d6f533a2fa4992652d8af9">A</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:a4f150207c0d6f533a2fa4992652d8af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32480c85733d598e342acdf296c7bf6c" id="r_a32480c85733d598e342acdf296c7bf6c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a32480c85733d598e342acdf296c7bf6c">D</a> () const</td></tr>
+<tr class="memitem:a32480c85733d598e342acdf296c7bf6c" id="r_a32480c85733d598e342acdf296c7bf6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a32480c85733d598e342acdf296c7bf6c">D</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:a32480c85733d598e342acdf296c7bf6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ac1734b9c2d52a52b0374fe41fbd60e" id="r_a7ac1734b9c2d52a52b0374fe41fbd60e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a7ac1734b9c2d52a52b0374fe41fbd60e">W_delta_grad</a> () const</td></tr>
+<tr class="memitem:a7ac1734b9c2d52a52b0374fe41fbd60e" id="r_a7ac1734b9c2d52a52b0374fe41fbd60e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a7ac1734b9c2d52a52b0374fe41fbd60e">W_delta_grad</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:a7ac1734b9c2d52a52b0374fe41fbd60e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8a11043b5a800c0cd0da82ecc1d20fb" id="r_aa8a11043b5a800c0cd0da82ecc1d20fb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#aa8a11043b5a800c0cd0da82ecc1d20fb">bias_delta_grad</a> () const</td></tr>
+<tr class="memitem:aa8a11043b5a800c0cd0da82ecc1d20fb" id="r_aa8a11043b5a800c0cd0da82ecc1d20fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#aa8a11043b5a800c0cd0da82ecc1d20fb">bias_delta_grad</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:aa8a11043b5a800c0cd0da82ecc1d20fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a903be339d437bb4bd93ada1f9c920161" id="r_a903be339d437bb4bd93ada1f9c920161"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a903be339d437bb4bd93ada1f9c920161">W_B_grad</a> () const</td></tr>
+<tr class="memitem:a903be339d437bb4bd93ada1f9c920161" id="r_a903be339d437bb4bd93ada1f9c920161"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a903be339d437bb4bd93ada1f9c920161">W_B_grad</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:a903be339d437bb4bd93ada1f9c920161"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb3821e93d179f1f1ba5f545551e7bdc" id="r_aeb3821e93d179f1f1ba5f545551e7bdc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#aeb3821e93d179f1f1ba5f545551e7bdc">W_C_grad</a> () const</td></tr>
+<tr class="memitem:aeb3821e93d179f1f1ba5f545551e7bdc" id="r_aeb3821e93d179f1f1ba5f545551e7bdc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#aeb3821e93d179f1f1ba5f545551e7bdc">W_C_grad</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:aeb3821e93d179f1f1ba5f545551e7bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae74d42f084f52bcc4d2f34ea8073dac7" id="r_ae74d42f084f52bcc4d2f34ea8073dac7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ae74d42f084f52bcc4d2f34ea8073dac7">A_grad</a> () const</td></tr>
+<tr class="memitem:ae74d42f084f52bcc4d2f34ea8073dac7" id="r_ae74d42f084f52bcc4d2f34ea8073dac7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ae74d42f084f52bcc4d2f34ea8073dac7">A_grad</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:ae74d42f084f52bcc4d2f34ea8073dac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addb70c1ed3ee72e027a9c1f7bb86b138" id="r_addb70c1ed3ee72e027a9c1f7bb86b138"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#addb70c1ed3ee72e027a9c1f7bb86b138">D_grad</a> () const</td></tr>
+<tr class="memitem:addb70c1ed3ee72e027a9c1f7bb86b138" id="r_addb70c1ed3ee72e027a9c1f7bb86b138"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#addb70c1ed3ee72e027a9c1f7bb86b138">D_grad</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:addb70c1ed3ee72e027a9c1f7bb86b138"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2ec556755115310c1faab8caf649da3" id="r_ae2ec556755115310c1faab8caf649da3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ae2ec556755115310c1faab8caf649da3">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
+<tr class="memitem:ae2ec556755115310c1faab8caf649da3" id="r_ae2ec556755115310c1faab8caf649da3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ae2ec556755115310c1faab8caf649da3">propagate_relevance</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">relevance_out</a>, <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">config</a>) <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:ae2ec556755115310c1faab8caf649da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">MambaLRP relevance propagation &ndash; Abar_t/Bbar_t/C_t/A/D detached and treated as fixed multiplicative constants, epsilon/z-rule over the resulting weighted sums, processed in reverse time order through a carried state-relevance accumulator. See the class-level note for the full per-timestep redistribution.  <br /></td></tr>
 <tr class="separator:ae2ec556755115310c1faab8caf649da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c1cd72262497fd1458f9e30d58d8a5f" id="r_a1c1cd72262497fd1458f9e30d58d8a5f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a1c1cd72262497fd1458f9e30d58d8a5f">parameters</a> () override</td></tr>
+<tr class="memitem:a1c1cd72262497fd1458f9e30d58d8a5f" id="r_a1c1cd72262497fd1458f9e30d58d8a5f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#a1c1cd72262497fd1458f9e30d58d8a5f">parameters</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:a1c1cd72262497fd1458f9e30d58d8a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a1c1cd72262497fd1458f9e30d58d8a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
-<tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
+<tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">default</a></td></tr>
 <tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module" id="r_a5cb3b4aac3d2364c973009413fde6a21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">forward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)</td></tr>
 <tr class="memdesc:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs this module's forward computation.  <br /></td></tr>
 <tr class="separator:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module" id="r_a91e80b510f8f04ca2911532dabe16879"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879">forward_traced</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> input_node, <a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a> &amp;graph, <a class="el" href="classpulsatrix_1_1Autograd.html">Autograd</a> &amp;autograd)</td></tr>
+<tr class="memitem:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module" id="r_a91e80b510f8f04ca2911532dabe16879"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879">forward_traced</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">input</a>, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">input_node</a>, <a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a> &amp;graph, <a class="el" href="classpulsatrix_1_1Autograd.html">Autograd</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">autograd</a>)</td></tr>
 <tr class="memdesc:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> while also registering a <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> node (tagged with this module's <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e" title="This module&#39;s operation-category tag, for ComputationGraph node tagging.">op_type()</a>, parented to input_node) and wiring an <a class="el" href="classpulsatrix_1_1Autograd.html" title="Computes gradients by walking a ComputationGraph in reverse topological order.">Autograd</a> backward function that reuses this module's own <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a" title="Computes the gradient w.r.t. this module&#39;s input, given the gradient w.r.t. its output....">backward()</a> &ndash; the opt-in traced/explainable path, per Phase 2 Mission 0.  <br /></td></tr>
 <tr class="separator:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (bool training)</td></tr>
+<tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">virtual</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">bool</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">training</a>)</td></tr>
 <tr class="memdesc:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default).  <br /></td></tr>
 <tr class="separator:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module" id="r_a708ed1a999e528bfa47ea8f341cee518"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518">is_training</a> () const</td></tr>
+<tr class="memitem:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module" id="r_a708ed1a999e528bfa47ea8f341cee518"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518">is_training</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="memdesc:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this module is currently in training mode.  <br /></td></tr>
 <tr class="separator:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ac9b8c9fdab107d2bb5356352524e208b" id="r_ac9b8c9fdab107d2bb5356352524e208b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ac9b8c9fdab107d2bb5356352524e208b">forward_impl</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input) override</td></tr>
+<tr class="memitem:ac9b8c9fdab107d2bb5356352524e208b" id="r_ac9b8c9fdab107d2bb5356352524e208b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html#ac9b8c9fdab107d2bb5356352524e208b">forward_impl</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">input</a>) <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:ac9b8c9fdab107d2bb5356352524e208b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The actual forward computation &ndash; per-timestep tied-weight selective scan.  <br /></td></tr>
 <tr class="separator:ac9b8c9fdab107d2bb5356352524e208b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -253,13 +253,13 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
         <tr>
           <td class="memname">pulsatrix::MambaModule::MambaModule </td>
           <td>(</td>
-          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">int64_t</a>&#160;</td>
           <td class="paramname"><em>d_model</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">int64_t</a>&#160;</td>
           <td class="paramname"><em>state_size</em>, </td>
         </tr>
         <tr>
@@ -305,7 +305,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::A </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::A </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -330,7 +330,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::A_grad </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::A_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -357,7 +357,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::MambaModule::backward </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>grad_output</em></td><td>)</td>
           <td></td>
         </tr>
@@ -400,7 +400,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::bias_delta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::bias_delta </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -425,7 +425,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::bias_delta_grad </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::bias_delta_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -450,7 +450,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::D </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::D </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -475,7 +475,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::D_grad </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::D_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -502,7 +502,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::MambaModule::forward_impl </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>input</em></td><td>)</td>
           <td></td>
         </tr>
@@ -599,13 +599,13 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::MambaModule::propagate_relevance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>relevance_out</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
           <td class="paramname"><em>config</em>&#160;</td>
         </tr>
         <tr>
@@ -650,9 +650,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_A </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_A </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -670,9 +670,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_A </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_A </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -690,9 +690,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_bias_delta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_bias_delta </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -710,9 +710,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_bias_delta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_bias_delta </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -730,9 +730,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_D </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_D </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -750,9 +750,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_D </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_D </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -770,9 +770,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_W_B </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_W_B </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -790,9 +790,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_W_B </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_W_B </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -810,9 +810,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_W_C </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_W_C </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -830,9 +830,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_W_C </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_W_C </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -850,9 +850,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_W_delta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_W_delta </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -870,9 +870,9 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::MambaModule::set_W_delta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::MambaModule::set_W_delta </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -893,7 +893,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_B </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_B </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -918,7 +918,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_B_grad </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_B_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -943,7 +943,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_C </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_C </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -968,7 +968,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_C_grad </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_C_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -993,7 +993,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_delta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_delta </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1018,7 +1018,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_delta_grad </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MambaModule::W_delta_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

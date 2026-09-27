@@ -10,7 +10,7 @@ var searchData=
   ['linear1_5fweight_7',['linear1_weight',['../classpulsatrix_1_1XorNetwork.html#ada65cdc5d77e6dd24102008ab05004e0',1,'pulsatrix::XorNetwork']]],
   ['linearmodule_8',['LinearModule',['../classpulsatrix_1_1LinearModule.html#ae8c20b3c12abca68d8167d307df344f3',1,'pulsatrix::LinearModule']]],
   ['linearprobe_9',['LinearProbe',['../classpulsatrix_1_1LinearProbe.html#a14a3d5bc95c1c478a9e85ace4244f125',1,'pulsatrix::LinearProbe']]],
-  ['load_10',['Load',['../classpulsatrix_1_1MnistIdxLoader.html#a11b4cf6faa1db4ee7719b5b6faddc7fb',1,'pulsatrix::MnistIdxLoader']]],
+  ['load_10',['load',['../classpulsatrix_1_1CsvReader.html#a8f1883181354af1cea62bd202f46a257',1,'pulsatrix::CsvReader::Load()'],['../classpulsatrix_1_1MnistIdxLoader.html#a11b4cf6faa1db4ee7719b5b6faddc7fb',1,'pulsatrix::MnistIdxLoader::Load()'],['../classpulsatrix_1_1WavReader.html#a5cd05bd1711df835267196e2630d081f',1,'pulsatrix::WavReader::Load()']]],
   ['log_5fhistogram_11',['log_histogram',['../classpulsatrix_1_1MetricsSink.html#a71ea141b7ded9edc78348d8c96d9d9b8',1,'pulsatrix::MetricsSink::log_histogram()'],['../classpulsatrix_1_1NoOpMetricsSink.html#a2e8e78de0b73cc8c86097452ba9961ff',1,'pulsatrix::NoOpMetricsSink::log_histogram()']]],
   ['log_5fprob_12',['log_prob',['../classpulsatrix_1_1CategoricalPolicyAgent.html#ac41c4ce782caf8f54512886a48ca9650',1,'pulsatrix::CategoricalPolicyAgent']]],
   ['log_5fscalar_13',['log_scalar',['../classpulsatrix_1_1MetricsSink.html#a4f36d9ace9b87065fba013eaaed08906',1,'pulsatrix::MetricsSink::log_scalar()'],['../classpulsatrix_1_1NoOpMetricsSink.html#a1cfe44365058001dcbcfb92e80455f07',1,'pulsatrix::NoOpMetricsSink::log_scalar()']]],

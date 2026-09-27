@@ -128,60 +128,60 @@ Collaboration diagram for pulsatrix::GroupNormModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abc71a062657b4d6ce474262d3d0e1227" id="r_abc71a062657b4d6ce474262d3d0e1227"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#abc71a062657b4d6ce474262d3d0e1227">GroupNormModule</a> (int64_t num_groups, int64_t num_channels, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device=<a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>, float eps=1e-6f)</td></tr>
+<tr class="memitem:abc71a062657b4d6ce474262d3d0e1227" id="r_abc71a062657b4d6ce474262d3d0e1227"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#abc71a062657b4d6ce474262d3d0e1227">GroupNormModule</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">int64_t</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">num_groups</a>, <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">int64_t</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">num_channels</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">backend</a>, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device=<a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>, <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">eps</a>=1<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">e</a>-6<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">f</a>)</td></tr>
 <tr class="memdesc:abc71a062657b4d6ce474262d3d0e1227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a GroupNorm layer with zero-initialized gamma and beta.  <br /></td></tr>
 <tr class="separator:abc71a062657b4d6ce474262d3d0e1227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cc3dcf2f5195d50decebf031829bcc7" id="r_a2cc3dcf2f5195d50decebf031829bcc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a2cc3dcf2f5195d50decebf031829bcc7">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
+<tr class="memitem:a2cc3dcf2f5195d50decebf031829bcc7" id="r_a2cc3dcf2f5195d50decebf031829bcc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a2cc3dcf2f5195d50decebf031829bcc7">backward</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">grad_output</a>) <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:a2cc3dcf2f5195d50decebf031829bcc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input, and accumulates gamma's/ beta's gradients internally.  <br /></td></tr>
 <tr class="separator:a2cc3dcf2f5195d50decebf031829bcc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23c8ccff26e523fc5715f931eb015a12" id="r_a23c8ccff26e523fc5715f931eb015a12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a23c8ccff26e523fc5715f931eb015a12">op_type</a> () const override</td></tr>
+<tr class="memitem:a23c8ccff26e523fc5715f931eb015a12" id="r_a23c8ccff26e523fc5715f931eb015a12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a23c8ccff26e523fc5715f931eb015a12">op_type</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:a23c8ccff26e523fc5715f931eb015a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalization per charter's closed OpType set.  <br /></td></tr>
 <tr class="separator:a23c8ccff26e523fc5715f931eb015a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a588bb3cc2bd016f7eac5f22f8856ce0b" id="r_a588bb3cc2bd016f7eac5f22f8856ce0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a588bb3cc2bd016f7eac5f22f8856ce0b">set_gamma</a> (std::initializer_list&lt; float &gt; values)</td></tr>
+<tr class="memitem:a588bb3cc2bd016f7eac5f22f8856ce0b" id="r_a588bb3cc2bd016f7eac5f22f8856ce0b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a588bb3cc2bd016f7eac5f22f8856ce0b">set_gamma</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; values)</td></tr>
 <tr class="memdesc:a588bb3cc2bd016f7eac5f22f8856ce0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the per-channel gamma buffer &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a588bb3cc2bd016f7eac5f22f8856ce0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca3021709443cb768073eb25ea9184c8" id="r_aca3021709443cb768073eb25ea9184c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#aca3021709443cb768073eb25ea9184c8">set_beta</a> (std::initializer_list&lt; float &gt; values)</td></tr>
+<tr class="memitem:aca3021709443cb768073eb25ea9184c8" id="r_aca3021709443cb768073eb25ea9184c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#aca3021709443cb768073eb25ea9184c8">set_beta</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; values)</td></tr>
 <tr class="memdesc:aca3021709443cb768073eb25ea9184c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the per-channel beta buffer &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:aca3021709443cb768073eb25ea9184c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bb9e65964ef4d3d0d17dbcc96875877" id="r_a7bb9e65964ef4d3d0d17dbcc96875877"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a7bb9e65964ef4d3d0d17dbcc96875877">set_gamma</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memitem:a7bb9e65964ef4d3d0d17dbcc96875877" id="r_a7bb9e65964ef4d3d0d17dbcc96875877"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a7bb9e65964ef4d3d0d17dbcc96875877">set_gamma</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;values)</td></tr>
 <tr class="memdesc:a7bb9e65964ef4d3d0d17dbcc96875877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector overload for runtime-sized sources &ndash; see <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s own vector ctor.  <br /></td></tr>
 <tr class="separator:a7bb9e65964ef4d3d0d17dbcc96875877"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0596a0afc127ec7223f6a3761226adf4" id="r_a0596a0afc127ec7223f6a3761226adf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a0596a0afc127ec7223f6a3761226adf4">set_beta</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memitem:a0596a0afc127ec7223f6a3761226adf4" id="r_a0596a0afc127ec7223f6a3761226adf4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a0596a0afc127ec7223f6a3761226adf4">set_beta</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;values)</td></tr>
 <tr class="memdesc:a0596a0afc127ec7223f6a3761226adf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector overload for runtime-sized sources &ndash; see <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s own vector ctor.  <br /></td></tr>
 <tr class="separator:a0596a0afc127ec7223f6a3761226adf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf25b95c8dbdcb80435bd5ede45e12d2" id="r_acf25b95c8dbdcb80435bd5ede45e12d2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#acf25b95c8dbdcb80435bd5ede45e12d2">gamma</a> () const</td></tr>
+<tr class="memitem:acf25b95c8dbdcb80435bd5ede45e12d2" id="r_acf25b95c8dbdcb80435bd5ede45e12d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#acf25b95c8dbdcb80435bd5ede45e12d2">gamma</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:acf25b95c8dbdcb80435bd5ede45e12d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc10be838eab7dab2d3779d284bf12fd" id="r_acc10be838eab7dab2d3779d284bf12fd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#acc10be838eab7dab2d3779d284bf12fd">beta</a> () const</td></tr>
+<tr class="memitem:acc10be838eab7dab2d3779d284bf12fd" id="r_acc10be838eab7dab2d3779d284bf12fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#acc10be838eab7dab2d3779d284bf12fd">beta</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:acc10be838eab7dab2d3779d284bf12fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6b63e961356227e77f878aa216a4f61" id="r_aa6b63e961356227e77f878aa216a4f61"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#aa6b63e961356227e77f878aa216a4f61">gamma_grad</a> () const</td></tr>
+<tr class="memitem:aa6b63e961356227e77f878aa216a4f61" id="r_aa6b63e961356227e77f878aa216a4f61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#aa6b63e961356227e77f878aa216a4f61">gamma_grad</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:aa6b63e961356227e77f878aa216a4f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ca454523c7f17e0b33bc9465ddce16a" id="r_a4ca454523c7f17e0b33bc9465ddce16a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a4ca454523c7f17e0b33bc9465ddce16a">beta_grad</a> () const</td></tr>
+<tr class="memitem:a4ca454523c7f17e0b33bc9465ddce16a" id="r_a4ca454523c7f17e0b33bc9465ddce16a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a4ca454523c7f17e0b33bc9465ddce16a">beta_grad</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="separator:a4ca454523c7f17e0b33bc9465ddce16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0508f844a42796f5d38fadff517e47fb" id="r_a0508f844a42796f5d38fadff517e47fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a0508f844a42796f5d38fadff517e47fb">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
+<tr class="memitem:a0508f844a42796f5d38fadff517e47fb" id="r_a0508f844a42796f5d38fadff517e47fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a0508f844a42796f5d38fadff517e47fb">propagate_relevance</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">relevance_out</a>, <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">config</a>) <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:a0508f844a42796f5d38fadff517e47fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identity-rule LRP relevance propagation (AttnLRP, Achtibat et al. 2024).  <br /></td></tr>
 <tr class="separator:a0508f844a42796f5d38fadff517e47fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc1f1e60176c4e779c98687196e8d3a1" id="r_abc1f1e60176c4e779c98687196e8d3a1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#abc1f1e60176c4e779c98687196e8d3a1">parameters</a> () override</td></tr>
+<tr class="memitem:abc1f1e60176c4e779c98687196e8d3a1" id="r_abc1f1e60176c4e779c98687196e8d3a1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#abc1f1e60176c4e779c98687196e8d3a1">parameters</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:abc1f1e60176c4e779c98687196e8d3a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:abc1f1e60176c4e779c98687196e8d3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
-<tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
+<tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">default</a></td></tr>
 <tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module" id="r_a5cb3b4aac3d2364c973009413fde6a21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">forward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)</td></tr>
 <tr class="memdesc:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs this module's forward computation.  <br /></td></tr>
 <tr class="separator:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module" id="r_a91e80b510f8f04ca2911532dabe16879"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879">forward_traced</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> input_node, <a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a> &amp;graph, <a class="el" href="classpulsatrix_1_1Autograd.html">Autograd</a> &amp;autograd)</td></tr>
+<tr class="memitem:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module" id="r_a91e80b510f8f04ca2911532dabe16879"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879">forward_traced</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">input</a>, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">input_node</a>, <a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a> &amp;graph, <a class="el" href="classpulsatrix_1_1Autograd.html">Autograd</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">autograd</a>)</td></tr>
 <tr class="memdesc:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> while also registering a <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> node (tagged with this module's <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e" title="This module&#39;s operation-category tag, for ComputationGraph node tagging.">op_type()</a>, parented to input_node) and wiring an <a class="el" href="classpulsatrix_1_1Autograd.html" title="Computes gradients by walking a ComputationGraph in reverse topological order.">Autograd</a> backward function that reuses this module's own <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a" title="Computes the gradient w.r.t. this module&#39;s input, given the gradient w.r.t. its output....">backward()</a> &ndash; the opt-in traced/explainable path, per Phase 2 Mission 0.  <br /></td></tr>
 <tr class="separator:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (bool training)</td></tr>
+<tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">virtual</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">bool</a> <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">training</a>)</td></tr>
 <tr class="memdesc:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default).  <br /></td></tr>
 <tr class="separator:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module" id="r_a708ed1a999e528bfa47ea8f341cee518"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518">is_training</a> () const</td></tr>
+<tr class="memitem:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module" id="r_a708ed1a999e528bfa47ea8f341cee518"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518">is_training</a> () <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a></td></tr>
 <tr class="memdesc:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this module is currently in training mode.  <br /></td></tr>
 <tr class="separator:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a5e834400a96397667ba2fcb0d6285c04" id="r_a5e834400a96397667ba2fcb0d6285c04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a5e834400a96397667ba2fcb0d6285c04">forward_impl</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input) override</td></tr>
+<tr class="memitem:a5e834400a96397667ba2fcb0d6285c04" id="r_a5e834400a96397667ba2fcb0d6285c04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html#a5e834400a96397667ba2fcb0d6285c04">forward_impl</a> (<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">input</a>) <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">override</a></td></tr>
 <tr class="memdesc:a5e834400a96397667ba2fcb0d6285c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">The actual forward computation. Called by <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> after precondition checks.  <br /></td></tr>
 <tr class="separator:a5e834400a96397667ba2fcb0d6285c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -198,13 +198,13 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">pulsatrix::GroupNormModule::GroupNormModule </td>
           <td>(</td>
-          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">int64_t</a>&#160;</td>
           <td class="paramname"><em>num_groups</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">int64_t</a>&#160;</td>
           <td class="paramname"><em>num_channels</em>, </td>
         </tr>
         <tr>
@@ -222,8 +222,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>eps</em> = <code>1e-6f</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a>&#160;</td>
+          <td class="paramname"><em>eps</em> = <code>1<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">e</a>-6<a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">f</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -266,7 +266,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::GroupNormModule::backward </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>grad_output</em></td><td>)</td>
           <td></td>
         </tr>
@@ -308,7 +308,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::GroupNormModule::beta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::GroupNormModule::beta </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -333,7 +333,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::GroupNormModule::beta_grad </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::GroupNormModule::beta_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -360,7 +360,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::GroupNormModule::forward_impl </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>input</em></td><td>)</td>
           <td></td>
         </tr>
@@ -388,7 +388,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::GroupNormModule::gamma </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::GroupNormModule::gamma </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -413,7 +413,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::GroupNormModule::gamma_grad </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::GroupNormModule::gamma_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -500,13 +500,13 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::GroupNormModule::propagate_relevance </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>relevance_out</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
           <td class="paramname"><em>config</em>&#160;</td>
         </tr>
         <tr>
@@ -550,9 +550,9 @@ Protected Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::GroupNormModule::set_beta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::GroupNormModule::set_beta </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -570,9 +570,9 @@ Protected Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::GroupNormModule::set_beta </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::GroupNormModule::set_beta </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -590,9 +590,9 @@ Protected Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::GroupNormModule::set_gamma </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::GroupNormModule::set_gamma </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -610,9 +610,9 @@ Protected Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void pulsatrix::GroupNormModule::set_gamma </td>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">void</a> pulsatrix::GroupNormModule::set_gamma </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">float</a> &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>

@@ -110,6 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a35a1132240ef45fdf43aa295fa9da534" id="r_a35a1132240ef45fdf43aa295fa9da534"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Shape.html#a35a1132240ef45fdf43aa295fa9da534">Shape</a> (std::initializer_list&lt; int64_t &gt; dims)</td></tr>
 <tr class="memdesc:a35a1132240ef45fdf43aa295fa9da534"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a shape from a dimension list. An empty list is a rank-0 scalar (<a class="el" href="classpulsatrix_1_1Shape.html#a1f7fda995b54fb43167e92ea8cf6f3a2" title="Total element count – the product of all dimensions.">numel()</a> == 1).  <br /></td></tr>
 <tr class="separator:a35a1132240ef45fdf43aa295fa9da534"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55da7f85edc0c63e497eb803082071ec" id="r_a55da7f85edc0c63e497eb803082071ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Shape.html#a55da7f85edc0c63e497eb803082071ec">Shape</a> (const std::vector&lt; int64_t &gt; &amp;dims)</td></tr>
+<tr class="memdesc:a55da7f85edc0c63e497eb803082071ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a shape from a runtime-sized dimension list.  <br /></td></tr>
+<tr class="separator:a55da7f85edc0c63e497eb803082071ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae09637dcd892e4539dff5f6d94e8d89" id="r_aae09637dcd892e4539dff5f6d94e8d89"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Shape.html#aae09637dcd892e4539dff5f6d94e8d89">rank</a> () const</td></tr>
 <tr class="memdesc:aae09637dcd892e4539dff5f6d94e8d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of dimensions. 0 for a scalar.  <br /></td></tr>
 <tr class="separator:aae09637dcd892e4539dff5f6d94e8d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,7 +134,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond "non-negative dimensions" &ndash; see oop_design/context_oop_design_fundamentals.md's struct-vs-class discussion for why this is still a class (<a class="el" href="classpulsatrix_1_1Shape.html#a1f7fda995b54fb43167e92ea8cf6f3a2" title="Total element count – the product of all dimensions.">numel()</a>/is_reshape_compatible() are derived queries, not raw public fields the caller could desync from dims_). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a35a1132240ef45fdf43aa295fa9da534" name="a35a1132240ef45fdf43aa295fa9da534"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35a1132240ef45fdf43aa295fa9da534">&#9670;&#160;</a></span>Shape()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a35a1132240ef45fdf43aa295fa9da534">&#9670;&#160;</a></span>Shape() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,6 +165,41 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd><a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> is an external boundary &ndash; <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> objects are built directly from externally-supplied dimension lists (e.g. bindings/pulsatrix_py.cpp's shape_from_list, from a Python caller). A negative dimension is exactly the kind of malformed input a well-formed <em>internal</em> caller would never produce but an external one can &ndash; see campaign_exai_dl_library_adversarial_hardening.md's Mission 0 classification. </dd></dl>
+
+</div>
+</div>
+<a id="a55da7f85edc0c63e497eb803082071ec" name="a55da7f85edc0c63e497eb803082071ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55da7f85edc0c63e497eb803082071ec">&#9670;&#160;</a></span>Shape() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::Shape::Shape </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dims</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a shape from a runtime-sized dimension list. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if any dimension is negative. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Same rationale as <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s std::vector&lt;float&gt; constructor overload (<a class="el" href="tensor_8hpp.html" title="N-dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five).">tensor.hpp</a>): std::initializer_list has no portable public constructor from a runtime-sized buffer, so a caller computing a rank at runtime (e.g. <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a> building an output shape whose rank matches its input tensors') cannot use the initializer_list overload at all, not just less conveniently. </dd></dl>
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xornetwork_0',['XorNetwork',['../classpulsatrix_1_1XorNetwork.html',1,'pulsatrix']]]
+  ['uniformframesampletransform_0',['UniformFrameSampleTransform',['../classpulsatrix_1_1UniformFrameSampleTransform.html',1,'pulsatrix']]]
 ];

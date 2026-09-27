@@ -122,17 +122,26 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An explanation result: the raw attribution values, the method that produced them, and any relevant metadata (charter Part 2 SS4).  <a href="structpulsatrix_1_1Attribution.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AudioFolderDataset.html">AudioFolderDataset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;audio_file.wav&gt;, structurally identical to <a class="el" href="classpulsatrix_1_1ImageFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;image_file&gt;, mirroring torchvision&#39;s...">ImageFolderDataset</a> (Phase 2): sorted subdirectory names are classes, sorted filenames within each are samples, decoded lazily per <a class="el" href="classpulsatrix_1_1AudioFolderDataset.html#abc165044540b2de74a750a19527b8800">get()</a> via <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>.  <a href="classpulsatrix_1_1AudioFolderDataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Autograd.html">Autograd</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes gradients by walking a <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> in reverse topological order.  <a href="classpulsatrix_1_1Autograd.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AvgPool2DModule.html">AvgPool2DModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Average pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; same minimal-cut discipline as MaxPool2DModule/Conv2DModule.  <a href="classpulsatrix_1_1AvgPool2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Batch.html">Batch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One collated batch: one stacked <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position.  <a href="structpulsatrix_1_1Batch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html">BatchNormModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over every (n, h, w) element jointly &ndash; BatchNorm's defining statistic, and the reason this module didn't exist before campaign_exai_dl_library_batch_dimension_support: it has nothing to compute over without a real batch dimension. Input/output are rank-4 (N, channels, H, W), the same convention Conv2DModule/GroupNormModule already establish.  <a href="classpulsatrix_1_1BatchNormModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BCEWithLogitsLoss.html">BCEWithLogitsLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean( max(x,0) - x*y + log(1 + exp(-|x|)) ), over all N*k elements of a (N, k) logit tensor <code>x</code> against a target tensor <code>y</code> of the same shape.  <a href="classpulsatrix_1_1BCEWithLogitsLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BoundedQueue.html">BoundedQueue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity thread-safe queue with blocking push/pop &ndash; the bounded buffer between pulsatrix data-pipeline stages (campaign_exai_dl_library_data_pipeline). Not tied to any Dataset/DataLoader type; deliberately generic.  <a href="classpulsatrix_1_1BoundedQueue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CalibrationLoss.html">CalibrationLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>BS = mean_n( Σ_k (p[n,k] − y[n,k])² )</code>, <code>y</code> one-hot at <code>target_class[n]</code> &ndash; Brier's original multi-class proper scoring rule.  <a href="classpulsatrix_1_1CalibrationLoss.html#details">More...</a><br /></td></tr>
@@ -143,6 +152,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CategoricalPolicyAgent.html">CategoricalPolicyAgent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples an action from <code>softmax(policy_network(observation))</code> &ndash; the discrete-action stochastic policy every policy-gradient method in this phase (REINFORCE, A2C, PPO) is built on.  <a href="classpulsatrix_1_1CategoricalPolicyAgent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CenterCropTransform.html">CenterCropTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crops the centered (crop_height, crop_width) region of the image.  <a href="classpulsatrix_1_1CenterCropTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitEdge.html">CircuitEdge</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One directed edge of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>, carrying a scalar weight.  <a href="structpulsatrix_1_1CircuitEdge.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,6 +163,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitNode.html">CircuitNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One node of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>: a computation-graph node plus its importance score.  <a href="structpulsatrix_1_1CircuitNode.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Compose.html">Compose</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eager, ordered list of Transforms applied in sequence &ndash; pulsatrix's analogue of torchvision.transforms.Compose. Deliberately simple: no fusion/graph, matching <a class="el" href="classpulsatrix_1_1Compose.html" title="Eager, ordered list of Transforms applied in sequence – pulsatrix&#39;s analogue of torchvision....">Compose</a>'s own upstream design; unlike Python, there is no GIL here for that simplicity to cost anything.  <a href="classpulsatrix_1_1Compose.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owns every <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> in a computation graph and exposes read access for graph-walking code (autograd's backward pass, Phase 2+ explainers).  <a href="classpulsatrix_1_1ComputationGraph.html#details">More...</a><br /></td></tr>
@@ -167,8 +182,37 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CrossEntropyLoss.html">CrossEntropyLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = -log(softmax(logits)[target_class]), combined for numerical stability (subtract the max logit before exponentiating) rather than computing softmax and log separately.  <a href="classpulsatrix_1_1CrossEntropyLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CsvDataset.html">CsvDataset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a CSV file's numeric columns: N named feature columns -&gt; one (1, num_features) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per row, plus one named label column -&gt; one (1,) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. Requires a header row (feature/label columns are resolved by name).  <a href="classpulsatrix_1_1CsvDataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CsvReader.html">CsvReader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimal RFC-4180-ish CSV parser: comma-delimited, double-quote-quoted fields, "" as an escaped quote, <br  />
+ or \r<br  />
+ line endings. Whole file loaded into memory at once &ndash; no streaming/chunked reading in this phase, matching <a class="el" href="classpulsatrix_1_1MnistIdxLoader.html" title="Reads MNIST&#39;s original IDX-format files directly – no format conversion, no generic Dataset abstracti...">MnistIdxLoader</a>'s own whole-file-at-once precedent.  <a href="classpulsatrix_1_1CsvReader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CsvTable.html">CsvTable</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One parsed CSV file's contents: raw string cells, row-major, plus an optional header.  <a href="structpulsatrix_1_1CsvTable.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html">CUDABackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation.  <a href="classpulsatrix_1_1CUDABackend.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DataLoader.html">DataLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Orchestrates sampling and collation into batches &ndash; pulsatrix's <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> (PyTorch <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> / torch::data::DataLoader analogue).  <a href="classpulsatrix_1_1DataLoader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DataLoaderOptions.html">DataLoaderOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for a <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a>.  <a href="structpulsatrix_1_1DataLoaderOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Dataset.html">Dataset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random-access dataset abstraction &ndash; pulsatrix's analogue of PyTorch's torch.utils.data.Dataset / LibTorch's torch::data::Dataset (<b>len</b>/__getitem__). Every concrete modality (<a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>, <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>, future image/text/audio readers) subclasses this; <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> depends only on this interface.  <a href="classpulsatrix_1_1Dataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DatasetStatistics.html">DatasetStatistics</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>'s per-field descriptive statistics.  <a href="structpulsatrix_1_1DatasetStatistics.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DatasetValidator.html">DatasetValidator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic data validation over any <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> implementation &ndash; descriptive statistics and missingness/outlier detection only (campaign_exai_dl_library_data_pipeline Decision Point 5: distributional drift detection and bias/fairness metrics are explicitly out of scope, named follow-ups for a future campaign).  <a href="classpulsatrix_1_1DatasetValidator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DataThreadPool.html">DataThreadPool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimal, generic thread pool for CPU-side data pipeline work (fetch, decode, transform, collate stages) &ndash; campaign_exai_dl_library_data_pipeline's staged- pipeline backbone alongside <a class="el" href="classpulsatrix_1_1BoundedQueue.html" title="Fixed-capacity thread-safe queue with blocking push/pop – the bounded buffer between pulsatrix data-p...">BoundedQueue</a>. Deliberately not tied to Dataset/DataLoader types.  <a href="classpulsatrix_1_1DataThreadPool.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html">DetailedBalanceLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lsquo;Δ(s,s&rsquo;) = log F(s) + log P_F(s'|s) − log F(s') − log P_B(s|s')<code>,</code>loss = Δ(s,s')²<code>-- the per-*transition* credit-assignment alternative to</code>TrajectoryBalanceLoss`'s per-trajectory constraint.  <a href="classpulsatrix_1_1DetailedBalanceLoss.html#details">More...</a><br /></td></tr>
@@ -193,6 +237,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps an ordered chain of Modules, running them via <a class="el" href="classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879" title="Runs forward() while also registering a ComputationGraph node (tagged with this module&#39;s op_type(),...">Module::forward_traced</a> to build a real <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> and <a class="el" href="classpulsatrix_1_1Autograd.html" title="Computes gradients by walking a ComputationGraph in reverse topological order.">Autograd</a> backward wiring &ndash; graph-native explainers (Missions 2-3) use <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088" title="The current graph (from the most recent forward_pass() call).">graph()</a>/backward_pass()/activation(); surrogate explainers (Phase 3) would use only <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a96409d2bd7b29e914b3281105cf97c4e" title="Runs the full module chain forward, building a fresh graph and caching every node&#39;s activation value ...">forward_pass()</a>, per the charter's stated interface segregation.  <a href="classpulsatrix_1_1ExplainerContext.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FieldStatistics.html">FieldStatistics</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptive statistics for one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position, aggregated across a whole <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>.  <a href="structpulsatrix_1_1FieldStatistics.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FlattenModule.html">FlattenModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = reshape(x, {N, x.numel()/N}), N = x.shape().dim(0). No parameters, no gradient math beyond reshaping.  <a href="classpulsatrix_1_1FlattenModule.html#details">More...</a><br /></td></tr>
@@ -221,11 +268,23 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html">HIPBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">HIP-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation, targeting AMD GPUs via ROCm.  <a href="classpulsatrix_1_1HIPBackend.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HorizontalFlipTransform.html">HorizontalFlipTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mirrors the image left-right. In-place, no backend needed (same shape).  <a href="classpulsatrix_1_1HorizontalFlipTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HyperGridEnv.html">HyperGridEnv</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An n-dimensional grid: state is an integer coordinate in <code>[0, H-1]^ndim</code>, actions increment one coordinate or stop the episode, reward is concentrated near the grid's corners.  <a href="classpulsatrix_1_1HyperGridEnv.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImageDecoder.html">ImageDecoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes an image file into a <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> &ndash; pulsatrix's generalization beyond <a class="el" href="classpulsatrix_1_1MnistIdxLoader.html" title="Reads MNIST&#39;s original IDX-format files directly – no format conversion, no generic Dataset abstracti...">MnistIdxLoader</a>'s IDX-format-only precedent (campaign_exai_dl_library_data_pipeline, Phase 2). Powered by stb_image (public-domain, single-header, vendored via FetchContent &ndash; Decision Point 2): supports PNG/JPEG/BMP/GIF/TGA/HDR and more.  <a href="classpulsatrix_1_1ImageDecoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImageFolderDataset.html">ImageFolderDataset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;image_file&gt;, mirroring torchvision's ImageFolder convention. Class names are the sorted subdirectory names; each class's label is its index in that sorted order. Images are decoded lazily (per <a class="el" href="classpulsatrix_1_1ImageFolderDataset.html#a1c5e82bd64b7a43d776324cefa507426">get()</a> call) via <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a>.  <a href="classpulsatrix_1_1ImageFolderDataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1IntegratedGradients.html">IntegratedGradients</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">IG_i(x) = (x_i - baseline_i) * (1/steps) * sum_{k=1}^{steps} d(F(baseline + (k/steps)(x - baseline)))/dx_i &ndash; a Riemann-sum approximation of the straight-line path integral from baseline to input.  <a href="classpulsatrix_1_1IntegratedGradients.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1IterableDataset.html">IterableDataset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Streaming dataset abstraction for sources with no random access or no known length (sharded files, generators) &ndash; pulsatrix's analogue of PyTorch's <a class="el" href="classpulsatrix_1_1IterableDataset.html" title="Streaming dataset abstraction for sources with no random access or no known length (sharded files,...">IterableDataset</a> / tf.data's source-op model. <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> treats this and <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> via a common internal adapter (<a class="el" href="data__loader_8hpp.html" title="Orchestrates sampling, fetch, and collation into batches.">data_loader.hpp</a>) so both share one fetch/collate path.  <a href="classpulsatrix_1_1IterableDataset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1KernelSHAP.html">KernelSHAP</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression, reusing fit_weighted_linear_regression for the reduced (n-1)-dimensional problem the efficiency-axiom substitution produces.  <a href="classpulsatrix_1_1KernelSHAP.html#details">More...</a><br /></td></tr>
@@ -269,8 +328,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MnistDataset.html">MnistDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One IDX file pair's contents: parallel images/labels, same length.  <a href="structpulsatrix_1_1MnistDataset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html">MnistDatasetAdapter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adapts a pre-loaded <a class="el" href="structpulsatrix_1_1MnistDataset.html" title="One IDX file pair&#39;s contents: parallel images/labels, same length.">MnistDataset</a> (<a class="el" href="classpulsatrix_1_1MnistIdxLoader.html#a11b4cf6faa1db4ee7719b5b6faddc7fb" title="Loads one images/labels IDX file pair.">MnistIdxLoader::Load</a>'s output) onto the generic <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> interface &ndash; minimal-diff retrofit (campaign_exai_dl_library_data_pipeline, Mission 4): MnistIdxLoader/MnistDataset themselves are unchanged, still exercised directly by mnist_loader_test.cpp; this adapter is purely additive, fulfilling <a class="el" href="mnist__loader_8hpp.html" title="Parses real MNIST IDX/ubyte files (fetched by tools/fetch_mnist.py) into Tensor images and integer la...">mnist_loader.hpp</a>'s own note that a second real dataset is the moment to generalize.  <a href="classpulsatrix_1_1MnistDatasetAdapter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistIdxLoader.html">MnistIdxLoader</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads MNIST's original IDX-format files directly &ndash; no format conversion, no generic Dataset abstraction. MNIST-specific by deliberate scope decision (see plan_mnist_classification_training_example.md's Recon); if a future mission needs a second real dataset, generalize then.  <a href="classpulsatrix_1_1MnistIdxLoader.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads MNIST's original IDX-format files directly &ndash; no format conversion, no generic <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> abstraction. MNIST-specific by deliberate scope decision (see plan_mnist_classification_training_example.md's Recon); if a future mission needs a second real dataset, generalize then.  <a href="classpulsatrix_1_1MnistIdxLoader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html">Module</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for every layer type (<a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>, <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>, activations, ...).  <a href="classpulsatrix_1_1Module.html#details">More...</a><br /></td></tr>
@@ -289,6 +351,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NoOpMetricsSink.html">NoOpMetricsSink</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does nothing. The charter's stated minimum viable <a class="el" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form...">MetricsSink</a> implementation.  <a href="classpulsatrix_1_1NoOpMetricsSink.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NormalizeTransform.html">NormalizeTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-channel normalization: pixel = (pixel - mean[c]) / std[c]. In-place, no backend needed (same shape in and out).  <a href="classpulsatrix_1_1NormalizeTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A trainable parameter and its accumulated gradient, as owned by some <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>.  <a href="structpulsatrix_1_1ParamRef.html#details">More...</a><br /></td></tr>
@@ -317,9 +382,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReplayBuffer.html">ReplayBuffer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity circular replay buffer of (observation, action, reward, next_observation, done) transitions, with uniform-random-with-replacement batch sampling &ndash; the off-policy experience store of Mnih et al. 2015 (DQN), reused unchanged by SAC and every other off-policy learner in this campaign.  <a href="classpulsatrix_1_1ReplayBuffer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResampleTransform.html">ResampleTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resamples a waveform (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/AudioFolderDataset's convention) from source_sample_rate to target_sample_rate via linear interpolation.  <a href="classpulsatrix_1_1ResampleTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html">ResidualModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = x + inner-&gt;forward(x)</code> for an arbitrary already-built <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>. The classic ResNet shortcut connection, owning its own native relevance-split rule &ndash; the charter's explicitly named failure mode to avoid is Captum/Zennit's "Canonizer
        surgery" (an external post-hoc graph rewrite for residual connections).  <a href="classpulsatrix_1_1ResidualModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResizeTransform.html">ResizeTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every transform in this file operates on sample.fields[0], assumed to be an image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> of shape (1, channels, height, width) &ndash; the convention <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>, <a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>, and <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a> all already share (image/features first, label last).  <a href="classpulsatrix_1_1ResizeTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RetNetModule.html">RetNetModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N, L, d_model) -&gt; output (N, L, d_model).  <a href="classpulsatrix_1_1RetNetModule.html#details">More...</a><br /></td></tr>
@@ -345,14 +416,26 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Saliency.html">Saliency</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">ExplainerContext::backward_pass</a> with a one-hot vector at target_index.  <a href="classpulsatrix_1_1Saliency.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Sample.html">Sample</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One dataset sample: an ordered list of <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> fields (e.g. {features, label} or {image, label}). Field order/count is a contract between a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> implementation and whatever CollateFn (<a class="el" href="collate_8hpp.html" title="Batch assembly – Batch, CollateFn, DefaultCollate.">collate.hpp</a>) later assembles samples into a <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>.  <a href="structpulsatrix_1_1Sample.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Sampler.html">Sampler</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces the order in which a <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> visits a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>'s indices for one epoch.  <a href="classpulsatrix_1_1Sampler.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html">SequentialModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Composes layers_[0..n-1] in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> order; <a class="el" href="classpulsatrix_1_1SequentialModule.html#ab250da54700dc610741f81ecad38224e" title="Chains backward() across layers_ in reverse order.">backward()</a>/propagate_relevance() chain layers_[n-1..0] in reverse &ndash; correct reverse-mode composition order.  <a href="classpulsatrix_1_1SequentialModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialSampler.html">SequentialSampler</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visits indices [0, dataset_size) in ascending order.  <a href="classpulsatrix_1_1SequentialSampler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html">SGDOptimizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">param -= learning_rate * grad, per parameter, for every parameter a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> exposes.  <a href="classpulsatrix_1_1SGDOptimizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Shape.html">Shape</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond "non-negative dimensions" &ndash; see oop_design/context_oop_design_fundamentals.md's struct-vs-class discussion for why this is still a class (<a class="el" href="classpulsatrix_1_1Shape.html#a1f7fda995b54fb43167e92ea8cf6f3a2" title="Total element count – the product of all dimensions.">numel()</a>/is_reshape_compatible() are derived queries, not raw public fields the caller could desync from dims_).  <a href="classpulsatrix_1_1Shape.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ShuffleSampler.html">ShuffleSampler</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visits indices [0, dataset_size) in a seeded pseudo-random permutation &ndash; reproducible across runs given the same seed (std::mt19937), re-shuffled fresh each <a class="el" href="classpulsatrix_1_1ShuffleSampler.html#a91bf87be5a5d3d7dc5c254f210e539f9" title="Begins a new epoch over a dataset of the given size.">reset()</a> call (a new epoch is a new permutation, not the same one repeated).  <a href="classpulsatrix_1_1ShuffleSampler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SoftmaxModule.html">SoftmaxModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Softmax over the tensor's last dimension, applied independently to every "row" (every fixed combination of all leading dimensions).  <a href="classpulsatrix_1_1SoftmaxModule.html#details">More...</a><br /></td></tr>
@@ -381,11 +464,41 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) &ndash; the backend must outlive every <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> constructed against it, per cpp_style_guide/context_style_project_conventions.md's ownership table.  <a href="classpulsatrix_1_1Tensor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextDataset.html">TextDataset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a line-delimited text corpus: each line becomes one sample, tokenized via <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a> and indexed via a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> into a (1, seq_len) float32 <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> of token indices &ndash; Decision Point 6's resolved representation (token IDs as float32 values, the same integer-as-float32 pattern <a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>'s label column and <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>'s class label already use). seq_len varies per sample; no padding here (see PadCollate, Mission 10) &ndash; an empty line produces a zero-element (1, 0) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, a valid, non-error <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> state.  <a href="classpulsatrix_1_1TextDataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tokenizer.html">Tokenizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into lowercase word/punctuation tokens &ndash; pulsatrix's first text primitive (campaign_exai_dl_library_data_pipeline, Phase 3, Decision Point 6: a minimal whitespace/punctuation tokenizer, not BPE &ndash; training a real subword-merge algorithm is a project-sized undertaking on its own).  <a href="classpulsatrix_1_1Tokenizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html">TrajectoryBalanceLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>Δ(τ) = log Zθ + Σ log P_F(s_{t+1}|s_t) − log R(x) − Σ log P_B(s_t|s_{t+1})</code>, <code>loss = Δ(τ)²</code>.  <a href="classpulsatrix_1_1TrajectoryBalanceLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Transform.html">Transform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single sample-level preprocessing step (normalize, augment, tokenize, ...).  <a href="classpulsatrix_1_1Transform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformDataset.html">TransformDataset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decorates a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> with a <a class="el" href="classpulsatrix_1_1Transform.html" title="A single sample-level preprocessing step (normalize, augment, tokenize, ...).">Transform</a>, applied to every sample <a class="el" href="classpulsatrix_1_1TransformDataset.html#a3641dc56d54bce1357ff3e8d00edac51" title="Loads one sample by index.">get()</a> returns &ndash; lets Transform/Compose compose with any <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> without modifying it or <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a>.  <a href="classpulsatrix_1_1TransformDataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y1 = x + MHA(RMSNorm(x))</code>, <code>y2 = y1 + SwiGLU(RMSNorm(y1))</code>. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(N, L, d_model) -&gt; (N, L, d_model)</code>.  <a href="classpulsatrix_1_1TransformerBlock.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1UniformFrameSampleTransform.html">UniformFrameSampleTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples num_frames evenly-spaced frames from a clip <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> (sample.fields[0], shape (T, C, H, W) &ndash; <a class="el" href="classpulsatrix_1_1VideoFrameDirectoryDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;clip_name&gt;/&lt;sequentially-named-frame...">VideoFrameDirectoryDataset</a>'s convention), producing an (N, C, H, W) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> &ndash; deliberately identical in shape convention to Phase 2's image Dataset/Transform outputs (<a class="el" href="classpulsatrix_1_1ImageFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;image_file&gt;, mirroring torchvision&#39;s...">ImageFolderDataset</a>, <a class="el" href="classpulsatrix_1_1ResizeTransform.html" title="Every transform in this file operates on sample.fields[0], assumed to be an image Tensor of shape (1,...">ResizeTransform</a>, etc.): a video clip, once frame-sampled, is just a batch of images from this codebase's perspective.  <a href="classpulsatrix_1_1UniformFrameSampleTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ValidationIssue.html">ValidationIssue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One detected data-quality issue: a missing (NaN) value or a statistical outlier.  <a href="structpulsatrix_1_1ValidationIssue.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VideoFrameDirectoryDataset.html">VideoFrameDirectoryDataset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;clip_name&gt;/&lt;sequentially-named-frame-image&gt;, decoding each clip's frames (via <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a>) into one (T, C, H, W) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per sample.  <a href="classpulsatrix_1_1VideoFrameDirectoryDataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Token&lt;-&gt;index lookup table. Index 0 is always the reserved "&lt;unk&gt;" token &ndash; guaranteed by construction, not caller convention: the constructor takes the ranked list of <em>real</em> tokens and prepends "&lt;unk&gt;" itself.  <a href="classpulsatrix_1_1Vocabulary.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WavData.html">WavData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One decoded WAV file's contents: waveform <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> plus its sample rate.  <a href="structpulsatrix_1_1WavData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1WavReader.html">WavReader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads uncompressed 16-bit PCM WAV files directly &ndash; pulsatrix's first audio primitive (campaign_exai_dl_library_data_pipeline, Phase 4, Decision Point 4: hand-rolled over libsndfile, same "narrowest thing that satisfies the exit gate" reasoning as Decision Points 1/2/6).  <a href="classpulsatrix_1_1WavReader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html">XorNetwork</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tiny MLP (<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(2,4)</a> -&gt; ReLU -&gt; <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(4,1)</a>) trained on XOR &ndash; the canonical not-linearly-separable case, exactly representable by a small MLP, giving an unambiguous convergence target for Phase 1's "prove the training loop works" goal.  <a href="classpulsatrix_1_1XorNetwork.html#details">More...</a><br /></td></tr>
@@ -393,6 +506,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a062f52068d0980a5b3771b192f0f0250" id="r_a062f52068d0980a5b3771b192f0f0250"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>(std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt;, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *)&gt;</td></tr>
+<tr class="memdesc:a062f52068d0980a5b3771b192f0f0250"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function assembling a list of Samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a> &ndash; pulsatrix's analogue of PyTorch's collate_fn. The standard extension point for ragged/variable-length modalities (text padding, variable-length audio): a caller-supplied CollateFn replacing DefaultCollate, not a subclass hierarchy.  <br /></td></tr>
+<tr class="separator:a062f52068d0980a5b3771b192f0f0250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b8dc3d7d2cef35f192d191f09156e67" id="r_a2b8dc3d7d2cef35f192d191f09156e67"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> = size_t</td></tr>
 <tr class="memdesc:a2b8dc3d7d2cef35f192d191f09156e67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stable identifier for a <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> within its owning <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a>.  <br /></td></tr>
 <tr class="separator:a2b8dc3d7d2cef35f192d191f09156e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -444,6 +560,12 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a6e0cd79959b261c8b59f554451342d31" id="r_a6e0cd79959b261c8b59f554451342d31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6e0cd79959b261c8b59f554451342d31">AudioPadCollate</a> ()</td></tr>
+<tr class="memdesc:a6e0cd79959b261c8b59f554451342d31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that zero-pads (silence) variable-length waveforms (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/ <a class="el" href="classpulsatrix_1_1AudioFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;audio_file.wav&gt;, structurally identi...">AudioFolderDataset</a>'s convention) to the batch's own max sample count, producing one (N, channels, max_samples) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field. Phase 4's version of PadCollate (Phase 3, text) &ndash; a second proof that the CollateFn extension point handles ragged/variable-length modalities with zero Dataset/DataLoader/Batch interface changes.  <br /></td></tr>
+<tr class="separator:a6e0cd79959b261c8b59f554451342d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0034be345e6f18cfc824460160d5cdf5" id="r_a0034be345e6f18cfc824460160d5cdf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0034be345e6f18cfc824460160d5cdf5">DefaultCollate</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt; samples, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a0034be345e6f18cfc824460160d5cdf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks a list of samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>, field-by-field, via <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a> &ndash; pulsatrix's default CollateFn (PyTorch's default_collate analogue).  <br /></td></tr>
+<tr class="separator:a0034be345e6f18cfc824460160d5cdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6176ba0afe78bd0aa69aec2b670d5b8c" id="r_a6176ba0afe78bd0aa69aec2b670d5b8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6176ba0afe78bd0aa69aec2b670d5b8c">ComputeDQNTarget</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;next_q_target, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;rewards, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;dones, float gamma, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a6176ba0afe78bd0aa69aec2b670d5b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vanilla DQN Bellman target (Mnih et al. 2015): <code>targets[b,0] = rewards[b,0] + gamma * (1 - dones[b,0]) * max_a next_q_target[b,a]</code>.  <br /></td></tr>
 <tr class="separator:a6176ba0afe78bd0aa69aec2b670d5b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -465,11 +587,33 @@ Functions</h2></td></tr>
 <tr class="memitem:a9db00216eaf37da6e93cdbc40371c65e" id="r_a9db00216eaf37da6e93cdbc40371c65e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9db00216eaf37da6e93cdbc40371c65e">SinusoidalTimestepEmbedding</a> (int64_t t, int64_t embedding_dim, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float base=10000.0f)</td></tr>
 <tr class="memdesc:a9db00216eaf37da6e93cdbc40371c65e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard Transformer-style sinusoidal encoding of a diffusion timestep <code>t</code>: <code>emb[2i] = sin(t / base^(2i/embedding_dim))</code>, <code>emb[2i+1] = cos(t / base^(2i/embedding_dim))</code> for <code>i in [0, embedding_dim/2)</code>.  <br /></td></tr>
 <tr class="separator:a9db00216eaf37da6e93cdbc40371c65e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf7be0b67a415f9361e7420a36b906e" id="r_afaf7be0b67a415f9361e7420a36b906e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afaf7be0b67a415f9361e7420a36b906e">PadCollate</a> (float pad_index=0.0f)</td></tr>
+<tr class="memdesc:afaf7be0b67a415f9361e7420a36b906e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that right-pads variable-length token sequences (sample.fields[0], shape (1, seq_len) &ndash; <a class="el" href="classpulsatrix_1_1TextDataset.html#adb902ad1d0b4e655003ce6fa720c421b">TextDataset::get()</a>'s output) to the batch's own max length, producing one (N, max_len) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field recording each sample's real (pre-padding) length. This is the CollateFn extension point Phase 1's architecture design reserved for ragged/variable-length modalities (PyTorch's collate_fn equivalent) &ndash; exercised here for the first time, with zero changes needed to Dataset/DataLoader/Batch themselves.  <br /></td></tr>
+<tr class="separator:afaf7be0b67a415f9361e7420a36b906e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
+<tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
+<tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab05bf402b9c13aea07d50c1b5951112a" id="r_ab05bf402b9c13aea07d50c1b5951112a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab05bf402b9c13aea07d50c1b5951112a">fit_weighted_linear_regression</a> (const std::vector&lt; std::vector&lt; float &gt; &gt; &amp;samples, const std::vector&lt; float &gt; &amp;targets, const std::vector&lt; float &gt; &amp;weights, float l2_lambda)</td></tr>
 <tr class="memdesc:ab05bf402b9c13aea07d50c1b5951112a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fits w* = argmin_w sum_i weight_i*(target_i - w^T sample_i)^2 + l2_lambda*||w||^2 via the normal equations (X^T W X + l2_lambda*I) w = X^T W y.  <br /></td></tr>
 <tr class="separator:ab05bf402b9c13aea07d50c1b5951112a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="a062f52068d0980a5b3771b192f0f0250" name="a062f52068d0980a5b3771b192f0f0250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a062f52068d0980a5b3771b192f0f0250">&#9670;&#160;</a></span>CollateFn</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">pulsatrix::CollateFn</a> = typedef std::function&lt;<a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>(std::vector&lt;<a class="el" href="structpulsatrix_1_1Sample.html">Sample</a>&gt;, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a>*)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A function assembling a list of Samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a> &ndash; pulsatrix's analogue of PyTorch's collate_fn. The standard extension point for ragged/variable-length modalities (text padding, variable-length audio): a caller-supplied CollateFn replacing DefaultCollate, not a subclass hierarchy. </p>
+
+</div>
+</div>
 <a id="a2b8dc3d7d2cef35f192d191f09156e67" name="a2b8dc3d7d2cef35f192d191f09156e67"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b8dc3d7d2cef35f192d191f09156e67">&#9670;&#160;</a></span>NodeId</h2>
 
@@ -627,6 +771,70 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a6e0cd79959b261c8b59f554451342d31" name="a6e0cd79959b261c8b59f554451342d31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e0cd79959b261c8b59f554451342d31">&#9670;&#160;</a></span>AudioPadCollate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a> pulsatrix::AudioPadCollate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Builds a CollateFn that zero-pads (silence) variable-length waveforms (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/ <a class="el" href="classpulsatrix_1_1AudioFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;audio_file.wav&gt;, structurally identi...">AudioFolderDataset</a>'s convention) to the batch's own max sample count, producing one (N, channels, max_samples) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field. Phase 4's version of PadCollate (Phase 3, text) &ndash; a second proof that the CollateFn extension point handles ragged/variable-length modalities with zero Dataset/DataLoader/Batch interface changes. </p>
+<dl class="section return"><dt>Returns</dt><dd>A CollateFn producing <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>{ {padded_waveforms (N,channels,max_samples), lengths (N,)} }. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>(from the returned CollateFn, at call time) if samples is empty, or if samples have differing channel counts &ndash; external boundary, matching DefaultCollate's/PadCollate's own convention. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6dcdc5579c39f1cdd2cad537f85f6847" name="a6dcdc5579c39f1cdd2cad537f85f6847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dcdc5579c39f1cdd2cad537f85f6847">&#9670;&#160;</a></span>BuildVocabulary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a> pulsatrix::BuildVocabulary </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tokenized_corpus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>max_vocab_size</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tokenized_corpus</td><td>One token sequence per document/line (e.g. <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a>'s output for each line of a corpus). </td></tr>
+    <tr><td class="paramname">max_vocab_size</td><td>If &gt;= 0, keeps only the top max_vocab_size most frequent real tokens (the reserved &lt;unk&gt; at index 0 doesn't count against this limit). -1 (default) keeps every distinct token seen. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The built <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a>. An empty corpus produces a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> containing only &lt;unk&gt; (size() == 1) &ndash; not an error, just nothing to rank. </dd></dl>
+
+</div>
+</div>
 <a id="a8b3d2d73f89e6df2c591365b7759994c" name="a8b3d2d73f89e6df2c591365b7759994c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8b3d2d73f89e6df2c591365b7759994c">&#9670;&#160;</a></span>ComputeDoubleDQNTarget()</h2>
 
@@ -867,6 +1075,50 @@ Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face
 
 </div>
 </div>
+<a id="a0034be345e6f18cfc824460160d5cdf5" name="a0034be345e6f18cfc824460160d5cdf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0034be345e6f18cfc824460160d5cdf5">&#9670;&#160;</a></span>DefaultCollate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Batch.html">Batch</a> pulsatrix::DefaultCollate </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt;&#160;</td>
+          <td class="paramname"><em>samples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stacks a list of samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>, field-by-field, via <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a> &ndash; pulsatrix's default CollateFn (PyTorch's default_collate analogue). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">samples</td><td>Non-empty list of samples, each with the same field count. </td></tr>
+    <tr><td class="paramname">backend</td><td>Backend to allocate stacked field tensors through. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a> with one stacked <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per field position. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if samples is empty or samples have differing field counts &ndash; external boundary: the list of samples is assembled by a <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> from independently constructed <a class="el" href="classpulsatrix_1_1Dataset.html#acad0399caeb5991a661f55d539419300" title="Loads one sample by index.">Dataset::get()</a> results, not a compile-time-known invariant. Per-field shape/device mismatches are reported by <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ab05bf402b9c13aea07d50c1b5951112a" name="ab05bf402b9c13aea07d50c1b5951112a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab05bf402b9c13aea07d50c1b5951112a">&#9670;&#160;</a></span>fit_weighted_linear_regression()</h2>
 
@@ -932,6 +1184,39 @@ Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Gaussian elimination, scoped to the small, dense, well-conditioned systems this codebase's explainers actually produce &ndash; not a general-purpose numerics library. </dd></dl>
+
+</div>
+</div>
+<a id="afaf7be0b67a415f9361e7420a36b906e" name="afaf7be0b67a415f9361e7420a36b906e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaf7be0b67a415f9361e7420a36b906e">&#9670;&#160;</a></span>PadCollate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a> pulsatrix::PadCollate </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>pad_index</em> = <code>0.0f</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Builds a CollateFn that right-pads variable-length token sequences (sample.fields[0], shape (1, seq_len) &ndash; <a class="el" href="classpulsatrix_1_1TextDataset.html#adb902ad1d0b4e655003ce6fa720c421b">TextDataset::get()</a>'s output) to the batch's own max length, producing one (N, max_len) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field recording each sample's real (pre-padding) length. This is the CollateFn extension point Phase 1's architecture design reserved for ragged/variable-length modalities (PyTorch's collate_fn equivalent) &ndash; exercised here for the first time, with zero changes needed to Dataset/DataLoader/Batch themselves. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pad_index</td><td>Value used to fill padding positions (as a float, matching Decision Point 6's token-as-float32 representation). Defaults to 0 &ndash; note this numerically collides with &lt;unk&gt;'s reserved index; a consumer that needs to distinguish real &lt;unk&gt; tokens from padding must use the length field, not the token value itself, to locate padding positions. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A CollateFn producing <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>{ {padded_tokens (N,max_len), lengths (N,)} }. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>(from the returned CollateFn, at call time) if samples is empty &ndash; matching DefaultCollate's own external-boundary convention. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
