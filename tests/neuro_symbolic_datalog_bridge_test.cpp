@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/datalog_lrp.hpp"
 #include "pulsatrix/datalog_semiring.hpp"
 #include "pulsatrix/datalog_weighted_engine.hpp"
 
@@ -174,6 +175,75 @@ TEST_F(NeuralPredicateDatalogBridgeTest, EvaluateThrowsOnWrongTrailingDimension)
 TEST_F(NeuralPredicateDatalogBridgeTest, BackwardThrowsIfCalledBeforeEvaluate) {
     NeuralPredicateDatalogBridge bridge(&backend);
     EXPECT_THROW(bridge.backward(), std::logic_error);
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3 Mission 3 -- LRP for the Datalog/provenance-semiring circuit, extended
+// end-to-end through this bridge's own neural predicate. Design question 2's resolution:
+// relevance does NOT stop at edge(a,b) -- it continues through sigmoid (pass-through) and
+// LinearModule::propagate_relevance() (composition, no new rule) down to the predicate's raw
+// input x.
+//
+// Hand-derived closed form (worked before this test, mirroring the gradient derivation
+// above): with Q = 0.6*s + 0.12 and the two-path diamond structure
+// (edge(a,b)*edge(b,d) + edge(a,c)*edge(c,d)), the eps=0 weighted-sum/bilinear-split
+// composition (see datalog_lrp.hpp's own worked example) gives edge(a,b)'s own
+// Datalog-level relevance as:
+//   R_s = (0.6*s / Q) / 2 = 0.3*s / Q
+// (the bilinear split of a two-factor product is always exactly half-and-half at eps=0,
+// independent of the operand values, and the ⊕-split for a two-term sum is that term's own
+// share of the total). This is verified below against the implementation's actual output at
+// eps=0, not merely asserted to hold generically.
+// ---------------------------------------------------------------------------
+
+TEST_F(NeuralPredicateDatalogBridgeTest, PropagateRelevanceMatchesHandDerivedClosedFormAtEpsilonZero) {
+    NeuralPredicateDatalogBridge bridge(&backend);
+    NeuralPredicateQueryResult query = bridge.evaluate(MakeX());
+
+    LRPRuleConfig zero_eps;
+    zero_eps.epsilon = 0.0f;
+    NeuralPredicateRelevanceResult relevance = bridge.propagate_relevance(1.0, zero_eps);
+
+    const double s = kExpectedS;
+    const double q = query.query_weight;
+    const double expected_r_s = (0.6 * s) / q / 2.0;
+
+    const double r_s = relevance.base_fact_relevance.at(Atom("edge", {Term::make_constant("a"), Term::make_constant("b")}));
+    EXPECT_NEAR(r_s, expected_r_s, 1e-4);
+}
+
+TEST_F(NeuralPredicateDatalogBridgeTest, PropagateRelevanceConservesEndToEndThroughPredicateToRawInput) {
+    NeuralPredicateDatalogBridge bridge(&backend);
+    (void)bridge.evaluate(MakeX());
+
+    constexpr double kSeed = 5.0;
+    NeuralPredicateRelevanceResult relevance = bridge.propagate_relevance(kSeed);
+
+    const double r_s = relevance.base_fact_relevance.at(Atom("edge", {Term::make_constant("a"), Term::make_constant("b")}));
+
+    double other_base_facts_total = 0.0;
+    for (const auto& [atom, r] : relevance.base_fact_relevance) {
+        if (atom != Atom("edge", {Term::make_constant("a"), Term::make_constant("b")})) {
+            other_base_facts_total += r;
+        }
+    }
+
+    const double r_x = static_cast<double>(relevance.relevance_wrt_x.at({0, 0}));
+
+    // The predicate's own LinearModule::propagate_relevance() conserves r_s into r_x
+    // near-exactly (single in_features/out_features, so this is a trivial one-term epsilon
+    // split) -- composition, not a new rule.
+    EXPECT_NEAR(r_x, r_s, 1e-3);
+
+    // Full end-to-end conservation: every base fact's relevance except edge(a,b)'s own
+    // (which continued on into r_x instead of terminating there) sums with r_x back to the
+    // seeded relevance -- a genuine trace from the Datalog query to the predicate's raw input.
+    EXPECT_NEAR(other_base_facts_total + r_x, kSeed, 1e-2);
+}
+
+TEST_F(NeuralPredicateDatalogBridgeTest, PropagateRelevanceThrowsIfCalledBeforeEvaluate) {
+    NeuralPredicateDatalogBridge bridge(&backend);
+    EXPECT_THROW(bridge.propagate_relevance(1.0), std::logic_error);
 }
 
 }  // namespace
