@@ -63,6 +63,9 @@ add_library(pulsatrix_core
     src/swiglu_module.cpp
     src/transformer_block.cpp
     src/residual_module.cpp
+    src/conjunction_module.cpp
+    src/disjunction_module.cpp
+    src/negation_module.cpp
     src/conv2d_module.cpp
     src/rms_norm_module.cpp
     src/layer_norm_module.cpp
