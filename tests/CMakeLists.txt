@@ -60,6 +60,8 @@ add_executable(pulsatrix_tests
     generator_population_test.cpp
     generator_population_gan_integration_test.cpp
     egan_mutation_test.cpp
+    egan_training_test.cpp
+    egan_training_integration_test.cpp
     node_test.cpp
     computation_graph_test.cpp
     computation_graph_persistence_test.cpp

@@ -151,5 +151,53 @@ TEST(BackwardThroughPopulationTest, ThrowsWhenBatchSizesDoNotSumToPooledLeadingD
     EXPECT_THROW(BackwardThroughPopulation(population, pooled_grad, {3}, &backend), std::invalid_argument);
 }
 
+TEST(FlattenParametersTest, ReturnsWeightThenBiasInParametersOrder) {
+    CPUBackend backend;
+    LinearModule module(1, 1, &backend);
+    module.set_weight({3.0f});
+    module.set_bias({5.0f});
+
+    std::vector<float> flat = FlattenParameters(module);
+
+    EXPECT_EQ(flat, (std::vector<float>{3.0f, 5.0f}));
+}
+
+TEST(RestoreParametersTest, OverwritesWeightThenBiasInParametersOrder) {
+    CPUBackend backend;
+    LinearModule module(1, 1, &backend);
+
+    RestoreParameters(module, {7.0f, 9.0f});
+
+    EXPECT_FLOAT_EQ(module.weight().data()[0], 7.0f);
+    EXPECT_FLOAT_EQ(module.bias().data()[0], 9.0f);
+}
+
+TEST(RestoreParametersTest, ThrowsOnTooFewValues) {
+    CPUBackend backend;
+    LinearModule module(1, 1, &backend);
+    EXPECT_THROW(RestoreParameters(module, {7.0f}), std::invalid_argument);
+}
+
+TEST(RestoreParametersTest, ThrowsOnTooManyValues) {
+    CPUBackend backend;
+    LinearModule module(1, 1, &backend);
+    EXPECT_THROW(RestoreParameters(module, {7.0f, 9.0f, 11.0f}), std::invalid_argument);
+}
+
+TEST(ZeroModuleGradientsTest, ZeroesEveryParameterGradient) {
+    CPUBackend backend;
+    LinearModule module(1, 1, &backend);
+    module.set_weight({1.0f});
+    module.set_bias({0.0f});
+    (void)module.forward(Tensor(Shape({1, 1}), &backend, {2.0f}));
+    (void)module.backward(Tensor(Shape({1, 1}), &backend, {5.0f}));
+    ASSERT_NE(module.weight_grad().data()[0], 0.0f);
+
+    ZeroModuleGradients(module);
+
+    EXPECT_FLOAT_EQ(module.weight_grad().data()[0], 0.0f);
+    EXPECT_FLOAT_EQ(module.bias_grad().data()[0], 0.0f);
+}
+
 }  // namespace
 }  // namespace pulsatrix

@@ -101,6 +101,60 @@ inline Tensor SliceBatch(const Tensor& t, int64_t start, int64_t count, DeviceBa
 }
 
 /**
+ * @brief Flattens every parameter tensor module.parameters() reports (in that order) into one
+ *        vector -- the concrete mechanism Phase 5 Mission 2's mutation-offspring construction
+ *        uses to copy a parent generator's current weights into a freshly-constructed
+ *        (architecturally identical) offspring instance before mutating the copy.
+ */
+inline std::vector<float> FlattenParameters(Module& module) {
+    std::vector<float> flat;
+    for (const auto& p : module.parameters()) {
+        for (int64_t i = 0; i < p.value->numel(); ++i) {
+            flat.push_back(p.value->data()[i]);
+        }
+    }
+    return flat;
+}
+
+/**
+ * @brief Overwrites every parameter tensor module.parameters() reports (in that order) from
+ *        flat -- the inverse of FlattenParameters.
+ * @throws std::invalid_argument if flat's size doesn't exactly match the total parameter count
+ *         module.parameters() reports.
+ */
+inline void RestoreParameters(Module& module, const std::vector<float>& flat) {
+    size_t offset = 0;
+    for (const auto& p : module.parameters()) {
+        int64_t n = p.value->numel();
+        for (int64_t i = 0; i < n; ++i) {
+            if (offset >= flat.size()) {
+                throw std::invalid_argument("RestoreParameters: flat has fewer entries than module.parameters() needs");
+            }
+            p.value->data()[i] = flat[offset];
+            ++offset;
+        }
+    }
+    if (offset != flat.size()) {
+        throw std::invalid_argument("RestoreParameters: flat has more entries than module.parameters() needs");
+    }
+}
+
+/**
+ * @brief Zeros every gradient tensor module.parameters() reports -- a standalone alternative
+ *        to calling some optimizer's own zero_grad(module) when no persistent per-module
+ *        optimizer instance is being kept around (Phase 5 Mission 2's own mutation-attempt
+ *        loop constructs a fresh optimizer per attempt, so there is no single optimizer
+ *        instance left to call zero_grad on between generations).
+ */
+inline void ZeroModuleGradients(Module& module) {
+    for (const auto& p : module.parameters()) {
+        for (int64_t i = 0; i < p.grad->numel(); ++i) {
+            p.grad->data()[i] = 0.0f;
+        }
+    }
+}
+
+/**
  * @brief Runs every population member's generator forward on its own noise batch
  *        (noise_per_generator[i] for population member i), then pools the results
  *        (Tensor::Stack, concatenated along the batch dimension, in population order) into
