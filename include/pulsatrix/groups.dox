@@ -45,3 +45,19 @@
  *        frame-directory stub) and generic dataset validation (descriptive statistics,
  *        missingness/outlier detection), all built on the @ref dl_modules Tensor.
  */
+
+/**
+ * @defgroup evolutionary Evolutionary Computation
+ * @brief A from-scratch, DEAP-free genetic-algorithm core (population/fitness/selection/
+ *        crossover/mutation, NSGA-II), plus neuroevolution (NEAT, Evolution Strategies),
+ *        evolutionary hyperparameter optimization (CMA-ES), Population Based Training, and
+ *        evolutionary generative-model training (E-GAN) built on top of it.
+ */
+
+/**
+ * @defgroup hyperparameter_optimization Hyperparameter Optimization
+ * @brief A typed SearchSpace/Configuration/Trial core plus grid/random search, Bayesian
+ *        optimization (Gaussian-process and TPE surrogates), and bandit-based early stopping
+ *        (Successive Halving, Hyperband, ASHA) -- also consumed directly by @ref evolutionary
+ *        CMA-ES and Population Based Training.
+ */
