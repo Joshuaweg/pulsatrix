@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['optimization_0',['Hyperparameter Optimization',['../group__hyperparameter__optimization.html',1,'']]]
+  ['neuro_20symbolic_20reasoning_0',['Neuro-Symbolic Reasoning',['../group__neuro__symbolic.html',1,'']]]
 ];

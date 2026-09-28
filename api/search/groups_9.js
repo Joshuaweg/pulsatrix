@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['reinforcement_20learning_0',['Reinforcement Learning',['../group__rl.html',1,'']]]
+  ['optimization_0',['Hyperparameter Optimization',['../group__hyperparameter__optimization.html',1,'']]]
 ];

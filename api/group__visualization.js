@@ -1,0 +1,18 @@
+var group__visualization =
+[
+    [ "attribution_bar_chart.hpp", "attribution__bar__chart_8hpp.html", null ],
+    [ "attribution_beeswarm.hpp", "attribution__beeswarm_8hpp.html", null ],
+    [ "attribution_waterfall.hpp", "attribution__waterfall_8hpp.html", null ],
+    [ "circuit_graph_view.hpp", "circuit__graph__view_8hpp.html", null ],
+    [ "colormap.hpp", "colormap_8hpp.html", null ],
+    [ "confidence_meter.hpp", "confidence__meter_8hpp.html", null ],
+    [ "dataset_statistics_view.hpp", "dataset__statistics__view_8hpp.html", null ],
+    [ "explanation_score_card.hpp", "explanation__score__card_8hpp.html", null ],
+    [ "image_grid_view.hpp", "image__grid__view_8hpp.html", null ],
+    [ "implot_metrics_sink.hpp", "implot__metrics__sink_8hpp.html", null ],
+    [ "plot_data.hpp", "plot__data_8hpp.html", null ],
+    [ "saliency_heatmap_view.hpp", "saliency__heatmap__view_8hpp.html", null ],
+    [ "texture_cache.hpp", "texture__cache_8hpp.html", null ],
+    [ "training_dashboard.hpp", "training__dashboard_8hpp.html", null ],
+    [ "window.hpp", "window_8hpp.html", null ]
+];

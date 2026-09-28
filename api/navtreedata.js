@@ -25,6 +25,8 @@
 var NAVTREE =
 [
   [ "pulsatrix", "index.html", [
+    [ "Modules", "index.html#mainpage_modules", null ],
+    [ "Where to go next", "index.html#mainpage_start", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -61,17 +63,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CategoricalPolicyAgent.html",
-"classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ead0f758f4f092310da74b1523c78793bb",
-"classpulsatrix_1_1HIPBackend.html#aff78faa24ac9c1246184103ff88e3c40",
-"classpulsatrix_1_1LinearModule.html#ae14ee1e63296f573f6411a5f275b48ae",
-"classpulsatrix_1_1Node.html#a512f6e03a64d5add1e0b3bdd89ed930f",
-"classpulsatrix_1_1ResidualModule.html#a366cf671459f34f026677d08d6bbc48a",
-"classpulsatrix_1_1SubTBLoss.html#ad33da20e1ea7eec8786ab486847c79cf",
-"classpulsatrix_1_1XorNetwork.html#aee7f8d2e4756c13ebe39075b7f4c92cf",
-"kernel__shap_8hpp.html",
-"sgd__optimizer_8hpp.html",
-"structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4"
+"classpulsatrix_1_1CategoricalPolicyAgent.html#a3e9c92126127b313ffd49ecae9cf5b6b",
+"classpulsatrix_1_1DisjunctionModule.html#af0481a10cfb90d54dde5ef4739670c33",
+"classpulsatrix_1_1HorizontalFlipTransform.html#a3389a5177163163fe09ccd00d3cd2aaf",
+"classpulsatrix_1_1LinearModule.html#aecfc2aaaa01b7a7d080e9fc1c01962ad",
+"classpulsatrix_1_1Node.html#a8dc8c212ec671251b3e30332dbf1572f",
+"classpulsatrix_1_1ResidualModule.html#a485aad8b3f0e6cf066df7ced7aad1b3c",
+"classpulsatrix_1_1SwiGLUModule.html#a193e9e312e1d9a20df41c6627ce20cd9",
+"classpulsatrix_1_1datalog_1_1Atom.html#a11ad0291ae9925a780e03f61ee3c2871",
+"lstm__module_8hpp.html",
+"structpulsatrix_1_1ActivationSnapshot_1_1NodeMetadata.html#aa1e194995d41a793614de7f1c5a200d2",
+"structpulsatrix_1_1PBTResult.html#ab2954c61764cb9444ccc7bcb83e11066"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

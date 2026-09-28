@@ -23,8 +23,8 @@ var searchData=
   ['wavdata_20',['WavData',['../structpulsatrix_1_1WavData.html',1,'pulsatrix']]],
   ['waveform_21',['waveform',['../structpulsatrix_1_1WavData.html#ab0bc71fa87327420ad00006c164a4ae8',1,'pulsatrix::WavData']]],
   ['wavreader_22',['WavReader',['../classpulsatrix_1_1WavReader.html',1,'pulsatrix']]],
-  ['weight_23',['weight',['../structpulsatrix_1_1CircuitEdge.html#ade063ead933e872f0e6cd7cd052a1009',1,'pulsatrix::CircuitEdge::weight'],['../structpulsatrix_1_1ConnectionGene.html#ad1860121d7550f2a258c1d99b104cb03',1,'pulsatrix::ConnectionGene::weight'],['../classpulsatrix_1_1EmbeddingModule.html#aa6703211c219623ce0470e3c79228c18',1,'pulsatrix::EmbeddingModule::weight()'],['../classpulsatrix_1_1LinearModule.html#a29fa2150e40fca9d7af1b9efa4ca097c',1,'pulsatrix::LinearModule::weight()']]],
-  ['weight_5fgrad_24',['weight_grad',['../classpulsatrix_1_1EmbeddingModule.html#adf38cf3614ca1e6931eda0bfb981f609',1,'pulsatrix::EmbeddingModule::weight_grad()'],['../classpulsatrix_1_1LinearModule.html#ae14ee1e63296f573f6411a5f275b48ae',1,'pulsatrix::LinearModule::weight_grad()']]],
+  ['weight_23',['weight',['../structpulsatrix_1_1CircuitEdge.html#ade063ead933e872f0e6cd7cd052a1009',1,'pulsatrix::CircuitEdge::weight'],['../structpulsatrix_1_1ConnectionGene.html#ad1860121d7550f2a258c1d99b104cb03',1,'pulsatrix::ConnectionGene::weight'],['../classpulsatrix_1_1EmbeddingModule.html#aa6703211c219623ce0470e3c79228c18',1,'pulsatrix::EmbeddingModule::weight()'],['../classpulsatrix_1_1LinearModule.html#a29fa2150e40fca9d7af1b9efa4ca097c',1,'pulsatrix::LinearModule::weight() const']]],
+  ['weight_5fgrad_24',['weight_grad',['../classpulsatrix_1_1LinearModule.html#ae14ee1e63296f573f6411a5f275b48ae',1,'pulsatrix::LinearModule::weight_grad()'],['../classpulsatrix_1_1EmbeddingModule.html#adf38cf3614ca1e6931eda0bfb981f609',1,'pulsatrix::EmbeddingModule::weight_grad()']]],
   ['weight_5fhf_25',['weight_hf',['../classpulsatrix_1_1LSTMModule.html#afa3bb23f5ca6ab67330dfe994343f98a',1,'pulsatrix::LSTMModule']]],
   ['weight_5fhf_5fgrad_26',['weight_hf_grad',['../classpulsatrix_1_1LSTMModule.html#a8ddd25175a486073dad7670d43f50bd2',1,'pulsatrix::LSTMModule']]],
   ['weight_5fhg_27',['weight_hg',['../classpulsatrix_1_1LSTMModule.html#a99b41eca5ed3ed2df7f3e25bc26d31ed',1,'pulsatrix::LSTMModule']]],
@@ -61,6 +61,7 @@ var searchData=
   ['weighted_5flinear_5fregression_2ehpp_58',['weighted_linear_regression.hpp',['../weighted__linear__regression_8hpp.html',1,'']]],
   ['weightedfactdatabase_59',['weightedfactdatabase',['../classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html',1,'pulsatrix::datalog::WeightedFactDatabase&lt; T &gt;'],['../classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html#a85d57bfe92d822575eec57d91c570976',1,'pulsatrix::datalog::WeightedFactDatabase::WeightedFactDatabase()=default'],['../classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html#a6cabbbc3e358b14ed284a65656514fbb',1,'pulsatrix::datalog::WeightedFactDatabase::WeightedFactDatabase(WeightedFactSet&lt; T &gt; facts)']]],
   ['weightedfactset_60',['WeightedFactSet',['../namespacepulsatrix_1_1datalog.html#af60e98e4e3ec0381120aa28f8d4953b9',1,'pulsatrix::datalog']]],
-  ['width_61',['width',['../structpulsatrix_1_1RgbImageBuffer.html#aaa6dc3c779d05dbcfb9b0e94ed1c3f82',1,'pulsatrix::RgbImageBuffer']]],
-  ['window_2ehpp_62',['window.hpp',['../window_8hpp.html',1,'']]]
+  ['where_20to_20go_20next_61',['Where to go next',['../index.html#mainpage_start',1,'']]],
+  ['width_62',['width',['../structpulsatrix_1_1RgbImageBuffer.html#aaa6dc3c779d05dbcfb9b0e94ed1c3f82',1,'pulsatrix::RgbImageBuffer']]],
+  ['window_2ehpp_63',['window.hpp',['../window_8hpp.html',1,'']]]
 ];

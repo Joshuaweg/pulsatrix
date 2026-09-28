@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['validation_0',['Data Loading, Transformation &amp; Validation',['../group__data__pipeline.html',1,'']]]
+  ['symbolic_20reasoning_0',['Neuro-Symbolic Reasoning',['../group__neuro__symbolic.html',1,'']]]
 ];
