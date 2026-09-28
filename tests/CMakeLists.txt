@@ -185,6 +185,11 @@ add_executable(pulsatrix_tests
     lrp_conservation_test.cpp
     stability_test.cpp
     captum_benchmark_test.cpp
+    colormap_test.cpp
+    plot_data_test.cpp
+    lrp_conservation_result_test.cpp
+    explainer_stability_test.cpp
+    implot_metrics_sink_test.cpp
 )
 
 if(PULSATRIX_ENABLE_CUDA)
