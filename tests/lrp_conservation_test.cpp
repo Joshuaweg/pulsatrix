@@ -6,22 +6,32 @@
 
 #include "pulsatrix/aggregator_module.hpp"
 #include "pulsatrix/avg_pool2d_module.hpp"
+#include "pulsatrix/batch_norm_module.hpp"
+#include "pulsatrix/conjunction_module.hpp"
 #include "pulsatrix/conv2d_module.hpp"
 #include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/disjunction_module.hpp"
+#include "pulsatrix/dropout_module.hpp"
 #include "pulsatrix/embedding_module.hpp"
 #include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/group_norm_module.hpp"
 #include "pulsatrix/gru_module.hpp"
+#include "pulsatrix/layer_norm_module.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/lrp_rule_config.hpp"
 #include "pulsatrix/lstm_module.hpp"
 #include "pulsatrix/mamba_module.hpp"
 #include "pulsatrix/max_pool2d_module.hpp"
+#include "pulsatrix/negation_module.hpp"
 #include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/residual_module.hpp"
 #include "pulsatrix/retnet_module.hpp"
+#include "pulsatrix/rms_norm_module.hpp"
 #include "pulsatrix/rnn_module.hpp"
 #include "pulsatrix/rope_module.hpp"
 #include "pulsatrix/rwkv_module.hpp"
 #include "pulsatrix/sequential_module.hpp"
+#include "pulsatrix/swiglu_module.hpp"
 
 // Phase 4 Mission 0: charter's "not just a spot-check on one architecture" LRP
 // completeness requirement, turned into a systematic TEST_P suite over every module type
@@ -376,6 +386,224 @@ std::vector<ConservationCase> AllModuleTypeCases() {
                           float sum_in = 0.0f;
                           for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
                           float sum_out = relevance_out.data()[0];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // BatchNormModule: identity LRP pass-through (Montavon et al. 2019 -- normalization
+    // layers pass relevance through unchanged), same fixture as
+    // BatchNormModuleTest.PropagateRelevanceConservesTotalRelevance.
+    cases.push_back({"BatchNormModule", [] {
+                          CPUBackend backend;
+                          BatchNormModule norm(2, &backend);
+                          Tensor x(Shape({2, 2, 1, 1}), &backend, {1.0f, 0.0f, 3.0f, 4.0f});
+                          (void)norm.forward(x);
+                          Tensor relevance_out(Shape({2, 2, 1, 1}), &backend, {4.0f, -1.0f, 2.5f, 0.0f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = norm.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // LayerNormModule: identity LRP pass-through (AttnLRP, Achtibat et al. 2024), same
+    // fixture as LayerNormModuleTest.PropagateRelevanceConservesTotalRelevance.
+    cases.push_back({"LayerNormModule", [] {
+                          CPUBackend backend;
+                          LayerNormModule norm(3, &backend);
+                          Tensor x(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
+                          (void)norm.forward(x);
+                          Tensor relevance_out(Shape({1, 3}), &backend, {4.0f, -1.0f, 2.5f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = norm.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // GroupNormModule: identity LRP pass-through, same fixture as
+    // GroupNormModuleTest.PropagateRelevanceConservesTotalRelevance.
+    cases.push_back({"GroupNormModule", [] {
+                          CPUBackend backend;
+                          GroupNormModule norm(2, 4, &backend);
+                          Tensor x(Shape({1, 4, 1, 2}), &backend, {1.0f, 1.0f, 3.0f, 3.0f, 0.0f, 0.0f, 4.0f, 4.0f});
+                          (void)norm.forward(x);
+                          Tensor relevance_out(Shape({1, 4, 1, 2}), &backend,
+                                                {4.0f, -1.0f, 2.5f, 0.0f, 1.0f, 1.0f, -2.0f, 3.0f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = norm.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // RMSNormModule: identity LRP pass-through (AttnLRP, Achtibat et al. 2024), same
+    // fixture as RMSNormModuleTest.PropagateRelevanceConservesTotalRelevance.
+    cases.push_back({"RMSNormModule", [] {
+                          CPUBackend backend;
+                          RMSNormModule norm(3, &backend);
+                          Tensor x(Shape({1, 3}), &backend, {1.0f, 2.0f, 3.0f});
+                          (void)norm.forward(x);
+                          Tensor relevance_out(Shape({1, 3}), &backend, {4.0f, -1.0f, 2.5f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = norm.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // DropoutModule: propagate_relevance is an UNCONDITIONAL identity pass-through --
+    // per dropout_module.hpp's class note, it does not depend on the training-mode mask at
+    // all (unlike backward(), which does). set_training(false) is applied anyway so this
+    // shared sweep's forward() call is itself deterministic (no RNG draw), matching this
+    // mission's determinism requirement rather than relying on the rule's own
+    // mask-independence to paper over a nondeterministic forward. Same fixture shape as
+    // DropoutModuleTest.PropagateRelevanceIsUnconditionalIdentity.
+    cases.push_back({"DropoutModule", [] {
+                          CPUBackend backend;
+                          DropoutModule d(0.5f, &backend, /*seed=*/7);
+                          d.set_training(false);
+                          const int64_t n = 50;
+                          std::vector<float> values(static_cast<size_t>(n), 1.0f);
+                          Tensor input(Shape({n}), &backend, values);
+                          (void)d.forward(input);
+                          std::vector<float> relevance_values(static_cast<size_t>(n));
+                          for (int64_t i = 0; i < n; ++i) relevance_values[static_cast<size_t>(i)] = static_cast<float>(i) + 1.0f;
+                          Tensor relevance_out(Shape({n}), &backend, relevance_values);
+                          LRPRuleConfig config;
+                          Tensor relevance_in = d.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // ResidualModule: y = x + inner->forward(x), a real ResNet-style bottleneck block
+    // (Conv2D(1x1) -> ReLU -> Conv2D(1x1), in==out channels). Reuses
+    // ResidualModuleTest.PropagateRelevanceConservesNearExactlyAcrossRealResidualBlock's
+    // exact bias values -- chosen there specifically to keep every position's
+    // pre-activation positive in every channel, avoiding the "dead ReLU row" edge case
+    // (a fully-clipped ReLU row traps incoming relevance and collapses the following
+    // epsilon-rule denominator to a bare epsilon, a real property of the rule family, not
+    // a bug -- but not what this near-exact-conservation case is meant to measure).
+    cases.push_back({"ResidualModule", [] {
+                          CPUBackend backend;
+                          Conv2DModule conv1(2, 2, 1, 1, &backend);
+                          conv1.set_kernel({0.4f, -0.2f, 0.3f, 0.5f});
+                          conv1.set_bias({0.5f, 0.7f});
+                          ReluModule relu(&backend);
+                          Conv2DModule conv2(2, 2, 1, 1, &backend);
+                          conv2.set_kernel({0.6f, -0.1f, 0.2f, 0.4f});
+                          conv2.set_bias({-0.05f, 0.1f});
+                          SequentialModule inner({&conv1, &relu, &conv2});
+                          ResidualModule residual(&inner, &backend);
+
+                          Tensor x(Shape({1, 2, 2, 2}), &backend,
+                                   {0.6f, -0.9f, 1.1f, -0.7f, 0.4f, -0.7f, 0.8f, 0.6f});
+                          (void)residual.forward(x);
+                          Tensor relevance_out(Shape({1, 2, 2, 2}), &backend,
+                                                {1.0f, -0.5f, 1.0f, -0.5f, 1.0f, -0.5f, 1.0f, -0.5f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = residual.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // SwiGLUModule: gate_proj/up_proj/down_proj composed with SiLU's exact identity
+    // pass-through and the diagonal Eq. 15 split, conserving near-exactly. Reuses
+    // SwiGLUModuleTest.PropagateRelevanceConservesNearExactly's exact input
+    // (0.65f/-0.85f/1.15f, not the "nicer" 0.7f/-0.9f/1.3f) -- that test's own close-out
+    // found the nicer values drive one of up_proj's pre-bias outputs to exactly 0.0,
+    // which blows up the epsilon-rule denominator; these values keep every pre-activation
+    // safely away from zero.
+    cases.push_back({"SwiGLUModule", [] {
+                          CPUBackend backend;
+                          SwiGLUModule m(3, 4, &backend);
+                          m.gate_proj().set_weight(
+                              {0.3f, -0.2f, 0.5f, 0.1f, -0.4f, 0.2f, 0.6f, -0.1f, 0.2f, 0.3f, -0.3f, 0.4f});
+                          m.gate_proj().set_bias({0.1f, -0.1f, 0.05f, 0.2f});
+                          m.up_proj().set_weight(
+                              {-0.1f, 0.4f, 0.2f, -0.3f, 0.5f, 0.1f, -0.2f, 0.3f, 0.4f, -0.2f, 0.1f, 0.2f});
+                          m.up_proj().set_bias({0.05f, 0.1f, -0.05f, 0.15f});
+                          m.down_proj().set_weight(
+                              {0.6f, -0.2f, 0.3f, 0.1f, -0.5f, 0.4f, 0.2f, -0.3f, 0.1f, 0.3f, -0.4f, 0.2f});
+                          m.down_proj().set_bias({-0.1f, 0.2f, 0.05f});
+
+                          Tensor x(Shape({1, 3}), &backend, {0.65f, -0.85f, 1.15f});
+                          (void)m.forward(x);
+                          Tensor relevance_out(Shape({1, 3}), &backend, {2.0f, -1.0f, 0.5f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = m.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // NegationModule: pass-through (y = 1 - x), same fixture as
+    // NegationModuleTest.PropagateRelevancePassesThroughUnchanged.
+    cases.push_back({"NegationModule", [] {
+                          CPUBackend backend;
+                          NegationModule negation(&backend);
+                          Tensor x(Shape({3}), &backend, {0.1f, 0.4f, 0.9f});
+                          (void)negation.forward(x);
+                          Tensor relevance_out(Shape({3}), &backend, {0.3f, -1.0f, 2.0f});
+                          LRPRuleConfig config;
+                          Tensor relevance_in = negation.propagate_relevance(relevance_out, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // ConjunctionModule (Product t-norm): bilinear split (AttnLRP Eq. 15), conserving
+    // near-exactly. Two-operand forward(a, b); relevance_in is the stacked (2, N) tensor,
+    // so its total sum (both operands' shares) is compared against sum(y) -- the canonical
+    // LRP setup, relevance_out == y itself. Same fixture as
+    // ConjunctionModuleTest.ProductPropagateRelevanceConservesNearExactly.
+    cases.push_back({"ConjunctionModule", [] {
+                          CPUBackend backend;
+                          ConjunctionModule conj(&backend);
+                          Tensor a(Shape({4}), &backend, {0.3f, 0.7f, 0.5f, 0.9f});
+                          Tensor b(Shape({4}), &backend, {0.6f, 0.2f, 0.5f, 0.1f});
+                          Tensor y = conj.forward(a, b);
+                          LRPRuleConfig config;
+                          Tensor relevance_in = conj.propagate_relevance(y, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < y.numel(); ++i) sum_out += y.data()[i];
+                          return std::make_pair(sum_in, sum_out);
+                      }});
+
+    // DisjunctionModule (Product t-conorm): averaged dual-decomposition rule, conserving
+    // near-exactly. Same fixture as
+    // DisjunctionModuleTest.ProductPropagateRelevanceConservesNearExactly.
+    cases.push_back({"DisjunctionModule", [] {
+                          CPUBackend backend;
+                          DisjunctionModule disj(&backend);
+                          Tensor a(Shape({4}), &backend, {0.3f, 0.7f, 0.5f, 0.9f});
+                          Tensor b(Shape({4}), &backend, {0.6f, 0.2f, 0.5f, 0.1f});
+                          Tensor y = disj.forward(a, b);
+                          LRPRuleConfig config;
+                          Tensor relevance_in = disj.propagate_relevance(y, config);
+                          float sum_in = 0.0f;
+                          for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+                          float sum_out = 0.0f;
+                          for (int64_t i = 0; i < y.numel(); ++i) sum_out += y.data()[i];
                           return std::make_pair(sum_in, sum_out);
                       }});
 
