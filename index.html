@@ -381,6 +381,33 @@
   
   
     <li class="md-nav__item">
+      <a href="customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="deep-learning/" class="md-nav__link">
         
   
@@ -443,10 +470,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -464,8 +491,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -627,6 +654,33 @@
   
   
     <li class="md-nav__item">
+      <a href="neuro-symbolic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neuro-Symbolic Reasoning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="evolutionary-computation/" class="md-nav__link">
         
   
@@ -662,6 +716,33 @@
     
   
     Hyperparameter Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="visualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualization
   
 
     
@@ -830,6 +911,12 @@ caching/snapshots, <code>LinearProbe</code>, <code>SparseAutoencoder</code>, <co
 implementation (<code>HyperGridEnv</code>, <code>TrajectoryBalanceLoss</code>, <code>DetailedBalanceLoss</code>,
 <code>SubTBLoss(λ)</code>) — non-goal-directed training objectives motivated by Bengio's Scientist AI /
 LawZero research direction.</p>
+<p><strong><a href="neuro-symbolic/">Neuro-Symbolic Reasoning</a></strong>: a differentiable fuzzy-logic core
+(<code>ConjunctionModule</code>/<code>DisjunctionModule</code>/<code>NegationModule</code>/<code>AggregatorModule</code>, Logic Tensor
+Networks-shaped) trainable via ordinary gradient descent, plus a from-scratch Datalog engine
+(<code>naive_evaluate</code>, a real-valued/weighted generalization, and a hand-derived LRP rule) bridged
+to a real neural predicate via <code>NeuralPredicateDatalogBridge</code> — relevance traces from a
+symbolic derivation back into the network.</p>
 <p><strong><a href="evolutionary-computation/">Evolutionary Computation</a></strong>: a from-scratch,
 DEAP-free genetic-algorithm core (population/fitness/selection/crossover/mutation, NSGA-II),
 neuroevolution (<code>NEATGenome</code>, Evolution Strategies), evolutionary hyperparameter optimization
@@ -840,6 +927,11 @@ neuroevolution (<code>NEATGenome</code>, Evolution Strategies), evolutionary hyp
 (<code>GaussianProcessRegressor</code>, TPE), and bandit-based early stopping (Successive Halving,
 Hyperband, ASHA) — every algorithm a from-scratch reimplementation, never a runtime
 dependency on a Python HPO library.</p>
+<p><strong><a href="visualization/">Visualization</a></strong>: a native C++ visualization layer (Dear ImGui +
+ImPlot, opt-in via <code>PULSATRIX_ENABLE_VIZ</code>) turning <code>Attribution</code>/<code>CircuitGraph</code>/training-metric
+data into charts — feature-importance bars, waterfalls, saliency heatmaps, a circuit-graph
+view, and a live <code>TrainingDashboard</code> — built on a pure, always-available data-transform layer
+that stays unit-tested independent of the GUI stack.</p>
 <p><strong>Bindings</strong>: pybind11 (<code>bindings/pulsatrix_py.cpp</code>) exposing <code>Tensor</code>, core modules, and the
 explainer suite to Python.</p>
 <p>1700+ tests, green in both Debug and Release, on Windows and Linux.</p>
@@ -847,8 +939,11 @@ explainer suite to Python.</p>
 <ul>
 <li><strong><a href="getting-started/">Getting Started</a></strong> — build the library and run your first example.</li>
 <li><strong><a href="recipes/">Recipes</a></strong> — small, runnable programs demonstrating one tool at a time.</li>
-<li><strong><a href="api/index.html">API Reference</a></strong> — the full Doxygen-generated class/function reference.</li>
-<li><a href="https://github.com/Joshuaweg/pulsatrix/tree/master/examples">Examples</a> — 11 runnable demos on GitHub.</li>
+<li><strong><a href="api/index.html">API Reference</a></strong> — the full Doxygen-generated class/function reference.
+  Populated by CI when this site deploys; running <code>mkdocs serve</code> locally, generate it yourself
+  first with <code>cmake --build build --target docs</code> (see <a href="getting-started/">Getting Started</a>) —
+  otherwise this link is empty.</li>
+<li><a href="https://github.com/Joshuaweg/pulsatrix/tree/master/examples">Examples</a> — 16 runnable demos on GitHub.</li>
 </ul>
 
 
