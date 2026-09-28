@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 option(PULSATRIX_ENABLE_CUDA "Build the CUDA DeviceBackend" OFF)
 option(PULSATRIX_ENABLE_HIP "Build the HIP/ROCm DeviceBackend" OFF)
 option(PULSATRIX_ENABLE_PYTHON "Build Python bindings via pybind11" OFF)
+option(PULSATRIX_ENABLE_VIZ "Build the Dear ImGui + ImPlot native visualization module" OFF)
 option(PULSATRIX_BUILD_TESTS "Build the GoogleTest suite" ON)
 option(PULSATRIX_BUILD_EXAMPLES "Build standalone example executables (examples/)" ON)
 
@@ -139,6 +140,11 @@ add_library(pulsatrix_core
     src/video_frame_directory_dataset.cpp
     src/video_transforms.cpp
     src/dataset_validator.cpp
+    src/lrp_conservation.cpp
+    src/explainer_stability.cpp
+    src/implot_metrics_sink.cpp
+    src/viz/colormap.cpp
+    src/viz/plot_data.cpp
 )
 target_include_directories(pulsatrix_core PUBLIC include)
 target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
@@ -226,6 +232,99 @@ if(PULSATRIX_ENABLE_PYTHON)
     # pulsatrix_py depends ON pulsatrix_core; pulsatrix_core has zero dependency edge back onto this
     # target or any pybind11 header -- non-negotiable #2.
     target_link_libraries(pulsatrix_py PRIVATE pulsatrix_core)
+endif()
+
+if(PULSATRIX_ENABLE_VIZ)
+    # Native C++ visualization layer (Dear ImGui + ImPlot) -- supersedes the charter's
+    # original Python+matplotlib Phase 5 Mission 2 plan (see
+    # plans/okay-we-have-now-buzzing-moth.md): live dashboards/scorecards stay in C++, no
+    # Python runtime dependency. pulsatrix_viz depends on pulsatrix_core; pulsatrix_core has
+    # zero dependency edge back onto this target or any ImGui/ImPlot/GLFW header -- same
+    # one-directional discipline non-negotiable #2 already requires of pulsatrix_py.
+    include(FetchContent)
+
+    set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+    FetchContent_Declare(
+        glfw
+        GIT_REPOSITORY https://github.com/glfw/glfw.git
+        GIT_TAG 3.4
+    )
+    FetchContent_MakeAvailable(glfw)
+
+    FetchContent_Declare(
+        imgui
+        GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG v1.90.9
+    )
+    FetchContent_MakeAvailable(imgui)
+
+    FetchContent_Declare(
+        implot
+        GIT_REPOSITORY https://github.com/epezent/implot.git
+        GIT_TAG v0.16
+    )
+    FetchContent_MakeAvailable(implot)
+
+    find_package(OpenGL REQUIRED)
+
+    # ImGui/ImPlot ship no CMakeLists.txt of their own -- wrap their sources into one static
+    # library each, the same way this project already vendors GoogleTest/pybind11/stb.
+    add_library(imgui STATIC
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+    )
+    target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends)
+    target_link_libraries(imgui PUBLIC glfw OpenGL::GL)
+
+    add_library(implot STATIC
+        ${implot_SOURCE_DIR}/implot.cpp
+        ${implot_SOURCE_DIR}/implot_items.cpp
+        ${implot_SOURCE_DIR}/implot_demo.cpp
+    )
+    target_include_directories(implot PUBLIC ${implot_SOURCE_DIR})
+    target_link_libraries(implot PUBLIC imgui)
+
+    # Phase A: explanation charts + score card, on top of Phase 0's VizWindow scaffolding.
+    # Later phases (B: training dashboards, C: data/inference previews) add more sources here.
+    add_library(pulsatrix_viz
+        src/viz/window.cpp
+        src/viz/attribution_bar_chart.cpp
+        src/viz/attribution_waterfall.cpp
+        src/viz/attribution_beeswarm.cpp
+        src/viz/saliency_heatmap_view.cpp
+        src/viz/circuit_graph_view.cpp
+        src/viz/confidence_meter.cpp
+        src/viz/explanation_score_card.cpp
+        src/viz/implot_metrics_sink_draw.cpp
+        src/viz/training_dashboard.cpp
+        src/viz/texture_cache.cpp
+        src/viz/image_grid_view.cpp
+        src/viz/dataset_statistics_view.cpp
+    )
+    target_include_directories(pulsatrix_viz PUBLIC include)
+    # PUBLIC, not PRIVATE: demo executables (examples/viz/*.cpp) call ImGui/ImPlot directly
+    # in their own translation units, so they need imgui/implot's include dirs propagated
+    # transitively through pulsatrix_viz, not just linked into it.
+    target_link_libraries(pulsatrix_viz PUBLIC pulsatrix_core imgui implot)
+
+    add_executable(explanation_dashboard_demo examples/viz/explanation_dashboard_demo.cpp)
+    target_link_libraries(explanation_dashboard_demo PRIVATE pulsatrix_viz)
+
+    add_executable(training_dashboard_demo examples/viz/training_dashboard_demo.cpp)
+    target_link_libraries(training_dashboard_demo PRIVATE pulsatrix_viz)
+
+    add_executable(dataset_preview_demo examples/viz/dataset_preview_demo.cpp)
+    target_link_libraries(dataset_preview_demo PRIVATE pulsatrix_viz)
+
+    add_executable(live_inference_demo examples/viz/live_inference_demo.cpp)
+    target_link_libraries(live_inference_demo PRIVATE pulsatrix_viz)
 endif()
 
 find_package(Doxygen QUIET)
