@@ -1,7 +1,7 @@
 /** @file negation_module.hpp
  *  @brief Standard fuzzy negation `y = 1 - x` -- Phase 1 Mission 0 of
  *         campaign_exai_dl_library_neuro_symbolic (differentiable fuzzy-logic core).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

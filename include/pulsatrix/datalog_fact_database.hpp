@@ -1,7 +1,7 @@
 /** @file datalog_fact_database.hpp
  *  @brief A set of ground (fully-constant) Datalog atoms. Phase 3 Mission 0 of
  *         campaign_exai_dl_library_neuro_symbolic (Datalog core).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

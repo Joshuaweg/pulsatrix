@@ -25,6 +25,12 @@ A few conventions worth knowing before you dive in:
 - Numerical algorithms (RL agents, sequence models, etc.) use this codebase's
   deterministic LCG convention instead of `<random>` so runs are reproducible;
   follow the same pattern for new stochastic code.
+- Extension always happens through compile-time polymorphism (subclassing
+  `Module`/`MetricsSink`/`DeviceBackend`, or an enum-selected variant) — there
+  is no runtime plugin/factory registry. See
+  [Customization](https://joshuaweg.github.io/pulsatrix/customization/) for
+  the full pattern and why, before adding a new layer, LRP rule variant,
+  metrics sink, or device backend.
 
 ## Submitting a change
 

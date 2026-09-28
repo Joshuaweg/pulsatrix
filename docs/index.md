@@ -40,6 +40,13 @@ implementation (`HyperGridEnv`, `TrajectoryBalanceLoss`, `DetailedBalanceLoss`,
 `SubTBLoss(λ)`) — non-goal-directed training objectives motivated by Bengio's Scientist AI /
 LawZero research direction.
 
+**[Neuro-Symbolic Reasoning](neuro-symbolic/index.md)**: a differentiable fuzzy-logic core
+(`ConjunctionModule`/`DisjunctionModule`/`NegationModule`/`AggregatorModule`, Logic Tensor
+Networks-shaped) trainable via ordinary gradient descent, plus a from-scratch Datalog engine
+(`naive_evaluate`, a real-valued/weighted generalization, and a hand-derived LRP rule) bridged
+to a real neural predicate via `NeuralPredicateDatalogBridge` — relevance traces from a
+symbolic derivation back into the network.
+
 **[Evolutionary Computation](evolutionary-computation/index.md)**: a from-scratch,
 DEAP-free genetic-algorithm core (population/fitness/selection/crossover/mutation, NSGA-II),
 neuroevolution (`NEATGenome`, Evolution Strategies), evolutionary hyperparameter optimization
@@ -52,6 +59,12 @@ neuroevolution (`NEATGenome`, Evolution Strategies), evolutionary hyperparameter
 Hyperband, ASHA) — every algorithm a from-scratch reimplementation, never a runtime
 dependency on a Python HPO library.
 
+**[Visualization](visualization/index.md)**: a native C++ visualization layer (Dear ImGui +
+ImPlot, opt-in via `PULSATRIX_ENABLE_VIZ`) turning `Attribution`/`CircuitGraph`/training-metric
+data into charts — feature-importance bars, waterfalls, saliency heatmaps, a circuit-graph
+view, and a live `TrainingDashboard` — built on a pure, always-available data-transform layer
+that stays unit-tested independent of the GUI stack.
+
 **Bindings**: pybind11 (`bindings/pulsatrix_py.cpp`) exposing `Tensor`, core modules, and the
 explainer suite to Python.
 
@@ -62,4 +75,7 @@ explainer suite to Python.
 - **[Getting Started](getting-started.md)** — build the library and run your first example.
 - **[Recipes](recipes/index.md)** — small, runnable programs demonstrating one tool at a time.
 - **[API Reference](api/index.html)** — the full Doxygen-generated class/function reference.
-- [Examples](https://github.com/Joshuaweg/pulsatrix/tree/master/examples) — 11 runnable demos on GitHub.
+  Populated by CI when this site deploys; running `mkdocs serve` locally, generate it yourself
+  first with `cmake --build build --target docs` (see [Getting Started](getting-started.md)) —
+  otherwise this link is empty.
+- [Examples](https://github.com/Joshuaweg/pulsatrix/tree/master/examples) — 16 runnable demos on GitHub.

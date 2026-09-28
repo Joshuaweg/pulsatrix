@@ -8,7 +8,7 @@
  *         parameters (via that module's own real `backward()`, mirroring `ToyKnowledgeBase`'s
  *         hand-chained-`Module::backward()` precedent). Phase 3 Mission 2 of
  *         campaign_exai_dl_library_neuro_symbolic (Neural-Predicate Integration).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

@@ -1,0 +1,36 @@
+/**
+ * @mainpage pulsatrix
+ *
+ * **ExAI-first C++ deep learning library** — explainability as a first-class property of the
+ * computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real,
+ * cited, conservation-tested Layer-wise Relevance Propagation (LRP) rule alongside its
+ * forward/backward math — never a placeholder or a post-hoc explainer bolted on afterward.
+ *
+ * This page is the Doxygen API reference's landing page — generated from `include/`'s doc
+ * comments only. For guides, worked examples, and build instructions, see the full
+ * [documentation site](https://joshuaweg.github.io/pulsatrix/) and the
+ * [GitHub repository](https://github.com/Joshuaweg/pulsatrix).
+ *
+ * @section mainpage_modules Modules
+ *
+ * - @ref dl_modules — Tensor/autograd core, layers, optimizers, losses, device backends
+ * - @ref interpretability — post-hoc explainers (@ref interpretability_agnostic,
+ *   @ref interpretability_dl)
+ * - @ref rl — environments, agents, and RL training algorithms
+ * - @ref mech_interp — activation probing, sparse autoencoders, circuit graphs, GFlowNets
+ * - @ref neuro_symbolic — differentiable fuzzy logic, a Datalog engine, and a neural-predicate
+ *   bridge tracing relevance from a symbolic derivation back into the network
+ * - @ref data_pipeline — dataset/loader/transform core and per-modality datasets
+ * - @ref evolutionary — genetic algorithms, neuroevolution, evolutionary HPO, PBT, E-GAN
+ * - @ref hyperparameter_optimization — search space, Bayesian optimization, bandit-based
+ *   early stopping
+ * - @ref visualization — native C++ (Dear ImGui + ImPlot) charts and dashboards, opt-in via
+ *   `PULSATRIX_ENABLE_VIZ`
+ *
+ * @section mainpage_start Where to go next
+ *
+ * - [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/) — build the
+ *   library and run your first example.
+ * - [Recipes](https://joshuaweg.github.io/pulsatrix/recipes/) — small, runnable programs
+ *   demonstrating one tool at a time.
+ */

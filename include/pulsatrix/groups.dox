@@ -39,6 +39,16 @@
  */
 
 /**
+ * @defgroup neuro_symbolic Neuro-Symbolic Reasoning
+ * @brief A differentiable fuzzy-logic core (Logic Tensor Networks-shaped t-norm/t-conorm
+ *        operators, a p-mean quantifier aggregator, and a satisfaction loss trainable via
+ *        ordinary gradient descent) plus a from-scratch Datalog engine (bottom-up fixpoint
+ *        evaluation, a real-valued/weighted generalization, and a hand-derived LRP rule) --
+ *        and a bridge wiring a real neural predicate's output in as a Datalog base fact's
+ *        weight, so relevance traces from a symbolic derivation back into the network.
+ */
+
+/**
  * @defgroup data_pipeline Data Loading, Transformation & Validation
  * @brief Dataset/IterableDataset/DataLoader/Transform/Compose/CollateFn core, plus concrete
  *        modality implementations (tabular CSV, image, text, audio, a reduced-scope video
@@ -52,6 +62,17 @@
  *        crossover/mutation, NSGA-II), plus neuroevolution (NEAT, Evolution Strategies),
  *        evolutionary hyperparameter optimization (CMA-ES), Population Based Training, and
  *        evolutionary generative-model training (E-GAN) built on top of it.
+ */
+
+/**
+ * @defgroup visualization Visualization
+ * @brief A native C++ visualization layer (Dear ImGui + ImPlot), opt-in via the
+ *        `PULSATRIX_ENABLE_VIZ` CMake option. Split into a pure data-transform layer
+ *        (`plot_data.hpp`/`colormap.hpp` -- always built as part of the core library,
+ *        unit-tested) and chart widgets/dashboards that call into ImGui/ImPlot directly
+ *        (built only when `PULSATRIX_ENABLE_VIZ=ON`, verified via the demo apps under
+ *        `examples/viz/` rather than GoogleTest, since a live GPU/window context isn't
+ *        meaningfully testable headlessly).
  */
 
 /**

@@ -5,7 +5,7 @@
  *         Circuit), extending Phase 1-2's fuzzy-logic LRP methodology (the weighted-sum/
  *         epsilon-rule split for `+`, the bilinear split for `x`) to derived-fact weights
  *         instead of `Module` output tensors.
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  *
  * @note **Hand-derived rule (Stage 3 design question 1), worked before implementation, on
  *       Mission 1's diamond-graph toy program**: a derived fact's weight is a `⊕`-sum of

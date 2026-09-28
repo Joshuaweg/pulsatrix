@@ -3,7 +3,7 @@
  *         campaign_exai_dl_library_neuro_symbolic (differentiable fuzzy-logic core's own
  *         correctness oracle: proves Missions 0-1's operators compose into a real,
  *         trainable Logic Tensor Network).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

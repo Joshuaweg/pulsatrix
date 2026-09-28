@@ -439,6 +439,9 @@ if(PULSATRIX_BUILD_EXAMPLES)
 
     add_executable(gflownet_hypergrid_recipe examples/recipes/gflownet_hypergrid.cpp)
     target_link_libraries(gflownet_hypergrid_recipe PRIVATE pulsatrix_core)
+
+    add_executable(datalog_lrp_bridge_recipe examples/recipes/datalog_lrp_bridge.cpp)
+    target_link_libraries(datalog_lrp_bridge_recipe PRIVATE pulsatrix_core)
 endif()
 
 if(PULSATRIX_BUILD_TESTS)

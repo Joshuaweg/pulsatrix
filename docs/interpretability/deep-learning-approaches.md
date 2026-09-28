@@ -46,6 +46,32 @@ output.
 
 Recipe: [Saliency and Integrated Gradients](../recipes/interpretability/saliency_and_integrated_gradients.md).
 
+### Integrated Gradients
+
+```cpp
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/integrated_gradients.hpp"
+
+using namespace pulsatrix;
+
+ExplainerContext ctx(&my_network, &backend);
+Tensor input(Shape({1, 2}), &backend, {1.0f, 0.0f});
+Tensor baseline(Shape({1, 2}), &backend, {0.0f, 0.0f});  // "uninformative" reference
+
+IntegratedGradients ig;
+Attribution result = ig.explain(ctx, input, baseline, /*target_index=*/0, /*steps=*/200, &backend);
+// result.values: the path-integrated attribution, same shape as input
+```
+
+**What's happening:** `explain()` runs `Saliency` at `steps` evenly-spaced interpolation
+points between `baseline` and `input`, then Riemann-sums those gradients and scales by
+`(input - baseline)` — approximating the line integral the completeness axiom requires (the
+attributions sum to `f(input) - f(baseline)`, up to interpolation error that shrinks as
+`steps` grows). Unlike raw `Saliency`, this doesn't saturate on a flat region of the model's
+output, since it accumulates gradient along the whole path rather than reading it at one point.
+
+Recipe: [Saliency and Integrated Gradients](../recipes/interpretability/saliency_and_integrated_gradients.md).
+
 ### Grad-CAM
 
 ```cpp

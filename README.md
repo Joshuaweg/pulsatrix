@@ -15,15 +15,17 @@ ExAI-first C++ deep learning library — explainability as a first-class propert
 
 **Layers**: `LinearModule`, `Conv2DModule`, `ReluModule`, `FlattenModule`, `SequentialModule`; normalization (`LayerNorm`/`RMSNorm`/`GroupNorm`/`BatchNorm`); pooling (`MaxPool2D`/`AvgPool2D`); `DropoutModule`, `EmbeddingModule`, `ResidualModule`.
 
-**Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule` (Arras et al. LRP), `SoftmaxModule`, `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock` (AttnLRP, validated against an independent reference implementation), `MambaModule` (S6 selective scan, MambaLRP).
+**Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule` (Arras et al. LRP), `SoftmaxModule`, `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock` (AttnLRP, validated against an independent reference implementation), `MambaModule` (S6 selective scan, MambaLRP), `RetNetModule` (AttnLRP-style rule over its `Q@K^T`-shaped retention scores), `RWKVModule` (MambaLRP-style detach-gate rule adapted to its WKV quotient).
 
 **Explainers**: `Saliency`, `IntegratedGradients`, `GradCAM`, `LIME`, `KernelSHAP`, `PDP`.
 
-**Modern architectures with LRP explicitly deferred** (real forward/backward, `propagate_relevance` throws rather than approximates): `RWKVModule`, `RetNetModule`; VAE (`Reparameterize`, `KLDivergenceLoss`); GAN (`BCEWithLogitsLoss`); Diffusion/DDPM (`NoiseSchedule`, `SinusoidalTimestepEmbedding`).
+**Generative building blocks with LRP explicitly deferred** (real forward/backward, `propagate_relevance` throws rather than approximates): VAE (`Reparameterize`, `KLDivergenceLoss`); GAN (`BCEWithLogitsLoss`); Diffusion/DDPM (`NoiseSchedule`, `SinusoidalTimestepEmbedding`).
 
 **Data pipeline**: `Dataset`/`IterableDataset`/`DataLoader`/`Transform`/`Compose`/`CollateFn` core, needing zero interface changes across every modality below; `CsvDataset` (tabular); `ImageDecoder`/`ImageFolderDataset`/image transforms (stb_image-backed); `Tokenizer`/`Vocabulary`/`TextDataset`/`PadCollate` (text); `WavReader`/`AudioFolderDataset`/`ResampleTransform`/`AudioPadCollate` (audio); `VideoFrameDirectoryDataset`/`UniformFrameSampleTransform` (video, reduced-scope pre-extracted-frames stub); `DatasetValidator` (descriptive statistics, missingness/outlier detection).
 
 **Reinforcement learning** (`Environment`/`Agent` interfaces, gymnasium-API-shaped): `CartPoleEnv`/`ContinuousCartPoleEnv`, `ReplayBuffer`/`RolloutBuffer`, DQN (+ Double DQN), REINFORCE, A2C, PPO (GAE + clipped surrogate objective), SAC (twin critics, reparameterized tanh-squashed policy, entropy regularization) — every algorithm trained end-to-end and verified against a fixed, pre-declared performance bar on a real environment, not just unit-tested in isolation.
+
+**Neuro-symbolic reasoning** (see [docs](https://joshuaweg.github.io/pulsatrix/neuro-symbolic/)): a differentiable fuzzy-logic core (`ConjunctionModule`/`DisjunctionModule`/`NegationModule`/`AggregatorModule`, Logic Tensor Networks-shaped) trainable via ordinary gradient descent; a from-scratch Datalog engine (`naive_evaluate`/`semi_naive_evaluate`, a real-valued/weighted generalization, and a hand-derived LRP rule for the derivation circuit); and `NeuralPredicateDatalogBridge`, wiring a real neural predicate's output into a Datalog derivation with relevance tracing end-to-end.
 
 **Evolutionary computation** (see [docs](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/)): a from-scratch, DEAP-free genetic-algorithm core (population/fitness/selection/crossover/mutation, NSGA-II); neuroevolution (`NEATGenome` + structural mutation + speciation, and Evolution Strategies, zero RL dependency); evolutionary hyperparameter optimization (`CMAES`); Population Based Training (`RunPBT`); and evolutionary generative-model training (`GeneratorPopulation`, E-GAN's Minimax/Heuristic/LeastSquares mutation objectives).
 
@@ -75,51 +77,24 @@ cmake --build build --target xor_demo --config Release
 build/Release/xor_demo.exe
 ```
 
-See [`examples/README.md`](examples/README.md) for the full list of 11 runnable
-demos (layers, sequence models, transformers, explainers, and five RL algorithms).
+See [`examples/README.md`](examples/README.md) for the full list of 16 runnable
+demos (layers, sequence models, transformers, explainers, five RL algorithms, and four opt-in
+visualization demos).
 
 ## Build
 
-### Prerequisites
+- [CMake](https://cmake.org/download/) 3.20+ and a C++17 compiler (MSVC 2022, GCC 11+, or
+  Clang 14+). Network access is needed at configure time (GoogleTest is fetched automatically).
 
-- [CMake](https://cmake.org/download/) 3.20 or newer
-- A C++17 compiler:
-  - **Windows**: Visual Studio 2022 (MSVC 19.4x) — verified
-  - **Linux**: GCC 11+ or Clang 14+ — exercised directly on GCC 15.2.0/CMake 4.2.3 and GCC 13.3.0/CMake 3.28.3 (not yet CI-verified)
-  - **macOS**: Clang 14+ (Xcode 14+) — community-untested, not yet CI-verified
-- Network access at configure time (GoogleTest is fetched automatically via CMake `FetchContent`)
-
-### Configure, build, test
-
-**Windows:**
 ```
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+cmake -S . -B build -G "Visual Studio 17 2022" -A x64   # Windows
 cmake --build build --config Release
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-**Linux / macOS:**
-
-Unix Makefiles/Ninja are single-config generators, so Debug and Release live in separate
-build directories rather than one `-C <cfg>` selecting between them:
-
-```
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j
-ctest --test-dir build --output-on-failure
-```
-
-### Build options
-
-All default to the values shown; pass `-D<OPTION>=ON/OFF` at configure time to change them.
-
-| Option | Default | Notes |
-|---|---|---|
-| `PULSATRIX_BUILD_TESTS` | `ON` | Builds the GoogleTest suite (fetched automatically). |
-| `PULSATRIX_BUILD_EXAMPLES` | `ON` | Builds the demo executables in `examples/`. |
-| `PULSATRIX_ENABLE_CUDA` | `OFF` | Builds the CUDA `DeviceBackend`. Requires the CUDA Toolkit (`find_package(CUDAToolkit)` must succeed). Defaults to compiling for the local GPU's architecture (`CMAKE_CUDA_ARCHITECTURES=native`) — override that variable yourself if you need a binary that runs on a different GPU. |
-| `PULSATRIX_ENABLE_HIP` | `OFF` | Builds the HIP/ROCm `DeviceBackend`. Requires a ROCm toolchain (`find_package(hip)`/`find_package(hipblas)` must succeed) — see the "HIP/ROCm backend" section below. Defaults `CMAKE_HIP_ARCHITECTURES` to `gfx1151` (this project's verified dev device); override for another target. |
-| `PULSATRIX_ENABLE_PYTHON` | `OFF` | Builds the pybind11 Python bindings. **Requires** `-DPYTHON_EXECUTABLE=<path-to-python>` (or the `PULSATRIX_PYTHON_EXECUTABLE` environment variable) pointing at a Python install with dev headers. Note the variable name: pybind11 2.13.x reads the legacy `PYTHON_EXECUTABLE`, not `Python3_EXECUTABLE` — passing the latter alone is silently ignored and pybind11 falls back to whatever `python3` resolves to on `PATH`. |
+See **[Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/)** for the full
+walkthrough — Linux/macOS commands, the build options table (`PULSATRIX_ENABLE_CUDA`/
+`_HIP`/`_PYTHON`, etc.), and a build-troubleshooting FAQ.
 
 ### HIP/ROCm backend (`PULSATRIX_ENABLE_HIP=ON`)
 

@@ -2,7 +2,7 @@
  *  @brief Differentiable fuzzy disjunction (t-conorm) -- Phase 1 Mission 0 of
  *         campaign_exai_dl_library_neuro_symbolic (differentiable fuzzy-logic core,
  *         Logic Tensor Networks-shaped).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 
