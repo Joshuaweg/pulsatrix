@@ -40,3 +40,7 @@ for those) — the existing demos stay as-is and are cross-linked here where rel
 
 - [Sparse autoencoder + linear probe](../recipes/mechanistic-interpretability/sparse_autoencoder_probe.md)
 - [GFlowNet on HyperGrid](../recipes/mechanistic-interpretability/gflownet_hypergrid.md)
+
+## Neuro-Symbolic Reasoning
+
+- [Datalog LRP bridge](../recipes/neuro-symbolic/datalog_lrp_bridge.md)

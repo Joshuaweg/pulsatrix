@@ -58,3 +58,17 @@ numbers), and share their training loop and hyperparameters with a matching inte
 | `a2c_cartpole_demo` | A2C (actor-critic). Prints episode-length progression, the first-10%/last-10% comparison, and the critic's own learning curve. |
 | `ppo_cartpole_demo` | PPO (GAE + clipped surrogate, multi-epoch updates). Prints episode-length progression, the first-10%/last-10% comparison, and the probability-ratio drift that proves the multi-epoch updates are real. |
 | `sac_continuous_cartpole_demo` | SAC (twin critics, reparameterized tanh-squashed policy, entropy regularization) on the continuous-action variant of CartPole. Prints episode-length progression plus SAC-specific diagnostics (learned exploration scale, entropy log-probability, twin-critic min-selection balance, soft-target tracking distance). |
+
+## Visualization
+
+These are GUI demos (Dear ImGui + ImPlot windows, not stdout output) and are **not** built by
+default — they require `-DPULSATRIX_ENABLE_VIZ=ON` at configure time (a display and GPU driver
+are needed to run them). See the [Visualization docs](https://joshuaweg.github.io/pulsatrix/visualization/)
+for the data-only/rendering split this module is built on.
+
+| Target | What it demonstrates |
+|---|---|
+| `explanation_dashboard_demo` | `AttributionBarChart`, `AttributionWaterfallChart`, `SaliencyHeatmapView`, `CircuitGraphView`, and `ExplanationScoreCard`, all run against the same small Linear->ReLU->Linear network `explainer_demo` uses. |
+| `training_dashboard_demo` | Trains `XorNetwork` live, a few steps per frame, logging through `ImPlotMetricsSink` and drawing `TrainingDashboard` so the loss curve visibly animates. |
+| `dataset_preview_demo` | `DatasetStatisticsView` (per-field histograms + `DatasetValidator` issue count) and `ImageGridView` (texture-cached thumbnail grid) against small synthetic datasets — no external file/download dependency. |
+| `live_inference_demo` | Reuses `ExplanationScoreCard` as a "live inference" view: cycles through the XOR inputs, recomputing Saliency + LRP conservation for whichever one is currently live. |

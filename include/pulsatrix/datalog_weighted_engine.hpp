@@ -2,7 +2,7 @@
  *  @brief Semiring-parameterized bottom-up fixpoint evaluation -- the weighted counterparts of
  *         Mission 0's `naive_evaluate`/`semi_naive_evaluate`. Phase 3 Mission 1 of
  *         campaign_exai_dl_library_neuro_symbolic (Generic Provenance-Semiring Abstraction).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

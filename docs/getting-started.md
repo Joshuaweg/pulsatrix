@@ -36,8 +36,8 @@ build/Release/xor_demo.exe
 ```
 
 See [`examples/README.md`](https://github.com/Joshuaweg/pulsatrix/blob/master/examples/README.md)
-for the full list of 11 runnable demos (layers, sequence models, transformers, explainers, and
-five RL algorithms).
+for the full list of 16 runnable demos (layers, sequence models, transformers, explainers,
+five RL algorithms, and four opt-in visualization demos).
 
 ## Prerequisites
 

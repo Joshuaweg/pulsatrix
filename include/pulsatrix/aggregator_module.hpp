@@ -3,7 +3,7 @@
  *         campaign_exai_dl_library_neuro_symbolic (Logic Tensor Networks' Real Logic:
  *         `agg_p(x) = (mean(x^p))^(1/p)`, standing in for a fuzzy universal/existential
  *         quantifier over a batch of groundings).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

@@ -4,7 +4,7 @@
  *         `Semiring` trait shape, carrying a value and its derivative w.r.t. one seeded
  *         scalar through every `⊕`/`⊗` the weighted engine performs. Phase 3 Mission 2 of
  *         campaign_exai_dl_library_neuro_symbolic (Neural-Predicate Integration).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

@@ -1,7 +1,7 @@
 /** @file datalog_weighted_fact_database.hpp
  *  @brief A map from ground Datalog atom to a semiring-typed weight. Phase 3 Mission 1 of
  *         campaign_exai_dl_library_neuro_symbolic (Generic Provenance-Semiring Abstraction).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

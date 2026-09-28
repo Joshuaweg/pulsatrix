@@ -1,7 +1,7 @@
 /** @file satisfaction_loss.hpp
  *  @brief Real-Logic-style knowledge-base satisfaction loss -- Phase 1 Mission 1 of
  *         campaign_exai_dl_library_neuro_symbolic.
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

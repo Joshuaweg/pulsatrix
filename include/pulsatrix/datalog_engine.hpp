@@ -1,7 +1,7 @@
 /** @file datalog_engine.hpp
  *  @brief Bottom-up fixpoint evaluation (naive and semi-naive), boolean semiring only.
  *         Phase 3 Mission 0 of campaign_exai_dl_library_neuro_symbolic (Datalog core).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

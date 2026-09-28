@@ -1,7 +1,7 @@
 /** @file datalog_term.hpp
  *  @brief Function-symbol-free Datalog term -- a constant or a variable, never a compound
  *         term. Phase 3 Mission 0 of campaign_exai_dl_library_neuro_symbolic (Datalog core).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 

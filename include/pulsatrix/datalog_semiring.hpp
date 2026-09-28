@@ -2,7 +2,7 @@
  *  @brief Generic provenance-semiring abstraction (`zero`/`one`/`add`=(+)/`mul`=(x)) plus the
  *         boolean (trivial) and real-valued (+, x) concrete instantiations. Phase 3 Mission 1
  *         of campaign_exai_dl_library_neuro_symbolic (Generic Provenance-Semiring Abstraction).
- *  @ingroup dl_modules
+ *  @ingroup neuro_symbolic
  */
 #pragma once
 
