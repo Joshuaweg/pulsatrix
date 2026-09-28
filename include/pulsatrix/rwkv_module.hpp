@@ -1,6 +1,7 @@
 /** @file rwkv_module.hpp
- *  @brief RWKV-4 time-mixing (WKV linear-attention) recurrence. LRP rule deliberately
- *         deferred -- propagate_relevance throws, by design (see the class-level note).
+ *  @brief RWKV-4 time-mixing (WKV linear-attention) recurrence, with an original derived
+ *         LRP rule adapting MambaLRP's detach-the-gate technique to the WKV quotient (see
+ *         the class-level note).
  *  @ingroup dl_modules
  */
 #pragma once
@@ -51,17 +52,41 @@ namespace pulsatrix {
  *       Exp/Sigmoid op; this follows MambaModule's first-occurrence-per-need disposition
  *       (which did the same for softplus/exp) rather than speculatively adding backend
  *       primitives in a module mission.
- * @note **No LRP rule -- deliberate, logged charter deviation.** Per the Phase 5 amendment
- *       of campaign_exai_dl_library_phase6_modern_architectures (2026-09-23, operator-
- *       directed), this module ships its real forward()/backward() (full BPTT, finite-
- *       difference verified, same rigor as every prior module) but *no* relevance rule:
- *       propagate_relevance is a real override satisfying Module's pure-virtual contract
- *       whose body unconditionally throws std::logic_error. A loud, explicit throw is the
- *       honest signal; returning zeros, an approximation or a gradient-based substitute
- *       would be a silent wrong answer, which is exactly the Captum/Zennit failure mode
- *       this project exists to avoid. Consequently RWKVModule is deliberately absent from
- *       lrp_conservation_test.cpp's AllModuleTypeCases() -- there is no relevance to
- *       conserve. See the campaign's Decision Point 2.
+ * @note **LRP rule -- original derivation (2026-09-27, operator-directed reassessment
+ *       following campaign_exai_dl_library_phase6_modern_architectures's Decision Point 2
+ *       and RetNet's own resolved derivation).** The mission's a-priori hypothesis was that
+ *       the WKV num/den quotient would inherit SoftmaxModule's non-conserving DTD-
+ *       approximation shape; fresh re-derivation (not a re-run of the same guess) found
+ *       otherwise. Unrolling: `num_t = a_{t-1} + e_t*v_t` and `den_t = b_{t-1} + e_t`, with
+ *       `a_t = decay*a_{t-1} + kk_t*v_t` (`kk_t = exp(k_t)`, no bonus) -- so
+ *       `wkv_t = num_t/den_t` is, at every step, a **two-term weighted sum of `a_{t-1}` and
+ *       `v_t`** with weights `1/den_t` and `e_t/den_t` (which sum to exactly 1 by
+ *       construction), and `a_t` is itself a two-term weighted sum of `a_{t-1}` and `v_t`
+ *       with weights `decay` and `kk_t`. This is structurally MambaModule's own
+ *       `h_t = Abar_t*h_{t-1} + Bbar_t*x_t` shape, not softmax's cross-normalizing shape --
+ *       so the *same* MambaLRP technique applies: **detach `e_t`, `kk_t`, `decay` (and the
+ *       receptance gate `r_t`) as constants** (they are already data-dependent gates in
+ *       Mamba's Abar/Bbar/C, detached there for the same reason), and apply the standard
+ *       weighted-sum epsilon/z-rule to the two surviving weighted-sum nodes (`wkv_t`'s
+ *       quotient and `a_t`'s carry), threading a state-relevance carry backward across `t`
+ *       exactly the way MambaModule's own `r_h_carry` does. Consequently `w_r_`, `mu_r_`,
+ *       `w_k_`, `mu_k_`, `u_` never appear in propagate_relevance() at all -- receptance
+ *       and the key path are consumed only through their cached, *detached* forward values
+ *       (`last_r_`, `last_e_`, `last_kk_`), mirroring MambaModule's own identical treatment
+ *       of `w_delta_`/`bias_delta_`/`w_b_`/`w_c_`. `w_` (the decay rate) is the one
+ *       exception: `decay = exp(-w_)` is recomputed from the live parameter rather than
+ *       cached, so it is technically referenced -- but only to reconstruct a detached
+ *       forward *value* used as a fixed weight, the same role every other detached gate
+ *       plays, not to compute `w_`'s own relevance share (there is no such concept for any
+ *       weight tensor in this codebase's LRP rules). None of these six parameters ever
+ *       receives a bilinear-split or weighted-sum relevance share of its own. Verified on a
+ *       hand-worked single-channel,
+ *       L=3 example before implementation (see the mission's Completion Summary): the
+ *       composed rule conserves exactly there (mod the usual epsilon stabilizers), so
+ *       RWKVModule -- like RetNetModule, and unlike SoftmaxModule/MultiHeadAttentionModule
+ *       -- belongs in lrp_conservation_test.cpp's AllModuleTypeCases(). See the campaign's
+ *       Decision Point 2 addendum for the full outcome, distinguishing this resolved case
+ *       from RetNet's independently-resolved (and approximation-free) one.
  */
 class RWKVModule : public Module {
 public:
@@ -174,20 +199,31 @@ public:
     [[nodiscard]] const Tensor& mu_v_grad() const { return mu_v_grad_; }
 
     /**
-     * @brief **Not implemented, by design.** Unconditionally throws -- this module ships
-     *        without an LRP rule under the campaign's logged Phase 5 charter deviation (see
-     *        the class-level note). The override exists so Module's pure-virtual contract is
-     *        satisfied honestly rather than weakened; its body redistributes nothing.
-     * @param relevance_out Relevance at this module's output. Only its device is inspected
-     *        (by the debug-only device guard); no relevance is read or redistributed.
-     * @param config Selects the LRP rule variant. Unused -- there is no rule to configure.
-     * @return Never returns.
-     * @throws std::logic_error always, with the message "RWKVModule::propagate_relevance:
-     *         LRP rule not yet implemented -- see campaign Decision Point 2".
-     * @note The PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu) device guard is kept
-     *       *ahead* of the throw so this entry point stays consistent with forward()/
-     *       backward() (and so it keeps firing for the death-test convention every module
-     *       here follows). It becomes load-bearing the moment a real rule lands.
+     * @brief The original derived LRP rule (see the class-level note): MambaLRP's
+     *        detach-the-gate technique adapted to the WKV quotient. Detaches the receptance
+     *        gate `r_t` and the num/den weights (`e_t`, `kk_t`, `decay`) as constants, then
+     *        applies the standard weighted-sum epsilon/z-rule to `wkv_t = num_t/den_t` and
+     *        to the state carry `a_t = decay*a_{t-1} + kk_t*v_t`, threading a state-
+     *        relevance carry backward across `t` (mirroring MambaModule's `r_h_carry`),
+     *        then the output/value projections' own no-bias z-rule and the value
+     *        token-shift's weighted-sum split.
+     * @param relevance_out Relevance at this module's output. Must be (N, L, d_model)
+     *        matching the most recent forward() call's output shape.
+     * @param config Supplies the epsilon stabilizer used throughout.
+     * @return Relevance at this module's input, shape (N, L, d_model).
+     * @throws std::logic_error if forward() has never been called.
+     * @throws std::invalid_argument if relevance_out's shape doesn't match the cached
+     *         forward output shape.
+     * @note `w_r_`, `mu_r_`, `w_k_`, `mu_k_`, `u_` never appear below at all; `w_` appears
+     *       only to reconstruct the detached `decay` value, not to compute its own
+     *       relevance share -- see the class-level note. Only `w_v_`, `w_o_`, `mu_v_`
+     *       (and `w_` for `decay`) participate.
+     * @note Not yet backend-generic -- raw host loops, mirroring forward_impl()/backward().
+     *       PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu) guards against silent
+     *       UB on a CUDA-backed Tensor.
+     * @note Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the
+     *       usual epsilon stabilizers -- NOT a known non-conserving approximation like
+     *       SoftmaxModule's Eq. 13.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 

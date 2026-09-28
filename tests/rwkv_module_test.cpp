@@ -406,45 +406,92 @@ TEST_F(RWKVModuleTest, BackwardAccumulatesGradientsAcrossCalls) {
 }
 
 // ---------------------------------------------------------------------------------------
-// The deliberate, logged absence of an LRP rule.
+// The original derived LRP rule (2026-09-27 follow-on to Decision Point 2, reassessed
+// fresh after RetNet's own resolved derivation -- see the header's derivation note).
 // ---------------------------------------------------------------------------------------
 
-// This module ships without a relevance rule under the campaign's Phase 5 charter deviation
-// (operator-directed, see the class-level note). The throw is the *contract*, not a gap: it
-// is tested here so the deviation stays visible and intentional, and so that quietly
-// replacing the throw with zeros or an approximation would break the suite. Also confirms
-// the throw is unconditional -- it fires on a perfectly well-formed, post-forward call.
-TEST_F(RWKVModuleTest, PropagateRelevanceThrowsNotYetImplemented) {
+TEST_F(RWKVModuleTest, PropagateRelevanceThrowsIfCalledBeforeForward) {
+    RWKVModule rwkv(1, &backend);
+    Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f});
+    EXPECT_THROW({ (void)rwkv.propagate_relevance(relevance_out, LRPRuleConfig{}); }, std::logic_error);
+}
+
+TEST_F(RWKVModuleTest, PropagateRelevanceThrowsOnShapeMismatchedRelevanceOut) {
+    RWKVModule rwkv(kD, &backend);
+    apply_params(rwkv, RWKVParams{});
+    (void)rwkv.forward(fd_input(backend));
+    Tensor wrong_shape(Shape({1, 3, kD}), &backend);
+    EXPECT_THROW({ (void)rwkv.propagate_relevance(wrong_shape, LRPRuleConfig{}); }, std::invalid_argument);
+}
+
+// The mission's hand-worked example (single channel, L = 3, gamma-free WKV quotient --
+// see plan_retnet_rwkv_lrp_derivation.md's Completion Summary) proved the detach-the-gate
+// decomposition conserves exactly there. This end-to-end test exercises the *implemented*
+// rule against the *implemented* forward on the same non-trivial fixture the finite-
+// difference gradient checks already use, with R(Y) = Y itself (the standard "explain the
+// output" LRP root).
+TEST_F(RWKVModuleTest, PropagateRelevanceConservesOnFiniteDifferenceFixture) {
+    RWKVModule rwkv(kD, &backend);
+    apply_params(rwkv, RWKVParams{});
+    Tensor input = fd_input(backend);
+    Tensor output = rwkv.forward(input);
+
+    Tensor relevance_out(output.shape(), &backend);
+    for (int64_t i = 0; i < output.numel(); ++i) {
+        relevance_out.data()[i] = output.data()[i];
+    }
+    Tensor relevance_in = rwkv.propagate_relevance(relevance_out, LRPRuleConfig{});
+
+    float sum_in = 0.0f;
+    for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+    float sum_out = 0.0f;
+    for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+
+    EXPECT_NEAR(sum_in, sum_out, 1e-2f);
+}
+
+// A second, independent conservation check with a distinct relevance seed (not R(Y) = Y),
+// to catch a rule that only happens to conserve on the "explain the output" root.
+TEST_F(RWKVModuleTest, PropagateRelevanceConservesWithArbitraryRelevanceSeed) {
     RWKVModule rwkv(kD, &backend);
     apply_params(rwkv, RWKVParams{});
     Tensor input = fd_input(backend);
     (void)rwkv.forward(input);
 
     Tensor relevance_out(Shape({1, 4, kD}), &backend, {1.0f, 2.0f, 0.5f, -0.5f, 1.5f, 0.8f, -1.2f, 0.7f});
-    try {
-        (void)rwkv.propagate_relevance(relevance_out, LRPRuleConfig{});
-        FAIL() << "propagate_relevance returned instead of throwing -- this module has no LRP rule by design";
-    } catch (const std::logic_error& e) {
-        EXPECT_STREQ(e.what(),
-                     "RWKVModule::propagate_relevance: LRP rule not yet implemented -- see campaign Decision "
-                     "Point 2");
-    }
+    Tensor relevance_in = rwkv.propagate_relevance(relevance_out, LRPRuleConfig{});
+
+    float sum_in = 0.0f;
+    for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+    float sum_out = 0.0f;
+    for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+
+    EXPECT_NEAR(sum_in, sum_out, 1e-2f);
 }
 
-// ...and it fires even before any forward() call, since there is no cached state it could
-// possibly need. A rule-bearing module would throw the "called before any forward()"
-// logic_error here instead; the message assertion pins which of the two this is.
-TEST_F(RWKVModuleTest, PropagateRelevanceThrowsNotYetImplementedEvenBeforeForward) {
-    RWKVModule rwkv(1, &backend);
-    Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f});
-    try {
-        (void)rwkv.propagate_relevance(relevance_out, LRPRuleConfig{});
-        FAIL() << "propagate_relevance returned instead of throwing";
-    } catch (const std::logic_error& e) {
-        EXPECT_STREQ(e.what(),
-                     "RWKVModule::propagate_relevance: LRP rule not yet implemented -- see campaign Decision "
-                     "Point 2");
-    }
+// gamma-analogue edge case: decay = exp(-w) -> 1 (w = 0) and the current-token bonus u = 0
+// collapse e_t to exactly kk_t, so the readout's "num_t/den_t" weighted sum and the state
+// carry's weighted sum use IDENTICAL weights for the current token -- the degenerate case
+// most likely to expose a sign or index error in the two-weighted-sum composition (the
+// two splits would be indistinguishable if the rule secretly conflated them).
+TEST_F(RWKVModuleTest, PropagateRelevanceConservesWithZeroDecayAndZeroBonus) {
+    RWKVModule rwkv(kD, &backend);
+    RWKVParams p;
+    p.w = {0.0f, 0.0f};
+    p.u = {0.0f, 0.0f};
+    apply_params(rwkv, p);
+    Tensor input = fd_input(backend);
+    Tensor output = rwkv.forward(input);
+
+    Tensor relevance_out(output.shape(), &backend, {1.0f, -0.5f, 0.8f, 1.3f, -0.6f, 0.4f, 0.9f, -1.1f});
+    Tensor relevance_in = rwkv.propagate_relevance(relevance_out, LRPRuleConfig{});
+
+    float sum_in = 0.0f;
+    for (int64_t i = 0; i < relevance_in.numel(); ++i) sum_in += relevance_in.data()[i];
+    float sum_out = 0.0f;
+    for (int64_t i = 0; i < relevance_out.numel(); ++i) sum_out += relevance_out.data()[i];
+
+    EXPECT_NEAR(sum_in, sum_out, 1e-2f);
 }
 
 using RWKVModuleDeathTest = RWKVModuleTest;
@@ -475,9 +522,10 @@ TEST_F(RWKVModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
     EXPECT_DEATH({ (void)rwkv.backward(grad_output); }, "PULSATRIX_ASSERT failed");
 }
 
-// The device guard sits AHEAD of propagate_relevance's unconditional throw (see the header's
-// note), so a CUDA-backed relevance tensor must abort rather than throw -- this test would
-// fail with "threw std::logic_error" if the guard were ever reordered behind the throw.
+// The device guard sits AHEAD of the actual relevance computation (see the header's note),
+// so a CUDA-backed relevance tensor must abort rather than run the (undefined-behavior) host
+// loops -- this test would fail with a segfault/garbage result instead of a clean abort if
+// the guard were ever removed or reordered behind the computation.
 TEST_F(RWKVModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
     GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
