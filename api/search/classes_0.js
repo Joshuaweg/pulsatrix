@@ -9,7 +9,10 @@ var searchData=
   ['atom_6',['Atom',['../classpulsatrix_1_1datalog_1_1Atom.html',1,'pulsatrix::datalog']]],
   ['atomhash_7',['AtomHash',['../structpulsatrix_1_1datalog_1_1AtomHash.html',1,'pulsatrix::datalog']]],
   ['attribution_8',['Attribution',['../structpulsatrix_1_1Attribution.html',1,'pulsatrix']]],
-  ['audiofolderdataset_9',['AudioFolderDataset',['../classpulsatrix_1_1AudioFolderDataset.html',1,'pulsatrix']]],
-  ['autograd_10',['Autograd',['../classpulsatrix_1_1Autograd.html',1,'pulsatrix']]],
-  ['avgpool2dmodule_11',['AvgPool2DModule',['../classpulsatrix_1_1AvgPool2DModule.html',1,'pulsatrix']]]
+  ['attributionbarchart_9',['AttributionBarChart',['../classpulsatrix_1_1AttributionBarChart.html',1,'pulsatrix']]],
+  ['attributionbeeswarmview_10',['AttributionBeeswarmView',['../classpulsatrix_1_1AttributionBeeswarmView.html',1,'pulsatrix']]],
+  ['attributionwaterfallchart_11',['AttributionWaterfallChart',['../classpulsatrix_1_1AttributionWaterfallChart.html',1,'pulsatrix']]],
+  ['audiofolderdataset_12',['AudioFolderDataset',['../classpulsatrix_1_1AudioFolderDataset.html',1,'pulsatrix']]],
+  ['autograd_13',['Autograd',['../classpulsatrix_1_1Autograd.html',1,'pulsatrix']]],
+  ['avgpool2dmodule_14',['AvgPool2DModule',['../classpulsatrix_1_1AvgPool2DModule.html',1,'pulsatrix']]]
 ];

@@ -8,9 +8,12 @@ var searchData=
   ['asha_2ehpp_5',['asha.hpp',['../asha_8hpp.html',1,'']]],
   ['assert_2ehpp_6',['assert.hpp',['../assert_8hpp.html',1,'']]],
   ['attribution_2ehpp_7',['attribution.hpp',['../attribution_8hpp.html',1,'']]],
-  ['audio_5fcollate_2ehpp_8',['audio_collate.hpp',['../audio__collate_8hpp.html',1,'']]],
-  ['audio_5ffolder_5fdataset_2ehpp_9',['audio_folder_dataset.hpp',['../audio__folder__dataset_8hpp.html',1,'']]],
-  ['audio_5ftransforms_2ehpp_10',['audio_transforms.hpp',['../audio__transforms_8hpp.html',1,'']]],
-  ['autograd_2ehpp_11',['autograd.hpp',['../autograd_8hpp.html',1,'']]],
-  ['avg_5fpool2d_5fmodule_2ehpp_12',['avg_pool2d_module.hpp',['../avg__pool2d__module_8hpp.html',1,'']]]
+  ['attribution_5fbar_5fchart_2ehpp_8',['attribution_bar_chart.hpp',['../attribution__bar__chart_8hpp.html',1,'']]],
+  ['attribution_5fbeeswarm_2ehpp_9',['attribution_beeswarm.hpp',['../attribution__beeswarm_8hpp.html',1,'']]],
+  ['attribution_5fwaterfall_2ehpp_10',['attribution_waterfall.hpp',['../attribution__waterfall_8hpp.html',1,'']]],
+  ['audio_5fcollate_2ehpp_11',['audio_collate.hpp',['../audio__collate_8hpp.html',1,'']]],
+  ['audio_5ffolder_5fdataset_2ehpp_12',['audio_folder_dataset.hpp',['../audio__folder__dataset_8hpp.html',1,'']]],
+  ['audio_5ftransforms_2ehpp_13',['audio_transforms.hpp',['../audio__transforms_8hpp.html',1,'']]],
+  ['autograd_2ehpp_14',['autograd.hpp',['../autograd_8hpp.html',1,'']]],
+  ['avg_5fpool2d_5fmodule_2ehpp_15',['avg_pool2d_module.hpp',['../avg__pool2d__module_8hpp.html',1,'']]]
 ];

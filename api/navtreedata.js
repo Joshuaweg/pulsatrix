@@ -61,17 +61,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CenterCropTransform.html#a09de3ace3c0ae5d1f473d300208ecaec",
-"classpulsatrix_1_1EmbeddingModule.html#a14cc586412aaf44f2c6955ed5164a2c8",
-"classpulsatrix_1_1HyperGridEnv.html#a4eadf4f47584831c46e60698eccdd020",
-"classpulsatrix_1_1MambaModule.html#a482a76b0c6246791fba3c89a7f1add76",
-"classpulsatrix_1_1PBTResumableTrial.html#a2c0ae9a28572470ff11ed747784291cb",
-"classpulsatrix_1_1RetNetModule.html#a219b3a595774a80c644c77efd3b00673",
-"classpulsatrix_1_1Tensor.html#a033bbd8ea7cb7d80638849e0d327a551",
-"classpulsatrix_1_1datalog_1_1Term.html#a74dbe7366b2618ef4fe16ebe6e9da78e",
-"namespacepulsatrix.html#a5eb50e58a73bb7390b16c2318116da9d",
-"structpulsatrix_1_1FieldStatistics.html#a26910779103a3fd563541bdf0e40a5fc",
-"structpulsatrix_1_1datalog_1_1RealSemiring.html#a0bc467675571dbf7e928fc027aeaff40"
+"classpulsatrix_1_1CategoricalPolicyAgent.html",
+"classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ead0f758f4f092310da74b1523c78793bb",
+"classpulsatrix_1_1HIPBackend.html#aff78faa24ac9c1246184103ff88e3c40",
+"classpulsatrix_1_1LinearModule.html#ae14ee1e63296f573f6411a5f275b48ae",
+"classpulsatrix_1_1Node.html#a512f6e03a64d5add1e0b3bdd89ed930f",
+"classpulsatrix_1_1ResidualModule.html#a366cf671459f34f026677d08d6bbc48a",
+"classpulsatrix_1_1SubTBLoss.html#ad33da20e1ea7eec8786ab486847c79cf",
+"classpulsatrix_1_1XorNetwork.html#aee7f8d2e4756c13ebe39075b7f4c92cf",
+"kernel__shap_8hpp.html",
+"sgd__optimizer_8hpp.html",
+"structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

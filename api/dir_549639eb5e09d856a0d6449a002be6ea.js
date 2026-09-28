@@ -1,5 +1,6 @@
 var dir_549639eb5e09d856a0d6449a002be6ea =
 [
+    [ "viz", "dir_1df8ff9027259fc5f483c2d1b9c2e5ad.html", "dir_1df8ff9027259fc5f483c2d1b9c2e5ad" ],
     [ "acquisition_functions.hpp", "acquisition__functions_8hpp.html", "acquisition__functions_8hpp" ],
     [ "activation_snapshot.hpp", "activation__snapshot_8hpp.html", "activation__snapshot_8hpp" ],
     [ "adam_optimizer.hpp", "adam__optimizer_8hpp.html", "adam__optimizer_8hpp" ],
@@ -62,6 +63,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "evolution_strategies.hpp", "evolution__strategies_8hpp.html", "evolution__strategies_8hpp" ],
     [ "evolutionary_loop.hpp", "evolutionary__loop_8hpp.html", "evolutionary__loop_8hpp" ],
     [ "explainer_context.hpp", "explainer__context_8hpp.html", "explainer__context_8hpp" ],
+    [ "explainer_stability.hpp", "explainer__stability_8hpp.html", "explainer__stability_8hpp" ],
     [ "fixed_topology_xor_network.hpp", "fixed__topology__xor__network_8hpp.html", "fixed__topology__xor__network_8hpp" ],
     [ "flatten_module.hpp", "flatten__module_8hpp.html", "flatten__module_8hpp" ],
     [ "gae.hpp", "gae_8hpp.html", "gae_8hpp" ],
@@ -94,6 +96,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "linear_algebra.hpp", "linear__algebra_8hpp.html", "linear__algebra_8hpp" ],
     [ "linear_module.hpp", "linear__module_8hpp.html", "linear__module_8hpp" ],
     [ "linear_probe.hpp", "linear__probe_8hpp.html", "linear__probe_8hpp" ],
+    [ "lrp_conservation.hpp", "lrp__conservation_8hpp.html", "lrp__conservation_8hpp" ],
     [ "lrp_rule_config.hpp", "lrp__rule__config_8hpp.html", "lrp__rule__config_8hpp" ],
     [ "lstm_module.hpp", "lstm__module_8hpp.html", "lstm__module_8hpp" ],
     [ "mamba_module.hpp", "mamba__module_8hpp.html", "mamba__module_8hpp" ],

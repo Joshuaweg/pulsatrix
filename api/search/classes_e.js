@@ -12,11 +12,13 @@ var searchData=
   ['resizetransform_9',['ResizeTransform',['../classpulsatrix_1_1ResizeTransform.html',1,'pulsatrix']]],
   ['resumabletrial_10',['ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html',1,'pulsatrix']]],
   ['retnetmodule_11',['RetNetModule',['../classpulsatrix_1_1RetNetModule.html',1,'pulsatrix']]],
-  ['rmsnormmodule_12',['RMSNormModule',['../classpulsatrix_1_1RMSNormModule.html',1,'pulsatrix']]],
-  ['rnnmodule_13',['RNNModule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix']]],
-  ['rolloutbatch_14',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
-  ['rolloutbuffer_15',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
-  ['ropemodule_16',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
-  ['rule_17',['Rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog']]],
-  ['rwkvmodule_18',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
+  ['rgbcolor_12',['RgbColor',['../structpulsatrix_1_1RgbColor.html',1,'pulsatrix']]],
+  ['rgbimagebuffer_13',['RgbImageBuffer',['../structpulsatrix_1_1RgbImageBuffer.html',1,'pulsatrix']]],
+  ['rmsnormmodule_14',['RMSNormModule',['../classpulsatrix_1_1RMSNormModule.html',1,'pulsatrix']]],
+  ['rnnmodule_15',['RNNModule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix']]],
+  ['rolloutbatch_16',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
+  ['rolloutbuffer_17',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
+  ['ropemodule_18',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
+  ['rule_19',['Rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog']]],
+  ['rwkvmodule_20',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
 ];

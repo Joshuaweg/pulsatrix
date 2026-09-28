@@ -13,12 +13,13 @@ var searchData=
   ['datalog_5fweighted_5fengine_2ehpp_10',['datalog_weighted_engine.hpp',['../datalog__weighted__engine_8hpp.html',1,'']]],
   ['datalog_5fweighted_5ffact_5fdatabase_2ehpp_11',['datalog_weighted_fact_database.hpp',['../datalog__weighted__fact__database_8hpp.html',1,'']]],
   ['dataset_2ehpp_12',['dataset.hpp',['../dataset_8hpp.html',1,'']]],
-  ['dataset_5fvalidator_2ehpp_13',['dataset_validator.hpp',['../dataset__validator_8hpp.html',1,'']]],
-  ['detailed_5fbalance_5floss_2ehpp_14',['detailed_balance_loss.hpp',['../detailed__balance__loss_8hpp.html',1,'']]],
-  ['device_5fbackend_2ehpp_15',['device_backend.hpp',['../device__backend_8hpp.html',1,'']]],
-  ['disjunction_5fmodule_2ehpp_16',['disjunction_module.hpp',['../disjunction__module_8hpp.html',1,'']]],
-  ['dqn_5fagent_2ehpp_17',['dqn_agent.hpp',['../dqn__agent_8hpp.html',1,'']]],
-  ['dqn_5floss_2ehpp_18',['dqn_loss.hpp',['../dqn__loss_8hpp.html',1,'']]],
-  ['dqn_5ftarget_2ehpp_19',['dqn_target.hpp',['../dqn__target_8hpp.html',1,'']]],
-  ['dropout_5fmodule_2ehpp_20',['dropout_module.hpp',['../dropout__module_8hpp.html',1,'']]]
+  ['dataset_5fstatistics_5fview_2ehpp_13',['dataset_statistics_view.hpp',['../dataset__statistics__view_8hpp.html',1,'']]],
+  ['dataset_5fvalidator_2ehpp_14',['dataset_validator.hpp',['../dataset__validator_8hpp.html',1,'']]],
+  ['detailed_5fbalance_5floss_2ehpp_15',['detailed_balance_loss.hpp',['../detailed__balance__loss_8hpp.html',1,'']]],
+  ['device_5fbackend_2ehpp_16',['device_backend.hpp',['../device__backend_8hpp.html',1,'']]],
+  ['disjunction_5fmodule_2ehpp_17',['disjunction_module.hpp',['../disjunction__module_8hpp.html',1,'']]],
+  ['dqn_5fagent_2ehpp_18',['dqn_agent.hpp',['../dqn__agent_8hpp.html',1,'']]],
+  ['dqn_5floss_2ehpp_19',['dqn_loss.hpp',['../dqn__loss_8hpp.html',1,'']]],
+  ['dqn_5ftarget_2ehpp_20',['dqn_target.hpp',['../dqn__target_8hpp.html',1,'']]],
+  ['dropout_5fmodule_2ehpp_21',['dropout_module.hpp',['../dropout__module_8hpp.html',1,'']]]
 ];
