@@ -7,11 +7,13 @@ var searchData=
   ['term_4',['Term',['../classpulsatrix_1_1datalog_1_1Term.html',1,'pulsatrix::datalog']]],
   ['termhash_5',['TermHash',['../structpulsatrix_1_1datalog_1_1TermHash.html',1,'pulsatrix::datalog']]],
   ['textdataset_6',['TextDataset',['../classpulsatrix_1_1TextDataset.html',1,'pulsatrix']]],
-  ['tokenizer_7',['Tokenizer',['../classpulsatrix_1_1Tokenizer.html',1,'pulsatrix']]],
-  ['toyknowledgebase_8',['ToyKnowledgeBase',['../classpulsatrix_1_1ToyKnowledgeBase.html',1,'pulsatrix']]],
-  ['trajectorybalanceloss_9',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
-  ['transform_10',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
-  ['transformdataset_11',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
-  ['transformerblock_12',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
-  ['trial_13',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
+  ['texturecache_7',['TextureCache',['../classpulsatrix_1_1TextureCache.html',1,'pulsatrix']]],
+  ['tokenizer_8',['Tokenizer',['../classpulsatrix_1_1Tokenizer.html',1,'pulsatrix']]],
+  ['toyknowledgebase_9',['ToyKnowledgeBase',['../classpulsatrix_1_1ToyKnowledgeBase.html',1,'pulsatrix']]],
+  ['trainingdashboard_10',['TrainingDashboard',['../classpulsatrix_1_1TrainingDashboard.html',1,'pulsatrix']]],
+  ['trajectorybalanceloss_11',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
+  ['transform_12',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
+  ['transformdataset_13',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
+  ['transformerblock_14',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
+  ['trial_15',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
 ];

@@ -131,6 +131,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An explanation result: the raw attribution values, the method that produced them, and any relevant metadata (charter Part 2 SS4).  <a href="structpulsatrix_1_1Attribution.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionBarChart.html">AttributionBarChart</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a horizontal bar chart of an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s top-k features (hc_information_visualization.md SS1/SS5: position-on-shared-axis is the most accurately perceived encoding for magnitude &ndash; Cleveland-McGill rank 1 &ndash; and horizontal bars read naturally with long feature names). Bar length encodes magnitude; hue (DivergingColormap) encodes sign, never magnitude. Bars start at zero (Tufte lie-factor = 1).  <a href="classpulsatrix_1_1AttributionBarChart.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionBeeswarmView.html">AttributionBeeswarmView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a beeswarm plot for one feature's attribution values across many samples/predictions &ndash; the global "how does the model behave overall" view (hc_information_visualization.md SS5), complementing <a class="el" href="classpulsatrix_1_1AttributionBarChart.html" title="Draws a horizontal bar chart of an Attribution&#39;s top-k features (hc_information_visualization....">AttributionBarChart</a>'s single-prediction "why this one" view.  <a href="classpulsatrix_1_1AttributionBeeswarmView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionWaterfallChart.html">AttributionWaterfallChart</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a waterfall chart cascading from baseline_value to the final prediction (hc_information_visualization.md SS5: "correct for local explanation with
+       directional attribution... bars cascade from base rate to prediction; color
+       encodes direction; length encodes magnitude"). This is the one bar chart in this module that legitimately does not start at zero &ndash; Tufte's lie-factor rule is satisfied relative to baseline_value, the meaningful reference point, not zero.  <a href="classpulsatrix_1_1AttributionWaterfallChart.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AudioFolderDataset.html">AudioFolderDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;audio_file.wav&gt;, structurally identical to <a class="el" href="classpulsatrix_1_1ImageFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;image_file&gt;, mirroring torchvision&#39;s...">ImageFolderDataset</a> (Phase 2): sorted subdirectory names are classes, sorted filenames within each are samples, decoded lazily per <a class="el" href="classpulsatrix_1_1AudioFolderDataset.html#abc165044540b2de74a750a19527b8800">get()</a> via <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>.  <a href="classpulsatrix_1_1AudioFolderDataset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,6 +151,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AvgPool2DModule.html">AvgPool2DModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Average pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; same minimal-cut discipline as MaxPool2DModule/Conv2DModule.  <a href="classpulsatrix_1_1AvgPool2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One feature-importance bar: a label and a signed value (sign carries direction).  <a href="structpulsatrix_1_1BarSeries.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Batch.html">Batch</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One collated batch: one stacked <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position.  <a href="structpulsatrix_1_1Batch.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,6 +162,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BCEWithLogitsLoss.html">BCEWithLogitsLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean( max(x,0) - x*y + log(1 + exp(-|x|)) ), over all N*k elements of a (N, k) logit tensor <code>x</code> against a target tensor <code>y</code> of the same shape.  <a href="classpulsatrix_1_1BCEWithLogitsLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BeeswarmPoint.html">BeeswarmPoint</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One beeswarm point: the attribution value (x) and a collision-avoidance vertical offset (y).  <a href="structpulsatrix_1_1BeeswarmPoint.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BoundedQueue.html">BoundedQueue</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity thread-safe queue with blocking push/pop &ndash; the bounded buffer between pulsatrix data-pipeline stages (campaign_exai_dl_library_data_pipeline). Not tied to any Dataset/DataLoader type; deliberately generic.  <a href="classpulsatrix_1_1BoundedQueue.html#details">More...</a><br /></td></tr>
@@ -170,6 +187,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CircuitGraph.html">CircuitGraph</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance score, plus the weighted edges between them.  <a href="classpulsatrix_1_1CircuitGraph.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CircuitGraphView.html">CircuitGraphView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a> as a node-link diagram: node position is topological depth (x-axis), node size and color encode ablation_effect via length/area AND Viridis (unsigned magnitude &ndash; never hue-for-magnitude, hc_information_visualization.md SS1), edge thickness encodes weight.  <a href="classpulsatrix_1_1CircuitGraphView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitNode.html">CircuitNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One node of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>: a computation-graph node plus its importance score.  <a href="structpulsatrix_1_1CircuitNode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,11 +205,18 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owns every <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> in a computation graph and exposes read access for graph-walking code (autograd's backward pass, Phase 2+ explainers).  <a href="classpulsatrix_1_1ComputationGraph.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ConfidenceMeter.html">ConfidenceMeter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a filled bar whose fill length encodes confidence (position/length, never color alone &ndash; hc_information_visualization.md SS1/SS5: "confidence bar/meter...
+       fastest to process"). The exact percentage is always rendered as text alongside the fill &ndash; never a color-only encoding (also satisfies WCAG: a colorblind user must be able to read the value without relying on hue).  <a href="classpulsatrix_1_1ConfidenceMeter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ConjunctionModule.html">ConjunctionModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = a T b</code> for a selected t-norm T, over two independent fuzzy-truth-valued operand tensors (values intended in [0,1]; out-of-range values are not rejected &ndash; see <a class="el" href="classpulsatrix_1_1ConjunctionModule.html#ac6eaa5103424a8647ecd5efc6e8d00ba" title="LRP relevance propagation for the selected t-norm – genuinely novel, no prior art (research_2026_neur...">propagate_relevance()</a>'s note and mission_0_tnorm_operators.md's adversarial section).  <a href="classpulsatrix_1_1ConjunctionModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConnectionGene.html">ConnectionGene</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One connection in a NEAT genome: an edge between two node IDs, its weight, whether it is currently active, and its historical marking (innovation number). Disabled connections are kept, not removed &ndash; NEAT's own design, preserving historical alignment for crossover (a future mission's concern, not built here).  <a href="structpulsatrix_1_1ConnectionGene.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConservationResult.html">ConservationResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of comparing a relevance-propagation step's input and output totals.  <a href="structpulsatrix_1_1ConservationResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ContinuousCartPoleEnv.html">ContinuousCartPoleEnv</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cart-pole balancing task with a <em>continuous</em> action: the action is a single force fraction in [-1, 1] rather than a discrete left/right choice.  <a href="classpulsatrix_1_1ContinuousCartPoleEnv.html#details">More...</a><br /></td></tr>
@@ -229,6 +256,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DatasetStatistics.html">DatasetStatistics</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>'s per-field descriptive statistics.  <a href="structpulsatrix_1_1DatasetStatistics.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DatasetStatisticsView.html">DatasetStatisticsView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws one histogram per <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field (small multiples, hc_information_visualization.md SS6) plus a flagged-issue count, using <a class="el" href="classpulsatrix_1_1DatasetValidator.html" title="Generic data validation over any Dataset implementation – descriptive statistics and missingness/outl...">DatasetValidator</a>'s existing production API (ComputeStatistics/DetectIssues) &ndash; no new core code needed, this is purely a consumer of data that already exists.  <a href="classpulsatrix_1_1DatasetStatisticsView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DatasetValidator.html">DatasetValidator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic data validation over any <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> implementation &ndash; descriptive statistics and missingness/outlier detection only (campaign_exai_dl_library_data_pipeline Decision Point 5: distributional drift detection and bias/fairness metrics are explicitly out of scope, named follow-ups for a future campaign).  <a href="classpulsatrix_1_1DatasetValidator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,6 +295,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps an ordered chain of Modules, running them via <a class="el" href="classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879" title="Runs forward() while also registering a ComputationGraph node (tagged with this module&#39;s op_type(),...">Module::forward_traced</a> to build a real <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> and <a class="el" href="classpulsatrix_1_1Autograd.html" title="Computes gradients by walking a ComputationGraph in reverse topological order.">Autograd</a> backward wiring &ndash; graph-native explainers (Missions 2-3) use <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088" title="The current graph (from the most recent forward_pass() call).">graph()</a>/backward_pass()/activation(); surrogate explainers (Phase 3) would use only <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a96409d2bd7b29e914b3281105cf97c4e" title="Runs the full module chain forward, building a fresh graph and caching every node&#39;s activation value ...">forward_pass()</a>, per the charter's stated interface segregation.  <a href="classpulsatrix_1_1ExplainerContext.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplanationScoreCard.html">ExplanationScoreCard</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aggregates, per prediction, a 2x2 panel: top row is "what was shown, how confident
+       was the model" (input label + <a class="el" href="classpulsatrix_1_1ConfidenceMeter.html" title="Draws a filled bar whose fill length encodes confidence (position/length, never color alone – hc_info...">ConfidenceMeter</a>), bottom row is "how trustworthy is
+       this explanation" (LRP conservation delta + explainer stability), visually separated by a rule (Gestalt proximity grouping &ndash; these are two different semantic questions, not one undifferentiated block of numbers).  <a href="classpulsatrix_1_1ExplanationScoreCard.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FieldStatistics.html">FieldStatistics</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptive statistics for one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position, aggregated across a whole <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>.  <a href="structpulsatrix_1_1FieldStatistics.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,8 +333,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GRUModule.html">GRUModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard GRU recurrence (Cho et al. 2014), h_0 = 0 (zero-initialized, not learnable &ndash; the same deliberate scope cut RNNModule/LSTMModule made, and the same thing that makes this module's conservation exact; see the LRP note below): z_t = sigmoid(x_t @ W_xz + h_{t-1} @ W_hz + b_z) (update gate), r_t = sigmoid(x_t @ W_xr + h_{t-1} @ W_hr + b_r) (reset gate), hn_prev_t = h_{t-1} @ W_hn (internal projection, no bias), n_t = tanh(x_t @ W_xn + r_t * hn_prev_t + b_n) (candidate), h_t = (1 - z_t) * h_{t-1} + z_t * n_t. Note the reset gate multiplies the <em>projected</em> previous hidden state <code>hn_prev_t</code>, not <code>h_{t-1}</code> itself &ndash; that projection is a distinct cached intermediate, and it is what gives GRU's LRP rule a different shape from LSTM's. Input (N, L, input_size) -&gt; output (N, L, hidden_size), the full hidden-state sequence (matches <a class="el" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t-1} @ W_hh + b_h), h_0 = 0 (zero-initialized, not learnable – a deliberat...">RNNModule</a>'s/LSTMModule's convention). Single layer, no bidirectional/multi-layer/variable-length support.  <a href="classpulsatrix_1_1GRUModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A row-major 2D grid of unsigned magnitude values, ready for a heatmap plot.  <a href="structpulsatrix_1_1HeatmapGrid.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html">HIPBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">HIP-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation, targeting AMD GPUs via ROCm.  <a href="classpulsatrix_1_1HIPBackend.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HistogramBins.html">HistogramBins</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equal-width histogram bins: rows.size() == counts.size() + 1 edges.  <a href="structpulsatrix_1_1HistogramBins.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HorizontalFlipTransform.html">HorizontalFlipTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mirrors the image left-right. In-place, no backend needed (same shape).  <a href="classpulsatrix_1_1HorizontalFlipTransform.html#details">More...</a><br /></td></tr>
@@ -318,6 +359,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImageFolderDataset.html">ImageFolderDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;image_file&gt;, mirroring torchvision's ImageFolder convention. Class names are the sorted subdirectory names; each class's label is its index in that sorted order. Images are decoded lazily (per <a class="el" href="classpulsatrix_1_1ImageFolderDataset.html#a1c5e82bd64b7a43d776324cefa507426">get()</a> call) via <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a>.  <a href="classpulsatrix_1_1ImageFolderDataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImageGridView.html">ImageGridView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a grid of image samples from a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> whose first <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field is a decoded (1,C,H,W) or (C,H,W) image tensor (e.g. <a class="el" href="classpulsatrix_1_1ImageFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;image_file&gt;, mirroring torchvision&#39;s...">ImageFolderDataset</a>) &ndash; the data-loading "preview what you're about to train on" touchpoint.  <a href="classpulsatrix_1_1ImageGridView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html">ImPlotMetricsSink</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concrete <a class="el" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form...">MetricsSink</a> (<a class="el" href="metrics__sink_8hpp.html" title="Keeps monitoring/visualization tools out of the training core – same OCP/DIP pattern as DeviceBackend...">metrics_sink.hpp</a>'s own doc comment names this the expected extension point: "Concrete writers... implement this") that buffers every logged scalar into a per-tag time series, and keeps the latest histogram snapshot per tag, for live rendering by a training dashboard. Zero core changes needed &ndash; MetricsSink* is already threaded through every training loop in this codebase (<a class="el" href="classpulsatrix_1_1XorNetwork.html#aee7f8d2e4756c13ebe39075b7f4c92cf" title="Runs one training step: forward, loss, backward through every layer, one Adam update per layer&#39;s para...">XorNetwork::train_step</a>, <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a985a7b6504845708e4fe12795f17d3ec" title="Runs one training step: forward, cross-entropy loss, backward through every layer,...">MnistConvNet::train_step</a>).  <a href="classpulsatrix_1_1ImPlotMetricsSink.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Individual.html">Individual</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single candidate solution in a genetic algorithm population.  <a href="structpulsatrix_1_1Individual.html#details">More...</a><br /></td></tr>
@@ -473,6 +520,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RetNetModule.html">RetNetModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N, L, d_model) -&gt; output (N, L, d_model).  <a href="classpulsatrix_1_1RetNetModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RgbColor.html">RgbColor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An RGB color, each channel in [0, 1].  <a href="structpulsatrix_1_1RgbColor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RgbImageBuffer.html">RgbImageBuffer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An interleaved-RGB, row-major byte buffer ready for a texture upload.  <a href="structpulsatrix_1_1RgbImageBuffer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html">RMSNormModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps), computed independently per batch row n. Batched ((N, num_features)), migrated from the original unbatched (rank-1) scope by campaign_exai_dl_library_batch_dimension_support &ndash; no mean-centering, no beta/bias term (RMSNorm's defining simplification vs. LayerNorm).  <a href="classpulsatrix_1_1RMSNormModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -494,6 +547,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Saliency.html">Saliency</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">ExplainerContext::backward_pass</a> with a one-hot vector at target_index.  <a href="classpulsatrix_1_1Saliency.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SaliencyHeatmapView.html">SaliencyHeatmapView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a 2D saliency heatmap with Viridis (perceptually uniform, colorblind-safe &ndash; hc_information_visualization.md SS4) for unsigned magnitude.  <a href="classpulsatrix_1_1SaliencyHeatmapView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Sample.html">Sample</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One dataset sample: an ordered list of <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> fields (e.g. {features, label} or {image, label}). Field order/count is a contract between a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> implementation and whatever CollateFn (<a class="el" href="collate_8hpp.html" title="Batch assembly – Batch, CollateFn, DefaultCollate.">collate.hpp</a>) later assembles samples into a <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>.  <a href="structpulsatrix_1_1Sample.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -502,6 +558,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SatisfactionLoss.html">SatisfactionLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>loss = 1 - agg_p(truth_values)</code> &ndash; the standard LTN "Real Logic" training objective (research_2026_neuro_symbolic_ai.md §1/§2): maximizing a knowledge base's aggregated satisfaction via ordinary gradient descent is the same as minimizing this loss.  <a href="classpulsatrix_1_1SatisfactionLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ScalarSeries.html">ScalarSeries</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One scalar tag's logged (step, value) pairs, in log order.  <a href="structpulsatrix_1_1ScalarSeries.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ScoreCardScaleContext.html">ScoreCardScaleContext</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared axis/color-scale state across several <a class="el" href="classpulsatrix_1_1ExplanationScoreCard.html" title="Aggregates, per prediction, a 2x2 panel: top row is &quot;what was shown, how confident        was the mod...">ExplanationScoreCard</a> instances shown together (small multiples &ndash; hc_information_visualization.md SS6), so each card's attribution bar chart uses a comparable scale rather than independently auto-scaling and silently making cross-card comparison invalid.  <a href="structpulsatrix_1_1ScoreCardScaleContext.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes a hyperparameter search space as an ordered list of named, typed parameters. Every HPO algorithm (grid/random search, GP-BO, TPE, Hyperband/ASHA) consumes a <code><a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a></code> to know what it may propose; this type itself has no sampling logic (that is each algorithm's own job, e.g. <code>RandomSample</code>/<code>GridSample</code>).  <a href="classpulsatrix_1_1SearchSpace.html#details">More...</a><br /></td></tr>
@@ -529,6 +591,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SpeciesAssignment.html">SpeciesAssignment</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Population grouping into species: each inner vector is a list of indices into the population vector that were passed to SpeciatePopulation.  <a href="structpulsatrix_1_1SpeciesAssignment.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1StabilityResult.html">StabilityResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of measuring an explainer's variance across repeated runs on the same input.  <a href="structpulsatrix_1_1StabilityResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1StepResult.html">StepResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What one <a class="el" href="classpulsatrix_1_1Environment.html#ad9703da6e1184b3b0d470d61c5fc552d" title="Advances the environment one timestep under the given action.">Environment::step()</a> produces: the next observation, this step's reward, and whether the episode ended.  <a href="structpulsatrix_1_1StepResult.html#details">More...</a><br /></td></tr>
@@ -558,11 +623,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextDataset.html">TextDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a line-delimited text corpus: each line becomes one sample, tokenized via <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a> and indexed via a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> into a (1, seq_len) float32 <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> of token indices &ndash; Decision Point 6's resolved representation (token IDs as float32 values, the same integer-as-float32 pattern <a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>'s label column and <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>'s class label already use). seq_len varies per sample; no padding here (see PadCollate, Mission 10) &ndash; an empty line produces a zero-element (1, 0) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, a valid, non-error <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> state.  <a href="classpulsatrix_1_1TextDataset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextureCache.html">TextureCache</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e.g. a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> index) so a scrolling image grid doesn't re-upload the same image every frame.  <a href="classpulsatrix_1_1TextureCache.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tokenizer.html">Tokenizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into lowercase word/punctuation tokens &ndash; pulsatrix's first text primitive (campaign_exai_dl_library_data_pipeline, Phase 3, Decision Point 6: a minimal whitespace/punctuation tokenizer, not BPE &ndash; training a real subword-merge algorithm is a project-sized undertaking on its own).  <a href="classpulsatrix_1_1Tokenizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ToyKnowledgeBase.html">ToyKnowledgeBase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A small, hand-traceable knowledge base: two neural predicates <code>A(x)</code>/<code>B(x)</code> (each a sigmoid-squashed <code>LinearModule(1,1)</code>, producing a fuzzy truth degree in <code>(0,1)</code>), one logical rule <code>A(x) -&gt; not(B(x))</code>, expressed via De Morgan (<code>not(A(x)) or not(B(x))</code>, Product t-conorm/t-negation) using only <code><a class="el" href="classpulsatrix_1_1NegationModule.html" title="y = 1 - x, elementwise. No parameters, no parameter gradients.">NegationModule</a></code>/<code><a class="el" href="classpulsatrix_1_1DisjunctionModule.html" title="y = a S b for a selected t-conorm S, over two independent fuzzy-truth-valued operand tensors (values ...">DisjunctionModule</a></code> (Mission 0) &ndash; no dedicated <code>Implication</code> <code><a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a></code> &ndash; aggregated across synthetic groundings into one scalar via <code><a class="el" href="classpulsatrix_1_1SatisfactionLoss.html" title="loss = 1 - agg_p(truth_values) – the standard LTN &quot;Real Logic&quot; training objective (research_2026_neur...">SatisfactionLoss</a></code> (Mission 1).  <a href="classpulsatrix_1_1ToyKnowledgeBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrainingDashboard.html">TrainingDashboard</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a live training dashboard: a data-ink-minimal per-tag summary line (last/min/max value, current step &ndash; Tufte SS6: no chartjunk, just the numbers that matter) followed by <a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html" title="A concrete MetricsSink (metrics_sink.hpp&#39;s own doc comment names this the expected extension point: &quot;...">ImPlotMetricsSink</a>'s line charts and histogram snapshots.  <a href="classpulsatrix_1_1TrainingDashboard.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html">TrajectoryBalanceLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>Δ(τ) = log Zθ + Σ log P_F(s_{t+1}|s_t) − log R(x) − Σ log P_B(s_t|s_{t+1})</code>, <code>loss = Δ(τ)²</code>.  <a href="classpulsatrix_1_1TrajectoryBalanceLoss.html#details">More...</a><br /></td></tr>
@@ -588,8 +659,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VideoFrameDirectoryDataset.html">VideoFrameDirectoryDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;clip_name&gt;/&lt;sequentially-named-frame-image&gt;, decoding each clip's frames (via <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a>) into one (T, C, H, W) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per sample.  <a href="classpulsatrix_1_1VideoFrameDirectoryDataset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html">VizWindow</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owns a GLFW window, OpenGL3 context, and ImGui/ImPlot context for the lifetime of one demo app. Every examples/viz/*_demo.cpp uses this instead of hand-rolling the standard imgui_impl_glfw_opengl3 boilerplate.  <a href="classpulsatrix_1_1VizWindow.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Token&lt;-&gt;index lookup table. Index 0 is always the reserved "&lt;unk&gt;" token &ndash; guaranteed by construction, not caller convention: the constructor takes the ranked list of <em>real</em> tokens and prepends "&lt;unk&gt;" itself.  <a href="classpulsatrix_1_1Vocabulary.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WaterfallStep.html">WaterfallStep</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One waterfall step: a labeled delta and the running cumulative value after it.  <a href="structpulsatrix_1_1WaterfallStep.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WavData.html">WavData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One decoded WAV file's contents: waveform <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> plus its sample rate.  <a href="structpulsatrix_1_1WavData.html#details">More...</a><br /></td></tr>
@@ -620,6 +697,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a6bc143576cb71fab19f76a88330f5a4f" id="r_a6bc143576cb71fab19f76a88330f5a4f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> = std::function&lt; std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1ResumableTrial.html">ResumableTrial</a> &gt;(const <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &amp;)&gt;</td></tr>
 <tr class="memdesc:a6bc143576cb71fab19f76a88330f5a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a fresh <a class="el" href="classpulsatrix_1_1ResumableTrial.html" title="A single hyperparameter configuration&#39;s live, resumable training state – own whatever network/optimiz...">ResumableTrial</a> for a given configuration.  <br /></td></tr>
 <tr class="separator:a6bc143576cb71fab19f76a88330f5a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae38e5361268c504e9b96249e75707a8" id="r_aae38e5361268c504e9b96249e75707a8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aae38e5361268c504e9b96249e75707a8">TextureId</a> = unsigned int</td></tr>
+<tr class="memdesc:aae38e5361268c504e9b96249e75707a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opaque GL texture handle, typed to avoid a GL header include in this public header.  <br /></td></tr>
+<tr class="separator:aae38e5361268c504e9b96249e75707a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -808,6 +888,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a460805a56a6a52c0f86ec6e5ed581dca"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a460805a56a6a52c0f86ec6e5ed581dca">RunEvolutionaryLoop</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt; population, size_t num_generations, size_t lambda_size, FitnessFn fitness_fn, OffspringFn produce_offspring_genotype, SurvivorFn survivor_selector, <a class="el" href="classpulsatrix_1_1DataThreadPool.html">DataThreadPool</a> *thread_pool=nullptr)</td></tr>
 <tr class="memdesc:a460805a56a6a52c0f86ec6e5ed581dca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs num_generations of the shared evolutionary-loop skeleton: evaluate -&gt; produce lambda_size offspring (via produce_offspring_genotype, called once per offspring) -&gt; evaluate offspring -&gt; survivor-select mu individuals for the next generation.  <br /></td></tr>
 <tr class="separator:a460805a56a6a52c0f86ec6e5ed581dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbbbc49f27d9abc30121803b8a105591" id="r_abbbbc49f27d9abc30121803b8a105591"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1StabilityResult.html">StabilityResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abbbbc49f27d9abc30121803b8a105591">ComputeAttributionStability</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; &amp;repeated_runs)</td></tr>
+<tr class="memdesc:abbbbc49f27d9abc30121803b8a105591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures an explainer's stability across repeated runs on the same input (charter's "repeated-run variance measured and documented" audit category). Known-unstable methods (<a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>, <a class="el" href="classpulsatrix_1_1KernelSHAP.html" title="Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression,...">KernelSHAP</a>) are expected to show is_deterministic == false; every other native/surrogate explainer in this codebase is deterministic by construction.  <br /></td></tr>
+<tr class="separator:abbbbc49f27d9abc30121803b8a105591"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a416909cba1eaf572fc95d96d7495a0dc" id="r_a416909cba1eaf572fc95d96d7495a0dc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a416909cba1eaf572fc95d96d7495a0dc">FixedTopologyXORForward</a> (const std::vector&lt; double &gt; &amp;theta, const std::array&lt; double, 2 &gt; &amp;inputs)</td></tr>
 <tr class="memdesc:a416909cba1eaf572fc95d96d7495a0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward pass: theta layout is [w1_00, w1_01, b1_0, w1_10, w1_11, b1_1, w2_0, w2_1, b2] &ndash; <code>h_j = sigmoid(w1_j0*x0 + w1_j1*x1 + b1_j)</code> for j in {0,1}, <code>y = sigmoid(w2_0*h0 + w2_1*h1 + b2)</code>.  <br /></td></tr>
 <tr class="separator:a416909cba1eaf572fc95d96d7495a0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -865,6 +948,9 @@ Functions</h2></td></tr>
 <tr class="memitem:abc312204e032ea8f6f81f09aeae4d9e2" id="r_abc312204e032ea8f6f81f09aeae4d9e2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc312204e032ea8f6f81f09aeae4d9e2">SolveLinearSystem</a> (std::vector&lt; std::vector&lt; float &gt; &gt; a, std::vector&lt; float &gt; b)</td></tr>
 <tr class="memdesc:abc312204e032ea8f6f81f09aeae4d9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A*x = b via Gaussian elimination with partial pivoting.  <br /></td></tr>
 <tr class="separator:abc312204e032ea8f6f81f09aeae4d9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65a61a87205c4d889e1c16baf4d439a9" id="r_a65a61a87205c4d889e1c16baf4d439a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ConservationResult.html">ConservationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a65a61a87205c4d889e1c16baf4d439a9">ComputeConservation</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_in, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out)</td></tr>
+<tr class="memdesc:a65a61a87205c4d889e1c16baf4d439a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sums relevance_in and relevance_out independently and reports their gap.  <br /></td></tr>
+<tr class="separator:a65a61a87205c4d889e1c16baf4d439a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88c88a8898d6848d8a6a21e268ef4035" id="r_a88c88a8898d6848d8a6a21e268ef4035"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a88c88a8898d6848d8a6a21e268ef4035">BitFlipMutationByMask</a> (const std::vector&lt; bool &gt; &amp;genotype, const std::vector&lt; bool &gt; &amp;flip_mask)</td></tr>
 <tr class="memdesc:a88c88a8898d6848d8a6a21e268ef4035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flips each gene where flip_mask is true, leaves the rest unchanged.  <br /></td></tr>
 <tr class="separator:a88c88a8898d6848d8a6a21e268ef4035"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1004,6 +1090,37 @@ Functions</h2></td></tr>
 <tr class="memitem:a2d278aa15e82c07f12370078484d3e92"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92">RunTPELoop</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, ObjectiveFn objective_fn, size_t num_initial_random, size_t num_iterations, double gamma, size_t num_candidates, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a2d278aa15e82c07f12370078484d3e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs TPE: num_initial_random uniformly-random trials (RandomSample), then num_iterations trials each chosen by splitting all trials so far into good/bad by the gamma quantile (maximization convention: good = highest objective values) and picking, among num_candidates uniformly-random candidates, the one maximizing LogDensityRatio.  <br /></td></tr>
 <tr class="separator:a2d278aa15e82c07f12370078484d3e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a858eb3cecb137b44c4f8792940ed740d" id="r_a858eb3cecb137b44c4f8792940ed740d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a858eb3cecb137b44c4f8792940ed740d">NormalizeUnsigned</a> (float value, float max_abs)</td></tr>
+<tr class="memdesc:a858eb3cecb137b44c4f8792940ed740d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalizes value into [0, 1] against a known maximum magnitude, for unsigned (magnitude-only) quantities such as saliency intensity or ablation effect.  <br /></td></tr>
+<tr class="separator:a858eb3cecb137b44c4f8792940ed740d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1284dd5415f64b3b45d4cc1156fe5d01" id="r_a1284dd5415f64b3b45d4cc1156fe5d01"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1284dd5415f64b3b45d4cc1156fe5d01">NormalizeSigned</a> (float value, float max_abs)</td></tr>
+<tr class="memdesc:a1284dd5415f64b3b45d4cc1156fe5d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalizes value into [-1, 1] against a known maximum absolute magnitude, for signed quantities such as attribution direction (positive/negative contribution).  <br /></td></tr>
+<tr class="separator:a1284dd5415f64b3b45d4cc1156fe5d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24584d97c280e278c14a60b8841de0f9" id="r_a24584d97c280e278c14a60b8841de0f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RgbColor.html">RgbColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a24584d97c280e278c14a60b8841de0f9">ViridisColormap</a> (float normalized_value)</td></tr>
+<tr class="memdesc:a24584d97c280e278c14a60b8841de0f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viridis colormap &ndash; perceptually uniform, colorblind-safe &ndash; for sequential/unsigned magnitude (hc_information_visualization.md SS4: "Recommended Color Systems").  <br /></td></tr>
+<tr class="separator:a24584d97c280e278c14a60b8841de0f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb4965a44bd544dcdcd56d7c3b602c8e" id="r_afb4965a44bd544dcdcd56d7c3b602c8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RgbColor.html">RgbColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afb4965a44bd544dcdcd56d7c3b602c8e">DivergingColormap</a> (float signed_normalized_value)</td></tr>
+<tr class="memdesc:afb4965a44bd544dcdcd56d7c3b602c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blue-White-Red diverging colormap for signed attribution (positive/negative contribution) &ndash; hue encodes direction only, never magnitude (hc_information_visualization.md SS1's Cleveland-McGill rule: color hue is categorical/directional, magnitude must be position or length).  <br /></td></tr>
+<tr class="separator:afb4965a44bd544dcdcd56d7c3b602c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab81a9c0a4ab6fc4d1d737368b0ec12b9" id="r_ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab81a9c0a4ab6fc4d1d737368b0ec12b9">ToFeatureImportanceBars</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int top_k)</td></tr>
+<tr class="memdesc:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1).  <br /></td></tr>
+<tr class="separator:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a0d96ad60ab368e82e5e29aa3605bbb" id="r_a8a0d96ad60ab368e82e5e29aa3605bbb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1WaterfallStep.html">WaterfallStep</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8a0d96ad60ab368e82e5e29aa3605bbb">ToWaterfallSteps</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, float baseline_value)</td></tr>
+<tr class="memdesc:a8a0d96ad60ab368e82e5e29aa3605bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into a cascading waterfall from a real baseline to the final prediction (hc_information_visualization.md SS5/SS6: the one case where a bar chart legitimately does not start at zero, since the baseline itself is the meaningful reference point &ndash; Tufte's lie-factor rule is satisfied relative to that baseline, not to zero).  <br /></td></tr>
+<tr class="separator:a8a0d96ad60ab368e82e5e29aa3605bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15e90a1cd35213623915bb921dc29117" id="r_a15e90a1cd35213623915bb921dc29117"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a15e90a1cd35213623915bb921dc29117">ToSaliencyHeatmap</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr)</td></tr>
+<tr class="memdesc:a15e90a1cd35213623915bb921dc29117"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reshapes an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s values into a 2D grid for a saliency overlay heatmap.  <br /></td></tr>
+<tr class="separator:a15e90a1cd35213623915bb921dc29117"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01b52699d2edf209e0fa4a98e4d8fc99" id="r_a01b52699d2edf209e0fa4a98e4d8fc99"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1BeeswarmPoint.html">BeeswarmPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a01b52699d2edf209e0fa4a98e4d8fc99">ToBeeswarmPoints</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; &amp;runs, int64_t feature_index)</td></tr>
+<tr class="memdesc:a01b52699d2edf209e0fa4a98e4d8fc99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts one feature's attribution value across many repeated/independent runs into jittered (x, y) points for a beeswarm plot &ndash; the global-explanation distribution view (hc_information_visualization.md SS5: "SHAP beeswarm plot...
+       each point is one prediction; x-position is the SHAP value"). Deterministic, density-based jitter: points are binned along x, then colliding points within a bin are alternately offset above/below y=0 so they read as spread rather than overlapping &ndash; not a random jitter, so two calls with the same input always produce the same layout.  <br /></td></tr>
+<tr class="separator:a01b52699d2edf209e0fa4a98e4d8fc99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ad3bf2421f5a44990ec5c97c07c6ce0" id="r_a6ad3bf2421f5a44990ec5c97c07c6ce0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HistogramBins.html">HistogramBins</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6ad3bf2421f5a44990ec5c97c07c6ce0">ToFieldHistogramBins</a> (const <a class="el" href="classpulsatrix_1_1Dataset.html">Dataset</a> &amp;dataset, int64_t field_index, int num_bins)</td></tr>
+<tr class="memdesc:a6ad3bf2421f5a44990ec5c97c07c6ce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bins one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field's values (flattened across every sample's <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> at that field position, mirroring <a class="el" href="classpulsatrix_1_1DatasetValidator.html" title="Generic data validation over any Dataset implementation – descriptive statistics and missingness/outl...">DatasetValidator</a>'s aggregation convention) into num_bins equal-width bins, for a per-field distribution histogram (hc_information_visualization.md's data-preview touchpoint).  <br /></td></tr>
+<tr class="separator:a6ad3bf2421f5a44990ec5c97c07c6ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a080ecc6a0d774b0d732e2540fb615c9b" id="r_a080ecc6a0d774b0d732e2540fb615c9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RgbImageBuffer.html">RgbImageBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a080ecc6a0d774b0d732e2540fb615c9b">ToRgbImageBuffer</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;image_chw)</td></tr>
+<tr class="memdesc:a080ecc6a0d774b0d732e2540fb615c9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a decoded image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> into an interleaved-RGB byte buffer for GPU texture upload (the data-preview "image grid" touchpoint's pure half &ndash; the actual glTexImage2D call lives in <a class="el" href="classpulsatrix_1_1TextureCache.html" title="Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e....">TextureCache</a>, which is GL-dependent and untestable here).  <br /></td></tr>
+<tr class="separator:a080ecc6a0d774b0d732e2540fb615c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1093,6 +1210,22 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="aae38e5361268c504e9b96249e75707a8" name="aae38e5361268c504e9b96249e75707a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae38e5361268c504e9b96249e75707a8">&#9670;&#160;</a></span>TextureId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#aae38e5361268c504e9b96249e75707a8">pulsatrix::TextureId</a> = typedef unsigned int</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opaque GL texture handle, typed to avoid a GL header include in this public header. </p>
 
 </div>
 </div>
@@ -1946,6 +2079,76 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="abbbbc49f27d9abc30121803b8a105591" name="abbbbc49f27d9abc30121803b8a105591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbbbc49f27d9abc30121803b8a105591">&#9670;&#160;</a></span>ComputeAttributionStability()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1StabilityResult.html">StabilityResult</a> pulsatrix::ComputeAttributionStability </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>repeated_runs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures an explainer's stability across repeated runs on the same input (charter's "repeated-run variance measured and documented" audit category). Known-unstable methods (<a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>, <a class="el" href="classpulsatrix_1_1KernelSHAP.html" title="Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression,...">KernelSHAP</a>) are expected to show is_deterministic == false; every other native/surrogate explainer in this codebase is deterministic by construction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">repeated_runs</td><td>Two or more <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> results from independent calls to the same explainer on the same input (varying only, e.g., a stochastic method's seed). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if repeated_runs is empty, or if the runs' <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> values do not all share the same element count &ndash; external boundary: the caller assembles this list from independent explainer invocations, not an internal invariant. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a65a61a87205c4d889e1c16baf4d439a9" name="a65a61a87205c4d889e1c16baf4d439a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65a61a87205c4d889e1c16baf4d439a9">&#9670;&#160;</a></span>ComputeConservation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ConservationResult.html">ConservationResult</a> pulsatrix::ComputeConservation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>relevance_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>relevance_out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sums relevance_in and relevance_out independently and reports their gap. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">relevance_in</td><td>A module's propagate_relevance() input-side relevance tensor. </td></tr>
+    <tr><td class="paramname">relevance_out</td><td>The same call's output-side relevance tensor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Deliberately does not call <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">Module::propagate_relevance</a> itself &ndash; the caller has already produced both tensors (from whichever module/config it used); this function is a pure summation over already-computed results, reusable regardless of which module type or LRP rule produced them. </dd></dl>
+
+</div>
+</div>
 <a id="a8b3d2d73f89e6df2c591365b7759994c" name="a8b3d2d73f89e6df2c591365b7759994c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8b3d2d73f89e6df2c591365b7759994c">&#9670;&#160;</a></span>ComputeDoubleDQNTarget()</h2>
 
@@ -2401,6 +2604,32 @@ If a front is uniform in some objective (max == min across the whole front), tha
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if samples is empty or samples have differing field counts &ndash; external boundary: the list of samples is assembled by a <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> from independently constructed <a class="el" href="classpulsatrix_1_1Dataset.html#acad0399caeb5991a661f55d539419300" title="Loads one sample by index.">Dataset::get()</a> results, not a compile-time-known invariant. Per-field shape/device mismatches are reported by <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afb4965a44bd544dcdcd56d7c3b602c8e" name="afb4965a44bd544dcdcd56d7c3b602c8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb4965a44bd544dcdcd56d7c3b602c8e">&#9670;&#160;</a></span>DivergingColormap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RgbColor.html">RgbColor</a> pulsatrix::DivergingColormap </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>signed_normalized_value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Blue-White-Red diverging colormap for signed attribution (positive/negative contribution) &ndash; hue encodes direction only, never magnitude (hc_information_visualization.md SS1's Cleveland-McGill rule: color hue is categorical/directional, magnitude must be position or length). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">signed_normalized_value</td><td>Position along the colormap, expected in [-1, 1]; values outside this range are clamped to the nearest end anchor. </td></tr>
   </table>
   </dd>
 </dl>
@@ -3512,6 +3741,80 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if population.size() + offspring.size() &lt; mu. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1284dd5415f64b3b45d4cc1156fe5d01" name="a1284dd5415f64b3b45d4cc1156fe5d01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1284dd5415f64b3b45d4cc1156fe5d01">&#9670;&#160;</a></span>NormalizeSigned()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::NormalizeSigned </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max_abs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Normalizes value into [-1, 1] against a known maximum absolute magnitude, for signed quantities such as attribution direction (positive/negative contribution). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>The raw value to normalize. Values outside [-max_abs, max_abs] are clamped. </td></tr>
+    <tr><td class="paramname">max_abs</td><td>The absolute value that should map to +/-1.0. If 0, returns 0.0 rather than dividing by zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a858eb3cecb137b44c4f8792940ed740d" name="a858eb3cecb137b44c4f8792940ed740d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a858eb3cecb137b44c4f8792940ed740d">&#9670;&#160;</a></span>NormalizeUnsigned()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::NormalizeUnsigned </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max_abs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Normalizes value into [0, 1] against a known maximum magnitude, for unsigned (magnitude-only) quantities such as saliency intensity or ablation effect. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>The raw value to normalize. Values outside [0, max_abs] are clamped. </td></tr>
+    <tr><td class="paramname">max_abs</td><td>The value that should map to 1.0. If 0 (a degenerate all-zero series), returns 0.0 rather than dividing by zero. </td></tr>
   </table>
   </dd>
 </dl>
@@ -5916,6 +6219,212 @@ No device guard of its own: it takes no caller-supplied <a class="el" href="clas
 
 </div>
 </div>
+<a id="a01b52699d2edf209e0fa4a98e4d8fc99" name="a01b52699d2edf209e0fa4a98e4d8fc99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01b52699d2edf209e0fa4a98e4d8fc99">&#9670;&#160;</a></span>ToBeeswarmPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1BeeswarmPoint.html">BeeswarmPoint</a> &gt; pulsatrix::ToBeeswarmPoints </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>runs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>feature_index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts one feature's attribution value across many repeated/independent runs into jittered (x, y) points for a beeswarm plot &ndash; the global-explanation distribution view (hc_information_visualization.md SS5: "SHAP beeswarm plot...
+       each point is one prediction; x-position is the SHAP value"). Deterministic, density-based jitter: points are binned along x, then colliding points within a bin are alternately offset above/below y=0 so they read as spread rather than overlapping &ndash; not a random jitter, so two calls with the same input always produce the same layout. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">runs</td><td><a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> results across many samples/predictions (not necessarily repeated runs on one input &ndash; unlike ComputeAttributionStability, this is the global view across many different inputs). </td></tr>
+    <tr><td class="paramname">feature_index</td><td>Which feature (element position) to plot. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if runs is empty. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if feature_index is out of range for any run's <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab81a9c0a4ab6fc4d1d737368b0ec12b9" name="ab81a9c0a4ab6fc4d1d737368b0ec12b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab81a9c0a4ab6fc4d1d737368b0ec12b9">&#9670;&#160;</a></span>ToFeatureImportanceBars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a> pulsatrix::ToFeatureImportanceBars </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>top_k</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attr</td><td>A rank-1 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> (one value per feature), or a rank-2 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> whose leading (batch) dimension is 1 &ndash; every native/surrogate explainer in this codebase is always-batched post campaign_exai_dl_library_batch_dimension_support, so a single-prediction explanation is shape (1, num_features), not (num_features,). </td></tr>
+    <tr><td class="paramname">top_k</td><td>Number of highest-|value| features to keep, in descending |value| order. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Bars sorted by descending absolute value, truncated to top_k (or fewer, if attr has fewer features than top_k). Labels come from attr.metadata["feature_names"] (comma-separated) when present, otherwise "feature_&lt;index&gt;". </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if attr.values is not rank 1 or batch-1 rank 2, or if top_k &lt;= 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6ad3bf2421f5a44990ec5c97c07c6ce0" name="a6ad3bf2421f5a44990ec5c97c07c6ce0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ad3bf2421f5a44990ec5c97c07c6ce0">&#9670;&#160;</a></span>ToFieldHistogramBins()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HistogramBins.html">HistogramBins</a> pulsatrix::ToFieldHistogramBins </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Dataset.html">Dataset</a> &amp;&#160;</td>
+          <td class="paramname"><em>dataset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>field_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_bins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Bins one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field's values (flattened across every sample's <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> at that field position, mirroring <a class="el" href="classpulsatrix_1_1DatasetValidator.html" title="Generic data validation over any Dataset implementation – descriptive statistics and missingness/outl...">DatasetValidator</a>'s aggregation convention) into num_bins equal-width bins, for a per-field distribution histogram (hc_information_visualization.md's data-preview touchpoint). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataset</td><td>The dataset to scan. Must be non-empty. </td></tr>
+    <tr><td class="paramname">field_index</td><td>Which <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position to bin. </td></tr>
+    <tr><td class="paramname">num_bins</td><td>Number of equal-width bins, must be positive. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if dataset is empty or num_bins &lt;= 0. </td></tr>
+    <tr><td class="paramname">std::out_of_range</td><td>if field_index is out of range for the dataset's samples. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>A constant field (max == min) places every value in the first bin rather than dividing by a zero-width bin range. </dd></dl>
+
+</div>
+</div>
+<a id="a080ecc6a0d774b0d732e2540fb615c9b" name="a080ecc6a0d774b0d732e2540fb615c9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a080ecc6a0d774b0d732e2540fb615c9b">&#9670;&#160;</a></span>ToRgbImageBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RgbImageBuffer.html">RgbImageBuffer</a> pulsatrix::ToRgbImageBuffer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>image_chw</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a decoded image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> into an interleaved-RGB byte buffer for GPU texture upload (the data-preview "image grid" touchpoint's pure half &ndash; the actual glTexImage2D call lives in <a class="el" href="classpulsatrix_1_1TextureCache.html" title="Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e....">TextureCache</a>, which is GL-dependent and untestable here). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">image_chw</td><td>A rank-3 (C, H, W) tensor, or a rank-4 tensor with a leading batch dimension of 1 ((1, C, H, W) &ndash; <a class="el" href="classpulsatrix_1_1ImageFolderDataset.html#a1c5e82bd64b7a43d776324cefa507426">ImageFolderDataset::get()</a>'s convention). C must be 1 (replicated across R/G/B) or 3. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Values are assumed already normalized to [0, 1] and clamped before scaling to [0, 255] &ndash; out-of-range input (e.g. an un-normalized decoder output) is clamped rather than wrapped, since a wrapped byte would silently invert bright/dark regions. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if image_chw's rank/channel count don't match the above. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a15e90a1cd35213623915bb921dc29117" name="a15e90a1cd35213623915bb921dc29117"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15e90a1cd35213623915bb921dc29117">&#9670;&#160;</a></span>ToSaliencyHeatmap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a> pulsatrix::ToSaliencyHeatmap </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reshapes an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s values into a 2D grid for a saliency overlay heatmap. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attr</td><td>A rank-2 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>, or a rank-3 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> whose leading (channel) dimension is 1 (single-channel saliency map, squeezed). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if attr.values is not reshapable to a 2D grid by the rules above (e.g. rank 1, or rank 3 with more than one channel). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a974487e04bed881f9e921fdb7f938ab5" name="a974487e04bed881f9e921fdb7f938ab5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a974487e04bed881f9e921fdb7f938ab5">&#9670;&#160;</a></span>TournamentSelect()</h2>
 
@@ -5967,6 +6476,49 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>tournament_size == population.size() draws every individual exactly once (without replacement), so it always returns the global-best index regardless of the RNG stream &ndash; this operator's own hand-verifiable correctness case, independent of which RNG or seed is used. </dd></dl>
+
+</div>
+</div>
+<a id="a8a0d96ad60ab368e82e5e29aa3605bbb" name="a8a0d96ad60ab368e82e5e29aa3605bbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a0d96ad60ab368e82e5e29aa3605bbb">&#9670;&#160;</a></span>ToWaterfallSteps()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1WaterfallStep.html">WaterfallStep</a> &gt; pulsatrix::ToWaterfallSteps </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>baseline_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into a cascading waterfall from a real baseline to the final prediction (hc_information_visualization.md SS5/SS6: the one case where a bar chart legitimately does not start at zero, since the baseline itself is the meaningful reference point &ndash; Tufte's lie-factor rule is satisfied relative to that baseline, not to zero). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attr</td><td>A rank-1 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> (one value per feature), or a rank-2 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> whose leading (batch) dimension is 1 (see ToFeatureImportanceBars's note on always-batched explainer output), in the explainer's own feature order &ndash; deliberately NOT sorted by magnitude, since a waterfall's narrative is the accumulation path, not a ranking. </td></tr>
+    <tr><td class="paramname">baseline_value</td><td>The starting reference value (e.g. Integrated Gradients' baseline prediction, or the model's mean output). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if attr.values is not rank 1 or batch-1 rank 2. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -6256,6 +6808,34 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a24584d97c280e278c14a60b8841de0f9" name="a24584d97c280e278c14a60b8841de0f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24584d97c280e278c14a60b8841de0f9">&#9670;&#160;</a></span>ViridisColormap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RgbColor.html">RgbColor</a> pulsatrix::ViridisColormap </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>normalized_value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Viridis colormap &ndash; perceptually uniform, colorblind-safe &ndash; for sequential/unsigned magnitude (hc_information_visualization.md SS4: "Recommended Color Systems"). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">normalized_value</td><td>Position along the colormap, expected in [0, 1]; values outside this range are clamped to the nearest end anchor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Deliberately never a rainbow/jet map &ndash; see the design doc's SS4 "Rainbow (Jet)
+      Colormap Problem". Approximates matplotlib's Viridis via a small set of anchor colors with linear interpolation between them; exact per-channel fidelity against ImPlot's own built-in ImPlotColormap_Viridis is an open verification item (plan Open Risk 4), not assumed here. </dd></dl>
 
 </div>
 </div>
