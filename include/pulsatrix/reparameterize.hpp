@@ -80,11 +80,11 @@ public:
      * @throws std::logic_error if forward() has never been called -- uses the cached
      *         log_sigma/epsilon.
      * @throws std::invalid_argument if grad_z's shape doesn't match the cached forward shape.
-     * @note Also dereferences Tensor::data() directly, but deliberately not independently
-     *       device-guarded: it only reads state forward() already validated before caching,
-     *       and forward()'s own guard is the only way a non-Cpu tensor could ever reach that
-     *       cache -- a second guard here would be untestable dead code, not a real safety
-     *       net. Identical reasoning to MSELoss::backward(); see mission_host_loop_guards.md.
+     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
+     *       guards on the incoming gradient(s), the cached state and the freshly allocated
+     *       gradients. forward()'s guard covers only forward()'s own arguments; the gradients
+     *       are allocated through backend_, which a GPU backend tags Cuda/Hip
+     *       (GPU-native-kernels campaign, Mission 0 O4).
      */
     [[nodiscard]] ReparamGrad backward(const Tensor& grad_z) const;
 

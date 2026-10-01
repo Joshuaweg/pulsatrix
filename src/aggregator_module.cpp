@@ -79,6 +79,10 @@ Tensor AggregatorModule::backward(const Tensor& grad_output) {
     const float exponent_m = 1.0f / p_ - 1.0f;
 
     Tensor grad_input(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     for (int64_t j = 0; j < cols; ++j) {
         const float m = last_mean_.data()[j];
         const float m_pow = std::pow(m, exponent_m);
@@ -106,6 +110,10 @@ Tensor AggregatorModule::propagate_relevance(const Tensor& relevance_out, const 
     const int64_t cols = last_output_.numel();
 
     Tensor relevance_in(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     for (int64_t j = 0; j < cols; ++j) {
         // sum_j(x_j^p) == mean(x^p) * n exactly, by m's own definition -- reuses the cached
         // mean rather than recomputing the sum of powers from scratch.

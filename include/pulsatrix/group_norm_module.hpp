@@ -45,7 +45,11 @@ public:
      *         validation), per cpp_tdd/context_tdd_adversarial_boundary_testing.md.
      */
     GroupNormModule(int64_t num_groups, int64_t num_channels, DeviceBackend* backend,
-                     DeviceType device = DeviceType::Cpu, float eps = 1e-6f);
+                     DeviceType device, float eps = 1e-6f);
+
+    /** @brief On backend's own device (backend->device()), default eps. Previously the device
+     *        defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0). */
+    GroupNormModule(int64_t num_groups, int64_t num_channels, DeviceBackend* backend);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input, and accumulates gamma's/

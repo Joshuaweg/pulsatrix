@@ -208,6 +208,10 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
 
     // --- Step 2: split heads ------------------------------------------------------------
     Tensor q(Shape({N, H, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(q);
     Tensor k(Shape({N, H, L, D}), backend_);
     Tensor v(Shape({N, H, L, D}), backend_);
     split_heads(q_flat.data(), q.data(), N, L, H, D);
@@ -305,6 +309,10 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
 
     // --- Step 8' : merge heads inverse (pure data movement) -----------------------------
     Tensor grad_context(Shape({N, H, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_context);
     split_heads(grad_merged.data(), grad_context.data(), N, L, H, D);
 
     // --- Step 7' : context = Attn @ V ---------------------------------------------------
@@ -400,6 +408,10 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
 
     // --- Step 8' : merge-heads inverse (pure index mapping, no epsilon) -----------------
     Tensor r_context(Shape({N, H, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(r_context);
     split_heads(r_merged.data(), r_context.data(), N, L, H, D);
 
     // --- Step 7' : Eq. 15 on context = Attn @ V -----------------------------------------

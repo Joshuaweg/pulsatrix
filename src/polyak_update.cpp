@@ -60,6 +60,10 @@ void PolyakUpdate(Module& source, Module& destination, float tau) {
         // already holding ParamRefs into them -- point at. The destination's current value is
         // also a read operand here, which is what makes successive calls an exponential moving
         // average rather than a sequence of independent writes.
+        // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+        // (GPU-native-kernels campaign, Mission 0 O4).
+        PULSATRIX_REQUIRE_HOST(from);
+        PULSATRIX_REQUIRE_HOST(into);
         for (int64_t e = 0; e < from.numel(); ++e) {
             into.data()[e] = tau * from.data()[e] + (1.0f - tau) * into.data()[e];
         }

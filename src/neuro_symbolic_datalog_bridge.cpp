@@ -80,6 +80,9 @@ NeuralPredicateQueryResult NeuralPredicateDatalogBridge::evaluate(const Tensor& 
     last_s_ = s;
     has_evaluated_ = true;
 
+    // Reads Tensor::at() on the host -- not yet backend-generic (GPU-native-kernels campaign,
+    // Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(s);
     const double s_value = static_cast<double>(s.at({0, 0}));
 
     WeightedFactDatabase<DualNumber<double>> dual_facts;
@@ -108,6 +111,9 @@ NeuralPredicateRelevanceResult NeuralPredicateDatalogBridge::propagate_relevance
     // datalog_lrp's rule operates on the plain real-valued (+, x) semiring's fixpoint, not the
     // DualSemiring pass evaluate() used for the gradient -- re-run the ordinary weighted
     // engine on the identical facts (same s value already cached from evaluate()).
+    // Reads Tensor::at() / writes Tensor::data() on the host -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(last_s_);
     const double s_value = static_cast<double>(last_s_.at({0, 0}));
     WeightedFactDatabase<double> facts = constant_edge_facts();
     facts.set(Atom("edge", {C("a"), C("b")}), s_value);
@@ -123,6 +129,7 @@ NeuralPredicateRelevanceResult NeuralPredicateDatalogBridge::propagate_relevance
     // Sigmoid Design Decision precedent -- no gradient-shaped rule for a monotonic bijective
     // single-input nonlinearity), then LinearModule's real, unmodified propagate_relevance().
     Tensor r_z(last_s_.shape(), backend_, last_s_.device());
+    PULSATRIX_REQUIRE_HOST(r_z);
     r_z.data()[0] = static_cast<float>(r_s);
     Tensor r_x = predicate_.propagate_relevance(r_z, config);
 

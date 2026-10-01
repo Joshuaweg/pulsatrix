@@ -39,6 +39,10 @@ void require_row_shape(const Tensor& tensor, int64_t expected_width, const char*
 
 // Copies one (1, width) row into row `row` of a (capacity, width) storage block.
 void write_row(Tensor& storage, int64_t row, const Tensor& source, int64_t width) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(storage);
+    PULSATRIX_REQUIRE_HOST(source);
     float* destination = storage.data() + row * width;
     const float* values = source.data();
     for (int64_t i = 0; i < width; ++i) {
@@ -48,6 +52,9 @@ void write_row(Tensor& storage, int64_t row, const Tensor& source, int64_t width
 
 // Copies row `row` of a (capacity, width) storage block into `out` at offset `out_row`.
 void gather_row(std::vector<float>& out, int64_t out_row, const Tensor& storage, int64_t row, int64_t width) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(storage);
     const float* source = storage.data() + row * width;
     float* destination = out.data() + out_row * width;
     for (int64_t i = 0; i < width; ++i) {
@@ -96,6 +103,15 @@ void ReplayBuffer::add(const Tensor& observation, const Tensor& action, float re
     require_row_shape(action, action_dim_, "action");
     require_row_shape(next_observation, observation_dim_, "next_observation");
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). The storage tensors are allocated through
+    // backend_, so a GPU backend tags them Cuda/Hip.
+    PULSATRIX_REQUIRE_HOST(observations_);
+    PULSATRIX_REQUIRE_HOST(actions_);
+    PULSATRIX_REQUIRE_HOST(rewards_);
+    PULSATRIX_REQUIRE_HOST(next_observations_);
+    PULSATRIX_REQUIRE_HOST(dones_);
+
     write_row(observations_, write_index_, observation, observation_dim_);
     write_row(actions_, write_index_, action, action_dim_);
     write_row(next_observations_, write_index_, next_observation, observation_dim_);
@@ -116,6 +132,15 @@ ReplayBatch ReplayBuffer::sample(int64_t batch_size) {
         throw std::invalid_argument("ReplayBuffer::sample: batch_size (" + std::to_string(batch_size) +
                                     ") exceeds the number of stored transitions (" + std::to_string(size_) + ")");
     }
+
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). The storage tensors are allocated through
+    // backend_, so a GPU backend tags them Cuda/Hip.
+    PULSATRIX_REQUIRE_HOST(observations_);
+    PULSATRIX_REQUIRE_HOST(actions_);
+    PULSATRIX_REQUIRE_HOST(rewards_);
+    PULSATRIX_REQUIRE_HOST(next_observations_);
+    PULSATRIX_REQUIRE_HOST(dones_);
 
     std::vector<float> observations(static_cast<size_t>(batch_size * observation_dim_));
     std::vector<float> actions(static_cast<size_t>(batch_size * action_dim_));

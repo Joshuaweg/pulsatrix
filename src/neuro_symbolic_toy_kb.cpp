@@ -46,8 +46,13 @@ std::pair<Tensor, Tensor> split_stacked_grad(const Tensor& stacked, DeviceBacken
     Shape operand_shape(operand_dims);
     const int64_t half = operand_shape.numel();
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(stacked);
     Tensor a(operand_shape, backend, stacked.device());
     Tensor b(operand_shape, backend, stacked.device());
+    PULSATRIX_REQUIRE_HOST(a);
+    PULSATRIX_REQUIRE_HOST(b);
     for (int64_t i = 0; i < half; ++i) {
         a.data()[i] = stacked.data()[i];
         b.data()[i] = stacked.data()[half + i];

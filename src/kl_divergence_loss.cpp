@@ -47,8 +47,14 @@ ReparamGrad KLDivergenceLoss::backward() const {
     }
 
     const float inv_batch = 1.0f / static_cast<float>(last_mu_.shape().dim(0));
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(last_mu_);
+    PULSATRIX_REQUIRE_HOST(last_log_sigma_);
     Tensor grad_mu(last_mu_.shape(), backend_);
     Tensor grad_log_sigma(last_mu_.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad_mu);
+    PULSATRIX_REQUIRE_HOST(grad_log_sigma);
     for (int64_t i = 0; i < last_mu_.numel(); ++i) {
         // d/dmu of 0.5*mu^2 is mu; d/dlog_sigma of 0.5*(exp(2*ls) - 2*ls) is exp(2*ls) - 1.
         grad_mu.data()[i] = last_mu_.data()[i] * inv_batch;

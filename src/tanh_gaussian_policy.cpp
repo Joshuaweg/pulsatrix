@@ -47,6 +47,10 @@ TanhGaussianSample TanhGaussianPolicy::forward(const Tensor& mean, const Tensor&
 
     Tensor action(mean.shape(), backend_);
     Tensor std_cache(mean.shape(), backend_);
+    // Allocated through backend_, so a GPU backend tags them Cuda/Hip -- the host write below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(action);
+    PULSATRIX_REQUIRE_HOST(std_cache);
     std::vector<float> log_probs(static_cast<size_t>(batch_size));
 
     for (int64_t n = 0; n < batch_size; ++n) {
@@ -100,8 +104,17 @@ TanhGaussianGrad TanhGaussianPolicy::backward(const Tensor& grad_action, const T
             "(N, action_dim) -- log_prob's own (N, 1) gradient broadcast across the row");
     }
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_action);
+    PULSATRIX_REQUIRE_HOST(grad_log_prob);
+    PULSATRIX_REQUIRE_HOST(last_action_);
+    PULSATRIX_REQUIRE_HOST(last_std_);
+    PULSATRIX_REQUIRE_HOST(last_epsilon_);
     Tensor grad_mean(last_action_.shape(), backend_);
     Tensor grad_log_std(last_action_.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad_mean);
+    PULSATRIX_REQUIRE_HOST(grad_log_std);
 
     for (int64_t i = 0; i < last_action_.numel(); ++i) {
         const float a = last_action_.data()[i];

@@ -76,6 +76,10 @@ Tensor RoPEModule::forward_impl(const Tensor& input) {
     const int64_t half = head_dim_ / 2;
 
     Tensor output(input.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
     for (int64_t m = 0; m < layout.num_matrices; ++m) {
         for (int64_t pos = 0; pos < layout.seq_len; ++pos) {
             const int64_t base_off = (m * layout.seq_len + pos) * head_dim_;
@@ -112,6 +116,10 @@ Tensor RoPEModule::backward(const Tensor& grad_output) {
     const int64_t half = head_dim_ / 2;
 
     Tensor grad_input(grad_output.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     for (int64_t m = 0; m < layout.num_matrices; ++m) {
         for (int64_t pos = 0; pos < layout.seq_len; ++pos) {
             const int64_t base_off = (m * layout.seq_len + pos) * head_dim_;
@@ -147,6 +155,10 @@ Tensor RoPEModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
     const int64_t half = head_dim_ / 2;
 
     Tensor relevance_in(relevance_out.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     // Zero-filled up front precisely because every element below is written with `+=`, not
     // `=` -- see the two-contribution note at the accumulation site.
     relevance_in.fill(0.0f);

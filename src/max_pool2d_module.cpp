@@ -44,6 +44,10 @@ Tensor MaxPool2DModule::forward_impl(const Tensor& input) {
     argmax_flat_index_.assign(static_cast<size_t>(N * C * out_plane), 0);
 
     Tensor output(Shape({N, C, out_h, out_w}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
 
     for (int64_t n = 0; n < N; ++n) {
         for (int64_t c = 0; c < C; ++c) {
@@ -99,6 +103,10 @@ Tensor MaxPool2DModule::backward(const Tensor& grad_output) {
     const int64_t out_plane = last_out_h_ * last_out_w_;
 
     Tensor grad_input(last_input_shape_, backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     grad_input.fill(0.0f);
 
     for (int64_t n = 0; n < N; ++n) {
@@ -139,6 +147,10 @@ Tensor MaxPool2DModule::propagate_relevance(const Tensor& relevance_out, const L
     const int64_t out_plane = last_out_h_ * last_out_w_;
 
     Tensor relevance_in(last_input_shape_, backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     relevance_in.fill(0.0f);
 
     for (int64_t n = 0; n < N; ++n) {

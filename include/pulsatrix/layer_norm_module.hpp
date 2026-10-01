@@ -34,8 +34,12 @@ public:
      * @throws std::invalid_argument if num_features <= 0 -- external boundary, mirrors
      *         RMSNormModule's identical constructor guard.
      */
-    LayerNormModule(int64_t num_features, DeviceBackend* backend, DeviceType device = DeviceType::Cpu,
+    LayerNormModule(int64_t num_features, DeviceBackend* backend, DeviceType device,
                      float eps = 1e-6f);
+
+    /** @brief On backend's own device (backend->device()), default eps. Previously the device
+     *        defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0). */
+    LayerNormModule(int64_t num_features, DeviceBackend* backend);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input, and accumulates gamma's/

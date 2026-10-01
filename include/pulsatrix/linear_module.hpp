@@ -42,13 +42,20 @@ public:
      * @param out_features Output dimension.
      * @param backend Backend to allocate/compute through. Not owned; must outlive this module.
      * @param device Which device every internal Tensor member (weight, bias, gradients,
-     *        forward-pass caches) is tagged as. Defaults to Cpu -- must match whatever
-     *        device backend actually allocates on, or Tensor's own device-based dispatch
-     *        (e.g. CopyDirection selection) will be wrong. See
-     *        campaign_exai_dl_library_phase1_5_cuda_backend.md's Mission 3.
+     *        forward-pass caches) is tagged as. Must match whatever device backend actually
+     *        allocates on, or Tensor's own device-based dispatch (e.g. CopyDirection
+     *        selection) will be wrong. See campaign_exai_dl_library_phase1_5_cuda_backend.md's
+     *        Mission 3.
      */
-    LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend,
-                 DeviceType device = DeviceType::Cpu);
+    LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, DeviceType device);
+
+    /**
+     * @brief As above, on backend's own device (backend->device()).
+     * @note Previously the device defaulted to Cpu, so a LinearModule built on a GPU backend
+     *       without an explicit tag -- e.g. SwiGLUModule's three projections -- held
+     *       Cpu-tagged weights in device memory (GPU-native-kernels Mission 0).
+     */
+    LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input, and accumulates the
