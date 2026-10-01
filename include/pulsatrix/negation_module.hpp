@@ -31,7 +31,7 @@ public:
      *        most recent forward() call's output.
      * @throws std::logic_error if called before any forward().
      * @throws std::invalid_argument if grad_output's shape differs from the cached forward shape.
-     * @note Raw host loop; PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu) guarded,
+     * @note Raw host loop; PULSATRIX_REQUIRE_HOST(grad_output) guarded,
      *       same convention as ReluModule/ResidualModule -- see mission_host_loop_guards.md.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;

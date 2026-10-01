@@ -27,7 +27,7 @@ Tensor NegationModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("NegationModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- not yet backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(grad_output.shape(), backend_);
     for (int64_t i = 0; i < grad_output.numel(); ++i) {

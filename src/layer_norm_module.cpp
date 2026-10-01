@@ -90,7 +90,7 @@ Tensor LayerNormModule::backward(const Tensor& grad_output) {
             "LayerNormModule::backward: grad_output must be rank-2 (N, num_features) matching the cached batch "
             "size");
     }
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const float D = static_cast<float>(num_features_);
 

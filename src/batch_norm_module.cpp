@@ -109,7 +109,7 @@ Tensor BatchNormModule::backward(const Tensor& grad_output) {
     }
     // Not yet backend-generic -- raw host loop below. See every existing Module
     // subclass's identical Phase 1.5 scope decision.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t N = last_input_.shape().dim(0);
     const int64_t H = last_input_.shape().dim(2);

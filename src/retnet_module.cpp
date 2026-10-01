@@ -102,7 +102,7 @@ void RetNetModule::set_W_V(const std::vector<float>& values) {
 Tensor RetNetModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly for the state recurrence -- not yet
     // backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("RetNetModule::forward: input must be rank-3 (N, L, d_model)");
@@ -184,7 +184,7 @@ Tensor RetNetModule::backward(const Tensor& grad_output) {
     }
     // Dereferences Tensor::data() directly for the state recurrence -- not yet
     // backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_input_.shape(), backend_);
     Tensor local_w_q_grad(w_q_.shape(), backend_);
@@ -309,7 +309,7 @@ Tensor RetNetModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     }
     // Dereferences Tensor::data() directly in raw host loops -- not yet backend-generic,
     // mirroring forward_impl()/backward().
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const float eps = config.epsilon;
     Tensor relevance_in(last_input_.shape(), backend_);

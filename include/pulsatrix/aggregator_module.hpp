@@ -82,7 +82,7 @@ public:
      * @return Gradient w.r.t. this module's input, same shape as that forward() call's input.
      * @throws std::logic_error if called before any forward().
      * @throws std::invalid_argument if grad_output's shape differs from the cached output shape.
-     * @note Raw host loop; PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu) guarded,
+     * @note Raw host loop; PULSATRIX_REQUIRE_HOST(grad_output) guarded,
      *       same convention as every other Module in this codebase. See
      *       mission_host_loop_guards.md.
      */

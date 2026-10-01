@@ -58,7 +58,7 @@ public:
      *         number, or if a decoded index falls outside [0, num_classes) -- all external
      *         boundaries, byte-for-byte `PolicyGradientLoss::forward`'s own classification.
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_ASSERT(device() == DeviceType::Cpu) on both inputs guards against
+     *       loop. PULSATRIX_REQUIRE_HOST on both inputs guards against
      *       silent UB on a CUDA-backed Tensor.
      */
     [[nodiscard]] float forward(const Tensor& probs, const Tensor& target_class);

@@ -17,7 +17,7 @@ DropoutModule::DropoutModule(float p, DeviceBackend* backend, uint64_t seed)
 
 Tensor DropoutModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     const int64_t n = input.numel();
     last_shape_ = input.shape();
@@ -58,7 +58,7 @@ Tensor DropoutModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("DropoutModule::backward: grad_output must match the cached forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_shape_, backend_);
     for (int64_t i = 0; i < grad_output.numel(); ++i) {

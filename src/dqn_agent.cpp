@@ -78,7 +78,7 @@ Tensor DQNAgent::act(const Tensor& observation) {
     // The argmax below is a raw host loop over Tensor::data(); the network output inherits
     // its device from this observation. Undefined behavior on a CUDA-backed Tensor -- see
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
 
     // The coin flip is drawn unconditionally, before the branch, so the stream advances by a
     // known amount regardless of which way it goes.
@@ -90,7 +90,7 @@ Tensor DQNAgent::act(const Tensor& observation) {
 }
 
 Tensor DQNAgent::act_greedy(const Tensor& observation) {
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
     return greedy_action(observation);
 }
 

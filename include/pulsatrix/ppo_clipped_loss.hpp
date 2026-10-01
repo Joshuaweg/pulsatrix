@@ -84,7 +84,7 @@ public:
      *         PolicyGradientLoss::forward()'s (itself DQNLoss's, itself CartPoleEnv::step()'s).
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host loops
      *       (a row-wise stabilized softmax and a per-row gather at a data-dependent column have
-     *       no DeviceBackend primitive). PULSATRIX_ASSERT(device() == DeviceType::Cpu) on all four
+     *       no DeviceBackend primitive). PULSATRIX_REQUIRE_HOST on all four
      *       inputs guards against silent UB on a CUDA-backed Tensor; see
      *       mission_host_loop_guards.md. Do not remove these guards without actually
      *       retrofitting the method to route through DeviceBackend.

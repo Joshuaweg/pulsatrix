@@ -108,7 +108,7 @@ public:
      *       derivation relies on exactly that.
      * @note Not backend-generic -- exp/tanh/log have no DeviceBackend::elementwise op, so this
      *       is a raw host loop dereferencing Tensor::data() directly.
-     *       PULSATRIX_ASSERT(device() == DeviceType::Cpu) on all three inputs guards against silent
+     *       PULSATRIX_REQUIRE_HOST on all three inputs guards against silent
      *       UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove
      *       this guard without actually retrofitting the method to route through DeviceBackend.

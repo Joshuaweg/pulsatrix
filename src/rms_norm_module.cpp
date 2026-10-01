@@ -74,7 +74,7 @@ Tensor RMSNormModule::backward(const Tensor& grad_output) {
     }
     // Not yet backend-generic -- raw host loop below. See every existing Module
     // subclass's identical Phase 1.5 scope decision.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const float D = static_cast<float>(num_features_);
 

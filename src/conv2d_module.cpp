@@ -117,7 +117,7 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly (bias-add loop, plus im2col()) -- not yet
     // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     // External boundary (campaign_exai_dl_library_adversarial_hardening.md, Mission 1,
     // findings 1/6; shape generalized to (N, in_channels, H, W) by
@@ -196,7 +196,7 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     // own bias-grad loop) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     const int64_t Q = last_out_h_ * last_out_w_;
@@ -261,7 +261,7 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     // Dereferences Tensor::data() directly (its own loop, plus col2im_into()) -- not yet
     // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     const int64_t Q = last_out_h_ * last_out_w_;

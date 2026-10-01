@@ -40,7 +40,7 @@ Tensor SoftmaxModule::forward_impl(const Tensor& input) {
     // Raw host loop (std::exp per element) -- not backend-generic. There is no Exp
     // elementwise op and adding one is out of this mission's scope (CrossEntropyLoss
     // computes its softmax the same way). See mission_host_loop_guards.md for the guard.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     const RowLayout layout = row_layout_of(input.shape());
 
@@ -73,7 +73,7 @@ Tensor SoftmaxModule::forward_impl(const Tensor& input) {
 
 Tensor SoftmaxModule::backward(const Tensor& grad_output) {
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
     PULSATRIX_ASSERT(grad_output.shape() == last_output_.shape());
 
     const RowLayout layout = row_layout_of(grad_output.shape());
@@ -96,7 +96,7 @@ Tensor SoftmaxModule::backward(const Tensor& grad_output) {
 
 Tensor SoftmaxModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
     PULSATRIX_ASSERT(relevance_out.shape() == last_output_.shape());
 
     const RowLayout layout = row_layout_of(relevance_out.shape());

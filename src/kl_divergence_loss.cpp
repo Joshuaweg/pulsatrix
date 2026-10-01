@@ -15,8 +15,8 @@ float KLDivergenceLoss::forward(const Tensor& mu, const Tensor& log_sigma) {
     // primitive) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(mu.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(log_sigma.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(mu);
+    PULSATRIX_REQUIRE_HOST(log_sigma);
 
     if (mu.rank() != 2) {
         throw std::invalid_argument("KLDivergenceLoss::forward: mu must be rank-2 (N, latent_dim)");

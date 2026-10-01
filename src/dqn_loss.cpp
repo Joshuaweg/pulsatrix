@@ -37,9 +37,9 @@ float DQNLoss::forward(const Tensor& q_values, const Tensor& actions, const Tens
     // per-row gather at a data-dependent column has no DeviceBackend primitive). See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(q_values.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(actions.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(targets.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(q_values);
+    PULSATRIX_REQUIRE_HOST(actions);
+    PULSATRIX_REQUIRE_HOST(targets);
 
     if (q_values.rank() != 2) {
         throw std::invalid_argument("DQNLoss::forward: q_values must have shape (N, action_dim)");

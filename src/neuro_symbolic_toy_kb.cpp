@@ -14,7 +14,7 @@ namespace {
 // Raw host loop; PULSATRIX_ASSERT-guarded against a non-Cpu tensor, same convention as
 // every other raw-host-loop Module in this codebase (NegationModule, LinearModule).
 Tensor sigmoid(const Tensor& z, DeviceBackend* backend) {
-    PULSATRIX_ASSERT(z.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(z);
     Tensor y(z.shape(), backend, z.device());
     const int64_t n = z.numel();
     for (int64_t i = 0; i < n; ++i) {
@@ -25,7 +25,7 @@ Tensor sigmoid(const Tensor& z, DeviceBackend* backend) {
 
 // dL/dz = dL/dy * y*(1-y), given the cached forward-pass output y.
 Tensor sigmoid_backward(const Tensor& grad_y, const Tensor& y, DeviceBackend* backend) {
-    PULSATRIX_ASSERT(grad_y.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_y);
     Tensor grad_z(y.shape(), backend, y.device());
     const int64_t n = y.numel();
     for (int64_t i = 0; i < n; ++i) {

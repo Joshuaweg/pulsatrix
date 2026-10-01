@@ -9,6 +9,7 @@
 
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/host_guard.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {

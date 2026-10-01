@@ -53,7 +53,7 @@ namespace pulsatrix {
  *       through the projections and bilinear in Q/K/V through the state), so unlike
  *       MambaModule/RWKVModule no raw-loop-nonlinearity workaround is needed. The
  *       recurrence itself is still a raw host loop over Tensor::data(), so every entry point
- *       carries the PULSATRIX_ASSERT(... .device() == DeviceType::Cpu) guard the rest of the
+ *       carries the PULSATRIX_REQUIRE_HOST guard the rest of the
  *       not-yet-backend-generic modules use.
  * @note **LRP rule -- original derivation (2026-09-27, operator-directed follow-on to
  *       campaign_exai_dl_library_phase6_modern_architectures's Decision Point 2, which found
@@ -167,7 +167,7 @@ public:
      * @throws std::invalid_argument if relevance_out's shape doesn't match the cached
      *         forward output shape.
      * @note Not yet backend-generic -- raw host loops, mirroring forward_impl()/backward().
-     *       PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu) guards against silent
+     *       PULSATRIX_REQUIRE_HOST(relevance_out) guards against silent
      *       UB on a CUDA-backed Tensor.
      * @note Conserves near-exactly (measured in retnet_module_test.cpp), gated only by the
      *       usual epsilon stabilizers -- see the class-level note for why every composed
@@ -186,7 +186,7 @@ protected:
      * @throws std::invalid_argument if input isn't rank-3 (N, L, d_model), or its last
      *         dimension doesn't match d_model.
      * @note Not yet backend-generic -- raw host loops for the state recurrence.
-     *       PULSATRIX_ASSERT(input.device() == DeviceType::Cpu) guards against silent UB on a
+     *       PULSATRIX_REQUIRE_HOST(input) guards against silent UB on a
      *       CUDA-backed Tensor.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

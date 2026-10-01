@@ -41,7 +41,7 @@ float GFlowNetForwardPolicy::next_unit() {
 
 GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
                                                      const std::vector<bool>& valid_actions) {
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
 
     if (static_cast<int64_t>(valid_actions.size()) != action_dim_) {
         throw std::invalid_argument("GFlowNetForwardPolicy::sample: valid_actions must have size action_dim()");
@@ -117,7 +117,7 @@ GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
 
 std::vector<float> GFlowNetForwardPolicy::masked_probs(const Tensor& observation,
                                                         const std::vector<bool>& valid_actions) {
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
 
     if (static_cast<int64_t>(valid_actions.size()) != action_dim_) {
         throw std::invalid_argument("GFlowNetForwardPolicy::masked_probs: valid_actions must have size action_dim()");

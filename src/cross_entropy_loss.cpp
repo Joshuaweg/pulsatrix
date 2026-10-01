@@ -12,7 +12,7 @@ float CrossEntropyLoss::forward(const Tensor& logits, int64_t target_class) {
     // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic,
     // same as MSELoss. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(logits.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(logits);
     PULSATRIX_ASSERT(target_class >= 0 && target_class < logits.numel());
 
     int64_t n = logits.numel();

@@ -76,7 +76,7 @@ public:
      *         tight enough to catch a genuinely fractional "action".
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host loops
      *       (a row-wise softmax and a per-row gather at a data-dependent column have no
-     *       DeviceBackend primitive). PULSATRIX_ASSERT(device() == DeviceType::Cpu) on all three
+     *       DeviceBackend primitive). PULSATRIX_REQUIRE_HOST on all three
      *       inputs guards against silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove
      *       these guards without actually retrofitting the method to route through

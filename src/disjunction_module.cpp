@@ -80,7 +80,7 @@ Tensor DisjunctionModule::forward(const Tensor& a, const Tensor& b) {
 
 Tensor DisjunctionModule::forward_impl(const Tensor& input) {
     // Raw host loop below -- not yet backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     auto [a, b] = split_operands(input, backend_, "DisjunctionModule::forward");
 
@@ -121,7 +121,7 @@ Tensor DisjunctionModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("DisjunctionModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     auto [a, b] = split_operands(last_input_, backend_, "DisjunctionModule::backward");
 
@@ -164,7 +164,7 @@ Tensor DisjunctionModule::propagate_relevance(const Tensor& relevance_out, const
             "DisjunctionModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     auto [a, b] = split_operands(last_input_, backend_, "DisjunctionModule::propagate_relevance");
 

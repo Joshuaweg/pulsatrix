@@ -119,7 +119,7 @@ void MambaModule::set_D(const std::vector<float>& values) {
 Tensor MambaModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly, and computes softplus/exp in raw host loops
     // (no DeviceBackend primitive exists for either) -- not yet backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("MambaModule::forward: input must be rank-3 (N, L, d_model)");
@@ -218,7 +218,7 @@ Tensor MambaModule::backward(const Tensor& grad_output) {
     }
     // Dereferences Tensor::data() directly, and computes exp/sigmoid in raw host loops --
     // not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_input_.shape(), backend_);
     Tensor local_w_delta_grad(w_delta_.shape(), backend_);
@@ -368,7 +368,7 @@ Tensor MambaModule::propagate_relevance(const Tensor& relevance_out, const LRPRu
             "forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     Tensor relevance_in(last_input_.shape(), backend_);
 
