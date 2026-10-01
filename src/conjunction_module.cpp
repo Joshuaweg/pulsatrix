@@ -40,11 +40,16 @@ std::pair<Tensor, Tensor> split_operands(const Tensor& stacked, DeviceBackend* b
         throw std::invalid_argument(
             std::string(caller) + ": input must be a Stack of exactly two operand tensors (leading dim == 2)");
     }
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(stacked);
     const Shape operand_shape = drop_leading_dim(stacked.shape());
     const int64_t half = operand_shape.numel();
 
     Tensor a(operand_shape, backend, stacked.device());
     Tensor b(operand_shape, backend, stacked.device());
+    PULSATRIX_REQUIRE_HOST(a);
+    PULSATRIX_REQUIRE_HOST(b);
     for (int64_t i = 0; i < half; ++i) {
         a.data()[i] = stacked.data()[i];
         b.data()[i] = stacked.data()[half + i];
@@ -59,7 +64,12 @@ Tensor combine_operands(const Tensor& a, const Tensor& b, DeviceBackend* backend
     for (int64_t i = 0; i < a.rank(); ++i) {
         dims.push_back(a.shape().dim(static_cast<size_t>(i)));
     }
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(a);
+    PULSATRIX_REQUIRE_HOST(b);
     Tensor result(Shape(dims), backend, a.device());
+    PULSATRIX_REQUIRE_HOST(result);
     const int64_t half = a.numel();
     for (int64_t i = 0; i < half; ++i) {
         result.data()[i] = a.data()[i];
@@ -88,7 +98,7 @@ Tensor ConjunctionModule::forward(const Tensor& a, const Tensor& b) {
 
 Tensor ConjunctionModule::forward_impl(const Tensor& input) {
     // Raw host loop below -- not yet backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     auto [a, b] = split_operands(input, backend_, "ConjunctionModule::forward");
 
@@ -127,12 +137,16 @@ Tensor ConjunctionModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("ConjunctionModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     auto [a, b] = split_operands(last_input_, backend_, "ConjunctionModule::backward");
 
     Tensor grad_a(a.shape(), backend_);
     Tensor grad_b(b.shape(), backend_);
+    // Allocated through backend_, so a GPU backend tags them Cuda/Hip -- the host writes below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_a);
+    PULSATRIX_REQUIRE_HOST(grad_b);
     const int64_t n = a.numel();
     switch (t_norm_) {
         case TNorm::Product:
@@ -170,12 +184,17 @@ Tensor ConjunctionModule::propagate_relevance(const Tensor& relevance_out, const
             "ConjunctionModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     auto [a, b] = split_operands(last_input_, backend_, "ConjunctionModule::propagate_relevance");
 
+    PULSATRIX_REQUIRE_HOST(last_output_);
     Tensor r_a(a.shape(), backend_);
     Tensor r_b(b.shape(), backend_);
+    // Allocated through backend_, so a GPU backend tags them Cuda/Hip -- the host writes below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(r_a);
+    PULSATRIX_REQUIRE_HOST(r_b);
     const int64_t n = a.numel();
     switch (t_norm_) {
         case TNorm::Product:

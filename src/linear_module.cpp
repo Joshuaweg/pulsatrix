@@ -11,7 +11,12 @@ namespace {
 // Used by backward()'s grad_x step (needs W^T) and, since the batch migration, also its
 // weight-gradient step (needs X^T) -- CPUBackend::gemm has no transpose flag.
 Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
+    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
+    PULSATRIX_REQUIRE_HOST(m);
     Tensor out(Shape({cols, rows}), backend);
+    PULSATRIX_REQUIRE_HOST(out);
     for (int64_t r = 0; r < rows; ++r) {
         for (int64_t c = 0; c < cols; ++c) {
             out.data()[c * rows + r] = m.data()[r * cols + c];
@@ -20,6 +25,9 @@ Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* bac
     return out;
 }
 }  // namespace
+
+LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend)
+    : LinearModule(in_features, out_features, backend, backend->device()) {}
 
 LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, DeviceType device)
     : in_features_(in_features),
@@ -111,7 +119,7 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
     // Dereferences Tensor::data() directly (via transpose()) -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     // grad_W = X^T @ grad_Y = (in_features x N) @ (N x out_features) -- the batched
     // sum-of-outer-products reduces to a single gemm via X^T (Mission 0's design trace,
@@ -119,6 +127,10 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
     // outer(x, grad_y); this generalizes it, not replaces it with new math.
     Tensor input_t = transpose(last_input_, N, in_features_, backend_);
     Tensor local_weight_grad(Shape({in_features_, out_features_}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(local_weight_grad);
     backend_->gemm(input_t.data(), grad_output.data(), local_weight_grad.data(), static_cast<size_t>(in_features_),
                     static_cast<size_t>(N), static_cast<size_t>(out_features_));
     weight_grad_.accumulate(local_weight_grad);
@@ -159,11 +171,15 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     // Applied independently per example -- each row's relevance redistribution uses only
     // that row's own cached z_j/x_i, no cross-example coupling.
     Tensor relevance_in(Shape({N, in_features_}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     relevance_in.fill(0.0f);
 
     for (int64_t n = 0; n < N; ++n) {

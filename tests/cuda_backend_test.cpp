@@ -4,7 +4,13 @@
 
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/cuda_backend.hpp"
+#include "pulsatrix/batch_norm_module.hpp"
+#include "pulsatrix/group_norm_module.hpp"
+#include "pulsatrix/layer_norm_module.hpp"
+#include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/rms_norm_module.hpp"
+#include "pulsatrix/swiglu_module.hpp"
 #include "pulsatrix/tensor.hpp"
 
 // Mirrors CPUBackendTest's exact test shape (allocate/free round-trip, zero-byte
@@ -333,6 +339,30 @@ TEST_F(CUDABackendTest, TensorToSecondBackendInstanceCopiesDeviceToDevice) {
     other.copy(host.data(), t.data(), host.size() * sizeof(float), CopyDirection::DeviceToHost);
     EXPECT_FLOAT_EQ(host[0], 3.0f);
     EXPECT_FLOAT_EQ(host[1], 4.0f);
+}
+
+TEST_F(CUDABackendTest, ReportsCudaDeviceAndTagsUntaggedTensors) {
+    EXPECT_EQ(backend.device(), DeviceType::Cuda);
+    EXPECT_EQ(Tensor(Shape({3}), &backend).device(), DeviceType::Cuda);
+}
+
+// Modules built on a GPU backend without an explicit device must hold device-tagged
+// parameters -- these used to default to Cpu, leaving Cpu-tagged weights in device memory
+// (GPU-native-kernels Mission 0). SwiGLU covers the composite case: its three LinearModule
+// projections are constructed without a tag.
+TEST_F(CUDABackendTest, ModulesBuiltWithoutExplicitDeviceTakeTheBackendsDevice) {
+    LinearModule linear(3, 2, &backend);
+    LayerNormModule layer_norm(4, &backend);
+    RMSNormModule rms_norm(4, &backend);
+    BatchNormModule batch_norm(2, &backend);
+    GroupNormModule group_norm(1, 2, &backend);
+    SwiGLUModule swiglu(4, 6, &backend);
+
+    for (Module* m : std::vector<Module*>{&linear, &layer_norm, &rms_norm, &batch_norm, &group_norm, &swiglu}) {
+        for (auto& param : m->parameters()) {
+            EXPECT_EQ(param.value->device(), DeviceType::Cuda);
+        }
+    }
 }
 
 }  // namespace

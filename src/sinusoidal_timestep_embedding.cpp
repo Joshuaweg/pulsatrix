@@ -16,6 +16,9 @@ Tensor SinusoidalTimestepEmbedding(int64_t t, int64_t embedding_dim, DeviceBacke
     }
 
     Tensor embedding(Shape({1, embedding_dim}), backend);
+    // Allocated through backend, so a GPU backend tags it Cuda/Hip -- the host writes below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(embedding);
     const float t_value = static_cast<float>(t);
     for (int64_t i = 0; i < embedding_dim / 2; ++i) {
         // Frequency of pair i: t / base^(2i/embedding_dim). Computed in double and narrowed

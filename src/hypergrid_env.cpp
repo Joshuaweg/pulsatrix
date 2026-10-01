@@ -45,7 +45,7 @@ void HyperGridEnv::decode_state(const Tensor& state, std::vector<int64_t>& out) 
     if (state.rank() != 2 || state.shape().dim(0) != 1 || state.shape().dim(1) != ndim_) {
         throw std::invalid_argument("HyperGridEnv: state must have shape (1, ndim())");
     }
-    PULSATRIX_ASSERT(state.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(state);
 
     out.assign(static_cast<size_t>(ndim_), 0);
     for (int64_t i = 0; i < ndim_; ++i) {
@@ -138,7 +138,7 @@ std::vector<bool> HyperGridEnv::valid_actions_mask(const Tensor& state) const {
 }
 
 StepResult HyperGridEnv::step(const Tensor& action) {
-    PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(action);
 
     if (!has_reset_) {
         throw std::invalid_argument("HyperGridEnv::step called before reset");

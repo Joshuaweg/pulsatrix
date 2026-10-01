@@ -14,8 +14,8 @@ void AdamOptimizer::step(Module& module) {
         // Dereferences Tensor::data() directly in a raw host loop -- not yet
         // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
         // decision and mission_host_loop_guards.md.
-        PULSATRIX_ASSERT(p.value->device() == DeviceType::Cpu);
-        PULSATRIX_ASSERT(p.grad->device() == DeviceType::Cpu);
+        PULSATRIX_REQUIRE_HOST(*p.value);
+        PULSATRIX_REQUIRE_HOST(*p.grad);
 
         auto it = state_.find(p.value);
         if (it == state_.end()) {
@@ -25,6 +25,10 @@ void AdamOptimizer::step(Module& module) {
             it = state_.emplace(p.value, std::move(fresh)).first;
         }
         AdamState& s = it->second;
+        // The moment buffers are allocated through backend_, so a GPU backend tags them
+        // Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
+        PULSATRIX_REQUIRE_HOST(s.m);
+        PULSATRIX_REQUIRE_HOST(s.v);
         ++s.t;
 
         for (int64_t i = 0; i < p.value->numel(); ++i) {

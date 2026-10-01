@@ -20,8 +20,8 @@ CalibrationLoss::CalibrationLoss(DeviceBackend* backend)
     : backend_(backend), last_probs_(Shape({0}), backend) {}
 
 float CalibrationLoss::forward(const Tensor& probs, const Tensor& target_class) {
-    PULSATRIX_ASSERT(probs.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(target_class.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(probs);
+    PULSATRIX_REQUIRE_HOST(target_class);
 
     if (probs.rank() != 2) {
         throw std::invalid_argument("CalibrationLoss::forward: probs must have shape (N, num_classes)");
@@ -79,7 +79,11 @@ Tensor CalibrationLoss::backward() const {
     const int64_t num_classes = last_probs_.shape().dim(1);
     const float scale = 2.0f / static_cast<float>(batch_size);
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(last_probs_);
     Tensor grad(last_probs_.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad);
     for (int64_t n = 0; n < batch_size; ++n) {
         const int64_t target = last_target_indices_[static_cast<size_t>(n)];
         for (int64_t k = 0; k < num_classes; ++k) {

@@ -118,7 +118,7 @@ public:
      *         action's shape is not (1, 1), or if the action is outside the tolerated range.
      *         All external boundary: an action can originate from an untrusted policy output
      *         or, eventually, Python bindings.
-     * @note PULSATRIX_ASSERT(action.device() == DeviceType::Cpu) -- this is a raw host-loop
+     * @note PULSATRIX_REQUIRE_HOST(action) -- this is a raw host-loop
      *       physics update dereferencing Tensor::data() directly, not yet backend-generic, so
      *       a CUDA-backed action Tensor would be silent UB. Same convention as CartPoleEnv
      *       and every prior module; do not remove without actually routing through

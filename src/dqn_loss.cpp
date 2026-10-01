@@ -37,9 +37,9 @@ float DQNLoss::forward(const Tensor& q_values, const Tensor& actions, const Tens
     // per-row gather at a data-dependent column has no DeviceBackend primitive). See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(q_values.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(actions.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(targets.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(q_values);
+    PULSATRIX_REQUIRE_HOST(actions);
+    PULSATRIX_REQUIRE_HOST(targets);
 
     if (q_values.rank() != 2) {
         throw std::invalid_argument("DQNLoss::forward: q_values must have shape (N, action_dim)");
@@ -97,7 +97,12 @@ Tensor DQNLoss::backward() const {
     // exactly 0.0f -- only the taken action's column is written. That untouched-zero pattern
     // is the masking: the Q-network's backward() receives gradient signal solely for the
     // action the behaviour policy actually took.
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(last_q_values_);
+    PULSATRIX_REQUIRE_HOST(last_targets_);
     Tensor grad(last_q_values_.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad);
     for (int64_t b = 0; b < batch_size; ++b) {
         const int64_t index = last_action_indices_[static_cast<size_t>(b)];
         const float selected = last_q_values_.data()[b * action_dim + index];

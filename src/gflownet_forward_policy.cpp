@@ -41,7 +41,7 @@ float GFlowNetForwardPolicy::next_unit() {
 
 GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
                                                      const std::vector<bool>& valid_actions) {
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
 
     if (static_cast<int64_t>(valid_actions.size()) != action_dim_) {
         throw std::invalid_argument("GFlowNetForwardPolicy::sample: valid_actions must have size action_dim()");
@@ -55,6 +55,10 @@ GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
         throw std::invalid_argument("GFlowNetForwardPolicy: policy_network must produce output of shape "
                                      "(1, action_dim)");
     }
+    // The network may run on a GPU backend even when observation is host-resident; the raw
+    // host loop over logits below would then be UB (GPU-native-kernels campaign,
+    // Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(logits);
 
     // Additive-mask technique: an invalid action's logit is driven to the lowest representable
     // float before softmax, giving it ~0 probability without risking a NaN from actual -infinity
@@ -117,7 +121,7 @@ GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
 
 std::vector<float> GFlowNetForwardPolicy::masked_probs(const Tensor& observation,
                                                         const std::vector<bool>& valid_actions) {
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
 
     if (static_cast<int64_t>(valid_actions.size()) != action_dim_) {
         throw std::invalid_argument("GFlowNetForwardPolicy::masked_probs: valid_actions must have size action_dim()");
@@ -132,6 +136,10 @@ std::vector<float> GFlowNetForwardPolicy::masked_probs(const Tensor& observation
         throw std::invalid_argument("GFlowNetForwardPolicy: policy_network must produce output of shape "
                                      "(1, action_dim)");
     }
+    // The network may run on a GPU backend even when observation is host-resident; the raw
+    // host loop over logits below would then be UB (GPU-native-kernels campaign,
+    // Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(logits);
 
     std::vector<float> masked_logits(static_cast<size_t>(action_dim_));
     for (int64_t a = 0; a < action_dim_; ++a) {

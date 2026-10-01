@@ -188,7 +188,7 @@ MultiHeadAttentionModule::MultiHeadAttentionModule(int64_t d_model, int64_t num_
 Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in raw host loops -- not backend-generic.
     // See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("MultiHeadAttentionModule::forward: input must be rank-3 (N, L, d_model)");
@@ -208,6 +208,10 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
 
     // --- Step 2: split heads ------------------------------------------------------------
     Tensor q(Shape({N, H, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(q);
     Tensor k(Shape({N, H, L, D}), backend_);
     Tensor v(Shape({N, H, L, D}), backend_);
     split_heads(q_flat.data(), q.data(), N, L, H, D);
@@ -298,13 +302,17 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
             "forward shape");
     }
     // Raw host loops -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     // --- Step 9' : output projection ----------------------------------------------------
     Tensor grad_merged = out_proj_.backward(reshaped(grad_output, Shape({N * L, d_model_})));
 
     // --- Step 8' : merge heads inverse (pure data movement) -----------------------------
     Tensor grad_context(Shape({N, H, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_context);
     split_heads(grad_merged.data(), grad_context.data(), N, L, H, D);
 
     // --- Step 7' : context = Attn @ V ---------------------------------------------------
@@ -393,13 +401,17 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
             "the cached forward shape");
     }
     // Raw host loops -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     // --- Step 9' : output projection (LinearModule's own epsilon rule) ------------------
     Tensor r_merged = out_proj_.propagate_relevance(reshaped(relevance_out, Shape({N * L, d_model_})), config);
 
     // --- Step 8' : merge-heads inverse (pure index mapping, no epsilon) -----------------
     Tensor r_context(Shape({N, H, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(r_context);
     split_heads(r_merged.data(), r_context.data(), N, L, H, D);
 
     // --- Step 7' : Eq. 15 on context = Attn @ V -----------------------------------------

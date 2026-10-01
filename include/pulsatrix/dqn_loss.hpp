@@ -58,7 +58,7 @@ public:
      *         float round-trip, tight enough to catch a genuinely fractional "action" (an
      *         un-argmaxed probability, say).
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_ASSERT(device() == DeviceType::Cpu) on the inputs guards against
+     *       loop. PULSATRIX_REQUIRE_HOST on the inputs guards against
      *       silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove
      *       this guard without actually retrofitting the method to route through
@@ -75,11 +75,10 @@ public:
      * @note The `2/N` factor is the same mean-square scaling MSELoss::backward() already
      *       folds in; N is the batch size, not the element count, because the mean is taken
      *       over transitions (one squared error each), not over all N*action_dim Q-values.
-     * @note Also dereferences Tensor::data() directly, but deliberately not independently
-     *       device-guarded: it only reads state forward() already validated before caching,
-     *       and forward()'s own guard is the only way a non-Cpu tensor could ever reach that
-     *       cache -- a second guard here would be untestable dead code, not a real safety
-     *       net. Identical reasoning to MSELoss::backward(); see mission_host_loop_guards.md.
+     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
+     *       guards on the cached state and on the freshly allocated gradient(s). forward()'s
+     *       guard covers only the caller's tensors; the gradient is allocated through backend_,
+     *       which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
      */
     [[nodiscard]] Tensor backward() const;
 

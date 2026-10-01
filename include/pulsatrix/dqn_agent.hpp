@@ -64,7 +64,7 @@ public:
      *       therefore leaves the stream one step further along than it found it, which keeps
      *       an epsilon=0 agent's stream position well-defined rather than frozen.
      * @note Raw host loop over the network output's Tensor::data() (argmax has no
-     *       DeviceBackend primitive) -- PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu)
+     *       DeviceBackend primitive) -- PULSATRIX_REQUIRE_HOST(observation)
      *       guards against silent UB on a CUDA-backed Tensor; see mission_host_loop_guards.md.
      */
     [[nodiscard]] Tensor act(const Tensor& observation) override;

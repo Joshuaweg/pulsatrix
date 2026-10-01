@@ -12,7 +12,12 @@ namespace {
 // same helper shape as LinearModule's/RNNModule's/MambaModule's own transpose()
 // (CPUBackend::gemm has no transpose flag).
 Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
+    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
+    PULSATRIX_REQUIRE_HOST(m);
     Tensor out(Shape({cols, rows}), backend);
+    PULSATRIX_REQUIRE_HOST(out);
     for (int64_t r = 0; r < rows; ++r) {
         for (int64_t c = 0; c < cols; ++c) {
             out.data()[c * rows + r] = m.data()[r * cols + c];
@@ -137,7 +142,7 @@ void RWKVModule::set_mu_v(const std::vector<float>& values) {
 Tensor RWKVModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly, and computes exp/sigmoid in raw host loops
     // (no DeviceBackend primitive exists for either) -- not yet backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("RWKVModule::forward: input must be rank-3 (N, L, d_model)");
@@ -163,6 +168,10 @@ Tensor RWKVModule::forward_impl(const Tensor& input) {
     last_b_ = Tensor(Shape({N, L + 1, D}), backend_);  // zero-filled: b_0 = 0
 
     Tensor output(Shape({N, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
 
     for (int64_t t = 0; t < L; ++t) {
         // The three token-shift mixes, gathered into contiguous (N, d_model) buffers so the
@@ -260,9 +269,13 @@ Tensor RWKVModule::backward(const Tensor& grad_output) {
     }
     // Dereferences Tensor::data() directly, and computes exp/sigmoid math in raw host loops
     // -- not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     Tensor local_w_r_grad(w_r_.shape(), backend_);
     Tensor local_w_k_grad(w_k_.shape(), backend_);
     Tensor local_w_v_grad(w_v_.shape(), backend_);
@@ -467,10 +480,14 @@ Tensor RWKVModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
     }
     // Dereferences Tensor::data() directly, and computes exp math in raw host loops -- not
     // yet backend-generic.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const float eps = config.epsilon;
     Tensor relevance_in(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     Tensor w_o_T = transpose(w_o_, D, D, backend_);
     Tensor w_v_T = transpose(w_v_, D, D, backend_);
 

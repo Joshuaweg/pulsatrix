@@ -112,7 +112,7 @@ public:
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached forward
      *         output shape.
      * @note Not yet backend-generic -- raw host loops for the recurrence and the exp/sigmoid
-     *       math. PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu) guards against silent
+     *       math. PULSATRIX_REQUIRE_HOST(grad_output) guards against silent
      *       UB on a CUDA-backed Tensor.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
@@ -219,7 +219,7 @@ public:
      *       relevance share -- see the class-level note. Only `w_v_`, `w_o_`, `mu_v_`
      *       (and `w_` for `decay`) participate.
      * @note Not yet backend-generic -- raw host loops, mirroring forward_impl()/backward().
-     *       PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu) guards against silent
+     *       PULSATRIX_REQUIRE_HOST(relevance_out) guards against silent
      *       UB on a CUDA-backed Tensor.
      * @note Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the
      *       usual epsilon stabilizers -- NOT a known non-conserving approximation like
@@ -239,7 +239,7 @@ protected:
      * @throws std::invalid_argument if input isn't rank-3 (N, L, d_model), or its last
      *         dimension doesn't match d_model.
      * @note Not yet backend-generic -- raw host loops (exp/sigmoid have no backend
-     *       primitive). PULSATRIX_ASSERT(input.device() == DeviceType::Cpu) guards against
+     *       primitive). PULSATRIX_REQUIRE_HOST(input) guards against
      *       silent UB on a CUDA-backed Tensor.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

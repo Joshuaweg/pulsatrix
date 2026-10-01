@@ -7,6 +7,9 @@
 
 namespace pulsatrix {
 
+RMSNormModule::RMSNormModule(int64_t num_features, DeviceBackend* backend)
+    : RMSNormModule(num_features, backend, backend->device()) {}
+
 RMSNormModule::RMSNormModule(int64_t num_features, DeviceBackend* backend, DeviceType device, float eps)
     : num_features_(num_features),
       eps_(eps),
@@ -40,10 +43,16 @@ Tensor RMSNormModule::forward_impl(const Tensor& input) {
     }
     const int64_t N = input.shape().dim(0);
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(input);
+    PULSATRIX_REQUIRE_HOST(gamma_);
+
     last_input_ = input;
     last_rms_.assign(static_cast<size_t>(N), 0.0f);
 
     Tensor output(Shape({N, num_features_}), backend_, gamma_.device());
+    PULSATRIX_REQUIRE_HOST(output);
     for (int64_t n = 0; n < N; ++n) {
         float sum_sq = 0.0f;
         for (int64_t i = 0; i < num_features_; ++i) {
@@ -74,11 +83,15 @@ Tensor RMSNormModule::backward(const Tensor& grad_output) {
     }
     // Not yet backend-generic -- raw host loop below. See every existing Module
     // subclass's identical Phase 1.5 scope decision.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const float D = static_cast<float>(num_features_);
 
     Tensor local_gamma_grad(Shape({num_features_}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(local_gamma_grad);
     local_gamma_grad.fill(0.0f);
     Tensor grad_input(Shape({N, num_features_}), backend_);
 

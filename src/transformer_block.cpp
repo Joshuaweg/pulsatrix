@@ -55,7 +55,7 @@ TransformerBlock::TransformerBlock(int64_t d_model, int64_t num_heads, int64_t d
 Tensor TransformerBlock::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in the residual-add raw host loop below -- not
     // backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() < 2 || input.shape().dim(static_cast<size_t>(input.rank() - 1)) != d_model_) {
         throw std::invalid_argument(
@@ -96,7 +96,7 @@ Tensor TransformerBlock::backward(const Tensor& grad_output) {
         throw std::invalid_argument("TransformerBlock::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t n_flat = flatten_leading_dims(last_input_shape_, d_model_);
 
@@ -132,7 +132,7 @@ Tensor TransformerBlock::propagate_relevance(const Tensor& relevance_out, const 
             "TransformerBlock::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t n_flat = flatten_leading_dims(last_input_shape_, d_model_);
 

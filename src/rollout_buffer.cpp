@@ -39,6 +39,10 @@ void require_row_shape(const Tensor& tensor, int64_t expected_width, const char*
 
 // Copies one (1, width) row into row `row` of a (max_length, width) storage block.
 void write_row(Tensor& storage, int64_t row, const Tensor& source, int64_t width) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(storage);
+    PULSATRIX_REQUIRE_HOST(source);
     float* destination = storage.data() + row * width;
     const float* values = source.data();
     for (int64_t i = 0; i < width; ++i) {
@@ -62,8 +66,8 @@ RolloutBuffer::RolloutBuffer(int64_t max_length, int64_t observation_dim, int64_
 void RolloutBuffer::add(const Tensor& observation, const Tensor& action, float reward, float log_prob, bool done) {
     // Raw host-loop row copies over Tensor::data() -- undefined behavior on a CUDA-backed
     // Tensor. See mission_host_loop_guards.md; same guard as every prior host-loop site.
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
+    PULSATRIX_REQUIRE_HOST(action);
 
     // Before the shape checks, because it is the stronger statement: when the rollout is
     // full, *no* add() can be correct, whatever the argument shapes are. Reporting a shape
@@ -76,6 +80,15 @@ void RolloutBuffer::add(const Tensor& observation, const Tensor& action, float r
 
     require_row_shape(observation, observation_dim_, "observation");
     require_row_shape(action, action_dim_, "action");
+
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). The storage tensors are allocated through
+    // backend_, so a GPU backend tags them Cuda/Hip.
+    PULSATRIX_REQUIRE_HOST(observations_);
+    PULSATRIX_REQUIRE_HOST(actions_);
+    PULSATRIX_REQUIRE_HOST(rewards_);
+    PULSATRIX_REQUIRE_HOST(log_probs_);
+    PULSATRIX_REQUIRE_HOST(dones_);
 
     write_row(observations_, size_, observation, observation_dim_);
     write_row(actions_, size_, action, action_dim_);
@@ -93,6 +106,15 @@ RolloutBatch RolloutBuffer::compute_returns(float gamma) const {
         // gamma > 1` and silently poison every return.
         throw std::invalid_argument("RolloutBuffer::compute_returns: gamma must be in (0, 1]");
     }
+
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). The storage tensors are allocated through
+    // backend_, so a GPU backend tags them Cuda/Hip.
+    PULSATRIX_REQUIRE_HOST(observations_);
+    PULSATRIX_REQUIRE_HOST(actions_);
+    PULSATRIX_REQUIRE_HOST(rewards_);
+    PULSATRIX_REQUIRE_HOST(log_probs_);
+    PULSATRIX_REQUIRE_HOST(dones_);
 
     std::vector<float> observations(static_cast<size_t>(size_ * observation_dim_));
     std::vector<float> actions(static_cast<size_t>(size_ * action_dim_));
@@ -135,6 +157,10 @@ RolloutBatch RolloutBuffer::compute_returns(float gamma) const {
 }
 
 Tensor RolloutBuffer::rewards() const {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). The storage tensors are allocated through
+    // backend_, so a GPU backend tags them Cuda/Hip.
+    PULSATRIX_REQUIRE_HOST(rewards_);
     // Straight prefix copy, for compute_returns()'s reason: rows [0, size_) of the storage
     // block are already in stored order, and the never-written rows beyond size_ must not be
     // handed back.
@@ -146,6 +172,10 @@ Tensor RolloutBuffer::rewards() const {
 }
 
 Tensor RolloutBuffer::dones() const {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). The storage tensors are allocated through
+    // backend_, so a GPU backend tags them Cuda/Hip.
+    PULSATRIX_REQUIRE_HOST(dones_);
     std::vector<float> values(static_cast<size_t>(size_));
     for (int64_t t = 0; t < size_; ++t) {
         values[static_cast<size_t>(t)] = dones_.data()[t];

@@ -12,7 +12,12 @@ namespace {
 // same helper shape as LinearModule's/Conv2DModule's/RNNModule's/LSTMModule's/GRUModule's
 // own transpose() (CPUBackend::gemm has no transpose flag).
 Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
+    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
+    PULSATRIX_REQUIRE_HOST(m);
     Tensor out(Shape({cols, rows}), backend);
+    PULSATRIX_REQUIRE_HOST(out);
     for (int64_t r = 0; r < rows; ++r) {
         for (int64_t c = 0; c < cols; ++c) {
             out.data()[c * rows + r] = m.data()[r * cols + c];
@@ -119,7 +124,7 @@ void MambaModule::set_D(const std::vector<float>& values) {
 Tensor MambaModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly, and computes softplus/exp in raw host loops
     // (no DeviceBackend primitive exists for either) -- not yet backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("MambaModule::forward: input must be rank-3 (N, L, d_model)");
@@ -140,6 +145,10 @@ Tensor MambaModule::forward_impl(const Tensor& input) {
     last_c_ = Tensor(Shape({N, L, S}), backend_);
 
     Tensor output(Shape({N, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
 
     for (int64_t t = 0; t < L; ++t) {
         // x_t, gathered into a contiguous (N, d_model) buffer so the three selective
@@ -218,9 +227,13 @@ Tensor MambaModule::backward(const Tensor& grad_output) {
     }
     // Dereferences Tensor::data() directly, and computes exp/sigmoid in raw host loops --
     // not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     Tensor local_w_delta_grad(w_delta_.shape(), backend_);
     Tensor local_bias_delta_grad(bias_delta_.shape(), backend_);
     Tensor local_w_b_grad(w_b_.shape(), backend_);
@@ -368,9 +381,13 @@ Tensor MambaModule::propagate_relevance(const Tensor& relevance_out, const LRPRu
             "forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     Tensor relevance_in(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
 
     // The carried state-relevance accumulator, R(h_t)[b,d,n] arriving from step t+1. Zero
     // at t = L-1, and (by h_0 == 0) it carries nothing out past t = 0.

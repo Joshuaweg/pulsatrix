@@ -38,10 +38,8 @@ ResidualModule::ResidualModule(Module* inner, DeviceBackend* backend)
 }
 
 Tensor ResidualModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly in the residual-add raw host loop below -- not
-    // backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
-
+    // Device-generic: the inner forward plus a DeviceBackend::add, no host dereference. Runs
+    // on a GPU tensor whenever inner_ does (GPU-native-kernels Mission 0 O5).
     Tensor f_x = inner_->forward(input);
 
     Tensor y(input.shape(), backend_);
@@ -62,7 +60,7 @@ Tensor ResidualModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("ResidualModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_from_inner = inner_->backward(grad_output);
 
@@ -81,7 +79,7 @@ Tensor ResidualModule::propagate_relevance(const Tensor& relevance_out, const LR
             "ResidualModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     Tensor r_x_direct(relevance_out.shape(), backend_);
     Tensor r_f_x(relevance_out.shape(), backend_);

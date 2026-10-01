@@ -60,6 +60,16 @@ public:
     virtual ~DeviceBackend() = default;
 
     /**
+     * @brief Which device this backend's buffers reside on.
+     * @note Tensor's constructors that take no explicit DeviceType tag the Tensor with this,
+     *       so a temporary allocated through a CUDA/HIP backend can no longer be silently
+     *       labelled Cpu (the default-tag defect found by the GPU-native-kernels campaign
+     *       recon: a mislabelled tensor makes Tensor pick HostToHost copies on device memory
+     *       and lets host-only guards pass).
+     */
+    [[nodiscard]] virtual DeviceType device() const noexcept = 0;
+
+    /**
      * @brief Allocates a buffer of the given size.
      * @param bytes Number of bytes to allocate. A request of 0 bytes returns nullptr by
      *        convention (not an error) — there is nothing to allocate.

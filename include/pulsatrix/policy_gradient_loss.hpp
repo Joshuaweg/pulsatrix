@@ -76,7 +76,7 @@ public:
      *         tight enough to catch a genuinely fractional "action".
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host loops
      *       (a row-wise softmax and a per-row gather at a data-dependent column have no
-     *       DeviceBackend primitive). PULSATRIX_ASSERT(device() == DeviceType::Cpu) on all three
+     *       DeviceBackend primitive). PULSATRIX_REQUIRE_HOST on all three
      *       inputs guards against silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove
      *       these guards without actually retrofitting the method to route through
@@ -98,11 +98,10 @@ public:
      * @note The `1/N` factor is the batch-mean scaling; N is the number of rollout steps, not
      *       the element count, because the mean is taken over steps (one log-probability each),
      *       not over all N*action_dim logits -- identical reasoning to DQNLoss's `2/N`.
-     * @note Also dereferences Tensor::data() directly, but deliberately not independently
-     *       device-guarded: it only reads state forward() already validated before caching, and
-     *       forward()'s own guard is the only way a non-Cpu tensor could reach that cache -- a
-     *       second guard here would be untestable dead code. Identical reasoning to
-     *       DQNLoss::backward(); see mission_host_loop_guards.md.
+     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
+     *       guards on the cached state and on the freshly allocated gradient(s). forward()'s
+     *       guard covers only the caller's tensors; the gradient is allocated through backend_,
+     *       which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
      */
     [[nodiscard]] Tensor backward() const;
 

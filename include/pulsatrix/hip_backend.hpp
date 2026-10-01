@@ -29,7 +29,7 @@ namespace pulsatrix {
  * @note The same Phase 1.5 scope limit applies here: only Tensor operations that route
  *       entirely through DeviceBackend's own primitives are safe against a HIP-backed Tensor.
  *       Phase 1's Module backward/LRP/optimizer code is host-loop-only and is guarded by
- *       `PULSATRIX_ASSERT(device() == DeviceType::Cpu)`, which covers DeviceType::Hip identically
+ *       `PULSATRIX_REQUIRE_HOST`, which covers DeviceType::Hip identically
  *       to DeviceType::Cuda -- those guards need no change for this backend.
  */
 class HIPBackend : public DeviceBackend {
@@ -39,6 +39,8 @@ public:
 
     HIPBackend(const HIPBackend&) = delete;
     HIPBackend& operator=(const HIPBackend&) = delete;
+
+    [[nodiscard]] DeviceType device() const noexcept override { return DeviceType::Hip; }
 
     [[nodiscard]] void* allocate(size_t bytes) override;
     void free(void* ptr) noexcept override;

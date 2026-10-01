@@ -95,7 +95,7 @@ public:
      *         action's shape is not (1, 1), or if the decoded index is not within 1e-4 of
      *         an integer in [0, action_dim()). All external boundary: an action can
      *         originate from an untrusted policy output or, eventually, Python bindings.
-     * @note PULSATRIX_ASSERT(action.device() == DeviceType::Cpu) -- this is a raw host-loop
+     * @note PULSATRIX_REQUIRE_HOST(action) -- this is a raw host-loop
      *       physics update dereferencing Tensor::data() directly, not yet backend-generic,
      *       so a CUDA-backed action Tensor would be silent UB. Same convention as every
      *       prior module; do not remove without actually routing through DeviceBackend.
