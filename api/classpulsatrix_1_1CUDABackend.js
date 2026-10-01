@@ -8,10 +8,13 @@ var classpulsatrix_1_1CUDABackend =
     [ "add_row_vector", "classpulsatrix_1_1CUDABackend.html#ac06276c01c2b60b411140ff2391ca591", null ],
     [ "allocate", "classpulsatrix_1_1CUDABackend.html#a1245659be03c2564e3c1d5ea24d37c8e", null ],
     [ "axpby", "classpulsatrix_1_1CUDABackend.html#a8f7d5e329a5f586840e68a93106084c2", null ],
+    [ "bce_with_logits", "classpulsatrix_1_1CUDABackend.html#a64ce9cd8c8654c7b7e57d59821408758", null ],
+    [ "bce_with_logits_grad", "classpulsatrix_1_1CUDABackend.html#a434421c123368353f5265c4210f3248c", null ],
     [ "column_sums", "classpulsatrix_1_1CUDABackend.html#a1607101006760f0b78356b875c873095", null ],
     [ "copy", "classpulsatrix_1_1CUDABackend.html#a5bb1c9ef2779b382555f212de0f50567", null ],
     [ "device", "classpulsatrix_1_1CUDABackend.html#af8543405b9fd64b66854be7ac2e891b5", null ],
     [ "dot", "classpulsatrix_1_1CUDABackend.html#aaff34c8332b931c73e0698f630fb35ba", null ],
+    [ "dropout_forward", "classpulsatrix_1_1CUDABackend.html#a7750f6b02eb0065b318ca3a2e1113c7a", null ],
     [ "elementwise", "classpulsatrix_1_1CUDABackend.html#a43d669dcc4b83a84ed7d82bc622f3c1c", null ],
     [ "elementwise_backward", "classpulsatrix_1_1CUDABackend.html#a7166d2b0e2684edabb1b143b5eb837f4", null ],
     [ "fill", "classpulsatrix_1_1CUDABackend.html#a1bab00e976895d4fa042ed6ceb0c23c2", null ],
@@ -22,5 +25,6 @@ var classpulsatrix_1_1CUDABackend =
     [ "mul", "classpulsatrix_1_1CUDABackend.html#aa91c1767a9c559e2fe39c2cd6971c7fa", null ],
     [ "operator=", "classpulsatrix_1_1CUDABackend.html#a2c630c7ce8e88657fda085bc4e8d31b4", null ],
     [ "softmax_rows", "classpulsatrix_1_1CUDABackend.html#aac38739d4442961adae210913e37a29d", null ],
-    [ "softmax_rows_backward", "classpulsatrix_1_1CUDABackend.html#a4a9d9c27b30d1b2b79d0a0e7326e316a", null ]
+    [ "softmax_rows_backward", "classpulsatrix_1_1CUDABackend.html#a4a9d9c27b30d1b2b79d0a0e7326e316a", null ],
+    [ "sum", "classpulsatrix_1_1CUDABackend.html#ace871d117e488a8d748e5e262f09eb3b", null ]
 ];

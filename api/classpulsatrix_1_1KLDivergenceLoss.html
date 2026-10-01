@@ -183,7 +183,7 @@ Pairs with <a class="el" href="classpulsatrix_1_1MSELoss.html" title="MSE = mean
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Dereferences <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly, so it carries its own PULSATRIX_REQUIRE_HOST guards on the cached state and on the freshly allocated gradient(s). <a class="el" href="classpulsatrix_1_1KLDivergenceLoss.html#a3e37d1595b2b7d71f05aeecc895de688" title="Computes the KL term and caches mu/log_sigma for backward().">forward()</a>'s guard covers only the caller's tensors; the gradient is allocated through backend_, which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b); inputs must share one device. </dd></dl>
 
 </div>
 </div>
@@ -228,7 +228,7 @@ Pairs with <a class="el" href="classpulsatrix_1_1MSELoss.html" title="MSE = mean
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Not yet backend-generic &ndash; exp() has no <a class="el" href="classpulsatrix_1_1DeviceBackend.html#aadd18aba9ba182e82ba34147900f1377" title="Applies a unary elementwise operation to every element of a buffer.">DeviceBackend::elementwise</a> op, so this is a raw host loop dereferencing <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly. PULSATRIX_REQUIRE_HOST on both inputs guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove this guard without actually retrofitting the method to route through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b); inputs must share one device. </dd></dl>
 
 </div>
 </div>

@@ -723,6 +723,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4">Sigmoid</a>
 , <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf">Silu</a>
+, <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0">Exp</a>
 <br />
  }</td></tr>
 <tr class="memdesc:afec27fa326532e4ad62b32d54558b503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary elementwise operations supported by DeviceBackend::elementwise().  <a href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">More...</a><br /></td></tr>
@@ -1367,6 +1368,8 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4" name="afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4"></a>Sigmoid&#160;</td><td class="fielddoc"><p>1 / (1 + exp(-x)) </p>
 </td></tr>
 <tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf" name="afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf"></a>Silu&#160;</td><td class="fielddoc"><p>x * sigmoid(x) &ndash; a.k.a. swish; the gate half of SwiGLU </p>
+</td></tr>
+<tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0" name="afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0"></a>Exp&#160;</td><td class="fielddoc"><p>exp(x) &ndash; GPU-native-kernels Mission 1b (<a class="el" href="classpulsatrix_1_1Reparameterize.html" title="VAE reparameterization trick (Kingma &amp; Welling 2013, arXiv:1312.6114), z[b,d] = mu[b,...">Reparameterize</a>, KL divergence) </p>
 </td></tr>
 </table>
 
