@@ -57,9 +57,8 @@ public:
      *         dimensions disagree, if an encoded class index is not within 1e-4 of a whole
      *         number, or if a decoded index falls outside [0, num_classes) -- all external
      *         boundaries, byte-for-byte `PolicyGradientLoss::forward`'s own classification.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_REQUIRE_HOST on both inputs guards against
-     *       silent UB on a CUDA-backed Tensor.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b);
+     *       inputs must share one device.
      */
     [[nodiscard]] float forward(const Tensor& probs, const Tensor& target_class);
 
@@ -75,6 +74,7 @@ private:
     DeviceBackend* backend_;
     Tensor last_probs_;
     std::vector<int64_t> last_target_indices_;
+    Tensor last_one_hot_ = Tensor(Shape({0}), backend_);  // (N, num_classes), on the probs' device
     bool has_forwarded_ = false;
 };
 

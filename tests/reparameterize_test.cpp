@@ -203,33 +203,13 @@ TEST_F(ReparameterizeTest, BackwardGradLogSigmaMatchesFiniteDifference) {
 
 using ReparameterizeDeathTest = ReparameterizeTest;
 
-// forward() dereferences Tensor::data() directly in a raw host loop -- undefined behavior on
-// a CUDA-backed Tensor, so it is PULSATRIX_ASSERT-guarded (mission_host_loop_guards.md). No real
-// GPU needed: see LinearModuleDeathTest for the mislabeled-Tensor testing pattern this reuses.
-//
-// backward() is NOT independently guarded: it only ever reads last_log_sigma_/last_epsilon_,
-// and those are only ever populated by forward() -- which already rejects a non-Cpu tensor
-// before caching it. There is no reachable call sequence that gets a non-Cpu tensor into
-// backward()'s cached state, so a second guard there would be untestable dead code, not a
-// real safety net. Identical to MSELoss::backward()'s precedent.
-TEST_F(ReparameterizeDeathTest, ForwardAbortsOnNonCpuMu) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor mu(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    Tensor log_sigma(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    Tensor eps(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    EXPECT_DEATH({ (void)reparam.forward(mu, log_sigma, eps); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(ReparameterizeDeathTest, ForwardAbortsOnNonCpuEpsilon) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor mu(Shape({1, 2}), &backend, {1.0f, 2.0f});
-    Tensor log_sigma(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    Tensor eps(Shape({1, 2}), &backend, {0.0f, 0.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)reparam.forward(mu, log_sigma, eps); }, "PULSATRIX_ASSERT failed");
+// GPU-native-kernels Mission 1b: the computation is device-generic, so mixed-device inputs
+// are a reachable caller error -- rejected before any kernel sees two devices' pointers.
+TEST_F(ReparameterizeTest, ForwardThrowsOnMixedDevices) {
+    Tensor mu(Shape({2}), &backend, {0.5f, -0.5f});
+    Tensor log_sigma(Shape({2}), &backend, {0.1f, 0.2f});
+    Tensor epsilon(Shape({2}), &backend, {1.0f, -1.0f}, DeviceType::Cuda);
+    EXPECT_THROW((void)reparam.forward(mu, log_sigma, epsilon), std::invalid_argument);
 }
 
 }  // namespace

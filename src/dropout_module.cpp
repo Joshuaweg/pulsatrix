@@ -7,7 +7,11 @@
 namespace pulsatrix {
 
 DropoutModule::DropoutModule(float p, DeviceBackend* backend, uint64_t seed)
-    : p_(p), scale_(p < 1.0f ? 1.0f / (1.0f - p) : 1.0f), backend_(backend), rng_(seed) {
+    : p_(p),
+      scale_(p < 1.0f ? 1.0f / (1.0f - p) : 1.0f),
+      backend_(backend),
+      seed_(seed),
+      last_mask_(Shape({0}), backend) {
     // External boundary (construction arguments can originate from Phase 5's Python
     // bindings with no upstream validation). p == 1 would make scale diverge.
     if (p < 0.0f || p >= 1.0f) {
@@ -16,37 +20,22 @@ DropoutModule::DropoutModule(float p, DeviceBackend* backend, uint64_t seed)
 }
 
 Tensor DropoutModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(input);
-
-    const int64_t n = input.numel();
+    // Device-generic (GPU-native-kernels Mission 1b): mask drawn and applied on the input's
+    // device by one fused kernel.
     last_shape_ = input.shape();
-    last_mask_.assign(static_cast<size_t>(n), 1.0f);
-
-    Tensor output(input.shape(), backend_, input.device());
+    has_forwarded_ = true;
 
     if (!is_training() || p_ == 0.0f) {
-        // Eval mode or p==0: identity. mask stays all-ones (set above), matching what a
-        // training-mode forward with p==0 would also produce -- backward()'s mask*scale
-        // formula needs no special-casing for this branch.
-        for (int64_t i = 0; i < n; ++i) {
-            output.data()[i] = input.data()[i];
-        }
-        has_forwarded_ = true;
-        return output;
+        last_was_identity_ = true;
+        return Tensor(input);
     }
 
-    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
-    for (int64_t i = 0; i < n; ++i) {
-        if (dist(rng_) < p_) {
-            last_mask_[static_cast<size_t>(i)] = 0.0f;
-            output.data()[i] = 0.0f;
-        } else {
-            output.data()[i] = input.data()[i] * scale_;
-        }
-    }
-
-    has_forwarded_ = true;
+    const auto n = static_cast<size_t>(input.numel());
+    Tensor output(input.shape(), backend_, input.device());
+    last_mask_ = Tensor(input.shape(), backend_, input.device());
+    backend_->dropout_forward(input.data(), output.data(), last_mask_.data(), n, p_, scale_, seed_, draws_);
+    draws_ += n;
+    last_was_identity_ = false;
     return output;
 }
 
@@ -57,18 +46,14 @@ Tensor DropoutModule::backward(const Tensor& grad_output) {
     if (grad_output.shape() != last_shape_) {
         throw std::invalid_argument("DropoutModule::backward: grad_output must match the cached forward shape");
     }
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(grad_output);
-
-    Tensor grad_input(last_shape_, backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
-    for (int64_t i = 0; i < grad_output.numel(); ++i) {
-        // mask is 0 or 1 -- when 0, the scale_ factor is irrelevant (product is still 0).
-        grad_input.data()[i] = grad_output.data()[i] * last_mask_[static_cast<size_t>(i)] * scale_;
+    if (last_was_identity_) {
+        return Tensor(grad_output);
     }
+    // grad * mask * scale, in that order (as the original host loop multiplied).
+    const auto n = static_cast<size_t>(grad_output.numel());
+    Tensor grad_input(last_shape_, backend_, grad_output.device());
+    backend_->mul(grad_output.data(), last_mask_.data(), grad_input.data(), n);
+    backend_->axpby(scale_, grad_input.data(), 0.0f, grad_input.data(), grad_input.data(), n);
     return grad_input;
 }
 

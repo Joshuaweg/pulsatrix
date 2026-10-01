@@ -62,13 +62,8 @@ public:
      * @return The scalar mean binary cross-entropy.
      * @throws std::invalid_argument if logits and target shapes differ -- external boundary,
      *         same classification as MSELoss::forward's shape check.
-     * @note Not yet backend-generic -- exp()/log() have no DeviceBackend::elementwise op, so
-     *       this is a raw host loop dereferencing Tensor::data() directly.
-     *       PULSATRIX_REQUIRE_HOST on both inputs guards against silent UB
-     *       on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b);
+     *       inputs must share one device.
      * @note Target values are not range-checked against {0, 1}: the formula is well-defined
      *       (and standard practice, cf. label smoothing / soft targets) for any real y, and
      *       the finite-difference check exercises it as a smooth function of the logits.
@@ -84,10 +79,8 @@ public:
      *       already folds into its own `2/n`.
      * @note sigmoid() is evaluated here in a branch-stable form (`exp(x)/(1+exp(x))` for
      *       x < 0, `1/(1+exp(-x))` otherwise) so the exponent argument is never positive.
-     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
-     *       guards on the cached state and on the freshly allocated gradient(s). forward()'s
-     *       guard covers only the caller's tensors; the gradient is allocated through backend_,
-     *       which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b);
+     *       inputs must share one device.
      */
     [[nodiscard]] Tensor backward() const;
 

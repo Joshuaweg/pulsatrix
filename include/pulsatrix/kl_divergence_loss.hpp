@@ -43,13 +43,8 @@ public:
      * @throws std::invalid_argument if mu/log_sigma shapes don't match, or either isn't
      *         rank-2 (N, latent_dim) -- external boundary, same classification as
      *         MSELoss::forward's shape check.
-     * @note Not yet backend-generic -- exp() has no DeviceBackend::elementwise op, so this
-     *       is a raw host loop dereferencing Tensor::data() directly.
-     *       PULSATRIX_REQUIRE_HOST on both inputs guards against silent
-     *       UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b);
+     *       inputs must share one device.
      */
     [[nodiscard]] float forward(const Tensor& mu, const Tensor& log_sigma);
 
@@ -62,10 +57,8 @@ public:
      * @return Both gradients, each the shape of the mu passed to forward().
      * @throws std::logic_error if forward() has never been called -- uses the cached
      *         mu/log_sigma.
-     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
-     *       guards on the cached state and on the freshly allocated gradient(s). forward()'s
-     *       guard covers only the caller's tensors; the gradient is allocated through backend_,
-     *       which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b);
+     *       inputs must share one device.
      */
     [[nodiscard]] ReparamGrad backward() const;
 

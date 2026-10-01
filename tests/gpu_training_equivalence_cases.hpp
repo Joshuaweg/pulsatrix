@@ -10,6 +10,13 @@
 #include <vector>
 
 #include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/bce_with_logits_loss.hpp"
+#include "pulsatrix/calibration_loss.hpp"
+#include "pulsatrix/dropout_module.hpp"
+#include "pulsatrix/kl_divergence_loss.hpp"
+#include "pulsatrix/negation_module.hpp"
+#include "pulsatrix/noise_schedule.hpp"
+#include "pulsatrix/reparameterize.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/cross_entropy_loss.hpp"
 #include "pulsatrix/linear_module.hpp"
@@ -155,6 +162,92 @@ inline void SwiGLUBackward(DeviceBackend& gpu) {
     ExpectParametersNear(cs, gs, kTolerance);
 }
 
+// ---- Mission 1b ----------------------------------------------------------------------------
+
+inline void NegationForwardBackward(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    NegationModule cn(&cpu), gn(&gpu);
+    std::vector<float> x = Random(60, 130, 0.0f, 1.0f), dy = Random(60, 131);
+    Tensor cx(Shape({6, 10}), &cpu, x), gx(Shape({6, 10}), &gpu, x);
+    Tensor cdy(Shape({6, 10}), &cpu, dy), gdy(Shape({6, 10}), &gpu, dy);
+    ExpectNear(cn.forward(cx), gn.forward(gx));
+    ExpectNear(cn.backward(cdy), gn.backward(gdy));
+}
+
+// Same seed on both sides, two consecutive training passes (so the stream offset advances):
+// identical masks, so forward and backward match.
+inline void DropoutTrainingForwardBackward(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    DropoutModule cd(0.4f, &cpu, /*seed=*/2024), gd(0.4f, &gpu, /*seed=*/2024);
+    for (unsigned pass = 0; pass < 2; ++pass) {
+        std::vector<float> x = Random(500, 140 + pass), dy = Random(500, 150 + pass);
+        Tensor cx(Shape({50, 10}), &cpu, x), gx(Shape({50, 10}), &gpu, x);
+        Tensor cdy(Shape({50, 10}), &cpu, dy), gdy(Shape({50, 10}), &gpu, dy);
+        ExpectNear(cd.forward(cx), gd.forward(gx));
+        ExpectNear(cd.backward(cdy), gd.backward(gdy));
+    }
+}
+
+inline void BCEForwardBackward(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    BCEWithLogitsLoss cl(&cpu), gl(&gpu);
+    std::vector<float> x = Random(200, 160, -8.0f, 8.0f), y = Random(200, 161, 0.0f, 1.0f);
+    Tensor cx(Shape({20, 10}), &cpu, x), gx(Shape({20, 10}), &gpu, x);
+    Tensor cy(Shape({20, 10}), &cpu, y), gy(Shape({20, 10}), &gpu, y);
+    EXPECT_NEAR(cl.forward(cx, cy), gl.forward(gx, gy), kTolerance);
+    ExpectNear(cl.backward(), gl.backward());
+}
+
+inline void KLForwardBackward(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    KLDivergenceLoss cl(&cpu), gl(&gpu);
+    std::vector<float> mu = Random(40, 170), ls = Random(40, 171, -1.0f, 1.0f);
+    Tensor cmu(Shape({8, 5}), &cpu, mu), gmu(Shape({8, 5}), &gpu, mu);
+    Tensor cls(Shape({8, 5}), &cpu, ls), gls(Shape({8, 5}), &gpu, ls);
+    EXPECT_NEAR(cl.forward(cmu, cls), gl.forward(gmu, gls), kTolerance);
+    ReparamGrad cg = cl.backward(), gg = gl.backward();
+    ExpectNear(cg.grad_mu, gg.grad_mu);
+    ExpectNear(cg.grad_log_sigma, gg.grad_log_sigma);
+}
+
+inline void CalibrationForwardBackward(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    CalibrationLoss cl(&cpu), gl(&gpu);
+    std::vector<float> probs = Random(12 * 5, 180, 0.0f, 1.0f);
+    std::vector<float> targets = {0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 2, 2};
+    Tensor cp(Shape({12, 5}), &cpu, probs), gp(Shape({12, 5}), &gpu, probs);
+    Tensor ct(Shape({12, 1}), &cpu, targets), gt(Shape({12, 1}), &gpu, targets);  // GPU targets read back for validation
+    EXPECT_NEAR(cl.forward(cp, ct), gl.forward(gp, gt), kTolerance);
+    ExpectNear(cl.backward(), gl.backward());
+}
+
+inline void ReparameterizeForwardBackward(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    Reparameterize cr(&cpu), gr(&gpu);
+    std::vector<float> mu = Random(30, 190), ls = Random(30, 191), eps = Random(30, 192), dz = Random(30, 193);
+    Tensor cmu(Shape({30}), &cpu, mu), gmu(Shape({30}), &gpu, mu);
+    Tensor cls(Shape({30}), &cpu, ls), gls(Shape({30}), &gpu, ls);
+    Tensor ceps(Shape({30}), &cpu, eps), geps(Shape({30}), &gpu, eps);
+    Tensor cdz(Shape({30}), &cpu, dz), gdz(Shape({30}), &gpu, dz);
+    ExpectNear(cr.forward(cmu, cls, ceps), gr.forward(gmu, gls, geps));
+    ReparamGrad cg = cr.backward(cdz), gg = gr.backward(gdz);
+    ExpectNear(cg.grad_mu, gg.grad_mu);
+    ExpectNear(cg.grad_log_sigma, gg.grad_log_sigma);
+}
+
+inline void NoiseScheduleAddAndDenoise(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    NoiseSchedule schedule(50);
+    std::vector<float> x0 = Random(64, 210), eps = Random(64, 211), z = Random(64, 212);
+    Tensor cx0(Shape({8, 8}), &cpu, x0), gx0(Shape({8, 8}), &gpu, x0);
+    Tensor ceps(Shape({8, 8}), &cpu, eps), geps(Shape({8, 8}), &gpu, eps);
+    Tensor cz(Shape({8, 8}), &cpu, z), gz(Shape({8, 8}), &gpu, z);
+    Tensor cxt = schedule.add_noise(cx0, ceps, 17);
+    Tensor gxt = schedule.add_noise(gx0, geps, 17);
+    ExpectNear(cxt, gxt);
+    ExpectNear(schedule.denoise_step(cxt, ceps, cz, 17), schedule.denoise_step(gxt, geps, gz, 17));
+}
+
 // The mission's integration gate: the same small MLP, same init, same data, trained for
 // several steps on each backend, ends with the same parameters.
 template <typename Optimizer>
@@ -216,6 +309,23 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
     }                                                                                                \
     TEST_F(FIXTURE, ResidualBackwardMatchesCPU) { ::pulsatrix::training_equivalence::ResidualBackward(MEMBER); } \
     TEST_F(FIXTURE, SwiGLUBackwardMatchesCPU) { ::pulsatrix::training_equivalence::SwiGLUBackward(MEMBER); } \
+    TEST_F(FIXTURE, NegationForwardBackwardMatchCPU) {                                               \
+        ::pulsatrix::training_equivalence::NegationForwardBackward(MEMBER);                          \
+    }                                                                                                \
+    TEST_F(FIXTURE, DropoutTrainingForwardBackwardMatchCPU) {                                        \
+        ::pulsatrix::training_equivalence::DropoutTrainingForwardBackward(MEMBER);                   \
+    }                                                                                                \
+    TEST_F(FIXTURE, BCEWithLogitsLossMatchesCPU) { ::pulsatrix::training_equivalence::BCEForwardBackward(MEMBER); } \
+    TEST_F(FIXTURE, KLDivergenceLossMatchesCPU) { ::pulsatrix::training_equivalence::KLForwardBackward(MEMBER); } \
+    TEST_F(FIXTURE, CalibrationLossMatchesCPU) {                                                     \
+        ::pulsatrix::training_equivalence::CalibrationForwardBackward(MEMBER);                       \
+    }                                                                                                \
+    TEST_F(FIXTURE, ReparameterizeMatchesCPU) {                                                      \
+        ::pulsatrix::training_equivalence::ReparameterizeForwardBackward(MEMBER);                    \
+    }                                                                                                \
+    TEST_F(FIXTURE, NoiseScheduleMatchesCPU) {                                                       \
+        ::pulsatrix::training_equivalence::NoiseScheduleAddAndDenoise(MEMBER);                       \
+    }                                                                                                \
     TEST_F(FIXTURE, MlpTrainedWithSGDEndsWithCPUParameters) {                                        \
         ::pulsatrix::SGDOptimizer cpu_opt(0.05f), gpu_opt(0.05f);                                    \
         ::pulsatrix::training_equivalence::MlpTrainsToSameParameters(MEMBER, cpu_opt, gpu_opt);      \
