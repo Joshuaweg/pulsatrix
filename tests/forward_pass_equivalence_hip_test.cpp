@@ -7,6 +7,8 @@
 #include "pulsatrix/hip_backend.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/residual_module.hpp"
+#include "pulsatrix/swiglu_module.hpp"
 
 // Phase 1.6's closing exit-gate item: LinearModule/ReluModule forward passes produce
 // numerically equivalent output on a CPU-backed vs. a genuinely HIP-backed Tensor, on real
@@ -115,6 +117,79 @@ TEST_F(HipForwardPassEquivalenceTest, ReluModuleForwardMatchesCPUBackendOnRandom
     for (size_t i = 0; i < 1000; ++i) {
         EXPECT_NEAR(cpu_output.data()[i], hip_output_host[i], kBackendEquivalenceTolerance)
             << "mismatch at flat index " << i;
+    }
+}
+
+// GPU-native-kernels Mission 0 O5: forwards that were already DeviceBackend-only but carried
+// a host guard. Parameters are copied across so both sides compute the same function.
+void CopyParameters(Module& from, DeviceBackend* from_backend, Module& to, DeviceBackend* to_backend) {
+    auto src = from.parameters();
+    auto dst = to.parameters();
+    ASSERT_EQ(src.size(), dst.size());
+    for (size_t p = 0; p < src.size(); ++p) {
+        std::vector<float> host(static_cast<size_t>(src[p].value->numel()));
+        from_backend->copy(host.data(), src[p].value->data(), host.size() * sizeof(float), CopyDirection::HostToHost);
+        WriteValues(to_backend, *dst[p].value, host);
+    }
+}
+
+void RandomizeParameters(Module& m, DeviceBackend* backend, unsigned seed) {
+    for (auto& param : m.parameters()) {
+        WriteValues(backend, *param.value, RandomVector(static_cast<size_t>(param.value->numel()), seed++));
+    }
+}
+
+std::vector<float> ToHost(DeviceBackend* backend, const Tensor& t) {
+    std::vector<float> host(static_cast<size_t>(t.numel()));
+    backend->copy(host.data(), t.data(), host.size() * sizeof(float), CopyDirection::DeviceToHost);
+    return host;
+}
+
+TEST_F(HipForwardPassEquivalenceTest, ResidualOverLinearForwardMatchesCPUBackend) {
+    constexpr int64_t features = 9;
+    constexpr int64_t batch = 4;
+    LinearModule cpu_inner(features, features, &cpu);
+    ResidualModule cpu_residual(&cpu_inner, &cpu);
+    LinearModule hip_inner(features, features, &hip);
+    ResidualModule hip_residual(&hip_inner, &hip);
+    RandomizeParameters(cpu_inner, &cpu, /*seed=*/20);
+    CopyParameters(cpu_inner, &cpu, hip_inner, &hip);
+
+    std::vector<float> input_values = RandomVector(static_cast<size_t>(batch * features), /*seed=*/30);
+    Tensor cpu_input(Shape({batch, features}), &cpu, input_values);
+    Tensor hip_input(Shape({batch, features}), &hip, input_values);
+
+    Tensor cpu_output = cpu_residual.forward(cpu_input);
+    Tensor hip_output = hip_residual.forward(hip_input);
+    EXPECT_EQ(hip_output.device(), DeviceType::Hip);
+
+    std::vector<float> hip_host = ToHost(&hip, hip_output);
+    for (size_t i = 0; i < hip_host.size(); ++i) {
+        EXPECT_NEAR(cpu_output.data()[i], hip_host[i], kBackendEquivalenceTolerance) << "mismatch at index " << i;
+    }
+}
+
+TEST_F(HipForwardPassEquivalenceTest, SwiGLUForwardMatchesCPUBackend) {
+    constexpr int64_t d_model = 6;
+    constexpr int64_t d_ff = 10;
+    SwiGLUModule cpu_swiglu(d_model, d_ff, &cpu);
+    SwiGLUModule hip_swiglu(d_model, d_ff, &hip);
+    RandomizeParameters(cpu_swiglu, &cpu, /*seed=*/40);
+    CopyParameters(cpu_swiglu, &cpu, hip_swiglu, &hip);
+
+    // Rank 3 so the leading-dimension flatten/unflatten path runs too.
+    std::vector<float> input_values = RandomVector(static_cast<size_t>(2 * 3 * d_model), /*seed=*/50);
+    Tensor cpu_input(Shape({2, 3, d_model}), &cpu, input_values);
+    Tensor hip_input(Shape({2, 3, d_model}), &hip, input_values);
+
+    Tensor cpu_output = cpu_swiglu.forward(cpu_input);
+    Tensor hip_output = hip_swiglu.forward(hip_input);
+    EXPECT_EQ(hip_output.device(), DeviceType::Hip);
+    ASSERT_EQ(hip_output.shape(), cpu_output.shape());
+
+    std::vector<float> hip_host = ToHost(&hip, hip_output);
+    for (size_t i = 0; i < hip_host.size(); ++i) {
+        EXPECT_NEAR(cpu_output.data()[i], hip_host[i], kBackendEquivalenceTolerance) << "mismatch at index " << i;
     }
 }
 

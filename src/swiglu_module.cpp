@@ -53,10 +53,9 @@ SwiGLUModule::SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend
 }
 
 Tensor SwiGLUModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly in raw host loops (the gate multiply below) --
-    // not backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(input);
-
+    // Device-generic: three LinearModule forwards plus DeviceBackend Silu and mul, no host
+    // dereference (GPU-native-kernels Mission 0 O5). backward/propagate_relevance remain
+    // host-only.
     if (input.rank() < 2 || input.shape().dim(static_cast<size_t>(input.rank() - 1)) != d_model_) {
         throw std::invalid_argument("SwiGLUModule::forward: input must be rank >= 2 with final dimension d_model");
     }
