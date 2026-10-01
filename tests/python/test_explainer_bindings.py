@@ -5,9 +5,16 @@
 # boundary is reachable and correctly mapped to a Python ValueError through pybind11, not
 # re-deriving the validation itself. Explainer-producing tests (Saliency/IntegratedGradients/
 # GradCAM/LIME/KernelSHAP/PDP) land in this same file under Objectives 2-3.
+import numpy as np
 import pytest
 
 import pulsatrix_py
+
+
+def flat(t):
+    # Attribution values follow the explained input's (batched) shape; these fixtures only
+    # care about per-feature values, so read them flat.
+    return np.asarray(t).ravel()
 
 
 def test_explainer_context_constructs_from_module_chain():
@@ -47,15 +54,15 @@ def test_saliency_gradient_matches_weight_column_for_linear_only_network():
     linear.set_bias([100.0, 100.0])
 
     ctx = pulsatrix_py.ExplainerContext([linear])
-    x = pulsatrix_py.Tensor.from_values([3], [1.0, 1.0, 1.0])
+    x = pulsatrix_py.Tensor.from_values([1, 3], [1.0, 1.0, 1.0])
 
     saliency = pulsatrix_py.Saliency()
     attr = saliency.explain(ctx, x, 1)
 
     assert attr.method == "saliency"
-    assert attr.values.at([0]) == pytest.approx(2.0)
-    assert attr.values.at([1]) == pytest.approx(4.0)
-    assert attr.values.at([2]) == pytest.approx(6.0)
+    assert flat(attr.values)[0] == pytest.approx(2.0)
+    assert flat(attr.values)[1] == pytest.approx(4.0)
+    assert flat(attr.values)[2] == pytest.approx(6.0)
     assert attr.metadata["target_index"] == "1"
 
 
@@ -72,14 +79,14 @@ def test_integrated_gradients_completeness_axiom_holds_within_tolerance():
 
     ctx = pulsatrix_py.ExplainerContext([linear1, relu, linear2])
 
-    x = pulsatrix_py.Tensor.from_values([3], [0.5, -0.3, 1.2])
-    baseline = pulsatrix_py.Tensor.from_values([3], [0.0, 0.0, 0.0])
+    x = pulsatrix_py.Tensor.from_values([1, 3], [0.5, -0.3, 1.2])
+    baseline = pulsatrix_py.Tensor.from_values([1, 3], [0.0, 0.0, 0.0])
     target_index = 0
 
     # ExplainerContext.forward_pass() is deliberately not bound (Objective 1's Recon) --
     # direct chained Module.forward() calls are proven equivalent to it (Phase 2 Mission 0).
-    f_x = linear2.forward(relu.forward(linear1.forward(x))).at([target_index])
-    f_baseline = linear2.forward(relu.forward(linear1.forward(baseline))).at([target_index])
+    f_x = linear2.forward(relu.forward(linear1.forward(x))).at([0, target_index])
+    f_baseline = linear2.forward(relu.forward(linear1.forward(baseline))).at([0, target_index])
 
     ig = pulsatrix_py.IntegratedGradients()
     attr = ig.explain(ctx, x, baseline, target_index, 200)
@@ -87,7 +94,7 @@ def test_integrated_gradients_completeness_axiom_holds_within_tolerance():
     assert attr.method == "integrated_gradients"
     assert attr.metadata["steps"] == "200"
 
-    sum_ig = sum(attr.values.at([i]) for i in range(3))
+    sum_ig = sum(flat(attr.values)[i] for i in range(3))
     assert sum_ig == pytest.approx(f_x - f_baseline, abs=1e-3)
 
 
@@ -104,23 +111,23 @@ def test_grad_cam_computes_hand_derived_cam_for_simple_network():
     linear.set_bias([0.0, 0.0])
 
     ctx = pulsatrix_py.ExplainerContext([conv, relu, flatten, linear])
-    x = pulsatrix_py.Tensor.from_values([1, 3, 3], [1.0, 2.0, 3.0, 4.0, 0.0, 5.0, 6.0, 7.0, 8.0])
+    x = pulsatrix_py.Tensor.from_values([1, 1, 3, 3], [1.0, 2.0, 3.0, 4.0, 0.0, 5.0, 6.0, 7.0, 8.0])
 
     gradcam = pulsatrix_py.GradCAM()
     attr = gradcam.explain(ctx, x, 0)
 
     assert attr.method == "grad_cam"
-    assert attr.values.at([0, 0]) == pytest.approx(13.0)
-    assert attr.values.at([0, 1]) == pytest.approx(13.0)
-    assert attr.values.at([1, 0]) == pytest.approx(23.0)
-    assert attr.values.at([1, 1]) == pytest.approx(32.0)
+    assert attr.values.at([0, 0, 0]) == pytest.approx(13.0)
+    assert attr.values.at([0, 0, 1]) == pytest.approx(13.0)
+    assert attr.values.at([0, 1, 0]) == pytest.approx(23.0)
+    assert attr.values.at([0, 1, 1]) == pytest.approx(32.0)
     assert attr.metadata["target_index"] == "0"
 
 
 def test_grad_cam_raises_when_graph_has_no_conv_layer():
     linear = pulsatrix_py.LinearModule(2, 2)
     ctx = pulsatrix_py.ExplainerContext([linear])
-    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
+    x = pulsatrix_py.Tensor.from_values([1, 2], [1.0, 1.0])
 
     gradcam = pulsatrix_py.GradCAM()
     with pytest.raises(ValueError):
@@ -130,8 +137,8 @@ def test_grad_cam_raises_when_graph_has_no_conv_layer():
 def test_integrated_gradients_raises_on_zero_steps():
     linear = pulsatrix_py.LinearModule(2, 1)
     ctx = pulsatrix_py.ExplainerContext([linear])
-    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
-    baseline = pulsatrix_py.Tensor.from_values([2], [0.0, 0.0])
+    x = pulsatrix_py.Tensor.from_values([1, 2], [1.0, 1.0])
+    baseline = pulsatrix_py.Tensor.from_values([1, 2], [0.0, 0.0])
 
     ig = pulsatrix_py.IntegratedGradients()
     with pytest.raises(ValueError):
@@ -150,21 +157,21 @@ def test_lime_recovers_exact_weight_column_for_linear_only_network():
     linear.set_bias([100.0, 100.0])  # deliberately large/irrelevant
 
     predict = linear.forward
-    x = pulsatrix_py.Tensor.from_values([3], [1.0, 1.0, 1.0])
+    x = pulsatrix_py.Tensor.from_values([1, 3], [1.0, 1.0, 1.0])
 
     lime = pulsatrix_py.LIME()
     attr = lime.explain(predict, x, target_index=1, num_samples=300, sigma=1.0, l2_lambda=0.0, seed=42)
 
     assert attr.method == "lime"
-    assert attr.values.at([0]) == pytest.approx(2.0, abs=1e-2)
-    assert attr.values.at([1]) == pytest.approx(4.0, abs=1e-2)
-    assert attr.values.at([2]) == pytest.approx(6.0, abs=1e-2)
+    assert flat(attr.values)[0] == pytest.approx(2.0, abs=1e-2)
+    assert flat(attr.values)[1] == pytest.approx(4.0, abs=1e-2)
+    assert flat(attr.values)[2] == pytest.approx(6.0, abs=1e-2)
     assert attr.metadata["target_index"] == "1"
 
 
 def test_lime_raises_on_non_positive_num_samples():
     linear = pulsatrix_py.LinearModule(2, 1)
-    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
+    x = pulsatrix_py.Tensor.from_values([1, 2], [1.0, 1.0])
 
     lime = pulsatrix_py.LIME()
     with pytest.raises(ValueError):
@@ -173,7 +180,7 @@ def test_lime_raises_on_non_positive_num_samples():
 
 def test_lime_raises_on_non_positive_sigma():
     linear = pulsatrix_py.LinearModule(2, 1)
-    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
+    x = pulsatrix_py.Tensor.from_values([1, 2], [1.0, 1.0])
 
     lime = pulsatrix_py.LIME()
     with pytest.raises(ValueError):
@@ -186,21 +193,21 @@ def test_kernel_shap_two_features_match_closed_form_shapley_values():
     linear.set_bias([0.0])
 
     predict = linear.forward
-    x = pulsatrix_py.Tensor.from_values([2], [1.0, 2.0])
-    baseline = pulsatrix_py.Tensor.from_values([2], [0.0, 0.0])
+    x = pulsatrix_py.Tensor.from_values([1, 2], [1.0, 2.0])
+    baseline = pulsatrix_py.Tensor.from_values([1, 2], [0.0, 0.0])
 
     shap = pulsatrix_py.KernelSHAP()
     attr = shap.explain(predict, x, baseline, target_index=0)
 
     assert attr.method == "kernel_shap"
-    assert attr.values.at([0]) == pytest.approx(2.0 * 1.0, abs=1e-3)
-    assert attr.values.at([1]) == pytest.approx(-3.0 * 2.0, abs=1e-3)
+    assert flat(attr.values)[0] == pytest.approx(2.0 * 1.0, abs=1e-3)
+    assert flat(attr.values)[1] == pytest.approx(-3.0 * 2.0, abs=1e-3)
 
 
 def test_kernel_shap_raises_on_mismatched_input_and_baseline_shapes():
     linear = pulsatrix_py.LinearModule(2, 1)
-    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
-    mismatched_baseline = pulsatrix_py.Tensor.from_values([3], [0.0, 0.0, 0.0])
+    x = pulsatrix_py.Tensor.from_values([1, 2], [1.0, 1.0])
+    mismatched_baseline = pulsatrix_py.Tensor.from_values([1, 3], [0.0, 0.0, 0.0])
 
     shap = pulsatrix_py.KernelSHAP()
     with pytest.raises(ValueError):
@@ -214,17 +221,17 @@ def test_pdp_curve_is_exactly_linear_with_true_feature_weight_as_slope():
 
     predict = linear.forward
     background = [
-        pulsatrix_py.Tensor.from_values([3], [1.0, 1.0, 1.0]),
-        pulsatrix_py.Tensor.from_values([3], [5.0, -2.0, 0.0]),
-        pulsatrix_py.Tensor.from_values([3], [-3.0, 4.0, 2.0]),
+        pulsatrix_py.Tensor.from_values([1, 3], [1.0, 1.0, 1.0]),
+        pulsatrix_py.Tensor.from_values([1, 3], [5.0, -2.0, 0.0]),
+        pulsatrix_py.Tensor.from_values([1, 3], [-3.0, 4.0, 2.0]),
     ]
 
     pdp = pulsatrix_py.PDP()
     attr = pdp.explain(predict, background, feature_index=1, target_index=0, grid_min=-2.0, grid_max=4.0, grid_size=7)
 
     assert attr.method == "pdp"
-    v0 = attr.values.at([0])
-    v6 = attr.values.at([6])
+    v0 = flat(attr.values)[0]
+    v6 = flat(attr.values)[6]
     grid_step = (4.0 - (-2.0)) / (7 - 1)
     empirical_slope = (v6 - v0) / (6 * grid_step)
     assert empirical_slope == pytest.approx(-3.0, abs=1e-3)

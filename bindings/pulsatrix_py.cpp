@@ -10,6 +10,7 @@
 #include <pybind11/stl.h>
 
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "pulsatrix/assert.hpp"
@@ -31,6 +32,13 @@
 #include "pulsatrix/shape.hpp"
 #include "pulsatrix/tensor.hpp"
 
+#ifdef PULSATRIX_PY_WITH_CUDA
+#include "pulsatrix/cuda_backend.hpp"
+#endif
+#ifdef PULSATRIX_PY_WITH_HIP
+#include "pulsatrix/hip_backend.hpp"
+#endif
+
 namespace py = pybind11;
 
 namespace {
@@ -43,6 +51,55 @@ namespace {
 pulsatrix::CPUBackend& default_backend() {
     static pulsatrix::CPUBackend backend;
     return backend;
+}
+
+// One binding-owned backend per device, same ownership pattern as default_backend(). GPU
+// backends are created on first use rather than at import, so importing the module on a
+// machine without the GPU still works -- only asking for that device fails, and it fails as
+// a Python exception (the backend constructor throws) rather than at load time.
+pulsatrix::DeviceBackend& backend_for(pulsatrix::DeviceType device) {
+    switch (device) {
+        case pulsatrix::DeviceType::Cpu:
+            return default_backend();
+        case pulsatrix::DeviceType::Cuda: {
+#ifdef PULSATRIX_PY_WITH_CUDA
+            static pulsatrix::CUDABackend backend;
+            return backend;
+#else
+            throw std::invalid_argument("pulsatrix_py: built without CUDA support (PULSATRIX_ENABLE_CUDA=OFF)");
+#endif
+        }
+        case pulsatrix::DeviceType::Hip: {
+#ifdef PULSATRIX_PY_WITH_HIP
+            static pulsatrix::HIPBackend backend;
+            return backend;
+#else
+            throw std::invalid_argument("pulsatrix_py: built without HIP support (PULSATRIX_ENABLE_HIP=OFF)");
+#endif
+        }
+    }
+    throw std::invalid_argument("pulsatrix_py: unknown device");
+}
+
+std::vector<pulsatrix::DeviceType> compiled_devices() {
+    std::vector<pulsatrix::DeviceType> devices{pulsatrix::DeviceType::Cpu};
+#ifdef PULSATRIX_PY_WITH_CUDA
+    devices.push_back(pulsatrix::DeviceType::Cuda);
+#endif
+#ifdef PULSATRIX_PY_WITH_HIP
+    devices.push_back(pulsatrix::DeviceType::Hip);
+#endif
+    return devices;
+}
+
+// Element access and the buffer protocol dereference Tensor::data() on the host, which is
+// only valid for a Cpu tensor. These are external boundaries (Python), so a device tensor
+// gets a real exception -- a PULSATRIX_ASSERT compiles out under NDEBUG and would leave UB.
+void require_host(const pulsatrix::Tensor& t, const char* what) {
+    if (t.device() != pulsatrix::DeviceType::Cpu) {
+        throw std::invalid_argument(std::string("pulsatrix_py: ") + what +
+                                    " needs a Cpu tensor -- call .to(DeviceType.Cpu) first");
+    }
 }
 
 pulsatrix::Shape shape_from_list(const std::vector<int64_t>& dims) {
@@ -120,6 +177,15 @@ public:
 PYBIND11_MODULE(pulsatrix_py, m) {
     m.doc() = "pulsatrix Python bindings (Phase 5) -- optional, non-load-bearing per charter non-negotiable #2";
 
+    py::enum_<pulsatrix::DeviceType>(m, "DeviceType")
+        .value("Cpu", pulsatrix::DeviceType::Cpu)
+        .value("Cuda", pulsatrix::DeviceType::Cuda)
+        .value("Hip", pulsatrix::DeviceType::Hip);
+
+    m.def("compiled_devices", &compiled_devices,
+          "Devices this build has a backend for. Cpu is always present; a GPU device listed here "
+          "can still fail on first use if no matching GPU is visible at runtime.");
+
     py::class_<pulsatrix::Tensor>(m, "Tensor", py::buffer_protocol())
         .def(py::init([](const std::vector<int64_t>& dims) {
                  return pulsatrix::Tensor(shape_from_list(dims), &default_backend());
@@ -137,16 +203,29 @@ PYBIND11_MODULE(pulsatrix_py, m) {
             py::arg("shape"), py::arg("values"))
         .def("shape", &dims_of)
         .def("numel", &pulsatrix::Tensor::numel)
-        .def("at", [](pulsatrix::Tensor& t, const std::vector<int64_t>& index) { return t[flat_index_of(t, index)]; })
+        .def("device", &pulsatrix::Tensor::device)
+        .def(
+            "to",
+            [](pulsatrix::Tensor& t, pulsatrix::DeviceType device) -> pulsatrix::Tensor& {
+                return t.to(device, &backend_for(device));
+            },
+            py::arg("device"), py::return_value_policy::reference_internal,
+            "Moves this tensor's buffer to device in place, through the binding-owned backend "
+            "for that device. Returns self.")
+        .def("at",
+             [](pulsatrix::Tensor& t, const std::vector<int64_t>& index) {
+                 require_host(t, "at()");
+                 return t[flat_index_of(t, index)];
+             })
         .def("set_at",
              [](pulsatrix::Tensor& t, const std::vector<int64_t>& index, float value) {
+                 require_host(t, "set_at()");
                  t[flat_index_of(t, index)] = value;
              })
         .def_buffer([](pulsatrix::Tensor& t) -> py::buffer_info {
             // Phase 1.5 Mission 2's guard discipline, applied at this new boundary:
-            // Tensor::data() is only a genuine host pointer when CPU-backed. A CUDA-backed
-            // Tensor reaching the buffer protocol unguarded would be silent UB.
-            PULSATRIX_ASSERT(t.device() == pulsatrix::DeviceType::Cpu);
+            // Tensor::data() is only a genuine host pointer when CPU-backed.
+            require_host(t, "the buffer protocol (numpy)");
 
             int64_t rank = t.rank();
             std::vector<py::ssize_t> shape(static_cast<size_t>(rank));
@@ -164,17 +243,20 @@ PYBIND11_MODULE(pulsatrix_py, m) {
     py::class_<pulsatrix::Module>(m, "Module").def("forward", &pulsatrix::Module::forward, py::arg("input"));
 
     py::class_<pulsatrix::LinearModule, pulsatrix::Module>(m, "LinearModule")
-        .def(py::init([](int64_t in_features, int64_t out_features) {
-                 return new pulsatrix::LinearModule(in_features, out_features, &default_backend());
+        .def(py::init([](int64_t in_features, int64_t out_features, pulsatrix::DeviceType device) {
+                 return new pulsatrix::LinearModule(in_features, out_features, &backend_for(device), device);
              }),
-             py::arg("in_features"), py::arg("out_features"))
+             py::arg("in_features"), py::arg("out_features"), py::arg("device") = pulsatrix::DeviceType::Cpu)
         .def("set_weight",
              static_cast<void (pulsatrix::LinearModule::*)(const std::vector<float>&)>(&pulsatrix::LinearModule::set_weight))
         .def("set_bias",
              static_cast<void (pulsatrix::LinearModule::*)(const std::vector<float>&)>(&pulsatrix::LinearModule::set_bias));
 
-    py::class_<pulsatrix::ReluModule, pulsatrix::Module>(m, "ReluModule").def(
-        py::init([]() { return new pulsatrix::ReluModule(&default_backend()); }));
+    py::class_<pulsatrix::ReluModule, pulsatrix::Module>(m, "ReluModule")
+        .def(py::init([](pulsatrix::DeviceType device) {
+                 return new pulsatrix::ReluModule(&backend_for(device), device);
+             }),
+             py::arg("device") = pulsatrix::DeviceType::Cpu);
 
     py::class_<pulsatrix::FlattenModule, pulsatrix::Module>(m, "FlattenModule")
         .def(py::init([]() { return new pulsatrix::FlattenModule(&default_backend()); }));

@@ -12,11 +12,11 @@ def test_linear_module_forward_matches_hand_verified_cpp_fixture():
     linear.set_weight([1.0, 2.0, 3.0, 4.0])
     linear.set_bias([0.5, -0.5])
 
-    x = pulsatrix_py.Tensor.from_values([2], [1.0, 1.0])
+    x = pulsatrix_py.Tensor.from_values([1, 2], [1.0, 1.0])  # (N=1, in_features)
     y = linear.forward(x)
 
-    assert y.at([0]) == 4.5
-    assert y.at([1]) == 5.5
+    assert y.at([0, 0]) == 4.5
+    assert y.at([0, 1]) == 5.5
 
 
 def test_relu_module_forward_zeroes_negatives():
@@ -37,10 +37,10 @@ def test_conv2d_module_forward_matches_hand_verified_cpp_fixture():
     conv.set_kernel([1.0, 0.0, 0.0, 1.0])
     conv.set_bias([0.0])
 
-    x = pulsatrix_py.Tensor.from_values([1, 3, 3], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0])
+    x = pulsatrix_py.Tensor.from_values([1, 1, 3, 3], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0])
     y = conv.forward(x)
 
-    assert y.at([0, 0, 0]) == 6.0
-    assert y.at([0, 0, 1]) == 8.0
-    assert y.at([0, 1, 0]) == 12.0
-    assert y.at([0, 1, 1]) == 14.0
+    assert y.at([0, 0, 0, 0]) == 6.0
+    assert y.at([0, 0, 0, 1]) == 8.0
+    assert y.at([0, 0, 1, 0]) == 12.0
+    assert y.at([0, 0, 1, 1]) == 14.0
