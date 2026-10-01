@@ -16,6 +16,7 @@
 #include <cstddef>
 #include <stdexcept>
 
+#include "pointwise_math.hpp"
 #include "pulsatrix/device_backend.hpp"
 
 namespace pulsatrix {
@@ -78,6 +79,13 @@ __global__ void silu_kernel(const float* in, float* out, size_t n) {
     }
 }
 
+__global__ void exp_kernel(const float* in, float* out, size_t n) {
+    size_t i = global_index();
+    if (i < n) {
+        out[i] = expf(in[i]);
+    }
+}
+
 __global__ void add_kernel(const float* a, const float* b, float* out, size_t n) {
     size_t i = global_index();
     if (i < n) {
@@ -119,6 +127,9 @@ void launch_elementwise(ElementwiseOp op, const float* in, float* out, size_t n,
             return;
         case ElementwiseOp::Silu:
             silu_kernel<<<grid, kBlockSize, 0, stream>>>(in, out, n);
+            return;
+        case ElementwiseOp::Exp:
+            exp_kernel<<<grid, kBlockSize, 0, stream>>>(in, out, n);
             return;
     }
     // Reached only if ElementwiseOp gains a value this switch doesn't handle -- fail loudly
@@ -188,6 +199,9 @@ __global__ void elementwise_backward_kernel(int op, const float* x, const float*
                 d = sg + xi * sg * (1.0f - sg);
                 break;
             }
+            case ElementwiseOp::Exp:
+                d = expf(xi);
+                break;
         }
         grad_in[i] = grad_out[i] * d;
     }
@@ -196,7 +210,8 @@ __global__ void elementwise_backward_kernel(int op, const float* x, const float*
 __global__ void axpby_kernel(float alpha, const float* x, float beta, const float* y, float* out, size_t n) {
     size_t i = global_index();
     if (i < n) {
-        out[i] = alpha * x[i] + beta * y[i];
+        // beta == 0 does not read y (uniform branch) -- see DeviceBackend::axpby.
+        out[i] = (beta == 0.0f) ? alpha * x[i] : alpha * x[i] + beta * y[i];
     }
 }
 
@@ -335,6 +350,75 @@ void launch_adam_step(float* param, const float* grad, float* m, float* v, size_
                       float beta2, float eps, float bias_correction1, float bias_correction2, Stream stream) {
     adam_step_kernel<<<grid_size_for(n), kBlockSize, 0, stream>>>(param, grad, m, v, n, lr, beta1, beta2, eps,
                                                                  bias_correction1, bias_correction2);
+}
+
+// ---- GPU-native-kernels Mission 1b ---------------------------------------------------------
+
+// Same single-block fixed-order tree as dot_kernel.
+__global__ void sum_kernel(const float* in, size_t n, float* result) {
+    __shared__ float partial[kBlockSize];
+    float acc = 0.0f;
+    for (size_t i = threadIdx.x; i < n; i += kBlockSize) {
+        acc += in[i];
+    }
+    partial[threadIdx.x] = acc;
+    __syncthreads();
+    for (int stride = kBlockSize / 2; stride > 0; stride /= 2) {
+        if (static_cast<int>(threadIdx.x) < stride) {
+            partial[threadIdx.x] += partial[threadIdx.x + stride];
+        }
+        __syncthreads();
+    }
+    if (threadIdx.x == 0) {
+        *result = partial[0];
+    }
+}
+
+__global__ void dropout_forward_kernel(const float* in, float* out, float* mask, size_t n, float p, float scale,
+                                       uint64_t seed, uint64_t offset) {
+    size_t i = global_index();
+    if (i < n) {
+        const bool keep = !(pointwise::counter_uniform(seed, offset + i) < p);
+        mask[i] = keep ? 1.0f : 0.0f;
+        out[i] = keep ? in[i] * scale : 0.0f;
+    }
+}
+
+__global__ void bce_with_logits_kernel(const float* logits, const float* target, float* out, size_t n) {
+    size_t i = global_index();
+    if (i < n) {
+        out[i] = pointwise::bce_with_logits_term(logits[i], target[i]);
+    }
+}
+
+__global__ void bce_with_logits_grad_kernel(const float* logits, const float* target, float* grad, size_t n,
+                                            float scale) {
+    size_t i = global_index();
+    if (i < n) {
+        grad[i] = (pointwise::stable_sigmoid(logits[i]) - target[i]) * scale;
+    }
+}
+
+template <typename Stream>
+void launch_sum(const float* in, size_t n, float* result, Stream stream) {
+    sum_kernel<<<1, kBlockSize, 0, stream>>>(in, n, result);
+}
+
+template <typename Stream>
+void launch_dropout_forward(const float* in, float* out, float* mask, size_t n, float p, float scale, uint64_t seed,
+                            uint64_t offset, Stream stream) {
+    dropout_forward_kernel<<<grid_size_for(n), kBlockSize, 0, stream>>>(in, out, mask, n, p, scale, seed, offset);
+}
+
+template <typename Stream>
+void launch_bce_with_logits(const float* logits, const float* target, float* out, size_t n, Stream stream) {
+    bce_with_logits_kernel<<<grid_size_for(n), kBlockSize, 0, stream>>>(logits, target, out, n);
+}
+
+template <typename Stream>
+void launch_bce_with_logits_grad(const float* logits, const float* target, float* grad, size_t n, float scale,
+                                 Stream stream) {
+    bce_with_logits_grad_kernel<<<grid_size_for(n), kBlockSize, 0, stream>>>(logits, target, grad, n, scale);
 }
 
 }  // namespace gpu

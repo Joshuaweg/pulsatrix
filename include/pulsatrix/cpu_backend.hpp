@@ -36,6 +36,11 @@ public:
     void logsumexp_rows(const float* in, float* out, size_t rows, size_t cols) override;
     void adam_step(float* param, const float* grad, float* m, float* v, size_t n, float lr, float beta1, float beta2,
                    float eps, float bias_correction1, float bias_correction2) override;
+    [[nodiscard]] float sum(const float* in, size_t n) override;
+    void dropout_forward(const float* in, float* out, float* mask, size_t n, float p, float scale, uint64_t seed,
+                         uint64_t offset) override;
+    void bce_with_logits(const float* logits, const float* target, float* out, size_t n) override;
+    void bce_with_logits_grad(const float* logits, const float* target, float* grad, size_t n, float scale) override;
 };
 
 }  // namespace pulsatrix
