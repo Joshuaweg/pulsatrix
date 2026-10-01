@@ -401,6 +401,70 @@ public:
     /** @brief AggregatorModule epsilon rule, per column. */
     virtual void aggregator_lrp(const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n,
                                 size_t cols, float p, float eps) = 0;
+
+    // ---- GPU-native-kernels Mission 4: convolution, pooling, spatial norms -----------------
+    // Shared per-output source in src/cnn_math.hpp; deterministic, no atomics.
+
+    /** @brief Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches (stride 1, no padding). */
+    virtual void im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) = 0;
+
+    /**
+     * @brief Folds (n, c*kh*kw, out_h*out_w) patches back, adding into out (n, c, h, w).
+     * @note A gather: one GPU thread per output pixel sums its window contributions in the same
+     *       order the CPU scatter loop adds them -- deterministic, no atomics.
+     */
+    virtual void col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)
+                            = 0;
+
+    /** @brief out[i][ch][k] = in[i][ch][k] + vec[ch] over (n, c, inner). out may alias in. */
+    virtual void add_channel_vector(const float* in, const float* vec, float* out, size_t n, size_t c, size_t inner) =
+                                    0;
+
+    /**
+     * @brief Conv2D epsilon rule in patch space: r_col (n, p, q) from the cached patches, the
+     *        kernel (out_channels, p) and the pre-bias outputs (n, out_channels, q).
+     */
+    virtual void lrp_conv(const float* col, const float* kernel, const float* pre_bias, const float* r, float* r_col,
+                          size_t n, size_t out_channels, size_t p, size_t q, float eps) = 0;
+
+    /** @brief Non-overlapping max pool over planes of (h, w); argmax = flat in-plane index (first max wins). */
+    virtual void max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w, size_t
+                                  kh, size_t kw) = 0;
+
+    /** @brief dst[plane][argmax] = src for every pooled element; dst must be zeroed by the caller. */
+    virtual void max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w, size_t
+                            kh, size_t kw) = 0;
+
+    /** @brief Non-overlapping average pool over planes of (h, w). */
+    virtual void avg_pool_forward(const float* in, float* out, size_t planes, size_t h, size_t w, size_t kh, size_t kw)
+                                  = 0;
+
+    /** @brief Spreads grad_out / (kh*kw) over each window; grad_in must be zeroed by the caller. */
+    virtual void avg_pool_backward(const float* grad_out, float* grad_in, size_t planes, size_t h, size_t w, size_t kh,
+                                   size_t kw) = 0;
+
+    /** @brief AvgPool2D epsilon rule; r_in must be zeroed by the caller. */
+    virtual void lrp_avg_pool(const float* x, const float* r, float* r_in, size_t planes, size_t h, size_t w, size_t kh,
+                              size_t kw, float eps) = 0;
+
+    /** @brief BatchNorm over (n, spatial) per channel of (n, c, spatial) data. */
+    virtual void batch_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                                    float* channel_std, size_t n, size_t c, size_t spatial, float eps) = 0;
+
+    /** @brief BatchNorm input gradient plus this call's gamma/beta gradients (overwritten, per channel). */
+    virtual void batch_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float*
+                                     channel_std, float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t
+                                     c, size_t spatial) = 0;
+
+    /** @brief GroupNorm per (example, group) of (n, c, spatial) data; group_std is (n, num_groups). */
+    virtual void group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                                    float* group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps)
+                                    = 0;
+
+    /** @brief GroupNorm input gradient plus this call's gamma/beta gradients (overwritten, per channel). */
+    virtual void group_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float*
+                                     group_std, float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t c,
+                                     size_t spatial, size_t num_groups) = 0;
 };
 
 }  // namespace pulsatrix
