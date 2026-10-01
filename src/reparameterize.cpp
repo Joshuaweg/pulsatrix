@@ -28,6 +28,9 @@ Tensor Reparameterize::forward(const Tensor& mu, const Tensor& log_sigma, const 
     has_forwarded_ = true;
 
     Tensor z(mu.shape(), backend_);
+    // Allocated through backend_, so a GPU backend tags it Cuda/Hip -- the host write below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(z);
     for (int64_t i = 0; i < mu.numel(); ++i) {
         z.data()[i] = mu.data()[i] + std::exp(log_sigma.data()[i]) * epsilon.data()[i];
     }
@@ -42,8 +45,15 @@ ReparamGrad Reparameterize::backward(const Tensor& grad_z) const {
         throw std::invalid_argument("Reparameterize::backward: grad_z shape must match the cached forward shape");
     }
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_z);
+    PULSATRIX_REQUIRE_HOST(last_log_sigma_);
+    PULSATRIX_REQUIRE_HOST(last_epsilon_);
     Tensor grad_mu(grad_z.shape(), backend_);
     Tensor grad_log_sigma(grad_z.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad_mu);
+    PULSATRIX_REQUIRE_HOST(grad_log_sigma);
     for (int64_t i = 0; i < grad_z.numel(); ++i) {
         // dz/dmu is exactly 1, so grad_mu is a straight pass-through of grad_z.
         grad_mu.data()[i] = grad_z.data()[i];

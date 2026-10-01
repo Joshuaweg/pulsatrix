@@ -73,6 +73,9 @@ float PolicyGradientLoss::forward(const Tensor& logits, const Tensor& actions, c
     // directly, never as log(p[a]), so a probability that underflowed to zero cannot produce an
     // infinite loss.
     Tensor probs(logits.shape(), backend_);
+    // Allocated through backend_, so a GPU backend tags it Cuda/Hip -- the host write below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(probs);
     float loss_sum = 0.0f;
     for (int64_t b = 0; b < batch_size; ++b) {
         const float* row = logits.data() + b * action_dim;
@@ -119,7 +122,12 @@ Tensor PolicyGradientLoss::backward() const {
     // is dense across all actions, because pushing probability onto the taken action takes it
     // from every other action. The `- 1` term applies only in the taken action's column; the
     // `p[b,k]` term applies everywhere.
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(last_probs_);
+    PULSATRIX_REQUIRE_HOST(last_returns_);
     Tensor grad(last_probs_.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad);
     for (int64_t b = 0; b < batch_size; ++b) {
         const int64_t index = last_action_indices_[static_cast<size_t>(b)];
         const float weight = last_returns_.data()[b] * scale;

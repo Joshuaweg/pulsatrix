@@ -13,6 +13,9 @@ float SatisfactionLoss::forward(const Tensor& truth_values) {
             "degrees)");
     }
     Tensor sat = aggregator_.forward(truth_values);  // rank 0 (a scalar), numel() == 1
+    // Reads Tensor::data() directly on the host -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(sat);
     has_forwarded_ = true;
     return 1.0f - sat.data()[0];
 }

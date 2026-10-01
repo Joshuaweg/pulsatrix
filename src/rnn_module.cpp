@@ -11,7 +11,12 @@ namespace {
 // same helper shape as LinearModule's/Conv2DModule's own transpose() (CPUBackend::gemm
 // has no transpose flag).
 Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
+    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
+    PULSATRIX_REQUIRE_HOST(m);
     Tensor out(Shape({cols, rows}), backend);
+    PULSATRIX_REQUIRE_HOST(out);
     for (int64_t r = 0; r < rows; ++r) {
         for (int64_t c = 0; c < cols; ++c) {
             out.data()[c * rows + r] = m.data()[r * cols + c];
@@ -73,6 +78,10 @@ Tensor RNNModule::forward_impl(const Tensor& input) {
     last_pre_activation_ = Tensor(Shape({N, L, hidden_size_}), backend_);
 
     Tensor output(Shape({N, L, hidden_size_}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
 
     for (int64_t t = 0; t < L; ++t) {
         Tensor x_t(Shape({N, input_size_}), backend_);
@@ -144,6 +153,10 @@ Tensor RNNModule::backward(const Tensor& grad_output) {
     PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     grad_input.fill(0.0f);
     Tensor local_wxh_grad(weight_xh_.shape(), backend_);
     local_wxh_grad.fill(0.0f);
@@ -250,6 +263,10 @@ Tensor RNNModule::propagate_relevance(const Tensor& relevance_out, const LRPRule
     PULSATRIX_REQUIRE_HOST(relevance_out);
 
     Tensor relevance_in(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     relevance_in.fill(0.0f);
 
     Tensor R_h_next(Shape({N, hidden_size_}), backend_);

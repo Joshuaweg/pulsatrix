@@ -51,6 +51,10 @@ Tensor CategoricalPolicyAgent::policy_logits(const Tensor& observation) {
         throw std::invalid_argument("CategoricalPolicyAgent: policy_network must produce output of shape "
                                     "(1, action_dim)");
     }
+    // The network may run on a GPU backend even when observation is host-resident; the
+    // caller's raw host loop over logits would then be UB (GPU-native-kernels campaign,
+    // Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(logits);
     return logits;
 }
 

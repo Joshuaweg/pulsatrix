@@ -26,8 +26,13 @@ float MSELoss::forward(const Tensor& prediction, const Tensor& target) {
 }
 
 Tensor MSELoss::backward() const {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(last_prediction_);
+    PULSATRIX_REQUIRE_HOST(last_target_);
     int64_t n = last_prediction_.numel();
     Tensor grad(last_prediction_.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad);
     float scale = 2.0f / static_cast<float>(n);
     for (int64_t i = 0; i < n; ++i) {
         grad.data()[i] = scale * (last_prediction_.data()[i] - last_target_.data()[i]);

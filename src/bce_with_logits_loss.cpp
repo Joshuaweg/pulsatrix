@@ -60,9 +60,14 @@ Tensor BCEWithLogitsLoss::backward() const {
         throw std::logic_error("BCEWithLogitsLoss::backward called before forward");
     }
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(last_logits_);
+    PULSATRIX_REQUIRE_HOST(last_target_);
     const int64_t n = last_logits_.numel();
     const float scale = 1.0f / static_cast<float>(n);
     Tensor grad(last_logits_.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad);
     for (int64_t i = 0; i < n; ++i) {
         grad.data()[i] = (stable_sigmoid(last_logits_.data()[i]) - last_target_.data()[i]) * scale;
     }

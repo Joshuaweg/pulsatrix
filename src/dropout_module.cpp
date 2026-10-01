@@ -61,6 +61,10 @@ Tensor DropoutModule::backward(const Tensor& grad_output) {
     PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_shape_, backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     for (int64_t i = 0; i < grad_output.numel(); ++i) {
         // mask is 0 or 1 -- when 0, the scale_ factor is irrelevant (product is still 0).
         grad_input.data()[i] = grad_output.data()[i] * last_mask_[static_cast<size_t>(i)] * scale_;

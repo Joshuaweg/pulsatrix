@@ -62,6 +62,10 @@ Tensor DQNAgent::greedy_action(const Tensor& observation) {
     if (q_values.rank() != 2 || q_values.shape().dim(0) != 1 || q_values.shape().dim(1) != action_dim_) {
         throw std::invalid_argument("DQNAgent: q_network must produce output of shape (1, action_dim)");
     }
+    // Reads Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). q_network_ may run on a GPU backend even
+    // when observation is host-resident.
+    PULSATRIX_REQUIRE_HOST(q_values);
 
     // Ties resolve to the lowest index (strict >), the same rule ComputeDQNTarget and
     // ComputeDoubleDQNTarget use, so policy and target agree on a tied row by construction.

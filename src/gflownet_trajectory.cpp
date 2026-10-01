@@ -11,6 +11,9 @@ GFlowNetTrajectory sample_gflownet_trajectory(HyperGridEnv& env, GFlowNetForward
     while (true) {
         const std::vector<bool> mask = env.valid_actions_mask(observation);
         const GFlowNetSampledAction sampled = forward_policy.sample(observation, mask);
+        // Reads Tensor::data() directly on the host -- not yet backend-generic
+        // (GPU-native-kernels campaign, Mission 0 O4).
+        PULSATRIX_REQUIRE_HOST(sampled.action);
         const int64_t action_index = static_cast<int64_t>(std::round(sampled.action.data()[0]));
 
         trajectory.states.push_back(observation);

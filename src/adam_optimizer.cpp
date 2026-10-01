@@ -25,6 +25,10 @@ void AdamOptimizer::step(Module& module) {
             it = state_.emplace(p.value, std::move(fresh)).first;
         }
         AdamState& s = it->second;
+        // The moment buffers are allocated through backend_, so a GPU backend tags them
+        // Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
+        PULSATRIX_REQUIRE_HOST(s.m);
+        PULSATRIX_REQUIRE_HOST(s.v);
         ++s.t;
 
         for (int64_t i = 0; i < p.value->numel(); ++i) {

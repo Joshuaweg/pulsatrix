@@ -84,12 +84,10 @@ public:
      *       already folds into its own `2/n`.
      * @note sigmoid() is evaluated here in a branch-stable form (`exp(x)/(1+exp(x))` for
      *       x < 0, `1/(1+exp(-x))` otherwise) so the exponent argument is never positive.
-     * @note Also dereferences Tensor::data() directly, but deliberately not independently
-     *       device-guarded: it has no parameters, it only ever reads state forward() already
-     *       validated before caching, and forward()'s own guard is the only way a non-Cpu
-     *       tensor could ever reach that cache -- a second guard here would be untestable
-     *       dead code, not a real safety net. Identical reasoning to MSELoss::backward();
-     *       see mission_host_loop_guards.md.
+     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
+     *       guards on the cached state and on the freshly allocated gradient(s). forward()'s
+     *       guard covers only the caller's tensors; the gradient is allocated through backend_,
+     *       which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
      */
     [[nodiscard]] Tensor backward() const;
 

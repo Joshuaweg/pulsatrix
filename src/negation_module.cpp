@@ -9,10 +9,14 @@ namespace pulsatrix {
 NegationModule::NegationModule(DeviceBackend* backend) : backend_(backend), last_input_(Shape({0}), backend) {}
 
 Tensor NegationModule::forward_impl(const Tensor& input) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(input);
     last_input_ = input;
     has_forwarded_ = true;
 
     Tensor output(input.shape(), backend_, input.device());
+    PULSATRIX_REQUIRE_HOST(output);
     for (int64_t i = 0; i < input.numel(); ++i) {
         output.data()[i] = 1.0f - input.data()[i];
     }
@@ -30,6 +34,10 @@ Tensor NegationModule::backward(const Tensor& grad_output) {
     PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(grad_output.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     for (int64_t i = 0; i < grad_output.numel(); ++i) {
         grad_input.data()[i] = -grad_output.data()[i];
     }

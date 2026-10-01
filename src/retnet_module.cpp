@@ -12,7 +12,12 @@ namespace {
 // same helper shape as LinearModule's/RNNModule's/MambaModule's/RWKVModule's own transpose()
 // (CPUBackend::gemm has no transpose flag).
 Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
+    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
+    PULSATRIX_REQUIRE_HOST(m);
     Tensor out(Shape({cols, rows}), backend);
+    PULSATRIX_REQUIRE_HOST(out);
     for (int64_t r = 0; r < rows; ++r) {
         for (int64_t c = 0; c < cols; ++c) {
             out.data()[c * rows + r] = m.data()[r * cols + c];
@@ -120,6 +125,10 @@ Tensor RetNetModule::forward_impl(const Tensor& input) {
     last_states_ = Tensor(Shape({N, L + 1, Kd, D}), backend_);  // zero-filled: S_0 = 0
 
     Tensor output(Shape({N, L, D}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
 
     for (int64_t t = 0; t < L; ++t) {
         // Gather this timestep's slice into a contiguous (N, d_model) buffer so all three
@@ -187,6 +196,10 @@ Tensor RetNetModule::backward(const Tensor& grad_output) {
     PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     Tensor local_w_q_grad(w_q_.shape(), backend_);
     Tensor local_w_k_grad(w_k_.shape(), backend_);
     Tensor local_w_v_grad(w_v_.shape(), backend_);
@@ -313,6 +326,10 @@ Tensor RetNetModule::propagate_relevance(const Tensor& relevance_out, const LRPR
 
     const float eps = config.epsilon;
     Tensor relevance_in(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
 
     // Per batch row: reconstruct the causal, gamma-decay-gated "attention-like" matrix
     // G[t,s] = gamma^(t-s)*(Q_t.K_s) for s <= t (0 above the diagonal -- see the header's

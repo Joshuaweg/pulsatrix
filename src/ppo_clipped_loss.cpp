@@ -75,6 +75,9 @@ float PPOClippedLoss::forward(const Tensor& new_logits, const Tensor& actions, c
     const float upper = 1.0f + clip_epsilon;
 
     Tensor probs(new_logits.shape(), backend_);
+    // Allocated through backend_, so a GPU backend tags it Cuda/Hip -- the host write below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(probs);
     std::vector<float> ratios(static_cast<size_t>(batch_size));
     std::vector<float> masks(static_cast<size_t>(batch_size));
     float loss_sum = 0.0f;
@@ -150,7 +153,12 @@ Tensor PPOClippedLoss::backward() const {
     // probability onto the taken action takes it from every other action. A masked-out *row*
     // is a different thing entirely -- there the whole row is exactly 0.0f by construction,
     // because `weight` is exactly 0.0f.
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(last_probs_);
+    PULSATRIX_REQUIRE_HOST(last_advantages_);
     Tensor grad(last_probs_.shape(), backend_);
+    PULSATRIX_REQUIRE_HOST(grad);
     for (int64_t b = 0; b < batch_size; ++b) {
         const int64_t index = last_action_indices_[static_cast<size_t>(b)];
         const float weight = -last_masks_[static_cast<size_t>(b)] * last_advantages_.data()[b] *

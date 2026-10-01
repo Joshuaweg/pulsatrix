@@ -45,6 +45,10 @@ Tensor SoftmaxModule::forward_impl(const Tensor& input) {
     const RowLayout layout = row_layout_of(input.shape());
 
     Tensor output(input.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
     for (int64_t row = 0; row < layout.num_rows; ++row) {
         const int64_t base = row * layout.row_len;
 
@@ -79,6 +83,10 @@ Tensor SoftmaxModule::backward(const Tensor& grad_output) {
     const RowLayout layout = row_layout_of(grad_output.shape());
 
     Tensor grad_input(grad_output.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     for (int64_t row = 0; row < layout.num_rows; ++row) {
         const int64_t base = row * layout.row_len;
 
@@ -102,6 +110,10 @@ Tensor SoftmaxModule::propagate_relevance(const Tensor& relevance_out, const LRP
     const RowLayout layout = row_layout_of(relevance_out.shape());
 
     Tensor relevance_in(relevance_out.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     for (int64_t row = 0; row < layout.num_rows; ++row) {
         const int64_t base = row * layout.row_len;
 

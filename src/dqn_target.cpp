@@ -146,6 +146,10 @@ void SyncTargetNetwork(Module& source, Module& destination) {
         // Element-wise into the *existing* buffer, never `into = from`: destination's
         // parameter Tensors must remain the same objects its own parameters() -- and any
         // optimizer already holding ParamRefs into them -- point at.
+        // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+        // (GPU-native-kernels campaign, Mission 0 O4).
+        PULSATRIX_REQUIRE_HOST(from);
+        PULSATRIX_REQUIRE_HOST(into);
         for (int64_t e = 0; e < from.numel(); ++e) {
             into.data()[e] = from.data()[e];
         }

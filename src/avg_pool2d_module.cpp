@@ -40,6 +40,10 @@ Tensor AvgPool2DModule::forward_impl(const Tensor& input) {
     last_out_w_ = out_w;
 
     Tensor output(Shape({N, C, out_h, out_w}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
 
     for (int64_t n = 0; n < N; ++n) {
         for (int64_t c = 0; c < C; ++c) {
@@ -85,6 +89,10 @@ Tensor AvgPool2DModule::backward(const Tensor& grad_output) {
     const int64_t K = kernel_h_ * kernel_w_;
 
     Tensor grad_input(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     grad_input.fill(0.0f);
 
     for (int64_t n = 0; n < N; ++n) {
@@ -133,6 +141,10 @@ Tensor AvgPool2DModule::propagate_relevance(const Tensor& relevance_out, const L
     const float inv_k = 1.0f / static_cast<float>(K);
 
     Tensor relevance_in(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     relevance_in.fill(0.0f);
 
     for (int64_t n = 0; n < N; ++n) {

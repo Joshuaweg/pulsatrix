@@ -20,6 +20,11 @@ Tensor im2col(const float* input_data, int64_t C, int64_t H, int64_t W, int64_t 
     int64_t P = C * kh * kw;
     int64_t Q = out_h * out_w;
     Tensor col(Shape({P, Q}), backend);
+    // Writes Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). col is allocated through backend, so a GPU
+    // backend tags it Cuda/Hip; the caller-side guards (which cover input_data's source
+    // tensor) cannot cover it.
+    PULSATRIX_REQUIRE_HOST(col);
     for (int64_t oh = 0; oh < out_h; ++oh) {
         for (int64_t ow = 0; ow < out_w; ++ow) {
             int64_t q = oh * out_w + ow;
@@ -72,6 +77,11 @@ void col2im_into(const float* col_data, float* out_data, int64_t C, int64_t H, i
 // Same helper shape as LinearModule's -- CPUBackend::gemm has no transpose flag.
 Tensor transpose2d(const float* data, int64_t rows, int64_t cols, DeviceBackend* backend) {
     Tensor out(Shape({cols, rows}), backend);
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
+    // backend tags it Cuda/Hip; the caller-side guards (which cover data's
+    // source tensor) cannot cover it.
+    PULSATRIX_REQUIRE_HOST(out);
     for (int64_t r = 0; r < rows; ++r) {
         for (int64_t c = 0; c < cols; ++c) {
             out.data()[c * rows + r] = data[r * cols + c];
@@ -148,6 +158,10 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
     last_pre_bias_output_ = Tensor(Shape({N, out_channels_, out_h, out_w}), backend_);
 
     Tensor output(Shape({N, out_channels_, out_h, out_w}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
 
     // Per-example loop over the existing unbatched im2col/gemm pipeline -- each im2col
     // column is independent of every other, so this is exactly equivalent to a single
@@ -206,6 +220,10 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     const int64_t out_stride = out_channels_ * Q;
 
     Tensor grad_input(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     grad_input.fill(0.0f);
 
     Tensor kernel_t = transpose2d(kernel_.data(), out_channels_, P, backend_);  // (out_channels,P) -> (P,out_channels)
@@ -271,6 +289,10 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     const int64_t out_stride = out_channels_ * Q;
 
     Tensor relevance_in(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     relevance_in.fill(0.0f);
 
     // Applied independently per example -- each row's relevance redistribution uses only

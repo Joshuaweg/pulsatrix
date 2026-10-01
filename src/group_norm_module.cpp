@@ -11,6 +11,9 @@ namespace {
 int64_t safe_channels(int64_t num_channels) { return num_channels > 0 ? num_channels : 1; }
 }  // namespace
 
+GroupNormModule::GroupNormModule(int64_t num_groups, int64_t num_channels, DeviceBackend* backend)
+    : GroupNormModule(num_groups, num_channels, backend, backend->device()) {}
+
 GroupNormModule::GroupNormModule(int64_t num_groups, int64_t num_channels, DeviceBackend* backend,
                                   DeviceType device, float eps)
     : num_groups_(num_groups),
@@ -69,6 +72,12 @@ Tensor GroupNormModule::forward_impl(const Tensor& input) {
     const int64_t N_g = group_size_ * spatial;
     const int64_t per_example = num_channels_ * spatial;
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(input);
+    PULSATRIX_REQUIRE_HOST(gamma_);
+    PULSATRIX_REQUIRE_HOST(beta_);
+
     last_input_ = input;
     last_h_ = H;
     last_w_ = W;
@@ -76,6 +85,8 @@ Tensor GroupNormModule::forward_impl(const Tensor& input) {
 
     Tensor xhat(input.shape(), backend_, gamma_.device());
     Tensor output(input.shape(), backend_, gamma_.device());
+    PULSATRIX_REQUIRE_HOST(xhat);
+    PULSATRIX_REQUIRE_HOST(output);
 
     for (int64_t n = 0; n < N; ++n) {
         const int64_t base = n * per_example;
@@ -143,6 +154,10 @@ Tensor GroupNormModule::backward(const Tensor& grad_output) {
     const int64_t per_example = num_channels_ * spatial;
 
     Tensor local_gamma_grad(gamma_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(local_gamma_grad);
     Tensor local_beta_grad(beta_.shape(), backend_);
     local_gamma_grad.fill(0.0f);
     local_beta_grad.fill(0.0f);
