@@ -16,6 +16,7 @@
 #include <cstddef>
 #include <stdexcept>
 
+#include "lrp_math.hpp"
 #include "pointwise_math.hpp"
 #include "row_math.hpp"
 #include "pulsatrix/device_backend.hpp"
@@ -524,6 +525,139 @@ __global__ void tanh_gaussian_backward_kernel(const float* action, const float* 
     if (i < n) {
         rows::tanh_gaussian_backward_element(action[i], std_cache[i], eps[i], grad_action[i], grad_log_prob[i],
                                              stabilizer, grad_mean + i, grad_log_std + i);
+    }
+}
+
+// ---- GPU-native-kernels Mission 3 ----------------------------------------------------------
+// One thread per output element (or row / column), each running the shared lrp:: routine.
+
+__global__ void lrp_linear_kernel(const float* x, const float* w, const float* z, const float* r, float* r_in,
+                                  size_t rows, size_t in_features, size_t out_features, float eps) {
+    size_t idx = global_index();
+    if (idx < rows * in_features) {
+        const size_t n = idx / in_features;
+        const size_t i = idx % in_features;
+        r_in[idx] = lrp::linear_epsilon(x + n * in_features, w, z + n * out_features, r + n * out_features,
+                                        static_cast<int64_t>(i), static_cast<int64_t>(out_features), eps);
+    }
+}
+
+__global__ void lrp_residual_split_kernel(const float* a, const float* b, const float* r, float* r_a, float* r_b,
+                                          size_t n, float eps) {
+    size_t i = global_index();
+    if (i < n) {
+        lrp::residual_split(a[i], b[i], r[i], eps, r_a + i, r_b + i);
+    }
+}
+
+__global__ void lrp_bilinear_elementwise_kernel(const float* a, const float* b, const float* r, float* r_out,
+                                                size_t n, float eps) {
+    size_t i = global_index();
+    if (i < n) {
+        r_out[i] = lrp::bilinear_elementwise(a[i], b[i], r[i], eps);
+    }
+}
+
+__global__ void lrp_bilinear_r_a_kernel(const float* a, const float* b, const float* o, const float* r_o, float* r_a,
+                                        size_t slices, size_t m, size_t p, size_t q, float eps, bool b_transposed) {
+    size_t idx = global_index();
+    if (idx < slices * m * p) {
+        const size_t s = idx / (m * p);
+        const size_t rem = idx % (m * p);
+        r_a[idx] = lrp::bilinear_matmul_r_a(a + s * m * p, b + s * p * q, o + s * m * q, r_o + s * m * q,
+                                            static_cast<int64_t>(rem / p), static_cast<int64_t>(rem % p),
+                                            static_cast<int64_t>(p), static_cast<int64_t>(q), eps, b_transposed);
+    }
+}
+
+__global__ void lrp_bilinear_r_b_kernel(const float* a, const float* b, const float* o, const float* r_o, float* r_b,
+                                        size_t slices, size_t m, size_t p, size_t q, float eps, bool b_transposed) {
+    size_t idx = global_index();  // index into r_b in its stored layout
+    if (idx < slices * p * q) {
+        const size_t s = idx / (p * q);
+        const size_t rem = idx % (p * q);
+        const size_t j = b_transposed ? rem % p : rem / q;
+        const size_t k = b_transposed ? rem / p : rem % q;
+        r_b[idx] = lrp::bilinear_matmul_r_b(a + s * m * p, b + s * p * q, o + s * m * q, r_o + s * m * q,
+                                            static_cast<int64_t>(j), static_cast<int64_t>(k), static_cast<int64_t>(m),
+                                            static_cast<int64_t>(p), static_cast<int64_t>(q), eps, b_transposed);
+    }
+}
+
+__global__ void lrp_softmax_rows_kernel(const float* x, const float* y, const float* r, float* r_in, size_t rows,
+                                        size_t cols) {
+    size_t row = global_index();
+    if (row < rows) {
+        const size_t off = row * cols;
+        lrp::softmax_row(x + off, y + off, r + off, r_in + off, static_cast<int64_t>(cols));
+    }
+}
+
+__global__ void lrp_rope_kernel(const float* x, const float* y, const float* r, const float* cos_table,
+                                const float* sin_table, float* r_in, size_t total_rows, size_t seq_len,
+                                size_t head_dim, float eps) {
+    size_t row = global_index();
+    if (row < total_rows) {
+        const size_t half = head_dim / 2;
+        const size_t pos = row % seq_len;
+        const size_t off = row * head_dim;
+        lrp::rope_position(x + off, y + off, r + off, cos_table + pos * half, sin_table + pos * half, r_in + off,
+                           static_cast<int64_t>(half), eps);
+    }
+}
+
+// op is uniform across the launch, so the switch costs no divergence.
+__global__ void logic_pointwise_kernel(int op, int norm, const float* a, const float* b, const float* g_or_r,
+                                       const float* y, float* out_a, float* out_b, size_t n, float eps) {
+    size_t i = global_index();
+    if (i < n) {
+        switch (static_cast<LogicOp>(op)) {
+            case LogicOp::ConjunctionForward:
+                out_a[i] = lrp::conjunction_forward(norm, a[i], b[i]);
+                break;
+            case LogicOp::ConjunctionBackward:
+                lrp::conjunction_backward(norm, a[i], b[i], g_or_r[i], out_a + i, out_b + i);
+                break;
+            case LogicOp::ConjunctionLrp:
+                lrp::conjunction_lrp(norm, a[i], b[i], y[i], g_or_r[i], eps, out_a + i, out_b + i);
+                break;
+            case LogicOp::DisjunctionForward:
+                out_a[i] = lrp::disjunction_forward(norm, a[i], b[i]);
+                break;
+            case LogicOp::DisjunctionBackward:
+                lrp::disjunction_backward(norm, a[i], b[i], g_or_r[i], out_a + i, out_b + i);
+                break;
+            case LogicOp::DisjunctionLrp:
+                lrp::disjunction_lrp(norm, a[i], b[i], y[i], g_or_r[i], eps, out_a + i, out_b + i);
+                break;
+        }
+    }
+}
+
+__global__ void aggregator_forward_kernel(const float* x, float* mean_pow, float* out, size_t n, size_t cols,
+                                          float p) {
+    size_t j = global_index();
+    if (j < cols) {
+        lrp::aggregator_forward_column(x, mean_pow, out, static_cast<int64_t>(n), static_cast<int64_t>(cols),
+                                       static_cast<int64_t>(j), p);
+    }
+}
+
+__global__ void aggregator_backward_kernel(const float* x, const float* mean_pow, const float* grad_out,
+                                           float* grad_in, size_t n, size_t cols, float p) {
+    size_t j = global_index();
+    if (j < cols) {
+        lrp::aggregator_backward_column(x, mean_pow, grad_out, grad_in, static_cast<int64_t>(n),
+                                        static_cast<int64_t>(cols), static_cast<int64_t>(j), p);
+    }
+}
+
+__global__ void aggregator_lrp_kernel(const float* x, const float* mean_pow, const float* r_out, float* r_in,
+                                      size_t n, size_t cols, float p, float eps) {
+    size_t j = global_index();
+    if (j < cols) {
+        lrp::aggregator_lrp_column(x, mean_pow, r_out, r_in, static_cast<int64_t>(n), static_cast<int64_t>(cols),
+                                   static_cast<int64_t>(j), p, eps);
     }
 }
 
