@@ -10,9 +10,8 @@ namespace pulsatrix {
 
 /**
  * @brief Which physical device a Tensor's buffer resides on.
- * @note Only Cpu has a DeviceBackend implementation as of Phase 0. Cuda/Hip exist here now
- *       so Tensor::to() has a stable enum to target starting Phase 1.5/1.6, without needing
- *       to change Tensor's public signature when those backends are added.
+ * @note CPUBackend, CUDABackend and HIPBackend implement Cpu, Cuda and Hip respectively.
+ *       Tensor::to(target, target_backend) moves a buffer between them.
  */
 enum class DeviceType {
     Cpu,

@@ -43,6 +43,29 @@ std::vector<float> RandomVector(size_t n, unsigned seed) {
     return v;
 }
 
+// Tanh/Sigmoid/Silu share one body: each is a single transcendental per element, so the
+// only legitimate CPU/GPU divergence is libm-vs-device-math ulp rounding, far inside the bound.
+void ExpectElementwiseMatchesCPU(CPUBackend& cpu, HIPBackend& hip, ElementwiseOp op, unsigned seed) {
+    std::vector<float> in = RandomVector(1000, seed);
+
+    std::vector<float> cpu_out(in.size(), 0.0f);
+    cpu.elementwise(op, in.data(), cpu_out.data(), in.size());
+
+    void* device_in = hip.allocate(in.size() * sizeof(float));
+    void* device_out = hip.allocate(in.size() * sizeof(float));
+    hip.copy(device_in, in.data(), in.size() * sizeof(float), CopyDirection::HostToDevice);
+    hip.elementwise(op, static_cast<float*>(device_in), static_cast<float*>(device_out), in.size());
+    std::vector<float> hip_out(in.size(), 0.0f);
+    hip.copy(hip_out.data(), device_out, hip_out.size() * sizeof(float), CopyDirection::DeviceToHost);
+
+    for (size_t i = 0; i < cpu_out.size(); ++i) {
+        EXPECT_NEAR(cpu_out[i], hip_out[i], kBackendEquivalenceTolerance) << "mismatch at flat index " << i;
+    }
+
+    hip.free(device_in);
+    hip.free(device_out);
+}
+
 class HipBackendEquivalenceTest : public ::testing::Test {
 protected:
     CPUBackend cpu;
@@ -163,6 +186,43 @@ TEST_F(HipBackendEquivalenceTest, FillMatchesCPUBackendOnRandomInput) {
     }
 
     hip.free(device_out);
+}
+
+TEST_F(HipBackendEquivalenceTest, MulMatchesCPUBackendOnRandomInput) {
+    std::vector<float> a = RandomVector(1000, /*seed=*/7);
+    std::vector<float> b = RandomVector(1000, /*seed=*/8);
+
+    std::vector<float> cpu_out(a.size(), 0.0f);
+    cpu.mul(a.data(), b.data(), cpu_out.data(), a.size());
+
+    void* device_a = hip.allocate(a.size() * sizeof(float));
+    void* device_b = hip.allocate(b.size() * sizeof(float));
+    void* device_out = hip.allocate(a.size() * sizeof(float));
+    hip.copy(device_a, a.data(), a.size() * sizeof(float), CopyDirection::HostToDevice);
+    hip.copy(device_b, b.data(), b.size() * sizeof(float), CopyDirection::HostToDevice);
+    hip.mul(static_cast<float*>(device_a), static_cast<float*>(device_b), static_cast<float*>(device_out), a.size());
+    std::vector<float> hip_out(a.size(), 0.0f);
+    hip.copy(hip_out.data(), device_out, hip_out.size() * sizeof(float), CopyDirection::DeviceToHost);
+
+    for (size_t i = 0; i < cpu_out.size(); ++i) {
+        EXPECT_NEAR(cpu_out[i], hip_out[i], kBackendEquivalenceTolerance) << "mismatch at flat index " << i;
+    }
+
+    hip.free(device_a);
+    hip.free(device_b);
+    hip.free(device_out);
+}
+
+TEST_F(HipBackendEquivalenceTest, ElementwiseTanhMatchesCPUBackendOnRandomInput) {
+    ExpectElementwiseMatchesCPU(cpu, hip, ElementwiseOp::Tanh, /*seed=*/9);
+}
+
+TEST_F(HipBackendEquivalenceTest, ElementwiseSigmoidMatchesCPUBackendOnRandomInput) {
+    ExpectElementwiseMatchesCPU(cpu, hip, ElementwiseOp::Sigmoid, /*seed=*/10);
+}
+
+TEST_F(HipBackendEquivalenceTest, ElementwiseSiluMatchesCPUBackendOnRandomInput) {
+    ExpectElementwiseMatchesCPU(cpu, hip, ElementwiseOp::Silu, /*seed=*/11);
 }
 
 }  // namespace

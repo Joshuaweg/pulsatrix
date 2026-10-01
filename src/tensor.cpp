@@ -1,6 +1,7 @@
 #include "pulsatrix/tensor.hpp"
 
 #include <stdexcept>
+#include <vector>
 
 #include "pulsatrix/assert.hpp"
 
@@ -209,8 +210,51 @@ Tensor& Tensor::to(DeviceType target) {
     if (target == device_) {
         return *this;
     }
-    throw std::runtime_error(
-        "Tensor::to: no DeviceBackend exists yet for the requested device (Phase 1.5/1.6)");
+    throw std::invalid_argument(
+        "Tensor::to: a cross-device move needs the target DeviceBackend -- use to(target, target_backend)");
+}
+
+Tensor& Tensor::to(DeviceType target, DeviceBackend* target_backend) {
+    // External boundary: target_backend is caller-supplied, so a null one is a reachable
+    // misuse rather than an internal invariant.
+    if (target_backend == nullptr) {
+        throw std::invalid_argument("Tensor::to: target_backend must not be null");
+    }
+    if (target == device_ && target_backend == backend_) {
+        return *this;
+    }
+
+    const size_t bytes = static_cast<size_t>(numel()) * sizeof(float);
+    float* new_data = allocate_buffer(target_backend, numel());
+    if (new_data != nullptr) {
+        try {
+            const bool src_is_host = device_ == DeviceType::Cpu;
+            const bool dst_is_host = target == DeviceType::Cpu;
+            if (src_is_host && dst_is_host) {
+                target_backend->copy(new_data, data_, bytes, CopyDirection::HostToHost);
+            } else if (src_is_host) {
+                target_backend->copy(new_data, data_, bytes, CopyDirection::HostToDevice);
+            } else if (dst_is_host) {
+                backend_->copy(new_data, data_, bytes, CopyDirection::DeviceToHost);
+            } else if (target == device_) {
+                target_backend->copy(new_data, data_, bytes, CopyDirection::DeviceToDevice);
+            } else {
+                // Cuda <-> Hip: neither runtime can address the other's memory.
+                std::vector<float> staging(static_cast<size_t>(numel()));
+                backend_->copy(staging.data(), data_, bytes, CopyDirection::DeviceToHost);
+                target_backend->copy(new_data, staging.data(), bytes, CopyDirection::HostToDevice);
+            }
+        } catch (...) {
+            target_backend->free(new_data);
+            throw;
+        }
+    }
+
+    backend_->free(data_);
+    data_ = new_data;
+    backend_ = target_backend;
+    device_ = target;
+    return *this;
 }
 
 }  // namespace pulsatrix

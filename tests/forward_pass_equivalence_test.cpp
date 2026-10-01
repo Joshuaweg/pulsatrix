@@ -46,6 +46,9 @@ protected:
 TEST_F(ForwardPassEquivalenceTest, LinearModuleForwardMatchesCPUBackendOnRandomInput) {
     constexpr int64_t in_features = 17;
     constexpr int64_t out_features = 11;
+    // N > 1 so the per-row bias broadcast is exercised, not just a single row -- LinearModule
+    // takes (N, in_features) since the batch-dimension migration.
+    constexpr int64_t batch = 5;
 
     LinearModule cpu_linear(in_features, out_features, &cpu);
     LinearModule cuda_linear(in_features, out_features, &cuda, DeviceType::Cuda);
@@ -60,21 +63,22 @@ TEST_F(ForwardPassEquivalenceTest, LinearModuleForwardMatchesCPUBackendOnRandomI
     WriteValues(&cuda, *cuda_params[0].value, weight_values);
     WriteValues(&cuda, *cuda_params[1].value, bias_values);
 
-    std::vector<float> input_values = RandomVector(static_cast<size_t>(in_features), /*seed=*/12);
-    Tensor cpu_input(Shape({in_features}), &cpu);
+    std::vector<float> input_values = RandomVector(static_cast<size_t>(batch * in_features), /*seed=*/12);
+    Tensor cpu_input(Shape({batch, in_features}), &cpu);
     WriteValues(&cpu, cpu_input, input_values);
-    Tensor cuda_input(Shape({in_features}), &cuda, DeviceType::Cuda);
+    Tensor cuda_input(Shape({batch, in_features}), &cuda, DeviceType::Cuda);
     WriteValues(&cuda, cuda_input, input_values);
 
     Tensor cpu_output = cpu_linear.forward(cpu_input);
     Tensor cuda_output = cuda_linear.forward(cuda_input);
     EXPECT_EQ(cuda_output.device(), DeviceType::Cuda);
 
-    std::vector<float> cuda_output_host(static_cast<size_t>(out_features), 0.0f);
+    std::vector<float> cuda_output_host(static_cast<size_t>(batch * out_features), 0.0f);
     cuda.copy(cuda_output_host.data(), cuda_output.data(), cuda_output_host.size() * sizeof(float),
               CopyDirection::DeviceToHost);
 
-    for (int64_t i = 0; i < out_features; ++i) {
+    ASSERT_EQ(cpu_output.numel(), batch * out_features);
+    for (int64_t i = 0; i < batch * out_features; ++i) {
         EXPECT_NEAR(cpu_output.data()[i], cuda_output_host[static_cast<size_t>(i)], kBackendEquivalenceTolerance)
             << "mismatch at index " << i;
     }
