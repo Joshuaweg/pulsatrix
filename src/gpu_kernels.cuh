@@ -17,6 +17,7 @@
 #include <stdexcept>
 
 #include "pointwise_math.hpp"
+#include "row_math.hpp"
 #include "pulsatrix/device_backend.hpp"
 
 namespace pulsatrix {
@@ -419,6 +420,111 @@ template <typename Stream>
 void launch_bce_with_logits_grad(const float* logits, const float* target, float* grad, size_t n, float scale,
                                  Stream stream) {
     bce_with_logits_grad_kernel<<<grid_size_for(n), kBlockSize, 0, stream>>>(logits, target, grad, n, scale);
+}
+
+// ---- GPU-native-kernels Mission 2 ----------------------------------------------------------
+// One thread per row running the shared rows:: routine (row_math.hpp), except the pure data
+// movement kernels (permute, gather), which are one thread per element, and scatter_add,
+// one thread per column so repeated indices accumulate in CPU order without atomics.
+
+__global__ void layer_norm_forward_kernel(const float* in, const float* gamma, const float* beta, float* xhat,
+                                          float* out, float* row_std, size_t rows, size_t cols, float eps) {
+    size_t r = global_index();
+    if (r < rows) {
+        rows::layer_norm_forward(in + r * cols, gamma, beta, xhat + r * cols, out + r * cols, row_std + r,
+                                 static_cast<int64_t>(cols), eps);
+    }
+}
+
+__global__ void layer_norm_backward_kernel(const float* grad_out, const float* gamma, const float* xhat,
+                                           const float* row_std, float* grad_in, size_t rows, size_t cols) {
+    size_t r = global_index();
+    if (r < rows) {
+        rows::layer_norm_backward(grad_out + r * cols, gamma, xhat + r * cols, row_std[r], grad_in + r * cols,
+                                  static_cast<int64_t>(cols));
+    }
+}
+
+__global__ void rms_norm_forward_kernel(const float* in, const float* gamma, float* out, float* row_rms, size_t rows,
+                                        size_t cols, float eps) {
+    size_t r = global_index();
+    if (r < rows) {
+        rows::rms_norm_forward(in + r * cols, gamma, out + r * cols, row_rms + r, static_cast<int64_t>(cols), eps);
+    }
+}
+
+__global__ void rms_norm_backward_kernel(const float* grad_out, const float* gamma, const float* in,
+                                         const float* row_rms, float* grad_in, float* gamma_terms, size_t rows,
+                                         size_t cols) {
+    size_t r = global_index();
+    if (r < rows) {
+        rows::rms_norm_backward(grad_out + r * cols, gamma, in + r * cols, row_rms[r], grad_in + r * cols,
+                                gamma_terms + r * cols, static_cast<int64_t>(cols));
+    }
+}
+
+__global__ void rope_rotate_kernel(const float* in, const float* cos_table, const float* sin_table, float* out,
+                                   size_t total_rows, size_t seq_len, size_t head_dim, bool inverse) {
+    size_t row = global_index();
+    if (row < total_rows) {
+        const size_t half = head_dim / 2;
+        const size_t pos = row % seq_len;
+        rows::rope_rotate(in + row * head_dim, cos_table + pos * half, sin_table + pos * half, out + row * head_dim,
+                          static_cast<int64_t>(half), inverse);
+    }
+}
+
+__global__ void permute_0213_kernel(const float* in, float* out, size_t d0, size_t d1, size_t d2, size_t d3) {
+    size_t idx = global_index();  // flat index into out (d0, d2, d1, d3)
+    if (idx < d0 * d1 * d2 * d3) {
+        const size_t e = idx % d3;
+        size_t rest = idx / d3;
+        const size_t b = rest % d1;
+        rest /= d1;
+        const size_t c = rest % d2;
+        const size_t a = rest / d2;
+        out[idx] = in[((a * d1 + b) * d2 + c) * d3 + e];
+    }
+}
+
+__global__ void gather_rows_kernel(const float* table, const float* indices, float* out, size_t count, size_t dim) {
+    size_t idx = global_index();
+    if (idx < count * dim) {
+        const size_t i = idx / dim;
+        const size_t d = idx % dim;
+        out[idx] = table[static_cast<size_t>(indices[i]) * dim + d];
+    }
+}
+
+__global__ void scatter_add_rows_kernel(const float* src, const float* indices, float* table, size_t count,
+                                        size_t dim) {
+    size_t d = global_index();
+    if (d < dim) {
+        for (size_t i = 0; i < count; ++i) {
+            table[static_cast<size_t>(indices[i]) * dim + d] += src[i * dim + d];
+        }
+    }
+}
+
+__global__ void tanh_gaussian_forward_kernel(const float* mean, const float* log_std, const float* eps, float* action,
+                                             float* std_cache, float* log_prob, size_t rows, size_t cols,
+                                             float stabilizer, double half_log_two_pi) {
+    size_t r = global_index();
+    if (r < rows) {
+        const size_t off = r * cols;
+        rows::tanh_gaussian_forward(mean + off, log_std + off, eps + off, action + off, std_cache + off, log_prob + r,
+                                    static_cast<int64_t>(cols), stabilizer, half_log_two_pi);
+    }
+}
+
+__global__ void tanh_gaussian_backward_kernel(const float* action, const float* std_cache, const float* eps,
+                                              const float* grad_action, const float* grad_log_prob, float* grad_mean,
+                                              float* grad_log_std, size_t n, float stabilizer) {
+    size_t i = global_index();
+    if (i < n) {
+        rows::tanh_gaussian_backward_element(action[i], std_cache[i], eps[i], grad_action[i], grad_log_prob[i],
+                                             stabilizer, grad_mean + i, grad_log_std + i);
+    }
 }
 
 }  // namespace gpu

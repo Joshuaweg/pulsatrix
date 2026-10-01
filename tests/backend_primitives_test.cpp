@@ -236,5 +236,43 @@ TEST_F(BackendPrimitivesTest, BceWithLogitsMatchesClosedFormAndIsStable) {
     EXPECT_NEAR(grad[2], 0.0f, 1e-30f);
 }
 
+// ---- Mission 2 -----------------------------------------------------------------------------
+
+TEST_F(BackendPrimitivesTest, Permute0213SwapsTheMiddleAxes) {
+    // in (1, 2, 3, 1): [[a0 a1 a2], [b0 b1 b2]] -> out (1, 3, 2, 1): [[a0 b0], [a1 b1], [a2 b2]]
+    std::vector<float> in = {0, 1, 2, 10, 11, 12};
+    std::vector<float> out(6);
+    cpu.permute_0213(in.data(), out.data(), 1, 2, 3, 1);
+    EXPECT_EQ(out, (std::vector<float>{0, 10, 1, 11, 2, 12}));
+    std::vector<float> back(6);
+    cpu.permute_0213(out.data(), back.data(), 1, 3, 2, 1);
+    EXPECT_EQ(back, in);
+}
+
+TEST_F(BackendPrimitivesTest, GatherAndScatterAddRowsHandleRepeatedIndices) {
+    std::vector<float> table = {1, 2, 10, 20, 100, 200};  // 3 rows x 2
+    std::vector<float> idx = {2, 0, 2};
+    std::vector<float> out(6);
+    cpu.gather_rows(table.data(), idx.data(), out.data(), 3, 2);
+    EXPECT_EQ(out, (std::vector<float>{100, 200, 1, 2, 100, 200}));
+    std::vector<float> acc(6, 0.0f);
+    std::vector<float> src = {1, 1, 5, 5, 2, 3};
+    cpu.scatter_add_rows(src.data(), idx.data(), acc.data(), 3, 2);
+    EXPECT_EQ(acc, (std::vector<float>{5, 5, 0, 0, 3, 4}));
+}
+
+TEST_F(BackendPrimitivesTest, RopeRotateInverseUndoesForward) {
+    std::vector<float> x = {1.0f, 2.0f, -3.0f, 0.5f};  // 1 slice, 2 positions, head_dim 2
+    std::vector<float> c = {1.0f, 0.6f}, s = {0.0f, 0.8f};  // per-position cos/sin
+    std::vector<float> y(4), back(4);
+    cpu.rope_rotate(x.data(), c.data(), s.data(), y.data(), 1, 2, 2, false);
+    EXPECT_FLOAT_EQ(y[0], 1.0f);  // position 0: identity
+    EXPECT_FLOAT_EQ(y[1], 2.0f);
+    cpu.rope_rotate(y.data(), c.data(), s.data(), back.data(), 1, 2, 2, true);
+    for (size_t i = 0; i < 4; ++i) {
+        EXPECT_NEAR(back[i], x[i], 1e-6f);
+    }
+}
+
 }  // namespace
 }  // namespace pulsatrix

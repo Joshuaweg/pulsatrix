@@ -106,12 +106,7 @@ public:
      *       **zero** direct gradient w.r.t. mean/log_std: it depends on them only through an
      *       identity that holds by construction, not through a live dependency. backward()'s
      *       derivation relies on exactly that.
-     * @note Not backend-generic -- exp/tanh/log have no DeviceBackend::elementwise op, so this
-     *       is a raw host loop dereferencing Tensor::data() directly.
-     *       PULSATRIX_REQUIRE_HOST on all three inputs guards against silent
-     *       UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove
-     *       this guard without actually retrofitting the method to route through DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 2).
      */
     [[nodiscard]] TanhGaussianSample forward(const Tensor& mean, const Tensor& log_std, const Tensor& epsilon);
 
@@ -143,11 +138,7 @@ public:
      * @throws std::invalid_argument if either gradient's shape doesn't match the cached
      *         forward shape. Both are genuine external inputs to backward(), the same
      *         classification Reparameterize::backward()'s grad_z argument got.
-     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
-     *       guards on the incoming gradient(s), the cached state and the freshly allocated
-     *       gradients. forward()'s guard covers only forward()'s own arguments; the gradients
-     *       are allocated through backend_, which a GPU backend tags Cuda/Hip
-     *       (GPU-native-kernels campaign, Mission 0 O4).
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 2).
      */
     [[nodiscard]] TanhGaussianGrad backward(const Tensor& grad_action, const Tensor& grad_log_prob) const;
 

@@ -19,7 +19,8 @@ LayerNormModule::LayerNormModule(int64_t num_features, DeviceBackend* backend, D
       gamma_grad_(Shape({num_features > 0 ? num_features : 1}), backend, device),
       beta_grad_(Shape({num_features > 0 ? num_features : 1}), backend, device),
       last_input_(Shape({1, num_features > 0 ? num_features : 1}), backend, device),
-      last_xhat_(Shape({1, num_features > 0 ? num_features : 1}), backend, device) {
+      last_xhat_(Shape({1, num_features > 0 ? num_features : 1}), backend, device),
+      last_std_(Shape({1}), backend, device) {
     if (num_features <= 0) {
         throw std::invalid_argument("LayerNormModule: num_features must be positive");
     }
@@ -46,45 +47,16 @@ Tensor LayerNormModule::forward_impl(const Tensor& input) {
         throw std::invalid_argument("LayerNormModule::forward: input must be rank-2 (N, num_features)");
     }
     const int64_t N = input.shape().dim(0);
-    const float D = static_cast<float>(num_features_);
 
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(input);
-    PULSATRIX_REQUIRE_HOST(gamma_);
-    PULSATRIX_REQUIRE_HOST(beta_);
-
+    // Device-generic (GPU-native-kernels Mission 2): one fused row kernel computes mean, std,
+    // xhat and the affine output per row, in the original host loop's order.
     last_input_ = input;
-    last_std_.assign(static_cast<size_t>(N), 0.0f);
-
-    Tensor xhat(Shape({N, num_features_}), backend_, gamma_.device());
-    Tensor output(Shape({N, num_features_}), backend_, gamma_.device());
-    PULSATRIX_REQUIRE_HOST(xhat);
-    PULSATRIX_REQUIRE_HOST(output);
-
-    for (int64_t n = 0; n < N; ++n) {
-        float sum = 0.0f;
-        for (int64_t i = 0; i < num_features_; ++i) {
-            sum += input.data()[n * num_features_ + i];
-        }
-        float mu = sum / D;
-
-        float sum_sq_diff = 0.0f;
-        for (int64_t i = 0; i < num_features_; ++i) {
-            float d = input.data()[n * num_features_ + i] - mu;
-            sum_sq_diff += d * d;
-        }
-        float var = sum_sq_diff / D;
-        float std_dev = std::sqrt(var + eps_);
-        last_std_[static_cast<size_t>(n)] = std_dev;
-
-        for (int64_t i = 0; i < num_features_; ++i) {
-            int64_t idx = n * num_features_ + i;
-            float xh = (input.data()[idx] - mu) / std_dev;
-            xhat.data()[idx] = xh;
-            output.data()[idx] = gamma_.data()[i] * xh + beta_.data()[i];
-        }
-    }
+    const DeviceType device = gamma_.device();
+    last_std_ = Tensor(Shape({N}), backend_, device);
+    Tensor xhat(Shape({N, num_features_}), backend_, device);
+    Tensor output(Shape({N, num_features_}), backend_, device);
+    backend_->layer_norm_forward(input.data(), gamma_.data(), beta_.data(), xhat.data(), output.data(),
+                                 last_std_.data(), static_cast<size_t>(N), static_cast<size_t>(num_features_), eps_);
     last_xhat_ = xhat;
 
     has_forwarded_ = true;
@@ -101,52 +73,27 @@ Tensor LayerNormModule::backward(const Tensor& grad_output) {
             "LayerNormModule::backward: grad_output must be rank-2 (N, num_features) matching the cached batch "
             "size");
     }
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
-    const float D = static_cast<float>(num_features_);
+    // Device-generic (GPU-native-kernels Mission 2). Parameter gradients: per-element terms,
+    // then column_sums over rows in row order into a zeroed local, then accumulate -- the
+    // original loop's exact association.
+    const auto rows = static_cast<size_t>(N);
+    const auto cols = static_cast<size_t>(num_features_);
+    const DeviceType device = gamma_.device();
 
-    Tensor local_gamma_grad(Shape({num_features_}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(local_gamma_grad);
-    Tensor local_beta_grad(Shape({num_features_}), backend_);
-    local_gamma_grad.fill(0.0f);
-    local_beta_grad.fill(0.0f);
+    Tensor gamma_terms(Shape({N, num_features_}), backend_, device);
+    backend_->mul(grad_output.data(), last_xhat_.data(), gamma_terms.data(), rows * cols);
+    Tensor local_gamma_grad(Shape({num_features_}), backend_, device);
+    backend_->column_sums(gamma_terms.data(), local_gamma_grad.data(), rows, cols, 0.0f);
+    Tensor local_beta_grad(Shape({num_features_}), backend_, device);
+    backend_->column_sums(grad_output.data(), local_beta_grad.data(), rows, cols, 0.0f);
 
-    Tensor grad_input(Shape({N, num_features_}), backend_);
+    Tensor grad_input(Shape({N, num_features_}), backend_, device);
+    backend_->layer_norm_backward(grad_output.data(), gamma_.data(), last_xhat_.data(), last_std_.data(),
+                                  grad_input.data(), rows, cols);
 
-    for (int64_t n = 0; n < N; ++n) {
-        const float std_dev = last_std_[static_cast<size_t>(n)];
-
-        // dL/dxhat_{n,i} = dL/dy_{n,i} * gamma_i
-        std::vector<float> grad_xhat(static_cast<size_t>(num_features_));
-        float sum_grad_xhat = 0.0f;
-        float sum_grad_xhat_xhat = 0.0f;
-        for (int64_t i = 0; i < num_features_; ++i) {
-            int64_t idx = n * num_features_ + i;
-            float g = grad_output.data()[idx] * gamma_.data()[i];
-            grad_xhat[static_cast<size_t>(i)] = g;
-            sum_grad_xhat += g;
-            sum_grad_xhat_xhat += g * last_xhat_.data()[idx];
-
-            // dL/dgamma_i = sum over batch of dL/dy_{n,i} * xhat_{n,i}
-            local_gamma_grad.data()[i] += grad_output.data()[idx] * last_xhat_.data()[idx];
-            // dL/dbeta_i = sum over batch of dL/dy_{n,i}
-            local_beta_grad.data()[i] += grad_output.data()[idx];
-        }
-
-        for (int64_t i = 0; i < num_features_; ++i) {
-            int64_t idx = n * num_features_ + i;
-            // dL/dx_{n,i} = (1/(D*std_n)) * [D*grad_xhat_i - sum(grad_xhat) - xhat_i*sum(grad_xhat*xhat)]
-            grad_input.data()[idx] =
-                (D * grad_xhat[static_cast<size_t>(i)] - sum_grad_xhat - last_xhat_.data()[idx] * sum_grad_xhat_xhat) /
-                (D * std_dev);
-        }
-    }
     gamma_grad_.accumulate(local_gamma_grad);
     beta_grad_.accumulate(local_beta_grad);
-
     return grad_input;
 }
 
