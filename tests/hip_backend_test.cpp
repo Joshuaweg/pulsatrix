@@ -235,5 +235,100 @@ TEST_F(HIPBackendTest, AddHandlesZeroLengthGracefully) {
     EXPECT_NO_THROW(backend.add(nullptr, nullptr, nullptr, 0));
 }
 
+TEST_F(HIPBackendTest, MulComputesElementwiseProduct) {
+    std::vector<float> a = {1.0f, 2.0f, 3.0f};
+    std::vector<float> b = {10.0f, 20.0f, 30.0f};
+    void* device_a = backend.allocate(a.size() * sizeof(float));
+    void* device_b = backend.allocate(b.size() * sizeof(float));
+    void* device_out = backend.allocate(a.size() * sizeof(float));
+    backend.copy(device_a, a.data(), a.size() * sizeof(float), CopyDirection::HostToDevice);
+    backend.copy(device_b, b.data(), b.size() * sizeof(float), CopyDirection::HostToDevice);
+
+    backend.mul(static_cast<float*>(device_a), static_cast<float*>(device_b), static_cast<float*>(device_out),
+                a.size());
+
+    std::vector<float> out(3, 0.0f);
+    backend.copy(out.data(), device_out, out.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(out[0], 10.0f);
+    EXPECT_FLOAT_EQ(out[1], 40.0f);
+    EXPECT_FLOAT_EQ(out[2], 90.0f);
+
+    backend.free(device_a);
+    backend.free(device_b);
+    backend.free(device_out);
+}
+
+TEST_F(HIPBackendTest, MulSupportsInPlaceAliasing) {
+    std::vector<float> acc = {1.0f, -2.0f, 3.0f};
+    std::vector<float> scale = {2.0f, 2.0f, -1.0f};
+    void* device_acc = backend.allocate(acc.size() * sizeof(float));
+    void* device_scale = backend.allocate(scale.size() * sizeof(float));
+    backend.copy(device_acc, acc.data(), acc.size() * sizeof(float), CopyDirection::HostToDevice);
+    backend.copy(device_scale, scale.data(), scale.size() * sizeof(float), CopyDirection::HostToDevice);
+
+    backend.mul(static_cast<float*>(device_acc), static_cast<float*>(device_scale),
+                static_cast<float*>(device_acc), acc.size());  // out aliases a
+
+    backend.copy(acc.data(), device_acc, acc.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(acc[0], 2.0f);
+    EXPECT_FLOAT_EQ(acc[1], -4.0f);
+    EXPECT_FLOAT_EQ(acc[2], -3.0f);
+
+    backend.free(device_acc);
+    backend.free(device_scale);
+}
+
+TEST_F(HIPBackendTest, MulHandlesZeroLengthGracefully) {
+    EXPECT_NO_THROW(backend.mul(nullptr, nullptr, nullptr, 0));
+}
+
+// Tanh/Sigmoid/Silu were added to ElementwiseOp after Phase 1.6 closed, and HIPBackend's
+// switch silently left the output untouched for them. Each test seeds the output with a
+// sentinel so an unhandled op fails loudly instead of passing on stale memory.
+class HIPBackendActivationTest : public HIPBackendTest {
+protected:
+    std::vector<float> Apply(ElementwiseOp op, const std::vector<float>& in) {
+        void* device_in = backend.allocate(in.size() * sizeof(float));
+        void* device_out = backend.allocate(in.size() * sizeof(float));
+        backend.copy(device_in, in.data(), in.size() * sizeof(float), CopyDirection::HostToDevice);
+        backend.fill(device_out, kSentinel, in.size());
+
+        backend.elementwise(op, static_cast<float*>(device_in), static_cast<float*>(device_out), in.size());
+
+        std::vector<float> out(in.size(), 0.0f);
+        backend.copy(out.data(), device_out, out.size() * sizeof(float), CopyDirection::DeviceToHost);
+        backend.free(device_in);
+        backend.free(device_out);
+        return out;
+    }
+
+    static constexpr float kSentinel = 12345.0f;
+    static constexpr float kTranscendentalTolerance = 1e-6f;
+};
+
+TEST_F(HIPBackendActivationTest, ElementwiseTanhMatchesHandComputedValues) {
+    std::vector<float> out = Apply(ElementwiseOp::Tanh, {0.0f, 1.0f, -1.0f, 20.0f});
+    EXPECT_NEAR(out[0], 0.0f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[1], 0.76159416f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[2], -0.76159416f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[3], 1.0f, kTranscendentalTolerance);  // saturates, no overflow
+}
+
+TEST_F(HIPBackendActivationTest, ElementwiseSigmoidMatchesHandComputedValues) {
+    std::vector<float> out = Apply(ElementwiseOp::Sigmoid, {0.0f, 2.0f, -2.0f, -100.0f});
+    EXPECT_NEAR(out[0], 0.5f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[1], 0.88079708f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[2], 0.11920292f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[3], 0.0f, kTranscendentalTolerance);  // exp(100) overflows to inf -> 1/inf = 0, not NaN
+}
+
+TEST_F(HIPBackendActivationTest, ElementwiseSiluMatchesHandComputedValues) {
+    std::vector<float> out = Apply(ElementwiseOp::Silu, {0.0f, 1.0f, -1.0f, 3.0f});
+    EXPECT_NEAR(out[0], 0.0f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[1], 0.73105858f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[2], -0.26894142f, kTranscendentalTolerance);
+    EXPECT_NEAR(out[3], 2.85772238f, 1e-5f);
+}
+
 }  // namespace
 }  // namespace pulsatrix

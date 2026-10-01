@@ -35,6 +35,29 @@ std::vector<float> RandomVector(size_t n, unsigned seed) {
     return v;
 }
 
+// Tanh/Sigmoid/Silu share one body: each is a single transcendental per element, so the
+// only legitimate CPU/GPU divergence is libm-vs-device-math ulp rounding, far inside the bound.
+void ExpectElementwiseMatchesCPU(CPUBackend& cpu, CUDABackend& cuda, ElementwiseOp op, unsigned seed) {
+    std::vector<float> in = RandomVector(1000, seed);
+
+    std::vector<float> cpu_out(in.size(), 0.0f);
+    cpu.elementwise(op, in.data(), cpu_out.data(), in.size());
+
+    void* device_in = cuda.allocate(in.size() * sizeof(float));
+    void* device_out = cuda.allocate(in.size() * sizeof(float));
+    cuda.copy(device_in, in.data(), in.size() * sizeof(float), CopyDirection::HostToDevice);
+    cuda.elementwise(op, static_cast<float*>(device_in), static_cast<float*>(device_out), in.size());
+    std::vector<float> cuda_out(in.size(), 0.0f);
+    cuda.copy(cuda_out.data(), device_out, cuda_out.size() * sizeof(float), CopyDirection::DeviceToHost);
+
+    for (size_t i = 0; i < cpu_out.size(); ++i) {
+        EXPECT_NEAR(cpu_out[i], cuda_out[i], kBackendEquivalenceTolerance) << "mismatch at flat index " << i;
+    }
+
+    cuda.free(device_in);
+    cuda.free(device_out);
+}
+
 class BackendEquivalenceTest : public ::testing::Test {
 protected:
     CPUBackend cpu;
@@ -158,6 +181,18 @@ TEST_F(BackendEquivalenceTest, MulMatchesCPUBackendOnRandomInput) {
     cuda.free(device_a);
     cuda.free(device_b);
     cuda.free(device_out);
+}
+
+TEST_F(BackendEquivalenceTest, ElementwiseTanhMatchesCPUBackendOnRandomInput) {
+    ExpectElementwiseMatchesCPU(cpu, cuda, ElementwiseOp::Tanh, /*seed=*/9);
+}
+
+TEST_F(BackendEquivalenceTest, ElementwiseSigmoidMatchesCPUBackendOnRandomInput) {
+    ExpectElementwiseMatchesCPU(cpu, cuda, ElementwiseOp::Sigmoid, /*seed=*/10);
+}
+
+TEST_F(BackendEquivalenceTest, ElementwiseSiluMatchesCPUBackendOnRandomInput) {
+    ExpectElementwiseMatchesCPU(cpu, cuda, ElementwiseOp::Silu, /*seed=*/11);
 }
 
 }  // namespace
