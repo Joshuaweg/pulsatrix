@@ -63,18 +63,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CartPoleEnv.html#adf4c7a72a0f704a9c3a08e9af26afb57",
-"classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3e",
-"classpulsatrix_1_1HIPBackend.html#a986e88f107512b4f5272d7e8843bef3c",
-"classpulsatrix_1_1LinearModule.html#a7c7292a8c01755dbeea35fb03404efd7",
-"classpulsatrix_1_1NoOpMetricsSink.html",
-"classpulsatrix_1_1ReplayBuffer.html#a8fc77ebbeb4de325ecbb246b3585ecdd",
-"classpulsatrix_1_1SparseAutoencoder.html#ace9b3723207021b67c6126f1c0d4f5c0",
-"classpulsatrix_1_1VizWindow.html#af24d3a1ef37b1d9fadcd1f9ff14573ad",
-"gru__module_8hpp.html",
-"retnet__module_8hpp.html",
-"structpulsatrix_1_1NEATEvolutionResult.html",
-"video__transforms_8hpp.html"
+"classpulsatrix_1_1CUDABackend.html#ab6d01f76bd0f38e16c723599a0b1ec91",
+"classpulsatrix_1_1DetailedBalanceLoss.html#adf00f62dd23568c3ca5ea066bb9a62c4",
+"classpulsatrix_1_1GeneratorPopulation.html#a418a4422b022829640c1957294d81f13",
+"classpulsatrix_1_1LSTMModule.html#ac169161bca38e2673e3349413065b0cf",
+"classpulsatrix_1_1MultiHeadAttentionModule.html",
+"classpulsatrix_1_1RWKVModule.html#a748454131223b6d41b5fc68155d16352",
+"classpulsatrix_1_1SequentialModule.html#a015429d2ef25755847b8714931b630e3",
+"classpulsatrix_1_1TrajectoryBalanceLoss.html#a35b66820c5e8df41f5b913f9dc8f2bcb",
+"environment_8hpp.html",
+"namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0",
+"structpulsatrix_1_1FieldStatistics.html#a8eabf7d22c9a8fbb1331f9aeacf17225",
+"structpulsatrix_1_1WaterfallStep.html#ac64eceb47fd75aa724ae08a0559ede22"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

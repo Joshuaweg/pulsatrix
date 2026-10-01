@@ -273,7 +273,13 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Not yet backend-generic &ndash; dereferences <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly in a raw host loop. PULSATRIX_REQUIRE_HOST on each parameter guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove this guard without actually retrofitting the method to route through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic: one fused <a class="el" href="classpulsatrix_1_1DeviceBackend.html#af911088cd492ed287da35639ea846eca" title="One fused Adam update over n parameters.">DeviceBackend::adam_step</a> per parameter. Moments are allocated through this optimizer's backend, so every parameter must live on that backend's device. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a parameter's device differs from the backend's. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

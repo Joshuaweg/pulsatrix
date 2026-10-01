@@ -262,7 +262,7 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Raw host loop for the add; <a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(grad_output)</a> guarded &ndash; see mission_host_loop_guards.md. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic: inner backward plus <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a7b12eb6a75b3363fc2cc34b0df91cf62" title="Elementwise binary addition: out[i] = a[i] + b[i] for i in [0, n).">DeviceBackend::add</a> (GPU-native-kernels Mission 1); runs on a GPU tensor whenever inner_ does. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
 
