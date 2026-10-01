@@ -62,13 +62,8 @@ public:
      * @return The sampled latent z, same shape as mu.
      * @throws std::invalid_argument if the three shapes don't all match -- external boundary,
      *         same classification as MSELoss::forward's prediction/target shape check.
-     * @note Not yet backend-generic -- exp() has no DeviceBackend::elementwise op, so this
-     *       is a raw host loop dereferencing Tensor::data() directly.
-     *       PULSATRIX_REQUIRE_HOST on all three inputs guards against
-     *       silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b);
+     *       inputs must share one device.
      */
     [[nodiscard]] Tensor forward(const Tensor& mu, const Tensor& log_sigma, const Tensor& epsilon);
 
@@ -80,11 +75,8 @@ public:
      * @throws std::logic_error if forward() has never been called -- uses the cached
      *         log_sigma/epsilon.
      * @throws std::invalid_argument if grad_z's shape doesn't match the cached forward shape.
-     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
-     *       guards on the incoming gradient(s), the cached state and the freshly allocated
-     *       gradients. forward()'s guard covers only forward()'s own arguments; the gradients
-     *       are allocated through backend_, which a GPU backend tags Cuda/Hip
-     *       (GPU-native-kernels campaign, Mission 0 O4).
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b);
+     *       inputs must share one device.
      */
     [[nodiscard]] ReparamGrad backward(const Tensor& grad_z) const;
 
