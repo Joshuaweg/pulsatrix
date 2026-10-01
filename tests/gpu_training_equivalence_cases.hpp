@@ -15,9 +15,11 @@
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/mse_loss.hpp"
 #include "pulsatrix/relu_module.hpp"
+#include "pulsatrix/residual_module.hpp"
 #include "pulsatrix/sequential_module.hpp"
 #include "pulsatrix/sgd_optimizer.hpp"
 #include "pulsatrix/softmax_module.hpp"
+#include "pulsatrix/swiglu_module.hpp"
 #include "pulsatrix/tensor.hpp"
 
 namespace pulsatrix {
@@ -128,6 +130,31 @@ inline void CrossEntropyForwardBackward(DeviceBackend& gpu) {
     ExpectNear(cl.backward(), gl.backward());
 }
 
+inline void ResidualBackward(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cin(6, 6, &cpu), gin(6, 6, &gpu);
+    ResidualModule cres(&cin, &cpu), gres(&gin, &gpu);
+    RandomizeAndMirror(cin, gin, 110);
+    std::vector<float> x = Random(4 * 6, 111), dy = Random(4 * 6, 112);
+    Tensor cx(Shape({4, 6}), &cpu, x), gx(Shape({4, 6}), &gpu, x);
+    Tensor cdy(Shape({4, 6}), &cpu, dy), gdy(Shape({4, 6}), &gpu, dy);
+    ExpectNear(cres.forward(cx), gres.forward(gx));
+    ExpectNear(cres.backward(cdy), gres.backward(gdy));
+    ExpectParametersNear(cin, gin, kTolerance);
+}
+
+inline void SwiGLUBackward(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    SwiGLUModule cs(6, 10, &cpu), gs(6, 10, &gpu);
+    RandomizeAndMirror(cs, gs, 120);
+    std::vector<float> x = Random(2 * 3 * 6, 121, -3.0f, 3.0f), dy = Random(2 * 3 * 6, 122);
+    Tensor cx(Shape({2, 3, 6}), &cpu, x), gx(Shape({2, 3, 6}), &gpu, x);
+    Tensor cdy(Shape({2, 3, 6}), &cpu, dy), gdy(Shape({2, 3, 6}), &gpu, dy);
+    ExpectNear(cs.forward(cx), gs.forward(gx));
+    ExpectNear(cs.backward(cdy), gs.backward(gdy));
+    ExpectParametersNear(cs, gs, kTolerance);
+}
+
 // The mission's integration gate: the same small MLP, same init, same data, trained for
 // several steps on each backend, ends with the same parameters.
 template <typename Optimizer>
@@ -187,6 +214,8 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
     TEST_F(FIXTURE, CrossEntropyLossForwardBackwardMatchCPU) {                                       \
         ::pulsatrix::training_equivalence::CrossEntropyForwardBackward(MEMBER);                      \
     }                                                                                                \
+    TEST_F(FIXTURE, ResidualBackwardMatchesCPU) { ::pulsatrix::training_equivalence::ResidualBackward(MEMBER); } \
+    TEST_F(FIXTURE, SwiGLUBackwardMatchesCPU) { ::pulsatrix::training_equivalence::SwiGLUBackward(MEMBER); } \
     TEST_F(FIXTURE, MlpTrainedWithSGDEndsWithCPUParameters) {                                        \
         ::pulsatrix::SGDOptimizer cpu_opt(0.05f), gpu_opt(0.05f);                                    \
         ::pulsatrix::training_equivalence::MlpTrainsToSameParameters(MEMBER, cpu_opt, gpu_opt);      \

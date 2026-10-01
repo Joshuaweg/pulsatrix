@@ -295,21 +295,6 @@ TEST_F(SwiGLUModuleTest, ParametersExposesAllThreeProjections) {
 // Adversarial / boundary-condition (device guards)
 // ---------------------------------------------------------------------------
 
-// Not yet backend-generic -- raw host loops in backward/propagate_relevance
-// dereference Tensor::data() directly. Same mislabeled-Tensor pattern as
-// RoPEModuleDeathTest/SoftmaxModuleDeathTest: no real GPU needed, DeviceType::Cuda tagged
-// over real CPUBackend memory trips the guard identically.
-TEST_F(SwiGLUModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    SwiGLUModule m(2, 2, &backend);
-    Tensor x(Shape({1, 2}), &backend, {1.0f, 2.0f});
-    (void)m.forward(x);
-    Tensor grad_out(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)m.backward(grad_out); }, "PULSATRIX_ASSERT failed");
-}
-
 TEST_F(SwiGLUModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOutput) {
 #ifdef NDEBUG
     GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";

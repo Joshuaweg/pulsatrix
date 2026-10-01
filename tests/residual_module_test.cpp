@@ -184,18 +184,6 @@ TEST_F(ResidualModuleTest, ParametersDelegatesToInner) {
 // Adversarial / boundary-condition (device guards)
 // ---------------------------------------------------------------------------
 
-TEST_F(ResidualModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    LinearModule inner(2, 2, &backend);
-    ResidualModule residual(&inner, &backend);
-    Tensor x(Shape({1, 2}), &backend, {1.0f, 2.0f});
-    (void)residual.forward(x);
-    Tensor grad_out(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)residual.backward(grad_out); }, "PULSATRIX_ASSERT failed");
-}
-
 TEST_F(ResidualModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOutput) {
 #ifdef NDEBUG
     GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";

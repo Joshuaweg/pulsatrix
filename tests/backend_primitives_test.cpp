@@ -95,7 +95,7 @@ TEST_F(BackendPrimitivesTest, ElementwiseBackwardSmoothActivationsMatchClosedFor
     cpu.elementwise_backward(ElementwiseOp::Sigmoid, &x, &g, &out, 1);
     EXPECT_FLOAT_EQ(out, g * s * (1.0f - s));
     cpu.elementwise_backward(ElementwiseOp::Silu, &x, &g, &out, 1);
-    EXPECT_FLOAT_EQ(out, g * s * (1.0f + x * (1.0f - s)));
+    EXPECT_FLOAT_EQ(out, g * (s + x * s * (1.0f - s)));
 }
 
 TEST_F(BackendPrimitivesTest, AxpbyAliasingY) {

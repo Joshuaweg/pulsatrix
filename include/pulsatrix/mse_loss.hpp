@@ -29,12 +29,8 @@ public:
      * @param prediction Model output.
      * @param target Ground truth. Must match prediction's shape.
      * @return The scalar MSE value.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_REQUIRE_HOST on both prediction and target
-     *       guards against silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @throws std::invalid_argument if prediction and target are on different devices.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
      */
     [[nodiscard]] float forward(const Tensor& prediction, const Tensor& target);
 
@@ -42,10 +38,7 @@ public:
      * @brief Computes the gradient w.r.t. the prediction: (2/n) * (prediction - target).
      * @return Gradient tensor, same shape as the prediction passed to forward().
      * @note Must be called after forward() -- uses the cached prediction/target.
-     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
-     *       guards on the cached state and on the freshly allocated gradient(s). forward()'s
-     *       guard covers only the caller's tensors; the gradient is allocated through backend_,
-     *       which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
+     * @note Device-generic; the gradient is on the prediction's device.
      */
     [[nodiscard]] Tensor backward() const;
 

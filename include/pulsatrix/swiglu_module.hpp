@@ -66,9 +66,8 @@ public:
      * @return Gradient w.r.t. this module's input, same shape as grad_output.
      * @throws std::logic_error if called before any forward().
      * @throws std::invalid_argument if grad_output's shape differs from the cached forward shape.
-     * @note Raw host loops for the gate-derivative combine and the two elementwise
-     *       multiplies/add; PULSATRIX_REQUIRE_HOST(grad_output) guarded --
-     *       see mission_host_loop_guards.md.
+     * @note Device-generic: the gate derivative is DeviceBackend::elementwise_backward(Silu),
+     *       the products DeviceBackend::mul (GPU-native-kernels Mission 1).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
