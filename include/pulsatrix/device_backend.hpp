@@ -50,6 +50,20 @@ enum class ElementwiseOp {
 };
 
 /**
+ * @brief Elementwise passes of the fuzzy-logic modules, for DeviceBackend::logic_pointwise.
+ * @note Paired with a norm index: 0 Product, 1 Lukasiewicz, 2 Godel -- the declaration order
+ *       of ConjunctionModule::TNorm and DisjunctionModule::TConorm.
+ */
+enum class LogicOp {
+    ConjunctionForward,
+    ConjunctionBackward,
+    ConjunctionLrp,
+    DisjunctionForward,
+    DisjunctionBackward,
+    DisjunctionLrp
+};
+
+/**
  * @brief Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and
  *        HIPBackend (Phase 1.6) all implement this contract; Tensor and ComputationGraph
  *        depend only on this interface, never on a concrete backend's types.
@@ -330,6 +344,63 @@ public:
     virtual void tanh_gaussian_backward(const float* action, const float* std_cache, const float* eps,
                                         const float* grad_action, const float* grad_log_prob, float* grad_mean,
                                         float* grad_log_std, size_t n, float stabilizer) = 0;
+
+    // ---- GPU-native-kernels Mission 3: LRP rules and logic modules --------------------------
+    // Shared per-output source in src/lrp_math.hpp (CPU loops, GPU one thread per output).
+    // Every reduction is owned by one thread and runs in the original loop order:
+    // deterministic, no atomics.
+
+    /**
+     * @brief LinearModule epsilon rule: r_in[n][i] = sum_j (x[n][i] w[i][j] / stab(z[n][j])) r[n][j].
+     * @param z (N, out) pre-bias outputs; w (in, out); x, r_in (N, in); r (N, out).
+     */
+    virtual void lrp_linear(const float* x, const float* w, const float* z, const float* r, float* r_in, size_t rows,
+                            size_t in_features, size_t out_features, float eps) = 0;
+
+    /** @brief Epsilon split of a residual sum y = a + b: r_a = (a / stab(y)) r, r_b = (b / stab(y)) r. */
+    virtual void lrp_residual_split(const float* a, const float* b, const float* r, float* r_a, float* r_b, size_t n,
+                                    float eps) = 0;
+
+    /** @brief Eq. 15 for an elementwise product c = a*b: r_out = (a b / (2c + eps sign c)) r (same for both). */
+    virtual void lrp_bilinear_elementwise(const float* a, const float* b, const float* r, float* r_out, size_t n,
+                                          float eps) = 0;
+
+    /**
+     * @brief Eq. 15 for slices independent matmuls O = A @ B (A (M x P), B (P x Q), O and r_o (M x Q)).
+     * @param b_transposed B is stored as B^T (Q x P); r_b is then written in that same layout.
+     * @note r_a and r_b are overwritten (not accumulated into).
+     */
+    virtual void lrp_bilinear_matmul(const float* a, const float* b, const float* o, const float* r_o, float* r_a,
+                                     float* r_b, size_t slices, size_t m, size_t p, size_t q, float eps,
+                                     bool b_transposed) = 0;
+
+    /** @brief SoftmaxModule rule per row: r_in = x * (r - y * sum(r)). */
+    virtual void lrp_softmax_rows(const float* x, const float* y, const float* r, float* r_in, size_t rows,
+                                  size_t cols) = 0;
+
+    /** @brief RoPEModule epsilon rule over (slices, seq_len, head_dim), tables as for rope_rotate. */
+    virtual void lrp_rope(const float* x, const float* y, const float* r, const float* cos_table,
+                          const float* sin_table, float* r_in, size_t slices, size_t seq_len, size_t head_dim,
+                          float eps) = 0;
+
+    /**
+     * @brief One elementwise pass of Conjunction/Disjunction for operands a, b.
+     * @param g_or_r Upstream gradient (Backward) or relevance (Lrp); unused by Forward.
+     * @param y Cached forward output (Lrp only).
+     * @param out_a Forward: the output. Backward/Lrp: a's gradient/relevance.
+     * @param out_b Backward/Lrp: b's gradient/relevance; unused by Forward.
+     */
+    virtual void logic_pointwise(LogicOp op, int norm, const float* a, const float* b, const float* g_or_r,
+                                 const float* y, float* out_a, float* out_b, size_t n, float eps) = 0;
+
+    /** @brief AggregatorModule power mean over the leading axis of an (n, cols) input, per column. */
+    virtual void aggregator_forward(const float* x, float* mean_pow, float* out, size_t n, size_t cols, float p) = 0;
+    /** @brief AggregatorModule input gradient, per column. */
+    virtual void aggregator_backward(const float* x, const float* mean_pow, const float* grad_out, float* grad_in,
+                                     size_t n, size_t cols, float p) = 0;
+    /** @brief AggregatorModule epsilon rule, per column. */
+    virtual void aggregator_lrp(const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n,
+                                size_t cols, float p, float eps) = 0;
 };
 
 }  // namespace pulsatrix

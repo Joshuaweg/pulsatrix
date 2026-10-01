@@ -60,6 +60,25 @@ public:
     void tanh_gaussian_backward(const float* action, const float* std_cache, const float* eps,
                                 const float* grad_action, const float* grad_log_prob, float* grad_mean,
                                 float* grad_log_std, size_t n, float stabilizer) override;
+    void lrp_linear(const float* x, const float* w, const float* z, const float* r, float* r_in, size_t rows,
+                    size_t in_features, size_t out_features, float eps) override;
+    void lrp_residual_split(const float* a, const float* b, const float* r, float* r_a, float* r_b, size_t n,
+                            float eps) override;
+    void lrp_bilinear_elementwise(const float* a, const float* b, const float* r, float* r_out, size_t n,
+                                  float eps) override;
+    void lrp_bilinear_matmul(const float* a, const float* b, const float* o, const float* r_o, float* r_a, float* r_b,
+                             size_t slices, size_t m, size_t p, size_t q, float eps, bool b_transposed) override;
+    void lrp_softmax_rows(const float* x, const float* y, const float* r, float* r_in, size_t rows,
+                          size_t cols) override;
+    void lrp_rope(const float* x, const float* y, const float* r, const float* cos_table, const float* sin_table,
+                  float* r_in, size_t slices, size_t seq_len, size_t head_dim, float eps) override;
+    void logic_pointwise(LogicOp op, int norm, const float* a, const float* b, const float* g_or_r, const float* y,
+                         float* out_a, float* out_b, size_t n, float eps) override;
+    void aggregator_forward(const float* x, float* mean_pow, float* out, size_t n, size_t cols, float p) override;
+    void aggregator_backward(const float* x, const float* mean_pow, const float* grad_out, float* grad_in, size_t n,
+                             size_t cols, float p) override;
+    void aggregator_lrp(const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n, size_t cols,
+                        float p, float eps) override;
 };
 
 }  // namespace pulsatrix
