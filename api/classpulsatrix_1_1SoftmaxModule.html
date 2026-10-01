@@ -360,7 +360,7 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 <dl class="section see"><dt>See also</dt><dd>cpp_engineering.aDNA's what/context/cpp_tdd/context_tdd_lrp_rule_pattern_taxonomy.md, "Known-Non-Conserving-by-Design Note" &ndash; this is the cited exception to rule shape 2 (bilinear split), not a fifth rule shape. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Must be called after <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> &ndash; uses both the input and the output cached from that call (the input is needed by the x[i] factor, which is why this module caches both). </dd>
 <dd>
-Raw host loop; <a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(relevance_out)</a> guarded. </dd></dl>
+Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3). </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>.</p>
 

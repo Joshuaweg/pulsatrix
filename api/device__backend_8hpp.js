@@ -19,5 +19,13 @@ var device__backend_8hpp =
       [ "Sigmoid", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4", null ],
       [ "Silu", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf", null ],
       [ "Exp", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0", null ]
+    ] ],
+    [ "LogicOp", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9e", [
+      [ "ConjunctionForward", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9eab09c932ce0af7600b64c202bc1f7c4f3", null ],
+      [ "ConjunctionBackward", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9ea228e1fd8b35a176d23bf8f941ff0c77e", null ],
+      [ "ConjunctionLrp", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9ea4b739ab135e0fbd479f7b2c287b6e164", null ],
+      [ "DisjunctionForward", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c", null ],
+      [ "DisjunctionBackward", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454", null ],
+      [ "DisjunctionLrp", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f", null ]
     ] ]
 ];
