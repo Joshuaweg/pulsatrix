@@ -1,6 +1,7 @@
 var classpulsatrix_1_1BatchNormModule =
 [
-    [ "BatchNormModule", "classpulsatrix_1_1BatchNormModule.html#a2c44df7ea8ff56a8d64d782f0757a3cf", null ],
+    [ "BatchNormModule", "classpulsatrix_1_1BatchNormModule.html#af3537b8c1de9772fb710dbefe3d85e1e", null ],
+    [ "BatchNormModule", "classpulsatrix_1_1BatchNormModule.html#a9ee47de3f21f1e929e20b47cda2acb5c", null ],
     [ "backward", "classpulsatrix_1_1BatchNormModule.html#a4e01e4931a75fd4d38d4fc1b4d26d4e7", null ],
     [ "beta", "classpulsatrix_1_1BatchNormModule.html#a027c367baec800783281f0c9cbe872da", null ],
     [ "beta_grad", "classpulsatrix_1_1BatchNormModule.html#a8bab8c454ff833788febac048ec7c160", null ],

@@ -1,8 +1,11 @@
 var classpulsatrix_1_1Tensor =
 [
-    [ "Tensor", "classpulsatrix_1_1Tensor.html#ae244da569cf1c58db8fd53049c9df90d", null ],
-    [ "Tensor", "classpulsatrix_1_1Tensor.html#a77cb6ab573aab654b07434f43a90e5f7", null ],
-    [ "Tensor", "classpulsatrix_1_1Tensor.html#a033bbd8ea7cb7d80638849e0d327a551", null ],
+    [ "Tensor", "classpulsatrix_1_1Tensor.html#ad3b83981e51409e6f14f2b41859a1e91", null ],
+    [ "Tensor", "classpulsatrix_1_1Tensor.html#a2cddbdb326c36252d39061fc445beb0b", null ],
+    [ "Tensor", "classpulsatrix_1_1Tensor.html#a7d61c6b5b2f11811b2acea4841cee240", null ],
+    [ "Tensor", "classpulsatrix_1_1Tensor.html#aaf0157d3b4c2e8f59c5b2df9ed0021a6", null ],
+    [ "Tensor", "classpulsatrix_1_1Tensor.html#acf10b975566fdfac89a6eea45427caa4", null ],
+    [ "Tensor", "classpulsatrix_1_1Tensor.html#a4606c3d8c84db64ed01a3ea18e5fa7f6", null ],
     [ "~Tensor", "classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367", null ],
     [ "Tensor", "classpulsatrix_1_1Tensor.html#a03a5144520aabccf54eb0161e8f2444a", null ],
     [ "Tensor", "classpulsatrix_1_1Tensor.html#a448a7c469dbd82043047f2c3c3d7879b", null ],

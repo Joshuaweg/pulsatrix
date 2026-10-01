@@ -242,7 +242,7 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Raw host loop; PULSATRIX_ASSERT(grad_output.device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>) guarded, same convention as ReluModule/ResidualModule &ndash; see mission_host_loop_guards.md. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Raw host loop; <a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(grad_output)</a> guarded, same convention as ReluModule/ResidualModule &ndash; see mission_host_loop_guards.md. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
 

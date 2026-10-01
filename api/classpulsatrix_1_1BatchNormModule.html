@@ -128,9 +128,12 @@ Collaboration diagram for pulsatrix::BatchNormModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2c44df7ea8ff56a8d64d782f0757a3cf" id="r_a2c44df7ea8ff56a8d64d782f0757a3cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a2c44df7ea8ff56a8d64d782f0757a3cf">BatchNormModule</a> (int64_t num_channels, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device=<a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>, float eps=1e-6f)</td></tr>
-<tr class="memdesc:a2c44df7ea8ff56a8d64d782f0757a3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a BatchNorm layer with zero-initialized gamma and beta.  <br /></td></tr>
-<tr class="separator:a2c44df7ea8ff56a8d64d782f0757a3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3537b8c1de9772fb710dbefe3d85e1e" id="r_af3537b8c1de9772fb710dbefe3d85e1e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#af3537b8c1de9772fb710dbefe3d85e1e">BatchNormModule</a> (int64_t num_channels, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device, float eps=1e-6f)</td></tr>
+<tr class="memdesc:af3537b8c1de9772fb710dbefe3d85e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a BatchNorm layer with zero-initialized gamma and beta.  <br /></td></tr>
+<tr class="separator:af3537b8c1de9772fb710dbefe3d85e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ee47de3f21f1e929e20b47cda2acb5c" id="r_a9ee47de3f21f1e929e20b47cda2acb5c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a9ee47de3f21f1e929e20b47cda2acb5c">BatchNormModule</a> (int64_t num_channels, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a9ee47de3f21f1e929e20b47cda2acb5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">On backend's own device (backend-&gt;device()), default eps. Previously the device defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0).  <br /></td></tr>
+<tr class="separator:a9ee47de3f21f1e929e20b47cda2acb5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e01e4931a75fd4d38d4fc1b4d26d4e7" id="r_a4e01e4931a75fd4d38d4fc1b4d26d4e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a4e01e4931a75fd4d38d4fc1b4d26d4e7">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a4e01e4931a75fd4d38d4fc1b4d26d4e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input, and accumulates gamma's/ beta's gradients internally.  <br /></td></tr>
 <tr class="separator:a4e01e4931a75fd4d38d4fc1b4d26d4e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,8 +194,8 @@ Protected Member Functions</h2></td></tr>
 <dd>
 No running-mean/running-variance or train/eval mode &ndash; this ships computing batch statistics from the current input on every call (the same behavior every other call site in this codebase already uses implicitly). A real BatchNorm eval-mode (exponential moving average statistics, frozen at inference) needs a train/eval toggle this codebase's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> hierarchy doesn't have yet (the same open design question already flagged for Dropout, campaign Decision Point 2) &ndash; deliberately not built speculatively here; this is a real, documented scope cut, not an oversight. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2c44df7ea8ff56a8d64d782f0757a3cf" name="a2c44df7ea8ff56a8d64d782f0757a3cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c44df7ea8ff56a8d64d782f0757a3cf">&#9670;&#160;</a></span>BatchNormModule()</h2>
+<a id="af3537b8c1de9772fb710dbefe3d85e1e" name="af3537b8c1de9772fb710dbefe3d85e1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3537b8c1de9772fb710dbefe3d85e1e">&#9670;&#160;</a></span>BatchNormModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,7 +216,7 @@ No running-mean/running-variance or train/eval mode &ndash; this ships computing
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a>&#160;</td>
-          <td class="paramname"><em>device</em> = <code><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a></code>, </td>
+          <td class="paramname"><em>device</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -245,6 +248,36 @@ No running-mean/running-variance or train/eval mode &ndash; this ships computing
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a9ee47de3f21f1e929e20b47cda2acb5c" name="a9ee47de3f21f1e929e20b47cda2acb5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ee47de3f21f1e929e20b47cda2acb5c">&#9670;&#160;</a></span>BatchNormModule() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::BatchNormModule::BatchNormModule </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_channels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>On backend's own device (backend-&gt;device()), default eps. Previously the device defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0). </p>
 
 </div>
 </div>

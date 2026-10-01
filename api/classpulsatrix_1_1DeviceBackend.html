@@ -123,6 +123,9 @@ Inheritance diagram for pulsatrix::DeviceBackend:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2feea27fda55c8c0addf4e7c3864f2aa" id="r_a2feea27fda55c8c0addf4e7c3864f2aa"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a2feea27fda55c8c0addf4e7c3864f2aa">~DeviceBackend</a> ()=default</td></tr>
 <tr class="separator:a2feea27fda55c8c0addf4e7c3864f2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39732e9839303fa0e9c872e24e41b283" id="r_a39732e9839303fa0e9c872e24e41b283"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a39732e9839303fa0e9c872e24e41b283">device</a> () const noexcept=0</td></tr>
+<tr class="memdesc:a39732e9839303fa0e9c872e24e41b283"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which device this backend's buffers reside on.  <br /></td></tr>
+<tr class="separator:a39732e9839303fa0e9c872e24e41b283"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1af6d806be26395c4114f96727149c88" id="r_a1af6d806be26395c4114f96727149c88"><td class="memItemLeft" align="right" valign="top">virtual void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a1af6d806be26395c4114f96727149c88">allocate</a> (size_t bytes)=0</td></tr>
 <tr class="memdesc:a1af6d806be26395c4114f96727149c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a buffer of the given size.  <br /></td></tr>
 <tr class="separator:a1af6d806be26395c4114f96727149c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -343,6 +346,36 @@ Public Member Functions</h2></td></tr>
 </dl>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a87694cc02322f218e4e7de852c53f892">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a5bb1c9ef2779b382555f212de0f50567">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a39894c414cbd933c2dd517e427687c29">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a39732e9839303fa0e9c872e24e41b283" name="a39732e9839303fa0e9c872e24e41b283"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39732e9839303fa0e9c872e24e41b283">&#9670;&#160;</a></span>device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> pulsatrix::DeviceBackend::device </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which device this backend's buffers reside on. </p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s constructors that take no explicit DeviceType tag the <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> with this, so a temporary allocated through a CUDA/HIP backend can no longer be silently labelled Cpu (the default-tag defect found by the GPU-native-kernels campaign recon: a mislabelled tensor makes <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> pick HostToHost copies on device memory and lets host-only guards pass). </dd></dl>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a011a382bfca0e7736c934fd2db678278">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#af8543405b9fd64b66854be7ac2e891b5">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#ab5f1e6f94bbcde729d57089a347530f0">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>

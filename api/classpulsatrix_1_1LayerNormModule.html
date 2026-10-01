@@ -128,9 +128,12 @@ Collaboration diagram for pulsatrix::LayerNormModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac984a914ade352468da469e095895cb7" id="r_ac984a914ade352468da469e095895cb7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LayerNormModule.html#ac984a914ade352468da469e095895cb7">LayerNormModule</a> (int64_t num_features, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device=<a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>, float eps=1e-6f)</td></tr>
-<tr class="memdesc:ac984a914ade352468da469e095895cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a LayerNorm layer with zero-initialized gamma and beta.  <br /></td></tr>
-<tr class="separator:ac984a914ade352468da469e095895cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e0e66ae0a405534394c3f93c8574be" id="r_a26e0e66ae0a405534394c3f93c8574be"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LayerNormModule.html#a26e0e66ae0a405534394c3f93c8574be">LayerNormModule</a> (int64_t num_features, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device, float eps=1e-6f)</td></tr>
+<tr class="memdesc:a26e0e66ae0a405534394c3f93c8574be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a LayerNorm layer with zero-initialized gamma and beta.  <br /></td></tr>
+<tr class="separator:a26e0e66ae0a405534394c3f93c8574be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84bfec5ac11c88be5fe7ab431bcb4edf" id="r_a84bfec5ac11c88be5fe7ab431bcb4edf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LayerNormModule.html#a84bfec5ac11c88be5fe7ab431bcb4edf">LayerNormModule</a> (int64_t num_features, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a84bfec5ac11c88be5fe7ab431bcb4edf"><td class="mdescLeft">&#160;</td><td class="mdescRight">On backend's own device (backend-&gt;device()), default eps. Previously the device defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0).  <br /></td></tr>
+<tr class="separator:a84bfec5ac11c88be5fe7ab431bcb4edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fd9e1c89acb2280e072bf8945cdd6a6" id="r_a6fd9e1c89acb2280e072bf8945cdd6a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LayerNormModule.html#a6fd9e1c89acb2280e072bf8945cdd6a6">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a6fd9e1c89acb2280e072bf8945cdd6a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input, and accumulates gamma's/ beta's gradients internally.  <br /></td></tr>
 <tr class="separator:a6fd9e1c89acb2280e072bf8945cdd6a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,8 +192,8 @@ Protected Member Functions</h2></td></tr>
 <div class="textblock"><p>y_{n,i} = gamma_i * (x_{n,i} - mu_n)/std_n + beta_i, mu_n = mean_i(x_{n,i}), std_n = sqrt(var_i(x_{n,i}) + eps), computed independently per batch row n. Batched ((N, num_features)), migrated from the original unbatched (rank-1) scope by campaign_exai_dl_library_batch_dimension_support. </p>
 <dl class="section note"><dt>Note</dt><dd>propagate_relevance is an identity pass-through, cited to AttnLRP's normalization-layer treatment (Achtibat et al. 2024) &ndash; identical rationale to <a class="el" href="classpulsatrix_1_1RMSNormModule.html" title="y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps), computed independen...">RMSNormModule</a>'s own identical rule; see that class's Doxygen for the full citation chain (Ali et al. 2022's detach-std treatment, simplified by AttnLRP to identity). <a class="el" href="classpulsatrix_1_1LayerNormModule.html#a6fd9e1c89acb2280e072bf8945cdd6a6" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates gamma&#39;s/ beta&#39;s gradients internall...">backward()</a> is the real, undetached training gradient &ndash; the standard LayerNorm backward formula, independent of the LRP treatment. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac984a914ade352468da469e095895cb7" name="ac984a914ade352468da469e095895cb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac984a914ade352468da469e095895cb7">&#9670;&#160;</a></span>LayerNormModule()</h2>
+<a id="a26e0e66ae0a405534394c3f93c8574be" name="a26e0e66ae0a405534394c3f93c8574be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26e0e66ae0a405534394c3f93c8574be">&#9670;&#160;</a></span>LayerNormModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,7 +214,7 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a>&#160;</td>
-          <td class="paramname"><em>device</em> = <code><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a></code>, </td>
+          <td class="paramname"><em>device</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -243,6 +246,36 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a84bfec5ac11c88be5fe7ab431bcb4edf" name="a84bfec5ac11c88be5fe7ab431bcb4edf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84bfec5ac11c88be5fe7ab431bcb4edf">&#9670;&#160;</a></span>LayerNormModule() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::LayerNormModule::LayerNormModule </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>On backend's own device (backend-&gt;device()), default eps. Previously the device defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0). </p>
 
 </div>
 </div>

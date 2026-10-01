@@ -128,9 +128,12 @@ Collaboration diagram for pulsatrix::ReluModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0760957549b91ed7324eeda1451cdf0a" id="r_a0760957549b91ed7324eeda1451cdf0a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReluModule.html#a0760957549b91ed7324eeda1451cdf0a">ReluModule</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device=<a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>)</td></tr>
-<tr class="memdesc:a0760957549b91ed7324eeda1451cdf0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a ReLU module.  <br /></td></tr>
-<tr class="separator:a0760957549b91ed7324eeda1451cdf0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5b8be609862f3f45441a2ebd53091e8" id="r_ac5b8be609862f3f45441a2ebd53091e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReluModule.html#ac5b8be609862f3f45441a2ebd53091e8">ReluModule</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device)</td></tr>
+<tr class="memdesc:ac5b8be609862f3f45441a2ebd53091e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a ReLU module.  <br /></td></tr>
+<tr class="separator:ac5b8be609862f3f45441a2ebd53091e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63f007e68b280361e8ac71d270c34d54" id="r_a63f007e68b280361e8ac71d270c34d54"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReluModule.html#a63f007e68b280361e8ac71d270c34d54">ReluModule</a> (<a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a63f007e68b280361e8ac71d270c34d54"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above, on backend's own device (backend-&gt;device()).  <br /></td></tr>
+<tr class="separator:a63f007e68b280361e8ac71d270c34d54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a4ab2390ae4e46ec1ca3f00e01d3ab9" id="r_a0a4ab2390ae4e46ec1ca3f00e01d3ab9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReluModule.html#a0a4ab2390ae4e46ec1ca3f00e01d3ab9">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a0a4ab2390ae4e46ec1ca3f00e01d3ab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input.  <br /></td></tr>
 <tr class="separator:a0a4ab2390ae4e46ec1ca3f00e01d3ab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,14 +171,11 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>y = max(x, 0), elementwise. No parameters, no parameter gradients. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0760957549b91ed7324eeda1451cdf0a" name="a0760957549b91ed7324eeda1451cdf0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0760957549b91ed7324eeda1451cdf0a">&#9670;&#160;</a></span>ReluModule()</h2>
+<a id="ac5b8be609862f3f45441a2ebd53091e8" name="ac5b8be609862f3f45441a2ebd53091e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5b8be609862f3f45441a2ebd53091e8">&#9670;&#160;</a></span>ReluModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">pulsatrix::ReluModule::ReluModule </td>
@@ -187,12 +187,42 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a>&#160;</td>
-          <td class="paramname"><em>device</em> = <code><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a></code>&#160;</td>
+          <td class="paramname"><em>device</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs a ReLU module. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">backend</td><td>Backend to compute through. Not owned; must outlive this module. </td></tr>
+    <tr><td class="paramname">device</td><td>Which device last_input_ is initially tagged as. <a class="el" href="classpulsatrix_1_1ReluModule.html#ab836852a327bc9fe6a2ae4e09438e1f8" title="The actual forward computation. Called by forward() after precondition checks.">forward_impl()</a>'s output is tagged with the actual input tensor's device on every call (not this constructor argument), since ReLU has no parameters of its own to anchor a fixed "module device" the way <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s weight_ does &ndash; see campaign_exai_dl_library_phase1_5_cuda_backend.md's Mission 3. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a63f007e68b280361e8ac71d270c34d54" name="a63f007e68b280361e8ac71d270c34d54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63f007e68b280361e8ac71d270c34d54">&#9670;&#160;</a></span>ReluModule() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::ReluModule::ReluModule </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -202,14 +232,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Constructs a ReLU module. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">backend</td><td>Backend to compute through. Not owned; must outlive this module. </td></tr>
-    <tr><td class="paramname">device</td><td>Which device last_input_ is initially tagged as. Defaults to Cpu. <a class="el" href="classpulsatrix_1_1ReluModule.html#ab836852a327bc9fe6a2ae4e09438e1f8" title="The actual forward computation. Called by forward() after precondition checks.">forward_impl()</a>'s output is tagged with the actual input tensor's device on every call (not this constructor argument), since ReLU has no parameters of its own to anchor a fixed "module device" the way <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s weight_ does &ndash; see campaign_exai_dl_library_phase1_5_cuda_backend.md's Mission 3. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>As above, on backend's own device (backend-&gt;device()). </p>
 
 </div>
 </div>
@@ -250,7 +273,7 @@ Protected Member Functions</h2></td></tr>
 <dd>
 Must be called after <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> &ndash; uses the input cached from that call. </dd>
 <dd>
-Not yet backend-generic &ndash; dereferences <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly in a raw host loop. PULSATRIX_ASSERT(grad_output.device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>) guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove this guard without actually retrofitting the method to route through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a>. </dd></dl>
+Not yet backend-generic &ndash; dereferences <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly in a raw host loop. <a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(grad_output)</a> guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove this guard without actually retrofitting the method to route through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a>. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
 

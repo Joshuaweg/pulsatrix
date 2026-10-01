@@ -78,6 +78,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "hip_backend.hpp", "hip__backend_8hpp.html", "hip__backend_8hpp" ],
     [ "hip_check.hpp", "hip__check_8hpp.html", "hip__check_8hpp" ],
     [ "hipblas_check.hpp", "hipblas__check_8hpp.html", "hipblas__check_8hpp" ],
+    [ "host_guard.hpp", "host__guard_8hpp.html", "host__guard_8hpp" ],
     [ "hpo_genotype.hpp", "hpo__genotype_8hpp.html", "hpo__genotype_8hpp" ],
     [ "hpo_sampling.hpp", "hpo__sampling_8hpp.html", "hpo__sampling_8hpp" ],
     [ "hyperband.hpp", "hyperband_8hpp.html", "hyperband_8hpp" ],

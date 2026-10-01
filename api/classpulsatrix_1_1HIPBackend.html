@@ -135,6 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2b3cbaa24088f1b54bfd160b9f7e5d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a986e88f107512b4f5272d7e8843bef3c" id="r_a986e88f107512b4f5272d7e8843bef3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1HIPBackend.html">HIPBackend</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a986e88f107512b4f5272d7e8843bef3c">operator=</a> (const <a class="el" href="classpulsatrix_1_1HIPBackend.html">HIPBackend</a> &amp;)=delete</td></tr>
 <tr class="separator:a986e88f107512b4f5272d7e8843bef3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5f1e6f94bbcde729d57089a347530f0" id="r_ab5f1e6f94bbcde729d57089a347530f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#ab5f1e6f94bbcde729d57089a347530f0">device</a> () const noexcept override</td></tr>
+<tr class="memdesc:ab5f1e6f94bbcde729d57089a347530f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which device this backend's buffers reside on.  <br /></td></tr>
+<tr class="separator:ab5f1e6f94bbcde729d57089a347530f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff78faa24ac9c1246184103ff88e3c40" id="r_aff78faa24ac9c1246184103ff88e3c40"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#aff78faa24ac9c1246184103ff88e3c40">allocate</a> (size_t bytes) override</td></tr>
 <tr class="memdesc:aff78faa24ac9c1246184103ff88e3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a buffer of the given size.  <br /></td></tr>
 <tr class="separator:aff78faa24ac9c1246184103ff88e3c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,7 +174,7 @@ Structurally a mirror of <a class="el" href="classpulsatrix_1_1CUDABackend.html"
 <dd>
 No <code>warpSize</code> handling is needed anywhere in this class: every kernel here is one-thread-per-element with no cross-lane operation, so the CDNA-wavefront-64 hazard that <code>context_accel_rocm_hip.md</code> flags for CUDA ports does not arise. (This project's dev device, gfx1151, reports warpSize 32 in any case.) </dd>
 <dd>
-The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> operations that route entirely through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a>'s own primitives are safe against a HIP-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. Phase 1's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> backward/LRP/optimizer code is host-loop-only and is guarded by <code>PULSATRIX_ASSERT(device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>)</code>, which covers <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92">DeviceType::Hip</a> identically to <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea8b95dcff7397d0693c03e394af5552aa">DeviceType::Cuda</a> &ndash; those guards need no change for this backend. </dd></dl>
+The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> operations that route entirely through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a>'s own primitives are safe against a HIP-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. Phase 1's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> backward/LRP/optimizer code is host-loop-only and is guarded by <code>PULSATRIX_REQUIRE_HOST</code>, which covers <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92">DeviceType::Hip</a> identically to <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea8b95dcff7397d0693c03e394af5552aa">DeviceType::Cuda</a> &ndash; those guards need no change for this backend. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab62ba66f083956b40cf612fd866cc2ac" name="ab62ba66f083956b40cf612fd866cc2ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab62ba66f083956b40cf612fd866cc2ac">&#9670;&#160;</a></span>HIPBackend() <span class="overload">[1/2]</span></h2>
@@ -407,6 +410,36 @@ The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsa
 </dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a8aa836582db51b3f87c225695bbbc0d8">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="ab5f1e6f94bbcde729d57089a347530f0" name="ab5f1e6f94bbcde729d57089a347530f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5f1e6f94bbcde729d57089a347530f0">&#9670;&#160;</a></span>device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> pulsatrix::HIPBackend::device </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which device this backend's buffers reside on. </p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s constructors that take no explicit DeviceType tag the <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> with this, so a temporary allocated through a CUDA/HIP backend can no longer be silently labelled Cpu (the default-tag defect found by the GPU-native-kernels campaign recon: a mislabelled tensor makes <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> pick HostToHost copies on device memory and lets host-only guards pass). </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a39732e9839303fa0e9c872e24e41b283">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>

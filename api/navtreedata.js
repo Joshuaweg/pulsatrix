@@ -63,17 +63,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CategoricalPolicyAgent.html#a3e9c92126127b313ffd49ecae9cf5b6b",
-"classpulsatrix_1_1DisjunctionModule.html#af0481a10cfb90d54dde5ef4739670c33",
-"classpulsatrix_1_1HorizontalFlipTransform.html",
-"classpulsatrix_1_1LinearModule.html#ae8c20b3c12abca68d8167d307df344f3",
-"classpulsatrix_1_1Node.html#a5da415fffbaee2f0b5946164341c5e2a",
-"classpulsatrix_1_1ResidualModule.html#a428dba9ba879d95d5dafd2e00827e689",
-"classpulsatrix_1_1SwiGLUModule.html",
-"classpulsatrix_1_1XorNetwork.html#aee7f8d2e4756c13ebe39075b7f4c92cf",
-"linear__module_8hpp.html",
-"structpulsatrix_1_1ASHAResult.html#af61808a819df2b4abdd553d53ac02bd2",
-"structpulsatrix_1_1PBTResult.html#a1fd50c0fc63c85ac47d75008aea47e6a"
+"classpulsatrix_1_1CartPoleEnv.html#adf4c7a72a0f704a9c3a08e9af26afb57",
+"classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3e",
+"classpulsatrix_1_1HIPBackend.html#a986e88f107512b4f5272d7e8843bef3c",
+"classpulsatrix_1_1LinearModule.html#a7c7292a8c01755dbeea35fb03404efd7",
+"classpulsatrix_1_1NoOpMetricsSink.html",
+"classpulsatrix_1_1ReplayBuffer.html#a8fc77ebbeb4de325ecbb246b3585ecdd",
+"classpulsatrix_1_1SparseAutoencoder.html#ace9b3723207021b67c6126f1c0d4f5c0",
+"classpulsatrix_1_1VizWindow.html#af24d3a1ef37b1d9fadcd1f9ff14573ad",
+"gru__module_8hpp.html",
+"retnet__module_8hpp.html",
+"structpulsatrix_1_1NEATEvolutionResult.html",
+"video__transforms_8hpp.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

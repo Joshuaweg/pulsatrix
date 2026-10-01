@@ -6,6 +6,7 @@ var classpulsatrix_1_1CUDABackend =
     [ "add", "classpulsatrix_1_1CUDABackend.html#abef98d1540502382189c08c3e525d86a", null ],
     [ "allocate", "classpulsatrix_1_1CUDABackend.html#a1245659be03c2564e3c1d5ea24d37c8e", null ],
     [ "copy", "classpulsatrix_1_1CUDABackend.html#a5bb1c9ef2779b382555f212de0f50567", null ],
+    [ "device", "classpulsatrix_1_1CUDABackend.html#af8543405b9fd64b66854be7ac2e891b5", null ],
     [ "elementwise", "classpulsatrix_1_1CUDABackend.html#a43d669dcc4b83a84ed7d82bc622f3c1c", null ],
     [ "fill", "classpulsatrix_1_1CUDABackend.html#a1bab00e976895d4fa042ed6ceb0c23c2", null ],
     [ "free", "classpulsatrix_1_1CUDABackend.html#ad12ac6eed1abc747a603bd3d7ea83a98", null ],

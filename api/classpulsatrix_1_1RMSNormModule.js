@@ -1,6 +1,7 @@
 var classpulsatrix_1_1RMSNormModule =
 [
-    [ "RMSNormModule", "classpulsatrix_1_1RMSNormModule.html#ace38e03274ef3a9658ad6a1b120294b2", null ],
+    [ "RMSNormModule", "classpulsatrix_1_1RMSNormModule.html#a2268db58479218a068f4a0b7083489ec", null ],
+    [ "RMSNormModule", "classpulsatrix_1_1RMSNormModule.html#a0db6a2028c28aff1624d8c14f170ddf5", null ],
     [ "backward", "classpulsatrix_1_1RMSNormModule.html#a61a7cf02b3a5480f3d5e50046812a9d8", null ],
     [ "forward_impl", "classpulsatrix_1_1RMSNormModule.html#a80744064b9df2df287f526fc6a70f6d0", null ],
     [ "gamma", "classpulsatrix_1_1RMSNormModule.html#af06d24d862e4b31909945018968fb29b", null ],
