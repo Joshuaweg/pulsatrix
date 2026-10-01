@@ -223,6 +223,32 @@ inline void BceWithLogits(DeviceBackend& gpu) {
     ExpectNear(grad, dgrad.host());
 }
 
+// ---- Mission 2 -----------------------------------------------------------------------------
+
+inline void PermuteGatherScatter(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const size_t a = 2, b = 5, c = 3, d = 4;
+    std::vector<float> in = Random(a * b * c * d, 400), out(in.size());
+    cpu.permute_0213(in.data(), out.data(), a, b, c, d);
+    DeviceBuffer din(gpu, in), dout(gpu, std::vector<float>(in.size()));
+    gpu.permute_0213(din.get(), dout.get(), a, b, c, d);
+    EXPECT_EQ(out, dout.host());  // pure data movement: bit-exact
+
+    const size_t rows = 7, dim = 9, count = 40;
+    std::vector<float> table = Random(rows * dim, 401), src = Random(count * dim, 402), idx(count);
+    for (size_t i = 0; i < count; ++i) {
+        idx[i] = static_cast<float>((i * 3) % rows);  // every row hit several times
+    }
+    std::vector<float> gathered(count * dim), acc = table;
+    cpu.gather_rows(table.data(), idx.data(), gathered.data(), count, dim);
+    cpu.scatter_add_rows(src.data(), idx.data(), acc.data(), count, dim);
+    DeviceBuffer dtable(gpu, table), didx(gpu, idx), dsrc(gpu, src), dgathered(gpu, std::vector<float>(count * dim));
+    gpu.gather_rows(dtable.get(), didx.get(), dgathered.get(), count, dim);
+    gpu.scatter_add_rows(dsrc.get(), didx.get(), dtable.get(), count, dim);
+    EXPECT_EQ(gathered, dgathered.host());
+    EXPECT_EQ(acc, dtable.host());  // same accumulation order: bit-exact, not merely close
+}
+
 }  // namespace primitive_equivalence
 }  // namespace pulsatrix
 
@@ -260,4 +286,7 @@ inline void BceWithLogits(DeviceBackend& gpu) {
     TEST_F(FIXTURE, DropoutMasksBitIdenticalToCPU) {                                                \
         ::pulsatrix::primitive_equivalence::DropoutMasksAreBitIdentical(MEMBER);                   \
     }                                                                                               \
-    TEST_F(FIXTURE, BceWithLogitsMatchesCPU) { ::pulsatrix::primitive_equivalence::BceWithLogits(MEMBER); }
+    TEST_F(FIXTURE, BceWithLogitsMatchesCPU) { ::pulsatrix::primitive_equivalence::BceWithLogits(MEMBER); } \
+    TEST_F(FIXTURE, PermuteGatherScatterMatchCPUBitExactly) {                                       \
+        ::pulsatrix::primitive_equivalence::PermuteGatherScatter(MEMBER);                          \
+    }
