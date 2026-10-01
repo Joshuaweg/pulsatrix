@@ -105,12 +105,7 @@ public:
      *       the rule entirely rather than approximated. This is what makes relevance
      *       conservation exact (up to the epsilon stabilizer) rather than merely
      *       approximate. Must be called after forward() -- uses the cached pre-bias output.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_REQUIRE_HOST(relevance_out) guards against
-     *       silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3).
      * @throws std::logic_error if forward() has never been called -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      */

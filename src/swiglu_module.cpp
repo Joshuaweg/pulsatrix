@@ -128,28 +128,18 @@ Tensor SwiGLUModule::propagate_relevance(const Tensor& relevance_out, const LRPR
         throw std::invalid_argument(
             "SwiGLUModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
-    // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
+    // Device-generic (GPU-native-kernels Mission 3).
 
     const Tensor relevance_out_flat = reshaped(relevance_out, Shape({last_n_flat_, d_model_}));
 
     Tensor r_hidden = down_proj_.propagate_relevance(relevance_out_flat, config);  // (n_flat, d_ff)
 
+    // Eq. 15 for the gate*up product: both operands receive the same share.
     const auto n = static_cast<size_t>(r_hidden.numel());
-    Tensor r_gate_post(r_hidden.shape(), backend_);
-    Tensor r_up(r_hidden.shape(), backend_);
-    for (size_t i = 0; i < n; ++i) {
-        const float a = last_gate_post_.data()[i];
-        const float b = last_up_.data()[i];
-        const float c = a * b;
-        const float denom = 2.0f * c + config.epsilon * ((c >= 0.0f) ? 1.0f : -1.0f);
-        const float share = (a * b / denom) * r_hidden.data()[i];
-        r_gate_post.data()[i] = share;
-        r_up.data()[i] = share;
-    }
-
-    // SiLU: identity pass-through (this codebase's established pointwise-nonlinearity
-    // convention -- see the header's note). No computation needed.
+    Tensor r_gate_post(r_hidden.shape(), backend_, r_hidden.device());
+    backend_->lrp_bilinear_elementwise(last_gate_post_.data(), last_up_.data(), r_hidden.data(), r_gate_post.data(), n,
+                                       config.epsilon);
+    Tensor r_up(r_gate_post);
     const Tensor& r_gate_pre = r_gate_post;
 
     Tensor r_from_gate = gate_proj_.propagate_relevance(r_gate_pre, config);  // (n_flat, d_model)

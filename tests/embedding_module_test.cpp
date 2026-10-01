@@ -167,17 +167,5 @@ TEST_F(EmbeddingModuleTest, PropagateRelevanceSumsOverEmbeddingDimensionAndConse
 
 using EmbeddingModuleDeathTest = EmbeddingModuleTest;
 
-TEST_F(EmbeddingModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    EmbeddingModule emb(4, 3, &backend);
-    Tensor input(Shape({1, 1}), &backend, {0.0f});
-    (void)emb.forward(input);
-
-    Tensor relevance_out(Shape({1, 1, 3}), &backend, {1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)emb.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

@@ -27,96 +27,6 @@ namespace {
 [[nodiscard]] int64_t safe_positive(int64_t value) { return value > 0 ? value : 1; }
 
 /**
- * @brief `(N, L, num_heads*head_dim)` -> `(N, num_heads, L, head_dim)`.
- * @note A genuine permutation, not a reshape: num_heads moves from inside the last axis to
- *       in front of L. No Tensor permute utility exists in this codebase, so this is a raw
- *       host loop, in the same style as RNNModule's per-timestep scatter/gather loops.
- */
-void split_heads(const float* src, float* dst, int64_t N, int64_t L, int64_t num_heads, int64_t head_dim) {
-    const int64_t d_model = num_heads * head_dim;
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t h = 0; h < num_heads; ++h) {
-            for (int64_t l = 0; l < L; ++l) {
-                const int64_t src_off = (n * L + l) * d_model + h * head_dim;
-                const int64_t dst_off = ((n * num_heads + h) * L + l) * head_dim;
-                for (int64_t e = 0; e < head_dim; ++e) {
-                    dst[dst_off + e] = src[src_off + e];
-                }
-            }
-        }
-    }
-}
-
-/** @brief The exact inverse of split_heads: `(N, num_heads, L, head_dim)` -> `(N, L, d_model)`. */
-void merge_heads(const float* src, float* dst, int64_t N, int64_t L, int64_t num_heads, int64_t head_dim) {
-    const int64_t d_model = num_heads * head_dim;
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t h = 0; h < num_heads; ++h) {
-            for (int64_t l = 0; l < L; ++l) {
-                const int64_t dst_off = (n * L + l) * d_model + h * head_dim;
-                const int64_t src_off = ((n * num_heads + h) * L + l) * head_dim;
-                for (int64_t e = 0; e < head_dim; ++e) {
-                    dst[dst_off + e] = src[src_off + e];
-                }
-            }
-        }
-    }
-}
-
-/**
- * @brief Transposes a (rows x cols) row-major block into a (cols x rows) row-major block --
- *        same helper shape as LinearModule's/RNNModule's own transpose() (DeviceBackend::gemm
- *        has no transpose flag), but writing into a caller-owned buffer since this one is
- *        called once per (n, h) slice rather than once per call.
- */
-void transpose_into(const float* src, float* dst, int64_t rows, int64_t cols) {
-    for (int64_t r = 0; r < rows; ++r) {
-        for (int64_t c = 0; c < cols; ++c) {
-            dst[c * rows + r] = src[r * cols + c];
-        }
-    }
-}
-
-/**
- * @brief AttnLRP Eq. 15 (Achtibat et al. 2024) -- the bilinear/"uniform" rule for a matmul
- *        `O = A @ B`, where BOTH operands are inputs carrying relevance.
- *
- *   `R_A[i,j] += (A[i,j]*B[j,k] / (2*O[i,k] + eps*sign(O[i,k]))) * R_O[i,k]`
- *   `R_B[j,k] += (A[i,j]*B[j,k] / (2*O[i,k] + eps*sign(O[i,k]))) * R_O[i,k]`
- *
- * @param a (M x P) row-major.
- * @param b (P x Q) row-major.
- * @param o (M x Q) row-major -- the forward product, the rule's denominator.
- * @param r_o (M x Q) relevance at the output.
- * @param r_a (M x P) accumulator for A's relevance. Caller zero-fills.
- * @param r_b (P x Q) accumulator for B's relevance. Caller zero-fills.
- * @param eps Stabilizer, signed to match o (sign(0) == +1, same convention as every other
- *        rule in this codebase).
- * @note **The `2*` in the denominator is the whole point of this rule and is not this
- *       codebase's usual additive epsilon rule.** Eq. 15 splits each output's relevance
- *       evenly between the two operands (each operand's shares sum to `R_O/2` rather than to
- *       `R_O`), which is what makes a bilinear product -- where both factors are activations,
- *       not one activation and one fixed weight -- attributable at all. Substituting the
- *       familiar `1*` denominator used by LinearModule/RNNModule/RoPEModule would double the
- *       total relevance handed to the two operands.
- */
-void bilinear_lrp_eq15(const float* a, const float* b, const float* o, const float* r_o, float* r_a, float* r_b,
-                       int64_t M, int64_t P, int64_t Q, float eps) {
-    for (int64_t i = 0; i < M; ++i) {
-        for (int64_t k = 0; k < Q; ++k) {
-            const float o_ik = o[i * Q + k];
-            const float denom = 2.0f * o_ik + eps * ((o_ik >= 0.0f) ? 1.0f : -1.0f);
-            const float scaled_r = r_o[i * Q + k] / denom;
-            for (int64_t j = 0; j < P; ++j) {
-                const float contribution = a[i * P + j] * b[j * Q + k] * scaled_r;
-                r_a[i * P + j] += contribution;
-                r_b[j * Q + k] += contribution;
-            }
-        }
-    }
-}
-
-/**
  * @brief A reshaped copy of t. Tensor::reshape is an in-place, non-const metadata-only
  *        operation on a contiguous row-major buffer, so this copy exists solely to keep the
  *        caller's tensor const -- the element order is byte-identical either way, which is
@@ -379,55 +289,31 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
             "the cached forward shape");
     }
     // Raw host loops -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
+    // Device-generic (GPU-native-kernels Mission 3): permutes for head split/merge; both
+    // bilinear products via lrp_bilinear_matmul (one GPU thread per relevance element, each
+    // summed in the original loop's order); K read transposed in place.
+    const DeviceType device = relevance_out.device();
+    const auto n = static_cast<size_t>(N), l = static_cast<size_t>(L), h = static_cast<size_t>(H),
+               d = static_cast<size_t>(D);
 
-    // --- Step 9' : output projection (LinearModule's own epsilon rule) ------------------
     Tensor r_merged = out_proj_.propagate_relevance(reshaped(relevance_out, Shape({N * L, d_model_})), config);
+    Tensor r_context(Shape({N, H, L, D}), backend_, device);
+    backend_->permute_0213(r_merged.data(), r_context.data(), n, l, h, d);
 
-    // --- Step 8' : merge-heads inverse (pure index mapping, no epsilon) -----------------
-    Tensor r_context(Shape({N, H, L, D}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(r_context);
-    split_heads(r_merged.data(), r_context.data(), N, L, H, D);
+    // context = Attn @ V
+    Tensor r_attn(Shape({N, H, L, L}), backend_, device);
+    Tensor r_v(Shape({N, H, L, D}), backend_, device);
+    backend_->lrp_bilinear_matmul(last_attn_.data(), last_v_.data(), last_context_.data(), r_context.data(),
+                                  r_attn.data(), r_v.data(), n * h, l, l, d, config.epsilon, /*b_transposed=*/false);
 
-    // --- Step 7' : Eq. 15 on context = Attn @ V -----------------------------------------
-    Tensor r_attn(Shape({N, H, L, L}), backend_);
-    Tensor r_v(Shape({N, H, L, D}), backend_);
-    r_attn.fill(0.0f);  // bilinear_lrp_eq15 accumulates with +=
-    r_v.fill(0.0f);
-    for (int64_t nh = 0; nh < N * H; ++nh) {
-        bilinear_lrp_eq15(last_attn_.data() + nh * L * L, last_v_.data() + nh * L * D,
-                          last_context_.data() + nh * L * D, r_context.data() + nh * L * D,
-                          r_attn.data() + nh * L * L, r_v.data() + nh * L * D, L, L, D, config.epsilon);
-    }
-
-    // --- Step 6' : softmax (AttnLRP Eq. 13, SoftmaxModule's own rule) -------------------
     Tensor r_scores = softmax_.propagate_relevance(r_attn, config);
 
-    // --- Step 5' : Eq. 15 on scores_raw = Q @ K^T ---------------------------------------
-    // The 1/sqrt(head_dim) scale is a positive constant, under which the epsilon rule is
-    // exactly the identity, so r_scores is also the relevance of the *raw* product -- which
-    // is what the cached denominator (last_scores_raw_) is.
-    Tensor r_q(Shape({N, H, L, D}), backend_);
-    Tensor r_k(Shape({N, H, L, D}), backend_);
-    r_q.fill(0.0f);
-    r_k.fill(0.0f);
-    std::vector<float> k_transposed(static_cast<size_t>(D * L));
-    std::vector<float> r_k_transposed(static_cast<size_t>(D * L));
-    for (int64_t nh = 0; nh < N * H; ++nh) {
-        // B is K^T, so B's relevance comes back in (head_dim, L) layout and must be
-        // transposed into K's own (L, head_dim) layout -- exactly as the value itself was.
-        transpose_into(last_k_.data() + nh * L * D, k_transposed.data(), L, D);
-        std::fill(r_k_transposed.begin(), r_k_transposed.end(), 0.0f);
-        bilinear_lrp_eq15(last_q_.data() + nh * L * D, k_transposed.data(), last_scores_raw_.data() + nh * L * L,
-                          r_scores.data() + nh * L * L, r_q.data() + nh * L * D, r_k_transposed.data(), L, D, L,
-                          config.epsilon);
-        transpose_into(r_k_transposed.data(), r_k.data() + nh * L * D, D, L);
-    }
+    // scores_raw = Q @ K^T, K stored (L, D) == K^T read transposed; r_k comes back in K's layout.
+    Tensor r_q(Shape({N, H, L, D}), backend_, device);
+    Tensor r_k(Shape({N, H, L, D}), backend_, device);
+    backend_->lrp_bilinear_matmul(last_q_.data(), last_k_.data(), last_scores_raw_.data(), r_scores.data(),
+                                  r_q.data(), r_k.data(), n * h, l, d, l, config.epsilon, /*b_transposed=*/true);
 
-    // --- Step 4' : RoPE (its own epsilon rule) ------------------------------------------
     if (use_rope_) {
         r_q = q_rope_->propagate_relevance(r_q, config);
         r_k = k_rope_->propagate_relevance(r_k, config);
@@ -443,12 +329,12 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
     }
 
     // --- Step 2' : split-heads inverse --------------------------------------------------
-    Tensor r_q_flat(Shape({N * L, d_model_}), backend_);
-    Tensor r_k_flat(Shape({N * L, d_model_}), backend_);
-    Tensor r_v_flat(Shape({N * L, d_model_}), backend_);
-    merge_heads(r_q.data(), r_q_flat.data(), N, L, H, D);
-    merge_heads(r_k.data(), r_k_flat.data(), N, L, H, D);
-    merge_heads(r_v.data(), r_v_flat.data(), N, L, H, D);
+    Tensor r_q_flat(Shape({N * L, d_model_}), backend_, device);
+    Tensor r_k_flat(Shape({N * L, d_model_}), backend_, device);
+    Tensor r_v_flat(Shape({N * L, d_model_}), backend_, device);
+    backend_->permute_0213(r_q.data(), r_q_flat.data(), n, h, l, d);
+    backend_->permute_0213(r_k.data(), r_k_flat.data(), n, h, l, d);
+    backend_->permute_0213(r_v.data(), r_v_flat.data(), n, h, l, d);
 
     // --- Step 1' : Q/K/V projections ----------------------------------------------------
     // All three projections read the same input, so their input relevances sum -- the same

@@ -64,7 +64,7 @@ public:
      * @note Must be called after forward() -- uses both the input and the output cached from
      *       that call (the input is needed by the x[i] factor, which is why this module
      *       caches both).
-     * @note Raw host loop; PULSATRIX_REQUIRE_HOST(relevance_out) guarded.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3).
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
