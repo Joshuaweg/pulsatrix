@@ -422,31 +422,6 @@ TEST_F(RoPEModuleTest, OpTypeIsElementwise) {
 
 using RoPEModuleDeathTest = RoPEModuleTest;
 
-// forward_impl/backward/propagate_relevance all dereference Tensor::data() in raw host
-// loops -- undefined behavior on a CUDA-backed Tensor. Same mislabeled-Tensor pattern as
-// RNNModuleDeathTest/SoftmaxModuleDeathTest (no real GPU needed: DeviceType::Cuda over real
-// CPUBackend memory trips the guard identically).
-TEST_F(RoPEModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RoPEModule rope(2, &backend);
-    Tensor x(Shape({1, 1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rope.forward(x); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(RoPEModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RoPEModule rope(2, &backend);
-    Tensor x(Shape({1, 1, 2}), &backend, {1.0f, 2.0f});
-    (void)rope.forward(x);
-
-    Tensor grad_output(Shape({1, 1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rope.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
 TEST_F(RoPEModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
     GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";

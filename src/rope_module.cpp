@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <vector>
 
 #include "pulsatrix/assert.hpp"
 
@@ -48,7 +49,9 @@ RoPEModule::RoPEModule(int64_t head_dim, DeviceBackend* backend, float base)
       base_(base),
       backend_(backend),
       last_input_(Shape({0}), backend),
-      last_output_(Shape({0}), backend) {
+      last_output_(Shape({0}), backend),
+      cos_table_(Shape({0}), backend),
+      sin_table_(Shape({0}), backend) {
     // External boundary (construction arguments can originate from Phase 5's Python
     // bindings with no upstream validation).
     if (head_dim <= 0) {
@@ -63,38 +66,37 @@ RoPEModule::RoPEModule(int64_t head_dim, DeviceBackend* backend, float base)
 // SoftmaxModule's two caches: the epsilon rule needs the input x (numerators) as well as
 // the output y (denominators).
 
-Tensor RoPEModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not backend-generic.
-    // See mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(input);
+void RoPEModule::ensure_tables(int64_t seq_len) {
+    if (seq_len == table_seq_len_) {
+        return;
+    }
+    const int64_t half = head_dim_ / 2;
+    std::vector<float> cos_values(static_cast<size_t>(seq_len * half));
+    std::vector<float> sin_values(static_cast<size_t>(seq_len * half));
+    for (int64_t pos = 0; pos < seq_len; ++pos) {
+        for (int64_t i = 0; i < half; ++i) {
+            const double theta = rope_angle(pos, i, head_dim_, base_);
+            cos_values[static_cast<size_t>(pos * half + i)] = static_cast<float>(std::cos(theta));
+            sin_values[static_cast<size_t>(pos * half + i)] = static_cast<float>(std::sin(theta));
+        }
+    }
+    cos_table_ = Tensor(Shape({seq_len, half}), backend_, cos_values);
+    sin_table_ = Tensor(Shape({seq_len, half}), backend_, sin_values);
+    table_seq_len_ = seq_len;
+}
 
+Tensor RoPEModule::forward_impl(const Tensor& input) {
     if (input.rank() < 2 || input.shape().dim(static_cast<size_t>(input.rank() - 1)) != head_dim_) {
         throw std::invalid_argument("RoPEModule::forward: input must be rank >= 2 with shape (..., L, head_dim)");
     }
 
+    // Device-generic (GPU-native-kernels Mission 2): precomputed tables + one rotate kernel.
     const SliceLayout layout = slice_layout_of(input.shape(), head_dim_);
-    const int64_t half = head_dim_ / 2;
-
-    Tensor output(input.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(output);
-    for (int64_t m = 0; m < layout.num_matrices; ++m) {
-        for (int64_t pos = 0; pos < layout.seq_len; ++pos) {
-            const int64_t base_off = (m * layout.seq_len + pos) * head_dim_;
-            for (int64_t i = 0; i < half; ++i) {
-                const double theta = rope_angle(pos, i, head_dim_, base_);
-                const float c = static_cast<float>(std::cos(theta));
-                const float s = static_cast<float>(std::sin(theta));
-
-                const float x0 = input.data()[base_off + 2 * i];
-                const float x1 = input.data()[base_off + 2 * i + 1];
-                output.data()[base_off + 2 * i] = x0 * c - x1 * s;
-                output.data()[base_off + 2 * i + 1] = x0 * s + x1 * c;
-            }
-        }
-    }
+    ensure_tables(layout.seq_len);
+    Tensor output(input.shape(), backend_, input.device());
+    backend_->rope_rotate(input.data(), cos_table_.data(), sin_table_.data(), output.data(),
+                          static_cast<size_t>(layout.num_matrices), static_cast<size_t>(layout.seq_len),
+                          static_cast<size_t>(head_dim_), /*inverse=*/false);
 
     last_input_ = input;
     last_output_ = output;
@@ -109,34 +111,14 @@ Tensor RoPEModule::backward(const Tensor& grad_output) {
     if (grad_output.shape() != last_input_.shape()) {
         throw std::invalid_argument("RoPEModule::backward: grad_output must match the cached forward shape");
     }
-    // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
+    // The rotation is orthogonal, so its gradient is the transpose rotation.
     const SliceLayout layout = slice_layout_of(grad_output.shape(), head_dim_);
-    const int64_t half = head_dim_ / 2;
-
-    Tensor grad_input(grad_output.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
-    for (int64_t m = 0; m < layout.num_matrices; ++m) {
-        for (int64_t pos = 0; pos < layout.seq_len; ++pos) {
-            const int64_t base_off = (m * layout.seq_len + pos) * head_dim_;
-            for (int64_t i = 0; i < half; ++i) {
-                const double theta = rope_angle(pos, i, head_dim_, base_);
-                const float c = static_cast<float>(std::cos(theta));
-                const float s = static_cast<float>(std::sin(theta));
-
-                // Inverse rotation (R^{-1} = R^T for an orthogonal rotation) -- the forward
-                // formula with the sin terms' signs swapped.
-                const float g0 = grad_output.data()[base_off + 2 * i];
-                const float g1 = grad_output.data()[base_off + 2 * i + 1];
-                grad_input.data()[base_off + 2 * i] = g0 * c + g1 * s;
-                grad_input.data()[base_off + 2 * i + 1] = -g0 * s + g1 * c;
-            }
-        }
-    }
+    ensure_tables(layout.seq_len);
+    Tensor grad_input(grad_output.shape(), backend_, grad_output.device());
+    backend_->rope_rotate(grad_output.data(), cos_table_.data(), sin_table_.data(), grad_input.data(),
+                          static_cast<size_t>(layout.num_matrices), static_cast<size_t>(layout.seq_len),
+                          static_cast<size_t>(head_dim_), /*inverse=*/true);
     return grad_input;
 }
 

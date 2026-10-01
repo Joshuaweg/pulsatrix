@@ -16,7 +16,8 @@ RMSNormModule::RMSNormModule(int64_t num_features, DeviceBackend* backend, Devic
       backend_(backend),
       gamma_(Shape({num_features > 0 ? num_features : 1}), backend, device),
       gamma_grad_(Shape({num_features > 0 ? num_features : 1}), backend, device),
-      last_input_(Shape({1, num_features > 0 ? num_features : 1}), backend, device) {
+      last_input_(Shape({1, num_features > 0 ? num_features : 1}), backend, device),
+      last_rms_(Shape({1}), backend, device) {
     // External boundary (constructor arguments can originate from Phase 5's Python
     // bindings with no upstream validation) -- a non-positive num_features would make
     // every subsequent Shape construction either empty or nonsensical.
@@ -34,39 +35,18 @@ void RMSNormModule::set_gamma(const std::vector<float>& values) {
 }
 
 Tensor RMSNormModule::forward_impl(const Tensor& input) {
-    // External boundary: input can originate from Phase 5's Python bindings with no
-    // upstream validation -- shape generalized to (N, num_features) by
-    // campaign_exai_dl_library_batch_dimension_support (matches LinearModule's identical
-    // migration).
     if (input.rank() != 2 || input.shape().dim(1) != num_features_) {
         throw std::invalid_argument("RMSNormModule::forward: input must be rank-2 (N, num_features)");
     }
     const int64_t N = input.shape().dim(0);
 
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(input);
-    PULSATRIX_REQUIRE_HOST(gamma_);
-
+    // Device-generic (GPU-native-kernels Mission 2): one fused row kernel.
     last_input_ = input;
-    last_rms_.assign(static_cast<size_t>(N), 0.0f);
-
-    Tensor output(Shape({N, num_features_}), backend_, gamma_.device());
-    PULSATRIX_REQUIRE_HOST(output);
-    for (int64_t n = 0; n < N; ++n) {
-        float sum_sq = 0.0f;
-        for (int64_t i = 0; i < num_features_; ++i) {
-            float xi = input.data()[n * num_features_ + i];
-            sum_sq += xi * xi;
-        }
-        float ms = sum_sq / static_cast<float>(num_features_);
-        float rms = std::sqrt(ms + eps_);
-        last_rms_[static_cast<size_t>(n)] = rms;
-
-        for (int64_t i = 0; i < num_features_; ++i) {
-            output.data()[n * num_features_ + i] = gamma_.data()[i] * input.data()[n * num_features_ + i] / rms;
-        }
-    }
+    const DeviceType device = gamma_.device();
+    last_rms_ = Tensor(Shape({N}), backend_, device);
+    Tensor output(Shape({N, num_features_}), backend_, device);
+    backend_->rms_norm_forward(input.data(), gamma_.data(), output.data(), last_rms_.data(), static_cast<size_t>(N),
+                               static_cast<size_t>(num_features_), eps_);
 
     has_forwarded_ = true;
     return output;
@@ -81,41 +61,19 @@ Tensor RMSNormModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument(
             "RMSNormModule::backward: grad_output must be rank-2 (N, num_features) matching the cached batch size");
     }
-    // Not yet backend-generic -- raw host loop below. See every existing Module
-    // subclass's identical Phase 1.5 scope decision.
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
-    const float D = static_cast<float>(num_features_);
-
-    Tensor local_gamma_grad(Shape({num_features_}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(local_gamma_grad);
-    local_gamma_grad.fill(0.0f);
-    Tensor grad_input(Shape({N, num_features_}), backend_);
-
-    for (int64_t n = 0; n < N; ++n) {
-        const float rms = last_rms_[static_cast<size_t>(n)];
-
-        // dot = sum_i(dL/dy_i * gamma_i * x_i), per row
-        float dot = 0.0f;
-        for (int64_t i = 0; i < num_features_; ++i) {
-            dot += grad_output.data()[n * num_features_ + i] * gamma_.data()[i] * last_input_.data()[n * num_features_ + i];
-        }
-
-        for (int64_t i = 0; i < num_features_; ++i) {
-            int64_t idx = n * num_features_ + i;
-            // dL/dgamma_i = sum over batch of dL/dy_{n,i} * x_{n,i} / rms_n
-            local_gamma_grad.data()[i] += grad_output.data()[idx] * last_input_.data()[idx] / rms;
-
-            // dL/dx_{n,i} = dL/dy_{n,i} * gamma_i / rms_n  -  (x_{n,i} / (D * rms_n^3)) * dot_n
-            grad_input.data()[idx] =
-                grad_output.data()[idx] * gamma_.data()[i] / rms - (last_input_.data()[idx] / (D * rms * rms * rms)) * dot;
-        }
-    }
+    // Device-generic (GPU-native-kernels Mission 2): the row kernel also emits each row's
+    // gamma-gradient terms; column_sums reduces them in row order, as the original loop did.
+    const auto rows = static_cast<size_t>(N);
+    const auto cols = static_cast<size_t>(num_features_);
+    const DeviceType device = gamma_.device();
+    Tensor grad_input(Shape({N, num_features_}), backend_, device);
+    Tensor gamma_terms(Shape({N, num_features_}), backend_, device);
+    backend_->rms_norm_backward(grad_output.data(), gamma_.data(), last_input_.data(), last_rms_.data(),
+                                grad_input.data(), gamma_terms.data(), rows, cols);
+    Tensor local_gamma_grad(Shape({num_features_}), backend_, device);
+    backend_->column_sums(gamma_terms.data(), local_gamma_grad.data(), rows, cols, 0.0f);
     gamma_grad_.accumulate(local_gamma_grad);
-
     return grad_input;
 }
 

@@ -266,6 +266,70 @@ public:
      */
     virtual void bce_with_logits_grad(const float* logits, const float* target, float* grad, size_t n,
                                       float scale) = 0;
+
+    // ---- GPU-native-kernels Mission 2: transformer building blocks -------------------------
+    // The fused row operations below run the same per-row source on every backend (src/
+    // row_math.hpp): CPU loops over rows, GPUs run one thread per row. row_std / row_rms /
+    // log_prob are per-row device buffers (rows entries). Index buffers hold whole numbers as
+    // floats, exact below 2^24.
+
+    /** @brief LayerNorm forward per row: xhat = (x - mean)/sqrt(var + eps), out = gamma*xhat + beta. */
+    virtual void layer_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                                    float* row_std, size_t rows, size_t cols, float eps) = 0;
+
+    /** @brief LayerNorm input gradient per row, from the cached xhat and per-row std. */
+    virtual void layer_norm_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                     const float* row_std, float* grad_in, size_t rows, size_t cols) = 0;
+
+    /** @brief RMSNorm forward per row: out = gamma * x / sqrt(mean(x^2) + eps). */
+    virtual void rms_norm_forward(const float* in, const float* gamma, float* out, float* row_rms, size_t rows,
+                                  size_t cols, float eps) = 0;
+
+    /**
+     * @brief RMSNorm input gradient per row, plus gamma_terms[r][i] = grad_out * x / rms --
+     *        the per-row contributions column_sums then reduces into gamma's gradient.
+     */
+    virtual void rms_norm_backward(const float* grad_out, const float* gamma, const float* in, const float* row_rms,
+                                   float* grad_in, float* gamma_terms, size_t rows, size_t cols) = 0;
+
+    /**
+     * @brief Rotary position embedding over (num_slices, seq_len, head_dim) data.
+     * @param cos_table,sin_table (seq_len, head_dim/2) per-position rotation tables.
+     * @param inverse false: forward rotation; true: its transpose (RoPE's backward).
+     * @note out must not alias in.
+     */
+    virtual void rope_rotate(const float* in, const float* cos_table, const float* sin_table, float* out,
+                             size_t num_slices, size_t seq_len, size_t head_dim, bool inverse) = 0;
+
+    /**
+     * @brief Swaps the middle two axes: in (d0, d1, d2, d3) -> out (d0, d2, d1, d3).
+     * @note Attention's head split ((N, L, H, D) -> (N, H, L, D)) and merge (the reverse) are
+     *       both this permutation. out must not alias in.
+     */
+    virtual void permute_0213(const float* in, float* out, size_t d0, size_t d1, size_t d2, size_t d3) = 0;
+
+    /** @brief out[i][:] = table[indices[i]][:] for count rows of width dim. */
+    virtual void gather_rows(const float* table, const float* indices, float* out, size_t count, size_t dim) = 0;
+
+    /**
+     * @brief table[indices[i]][:] += src[i][:] for i = 0..count-1, in increasing i.
+     * @note Deterministic: the GPU kernel runs one thread per column and walks i in order --
+     *       repeated indices accumulate in the same order as the CPU, no atomics.
+     */
+    virtual void scatter_add_rows(const float* src, const float* indices, float* table, size_t count, size_t dim) = 0;
+
+    /**
+     * @brief TanhGaussianPolicy sampling per (rows, cols) row: action = tanh(mean + exp(log_std)*eps),
+     *        std_cache = exp(log_std), log_prob[r] accumulated in double.
+     */
+    virtual void tanh_gaussian_forward(const float* mean, const float* log_std, const float* eps, float* action,
+                                       float* std_cache, float* log_prob, size_t rows, size_t cols,
+                                       float stabilizer, double half_log_two_pi) = 0;
+
+    /** @brief TanhGaussianPolicy gradients w.r.t. mean and log_std, per element. */
+    virtual void tanh_gaussian_backward(const float* action, const float* std_cache, const float* eps,
+                                        const float* grad_action, const float* grad_log_prob, float* grad_mean,
+                                        float* grad_log_std, size_t n, float stabilizer) = 0;
 };
 
 }  // namespace pulsatrix
