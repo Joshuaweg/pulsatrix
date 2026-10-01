@@ -14,13 +14,19 @@
 #include "pulsatrix/adam_optimizer.hpp"
 #include "pulsatrix/bce_with_logits_loss.hpp"
 #include "pulsatrix/aggregator_module.hpp"
+#include "pulsatrix/avg_pool2d_module.hpp"
+#include "pulsatrix/batch_norm_module.hpp"
 #include "pulsatrix/calibration_loss.hpp"
 #include "pulsatrix/conjunction_module.hpp"
+#include "pulsatrix/conv2d_module.hpp"
 #include "pulsatrix/disjunction_module.hpp"
 #include "pulsatrix/dropout_module.hpp"
 #include "pulsatrix/embedding_module.hpp"
+#include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/group_norm_module.hpp"
 #include "pulsatrix/layer_norm_module.hpp"
 #include "pulsatrix/lrp_conservation.hpp"
+#include "pulsatrix/max_pool2d_module.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
 #include "pulsatrix/rms_norm_module.hpp"
 #include "pulsatrix/rope_module.hpp"
@@ -538,6 +544,95 @@ inline void NeuroSymbolicPipelines(DeviceBackend& gpu) {
                           gbridge.propagate_relevance(1.0).relevance_wrt_x);
 }
 
+// ---- Mission 4: CNN ----------------------------------------------------------------------------
+
+// Forward, backward, parameter gradients and relevance for one image-shaped module.
+template <typename Module>
+inline void ImageModuleMatches(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Module& gm, const Shape& in_shape,
+                               unsigned seed) {
+    RandomizeAndMirror(cm, gm, seed);
+    std::vector<float> x = Random(static_cast<size_t>(in_shape.numel()), seed + 100);
+    Tensor cx(in_shape, &cpu, x), gx(in_shape, &gpu, x);
+    Tensor cy = cm.forward(cx);
+    Tensor gy = gm.forward(gx);
+    ExpectNear(cy, gy);
+    std::vector<float> dy = Random(static_cast<size_t>(cy.numel()), seed + 200);
+    Tensor cdy(cy.shape(), &cpu, dy), gdy(gy.shape(), &gpu, dy);
+    ExpectNear(cm.backward(cdy), gm.backward(gdy));
+    ExpectParametersNear(cm, gm, kTolerance);
+    ExpectRelevanceAgrees(cm.propagate_relevance(cdy, LRPRuleConfig{}), gm.propagate_relevance(gdy, LRPRuleConfig{}));
+}
+
+// 3x3 kernels on 7x6 images: windows overlap heavily, so col2im's gather order matters.
+inline void Conv2DMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    Conv2DModule cm(3, 4, 3, 3, &cpu), gm(3, 4, 3, 3, &gpu);
+    ImageModuleMatches(cpu, gpu, cm, gm, Shape({2, 3, 7, 6}), 700);
+}
+
+// 7x6 with 2x2 windows leaves a trailing row/column outside every window (gradient 0 there),
+// and a constant plane makes every window a tie: the first maximum must win on both sides.
+inline void PoolingMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    MaxPool2DModule cmax(2, 2, &cpu), gmax(2, 2, &gpu);
+    ImageModuleMatches(cpu, gpu, cmax, gmax, Shape({2, 3, 7, 6}), 710);
+    AvgPool2DModule cavg(2, 2, &cpu), gavg(2, 2, &gpu);
+    ImageModuleMatches(cpu, gpu, cavg, gavg, Shape({2, 3, 7, 6}), 720);
+
+    std::vector<float> flat(36, 0.5f);
+    Tensor cx(Shape({1, 1, 6, 6}), &cpu, flat), gx(Shape({1, 1, 6, 6}), &gpu, flat);
+    (void)cmax.forward(cx);
+    (void)gmax.forward(gx);
+    std::vector<float> dy(9, 1.0f);
+    Tensor cdy(Shape({1, 1, 3, 3}), &cpu, dy), gdy(Shape({1, 1, 3, 3}), &gpu, dy);
+    EXPECT_EQ(ToHost(cmax.backward(cdy)), ToHost(gmax.backward(gdy)));  // same tie winner, exactly
+}
+
+inline void SpatialNormsMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    BatchNormModule cbn(4, &cpu), gbn(4, &gpu);
+    ImageModuleMatches(cpu, gpu, cbn, gbn, Shape({3, 4, 5, 5}), 730);
+    GroupNormModule cgn(2, 4, &cpu), ggn(2, 4, &gpu);
+    ImageModuleMatches(cpu, gpu, cgn, ggn, Shape({3, 4, 5, 5}), 740);
+}
+
+// Mission 4 gate: Conv -> ReLU -> MaxPool -> Flatten -> Linear trained with Adam on GPU ends
+// with the CPU's parameters.
+inline void CnnTrainsToSameParameters(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    Conv2DModule cc(1, 4, 3, 3, &cpu), gc(1, 4, 3, 3, &gpu);
+    ReluModule cr(&cpu), gr(&gpu);
+    MaxPool2DModule cp(2, 2, &cpu), gp(2, 2, &gpu);
+    FlattenModule cf(&cpu), gf(&gpu);
+    LinearModule cl(4 * 3 * 3, 3, &cpu), gl(4 * 3 * 3, 3, &gpu);
+    SequentialModule cnet({&cc, &cr, &cp, &cf, &cl});
+    SequentialModule gnet({&gc, &gr, &gp, &gf, &gl});
+    RandomizeAndMirror(cnet, gnet, 750);
+    AdamOptimizer copt(0.01f, &cpu), gopt(0.01f, &gpu);
+    MSELoss closs(&cpu), gloss(&gpu);
+    std::vector<float> x = Random(4 * 8 * 8, 751), y = Random(4 * 3, 752);
+    Tensor cx(Shape({4, 1, 8, 8}), &cpu, x), gx(Shape({4, 1, 8, 8}), &gpu, x);
+    Tensor cy(Shape({4, 3}), &cpu, y), gy(Shape({4, 3}), &gpu, y);
+    float first_loss = 0.0f, last_loss = 0.0f;
+    for (int step = 0; step < 15; ++step) {
+        copt.zero_grad(cnet);
+        gopt.zero_grad(gnet);
+        const float lc = closs.forward(cnet.forward(cx), cy);
+        const float lg = gloss.forward(gnet.forward(gx), gy);
+        EXPECT_NEAR(lc, lg, 1e-3f) << "loss diverged at step " << step;
+        (void)cnet.backward(closs.backward());
+        (void)gnet.backward(gloss.backward());
+        copt.step(cnet);
+        gopt.step(gnet);
+        if (step == 0) {
+            first_loss = lc;
+        }
+        last_loss = lc;
+    }
+    EXPECT_LT(last_loss, first_loss) << "the CNN did not actually train";
+    ExpectParametersNear(cnet, gnet, 1e-3f);
+}
+
 // The mission's integration gate: the same small MLP, same init, same data, trained for
 // several steps on each backend, ends with the same parameters.
 template <typename Optimizer>
@@ -661,6 +756,12 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
     TEST_F(FIXTURE, AggregatorMatchesCPU) { ::pulsatrix::training_equivalence::AggregatorMatches(MEMBER); } \
     TEST_F(FIXTURE, NeuroSymbolicPipelinesMatchCPU) {                                                \
         ::pulsatrix::training_equivalence::NeuroSymbolicPipelines(MEMBER);                           \
+    }                                                                                                \
+    TEST_F(FIXTURE, Conv2DMatchesCPU) { ::pulsatrix::training_equivalence::Conv2DMatches(MEMBER); }      \
+    TEST_F(FIXTURE, PoolingMatchesCPU) { ::pulsatrix::training_equivalence::PoolingMatches(MEMBER); }    \
+    TEST_F(FIXTURE, SpatialNormsMatchCPU) { ::pulsatrix::training_equivalence::SpatialNormsMatch(MEMBER); } \
+    TEST_F(FIXTURE, CnnTrainedWithAdamEndsWithCPUParameters) {                                       \
+        ::pulsatrix::training_equivalence::CnnTrainsToSameParameters(MEMBER);                        \
     }                                                                                                \
     TEST_F(FIXTURE, MlpTrainedWithSGDEndsWithCPUParameters) {                                        \
         ::pulsatrix::SGDOptimizer cpu_opt(0.05f), gpu_opt(0.05f);                                    \

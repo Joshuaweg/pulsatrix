@@ -45,8 +45,7 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached forward
      *         output shape.
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -71,8 +70,7 @@ protected:
      * @brief The actual forward computation -- per-window mean.
      * @throws std::invalid_argument if input isn't rank-4 (N, C, H, W), or the kernel is
      *         larger than the input (kernel_h &gt; H or kernel_w &gt; W).
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(input.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 

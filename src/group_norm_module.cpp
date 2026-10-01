@@ -26,7 +26,8 @@ GroupNormModule::GroupNormModule(int64_t num_groups, int64_t num_channels, Devic
       gamma_grad_(Shape({safe_channels(num_channels)}), backend, device),
       beta_grad_(Shape({safe_channels(num_channels)}), backend, device),
       last_input_(Shape({1, safe_channels(num_channels), 1, 1}), backend, device),
-      last_xhat_(Shape({1, safe_channels(num_channels), 1, 1}), backend, device) {
+      last_xhat_(Shape({1, safe_channels(num_channels), 1, 1}), backend, device),
+      last_group_std_(Shape({1}), backend, device) {
     // External boundary (construction arguments can originate from Phase 5's Python
     // bindings with no upstream validation).
     if (num_groups <= 0) {
@@ -72,63 +73,17 @@ Tensor GroupNormModule::forward_impl(const Tensor& input) {
     const int64_t N_g = group_size_ * spatial;
     const int64_t per_example = num_channels_ * spatial;
 
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(input);
-    PULSATRIX_REQUIRE_HOST(gamma_);
-    PULSATRIX_REQUIRE_HOST(beta_);
 
     last_input_ = input;
     last_h_ = H;
     last_w_ = W;
-    last_group_std_.assign(static_cast<size_t>(N * num_groups_), 0.0f);
-
+    // Device-generic (GPU-native-kernels Mission 4): one thread per (example, group).
+    last_group_std_ = Tensor(Shape({N, num_groups_}), backend_, gamma_.device());
     Tensor xhat(input.shape(), backend_, gamma_.device());
     Tensor output(input.shape(), backend_, gamma_.device());
-    PULSATRIX_REQUIRE_HOST(xhat);
-    PULSATRIX_REQUIRE_HOST(output);
-
-    for (int64_t n = 0; n < N; ++n) {
-        const int64_t base = n * per_example;
-
-        std::vector<float> group_mean(static_cast<size_t>(num_groups_), 0.0f);
-        std::vector<float> group_std(static_cast<size_t>(num_groups_), 0.0f);
-
-        for (int64_t g = 0; g < num_groups_; ++g) {
-            float sum = 0.0f;
-            int64_t c_start = g * group_size_;
-            int64_t c_end = c_start + group_size_;
-            for (int64_t c = c_start; c < c_end; ++c) {
-                for (int64_t s = 0; s < spatial; ++s) {
-                    sum += input.data()[base + c * spatial + s];
-                }
-            }
-            float mu = sum / static_cast<float>(N_g);
-
-            float sum_sq_diff = 0.0f;
-            for (int64_t c = c_start; c < c_end; ++c) {
-                for (int64_t s = 0; s < spatial; ++s) {
-                    float d = input.data()[base + c * spatial + s] - mu;
-                    sum_sq_diff += d * d;
-                }
-            }
-            float var = sum_sq_diff / static_cast<float>(N_g);
-            group_mean[static_cast<size_t>(g)] = mu;
-            group_std[static_cast<size_t>(g)] = std::sqrt(var + eps_);
-            last_group_std_[static_cast<size_t>(n * num_groups_ + g)] = group_std[static_cast<size_t>(g)];
-        }
-
-        for (int64_t c = 0; c < num_channels_; ++c) {
-            int64_t g = c / group_size_;
-            for (int64_t s = 0; s < spatial; ++s) {
-                int64_t idx = base + c * spatial + s;
-                float xh = (input.data()[idx] - group_mean[static_cast<size_t>(g)]) /
-                           group_std[static_cast<size_t>(g)];
-                xhat.data()[idx] = xh;
-                output.data()[idx] = gamma_.data()[c] * xh + beta_.data()[c];
-            }
-        }
-    }
+    backend_->group_norm_forward(input.data(), gamma_.data(), beta_.data(), xhat.data(), output.data(),
+                                 last_group_std_.data(), static_cast<size_t>(N), static_cast<size_t>(num_channels_),
+                                 static_cast<size_t>(spatial), static_cast<size_t>(num_groups_), eps_);
     last_xhat_ = xhat;
 
     has_forwarded_ = true;
@@ -142,9 +97,6 @@ Tensor GroupNormModule::backward(const Tensor& grad_output) {
     if (grad_output.shape() != last_input_.shape()) {
         throw std::invalid_argument("GroupNormModule::backward: grad_output must match the cached forward shape");
     }
-    // Not yet backend-generic -- raw host loop below. See every existing Module
-    // subclass's identical Phase 1.5 scope decision.
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t N = last_input_.shape().dim(0);
     const int64_t H = last_h_;
@@ -153,62 +105,15 @@ Tensor GroupNormModule::backward(const Tensor& grad_output) {
     const int64_t N_g = group_size_ * spatial;
     const int64_t per_example = num_channels_ * spatial;
 
-    Tensor local_gamma_grad(gamma_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(local_gamma_grad);
-    Tensor local_beta_grad(beta_.shape(), backend_);
-    local_gamma_grad.fill(0.0f);
-    local_beta_grad.fill(0.0f);
-
-    Tensor grad_input(last_input_.shape(), backend_);
-
-    for (int64_t n = 0; n < N; ++n) {
-        const int64_t base = n * per_example;
-
-        // dL/dgamma_c = sum over batch,spatial of dL/dy * xhat ; dL/dbeta_c likewise of dL/dy
-        for (int64_t c = 0; c < num_channels_; ++c) {
-            float gsum = 0.0f;
-            float bsum = 0.0f;
-            for (int64_t s = 0; s < spatial; ++s) {
-                int64_t idx = base + c * spatial + s;
-                gsum += grad_output.data()[idx] * last_xhat_.data()[idx];
-                bsum += grad_output.data()[idx];
-            }
-            local_gamma_grad.data()[c] += gsum;
-            local_beta_grad.data()[c] += bsum;
-        }
-
-        for (int64_t g = 0; g < num_groups_; ++g) {
-            int64_t c_start = g * group_size_;
-            int64_t c_end = c_start + group_size_;
-            const float std_g = last_group_std_[static_cast<size_t>(n * num_groups_ + g)];
-
-            // dL/dxhat_i = dL/dy_i * gamma_{c(i)}
-            float sum_grad_xhat = 0.0f;
-            float sum_grad_xhat_xhat = 0.0f;
-            for (int64_t c = c_start; c < c_end; ++c) {
-                for (int64_t s = 0; s < spatial; ++s) {
-                    int64_t idx = base + c * spatial + s;
-                    float gxh = grad_output.data()[idx] * gamma_.data()[c];
-                    sum_grad_xhat += gxh;
-                    sum_grad_xhat_xhat += gxh * last_xhat_.data()[idx];
-                }
-            }
-
-            for (int64_t c = c_start; c < c_end; ++c) {
-                for (int64_t s = 0; s < spatial; ++s) {
-                    int64_t idx = base + c * spatial + s;
-                    float gxh = grad_output.data()[idx] * gamma_.data()[c];
-                    grad_input.data()[idx] = (static_cast<float>(N_g) * gxh - sum_grad_xhat -
-                                               last_xhat_.data()[idx] * sum_grad_xhat_xhat) /
-                                              (static_cast<float>(N_g) * std_g);
-                }
-            }
-        }
-    }
-
+    // Device-generic: parameter gradients one thread per channel (examples summed in order),
+    // input gradient one thread per (example, group).
+    Tensor local_gamma_grad(gamma_.shape(), backend_, gamma_.device());
+    Tensor local_beta_grad(beta_.shape(), backend_, gamma_.device());
+    Tensor grad_input(last_input_.shape(), backend_, gamma_.device());
+    backend_->group_norm_backward(grad_output.data(), gamma_.data(), last_xhat_.data(), last_group_std_.data(),
+                                  grad_input.data(), local_gamma_grad.data(), local_beta_grad.data(),
+                                  static_cast<size_t>(N), static_cast<size_t>(num_channels_),
+                                  static_cast<size_t>(spatial), static_cast<size_t>(num_groups_));
     gamma_grad_.accumulate(local_gamma_grad);
     beta_grad_.accumulate(local_beta_grad);
 
