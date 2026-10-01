@@ -185,7 +185,7 @@ __global__ void elementwise_backward_kernel(int op, const float* x, const float*
             }
             case ElementwiseOp::Silu: {
                 const float sg = sigmoid(xi);
-                d = sg * (1.0f + xi * (1.0f - sg));
+                d = sg + xi * sg * (1.0f - sg);
                 break;
             }
         }

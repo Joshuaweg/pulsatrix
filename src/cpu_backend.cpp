@@ -166,8 +166,10 @@ void CPUBackend::elementwise_backward(ElementwiseOp op, const float* x, const fl
                 break;
             }
             case ElementwiseOp::Silu: {
+                // s + x*s*(1-s): SwiGLUModule's original expression, kept verbatim so its CPU
+                // results are unchanged by the migration.
                 const float s = sigmoid(xi);
-                d = s * (1.0f + xi * (1.0f - s));
+                d = s + xi * s * (1.0f - s);
                 break;
             }
         }

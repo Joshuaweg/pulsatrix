@@ -59,9 +59,7 @@ Tensor ResidualModule::backward(const Tensor& grad_output) {
     if (grad_output.shape() != last_x_.shape()) {
         throw std::invalid_argument("ResidualModule::backward: grad_output must match the cached forward shape");
     }
-    // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
-
+    // Device-generic: inner backward plus DeviceBackend::add (GPU-native-kernels Mission 1).
     Tensor grad_from_inner = inner_->backward(grad_output);
 
     Tensor grad_x(grad_output.shape(), backend_);

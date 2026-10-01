@@ -38,9 +38,8 @@ public:
      * @param target_class Ground-truth class index, 0-based. Must be in
      *        [0, logits.numel()).
      * @return The scalar cross-entropy loss.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop, same as MSELoss. PULSATRIX_REQUIRE_HOST guards against
-     *       silent UB on a CUDA-backed Tensor. target_class range is also an
+     * @note Device-generic (GPU-native-kernels Mission 1): only the loss scalar and the target
+     *       logit cross to the host. target_class range is an
      *       PULSATRIX_ASSERT -- an internal invariant for this loss's current (non-Python-
      *       bound) call sites, not yet a Python-reachable external boundary.
      */
