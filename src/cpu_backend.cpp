@@ -1,6 +1,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 
 #include "pointwise_math.hpp"
+#include "lrp_math.hpp"
 #include "row_math.hpp"
 
 #include <algorithm>
@@ -394,6 +395,126 @@ void CPUBackend::tanh_gaussian_backward(const float* action, const float* std_ca
     for (size_t i = 0; i < n; ++i) {
         rows::tanh_gaussian_backward_element(action[i], std_cache[i], eps[i], grad_action[i], grad_log_prob[i],
                                              stabilizer, grad_mean + i, grad_log_std + i);
+    }
+}
+
+// ---- GPU-native-kernels Mission 3 ----------------------------------------------------------
+
+void CPUBackend::lrp_linear(const float* x, const float* w, const float* z, const float* r, float* r_in, size_t rows,
+                            size_t in_features, size_t out_features, float eps) {
+    const auto out = static_cast<int64_t>(out_features);
+    for (size_t n = 0; n < rows; ++n) {
+        for (size_t i = 0; i < in_features; ++i) {
+            r_in[n * in_features + i] = lrp::linear_epsilon(x + n * in_features, w, z + n * out_features,
+                                                            r + n * out_features, static_cast<int64_t>(i), out, eps);
+        }
+    }
+}
+
+void CPUBackend::lrp_residual_split(const float* a, const float* b, const float* r, float* r_a, float* r_b, size_t n,
+                                    float eps) {
+    for (size_t i = 0; i < n; ++i) {
+        lrp::residual_split(a[i], b[i], r[i], eps, r_a + i, r_b + i);
+    }
+}
+
+void CPUBackend::lrp_bilinear_elementwise(const float* a, const float* b, const float* r, float* r_out, size_t n,
+                                          float eps) {
+    for (size_t i = 0; i < n; ++i) {
+        r_out[i] = lrp::bilinear_elementwise(a[i], b[i], r[i], eps);
+    }
+}
+
+void CPUBackend::lrp_bilinear_matmul(const float* a, const float* b, const float* o, const float* r_o, float* r_a,
+                                     float* r_b, size_t slices, size_t m, size_t p, size_t q, float eps,
+                                     bool b_transposed) {
+    const auto M = static_cast<int64_t>(m), P = static_cast<int64_t>(p), Q = static_cast<int64_t>(q);
+    for (size_t s = 0; s < slices; ++s) {
+        const float* as = a + s * m * p;
+        const float* bs = b + s * p * q;
+        const float* os = o + s * m * q;
+        const float* rs = r_o + s * m * q;
+        for (int64_t i = 0; i < M; ++i) {
+            for (int64_t j = 0; j < P; ++j) {
+                r_a[s * m * p + static_cast<size_t>(i * P + j)] =
+                    lrp::bilinear_matmul_r_a(as, bs, os, rs, i, j, P, Q, eps, b_transposed);
+            }
+        }
+        for (int64_t j = 0; j < P; ++j) {
+            for (int64_t k = 0; k < Q; ++k) {
+                const size_t out_idx = b_transposed ? static_cast<size_t>(k * P + j) : static_cast<size_t>(j * Q + k);
+                r_b[s * p * q + out_idx] = lrp::bilinear_matmul_r_b(as, bs, os, rs, j, k, M, P, Q, eps, b_transposed);
+            }
+        }
+    }
+}
+
+void CPUBackend::lrp_softmax_rows(const float* x, const float* y, const float* r, float* r_in, size_t rows,
+                                  size_t cols) {
+    for (size_t row = 0; row < rows; ++row) {
+        const size_t off = row * cols;
+        lrp::softmax_row(x + off, y + off, r + off, r_in + off, static_cast<int64_t>(cols));
+    }
+}
+
+void CPUBackend::lrp_rope(const float* x, const float* y, const float* r, const float* cos_table,
+                          const float* sin_table, float* r_in, size_t slices, size_t seq_len, size_t head_dim,
+                          float eps) {
+    const size_t half = head_dim / 2;
+    for (size_t row = 0; row < slices * seq_len; ++row) {
+        const size_t pos = row % seq_len;
+        const size_t off = row * head_dim;
+        lrp::rope_position(x + off, y + off, r + off, cos_table + pos * half, sin_table + pos * half, r_in + off,
+                           static_cast<int64_t>(half), eps);
+    }
+}
+
+void CPUBackend::logic_pointwise(LogicOp op, int norm, const float* a, const float* b, const float* g_or_r,
+                                 const float* y, float* out_a, float* out_b, size_t n, float eps) {
+    for (size_t i = 0; i < n; ++i) {
+        switch (op) {
+            case LogicOp::ConjunctionForward:
+                out_a[i] = lrp::conjunction_forward(norm, a[i], b[i]);
+                break;
+            case LogicOp::ConjunctionBackward:
+                lrp::conjunction_backward(norm, a[i], b[i], g_or_r[i], out_a + i, out_b + i);
+                break;
+            case LogicOp::ConjunctionLrp:
+                lrp::conjunction_lrp(norm, a[i], b[i], y[i], g_or_r[i], eps, out_a + i, out_b + i);
+                break;
+            case LogicOp::DisjunctionForward:
+                out_a[i] = lrp::disjunction_forward(norm, a[i], b[i]);
+                break;
+            case LogicOp::DisjunctionBackward:
+                lrp::disjunction_backward(norm, a[i], b[i], g_or_r[i], out_a + i, out_b + i);
+                break;
+            case LogicOp::DisjunctionLrp:
+                lrp::disjunction_lrp(norm, a[i], b[i], y[i], g_or_r[i], eps, out_a + i, out_b + i);
+                break;
+        }
+    }
+}
+
+void CPUBackend::aggregator_forward(const float* x, float* mean_pow, float* out, size_t n, size_t cols, float p) {
+    for (size_t j = 0; j < cols; ++j) {
+        lrp::aggregator_forward_column(x, mean_pow, out, static_cast<int64_t>(n), static_cast<int64_t>(cols),
+                                       static_cast<int64_t>(j), p);
+    }
+}
+
+void CPUBackend::aggregator_backward(const float* x, const float* mean_pow, const float* grad_out, float* grad_in,
+                                     size_t n, size_t cols, float p) {
+    for (size_t j = 0; j < cols; ++j) {
+        lrp::aggregator_backward_column(x, mean_pow, grad_out, grad_in, static_cast<int64_t>(n),
+                                        static_cast<int64_t>(cols), static_cast<int64_t>(j), p);
+    }
+}
+
+void CPUBackend::aggregator_lrp(const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n,
+                                size_t cols, float p, float eps) {
+    for (size_t j = 0; j < cols; ++j) {
+        lrp::aggregator_lrp_column(x, mean_pow, r_out, r_in, static_cast<int64_t>(n), static_cast<int64_t>(cols),
+                                   static_cast<int64_t>(j), p, eps);
     }
 }
 

@@ -261,28 +261,5 @@ TEST_F(DisjunctionModuleTest, ForwardRejectsNonStackedInputWithWrongLeadingDimen
     EXPECT_THROW({ (void)disj.forward(not_stacked); }, std::invalid_argument);
 }
 
-TEST_F(DisjunctionModuleDeathTest, ForwardAbortsOnNonCpuStackedInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    DisjunctionModule disj(&backend);
-    Tensor a(Shape({2}), &backend, {0.1f, 0.2f}, DeviceType::Cuda);
-    Tensor b(Shape({2}), &backend, {0.3f, 0.4f}, DeviceType::Cuda);
-    Tensor stacked = DisjunctionModule::stack_operands(a, b, &backend);
-    EXPECT_DEATH({ (void)disj.forward(stacked); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(DisjunctionModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    DisjunctionModule disj(&backend);
-    Tensor a(Shape({2}), &backend, {0.1f, 0.2f});
-    Tensor b(Shape({2}), &backend, {0.3f, 0.4f});
-    (void)disj.forward(a, b);
-    Tensor grad_out(Shape({2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)disj.backward(grad_out); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

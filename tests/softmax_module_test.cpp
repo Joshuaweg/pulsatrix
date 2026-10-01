@@ -266,16 +266,5 @@ TEST_F(SoftmaxModuleTest, ForwardRejectsEmptyInput) {
 
 using SoftmaxModuleDeathTest = SoftmaxModuleTest;
 
-TEST_F(SoftmaxModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor x(Shape({2}), &backend, {1.0f, 2.0f});
-    (void)softmax.forward(x);
-
-    Tensor relevance_out(Shape({2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)softmax.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

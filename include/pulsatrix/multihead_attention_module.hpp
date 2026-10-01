@@ -122,7 +122,7 @@ public:
      *       relevance.
      * @throws std::logic_error if called before any forward().
      * @throws std::invalid_argument if relevance_out's shape differs from the cached forward shape.
-     * @note Raw host loops; PULSATRIX_REQUIRE_HOST(relevance_out) guarded.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3).
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
@@ -160,7 +160,7 @@ protected:
     /**
      * @brief Runs the 9-step pipeline: project -> split heads -> (QK-Norm) -> (RoPE) ->
      *        scores -> softmax -> context -> merge heads -> output projection.
-     * @param input `(N, L, d_model)`, Cpu-resident.
+     * @param input `(N, L, d_model)`, any device.
      * @return `(N, L, d_model)`.
      * @throws std::invalid_argument if input is not rank-3 with a final dimension of d_model.
      */

@@ -40,20 +40,17 @@ std::pair<Tensor, Tensor> split_operands(const Tensor& stacked, DeviceBackend* b
         throw std::invalid_argument(
             std::string(caller) + ": input must be a Stack of exactly two operand tensors (leading dim == 2)");
     }
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(stacked);
     const Shape operand_shape = drop_leading_dim(stacked.shape());
     const int64_t half = operand_shape.numel();
-
+    // Device-generic (GPU-native-kernels Mission 3): each operand is a contiguous half of the
+    // stacked buffer, so the split is two same-device copies.
     Tensor a(operand_shape, backend, stacked.device());
     Tensor b(operand_shape, backend, stacked.device());
-    PULSATRIX_REQUIRE_HOST(a);
-    PULSATRIX_REQUIRE_HOST(b);
-    for (int64_t i = 0; i < half; ++i) {
-        a.data()[i] = stacked.data()[i];
-        b.data()[i] = stacked.data()[half + i];
-    }
+    const CopyDirection dir =
+        stacked.device() == DeviceType::Cpu ? CopyDirection::HostToHost : CopyDirection::DeviceToDevice;
+    const size_t bytes = static_cast<size_t>(half) * sizeof(float);
+    backend->copy(a.data(), stacked.data(), bytes, dir);
+    backend->copy(b.data(), stacked.data() + half, bytes, dir);
     return {std::move(a), std::move(b)};
 }
 
@@ -64,17 +61,12 @@ Tensor combine_operands(const Tensor& a, const Tensor& b, DeviceBackend* backend
     for (int64_t i = 0; i < a.rank(); ++i) {
         dims.push_back(a.shape().dim(static_cast<size_t>(i)));
     }
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(a);
-    PULSATRIX_REQUIRE_HOST(b);
     Tensor result(Shape(dims), backend, a.device());
-    PULSATRIX_REQUIRE_HOST(result);
     const int64_t half = a.numel();
-    for (int64_t i = 0; i < half; ++i) {
-        result.data()[i] = a.data()[i];
-        result.data()[half + i] = b.data()[i];
-    }
+    const CopyDirection dir = a.device() == DeviceType::Cpu ? CopyDirection::HostToHost : CopyDirection::DeviceToDevice;
+    const size_t bytes = static_cast<size_t>(half) * sizeof(float);
+    backend->copy(result.data(), a.data(), bytes, dir);
+    backend->copy(result.data() + half, b.data(), bytes, dir);
     return result;
 }
 
@@ -97,32 +89,12 @@ Tensor ConjunctionModule::forward(const Tensor& a, const Tensor& b) {
 }
 
 Tensor ConjunctionModule::forward_impl(const Tensor& input) {
-    // Raw host loop below -- not yet backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(input);
 
     auto [a, b] = split_operands(input, backend_, "ConjunctionModule::forward");
 
     Tensor y(a.shape(), backend_, input.device());
-    const int64_t n = a.numel();
-    switch (t_norm_) {
-        case TNorm::Product:
-            for (int64_t i = 0; i < n; ++i) {
-                y.data()[i] = a.data()[i] * b.data()[i];
-            }
-            break;
-        case TNorm::Lukasiewicz:
-            for (int64_t i = 0; i < n; ++i) {
-                const float z = a.data()[i] + b.data()[i] - 1.0f;
-                y.data()[i] = (z > 0.0f) ? z : 0.0f;
-            }
-            break;
-        case TNorm::Godel:
-            for (int64_t i = 0; i < n; ++i) {
-                y.data()[i] = (a.data()[i] <= b.data()[i]) ? a.data()[i] : b.data()[i];
-            }
-            break;
-    }
-
+    backend_->logic_pointwise(LogicOp::ConjunctionForward, static_cast<int>(t_norm_), a.data(), b.data(), nullptr,
+                              nullptr, y.data(), nullptr, static_cast<size_t>(a.numel()), 0.0f);
     last_input_ = input;
     last_output_ = y;
     has_forwarded_ = true;
@@ -136,42 +108,14 @@ Tensor ConjunctionModule::backward(const Tensor& grad_output) {
     if (grad_output.shape() != last_output_.shape()) {
         throw std::invalid_argument("ConjunctionModule::backward: grad_output must match the cached forward shape");
     }
-    // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
     auto [a, b] = split_operands(last_input_, backend_, "ConjunctionModule::backward");
 
-    Tensor grad_a(a.shape(), backend_);
-    Tensor grad_b(b.shape(), backend_);
-    // Allocated through backend_, so a GPU backend tags them Cuda/Hip -- the host writes below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_a);
-    PULSATRIX_REQUIRE_HOST(grad_b);
-    const int64_t n = a.numel();
-    switch (t_norm_) {
-        case TNorm::Product:
-            for (int64_t i = 0; i < n; ++i) {
-                grad_a.data()[i] = b.data()[i] * grad_output.data()[i];
-                grad_b.data()[i] = a.data()[i] * grad_output.data()[i];
-            }
-            break;
-        case TNorm::Lukasiewicz:
-            for (int64_t i = 0; i < n; ++i) {
-                const float z = a.data()[i] + b.data()[i] - 1.0f;
-                const float g = (z > 0.0f) ? grad_output.data()[i] : 0.0f;
-                grad_a.data()[i] = g;
-                grad_b.data()[i] = g;
-            }
-            break;
-        case TNorm::Godel:
-            for (int64_t i = 0; i < n; ++i) {
-                const bool a_wins = a.data()[i] <= b.data()[i];  // tie -> a, ReluModule-style convention
-                grad_a.data()[i] = a_wins ? grad_output.data()[i] : 0.0f;
-                grad_b.data()[i] = a_wins ? 0.0f : grad_output.data()[i];
-            }
-            break;
-    }
-
+    Tensor grad_a(a.shape(), backend_, a.device());
+    Tensor grad_b(b.shape(), backend_, b.device());
+    backend_->logic_pointwise(LogicOp::ConjunctionBackward, static_cast<int>(t_norm_), a.data(), b.data(),
+                              grad_output.data(), nullptr, grad_a.data(), grad_b.data(), static_cast<size_t>(a.numel()),
+                              0.0f);
     return combine_operands(grad_a, grad_b, backend_);
 }
 
@@ -183,58 +127,14 @@ Tensor ConjunctionModule::propagate_relevance(const Tensor& relevance_out, const
         throw std::invalid_argument(
             "ConjunctionModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
-    // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     auto [a, b] = split_operands(last_input_, backend_, "ConjunctionModule::propagate_relevance");
 
-    PULSATRIX_REQUIRE_HOST(last_output_);
-    Tensor r_a(a.shape(), backend_);
-    Tensor r_b(b.shape(), backend_);
-    // Allocated through backend_, so a GPU backend tags them Cuda/Hip -- the host writes below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(r_a);
-    PULSATRIX_REQUIRE_HOST(r_b);
-    const int64_t n = a.numel();
-    switch (t_norm_) {
-        case TNorm::Product:
-            // AttnLRP Eq. 15-shaped bilinear split, elementwise (inner dimension 1) case --
-            // see the header's propagate_relevance() doc comment for the full derivation.
-            for (int64_t i = 0; i < n; ++i) {
-                const float y = last_output_.data()[i];
-                const float denom = 2.0f * y + config.epsilon * ((y >= 0.0f) ? 1.0f : -1.0f);
-                const float contribution = (a.data()[i] * b.data()[i] / denom) * relevance_out.data()[i];
-                r_a.data()[i] = contribution;
-                r_b.data()[i] = contribution;
-            }
-            break;
-        case TNorm::Lukasiewicz:
-            // Active region: LinearModule-style bias-excluded epsilon rule on z = a+b-1.
-            // Inactive region: both operands' local derivative is 0 (matches backward()),
-            // so both receive 0 -- kept consistent rather than force-conserving a dead branch.
-            for (int64_t i = 0; i < n; ++i) {
-                const float z = a.data()[i] + b.data()[i] - 1.0f;
-                if (z > 0.0f) {
-                    const float denom = z + config.epsilon;  // z > 0 here, sign(z) == +1
-                    r_a.data()[i] = (a.data()[i] / denom) * relevance_out.data()[i];
-                    r_b.data()[i] = (b.data()[i] / denom) * relevance_out.data()[i];
-                } else {
-                    r_a.data()[i] = 0.0f;
-                    r_b.data()[i] = 0.0f;
-                }
-            }
-            break;
-        case TNorm::Godel:
-            // Exact conservation: the winning (smaller, tie -> a) operand is a pure identity
-            // map (y == that operand), so it receives all of R_out; the other receives 0.
-            for (int64_t i = 0; i < n; ++i) {
-                const bool a_wins = a.data()[i] <= b.data()[i];
-                r_a.data()[i] = a_wins ? relevance_out.data()[i] : 0.0f;
-                r_b.data()[i] = a_wins ? 0.0f : relevance_out.data()[i];
-            }
-            break;
-    }
-
+    Tensor r_a(a.shape(), backend_, a.device());
+    Tensor r_b(b.shape(), backend_, b.device());
+    backend_->logic_pointwise(LogicOp::ConjunctionLrp, static_cast<int>(t_norm_), a.data(), b.data(),
+                              relevance_out.data(), last_output_.data(), r_a.data(), r_b.data(),
+                              static_cast<size_t>(a.numel()), config.epsilon);
     return combine_operands(r_a, r_b, backend_);
 }
 

@@ -615,17 +615,5 @@ TEST_F(MultiHeadAttentionModuleTest, PropagateRelevanceRejectsShapeMismatchAgain
 
 using MultiHeadAttentionModuleDeathTest = MultiHeadAttentionModuleTest;
 
-TEST_F(MultiHeadAttentionModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    MultiHeadAttentionModule mha(4, 2, &backend);
-    Tensor x(Shape({1, 2, 4}), &backend, kX);
-    (void)mha.forward(x);
-
-    Tensor relevance_out(Shape({1, 2, 4}), &backend, kX, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mha.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

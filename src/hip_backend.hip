@@ -380,4 +380,119 @@ void HIPBackend::tanh_gaussian_backward(const float* action, const float* std_ca
     PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
 }
 
+// ---- GPU-native-kernels Mission 3 (kernels in gpu_kernels.cuh) ---------------------------
+
+void HIPBackend::lrp_linear(const float* x, const float* w, const float* z, const float* r, float* r_in, size_t rows,
+                            size_t in_features, size_t out_features, float eps) {
+    if (rows == 0 || in_features == 0) {
+        return;
+    }
+    gpu::lrp_linear_kernel<<<gpu::grid_size_for(rows * in_features), gpu::kBlockSize, 0, stream_>>>(
+        x, w, z, r, r_in, rows, in_features, out_features, eps);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::lrp_residual_split(const float* a, const float* b, const float* r, float* r_a, float* r_b, size_t n,
+                                    float eps) {
+    if (n == 0) {
+        return;
+    }
+    gpu::lrp_residual_split_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(
+        a, b, r, r_a, r_b, n, eps);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::lrp_bilinear_elementwise(const float* a, const float* b, const float* r, float* r_out, size_t n,
+                                          float eps) {
+    if (n == 0) {
+        return;
+    }
+    gpu::lrp_bilinear_elementwise_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(
+        a, b, r, r_out, n, eps);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::lrp_bilinear_matmul(const float* a, const float* b, const float* o, const float* r_o, float* r_a,
+                                     float* r_b, size_t slices, size_t m, size_t p, size_t q, float eps,
+                                     bool b_transposed) {
+    if (slices == 0 || m == 0 || p == 0 || q == 0) {
+        return;
+    }
+    gpu::lrp_bilinear_r_a_kernel<<<gpu::grid_size_for(slices * m * p), gpu::kBlockSize, 0, stream_>>>(
+        a, b, o, r_o, r_a, slices, m, p, q, eps, b_transposed);
+    gpu::lrp_bilinear_r_b_kernel<<<gpu::grid_size_for(slices * p * q), gpu::kBlockSize, 0, stream_>>>(
+        a, b, o, r_o, r_b, slices, m, p, q, eps, b_transposed);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::lrp_softmax_rows(const float* x, const float* y, const float* r, float* r_in, size_t rows,
+                                  size_t cols) {
+    if (rows == 0 || cols == 0) {
+        return;
+    }
+    gpu::lrp_softmax_rows_kernel<<<gpu::grid_size_for(rows), gpu::kBlockSize, 0, stream_>>>(
+        x, y, r, r_in, rows, cols);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::lrp_rope(const float* x, const float* y, const float* r, const float* cos_table,
+                          const float* sin_table, float* r_in, size_t slices, size_t seq_len, size_t head_dim,
+                          float eps) {
+    if (slices * seq_len == 0 || head_dim == 0) {
+        return;
+    }
+    gpu::lrp_rope_kernel<<<gpu::grid_size_for(slices * seq_len), gpu::kBlockSize, 0, stream_>>>(
+        x, y, r, cos_table, sin_table, r_in, slices * seq_len, seq_len, head_dim, eps);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::logic_pointwise(LogicOp op, int norm, const float* a, const float* b, const float* g_or_r,
+                                 const float* y, float* out_a, float* out_b, size_t n, float eps) {
+    if (n == 0) {
+        return;
+    }
+    gpu::logic_pointwise_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(
+        static_cast<int>(op), norm, a, b, g_or_r, y, out_a, out_b, n, eps);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::aggregator_forward(const float* x, float* mean_pow, float* out, size_t n, size_t cols, float p) {
+    if (cols == 0) {
+        return;
+    }
+    gpu::aggregator_forward_kernel<<<gpu::grid_size_for(cols), gpu::kBlockSize, 0, stream_>>>(
+        x, mean_pow, out, n, cols, p);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::aggregator_backward(const float* x, const float* mean_pow, const float* grad_out, float* grad_in,
+                                     size_t n, size_t cols, float p) {
+    if (cols == 0) {
+        return;
+    }
+    gpu::aggregator_backward_kernel<<<gpu::grid_size_for(cols), gpu::kBlockSize, 0, stream_>>>(
+        x, mean_pow, grad_out, grad_in, n, cols, p);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::aggregator_lrp(const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n,
+                                size_t cols, float p, float eps) {
+    if (cols == 0) {
+        return;
+    }
+    gpu::aggregator_lrp_kernel<<<gpu::grid_size_for(cols), gpu::kBlockSize, 0, stream_>>>(
+        x, mean_pow, r_out, r_in, n, cols, p, eps);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
 }  // namespace pulsatrix

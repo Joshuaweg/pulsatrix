@@ -84,7 +84,7 @@ public:
      * @return Relevance at this module's input, same shape as relevance_out.
      * @throws std::logic_error if called before any forward().
      * @throws std::invalid_argument if relevance_out's shape differs from the cached forward shape.
-     * @note Raw host loops; PULSATRIX_REQUIRE_HOST(relevance_out) guarded.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3).
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
@@ -104,7 +104,7 @@ public:
 protected:
     /**
      * @brief Runs: project (gate, up) -> silu(gate) -> gate*up -> project (down).
-     * @param input `(..., d_model)`, rank >= 2, Cpu-resident.
+     * @param input `(..., d_model)`, rank >= 2, any device.
      * @return `(..., d_model)`, same shape as input.
      * @throws std::invalid_argument if input's rank < 2 or final dimension != d_model.
      */

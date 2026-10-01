@@ -215,25 +215,5 @@ TEST_F(AggregatorModuleTest, ForwardHandlesNegativeInputWithNonIntegerPWithoutTh
     EXPECT_TRUE(std::isnan(y.data()[0]));
 }
 
-TEST_F(AggregatorModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    AggregatorModule agg(&backend);
-    Tensor x(Shape({2}), &backend, {0.1f, 0.2f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)agg.forward(x); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(AggregatorModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    AggregatorModule agg(&backend);
-    Tensor x(Shape({2}), &backend, {0.1f, 0.2f});
-    (void)agg.forward(x);
-    Tensor grad_out(Shape({}), &backend, {1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)agg.backward(grad_out); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix
