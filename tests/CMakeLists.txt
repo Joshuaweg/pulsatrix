@@ -4,6 +4,7 @@ add_executable(pulsatrix_tests
     shape_test.cpp
     assert_test.cpp
     tensor_test.cpp
+    backend_primitives_test.cpp
     dataset_test.cpp
     iterable_dataset_test.cpp
     sampler_test.cpp

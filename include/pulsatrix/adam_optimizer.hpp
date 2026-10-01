@@ -33,12 +33,10 @@ public:
     /**
      * @brief Applies one Adam update to every parameter the module exposes.
      * @param module Module to update. Safe no-op if it has no parameters.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_REQUIRE_HOST on each parameter guards against
-     *       silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: one fused DeviceBackend::adam_step per parameter. Moments are
+     *       allocated through this optimizer's backend, so every parameter must live on that
+     *       backend's device.
+     * @throws std::invalid_argument if a parameter's device differs from the backend's.
      */
     void step(Module& module);
 

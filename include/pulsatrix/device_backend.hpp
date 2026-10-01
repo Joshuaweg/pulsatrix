@@ -152,6 +152,79 @@ public:
      *       there, logged as a low-priority future cleanup only.
      */
     virtual void mul(const float* a, const float* b, float* out, size_t n) = 0;
+
+    // ---- GPU-native-kernels Mission 1: primitives for device-resident training ----------
+    // Every reduction below has a fixed summation order on every backend (no atomics), so
+    // results are reproducible run to run.
+
+    /**
+     * @brief General row-major matrix multiply: out = op(A) * op(B) + beta * out.
+     * @param a A, stored (m x k) row-major, or (k x m) when transpose_a.
+     * @param transpose_a Use A^T.
+     * @param b B, stored (k x n) row-major, or (n x k) when transpose_b.
+     * @param transpose_b Use B^T.
+     * @param out (m x n) row-major. Read only when beta != 0 (beta == 0 overwrites, so out may
+     *        hold garbage). Must not alias a or b.
+     * @param beta Scale on the existing out; 1 accumulates (gradient accumulation).
+     * @note Replaces the explicit host-side transpose() copies modules built to feed gemm().
+     */
+    virtual void gemm_ex(const float* a, bool transpose_a, const float* b, bool transpose_b, float* out, size_t m,
+                         size_t k, size_t n, float beta) = 0;
+
+    /**
+     * @brief Per-column sum of a (rows x cols) row-major matrix: out[j] = beta*out[j] + sum_i in[i][j].
+     * @note Rows are summed in increasing i on every backend. out must not alias in.
+     */
+    virtual void column_sums(const float* in, float* out, size_t rows, size_t cols, float beta) = 0;
+
+    /**
+     * @brief Broadcast row add: out[i][j] = in[i][j] + row[j] for a (rows x cols) matrix.
+     * @note out may alias in.
+     */
+    virtual void add_row_vector(const float* in, const float* row, float* out, size_t rows, size_t cols) = 0;
+
+    /**
+     * @brief Activation backward: grad_in[i] = grad_out[i] * f'(x[i]), f = op, x = the
+     *        forward *input*.
+     * @note Derivatives: Relu selects grad_out where x > 0, else 0 (0 at x == 0 and for a
+     *       non-finite grad_out, matching ReluModule); Neg -1;
+     *       Tanh 1 - tanh(x)^2; Sigmoid s(1 - s); Silu s + x*s*(1 - s), s = sigmoid(x).
+     *       grad_in may alias grad_out or x.
+     */
+    virtual void elementwise_backward(ElementwiseOp op, const float* x, const float* grad_out, float* grad_in,
+                                      size_t n) = 0;
+
+    /** @brief out[i] = alpha * x[i] + beta * y[i]. out may alias x or y. */
+    virtual void axpby(float alpha, const float* x, float beta, const float* y, float* out, size_t n) = 0;
+
+    /**
+     * @brief Dot product sum_i a[i]*b[i], returned to the host.
+     * @note Synchronizes. Fixed-order reduction on every backend, but GPU order differs from
+     *       CPU's sequential sum, so CPU and GPU agree to rounding, not bitwise.
+     */
+    [[nodiscard]] virtual float dot(const float* a, const float* b, size_t n) = 0;
+
+    /** @brief Row-wise softmax of a (rows x cols) matrix, max-subtracted. out may alias in. */
+    virtual void softmax_rows(const float* in, float* out, size_t rows, size_t cols) = 0;
+
+    /**
+     * @brief Softmax backward from its output y: dx[i][j] = y[i][j] * (dy[i][j] - sum_k y[i][k]*dy[i][k]).
+     * @note dx must not alias y or dy.
+     */
+    virtual void softmax_rows_backward(const float* y, const float* dy, float* dx, size_t rows, size_t cols) = 0;
+
+    /** @brief Per-row log-sum-exp, max-subtracted: out[i] = log sum_j exp(in[i][j]). */
+    virtual void logsumexp_rows(const float* in, float* out, size_t rows, size_t cols) = 0;
+
+    /**
+     * @brief One fused Adam update over n parameters.
+     * @param bias_correction1 1 - beta1^t, computed once on the host per step.
+     * @param bias_correction2 1 - beta2^t, likewise.
+     * @note Same per-element expression order as the pre-campaign AdamOptimizer host loop:
+     *       m = b1*m + (1-b1)*g; v = b2*v + (1-b2)*g*g; p -= lr * (m/bc1) / (sqrt(v/bc2) + eps).
+     */
+    virtual void adam_step(float* param, const float* grad, float* m, float* v, size_t n, float lr, float beta1,
+                           float beta2, float eps, float bias_correction1, float bias_correction2) = 0;
 };
 
 }  // namespace pulsatrix

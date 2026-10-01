@@ -3,6 +3,7 @@
 #include <random>
 #include <vector>
 
+#include "gpu_training_equivalence_cases.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/cuda_backend.hpp"
 #include "pulsatrix/linear_module.hpp"
@@ -182,6 +183,9 @@ TEST_F(ForwardPassEquivalenceTest, SwiGLUForwardMatchesCPUBackend) {
         EXPECT_NEAR(cpu_output.data()[i], cuda_host[i], kBackendEquivalenceTolerance) << "mismatch at index " << i;
     }
 }
+
+// GPU-native-kernels Mission 1: device-resident training -- cases shared with the other GPU backend.
+PULSATRIX_TRAINING_EQUIVALENCE_TESTS(ForwardPassEquivalenceTest, cuda)
 
 }  // namespace
 }  // namespace pulsatrix

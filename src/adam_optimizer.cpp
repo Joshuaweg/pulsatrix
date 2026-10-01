@@ -1,6 +1,7 @@
 #include "pulsatrix/adam_optimizer.hpp"
 
 #include <cmath>
+#include <stdexcept>
 
 #include "pulsatrix/assert.hpp"
 
@@ -11,12 +12,14 @@ AdamOptimizer::AdamOptimizer(float learning_rate, DeviceBackend* backend, float 
 
 void AdamOptimizer::step(Module& module) {
     for (ParamRef p : module.parameters()) {
-        // Dereferences Tensor::data() directly in a raw host loop -- not yet
-        // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
-        // decision and mission_host_loop_guards.md.
-        PULSATRIX_REQUIRE_HOST(*p.value);
-        PULSATRIX_REQUIRE_HOST(*p.grad);
-
+        // Moments are allocated through the optimizer's own backend_ -- whose lifetime the
+        // caller already guarantees -- so they must live where the parameter lives. A
+        // mismatch would hand adam_step pointers from two devices (GPU-native-kernels
+        // Mission 1).
+        if (p.value->device() != backend_->device()) {
+            throw std::invalid_argument(
+                "AdamOptimizer::step: parameter is on a different device than the optimizer's backend");
+        }
         auto it = state_.find(p.value);
         if (it == state_.end()) {
             AdamState fresh{Tensor(p.value->shape(), backend_), Tensor(p.value->shape(), backend_), 0};
@@ -25,22 +28,15 @@ void AdamOptimizer::step(Module& module) {
             it = state_.emplace(p.value, std::move(fresh)).first;
         }
         AdamState& s = it->second;
-        // The moment buffers are allocated through backend_, so a GPU backend tags them
-        // Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
-        PULSATRIX_REQUIRE_HOST(s.m);
-        PULSATRIX_REQUIRE_HOST(s.v);
         ++s.t;
 
-        for (int64_t i = 0; i < p.value->numel(); ++i) {
-            float g = p.grad->data()[i];
-            s.m.data()[i] = beta1_ * s.m.data()[i] + (1.0f - beta1_) * g;
-            s.v.data()[i] = beta2_ * s.v.data()[i] + (1.0f - beta2_) * g * g;
-
-            float m_hat = s.m.data()[i] / (1.0f - std::pow(beta1_, static_cast<float>(s.t)));
-            float v_hat = s.v.data()[i] / (1.0f - std::pow(beta2_, static_cast<float>(s.t)));
-
-            p.value->data()[i] -= learning_rate_ * m_hat / (std::sqrt(v_hat) + eps_);
-        }
+        // Bias corrections once per parameter per step on the host -- the same float
+        // expressions the original per-element host loop evaluated.
+        const float bias_correction1 = 1.0f - std::pow(beta1_, static_cast<float>(s.t));
+        const float bias_correction2 = 1.0f - std::pow(beta2_, static_cast<float>(s.t));
+        backend_->adam_step(p.value->data(), p.grad->data(), s.m.data(), s.v.data(),
+                            static_cast<size_t>(p.value->numel()), learning_rate_, beta1_, beta2_, eps_,
+                            bias_correction1, bias_correction2);
     }
 }
 
