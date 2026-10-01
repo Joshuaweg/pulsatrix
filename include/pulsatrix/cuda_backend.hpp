@@ -43,10 +43,26 @@ public:
     void elementwise(ElementwiseOp op, const float* in, float* out, size_t n) override;
     void add(const float* a, const float* b, float* out, size_t n) override;
     void mul(const float* a, const float* b, float* out, size_t n) override;
+    void gemm_ex(const float* a, bool transpose_a, const float* b, bool transpose_b, float* out, size_t m, size_t k,
+                 size_t n, float beta) override;
+    void column_sums(const float* in, float* out, size_t rows, size_t cols, float beta) override;
+    void add_row_vector(const float* in, const float* row, float* out, size_t rows, size_t cols) override;
+    void elementwise_backward(ElementwiseOp op, const float* x, const float* grad_out, float* grad_in,
+                              size_t n) override;
+    void axpby(float alpha, const float* x, float beta, const float* y, float* out, size_t n) override;
+    [[nodiscard]] float dot(const float* a, const float* b, size_t n) override;
+    void softmax_rows(const float* in, float* out, size_t rows, size_t cols) override;
+    void softmax_rows_backward(const float* y, const float* dy, float* dx, size_t rows, size_t cols) override;
+    void logsumexp_rows(const float* in, float* out, size_t rows, size_t cols) override;
+    void adam_step(float* param, const float* grad, float* m, float* v, size_t n, float lr, float beta1, float beta2,
+                   float eps, float bias_correction1, float bias_correction2) override;
 
 private:
     cudaStream_t stream_;
     cublasHandle_t cublas_handle_;
+    // One device float that dot() reduces into before copying it to the host; allocated once
+    // so dot() costs no per-call device allocation.
+    float* dot_result_ = nullptr;
 };
 
 }  // namespace pulsatrix
