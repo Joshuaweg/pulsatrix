@@ -329,9 +329,146 @@ TEST_F(TensorTest, ToSameDeviceIsNoOp) {
     EXPECT_FLOAT_EQ(t.data()[0], 1.0f);
 }
 
-TEST_F(TensorTest, ToDifferentDeviceThrowsUntilThatBackendExists) {
+TEST_F(TensorTest, ToDifferentDeviceWithoutBackendThrows) {
     Tensor t(Shape({2}), &backend);
-    EXPECT_THROW(t.to(DeviceType::Cuda), std::runtime_error);
+    EXPECT_THROW(t.to(DeviceType::Cuda), std::invalid_argument);
+}
+
+// Stands in for a GPU backend without needing one: host memory underneath (so results are
+// inspectable), but records which CopyDirection each copy() was issued with, on which
+// backend, and can be told to fail. Real-hardware coverage of the same paths lives in
+// hip_backend_test.cpp / cuda_backend_test.cpp.
+class RecordingBackend : public CPUBackend {
+public:
+    void copy(void* dst, const void* src, size_t bytes, CopyDirection dir) override {
+        directions.push_back(dir);
+        if (fail_copy) {
+            throw std::runtime_error("RecordingBackend: injected copy failure");
+        }
+        CPUBackend::copy(dst, src, bytes, dir);
+    }
+    void free(void* ptr) noexcept override {
+        if (ptr != nullptr) {
+            ++frees;
+        }
+        CPUBackend::free(ptr);
+    }
+
+    std::vector<CopyDirection> directions;
+    int frees = 0;
+    bool fail_copy = false;
+};
+
+TEST_F(TensorTest, ToNullBackendThrows) {
+    Tensor t(Shape({2}), &backend);
+    EXPECT_THROW(t.to(DeviceType::Cuda, nullptr), std::invalid_argument);
+}
+
+TEST_F(TensorTest, ToSameDeviceAndBackendIsNoOp) {
+    Tensor t(Shape({2}), &backend, {1.0f, 2.0f});
+    const float* ptr_before = t.data();
+    t.to(DeviceType::Cpu, &backend);
+    EXPECT_EQ(t.data(), ptr_before);
+}
+
+TEST_F(TensorTest, ToDeviceCopiesHostToDeviceThroughTargetBackend) {
+    RecordingBackend source;
+    RecordingBackend device;
+    Tensor t(Shape({3}), &source, {1.0f, -2.0f, 3.0f});
+    source.directions.clear();
+
+    t.to(DeviceType::Hip, &device);
+
+    EXPECT_EQ(t.device(), DeviceType::Hip);
+    EXPECT_TRUE(source.directions.empty());
+    ASSERT_EQ(device.directions.size(), 1u);
+    EXPECT_EQ(device.directions[0], CopyDirection::HostToDevice);
+    EXPECT_EQ(source.frees, 1);  // old buffer released through the backend that allocated it
+    EXPECT_FLOAT_EQ(t.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(t.data()[1], -2.0f);
+    EXPECT_FLOAT_EQ(t.data()[2], 3.0f);
+}
+
+TEST_F(TensorTest, ToHostCopiesDeviceToHostThroughSourceBackend) {
+    RecordingBackend device;
+    RecordingBackend host;
+    Tensor t(Shape({2}), &device, {4.0f, 5.0f}, DeviceType::Cuda);
+    device.directions.clear();
+
+    t.to(DeviceType::Cpu, &host);
+
+    EXPECT_EQ(t.device(), DeviceType::Cpu);
+    ASSERT_EQ(device.directions.size(), 1u);
+    EXPECT_EQ(device.directions[0], CopyDirection::DeviceToHost);
+    EXPECT_TRUE(host.directions.empty());
+    EXPECT_FLOAT_EQ(t.data()[0], 4.0f);
+    EXPECT_FLOAT_EQ(t.data()[1], 5.0f);
+}
+
+TEST_F(TensorTest, ToBetweenGpuVendorsStagesThroughHost) {
+    RecordingBackend cuda_like;
+    RecordingBackend hip_like;
+    Tensor t(Shape({2}), &cuda_like, {6.0f, 7.0f}, DeviceType::Cuda);
+    cuda_like.directions.clear();
+
+    t.to(DeviceType::Hip, &hip_like);
+
+    ASSERT_EQ(cuda_like.directions.size(), 1u);
+    EXPECT_EQ(cuda_like.directions[0], CopyDirection::DeviceToHost);
+    ASSERT_EQ(hip_like.directions.size(), 1u);
+    EXPECT_EQ(hip_like.directions[0], CopyDirection::HostToDevice);
+    EXPECT_FLOAT_EQ(t.data()[0], 6.0f);
+    EXPECT_FLOAT_EQ(t.data()[1], 7.0f);
+}
+
+TEST_F(TensorTest, ToSameDeviceTypeDifferentBackendCopiesDeviceToDevice) {
+    RecordingBackend first;
+    RecordingBackend second;
+    Tensor t(Shape({1}), &first, {8.0f}, DeviceType::Hip);
+
+    t.to(DeviceType::Hip, &second);
+
+    ASSERT_EQ(second.directions.size(), 1u);
+    EXPECT_EQ(second.directions[0], CopyDirection::DeviceToDevice);
+    EXPECT_FLOAT_EQ(t.data()[0], 8.0f);
+}
+
+TEST_F(TensorTest, ToReroutesLaterOperationsThroughTargetBackend) {
+    RecordingBackend device;
+    Tensor t(Shape({2}), &backend, {1.0f, 2.0f});
+    t.to(DeviceType::Hip, &device);
+    device.directions.clear();
+
+    Tensor copy(t);  // copy ctor must use the new backend and device's direction
+
+    ASSERT_EQ(device.directions.size(), 1u);
+    EXPECT_EQ(device.directions[0], CopyDirection::DeviceToDevice);
+    EXPECT_EQ(copy.device(), DeviceType::Hip);
+}
+
+TEST_F(TensorTest, ToLeavesTensorUnchangedWhenCopyThrows) {
+    RecordingBackend device;
+    device.fail_copy = true;
+    Tensor t(Shape({2}), &backend, {1.0f, 2.0f});
+    const float* ptr_before = t.data();
+
+    EXPECT_THROW(t.to(DeviceType::Cuda, &device), std::runtime_error);
+
+    EXPECT_EQ(t.device(), DeviceType::Cpu);
+    EXPECT_EQ(t.data(), ptr_before);
+    EXPECT_FLOAT_EQ(t.data()[1], 2.0f);
+    EXPECT_EQ(device.frees, 1);  // the half-built target buffer was released, not leaked
+}
+
+TEST_F(TensorTest, ToOnEmptyTensorRetagsWithoutCopying) {
+    RecordingBackend device;
+    Tensor t(Shape({0}), &backend);
+
+    t.to(DeviceType::Cuda, &device);
+
+    EXPECT_EQ(t.device(), DeviceType::Cuda);
+    EXPECT_EQ(t.data(), nullptr);
+    EXPECT_TRUE(device.directions.empty());
 }
 
 // Adversarial hardening (campaign_exai_dl_library_adversarial_hardening, Mission 0):

@@ -30,7 +30,7 @@ public:
      * @param shape Tensor shape.
      * @param backend Backend to allocate/fill through. Not owned; must outlive this Tensor.
      * @param device Which device this tensor's buffer conceptually resides on. Defaults to
-     *        Cpu -- only Cpu has a DeviceBackend implementation as of Phase 0.
+     *        Cpu. Must match the device backend allocates on.
      */
     explicit Tensor(Shape shape, DeviceBackend* backend, DeviceType device = DeviceType::Cpu);
 
@@ -119,8 +119,8 @@ public:
      * @note Bounds and rank are checked via PULSATRIX_ASSERT (programmer-error contract, not a
      *       condition a well-formed caller can legitimately trigger) -- see
      *       cpp_style_guide/context_style_project_conventions.md's assert-vs-throw table.
-     *       Assumes a host-addressable (Cpu) backend; revisit when a GPU-resident Tensor's
-     *       at() needs a host round-trip (Phase 1.5+).
+     *       Assumes a host-addressable (Cpu) backend: on a Cuda/Hip Tensor, move it with
+     *       to(DeviceType::Cpu, cpu_backend) first.
      */
     [[nodiscard]] float& at(std::initializer_list<int64_t> index);
 
@@ -174,16 +174,38 @@ public:
     Tensor& reshape(Shape new_shape);
 
     /**
-     * @brief Transfers this tensor to a different device.
-     * @param target Target device.
+     * @brief Same-device no-op form of to().
+     * @param target Target device. Must equal device().
      * @return *this, for chaining.
-     * @note A no-op when target == device() (charter's Phase 0 exit gate requires this
-     *       specific path). Any genuine cross-device transfer throws until a DeviceBackend
-     *       for that device exists (Phase 1.5/1.6) -- there is currently nothing to
-     *       transfer to or from.
-     * @throws std::runtime_error if target != device().
+     * @note A Tensor holds exactly one non-owned DeviceBackend*, and there is no global
+     *       backend registry, so a cross-device move cannot know which backend should own
+     *       the new buffer -- use to(target, target_backend) for that. This overload exists
+     *       for the charter's Phase 0 exit gate (to(device()) is a no-op).
+     * @throws std::invalid_argument if target != device().
      */
     Tensor& to(DeviceType target);
+
+    /**
+     * @brief Moves this tensor's buffer to another device, owned by target_backend.
+     * @param target Device the new buffer resides on. Must be the device target_backend
+     *        allocates on (Cpu for CPUBackend, Cuda for CUDABackend, Hip for HIPBackend) --
+     *        not checkable here, since DeviceBackend does not report its own device.
+     * @param target_backend Backend to allocate the new buffer through. Not owned; must
+     *        outlive this Tensor, exactly as the constructor's backend must.
+     * @return *this, for chaining. Afterwards device() == target and every subsequent
+     *         allocate/copy/free goes through target_backend.
+     * @note The copy is issued by whichever backend owns the device-side pointer:
+     *       Cpu -> device uses target_backend (HostToDevice); device -> Cpu uses the current
+     *       backend (DeviceToHost); between two different GPU device types (Cuda <-> Hip) the
+     *       data is staged through a host buffer, since neither vendor's runtime can address
+     *       the other's memory. Same device type through a different backend instance copies
+     *       directly (HostToHost / DeviceToDevice).
+     * @note Strong exception guarantee: if allocation or the copy throws, this Tensor is left
+     *       unchanged (same buffer, backend and device) and the new buffer is released.
+     * @note A no-op when target == device() and target_backend is the current backend.
+     * @throws std::invalid_argument if target_backend is nullptr.
+     */
+    Tensor& to(DeviceType target, DeviceBackend* target_backend);
 
 private:
     [[nodiscard]] int64_t flat_index_of(std::initializer_list<int64_t> index) const;

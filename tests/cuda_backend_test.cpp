@@ -2,7 +2,9 @@
 
 #include <vector>
 
+#include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/cuda_backend.hpp"
+#include "pulsatrix/relu_module.hpp"
 #include "pulsatrix/tensor.hpp"
 
 // Mirrors CPUBackendTest's exact test shape (allocate/free round-trip, zero-byte
@@ -283,6 +285,54 @@ TEST_F(CUDABackendTest, MulComputesElementwiseProduct) {
 
 TEST_F(CUDABackendTest, MulHandlesZeroLengthGracefully) {
     EXPECT_NO_THROW(backend.mul(nullptr, nullptr, nullptr, 0));
+}
+
+// Tensor::to(target, target_backend) on real CUDA hardware: the direction-selection logic is
+// covered in tensor_test.cpp against a host-simulated backend; these prove the copies are
+// valid against a genuine device allocator.
+TEST_F(CUDABackendTest, TensorToDeviceAndBackRoundTripsValues) {
+    CPUBackend cpu;
+    Tensor t(Shape({4}), &cpu, {1.5f, -2.0f, 0.0f, 9.25f});
+
+    t.to(DeviceType::Cuda, &backend);
+    EXPECT_EQ(t.device(), DeviceType::Cuda);
+    std::vector<float> on_device(4, 0.0f);
+    backend.copy(on_device.data(), t.data(), on_device.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(on_device[3], 9.25f);
+
+    t.to(DeviceType::Cpu, &cpu);
+    EXPECT_EQ(t.device(), DeviceType::Cpu);
+    EXPECT_FLOAT_EQ(t.data()[0], 1.5f);
+    EXPECT_FLOAT_EQ(t.data()[1], -2.0f);
+    EXPECT_FLOAT_EQ(t.data()[2], 0.0f);
+    EXPECT_FLOAT_EQ(t.data()[3], 9.25f);
+}
+
+TEST_F(CUDABackendTest, TensorMovedToDeviceFeedsAModuleForwardPass) {
+    CPUBackend cpu;
+    Tensor input(Shape({2, 2}), &cpu, {-1.0f, 2.0f, 3.0f, -4.0f});
+    ReluModule relu(&backend, DeviceType::Cuda);
+
+    input.to(DeviceType::Cuda, &backend);
+    Tensor output = relu.forward(input);
+    output.to(DeviceType::Cpu, &cpu);
+
+    EXPECT_FLOAT_EQ(output.data()[0], 0.0f);
+    EXPECT_FLOAT_EQ(output.data()[1], 2.0f);
+    EXPECT_FLOAT_EQ(output.data()[2], 3.0f);
+    EXPECT_FLOAT_EQ(output.data()[3], 0.0f);
+}
+
+TEST_F(CUDABackendTest, TensorToSecondBackendInstanceCopiesDeviceToDevice) {
+    CUDABackend other;
+    Tensor t(Shape({2}), &backend, {3.0f, 4.0f}, DeviceType::Cuda);
+
+    t.to(DeviceType::Cuda, &other);
+
+    std::vector<float> host(2, 0.0f);
+    other.copy(host.data(), t.data(), host.size() * sizeof(float), CopyDirection::DeviceToHost);
+    EXPECT_FLOAT_EQ(host[0], 3.0f);
+    EXPECT_FLOAT_EQ(host[1], 4.0f);
 }
 
 }  // namespace
