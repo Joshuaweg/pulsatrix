@@ -1,6 +1,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 
 #include "pointwise_math.hpp"
+#include "cnn_math.hpp"
 #include "lrp_math.hpp"
 #include "row_math.hpp"
 
@@ -515,6 +516,183 @@ void CPUBackend::aggregator_lrp(const float* x, const float* mean_pow, const flo
     for (size_t j = 0; j < cols; ++j) {
         lrp::aggregator_lrp_column(x, mean_pow, r_out, r_in, static_cast<int64_t>(n), static_cast<int64_t>(cols),
                                    static_cast<int64_t>(j), p, eps);
+    }
+}
+
+// ---- GPU-native-kernels Mission 4 ----------------------------------------------------------
+
+void CPUBackend::im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) {
+    const size_t out_w = w - kw + 1;
+    const size_t P = c * kh * kw, Q = (h - kh + 1) * out_w;
+    for (size_t e = 0; e < n; ++e) {
+        for (size_t p = 0; p < P; ++p) {
+            for (size_t q = 0; q < Q; ++q) {
+                col[(e * P + p) * Q + q] = cnn::im2col_element(
+                    in + e * c * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w), static_cast<int64_t>(kh),
+                    static_cast<int64_t>(kw), static_cast<int64_t>(out_w), static_cast<int64_t>(p),
+                    static_cast<int64_t>(q));
+            }
+        }
+    }
+}
+
+void CPUBackend::col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh,
+                            size_t kw) {
+    const size_t P = c * kh * kw, Q = (h - kh + 1) * (w - kw + 1);
+    for (size_t e = 0; e < n; ++e) {
+        for (size_t ch = 0; ch < c; ++ch) {
+            for (size_t ih = 0; ih < h; ++ih) {
+                for (size_t iw = 0; iw < w; ++iw) {
+                    float* px = out + ((e * c + ch) * h + ih) * w + iw;
+                    *px = cnn::col2im_pixel(col + e * P * Q, *px, static_cast<int64_t>(h), static_cast<int64_t>(w),
+                                            static_cast<int64_t>(kh), static_cast<int64_t>(kw),
+                                            static_cast<int64_t>(ch), static_cast<int64_t>(ih),
+                                            static_cast<int64_t>(iw));
+                }
+            }
+        }
+    }
+}
+
+void CPUBackend::add_channel_vector(const float* in, const float* vec, float* out, size_t n, size_t c, size_t inner) {
+    for (size_t idx = 0; idx < n * c * inner; ++idx) {
+        out[idx] = in[idx] + vec[(idx / inner) % c];
+    }
+}
+
+void CPUBackend::lrp_conv(const float* col, const float* kernel, const float* pre_bias, const float* r, float* r_col,
+                          size_t n, size_t out_channels, size_t p, size_t q, float eps) {
+    for (size_t e = 0; e < n; ++e) {
+        for (size_t pi = 0; pi < p; ++pi) {
+            for (size_t qi = 0; qi < q; ++qi) {
+                r_col[(e * p + pi) * q + qi] = cnn::conv_lrp_col(
+                    col + e * p * q, kernel, pre_bias + e * out_channels * q, r + e * out_channels * q,
+                    static_cast<int64_t>(pi), static_cast<int64_t>(qi), static_cast<int64_t>(p),
+                    static_cast<int64_t>(q), static_cast<int64_t>(out_channels), eps);
+            }
+        }
+    }
+}
+
+void CPUBackend::max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w,
+                                  size_t kh, size_t kw) {
+    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+    for (size_t pl = 0; pl < planes; ++pl) {
+        for (size_t oh = 0; oh < out_h; ++oh) {
+            for (size_t ow = 0; ow < out_w; ++ow) {
+                const size_t o = (pl * out_h + oh) * out_w + ow;
+                cnn::max_pool_window(in + pl * h * w, static_cast<int64_t>(w), static_cast<int64_t>(kh),
+                                     static_cast<int64_t>(kw), static_cast<int64_t>(oh), static_cast<int64_t>(ow),
+                                     out + o, argmax + o);
+            }
+        }
+    }
+}
+
+void CPUBackend::max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w,
+                            size_t kh, size_t kw) {
+    const size_t out_plane = ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
+    for (size_t pl = 0; pl < planes; ++pl) {
+        for (size_t q = 0; q < out_plane; ++q) {
+            dst[pl * h * w + static_cast<size_t>(argmax[pl * out_plane + q])] = src[pl * out_plane + q];
+        }
+    }
+}
+
+void CPUBackend::avg_pool_forward(const float* in, float* out, size_t planes, size_t h, size_t w, size_t kh,
+                                  size_t kw) {
+    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+    for (size_t pl = 0; pl < planes; ++pl) {
+        for (size_t oh = 0; oh < out_h; ++oh) {
+            for (size_t ow = 0; ow < out_w; ++ow) {
+                out[(pl * out_h + oh) * out_w + ow] =
+                    cnn::avg_pool_window(in + pl * h * w, static_cast<int64_t>(w), static_cast<int64_t>(kh),
+                                         static_cast<int64_t>(kw), static_cast<int64_t>(oh), static_cast<int64_t>(ow));
+            }
+        }
+    }
+}
+
+void CPUBackend::avg_pool_backward(const float* grad_out, float* grad_in, size_t planes, size_t h, size_t w,
+                                   size_t kh, size_t kw) {
+    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+    for (size_t pl = 0; pl < planes; ++pl) {
+        for (size_t oh = 0; oh < out_h; ++oh) {
+            for (size_t ow = 0; ow < out_w; ++ow) {
+                const float g = grad_out[(pl * out_h + oh) * out_w + ow] / static_cast<float>(kh * kw);
+                for (size_t i = 0; i < kh; ++i) {
+                    for (size_t j = 0; j < kw; ++j) {
+                        grad_in[pl * h * w + (oh * kh + i) * w + (ow * kw + j)] = g;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void CPUBackend::lrp_avg_pool(const float* x, const float* r, float* r_in, size_t planes, size_t h, size_t w,
+                              size_t kh, size_t kw, float eps) {
+    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+    for (size_t pl = 0; pl < planes; ++pl) {
+        for (size_t oh = 0; oh < out_h; ++oh) {
+            for (size_t ow = 0; ow < out_w; ++ow) {
+                cnn::avg_pool_lrp_window(x + pl * h * w, r_in + pl * h * w, static_cast<int64_t>(w),
+                                         static_cast<int64_t>(kh), static_cast<int64_t>(kw), static_cast<int64_t>(oh),
+                                         static_cast<int64_t>(ow), r[(pl * out_h + oh) * out_w + ow], eps);
+            }
+        }
+    }
+}
+
+void CPUBackend::batch_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                                    float* channel_std, size_t n, size_t c, size_t spatial, float eps) {
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::batch_norm_forward_channel(in, gamma, beta, xhat, out, channel_std, static_cast<int64_t>(n),
+                                        static_cast<int64_t>(c), static_cast<int64_t>(spatial),
+                                        static_cast<int64_t>(ch), eps);
+    }
+}
+
+void CPUBackend::batch_norm_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                     const float* channel_std, float* grad_in, float* gamma_grad, float* beta_grad,
+                                     size_t n, size_t c, size_t spatial) {
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::batch_norm_backward_channel(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad,
+                                         static_cast<int64_t>(n), static_cast<int64_t>(c),
+                                         static_cast<int64_t>(spatial), static_cast<int64_t>(ch));
+    }
+}
+
+void CPUBackend::group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                                    float* group_std, size_t n, size_t c, size_t spatial, size_t num_groups,
+                                    float eps) {
+    const size_t group_size = c / num_groups;
+    for (size_t e = 0; e < n; ++e) {
+        for (size_t g = 0; g < num_groups; ++g) {
+            cnn::group_norm_forward_group(in, gamma, beta, xhat, out, group_std, static_cast<int64_t>(c),
+                                          static_cast<int64_t>(spatial), static_cast<int64_t>(num_groups),
+                                          static_cast<int64_t>(group_size), static_cast<int64_t>(e),
+                                          static_cast<int64_t>(g), eps);
+        }
+    }
+}
+
+void CPUBackend::group_norm_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                     const float* group_std, float* grad_in, float* gamma_grad, float* beta_grad,
+                                     size_t n, size_t c, size_t spatial, size_t num_groups) {
+    const size_t group_size = c / num_groups;
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::group_norm_param_grads_channel(grad_out, xhat, gamma_grad, beta_grad, static_cast<int64_t>(n),
+                                            static_cast<int64_t>(c), static_cast<int64_t>(spatial),
+                                            static_cast<int64_t>(ch));
+    }
+    for (size_t e = 0; e < n; ++e) {
+        for (size_t g = 0; g < num_groups; ++g) {
+            cnn::group_norm_backward_group(grad_out, gamma, xhat, group_std, grad_in, static_cast<int64_t>(c),
+                                           static_cast<int64_t>(spatial), static_cast<int64_t>(num_groups),
+                                           static_cast<int64_t>(group_size), static_cast<int64_t>(e),
+                                           static_cast<int64_t>(g));
+        }
     }
 }
 
