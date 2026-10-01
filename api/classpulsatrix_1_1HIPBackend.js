@@ -8,10 +8,13 @@ var classpulsatrix_1_1HIPBackend =
     [ "add_row_vector", "classpulsatrix_1_1HIPBackend.html#a2e081fc275ae92ad25a75fa044083e53", null ],
     [ "allocate", "classpulsatrix_1_1HIPBackend.html#aff78faa24ac9c1246184103ff88e3c40", null ],
     [ "axpby", "classpulsatrix_1_1HIPBackend.html#af6224fc26feb843529feb6afb107ffec", null ],
+    [ "bce_with_logits", "classpulsatrix_1_1HIPBackend.html#a95b7c241d558f2cc9e4097fb804033b9", null ],
+    [ "bce_with_logits_grad", "classpulsatrix_1_1HIPBackend.html#a152f37db69fae77c5d553796b3f9665d", null ],
     [ "column_sums", "classpulsatrix_1_1HIPBackend.html#a58b3b5d40a4a84f862da2ee25aefc391", null ],
     [ "copy", "classpulsatrix_1_1HIPBackend.html#a39894c414cbd933c2dd517e427687c29", null ],
     [ "device", "classpulsatrix_1_1HIPBackend.html#ab5f1e6f94bbcde729d57089a347530f0", null ],
     [ "dot", "classpulsatrix_1_1HIPBackend.html#ab7a9751587bc807a0acb8d6128b2834c", null ],
+    [ "dropout_forward", "classpulsatrix_1_1HIPBackend.html#a31106bfb664daef9aae9715c3589e940", null ],
     [ "elementwise", "classpulsatrix_1_1HIPBackend.html#af6d94738c9465aa151741094e02b5126", null ],
     [ "elementwise_backward", "classpulsatrix_1_1HIPBackend.html#a0ebfccbcee8e2c80b8ec91ff2a8c2f7e", null ],
     [ "fill", "classpulsatrix_1_1HIPBackend.html#a3cb4bc1c028c8676510ce3e1a5c3b326", null ],
@@ -22,5 +25,6 @@ var classpulsatrix_1_1HIPBackend =
     [ "mul", "classpulsatrix_1_1HIPBackend.html#a8d1e6e52eb84ed7e21535e9bed152478", null ],
     [ "operator=", "classpulsatrix_1_1HIPBackend.html#a986e88f107512b4f5272d7e8843bef3c", null ],
     [ "softmax_rows", "classpulsatrix_1_1HIPBackend.html#a367db925b9109e0c4e153d0c34985b75", null ],
-    [ "softmax_rows_backward", "classpulsatrix_1_1HIPBackend.html#a1d98152f685f2efc6e27a7f4e77ea121", null ]
+    [ "softmax_rows_backward", "classpulsatrix_1_1HIPBackend.html#a1d98152f685f2efc6e27a7f4e77ea121", null ],
+    [ "sum", "classpulsatrix_1_1HIPBackend.html#a0e7278da12745d1df0b0bcdd855b5501", null ]
 ];

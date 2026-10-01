@@ -24,13 +24,14 @@ var searchData=
   ['evolution_5fstrategies_2ehpp_21',['evolution_strategies.hpp',['../evolution__strategies_8hpp.html',1,'']]],
   ['evolutionary_20computation_22',['Evolutionary Computation',['../group__evolutionary.html',1,'']]],
   ['evolutionary_5floop_2ehpp_23',['evolutionary_loop.hpp',['../evolutionary__loop_8hpp.html',1,'']]],
-  ['expectedimprovement_24',['expectedimprovement',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192',1,'pulsatrix::ExpectedImprovement'],['../namespacepulsatrix.html#abf980c4f81efaaafcbfd21722b3d7d3e',1,'pulsatrix::ExpectedImprovement(double mean, double variance, double best_value, double xi=0.01)']]],
-  ['explain_25',['explain',['../classpulsatrix_1_1Saliency.html#a8bf60072cd33a12ba4e13b725874ab0d',1,'pulsatrix::Saliency::explain()'],['../classpulsatrix_1_1PDP.html#aa6f5bb5e6cb1a2751afb6bbadbeb988a',1,'pulsatrix::PDP::explain()'],['../classpulsatrix_1_1LIME.html#a567e20df12b7965504e16d3e7e638c0a',1,'pulsatrix::LIME::explain()'],['../classpulsatrix_1_1KernelSHAP.html#a5dab4fed1a768722277916b14fee0d33',1,'pulsatrix::KernelSHAP::explain()'],['../classpulsatrix_1_1IntegratedGradients.html#affd1e5ac2533c1b2c1c6911cb278551f',1,'pulsatrix::IntegratedGradients::explain()'],['../classpulsatrix_1_1GradCAM.html#addf8b756810847f14a9dca10d2faab70',1,'pulsatrix::GradCAM::explain()']]],
-  ['explainer_5fcontext_2ehpp_26',['explainer_context.hpp',['../explainer__context_8hpp.html',1,'']]],
-  ['explainer_5fstability_2ehpp_27',['explainer_stability.hpp',['../explainer__stability_8hpp.html',1,'']]],
-  ['explainercontext_28',['explainercontext',['../classpulsatrix_1_1ExplainerContext.html#aaf2c031a3c7b796bea55e7613080e0ea',1,'pulsatrix::ExplainerContext::ExplainerContext()'],['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix::ExplainerContext']]],
-  ['explanation_5fscore_5fcard_2ehpp_29',['explanation_score_card.hpp',['../explanation__score__card_8hpp.html',1,'']]],
-  ['explanationscorecard_30',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]],
-  ['exploreconfiguration_31',['ExploreConfiguration',['../namespacepulsatrix.html#a15aae4f82a577165290ca698e28d4fd3',1,'pulsatrix']]],
-  ['exploreconfigurationgivenfactors_32',['ExploreConfigurationGivenFactors',['../namespacepulsatrix.html#a1ee9611b4c31458db9f3d21589227c39',1,'pulsatrix']]]
+  ['exp_24',['Exp',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0',1,'pulsatrix']]],
+  ['expectedimprovement_25',['expectedimprovement',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192',1,'pulsatrix::ExpectedImprovement'],['../namespacepulsatrix.html#abf980c4f81efaaafcbfd21722b3d7d3e',1,'pulsatrix::ExpectedImprovement(double mean, double variance, double best_value, double xi=0.01)']]],
+  ['explain_26',['explain',['../classpulsatrix_1_1Saliency.html#a8bf60072cd33a12ba4e13b725874ab0d',1,'pulsatrix::Saliency::explain()'],['../classpulsatrix_1_1PDP.html#aa6f5bb5e6cb1a2751afb6bbadbeb988a',1,'pulsatrix::PDP::explain()'],['../classpulsatrix_1_1LIME.html#a567e20df12b7965504e16d3e7e638c0a',1,'pulsatrix::LIME::explain()'],['../classpulsatrix_1_1KernelSHAP.html#a5dab4fed1a768722277916b14fee0d33',1,'pulsatrix::KernelSHAP::explain()'],['../classpulsatrix_1_1IntegratedGradients.html#affd1e5ac2533c1b2c1c6911cb278551f',1,'pulsatrix::IntegratedGradients::explain()'],['../classpulsatrix_1_1GradCAM.html#addf8b756810847f14a9dca10d2faab70',1,'pulsatrix::GradCAM::explain()']]],
+  ['explainer_5fcontext_2ehpp_27',['explainer_context.hpp',['../explainer__context_8hpp.html',1,'']]],
+  ['explainer_5fstability_2ehpp_28',['explainer_stability.hpp',['../explainer__stability_8hpp.html',1,'']]],
+  ['explainercontext_29',['explainercontext',['../classpulsatrix_1_1ExplainerContext.html',1,'pulsatrix::ExplainerContext'],['../classpulsatrix_1_1ExplainerContext.html#aaf2c031a3c7b796bea55e7613080e0ea',1,'pulsatrix::ExplainerContext::ExplainerContext()']]],
+  ['explanation_5fscore_5fcard_2ehpp_30',['explanation_score_card.hpp',['../explanation__score__card_8hpp.html',1,'']]],
+  ['explanationscorecard_31',['ExplanationScoreCard',['../classpulsatrix_1_1ExplanationScoreCard.html',1,'pulsatrix']]],
+  ['exploreconfiguration_32',['ExploreConfiguration',['../namespacepulsatrix.html#a15aae4f82a577165290ca698e28d4fd3',1,'pulsatrix']]],
+  ['exploreconfigurationgivenfactors_33',['ExploreConfigurationGivenFactors',['../namespacepulsatrix.html#a1ee9611b4c31458db9f3d21589227c39',1,'pulsatrix']]]
 ];

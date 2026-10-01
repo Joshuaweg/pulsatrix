@@ -17,6 +17,7 @@ var device__backend_8hpp =
       [ "Neg", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503afb278fa5defd7e699fcbc930c3e76ccd", null ],
       [ "Tanh", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503acc132a41cab5676334f353a22a0aa5c5", null ],
       [ "Sigmoid", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4", null ],
-      [ "Silu", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf", null ]
+      [ "Silu", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf", null ],
+      [ "Exp", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0", null ]
     ] ]
 ];

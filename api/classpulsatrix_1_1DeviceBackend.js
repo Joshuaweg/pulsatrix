@@ -6,10 +6,13 @@ var classpulsatrix_1_1DeviceBackend =
     [ "add_row_vector", "classpulsatrix_1_1DeviceBackend.html#ad9951a0cf9c89db339f37942954982a2", null ],
     [ "allocate", "classpulsatrix_1_1DeviceBackend.html#a1af6d806be26395c4114f96727149c88", null ],
     [ "axpby", "classpulsatrix_1_1DeviceBackend.html#a5a6bdc040ec70deb167b7a44a7691854", null ],
+    [ "bce_with_logits", "classpulsatrix_1_1DeviceBackend.html#afdb18cf867e392194333312986990ded", null ],
+    [ "bce_with_logits_grad", "classpulsatrix_1_1DeviceBackend.html#a10e3fcac8663dbd4af123bdbab0631e1", null ],
     [ "column_sums", "classpulsatrix_1_1DeviceBackend.html#a23304707c57a62c3603bb2a04bef29c0", null ],
     [ "copy", "classpulsatrix_1_1DeviceBackend.html#a8aa836582db51b3f87c225695bbbc0d8", null ],
     [ "device", "classpulsatrix_1_1DeviceBackend.html#a39732e9839303fa0e9c872e24e41b283", null ],
     [ "dot", "classpulsatrix_1_1DeviceBackend.html#a765dfca9460f519ad89cac13ee523be8", null ],
+    [ "dropout_forward", "classpulsatrix_1_1DeviceBackend.html#a31e8fa0c05497c6d6fbef96b6d9e1636", null ],
     [ "elementwise", "classpulsatrix_1_1DeviceBackend.html#aadd18aba9ba182e82ba34147900f1377", null ],
     [ "elementwise_backward", "classpulsatrix_1_1DeviceBackend.html#a4bdeaf59aa5066eae3ee3802e2cf12b9", null ],
     [ "fill", "classpulsatrix_1_1DeviceBackend.html#a4747d452a4b961bf806181187adac268", null ],
@@ -19,5 +22,6 @@ var classpulsatrix_1_1DeviceBackend =
     [ "logsumexp_rows", "classpulsatrix_1_1DeviceBackend.html#abe98a249971685a99f062357dea562ac", null ],
     [ "mul", "classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d", null ],
     [ "softmax_rows", "classpulsatrix_1_1DeviceBackend.html#a4a41fb8f954595ee69e766dd03d731d5", null ],
-    [ "softmax_rows_backward", "classpulsatrix_1_1DeviceBackend.html#a95d257c0de48811b0201092b62b50417", null ]
+    [ "softmax_rows_backward", "classpulsatrix_1_1DeviceBackend.html#a95d257c0de48811b0201092b62b50417", null ],
+    [ "sum", "classpulsatrix_1_1DeviceBackend.html#a6ea46da74ce088bde77a22e71da700cb", null ]
 ];

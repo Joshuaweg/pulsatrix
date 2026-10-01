@@ -102,95 +102,93 @@ $(document).ready(function(){initNavTree('dropout__module_8hpp.html',''); initRe
 
 <p>Inverted dropout &ndash; the first module whose forward behavior genuinely differs between training and inference (Module::is_training()).  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;random&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
+<div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
 <code>#include &quot;<a class="el" href="module_8hpp_source.html">pulsatrix/module.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dropout_module.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="dropout__module_8hpp__incl.png" border="0" usemap="#ainclude_2pulsatrix_2dropout__module_8hpp" alt=""/></div>
 <map name="ainclude_2pulsatrix_2dropout__module_8hpp" id="ainclude_2pulsatrix_2dropout__module_8hpp">
-<area shape="rect" title="Inverted dropout – the first module whose forward behavior genuinely differs between training and inf..." alt="" coords="969,5,1153,45"/>
-<area shape="rect" title=" " alt="" coords="885,93,957,119"/>
-<area shape="poly" title=" " alt="" coords="1028,48,955,89,952,84,1026,43"/>
-<area shape="rect" title=" " alt="" coords="1393,489,1456,515"/>
-<area shape="poly" title=" " alt="" coords="1153,29,1308,42,1395,54,1480,70,1557,90,1620,115,1645,130,1663,147,1675,165,1679,185,1679,357,1673,390,1657,418,1632,441,1602,460,1568,474,1533,485,1470,498,1469,493,1532,480,1566,469,1599,455,1629,437,1652,415,1668,388,1674,356,1674,186,1670,167,1659,150,1641,135,1618,120,1555,95,1479,75,1394,59,1307,48,1153,34"/>
-<area shape="rect" href="module_8hpp.html" title="Abstract base every layer subclasses – NVI forward(), pure&#45;virtual LRP contract." alt="" coords="981,93,1141,119"/>
-<area shape="poly" title=" " alt="" coords="1063,46,1063,79,1058,79,1058,46"/>
-<area shape="poly" title=" " alt="" coords="1141,110,1336,130,1431,145,1498,164,1547,183,1588,201,1605,213,1618,228,1626,248,1629,273,1629,357,1624,384,1612,409,1594,430,1571,448,1520,475,1470,493,1468,488,1518,470,1568,443,1590,426,1608,406,1619,383,1623,356,1623,273,1621,249,1613,231,1601,217,1586,206,1545,188,1496,169,1429,151,1336,135,1141,116"/>
-<area shape="rect" title=" " alt="" coords="902,416,977,441"/>
-<area shape="poly" title=" " alt="" coords="998,121,888,145,843,157,821,169,806,198,804,230,812,264,828,297,849,329,873,359,918,405,914,408,869,362,845,332,823,300,807,266,799,231,801,197,817,165,841,153,887,140,997,116"/>
-<area shape="rect" title=" " alt="" coords="929,489,1016,515"/>
-<area shape="poly" title=" " alt="" coords="1021,121,978,140,958,153,940,168,924,189,916,208,906,255,878,351,875,371,876,392,881,415,892,440,911,463,935,481,932,485,907,467,888,443,876,416,871,393,870,371,873,350,901,254,911,206,920,186,936,165,955,148,976,135,1018,116"/>
-<area shape="rect" title=" " alt="" coords="1477,262,1537,287"/>
-<area shape="poly" title=" " alt="" coords="1141,106,1199,111,1265,121,1332,138,1397,164,1426,183,1453,205,1493,249,1489,253,1449,209,1423,187,1394,169,1331,144,1264,127,1199,116,1141,111"/>
+<area shape="rect" title="Inverted dropout – the first module whose forward behavior genuinely differs between training and inf..." alt="" coords="510,5,694,45"/>
+<area shape="rect" title=" " alt="" coords="407,563,474,588"/>
+<area shape="poly" title=" " alt="" coords="511,38,439,54,403,66,370,82,341,101,318,124,303,152,298,186,298,430,301,475,308,493,323,513,338,528,356,540,395,559,393,563,354,545,335,532,319,516,304,496,296,476,293,430,293,185,298,151,314,121,338,97,367,77,401,61,438,49,509,33"/>
+<area shape="rect" href="module_8hpp.html" title="Abstract base every layer subclasses – NVI forward(), pure&#45;virtual LRP contract." alt="" coords="929,93,1089,119"/>
+<area shape="poly" title=" " alt="" coords="695,42,937,88,936,93,694,47"/>
+<area shape="rect" title=" " alt="" coords="970,416,1045,441"/>
+<area shape="poly" title=" " alt="" coords="983,121,943,141,898,170,854,209,835,231,820,256,814,281,818,305,832,328,853,348,907,383,962,409,960,413,904,388,849,352,828,331,813,307,808,281,816,254,831,228,850,205,894,166,941,136,980,116"/>
+<area shape="rect" title=" " alt="" coords="572,489,659,515"/>
+<area shape="poly" title=" " alt="" coords="928,113,883,119,833,129,784,146,738,169,687,205,653,241,628,284,606,343,599,378,599,414,610,476,605,477,594,415,594,378,601,342,623,282,649,238,684,201,735,164,782,141,832,124,882,114,928,108"/>
+<area shape="rect" title=" " alt="" coords="1381,262,1441,287"/>
+<area shape="poly" title=" " alt="" coords="1052,116,1120,137,1196,164,1298,210,1380,253,1378,258,1296,215,1194,169,1118,142,1050,121"/>
+<area shape="rect" title=" " alt="" coords="1083,489,1145,515"/>
+<area shape="poly" title=" " alt="" coords="1089,104,1203,107,1334,116,1453,134,1500,147,1534,164,1560,187,1575,211,1582,239,1583,273,1583,357,1580,374,1569,389,1533,416,1479,439,1414,458,1275,484,1159,499,1159,494,1274,479,1413,452,1477,434,1530,411,1565,386,1575,372,1578,356,1578,273,1576,239,1570,213,1556,191,1531,169,1498,152,1452,139,1333,121,1203,112,1089,110"/>
 <area shape="rect" href="assert_8hpp.html" title="PULSATRIX_ASSERT – debug&#45;only invariant check for programmer errors, distinct from throw (used for ca..." alt="" coords="5,489,156,515"/>
-<area shape="poly" title=" " alt="" coords="983,121,455,203,205,247,127,264,100,275,101,357,96,422,88,476,83,475,91,421,95,357,96,272,126,259,203,242,454,198,982,116"/>
-<area shape="rect" href="autograd_8hpp.html" title="Reverse&#45;mode autodiff – walks a ComputationGraph backward, accumulating gradients via per&#45;node backwa..." alt="" coords="1213,174,1383,199"/>
-<area shape="poly" title=" " alt="" coords="1096,116,1251,167,1250,172,1094,121"/>
-<area shape="rect" href="computation__graph_8hpp.html" title="Owns and exposes graph structure – the interpretability substrate every explainer (Phase 2+) walks." alt="" coords="926,255,1091,295"/>
-<area shape="poly" title=" " alt="" coords="1058,120,1038,168,1018,242,1013,240,1033,166,1053,118"/>
-<area shape="rect" href="node_8hpp.html" title="Computation graph node – op type, shape, optional label, parent/child edges." alt="" coords="977,343,1120,368"/>
-<area shape="poly" title=" " alt="" coords="1044,121,1013,142,977,173,943,211,916,256,910,275,916,293,942,319,975,336,973,341,939,323,912,296,905,275,912,254,938,208,974,169,1010,138,1041,117"/>
-<area shape="rect" href="op__type_8hpp.html" title="Closed set of operation categories every graph Node is tagged with." alt="" coords="1225,416,1387,441"/>
-<area shape="poly" title=" " alt="" coords="1141,105,1208,110,1284,120,1365,137,1442,164,1479,181,1508,197,1532,219,1552,254,1560,284,1553,312,1535,337,1509,358,1476,377,1441,392,1371,415,1370,410,1439,387,1474,372,1506,354,1531,333,1548,310,1555,284,1548,256,1527,222,1505,201,1477,186,1440,169,1363,142,1284,125,1207,115,1141,111"/>
-<area shape="rect" href="tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="523,343,673,368"/>
-<area shape="poly" title=" " alt="" coords="981,120,822,144,755,157,719,169,679,205,647,249,624,294,609,331,604,329,619,292,643,247,675,202,717,164,754,152,821,139,980,115"/>
-<area shape="rect" href="lrp__rule__config_8hpp.html" title="Selects which LRP rule variant a Module::propagate_relevance() call uses." alt="" coords="1047,167,1179,207"/>
-<area shape="poly" title=" " alt="" coords="1071,117,1095,154,1090,157,1066,120"/>
-<area shape="rect" title=" " alt="" coords="177,563,238,588"/>
-<area shape="poly" title=" " alt="" coords="102,512,176,553,173,558,100,517"/>
-<area shape="rect" title=" " alt="" coords="68,563,133,588"/>
+<area shape="poly" title=" " alt="" coords="929,116,708,138,437,172,311,194,208,219,168,232,138,246,119,260,113,274,113,357,105,422,91,477,86,476,100,421,107,357,107,273,115,256,135,241,166,227,206,213,310,189,436,167,707,132,928,111"/>
+<area shape="rect" href="autograd_8hpp.html" title="Reverse&#45;mode autodiff – walks a ComputationGraph backward, accumulating gradients via per&#45;node backwa..." alt="" coords="1013,174,1183,199"/>
+<area shape="poly" title=" " alt="" coords="1024,117,1076,163,1073,167,1020,121"/>
+<area shape="rect" href="computation__graph_8hpp.html" title="Owns and exposes graph structure – the interpretability substrate every explainer (Phase 2+) walks." alt="" coords="830,255,995,295"/>
+<area shape="poly" title=" " alt="" coords="1004,120,933,244,928,241,1000,117"/>
+<area shape="rect" href="node_8hpp.html" title="Computation graph node – op type, shape, optional label, parent/child edges." alt="" coords="1147,343,1289,368"/>
+<area shape="poly" title=" " alt="" coords="1070,116,1159,136,1256,164,1456,253,1465,276,1461,295,1447,311,1426,323,1368,341,1304,351,1303,346,1367,336,1423,319,1444,307,1456,293,1460,276,1452,257,1254,169,1157,141,1069,121"/>
+<area shape="rect" href="op__type_8hpp.html" title="Closed set of operation categories every graph Node is tagged with." alt="" coords="1253,416,1415,441"/>
+<area shape="poly" title=" " alt="" coords="1089,109,1206,116,1337,128,1448,144,1485,153,1506,165,1518,181,1525,198,1525,233,1512,268,1488,303,1458,336,1425,365,1365,410,1362,406,1422,361,1454,332,1484,300,1507,266,1520,232,1519,199,1513,184,1503,169,1484,158,1446,149,1336,133,1206,121,1089,114"/>
+<area shape="rect" href="tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="616,343,767,368"/>
+<area shape="poly" title=" " alt="" coords="929,113,890,119,850,130,810,146,776,169,744,206,721,250,706,293,698,329,693,328,701,292,716,247,739,203,772,165,808,141,848,124,889,114,928,108"/>
+<area shape="rect" href="lrp__rule__config_8hpp.html" title="Selects which LRP rule variant a Module::propagate_relevance() call uses." alt="" coords="1360,167,1492,207"/>
+<area shape="poly" title=" " alt="" coords="1077,116,1341,164,1347,165,1346,170,1340,169,1076,121"/>
+<area shape="rect" title=" " alt="" coords="70,563,131,588"/>
 <area shape="poly" title=" " alt="" coords="87,514,96,549,91,550,81,516"/>
-<area shape="poly" title=" " alt="" coords="1322,197,1356,220,1387,253,1402,281,1413,311,1426,373,1431,431,1430,476,1424,475,1425,431,1421,374,1408,313,1397,283,1383,256,1352,224,1319,202"/>
-<area shape="poly" title=" " alt="" coords="1327,197,1468,254,1466,259,1325,202"/>
-<area shape="rect" title=" " alt="" coords="1264,262,1351,287"/>
-<area shape="poly" title=" " alt="" coords="1302,199,1307,248,1302,248,1297,200"/>
-<area shape="rect" title=" " alt="" coords="1116,262,1240,287"/>
-<area shape="poly" title=" " alt="" coords="1283,202,1207,256,1204,251,1280,197"/>
-<area shape="poly" title=" " alt="" coords="1260,202,1086,253,1085,248,1258,197"/>
-<area shape="poly" title=" " alt="" coords="1316,198,1339,217,1361,241,1373,269,1372,283,1365,297,1338,306,1280,318,1134,343,1133,338,1279,313,1336,301,1362,293,1367,282,1368,270,1357,244,1335,221,1313,202"/>
-<area shape="poly" title=" " alt="" coords="1234,202,1192,209,1052,230,992,240,915,257,765,300,643,341,641,335,763,295,913,252,991,235,1052,225,1191,204,1233,197"/>
-<area shape="poly" title=" " alt="" coords="1092,290,1201,315,1286,340,1351,368,1376,386,1402,414,1417,445,1424,475,1419,476,1412,447,1397,418,1372,389,1348,372,1284,345,1200,320,1091,295"/>
-<area shape="poly" title=" " alt="" coords="997,296,968,344,948,403,943,401,964,342,992,294"/>
-<area shape="rect" title=" " alt="" coords="1145,343,1222,368"/>
-<area shape="poly" title=" " alt="" coords="1052,292,1146,334,1144,339,1049,297"/>
-<area shape="rect" title=" " alt="" coords="1142,416,1201,441"/>
-<area shape="poly" title=" " alt="" coords="1089,292,1182,317,1217,330,1236,341,1242,360,1235,379,1221,396,1203,410,1200,406,1217,392,1231,376,1237,360,1232,344,1215,335,1180,322,1088,297"/>
-<area shape="poly" title=" " alt="" coords="1021,294,1039,329,1034,331,1016,296"/>
-<area shape="poly" title=" " alt="" coords="1090,292,1193,318,1257,340,1283,370,1300,402,1295,404,1279,373,1254,345,1192,323,1089,297"/>
-<area shape="rect" href="shape_8hpp.html" title="Tensor dimension arithmetic – rank, element count, per&#45;dimension access." alt="" coords="615,416,765,441"/>
-<area shape="poly" title=" " alt="" coords="970,297,728,412,725,408,968,292"/>
-<area shape="poly" title=" " alt="" coords="1058,366,1087,403,1108,423,1131,439,1195,466,1263,483,1326,493,1380,497,1379,502,1326,498,1262,489,1193,471,1129,444,1105,427,1083,407,1054,370"/>
-<area shape="poly" title=" " alt="" coords="1033,370,970,411,967,406,1030,366"/>
-<area shape="poly" title=" " alt="" coords="1070,366,1141,407,1138,411,1067,370"/>
-<area shape="rect" title=" " alt="" coords="687,563,757,588"/>
-<area shape="poly" title=" " alt="" coords="1054,368,1058,397,1059,437,1052,479,1043,499,1031,517,1012,530,986,541,917,557,840,568,771,574,771,569,839,563,916,552,984,536,1010,525,1027,513,1039,496,1047,478,1054,436,1053,398,1049,368"/>
-<area shape="poly" title=" " alt="" coords="1091,365,1252,410,1251,415,1089,371"/>
-<area shape="poly" title=" " alt="" coords="992,371,762,416,761,411,991,365"/>
-<area shape="poly" title=" " alt="" coords="766,437,785,439,1126,472,1379,494,1379,500,1126,477,784,444,765,442"/>
-<area shape="poly" title=" " alt="" coords="736,439,917,484,915,489,735,444"/>
-<area shape="poly" title=" " alt="" coords="614,441,170,493,169,488,614,436"/>
-<area shape="rect" title=" " alt="" coords="838,489,905,515"/>
-<area shape="poly" title=" " alt="" coords="720,439,830,482,828,487,718,444"/>
-<area shape="rect" title=" " alt="" coords="521,489,632,515"/>
-<area shape="poly" title=" " alt="" coords="673,444,608,484,605,480,670,439"/>
-<area shape="rect" title=" " alt="" coords="657,489,715,515"/>
-<area shape="poly" title=" " alt="" coords="692,442,690,476,685,476,687,442"/>
-<area shape="rect" title=" " alt="" coords="739,489,814,515"/>
-<area shape="poly" title=" " alt="" coords="706,439,754,478,750,483,702,443"/>
-<area shape="poly" title=" " alt="" coords="631,366,745,402,891,439,1029,462,1167,478,1379,496,1379,501,1167,484,1029,467,889,444,743,407,630,371"/>
-<area shape="poly" title=" " alt="" coords="523,368,403,387,336,401,271,419,185,451,115,485,112,481,183,446,269,413,335,396,402,381,522,362"/>
-<area shape="poly" title=" " alt="" coords="614,366,666,405,663,410,611,370"/>
-<area shape="poly" title=" " alt="" coords="599,369,583,476,578,475,594,368"/>
-<area shape="rect" href="device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="283,489,497,515"/>
-<area shape="poly" title=" " alt="" coords="583,370,478,444,420,483,417,479,475,439,580,366"/>
-<area shape="rect" href="host__guard_8hpp.html" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="283,416,465,441"/>
-<area shape="poly" title=" " alt="" coords="563,371,424,414,422,409,561,365"/>
-<area shape="poly" title=" " alt="" coords="444,512,674,561,673,566,443,517"/>
-<area shape="poly" title=" " alt="" coords="349,444,310,464,272,491,244,521,223,552,219,549,240,518,268,487,308,459,346,439"/>
-<area shape="poly" title=" " alt="" coords="347,444,243,492,131,558,128,553,241,487,345,439"/>
-<area shape="poly" title=" " alt="" coords="379,441,387,476,382,477,374,442"/>
+<area shape="rect" title=" " alt="" coords="193,563,259,588"/>
+<area shape="poly" title=" " alt="" coords="105,512,191,554,189,559,103,517"/>
+<area shape="poly" title=" " alt="" coords="1151,197,1250,220,1363,252,1371,255,1369,260,1361,257,1249,226,1150,202"/>
+<area shape="poly" title=" " alt="" coords="1140,197,1244,232,1304,257,1361,287,1408,320,1427,339,1440,358,1448,378,1449,399,1443,421,1429,443,1411,458,1383,469,1311,486,1230,497,1160,502,1159,496,1229,491,1310,481,1382,464,1408,453,1425,440,1439,419,1444,399,1443,380,1435,361,1423,342,1405,325,1358,291,1302,262,1242,237,1138,202"/>
+<area shape="rect" title=" " alt="" coords="1168,262,1255,287"/>
+<area shape="poly" title=" " alt="" coords="1115,197,1187,252,1184,256,1112,202"/>
+<area shape="rect" title=" " alt="" coords="1020,262,1144,287"/>
+<area shape="poly" title=" " alt="" coords="1098,200,1089,249,1084,248,1093,199"/>
+<area shape="poly" title=" " alt="" coords="1074,202,967,251,965,246,1072,197"/>
+<area shape="poly" title=" " alt="" coords="1179,197,1229,217,1251,233,1270,253,1276,274,1271,296,1259,317,1244,334,1240,331,1254,314,1266,294,1271,275,1265,256,1248,237,1226,222,1177,202"/>
+<area shape="poly" title=" " alt="" coords="1013,201,918,222,867,237,819,257,789,274,760,295,714,335,710,331,757,291,786,270,817,252,865,232,916,216,1012,196"/>
+<area shape="poly" title=" " alt="" coords="927,294,995,403,991,406,922,297"/>
+<area shape="poly" title=" " alt="" coords="915,295,917,326,924,364,937,404,960,440,984,460,1012,475,1070,492,1068,497,1010,480,981,464,956,443,933,407,919,366,912,326,910,295"/>
+<area shape="rect" title=" " alt="" coords="994,343,1071,368"/>
+<area shape="poly" title=" " alt="" coords="943,293,1005,333,1002,337,940,297"/>
+<area shape="rect" title=" " alt="" coords="1069,416,1127,441"/>
+<area shape="poly" title=" " alt="" coords="981,292,1043,315,1069,328,1085,341,1099,371,1102,401,1097,402,1094,372,1081,344,1066,332,1041,320,979,297"/>
+<area shape="poly" title=" " alt="" coords="986,292,1161,337,1159,342,985,297"/>
+<area shape="poly" title=" " alt="" coords="996,290,1009,292,1055,297,1095,298,1166,293,1199,294,1232,301,1267,315,1304,341,1316,354,1324,370,1334,401,1329,403,1320,372,1311,357,1300,345,1264,320,1231,306,1198,300,1166,299,1095,303,1054,303,1008,297,995,295"/>
+<area shape="rect" href="shape_8hpp.html" title="Tensor dimension arithmetic – rank, element count, per&#45;dimension access." alt="" coords="693,416,844,441"/>
+<area shape="poly" title=" " alt="" coords="896,297,791,408,787,404,892,293"/>
+<area shape="poly" title=" " alt="" coords="1185,371,1055,414,1053,409,1183,365"/>
+<area shape="poly" title=" " alt="" coords="1212,370,1132,480,1128,477,1207,367"/>
+<area shape="poly" title=" " alt="" coords="1200,370,1131,411,1128,406,1197,366"/>
+<area shape="rect" title=" " alt="" coords="839,563,909,588"/>
+<area shape="poly" title=" " alt="" coords="1220,369,1216,399,1206,439,1189,481,1176,500,1160,517,1142,528,1117,537,1055,553,923,572,922,567,1054,548,1116,532,1140,523,1156,513,1171,497,1184,478,1201,437,1211,398,1215,368"/>
+<area shape="poly" title=" " alt="" coords="1238,366,1305,406,1302,411,1235,370"/>
+<area shape="poly" title=" " alt="" coords="1147,371,854,417,854,411,1146,365"/>
+<area shape="poly" title=" " alt="" coords="783,440,796,456,808,475,814,496,807,516,784,533,751,546,665,564,569,573,488,576,488,571,569,568,664,558,750,541,782,528,803,513,809,496,804,477,792,459,779,443"/>
+<area shape="poly" title=" " alt="" coords="745,444,654,486,652,481,743,439"/>
+<area shape="poly" title=" " alt="" coords="825,439,1070,489,1069,494,824,444"/>
+<area shape="poly" title=" " alt="" coords="693,440,170,494,170,489,693,435"/>
+<area shape="rect" title=" " alt="" coords="683,489,793,515"/>
+<area shape="poly" title=" " alt="" coords="766,443,751,478,746,476,761,441"/>
+<area shape="rect" title=" " alt="" coords="869,489,927,515"/>
+<area shape="poly" title=" " alt="" coords="791,439,866,480,863,485,788,444"/>
+<area shape="rect" title=" " alt="" coords="951,489,1026,515"/>
+<area shape="poly" title=" " alt="" coords="805,439,941,483,940,488,803,444"/>
+<area shape="poly" title=" " alt="" coords="726,366,856,414,915,439,997,466,1070,487,1069,492,995,471,913,444,854,418,724,371"/>
+<area shape="poly" title=" " alt="" coords="616,367,478,387,321,419,212,452,122,486,120,481,211,447,320,413,477,381,616,362"/>
+<area shape="poly" title=" " alt="" coords="706,366,748,405,744,408,702,370"/>
+<area shape="poly" title=" " alt="" coords="689,369,680,402,679,422,683,440,696,461,713,479,709,483,692,465,678,442,674,422,675,401,684,367"/>
+<area shape="rect" href="device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="333,489,548,515"/>
+<area shape="poly" title=" " alt="" coords="673,371,474,485,471,480,670,366"/>
+<area shape="rect" href="host__guard_8hpp.html" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="333,416,516,441"/>
+<area shape="poly" title=" " alt="" coords="649,371,482,415,481,410,648,365"/>
+<area shape="poly" title=" " alt="" coords="443,515,443,549,438,549,438,515"/>
+<area shape="poly" title=" " alt="" coords="511,512,825,563,824,569,510,517"/>
+<area shape="poly" title=" " alt="" coords="399,444,287,492,138,559,136,554,285,487,396,439"/>
+<area shape="poly" title=" " alt="" coords="403,444,364,465,322,491,283,523,249,555,245,551,279,519,319,487,361,460,400,439"/>
+<area shape="poly" title=" " alt="" coords="430,441,438,476,433,477,425,442"/>
 </map>
 </div>
 </div>

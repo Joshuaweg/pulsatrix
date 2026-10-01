@@ -214,7 +214,7 @@ Protected Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">p</td><td>Drop probability, must be in [0, 1). </td></tr>
     <tr><td class="paramname">backend</td><td>Backend to compute through. Not owned; must outlive this module. </td></tr>
-    <tr><td class="paramname">seed</td><td>RNG seed. Defaults to a fixed value for reproducibility &ndash; callers needing independent randomness across instances should pass distinct seeds. </td></tr>
+    <tr><td class="paramname">seed</td><td>RNG seed. Defaults to a fixed value for reproducibility &ndash; callers needing independent randomness across instances should pass distinct seeds. Masks come from <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a31e8fa0c05497c6d6fbef96b6d9e1636" title="Inverted dropout with a counter-based RNG: element i is dropped iff uniform(seed, offset + i) &lt; p; ke...">DeviceBackend::dropout_forward</a>'s counter-based generator (element k of the stream is a pure function of (seed, k)), so the same seed produces the same masks on every backend. Each training <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> advances the stream by numel(). </td></tr>
   </table>
   </dd>
 </dl>
@@ -224,7 +224,7 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>No device parameter &ndash; unlike <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a>, this module caches no <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> members (only a <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> and a plain float mask vector), so there is no internal <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> needing an initial device tag; <a class="el" href="classpulsatrix_1_1DropoutModule.html#a395896eaa4c812878dabc4fa5042a1a9" title="The actual forward computation – per-element RNG draw at training time, identity at eval time or p ==...">forward_impl()</a> tags its output with the input tensor's own device, same reasoning as <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a>'s forward_impl. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>No device parameter: the cached mask is allocated per <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> on the input's own device, same reasoning as <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a>'s forward_impl. </dd></dl>
 
 </div>
 </div>
@@ -268,7 +268,7 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Not yet backend-generic &ndash; raw host loop. PULSATRIX_ASSERT(grad_output.device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>) guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic (GPU-native-kernels Mission 1b). The scale applied is the one the most recent <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> actually used: before Mission 1b this always applied 1/(1-p), so a gradient through an eval-mode forward came back wrongly scaled. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
 
@@ -299,7 +299,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The actual forward computation &ndash; per-element RNG draw at training time, identity at eval time or p == 0. </p>
-<dl class="section note"><dt>Note</dt><dd>Not yet backend-generic &ndash; raw host loop. PULSATRIX_ASSERT(input.device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>) guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic (GPU-native-kernels Mission 1b). </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a64d2dd3268af1b112aaeb1c8286351a9">pulsatrix::Module</a>.</p>
 

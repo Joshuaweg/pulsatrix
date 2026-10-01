@@ -184,6 +184,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a3342c8950d113547482c92e423a4b5" id="r_a7a3342c8950d113547482c92e423a4b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a7a3342c8950d113547482c92e423a4b5">adam_step</a> (float *param, const float *grad, float *m, float *v, size_t n, float lr, float beta1, float beta2, float eps, float bias_correction1, float bias_correction2) override</td></tr>
 <tr class="memdesc:a7a3342c8950d113547482c92e423a4b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused Adam update over n parameters.  <br /></td></tr>
 <tr class="separator:a7a3342c8950d113547482c92e423a4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f0ace126c2819bc1e8cd19cedb5225e" id="r_a0f0ace126c2819bc1e8cd19cedb5225e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a0f0ace126c2819bc1e8cd19cedb5225e">sum</a> (const float *in, size_t n) override</td></tr>
+<tr class="memdesc:a0f0ace126c2819bc1e8cd19cedb5225e"><td class="mdescLeft">&#160;</td><td class="mdescRight">sum_i in[i], returned to the host. Same reduction order as <a class="el" href="classpulsatrix_1_1CPUBackend.html#ac7dc266bccc27b24d8924f958928d306" title="Dot product sum_i a[i]*b[i], returned to the host.">dot()</a>. Synchronizes.  <br /></td></tr>
+<tr class="separator:a0f0ace126c2819bc1e8cd19cedb5225e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12f371f9132c2df00ca975e8efdd829d" id="r_a12f371f9132c2df00ca975e8efdd829d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a12f371f9132c2df00ca975e8efdd829d">dropout_forward</a> (const float *in, float *out, float *mask, size_t n, float p, float scale, uint64_t seed, uint64_t offset) override</td></tr>
+<tr class="memdesc:a12f371f9132c2df00ca975e8efdd829d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverted dropout with a counter-based RNG: element i is dropped iff uniform(seed, offset + i) &lt; p; kept elements are scaled by scale.  <br /></td></tr>
+<tr class="separator:a12f371f9132c2df00ca975e8efdd829d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acedb4ae279181bf7bfcf922a39f4a2e1" id="r_acedb4ae279181bf7bfcf922a39f4a2e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#acedb4ae279181bf7bfcf922a39f4a2e1">bce_with_logits</a> (const float *logits, const float *target, float *out, size_t n) override</td></tr>
+<tr class="memdesc:acedb4ae279181bf7bfcf922a39f4a2e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-element binary cross-entropy with logits: out[i] = max(x, 0) - x*y + log1p(exp(-|x|)), x = logits[i], y = target[i].  <br /></td></tr>
+<tr class="separator:acedb4ae279181bf7bfcf922a39f4a2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a100ea08a60b5372fdecdbd5bf284a8fb" id="r_a100ea08a60b5372fdecdbd5bf284a8fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a100ea08a60b5372fdecdbd5bf284a8fb">bce_with_logits_grad</a> (const float *logits, const float *target, float *grad, size_t n, float scale) override</td></tr>
+<tr class="memdesc:a100ea08a60b5372fdecdbd5bf284a8fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">BCE-with-logits gradient: grad[i] = (sigmoid(x) - y) * scale, using the overflow-free sigmoid (exp(x) / (1 + exp(x)) for x &lt; 0).  <br /></td></tr>
+<tr class="separator:a100ea08a60b5372fdecdbd5bf284a8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1DeviceBackend"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1DeviceBackend')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1DeviceBackend.html">pulsatrix::DeviceBackend</a></td></tr>
 <tr class="memitem:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend" id="r_a2feea27fda55c8c0addf4e7c3864f2aa"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a2feea27fda55c8c0addf4e7c3864f2aa">~DeviceBackend</a> ()=default</td></tr>
 <tr class="separator:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -518,8 +530,120 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>out[i] = alpha * x[i] + beta * y[i]. out may alias x or y. </p>
+<dl class="section note"><dt>Note</dt><dd>beta == 0 does not read y (BLAS convention), so out = alpha * x exactly even where y holds inf/NaN &ndash; otherwise 0 * inf would turn a scale-only call into NaN. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a5a6bdc040ec70deb167b7a44a7691854">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="acedb4ae279181bf7bfcf922a39f4a2e1" name="acedb4ae279181bf7bfcf922a39f4a2e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acedb4ae279181bf7bfcf922a39f4a2e1">&#9670;&#160;</a></span>bce_with_logits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CPUBackend::bce_with_logits </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>logits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Per-element binary cross-entropy with logits: out[i] = max(x, 0) - x*y + log1p(exp(-|x|)), x = logits[i], y = target[i]. </p>
+<dl class="section note"><dt>Note</dt><dd>Fused rather than composed from elementwise ops: this exact evaluation order is what <a class="el" href="classpulsatrix_1_1BCEWithLogitsLoss.html" title="loss = mean( max(x,0) - x*y + log(1 + exp(-|x|)) ), over all N*k elements of a (N,...">BCEWithLogitsLoss</a> has always computed, and no composition reproduces its rounding. </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#afdb18cf867e392194333312986990ded">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a100ea08a60b5372fdecdbd5bf284a8fb" name="a100ea08a60b5372fdecdbd5bf284a8fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a100ea08a60b5372fdecdbd5bf284a8fb">&#9670;&#160;</a></span>bce_with_logits_grad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CPUBackend::bce_with_logits_grad </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>logits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>grad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>scale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>BCE-with-logits gradient: grad[i] = (sigmoid(x) - y) * scale, using the overflow-free sigmoid (exp(x) / (1 + exp(x)) for x &lt; 0). </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a10e3fcac8663dbd4af123bdbab0631e1">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
@@ -720,6 +844,89 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a12f371f9132c2df00ca975e8efdd829d" name="a12f371f9132c2df00ca975e8efdd829d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12f371f9132c2df00ca975e8efdd829d">&#9670;&#160;</a></span>dropout_forward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CPUBackend::dropout_forward </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>offset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inverted dropout with a counter-based RNG: element i is dropped iff uniform(seed, offset + i) &lt; p; kept elements are scaled by scale. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mask</td><td>Receives 1.0 (kept) or 0.0 (dropped) per element, for backward(). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>uniform(seed, k) is splitmix64(seed + (k + 1) * golden_gamma), top 24 bits as a float in [0, 1). Stateless and identical on every backend, so a GPU mask is bit-identical to the CPU one for the same (seed, offset) &ndash; the property that lets Dropout be tested CPU-vs-GPU at all. A dropped element is written as 0 (a select, not in * 0), so an inf/NaN input there still yields 0. </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a31e8fa0c05497c6d6fbef96b6d9e1636">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
 <a id="a9ce1c8eb509e5ee2972f0d7765d99638" name="a9ce1c8eb509e5ee2972f0d7765d99638"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ce1c8eb509e5ee2972f0d7765d99638">&#9670;&#160;</a></span>elementwise()</h2>
 
@@ -834,7 +1041,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Activation backward: grad_in[i] = grad_out[i] * f'(x[i]), f = op, x = the forward <em>input</em>. </p>
-<dl class="section note"><dt>Note</dt><dd>Derivatives: Relu selects grad_out where x &gt; 0, else 0 (0 at x == 0 and for a non-finite grad_out, matching <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a>); Neg -1; Tanh 1 - tanh(x)^2; Sigmoid s(1 - s); Silu s + x*s*(1 - s), s = sigmoid(x). grad_in may alias grad_out or x. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Derivatives: Relu selects grad_out where x &gt; 0, else 0 (0 at x == 0 and for a non-finite grad_out, matching <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a>); Neg -1; Tanh 1 - tanh(x)^2; Sigmoid s(1 - s); Silu s + x*s*(1 - s), s = sigmoid(x); Exp exp(x). grad_in may alias grad_out or x. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a4bdeaf59aa5066eae3ee3802e2cf12b9">pulsatrix::DeviceBackend</a>.</p>
 
@@ -1315,6 +1522,46 @@ Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>dx must not alias y or dy. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a95d257c0de48811b0201092b62b50417">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a0f0ace126c2819bc1e8cd19cedb5225e" name="a0f0ace126c2819bc1e8cd19cedb5225e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f0ace126c2819bc1e8cd19cedb5225e">&#9670;&#160;</a></span>sum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::CPUBackend::sum </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>sum_i in[i], returned to the host. Same reduction order as <a class="el" href="classpulsatrix_1_1CPUBackend.html#ac7dc266bccc27b24d8924f958928d306" title="Dot product sum_i a[i]*b[i], returned to the host.">dot()</a>. Synchronizes. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a6ea46da74ce088bde77a22e71da700cb">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>

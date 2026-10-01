@@ -63,18 +63,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CUDABackend.html#ab6d01f76bd0f38e16c723599a0b1ec91",
-"classpulsatrix_1_1DetailedBalanceLoss.html#adf00f62dd23568c3ca5ea066bb9a62c4",
-"classpulsatrix_1_1GeneratorPopulation.html#a418a4422b022829640c1957294d81f13",
-"classpulsatrix_1_1LSTMModule.html#ac169161bca38e2673e3349413065b0cf",
-"classpulsatrix_1_1MultiHeadAttentionModule.html",
-"classpulsatrix_1_1RWKVModule.html#a748454131223b6d41b5fc68155d16352",
-"classpulsatrix_1_1SequentialModule.html#a015429d2ef25755847b8714931b630e3",
-"classpulsatrix_1_1TrajectoryBalanceLoss.html#a35b66820c5e8df41f5b913f9dc8f2bcb",
-"environment_8hpp.html",
-"namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0",
-"structpulsatrix_1_1FieldStatistics.html#a8eabf7d22c9a8fbb1331f9aeacf17225",
-"structpulsatrix_1_1WaterfallStep.html#ac64eceb47fd75aa724ae08a0559ede22"
+"classpulsatrix_1_1CUDABackend.html#a7750f6b02eb0065b318ca3a2e1113c7a",
+"classpulsatrix_1_1Dataset.html#aede324cc847f11c60a7dbcf0c8675c67",
+"classpulsatrix_1_1GRUModule.html#ade60c3c98243b649a0f4213dfa8eceb4",
+"classpulsatrix_1_1LSTMModule.html#a5f0a8ff5e3f6bfa8ea70dc81175f371c",
+"classpulsatrix_1_1MnistDatasetAdapter.html",
+"classpulsatrix_1_1RWKVModule.html#a06a4a23a5b38fd76d79c07372bafbe8c",
+"classpulsatrix_1_1Sampler.html#ab92d10d3dd776c33c96204cdd9381405",
+"classpulsatrix_1_1ToyKnowledgeBase.html#a05ce49df36fd9d9cbcf4f46caa11e667",
+"csv__reader_8hpp.html",
+"namespacepulsatrix.html#a920a0c45d7bd1e565a028ddb409d9ec9",
+"structpulsatrix_1_1DatasetStatistics.html#a96536fd46a8d432b2ba876a717cb6660",
+"structpulsatrix_1_1StepResult.html#ae5bd2a2383e982da508334bc3bcf34b8"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
