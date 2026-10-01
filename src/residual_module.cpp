@@ -38,10 +38,8 @@ ResidualModule::ResidualModule(Module* inner, DeviceBackend* backend)
 }
 
 Tensor ResidualModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly in the residual-add raw host loop below -- not
-    // backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(input);
-
+    // Device-generic: the inner forward plus a DeviceBackend::add, no host dereference. Runs
+    // on a GPU tensor whenever inner_ does (GPU-native-kernels Mission 0 O5).
     Tensor f_x = inner_->forward(input);
 
     Tensor y(input.shape(), backend_);
