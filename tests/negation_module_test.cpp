@@ -100,15 +100,5 @@ TEST_F(NegationModuleTest, ForwardRejectsEmptyInput) {
     EXPECT_THROW({ (void)negation.forward(x); }, std::invalid_argument);
 }
 
-TEST_F(NegationModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor x(Shape({3}), &backend, {0.1f, 0.2f, 0.3f});
-    (void)negation.forward(x);
-    Tensor grad_y(Shape({3}), &backend, {1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)negation.backward(grad_y); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

@@ -5,8 +5,8 @@
  */
 #pragma once
 
-#include <random>
-#include <vector>
+
+#include <cstdint>
 
 #include "pulsatrix/module.hpp"
 
@@ -34,13 +34,15 @@ public:
      * @param backend Backend to compute through. Not owned; must outlive this module.
      * @param seed RNG seed. Defaults to a fixed value for reproducibility -- callers
      *        needing independent randomness across instances should pass distinct seeds.
+     *        Masks come from DeviceBackend::dropout_forward's counter-based generator
+     *        (element k of the stream is a pure function of (seed, k)), so the same seed
+     *        produces the same masks on every backend. Each training forward() advances the
+     *        stream by numel().
      * @throws std::invalid_argument if p < 0 or p >= 1 -- external boundary (p == 1 would
      *         make scale = 1/(1-p) diverge; construction arguments can originate from
      *         Phase 5's Python bindings with no upstream validation).
-     * @note No device parameter -- unlike ReluModule, this module caches no Tensor members
-     *       (only a Shape and a plain float mask vector), so there is no internal Tensor
-     *       needing an initial device tag; forward_impl() tags its output with the input
-     *       tensor's own device, same reasoning as ReluModule's forward_impl.
+     * @note No device parameter: the cached mask is allocated per forward() on the input's
+     *       own device, same reasoning as ReluModule's forward_impl.
      */
     explicit DropoutModule(float p, DeviceBackend* backend, uint64_t seed = 42);
 
@@ -55,8 +57,9 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached
      *         forward output shape.
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 1b). The scale applied is the one
+     *       the most recent forward() actually used: before Mission 1b this always applied
+     *       1/(1-p), so a gradient through an eval-mode forward came back wrongly scaled.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -81,8 +84,7 @@ protected:
     /**
      * @brief The actual forward computation -- per-element RNG draw at training time,
      *        identity at eval time or p == 0.
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(input.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 1b).
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
@@ -90,9 +92,11 @@ private:
     float p_;
     float scale_;
     DeviceBackend* backend_;
-    std::mt19937 rng_;
+    uint64_t seed_;
+    uint64_t draws_ = 0;  // elements consumed from the (seed_, k) stream so far
     Shape last_shape_ = Shape({0});
-    std::vector<float> last_mask_;  // 1.0 (kept) or 0.0 (dropped), flat, numel() entries
+    Tensor last_mask_;    // 1.0 (kept) or 0.0 (dropped); meaningful only when !last_was_identity_
+    bool last_was_identity_ = true;
     bool has_forwarded_ = false;
 };
 

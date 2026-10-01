@@ -66,9 +66,6 @@ float NoiseSchedule::alpha_bar(int64_t t) const {
 Tensor NoiseSchedule::add_noise(const Tensor& x0, const Tensor& epsilon, int64_t t) const {
     // Raw host loop dereferencing Tensor::data() directly -- see the header's note and
     // mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(x0);
-    PULSATRIX_REQUIRE_HOST(epsilon);
-
     if (!(x0.shape() == epsilon.shape())) {
         throw std::invalid_argument("NoiseSchedule::add_noise: x0 and epsilon must have the same shape");
     }
@@ -84,19 +81,18 @@ Tensor NoiseSchedule::add_noise(const Tensor& x0, const Tensor& epsilon, int64_t
     // Copy-construct from x0 rather than allocating through a stored DeviceBackend*: this
     // class deliberately holds no backend (its constructor takes only schedule parameters),
     // and a Tensor's copy constructor already carries the right backend and shape.
-    Tensor x_t(x0);
-    for (int64_t i = 0; i < x_t.numel(); ++i) {
-        x_t.data()[i] = signal_scale * x0.data()[i] + noise_scale * epsilon.data()[i];
+    if (x0.device() != epsilon.device()) {
+        throw std::invalid_argument("NoiseSchedule::add_noise: x0 and epsilon must be on the same device");
     }
+    // Device-generic (GPU-native-kernels Mission 1b): one axpby on x0's own backend.
+    Tensor x_t(x0.shape(), x0.backend(), x0.device());
+    x0.backend()->axpby(signal_scale, x0.data(), noise_scale, epsilon.data(), x_t.data(),
+                        static_cast<size_t>(x_t.numel()));
     return x_t;
 }
 
 Tensor NoiseSchedule::denoise_step(const Tensor& x_t, const Tensor& predicted_epsilon, const Tensor& z,
                                    int64_t t) const {
-    PULSATRIX_REQUIRE_HOST(x_t);
-    PULSATRIX_REQUIRE_HOST(predicted_epsilon);
-    PULSATRIX_REQUIRE_HOST(z);
-
     if (!(x_t.shape() == predicted_epsilon.shape()) || !(x_t.shape() == z.shape())) {
         throw std::invalid_argument(
             "NoiseSchedule::denoise_step: x_t, predicted_epsilon and z must all have the same shape");
@@ -111,11 +107,17 @@ Tensor NoiseSchedule::denoise_step(const Tensor& x_t, const Tensor& predicted_ep
     const float eps_coefficient = beta_t / std::sqrt(std::fmax(0.0f, 1.0f - alpha_bar_t));
     const float z_scale = std::sqrt(beta_t);
 
-    Tensor x_prev(x_t);
-    for (int64_t i = 0; i < x_prev.numel(); ++i) {
-        x_prev.data()[i] = inv_sqrt_alpha * (x_t.data()[i] - eps_coefficient * predicted_epsilon.data()[i]) +
-                           z_scale * z.data()[i];
+    if (x_t.device() != predicted_epsilon.device() || x_t.device() != z.device()) {
+        throw std::invalid_argument(
+            "NoiseSchedule::denoise_step: x_t, predicted_epsilon and z must be on the same device");
     }
+    // inv_sqrt_alpha * (x_t - eps_coefficient * eps) + z_scale * z, as two axpbys on x_t's
+    // backend in the original evaluation order (GPU-native-kernels Mission 1b).
+    const auto n = static_cast<size_t>(x_t.numel());
+    DeviceBackend* backend = x_t.backend();
+    Tensor x_prev(x_t.shape(), backend, x_t.device());
+    backend->axpby(1.0f, x_t.data(), -eps_coefficient, predicted_epsilon.data(), x_prev.data(), n);
+    backend->axpby(inv_sqrt_alpha, x_prev.data(), z_scale, z.data(), x_prev.data(), n);
     return x_prev;
 }
 

@@ -98,13 +98,8 @@ public:
      * @throws std::invalid_argument if x0 and epsilon have different shapes -- external
      *         boundary, same classification as MSELoss::forward's shape check.
      * @throws std::out_of_range if t is outside [1, T].
-     * @note Not backend-generic -- a raw host loop dereferencing Tensor::data() directly
-     *       (a scaled two-tensor combination has no DeviceBackend elementwise primitive).
-     *       PULSATRIX_REQUIRE_HOST on both inputs guards against silent UB
-     *       on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
-     *       mission_host_loop_guards.md. Do not remove this guard without actually
-     *       retrofitting the method to route through DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1b);
+     *       inputs must share one device.
      */
     [[nodiscard]] Tensor add_noise(const Tensor& x0, const Tensor& epsilon, int64_t t) const;
 

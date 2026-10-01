@@ -7,70 +7,36 @@
 #include "pulsatrix/assert.hpp"
 
 namespace pulsatrix {
-namespace {
-
-/**
- * @brief Overflow-free logistic sigmoid: the exponent argument is never positive.
- * @note The naive 1/(1+exp(-x)) overflows exp() for large negative x; the mirrored
- *       exp(x)/(1+exp(x)) branch keeps -|x| in the exponent either way.
- */
-float stable_sigmoid(float x) {
-    if (x >= 0.0f) {
-        return 1.0f / (1.0f + std::exp(-x));
-    }
-    const float e = std::exp(x);
-    return e / (1.0f + e);
-}
-
-}  // namespace
-
 BCEWithLogitsLoss::BCEWithLogitsLoss(DeviceBackend* backend)
     : backend_(backend), last_logits_(Shape({0}), backend), last_target_(Shape({0}), backend) {}
 
 float BCEWithLogitsLoss::forward(const Tensor& logits, const Tensor& target) {
-    // Dereferences Tensor::data() directly in a raw host loop (exp()/log() have no backend
-    // primitive) -- not yet backend-generic. See
-    // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
-    // mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(logits);
-    PULSATRIX_REQUIRE_HOST(target);
-
     if (!(logits.shape() == target.shape())) {
         throw std::invalid_argument("BCEWithLogitsLoss::forward: logits and target must have the same shape");
     }
-
+    if (logits.device() != target.device()) {
+        throw std::invalid_argument("BCEWithLogitsLoss::forward: logits and target must be on the same device");
+    }
     last_logits_ = logits;
     last_target_ = target;
     has_forwarded_ = true;
 
-    // max(x,0) - x*y + log(1 + exp(-|x|)): the numerically stable rewrite of
-    // -y*log(sigmoid(x)) - (1-y)*log(1 - sigmoid(x)). log1p keeps the small-|x| end accurate
-    // too, where exp(-|x|) is near 1 and 1 + it loses no significance, but 1 + tiny would.
-    float total = 0.0f;
-    for (int64_t i = 0; i < logits.numel(); ++i) {
-        const float x = logits.data()[i];
-        const float y = target.data()[i];
-        total += std::max(x, 0.0f) - x * y + std::log1p(std::exp(-std::fabs(x)));
-    }
-    return total / static_cast<float>(logits.numel());
+    // Device-generic (GPU-native-kernels Mission 1b): per-element terms by the fused kernel,
+    // then one reduction; only the scalar crosses to the host.
+    const auto n = static_cast<size_t>(logits.numel());
+    Tensor terms(logits.shape(), backend_, logits.device());
+    backend_->bce_with_logits(logits.data(), target.data(), terms.data(), n);
+    return backend_->sum(terms.data(), n) / static_cast<float>(logits.numel());
 }
 
 Tensor BCEWithLogitsLoss::backward() const {
     if (!has_forwarded_) {
         throw std::logic_error("BCEWithLogitsLoss::backward called before forward");
     }
-
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(last_logits_);
-    PULSATRIX_REQUIRE_HOST(last_target_);
     const int64_t n = last_logits_.numel();
-    const float scale = 1.0f / static_cast<float>(n);
-    Tensor grad(last_logits_.shape(), backend_);
-    PULSATRIX_REQUIRE_HOST(grad);
-    for (int64_t i = 0; i < n; ++i) {
-        grad.data()[i] = (stable_sigmoid(last_logits_.data()[i]) - last_target_.data()[i]) * scale;
-    }
+    Tensor grad(last_logits_.shape(), backend_, last_logits_.device());
+    backend_->bce_with_logits_grad(last_logits_.data(), last_target_.data(), grad.data(), static_cast<size_t>(n),
+                                   1.0f / static_cast<float>(n));
     return grad;
 }
 
