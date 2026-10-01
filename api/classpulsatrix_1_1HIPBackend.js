@@ -10,5 +10,6 @@ var classpulsatrix_1_1HIPBackend =
     [ "fill", "classpulsatrix_1_1HIPBackend.html#a3cb4bc1c028c8676510ce3e1a5c3b326", null ],
     [ "free", "classpulsatrix_1_1HIPBackend.html#a4312ed55031f1dcfabb3f26d709b6229", null ],
     [ "gemm", "classpulsatrix_1_1HIPBackend.html#a54ad0486db8c9625a75593004b8444fd", null ],
+    [ "mul", "classpulsatrix_1_1HIPBackend.html#a8d1e6e52eb84ed7e21535e9bed152478", null ],
     [ "operator=", "classpulsatrix_1_1HIPBackend.html#a986e88f107512b4f5272d7e8843bef3c", null ]
 ];

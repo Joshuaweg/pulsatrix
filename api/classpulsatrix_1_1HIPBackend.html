@@ -156,12 +156,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2790275e26949610092127b61f7a40b8" id="r_a2790275e26949610092127b61f7a40b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a2790275e26949610092127b61f7a40b8">add</a> (const float *a, const float *b, float *out, size_t n) override</td></tr>
 <tr class="memdesc:a2790275e26949610092127b61f7a40b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elementwise binary addition: out[i] = a[i] + b[i] for i in [0, n).  <br /></td></tr>
 <tr class="separator:a2790275e26949610092127b61f7a40b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d1e6e52eb84ed7e21535e9bed152478" id="r_a8d1e6e52eb84ed7e21535e9bed152478"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a8d1e6e52eb84ed7e21535e9bed152478">mul</a> (const float *a, const float *b, float *out, size_t n) override</td></tr>
+<tr class="memdesc:a8d1e6e52eb84ed7e21535e9bed152478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elementwise binary (Hadamard) multiplication: out[i] = a[i] * b[i] for i in [0, n).  <br /></td></tr>
+<tr class="separator:a8d1e6e52eb84ed7e21535e9bed152478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1DeviceBackend"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1DeviceBackend')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1DeviceBackend.html">pulsatrix::DeviceBackend</a></td></tr>
 <tr class="memitem:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend" id="r_a2feea27fda55c8c0addf4e7c3864f2aa"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a2feea27fda55c8c0addf4e7c3864f2aa">~DeviceBackend</a> ()=default</td></tr>
 <tr class="separator:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2d61bb06621a5a0b7934c6ed653708d inherit pub_methods_classpulsatrix_1_1DeviceBackend" id="r_ab2d61bb06621a5a0b7934c6ed653708d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d">mul</a> (const float *a, const float *b, float *out, size_t n)=0</td></tr>
-<tr class="memdesc:ab2d61bb06621a5a0b7934c6ed653708d inherit pub_methods_classpulsatrix_1_1DeviceBackend"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elementwise binary (Hadamard) multiplication: out[i] = a[i] * b[i] for i in [0, n).  <br /></td></tr>
-<tr class="separator:ab2d61bb06621a5a0b7934c6ed653708d inherit pub_methods_classpulsatrix_1_1DeviceBackend"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>HIP-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation, targeting AMD GPUs via ROCm. </p>
@@ -627,6 +627,68 @@ The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsa
 </dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a171a50250bf4560d92c7e71da4cc1afa">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a8d1e6e52eb84ed7e21535e9bed152478" name="a8d1e6e52eb84ed7e21535e9bed152478"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d1e6e52eb84ed7e21535e9bed152478">&#9670;&#160;</a></span>mul()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::HIPBackend::mul </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Elementwise binary (Hadamard) multiplication: out[i] = a[i] * b[i] for i in [0, n). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>First operand, must hold at least n floats. </td></tr>
+    <tr><td class="paramname">b</td><td>Second operand, must hold at least n floats. </td></tr>
+    <tr><td class="paramname">out</td><td>Output buffer, must hold at least n floats. May alias a or b for an in-place application. </td></tr>
+    <tr><td class="paramname">n</td><td>Number of elements. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Added in Phase 6's SwiGLU mission (mission_swiglu.md) &ndash; the third consumer needing a Hadamard product via a raw host loop (after <a class="el" href="classpulsatrix_1_1LSTMModule.html" title="Standard 4-gate LSTM recurrence, h_0 = c_0 = 0 (zero-initialized, not learnable – the same deliberate...">LSTMModule</a>'s/GRUModule's gate arithmetic), the trigger point the Risk Register named for finally adding this primitive properly instead of a fourth raw loop. LSTMModule/GRUModule's existing raw loops are not retrofitted to use it &ndash; no behavior change needed there, logged as a low-priority future cleanup only. </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>

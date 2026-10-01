@@ -168,8 +168,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a000ba22a3b252dc2cf7219a78d7c1ce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinterprets this tensor's dimensions in place &ndash; same buffer, new shape.  <br /></td></tr>
 <tr class="separator:a000ba22a3b252dc2cf7219a78d7c1ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6f088bd4ae54d5640d889a93fe362df" id="r_ac6f088bd4ae54d5640d889a93fe362df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#ac6f088bd4ae54d5640d889a93fe362df">to</a> (<a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> target)</td></tr>
-<tr class="memdesc:ac6f088bd4ae54d5640d889a93fe362df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfers this tensor to a different device.  <br /></td></tr>
+<tr class="memdesc:ac6f088bd4ae54d5640d889a93fe362df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same-device no-op form of <a class="el" href="classpulsatrix_1_1Tensor.html#ac6f088bd4ae54d5640d889a93fe362df" title="Same-device no-op form of to().">to()</a>.  <br /></td></tr>
 <tr class="separator:ac6f088bd4ae54d5640d889a93fe362df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1543d456329dbde308e401ac744f31d9" id="r_a1543d456329dbde308e401ac744f31d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#a1543d456329dbde308e401ac744f31d9">to</a> (<a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> target, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *target_backend)</td></tr>
+<tr class="memdesc:a1543d456329dbde308e401ac744f31d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves this tensor's buffer to another device, owned by target_backend.  <br /></td></tr>
+<tr class="separator:a1543d456329dbde308e401ac744f31d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -226,7 +229,7 @@ Static Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">shape</td><td><a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> shape. </td></tr>
     <tr><td class="paramname">backend</td><td>Backend to allocate/fill through. Not owned; must outlive this <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. </td></tr>
-    <tr><td class="paramname">device</td><td>Which device this tensor's buffer conceptually resides on. Defaults to Cpu &ndash; only Cpu has a <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation as of Phase 0. </td></tr>
+    <tr><td class="paramname">device</td><td>Which device this tensor's buffer conceptually resides on. Defaults to Cpu. Must match the device backend allocates on. </td></tr>
   </table>
   </dd>
 </dl>
@@ -454,7 +457,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Reference to the element. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Bounds and rank are checked via PULSATRIX_ASSERT (programmer-error contract, not a condition a well-formed caller can legitimately trigger) &ndash; see cpp_style_guide/context_style_project_conventions.md's assert-vs-throw table. Assumes a host-addressable (Cpu) backend; revisit when a GPU-resident <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s <a class="el" href="classpulsatrix_1_1Tensor.html#ab9cb31cbcc6b063d31bab7e4d3766c01" title="Element access by multi-dimensional index (row-major).">at()</a> needs a host round-trip (Phase 1.5+). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Bounds and rank are checked via PULSATRIX_ASSERT (programmer-error contract, not a condition a well-formed caller can legitimately trigger) &ndash; see cpp_style_guide/context_style_project_conventions.md's assert-vs-throw table. Assumes a host-addressable (Cpu) backend: on a Cuda/Hip <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, move it with to(DeviceType::Cpu, cpu_backend) first. </dd></dl>
 
 </div>
 </div>
@@ -854,7 +857,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ac6f088bd4ae54d5640d889a93fe362df" name="ac6f088bd4ae54d5640d889a93fe362df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6f088bd4ae54d5640d889a93fe362df">&#9670;&#160;</a></span>to()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6f088bd4ae54d5640d889a93fe362df">&#9670;&#160;</a></span>to() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -869,18 +872,67 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Transfers this tensor to a different device. </p>
+<p>Same-device no-op form of <a class="el" href="classpulsatrix_1_1Tensor.html#ac6f088bd4ae54d5640d889a93fe362df" title="Same-device no-op form of to().">to()</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">target</td><td>Target device. </td></tr>
+    <tr><td class="paramname">target</td><td>Target device. Must equal <a class="el" href="classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d" title="Which device this tensor&#39;s buffer conceptually resides on.">device()</a>. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>*this, for chaining. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>A no-op when target == <a class="el" href="classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d" title="Which device this tensor&#39;s buffer conceptually resides on.">device()</a> (charter's Phase 0 exit gate requires this specific path). Any genuine cross-device transfer throws until a <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> for that device exists (Phase 1.5/1.6) &ndash; there is currently nothing to transfer to or from. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>A <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> holds exactly one non-owned DeviceBackend*, and there is no global backend registry, so a cross-device move cannot know which backend should own the new buffer &ndash; use to(target, target_backend) for that. This overload exists for the charter's Phase 0 exit gate (to(device()) is a no-op). </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>if target != <a class="el" href="classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d" title="Which device this tensor&#39;s buffer conceptually resides on.">device()</a>. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if target != <a class="el" href="classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d" title="Which device this tensor&#39;s buffer conceptually resides on.">device()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1543d456329dbde308e401ac744f31d9" name="a1543d456329dbde308e401ac744f31d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1543d456329dbde308e401ac744f31d9">&#9670;&#160;</a></span>to() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::Tensor::to </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>target_backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Moves this tensor's buffer to another device, owned by target_backend. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>Device the new buffer resides on. Must be the device target_backend allocates on (Cpu for <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, Cuda for <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a>, Hip for <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a>) &ndash; not checkable here, since <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> does not report its own device. </td></tr>
+    <tr><td class="paramname">target_backend</td><td>Backend to allocate the new buffer through. Not owned; must outlive this <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, exactly as the constructor's backend must. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>*this, for chaining. Afterwards <a class="el" href="classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d" title="Which device this tensor&#39;s buffer conceptually resides on.">device()</a> == target and every subsequent allocate/copy/free goes through target_backend. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The copy is issued by whichever backend owns the device-side pointer: Cpu -&gt; device uses target_backend (HostToDevice); device -&gt; Cpu uses the current backend (DeviceToHost); between two different GPU device types (Cuda &lt;-&gt; Hip) the data is staged through a host buffer, since neither vendor's runtime can address the other's memory. Same device type through a different backend instance copies directly (HostToHost / DeviceToDevice). </dd>
+<dd>
+Strong exception guarantee: if allocation or the copy throws, this <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> is left unchanged (same buffer, backend and device) and the new buffer is released. </dd>
+<dd>
+A no-op when target == <a class="el" href="classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d" title="Which device this tensor&#39;s buffer conceptually resides on.">device()</a> and target_backend is the current backend. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if target_backend is nullptr. </td></tr>
   </table>
   </dd>
 </dl>

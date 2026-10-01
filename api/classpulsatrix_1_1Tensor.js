@@ -21,5 +21,6 @@ var classpulsatrix_1_1Tensor =
     [ "rank", "classpulsatrix_1_1Tensor.html#a66cf64adde5d5ab375ffe88edddfb7de", null ],
     [ "reshape", "classpulsatrix_1_1Tensor.html#a000ba22a3b252dc2cf7219a78d7c1ce0", null ],
     [ "shape", "classpulsatrix_1_1Tensor.html#a966fcddb4620f766ff0248daeeaee223", null ],
-    [ "to", "classpulsatrix_1_1Tensor.html#ac6f088bd4ae54d5640d889a93fe362df", null ]
+    [ "to", "classpulsatrix_1_1Tensor.html#ac6f088bd4ae54d5640d889a93fe362df", null ],
+    [ "to", "classpulsatrix_1_1Tensor.html#a1543d456329dbde308e401ac744f31d9", null ]
 ];
