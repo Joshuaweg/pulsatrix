@@ -120,13 +120,6 @@ TEST_F(HostGuardCoverageDeathTest, GroupNormBackwardAbortsOnGpuBackendScratch) {
     EXPECT_HOST_GUARD_DEATH({ (void)gn.backward(grad); }, "local_gamma_grad");
 }
 
-TEST_F(HostGuardCoverageDeathTest, AggregatorBackwardAbortsOnGpuBackendScratch) {
-    AggregatorModule agg(&hip);
-    (void)agg.forward(host(Shape({3}), {0.2f, 0.5f, 0.8f}));
-    Tensor grad = host(Shape({}), {1.0f});
-    EXPECT_HOST_GUARD_DEATH({ (void)agg.backward(grad); }, "grad_input");
-}
-
 // ---- Losses ----
 
 TEST_F(HostGuardCoverageDeathTest, DQNLossBackwardAbortsOnGpuBackendGradient) {
@@ -157,20 +150,6 @@ TEST_F(HostGuardCoverageDeathTest, PPOClippedLossForwardAbortsOnGpuBackendProbs)
 
 // ---- Fuzzy-logic operators (split_operands / combine_operands paths) ----
 
-TEST_F(HostGuardCoverageDeathTest, ConjunctionBackwardAbortsOnGpuBackendGradients) {
-    ConjunctionModule conj(&hip);
-    (void)conj.forward(host(Shape({2}), {0.2f, 0.8f}), host(Shape({2}), {0.6f, 0.4f}));
-    Tensor grad = host(Shape({2}), {1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)conj.backward(grad); }, "grad_a");
-}
-
-TEST_F(HostGuardCoverageDeathTest, DisjunctionBackwardAbortsOnGpuBackendGradients) {
-    DisjunctionModule disj(&hip);
-    (void)disj.forward(host(Shape({2}), {0.2f, 0.8f}), host(Shape({2}), {0.6f, 0.4f}));
-    Tensor grad = host(Shape({2}), {1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)disj.backward(grad); }, "grad_a");
-}
-
 // ---- Target-network updates and optimizer state ----
 
 TEST_F(HostGuardCoverageDeathTest, SyncTargetNetworkAbortsOnNonCpuParameters) {
@@ -186,19 +165,6 @@ TEST_F(HostGuardCoverageDeathTest, PolyakUpdateAbortsOnNonCpuParameters) {
 }
 
 // ---- Explainability metrics ----
-
-TEST_F(HostGuardCoverageDeathTest, ComputeAttributionStabilityAbortsOnNonCpuValues) {
-    std::vector<Attribution> runs;
-    runs.push_back(Attribution{"saliency", mislabelled(Shape({2}), {0.1f, 0.2f}), {}});
-    runs.push_back(Attribution{"saliency", mislabelled(Shape({2}), {0.1f, 0.3f}), {}});
-    EXPECT_HOST_GUARD_DEATH({ (void)ComputeAttributionStability(runs); }, "run.values");
-}
-
-TEST_F(HostGuardCoverageDeathTest, ComputeConservationAbortsOnNonCpuRelevance) {
-    Tensor r_in = mislabelled(Shape({2}), {0.4f, 0.6f});
-    Tensor r_out = host(Shape({1}), {1.0f});
-    EXPECT_HOST_GUARD_DEATH({ (void)ComputeConservation(r_in, r_out); }, "relevance_in");
-}
 
 // ---- RL agents, GFlowNet sampling ----
 

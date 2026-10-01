@@ -14,30 +14,25 @@ namespace {
 // Raw host loop; PULSATRIX_ASSERT-guarded against a non-Cpu tensor, same convention as
 // every other raw-host-loop Module in this codebase (NegationModule, LinearModule).
 Tensor sigmoid(const Tensor& z, DeviceBackend* backend) {
-    PULSATRIX_REQUIRE_HOST(z);
+    // Device-generic (GPU-native-kernels Mission 3): DeviceBackend's Sigmoid is the same
+    // 1 / (1 + exp(-z)) this helper always computed.
     Tensor y(z.shape(), backend, z.device());
-    const int64_t n = z.numel();
-    for (int64_t i = 0; i < n; ++i) {
-        y.data()[i] = 1.0f / (1.0f + std::exp(-z.data()[i]));
-    }
+    backend->elementwise(ElementwiseOp::Sigmoid, z.data(), y.data(), static_cast<size_t>(z.numel()));
     return y;
 }
 
-// dL/dz = dL/dy * y*(1-y), given the cached forward-pass output y.
+// grad_z = (grad_y * y) * (1 - y), composed in the original evaluation order.
 Tensor sigmoid_backward(const Tensor& grad_y, const Tensor& y, DeviceBackend* backend) {
-    PULSATRIX_REQUIRE_HOST(grad_y);
+    const auto n = static_cast<size_t>(y.numel());
     Tensor grad_z(y.shape(), backend, y.device());
-    const int64_t n = y.numel();
-    for (int64_t i = 0; i < n; ++i) {
-        const float yv = y.data()[i];
-        grad_z.data()[i] = grad_y.data()[i] * yv * (1.0f - yv);
-    }
+    backend->mul(grad_y.data(), y.data(), grad_z.data(), n);
+    Tensor one_minus_y(y.shape(), backend, y.device());
+    one_minus_y.fill(1.0f);
+    backend->axpby(-1.0f, y.data(), 1.0f, one_minus_y.data(), one_minus_y.data(), n);
+    backend->mul(grad_z.data(), one_minus_y.data(), grad_z.data(), n);
     return grad_z;
 }
 
-// Splits a DisjunctionModule::backward()-shaped stacked gradient (leading dim 2) back into
-// its two operand-shaped halves -- same "small, per-file helper" convention as
-// disjunction_module.cpp's own split_operands/combine_operands (mission_0's Stage 3 note).
 std::pair<Tensor, Tensor> split_stacked_grad(const Tensor& stacked, DeviceBackend* backend) {
     std::vector<int64_t> operand_dims;
     for (int64_t i = 1; i < stacked.rank(); ++i) {
@@ -45,18 +40,13 @@ std::pair<Tensor, Tensor> split_stacked_grad(const Tensor& stacked, DeviceBacken
     }
     Shape operand_shape(operand_dims);
     const int64_t half = operand_shape.numel();
-
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(stacked);
     Tensor a(operand_shape, backend, stacked.device());
     Tensor b(operand_shape, backend, stacked.device());
-    PULSATRIX_REQUIRE_HOST(a);
-    PULSATRIX_REQUIRE_HOST(b);
-    for (int64_t i = 0; i < half; ++i) {
-        a.data()[i] = stacked.data()[i];
-        b.data()[i] = stacked.data()[half + i];
-    }
+    const CopyDirection dir =
+        stacked.device() == DeviceType::Cpu ? CopyDirection::HostToHost : CopyDirection::DeviceToDevice;
+    const size_t bytes = static_cast<size_t>(half) * sizeof(float);
+    backend->copy(a.data(), stacked.data(), bytes, dir);
+    backend->copy(b.data(), stacked.data() + half, bytes, dir);
     return {std::move(a), std::move(b)};
 }
 

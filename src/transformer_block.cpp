@@ -27,14 +27,11 @@ namespace {
  *        established two-term weighted-sum epsilon/z-rule (LSTMModule's cell-carry split,
  *        GRUModule's candidate split -- here with both weights fixed at 1).
  */
-void residual_split(const Tensor& a, const Tensor& b, const Tensor& r, float epsilon, Tensor& r_a, Tensor& r_b) {
-    const auto n = static_cast<size_t>(r.numel());
-    for (size_t i = 0; i < n; ++i) {
-        const float y = a.data()[i] + b.data()[i];
-        const float denom = y + epsilon * ((y >= 0.0f) ? 1.0f : -1.0f);
-        r_a.data()[i] = (a.data()[i] / denom) * r.data()[i];
-        r_b.data()[i] = (b.data()[i] / denom) * r.data()[i];
-    }
+void residual_split(const Tensor& a, const Tensor& b, const Tensor& r, float epsilon, Tensor& r_a, Tensor& r_b,
+                    DeviceBackend* backend) {
+    // Device-generic (GPU-native-kernels Mission 3).
+    backend->lrp_residual_split(a.data(), b.data(), r.data(), r_a.data(), r_b.data(), static_cast<size_t>(r.numel()),
+                                epsilon);
 }
 
 }  // namespace
@@ -128,15 +125,14 @@ Tensor TransformerBlock::propagate_relevance(const Tensor& relevance_out, const 
         throw std::invalid_argument(
             "TransformerBlock::propagate_relevance: relevance_out must match the cached forward shape");
     }
-    // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
+    // Device-generic (GPU-native-kernels Mission 3).
 
     const int64_t n_flat = flatten_leading_dims(last_input_shape_, d_model_);
 
     // y2 = y1 + ffn_out.
     Tensor r_y1_direct(relevance_out.shape(), backend_);
     Tensor r_ffn_out(relevance_out.shape(), backend_);
-    residual_split(last_y1_, last_ffn_out_, relevance_out, config.epsilon, r_y1_direct, r_ffn_out);
+    residual_split(last_y1_, last_ffn_out_, relevance_out, config.epsilon, r_y1_direct, r_ffn_out, backend_);
 
     Tensor r_norm2_out = swiglu_.propagate_relevance(r_ffn_out, config);
     Tensor r_y1_from_norm2 = reshaped(
@@ -148,7 +144,7 @@ Tensor TransformerBlock::propagate_relevance(const Tensor& relevance_out, const 
     // y1 = x + attn_out.
     Tensor r_x_direct(relevance_out.shape(), backend_);
     Tensor r_attn_out(relevance_out.shape(), backend_);
-    residual_split(last_x_, last_attn_out_, r_y1, config.epsilon, r_x_direct, r_attn_out);
+    residual_split(last_x_, last_attn_out_, r_y1, config.epsilon, r_x_direct, r_attn_out, backend_);
 
     Tensor r_norm1_out = mha_.propagate_relevance(r_attn_out, config);
     Tensor r_x_from_norm1 = reshaped(

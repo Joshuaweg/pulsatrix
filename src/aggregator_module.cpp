@@ -34,8 +34,6 @@ AggregatorModule::AggregatorModule(DeviceBackend* backend, float p)
 }
 
 Tensor AggregatorModule::forward_impl(const Tensor& input) {
-    // Raw host loop below -- not yet backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() < 1) {
         throw std::invalid_argument("AggregatorModule::forward: input must have rank >= 1 (a leading batch axis)");
@@ -45,17 +43,11 @@ Tensor AggregatorModule::forward_impl(const Tensor& input) {
     const Shape output_shape = drop_leading_dim(input.shape());
     const int64_t cols = output_shape.numel();
 
+    // Device-generic (GPU-native-kernels Mission 3): one thread per output column.
     Tensor mean_pow(output_shape, backend_, input.device());
     Tensor output(output_shape, backend_, input.device());
-    for (int64_t j = 0; j < cols; ++j) {
-        float sum = 0.0f;
-        for (int64_t i = 0; i < n; ++i) {
-            sum += std::pow(input.data()[i * cols + j], p_);
-        }
-        const float m = sum / static_cast<float>(n);
-        mean_pow.data()[j] = m;
-        output.data()[j] = std::pow(m, 1.0f / p_);
-    }
+    backend_->aggregator_forward(input.data(), mean_pow.data(), output.data(), static_cast<size_t>(n),
+                                 static_cast<size_t>(cols), p_);
 
     last_input_ = input;
     last_mean_ = mean_pow;
@@ -71,27 +63,12 @@ Tensor AggregatorModule::backward(const Tensor& grad_output) {
     if (grad_output.shape() != last_output_.shape()) {
         throw std::invalid_argument("AggregatorModule::backward: grad_output must match the cached forward shape");
     }
-    // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t n = last_input_.shape().dim(0);
     const int64_t cols = last_output_.numel();
-    const float exponent_m = 1.0f / p_ - 1.0f;
-
-    Tensor grad_input(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
-    for (int64_t j = 0; j < cols; ++j) {
-        const float m = last_mean_.data()[j];
-        const float m_pow = std::pow(m, exponent_m);
-        for (int64_t i = 0; i < n; ++i) {
-            const float x = last_input_.data()[i * cols + j];
-            const float x_pow = std::pow(x, p_ - 1.0f);
-            grad_input.data()[i * cols + j] = grad_output.data()[j] * (m_pow * x_pow) / static_cast<float>(n);
-        }
-    }
+    Tensor grad_input(last_input_.shape(), backend_, last_input_.device());
+    backend_->aggregator_backward(last_input_.data(), last_mean_.data(), grad_output.data(), grad_input.data(),
+                                  static_cast<size_t>(n), static_cast<size_t>(cols), p_);
     return grad_input;
 }
 
@@ -103,28 +80,13 @@ Tensor AggregatorModule::propagate_relevance(const Tensor& relevance_out, const 
         throw std::invalid_argument(
             "AggregatorModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
-    // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t n = last_input_.shape().dim(0);
     const int64_t cols = last_output_.numel();
 
-    Tensor relevance_in(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
-    for (int64_t j = 0; j < cols; ++j) {
-        // sum_j(x_j^p) == mean(x^p) * n exactly, by m's own definition -- reuses the cached
-        // mean rather than recomputing the sum of powers from scratch.
-        const float denom_raw = last_mean_.data()[j] * static_cast<float>(n);
-        const float denom = denom_raw + config.epsilon * ((denom_raw >= 0.0f) ? 1.0f : -1.0f);
-        for (int64_t i = 0; i < n; ++i) {
-            const float x = last_input_.data()[i * cols + j];
-            const float contribution = std::pow(x, p_) / denom;
-            relevance_in.data()[i * cols + j] = contribution * relevance_out.data()[j];
-        }
-    }
+    Tensor relevance_in(last_input_.shape(), backend_, last_input_.device());
+    backend_->aggregator_lrp(last_input_.data(), last_mean_.data(), relevance_out.data(), relevance_in.data(),
+                             static_cast<size_t>(n), static_cast<size_t>(cols), p_, config.epsilon);
     return relevance_in;
 }
 

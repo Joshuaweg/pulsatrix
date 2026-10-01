@@ -130,61 +130,13 @@ Tensor RoPEModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
         throw std::invalid_argument(
             "RoPEModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
-    // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
-
+    // Device-generic (GPU-native-kernels Mission 3): same cached cos/sin tables as forward.
     const SliceLayout layout = slice_layout_of(relevance_out.shape(), head_dim_);
-    const int64_t half = head_dim_ / 2;
-
-    Tensor relevance_in(relevance_out.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
-    // Zero-filled up front precisely because every element below is written with `+=`, not
-    // `=` -- see the two-contribution note at the accumulation site.
-    relevance_in.fill(0.0f);
-
-    for (int64_t m = 0; m < layout.num_matrices; ++m) {
-        for (int64_t pos = 0; pos < layout.seq_len; ++pos) {
-            const int64_t base_off = (m * layout.seq_len + pos) * head_dim_;
-            for (int64_t i = 0; i < half; ++i) {
-                const double theta = rope_angle(pos, i, head_dim_, base_);
-                const float c = static_cast<float>(std::cos(theta));
-                const float s = static_cast<float>(std::sin(theta));
-
-                const int64_t lo = base_off + 2 * i;      // flat index of x[2i]   / y[2i]
-                const int64_t hi = base_off + 2 * i + 1;  // flat index of x[2i+1] / y[2i+1]
-
-                const float x0 = last_input_.data()[lo];
-                const float x1 = last_input_.data()[hi];
-                const float y0 = last_output_.data()[lo];
-                const float y1 = last_output_.data()[hi];
-
-                // Epsilon-stabilized denominators, signed to match z_j (same sign(0) == +1
-                // convention as RNNModule/LinearModule).
-                const float denom0 = y0 + config.epsilon * ((y0 >= 0.0f) ? 1.0f : -1.0f);
-                const float denom1 = y1 + config.epsilon * ((y1 >= 0.0f) ? 1.0f : -1.0f);
-
-                const float r0 = relevance_out.data()[lo];
-                const float r1 = relevance_out.data()[hi];
-
-                // Source 1: y[2i] = x[2i]*cos + x[2i+1]*(-sin), redistributed across both
-                // inputs of this pair.
-                relevance_in.data()[lo] += (x0 * c / denom0) * r0;
-                relevance_in.data()[hi] += (x1 * -s / denom0) * r0;
-
-                // Source 2: y[2i+1] = x[2i]*sin + x[2i+1]*cos. These MUST accumulate on top
-                // of source 1's writes above -- each x-component of the pair receives
-                // relevance from BOTH output components, so `lo` and `hi` each get exactly
-                // two `+=` writes per (matrix, position, pair). Turning either of these four
-                // into `=` silently drops half the relevance and breaks conservation
-                // (structurally the same trap as GRUModule's two-path accumulator).
-                relevance_in.data()[lo] += (x0 * s / denom1) * r1;
-                relevance_in.data()[hi] += (x1 * c / denom1) * r1;
-            }
-        }
-    }
+    ensure_tables(layout.seq_len);
+    Tensor relevance_in(relevance_out.shape(), backend_, relevance_out.device());
+    backend_->lrp_rope(last_input_.data(), last_output_.data(), relevance_out.data(), cos_table_.data(),
+                       sin_table_.data(), relevance_in.data(), static_cast<size_t>(layout.num_matrices),
+                       static_cast<size_t>(layout.seq_len), static_cast<size_t>(head_dim_), config.epsilon);
     return relevance_in;
 }
 

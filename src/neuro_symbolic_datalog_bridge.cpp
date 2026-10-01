@@ -15,23 +15,21 @@ namespace {
 // toy-KB-style class owns its own small, private squashing glue, per that file's own header
 // note on why sigmoid is not a library-wide Module).
 Tensor sigmoid(const Tensor& z, DeviceBackend* backend) {
-    PULSATRIX_REQUIRE_HOST(z);
+    // Device-generic (GPU-native-kernels Mission 3): the same 1 / (1 + exp(-z)).
     Tensor y(z.shape(), backend, z.device());
-    const int64_t n = z.numel();
-    for (int64_t i = 0; i < n; ++i) {
-        y.data()[i] = 1.0f / (1.0f + std::exp(-z.data()[i]));
-    }
+    backend->elementwise(ElementwiseOp::Sigmoid, z.data(), y.data(), static_cast<size_t>(z.numel()));
     return y;
 }
 
+// grad_z = (grad_y * y) * (1 - y), composed in the original evaluation order.
 Tensor sigmoid_backward(float grad_y, const Tensor& y, DeviceBackend* backend) {
-    PULSATRIX_REQUIRE_HOST(y);
+    const auto n = static_cast<size_t>(y.numel());
     Tensor grad_z(y.shape(), backend, y.device());
-    const int64_t n = y.numel();
-    for (int64_t i = 0; i < n; ++i) {
-        const float yv = y.data()[i];
-        grad_z.data()[i] = grad_y * yv * (1.0f - yv);
-    }
+    backend->axpby(grad_y, y.data(), 0.0f, nullptr, grad_z.data(), n);
+    Tensor one_minus_y(y.shape(), backend, y.device());
+    one_minus_y.fill(1.0f);
+    backend->axpby(-1.0f, y.data(), 1.0f, one_minus_y.data(), one_minus_y.data(), n);
+    backend->mul(grad_z.data(), one_minus_y.data(), grad_z.data(), n);
     return grad_z;
 }
 
@@ -80,10 +78,9 @@ NeuralPredicateQueryResult NeuralPredicateDatalogBridge::evaluate(const Tensor& 
     last_s_ = s;
     has_evaluated_ = true;
 
-    // Reads Tensor::at() on the host -- not yet backend-generic (GPU-native-kernels campaign,
-    // Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(s);
-    const double s_value = static_cast<double>(s.at({0, 0}));
+    // Host boundary: the datalog engine runs on the host in double, so the single truth value
+    // crosses over -- one element read, valid on any device (GPU-native-kernels Mission 3).
+    const double s_value = static_cast<double>(s.read_element(0));
 
     WeightedFactDatabase<DualNumber<double>> dual_facts;
     // Seed edge(a,b) with derivative 1 w.r.t. itself; every constant fact carries derivative 0.
@@ -108,13 +105,8 @@ NeuralPredicateRelevanceResult NeuralPredicateDatalogBridge::propagate_relevance
         throw std::logic_error("NeuralPredicateDatalogBridge::propagate_relevance: evaluate() has not been called yet");
     }
 
-    // datalog_lrp's rule operates on the plain real-valued (+, x) semiring's fixpoint, not the
-    // DualSemiring pass evaluate() used for the gradient -- re-run the ordinary weighted
-    // engine on the identical facts (same s value already cached from evaluate()).
-    // Reads Tensor::at() / writes Tensor::data() on the host -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(last_s_);
-    const double s_value = static_cast<double>(last_s_.at({0, 0}));
+    // Host boundary, as in evaluate(): one element read.
+    const double s_value = static_cast<double>(last_s_.read_element(0));
     WeightedFactDatabase<double> facts = constant_edge_facts();
     facts.set(Atom("edge", {C("a"), C("b")}), s_value);
     WeightedFactDatabase<double> fixpoint = naive_evaluate_weighted<RealSemiring<double>>(diamond_ancestor_program(), facts);
@@ -128,9 +120,8 @@ NeuralPredicateRelevanceResult NeuralPredicateDatalogBridge::propagate_relevance
     // Continue through the predicate's own chain: sigmoid pass-through (Phase 2 Mission 0's
     // Sigmoid Design Decision precedent -- no gradient-shaped rule for a monotonic bijective
     // single-input nonlinearity), then LinearModule's real, unmodified propagate_relevance().
-    Tensor r_z(last_s_.shape(), backend_, last_s_.device());
-    PULSATRIX_REQUIRE_HOST(r_z);
-    r_z.data()[0] = static_cast<float>(r_s);
+    Tensor r_z(last_s_.shape(), backend_, last_s_.device());  // zero-initialized
+    r_z.write_element(0, static_cast<float>(r_s));
     Tensor r_x = predicate_.propagate_relevance(r_z, config);
 
     return NeuralPredicateRelevanceResult{datalog_relevance.base_facts, r_x};

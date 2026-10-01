@@ -122,35 +122,12 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
             "cached batch size");
     }
 
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
-    // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
-    // mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
-
-    // Applied independently per example -- each row's relevance redistribution uses only
-    // that row's own cached z_j/x_i, no cross-example coupling.
-    Tensor relevance_in(Shape({N, in_features_}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
-    relevance_in.fill(0.0f);
-
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t j = 0; j < out_features_; ++j) {
-            float z_j = last_pre_bias_output_.data()[n * out_features_ + j];
-            float sign = (z_j >= 0.0f) ? 1.0f : -1.0f;
-            float denom = z_j + config.epsilon * sign;
-            float r_j = relevance_out.data()[n * out_features_ + j];
-
-            for (int64_t i = 0; i < in_features_; ++i) {
-                float w_ij = weight_.data()[i * out_features_ + j];
-                float x_i = last_input_.data()[n * in_features_ + i];
-                relevance_in.data()[n * in_features_ + i] += (x_i * w_ij / denom) * r_j;
-            }
-        }
-    }
-
+    // Device-generic (GPU-native-kernels Mission 3): one output element per GPU thread, each
+    // summing over out_features in the original loop's order.
+    Tensor relevance_in(Shape({N, in_features_}), backend_, weight_.device());
+    backend_->lrp_linear(last_input_.data(), weight_.data(), last_pre_bias_output_.data(), relevance_out.data(),
+                         relevance_in.data(), static_cast<size_t>(N), static_cast<size_t>(in_features_),
+                         static_cast<size_t>(out_features_), config.epsilon);
     return relevance_in;
 }
 

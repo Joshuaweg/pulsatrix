@@ -6,15 +6,21 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
+#include <cmath>
 #include <random>
 #include <vector>
 
 #include "pulsatrix/adam_optimizer.hpp"
 #include "pulsatrix/bce_with_logits_loss.hpp"
+#include "pulsatrix/aggregator_module.hpp"
 #include "pulsatrix/calibration_loss.hpp"
+#include "pulsatrix/conjunction_module.hpp"
+#include "pulsatrix/disjunction_module.hpp"
 #include "pulsatrix/dropout_module.hpp"
 #include "pulsatrix/embedding_module.hpp"
 #include "pulsatrix/layer_norm_module.hpp"
+#include "pulsatrix/lrp_conservation.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
 #include "pulsatrix/rms_norm_module.hpp"
 #include "pulsatrix/rope_module.hpp"
@@ -22,6 +28,8 @@
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
 #include "pulsatrix/negation_module.hpp"
+#include "pulsatrix/neuro_symbolic_datalog_bridge.hpp"
+#include "pulsatrix/neuro_symbolic_toy_kb.hpp"
 #include "pulsatrix/noise_schedule.hpp"
 #include "pulsatrix/reparameterize.hpp"
 #include "pulsatrix/cpu_backend.hpp"
@@ -368,6 +376,168 @@ inline void TransformerBlockTrainsToSameParameters(DeviceBackend& gpu) {
     ExpectParametersNear(cb, gb, 1e-3f);
 }
 
+// ---- Mission 3: LRP and logic modules ------------------------------------------------------
+
+// Campaign Decision Point 2: GPU relevance is judged by what LRP guarantees, not by 1e-4
+// elementwise equality -- the epsilon rule divides by sums that can sit near zero, where
+// rounding-level differences are amplified. Three checks:
+//  1. conservation: total relevance matches the CPU's (relative to its magnitude);
+//  2. sign agreement wherever the CPU's relevance is clearly away from zero;
+//  3. elementwise closeness, relative to the relevance scale of the tensor.
+// The shared per-output source (src/lrp_math.hpp) keeps CPU and GPU far inside these bounds in
+// practice; the bounds are the contract, not the expectation.
+constexpr float kLrpConservationTolerance = 1e-3f;  // relative to sum(|R|)
+constexpr float kLrpElementTolerance = 1e-3f;       // relative to max(|R|)
+constexpr float kLrpSignFloor = 1e-2f;              // |R| below this fraction of max(|R|) is "near zero"
+
+inline void ExpectRelevanceAgrees(const Tensor& cpu, const Tensor& gpu) {
+    ASSERT_EQ(cpu.shape(), gpu.shape());
+    const std::vector<float> c = ToHost(cpu), g = ToHost(gpu);
+    float max_abs = 0.0f, sum_abs = 0.0f, sum_c = 0.0f, sum_g = 0.0f;
+    for (size_t i = 0; i < c.size(); ++i) {
+        max_abs = std::max(max_abs, std::fabs(c[i]));
+        sum_abs += std::fabs(c[i]);
+        sum_c += c[i];
+        sum_g += g[i];
+    }
+    EXPECT_NEAR(sum_c, sum_g, kLrpConservationTolerance * std::max(sum_abs, 1e-6f)) << "conservation";
+    for (size_t i = 0; i < c.size(); ++i) {
+        EXPECT_NEAR(c[i], g[i], kLrpElementTolerance * std::max(max_abs, 1e-6f)) << "element " << i;
+        if (std::fabs(c[i]) > kLrpSignFloor * max_abs) {
+            EXPECT_EQ(c[i] > 0.0f, g[i] > 0.0f) << "sign flip at element " << i;
+        }
+    }
+}
+
+// Forward on both sides, then propagate_relevance with the same random relevance.
+template <typename Module>
+inline void ModuleRelevance(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Module& gm, const Shape& in_shape,
+                            unsigned seed) {
+    RandomizeAndMirror(cm, gm, seed);
+    std::vector<float> x = Random(static_cast<size_t>(in_shape.numel()), seed + 100);
+    Tensor cx(in_shape, &cpu, x), gx(in_shape, &gpu, x);
+    Tensor cy = cm.forward(cx);
+    Tensor gy = gm.forward(gx);
+    std::vector<float> r = Random(static_cast<size_t>(cy.numel()), seed + 200);
+    Tensor cr(cy.shape(), &cpu, r), gr(gy.shape(), &gpu, r);
+    ExpectRelevanceAgrees(cm.propagate_relevance(cr, LRPRuleConfig{}), gm.propagate_relevance(gr, LRPRuleConfig{}));
+}
+
+inline void LinearRelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cm(9, 6, &cpu), gm(9, 6, &gpu);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({5, 9}), 500);
+
+    // The conservation diagnostic itself runs on device tensors (Mission 3).
+    std::vector<float> r = Random(30, 505);
+    Tensor cr(Shape({5, 6}), &cpu, r), gr(Shape({5, 6}), &gpu, r);
+    ConservationResult cc = ComputeConservation(cm.propagate_relevance(cr, LRPRuleConfig{}), cr);
+    ConservationResult gc = ComputeConservation(gm.propagate_relevance(gr, LRPRuleConfig{}), gr);
+    EXPECT_NEAR(cc.relevance_in_sum, gc.relevance_in_sum, 1e-3f);
+    EXPECT_NEAR(cc.relevance_out_sum, gc.relevance_out_sum, 1e-4f);
+}
+
+inline void SoftmaxRelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    SoftmaxModule cm(&cpu), gm(&gpu);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({4, 3, 7}), 510);
+}
+
+inline void ResidualRelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cin(6, 6, &cpu), gin(6, 6, &gpu);
+    ResidualModule cm(&cin, &cpu), gm(&gin, &gpu);
+    RandomizeAndMirror(cin, gin, 520);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({4, 6}), 521);
+}
+
+inline void SwiGLURelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    SwiGLUModule cm(6, 10, &cpu), gm(6, 10, &gpu);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 3, 6}), 530);
+}
+
+inline void RoPERelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    RoPEModule cm(8, &cpu), gm(8, &gpu);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 3, 40, 8}), 540);
+}
+
+inline void AttentionRelevance(DeviceBackend& gpu, bool use_rope, bool use_qk_norm) {
+    CPUBackend cpu;
+    MultiHeadAttentionModule cm(8, 2, &cpu, use_rope, use_qk_norm), gm(8, 2, &gpu, use_rope, use_qk_norm);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 5, 8}), 550);
+}
+
+inline void TransformerBlockRelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    TransformerBlock cm(8, 2, 16, &cpu), gm(8, 2, 16, &gpu);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 5, 8}), 560);
+}
+
+inline void EmbeddingRelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    EmbeddingModule cm(10, 6, &cpu), gm(10, 6, &gpu);
+    RandomizeAndMirror(cm, gm, 570);
+    std::vector<float> ids = {3, 7, 3, 0, 9, 3, 7, 1};
+    Tensor cids(Shape({2, 4}), &cpu, ids), gids(Shape({2, 4}), &gpu, ids);
+    (void)cm.forward(cids);
+    (void)gm.forward(gids);
+    std::vector<float> r = Random(8 * 6, 571);
+    Tensor cr(Shape({2, 4, 6}), &cpu, r), gr(Shape({2, 4, 6}), &gpu, r);
+    ExpectRelevanceAgrees(cm.propagate_relevance(cr, LRPRuleConfig{}), gm.propagate_relevance(gr, LRPRuleConfig{}));
+}
+
+// Truth degrees in [0, 1], every norm, forward + backward + relevance.
+template <typename Module, typename Norm>
+inline void LogicModuleMatches(DeviceBackend& gpu, Norm norm, unsigned seed) {
+    CPUBackend cpu;
+    Module cm(&cpu, norm), gm(&gpu, norm);
+    std::vector<float> a = Random(24, seed, 0.0f, 1.0f), b = Random(24, seed + 1, 0.0f, 1.0f);
+    a[0] = b[0];  // a Godel tie: the tie convention must agree
+    Tensor ca(Shape({4, 6}), &cpu, a), ga(Shape({4, 6}), &gpu, a);
+    Tensor cb(Shape({4, 6}), &cpu, b), gb(Shape({4, 6}), &gpu, b);
+    ExpectNear(cm.forward(ca, cb), gm.forward(ga, gb));
+    std::vector<float> g = Random(24, seed + 2);
+    Tensor cg(Shape({4, 6}), &cpu, g), gg(Shape({4, 6}), &gpu, g);
+    ExpectNear(cm.backward(cg), gm.backward(gg));
+    ExpectRelevanceAgrees(cm.propagate_relevance(cg, LRPRuleConfig{}), gm.propagate_relevance(gg, LRPRuleConfig{}));
+}
+
+inline void AggregatorMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    AggregatorModule cm(&cpu, 3.0f), gm(&gpu, 3.0f);
+    std::vector<float> x = Random(5 * 7, 580, 0.05f, 1.0f);  // truth degrees, pow-safe
+    Tensor cx(Shape({5, 7}), &cpu, x), gx(Shape({5, 7}), &gpu, x);
+    ExpectNear(cm.forward(cx), gm.forward(gx));
+    std::vector<float> g = Random(7, 581);
+    Tensor cg(Shape({7}), &cpu, g), gg(Shape({7}), &gpu, g);
+    ExpectNear(cm.backward(cg), gm.backward(gg));
+    ExpectRelevanceAgrees(cm.propagate_relevance(cg, LRPRuleConfig{}), gm.propagate_relevance(gg, LRPRuleConfig{}));
+}
+
+// The neuro-symbolic pipelines end to end on GPU: the toy KB trains like the CPU one, and the
+// datalog bridge (a deliberate host boundary) evaluates and attributes from a GPU tensor.
+inline void NeuroSymbolicPipelines(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    ToyKnowledgeBase ckb(&cpu), gkb(&gpu);
+    SGDOptimizer copt(0.5f), gopt(0.5f);
+    std::vector<float> x = Random(8, 590);
+    Tensor cx(Shape({8, 1}), &cpu, x), gx(Shape({8, 1}), &gpu, x);
+    for (int step = 0; step < 5; ++step) {
+        EXPECT_NEAR(ckb.train_step(cx, copt), gkb.train_step(gx, gopt), 1e-4f) << "step " << step;
+    }
+    ExpectParametersNear(ckb.predicate_a(), gkb.predicate_a(), 1e-4f);
+
+    datalog::NeuralPredicateDatalogBridge cbridge(&cpu), gbridge(&gpu);
+    Tensor cq(Shape({1, 1}), &cpu, {0.3f}), gq(Shape({1, 1}), &gpu, {0.3f});
+    datalog::NeuralPredicateQueryResult cres = cbridge.evaluate(cq), gres = gbridge.evaluate(gq);
+    EXPECT_NEAR(cres.query_weight, gres.query_weight, 1e-6);
+    EXPECT_NEAR(cres.grad_wrt_predicate_output, gres.grad_wrt_predicate_output, 1e-6);
+    ExpectRelevanceAgrees(cbridge.propagate_relevance(1.0).relevance_wrt_x,
+                          gbridge.propagate_relevance(1.0).relevance_wrt_x);
+}
+
 // The mission's integration gate: the same small MLP, same init, same data, trained for
 // several steps on each backend, ends with the same parameters.
 template <typename Optimizer>
@@ -461,6 +631,36 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \
+    }                                                                                                \
+    TEST_F(FIXTURE, LinearRelevanceAgreesWithCPU) { ::pulsatrix::training_equivalence::LinearRelevance(MEMBER); } \
+    TEST_F(FIXTURE, SoftmaxRelevanceAgreesWithCPU) { ::pulsatrix::training_equivalence::SoftmaxRelevance(MEMBER); } \
+    TEST_F(FIXTURE, ResidualRelevanceAgreesWithCPU) { ::pulsatrix::training_equivalence::ResidualRelevance(MEMBER); } \
+    TEST_F(FIXTURE, SwiGLURelevanceAgreesWithCPU) { ::pulsatrix::training_equivalence::SwiGLURelevance(MEMBER); } \
+    TEST_F(FIXTURE, RoPERelevanceAgreesWithCPU) { ::pulsatrix::training_equivalence::RoPERelevance(MEMBER); }    \
+    TEST_F(FIXTURE, AttentionRelevanceAgreesWithCPU) {                                               \
+        ::pulsatrix::training_equivalence::AttentionRelevance(MEMBER, false, false);                 \
+        ::pulsatrix::training_equivalence::AttentionRelevance(MEMBER, true, false);                  \
+        ::pulsatrix::training_equivalence::AttentionRelevance(MEMBER, true, true);                   \
+    }                                                                                                \
+    TEST_F(FIXTURE, TransformerBlockRelevanceAgreesWithCPU) {                                        \
+        ::pulsatrix::training_equivalence::TransformerBlockRelevance(MEMBER);                        \
+    }                                                                                                \
+    TEST_F(FIXTURE, EmbeddingRelevanceAgreesWithCPU) { ::pulsatrix::training_equivalence::EmbeddingRelevance(MEMBER); } \
+    TEST_F(FIXTURE, ConjunctionEveryTNormMatchesCPU) {                                               \
+        using ::pulsatrix::ConjunctionModule;                                                        \
+        for (auto norm : {ConjunctionModule::TNorm::Product, ConjunctionModule::TNorm::Lukasiewicz,  \
+                          ConjunctionModule::TNorm::Godel})                                          \
+            ::pulsatrix::training_equivalence::LogicModuleMatches<ConjunctionModule>(MEMBER, norm, 600); \
+    }                                                                                                \
+    TEST_F(FIXTURE, DisjunctionEveryTConormMatchesCPU) {                                             \
+        using ::pulsatrix::DisjunctionModule;                                                        \
+        for (auto norm : {DisjunctionModule::TConorm::Product, DisjunctionModule::TConorm::Lukasiewicz, \
+                          DisjunctionModule::TConorm::Godel})                                        \
+            ::pulsatrix::training_equivalence::LogicModuleMatches<DisjunctionModule>(MEMBER, norm, 610); \
+    }                                                                                                \
+    TEST_F(FIXTURE, AggregatorMatchesCPU) { ::pulsatrix::training_equivalence::AggregatorMatches(MEMBER); } \
+    TEST_F(FIXTURE, NeuroSymbolicPipelinesMatchCPU) {                                                \
+        ::pulsatrix::training_equivalence::NeuroSymbolicPipelines(MEMBER);                           \
     }                                                                                                \
     TEST_F(FIXTURE, MlpTrainedWithSGDEndsWithCPUParameters) {                                        \
         ::pulsatrix::SGDOptimizer cpu_opt(0.05f), gpu_opt(0.05f);                                    \
