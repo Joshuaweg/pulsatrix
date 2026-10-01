@@ -335,5 +335,10 @@ TEST_F(CUDABackendTest, TensorToSecondBackendInstanceCopiesDeviceToDevice) {
     EXPECT_FLOAT_EQ(host[1], 4.0f);
 }
 
+TEST_F(CUDABackendTest, ReportsCudaDeviceAndTagsUntaggedTensors) {
+    EXPECT_EQ(backend.device(), DeviceType::Cuda);
+    EXPECT_EQ(Tensor(Shape({3}), &backend).device(), DeviceType::Cuda);
+}
+
 }  // namespace
 }  // namespace pulsatrix

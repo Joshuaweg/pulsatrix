@@ -33,6 +33,8 @@ public:
     CUDABackend(const CUDABackend&) = delete;
     CUDABackend& operator=(const CUDABackend&) = delete;
 
+    [[nodiscard]] DeviceType device() const noexcept override { return DeviceType::Cuda; }
+
     [[nodiscard]] void* allocate(size_t bytes) override;
     void free(void* ptr) noexcept override;
     void copy(void* dst, const void* src, size_t bytes, CopyDirection dir) override;
