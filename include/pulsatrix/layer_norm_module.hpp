@@ -47,9 +47,7 @@ public:
      * @param grad_output Gradient w.r.t. this module's output. Must match num_features.
      * @return Gradient w.r.t. this module's input.
      * @throws std::logic_error if forward() has never been called.
-     * @note Not yet backend-generic -- raw host loop, PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor, matching
-     *       every existing Module subclass's Phase 1.5 scope decision.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 2).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -98,7 +96,7 @@ private:
     Tensor beta_grad_;
     Tensor last_input_;
     Tensor last_xhat_;
-    std::vector<float> last_std_;  // one std per batch row
+    Tensor last_std_;  // (N,) one std per batch row, on the module's device
     bool has_forwarded_ = false;
 };
 

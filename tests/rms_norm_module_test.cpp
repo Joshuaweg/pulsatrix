@@ -258,20 +258,5 @@ TEST_F(RMSNormModuleTest, ParametersExposesGammaByPointer) {
 
 using RMSNormModuleDeathTest = RMSNormModuleTest;
 
-// Not yet backend-generic -- raw host loop in backward(), matching every existing Module
-// subclass's Phase 1.5 scope decision. No real GPU needed: Tensor::device() is metadata
-// decoupled from which DeviceBackend* actually allocated its buffer.
-TEST_F(RMSNormModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RMSNormModule norm(2, &backend);
-    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
-    (void)norm.forward(x);
-
-    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)norm.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

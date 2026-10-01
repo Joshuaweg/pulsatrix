@@ -72,8 +72,7 @@ public:
      * @return Gradient w.r.t. this module's input, same shape.
      * @throws std::logic_error if called before any forward().
      * @throws std::invalid_argument if grad_output's shape differs from the cached forward shape.
-     * @note Raw host loop for the two residual adds; PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guarded -- see mission_host_loop_guards.md.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 2).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 

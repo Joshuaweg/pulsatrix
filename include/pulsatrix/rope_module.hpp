@@ -61,9 +61,7 @@ public:
      * @throws std::logic_error if called before any forward().
      * @throws std::invalid_argument if grad_output's shape differs from the cached
      *         forward shape.
-     * @note Raw host loop; PULSATRIX_REQUIRE_HOST(grad_output) guarded --
-     *       see mission_host_loop_guards.md. Do not remove without routing through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 2).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -121,7 +119,7 @@ protected:
     /**
      * @brief Applies the per-position pair rotation.
      * @param input Input tensor of shape `(..., L, head_dim)`. Must be rank >= 2 with a
-     *        final dimension equal to head_dim, and Cpu-resident (raw host loop).
+     *        final dimension equal to head_dim; any device.
      * @return The rotated tensor, same shape as input.
      * @throws std::invalid_argument if input.rank() < 2 or its last dimension != head_dim.
      */
@@ -134,6 +132,18 @@ private:
     Tensor last_input_;   ///< Cached forward input x -- the epsilon rule's numerators.
     Tensor last_output_;  ///< Cached forward output y -- the epsilon rule's denominators.
     bool has_forwarded_ = false;
+
+    /**
+     * @brief Ensures cos_table_/sin_table_ hold (seq_len, head_dim/2) rotation tables on the
+     *        backend's device, rebuilding only when seq_len changes.
+     * @note Angles are computed on the host in double and narrowed once, exactly as the
+     *       pre-campaign host loop did, then uploaded -- a float angle on the device would lose
+     *       ~5e-4 at positions in the thousands (GPU-native-kernels Mission 2).
+     */
+    void ensure_tables(int64_t seq_len);
+    Tensor cos_table_;
+    Tensor sin_table_;
+    int64_t table_seq_len_ = 0;
 };
 
 }  // namespace pulsatrix

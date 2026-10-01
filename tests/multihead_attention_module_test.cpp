@@ -615,31 +615,6 @@ TEST_F(MultiHeadAttentionModuleTest, PropagateRelevanceRejectsShapeMismatchAgain
 
 using MultiHeadAttentionModuleDeathTest = MultiHeadAttentionModuleTest;
 
-// Exactly three death tests -- forward/backward/propagate_relevance, the three entry points
-// that dereference Tensor::data() in raw host loops. Same mislabeled-Tensor pattern as
-// SoftmaxModuleDeathTest/RNNModuleDeathTest: DeviceType::Cuda over real CPUBackend memory
-// trips the guard with no GPU involved.
-TEST_F(MultiHeadAttentionModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    MultiHeadAttentionModule mha(4, 2, &backend);
-    Tensor x(Shape({1, 2, 4}), &backend, kX, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mha.forward(x); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(MultiHeadAttentionModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    MultiHeadAttentionModule mha(4, 2, &backend);
-    Tensor x(Shape({1, 2, 4}), &backend, kX);
-    (void)mha.forward(x);
-
-    Tensor grad_out(Shape({1, 2, 4}), &backend, kX, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mha.backward(grad_out); }, "PULSATRIX_ASSERT failed");
-}
-
 TEST_F(MultiHeadAttentionModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
     GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";

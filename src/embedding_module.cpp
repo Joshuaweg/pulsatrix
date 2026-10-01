@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <vector>
 
 #include "pulsatrix/assert.hpp"
 
@@ -32,9 +33,6 @@ void EmbeddingModule::set_weight(const std::vector<float>& values) {
 }
 
 Tensor EmbeddingModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(input);
-
     if (input.rank() != 2) {
         throw std::invalid_argument("EmbeddingModule::forward: input must be rank-2 (N, L)");
     }
@@ -43,29 +41,26 @@ Tensor EmbeddingModule::forward_impl(const Tensor& input) {
     const int64_t count = N * L;
 
     last_input_shape_ = input.shape();
-    last_indices_.assign(static_cast<size_t>(count), 0);
 
+    // Index validation can throw per element, so it runs on the host: the N*L index values are
+    // read back (a small transfer next to the N*L*embedding_dim gather) and the validated,
+    // rounded indices are uploaded for the device kernels (GPU-native-kernels Mission 2).
+    std::vector<float> raw(static_cast<size_t>(count));
+    input.backend()->copy(raw.data(), input.data(), raw.size() * sizeof(float),
+                          input.device() == DeviceType::Cpu ? CopyDirection::HostToHost : CopyDirection::DeviceToHost);
+    std::vector<float> indices(static_cast<size_t>(count));
     for (int64_t i = 0; i < count; ++i) {
-        // Round-to-nearest, not truncation -- see the float-indices design decision.
-        int64_t idx = static_cast<int64_t>(std::llround(static_cast<double>(input.data()[i])));
+        int64_t idx = static_cast<int64_t>(std::llround(static_cast<double>(raw[static_cast<size_t>(i)])));
         if (idx < 0 || idx >= num_embeddings_) {
             throw std::invalid_argument("EmbeddingModule::forward: index out of range [0, num_embeddings)");
         }
-        last_indices_[static_cast<size_t>(i)] = idx;
+        indices[static_cast<size_t>(i)] = static_cast<float>(idx);
     }
+    last_indices_ = Tensor(Shape({count}), backend_, indices, weight_.device());
 
-    Tensor output(Shape({N, L, embedding_dim_}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(output);
-    for (int64_t i = 0; i < count; ++i) {
-        const float* row = weight_.data() + last_indices_[static_cast<size_t>(i)] * embedding_dim_;
-        float* out_row = output.data() + i * embedding_dim_;
-        for (int64_t d = 0; d < embedding_dim_; ++d) {
-            out_row[d] = row[d];
-        }
-    }
+    Tensor output(Shape({N, L, embedding_dim_}), backend_, weight_.device());
+    backend_->gather_rows(weight_.data(), last_indices_.data(), output.data(), static_cast<size_t>(count),
+                          static_cast<size_t>(embedding_dim_));
 
     has_forwarded_ = true;
     return output;
@@ -83,33 +78,17 @@ Tensor EmbeddingModule::backward(const Tensor& grad_output) {
             "EmbeddingModule::backward: grad_output must be (N, L, embedding_dim) matching the cached forward "
             "shape");
     }
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
-    const int64_t count = N * L;
-    Tensor local_weight_grad(weight_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(local_weight_grad);
+    // Scatter-add into a zeroed local, then accumulate -- the original association. The
+    // scatter walks tokens in order on every backend (deterministic; no atomics).
+    Tensor local_weight_grad(weight_.shape(), backend_, weight_.device());
     local_weight_grad.fill(0.0f);
-
-    // Scatter-add: multiple (n,l) positions can reference the same row -- each
-    // contributes additively, not via overwrite. First module in this codebase needing
-    // this pattern (LinearModule/Conv2DModule's gradients are dense-matmul sums).
-    for (int64_t i = 0; i < count; ++i) {
-        int64_t idx = last_indices_[static_cast<size_t>(i)];
-        float* grad_row = local_weight_grad.data() + idx * embedding_dim_;
-        const float* out_row = grad_output.data() + i * embedding_dim_;
-        for (int64_t d = 0; d < embedding_dim_; ++d) {
-            grad_row[d] += out_row[d];
-        }
-    }
+    backend_->scatter_add_rows(grad_output.data(), last_indices_.data(), local_weight_grad.data(),
+                               static_cast<size_t>(N * L), static_cast<size_t>(embedding_dim_));
     weight_grad_.accumulate(local_weight_grad);
 
-    // Gradient w.r.t. discrete indices is undefined -- always zero, matching every
-    // mainstream framework's nn.Embedding behavior.
-    Tensor grad_input(last_input_shape_, backend_);
+    // Indices are not differentiable: the input gradient is zero by definition.
+    Tensor grad_input(last_input_shape_, backend_, weight_.device());
     grad_input.fill(0.0f);
     return grad_input;
 }
