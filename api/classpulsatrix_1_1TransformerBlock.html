@@ -355,7 +355,7 @@ Protected Member Functions</h2></td></tr>
 <p>Runs: norm1 -&gt; attention -&gt; residual add -&gt; norm2 -&gt; SwiGLU -&gt; residual add. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">input</td><td><code>(N, L, d_model)</code>, Cpu-resident. </td></tr>
+    <tr><td class="paramname">input</td><td><code>(N, L, d_model)</code>, any device. </td></tr>
   </table>
   </dd>
 </dl>
@@ -554,7 +554,7 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Raw host loop; <a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(relevance_out)</a> guarded. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3). </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>.</p>
 

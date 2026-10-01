@@ -222,6 +222,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac34c79379b3561f790ffe1a4881a45f7" id="r_ac34c79379b3561f790ffe1a4881a45f7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ac34c79379b3561f790ffe1a4881a45f7">tanh_gaussian_backward</a> (const float *action, const float *std_cache, const float *eps, const float *grad_action, const float *grad_log_prob, float *grad_mean, float *grad_log_std, size_t n, float stabilizer)=0</td></tr>
 <tr class="memdesc:ac34c79379b3561f790ffe1a4881a45f7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html" title="SAC&#39;s reparameterized, tanh-squashed Gaussian policy sample (Haarnoja et al. 2018,...">TanhGaussianPolicy</a> gradients w.r.t. mean and log_std, per element.  <br /></td></tr>
 <tr class="separator:ac34c79379b3561f790ffe1a4881a45f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e95b2f2d86ebef7201a7a644f672cff" id="r_a7e95b2f2d86ebef7201a7a644f672cff"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a7e95b2f2d86ebef7201a7a644f672cff">lrp_linear</a> (const float *x, const float *w, const float *z, const float *r, float *r_in, size_t rows, size_t in_features, size_t out_features, float eps)=0</td></tr>
+<tr class="memdesc:a7e95b2f2d86ebef7201a7a644f672cff"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> epsilon rule: r_in[n][i] = sum_j (x[n][i] w[i][j] / stab(z[n][j])) r[n][j].  <br /></td></tr>
+<tr class="separator:a7e95b2f2d86ebef7201a7a644f672cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d5a61595366bc895d4248662b5a215" id="r_a92d5a61595366bc895d4248662b5a215"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a92d5a61595366bc895d4248662b5a215">lrp_residual_split</a> (const float *a, const float *b, const float *r, float *r_a, float *r_b, size_t n, float eps)=0</td></tr>
+<tr class="memdesc:a92d5a61595366bc895d4248662b5a215"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon split of a residual sum y = a + b: r_a = (a / stab(y)) r, r_b = (b / stab(y)) r.  <br /></td></tr>
+<tr class="separator:a92d5a61595366bc895d4248662b5a215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3632ea9bc53250c4240fc3883eefdb1" id="r_ab3632ea9bc53250c4240fc3883eefdb1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ab3632ea9bc53250c4240fc3883eefdb1">lrp_bilinear_elementwise</a> (const float *a, const float *b, const float *r, float *r_out, size_t n, float eps)=0</td></tr>
+<tr class="memdesc:ab3632ea9bc53250c4240fc3883eefdb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eq. 15 for an elementwise product c = a*b: r_out = (a b / (2c + eps sign c)) r (same for both).  <br /></td></tr>
+<tr class="separator:ab3632ea9bc53250c4240fc3883eefdb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab901c27ff2f1372c6f9b6b11db50b8e7" id="r_ab901c27ff2f1372c6f9b6b11db50b8e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ab901c27ff2f1372c6f9b6b11db50b8e7">lrp_bilinear_matmul</a> (const float *a, const float *b, const float *o, const float *r_o, float *r_a, float *r_b, size_t slices, size_t m, size_t p, size_t q, float eps, bool b_transposed)=0</td></tr>
+<tr class="memdesc:ab901c27ff2f1372c6f9b6b11db50b8e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eq. 15 for slices independent matmuls O = A @ B (A (M x P), B (P x Q), O and r_o (M x Q)).  <br /></td></tr>
+<tr class="separator:ab901c27ff2f1372c6f9b6b11db50b8e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad022e4a023a4c448fca24d562538b80a" id="r_ad022e4a023a4c448fca24d562538b80a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ad022e4a023a4c448fca24d562538b80a">lrp_softmax_rows</a> (const float *x, const float *y, const float *r, float *r_in, size_t rows, size_t cols)=0</td></tr>
+<tr class="memdesc:ad022e4a023a4c448fca24d562538b80a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati...">SoftmaxModule</a> rule per row: r_in = x * (r - y * sum(r)).  <br /></td></tr>
+<tr class="separator:ad022e4a023a4c448fca24d562538b80a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18248928634c2f460eb95600564804c8" id="r_a18248928634c2f460eb95600564804c8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a18248928634c2f460eb95600564804c8">lrp_rope</a> (const float *x, const float *y, const float *r, const float *cos_table, const float *sin_table, float *r_in, size_t slices, size_t seq_len, size_t head_dim, float eps)=0</td></tr>
+<tr class="memdesc:a18248928634c2f460eb95600564804c8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a> epsilon rule over (slices, seq_len, head_dim), tables as for rope_rotate.  <br /></td></tr>
+<tr class="separator:a18248928634c2f460eb95600564804c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99082aad9af2353a8133a6b871724bce" id="r_a99082aad9af2353a8133a6b871724bce"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a99082aad9af2353a8133a6b871724bce">logic_pointwise</a> (<a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">LogicOp</a> op, int norm, const float *a, const float *b, const float *g_or_r, const float *y, float *out_a, float *out_b, size_t n, float eps)=0</td></tr>
+<tr class="memdesc:a99082aad9af2353a8133a6b871724bce"><td class="mdescLeft">&#160;</td><td class="mdescRight">One elementwise pass of Conjunction/Disjunction for operands a, b.  <br /></td></tr>
+<tr class="separator:a99082aad9af2353a8133a6b871724bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97bc41553f0e7961448e154ab70b4c31" id="r_a97bc41553f0e7961448e154ab70b4c31"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a97bc41553f0e7961448e154ab70b4c31">aggregator_forward</a> (const float *x, float *mean_pow, float *out, size_t n, size_t cols, float p)=0</td></tr>
+<tr class="memdesc:a97bc41553f0e7961448e154ab70b4c31"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis....">AggregatorModule</a> power mean over the leading axis of an (n, cols) input, per column.  <br /></td></tr>
+<tr class="separator:a97bc41553f0e7961448e154ab70b4c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c3e7ded556cd1de27773cf214d00012" id="r_a9c3e7ded556cd1de27773cf214d00012"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a9c3e7ded556cd1de27773cf214d00012">aggregator_backward</a> (const float *x, const float *mean_pow, const float *grad_out, float *grad_in, size_t n, size_t cols, float p)=0</td></tr>
+<tr class="memdesc:a9c3e7ded556cd1de27773cf214d00012"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis....">AggregatorModule</a> input gradient, per column.  <br /></td></tr>
+<tr class="separator:a9c3e7ded556cd1de27773cf214d00012"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f99c3bf8321cec4e22b56e3a3ded9e3" id="r_a0f99c3bf8321cec4e22b56e3a3ded9e3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a0f99c3bf8321cec4e22b56e3a3ded9e3">aggregator_lrp</a> (const float *x, const float *mean_pow, const float *r_out, float *r_in, size_t n, size_t cols, float p, float eps)=0</td></tr>
+<tr class="memdesc:a0f99c3bf8321cec4e22b56e3a3ded9e3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis....">AggregatorModule</a> epsilon rule, per column.  <br /></td></tr>
+<tr class="separator:a0f99c3bf8321cec4e22b56e3a3ded9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Vendor-agnostic compute/memory backend. <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a> (Phase 1.5), and <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a> (Phase 1.6) all implement this contract; <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> and <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> depend only on this interface, never on a concrete backend's types. </p>
@@ -475,6 +505,216 @@ Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>out may alias in. </dd></dl>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ac923f0ac9ec7e1c9cd4f4298e8a1e618">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#ac06276c01c2b60b411140ff2391ca591">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a2e081fc275ae92ad25a75fa044083e53">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a9c3e7ded556cd1de27773cf214d00012" name="a9c3e7ded556cd1de27773cf214d00012"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c3e7ded556cd1de27773cf214d00012">&#9670;&#160;</a></span>aggregator_backward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::aggregator_backward </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>mean_pow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>grad_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>grad_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis....">AggregatorModule</a> input gradient, per column. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#abc70d8616cda70c77b6afe5add0bb645">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#ac7c9d0b46fed8b255e34b550832150c1">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a809db846743c68f81e97ac0b71cbb249">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a97bc41553f0e7961448e154ab70b4c31" name="a97bc41553f0e7961448e154ab70b4c31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97bc41553f0e7961448e154ab70b4c31">&#9670;&#160;</a></span>aggregator_forward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::aggregator_forward </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>mean_pow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis....">AggregatorModule</a> power mean over the leading axis of an (n, cols) input, per column. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a62bfd935e8acbfad13bb6d2c907f2cfa">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a38fb59ed677a4fea0f0828419ac672ff">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#ade4993fe5f2f7a4dc5fd0c41f4322645">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a0f99c3bf8321cec4e22b56e3a3ded9e3" name="a0f99c3bf8321cec4e22b56e3a3ded9e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f99c3bf8321cec4e22b56e3a3ded9e3">&#9670;&#160;</a></span>aggregator_lrp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::aggregator_lrp </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>mean_pow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>r_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis....">AggregatorModule</a> epsilon rule, per column. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a805dbc60d8b59e886f325d3dc3d6d172">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a1dc9d0ddd4369f97a9cf6875e9fa5dde">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a0401ec38fd9c4fb2dd2fca20fb1fdeb1">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>
@@ -1560,6 +1800,103 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a99082aad9af2353a8133a6b871724bce" name="a99082aad9af2353a8133a6b871724bce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99082aad9af2353a8133a6b871724bce">&#9670;&#160;</a></span>logic_pointwise()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::logic_pointwise </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">LogicOp</a>&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>norm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>g_or_r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out_a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>One elementwise pass of Conjunction/Disjunction for operands a, b. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g_or_r</td><td>Upstream gradient (Backward) or relevance (Lrp); unused by Forward. </td></tr>
+    <tr><td class="paramname">y</td><td>Cached forward output (Lrp only). </td></tr>
+    <tr><td class="paramname">out_a</td><td>Forward: the output. Backward/Lrp: a's gradient/relevance. </td></tr>
+    <tr><td class="paramname">out_b</td><td>Backward/Lrp: b's gradient/relevance; unused by Forward. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ab59c38c0960d97e9ef6ed08b6f828dd7">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#ac21bc124e803aeaf1fd597634a251a43">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a9a293dbe3656cb0b25a66dba1241e2a4">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
 <a id="abe98a249971685a99f062357dea562ac" name="abe98a249971685a99f062357dea562ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe98a249971685a99f062357dea562ac">&#9670;&#160;</a></span>logsumexp_rows()</h2>
 
@@ -1609,6 +1946,487 @@ Public Member Functions</h2></td></tr>
 <p>Per-row log-sum-exp, max-subtracted: out[i] = log sum_j exp(in[i][j]). </p>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#aeddfd9f9ecf306936509ade83f662fb4">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a9a06932b2f772c5e2353507345246e8e">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#afbb9edd0fc11ecd588b99829b1200014">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="ab3632ea9bc53250c4240fc3883eefdb1" name="ab3632ea9bc53250c4240fc3883eefdb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3632ea9bc53250c4240fc3883eefdb1">&#9670;&#160;</a></span>lrp_bilinear_elementwise()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::lrp_bilinear_elementwise </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Eq. 15 for an elementwise product c = a*b: r_out = (a b / (2c + eps sign c)) r (same for both). </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ab1d7f0a3e17031c037953d3e5f2f0b4a">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a3943183cad18436ae610148ea15213bf">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a6503b1b776a9b56216c172f72e71f5c9">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="ab901c27ff2f1372c6f9b6b11db50b8e7" name="ab901c27ff2f1372c6f9b6b11db50b8e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab901c27ff2f1372c6f9b6b11db50b8e7">&#9670;&#160;</a></span>lrp_bilinear_matmul()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::lrp_bilinear_matmul </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>r_o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>slices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>b_transposed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Eq. 15 for slices independent matmuls O = A @ B (A (M x P), B (P x Q), O and r_o (M x Q)). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b_transposed</td><td>B is stored as B^T (Q x P); r_b is then written in that same layout. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>r_a and r_b are overwritten (not accumulated into). </dd></dl>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#aae4b00e9053e3a0704eb1857e0d66970">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a1c5b558dad7fdef4eb26fe4aa92a7ba6">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#ad71997b8ce4611b4541896ed2845f4aa">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a7e95b2f2d86ebef7201a7a644f672cff" name="a7e95b2f2d86ebef7201a7a644f672cff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e95b2f2d86ebef7201a7a644f672cff">&#9670;&#160;</a></span>lrp_linear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::lrp_linear </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>in_features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>out_features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> epsilon rule: r_in[n][i] = sum_j (x[n][i] w[i][j] / stab(z[n][j])) r[n][j]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">z</td><td>(N, out) pre-bias outputs; w (in, out); x, r_in (N, in); r (N, out). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ab426bc887fcad54594556b61bc54d0e7">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a8154e48cb563fd965d91cfa647b652ed">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a219eab09fcc59ca03c8357307d7a59db">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a92d5a61595366bc895d4248662b5a215" name="a92d5a61595366bc895d4248662b5a215"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92d5a61595366bc895d4248662b5a215">&#9670;&#160;</a></span>lrp_residual_split()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::lrp_residual_split </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Epsilon split of a residual sum y = a + b: r_a = (a / stab(y)) r, r_b = (b / stab(y)) r. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a76bd3dc6c56c05820aef7e94abf5a381">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a3509ea39cd8cf23b816b2292f774bed4">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a0f880acdcd5aeb75025a467123aab981">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a18248928634c2f460eb95600564804c8" name="a18248928634c2f460eb95600564804c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18248928634c2f460eb95600564804c8">&#9670;&#160;</a></span>lrp_rope()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::lrp_rope </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>cos_table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>sin_table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>slices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>seq_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>head_dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a> epsilon rule over (slices, seq_len, head_dim), tables as for rope_rotate. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a7e81fae85df1e313c27fb52c2d9ecf10">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a33d3c592d9ffb44de369c6ced6fb3f9d">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a361610459c5eb1002c8a2164d550322b">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="ad022e4a023a4c448fca24d562538b80a" name="ad022e4a023a4c448fca24d562538b80a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad022e4a023a4c448fca24d562538b80a">&#9670;&#160;</a></span>lrp_softmax_rows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::lrp_softmax_rows </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati...">SoftmaxModule</a> rule per row: r_in = x * (r - y * sum(r)). </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ae08fdaea15f5b0b066aebcfaf351a9c1">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#abe1294ec5de2d1366f8bafd46423d63d">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#ab619972ebf26be22346239c0c6d31453">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>

@@ -728,6 +728,18 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afec27fa326532e4ad62b32d54558b503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary elementwise operations supported by DeviceBackend::elementwise().  <a href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">More...</a><br /></td></tr>
 <tr class="separator:afec27fa326532e4ad62b32d54558b503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23ce7985a73e7df95c9467eac40d5d9e" id="r_a23ce7985a73e7df95c9467eac40d5d9e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">LogicOp</a> { <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9eab09c932ce0af7600b64c202bc1f7c4f3">ConjunctionForward</a>
+, <a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9ea228e1fd8b35a176d23bf8f941ff0c77e">ConjunctionBackward</a>
+, <a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9ea4b739ab135e0fbd479f7b2c287b6e164">ConjunctionLrp</a>
+, <a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c">DisjunctionForward</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454">DisjunctionBackward</a>
+, <a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f">DisjunctionLrp</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a23ce7985a73e7df95c9467eac40d5d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elementwise passes of the fuzzy-logic modules, for DeviceBackend::logic_pointwise.  <a href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">More...</a><br /></td></tr>
+<tr class="separator:a23ce7985a73e7df95c9467eac40d5d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab997921e8dd2fcb16daefdcc05ce6550" id="r_ab997921e8dd2fcb16daefdcc05ce6550"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">MutationObjective</a> { <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b">Minimax</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763">Heuristic</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46">LeastSquares</a>
@@ -1371,6 +1383,39 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </td></tr>
 <tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0" name="afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0"></a>Exp&#160;</td><td class="fielddoc"><p>exp(x) &ndash; GPU-native-kernels Mission 1b (<a class="el" href="classpulsatrix_1_1Reparameterize.html" title="VAE reparameterization trick (Kingma &amp; Welling 2013, arXiv:1312.6114), z[b,d] = mu[b,...">Reparameterize</a>, KL divergence) </p>
 </td></tr>
+</table>
+
+</div>
+</div>
+<a id="a23ce7985a73e7df95c9467eac40d5d9e" name="a23ce7985a73e7df95c9467eac40d5d9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23ce7985a73e7df95c9467eac40d5d9e">&#9670;&#160;</a></span>LogicOp</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">pulsatrix::LogicOp</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Elementwise passes of the fuzzy-logic modules, for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a99082aad9af2353a8133a6b871724bce" title="One elementwise pass of Conjunction/Disjunction for operands a, b.">DeviceBackend::logic_pointwise</a>. </p>
+<dl class="section note"><dt>Note</dt><dd>Paired with a norm index: 0 Product, 1 Lukasiewicz, 2 Godel &ndash; the declaration order of <a class="el" href="classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346f" title="Which t-norm this instance computes. Product is the campaign&#39;s primary case.">ConjunctionModule::TNorm</a> and <a class="el" href="classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3e" title="Which t-conorm this instance computes. Product is the campaign&#39;s primary case.">DisjunctionModule::TConorm</a>. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9eab09c932ce0af7600b64c202bc1f7c4f3" name="a23ce7985a73e7df95c9467eac40d5d9eab09c932ce0af7600b64c202bc1f7c4f3"></a>ConjunctionForward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9ea228e1fd8b35a176d23bf8f941ff0c77e" name="a23ce7985a73e7df95c9467eac40d5d9ea228e1fd8b35a176d23bf8f941ff0c77e"></a>ConjunctionBackward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9ea4b739ab135e0fbd479f7b2c287b6e164" name="a23ce7985a73e7df95c9467eac40d5d9ea4b739ab135e0fbd479f7b2c287b6e164"></a>ConjunctionLrp&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c" name="a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c"></a>DisjunctionForward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454" name="a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454"></a>DisjunctionBackward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f" name="a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f"></a>DisjunctionLrp&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
