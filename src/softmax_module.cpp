@@ -63,34 +63,13 @@ Tensor SoftmaxModule::backward(const Tensor& grad_output) {
 }
 
 Tensor SoftmaxModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
-    // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
     PULSATRIX_ASSERT(relevance_out.shape() == last_output_.shape());
 
+    // Device-generic (GPU-native-kernels Mission 3).
     const RowLayout layout = row_layout_of(relevance_out.shape());
-
-    Tensor relevance_in(relevance_out.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
-    for (int64_t row = 0; row < layout.num_rows; ++row) {
-        const int64_t base = row * layout.row_len;
-
-        // Per-row relevance total -- each row's own sum, never a global one.
-        float relevance_sum = 0.0f;
-        for (int64_t j = 0; j < layout.row_len; ++j) {
-            relevance_sum += relevance_out.data()[base + j];
-        }
-        // AttnLRP Eq. 13: R_in[i] = x[i] * (R_out[i] - s[i] * sum_j(R_out[j])).
-        // No epsilon stabilizer and no rescaling -- this rule does not conserve relevance by
-        // construction and must not be "corrected" into conserving. See the header.
-        for (int64_t i = 0; i < layout.row_len; ++i) {
-            relevance_in.data()[base + i] =
-                last_input_.data()[base + i] * (relevance_out.data()[base + i] -
-                                                last_output_.data()[base + i] * relevance_sum);
-        }
-    }
+    Tensor relevance_in(relevance_out.shape(), backend_, relevance_out.device());
+    backend_->lrp_softmax_rows(last_input_.data(), last_output_.data(), relevance_out.data(), relevance_in.data(),
+                               static_cast<size_t>(layout.num_rows), static_cast<size_t>(layout.row_len));
     return relevance_in;
 }
 

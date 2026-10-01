@@ -295,16 +295,5 @@ TEST_F(SwiGLUModuleTest, ParametersExposesAllThreeProjections) {
 // Adversarial / boundary-condition (device guards)
 // ---------------------------------------------------------------------------
 
-TEST_F(SwiGLUModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    SwiGLUModule m(2, 2, &backend);
-    Tensor x(Shape({1, 2}), &backend, {1.0f, 2.0f});
-    (void)m.forward(x);
-    Tensor relevance_out(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)m.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

@@ -105,24 +105,16 @@ Tensor EmbeddingModule::propagate_relevance(const Tensor& relevance_out, const L
             "EmbeddingModule::propagate_relevance: relevance_out must be (N, L, embedding_dim) matching the "
             "cached forward shape");
     }
-    PULSATRIX_REQUIRE_HOST(relevance_out);
-
+    // Device-generic (GPU-native-kernels Mission 3): each token's relevance is the sum of its
+    // embedding row's relevance -- a gemm against a ones column accumulates it from 0 in
+    // feature order, exactly as the original loop did.
     const int64_t count = N * L;
-    Tensor relevance_in(last_input_shape_, backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
-
-    for (int64_t i = 0; i < count; ++i) {
-        const float* row = relevance_out.data() + i * embedding_dim_;
-        float sum = 0.0f;
-        for (int64_t d = 0; d < embedding_dim_; ++d) {
-            sum += row[d];
-        }
-        relevance_in.data()[i] = sum;
-    }
-
+    const DeviceType device = relevance_out.device();
+    Tensor ones(Shape({embedding_dim_, 1}), backend_, device);
+    ones.fill(1.0f);
+    Tensor relevance_in(last_input_shape_, backend_, device);
+    backend_->gemm_ex(relevance_out.data(), false, ones.data(), false, relevance_in.data(), static_cast<size_t>(count),
+                      static_cast<size_t>(embedding_dim_), 1, 0.0f);
     return relevance_in;
 }
 

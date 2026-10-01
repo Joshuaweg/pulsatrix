@@ -15,14 +15,11 @@ namespace {
  *        across files (see multihead_attention_module.cpp's/swiglu_module.cpp's own
  *        `reshaped()` duplication).
  */
-void residual_split(const Tensor& a, const Tensor& b, const Tensor& r, float epsilon, Tensor& r_a, Tensor& r_b) {
-    const auto n = static_cast<size_t>(r.numel());
-    for (size_t i = 0; i < n; ++i) {
-        const float y = a.data()[i] + b.data()[i];
-        const float denom = y + epsilon * ((y >= 0.0f) ? 1.0f : -1.0f);
-        r_a.data()[i] = (a.data()[i] / denom) * r.data()[i];
-        r_b.data()[i] = (b.data()[i] / denom) * r.data()[i];
-    }
+void residual_split(const Tensor& a, const Tensor& b, const Tensor& r, float epsilon, Tensor& r_a, Tensor& r_b,
+                    DeviceBackend* backend) {
+    // Device-generic (GPU-native-kernels Mission 3).
+    backend->lrp_residual_split(a.data(), b.data(), r.data(), r_a.data(), r_b.data(), static_cast<size_t>(r.numel()),
+                                epsilon);
 }
 
 }  // namespace
@@ -76,12 +73,11 @@ Tensor ResidualModule::propagate_relevance(const Tensor& relevance_out, const LR
         throw std::invalid_argument(
             "ResidualModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
-    // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
+    // Device-generic (GPU-native-kernels Mission 3).
 
     Tensor r_x_direct(relevance_out.shape(), backend_);
     Tensor r_f_x(relevance_out.shape(), backend_);
-    residual_split(last_x_, last_f_x_, relevance_out, config.epsilon, r_x_direct, r_f_x);
+    residual_split(last_x_, last_f_x_, relevance_out, config.epsilon, r_x_direct, r_f_x, backend_);
 
     Tensor r_x_from_inner = inner_->propagate_relevance(r_f_x, config);
 

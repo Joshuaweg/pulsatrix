@@ -15,7 +15,6 @@ protected:
     CPUBackend backend;
 };
 
-using SatisfactionLossDeathTest = SatisfactionLossTest;
 
 // ---------------------------------------------------------------------------
 // Forward correctness
@@ -127,15 +126,6 @@ TEST_F(SatisfactionLossTest, ForwardRejectsEmptyTruthValues) {
     SatisfactionLoss loss(&backend);
     Tensor truth_values(Shape({0}), &backend);
     EXPECT_THROW({ (void)loss.forward(truth_values); }, std::invalid_argument);
-}
-
-TEST_F(SatisfactionLossDeathTest, ForwardAbortsOnNonCpuTruthValues) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    SatisfactionLoss loss(&backend);
-    Tensor truth_values(Shape({2}), &backend, {0.1f, 0.2f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)loss.forward(truth_values); }, "PULSATRIX_ASSERT failed");
 }
 
 }  // namespace

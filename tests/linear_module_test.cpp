@@ -345,19 +345,6 @@ TEST_F(LinearModuleTest, PropagateRelevanceConservesTotalRelevancePerExample) {
 
 using LinearModuleDeathTest = LinearModuleTest;
 
-TEST_F(LinearModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    LinearModule linear(2, 2, &backend);
-    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
-    (void)linear.forward(x);
-
-    Tensor relevance_out(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    LRPRuleConfig config;
-    EXPECT_DEATH({ (void)linear.propagate_relevance(relevance_out, config); }, "PULSATRIX_ASSERT failed");
-}
-
 TEST_F(LinearModuleTest, ParametersExposesWeightAndBiasByPointer) {
     LinearModule linear(2, 2, &backend);
     auto params = linear.parameters();
