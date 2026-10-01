@@ -13,6 +13,13 @@
 #include "pulsatrix/bce_with_logits_loss.hpp"
 #include "pulsatrix/calibration_loss.hpp"
 #include "pulsatrix/dropout_module.hpp"
+#include "pulsatrix/embedding_module.hpp"
+#include "pulsatrix/layer_norm_module.hpp"
+#include "pulsatrix/multihead_attention_module.hpp"
+#include "pulsatrix/rms_norm_module.hpp"
+#include "pulsatrix/rope_module.hpp"
+#include "pulsatrix/tanh_gaussian_policy.hpp"
+#include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
 #include "pulsatrix/negation_module.hpp"
 #include "pulsatrix/noise_schedule.hpp"
@@ -248,6 +255,119 @@ inline void NoiseScheduleAddAndDenoise(DeviceBackend& gpu) {
     ExpectNear(schedule.denoise_step(cxt, ceps, cz, 17), schedule.denoise_step(gxt, geps, gz, 17));
 }
 
+// ---- Mission 2 -----------------------------------------------------------------------------
+
+// Forward, backward and parameter gradients of a module on a (shape) input, CPU vs GPU.
+// cpu must be the backend cm was built on: cm caches the input tensors, so their backend has to
+// outlive it.
+template <typename Module>
+inline void ModuleForwardBackward(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Module& gm, const Shape& shape,
+                                  unsigned seed, float tol = kTolerance) {
+    RandomizeAndMirror(cm, gm, seed);
+    const auto n = static_cast<size_t>(shape.numel());
+    std::vector<float> x = Random(n, seed + 100), dy = Random(n, seed + 200);
+    Tensor cx(shape, &cpu, x), gx(shape, &gpu, x);
+    Tensor cdy(shape, &cpu, dy), gdy(shape, &gpu, dy);
+    ExpectNear(cm.forward(cx), gm.forward(gx), tol);
+    ExpectNear(cm.backward(cdy), gm.backward(gdy), tol);
+    ExpectParametersNear(cm, gm, tol);
+}
+
+inline void LayerNormMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LayerNormModule cm(12, &cpu), gm(12, &gpu);
+    ModuleForwardBackward(cpu, gpu, cm, gm, Shape({7, 12}), 300);
+}
+
+inline void RMSNormMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    RMSNormModule cm(12, &cpu), gm(12, &gpu);
+    ModuleForwardBackward(cpu, gpu, cm, gm, Shape({7, 12}), 310);
+}
+
+// Long enough that a device-side float angle would visibly drift; the tables are built in
+// double on the host, so CPU and GPU see identical cos/sin.
+inline void RoPEMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    RoPEModule cm(8, &cpu), gm(8, &gpu);
+    ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 3, 300, 8}), 320);
+}
+
+inline void AttentionMatches(DeviceBackend& gpu, bool use_rope, bool use_qk_norm) {
+    CPUBackend cpu;
+    MultiHeadAttentionModule cm(8, 2, &cpu, use_rope, use_qk_norm), gm(8, 2, &gpu, use_rope, use_qk_norm);
+    ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 5, 8}), 330);
+}
+
+inline void TransformerBlockMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    TransformerBlock cm(8, 2, 16, &cpu), gm(8, 2, 16, &gpu);
+    ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 5, 8}), 340);
+}
+
+// Repeated indices: the scatter-add must accumulate them, in token order.
+inline void EmbeddingMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    EmbeddingModule cm(10, 6, &cpu), gm(10, 6, &gpu);
+    RandomizeAndMirror(cm, gm, 350);
+    std::vector<float> ids = {3, 7, 3, 0, 9, 3, 7, 1};
+    std::vector<float> dy = Random(8 * 6, 351);
+    Tensor cids(Shape({2, 4}), &cpu, ids), gids(Shape({2, 4}), &gpu, ids);  // GPU ids read back for validation
+    Tensor cdy(Shape({2, 4, 6}), &cpu, dy), gdy(Shape({2, 4, 6}), &gpu, dy);
+    ExpectNear(cm.forward(cids), gm.forward(gids));
+    ExpectNear(cm.backward(cdy), gm.backward(gdy));
+    ExpectParametersNear(cm, gm, kTolerance);
+}
+
+inline void TanhGaussianMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    TanhGaussianPolicy cp(&cpu), gp(&gpu);
+    std::vector<float> mean = Random(12, 360), ls = Random(12, 361, -1.0f, 0.5f), eps = Random(12, 362);
+    std::vector<float> ga = Random(12, 363), glp = Random(12, 364);
+    Tensor cm(Shape({4, 3}), &cpu, mean), gm(Shape({4, 3}), &gpu, mean);
+    Tensor cls(Shape({4, 3}), &cpu, ls), gls(Shape({4, 3}), &gpu, ls);
+    Tensor ce(Shape({4, 3}), &cpu, eps), ge(Shape({4, 3}), &gpu, eps);
+    TanhGaussianSample cs = cp.forward(cm, cls, ce), gs = gp.forward(gm, gls, ge);
+    ExpectNear(cs.action, gs.action);
+    ExpectNear(cs.log_prob, gs.log_prob);
+    Tensor cga(Shape({4, 3}), &cpu, ga), gga(Shape({4, 3}), &gpu, ga);
+    Tensor cglp(Shape({4, 3}), &cpu, glp), gglp(Shape({4, 3}), &gpu, glp);
+    TanhGaussianGrad cg = cp.backward(cga, cglp), gg = gp.backward(gga, gglp);
+    ExpectNear(cg.grad_mean, gg.grad_mean);
+    ExpectNear(cg.grad_log_std, gg.grad_log_std);
+}
+
+// Mission 2 gate: a full transformer block (RMS/LayerNorm, RoPE attention, SwiGLU) trained
+// with Adam on GPU ends with the CPU's parameters.
+inline void TransformerBlockTrainsToSameParameters(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    TransformerBlock cb(8, 2, 16, &cpu), gb(8, 2, 16, &gpu);
+    RandomizeAndMirror(cb, gb, 370);
+    AdamOptimizer copt(0.01f, &cpu), gopt(0.01f, &gpu);
+    MSELoss closs(&cpu), gloss(&gpu);
+    std::vector<float> x = Random(2 * 5 * 8, 371), y = Random(2 * 5 * 8, 372);
+    Tensor cx(Shape({2, 5, 8}), &cpu, x), gx(Shape({2, 5, 8}), &gpu, x);
+    Tensor cy(Shape({2, 5, 8}), &cpu, y), gy(Shape({2, 5, 8}), &gpu, y);
+    float first_loss = 0.0f, last_loss = 0.0f;
+    for (int step = 0; step < 10; ++step) {
+        copt.zero_grad(cb);
+        gopt.zero_grad(gb);
+        const float lc = closs.forward(cb.forward(cx), cy);
+        const float lg = gloss.forward(gb.forward(gx), gy);
+        EXPECT_NEAR(lc, lg, 1e-3f) << "loss diverged at step " << step;
+        (void)cb.backward(closs.backward());
+        (void)gb.backward(gloss.backward());
+        copt.step(cb);
+        gopt.step(gb);
+        if (step == 0) {
+            first_loss = lc;
+        }
+        last_loss = lc;
+    }
+    EXPECT_LT(last_loss, first_loss) << "the block did not actually train";
+    ExpectParametersNear(cb, gb, 1e-3f);
+}
+
 // The mission's integration gate: the same small MLP, same init, same data, trained for
 // several steps on each backend, ends with the same parameters.
 template <typename Optimizer>
@@ -325,6 +445,22 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
     }                                                                                                \
     TEST_F(FIXTURE, NoiseScheduleMatchesCPU) {                                                       \
         ::pulsatrix::training_equivalence::NoiseScheduleAddAndDenoise(MEMBER);                       \
+    }                                                                                                \
+    TEST_F(FIXTURE, LayerNormForwardBackwardMatchCPU) { ::pulsatrix::training_equivalence::LayerNormMatches(MEMBER); } \
+    TEST_F(FIXTURE, RMSNormForwardBackwardMatchCPU) { ::pulsatrix::training_equivalence::RMSNormMatches(MEMBER); } \
+    TEST_F(FIXTURE, RoPEForwardBackwardMatchCPU) { ::pulsatrix::training_equivalence::RoPEMatches(MEMBER); }    \
+    TEST_F(FIXTURE, AttentionForwardBackwardMatchCPU) {                                              \
+        ::pulsatrix::training_equivalence::AttentionMatches(MEMBER, false, false);                   \
+        ::pulsatrix::training_equivalence::AttentionMatches(MEMBER, true, false);                    \
+        ::pulsatrix::training_equivalence::AttentionMatches(MEMBER, true, true);                     \
+    }                                                                                                \
+    TEST_F(FIXTURE, TransformerBlockForwardBackwardMatchCPU) {                                       \
+        ::pulsatrix::training_equivalence::TransformerBlockMatches(MEMBER);                          \
+    }                                                                                                \
+    TEST_F(FIXTURE, EmbeddingForwardBackwardMatchCPU) { ::pulsatrix::training_equivalence::EmbeddingMatches(MEMBER); } \
+    TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
+    TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
+        ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \
     }                                                                                                \
     TEST_F(FIXTURE, MlpTrainedWithSGDEndsWithCPUParameters) {                                        \
         ::pulsatrix::SGDOptimizer cpu_opt(0.05f), gpu_opt(0.05f);                                    \

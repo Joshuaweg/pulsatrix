@@ -58,8 +58,7 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached
      *         forward output shape.
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 2).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -95,8 +94,7 @@ protected:
      * @brief The actual forward computation -- per-position row copy from weight_.
      * @throws std::invalid_argument if input isn't rank-2 (N, L), or any element
      *         round-resolves to an index outside [0, num_embeddings).
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(input.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 2).
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
@@ -107,7 +105,10 @@ private:
     Tensor weight_;       // shape (num_embeddings, embedding_dim)
     Tensor weight_grad_;
     Shape last_input_shape_ = Shape({0});
-    std::vector<int64_t> last_indices_;  // flat, N*L entries, resolved+bounds-checked
+    // Flat N*L validated indices as whole-number floats on the weights' device (exact below
+    // 2^24 -- far above any vocabulary this module is built for), consumed by gather_rows /
+    // scatter_add_rows (GPU-native-kernels Mission 2).
+    Tensor last_indices_ = Tensor(Shape({0}), backend_);
     bool has_forwarded_ = false;
 };
 

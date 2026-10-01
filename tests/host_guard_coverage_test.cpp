@@ -104,18 +104,6 @@ TEST_F(HostGuardCoverageDeathTest, GroupNormForwardAbortsOnNonCpuInput) {
     EXPECT_HOST_GUARD_DEATH({ (void)gn.forward(x); }, "input");
 }
 
-TEST_F(HostGuardCoverageDeathTest, LayerNormForwardAbortsOnNonCpuInput) {
-    LayerNormModule ln(3, &cpu);
-    Tensor x = mislabelled(Shape({2, 3}), {1, 2, 3, 4, 5, 6});
-    EXPECT_HOST_GUARD_DEATH({ (void)ln.forward(x); }, "input");
-}
-
-TEST_F(HostGuardCoverageDeathTest, RMSNormForwardAbortsOnNonCpuInput) {
-    RMSNormModule rms(3, &cpu);
-    Tensor x = mislabelled(Shape({2, 3}), {1, 2, 3, 4, 5, 6});
-    EXPECT_HOST_GUARD_DEATH({ (void)rms.forward(x); }, "input");
-}
-
 // ---- Normalization / elementwise modules: backward scratch allocated through a GPU backend ----
 
 TEST_F(HostGuardCoverageDeathTest, BatchNormBackwardAbortsOnGpuBackendScratch) {
@@ -130,20 +118,6 @@ TEST_F(HostGuardCoverageDeathTest, GroupNormBackwardAbortsOnGpuBackendScratch) {
     (void)gn.forward(host(Shape({1, 2, 2, 2}), {1, 2, 3, 4, 5, 6, 7, 8}));
     Tensor grad = host(Shape({1, 2, 2, 2}), {1, 1, 1, 1, 1, 1, 1, 1});
     EXPECT_HOST_GUARD_DEATH({ (void)gn.backward(grad); }, "local_gamma_grad");
-}
-
-TEST_F(HostGuardCoverageDeathTest, LayerNormBackwardAbortsOnGpuBackendScratch) {
-    LayerNormModule ln(3, &hip, DeviceType::Cpu);  // Cpu params, Hip-tagged scratch
-    (void)ln.forward(host(Shape({2, 3}), {1, 2, 3, 4, 5, 6}));
-    Tensor grad = host(Shape({2, 3}), {1, 1, 1, 1, 1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)ln.backward(grad); }, "local_gamma_grad");
-}
-
-TEST_F(HostGuardCoverageDeathTest, RMSNormBackwardAbortsOnGpuBackendScratch) {
-    RMSNormModule rms(3, &hip, DeviceType::Cpu);  // Cpu params, Hip-tagged scratch
-    (void)rms.forward(host(Shape({2, 3}), {1, 2, 3, 4, 5, 6}));
-    Tensor grad = host(Shape({2, 3}), {1, 1, 1, 1, 1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)rms.backward(grad); }, "local_gamma_grad");
 }
 
 TEST_F(HostGuardCoverageDeathTest, AggregatorBackwardAbortsOnGpuBackendScratch) {
@@ -180,22 +154,6 @@ TEST_F(HostGuardCoverageDeathTest, PPOClippedLossForwardAbortsOnGpuBackendProbs)
 }
 
 // ---- Reparameterization / squashed-Gaussian policy ----
-
-TEST_F(HostGuardCoverageDeathTest, TanhGaussianPolicyForwardAbortsOnGpuBackendOutput) {
-    TanhGaussianPolicy policy(&hip);
-    Tensor mean = host(Shape({1, 2}), {0, 0});
-    Tensor log_std = host(Shape({1, 2}), {0, 0});
-    Tensor eps = host(Shape({1, 2}), {0.5f, -0.5f});
-    EXPECT_HOST_GUARD_DEATH({ (void)policy.forward(mean, log_std, eps); }, "action");
-}
-
-TEST_F(HostGuardCoverageDeathTest, TanhGaussianPolicyBackwardAbortsOnNonCpuGradAction) {
-    TanhGaussianPolicy policy(&cpu);
-    (void)policy.forward(host(Shape({1, 2}), {0, 0}), host(Shape({1, 2}), {0, 0}), host(Shape({1, 2}), {0.5f, -0.5f}));
-    Tensor grad_action = mislabelled(Shape({1, 2}), {1, 1});
-    Tensor grad_log_prob = host(Shape({1, 2}), {1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)policy.backward(grad_action, grad_log_prob); }, "grad_action");
-}
 
 // ---- Fuzzy-logic operators (split_operands / combine_operands paths) ----
 
@@ -330,18 +288,6 @@ TEST_F(HostGuardCoverageDeathTest, MaxPool2DForwardAbortsOnGpuBackendOutput) {
     EXPECT_HOST_GUARD_DEATH({ (void)pool.forward(x); }, "output");
 }
 
-TEST_F(HostGuardCoverageDeathTest, EmbeddingForwardAbortsOnGpuBackendOutput) {
-    EmbeddingModule emb(4, 2, &hip);
-    Tensor indices = host(Shape({1, 2}), {0, 3});
-    EXPECT_HOST_GUARD_DEATH({ (void)emb.forward(indices); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, RoPEForwardAbortsOnGpuBackendOutput) {
-    RoPEModule rope(2, &hip);
-    Tensor x = host(Shape({2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)rope.forward(x); }, "output");
-}
-
 TEST_F(HostGuardCoverageDeathTest, RNNForwardAbortsOnGpuBackendOutput) {
     RNNModule rnn(2, 2, &hip);
     Tensor x = host(Shape({1, 2, 2}), {1, 2, 3, 4});
@@ -376,12 +322,6 @@ TEST_F(HostGuardCoverageDeathTest, RWKVForwardAbortsOnGpuBackendOutput) {
     RWKVModule rwkv(2, &hip);
     Tensor x = host(Shape({1, 2, 2}), {1, 2, 3, 4});
     EXPECT_HOST_GUARD_DEATH({ (void)rwkv.forward(x); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, MultiHeadAttentionForwardAbortsOnGpuBackendScratch) {
-    MultiHeadAttentionModule mha(4, 2, &hip, /*use_rope=*/false, /*use_qk_norm=*/false);
-    Tensor x = host(Shape({1, 2, 4}), {1, 2, 3, 4, 5, 6, 7, 8});
-    EXPECT_HOST_GUARD_DEATH({ (void)mha.forward(x); }, "q");
 }
 
 }  // namespace

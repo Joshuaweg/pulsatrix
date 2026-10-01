@@ -466,26 +466,13 @@ TEST_F(TanhGaussianPolicyTest, BackwardGradLogStdMatchesFiniteDifference) {
 
 using TanhGaussianPolicyDeathTest = TanhGaussianPolicyTest;
 
-// Exactly one death test, per the mission's Requirements section: forward() dereferences
-// Tensor::data() directly in a raw host loop (exp/tanh/log have no backend primitive), which is
-// undefined behavior on a CUDA-backed Tensor, and its three PULSATRIX_ASSERTs are adjacent lines on
-// one entry path covering a single guarded-argument role -- one test covers that role (see
-// mission_host_loop_guards.md; LinearModuleDeathTest is the mislabeled-Tensor pattern reused
-// here, so no real GPU is needed).
-//
-// backward() is NOT independently guarded and gets no death test: it only reads
-// last_action_/last_std_/last_epsilon_, which only forward() ever populates -- after rejecting
-// a non-Cpu tensor. No reachable call sequence gets a non-Cpu tensor into that cache, so a
-// guard there would be untestable dead code. Identical to Reparameterize::backward()'s
-// precedent.
-TEST_F(TanhGaussianPolicyDeathTest, ForwardAbortsOnNonCpuMean) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor mean(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
+// GPU-native-kernels Mission 2: forward is device-generic, so mixed-device inputs are a
+// reachable caller error.
+TEST_F(TanhGaussianPolicyTest, ForwardThrowsOnMixedDevices) {
+    Tensor mean(Shape({1, 2}), &backend, {0.1f, 0.2f}, DeviceType::Cuda);
     Tensor log_std(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    Tensor epsilon(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    EXPECT_DEATH({ (void)policy.forward(mean, log_std, epsilon); }, "PULSATRIX_ASSERT failed");
+    Tensor epsilon(Shape({1, 2}), &backend, {0.5f, -0.5f});
+    EXPECT_THROW((void)policy.forward(mean, log_std, epsilon), std::invalid_argument);
 }
 
 }  // namespace
