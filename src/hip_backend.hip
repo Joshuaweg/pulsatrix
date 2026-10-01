@@ -226,4 +226,46 @@ void HIPBackend::adam_step(float* param, const float* grad, float* m, float* v, 
 }
 
 
+// ---- GPU-native-kernels Mission 1b -------------------------------------------------------
+
+float HIPBackend::sum(const float* in, size_t n) {
+    if (n == 0) {
+        return 0.0f;
+    }
+    gpu::launch_sum(in, n, dot_result_, stream_);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    float result = 0.0f;
+    copy(&result, dot_result_, sizeof(float), CopyDirection::DeviceToHost);  // synchronizes
+    return result;
+}
+
+void HIPBackend::dropout_forward(const float* in, float* out, float* mask, size_t n, float p, float scale,
+                                 uint64_t seed, uint64_t offset) {
+    if (n == 0) {
+        return;
+    }
+    gpu::launch_dropout_forward(in, out, mask, n, p, scale, seed, offset, stream_);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::bce_with_logits(const float* logits, const float* target, float* out, size_t n) {
+    if (n == 0) {
+        return;
+    }
+    gpu::launch_bce_with_logits(logits, target, out, n, stream_);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::bce_with_logits_grad(const float* logits, const float* target, float* grad, size_t n,
+                                      float scale) {
+    if (n == 0) {
+        return;
+    }
+    gpu::launch_bce_with_logits_grad(logits, target, grad, n, scale, stream_);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
 }  // namespace pulsatrix

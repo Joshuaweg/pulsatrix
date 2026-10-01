@@ -154,5 +154,87 @@ TEST_F(BackendPrimitivesTest, AdamStepFirstIterationMovesByLearningRate) {
     EXPECT_NEAR(v[1], 0.004f, 1e-7f);
 }
 
+// ---- Mission 1b ----------------------------------------------------------------------------
+
+TEST_F(BackendPrimitivesTest, AxpbyWithZeroBetaDoesNotReadY) {
+    std::vector<float> x = {1.0f, 2.0f};
+    std::vector<float> y = {INFINITY, std::nanf("")};
+    std::vector<float> out(2);
+    cpu.axpby(3.0f, x.data(), 0.0f, y.data(), out.data(), 2);
+    EXPECT_EQ(out, (std::vector<float>{3.0f, 6.0f}));  // not NaN from 0 * inf / 0 * NaN
+    cpu.axpby(3.0f, x.data(), 0.0f, nullptr, out.data(), 2);  // y may even be null
+    EXPECT_EQ(out, (std::vector<float>{3.0f, 6.0f}));
+}
+
+TEST_F(BackendPrimitivesTest, ExpForwardAndBackward) {
+    const float x = 0.75f;
+    const float g = 2.0f;
+    float out = 0.0f;
+    cpu.elementwise(ElementwiseOp::Exp, &x, &out, 1);
+    EXPECT_FLOAT_EQ(out, std::exp(0.75f));
+    cpu.elementwise_backward(ElementwiseOp::Exp, &x, &g, &out, 1);
+    EXPECT_FLOAT_EQ(out, 2.0f * std::exp(0.75f));
+}
+
+TEST_F(BackendPrimitivesTest, SumAddsSequentially) {
+    std::vector<float> v = {1.5f, -2.0f, 4.0f};
+    EXPECT_FLOAT_EQ(cpu.sum(v.data(), 3), 3.5f);
+    EXPECT_FLOAT_EQ(cpu.sum(nullptr, 0), 0.0f);
+}
+
+TEST_F(BackendPrimitivesTest, DropoutIsAPureFunctionOfSeedAndOffset) {
+    const size_t n = 4096;
+    std::vector<float> in(n, 3.0f), out_a(n), out_b(n), mask_a(n), mask_b(n);
+    cpu.dropout_forward(in.data(), out_a.data(), mask_a.data(), n, 0.3f, 1.0f / 0.7f, 99, 0);
+    cpu.dropout_forward(in.data(), out_b.data(), mask_b.data(), n, 0.3f, 1.0f / 0.7f, 99, 0);
+    EXPECT_EQ(mask_a, mask_b);
+
+    // Offset k shifts the stream: element i at offset 1000 is element 1000 + i at offset 0.
+    std::vector<float> shifted_out(n - 1000), shifted_mask(n - 1000);
+    cpu.dropout_forward(in.data(), shifted_out.data(), shifted_mask.data(), n - 1000, 0.3f, 1.0f / 0.7f, 99, 1000);
+    for (size_t i = 0; i < n - 1000; ++i) {
+        ASSERT_EQ(shifted_mask[i], mask_a[1000 + i]) << "at " << i;
+    }
+
+    size_t dropped = 0;
+    for (size_t i = 0; i < n; ++i) {
+        if (mask_a[i] == 0.0f) {
+            ++dropped;
+            EXPECT_EQ(out_a[i], 0.0f);
+        } else {
+            EXPECT_FLOAT_EQ(out_a[i], 3.0f / 0.7f);
+        }
+    }
+    const float fraction = static_cast<float>(dropped) / static_cast<float>(n);
+    EXPECT_GT(fraction, 0.27f);  // p = 0.3, n = 4096: sigma ~ 0.007
+    EXPECT_LT(fraction, 0.33f);
+}
+
+TEST_F(BackendPrimitivesTest, DropoutZeroesDroppedNonFiniteInputs) {
+    std::vector<float> in(256, INFINITY), out(256), mask(256);
+    cpu.dropout_forward(in.data(), out.data(), mask.data(), 256, 0.5f, 2.0f, 7, 0);
+    for (size_t i = 0; i < 256; ++i) {
+        if (mask[i] == 0.0f) {
+            EXPECT_EQ(out[i], 0.0f);  // a select, not inf * 0
+        }
+    }
+}
+
+TEST_F(BackendPrimitivesTest, BceWithLogitsMatchesClosedFormAndIsStable) {
+    // x = 0, y = 1: loss = log 2; grad = (0.5 - 1) * scale.
+    std::vector<float> x = {0.0f, 100.0f, -100.0f};
+    std::vector<float> y = {1.0f, 1.0f, 0.0f};
+    std::vector<float> terms(3), grad(3);
+    cpu.bce_with_logits(x.data(), y.data(), terms.data(), 3);
+    EXPECT_FLOAT_EQ(terms[0], std::log(2.0f));
+    // Confident and right: no overflow, and the loss is the denormal log1p(exp(-100)) ~ 4e-44.
+    EXPECT_NEAR(terms[1], 0.0f, 1e-30f);
+    EXPECT_NEAR(terms[2], 0.0f, 1e-30f);
+    cpu.bce_with_logits_grad(x.data(), y.data(), grad.data(), 3, 0.5f);
+    EXPECT_FLOAT_EQ(grad[0], -0.25f);
+    EXPECT_NEAR(grad[1], 0.0f, 1e-30f);
+    EXPECT_NEAR(grad[2], 0.0f, 1e-30f);
+}
+
 }  // namespace
 }  // namespace pulsatrix

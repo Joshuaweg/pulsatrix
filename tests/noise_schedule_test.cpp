@@ -283,23 +283,13 @@ TEST_F(NoiseScheduleTest, DenoiseStepThrowsOnOutOfRangeTimestep) {
 
 using NoiseScheduleDeathTest = NoiseScheduleTest;
 
-TEST_F(NoiseScheduleDeathTest, AddNoiseAbortsOnNonCpuTensor) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor x0(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    Tensor eps(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    EXPECT_DEATH({ (void)coarse.add_noise(x0, eps, 1); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(NoiseScheduleDeathTest, DenoiseStepAbortsOnNonCpuTensor) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor x_t(Shape({1, 2}), &backend, {1.0f, 2.0f});
-    Tensor eps_theta(Shape({1, 2}), &backend, {0.0f, 0.0f});
-    Tensor z(Shape({1, 2}), &backend, {0.0f, 0.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)coarse.denoise_step(x_t, eps_theta, z, 1); }, "PULSATRIX_ASSERT failed");
+// GPU-native-kernels Mission 1b: add_noise/denoise_step are device-generic, so mixed-device
+// inputs are a reachable caller error.
+TEST_F(NoiseScheduleTest, AddNoiseThrowsOnMixedDevices) {
+    NoiseSchedule schedule(10);
+    Tensor x0(Shape({2}), &backend, {1.0f, 2.0f});
+    Tensor epsilon(Shape({2}), &backend, {0.5f, 0.5f}, DeviceType::Hip);
+    EXPECT_THROW((void)schedule.add_noise(x0, epsilon, 1), std::invalid_argument);
 }
 
 }  // namespace

@@ -1,5 +1,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 
+#include "pointwise_math.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
@@ -87,6 +89,11 @@ void CPUBackend::elementwise(ElementwiseOp op, const float* in, float* out, size
                 out[i] = in[i] * sigmoid(in[i]);
             }
             break;
+        case ElementwiseOp::Exp:
+            for (size_t i = 0; i < n; ++i) {
+                out[i] = std::exp(in[i]);
+            }
+            break;
     }
 }
 
@@ -172,12 +179,21 @@ void CPUBackend::elementwise_backward(ElementwiseOp op, const float* x, const fl
                 d = s + xi * s * (1.0f - s);
                 break;
             }
+            case ElementwiseOp::Exp:
+                d = std::exp(xi);
+                break;
         }
         grad_in[i] = g * d;
     }
 }
 
 void CPUBackend::axpby(float alpha, const float* x, float beta, const float* y, float* out, size_t n) {
+    if (beta == 0.0f) {
+        for (size_t i = 0; i < n; ++i) {
+            out[i] = alpha * x[i];  // y not read -- see the interface note
+        }
+        return;
+    }
     for (size_t i = 0; i < n; ++i) {
         out[i] = alpha * x[i] + beta * y[i];
     }
@@ -248,6 +264,38 @@ void CPUBackend::adam_step(float* param, const float* grad, float* m, float* v, 
         const float m_hat = m[i] / bias_correction1;
         const float v_hat = v[i] / bias_correction2;
         param[i] -= lr * m_hat / (std::sqrt(v_hat) + eps);
+    }
+}
+
+// ---- GPU-native-kernels Mission 1b ---------------------------------------------------------
+
+float CPUBackend::sum(const float* in, size_t n) {
+    float acc = 0.0f;
+    for (size_t i = 0; i < n; ++i) {
+        acc += in[i];
+    }
+    return acc;
+}
+
+void CPUBackend::dropout_forward(const float* in, float* out, float* mask, size_t n, float p, float scale,
+                                 uint64_t seed, uint64_t offset) {
+    for (size_t i = 0; i < n; ++i) {
+        const bool keep = !(pointwise::counter_uniform(seed, offset + i) < p);
+        mask[i] = keep ? 1.0f : 0.0f;
+        out[i] = keep ? in[i] * scale : 0.0f;
+    }
+}
+
+void CPUBackend::bce_with_logits(const float* logits, const float* target, float* out, size_t n) {
+    for (size_t i = 0; i < n; ++i) {
+        out[i] = pointwise::bce_with_logits_term(logits[i], target[i]);
+    }
+}
+
+void CPUBackend::bce_with_logits_grad(const float* logits, const float* target, float* grad, size_t n,
+                                      float scale) {
+    for (size_t i = 0; i < n; ++i) {
+        grad[i] = (pointwise::stable_sigmoid(logits[i]) - target[i]) * scale;
     }
 }
 

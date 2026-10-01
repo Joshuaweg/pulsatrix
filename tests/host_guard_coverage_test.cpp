@@ -116,12 +116,6 @@ TEST_F(HostGuardCoverageDeathTest, RMSNormForwardAbortsOnNonCpuInput) {
     EXPECT_HOST_GUARD_DEATH({ (void)rms.forward(x); }, "input");
 }
 
-TEST_F(HostGuardCoverageDeathTest, NegationForwardAbortsOnNonCpuInput) {
-    NegationModule neg(&cpu);
-    Tensor x = mislabelled(Shape({3}), {0.1f, 0.5f, 0.9f});
-    EXPECT_HOST_GUARD_DEATH({ (void)neg.forward(x); }, "input");
-}
-
 // ---- Normalization / elementwise modules: backward scratch allocated through a GPU backend ----
 
 TEST_F(HostGuardCoverageDeathTest, BatchNormBackwardAbortsOnGpuBackendScratch) {
@@ -152,20 +146,6 @@ TEST_F(HostGuardCoverageDeathTest, RMSNormBackwardAbortsOnGpuBackendScratch) {
     EXPECT_HOST_GUARD_DEATH({ (void)rms.backward(grad); }, "local_gamma_grad");
 }
 
-TEST_F(HostGuardCoverageDeathTest, NegationBackwardAbortsOnGpuBackendScratch) {
-    NegationModule neg(&hip);
-    (void)neg.forward(host(Shape({3}), {0.1f, 0.5f, 0.9f}));
-    Tensor grad = host(Shape({3}), {1, 1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)neg.backward(grad); }, "grad_input");
-}
-
-TEST_F(HostGuardCoverageDeathTest, DropoutBackwardAbortsOnGpuBackendScratch) {
-    DropoutModule dropout(0.5f, &hip);
-    (void)dropout.forward(host(Shape({4}), {1, 2, 3, 4}));
-    Tensor grad = host(Shape({4}), {1, 1, 1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)dropout.backward(grad); }, "grad_input");
-}
-
 TEST_F(HostGuardCoverageDeathTest, AggregatorBackwardAbortsOnGpuBackendScratch) {
     AggregatorModule agg(&hip);
     (void)agg.forward(host(Shape({3}), {0.2f, 0.5f, 0.8f}));
@@ -174,24 +154,6 @@ TEST_F(HostGuardCoverageDeathTest, AggregatorBackwardAbortsOnGpuBackendScratch) 
 }
 
 // ---- Losses ----
-
-TEST_F(HostGuardCoverageDeathTest, BCEWithLogitsLossBackwardAbortsOnGpuBackendGradient) {
-    BCEWithLogitsLoss loss(&hip);
-    (void)loss.forward(host(Shape({2}), {0.5f, -0.5f}), host(Shape({2}), {1, 0}));
-    EXPECT_HOST_GUARD_DEATH({ (void)loss.backward(); }, "grad");
-}
-
-TEST_F(HostGuardCoverageDeathTest, KLDivergenceLossBackwardAbortsOnGpuBackendGradient) {
-    KLDivergenceLoss loss(&hip);
-    (void)loss.forward(host(Shape({1, 2}), {0.1f, 0.2f}), host(Shape({1, 2}), {0.0f, 0.1f}));
-    EXPECT_HOST_GUARD_DEATH({ (void)loss.backward(); }, "grad_mu");
-}
-
-TEST_F(HostGuardCoverageDeathTest, CalibrationLossBackwardAbortsOnGpuBackendGradient) {
-    CalibrationLoss loss(&hip);
-    (void)loss.forward(host(Shape({1, 2}), {0.3f, 0.7f}), host(Shape({1, 1}), {1}));
-    EXPECT_HOST_GUARD_DEATH({ (void)loss.backward(); }, "grad");
-}
 
 TEST_F(HostGuardCoverageDeathTest, DQNLossBackwardAbortsOnGpuBackendGradient) {
     DQNLoss loss(&hip);
@@ -218,21 +180,6 @@ TEST_F(HostGuardCoverageDeathTest, PPOClippedLossForwardAbortsOnGpuBackendProbs)
 }
 
 // ---- Reparameterization / squashed-Gaussian policy ----
-
-TEST_F(HostGuardCoverageDeathTest, ReparameterizeForwardAbortsOnGpuBackendOutput) {
-    Reparameterize reparam(&hip);
-    Tensor mu = host(Shape({1, 2}), {0, 0});
-    Tensor log_sigma = host(Shape({1, 2}), {0, 0});
-    Tensor eps = host(Shape({1, 2}), {1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)reparam.forward(mu, log_sigma, eps); }, "z");
-}
-
-TEST_F(HostGuardCoverageDeathTest, ReparameterizeBackwardAbortsOnNonCpuGradZ) {
-    Reparameterize reparam(&cpu);
-    (void)reparam.forward(host(Shape({1, 2}), {0, 0}), host(Shape({1, 2}), {0, 0}), host(Shape({1, 2}), {1, 1}));
-    Tensor grad_z = mislabelled(Shape({1, 2}), {1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)reparam.backward(grad_z); }, "grad_z");
-}
 
 TEST_F(HostGuardCoverageDeathTest, TanhGaussianPolicyForwardAbortsOnGpuBackendOutput) {
     TanhGaussianPolicy policy(&hip);
