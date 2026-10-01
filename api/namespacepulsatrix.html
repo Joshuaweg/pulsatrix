@@ -2291,7 +2291,7 @@ A free function rather than a class or an enum-flagged variant of ComputeDQNTarg
 <dd>
 <code>dones</code> is used as a plain multiplier, not thresholded &ndash; 0.0f/1.0f is the documented encoding, and silently reinterpreting anything else would hide a caller's bug. </dd>
 <dd>
-Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> (a row-wise max at a data-dependent column has no <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> primitive) &ndash; PULSATRIX_ASSERT(device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>) guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see mission_host_loop_guards.md. </dd></dl>
+Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> (a row-wise max at a data-dependent column has no <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> primitive) &ndash; PULSATRIX_REQUIRE_HOST guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see mission_host_loop_guards.md. </dd></dl>
 
 </div>
 </div>
@@ -2385,7 +2385,7 @@ A <code>dones[t] == 1</code> row cuts <em>both</em> the bootstrap and the trace 
 <dd>
 A free function rather than a class: a pure reduction with no state to carry, matching <a class="el" href="namespacepulsatrix.html#a6176ba0afe78bd0aa69aec2b670d5b8c" title="Vanilla DQN Bellman target (Mnih et al. 2015): targets[b,0] = rewards[b,0] + gamma * (1 - dones[b,...">ComputeDQNTarget()</a>/ComputeDoubleDQNTarget()'s own free-function precedent. </dd>
 <dd>
-Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> (a reverse-order recursion has no <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> primitive) &ndash; PULSATRIX_ASSERT(device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>) guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see mission_host_loop_guards.md. </dd></dl>
+Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> (a reverse-order recursion has no <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> primitive) &ndash; PULSATRIX_REQUIRE_HOST guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see mission_host_loop_guards.md. </dd></dl>
 
 </div>
 </div>
@@ -4041,7 +4041,7 @@ template&lt;typename T &gt; </div>
 <dd>
 Gradients are untouched. This is a pure value blend and has nothing to do with zero_grad(); a target network is never backpropagated through. </dd>
 <dd>
-No device guard of its own: it takes no caller-supplied <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, only Modules, whose parameters() buffers were validated when those Modules were constructed. A guard here would be untestable dead code &ndash; the same reasoning SyncTargetNetwork and <a class="el" href="classpulsatrix_1_1MSELoss.html#a6d5585d30079af244aaf7bf8202378ea" title="Computes the gradient w.r.t. the prediction: (2/n) * (prediction - target).">MSELoss::backward()</a> document (mission_host_loop_guards.md). </dd>
+Dereferences every parameter's <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> in a raw host loop, so it guards each source/destination parameter with PULSATRIX_REQUIRE_HOST: a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> built on a GPU backend holds Cuda/Hip-tagged parameters (GPU-native-kernels campaign, Mission 0 O4). </dd>
 <dd>
 A free function, not a class: there is no state to carry between calls (the state <em>is</em> the destination network's own parameters), matching SyncTargetNetwork's shape. </dd></dl>
 
@@ -6141,7 +6141,7 @@ The copy is element-wise into <code>destination</code>'s existing parameter buff
 <dd>
 Gradients are untouched. This is a pure value copy and has nothing to do with zero_grad(); a target network is never backpropagated through in DQN anyway. </dd>
 <dd>
-No device guard of its own: it takes no caller-supplied <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, only Modules, whose parameters() buffers were validated when those Modules were constructed. A guard here would be untestable dead code &ndash; the same reasoning <a class="el" href="classpulsatrix_1_1MSELoss.html#a6d5585d30079af244aaf7bf8202378ea" title="Computes the gradient w.r.t. the prediction: (2/n) * (prediction - target).">MSELoss::backward()</a> documents (mission_host_loop_guards.md). </dd></dl>
+Dereferences every parameter's <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> in a raw host loop, so it guards each source/destination parameter with PULSATRIX_REQUIRE_HOST: a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> built on a GPU backend holds Cuda/Hip-tagged parameters (GPU-native-kernels campaign, Mission 0 O4). </dd></dl>
 
 </div>
 </div>

@@ -48,11 +48,11 @@ var searchData=
   ['grad_5fweight_5ffor_5flog_5fpf_5frange_45',['grad_weight_for_log_pf_range',['../classpulsatrix_1_1SubTBLoss.html#a32f60a55c0451235ce87c39457140ea0',1,'pulsatrix::SubTBLoss']]],
   ['grad_5fwrt_5fpredicate_5foutput_46',['grad_wrt_predicate_output',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#adc4546f4598f6e602cb107d071fc9d91',1,'pulsatrix::datalog::NeuralPredicateQueryResult']]],
   ['gradcam_47',['GradCAM',['../classpulsatrix_1_1GradCAM.html',1,'pulsatrix']]],
-  ['gradient_48',['gradient',['../classpulsatrix_1_1ExplainerContext.html#a092855583e219e35269f06b916ac5c0c',1,'pulsatrix::ExplainerContext::gradient()'],['../classpulsatrix_1_1Autograd.html#a50638f940195c3282b79de862902d84f',1,'pulsatrix::Autograd::gradient()']]],
+  ['gradient_48',['gradient',['../classpulsatrix_1_1Autograd.html#a50638f940195c3282b79de862902d84f',1,'pulsatrix::Autograd::gradient()'],['../classpulsatrix_1_1ExplainerContext.html#a092855583e219e35269f06b916ac5c0c',1,'pulsatrix::ExplainerContext::gradient(NodeId id) const']]],
   ['graph_49',['graph',['../classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088',1,'pulsatrix::ExplainerContext']]],
   ['gridsample_50',['GridSample',['../namespacepulsatrix.html#a0a856a540f60965e1c72c6462e63bdbe',1,'pulsatrix']]],
   ['group_5fnorm_5fmodule_2ehpp_51',['group_norm_module.hpp',['../group__norm__module_8hpp.html',1,'']]],
-  ['groupnormmodule_52',['groupnormmodule',['../classpulsatrix_1_1GroupNormModule.html#abc71a062657b4d6ce474262d3d0e1227',1,'pulsatrix::GroupNormModule::GroupNormModule()'],['../classpulsatrix_1_1GroupNormModule.html',1,'pulsatrix::GroupNormModule']]],
+  ['groupnormmodule_52',['groupnormmodule',['../classpulsatrix_1_1GroupNormModule.html#a4b2b8a67e8a14a8667b1075396386b64',1,'pulsatrix::GroupNormModule::GroupNormModule()'],['../classpulsatrix_1_1GroupNormModule.html',1,'pulsatrix::GroupNormModule'],['../classpulsatrix_1_1GroupNormModule.html#a23460be453dbd91d059a1857ddd05b5b',1,'pulsatrix::GroupNormModule::GroupNormModule()']]],
   ['groups_2edox_53',['groups.dox',['../groups_8dox.html',1,'']]],
   ['gru_5fmodule_2ehpp_54',['gru_module.hpp',['../gru__module_8hpp.html',1,'']]],
   ['grumodule_55',['grumodule',['../classpulsatrix_1_1GRUModule.html#ae4d024b17c5ce6e82177750c1d6f4ce1',1,'pulsatrix::GRUModule::GRUModule()'],['../classpulsatrix_1_1GRUModule.html',1,'pulsatrix::GRUModule']]]

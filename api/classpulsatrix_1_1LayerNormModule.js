@@ -1,6 +1,7 @@
 var classpulsatrix_1_1LayerNormModule =
 [
-    [ "LayerNormModule", "classpulsatrix_1_1LayerNormModule.html#ac984a914ade352468da469e095895cb7", null ],
+    [ "LayerNormModule", "classpulsatrix_1_1LayerNormModule.html#a26e0e66ae0a405534394c3f93c8574be", null ],
+    [ "LayerNormModule", "classpulsatrix_1_1LayerNormModule.html#a84bfec5ac11c88be5fe7ab431bcb4edf", null ],
     [ "backward", "classpulsatrix_1_1LayerNormModule.html#a6fd9e1c89acb2280e072bf8945cdd6a6", null ],
     [ "beta", "classpulsatrix_1_1LayerNormModule.html#a83170d259d07f3e3c0c111448b2180c7", null ],
     [ "beta_grad", "classpulsatrix_1_1LayerNormModule.html#a018dd4110d1cf49288385fbe5002c330", null ],

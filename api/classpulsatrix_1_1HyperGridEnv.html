@@ -628,7 +628,7 @@ Reward is 0 at every non-terminal step and R(x) only at the terminal state (the 
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>PULSATRIX_ASSERT(action.device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>) &ndash; raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a>, same convention as every other <a class="el" href="classpulsatrix_1_1Environment.html" title="Base class for every RL environment (CartPoleEnv, and whatever later phases add).">Environment</a> in this codebase. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(action)</a> &ndash; raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a>, same convention as every other <a class="el" href="classpulsatrix_1_1Environment.html" title="Base class for every RL environment (CartPoleEnv, and whatever later phases add).">Environment</a> in this codebase. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Environment.html#ad9703da6e1184b3b0d470d61c5fc552d">pulsatrix::Environment</a>.</p>
 

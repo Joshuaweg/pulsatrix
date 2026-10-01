@@ -1,6 +1,7 @@
 var classpulsatrix_1_1LinearModule =
 [
-    [ "LinearModule", "classpulsatrix_1_1LinearModule.html#ae8c20b3c12abca68d8167d307df344f3", null ],
+    [ "LinearModule", "classpulsatrix_1_1LinearModule.html#a7c7292a8c01755dbeea35fb03404efd7", null ],
+    [ "LinearModule", "classpulsatrix_1_1LinearModule.html#abe6201d58645cf5043ed4e5e4c6f3710", null ],
     [ "backward", "classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97", null ],
     [ "bias", "classpulsatrix_1_1LinearModule.html#aecfc2aaaa01b7a7d080e9fc1c01962ad", null ],
     [ "bias_grad", "classpulsatrix_1_1LinearModule.html#adec11485fb93f5c6ae0ff4840747849a", null ],

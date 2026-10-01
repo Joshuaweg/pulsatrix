@@ -1,6 +1,7 @@
 var classpulsatrix_1_1GroupNormModule =
 [
-    [ "GroupNormModule", "classpulsatrix_1_1GroupNormModule.html#abc71a062657b4d6ce474262d3d0e1227", null ],
+    [ "GroupNormModule", "classpulsatrix_1_1GroupNormModule.html#a23460be453dbd91d059a1857ddd05b5b", null ],
+    [ "GroupNormModule", "classpulsatrix_1_1GroupNormModule.html#a4b2b8a67e8a14a8667b1075396386b64", null ],
     [ "backward", "classpulsatrix_1_1GroupNormModule.html#a2cc3dcf2f5195d50decebf031829bcc7", null ],
     [ "beta", "classpulsatrix_1_1GroupNormModule.html#acc10be838eab7dab2d3779d284bf12fd", null ],
     [ "beta_grad", "classpulsatrix_1_1GroupNormModule.html#a4ca454523c7f17e0b33bc9465ddce16a", null ],
