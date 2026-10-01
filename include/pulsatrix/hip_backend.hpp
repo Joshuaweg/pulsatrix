@@ -40,6 +40,8 @@ public:
     HIPBackend(const HIPBackend&) = delete;
     HIPBackend& operator=(const HIPBackend&) = delete;
 
+    [[nodiscard]] DeviceType device() const noexcept override { return DeviceType::Hip; }
+
     [[nodiscard]] void* allocate(size_t bytes) override;
     void free(void* ptr) noexcept override;
     void copy(void* dst, const void* src, size_t bytes, CopyDirection dir) override;

@@ -13,6 +13,14 @@ namespace {
 }
 }  // namespace
 
+Tensor::Tensor(Shape shape, DeviceBackend* backend) : Tensor(std::move(shape), backend, backend->device()) {}
+
+Tensor::Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float> values)
+    : Tensor(std::move(shape), backend, values, backend->device()) {}
+
+Tensor::Tensor(Shape shape, DeviceBackend* backend, const std::vector<float>& values)
+    : Tensor(std::move(shape), backend, values, backend->device()) {}
+
 Tensor::Tensor(Shape shape, DeviceBackend* backend, DeviceType device)
     : data_(nullptr), shape_(std::move(shape)), backend_(backend), device_(device) {
     data_ = allocate_buffer(backend_, shape_.numel());

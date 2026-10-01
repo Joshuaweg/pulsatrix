@@ -15,6 +15,7 @@ namespace {
 
 class MockDeviceBackend : public DeviceBackend {
 public:
+    MOCK_METHOD(DeviceType, device, (), (const, noexcept, override));
     MOCK_METHOD(void*, allocate, (size_t bytes), (override));
     MOCK_METHOD(void, free, (void* ptr), (noexcept, override));
     MOCK_METHOD(void, copy, (void* dst, const void* src, size_t bytes, CopyDirection dir), (override));
@@ -340,6 +341,7 @@ TEST_F(TensorTest, ToDifferentDeviceWithoutBackendThrows) {
 // hip_backend_test.cpp / cuda_backend_test.cpp.
 class RecordingBackend : public CPUBackend {
 public:
+    [[nodiscard]] DeviceType device() const noexcept override { return reported_device; }
     void copy(void* dst, const void* src, size_t bytes, CopyDirection dir) override {
         directions.push_back(dir);
         if (fail_copy) {
@@ -357,7 +359,36 @@ public:
     std::vector<CopyDirection> directions;
     int frees = 0;
     bool fail_copy = false;
+    DeviceType reported_device = DeviceType::Cpu;
 };
+
+// GPU-native-kernels Mission 0, O1: an untagged Tensor takes its backend's device, so a
+// temporary allocated through a GPU backend can no longer be silently labelled Cpu.
+TEST_F(TensorTest, UntaggedConstructorsTakeTheBackendsDevice) {
+    RecordingBackend hip_like;
+    hip_like.reported_device = DeviceType::Hip;
+
+    EXPECT_EQ(Tensor(Shape({2}), &hip_like).device(), DeviceType::Hip);
+    EXPECT_EQ(Tensor(Shape({2}), &hip_like, {1.0f, 2.0f}).device(), DeviceType::Hip);
+    EXPECT_EQ(Tensor(Shape({2}), &hip_like, std::vector<float>{1.0f, 2.0f}).device(), DeviceType::Hip);
+}
+
+TEST_F(TensorTest, UntaggedDeviceTensorCopiesDeviceToDevice) {
+    RecordingBackend hip_like;
+    hip_like.reported_device = DeviceType::Hip;
+    Tensor original(Shape({2}), &hip_like, {1.0f, 2.0f});  // HostToDevice, not HostToHost
+    hip_like.directions.clear();
+
+    Tensor copy(original);
+
+    ASSERT_EQ(hip_like.directions.size(), 1u);
+    EXPECT_EQ(hip_like.directions[0], CopyDirection::DeviceToDevice);
+}
+
+TEST_F(TensorTest, ExplicitTagStillOverridesTheBackendsDevice) {
+    // The mislabelled-Tensor trick every host-guard death test relies on.
+    EXPECT_EQ(Tensor(Shape({2}), &backend, DeviceType::Cuda).device(), DeviceType::Cuda);
+}
 
 TEST_F(TensorTest, ToNullBackendThrows) {
     Tensor t(Shape({2}), &backend);

@@ -380,5 +380,10 @@ TEST_F(HIPBackendTest, TensorToSecondBackendInstanceCopiesDeviceToDevice) {
     EXPECT_FLOAT_EQ(host[1], 4.0f);
 }
 
+TEST_F(HIPBackendTest, ReportsHipDeviceAndTagsUntaggedTensors) {
+    EXPECT_EQ(backend.device(), DeviceType::Hip);
+    EXPECT_EQ(Tensor(Shape({3}), &backend).device(), DeviceType::Hip);
+}
+
 }  // namespace
 }  // namespace pulsatrix
