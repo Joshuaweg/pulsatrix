@@ -3,6 +3,7 @@
 #include <random>
 #include <vector>
 
+#include "backend_primitive_equivalence_cases.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/device_backend.hpp"
 #include "pulsatrix/hip_backend.hpp"
@@ -224,6 +225,9 @@ TEST_F(HipBackendEquivalenceTest, ElementwiseSigmoidMatchesCPUBackendOnRandomInp
 TEST_F(HipBackendEquivalenceTest, ElementwiseSiluMatchesCPUBackendOnRandomInput) {
     ExpectElementwiseMatchesCPU(cpu, hip, ElementwiseOp::Silu, /*seed=*/11);
 }
+
+// GPU-native-kernels Mission 1 primitives -- cases shared with the other GPU backend.
+PULSATRIX_PRIMITIVE_EQUIVALENCE_TESTS(HipBackendEquivalenceTest, hip)
 
 }  // namespace
 }  // namespace pulsatrix

@@ -19,20 +19,19 @@ namespace pulsatrix {
  * @note Weight layout is (in_features, out_features), not the more common
  *       (out_features, in_features) PyTorch convention -- chosen specifically so forward
  *       (x @ W) and the weight-gradient step (X^T @ grad_Y) both use
- *       DeviceBackend::gemm directly with no transpose of the *weight* operand. Only the
- *       input-gradient step (grad_Y @ W^T) needs an actual transpose of W, and the
- *       weight-gradient step needs an actual transpose of X (batched sum-of-outer-products
- *       reduces to a single (in_features x N) @ (N x out_features) gemm via X^T) -- both
- *       handled internally by the same transpose() helper.
+ *       DeviceBackend::gemm directly with no transpose of the *weight* operand. The
+ *       input-gradient step (grad_Y @ W^T) and the weight-gradient step (X^T @ grad_Y, the
+ *       batched sum of outer products) read their transposed operand in place through
+ *       DeviceBackend::gemm_ex -- no transposed copy is built.
  * @note Weights/biases are owned here as member Tensors, not ComputationGraph nodes.
  *       Parameter gradients accumulate via Tensor::accumulate() across backward() calls
  *       until something (the optimizer) resets them. Batch-dimension gradient reduction
  *       (summing weight/bias gradient contributions across the N examples in a batch)
  *       needs no new Tensor primitive -- see
  *       campaign_exai_dl_library_batch_dimension_support's mission_tensor_shape_foundation.md:
- *       weight_grad's reduction falls out of gemm's own k-dimension summation; bias_grad's
- *       reduction is a locally-built (out_features,) tensor via a raw host loop, then the
- *       existing, unmodified accumulate().
+ *       weight_grad's reduction falls out of gemm's own k-dimension summation (accumulated
+ *       in place, beta = 1); bias_grad's is DeviceBackend::column_sums, likewise
+ *       accumulated in place. Both are device-resident (GPU-native-kernels Mission 1).
  */
 class LinearModule : public Module {
 public:
@@ -64,13 +63,7 @@ public:
      *        with N matching the most recent forward() call's batch size.
      * @return Gradient w.r.t. this module's input, shape (N, in_features).
      * @note Must be called after forward() -- uses the input cached from that call.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host
-     *       loops (via an internal transpose() helper and the bias-gradient batch-reduction
-     *       loop). PULSATRIX_REQUIRE_HOST(grad_output) guards against
-     *       silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
      * @throws std::logic_error if forward() has never been called -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      * @throws std::invalid_argument if grad_output's rank/shape don't match (N, out_features)

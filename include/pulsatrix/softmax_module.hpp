@@ -34,10 +34,7 @@ public:
      *         grad_in[i] = s[i] * (grad_out[i] - sum_j(s[j] * grad_out[j])), the standard
      *         softmax Jacobian-vector product with s the cached forward output.
      * @note Must be called after forward() -- uses the output cached from that call.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_REQUIRE_HOST(grad_output) guards against silent
-     *       UB on a CUDA-backed Tensor; see mission_host_loop_guards.md. Do not remove this
-     *       guard without actually retrofitting the method to route through DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -75,7 +72,7 @@ protected:
     /**
      * @brief Numerically stable softmax over the last axis, per row (subtract the row max
      *        before exponentiating -- same convention as CrossEntropyLoss::forward).
-     * @param input Input tensor. Must be rank >= 1 and Cpu-resident (raw host loop).
+     * @param input Input tensor. Must be rank >= 1; any device.
      * @return Softmax probabilities, same shape as input; each row sums to 1.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

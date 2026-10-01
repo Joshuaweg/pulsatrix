@@ -93,9 +93,8 @@ Tensor SwiGLUModule::backward(const Tensor& grad_output) {
     if (grad_output.shape() != last_input_shape_) {
         throw std::invalid_argument("SwiGLUModule::backward: grad_output must match the cached forward shape");
     }
-    // Raw host loops -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
-
+    // Device-generic (GPU-native-kernels Mission 1): three LinearModule backwards, two muls
+    // and the fused Silu derivative.
     const Tensor grad_output_flat = reshaped(grad_output, Shape({last_n_flat_, d_model_}));
 
     Tensor grad_hidden = down_proj_.backward(grad_output_flat);  // (n_flat, d_ff)
@@ -106,18 +105,10 @@ Tensor SwiGLUModule::backward(const Tensor& grad_output) {
     Tensor grad_up(grad_hidden.shape(), backend_);
     backend_->mul(grad_hidden.data(), last_gate_post_.data(), grad_up.data(), n);
 
-    // silu(x) = x*sigmoid(x); silu'(x) = sigmoid(x) + x*sigmoid(x)*(1-sigmoid(x)) -- computed
-    // locally from the cached pre-activation, same "activation computes its own derivative
-    // locally" pattern as ReluModule.
-    Tensor sig(last_gate_pre_.shape(), backend_);
-    backend_->elementwise(ElementwiseOp::Sigmoid, last_gate_pre_.data(), sig.data(), n);
+    // silu'(x) = sigmoid(x) + x*sigmoid(x)*(1-sigmoid(x)), from the cached pre-activation.
     Tensor grad_gate_pre(grad_hidden.shape(), backend_);
-    for (size_t i = 0; i < n; ++i) {
-        const float s = sig.data()[i];
-        const float x = last_gate_pre_.data()[i];
-        const float silu_deriv = s + x * s * (1.0f - s);
-        grad_gate_pre.data()[i] = grad_gate_post.data()[i] * silu_deriv;
-    }
+    backend_->elementwise_backward(ElementwiseOp::Silu, last_gate_pre_.data(), grad_gate_post.data(),
+                                   grad_gate_pre.data(), n);
 
     Tensor grad_from_gate = gate_proj_.backward(grad_gate_pre);  // (n_flat, d_model)
     Tensor grad_from_up = up_proj_.backward(grad_up);            // (n_flat, d_model)

@@ -24,6 +24,26 @@ public:
     MOCK_METHOD(void, elementwise, (ElementwiseOp op, const float* in, float* out, size_t n), (override));
     MOCK_METHOD(void, add, (const float* a, const float* b, float* out, size_t n), (override));
     MOCK_METHOD(void, mul, (const float* a, const float* b, float* out, size_t n), (override));
+    MOCK_METHOD(void, gemm_ex,
+                (const float* a, bool transpose_a, const float* b, bool transpose_b, float* out, size_t m, size_t k,
+                 size_t n, float beta),
+                (override));
+    MOCK_METHOD(void, column_sums, (const float* in, float* out, size_t rows, size_t cols, float beta), (override));
+    MOCK_METHOD(void, add_row_vector, (const float* in, const float* row, float* out, size_t rows, size_t cols),
+                (override));
+    MOCK_METHOD(void, elementwise_backward,
+                (ElementwiseOp op, const float* x, const float* grad_out, float* grad_in, size_t n), (override));
+    MOCK_METHOD(void, axpby, (float alpha, const float* x, float beta, const float* y, float* out, size_t n),
+                (override));
+    MOCK_METHOD(float, dot, (const float* a, const float* b, size_t n), (override));
+    MOCK_METHOD(void, softmax_rows, (const float* in, float* out, size_t rows, size_t cols), (override));
+    MOCK_METHOD(void, softmax_rows_backward, (const float* y, const float* dy, float* dx, size_t rows, size_t cols),
+                (override));
+    MOCK_METHOD(void, logsumexp_rows, (const float* in, float* out, size_t rows, size_t cols), (override));
+    MOCK_METHOD(void, adam_step,
+                (float* param, const float* grad, float* m, float* v, size_t n, float lr, float beta1, float beta2,
+                 float eps, float bias_correction1, float bias_correction2),
+                (override));
 };
 
 class TensorTest : public ::testing::Test {

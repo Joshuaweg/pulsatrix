@@ -6,26 +6,6 @@
 
 namespace pulsatrix {
 
-namespace {
-// Transposes a (rows x cols) row-major buffer into a (cols x rows) row-major buffer.
-// Used by backward()'s grad_x step (needs W^T) and, since the batch migration, also its
-// weight-gradient step (needs X^T) -- CPUBackend::gemm has no transpose flag.
-Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
-    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
-    PULSATRIX_REQUIRE_HOST(m);
-    Tensor out(Shape({cols, rows}), backend);
-    PULSATRIX_REQUIRE_HOST(out);
-    for (int64_t r = 0; r < rows; ++r) {
-        for (int64_t c = 0; c < cols; ++c) {
-            out.data()[c * rows + r] = m.data()[r * cols + c];
-        }
-    }
-    return out;
-}
-}  // namespace
-
 LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend)
     : LinearModule(in_features, out_features, backend, backend->device()) {}
 
@@ -82,19 +62,13 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
                     static_cast<size_t>(in_features_), static_cast<size_t>(out_features_));
     last_pre_bias_output_ = pre_bias;  // cached for propagate_relevance's z_j
 
-    // bias_ is (out_features,), broadcast-added per row. Tensor::accumulate() requires exact
-    // shape equality, so the broadcast is materialized as ones(N,1) x bias(1,out_features)
-    // through gemm, then added -- every step routes through backend_, so this stays valid on
-    // a device-resident Tensor. (The batch migration originally used a raw host loop here,
-    // which silently dereferenced device pointers on a Cuda/Hip module.) k == 1, so each
-    // broadcast element is exactly 1.0f * bias[j]: bit-identical to the direct add.
-    Tensor ones(Shape({N, 1}), backend_, weight_.device());
-    ones.fill(1.0f);
-    Tensor bias_rows(Shape({N, out_features_}), backend_, weight_.device());
-    backend_->gemm(ones.data(), bias_.data(), bias_rows.data(), static_cast<size_t>(N), 1,
-                   static_cast<size_t>(out_features_));
-    Tensor output(pre_bias);
-    output.accumulate(bias_rows);
+    // bias_ is (out_features,), broadcast-added per row on the device. (The batch migration
+    // originally used a raw host loop here, which silently dereferenced device pointers on a
+    // Cuda/Hip module; Mission 0 of GPU-native-kernels routed it through a ones-gemm, now the
+    // dedicated add_row_vector primitive.)
+    Tensor output(pre_bias.shape(), backend_, weight_.device());
+    backend_->add_row_vector(pre_bias.data(), bias_.data(), output.data(), static_cast<size_t>(N),
+                             static_cast<size_t>(out_features_));
     has_forwarded_ = true;
     return output;
 }
@@ -116,42 +90,22 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
             "LinearModule::backward: grad_output must be rank-2 (N, out_features) matching the cached batch size");
     }
 
-    // Dereferences Tensor::data() directly (via transpose()) -- not yet backend-generic.
-    // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
-    // mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
+    // Device-generic (GPU-native-kernels Mission 1): gemm_ex reads X and W transposed in
+    // place and accumulates straight into the gradient buffers (beta = 1), replacing the
+    // host-side transpose copies and the bias-gradient host loop.
+    const auto n = static_cast<size_t>(N);
+    const auto in = static_cast<size_t>(in_features_);
+    const auto out = static_cast<size_t>(out_features_);
 
-    // grad_W = X^T @ grad_Y = (in_features x N) @ (N x out_features) -- the batched
-    // sum-of-outer-products reduces to a single gemm via X^T (Mission 0's design trace,
-    // campaign_exai_dl_library_batch_dimension_support). The pre-migration N=1 case was
-    // outer(x, grad_y); this generalizes it, not replaces it with new math.
-    Tensor input_t = transpose(last_input_, N, in_features_, backend_);
-    Tensor local_weight_grad(Shape({in_features_, out_features_}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(local_weight_grad);
-    backend_->gemm(input_t.data(), grad_output.data(), local_weight_grad.data(), static_cast<size_t>(in_features_),
-                    static_cast<size_t>(N), static_cast<size_t>(out_features_));
-    weight_grad_.accumulate(local_weight_grad);
+    // grad_W += X^T @ grad_Y -- the batched sum of outer products is gemm's k-dimension sum.
+    backend_->gemm_ex(last_input_.data(), true, grad_output.data(), false, weight_grad_.data(), in, n, out, 1.0f);
 
-    // grad_bias = sum over the batch of grad_output -- no new Tensor primitive needed
-    // (Mission 0's design trace): a locally-built (out_features,) tensor via a raw host
-    // loop, then the existing, unmodified accumulate().
-    Tensor local_bias_grad(Shape({out_features_}), backend_);
-    local_bias_grad.fill(0.0f);
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t j = 0; j < out_features_; ++j) {
-            local_bias_grad.data()[j] += grad_output.data()[n * out_features_ + j];
-        }
-    }
-    bias_grad_.accumulate(local_bias_grad);
+    // grad_bias += sum over the batch of grad_Y.
+    backend_->column_sums(grad_output.data(), bias_grad_.data(), n, out, 1.0f);
 
-    // grad_x = grad_Y @ W^T = (N x out_features) @ (out_features x in_features)
-    Tensor weight_t = transpose(weight_, in_features_, out_features_, backend_);
-    Tensor grad_input(Shape({N, in_features_}), backend_);
-    backend_->gemm(grad_output.data(), weight_t.data(), grad_input.data(), static_cast<size_t>(N),
-                    static_cast<size_t>(out_features_), static_cast<size_t>(in_features_));
+    // grad_X = grad_Y @ W^T
+    Tensor grad_input(Shape({N, in_features_}), backend_, weight_.device());
+    backend_->gemm_ex(grad_output.data(), false, weight_.data(), true, grad_input.data(), n, out, in, 0.0f);
     return grad_input;
 }
 

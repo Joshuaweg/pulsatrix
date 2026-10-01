@@ -119,6 +119,24 @@ public:
     /** @brief Which device this tensor's buffer conceptually resides on. */
     [[nodiscard]] DeviceType device() const { return device_; }
 
+    /**
+     * @brief The backend that owns this tensor's buffer. Not owned by the Tensor.
+     * @note Lets device-generic code (e.g. an optimizer stepping a module's parameters)
+     *       compute through the buffer's own backend instead of carrying a second pointer
+     *       that could name a different device.
+     */
+    [[nodiscard]] DeviceBackend* backend() const { return backend_; }
+
+    /**
+     * @brief Reads one element to the host through the owning backend, on any device.
+     * @note One synchronous device-to-host copy -- for scalars (a loss value, a picked
+     *       logit), never for loops. Bounds are PULSATRIX_ASSERT-checked like operator[].
+     */
+    [[nodiscard]] float read_element(int64_t flat_index) const;
+
+    /** @brief Writes one element from the host through the owning backend, on any device. */
+    void write_element(int64_t flat_index, float value);
+
     /** @brief Raw buffer access. nullptr iff numel() == 0. */
     [[nodiscard]] const float* data() const { return data_; }
 

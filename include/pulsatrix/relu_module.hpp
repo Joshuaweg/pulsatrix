@@ -36,12 +36,7 @@ public:
      *       is technically any value in [0,1]; this codebase picks 0, matching forward's
      *       own x > 0 threshold for max(x, 0)).
      * @note Must be called after forward() -- uses the input cached from that call.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_REQUIRE_HOST(grad_output) guards against
-     *       silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
