@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <stdexcept>
 
 #include "pulsatrix/adam_optimizer.hpp"
 #include "pulsatrix/cpu_backend.hpp"
@@ -89,37 +90,13 @@ TEST(AdamOptimizerTest, StepOnParameterlessModuleIsSafeNoOp) {
     EXPECT_NO_THROW(opt.zero_grad(m));
 }
 
-// step() dereferences Tensor::data() directly in a raw host loop -- undefined behavior on
-// a CUDA-backed Tensor. Phase 1.5 Mission 2 (mission_host_loop_guards.md) guards it with
-// PULSATRIX_ASSERT. Same CudaParamModule test-double pattern as SGDOptimizerDeathTest (see that
-// file's comment for why LinearModule can't be reused here). zero_grad() is NOT guarded --
-// confirmed safe, it routes through Tensor::fill() -> DeviceBackend::fill().
-TEST(AdamOptimizerDeathTest, StepAbortsOnNonCpuParameter) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    class CudaParamModule : public Module {
-    public:
-        explicit CudaParamModule(DeviceBackend* backend)
-            : value_(Shape({1}), backend, {1.0f}, DeviceType::Cuda),
-              grad_(Shape({1}), backend, {1.0f}, DeviceType::Cuda) {}
-        Tensor propagate_relevance(const Tensor& r, const LRPRuleConfig&) override { return Tensor(r); }
-        Tensor backward(const Tensor& grad_output) override { return Tensor(grad_output); }
-        [[nodiscard]] OpType op_type() const override { return OpType::Elementwise; }
-        std::vector<ParamRef> parameters() override { return {{&value_, &grad_}}; }
-
-    protected:
-        Tensor forward_impl(const Tensor& input) override { return Tensor(input); }
-
-    private:
-        Tensor value_;
-        Tensor grad_;
-    };
-
+// GPU-native-kernels Mission 1: moments are allocated through the optimizer's backend, so a
+// parameter on another device is a caller error, reported before any kernel runs.
+TEST(AdamOptimizerTest, StepThrowsWhenParameterDeviceDiffersFromOptimizerBackend) {
     CPUBackend backend;
-    CudaParamModule m(&backend);
-    AdamOptimizer opt(0.1f, &backend);
-    EXPECT_DEATH({ opt.step(m); }, "PULSATRIX_ASSERT failed");
+    LinearModule linear(2, 2, &backend, DeviceType::Hip);  // Hip-tagged parameters
+    AdamOptimizer adam(0.01f, &backend);                  // Cpu backend
+    EXPECT_THROW(adam.step(linear), std::invalid_argument);
 }
 
 }  // namespace

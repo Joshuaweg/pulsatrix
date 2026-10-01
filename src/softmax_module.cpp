@@ -37,38 +37,13 @@ SoftmaxModule::SoftmaxModule(DeviceBackend* backend)
 // except two caches: Eq. 13 needs the pre-softmax input x as well as the output s.
 
 Tensor SoftmaxModule::forward_impl(const Tensor& input) {
-    // Raw host loop (std::exp per element) -- not backend-generic. There is no Exp
-    // elementwise op and adding one is out of this mission's scope (CrossEntropyLoss
-    // computes its softmax the same way). See mission_host_loop_guards.md for the guard.
-    PULSATRIX_REQUIRE_HOST(input);
-
+    // Device-generic (GPU-native-kernels Mission 1): max-subtracted row softmax on the
+    // input's own device.
     const RowLayout layout = row_layout_of(input.shape());
 
-    Tensor output(input.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(output);
-    for (int64_t row = 0; row < layout.num_rows; ++row) {
-        const int64_t base = row * layout.row_len;
-
-        // Numerically stable: subtract this row's own max before exponentiating, same
-        // convention as CrossEntropyLoss::forward, applied per row rather than globally.
-        float row_max = input.data()[base];
-        for (int64_t j = 1; j < layout.row_len; ++j) {
-            row_max = std::max(row_max, input.data()[base + j]);
-        }
-
-        float exp_sum = 0.0f;
-        for (int64_t j = 0; j < layout.row_len; ++j) {
-            const float e = std::exp(input.data()[base + j] - row_max);
-            output.data()[base + j] = e;
-            exp_sum += e;
-        }
-        for (int64_t j = 0; j < layout.row_len; ++j) {
-            output.data()[base + j] /= exp_sum;
-        }
-    }
+    Tensor output(input.shape(), backend_, input.device());
+    backend_->softmax_rows(input.data(), output.data(), static_cast<size_t>(layout.num_rows),
+                           static_cast<size_t>(layout.row_len));
 
     last_input_ = input;
     last_output_ = output;
@@ -76,29 +51,14 @@ Tensor SoftmaxModule::forward_impl(const Tensor& input) {
 }
 
 Tensor SoftmaxModule::backward(const Tensor& grad_output) {
-    // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
     PULSATRIX_ASSERT(grad_output.shape() == last_output_.shape());
 
     const RowLayout layout = row_layout_of(grad_output.shape());
 
-    Tensor grad_input(grad_output.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
-    for (int64_t row = 0; row < layout.num_rows; ++row) {
-        const int64_t base = row * layout.row_len;
-
-        // dot = sum_j(s[j] * grad_out[j]) -- the softmax Jacobian's rank-1 correction term.
-        float dot = 0.0f;
-        for (int64_t j = 0; j < layout.row_len; ++j) {
-            dot += last_output_.data()[base + j] * grad_output.data()[base + j];
-        }
-        for (int64_t i = 0; i < layout.row_len; ++i) {
-            grad_input.data()[base + i] = last_output_.data()[base + i] * (grad_output.data()[base + i] - dot);
-        }
-    }
+    // dx = y * (dy - <y, dy>) per row, computed from the cached output.
+    Tensor grad_input(grad_output.shape(), backend_, grad_output.device());
+    backend_->softmax_rows_backward(last_output_.data(), grad_output.data(), grad_input.data(),
+                                    static_cast<size_t>(layout.num_rows), static_cast<size_t>(layout.row_len));
     return grad_input;
 }
 

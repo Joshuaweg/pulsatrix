@@ -186,7 +186,8 @@ public:
     /**
      * @brief Activation backward: grad_in[i] = grad_out[i] * f'(x[i]), f = op, x = the
      *        forward *input*.
-     * @note Derivatives: Relu x > 0 ? 1 : 0 (0 at x == 0, matching ReluModule); Neg -1;
+     * @note Derivatives: Relu selects grad_out where x > 0, else 0 (0 at x == 0 and for a
+     *       non-finite grad_out, matching ReluModule); Neg -1;
      *       Tanh 1 - tanh(x)^2; Sigmoid s(1 - s); Silu s(1 + x(1 - s)), s = sigmoid(x).
      *       grad_in may alias grad_out or x.
      */

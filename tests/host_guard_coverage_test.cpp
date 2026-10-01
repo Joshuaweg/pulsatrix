@@ -159,13 +159,6 @@ TEST_F(HostGuardCoverageDeathTest, NegationBackwardAbortsOnGpuBackendScratch) {
     EXPECT_HOST_GUARD_DEATH({ (void)neg.backward(grad); }, "grad_input");
 }
 
-TEST_F(HostGuardCoverageDeathTest, ReluBackwardAbortsOnGpuBackendScratch) {
-    ReluModule relu(&hip, DeviceType::Cpu);
-    (void)relu.forward(host(Shape({3}), {-1, 0, 1}));
-    Tensor grad = host(Shape({3}), {1, 1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)relu.backward(grad); }, "grad_input");
-}
-
 TEST_F(HostGuardCoverageDeathTest, DropoutBackwardAbortsOnGpuBackendScratch) {
     DropoutModule dropout(0.5f, &hip);
     (void)dropout.forward(host(Shape({4}), {1, 2, 3, 4}));
@@ -181,20 +174,6 @@ TEST_F(HostGuardCoverageDeathTest, AggregatorBackwardAbortsOnGpuBackendScratch) 
 }
 
 // ---- Losses ----
-
-TEST_F(HostGuardCoverageDeathTest, MSELossBackwardAbortsOnGpuBackendGradient) {
-    MSELoss loss(&hip);
-    (void)loss.forward(host(Shape({2}), {1, 2}), host(Shape({2}), {0, 0}));
-    EXPECT_HOST_GUARD_DEATH({ (void)loss.backward(); }, "grad");
-}
-
-// backward()'s guards are unreachable through the public API once forward() guards the
-// backend-allocated softmax cache, so the forward() guard is what is exercised here.
-TEST_F(HostGuardCoverageDeathTest, CrossEntropyLossForwardAbortsOnGpuBackendSoftmaxCache) {
-    CrossEntropyLoss loss(&hip);
-    Tensor logits = host(Shape({3}), {1, 2, 3});
-    EXPECT_HOST_GUARD_DEATH({ (void)loss.forward(logits, 0); }, "softmax_probs_");
-}
 
 TEST_F(HostGuardCoverageDeathTest, BCEWithLogitsLossBackwardAbortsOnGpuBackendGradient) {
     BCEWithLogitsLoss loss(&hip);
@@ -301,12 +280,6 @@ TEST_F(HostGuardCoverageDeathTest, PolyakUpdateAbortsOnNonCpuParameters) {
     EXPECT_HOST_GUARD_DEATH({ PolyakUpdate(source, destination, 0.5f); }, "from");
 }
 
-TEST_F(HostGuardCoverageDeathTest, AdamStepAbortsOnGpuBackendMomentBuffers) {
-    LinearModule net(1, 1, &cpu, DeviceType::Cpu);
-    AdamOptimizer adam(0.01f, &hip);
-    EXPECT_HOST_GUARD_DEATH({ adam.step(net); }, "s.m");
-}
-
 // ---- Explainability metrics ----
 
 TEST_F(HostGuardCoverageDeathTest, ComputeAttributionStabilityAbortsOnNonCpuValues) {
@@ -392,13 +365,6 @@ TEST_F(HostGuardCoverageDeathTest, SinusoidalTimestepEmbeddingAbortsOnGpuBackend
 
 // ---- Layers whose output / scratch is allocated through a GPU backend ----
 
-TEST_F(HostGuardCoverageDeathTest, LinearBackwardTransposeAbortsOnGpuBackendScratch) {
-    LinearModule linear(2, 2, &hip, DeviceType::Cpu);
-    (void)linear.forward(host(Shape({1, 2}), {1, 2}));
-    Tensor grad = host(Shape({1, 2}), {1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)linear.backward(grad); }, "out");
-}
-
 TEST_F(HostGuardCoverageDeathTest, Conv2DForwardAbortsOnGpuBackendOutput) {
     Conv2DModule conv(1, 1, 2, 2, &hip);
     Tensor x = host(Shape({1, 1, 3, 3}), {1, 2, 3, 4, 5, 6, 7, 8, 9});
@@ -421,12 +387,6 @@ TEST_F(HostGuardCoverageDeathTest, EmbeddingForwardAbortsOnGpuBackendOutput) {
     EmbeddingModule emb(4, 2, &hip);
     Tensor indices = host(Shape({1, 2}), {0, 3});
     EXPECT_HOST_GUARD_DEATH({ (void)emb.forward(indices); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, SoftmaxForwardAbortsOnGpuBackendOutput) {
-    SoftmaxModule softmax(&hip);
-    Tensor x = host(Shape({1, 3}), {1, 2, 3});
-    EXPECT_HOST_GUARD_DEATH({ (void)softmax.forward(x); }, "output");
 }
 
 TEST_F(HostGuardCoverageDeathTest, RoPEForwardAbortsOnGpuBackendOutput) {

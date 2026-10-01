@@ -9,48 +9,24 @@ namespace pulsatrix {
 CrossEntropyLoss::CrossEntropyLoss(DeviceBackend* backend) : backend_(backend), softmax_probs_(Shape({0}), backend) {}
 
 float CrossEntropyLoss::forward(const Tensor& logits, int64_t target_class) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic,
-    // same as MSELoss. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
-    // decision and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(logits);
     PULSATRIX_ASSERT(target_class >= 0 && target_class < logits.numel());
 
-    int64_t n = logits.numel();
-
-    // Numerically stable softmax: subtract the max logit before exponentiating.
-    float max_logit = logits.data()[0];
-    for (int64_t i = 1; i < n; ++i) {
-        max_logit = std::max(max_logit, logits.data()[i]);
-    }
-
-    float exp_sum = 0.0f;
-    for (int64_t i = 0; i < n; ++i) {
-        exp_sum += std::exp(logits.data()[i] - max_logit);
-    }
-
-    softmax_probs_ = Tensor(logits.shape(), backend_);
-    // Allocated through backend_, so a GPU backend tags it Cuda/Hip -- the host write below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(softmax_probs_);
-    for (int64_t i = 0; i < n; ++i) {
-        softmax_probs_.data()[i] = std::exp(logits.data()[i] - max_logit) / exp_sum;
-    }
+    // Device-generic (GPU-native-kernels Mission 1): softmax and log-sum-exp on the logits'
+    // device; only two scalars (log-sum-exp, the target logit) come back to the host.
+    const auto n = static_cast<size_t>(logits.numel());
+    softmax_probs_ = Tensor(logits.shape(), backend_, logits.device());
+    backend_->softmax_rows(logits.data(), softmax_probs_.data(), 1, n);
     target_class_ = target_class;
 
-    float log_sum_exp = max_logit + std::log(exp_sum);
-    return log_sum_exp - logits.data()[target_class];
+    Tensor log_sum_exp(Shape({1}), backend_, logits.device());
+    backend_->logsumexp_rows(logits.data(), log_sum_exp.data(), 1, n);
+    return log_sum_exp.read_element(0) - logits.read_element(target_class);
 }
 
 Tensor CrossEntropyLoss::backward() const {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(softmax_probs_);
-    int64_t n = softmax_probs_.numel();
-    Tensor grad(softmax_probs_.shape(), backend_);
-    PULSATRIX_REQUIRE_HOST(grad);
-    for (int64_t i = 0; i < n; ++i) {
-        grad.data()[i] = softmax_probs_.data()[i] - ((i == target_class_) ? 1.0f : 0.0f);
-    }
+    // grad = softmax - one_hot(target): copy the probabilities, then fix up one element.
+    Tensor grad(softmax_probs_);
+    grad.write_element(target_class_, softmax_probs_.read_element(target_class_) - 1.0f);
     return grad;
 }
 

@@ -167,8 +167,9 @@ __global__ void elementwise_backward_kernel(int op, const float* x, const float*
         float d = 0.0f;
         switch (static_cast<ElementwiseOp>(op)) {
             case ElementwiseOp::Relu:
-                d = xi > 0.0f ? 1.0f : 0.0f;
-                break;
+                // Select, not multiply -- see CPUBackend::elementwise_backward.
+                grad_in[i] = xi > 0.0f ? grad_out[i] : 0.0f;
+                return;
             case ElementwiseOp::Neg:
                 d = -1.0f;
                 break;

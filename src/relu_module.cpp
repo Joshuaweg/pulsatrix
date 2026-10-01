@@ -24,19 +24,11 @@ Tensor ReluModule::forward_impl(const Tensor& input) {
 }
 
 Tensor ReluModule::backward(const Tensor& grad_output) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
-    // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
-    // mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
-
-    Tensor grad_input(grad_output.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
-    for (int64_t i = 0; i < grad_output.numel(); ++i) {
-        grad_input.data()[i] = (last_input_.data()[i] > 0.0f) ? grad_output.data()[i] : 0.0f;
-    }
+    // Device-generic (GPU-native-kernels Mission 1): grad masked where the cached forward
+    // input was <= 0.
+    Tensor grad_input(grad_output.shape(), backend_, grad_output.device());
+    backend_->elementwise_backward(ElementwiseOp::Relu, last_input_.data(), grad_output.data(), grad_input.data(),
+                                   static_cast<size_t>(grad_output.numel()));
     return grad_input;
 }
 
