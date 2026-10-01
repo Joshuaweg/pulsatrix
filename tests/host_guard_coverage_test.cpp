@@ -92,33 +92,7 @@ protected:
 
 // ---- Normalization modules: forward_impl (mislabelled input) ----
 
-TEST_F(HostGuardCoverageDeathTest, BatchNormForwardAbortsOnNonCpuInput) {
-    BatchNormModule bn(2, &cpu);
-    Tensor x = mislabelled(Shape({1, 2, 2, 2}), {1, 2, 3, 4, 5, 6, 7, 8});
-    EXPECT_HOST_GUARD_DEATH({ (void)bn.forward(x); }, "input");
-}
-
-TEST_F(HostGuardCoverageDeathTest, GroupNormForwardAbortsOnNonCpuInput) {
-    GroupNormModule gn(1, 2, &cpu);
-    Tensor x = mislabelled(Shape({1, 2, 2, 2}), {1, 2, 3, 4, 5, 6, 7, 8});
-    EXPECT_HOST_GUARD_DEATH({ (void)gn.forward(x); }, "input");
-}
-
 // ---- Normalization / elementwise modules: backward scratch allocated through a GPU backend ----
-
-TEST_F(HostGuardCoverageDeathTest, BatchNormBackwardAbortsOnGpuBackendScratch) {
-    BatchNormModule bn(2, &hip, DeviceType::Cpu);  // Cpu params, Hip-tagged scratch
-    (void)bn.forward(host(Shape({1, 2, 2, 2}), {1, 2, 3, 4, 5, 6, 7, 8}));
-    Tensor grad = host(Shape({1, 2, 2, 2}), {1, 1, 1, 1, 1, 1, 1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)bn.backward(grad); }, "local_gamma_grad");
-}
-
-TEST_F(HostGuardCoverageDeathTest, GroupNormBackwardAbortsOnGpuBackendScratch) {
-    GroupNormModule gn(1, 2, &hip, DeviceType::Cpu);  // Cpu params, Hip-tagged scratch
-    (void)gn.forward(host(Shape({1, 2, 2, 2}), {1, 2, 3, 4, 5, 6, 7, 8}));
-    Tensor grad = host(Shape({1, 2, 2, 2}), {1, 1, 1, 1, 1, 1, 1, 1});
-    EXPECT_HOST_GUARD_DEATH({ (void)gn.backward(grad); }, "local_gamma_grad");
-}
 
 // ---- Losses ----
 
@@ -235,24 +209,6 @@ TEST_F(HostGuardCoverageDeathTest, SinusoidalTimestepEmbeddingAbortsOnGpuBackend
 }
 
 // ---- Layers whose output / scratch is allocated through a GPU backend ----
-
-TEST_F(HostGuardCoverageDeathTest, Conv2DForwardAbortsOnGpuBackendOutput) {
-    Conv2DModule conv(1, 1, 2, 2, &hip);
-    Tensor x = host(Shape({1, 1, 3, 3}), {1, 2, 3, 4, 5, 6, 7, 8, 9});
-    EXPECT_HOST_GUARD_DEATH({ (void)conv.forward(x); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, AvgPool2DForwardAbortsOnGpuBackendOutput) {
-    AvgPool2DModule pool(2, 2, &hip);
-    Tensor x = host(Shape({1, 1, 2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)pool.forward(x); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, MaxPool2DForwardAbortsOnGpuBackendOutput) {
-    MaxPool2DModule pool(2, 2, &hip);
-    Tensor x = host(Shape({1, 1, 2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)pool.forward(x); }, "output");
-}
 
 TEST_F(HostGuardCoverageDeathTest, RNNForwardAbortsOnGpuBackendOutput) {
     RNNModule rnn(2, 2, &hip);
