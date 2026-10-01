@@ -35,7 +35,7 @@ namespace pulsatrix {
  * @note `dones` is used as a plain multiplier, not thresholded -- 0.0f/1.0f is the documented
  *       encoding, and silently reinterpreting anything else would hide a caller's bug.
  * @note Raw host loop over Tensor::data() (a row-wise max at a data-dependent column has no
- *       DeviceBackend primitive) -- PULSATRIX_ASSERT(device() == DeviceType::Cpu) guards against
+ *       DeviceBackend primitive) -- PULSATRIX_REQUIRE_HOST guards against
  *       silent UB on a CUDA-backed Tensor; see mission_host_loop_guards.md.
  */
 [[nodiscard]] Tensor ComputeDQNTarget(const Tensor& next_q_target, const Tensor& rewards, const Tensor& dones,
@@ -95,10 +95,9 @@ namespace pulsatrix {
  *       storage. Replacing the Tensors would dangle every outstanding ParamRef.
  * @note Gradients are untouched. This is a pure value copy and has nothing to do with
  *       zero_grad(); a target network is never backpropagated through in DQN anyway.
- * @note No device guard of its own: it takes no caller-supplied Tensor, only Modules, whose
- *       parameters() buffers were validated when those Modules were constructed. A guard
- *       here would be untestable dead code -- the same reasoning MSELoss::backward()
- *       documents (mission_host_loop_guards.md).
+ * @note Dereferences every parameter's Tensor::data() in a raw host loop, so it guards each
+ *       source/destination parameter with PULSATRIX_REQUIRE_HOST: a Module built on a GPU
+ *       backend holds Cuda/Hip-tagged parameters (GPU-native-kernels campaign, Mission 0 O4).
  */
 void SyncTargetNetwork(Module& source, Module& destination);
 

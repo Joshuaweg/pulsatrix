@@ -16,13 +16,16 @@ public:
     /**
      * @brief Constructs a ReLU module.
      * @param backend Backend to compute through. Not owned; must outlive this module.
-     * @param device Which device last_input_ is initially tagged as. Defaults to Cpu.
+     * @param device Which device last_input_ is initially tagged as.
      *        forward_impl()'s output is tagged with the actual input tensor's device on
      *        every call (not this constructor argument), since ReLU has no parameters of
      *        its own to anchor a fixed "module device" the way LinearModule's weight_ does
      *        -- see campaign_exai_dl_library_phase1_5_cuda_backend.md's Mission 3.
      */
-    explicit ReluModule(DeviceBackend* backend, DeviceType device = DeviceType::Cpu);
+    ReluModule(DeviceBackend* backend, DeviceType device);
+
+    /** @brief As above, on backend's own device (backend->device()). */
+    explicit ReluModule(DeviceBackend* backend);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input.
@@ -34,7 +37,7 @@ public:
      *       own x > 0 threshold for max(x, 0)).
      * @note Must be called after forward() -- uses the input cached from that call.
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu) guards against
+     *       loop. PULSATRIX_REQUIRE_HOST(grad_output) guards against
      *       silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through

@@ -11,6 +11,9 @@ namespace {
 int64_t safe_channels(int64_t num_channels) { return num_channels > 0 ? num_channels : 1; }
 }  // namespace
 
+BatchNormModule::BatchNormModule(int64_t num_channels, DeviceBackend* backend)
+    : BatchNormModule(num_channels, backend, backend->device()) {}
+
 BatchNormModule::BatchNormModule(int64_t num_channels, DeviceBackend* backend, DeviceType device, float eps)
     : num_channels_(num_channels),
       eps_(eps),
@@ -59,11 +62,19 @@ Tensor BatchNormModule::forward_impl(const Tensor& input) {
     const int64_t per_example = num_channels_ * spatial;
     const int64_t M = N * spatial;  // elements per channel, across the whole batch
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(input);
+    PULSATRIX_REQUIRE_HOST(gamma_);
+    PULSATRIX_REQUIRE_HOST(beta_);
+
     last_input_ = input;
     last_std_.assign(static_cast<size_t>(num_channels_), 0.0f);
 
     Tensor xhat(input.shape(), backend_, gamma_.device());
     Tensor output(input.shape(), backend_, gamma_.device());
+    PULSATRIX_REQUIRE_HOST(xhat);
+    PULSATRIX_REQUIRE_HOST(output);
 
     for (int64_t c = 0; c < num_channels_; ++c) {
         float sum = 0.0f;
@@ -109,7 +120,7 @@ Tensor BatchNormModule::backward(const Tensor& grad_output) {
     }
     // Not yet backend-generic -- raw host loop below. See every existing Module
     // subclass's identical Phase 1.5 scope decision.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t N = last_input_.shape().dim(0);
     const int64_t H = last_input_.shape().dim(2);
@@ -119,6 +130,10 @@ Tensor BatchNormModule::backward(const Tensor& grad_output) {
     const int64_t M = N * spatial;
 
     Tensor local_gamma_grad(gamma_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(local_gamma_grad);
     Tensor local_beta_grad(beta_.shape(), backend_);
     Tensor grad_input(last_input_.shape(), backend_);
 

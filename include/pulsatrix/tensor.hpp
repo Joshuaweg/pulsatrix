@@ -9,6 +9,7 @@
 
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/host_guard.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -26,13 +27,21 @@ namespace pulsatrix {
 class Tensor {
 public:
     /**
-     * @brief Constructs a zero-initialized tensor.
+     * @brief Constructs a zero-initialized tensor on backend's own device (backend->device()).
      * @param shape Tensor shape.
      * @param backend Backend to allocate/fill through. Not owned; must outlive this Tensor.
-     * @param device Which device this tensor's buffer conceptually resides on. Defaults to
-     *        Cpu. Must match the device backend allocates on.
      */
-    explicit Tensor(Shape shape, DeviceBackend* backend, DeviceType device = DeviceType::Cpu);
+    Tensor(Shape shape, DeviceBackend* backend);
+
+    /**
+     * @brief Constructs a zero-initialized tensor with an explicit device tag.
+     * @param shape Tensor shape.
+     * @param backend Backend to allocate/fill through. Not owned; must outlive this Tensor.
+     * @param device Which device this tensor's buffer conceptually resides on. Should equal
+     *        backend->device(); deliberately not enforced, because tests tag a host-backed
+     *        buffer Cuda/Hip to exercise device guards without GPU hardware.
+     */
+    Tensor(Shape shape, DeviceBackend* backend, DeviceType device);
 
     /**
      * @brief Constructs a tensor from explicit values.
@@ -44,8 +53,10 @@ public:
      *       values.begin() is always a genuine host pointer (std::initializer_list lives on
      *       the host) regardless of the destination.
      */
-    Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float> values,
-           DeviceType device = DeviceType::Cpu);
+    Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float> values, DeviceType device);
+
+    /** @brief As above, tagged with backend->device(). */
+    Tensor(Shape shape, DeviceBackend* backend, std::initializer_list<float> values);
 
     /**
      * @brief Constructs a tensor from explicit values, runtime-sized source.
@@ -60,8 +71,10 @@ public:
      *       Phase 5 Python bindings) cannot use the initializer_list overload at all, not
      *       just less conveniently.
      */
-    Tensor(Shape shape, DeviceBackend* backend, const std::vector<float>& values,
-           DeviceType device = DeviceType::Cpu);
+    Tensor(Shape shape, DeviceBackend* backend, const std::vector<float>& values, DeviceType device);
+
+    /** @brief As above, tagged with backend->device(). */
+    Tensor(Shape shape, DeviceBackend* backend, const std::vector<float>& values);
 
     ~Tensor();
 

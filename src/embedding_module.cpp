@@ -33,7 +33,7 @@ void EmbeddingModule::set_weight(const std::vector<float>& values) {
 
 Tensor EmbeddingModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 2) {
         throw std::invalid_argument("EmbeddingModule::forward: input must be rank-2 (N, L)");
@@ -55,6 +55,10 @@ Tensor EmbeddingModule::forward_impl(const Tensor& input) {
     }
 
     Tensor output(Shape({N, L, embedding_dim_}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
     for (int64_t i = 0; i < count; ++i) {
         const float* row = weight_.data() + last_indices_[static_cast<size_t>(i)] * embedding_dim_;
         float* out_row = output.data() + i * embedding_dim_;
@@ -80,10 +84,14 @@ Tensor EmbeddingModule::backward(const Tensor& grad_output) {
             "shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t count = N * L;
     Tensor local_weight_grad(weight_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(local_weight_grad);
     local_weight_grad.fill(0.0f);
 
     // Scatter-add: multiple (n,l) positions can reference the same row -- each
@@ -118,10 +126,14 @@ Tensor EmbeddingModule::propagate_relevance(const Tensor& relevance_out, const L
             "EmbeddingModule::propagate_relevance: relevance_out must be (N, L, embedding_dim) matching the "
             "cached forward shape");
     }
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t count = N * L;
     Tensor relevance_in(last_input_shape_, backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
 
     for (int64_t i = 0; i < count; ++i) {
         const float* row = relevance_out.data() + i * embedding_dim_;

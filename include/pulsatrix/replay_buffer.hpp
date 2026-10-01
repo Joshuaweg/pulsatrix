@@ -86,7 +86,7 @@ public:
      * @throws std::invalid_argument if any of the three tensors has the wrong shape --
      *         external boundary: a mismatched-shape Tensor can arrive from any caller, and
      *         silently writing it would corrupt neighbouring rows of the storage block.
-     * @note PULSATRIX_ASSERT(... .device() == DeviceType::Cpu) on all three tensor arguments --
+     * @note PULSATRIX_REQUIRE_HOST on all three tensor arguments --
      *       this is a raw host-loop row copy dereferencing Tensor::data() directly, not yet
      *       backend-generic, so a CUDA-backed Tensor would be silent UB. Same convention as
      *       every prior host-loop site (mission_host_loop_guards.md); do not remove without

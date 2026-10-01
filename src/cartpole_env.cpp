@@ -62,7 +62,7 @@ Tensor CartPoleEnv::reset(const Tensor& initial_state) {
     if (initial_state.rank() != 2 || initial_state.shape().dim(0) != 1 || initial_state.shape().dim(1) != 4) {
         throw std::invalid_argument("CartPoleEnv::reset: initial_state must have shape (1, 4)");
     }
-    PULSATRIX_ASSERT(initial_state.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(initial_state);
 
     x_ = static_cast<double>(initial_state.data()[0]);
     x_dot_ = static_cast<double>(initial_state.data()[1]);
@@ -76,7 +76,7 @@ Tensor CartPoleEnv::reset(const Tensor& initial_state) {
 StepResult CartPoleEnv::step(const Tensor& action) {
     // Raw host loop over Tensor::data() -- undefined behavior on a CUDA-backed Tensor.
     // See mission_host_loop_guards.md; same guard as every prior module.
-    PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(action);
 
     if (!has_reset_) {
         throw std::invalid_argument("CartPoleEnv::step called before reset");

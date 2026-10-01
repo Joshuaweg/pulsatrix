@@ -9,6 +9,7 @@ namespace {
 
 class MockDeviceBackend : public DeviceBackend {
 public:
+    MOCK_METHOD(DeviceType, device, (), (const, noexcept, override));
     MOCK_METHOD(void*, allocate, (size_t bytes), (override));
     MOCK_METHOD(void, free, (void* ptr), (noexcept, override));
     MOCK_METHOD(void, copy, (void* dst, const void* src, size_t bytes, CopyDirection dir), (override));

@@ -49,8 +49,12 @@ public:
      *         arguments can originate from Phase 5's Python bindings with no upstream
      *         validation), per cpp_tdd/context_tdd_adversarial_boundary_testing.md.
      */
-    BatchNormModule(int64_t num_channels, DeviceBackend* backend, DeviceType device = DeviceType::Cpu,
+    BatchNormModule(int64_t num_channels, DeviceBackend* backend, DeviceType device,
                      float eps = 1e-6f);
+
+    /** @brief On backend's own device (backend->device()), default eps. Previously the device
+     *        defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0). */
+    BatchNormModule(int64_t num_channels, DeviceBackend* backend);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input, and accumulates gamma's/

@@ -100,7 +100,7 @@ public:
      * @throws std::out_of_range if t is outside [1, T].
      * @note Not backend-generic -- a raw host loop dereferencing Tensor::data() directly
      *       (a scaled two-tensor combination has no DeviceBackend elementwise primitive).
-     *       PULSATRIX_ASSERT(device() == DeviceType::Cpu) on both inputs guards against silent UB
+     *       PULSATRIX_REQUIRE_HOST on both inputs guards against silent UB
      *       on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
      *       mission_host_loop_guards.md. Do not remove this guard without actually

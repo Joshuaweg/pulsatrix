@@ -9,6 +9,12 @@ StabilityResult ComputeAttributionStability(const std::vector<Attribution>& repe
         throw std::invalid_argument("ComputeAttributionStability: repeated_runs must be non-empty");
     }
 
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4).
+    for (const Attribution& run : repeated_runs) {
+        PULSATRIX_REQUIRE_HOST(run.values);
+    }
+
     int64_t n = repeated_runs.front().values.numel();
     for (const Attribution& run : repeated_runs) {
         if (run.values.numel() != n) {

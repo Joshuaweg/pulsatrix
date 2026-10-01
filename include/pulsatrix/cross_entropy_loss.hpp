@@ -39,7 +39,7 @@ public:
      *        [0, logits.numel()).
      * @return The scalar cross-entropy loss.
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop, same as MSELoss. PULSATRIX_ASSERT(device() == DeviceType::Cpu) guards against
+     *       loop, same as MSELoss. PULSATRIX_REQUIRE_HOST guards against
      *       silent UB on a CUDA-backed Tensor. target_class range is also an
      *       PULSATRIX_ASSERT -- an internal invariant for this loss's current (non-Python-
      *       bound) call sites, not yet a Python-reachable external boundary.

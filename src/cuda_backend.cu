@@ -2,75 +2,12 @@
 
 #include <stdexcept>
 
+#include "gpu_kernels.cuh"
+
 #include "pulsatrix/cublas_check.hpp"
 #include "pulsatrix/cuda_check.hpp"
 
 namespace pulsatrix {
-
-namespace {
-
-__global__ void fill_kernel(float* ptr, float value, size_t n) {
-    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (i < n) {
-        ptr[i] = value;
-    }
-}
-
-__global__ void relu_kernel(const float* in, float* out, size_t n) {
-    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (i < n) {
-        out[i] = in[i] > 0.0f ? in[i] : 0.0f;
-    }
-}
-
-__global__ void neg_kernel(const float* in, float* out, size_t n) {
-    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (i < n) {
-        out[i] = -in[i];
-    }
-}
-
-// Device-side logistic sigmoid -- one definition shared by sigmoid_kernel and silu_kernel,
-// mirroring CPUBackend::elementwise's host-side sigmoid() helper so both backends compute
-// Sigmoid and Silu from the identical expression.
-__device__ inline float sigmoid_device(float z) { return 1.0f / (1.0f + expf(-z)); }
-
-__global__ void tanh_kernel(const float* in, float* out, size_t n) {
-    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (i < n) {
-        out[i] = tanhf(in[i]);
-    }
-}
-
-__global__ void sigmoid_kernel(const float* in, float* out, size_t n) {
-    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (i < n) {
-        out[i] = sigmoid_device(in[i]);
-    }
-}
-
-__global__ void silu_kernel(const float* in, float* out, size_t n) {
-    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (i < n) {
-        out[i] = in[i] * sigmoid_device(in[i]);
-    }
-}
-
-__global__ void add_kernel(const float* a, const float* b, float* out, size_t n) {
-    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (i < n) {
-        out[i] = a[i] + b[i];
-    }
-}
-
-__global__ void mul_kernel(const float* a, const float* b, float* out, size_t n) {
-    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (i < n) {
-        out[i] = a[i] * b[i];
-    }
-}
-
-}  // namespace
 
 CUDABackend::CUDABackend() {
     PULSATRIX_CUDA_CHECK(cudaStreamCreate(&stream_));
@@ -123,9 +60,7 @@ void CUDABackend::fill(void* ptr, float value, size_t n) {
     if (n == 0) {
         return;
     }
-    constexpr int block_size = 256;
-    int grid_size = static_cast<int>((n + block_size - 1) / block_size);
-    fill_kernel<<<grid_size, block_size, 0, stream_>>>(static_cast<float*>(ptr), value, n);
+    gpu::launch_fill(static_cast<float*>(ptr), value, n, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
@@ -147,25 +82,7 @@ void CUDABackend::elementwise(ElementwiseOp op, const float* in, float* out, siz
     if (n == 0) {
         return;
     }
-    constexpr int block_size = 256;
-    int grid_size = static_cast<int>((n + block_size - 1) / block_size);
-    switch (op) {
-        case ElementwiseOp::Relu:
-            relu_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
-            break;
-        case ElementwiseOp::Neg:
-            neg_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
-            break;
-        case ElementwiseOp::Tanh:
-            tanh_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
-            break;
-        case ElementwiseOp::Sigmoid:
-            sigmoid_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
-            break;
-        case ElementwiseOp::Silu:
-            silu_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
-            break;
-    }
+    gpu::launch_elementwise(op, in, out, n, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
@@ -174,9 +91,7 @@ void CUDABackend::add(const float* a, const float* b, float* out, size_t n) {
     if (n == 0) {
         return;
     }
-    constexpr int block_size = 256;
-    int grid_size = static_cast<int>((n + block_size - 1) / block_size);
-    add_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
+    gpu::launch_add(a, b, out, n, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
@@ -185,9 +100,7 @@ void CUDABackend::mul(const float* a, const float* b, float* out, size_t n) {
     if (n == 0) {
         return;
     }
-    constexpr int block_size = 256;
-    int grid_size = static_cast<int>((n + block_size - 1) / block_size);
-    mul_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
+    gpu::launch_mul(a, b, out, n, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }

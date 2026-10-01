@@ -90,7 +90,7 @@ public:
      *       needed for gradients. Bias is excluded from z, same rationale as LinearModule.
      *       Must be called after forward().
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host
-     *       loops (via col2im()). PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu)
+     *       loops (via col2im()). PULSATRIX_REQUIRE_HOST(relevance_out)
      *       guards against silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
@@ -109,7 +109,7 @@ protected:
      * @brief The actual forward computation (im2col + gemm + per-channel bias add).
      * @note Not yet backend-generic -- unlike LinearModule/ReluModule's forward_impl, this
      *       one dereferences Tensor::data() directly (its bias-add loop, plus the im2col()
-     *       helper). PULSATRIX_ASSERT(input.device() == DeviceType::Cpu) guards against silent
+     *       helper). PULSATRIX_REQUIRE_HOST(input) guards against silent
      *       UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through

@@ -66,7 +66,7 @@ RoPEModule::RoPEModule(int64_t head_dim, DeviceBackend* backend, float base)
 Tensor RoPEModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in a raw host loop -- not backend-generic.
     // See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() < 2 || input.shape().dim(static_cast<size_t>(input.rank() - 1)) != head_dim_) {
         throw std::invalid_argument("RoPEModule::forward: input must be rank >= 2 with shape (..., L, head_dim)");
@@ -76,6 +76,10 @@ Tensor RoPEModule::forward_impl(const Tensor& input) {
     const int64_t half = head_dim_ / 2;
 
     Tensor output(input.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
     for (int64_t m = 0; m < layout.num_matrices; ++m) {
         for (int64_t pos = 0; pos < layout.seq_len; ++pos) {
             const int64_t base_off = (m * layout.seq_len + pos) * head_dim_;
@@ -106,12 +110,16 @@ Tensor RoPEModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("RoPEModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const SliceLayout layout = slice_layout_of(grad_output.shape(), head_dim_);
     const int64_t half = head_dim_ / 2;
 
     Tensor grad_input(grad_output.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     for (int64_t m = 0; m < layout.num_matrices; ++m) {
         for (int64_t pos = 0; pos < layout.seq_len; ++pos) {
             const int64_t base_off = (m * layout.seq_len + pos) * head_dim_;
@@ -141,12 +149,16 @@ Tensor RoPEModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
             "RoPEModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const SliceLayout layout = slice_layout_of(relevance_out.shape(), head_dim_);
     const int64_t half = head_dim_ / 2;
 
     Tensor relevance_in(relevance_out.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     // Zero-filled up front precisely because every element below is written with `+=`, not
     // `=` -- see the two-contribution note at the accumulation site.
     relevance_in.fill(0.0f);

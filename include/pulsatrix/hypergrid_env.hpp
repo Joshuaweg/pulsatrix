@@ -80,7 +80,7 @@ public:
      * @throws std::logic_error if the most recent step already reported `done=true` -- a
      *         GFlowNet trajectory has no meaning past its terminal state; unlike CartPoleEnv,
      *         this is enforced here rather than left to the caller.
-     * @note PULSATRIX_ASSERT(action.device() == DeviceType::Cpu) -- raw host loop over
+     * @note PULSATRIX_REQUIRE_HOST(action) -- raw host loop over
      *       Tensor::data(), same convention as every other Environment in this codebase.
      */
     [[nodiscard]] StepResult step(const Tensor& action) override;

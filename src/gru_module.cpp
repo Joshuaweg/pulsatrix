@@ -11,7 +11,12 @@ namespace {
 // same helper shape as LinearModule's/Conv2DModule's/RNNModule's/LSTMModule's own
 // transpose() (CPUBackend::gemm has no transpose flag).
 Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
+    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
+    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
+    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
+    PULSATRIX_REQUIRE_HOST(m);
     Tensor out(Shape({cols, rows}), backend);
+    PULSATRIX_REQUIRE_HOST(out);
     for (int64_t r = 0; r < rows; ++r) {
         for (int64_t c = 0; c < cols; ++c) {
             out.data()[c * rows + r] = m.data()[r * cols + c];
@@ -90,7 +95,7 @@ void GRUModule::set_bias_n(std::initializer_list<float> values) {
 
 Tensor GRUModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 3 || input.shape().dim(2) != input_size_) {
         throw std::invalid_argument("GRUModule::forward: input must be rank-3 (N, L, input_size)");
@@ -109,6 +114,10 @@ Tensor GRUModule::forward_impl(const Tensor& input) {
     last_pre_activation_n_ = Tensor(Shape({N, L, hidden_size_}), backend_);
 
     Tensor output(Shape({N, L, hidden_size_}), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(output);
 
     // z = x_t @ Wx + h_prev @ Wh, EXCLUDING bias -- one gate's pre-activation.
     auto gate_preactivation = [&](const Tensor& x_t, const Tensor& h_prev, const Tensor& wx, const Tensor& wh) {
@@ -229,9 +238,13 @@ Tensor GRUModule::backward(const Tensor& grad_output) {
             "GRUModule::backward: grad_output must be (N, L, hidden_size) matching the cached forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(grad_input);
     grad_input.fill(0.0f);
 
     auto zeroed_like = [&](const Tensor& t) {
@@ -397,9 +410,13 @@ Tensor GRUModule::propagate_relevance(const Tensor& relevance_out, const LRPRule
             "forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     Tensor relevance_in(last_input_.shape(), backend_);
+    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
+    // later backend_-allocated temporary here shares that device. The raw host loops below
+    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
+    PULSATRIX_REQUIRE_HOST(relevance_in);
     relevance_in.fill(0.0f);
 
     // One carried accumulator, mirroring backward()'s dh_next: the relevance a later

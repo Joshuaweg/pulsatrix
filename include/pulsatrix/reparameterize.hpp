@@ -64,7 +64,7 @@ public:
      *         same classification as MSELoss::forward's prediction/target shape check.
      * @note Not yet backend-generic -- exp() has no DeviceBackend::elementwise op, so this
      *       is a raw host loop dereferencing Tensor::data() directly.
-     *       PULSATRIX_ASSERT(device() == DeviceType::Cpu) on all three inputs guards against
+     *       PULSATRIX_REQUIRE_HOST on all three inputs guards against
      *       silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through
@@ -80,11 +80,11 @@ public:
      * @throws std::logic_error if forward() has never been called -- uses the cached
      *         log_sigma/epsilon.
      * @throws std::invalid_argument if grad_z's shape doesn't match the cached forward shape.
-     * @note Also dereferences Tensor::data() directly, but deliberately not independently
-     *       device-guarded: it only reads state forward() already validated before caching,
-     *       and forward()'s own guard is the only way a non-Cpu tensor could ever reach that
-     *       cache -- a second guard here would be untestable dead code, not a real safety
-     *       net. Identical reasoning to MSELoss::backward(); see mission_host_loop_guards.md.
+     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
+     *       guards on the incoming gradient(s), the cached state and the freshly allocated
+     *       gradients. forward()'s guard covers only forward()'s own arguments; the gradients
+     *       are allocated through backend_, which a GPU backend tags Cuda/Hip
+     *       (GPU-native-kernels campaign, Mission 0 O4).
      */
     [[nodiscard]] ReparamGrad backward(const Tensor& grad_z) const;
 

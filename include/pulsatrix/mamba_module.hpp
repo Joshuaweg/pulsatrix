@@ -40,7 +40,7 @@ namespace pulsatrix {
  *       recurrent module, and the thing that makes this module's conservation exact rather
  *       than merely approximate (see the LRP note below).
  * @note softplus (and its derivative sigmoid) and exp are computed in raw host loops here,
- *       PULSATRIX_ASSERT(... .device() == DeviceType::Cpu)-guarded on every entry point.
+ *       PULSATRIX_REQUIRE_HOST-guarded on every entry point.
  *       DeviceBackend::elementwise has no Softplus/Exp op; this is the *first* consumer
  *       needing softplus, so it gets the first-occurrence workaround RNNModule's Mission 0
  *       used for tanh, not a speculative new backend primitive. Adding one is the
@@ -103,7 +103,7 @@ public:
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached forward
      *         output shape.
      * @note Not yet backend-generic -- raw host loops for the recurrence and the exp/sigmoid
-     *       math. PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu) guards against
+     *       math. PULSATRIX_REQUIRE_HOST(grad_output) guards against
      *       silent UB on a CUDA-backed Tensor.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
@@ -181,7 +181,7 @@ protected:
      * @throws std::invalid_argument if input isn't rank-3 (N, L, d_model), or its last
      *         dimension doesn't match d_model.
      * @note Not yet backend-generic -- raw host loops (softplus/exp have no backend
-     *       primitive). PULSATRIX_ASSERT(input.device() == DeviceType::Cpu) guards against
+     *       primitive). PULSATRIX_REQUIRE_HOST(input) guards against
      *       silent UB on a CUDA-backed Tensor.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

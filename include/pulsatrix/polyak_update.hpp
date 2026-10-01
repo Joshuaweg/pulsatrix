@@ -47,10 +47,9 @@ namespace pulsatrix {
  *       an average at all.
  * @note Gradients are untouched. This is a pure value blend and has nothing to do with
  *       zero_grad(); a target network is never backpropagated through.
- * @note No device guard of its own: it takes no caller-supplied Tensor, only Modules, whose
- *       parameters() buffers were validated when those Modules were constructed. A guard here
- *       would be untestable dead code -- the same reasoning SyncTargetNetwork and
- *       MSELoss::backward() document (mission_host_loop_guards.md).
+ * @note Dereferences every parameter's Tensor::data() in a raw host loop, so it guards each
+ *       source/destination parameter with PULSATRIX_REQUIRE_HOST: a Module built on a GPU
+ *       backend holds Cuda/Hip-tagged parameters (GPU-native-kernels campaign, Mission 0 O4).
  * @note A free function, not a class: there is no state to carry between calls (the state *is*
  *       the destination network's own parameters), matching SyncTargetNetwork's shape.
  */
