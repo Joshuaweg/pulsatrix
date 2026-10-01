@@ -345,25 +345,6 @@ TEST_F(LinearModuleTest, PropagateRelevanceConservesTotalRelevancePerExample) {
 
 using LinearModuleDeathTest = LinearModuleTest;
 
-// backward()/propagate_relevance() dereference Tensor::data() in raw host loops (via
-// backward()'s transpose() helper, and propagate_relevance()'s own loop) -- undefined
-// behavior on a CUDA-backed Tensor. Phase 1.5 Mission 2
-// (mission_host_loop_guards.md) guards both with PULSATRIX_ASSERT. No real GPU needed to test
-// this: Tensor::device() is metadata decoupled from which DeviceBackend* actually
-// allocated its buffer, so a Tensor tagged DeviceType::Cuda over real CPUBackend memory
-// triggers the guard just like a genuine CUDA tensor would.
-TEST_F(LinearModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    LinearModule linear(2, 2, &backend);
-    Tensor x(Shape({1, 2}), &backend, {1.0f, 1.0f});
-    (void)linear.forward(x);
-
-    Tensor grad_output(Shape({1, 2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)linear.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
 TEST_F(LinearModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
     GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";

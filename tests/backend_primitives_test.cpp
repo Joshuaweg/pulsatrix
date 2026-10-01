@@ -74,6 +74,14 @@ TEST_F(BackendPrimitivesTest, ElementwiseBackwardReluIsZeroAtZero) {
     EXPECT_EQ(out, (std::vector<float>{0.0f, 0.0f, 5.0f}));  // ReluModule's x > 0 convention
 }
 
+TEST_F(BackendPrimitivesTest, ElementwiseBackwardReluMasksNonFiniteGradients) {
+    std::vector<float> x = {-1.0f, 0.0f};
+    std::vector<float> g = {std::nanf(""), INFINITY};
+    std::vector<float> out(2, 1.0f);
+    cpu.elementwise_backward(ElementwiseOp::Relu, x.data(), g.data(), out.data(), 2);
+    EXPECT_EQ(out, (std::vector<float>{0.0f, 0.0f}));
+}
+
 TEST_F(BackendPrimitivesTest, ElementwiseBackwardSmoothActivationsMatchClosedForms) {
     const float x = 0.5f;
     const float g = 2.0f;

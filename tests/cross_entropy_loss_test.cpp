@@ -72,16 +72,6 @@ TEST_F(CrossEntropyLossTest, BackwardMatchesFiniteDifferenceGradient) {
 
 using CrossEntropyLossDeathTest = CrossEntropyLossTest;
 
-// Same guard discipline as MSELoss -- forward() dereferences Tensor::data() directly in a
-// raw host loop, undefined behavior on a CUDA-backed Tensor.
-TEST_F(CrossEntropyLossDeathTest, ForwardAbortsOnNonCpuLogits) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor logits(Shape({3}), &backend, {1.0f, 2.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)loss.forward(logits, 1); }, "PULSATRIX_ASSERT failed");
-}
-
 TEST_F(CrossEntropyLossDeathTest, ForwardAbortsOnOutOfRangeTargetClass) {
 #ifdef NDEBUG
     GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";

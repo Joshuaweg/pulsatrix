@@ -148,8 +148,10 @@ void CPUBackend::elementwise_backward(ElementwiseOp op, const float* x, const fl
         float d = 0.0f;
         switch (op) {
             case ElementwiseOp::Relu:
-                d = xi > 0.0f ? 1.0f : 0.0f;
-                break;
+                // A select, not g * {0,1}: a NaN/inf gradient where x <= 0 must still yield
+                // 0, exactly as ReluModule's original masked loop did.
+                grad_in[i] = xi > 0.0f ? g : 0.0f;
+                continue;
             case ElementwiseOp::Neg:
                 d = -1.0f;
                 break;

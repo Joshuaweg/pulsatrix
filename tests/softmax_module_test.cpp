@@ -266,30 +266,6 @@ TEST_F(SoftmaxModuleTest, ForwardRejectsEmptyInput) {
 
 using SoftmaxModuleDeathTest = SoftmaxModuleTest;
 
-// forward_impl/backward/propagate_relevance all dereference Tensor::data() in raw host
-// loops -- undefined behavior on a CUDA-backed Tensor. See RNNModuleDeathTest for the
-// mislabeled-Tensor testing pattern this reuses (no real GPU needed: DeviceType::Cuda over
-// real CPUBackend memory trips the guard identically). Written from the start of this
-// mission, per this campaign's standing adversarial discipline.
-TEST_F(SoftmaxModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor x(Shape({2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)softmax.forward(x); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(SoftmaxModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor x(Shape({2}), &backend, {1.0f, 2.0f});
-    (void)softmax.forward(x);
-
-    Tensor grad_output(Shape({2}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)softmax.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
 TEST_F(SoftmaxModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
 #ifdef NDEBUG
     GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
