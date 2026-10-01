@@ -74,15 +74,19 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
                     static_cast<size_t>(in_features_), static_cast<size_t>(out_features_));
     last_pre_bias_output_ = pre_bias;  // cached for propagate_relevance's z_j
 
-    // bias_ is (out_features,), broadcast-added per row -- Tensor::accumulate() requires
-    // exact shape equality, so this is a raw loop, not accumulate(bias_) (which only worked
-    // for the pre-migration N=1-shaped-as-rank-1 case).
+    // bias_ is (out_features,), broadcast-added per row. Tensor::accumulate() requires exact
+    // shape equality, so the broadcast is materialized as ones(N,1) x bias(1,out_features)
+    // through gemm, then added -- every step routes through backend_, so this stays valid on
+    // a device-resident Tensor. (The batch migration originally used a raw host loop here,
+    // which silently dereferenced device pointers on a Cuda/Hip module.) k == 1, so each
+    // broadcast element is exactly 1.0f * bias[j]: bit-identical to the direct add.
+    Tensor ones(Shape({N, 1}), backend_, weight_.device());
+    ones.fill(1.0f);
+    Tensor bias_rows(Shape({N, out_features_}), backend_, weight_.device());
+    backend_->gemm(ones.data(), bias_.data(), bias_rows.data(), static_cast<size_t>(N), 1,
+                   static_cast<size_t>(out_features_));
     Tensor output(pre_bias);
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t j = 0; j < out_features_; ++j) {
-            output.data()[n * out_features_ + j] += bias_.data()[j];
-        }
-    }
+    output.accumulate(bias_rows);
     has_forwarded_ = true;
     return output;
 }
