@@ -16,11 +16,21 @@ var classpulsatrix_1_1CPUBackend =
     [ "elementwise_backward", "classpulsatrix_1_1CPUBackend.html#a86bf28b857b3dd0cc31f7cf544d42353", null ],
     [ "fill", "classpulsatrix_1_1CPUBackend.html#a97e95494b2b5da4e167a638ff76bbe70", null ],
     [ "free", "classpulsatrix_1_1CPUBackend.html#a703dc9d5dd20c0c833bf52baf58cde3b", null ],
+    [ "gather_rows", "classpulsatrix_1_1CPUBackend.html#a61311bb045cee3d1b3a724d00dc52f6a", null ],
     [ "gemm", "classpulsatrix_1_1CPUBackend.html#a2a4e21e556505a6477d9b859165309be", null ],
     [ "gemm_ex", "classpulsatrix_1_1CPUBackend.html#a7b5190a8fc4dd778bc3fc36bf8a51b74", null ],
+    [ "layer_norm_backward", "classpulsatrix_1_1CPUBackend.html#a8d05904eec564ec03b6fe60e0c06cee0", null ],
+    [ "layer_norm_forward", "classpulsatrix_1_1CPUBackend.html#a73b9bb4c32ee430700a64b9d04de56da", null ],
     [ "logsumexp_rows", "classpulsatrix_1_1CPUBackend.html#aeddfd9f9ecf306936509ade83f662fb4", null ],
     [ "mul", "classpulsatrix_1_1CPUBackend.html#a19efc91d50ebf477bbc01af80cbada3d", null ],
+    [ "permute_0213", "classpulsatrix_1_1CPUBackend.html#a1c34c38027eb73943a6139e0e53a081c", null ],
+    [ "rms_norm_backward", "classpulsatrix_1_1CPUBackend.html#a69a4b3f71cf828e214f485cd80b16e82", null ],
+    [ "rms_norm_forward", "classpulsatrix_1_1CPUBackend.html#a92611b2d68ae4d30b2228729d72fcf53", null ],
+    [ "rope_rotate", "classpulsatrix_1_1CPUBackend.html#a762c65c26fc683d13817339a16b734ab", null ],
+    [ "scatter_add_rows", "classpulsatrix_1_1CPUBackend.html#ac526e9b80c51cddc8c997ea210792b25", null ],
     [ "softmax_rows", "classpulsatrix_1_1CPUBackend.html#a7e7c4204306f82d995adc9a0d49a4ee7", null ],
     [ "softmax_rows_backward", "classpulsatrix_1_1CPUBackend.html#a62db75ddf9548dbbb6d55315310fa6c0", null ],
-    [ "sum", "classpulsatrix_1_1CPUBackend.html#a0f0ace126c2819bc1e8cd19cedb5225e", null ]
+    [ "sum", "classpulsatrix_1_1CPUBackend.html#a0f0ace126c2819bc1e8cd19cedb5225e", null ],
+    [ "tanh_gaussian_backward", "classpulsatrix_1_1CPUBackend.html#a1b24e2297de68d62cc299ec47db753ac", null ],
+    [ "tanh_gaussian_forward", "classpulsatrix_1_1CPUBackend.html#a4c2b28cadf9a10458aabaa4a2d7462f6", null ]
 ];

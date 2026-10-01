@@ -17,11 +17,21 @@ var classpulsatrix_1_1DeviceBackend =
     [ "elementwise_backward", "classpulsatrix_1_1DeviceBackend.html#a4bdeaf59aa5066eae3ee3802e2cf12b9", null ],
     [ "fill", "classpulsatrix_1_1DeviceBackend.html#a4747d452a4b961bf806181187adac268", null ],
     [ "free", "classpulsatrix_1_1DeviceBackend.html#a8ea09040ed6b2be802daa25af3a9c33c", null ],
+    [ "gather_rows", "classpulsatrix_1_1DeviceBackend.html#a96b91d19e3f763089db8add216159296", null ],
     [ "gemm", "classpulsatrix_1_1DeviceBackend.html#a171a50250bf4560d92c7e71da4cc1afa", null ],
     [ "gemm_ex", "classpulsatrix_1_1DeviceBackend.html#ae11eb20165162a07132507fdf873e29e", null ],
+    [ "layer_norm_backward", "classpulsatrix_1_1DeviceBackend.html#a12257f548f7c4bad4bb1f23eb59cab85", null ],
+    [ "layer_norm_forward", "classpulsatrix_1_1DeviceBackend.html#a38b296811eeb119921ee5dc1de13ee5f", null ],
     [ "logsumexp_rows", "classpulsatrix_1_1DeviceBackend.html#abe98a249971685a99f062357dea562ac", null ],
     [ "mul", "classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d", null ],
+    [ "permute_0213", "classpulsatrix_1_1DeviceBackend.html#a441f01bb9aa5581f616d15a8d898d6bd", null ],
+    [ "rms_norm_backward", "classpulsatrix_1_1DeviceBackend.html#a2690e8ead52d949537d29e45690bf207", null ],
+    [ "rms_norm_forward", "classpulsatrix_1_1DeviceBackend.html#a8c27211ec8f3074b8fa17da3b05d2704", null ],
+    [ "rope_rotate", "classpulsatrix_1_1DeviceBackend.html#a639a0825620484b5f514f4b9ed8ce6c2", null ],
+    [ "scatter_add_rows", "classpulsatrix_1_1DeviceBackend.html#a0648bb7791647dac6ae2f95bcd6a45e8", null ],
     [ "softmax_rows", "classpulsatrix_1_1DeviceBackend.html#a4a41fb8f954595ee69e766dd03d731d5", null ],
     [ "softmax_rows_backward", "classpulsatrix_1_1DeviceBackend.html#a95d257c0de48811b0201092b62b50417", null ],
-    [ "sum", "classpulsatrix_1_1DeviceBackend.html#a6ea46da74ce088bde77a22e71da700cb", null ]
+    [ "sum", "classpulsatrix_1_1DeviceBackend.html#a6ea46da74ce088bde77a22e71da700cb", null ],
+    [ "tanh_gaussian_backward", "classpulsatrix_1_1DeviceBackend.html#ac34c79379b3561f790ffe1a4881a45f7", null ],
+    [ "tanh_gaussian_forward", "classpulsatrix_1_1DeviceBackend.html#a8aa3070ea46a64395fb350095cfe7e83", null ]
 ];
