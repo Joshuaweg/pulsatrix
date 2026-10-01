@@ -12,6 +12,7 @@ var classpulsatrix_1_1Tensor =
     [ "accumulate", "classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e", null ],
     [ "at", "classpulsatrix_1_1Tensor.html#ab9cb31cbcc6b063d31bab7e4d3766c01", null ],
     [ "at", "classpulsatrix_1_1Tensor.html#a23011d8605237d7303d905f7fea47912", null ],
+    [ "backend", "classpulsatrix_1_1Tensor.html#a68fcbaae50f4b8cbdb63b475fd27b891", null ],
     [ "data", "classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3", null ],
     [ "data", "classpulsatrix_1_1Tensor.html#aed15289e47e884d38feb5d8eb2fab00e", null ],
     [ "device", "classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d", null ],
@@ -22,8 +23,10 @@ var classpulsatrix_1_1Tensor =
     [ "operator[]", "classpulsatrix_1_1Tensor.html#ac5cbd9f64567ac2f3d3c96a4e6fbedf9", null ],
     [ "operator[]", "classpulsatrix_1_1Tensor.html#a95e994469634d67fd0ebf00beb337b26", null ],
     [ "rank", "classpulsatrix_1_1Tensor.html#a66cf64adde5d5ab375ffe88edddfb7de", null ],
+    [ "read_element", "classpulsatrix_1_1Tensor.html#a9a2059bfdff6da4fd98a44bd2aaba9f5", null ],
     [ "reshape", "classpulsatrix_1_1Tensor.html#a000ba22a3b252dc2cf7219a78d7c1ce0", null ],
     [ "shape", "classpulsatrix_1_1Tensor.html#a966fcddb4620f766ff0248daeeaee223", null ],
     [ "to", "classpulsatrix_1_1Tensor.html#ac6f088bd4ae54d5640d889a93fe362df", null ],
-    [ "to", "classpulsatrix_1_1Tensor.html#a1543d456329dbde308e401ac744f31d9", null ]
+    [ "to", "classpulsatrix_1_1Tensor.html#a1543d456329dbde308e401ac744f31d9", null ],
+    [ "write_element", "classpulsatrix_1_1Tensor.html#acbbf07280c7edc4d610b94c94dba3e9b", null ]
 ];

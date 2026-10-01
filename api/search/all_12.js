@@ -53,10 +53,10 @@ var searchData=
   ['transformdataset_50',['transformdataset',['../classpulsatrix_1_1TransformDataset.html#afad166336081a9f387c40ef9f68d1d04',1,'pulsatrix::TransformDataset::TransformDataset()'],['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix::TransformDataset']]],
   ['transformer_5fblock_2ehpp_51',['transformer_block.hpp',['../transformer__block_8hpp.html',1,'']]],
   ['transformerblock_52',['transformerblock',['../classpulsatrix_1_1TransformerBlock.html#acde60b9083910b814406bc6a10d7deee',1,'pulsatrix::TransformerBlock::TransformerBlock()'],['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix::TransformerBlock']]],
-  ['trial_53',['trial',['../classpulsatrix_1_1Trial.html#a480523c7f5fc9fa737d6bc91010c2a25',1,'pulsatrix::Trial::Trial()'],['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a',1,'pulsatrix::detail::ASHACandidate::trial'],['../classpulsatrix_1_1Trial.html',1,'pulsatrix::Trial']]],
+  ['trial_53',['trial',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a',1,'pulsatrix::detail::ASHACandidate::trial'],['../classpulsatrix_1_1Trial.html#a480523c7f5fc9fa737d6bc91010c2a25',1,'pulsatrix::Trial::Trial()'],['../classpulsatrix_1_1Trial.html',1,'pulsatrix::Trial']]],
   ['trial_2ehpp_54',['trial.hpp',['../trial_8hpp.html',1,'']]],
   ['trialfactory_55',['TrialFactory',['../namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f',1,'pulsatrix']]],
   ['twopointcrossover_56',['TwoPointCrossover',['../namespacepulsatrix.html#a00dc6490fb03959b449db691a86eeead',1,'pulsatrix']]],
   ['twopointcrossoveratpoints_57',['TwoPointCrossoverAtPoints',['../namespacepulsatrix.html#afcbb0593c7f9f2201095dbf4675a7cff',1,'pulsatrix']]],
-  ['type_58',['type',['../structpulsatrix_1_1NodeGene.html#a112e84f4b4f12e605da66760b07b2f5a',1,'pulsatrix::NodeGene::type'],['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4',1,'pulsatrix::NodeGene::Type']]]
+  ['type_58',['type',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4',1,'pulsatrix::NodeGene::Type'],['../structpulsatrix_1_1NodeGene.html#a112e84f4b4f12e605da66760b07b2f5a',1,'pulsatrix::NodeGene::type']]]
 ];
