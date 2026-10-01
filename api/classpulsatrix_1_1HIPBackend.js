@@ -19,12 +19,22 @@ var classpulsatrix_1_1HIPBackend =
     [ "elementwise_backward", "classpulsatrix_1_1HIPBackend.html#a0ebfccbcee8e2c80b8ec91ff2a8c2f7e", null ],
     [ "fill", "classpulsatrix_1_1HIPBackend.html#a3cb4bc1c028c8676510ce3e1a5c3b326", null ],
     [ "free", "classpulsatrix_1_1HIPBackend.html#a4312ed55031f1dcfabb3f26d709b6229", null ],
+    [ "gather_rows", "classpulsatrix_1_1HIPBackend.html#a32e6e2100c0b290276fefe4ad011c243", null ],
     [ "gemm", "classpulsatrix_1_1HIPBackend.html#a54ad0486db8c9625a75593004b8444fd", null ],
     [ "gemm_ex", "classpulsatrix_1_1HIPBackend.html#aed0ce2cb82f10c632ee39b0541d371e4", null ],
+    [ "layer_norm_backward", "classpulsatrix_1_1HIPBackend.html#a962d11d69b008038bd01d9e3b502b232", null ],
+    [ "layer_norm_forward", "classpulsatrix_1_1HIPBackend.html#ab5094697a2864528146581fdd615ca72", null ],
     [ "logsumexp_rows", "classpulsatrix_1_1HIPBackend.html#afbb9edd0fc11ecd588b99829b1200014", null ],
     [ "mul", "classpulsatrix_1_1HIPBackend.html#a8d1e6e52eb84ed7e21535e9bed152478", null ],
     [ "operator=", "classpulsatrix_1_1HIPBackend.html#a986e88f107512b4f5272d7e8843bef3c", null ],
+    [ "permute_0213", "classpulsatrix_1_1HIPBackend.html#a601b2d10748f931a38f03260a52495ad", null ],
+    [ "rms_norm_backward", "classpulsatrix_1_1HIPBackend.html#add0f9702c6be74b40467f7fc23570364", null ],
+    [ "rms_norm_forward", "classpulsatrix_1_1HIPBackend.html#abbd17f551b50802df4eab83d188d1dc8", null ],
+    [ "rope_rotate", "classpulsatrix_1_1HIPBackend.html#a09a3bb7946a4dc029a4dac7b5d2e6522", null ],
+    [ "scatter_add_rows", "classpulsatrix_1_1HIPBackend.html#af1ec288478addfca2165e22738338df0", null ],
     [ "softmax_rows", "classpulsatrix_1_1HIPBackend.html#a367db925b9109e0c4e153d0c34985b75", null ],
     [ "softmax_rows_backward", "classpulsatrix_1_1HIPBackend.html#a1d98152f685f2efc6e27a7f4e77ea121", null ],
-    [ "sum", "classpulsatrix_1_1HIPBackend.html#a0e7278da12745d1df0b0bcdd855b5501", null ]
+    [ "sum", "classpulsatrix_1_1HIPBackend.html#a0e7278da12745d1df0b0bcdd855b5501", null ],
+    [ "tanh_gaussian_backward", "classpulsatrix_1_1HIPBackend.html#ab34d355116b31d8a411fccf90691c810", null ],
+    [ "tanh_gaussian_forward", "classpulsatrix_1_1HIPBackend.html#a397a156e54f08ee5ecc4bda7c8358db4", null ]
 ];

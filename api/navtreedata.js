@@ -63,18 +63,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CUDABackend.html#a7750f6b02eb0065b318ca3a2e1113c7a",
-"classpulsatrix_1_1Dataset.html#aede324cc847f11c60a7dbcf0c8675c67",
-"classpulsatrix_1_1GRUModule.html#ade60c3c98243b649a0f4213dfa8eceb4",
-"classpulsatrix_1_1LSTMModule.html#a5f0a8ff5e3f6bfa8ea70dc81175f371c",
-"classpulsatrix_1_1MnistDatasetAdapter.html",
-"classpulsatrix_1_1RWKVModule.html#a06a4a23a5b38fd76d79c07372bafbe8c",
-"classpulsatrix_1_1Sampler.html#ab92d10d3dd776c33c96204cdd9381405",
-"classpulsatrix_1_1ToyKnowledgeBase.html#a05ce49df36fd9d9cbcf4f46caa11e667",
-"csv__reader_8hpp.html",
-"namespacepulsatrix.html#a920a0c45d7bd1e565a028ddb409d9ec9",
-"structpulsatrix_1_1DatasetStatistics.html#a96536fd46a8d432b2ba876a717cb6660",
-"structpulsatrix_1_1StepResult.html#ae5bd2a2383e982da508334bc3bcf34b8"
+"classpulsatrix_1_1CUDABackend.html#a1607101006760f0b78356b875c873095",
+"classpulsatrix_1_1DQNAgent.html#aea5e7a3952d3cc3f8c87ef234cfb362f",
+"classpulsatrix_1_1GFlowNetForwardPolicy.html#aa4cc65adb95d9a0f5344fb47a27695ae",
+"classpulsatrix_1_1ImageDecoder.html",
+"classpulsatrix_1_1MambaModule.html#a5c3c31774589dbd2627a57b1b0e351e1",
+"classpulsatrix_1_1PBTResumableTrial.html#ade7eb5f05836be3332c0ea8a306dacb9",
+"classpulsatrix_1_1RetNetModule.html#a33975833d03e1da70e3c4e034798a813",
+"classpulsatrix_1_1Tensor.html#a1543d456329dbde308e401ac744f31d9",
+"classpulsatrix_1_1datalog_1_1FactDatabase.html#a30ccd57920b22d13d68bcea6d63f4a93",
+"namespacepulsatrix.html#a044803ae38e9d03363ed45b9d44db28a",
+"structpulsatrix_1_1Batch.html#a80aba211e9a9ac9ae2044c1415c659c2",
+"structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -19,12 +19,22 @@ var classpulsatrix_1_1CUDABackend =
     [ "elementwise_backward", "classpulsatrix_1_1CUDABackend.html#a7166d2b0e2684edabb1b143b5eb837f4", null ],
     [ "fill", "classpulsatrix_1_1CUDABackend.html#a1bab00e976895d4fa042ed6ceb0c23c2", null ],
     [ "free", "classpulsatrix_1_1CUDABackend.html#ad12ac6eed1abc747a603bd3d7ea83a98", null ],
+    [ "gather_rows", "classpulsatrix_1_1CUDABackend.html#a3f1ebbba84e75f55ba8450ca38f456a2", null ],
     [ "gemm", "classpulsatrix_1_1CUDABackend.html#af3b83c006aafa62eea5046cab2747e32", null ],
     [ "gemm_ex", "classpulsatrix_1_1CUDABackend.html#a8e15a31ce782d6c2a913c2542152db3a", null ],
+    [ "layer_norm_backward", "classpulsatrix_1_1CUDABackend.html#ae1350285d7edf35a3fcd60da2da7e138", null ],
+    [ "layer_norm_forward", "classpulsatrix_1_1CUDABackend.html#a1a9970194ff51a86032acc6cc358a810", null ],
     [ "logsumexp_rows", "classpulsatrix_1_1CUDABackend.html#a9a06932b2f772c5e2353507345246e8e", null ],
     [ "mul", "classpulsatrix_1_1CUDABackend.html#aa91c1767a9c559e2fe39c2cd6971c7fa", null ],
     [ "operator=", "classpulsatrix_1_1CUDABackend.html#a2c630c7ce8e88657fda085bc4e8d31b4", null ],
+    [ "permute_0213", "classpulsatrix_1_1CUDABackend.html#af58a07153b514b48724c91fe03d8a0ee", null ],
+    [ "rms_norm_backward", "classpulsatrix_1_1CUDABackend.html#abbebb1abcdc2bcf0852488211c346deb", null ],
+    [ "rms_norm_forward", "classpulsatrix_1_1CUDABackend.html#ac61a67f643ba6232a29115ec6bf3e41c", null ],
+    [ "rope_rotate", "classpulsatrix_1_1CUDABackend.html#ad008c5ec809c6bbe93aa6367f7b05fe8", null ],
+    [ "scatter_add_rows", "classpulsatrix_1_1CUDABackend.html#a999cdf9108a70e5fb8f2695f7d5d01cd", null ],
     [ "softmax_rows", "classpulsatrix_1_1CUDABackend.html#aac38739d4442961adae210913e37a29d", null ],
     [ "softmax_rows_backward", "classpulsatrix_1_1CUDABackend.html#a4a9d9c27b30d1b2b79d0a0e7326e316a", null ],
-    [ "sum", "classpulsatrix_1_1CUDABackend.html#ace871d117e488a8d748e5e262f09eb3b", null ]
+    [ "sum", "classpulsatrix_1_1CUDABackend.html#ace871d117e488a8d748e5e262f09eb3b", null ],
+    [ "tanh_gaussian_backward", "classpulsatrix_1_1CUDABackend.html#aca1edf6f7bcb910acea442d266ea98ed", null ],
+    [ "tanh_gaussian_forward", "classpulsatrix_1_1CUDABackend.html#a171b7ee9b859b3d6a52c3b521bc4403c", null ]
 ];
