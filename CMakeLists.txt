@@ -228,10 +228,30 @@ if(PULSATRIX_ENABLE_PYTHON)
     )
     FetchContent_MakeAvailable(pybind11)
 
+    if(PULSATRIX_ENABLE_HIP AND NOT DEFINED CMAKE_INTERPROCEDURAL_OPTIMIZATION)
+        # pybind11 adds -flto unless this variable is defined. With HIP on, pulsatrix_core
+        # carries HIP sources, so the module is linked by ROCm's clang -- which cannot read
+        # the GCC LTO bytecode in the bindings object and silently emits a .so with no
+        # PyInit_pulsatrix_py ("dynamic module does not define module export function").
+        # Defining it (OFF, CMake's own default) stops pybind11 adding the flag.
+        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION OFF)
+    endif()
     pybind11_add_module(pulsatrix_py bindings/pulsatrix_py.cpp)
     # pulsatrix_py depends ON pulsatrix_core; pulsatrix_core has zero dependency edge back onto this
     # target or any pybind11 header -- non-negotiable #2.
     target_link_libraries(pulsatrix_py PRIVATE pulsatrix_core)
+    # pulsatrix_core is static and linked into a shared module. GNU ld tolerates the
+    # distro default PIE objects; ROCm's lld (the linker once HIP is on) rejects them with
+    # "relocation R_X86_64_PC32 cannot be used against symbol ...; recompile with -fPIC".
+    set_target_properties(pulsatrix_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    # Lets the bindings expose the GPU backends this build actually has (Tensor.to,
+    # compiled_devices) without any core header learning about the binding layer.
+    if(PULSATRIX_ENABLE_CUDA)
+        target_compile_definitions(pulsatrix_py PRIVATE PULSATRIX_PY_WITH_CUDA)
+    endif()
+    if(PULSATRIX_ENABLE_HIP)
+        target_compile_definitions(pulsatrix_py PRIVATE PULSATRIX_PY_WITH_HIP)
+    endif()
 endif()
 
 if(PULSATRIX_ENABLE_VIZ)
