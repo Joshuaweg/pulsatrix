@@ -19,7 +19,7 @@ MaxPool2DModule::MaxPool2DModule(int64_t kernel_h, int64_t kernel_w, DeviceBacke
 Tensor MaxPool2DModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     // External boundary -- input can originate from Phase 5's Python bindings with no
     // upstream validation.
@@ -91,7 +91,7 @@ Tensor MaxPool2DModule::backward(const Tensor& grad_output) {
             "forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t H = last_input_shape_.dim(2);
     const int64_t W = last_input_shape_.dim(3);
@@ -131,7 +131,7 @@ Tensor MaxPool2DModule::propagate_relevance(const Tensor& relevance_out, const L
             "MaxPool2DModule::propagate_relevance: relevance_out must be rank-4 (N, C, out_h, out_w) matching the "
             "cached forward shape");
     }
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t H = last_input_shape_.dim(2);
     const int64_t W = last_input_shape_.dim(3);

@@ -20,8 +20,8 @@ CalibrationLoss::CalibrationLoss(DeviceBackend* backend)
     : backend_(backend), last_probs_(Shape({0}), backend) {}
 
 float CalibrationLoss::forward(const Tensor& probs, const Tensor& target_class) {
-    PULSATRIX_ASSERT(probs.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(target_class.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(probs);
+    PULSATRIX_REQUIRE_HOST(target_class);
 
     if (probs.rank() != 2) {
         throw std::invalid_argument("CalibrationLoss::forward: probs must have shape (N, num_classes)");

@@ -72,9 +72,9 @@ Tensor ComputeDQNTarget(const Tensor& next_q_target, const Tensor& rewards, cons
                         DeviceBackend* backend) {
     // Raw host loop over Tensor::data() (a row-wise max has no DeviceBackend primitive) --
     // undefined behavior on a CUDA-backed Tensor. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(next_q_target.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(rewards.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(dones.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(next_q_target);
+    PULSATRIX_REQUIRE_HOST(rewards);
+    PULSATRIX_REQUIRE_HOST(dones);
 
     int64_t batch_size = 0;
     int64_t action_dim = 0;
@@ -97,10 +97,10 @@ Tensor ComputeDQNTarget(const Tensor& next_q_target, const Tensor& rewards, cons
 
 Tensor ComputeDoubleDQNTarget(const Tensor& next_q_online, const Tensor& next_q_target, const Tensor& rewards,
                               const Tensor& dones, float gamma, DeviceBackend* backend) {
-    PULSATRIX_ASSERT(next_q_online.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(next_q_target.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(rewards.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(dones.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(next_q_online);
+    PULSATRIX_REQUIRE_HOST(next_q_target);
+    PULSATRIX_REQUIRE_HOST(rewards);
+    PULSATRIX_REQUIRE_HOST(dones);
 
     int64_t batch_size = 0;
     int64_t action_dim = 0;

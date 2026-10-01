@@ -188,7 +188,7 @@ MultiHeadAttentionModule::MultiHeadAttentionModule(int64_t d_model, int64_t num_
 Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in raw host loops -- not backend-generic.
     // See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("MultiHeadAttentionModule::forward: input must be rank-3 (N, L, d_model)");
@@ -298,7 +298,7 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
             "forward shape");
     }
     // Raw host loops -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     // --- Step 9' : output projection ----------------------------------------------------
     Tensor grad_merged = out_proj_.backward(reshaped(grad_output, Shape({N * L, d_model_})));
@@ -393,7 +393,7 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
             "the cached forward shape");
     }
     // Raw host loops -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     // --- Step 9' : output projection (LinearModule's own epsilon rule) ------------------
     Tensor r_merged = out_proj_.propagate_relevance(reshaped(relevance_out, Shape({N * L, d_model_})), config);

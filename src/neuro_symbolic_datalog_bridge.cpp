@@ -15,7 +15,7 @@ namespace {
 // toy-KB-style class owns its own small, private squashing glue, per that file's own header
 // note on why sigmoid is not a library-wide Module).
 Tensor sigmoid(const Tensor& z, DeviceBackend* backend) {
-    PULSATRIX_ASSERT(z.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(z);
     Tensor y(z.shape(), backend, z.device());
     const int64_t n = z.numel();
     for (int64_t i = 0; i < n; ++i) {
@@ -25,7 +25,7 @@ Tensor sigmoid(const Tensor& z, DeviceBackend* backend) {
 }
 
 Tensor sigmoid_backward(float grad_y, const Tensor& y, DeviceBackend* backend) {
-    PULSATRIX_ASSERT(y.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(y);
     Tensor grad_z(y.shape(), backend, y.device());
     const int64_t n = y.numel();
     for (int64_t i = 0; i < n; ++i) {

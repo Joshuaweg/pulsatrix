@@ -33,7 +33,7 @@ void EmbeddingModule::set_weight(const std::vector<float>& values) {
 
 Tensor EmbeddingModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 2) {
         throw std::invalid_argument("EmbeddingModule::forward: input must be rank-2 (N, L)");
@@ -80,7 +80,7 @@ Tensor EmbeddingModule::backward(const Tensor& grad_output) {
             "shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t count = N * L;
     Tensor local_weight_grad(weight_.shape(), backend_);
@@ -118,7 +118,7 @@ Tensor EmbeddingModule::propagate_relevance(const Tensor& relevance_out, const L
             "EmbeddingModule::propagate_relevance: relevance_out must be (N, L, embedding_dim) matching the "
             "cached forward shape");
     }
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t count = N * L;
     Tensor relevance_in(last_input_shape_, backend_);

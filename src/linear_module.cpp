@@ -111,7 +111,7 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
     // Dereferences Tensor::data() directly (via transpose()) -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     // grad_W = X^T @ grad_Y = (in_features x N) @ (N x out_features) -- the batched
     // sum-of-outer-products reduces to a single gemm via X^T (Mission 0's design trace,
@@ -159,7 +159,7 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     // Applied independently per example -- each row's relevance redistribution uses only
     // that row's own cached z_j/x_i, no cross-example coupling.

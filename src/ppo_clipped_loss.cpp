@@ -35,10 +35,10 @@ float PPOClippedLoss::forward(const Tensor& new_logits, const Tensor& actions, c
     // Dereferences Tensor::data() directly in raw host loops -- not yet backend-generic (a
     // row-wise stabilized softmax and a per-row gather at a data-dependent column have no
     // DeviceBackend primitive). See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(new_logits.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(actions.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(old_log_probs.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(advantages.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(new_logits);
+    PULSATRIX_REQUIRE_HOST(actions);
+    PULSATRIX_REQUIRE_HOST(old_log_probs);
+    PULSATRIX_REQUIRE_HOST(advantages);
 
     if (new_logits.rank() != 2) {
         throw std::invalid_argument("PPOClippedLoss::forward: new_logits must have shape (N, action_dim)");

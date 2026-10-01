@@ -32,8 +32,8 @@ float BCEWithLogitsLoss::forward(const Tensor& logits, const Tensor& target) {
     // primitive) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(logits.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(target.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(logits);
+    PULSATRIX_REQUIRE_HOST(target);
 
     if (!(logits.shape() == target.shape())) {
         throw std::invalid_argument("BCEWithLogitsLoss::forward: logits and target must have the same shape");

@@ -66,8 +66,8 @@ float NoiseSchedule::alpha_bar(int64_t t) const {
 Tensor NoiseSchedule::add_noise(const Tensor& x0, const Tensor& epsilon, int64_t t) const {
     // Raw host loop dereferencing Tensor::data() directly -- see the header's note and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(x0.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(epsilon.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(x0);
+    PULSATRIX_REQUIRE_HOST(epsilon);
 
     if (!(x0.shape() == epsilon.shape())) {
         throw std::invalid_argument("NoiseSchedule::add_noise: x0 and epsilon must have the same shape");
@@ -93,9 +93,9 @@ Tensor NoiseSchedule::add_noise(const Tensor& x0, const Tensor& epsilon, int64_t
 
 Tensor NoiseSchedule::denoise_step(const Tensor& x_t, const Tensor& predicted_epsilon, const Tensor& z,
                                    int64_t t) const {
-    PULSATRIX_ASSERT(x_t.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(predicted_epsilon.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(z.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(x_t);
+    PULSATRIX_REQUIRE_HOST(predicted_epsilon);
+    PULSATRIX_REQUIRE_HOST(z);
 
     if (!(x_t.shape() == predicted_epsilon.shape()) || !(x_t.shape() == z.shape())) {
         throw std::invalid_argument(

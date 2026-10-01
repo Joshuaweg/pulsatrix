@@ -88,9 +88,9 @@ void ReplayBuffer::add(const Tensor& observation, const Tensor& action, float re
                        bool done) {
     // Raw host-loop row copies over Tensor::data() -- undefined behavior on a CUDA-backed
     // Tensor. See mission_host_loop_guards.md; same guard as every prior host-loop site.
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(next_observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
+    PULSATRIX_REQUIRE_HOST(action);
+    PULSATRIX_REQUIRE_HOST(next_observation);
 
     require_row_shape(observation, observation_dim_, "observation");
     require_row_shape(action, action_dim_, "action");

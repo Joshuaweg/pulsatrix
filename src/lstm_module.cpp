@@ -107,7 +107,7 @@ void LSTMModule::set_bias_o(std::initializer_list<float> values) {
 
 Tensor LSTMModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 3 || input.shape().dim(2) != input_size_) {
         throw std::invalid_argument("LSTMModule::forward: input must be rank-3 (N, L, input_size)");
@@ -245,7 +245,7 @@ Tensor LSTMModule::backward(const Tensor& grad_output) {
             "LSTMModule::backward: grad_output must be (N, L, hidden_size) matching the cached forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(last_input_.shape(), backend_);
     grad_input.fill(0.0f);
@@ -404,7 +404,7 @@ Tensor LSTMModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
             "forward shape");
     }
     // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     Tensor relevance_in(last_input_.shape(), backend_);
     relevance_in.fill(0.0f);

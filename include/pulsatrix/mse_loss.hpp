@@ -30,7 +30,7 @@ public:
      * @param target Ground truth. Must match prediction's shape.
      * @return The scalar MSE value.
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_ASSERT(device() == DeviceType::Cpu) on both prediction and target
+     *       loop. PULSATRIX_REQUIRE_HOST on both prediction and target
      *       guards against silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through

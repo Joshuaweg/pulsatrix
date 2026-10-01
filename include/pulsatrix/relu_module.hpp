@@ -34,7 +34,7 @@ public:
      *       own x > 0 threshold for max(x, 0)).
      * @note Must be called after forward() -- uses the input cached from that call.
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu) guards against
+     *       loop. PULSATRIX_REQUIRE_HOST(grad_output) guards against
      *       silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
      *       remove this guard without actually retrofitting the method to route through

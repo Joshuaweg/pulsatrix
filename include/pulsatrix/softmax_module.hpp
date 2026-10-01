@@ -35,7 +35,7 @@ public:
      *         softmax Jacobian-vector product with s the cached forward output.
      * @note Must be called after forward() -- uses the output cached from that call.
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu) guards against silent
+     *       loop. PULSATRIX_REQUIRE_HOST(grad_output) guards against silent
      *       UB on a CUDA-backed Tensor; see mission_host_loop_guards.md. Do not remove this
      *       guard without actually retrofitting the method to route through DeviceBackend.
      */
@@ -67,7 +67,7 @@ public:
      * @note Must be called after forward() -- uses both the input and the output cached from
      *       that call (the input is needed by the x[i] factor, which is why this module
      *       caches both).
-     * @note Raw host loop; PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu) guarded.
+     * @note Raw host loop; PULSATRIX_REQUIRE_HOST(relevance_out) guarded.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 

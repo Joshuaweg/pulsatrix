@@ -29,9 +29,9 @@ TanhGaussianSample TanhGaussianPolicy::forward(const Tensor& mean, const Tensor&
     // primitive) -- not yet backend-generic. See
     // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(mean.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(log_std.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(epsilon.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(mean);
+    PULSATRIX_REQUIRE_HOST(log_std);
+    PULSATRIX_REQUIRE_HOST(epsilon);
 
     if (mean.rank() != 2 || mean.shape().dim(0) < 1 || mean.shape().dim(1) < 1) {
         throw std::invalid_argument(

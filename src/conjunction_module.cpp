@@ -88,7 +88,7 @@ Tensor ConjunctionModule::forward(const Tensor& a, const Tensor& b) {
 
 Tensor ConjunctionModule::forward_impl(const Tensor& input) {
     // Raw host loop below -- not yet backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     auto [a, b] = split_operands(input, backend_, "ConjunctionModule::forward");
 
@@ -127,7 +127,7 @@ Tensor ConjunctionModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("ConjunctionModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     auto [a, b] = split_operands(last_input_, backend_, "ConjunctionModule::backward");
 
@@ -170,7 +170,7 @@ Tensor ConjunctionModule::propagate_relevance(const Tensor& relevance_out, const
             "ConjunctionModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     auto [a, b] = split_operands(last_input_, backend_, "ConjunctionModule::propagate_relevance");
 

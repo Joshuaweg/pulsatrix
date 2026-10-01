@@ -100,7 +100,7 @@ public:
      * @throws std::logic_error if size() already equals max_length(). See the class note:
      *         a full rollout is a protocol violation, not a malformed argument, and the two
      *         exception types are distinct so a caller can tell them apart.
-     * @note PULSATRIX_ASSERT(... .device() == DeviceType::Cpu) on both tensor arguments -- this is
+     * @note PULSATRIX_REQUIRE_HOST on both tensor arguments -- this is
      *       a raw host-loop row copy dereferencing Tensor::data() directly, not yet
      *       backend-generic, so a CUDA-backed Tensor would be silent UB. Same convention as
      *       every prior host-loop site (mission_host_loop_guards.md); do not remove without

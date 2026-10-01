@@ -35,7 +35,7 @@ namespace pulsatrix {
  * @note `dones` is used as a plain multiplier, not thresholded -- 0.0f/1.0f is the documented
  *       encoding, and silently reinterpreting anything else would hide a caller's bug.
  * @note Raw host loop over Tensor::data() (a row-wise max at a data-dependent column has no
- *       DeviceBackend primitive) -- PULSATRIX_ASSERT(device() == DeviceType::Cpu) guards against
+ *       DeviceBackend primitive) -- PULSATRIX_REQUIRE_HOST guards against
  *       silent UB on a CUDA-backed Tensor; see mission_host_loop_guards.md.
  */
 [[nodiscard]] Tensor ComputeDQNTarget(const Tensor& next_q_target, const Tensor& rewards, const Tensor& dones,

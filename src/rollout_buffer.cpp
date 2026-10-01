@@ -62,8 +62,8 @@ RolloutBuffer::RolloutBuffer(int64_t max_length, int64_t observation_dim, int64_
 void RolloutBuffer::add(const Tensor& observation, const Tensor& action, float reward, float log_prob, bool done) {
     // Raw host-loop row copies over Tensor::data() -- undefined behavior on a CUDA-backed
     // Tensor. See mission_host_loop_guards.md; same guard as every prior host-loop site.
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(action.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
+    PULSATRIX_REQUIRE_HOST(action);
 
     // Before the shape checks, because it is the stronger statement: when the rollout is
     // full, *no* add() can be correct, whatever the argument shapes are. Reporting a shape

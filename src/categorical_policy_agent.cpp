@@ -58,7 +58,7 @@ Tensor CategoricalPolicyAgent::act(const Tensor& observation) {
     // The softmax and the inverse-CDF scan below are raw host loops over Tensor::data(); the
     // network output inherits its device from this observation. Undefined behavior on a
     // CUDA-backed Tensor -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
 
     const Tensor logits = policy_logits(observation);
 
@@ -106,7 +106,7 @@ Tensor CategoricalPolicyAgent::act(const Tensor& observation) {
 }
 
 Tensor CategoricalPolicyAgent::act_greedy(const Tensor& observation) {
-    PULSATRIX_ASSERT(observation.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(observation);
 
     const Tensor logits = policy_logits(observation);
 

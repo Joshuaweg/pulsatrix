@@ -25,7 +25,7 @@ Tensor ReluModule::backward(const Tensor& grad_output) {
     // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     Tensor grad_input(grad_output.shape(), backend_);
     for (int64_t i = 0; i < grad_output.numel(); ++i) {

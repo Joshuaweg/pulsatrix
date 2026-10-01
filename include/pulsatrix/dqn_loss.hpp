@@ -58,7 +58,7 @@ public:
      *         float round-trip, tight enough to catch a genuinely fractional "action" (an
      *         un-argmaxed probability, say).
      * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_ASSERT(device() == DeviceType::Cpu) on the inputs guards against
+     *       loop. PULSATRIX_REQUIRE_HOST on the inputs guards against
      *       silent UB on a CUDA-backed Tensor; see
      *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove
      *       this guard without actually retrofitting the method to route through

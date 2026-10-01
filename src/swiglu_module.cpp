@@ -55,7 +55,7 @@ SwiGLUModule::SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend
 Tensor SwiGLUModule::forward_impl(const Tensor& input) {
     // Dereferences Tensor::data() directly in raw host loops (the gate multiply below) --
     // not backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() < 2 || input.shape().dim(static_cast<size_t>(input.rank() - 1)) != d_model_) {
         throw std::invalid_argument("SwiGLUModule::forward: input must be rank >= 2 with final dimension d_model");
@@ -95,7 +95,7 @@ Tensor SwiGLUModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("SwiGLUModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loops -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const Tensor grad_output_flat = reshaped(grad_output, Shape({last_n_flat_, d_model_}));
 
@@ -139,7 +139,7 @@ Tensor SwiGLUModule::propagate_relevance(const Tensor& relevance_out, const LRPR
             "SwiGLUModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see the header's note and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const Tensor relevance_out_flat = reshaped(relevance_out, Shape({last_n_flat_, d_model_}));
 

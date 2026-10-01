@@ -11,8 +11,8 @@ float MSELoss::forward(const Tensor& prediction, const Tensor& target) {
     // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic.
     // See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
     // mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(prediction.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(target.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(prediction);
+    PULSATRIX_REQUIRE_HOST(target);
 
     last_prediction_ = prediction;
     last_target_ = target;

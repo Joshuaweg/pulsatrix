@@ -33,9 +33,9 @@ GAEResult ComputeGAE(const Tensor& rewards, const Tensor& dones, const Tensor& v
                      float gamma, float lambda, DeviceBackend* backend) {
     // Raw host loop over Tensor::data() (a reverse-order recursion has no DeviceBackend
     // primitive) -- undefined behavior on a CUDA-backed Tensor. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(rewards.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(dones.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(values.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(rewards);
+    PULSATRIX_REQUIRE_HOST(dones);
+    PULSATRIX_REQUIRE_HOST(values);
 
     if (rewards.rank() != 2 || rewards.shape().dim(1) != 1) {
         throw std::invalid_argument("ComputeGAE: rewards must have shape (N, 1)");

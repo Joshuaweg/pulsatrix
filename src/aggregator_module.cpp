@@ -35,7 +35,7 @@ AggregatorModule::AggregatorModule(DeviceBackend* backend, float p)
 
 Tensor AggregatorModule::forward_impl(const Tensor& input) {
     // Raw host loop below -- not yet backend-generic. See mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(input.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() < 1) {
         throw std::invalid_argument("AggregatorModule::forward: input must have rank >= 1 (a leading batch axis)");
@@ -72,7 +72,7 @@ Tensor AggregatorModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument("AggregatorModule::backward: grad_output must match the cached forward shape");
     }
     // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(grad_output.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t n = last_input_.shape().dim(0);
     const int64_t cols = last_output_.numel();
@@ -100,7 +100,7 @@ Tensor AggregatorModule::propagate_relevance(const Tensor& relevance_out, const 
             "AggregatorModule::propagate_relevance: relevance_out must match the cached forward shape");
     }
     // Raw host loop -- see mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(relevance_out.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t n = last_input_.shape().dim(0);
     const int64_t cols = last_output_.numel();

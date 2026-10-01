@@ -36,9 +36,9 @@ float PolicyGradientLoss::forward(const Tensor& logits, const Tensor& actions, c
     // row-wise stabilized softmax and a per-row gather at a data-dependent column have no
     // DeviceBackend primitive). See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
     // decision and mission_host_loop_guards.md.
-    PULSATRIX_ASSERT(logits.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(actions.device() == DeviceType::Cpu);
-    PULSATRIX_ASSERT(returns.device() == DeviceType::Cpu);
+    PULSATRIX_REQUIRE_HOST(logits);
+    PULSATRIX_REQUIRE_HOST(actions);
+    PULSATRIX_REQUIRE_HOST(returns);
 
     if (logits.rank() != 2) {
         throw std::invalid_argument("PolicyGradientLoss::forward: logits must have shape (N, action_dim)");
