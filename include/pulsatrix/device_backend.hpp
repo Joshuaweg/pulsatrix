@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 
 namespace pulsatrix {
 
@@ -44,7 +45,8 @@ enum class ElementwiseOp {
     Neg,
     Tanh,     ///< tanh(x)
     Sigmoid,  ///< 1 / (1 + exp(-x))
-    Silu      ///< x * sigmoid(x) -- a.k.a. swish; the gate half of SwiGLU
+    Silu,     ///< x * sigmoid(x) -- a.k.a. swish; the gate half of SwiGLU
+    Exp       ///< exp(x) -- GPU-native-kernels Mission 1b (Reparameterize, KL divergence)
 };
 
 /**
@@ -188,13 +190,18 @@ public:
      *        forward *input*.
      * @note Derivatives: Relu selects grad_out where x > 0, else 0 (0 at x == 0 and for a
      *       non-finite grad_out, matching ReluModule); Neg -1;
-     *       Tanh 1 - tanh(x)^2; Sigmoid s(1 - s); Silu s + x*s*(1 - s), s = sigmoid(x).
+     *       Tanh 1 - tanh(x)^2; Sigmoid s(1 - s); Silu s + x*s*(1 - s), s = sigmoid(x);
+     *       Exp exp(x).
      *       grad_in may alias grad_out or x.
      */
     virtual void elementwise_backward(ElementwiseOp op, const float* x, const float* grad_out, float* grad_in,
                                       size_t n) = 0;
 
-    /** @brief out[i] = alpha * x[i] + beta * y[i]. out may alias x or y. */
+    /**
+     * @brief out[i] = alpha * x[i] + beta * y[i]. out may alias x or y.
+     * @note beta == 0 does not read y (BLAS convention), so out = alpha * x exactly even
+     *       where y holds inf/NaN -- otherwise 0 * inf would turn a scale-only call into NaN.
+     */
     virtual void axpby(float alpha, const float* x, float beta, const float* y, float* out, size_t n) = 0;
 
     /**
@@ -225,6 +232,40 @@ public:
      */
     virtual void adam_step(float* param, const float* grad, float* m, float* v, size_t n, float lr, float beta1,
                            float beta2, float eps, float bias_correction1, float bias_correction2) = 0;
+
+    // ---- GPU-native-kernels Mission 1b ---------------------------------------------------
+
+    /** @brief sum_i in[i], returned to the host. Same reduction order as dot(). Synchronizes. */
+    [[nodiscard]] virtual float sum(const float* in, size_t n) = 0;
+
+    /**
+     * @brief Inverted dropout with a counter-based RNG: element i is dropped iff
+     *        uniform(seed, offset + i) < p; kept elements are scaled by scale.
+     * @param mask Receives 1.0 (kept) or 0.0 (dropped) per element, for backward().
+     * @note uniform(seed, k) is splitmix64(seed + (k + 1) * golden_gamma), top 24 bits as a
+     *       float in [0, 1). Stateless and identical on every backend, so a GPU mask is
+     *       bit-identical to the CPU one for the same (seed, offset) -- the property that lets
+     *       Dropout be tested CPU-vs-GPU at all. A dropped element is written as 0 (a select,
+     *       not in * 0), so an inf/NaN input there still yields 0.
+     */
+    virtual void dropout_forward(const float* in, float* out, float* mask, size_t n, float p, float scale,
+                                 uint64_t seed, uint64_t offset) = 0;
+
+    /**
+     * @brief Per-element binary cross-entropy with logits:
+     *        out[i] = max(x, 0) - x*y + log1p(exp(-|x|)), x = logits[i], y = target[i].
+     * @note Fused rather than composed from elementwise ops: this exact evaluation order is
+     *       what BCEWithLogitsLoss has always computed, and no composition reproduces its
+     *       rounding.
+     */
+    virtual void bce_with_logits(const float* logits, const float* target, float* out, size_t n) = 0;
+
+    /**
+     * @brief BCE-with-logits gradient: grad[i] = (sigmoid(x) - y) * scale, using the
+     *        overflow-free sigmoid (exp(x) / (1 + exp(x)) for x < 0).
+     */
+    virtual void bce_with_logits_grad(const float* logits, const float* target, float* grad, size_t n,
+                                      float scale) = 0;
 };
 
 }  // namespace pulsatrix

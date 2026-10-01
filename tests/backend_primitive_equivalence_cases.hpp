@@ -173,6 +173,56 @@ inline void AdamThreeSteps(DeviceBackend& gpu) {
     ExpectNear(cv, dv.host());
 }
 
+// ---- Mission 1b ----------------------------------------------------------------------------
+
+inline void ExpAndSum(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    std::vector<float> x = Random(1000, 200, -5.0f, 5.0f), g = Random(1000, 201);
+    std::vector<float> fwd(1000), bwd(1000);
+    cpu.elementwise(ElementwiseOp::Exp, x.data(), fwd.data(), x.size());
+    cpu.elementwise_backward(ElementwiseOp::Exp, x.data(), g.data(), bwd.data(), x.size());
+    DeviceBuffer dx(gpu, x), dg(gpu, g), dfwd(gpu, std::vector<float>(1000)), dbwd(gpu, std::vector<float>(1000));
+    gpu.elementwise(ElementwiseOp::Exp, dx.get(), dfwd.get(), x.size());
+    gpu.elementwise_backward(ElementwiseOp::Exp, dx.get(), dg.get(), dbwd.get(), x.size());
+    ExpectNear(fwd, dfwd.host(), 1e-3f);  // exp(5) ~ 148: 1e-4 relative, ~1e-3 absolute
+    ExpectNear(bwd, dbwd.host(), 1e-3f);
+    EXPECT_NEAR(cpu.sum(g.data(), g.size()), gpu.sum(dg.get(), g.size()), kTolerance * 10);
+    EXPECT_FLOAT_EQ(gpu.sum(nullptr, 0), 0.0f);
+}
+
+inline void AxpbyZeroBetaIgnoresY(DeviceBackend& gpu) {
+    std::vector<float> x = {1.0f, 2.0f}, y = {INFINITY, std::nanf("")};
+    DeviceBuffer dx(gpu, x), dy(gpu, y), dout(gpu, std::vector<float>(2));
+    gpu.axpby(3.0f, dx.get(), 0.0f, dy.get(), dout.get(), 2);
+    EXPECT_EQ(dout.host(), (std::vector<float>{3.0f, 6.0f}));
+}
+
+// The property that makes Dropout testable CPU-vs-GPU: identical masks, bit for bit.
+inline void DropoutMasksAreBitIdentical(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const size_t n = 10007;
+    std::vector<float> in = Random(n, 202);
+    std::vector<float> out(n), mask(n);
+    cpu.dropout_forward(in.data(), out.data(), mask.data(), n, 0.4f, 1.0f / 0.6f, 12345, 777);
+    DeviceBuffer din(gpu, in), dout(gpu, std::vector<float>(n)), dmask(gpu, std::vector<float>(n));
+    gpu.dropout_forward(din.get(), dout.get(), dmask.get(), n, 0.4f, 1.0f / 0.6f, 12345, 777);
+    EXPECT_EQ(mask, dmask.host());
+    ExpectNear(out, dout.host());
+}
+
+inline void BceWithLogits(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    std::vector<float> x = Random(1000, 203, -30.0f, 30.0f), y = Random(1000, 204, 0.0f, 1.0f);
+    std::vector<float> terms(1000), grad(1000);
+    cpu.bce_with_logits(x.data(), y.data(), terms.data(), x.size());
+    cpu.bce_with_logits_grad(x.data(), y.data(), grad.data(), x.size(), 0.01f);
+    DeviceBuffer dx(gpu, x), dy(gpu, y), dterms(gpu, std::vector<float>(1000)), dgrad(gpu, std::vector<float>(1000));
+    gpu.bce_with_logits(dx.get(), dy.get(), dterms.get(), x.size());
+    gpu.bce_with_logits_grad(dx.get(), dy.get(), dgrad.get(), x.size(), 0.01f);
+    ExpectNear(terms, dterms.host(), 1e-3f);  // |x| up to 30: terms up to ~30
+    ExpectNear(grad, dgrad.host());
+}
+
 }  // namespace primitive_equivalence
 }  // namespace pulsatrix
 
@@ -204,4 +254,10 @@ inline void AdamThreeSteps(DeviceBackend& gpu) {
     TEST_F(FIXTURE, SoftmaxRowsForwardBackwardAndLogsumexpMatchCPU) {                               \
         ::pulsatrix::primitive_equivalence::SoftmaxFamily(MEMBER);                                 \
     }                                                                                               \
-    TEST_F(FIXTURE, AdamThreeStepsMatchCPU) { ::pulsatrix::primitive_equivalence::AdamThreeSteps(MEMBER); }
+    TEST_F(FIXTURE, AdamThreeStepsMatchCPU) { ::pulsatrix::primitive_equivalence::AdamThreeSteps(MEMBER); } \
+    TEST_F(FIXTURE, ExpAndSumMatchCPU) { ::pulsatrix::primitive_equivalence::ExpAndSum(MEMBER); }       \
+    TEST_F(FIXTURE, AxpbyZeroBetaIgnoresY) { ::pulsatrix::primitive_equivalence::AxpbyZeroBetaIgnoresY(MEMBER); } \
+    TEST_F(FIXTURE, DropoutMasksBitIdenticalToCPU) {                                                \
+        ::pulsatrix::primitive_equivalence::DropoutMasksAreBitIdentical(MEMBER);                   \
+    }                                                                                               \
+    TEST_F(FIXTURE, BceWithLogitsMatchesCPU) { ::pulsatrix::primitive_equivalence::BceWithLogits(MEMBER); }
