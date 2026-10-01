@@ -7,6 +7,7 @@
 #include "pulsatrix/cuda_backend.hpp"
 #include "pulsatrix/device_backend.hpp"
 #include "pulsatrix/hip_backend.hpp"
+#include "pulsatrix/tensor.hpp"
 
 // The direct CUDA <-> HIP arm of the charter's three-way gate ("CPU/CUDA/HIP must agree
 // numerically on shared ops", charter line 106).
@@ -136,6 +137,21 @@ TEST_F(ThreeWayEquivalenceTest, AddAgreesBetweenCUDAAndHIP) {
     for (size_t i = 0; i < cuda_out.size(); ++i) {
         EXPECT_NEAR(cuda_out[i], hip_out[i], kBackendEquivalenceTolerance) << "mismatch at flat index " << i;
     }
+}
+
+// Tensor::to() between vendors stages through a host buffer -- neither runtime can address
+// the other's memory. Written alongside the rest of this arm; unrun for the same reason.
+TEST_F(ThreeWayEquivalenceTest, TensorToMovesBetweenCUDAAndHIP) {
+    CPUBackend cpu;
+    Tensor t(Shape({3}), &cuda, {1.0f, -2.0f, 3.5f}, DeviceType::Cuda);
+
+    t.to(DeviceType::Hip, &hip);
+    EXPECT_EQ(t.device(), DeviceType::Hip);
+    t.to(DeviceType::Cpu, &cpu);
+
+    EXPECT_FLOAT_EQ(t.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(t.data()[1], -2.0f);
+    EXPECT_FLOAT_EQ(t.data()[2], 3.5f);
 }
 
 }  // namespace

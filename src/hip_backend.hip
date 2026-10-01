@@ -30,10 +30,43 @@ __global__ void neg_kernel(const float* in, float* out, size_t n) {
     }
 }
 
+// Device-side logistic sigmoid -- one definition shared by sigmoid_kernel and silu_kernel,
+// mirroring CUDABackend's sigmoid_device() byte-for-byte so both GPU backends compute
+// Sigmoid and Silu from the identical expression CPUBackend uses.
+__device__ inline float sigmoid_device(float z) { return 1.0f / (1.0f + expf(-z)); }
+
+__global__ void tanh_kernel(const float* in, float* out, size_t n) {
+    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n) {
+        out[i] = tanhf(in[i]);
+    }
+}
+
+__global__ void sigmoid_kernel(const float* in, float* out, size_t n) {
+    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n) {
+        out[i] = sigmoid_device(in[i]);
+    }
+}
+
+__global__ void silu_kernel(const float* in, float* out, size_t n) {
+    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n) {
+        out[i] = in[i] * sigmoid_device(in[i]);
+    }
+}
+
 __global__ void add_kernel(const float* a, const float* b, float* out, size_t n) {
     size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
     if (i < n) {
         out[i] = a[i] + b[i];
+    }
+}
+
+__global__ void mul_kernel(const float* a, const float* b, float* out, size_t n) {
+    size_t i = static_cast<size_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i < n) {
+        out[i] = a[i] * b[i];
     }
 }
 
@@ -133,6 +166,15 @@ void HIPBackend::elementwise(ElementwiseOp op, const float* in, float* out, size
         case ElementwiseOp::Neg:
             neg_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
             break;
+        case ElementwiseOp::Tanh:
+            tanh_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
+            break;
+        case ElementwiseOp::Sigmoid:
+            sigmoid_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
+            break;
+        case ElementwiseOp::Silu:
+            silu_kernel<<<grid_size, block_size, 0, stream_>>>(in, out, n);
+            break;
     }
     PULSATRIX_HIP_CHECK(hipGetLastError());
     PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
@@ -145,6 +187,17 @@ void HIPBackend::add(const float* a, const float* b, float* out, size_t n) {
     constexpr int block_size = 256;
     int grid_size = static_cast<int>((n + block_size - 1) / block_size);
     add_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
+void HIPBackend::mul(const float* a, const float* b, float* out, size_t n) {
+    if (n == 0) {
+        return;
+    }
+    constexpr int block_size = 256;
+    int grid_size = static_cast<int>((n + block_size - 1) / block_size);
+    mul_kernel<<<grid_size, block_size, 0, stream_>>>(a, b, out, n);
     PULSATRIX_HIP_CHECK(hipGetLastError());
     PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
 }

@@ -56,6 +56,9 @@ protected:
 TEST_F(HipForwardPassEquivalenceTest, LinearModuleForwardMatchesCPUBackendOnRandomInput) {
     constexpr int64_t in_features = 17;
     constexpr int64_t out_features = 11;
+    // N > 1 so the per-row bias broadcast is exercised, not just a single row -- LinearModule
+    // takes (N, in_features) since the batch-dimension migration.
+    constexpr int64_t batch = 5;
 
     LinearModule cpu_linear(in_features, out_features, &cpu);
     LinearModule hip_linear(in_features, out_features, &hip, DeviceType::Hip);
@@ -70,21 +73,22 @@ TEST_F(HipForwardPassEquivalenceTest, LinearModuleForwardMatchesCPUBackendOnRand
     WriteValues(&hip, *hip_params[0].value, weight_values);
     WriteValues(&hip, *hip_params[1].value, bias_values);
 
-    std::vector<float> input_values = RandomVector(static_cast<size_t>(in_features), /*seed=*/12);
-    Tensor cpu_input(Shape({in_features}), &cpu);
+    std::vector<float> input_values = RandomVector(static_cast<size_t>(batch * in_features), /*seed=*/12);
+    Tensor cpu_input(Shape({batch, in_features}), &cpu);
     WriteValues(&cpu, cpu_input, input_values);
-    Tensor hip_input(Shape({in_features}), &hip, DeviceType::Hip);
+    Tensor hip_input(Shape({batch, in_features}), &hip, DeviceType::Hip);
     WriteValues(&hip, hip_input, input_values);
 
     Tensor cpu_output = cpu_linear.forward(cpu_input);
     Tensor hip_output = hip_linear.forward(hip_input);
     EXPECT_EQ(hip_output.device(), DeviceType::Hip);
 
-    std::vector<float> hip_output_host(static_cast<size_t>(out_features), 0.0f);
+    std::vector<float> hip_output_host(static_cast<size_t>(batch * out_features), 0.0f);
     hip.copy(hip_output_host.data(), hip_output.data(), hip_output_host.size() * sizeof(float),
              CopyDirection::DeviceToHost);
 
-    for (int64_t i = 0; i < out_features; ++i) {
+    ASSERT_EQ(cpu_output.numel(), batch * out_features);
+    for (int64_t i = 0; i < batch * out_features; ++i) {
         EXPECT_NEAR(cpu_output.data()[i], hip_output_host[static_cast<size_t>(i)], kBackendEquivalenceTolerance)
             << "mismatch at index " << i;
     }
