@@ -41,6 +41,25 @@ public:
                          uint64_t offset) override;
     void bce_with_logits(const float* logits, const float* target, float* out, size_t n) override;
     void bce_with_logits_grad(const float* logits, const float* target, float* grad, size_t n, float scale) override;
+    void layer_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                            float* row_std, size_t rows, size_t cols, float eps) override;
+    void layer_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float* row_std,
+                             float* grad_in, size_t rows, size_t cols) override;
+    void rms_norm_forward(const float* in, const float* gamma, float* out, float* row_rms, size_t rows, size_t cols,
+                          float eps) override;
+    void rms_norm_backward(const float* grad_out, const float* gamma, const float* in, const float* row_rms,
+                           float* grad_in, float* gamma_terms, size_t rows, size_t cols) override;
+    void rope_rotate(const float* in, const float* cos_table, const float* sin_table, float* out, size_t num_slices,
+                     size_t seq_len, size_t head_dim, bool inverse) override;
+    void permute_0213(const float* in, float* out, size_t d0, size_t d1, size_t d2, size_t d3) override;
+    void gather_rows(const float* table, const float* indices, float* out, size_t count, size_t dim) override;
+    void scatter_add_rows(const float* src, const float* indices, float* table, size_t count, size_t dim) override;
+    void tanh_gaussian_forward(const float* mean, const float* log_std, const float* eps, float* action,
+                               float* std_cache, float* log_prob, size_t rows, size_t cols, float stabilizer,
+                               double half_log_two_pi) override;
+    void tanh_gaussian_backward(const float* action, const float* std_cache, const float* eps,
+                                const float* grad_action, const float* grad_log_prob, float* grad_mean,
+                                float* grad_log_std, size_t n, float stabilizer) override;
 };
 
 }  // namespace pulsatrix

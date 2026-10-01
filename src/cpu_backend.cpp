@@ -1,6 +1,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 
 #include "pointwise_math.hpp"
+#include "row_math.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -296,6 +297,103 @@ void CPUBackend::bce_with_logits_grad(const float* logits, const float* target, 
                                       float scale) {
     for (size_t i = 0; i < n; ++i) {
         grad[i] = (pointwise::stable_sigmoid(logits[i]) - target[i]) * scale;
+    }
+}
+
+// ---- GPU-native-kernels Mission 2 ----------------------------------------------------------
+
+void CPUBackend::layer_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                                    float* row_std, size_t rows, size_t cols, float eps) {
+    const auto D = static_cast<int64_t>(cols);
+    for (size_t r = 0; r < rows; ++r) {
+        rows::layer_norm_forward(in + r * cols, gamma, beta, xhat + r * cols, out + r * cols, row_std + r, D, eps);
+    }
+}
+
+void CPUBackend::layer_norm_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                     const float* row_std, float* grad_in, size_t rows, size_t cols) {
+    const auto D = static_cast<int64_t>(cols);
+    for (size_t r = 0; r < rows; ++r) {
+        rows::layer_norm_backward(grad_out + r * cols, gamma, xhat + r * cols, row_std[r], grad_in + r * cols, D);
+    }
+}
+
+void CPUBackend::rms_norm_forward(const float* in, const float* gamma, float* out, float* row_rms, size_t rows,
+                                  size_t cols, float eps) {
+    const auto D = static_cast<int64_t>(cols);
+    for (size_t r = 0; r < rows; ++r) {
+        rows::rms_norm_forward(in + r * cols, gamma, out + r * cols, row_rms + r, D, eps);
+    }
+}
+
+void CPUBackend::rms_norm_backward(const float* grad_out, const float* gamma, const float* in, const float* row_rms,
+                                   float* grad_in, float* gamma_terms, size_t rows, size_t cols) {
+    const auto D = static_cast<int64_t>(cols);
+    for (size_t r = 0; r < rows; ++r) {
+        rows::rms_norm_backward(grad_out + r * cols, gamma, in + r * cols, row_rms[r], grad_in + r * cols,
+                                gamma_terms + r * cols, D);
+    }
+}
+
+void CPUBackend::rope_rotate(const float* in, const float* cos_table, const float* sin_table, float* out,
+                             size_t num_slices, size_t seq_len, size_t head_dim, bool inverse) {
+    const size_t half = head_dim / 2;
+    for (size_t row = 0; row < num_slices * seq_len; ++row) {
+        const size_t pos = row % seq_len;
+        rows::rope_rotate(in + row * head_dim, cos_table + pos * half, sin_table + pos * half, out + row * head_dim,
+                          static_cast<int64_t>(half), inverse);
+    }
+}
+
+void CPUBackend::permute_0213(const float* in, float* out, size_t d0, size_t d1, size_t d2, size_t d3) {
+    for (size_t a = 0; a < d0; ++a) {
+        for (size_t b = 0; b < d1; ++b) {
+            for (size_t c = 0; c < d2; ++c) {
+                const float* src = in + ((a * d1 + b) * d2 + c) * d3;
+                float* dst = out + ((a * d2 + c) * d1 + b) * d3;
+                for (size_t e = 0; e < d3; ++e) {
+                    dst[e] = src[e];
+                }
+            }
+        }
+    }
+}
+
+void CPUBackend::gather_rows(const float* table, const float* indices, float* out, size_t count, size_t dim) {
+    for (size_t i = 0; i < count; ++i) {
+        const float* row = table + static_cast<size_t>(indices[i]) * dim;
+        for (size_t d = 0; d < dim; ++d) {
+            out[i * dim + d] = row[d];
+        }
+    }
+}
+
+void CPUBackend::scatter_add_rows(const float* src, const float* indices, float* table, size_t count, size_t dim) {
+    for (size_t i = 0; i < count; ++i) {
+        float* row = table + static_cast<size_t>(indices[i]) * dim;
+        for (size_t d = 0; d < dim; ++d) {
+            row[d] += src[i * dim + d];
+        }
+    }
+}
+
+void CPUBackend::tanh_gaussian_forward(const float* mean, const float* log_std, const float* eps, float* action,
+                                       float* std_cache, float* log_prob, size_t rows, size_t cols, float stabilizer,
+                                       double half_log_two_pi) {
+    const auto D = static_cast<int64_t>(cols);
+    for (size_t r = 0; r < rows; ++r) {
+        const size_t off = r * cols;
+        rows::tanh_gaussian_forward(mean + off, log_std + off, eps + off, action + off, std_cache + off, log_prob + r,
+                                    D, stabilizer, half_log_two_pi);
+    }
+}
+
+void CPUBackend::tanh_gaussian_backward(const float* action, const float* std_cache, const float* eps,
+                                        const float* grad_action, const float* grad_log_prob, float* grad_mean,
+                                        float* grad_log_std, size_t n, float stabilizer) {
+    for (size_t i = 0; i < n; ++i) {
+        rows::tanh_gaussian_backward_element(action[i], std_cache[i], eps[i], grad_action[i], grad_log_prob[i],
+                                             stabilizer, grad_mean + i, grad_log_std + i);
     }
 }
 
