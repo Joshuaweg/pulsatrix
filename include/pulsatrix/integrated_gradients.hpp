@@ -7,6 +7,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
@@ -28,11 +29,9 @@ namespace pulsatrix {
  *       F(baseline)), not just "it runs" -- see vision_integrated_gradients.md.
  * @note A pure graph walker built entirely against ExplainerContext/Saliency's public
  *       interfaces -- no core (Tensor/ComputationGraph/Autograd/Module) changes needed.
- * @note The final interpolation/scaling arithmetic is a raw host loop over
- *       input/baseline/accumulated-gradient buffers -- DeviceBackend has no
- *       tensor-tensor subtract or scalar-multiply primitive, and this campaign's Phase
- *       1.5-style device guards weren't extended to Phase 2's new explainer code (no CUDA
- *       explainer work exists yet to require it). CPU-only until that need arises.
+ * @note Device-generic host boundary: input/baseline are read to the host once, each
+ *       interpolated point is uploaded beside the input, gradients accumulate on the device,
+ *       and the final (x - baseline) * avg_grad product runs on one host read of the sum.
  */
 class IntegratedGradients {
 public:
@@ -60,24 +59,32 @@ public:
         }
 
         Saliency saliency;
-        Tensor accumulated_grad(input.shape(), backend);  // zero-initialized
+        DeviceBackend* input_backend = explainer_detail::backend_beside(input, backend);
+        Tensor accumulated_grad(input.shape(), input_backend, input.device());  // zero-initialized
 
+        const std::vector<float> input_values = input.to_host_vector();
+        const std::vector<float> baseline_values = baseline.to_host_vector();
+        const auto numel = static_cast<size_t>(input.numel());
+
+        std::vector<float> interpolated_values(numel);
         for (int64_t k = 1; k <= steps; ++k) {
             float alpha = static_cast<float>(k) / static_cast<float>(steps);
-            Tensor interpolated(input.shape(), backend);
-            for (int64_t i = 0; i < input.numel(); ++i) {
-                interpolated.data()[i] = baseline.data()[i] + alpha * (input.data()[i] - baseline.data()[i]);
+            for (size_t i = 0; i < numel; ++i) {
+                interpolated_values[i] = baseline_values[i] + alpha * (input_values[i] - baseline_values[i]);
             }
+            Tensor interpolated(input.shape(), input_backend, interpolated_values, input.device());
 
             Attribution step = saliency.explain(ctx, interpolated, target_index, backend);
             accumulated_grad.accumulate(step.values);
         }
 
-        Tensor ig_values(input.shape(), backend);
-        for (int64_t i = 0; i < input.numel(); ++i) {
-            float avg_grad = accumulated_grad.data()[i] / static_cast<float>(steps);
-            ig_values.data()[i] = (input.data()[i] - baseline.data()[i]) * avg_grad;
+        const std::vector<float> accumulated = accumulated_grad.to_host_vector();
+        std::vector<float> ig(numel);
+        for (size_t i = 0; i < numel; ++i) {
+            float avg_grad = accumulated[i] / static_cast<float>(steps);
+            ig[i] = (input_values[i] - baseline_values[i]) * avg_grad;
         }
+        Tensor ig_values(input.shape(), input_backend, ig, input.device());
 
         return Attribution{"integrated_gradients", std::move(ig_values),
                             {{"steps", std::to_string(steps)}, {"target_index", std::to_string(target_index)}}};
