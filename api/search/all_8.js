@@ -12,7 +12,7 @@ var searchData=
   ['images_9',['images',['../structpulsatrix_1_1MnistDataset.html#a4521c6bdaefaaf2ef59389848ada7295',1,'pulsatrix::MnistDataset']]],
   ['implot_5fmetrics_5fsink_2ehpp_10',['implot_metrics_sink.hpp',['../implot__metrics__sink_8hpp.html',1,'']]],
   ['implotmetricssink_11',['ImPlotMetricsSink',['../classpulsatrix_1_1ImPlotMetricsSink.html',1,'pulsatrix']]],
-  ['in_12',['in',['../structpulsatrix_1_1RecurrentCellArgs.html#ac61d3af2c9778e16e7ad6537ad58e1d3',1,'pulsatrix::RecurrentCellArgs']]],
+  ['in_12',['in',['../structpulsatrix_1_1SsmPassArgs.html#add1d724ff478ba1e7e655fe5ca038c20',1,'pulsatrix::SsmPassArgs::in'],['../structpulsatrix_1_1RecurrentCellArgs.html#ac61d3af2c9778e16e7ad6537ad58e1d3',1,'pulsatrix::RecurrentCellArgs::in']]],
   ['in_5fnode_13',['in_node',['../structpulsatrix_1_1ConnectionGene.html#ab5d25b63f3f7fcd681f88eb1f35e0b87',1,'pulsatrix::ConnectionGene']]],
   ['indexof_14',['IndexOf',['../classpulsatrix_1_1Vocabulary.html#aad956d5e6776e13be224d60b9de130cb',1,'pulsatrix::Vocabulary']]],
   ['individual_15',['Individual',['../structpulsatrix_1_1Individual.html',1,'pulsatrix']]],

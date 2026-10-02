@@ -57,6 +57,7 @@ var classpulsatrix_1_1CPUBackend =
     [ "scatter_add_rows", "classpulsatrix_1_1CPUBackend.html#ac526e9b80c51cddc8c997ea210792b25", null ],
     [ "softmax_rows", "classpulsatrix_1_1CPUBackend.html#a7e7c4204306f82d995adc9a0d49a4ee7", null ],
     [ "softmax_rows_backward", "classpulsatrix_1_1CPUBackend.html#a62db75ddf9548dbbb6d55315310fa6c0", null ],
+    [ "ssm_pass", "classpulsatrix_1_1CPUBackend.html#a55052ced9a75ab656d317a9f89ba8447", null ],
     [ "sum", "classpulsatrix_1_1CPUBackend.html#a0f0ace126c2819bc1e8cd19cedb5225e", null ],
     [ "tanh_gaussian_backward", "classpulsatrix_1_1CPUBackend.html#a1b24e2297de68d62cc299ec47db753ac", null ],
     [ "tanh_gaussian_forward", "classpulsatrix_1_1CPUBackend.html#a4c2b28cadf9a10458aabaa4a2d7462f6", null ]

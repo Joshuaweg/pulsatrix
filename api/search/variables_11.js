@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['s_0',['s',['../structpulsatrix_1_1HyperbandBracket.html#abb725edab5253663817a81a110f50bea',1,'pulsatrix::HyperbandBracket']]],
+  ['s_0',['s',['../structpulsatrix_1_1SsmPassArgs.html#a86acf88d33644ea4c410f5db448cc6ad',1,'pulsatrix::SsmPassArgs::s'],['../structpulsatrix_1_1HyperbandBracket.html#abb725edab5253663817a81a110f50bea',1,'pulsatrix::HyperbandBracket::s']]],
   ['sample_5findex_1',['sample_index',['../structpulsatrix_1_1ValidationIssue.html#a7e9ea9c75ba69a37b1b8121e4854d3fd',1,'pulsatrix::ValidationIssue']]],
   ['sample_5frate_2',['sample_rate',['../structpulsatrix_1_1WavData.html#a3252af24e220e3f9fa36c450029679ee',1,'pulsatrix::WavData']]],
   ['shuffle_3',['shuffle',['../structpulsatrix_1_1DataLoaderOptions.html#a7699e789c8a5cb60d329965f6d70285a',1,'pulsatrix::DataLoaderOptions']]],

@@ -179,6 +179,7 @@ var annotated_dup =
       [ "SoftmaxModule", "classpulsatrix_1_1SoftmaxModule.html", "classpulsatrix_1_1SoftmaxModule" ],
       [ "SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html", "classpulsatrix_1_1SparseAutoencoder" ],
       [ "SpeciesAssignment", "structpulsatrix_1_1SpeciesAssignment.html", "structpulsatrix_1_1SpeciesAssignment" ],
+      [ "SsmPassArgs", "structpulsatrix_1_1SsmPassArgs.html", "structpulsatrix_1_1SsmPassArgs" ],
       [ "StabilityResult", "structpulsatrix_1_1StabilityResult.html", "structpulsatrix_1_1StabilityResult" ],
       [ "StepResult", "structpulsatrix_1_1StepResult.html", "structpulsatrix_1_1StepResult" ],
       [ "SubTBLoss", "classpulsatrix_1_1SubTBLoss.html", "classpulsatrix_1_1SubTBLoss" ],

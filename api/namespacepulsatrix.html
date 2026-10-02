@@ -595,6 +595,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SpeciesAssignment.html">SpeciesAssignment</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Population grouping into species: each inner vector is a list of indices into the population vector that were passed to SpeciatePopulation.  <a href="structpulsatrix_1_1SpeciesAssignment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SsmPassArgs.html">SsmPassArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers and dims for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd" title="One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).">DeviceBackend::ssm_pass</a> (passed to kernels by value).  <a href="structpulsatrix_1_1SsmPassArgs.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1StabilityResult.html">StabilityResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of measuring an explainer's variance across repeated runs on the same input.  <a href="structpulsatrix_1_1StabilityResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -755,6 +758,34 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ac55b0127cfe9bf4ce7793fef9db97400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused per-element recurrent-cell passes, for DeviceBackend::recurrent_cell. Slots (in[] / out[]), all (rows x hidden) per timestep unless noted:  <a href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">More...</a><br /></td></tr>
 <tr class="separator:ac55b0127cfe9bf4ce7793fef9db97400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ea30dd018ca9a3db2acc46af2880883" id="r_a9ea30dd018ca9a3db2acc46af2880883"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">SsmPassOp</a> { <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4">MambaForward</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aafd6ee7fcd70442a7b08a77881574ab2">MambaBackward</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aa4c2ce7fcd5cbf8e07420e447bac3987">MambaGradBC</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aaca452419514797385505efded2e0473">MambaLrp</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abcdd6c9e1928960ed3f5a5f38cc9b8d1">RwkvTokenShift</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a02074e773654d60be53588a7c551717e">RwkvForward</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ad67af2133293778b01e15a50778282d7">RwkvBackward</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac4e80c16787796dda381d1515c6af876">RwkvShiftBackward</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac5aa76383a18f79f619e4523207ad4d5">RwkvLrp</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a5df15a49eb81d6e7b5c201c81d93b364">RwkvShiftLrp</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883af7357d9f8c4df9c447eaaec3710f1a2f">StabilizedDiv</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ae540a55d2cfff0c1b3c1fdaa6ea86072">RetnetForward</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a9ae91a09f05f50ad5e936dbcc8dd137a">RetnetStateGrad</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a">RetnetGradQK</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a03d4e7d6d672e547c44f37cd463c518b">RetnetGradV</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a00b785050045bc646eeac7d9b576b822">RetnetScores</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f">RetnetReadout</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97">RetnetLrpInput</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3">ReverseTimeSum</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a9ea30dd018ca9a3db2acc46af2880883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused passes of the state-space / linear-recurrence modules (MambaModule, RWKVModule, RetNetModule), for DeviceBackend::ssm_pass. Dims come from SsmPassArgs: n batch, l sequence length, d d_model (or C for ReverseTimeSum), s Mamba's state_size / RetNet's key_dim. Sequences are (n, l, X) row-major; "states" buffers are (n, l + 1, ...) with the zero initial state at index 0. Lanes and slots (in[] -&gt; out[]):  <a href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">More...</a><br /></td></tr>
+<tr class="separator:a9ea30dd018ca9a3db2acc46af2880883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab997921e8dd2fcb16daefdcc05ce6550" id="r_ab997921e8dd2fcb16daefdcc05ce6550"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">MutationObjective</a> { <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b">Minimax</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763">Heuristic</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46">LeastSquares</a>
@@ -1572,6 +1603,72 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731" name="ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731"></a>LstmLrp&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185" name="ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185"></a>GruBackward&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44" name="ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44"></a>GruLrp&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a9ea30dd018ca9a3db2acc46af2880883" name="a9ea30dd018ca9a3db2acc46af2880883"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ea30dd018ca9a3db2acc46af2880883">&#9670;&#160;</a></span>SsmPassOp</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">pulsatrix::SsmPassOp</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fused passes of the state-space / linear-recurrence modules (<a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>, <a class="el" href="classpulsatrix_1_1RWKVModule.html" title="Core RWKV-4 time-mixing block (Peng et al. 2023, arXiv:2305.13048), input (N, L, d_model) -&gt; output (...">RWKVModule</a>, <a class="el" href="classpulsatrix_1_1RetNetModule.html" title="Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N,...">RetNetModule</a>), for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd" title="One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).">DeviceBackend::ssm_pass</a>. Dims come from <a class="el" href="structpulsatrix_1_1SsmPassArgs.html" title="Operand pointers and dims for DeviceBackend::ssm_pass (passed to kernels by value).">SsmPassArgs</a>: n batch, l sequence length, d d_model (or C for ReverseTimeSum), s Mamba's state_size / RetNet's key_dim. Sequences are (n, l, X) row-major; "states" buffers are (n, l + 1, ...) with the zero initial state at index 0. Lanes and slots (in[] -&gt; out[]): </p>
+<ul>
+<li>MambaForward (n*d lanes, t ascending): in input, z_delta (bias added), B, C, A (d, s), D (d) -&gt; out delta, Abar, Bbar (n, l, d, s), states (n, l+1, d, s), output</li>
+<li>MambaBackward (n*d lanes, t descending): in grad_output, input, delta, z_delta, states, Abar, Bbar, B, C, A, D -&gt; out dx_direct, dz_delta, dh_total, A_terms (n, l, d, s), carry scratch (n, d, s), zero-filled by the caller</li>
+<li>MambaGradBC (n*l*s lanes): in grad_output, input, delta, states, dh_total -&gt; out dB, dC</li>
+<li>MambaLrp (n*d lanes, t descending): in input, output, relevance_out, states, Abar, Bbar, C, D -&gt; out relevance_in, carry scratch (n, d, s), zero-filled (uses eps)</li>
+<li>RwkvTokenShift (n*l*d): in input, mu_r, mu_k, mu_v -&gt; out xr, xk, xv</li>
+<li>RwkvForward (n*d lanes, t ascending): in z_r, k, v, u, w -&gt; out r, e, num, den, wkv, kk, a states, b states (n, l+1, d), gated</li>
+<li>RwkvBackward (n*d lanes, t descending): in g_gated, r, v, e, kk, num, den, a states, b states, wkv, w -&gt; out dz_r, dk, dv, u_terms, w_terms</li>
+<li>RwkvShiftBackward (n*l*d): in input, g_xr, g_xk, g_xv, mu_r, mu_k, mu_v -&gt; out grad_input, mu_r_terms, mu_k_terms, mu_v_terms</li>
+<li>RwkvLrp (n*d lanes, t descending): in r_gated, a states, den, e, v, wkv, kk, w -&gt; out v_relevance (uses eps)</li>
+<li>RwkvShiftLrp (n*l*d): in input, xv, r_xv_raw, mu_v -&gt; out relevance_in (uses eps)</li>
+<li>StabilizedDiv (n*l*d): in r, z -&gt; out r / (z + eps*sign(z))</li>
+<li>RetnetForward (n*d lanes, t ascending): in q, k, v -&gt; out states (n, l+1, s, d), output (uses gamma)</li>
+<li>RetnetStateGrad (n*s*d lanes, t descending): in grad_output, q -&gt; out dS (n, l, s, d) (uses gamma)</li>
+<li>RetnetGradQK (n*l*s): in grad_output, states, dS, v -&gt; out dq, dk</li>
+<li>RetnetGradV (n*l*d): in dS, k -&gt; out dv</li>
+<li>RetnetScores (n*l*l): in q, k -&gt; out QK, G = gamma^(t-s) QK (both 0 for s &gt; t)</li>
+<li>RetnetReadout (n*l*d): in G, v -&gt; out Y = G @ V over s &lt;= t</li>
+<li>RetnetLrpInput (n*l*d): in input, W_q, W_k, W_v, q, k, v, r_q, r_k, r_v -&gt; out relevance_in (uses eps)</li>
+<li>ReverseTimeSum (d lanes): in terms (n, l, d) -&gt; out[c] = sum over t descending, b ascending &ndash; a backward loop's parameter-gradient accumulation order </li>
+</ul>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4" name="a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4"></a>MambaForward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883aafd6ee7fcd70442a7b08a77881574ab2" name="a9ea30dd018ca9a3db2acc46af2880883aafd6ee7fcd70442a7b08a77881574ab2"></a>MambaBackward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883aa4c2ce7fcd5cbf8e07420e447bac3987" name="a9ea30dd018ca9a3db2acc46af2880883aa4c2ce7fcd5cbf8e07420e447bac3987"></a>MambaGradBC&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883aaca452419514797385505efded2e0473" name="a9ea30dd018ca9a3db2acc46af2880883aaca452419514797385505efded2e0473"></a>MambaLrp&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883abcdd6c9e1928960ed3f5a5f38cc9b8d1" name="a9ea30dd018ca9a3db2acc46af2880883abcdd6c9e1928960ed3f5a5f38cc9b8d1"></a>RwkvTokenShift&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a02074e773654d60be53588a7c551717e" name="a9ea30dd018ca9a3db2acc46af2880883a02074e773654d60be53588a7c551717e"></a>RwkvForward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883ad67af2133293778b01e15a50778282d7" name="a9ea30dd018ca9a3db2acc46af2880883ad67af2133293778b01e15a50778282d7"></a>RwkvBackward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883ac4e80c16787796dda381d1515c6af876" name="a9ea30dd018ca9a3db2acc46af2880883ac4e80c16787796dda381d1515c6af876"></a>RwkvShiftBackward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883ac5aa76383a18f79f619e4523207ad4d5" name="a9ea30dd018ca9a3db2acc46af2880883ac5aa76383a18f79f619e4523207ad4d5"></a>RwkvLrp&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a5df15a49eb81d6e7b5c201c81d93b364" name="a9ea30dd018ca9a3db2acc46af2880883a5df15a49eb81d6e7b5c201c81d93b364"></a>RwkvShiftLrp&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883af7357d9f8c4df9c447eaaec3710f1a2f" name="a9ea30dd018ca9a3db2acc46af2880883af7357d9f8c4df9c447eaaec3710f1a2f"></a>StabilizedDiv&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883ae540a55d2cfff0c1b3c1fdaa6ea86072" name="a9ea30dd018ca9a3db2acc46af2880883ae540a55d2cfff0c1b3c1fdaa6ea86072"></a>RetnetForward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a9ae91a09f05f50ad5e936dbcc8dd137a" name="a9ea30dd018ca9a3db2acc46af2880883a9ae91a09f05f50ad5e936dbcc8dd137a"></a>RetnetStateGrad&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a" name="a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a"></a>RetnetGradQK&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a03d4e7d6d672e547c44f37cd463c518b" name="a9ea30dd018ca9a3db2acc46af2880883a03d4e7d6d672e547c44f37cd463c518b"></a>RetnetGradV&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a00b785050045bc646eeac7d9b576b822" name="a9ea30dd018ca9a3db2acc46af2880883a00b785050045bc646eeac7d9b576b822"></a>RetnetScores&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f" name="a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f"></a>RetnetReadout&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97" name="a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97"></a>RetnetLrpInput&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3" name="a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3"></a>ReverseTimeSum&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>

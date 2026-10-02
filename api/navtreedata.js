@@ -63,19 +63,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CPUBackend.html#a87694cc02322f218e4e7de852c53f892",
-"classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd",
-"classpulsatrix_1_1DeviceBackend.html#aa3ba042f812493990e3735459a6ffd1c",
-"classpulsatrix_1_1GeneratorPopulation.html#a67432725273117cb25bd98ba17c5f000",
-"classpulsatrix_1_1KLDivergenceLoss.html",
-"classpulsatrix_1_1MambaModule.html#addb70c1ed3ee72e027a9c1f7bb86b138",
-"classpulsatrix_1_1RMSNormModule.html#a61a7cf02b3a5480f3d5e50046812a9d8",
-"classpulsatrix_1_1RoPEModule.html#a90556c7db2828a357ba1e048e64fbd19",
-"classpulsatrix_1_1Tensor.html#aaf0157d3b4c2e8f59c5b2df9ed0021a6",
-"classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c",
-"namespacepulsatrix.html#a38de2549fafa7ece476360793b7b1ccb",
-"structpulsatrix_1_1CircuitEdge.html#a77fafe24bfaef222e75479a5a62f6708",
-"structpulsatrix_1_1ReplayBatch.html"
+"classpulsatrix_1_1CPUBackend.html#a86bf28b857b3dd0cc31f7cf544d42353",
+"classpulsatrix_1_1ComputationGraph.html#ae89e87cf4f94476c1eb5e277ca493619",
+"classpulsatrix_1_1DeviceBackend.html#a99082aad9af2353a8133a6b871724bce",
+"classpulsatrix_1_1GeneratorPopulation.html#a0b183a919ab743786a020c0072b86dc2",
+"classpulsatrix_1_1IterableDataset.html",
+"classpulsatrix_1_1MambaModule.html#ac9b8c9fdab107d2bb5356352524e208b",
+"classpulsatrix_1_1RMSNormModule.html#a118b29388de9e763cdc090a665e83831",
+"classpulsatrix_1_1RetNetModule.html#aee87498dec9a66621bb79cbd8035ee27",
+"classpulsatrix_1_1Tensor.html#a903dae02b55d8eb93709bf2c0a399d85",
+"classpulsatrix_1_1datalog_1_1Rule.html#a1bdf21f58b3a0210aa66e55cc2aaedd4",
+"namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67",
+"structpulsatrix_1_1BarSeries.html",
+"structpulsatrix_1_1ParamRef.html#afdf2da37358479b58e19f1b0468a03d0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
