@@ -639,4 +639,46 @@ void CUDABackend::group_norm_backward(const float* grad_out, const float* gamma,
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
+// ---- GPU-native-kernels Mission 5 (kernels in gpu_kernels.cuh) ---------------------------
+
+void CUDABackend::copy_2d(float* dst, size_t dst_stride, const float* src, size_t src_stride, size_t rows,
+                         size_t cols) {
+    if (rows * cols == 0) {
+        return;
+    }
+    gpu::copy_2d_kernel<<<gpu::grid_size_for(rows * cols), gpu::kBlockSize, 0, stream_>>>(dst, dst_stride, src,
+                                                                                          src_stride, rows, cols);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::accumulate_rows(const float* in, float* out, size_t rows, size_t cols) {
+    if (cols == 0) {
+        return;
+    }
+    gpu::accumulate_rows_kernel<<<gpu::grid_size_for(cols), gpu::kBlockSize, 0, stream_>>>(in, out, rows, cols);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::recurrent_cell(RecurrentCellOp op, const RecurrentCellArgs& args, size_t n) {
+    if (n == 0) {
+        return;
+    }
+    gpu::recurrent_cell_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(static_cast<int>(op), args, n);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::gru_lrp_hprev(const float* h_prev, const float* w_hn, const float* hn, const float* r_term_b,
+                               const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) {
+    if (rows * hidden == 0) {
+        return;
+    }
+    gpu::gru_lrp_hprev_kernel<<<gpu::grid_size_for(rows * hidden), gpu::kBlockSize, 0, stream_>>>(
+        h_prev, w_hn, hn, r_term_b, direct, r_hprev, rows, hidden, eps);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
 }  // namespace pulsatrix

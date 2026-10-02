@@ -23,8 +23,10 @@
 #include "pulsatrix/dropout_module.hpp"
 #include "pulsatrix/embedding_module.hpp"
 #include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/gru_module.hpp"
 #include "pulsatrix/group_norm_module.hpp"
 #include "pulsatrix/layer_norm_module.hpp"
+#include "pulsatrix/lstm_module.hpp"
 #include "pulsatrix/lrp_conservation.hpp"
 #include "pulsatrix/max_pool2d_module.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
@@ -44,6 +46,7 @@
 #include "pulsatrix/mse_loss.hpp"
 #include "pulsatrix/relu_module.hpp"
 #include "pulsatrix/residual_module.hpp"
+#include "pulsatrix/rnn_module.hpp"
 #include "pulsatrix/sequential_module.hpp"
 #include "pulsatrix/sgd_optimizer.hpp"
 #include "pulsatrix/softmax_module.hpp"
@@ -633,6 +636,60 @@ inline void CnnTrainsToSameParameters(DeviceBackend& gpu) {
     ExpectParametersNear(cnet, gnet, 1e-3f);
 }
 
+// ---- Mission 5: recurrent networks --------------------------------------------------------------
+
+// Forward, backward, parameter gradients and relevance over a (N, L, input) sequence. L = 6
+// so the recurrence (and its backward / relevance unrolling) runs through several steps.
+template <typename Module>
+inline void RecurrentMatches(DeviceBackend& gpu, unsigned seed) {
+    CPUBackend cpu;
+    Module cm(5, 7, &cpu), gm(5, 7, &gpu);
+    RandomizeAndMirror(cm, gm, seed);
+    std::vector<float> x = Random(3 * 6 * 5, seed + 100);
+    Tensor cx(Shape({3, 6, 5}), &cpu, x), gx(Shape({3, 6, 5}), &gpu, x);
+    Tensor cy = cm.forward(cx);
+    Tensor gy = gm.forward(gx);
+    ExpectNear(cy, gy);
+    std::vector<float> dy = Random(static_cast<size_t>(cy.numel()), seed + 200);
+    Tensor cdy(cy.shape(), &cpu, dy), gdy(gy.shape(), &gpu, dy);
+    ExpectNear(cm.backward(cdy), gm.backward(gdy));
+    ExpectParametersNear(cm, gm, kTolerance);
+    ExpectRelevanceAgrees(cm.propagate_relevance(cdy, LRPRuleConfig{}), gm.propagate_relevance(gdy, LRPRuleConfig{}));
+}
+
+// Mission 5 gate: an LSTM -> (last step) regression trained with Adam on GPU ends with the CPU's
+// parameters -- BPTT through every timestep, every gate.
+template <typename Module>
+inline void RecurrentTrainsToSameParameters(DeviceBackend& gpu, unsigned seed) {
+    CPUBackend cpu;
+    Module cm(4, 6, &cpu), gm(4, 6, &gpu);
+    RandomizeAndMirror(cm, gm, seed);
+    AdamOptimizer copt(0.01f, &cpu), gopt(0.01f, &gpu);
+    MSELoss closs(&cpu), gloss(&gpu);
+    std::vector<float> x = Random(3 * 5 * 4, seed + 1), y = Random(3 * 5 * 6, seed + 2);
+    Tensor cx(Shape({3, 5, 4}), &cpu, x), gx(Shape({3, 5, 4}), &gpu, x);
+    Tensor cy(Shape({3, 5, 6}), &cpu, y), gy(Shape({3, 5, 6}), &gpu, y);
+    float first_loss = 0.0f, last_loss = 0.0f;
+    for (int step = 0; step < 10; ++step) {
+        copt.zero_grad(cm);
+        gopt.zero_grad(gm);
+        const float lc = closs.forward(cm.forward(cx), cy);
+        const float lg = gloss.forward(gm.forward(gx), gy);
+        EXPECT_NEAR(lc, lg, 1e-3f) << "loss diverged at step " << step;
+        (void)cm.backward(closs.backward());
+        (void)gm.backward(gloss.backward());
+        copt.step(cm);
+        gopt.step(gm);
+        if (step == 0) {
+            first_loss = lc;
+        }
+        last_loss = lc;
+    }
+    EXPECT_LT(last_loss, first_loss) << "the recurrent net did not actually train";
+    ExpectParametersNear(cm, gm, 1e-3f);
+}
+
+
 // The mission's integration gate: the same small MLP, same init, same data, trained for
 // several steps on each backend, ends with the same parameters.
 template <typename Optimizer>
@@ -762,6 +819,14 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
     TEST_F(FIXTURE, SpatialNormsMatchCPU) { ::pulsatrix::training_equivalence::SpatialNormsMatch(MEMBER); } \
     TEST_F(FIXTURE, CnnTrainedWithAdamEndsWithCPUParameters) {                                       \
         ::pulsatrix::training_equivalence::CnnTrainsToSameParameters(MEMBER);                        \
+    }                                                                                                \
+    TEST_F(FIXTURE, RNNMatchesCPU) { ::pulsatrix::training_equivalence::RecurrentMatches<::pulsatrix::RNNModule>(MEMBER, 900); } \
+    TEST_F(FIXTURE, LSTMMatchesCPU) { ::pulsatrix::training_equivalence::RecurrentMatches<::pulsatrix::LSTMModule>(MEMBER, 910); } \
+    TEST_F(FIXTURE, GRUMatchesCPU) { ::pulsatrix::training_equivalence::RecurrentMatches<::pulsatrix::GRUModule>(MEMBER, 920); } \
+    TEST_F(FIXTURE, RecurrentNetsTrainedWithAdamEndWithCPUParameters) {                              \
+        ::pulsatrix::training_equivalence::RecurrentTrainsToSameParameters<::pulsatrix::RNNModule>(MEMBER, 930); \
+        ::pulsatrix::training_equivalence::RecurrentTrainsToSameParameters<::pulsatrix::LSTMModule>(MEMBER, 940); \
+        ::pulsatrix::training_equivalence::RecurrentTrainsToSameParameters<::pulsatrix::GRUModule>(MEMBER, 950); \
     }                                                                                                \
     TEST_F(FIXTURE, MlpTrainedWithSGDEndsWithCPUParameters) {                                        \
         ::pulsatrix::SGDOptimizer cpu_opt(0.05f), gpu_opt(0.05f);                                    \
