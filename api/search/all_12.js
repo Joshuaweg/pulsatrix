@@ -55,7 +55,7 @@ var searchData=
   ['transformdataset_52',['transformdataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix::TransformDataset'],['../classpulsatrix_1_1TransformDataset.html#afad166336081a9f387c40ef9f68d1d04',1,'pulsatrix::TransformDataset::TransformDataset()']]],
   ['transformer_5fblock_2ehpp_53',['transformer_block.hpp',['../transformer__block_8hpp.html',1,'']]],
   ['transformerblock_54',['transformerblock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix::TransformerBlock'],['../classpulsatrix_1_1TransformerBlock.html#acde60b9083910b814406bc6a10d7deee',1,'pulsatrix::TransformerBlock::TransformerBlock()']]],
-  ['trial_55',['trial',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a',1,'pulsatrix::detail::ASHACandidate::trial'],['../classpulsatrix_1_1Trial.html',1,'pulsatrix::Trial'],['../classpulsatrix_1_1Trial.html#a480523c7f5fc9fa737d6bc91010c2a25',1,'pulsatrix::Trial::Trial()']]],
+  ['trial_55',['trial',['../classpulsatrix_1_1Trial.html#a480523c7f5fc9fa737d6bc91010c2a25',1,'pulsatrix::Trial::Trial()'],['../classpulsatrix_1_1Trial.html',1,'pulsatrix::Trial'],['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a',1,'pulsatrix::detail::ASHACandidate::trial']]],
   ['trial_2ehpp_56',['trial.hpp',['../trial_8hpp.html',1,'']]],
   ['trialfactory_57',['TrialFactory',['../namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f',1,'pulsatrix']]],
   ['twopointcrossover_58',['TwoPointCrossover',['../namespacepulsatrix.html#a00dc6490fb03959b449db691a86eeead',1,'pulsatrix']]],
