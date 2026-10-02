@@ -15,5 +15,6 @@ var searchData=
   ['step_12',['step',['../structpulsatrix_1_1MetricRecord.html#a5fe453b24af022d273c878aeda0ede88',1,'pulsatrix::MetricRecord']]],
   ['steps_13',['steps',['../structpulsatrix_1_1ScalarSeries.html#a5fde697796d2d474acba677283c12d30',1,'pulsatrix::ScalarSeries']]],
   ['sum_5flog_5fpb_14',['sum_log_pb',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae8231cbd2a73c60f9c3041f28f1c7767',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['sum_5flog_5fpf_15',['sum_log_pf',['../structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc',1,'pulsatrix::GFlowNetTrajectory']]]
+  ['sum_5flog_5fpf_15',['sum_log_pf',['../structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc',1,'pulsatrix::GFlowNetTrajectory']]],
+  ['system_5fcpu_16',['system_cpu',['../structpulsatrix_1_1detail_1_1RawReading.html#a4c3598368c1f33ffb51e0d4781c23dda',1,'pulsatrix::detail::RawReading']]]
 ];

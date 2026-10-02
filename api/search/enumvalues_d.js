@@ -1,21 +1,12 @@
 var searchData=
 [
-  ['recurrent_0',['Recurrent',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba1e58fa41670a96a3ee2aa8007ce54dc6',1,'pulsatrix']]],
-  ['reduction_1',['Reduction',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba9e834f13e35e4edf64863ab414a6217a',1,'pulsatrix']]],
-  ['relu_2',['Relu',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a7bfde445daa113a9903d4eaa43b41e2b',1,'pulsatrix']]],
-  ['retnetforward_3',['RetnetForward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ae540a55d2cfff0c1b3c1fdaa6ea86072',1,'pulsatrix']]],
-  ['retnetgradqk_4',['RetnetGradQK',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a',1,'pulsatrix']]],
-  ['retnetgradv_5',['RetnetGradV',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a03d4e7d6d672e547c44f37cd463c518b',1,'pulsatrix']]],
-  ['retnetlrpinput_6',['RetnetLrpInput',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97',1,'pulsatrix']]],
-  ['retnetreadout_7',['RetnetReadout',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f',1,'pulsatrix']]],
-  ['retnetscores_8',['RetnetScores',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a00b785050045bc646eeac7d9b576b822',1,'pulsatrix']]],
-  ['retnetstategrad_9',['RetnetStateGrad',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a9ae91a09f05f50ad5e936dbcc8dd137a',1,'pulsatrix']]],
-  ['reversetimesum_10',['ReverseTimeSum',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3',1,'pulsatrix']]],
-  ['rnnbackward_11',['RnnBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64',1,'pulsatrix']]],
-  ['rwkvbackward_12',['RwkvBackward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ad67af2133293778b01e15a50778282d7',1,'pulsatrix']]],
-  ['rwkvforward_13',['RwkvForward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a02074e773654d60be53588a7c551717e',1,'pulsatrix']]],
-  ['rwkvlrp_14',['RwkvLrp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac5aa76383a18f79f619e4523207ad4d5',1,'pulsatrix']]],
-  ['rwkvshiftbackward_15',['RwkvShiftBackward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac4e80c16787796dda381d1515c6af876',1,'pulsatrix']]],
-  ['rwkvshiftlrp_16',['RwkvShiftLrp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a5df15a49eb81d6e7b5c201c81d93b364',1,'pulsatrix']]],
-  ['rwkvtokenshift_17',['RwkvTokenShift',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abcdd6c9e1928960ed3f5a5f38cc9b8d1',1,'pulsatrix']]]
+  ['pggrad_0',['PgGrad',['../namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930adc1f63481ef485e13b060c446d273bbf',1,'pulsatrix']]],
+  ['pgloss_1',['PgLoss',['../namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930ab760ac927f4ec969409760e2f044e09f',1,'pulsatrix']]],
+  ['polyakblend_2',['PolyakBlend',['../namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9',1,'pulsatrix']]],
+  ['pooling_3',['Pooling',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba43c8fdf1b340cd45e02e0b66ba2f81a7',1,'pulsatrix']]],
+  ['positive_4',['Positive',['../namespacepulsatrix.html#aeafb34c87ad858963e6f06a87ee9bbc3a3289297424e01eda5b788c083bbf3147',1,'pulsatrix']]],
+  ['ppograd_5',['PpoGrad',['../namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536',1,'pulsatrix']]],
+  ['ppoloss_6',['PpoLoss',['../namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a8bc4fa0f592f03c568063df4971d27f9',1,'pulsatrix']]],
+  ['probabilityofimprovement_7',['ProbabilityOfImprovement',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9',1,'pulsatrix']]],
+  ['product_8',['product',['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fadeb10517653c255364175796ace3553f',1,'pulsatrix::ConjunctionModule::Product'],['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3eadeb10517653c255364175796ace3553f',1,'pulsatrix::DisjunctionModule::Product']]]
 ];

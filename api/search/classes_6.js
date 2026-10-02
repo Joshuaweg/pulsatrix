@@ -6,7 +6,8 @@ var searchData=
   ['gflownetforwardpolicy_3',['GFlowNetForwardPolicy',['../classpulsatrix_1_1GFlowNetForwardPolicy.html',1,'pulsatrix']]],
   ['gflownetsampledaction_4',['GFlowNetSampledAction',['../structpulsatrix_1_1GFlowNetSampledAction.html',1,'pulsatrix']]],
   ['gflownettrajectory_5',['GFlowNetTrajectory',['../structpulsatrix_1_1GFlowNetTrajectory.html',1,'pulsatrix']]],
-  ['gradcam_6',['GradCAM',['../classpulsatrix_1_1GradCAM.html',1,'pulsatrix']]],
-  ['groupnormmodule_7',['GroupNormModule',['../classpulsatrix_1_1GroupNormModule.html',1,'pulsatrix']]],
-  ['grumodule_8',['GRUModule',['../classpulsatrix_1_1GRUModule.html',1,'pulsatrix']]]
+  ['gpusample_6',['GpuSample',['../structpulsatrix_1_1GpuSample.html',1,'pulsatrix']]],
+  ['gradcam_7',['GradCAM',['../classpulsatrix_1_1GradCAM.html',1,'pulsatrix']]],
+  ['groupnormmodule_8',['GroupNormModule',['../classpulsatrix_1_1GroupNormModule.html',1,'pulsatrix']]],
+  ['grumodule_9',['GRUModule',['../classpulsatrix_1_1GRUModule.html',1,'pulsatrix']]]
 ];

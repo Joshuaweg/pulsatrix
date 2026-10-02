@@ -8,5 +8,6 @@ var topics =
     [ "Data Loading, Transformation & Validation", "group__data__pipeline.html", "group__data__pipeline" ],
     [ "Evolutionary Computation", "group__evolutionary.html", "group__evolutionary" ],
     [ "Visualization", "group__visualization.html", "group__visualization" ],
-    [ "Hyperparameter Optimization", "group__hyperparameter__optimization.html", "group__hyperparameter__optimization" ]
+    [ "Hyperparameter Optimization", "group__hyperparameter__optimization.html", "group__hyperparameter__optimization" ],
+    [ "System Monitoring", "group__system__monitoring.html", "group__system__monitoring" ]
 ];

@@ -19,9 +19,10 @@ var searchData=
   ['continuouscartpoleenv_16',['ContinuousCartPoleEnv',['../classpulsatrix_1_1ContinuousCartPoleEnv.html',1,'pulsatrix']]],
   ['conv2dmodule_17',['Conv2DModule',['../classpulsatrix_1_1Conv2DModule.html',1,'pulsatrix']]],
   ['cpubackend_18',['CPUBackend',['../classpulsatrix_1_1CPUBackend.html',1,'pulsatrix']]],
-  ['crossentropyloss_19',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
-  ['csvdataset_20',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
-  ['csvreader_21',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
-  ['csvtable_22',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
-  ['cudabackend_23',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
+  ['cputimes_19',['CpuTimes',['../structpulsatrix_1_1detail_1_1CpuTimes.html',1,'pulsatrix::detail']]],
+  ['crossentropyloss_20',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
+  ['csvdataset_21',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
+  ['csvreader_22',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
+  ['csvtable_23',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
+  ['cudabackend_24',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
 ];

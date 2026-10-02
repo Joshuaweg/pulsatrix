@@ -330,6 +330,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GFlowNetTrajectory.html">GFlowNetTrajectory</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One full sampled trajectory: every state the forward policy acted from, the action taken at each, and the trajectory-level quantities Trajectory Balance (and Detailed Balance/SubTB, in later missions) need.  <a href="structpulsatrix_1_1GFlowNetTrajectory.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GpuSample.html">GpuSample</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One GPU's readings within a <a class="el" href="structpulsatrix_1_1SystemSample.html" title="One point-in-time measurement of the host.">SystemSample</a>.  <a href="structpulsatrix_1_1GpuSample.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GradCAM.html">GradCAM</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">L^c = ReLU(sum_k alpha^c_k * A^k), where alpha^c_k = mean_ij(d(y^c)/d(A^k_ij)) and A is the last <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbacc31a669f6d086f816852dda3290a3ef">OpType::Conv</a> node's activation.  <a href="classpulsatrix_1_1GradCAM.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -422,6 +425,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html">MaxPool2DModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; deferred until a real use case needs them, same minimal-cut discipline as <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s original stride-1/no-padding scope cut.  <a href="classpulsatrix_1_1MaxPool2DModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MetricCapability.html">MetricCapability</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether one metric can be read on this machine, and from where &ndash; or why not.  <a href="structpulsatrix_1_1MetricCapability.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MetricRecord.html">MetricRecord</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One recorded metric value: a named tag, its value, and the training step it was logged at (mirrors <a class="el" href="classpulsatrix_1_1MetricsSink.html#a4f36d9ace9b87065fba013eaaed08906" title="Logs a scalar value (e.g. loss, accuracy).">MetricsSink::log_scalar</a>'s own (tag, value, step) shape).  <a href="structpulsatrix_1_1MetricRecord.html#details">More...</a><br /></td></tr>
@@ -628,6 +634,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html">SwiGLUModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>down_proj(silu(gate_proj(x)) * up_proj(x))</code>, the gated feedforward block used in place of a plain two-linear-layer MLP in most modern transformers. Rank-agnostic over <code>(..., d_model) -&gt; (..., d_model)</code>, matching <code><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a></code>'s I/O contract so Phase 3 Mission 5 (<code><a class="el" href="classpulsatrix_1_1TransformerBlock.html" title="y1 = x + MHA(RMSNorm(x)), y2 = y1 + SwiGLU(RMSNorm(y1)). Shape (N, L, d_model) -&gt; (N,...">TransformerBlock</a></code>) can chain them directly.  <a href="classpulsatrix_1_1SwiGLUModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SystemMonitor.html">SystemMonitor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples CPU/GPU utilization, memory use and temperatures on a background thread, keeps a bounded in-memory history, and streams every sample to a log file.  <a href="classpulsatrix_1_1SystemMonitor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SystemSample.html">SystemSample</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One point-in-time measurement of the host.  <a href="structpulsatrix_1_1SystemSample.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TanhGaussianGrad.html">TanhGaussianGrad</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The (grad_mean, grad_log_std) pair <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a91c0bdf9f5c3a45065361f3f35706e09" title="Gradients w.r.t. mean and log_std, combining the two gradients that arrive at this step&#39;s two outputs...">TanhGaussianPolicy::backward()</a> produces &ndash; both (N, action_dim), the shape of the forward's own <code>mean</code>/<code>log_std</code>.  <a href="structpulsatrix_1_1TanhGaussianGrad.html#details">More...</a><br /></td></tr>
@@ -873,6 +885,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:abb575cb311c04812afe7f12350d86eec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which family of values a named parameter draws from.  <a href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eec">More...</a><br /></td></tr>
 <tr class="separator:abb575cb311c04812afe7f12350d86eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga36063879210fbfeed97464b5b089b871" id="r_ga36063879210fbfeed97464b5b089b871"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871">LogFormat</a> { <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871aaaffc9a26d918147e8944a8fd5e231b9">LogFormat::JsonLines</a>
+, <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871ab20daea8bfacec3891fcf5b7be4adca0">LogFormat::Csv</a>
+ }</td></tr>
+<tr class="memdesc:ga36063879210fbfeed97464b5b089b871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log record encoding.  <a href="group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871">More...</a><br /></td></tr>
+<tr class="separator:ga36063879210fbfeed97464b5b089b871"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -1186,6 +1203,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a469c1dd8905840b1f89ec4f05ff821b3"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a469c1dd8905840b1f89ec4f05ff821b3">MuCommaLambdaReplacement</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt; &amp;, std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt; offspring, size_t mu)</td></tr>
 <tr class="memdesc:a469c1dd8905840b1f89ec4f05ff821b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">(mu,lambda) replacement: the next generation is the fittest mu individuals from offspring only (population/parents are always discarded) &ndash; more explorative than (mu+lambda), since it cannot get stuck re-selecting the same elite parent forever.  <br /></td></tr>
 <tr class="separator:a469c1dd8905840b1f89ec4f05ff821b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae7427cc91bd5f0149c81c3c9251897a" id="r_aae7427cc91bd5f0149c81c3c9251897a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aae7427cc91bd5f0149c81c3c9251897a">format_iso8601_utc</a> (std::chrono::system_clock::time_point tp)</td></tr>
+<tr class="memdesc:aae7427cc91bd5f0149c81c3c9251897a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formats <code>tp</code> as ISO-8601 UTC with milliseconds, e.g. "2026-10-02T12:34:56.789Z".  <br /></td></tr>
+<tr class="separator:aae7427cc91bd5f0149c81c3c9251897a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba113e4a47a13ae03ade3411dc53a115" id="r_aba113e4a47a13ae03ade3411dc53a115"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aba113e4a47a13ae03ade3411dc53a115">sample_to_json</a> (const <a class="el" href="structpulsatrix_1_1SystemSample.html">SystemSample</a> &amp;sample)</td></tr>
+<tr class="memdesc:aba113e4a47a13ae03ade3411dc53a115"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes <code>sample</code> as one JSON object (no trailing newline), the JSON Lines log record.  <br /></td></tr>
+<tr class="separator:aba113e4a47a13ae03ade3411dc53a115"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afaf7be0b67a415f9361e7420a36b906e" id="r_afaf7be0b67a415f9361e7420a36b906e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afaf7be0b67a415f9361e7420a36b906e">PadCollate</a> (float pad_index=0.0f)</td></tr>
 <tr class="memdesc:afaf7be0b67a415f9361e7420a36b906e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that right-pads variable-length token sequences (sample.fields[0], shape (1, seq_len) &ndash; <a class="el" href="classpulsatrix_1_1TextDataset.html#adb902ad1d0b4e655003ce6fa720c421b">TextDataset::get()</a>'s output) to the batch's own max length, producing one (N, max_len) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field recording each sample's real (pre-padding) length. This is the CollateFn extension point Phase 1's architecture design reserved for ragged/variable-length modalities (PyTorch's collate_fn equivalent) &ndash; exercised here for the first time, with zero changes needed to Dataset/DataLoader/Batch themselves.  <br /></td></tr>
 <tr class="separator:afaf7be0b67a415f9361e7420a36b906e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3713,6 +3736,26 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="aae7427cc91bd5f0149c81c3c9251897a" name="aae7427cc91bd5f0149c81c3c9251897a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae7427cc91bd5f0149c81c3c9251897a">&#9670;&#160;</a></span>format_iso8601_utc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::format_iso8601_utc </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::system_clock::time_point&#160;</td>
+          <td class="paramname"><em>tp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Formats <code>tp</code> as ISO-8601 UTC with milliseconds, e.g. "2026-10-02T12:34:56.789Z". </p>
+
+</div>
+</div>
 <a id="ab1858561757f00aeb2d092ed10325f76" name="ab1858561757f00aeb2d092ed10325f76"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab1858561757f00aeb2d092ed10325f76">&#9670;&#160;</a></span>GaussianKdeDensity()</h2>
 
@@ -6140,6 +6183,26 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The full trajectory, per <a class="el" href="structpulsatrix_1_1GFlowNetTrajectory.html" title="One full sampled trajectory: every state the forward policy acted from, the action taken at each,...">GFlowNetTrajectory</a>'s fields above. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Host boundary (GPU-native-kernels Mission 7): the rollout loop is host control flow. env and forward_policy may use any backend; each step reads the sampled action back with one device-&gt;host copy. </dd></dl>
+
+</div>
+</div>
+<a id="aba113e4a47a13ae03ade3411dc53a115" name="aba113e4a47a13ae03ade3411dc53a115"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba113e4a47a13ae03ade3411dc53a115">&#9670;&#160;</a></span>sample_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::sample_to_json </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SystemSample.html">SystemSample</a> &amp;&#160;</td>
+          <td class="paramname"><em>sample</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Encodes <code>sample</code> as one JSON object (no trailing newline), the JSON Lines log record. </p>
 
 </div>
 </div>
