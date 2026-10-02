@@ -238,21 +238,5 @@ TEST_F(DQNAgentTest, WorksWithAMultiLayerSequentialQNetwork) {
     EXPECT_FLOAT_EQ(agent.act_greedy(observation()).data()[0], 1.0f);
 }
 
-using DQNAgentDeathTest = DQNAgentTest;
-
-// act() argmaxes over the network output in a raw host loop over Tensor::data(); that output
-// inherits its device from the observation, so a CUDA-backed observation is silent UB
-// (mission_host_loop_guards.md). One death test, per the mission's one-per-entry-point rule:
-// act() has exactly one caller-supplied Tensor argument, and act_greedy() reaches the same
-// guarded argument role through the same helper.
-TEST_F(DQNAgentDeathTest, ActAbortsOnNonCpuObservation) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    DQNAgent agent(&q_network, kActionDim, 0.0f, &backend);
-    Tensor cuda_observation(Shape({1, kObsDim}), &backend, {0.3f, -0.7f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)agent.act(cuda_observation); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

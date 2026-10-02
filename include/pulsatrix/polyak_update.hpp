@@ -47,11 +47,10 @@ namespace pulsatrix {
  *       an average at all.
  * @note Gradients are untouched. This is a pure value blend and has nothing to do with
  *       zero_grad(); a target network is never backpropagated through.
- * @note Dereferences every parameter's Tensor::data() in a raw host loop, so it guards each
- *       source/destination parameter with PULSATRIX_REQUIRE_HOST: a Module built on a GPU
- *       backend holds Cuda/Hip-tagged parameters (GPU-native-kernels campaign, Mission 0 O4).
- * @note A free function, not a class: there is no state to carry between calls (the state *is*
- *       the destination network's own parameters), matching SyncTargetNetwork's shape.
+ * @note Device-generic (GPU-native-kernels Mission 7): one DeviceBackend::rl_rows(PolyakBlend)
+ *       pass per parameter through the destination parameter's own backend, evaluating
+ *       `tau * source + (1 - tau) * destination` per element exactly as the original host loop
+ *       did. A source parameter on a different device is staged onto the destination's first.
  */
 void PolyakUpdate(Module& source, Module& destination, float tau);
 

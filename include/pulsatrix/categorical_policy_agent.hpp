@@ -70,10 +70,10 @@ public:
      * @note Caches the sampled action's log-probability for log_prob(), taken straight from the
      *       stable log-softmax rather than re-derived as `log(p[action])` -- one rounding path,
      *       not two possibly inconsistent ones.
-     * @note Raw host loop over the network output's Tensor::data() (softmax and the inverse-CDF
-     *       scan have no DeviceBackend primitive) -- PULSATRIX_ASSERT(observation.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor; see
-     *       mission_host_loop_guards.md.
+     * @note Host boundary (GPU-native-kernels Mission 7): sampling (the softmax and the
+     *       inverse-CDF scan against the LCG draw) is host logic. The network may run on any
+     *       device; its (1, action_dim) logits are copied to the host once per call, and the
+     *       action is returned through this agent's own backend. act_greedy() likewise.
      */
     [[nodiscard]] Tensor act(const Tensor& observation) override;
 

@@ -81,9 +81,9 @@ struct GAEResult {
  *       convention as ComputeDQNTarget().
  * @note A free function rather than a class: a pure reduction with no state to carry, matching
  *       ComputeDQNTarget()/ComputeDoubleDQNTarget()'s own free-function precedent.
- * @note Raw host loop over Tensor::data() (a reverse-order recursion has no DeviceBackend
- *       primitive) -- PULSATRIX_REQUIRE_HOST guards against silent UB on a
- *       CUDA-backed Tensor; see mission_host_loop_guards.md.
+ * @note Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recursion
+ *       over one rollout. The inputs may live on any device -- one device->host copy of each of
+ *       rewards, dones and values per call -- and both results are uploaded through `backend`.
  */
 [[nodiscard]] GAEResult ComputeGAE(const Tensor& rewards, const Tensor& dones, const Tensor& values,
                                    float bootstrap_value, float gamma, float lambda, DeviceBackend* backend);

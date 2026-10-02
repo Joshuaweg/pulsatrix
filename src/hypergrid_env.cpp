@@ -2,8 +2,8 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -45,11 +45,12 @@ void HyperGridEnv::decode_state(const Tensor& state, std::vector<int64_t>& out) 
     if (state.rank() != 2 || state.shape().dim(0) != 1 || state.shape().dim(1) != ndim_) {
         throw std::invalid_argument("HyperGridEnv: state must have shape (1, ndim())");
     }
-    PULSATRIX_REQUIRE_HOST(state);
+    // Host boundary (GPU-native-kernels Mission 7): one device->host copy of the coordinates.
+    const std::vector<float> encoded_state = state.to_host_vector();
 
     out.assign(static_cast<size_t>(ndim_), 0);
     for (int64_t i = 0; i < ndim_; ++i) {
-        const float encoded = state.data()[i];
+        const float encoded = encoded_state[static_cast<size_t>(i)];
         const float rounded = std::round(encoded);
         if (std::abs(encoded - rounded) > kIntegerTolerance) {
             throw std::invalid_argument("HyperGridEnv: state coordinates must be integer-valued");
@@ -138,8 +139,6 @@ std::vector<bool> HyperGridEnv::valid_actions_mask(const Tensor& state) const {
 }
 
 StepResult HyperGridEnv::step(const Tensor& action) {
-    PULSATRIX_REQUIRE_HOST(action);
-
     if (!has_reset_) {
         throw std::invalid_argument("HyperGridEnv::step called before reset");
     }
@@ -150,7 +149,8 @@ StepResult HyperGridEnv::step(const Tensor& action) {
         throw std::invalid_argument("HyperGridEnv::step: action must have shape (1, 1)");
     }
 
-    const float encoded = action.data()[0];
+    // Host boundary (GPU-native-kernels Mission 7): one device->host copy of the action.
+    const float encoded = action.to_host_vector()[0];
     const float rounded = std::round(encoded);
     if (std::abs(encoded - rounded) > kIntegerTolerance) {
         throw std::invalid_argument("HyperGridEnv::step: action must encode a whole-number action index");

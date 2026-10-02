@@ -277,30 +277,5 @@ TEST_F(PPOClippedLossTest, RejectsMalformedInputsAndOutOfRangeClipEpsilon) {
     EXPECT_NO_THROW((void)loss.forward(logits, actions, old_log_probs, advantages, 0.999f));
 }
 
-using PPOClippedLossDeathTest = PPOClippedLossTest;
-
-// forward() reads all four tensors in raw host loops over Tensor::data() -- undefined behavior
-// on a CUDA-backed Tensor, so each is PULSATRIX_ASSERT-guarded (mission_host_loop_guards.md). No
-// real GPU needed: this reuses LinearModuleDeathTest's mislabeled-Tensor pattern.
-//
-// One death test, not four -- byte-for-byte PolicyGradientLossDeathTest's own count decision
-// and reasoning, which this class's forward() structurally mirrors. The mission fixes the count
-// at one per raw-host-loop *entry point*, and the four guards here are adjacent lines on a
-// single entry path covering one guarded-argument role: a caller-supplied host tensor read by
-// the same loops. `actions`, `old_log_probs` and `advantages` are all (N, 1) columns validated
-// identically, so extra cases would re-cover a path rather than cover a new one.
-TEST_F(PPOClippedLossDeathTest, ForwardAbortsOnNonCpuNewLogits) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    PPOClippedLoss loss(&backend);
-    Tensor cuda_logits(Shape({2, 3}), &backend, {1.0f, 2.0f, 3.0f, 1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    Tensor actions(Shape({2, 1}), &backend, {0.0f, 1.0f});
-    Tensor old_log_probs(Shape({2, 1}), &backend, {-1.0f, -1.0f});
-    Tensor advantages(Shape({2, 1}), &backend, {1.0f, 1.0f});
-    EXPECT_DEATH({ (void)loss.forward(cuda_logits, actions, old_log_probs, advantages, 0.2f); },
-                 "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix
