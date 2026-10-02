@@ -6,9 +6,11 @@
 
 #include <cmath>
 #include <cstddef>
+#include <cstdlib>
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <typeinfo>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -23,7 +25,27 @@
 #include "pulsatrix/multihead_attention_module.hpp"
 #include "pulsatrix/tensor.hpp"
 
+#if defined(__GNUG__)
+#include <cxxabi.h>
+#endif
+
 namespace pulsatrix {
+
+namespace detail {
+/** @brief The dynamic type's readable name (e.g. "pulsatrix::SoftmaxModule"), for error messages. */
+inline std::string module_type_name(const Module& module) {
+    const char* raw = typeid(module).name();
+#if defined(__GNUG__)
+    int status = 0;
+    char* demangled = abi::__cxa_demangle(raw, nullptr, nullptr, &status);
+    std::string name = (status == 0 && demangled != nullptr) ? demangled : raw;
+    std::free(demangled);
+    return name;
+#else
+    return raw;
+#endif
+}
+}  // namespace detail
 
 /**
  * @brief Wraps an ordered chain of Modules, running them via Module::forward_traced to
@@ -205,20 +227,46 @@ public:
      * @throws std::logic_error if the most recent forward pass was forward_pass_with_patch(), for
      *         the same reason backward_pass() refuses: the modules' cached state would describe a
      *         computation the input did not produce.
+     * @throws std::invalid_argument if a module does not implement config.rule
+     *         (Module::supports_lrp_rule()) -- checked for every module before any propagation;
+     *         the rule is never silently replaced by epsilon.
      */
     Tensor relevance_pass(const Tensor& output_relevance, const LRPRuleConfig& config) {
+        return relevance_pass(output_relevance, std::vector<LRPRuleConfig>(modules_.size(), config));
+    }
+
+    /**
+     * @brief relevance_pass() with a per-module rule choice: `configs[i]` is handed to the i-th
+     *        module (forward order) -- e.g. LRP composites (lrp.hpp).
+     * @throws std::invalid_argument if configs.size() != number of modules, or a module does not
+     *         implement its rule; std::logic_error as for the uniform overload.
+     */
+    Tensor relevance_pass(const Tensor& output_relevance, const std::vector<LRPRuleConfig>& configs) {
         if (last_forward_was_patched_) {
             throw std::logic_error(
                 "ExplainerContext::relevance_pass: the most recent forward pass was "
                 "forward_pass_with_patch(); relevance through a patched activation would describe a "
                 "computation the input did not produce. Run an unpatched forward_pass() first.");
         }
+        if (configs.size() != modules_.size()) {
+            throw std::invalid_argument("ExplainerContext::relevance_pass: need exactly one LRPRuleConfig per module");
+        }
+        for (size_t i = 0; i < modules_.size(); ++i) {
+            if (!modules_[i]->supports_lrp_rule(configs[i].rule)) {
+                throw std::invalid_argument("ExplainerContext::relevance_pass: module " + std::to_string(i) + " (" +
+                                            detail::module_type_name(*modules_[i]) + ") does not implement the " +
+                                            lrp_rule_name(configs[i].rule) + " LRP rule");
+            }
+        }
         Tensor relevance = output_relevance;
-        for (auto it = modules_.rbegin(); it != modules_.rend(); ++it) {
-            relevance = (*it)->propagate_relevance(relevance, config);
+        for (size_t i = modules_.size(); i-- > 0;) {
+            relevance = modules_[i]->propagate_relevance(relevance, configs[i]);
         }
         return relevance;
     }
+
+    /** @brief The module chain, in forward order (not owned). */
+    [[nodiscard]] const std::vector<Module*>& modules() const { return modules_; }
 
     /** @brief The current graph (from the most recent forward_pass() call). */
     [[nodiscard]] const ComputationGraph& graph() const { return graph_; }

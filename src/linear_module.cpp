@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+#include "lrp_rules.hpp"
 #include "pulsatrix/assert.hpp"
 
 namespace pulsatrix {
@@ -122,9 +123,33 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
             "cached batch size");
     }
 
+    lrp_rules::validate(config, "LinearModule");
+
+    Tensor relevance_in(Shape({N, in_features_}), backend_, weight_.device());
+    if (!lrp_rules::is_legacy_epsilon(config)) {
+        // Zennit-compatible rules (LRP-rules Mission 2), composed from gemm/elementwise primitives.
+        const auto n = static_cast<size_t>(N), in = static_cast<size_t>(in_features_),
+                   out = static_cast<size_t>(out_features_);
+        DeviceBackend* be = backend_;
+        lrp_rules::AffineOp op;
+        op.backend = be;
+        op.device = weight_.device();
+        op.input_numel = n * in;
+        op.output_numel = n * out;
+        op.weight_numel = in * out;
+        op.bias_numel = out;
+        op.forward = [=](const float* x, const float* w, float* y) { be->gemm(x, w, y, n, in, out); };
+        op.backward = [=](const float* g, const float* w, float* gx) {
+            be->gemm_ex(g, false, w, true, gx, n, out, in, 0.0f);
+        };
+        op.add_bias = [=](const float* y, const float* b, float* o) { be->add_row_vector(y, b, o, n, out); };
+        lrp_rules::apply(op, last_input_.data(), weight_.data(), bias_.data(), last_pre_bias_output_.data(),
+                         relevance_out.data(), relevance_in.data(), config);
+        return relevance_in;
+    }
+
     // Device-generic (GPU-native-kernels Mission 3): one output element per GPU thread, each
     // summing over out_features in the original loop's order.
-    Tensor relevance_in(Shape({N, in_features_}), backend_, weight_.device());
     backend_->lrp_linear(last_input_.data(), weight_.data(), last_pre_bias_output_.data(), relevance_out.data(),
                          relevance_in.data(), static_cast<size_t>(N), static_cast<size_t>(in_features_),
                          static_cast<size_t>(out_features_), config.epsilon);

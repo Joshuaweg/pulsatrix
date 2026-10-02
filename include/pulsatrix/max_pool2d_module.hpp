@@ -65,6 +65,9 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
+    /** @brief Winner-take-all ignores the config: the same under every rule, so supports all of them. */
+    [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
+
 protected:
     /**
      * @brief The actual forward computation -- per-window max, argmax cached per output

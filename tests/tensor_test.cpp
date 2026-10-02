@@ -122,6 +122,10 @@ public:
                 inner), (override));
     MOCK_METHOD(void, lrp_conv, (const float* col, const float* kernel, const float* pre_bias, const float* r,
                 float* r_col, size_t n, size_t out_channels, size_t p, size_t q, float eps), (override));
+    MOCK_METHOD(void, lrp_stabilized_divide,
+                (const float* r, const float* denom, const float* gate, float* out, size_t n, float eps,
+                 LrpGate gate_mode),
+                (override));
     MOCK_METHOD(void, max_pool_forward, (const float* in, float* out, float* argmax, size_t planes, size_t h, size_t
                 w, size_t kh, size_t kw), (override));
     MOCK_METHOD(void, max_unpool, (const float* src, const float* argmax, float* dst, size_t planes, size_t h,

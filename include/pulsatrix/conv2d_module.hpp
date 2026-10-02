@@ -85,10 +85,19 @@ public:
      *       needed for gradients. Bias is excluded from z, same rationale as LinearModule.
      *       Must be called after forward().
      * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
+     * @note config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox: the
+     *       LinearModule formulas (Zennit 1.0.0) applied in patch space, where each output
+     *       position is K @ patch + b, then folded back with col2im. Epsilon with
+     *       config.epsilon_bias_in_denominator uses z = K @ patch + b (Zennit's Epsilon).
      * @throws std::logic_error if forward() has never been called -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
+     * @throws std::invalid_argument if config's rule parameters are invalid (AlphaBeta needs
+     *         alpha, beta >= 0 and alpha - beta == 1).
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
+
+    /** @brief Implements every LRPRule. */
+    [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
 
     [[nodiscard]] std::vector<ParamRef> parameters() override {
         return {{&kernel_, &kernel_grad_}, {&bias_, &bias_grad_}};
