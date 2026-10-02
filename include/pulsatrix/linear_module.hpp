@@ -106,10 +106,18 @@ public:
      *       conservation exact (up to the epsilon stabilizer) rather than merely
      *       approximate. Must be called after forward() -- uses the cached pre-bias output.
      * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3).
+     * @note config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox, with
+     *       Zennit 1.0.0 semantics (see src/lrp_rules.hpp for the formulas). Epsilon with
+     *       config.epsilon_bias_in_denominator uses z = xW + b instead (Zennit's Epsilon).
      * @throws std::logic_error if forward() has never been called -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
+     * @throws std::invalid_argument if config's rule parameters are invalid (AlphaBeta needs
+     *         alpha, beta >= 0 and alpha - beta == 1).
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
+
+    /** @brief Implements every LRPRule. */
+    [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
 
     [[nodiscard]] std::vector<ParamRef> parameters() override {
         return {{&weight_, &weight_grad_}, {&bias_, &bias_grad_}};

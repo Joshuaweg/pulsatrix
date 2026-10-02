@@ -303,5 +303,14 @@ PULSATRIX_HOST_DEVICE inline void aggregator_lrp_column(const float* x, const fl
     }
 }
 
+// ---- Affine-layer rules (Gamma / AlphaBeta / ZBox / bias-epsilon), LRP-rules Mission 2 ----------
+// out = passes ? r / stab(denom) : 0, where gate_mode 0 passes everything, 1 passes gate > 0 and
+// 2 passes gate < 0 (the declaration order of LrpGate). The gated-out branch is a hard 0, not
+// 0 * (r / stab), so a huge quotient can never leak a NaN through the mask.
+PULSATRIX_HOST_DEVICE inline float stabilized_divide(float r, float denom, float gate, int gate_mode, float eps) {
+    const bool passes = gate_mode == 0 || (gate_mode == 1 && gate > 0.0f) || (gate_mode == 2 && gate < 0.0f);
+    return passes ? r / stabilize(denom, eps) : 0.0f;
+}
+
 }  // namespace lrp
 }  // namespace pulsatrix

@@ -98,6 +98,16 @@ public:
     [[nodiscard]] virtual Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) = 0;
 
     /**
+     * @brief Whether propagate_relevance() implements `rule` (no silent fallback: callers such
+     *        as ExplainerContext::relevance_pass() throw rather than run a module on a rule it
+     *        does not implement).
+     * @note Default: only LRPRule::Epsilon, the rule every module implements. Overridden by
+     *       LinearModule / Conv2DModule (all rules), by parameter-free pass-through modules whose
+     *       relevance rule does not read the config at all, and by SequentialModule (all layers).
+     */
+    [[nodiscard]] virtual bool supports_lrp_rule(LRPRule rule) const { return rule == LRPRule::Epsilon; }
+
+    /**
      * @brief Computes the gradient w.r.t. this module's input, given the gradient w.r.t.
      *        its output. Must be called after forward() -- uses state cached from that call.
      * @param grad_output Gradient w.r.t. this module's output.

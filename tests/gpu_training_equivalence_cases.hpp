@@ -1090,6 +1090,61 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
     ExpectParametersNear(cl2, gl2, 1e-3f);
 }
 
+// LRP-rules Mission 2: every rule on Linear and Conv2D, and each Zennit preset through
+// LRP::explain on a small conv net, CPU vs GPU.
+inline void LRPRulesMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    std::vector<LRPRuleConfig> rules(6);
+    rules[0].epsilon_bias_in_denominator = true;
+    rules[1].rule = LRPRule::AlphaBeta;  // ZPlus
+    rules[2].rule = LRPRule::AlphaBeta;
+    rules[2].alpha = 2.0f;
+    rules[2].beta = 1.0f;
+    rules[3].rule = LRPRule::Gamma;
+    rules[4].rule = LRPRule::ZBox;
+    rules[4].low = -1.0f;
+    rules[5].rule = LRPRule::Epsilon;  // the original pre-bias rule, for completeness
+
+    LinearModule cl(6, 5, &cpu), gl(6, 5, &gpu);
+    RandomizeAndMirror(cl, gl, 1300);
+    Conv2DModule cc(2, 3, 2, 2, &cpu), gc(2, 3, 2, 2, &gpu);
+    RandomizeAndMirror(cc, gc, 1301);
+    const std::vector<float> lx = Random(4 * 6, 1302), cx = Random(2 * 2 * 5 * 5, 1303);
+    const std::vector<float> lr = Random(4 * 5, 1304), cr = Random(2 * 3 * 4 * 4, 1305);
+    (void)cl.forward(Tensor(Shape({4, 6}), &cpu, lx));
+    (void)gl.forward(Tensor(Shape({4, 6}), &gpu, lx));
+    (void)cc.forward(Tensor(Shape({2, 2, 5, 5}), &cpu, cx));
+    (void)gc.forward(Tensor(Shape({2, 2, 5, 5}), &gpu, cx));
+    for (const LRPRuleConfig& config : rules) {
+        SCOPED_TRACE(lrp_rule_name(config.rule));
+        Tensor g_lin = gl.propagate_relevance(Tensor(Shape({4, 5}), &gpu, lr), config);
+        EXPECT_EQ(g_lin.device(), gpu.device());
+        ExpectRelevanceAgrees(cl.propagate_relevance(Tensor(Shape({4, 5}), &cpu, lr), config), g_lin);
+        ExpectRelevanceAgrees(cc.propagate_relevance(Tensor(Shape({2, 3, 4, 4}), &cpu, cr), config),
+                              gc.propagate_relevance(Tensor(Shape({2, 3, 4, 4}), &gpu, cr), config));
+    }
+
+    // conv -> relu -> conv -> relu -> flatten -> linear, through each preset.
+    Conv2DModule cc1(1, 3, 2, 2, &cpu), gc1(1, 3, 2, 2, &gpu), cc2(3, 2, 2, 2, &cpu), gc2(3, 2, 2, 2, &gpu);
+    ReluModule cr1(&cpu), gr1(&gpu), cr2(&cpu), gr2(&gpu);
+    FlattenModule cf(&cpu), gf(&gpu);
+    LinearModule cl2(8, 3, &cpu), gl2(8, 3, &gpu);
+    RandomizeAndMirror(cc1, gc1, 1306);
+    RandomizeAndMirror(cc2, gc2, 1307);
+    RandomizeAndMirror(cl2, gl2, 1308);
+    ExplainerContext cctx({&cc1, &cr1, &cc2, &cr2, &cf, &cl2}), gctx({&gc1, &gr1, &gc2, &gr2, &gf, &gl2});
+    const std::vector<float> x = Random(2 * 1 * 4 * 4, 1309, 0.0f, 1.0f);
+    Tensor cxt(Shape({2, 1, 4, 4}), &cpu, x), gxt(Shape({2, 1, 4, 4}), &gpu, x);
+    for (const LRP& lrp : {LRP::epsilon_plus(), LRP::epsilon_alpha2_beta1(), LRP::epsilon_gamma_box(0.0f, 1.0f)}) {
+        Attribution ca = lrp.explain(cctx, cxt, 1, &cpu);
+        Attribution ga = lrp.explain(gctx, gxt, 1, &gpu);
+        SCOPED_TRACE(ca.metadata.at("rule"));
+        EXPECT_EQ(ca.metadata.at("rules"), ga.metadata.at("rules"));
+        EXPECT_EQ(ga.values.device(), gpu.device());
+        ExpectRelevanceAgrees(ca.values, ga.values);
+    }
+}
+
 }  // namespace training_equivalence
 }  // namespace pulsatrix
 
@@ -1234,4 +1289,5 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
         ::pulsatrix::CPUBackend adam_cpu_backend;                                                    \
         ::pulsatrix::AdamOptimizer cpu_opt(0.01f, &adam_cpu_backend), gpu_opt(0.01f, &MEMBER);       \
         ::pulsatrix::training_equivalence::MlpTrainsToSameParameters(MEMBER, cpu_opt, gpu_opt);      \
-    }
+    }                                                                                               \
+    TEST_F(FIXTURE, LRPRulesMatchCPU) { ::pulsatrix::training_equivalence::LRPRulesMatch(MEMBER); }
