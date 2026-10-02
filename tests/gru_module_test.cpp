@@ -366,44 +366,5 @@ TEST_F(GRUModuleTest, RelevanceSeededAtLastStepReachesEarlierTimesteps) {
     EXPECT_NEAR(sum_in, 3.0f, 1e-2f);
 }
 
-using GRUModuleDeathTest = GRUModuleTest;
-
-// forward_impl/backward/propagate_relevance all dereference Tensor::data() in raw host
-// loops (including the sigmoid/tanh workarounds) -- undefined behavior on a CUDA-backed
-// Tensor. See RNNModuleDeathTest for the mislabeled-Tensor testing pattern this reuses.
-// Written from the start of this mission, not deferred.
-TEST_F(GRUModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    GRUModule gru(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)gru.forward(input); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(GRUModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    GRUModule gru(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)gru.forward(input);
-
-    Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)gru.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(GRUModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    GRUModule gru(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)gru.forward(input);
-
-    Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)gru.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

@@ -38,13 +38,11 @@
 #include "pulsatrix/gflownet_forward_policy.hpp"
 #include "pulsatrix/gflownet_trajectory.hpp"
 #include "pulsatrix/group_norm_module.hpp"
-#include "pulsatrix/gru_module.hpp"
 #include "pulsatrix/hypergrid_env.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
 #include "pulsatrix/layer_norm_module.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/lrp_conservation.hpp"
-#include "pulsatrix/lstm_module.hpp"
 #include "pulsatrix/mamba_module.hpp"
 #include "pulsatrix/max_pool2d_module.hpp"
 #include "pulsatrix/mse_loss.hpp"
@@ -58,7 +56,6 @@
 #include "pulsatrix/replay_buffer.hpp"
 #include "pulsatrix/retnet_module.hpp"
 #include "pulsatrix/rms_norm_module.hpp"
-#include "pulsatrix/rnn_module.hpp"
 #include "pulsatrix/rollout_buffer.hpp"
 #include "pulsatrix/rope_module.hpp"
 #include "pulsatrix/rwkv_module.hpp"
@@ -209,24 +206,6 @@ TEST_F(HostGuardCoverageDeathTest, SinusoidalTimestepEmbeddingAbortsOnGpuBackend
 }
 
 // ---- Layers whose output / scratch is allocated through a GPU backend ----
-
-TEST_F(HostGuardCoverageDeathTest, RNNForwardAbortsOnGpuBackendOutput) {
-    RNNModule rnn(2, 2, &hip);
-    Tensor x = host(Shape({1, 2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)rnn.forward(x); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, GRUForwardAbortsOnGpuBackendOutput) {
-    GRUModule gru(2, 2, &hip);
-    Tensor x = host(Shape({1, 2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)gru.forward(x); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, LSTMForwardAbortsOnGpuBackendOutput) {
-    LSTMModule lstm(2, 2, &hip);
-    Tensor x = host(Shape({1, 2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)lstm.forward(x); }, "output");
-}
 
 TEST_F(HostGuardCoverageDeathTest, MambaForwardAbortsOnGpuBackendOutput) {
     MambaModule mamba(2, 2, &hip);

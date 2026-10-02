@@ -26,13 +26,12 @@ namespace pulsatrix {
  *        Input (N, L, input_size) -> output (N, L, hidden_size), the full hidden-state
  *        sequence (matches RNNModule's/LSTMModule's convention). Single layer, no
  *        bidirectional/multi-layer/variable-length support.
- * @note forward() computes its sigmoid/tanh activations through
- *       DeviceBackend::elementwise (ElementwiseOp::Sigmoid / ::Tanh), not a raw host loop --
- *       the deferred primitive this class's note used to describe now exists. Their
- *       *derivatives* are still raw host loops in backward()/propagate_relevance(),
- *       PULSATRIX_ASSERT-guarded like every other not-yet-backend-generic method here:
- *       DeviceBackend::elementwise has no derivative variant for any op, so each module
- *       computes its own from its cached forward output (ReluModule included).
+ * @note Device-generic (GPU-native-kernels Mission 5): forward(), backward() and
+ *       propagate_relevance() run entirely through DeviceBackend primitives (gemm/gemm_ex,
+ *       copy_2d timestep slicing, elementwise Sigmoid/Tanh plus add/mul/axpby for the gate
+ *       blend, recurrent_cell(GruBackward / GruLrp), accumulate_rows, lrp_linear,
+ *       gru_lrp_hprev), reproducing the former host loops' evaluation order so CPU results
+ *       are bit-identical.
  * @note LRP rule (gate-signal principle of Arras et al. 2019, "Explaining Recurrent Neural
  *       Network Predictions in Sentiment Analysis", extended here to GRU's
  *       reset-gate-inside-the-preactivation structure -- Arras et al. cover LSTM explicitly,
@@ -98,8 +97,8 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached
      *         forward output shape.
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 5): every step runs through
+     *       DeviceBackend primitives, bit-identical to the former host loops on CPU.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -173,8 +172,8 @@ protected:
      * @brief The actual forward computation -- per-timestep tied-weight gated recurrence.
      * @throws std::invalid_argument if input isn't rank-3 (N, L, input_size), or its last
      *         dimension doesn't match input_size.
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(input.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 5): every step runs through
+     *       DeviceBackend primitives, bit-identical to the former host loops on CPU.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
