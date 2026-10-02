@@ -145,6 +145,22 @@ Signed attributions are drawn with the blue-white-red diverging map centred on z
 ones (Grad-CAM) with Viridis -- `SaliencyHeatmapView` picks the map via
 `ComputeHeatmapColorScale`.
 
+### Screenshots
+
+Captured with `--screenshot` on a model trained for one epoch (96.78% test accuracy), test
+digit #0 (a 7):
+
+| | |
+|---|---|
+| ![Training dashboard](../assets/visualization/mnist_gallery/01_training.png) | ![Dataset statistics and image grid](../assets/visualization/mnist_gallery/02_dataset.png) |
+| Training: live loss, held-out accuracy, weight histograms | Dataset: pixel/label histograms, captioned test digits (X = misclassified) |
+| ![Heatmaps for every explainer](../assets/visualization/mnist_gallery/04_heatmaps.png) | ![LRP epsilon bar and waterfall charts](../assets/visualization/mnist_gallery/11_charts_lrp_epsilon.png) |
+| Heatmaps: all nine explainers side by side | LRP epsilon: heatmap, top-12 bars, waterfall to the 2.436 logit |
+| ![LRP score cards](../assets/visualization/mnist_gallery/17_lrp_score_cards.png) | ![Beeswarm for LRP epsilon](../assets/visualization/mnist_gallery/21_beeswarm_lrp_epsilon.png) |
+| Score cards: one per LRP rule set, conservation and stability | Beeswarm: top-4 pixels across 200 test digits |
+| ![Circuit graph](../assets/visualization/mnist_gallery/25_circuit.png) | |
+| Circuit graph: per-layer zero-ablation effect (the output node is the reference, not ablated) | |
+
 ## Recipes
 
 - [Training dashboard](../recipes/visualization/training_dashboard.md)
