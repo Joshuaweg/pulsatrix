@@ -964,10 +964,9 @@ rather than something specific to layers.</p>
 rule is a compile error, not a runtime "no default rule" exception. This is deliberate: it's
 the specific failure mode (silently falling back to a generic/undefined rule) this project
 exists to avoid, the way Captum/Zennit-style post-hoc tools can. If a new layer's correct LRP
-rule genuinely isn't known yet, <code>propagate_relevance()</code> should <code>throw</code> explicitly (see
-<code>RWKVModule</code>/<code>RetNetModule</code> in <a href="../deep-learning/">Deep Learning Modules and Layers</a>
-for real examples of a documented, intentional "not yet derived" throw) rather than being
-skipped or stubbed with a plausible-looking approximation.</p>
+rule genuinely isn't known yet, <code>propagate_relevance()</code> should <code>throw</code> explicitly, with a
+message saying the rule is not yet derived, rather than being skipped or stubbed with a
+plausible-looking approximation.</p>
 <p>If your layer needs a <strong>selectable rule variant</strong> rather than one fixed formula (see
 <code>ConjunctionModule::TNorm</code>'s <code>Product</code>/<code>Lukasiewicz</code>/<code>Godel</code> choice in
 <a href="../neuro-symbolic/">Neuro-Symbolic Reasoning</a> for a worked example), add an enum
