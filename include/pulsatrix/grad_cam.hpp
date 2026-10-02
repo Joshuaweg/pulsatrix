@@ -31,6 +31,8 @@ namespace pulsatrix {
  *       just worth noting for a reader used to "conv block" framing elsewhere.
  * @note A pure graph walker built entirely against ExplainerContext's public interface --
  *       no core (Tensor/ComputationGraph/Autograd/Module) changes needed.
+ * @note Device-generic: the CAM weighting runs on host copies of the target node's
+ *       activation/gradient; the seed and the CAM are uploaded beside the network's tensors.
  */
 class GradCAM {
 public:
@@ -65,12 +67,14 @@ public:
             throw std::invalid_argument("GradCAM::explain: target_index out of range");
         }
         int64_t N = output.shape().dim(0);
+        int64_t num_classes = output.shape().dim(1);
 
-        Tensor seed(output.shape(), backend);
-        seed.fill(0.0f);
+        std::vector<float> seed_values(static_cast<size_t>(output.numel()), 0.0f);
         for (int64_t n = 0; n < N; ++n) {
-            seed.at({n, target_index}) = 1.0f;
+            seed_values[static_cast<size_t>(n * num_classes + target_index)] = 1.0f;
         }
+        Tensor seed(output.shape(), explainer_detail::backend_beside(output, backend), seed_values,
+                    output.device());
         (void)ctx.backward_pass(seed);
 
         std::vector<NodeId> conv_nodes = ctx.graph().nodes_by_op_type(OpType::Conv);
@@ -81,21 +85,28 @@ public:
         }
         NodeId target_node = conv_nodes.back();
 
-        const Tensor& activation = ctx.activation(target_node);
-        const Tensor& grad = ctx.gradient(target_node);
+        const Tensor& activation_tensor = ctx.activation(target_node);
+        const Tensor& grad_tensor = ctx.gradient(target_node);
 
-        int64_t channels = activation.shape().dim(1);
-        int64_t height = activation.shape().dim(2);
-        int64_t width = activation.shape().dim(3);
+        int64_t channels = activation_tensor.shape().dim(1);
+        int64_t height = activation_tensor.shape().dim(2);
+        int64_t width = activation_tensor.shape().dim(3);
 
-        Tensor cam(Shape({N, height, width}), backend);
+        // Host boundary: one read of each buffer, then the original arithmetic on the copies.
+        const std::vector<float> activation = activation_tensor.to_host_vector();
+        const std::vector<float> grad = grad_tensor.to_host_vector();
+        auto at4 = [&](const std::vector<float>& v, int64_t n, int64_t c, int64_t h, int64_t w) {
+            return v[static_cast<size_t>(((n * channels + c) * height + h) * width + w)];
+        };
+
+        std::vector<float> cam(static_cast<size_t>(N * height * width), 0.0f);
         for (int64_t n = 0; n < N; ++n) {
             std::vector<float> alpha(static_cast<size_t>(channels), 0.0f);
             for (int64_t c = 0; c < channels; ++c) {
                 float sum = 0.0f;
                 for (int64_t h = 0; h < height; ++h) {
                     for (int64_t w = 0; w < width; ++w) {
-                        sum += grad.at({n, c, h, w});
+                        sum += at4(grad, n, c, h, w);
                     }
                 }
                 alpha[static_cast<size_t>(c)] = sum / static_cast<float>(height * width);
@@ -105,14 +116,16 @@ public:
                 for (int64_t w = 0; w < width; ++w) {
                     float value = 0.0f;
                     for (int64_t c = 0; c < channels; ++c) {
-                        value += alpha[static_cast<size_t>(c)] * activation.at({n, c, h, w});
+                        value += alpha[static_cast<size_t>(c)] * at4(activation, n, c, h, w);
                     }
-                    cam.at({n, h, w}) = value > 0.0f ? value : 0.0f;
+                    cam[static_cast<size_t>((n * height + h) * width + w)] = value > 0.0f ? value : 0.0f;
                 }
             }
         }
 
-        return Attribution{"grad_cam", std::move(cam),
+        Tensor cam_tensor(Shape({N, height, width}), explainer_detail::backend_beside(activation_tensor, backend),
+                          cam, activation_tensor.device());
+        return Attribution{"grad_cam", std::move(cam_tensor),
                             {{"target_index", std::to_string(target_index)},
                              {"layer_node_id", std::to_string(target_node)}}};
     }
