@@ -2,29 +2,7 @@
 
 #include <stdexcept>
 
-#include "pulsatrix/assert.hpp"
-
 namespace pulsatrix {
-
-namespace {
-// Transposes a (rows x cols) row-major buffer into a (cols x rows) row-major buffer --
-// same helper shape as LinearModule's/Conv2DModule's/RNNModule's own transpose()
-// (CPUBackend::gemm has no transpose flag).
-Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
-    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
-    PULSATRIX_REQUIRE_HOST(m);
-    Tensor out(Shape({cols, rows}), backend);
-    PULSATRIX_REQUIRE_HOST(out);
-    for (int64_t r = 0; r < rows; ++r) {
-        for (int64_t c = 0; c < cols; ++c) {
-            out.data()[c * rows + r] = m.data()[r * cols + c];
-        }
-    }
-    return out;
-}
-}  // namespace
 
 LSTMModule::LSTMModule(int64_t input_size, int64_t hidden_size, DeviceBackend* backend)
     : input_size_(input_size),
@@ -111,9 +89,6 @@ void LSTMModule::set_bias_o(std::initializer_list<float> values) {
 }
 
 Tensor LSTMModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(input);
-
     if (input.rank() != 3 || input.shape().dim(2) != input_size_) {
         throw std::invalid_argument("LSTMModule::forward: input must be rank-3 (N, L, input_size)");
     }
@@ -133,63 +108,57 @@ Tensor LSTMModule::forward_impl(const Tensor& input) {
     last_cell_tanh_ = Tensor(Shape({N, L, hidden_size_}), backend_);
     last_pre_activation_g_ = Tensor(Shape({N, L, hidden_size_}), backend_);
 
+    // Device-generic (GPU-native-kernels Mission 5): every step below is a DeviceBackend
+    // primitive reproducing the former host loop's per-element expression and order.
+    const auto n = static_cast<size_t>(N);
+    const auto d = static_cast<size_t>(input_size_);
+    const auto h = static_cast<size_t>(hidden_size_);
+    const auto lu = static_cast<size_t>(L);
+    const size_t gate_n = n * h;
+
     Tensor output(Shape({N, L, hidden_size_}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(output);
 
     // z = x_t @ Wx + h_prev @ Wh, EXCLUDING bias -- one gate's pre-activation.
     auto gate_preactivation = [&](const Tensor& x_t, const Tensor& h_prev, const Tensor& wx, const Tensor& wh) {
         Tensor z1(Shape({N, hidden_size_}), backend_);
-        backend_->gemm(x_t.data(), wx.data(), z1.data(), static_cast<size_t>(N), static_cast<size_t>(input_size_),
-                       static_cast<size_t>(hidden_size_));
+        backend_->gemm(x_t.data(), wx.data(), z1.data(), n, d, h);
         Tensor z2(Shape({N, hidden_size_}), backend_);
-        backend_->gemm(h_prev.data(), wh.data(), z2.data(), static_cast<size_t>(N),
-                       static_cast<size_t>(hidden_size_), static_cast<size_t>(hidden_size_));
+        backend_->gemm(h_prev.data(), wh.data(), z2.data(), n, h, h);
         z1.accumulate(z2);
         return z1;
     };
 
+    // Adds the gate's bias into a fresh buffer, leaving the bias-free pre-activation (which
+    // the LRP epsilon-rule denominator needs) intact in z.
+    auto add_bias = [&](const Tensor& z, const Tensor& bias) {
+        Tensor pre(Shape({N, hidden_size_}), backend_);
+        backend_->add_row_vector(z.data(), bias.data(), pre.data(), n, h);
+        return pre;
+    };
+
+    // Writes a contiguous (N, H) timestep buffer into slice t of an (N, L, H) cache.
+    auto store_step = [&](Tensor& seq, const Tensor& step, size_t tu) {
+        backend_->copy_2d(seq.data() + tu * h, lu * h, step.data(), h, n, h);
+    };
+
     for (int64_t t = 0; t < L; ++t) {
+        const auto tu = static_cast<size_t>(t);
         Tensor x_t(Shape({N, input_size_}), backend_);
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t i = 0; i < input_size_; ++i) {
-                x_t.data()[n * input_size_ + i] = input.data()[(n * L + t) * input_size_ + i];
-            }
-        }
+        backend_->copy_2d(x_t.data(), d, input.data() + tu * d, lu * d, n, d);
         Tensor h_prev(Shape({N, hidden_size_}), backend_);
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t k = 0; k < hidden_size_; ++k) {
-                h_prev.data()[n * hidden_size_ + k] = last_hidden_states_.data()[(n * (L + 1) + t) * hidden_size_ + k];
-            }
-        }
+        backend_->copy_2d(h_prev.data(), h, last_hidden_states_.data() + tu * h, (lu + 1) * h, n, h);
 
         Tensor z_i = gate_preactivation(x_t, h_prev, weight_xi_, weight_hi_);
         Tensor z_f = gate_preactivation(x_t, h_prev, weight_xf_, weight_hf_);
         Tensor z_g = gate_preactivation(x_t, h_prev, weight_xg_, weight_hg_);
         Tensor z_o = gate_preactivation(x_t, h_prev, weight_xo_, weight_ho_);
 
-        // Adds the gate's bias into a fresh buffer, leaving the bias-free pre-activation
-        // (which the LRP epsilon-rule denominator needs) intact in z.
-        auto add_bias = [&](const Tensor& z, const Tensor& bias) {
-            Tensor pre(Shape({N, hidden_size_}), backend_);
-            for (int64_t n = 0; n < N; ++n) {
-                for (int64_t k = 0; k < hidden_size_; ++k) {
-                    pre.data()[n * hidden_size_ + k] = z.data()[n * hidden_size_ + k] + bias.data()[k];
-                }
-            }
-            return pre;
-        };
-
-        // Gate activations via the backend's Sigmoid/Tanh primitives (applied in place)
-        // rather than raw host loops. z_g EXCLUDING bias is what the LRP epsilon-rule
-        // denominator uses (cached below -- same convention as LinearModule/RNNModule: bias
-        // has no associated input feature to redistribute relevance to, so it's excluded
-        // from z entirely, which is what makes conservation exact rather than merely
-        // approximate). The actual tanh activation still needs the real bias-included
-        // pre-activation, which is what add_bias() builds.
-        const size_t gate_n = static_cast<size_t>(N * hidden_size_);
+        // Gate activations via the backend's Sigmoid/Tanh primitives (applied in place). z_g
+        // EXCLUDING bias is what the LRP epsilon-rule denominator uses (cached below -- same
+        // convention as LinearModule/RNNModule: bias has no associated input feature to
+        // redistribute relevance to, so it's excluded from z entirely, which is what makes
+        // conservation exact rather than merely approximate). The actual tanh activation still
+        // needs the real bias-included pre-activation, which is what add_bias() builds.
         Tensor gate_i = add_bias(z_i, bias_i_);
         Tensor gate_f = add_bias(z_f, bias_f_);
         Tensor gate_g = add_bias(z_g, bias_g_);
@@ -199,43 +168,32 @@ Tensor LSTMModule::forward_impl(const Tensor& input) {
         backend_->elementwise(ElementwiseOp::Tanh, gate_g.data(), gate_g.data(), gate_n);
         backend_->elementwise(ElementwiseOp::Sigmoid, gate_o.data(), gate_o.data(), gate_n);
 
-        // c_t = f_t*c_{t-1} + i_t*g_t, then tanh(c_t) through the same backend primitive.
+        // c_t = f_t*c_{t-1} + i_t*g_t, tanh(c_t), h_t = o_t*tanh(c_t) in one fused pass.
+        Tensor c_prev(Shape({N, hidden_size_}), backend_);
+        backend_->copy_2d(c_prev.data(), h, last_cell_states_.data() + tu * h, (lu + 1) * h, n, h);
         Tensor cell(Shape({N, hidden_size_}), backend_);
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t k = 0; k < hidden_size_; ++k) {
-                const int64_t idx = n * hidden_size_ + k;
-                const float c_prev = last_cell_states_.data()[(n * (L + 1) + t) * hidden_size_ + k];
-                cell.data()[idx] = gate_f.data()[idx] * c_prev + gate_i.data()[idx] * gate_g.data()[idx];
-            }
-        }
         Tensor cell_tanh(Shape({N, hidden_size_}), backend_);
-        backend_->elementwise(ElementwiseOp::Tanh, cell.data(), cell_tanh.data(), gate_n);
+        Tensor h_t(Shape({N, hidden_size_}), backend_);
+        RecurrentCellArgs args;
+        args.in[0] = gate_i.data();
+        args.in[1] = gate_f.data();
+        args.in[2] = gate_g.data();
+        args.in[3] = gate_o.data();
+        args.in[4] = c_prev.data();
+        args.out[0] = cell.data();
+        args.out[1] = cell_tanh.data();
+        args.out[2] = h_t.data();
+        backend_->recurrent_cell(RecurrentCellOp::LstmForward, args, gate_n);
 
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t k = 0; k < hidden_size_; ++k) {
-                const int64_t idx = n * hidden_size_ + k;
-                const int64_t seq_idx = (n * L + t) * hidden_size_ + k;
-
-                const float i_t = gate_i.data()[idx];
-                const float f_t = gate_f.data()[idx];
-                const float g_t = gate_g.data()[idx];
-                const float o_t = gate_o.data()[idx];
-
-                const float c_t = cell.data()[idx];
-                const float tanh_c = cell_tanh.data()[idx];
-                const float h_t = o_t * tanh_c;
-
-                last_gate_i_.data()[seq_idx] = i_t;
-                last_gate_f_.data()[seq_idx] = f_t;
-                last_gate_g_.data()[seq_idx] = g_t;
-                last_gate_o_.data()[seq_idx] = o_t;
-                last_cell_tanh_.data()[seq_idx] = tanh_c;
-                last_pre_activation_g_.data()[seq_idx] = z_g.data()[idx];
-                last_cell_states_.data()[(n * (L + 1) + t + 1) * hidden_size_ + k] = c_t;
-                last_hidden_states_.data()[(n * (L + 1) + t + 1) * hidden_size_ + k] = h_t;
-                output.data()[seq_idx] = h_t;
-            }
-        }
+        store_step(last_gate_i_, gate_i, tu);
+        store_step(last_gate_f_, gate_f, tu);
+        store_step(last_gate_g_, gate_g, tu);
+        store_step(last_gate_o_, gate_o, tu);
+        store_step(last_cell_tanh_, cell_tanh, tu);
+        store_step(last_pre_activation_g_, z_g, tu);
+        backend_->copy_2d(last_cell_states_.data() + (tu + 1) * h, (lu + 1) * h, cell.data(), h, n, h);
+        backend_->copy_2d(last_hidden_states_.data() + (tu + 1) * h, (lu + 1) * h, h_t.data(), h, n, h);
+        store_step(output, h_t, tu);
     }
 
     has_forwarded_ = true;
@@ -253,14 +211,13 @@ Tensor LSTMModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument(
             "LSTMModule::backward: grad_output must be (N, L, hidden_size) matching the cached forward shape");
     }
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(grad_output);
+
+    const auto n = static_cast<size_t>(N);
+    const auto d = static_cast<size_t>(input_size_);
+    const auto h = static_cast<size_t>(hidden_size_);
+    const auto lu = static_cast<size_t>(L);
 
     Tensor grad_input(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
     grad_input.fill(0.0f);
 
     auto zeroed_like = [&](const Tensor& t) {
@@ -286,19 +243,28 @@ Tensor LSTMModule::backward(const Tensor& grad_output) {
     Tensor dc_next(Shape({N, hidden_size_}), backend_);
     dc_next.fill(0.0f);
 
+    // Contiguous (N, H) copy of timestep t of an (N, L, H) cache.
+    auto load_step = [&](const Tensor& seq, size_t tu) {
+        Tensor out(Shape({N, hidden_size_}), backend_);
+        backend_->copy_2d(out.data(), h, seq.data() + tu * h, lu * h, n, h);
+        return out;
+    };
+
     for (int64_t t = L - 1; t >= 0; --t) {
+        const auto tu = static_cast<size_t>(t);
         Tensor x_t(Shape({N, input_size_}), backend_);
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t i = 0; i < input_size_; ++i) {
-                x_t.data()[n * input_size_ + i] = last_input_.data()[(n * L + t) * input_size_ + i];
-            }
-        }
+        backend_->copy_2d(x_t.data(), d, last_input_.data() + tu * d, lu * d, n, d);
         Tensor h_prev(Shape({N, hidden_size_}), backend_);
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t k = 0; k < hidden_size_; ++k) {
-                h_prev.data()[n * hidden_size_ + k] = last_hidden_states_.data()[(n * (L + 1) + t) * hidden_size_ + k];
-            }
-        }
+        backend_->copy_2d(h_prev.data(), h, last_hidden_states_.data() + tu * h, (lu + 1) * h, n, h);
+        Tensor c_prev(Shape({N, hidden_size_}), backend_);
+        backend_->copy_2d(c_prev.data(), h, last_cell_states_.data() + tu * h, (lu + 1) * h, n, h);
+
+        Tensor g_t = load_step(grad_output, tu);
+        Tensor i_t = load_step(last_gate_i_, tu);
+        Tensor f_t = load_step(last_gate_f_, tu);
+        Tensor gg_t = load_step(last_gate_g_, tu);
+        Tensor o_t = load_step(last_gate_o_, tu);
+        Tensor tanh_c = load_step(last_cell_tanh_, tu);
 
         // Per-gate pre-activation gradients. dz_* = dgate_* * d(activation)/dz, with the
         // sigmoid derivative written as s*(1-s) and tanh's as 1-g^2 -- both computed from
@@ -308,32 +274,22 @@ Tensor LSTMModule::backward(const Tensor& grad_output) {
         Tensor dz_g(Shape({N, hidden_size_}), backend_);
         Tensor dz_o(Shape({N, hidden_size_}), backend_);
         Tensor dc_prev(Shape({N, hidden_size_}), backend_);
-
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t k = 0; k < hidden_size_; ++k) {
-                const int64_t idx = n * hidden_size_ + k;
-                const int64_t seq_idx = (n * L + t) * hidden_size_ + k;
-
-                const float i_t = last_gate_i_.data()[seq_idx];
-                const float f_t = last_gate_f_.data()[seq_idx];
-                const float g_t = last_gate_g_.data()[seq_idx];
-                const float o_t = last_gate_o_.data()[seq_idx];
-                const float tanh_c = last_cell_tanh_.data()[seq_idx];
-                const float c_prev = last_cell_states_.data()[(n * (L + 1) + t) * hidden_size_ + k];
-
-                const float dh = grad_output.data()[seq_idx] + dh_next.data()[idx];
-                const float dc = dh * o_t * (1.0f - tanh_c * tanh_c) + dc_next.data()[idx];
-
-                dz_o.data()[idx] = dh * tanh_c * o_t * (1.0f - o_t);
-                dz_f.data()[idx] = dc * c_prev * f_t * (1.0f - f_t);
-                dz_i.data()[idx] = dc * g_t * i_t * (1.0f - i_t);
-                dz_g.data()[idx] = dc * i_t * (1.0f - g_t * g_t);
-                dc_prev.data()[idx] = dc * f_t;
-            }
-        }
-
-        Tensor x_t_T = transpose(x_t, N, input_size_, backend_);
-        Tensor h_prev_T = transpose(h_prev, N, hidden_size_, backend_);
+        RecurrentCellArgs args;
+        args.in[0] = g_t.data();
+        args.in[1] = dh_next.data();
+        args.in[2] = dc_next.data();
+        args.in[3] = i_t.data();
+        args.in[4] = f_t.data();
+        args.in[5] = gg_t.data();
+        args.in[6] = o_t.data();
+        args.in[7] = tanh_c.data();
+        args.in[8] = c_prev.data();
+        args.out[0] = dz_i.data();
+        args.out[1] = dz_f.data();
+        args.out[2] = dz_g.data();
+        args.out[3] = dz_o.data();
+        args.out[4] = dc_prev.data();
+        backend_->recurrent_cell(RecurrentCellOp::LstmBackward, args, n * h);
 
         Tensor dx_t(Shape({N, input_size_}), backend_);
         dx_t.fill(0.0f);
@@ -346,31 +302,21 @@ Tensor LSTMModule::backward(const Tensor& grad_output) {
         auto accumulate_gate = [&](const Tensor& dz, const Tensor& wx, const Tensor& wh, Tensor& gwx_acc,
                                    Tensor& gwh_acc, Tensor& gb_acc) {
             Tensor gwx(wx.shape(), backend_);
-            backend_->gemm(x_t_T.data(), dz.data(), gwx.data(), static_cast<size_t>(input_size_),
-                           static_cast<size_t>(N), static_cast<size_t>(hidden_size_));
+            backend_->gemm_ex(x_t.data(), true, dz.data(), false, gwx.data(), d, n, h, 0.0f);
             gwx_acc.accumulate(gwx);
 
             Tensor gwh(wh.shape(), backend_);
-            backend_->gemm(h_prev_T.data(), dz.data(), gwh.data(), static_cast<size_t>(hidden_size_),
-                           static_cast<size_t>(N), static_cast<size_t>(hidden_size_));
+            backend_->gemm_ex(h_prev.data(), true, dz.data(), false, gwh.data(), h, n, h, 0.0f);
             gwh_acc.accumulate(gwh);
 
-            for (int64_t n = 0; n < N; ++n) {
-                for (int64_t k = 0; k < hidden_size_; ++k) {
-                    gb_acc.data()[k] += dz.data()[n * hidden_size_ + k];
-                }
-            }
+            backend_->accumulate_rows(dz.data(), gb_acc.data(), n, h);
 
-            Tensor wx_T = transpose(wx, input_size_, hidden_size_, backend_);
             Tensor gx(Shape({N, input_size_}), backend_);
-            backend_->gemm(dz.data(), wx_T.data(), gx.data(), static_cast<size_t>(N),
-                           static_cast<size_t>(hidden_size_), static_cast<size_t>(input_size_));
+            backend_->gemm_ex(dz.data(), false, wx.data(), true, gx.data(), n, h, d, 0.0f);
             dx_t.accumulate(gx);
 
-            Tensor wh_T = transpose(wh, hidden_size_, hidden_size_, backend_);
             Tensor gh(Shape({N, hidden_size_}), backend_);
-            backend_->gemm(dz.data(), wh_T.data(), gh.data(), static_cast<size_t>(N),
-                           static_cast<size_t>(hidden_size_), static_cast<size_t>(hidden_size_));
+            backend_->gemm_ex(dz.data(), false, wh.data(), true, gh.data(), n, h, h, 0.0f);
             dh_prev.accumulate(gh);
         };
 
@@ -379,11 +325,7 @@ Tensor LSTMModule::backward(const Tensor& grad_output) {
         accumulate_gate(dz_g, weight_xg_, weight_hg_, local_wxg_grad, local_whg_grad, local_bg_grad);
         accumulate_gate(dz_o, weight_xo_, weight_ho_, local_wxo_grad, local_who_grad, local_bo_grad);
 
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t i = 0; i < input_size_; ++i) {
-                grad_input.data()[(n * L + t) * input_size_ + i] = dx_t.data()[n * input_size_ + i];
-            }
-        }
+        backend_->copy_2d(grad_input.data() + tu * d, lu * d, dx_t.data(), d, n, d);
         dh_next = dh_prev;
         dc_next = dc_prev;
     }
@@ -416,14 +358,13 @@ Tensor LSTMModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
             "LSTMModule::propagate_relevance: relevance_out must be (N, L, hidden_size) matching the cached "
             "forward shape");
     }
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
+
+    const auto n = static_cast<size_t>(N);
+    const auto d = static_cast<size_t>(input_size_);
+    const auto h = static_cast<size_t>(hidden_size_);
+    const auto lu = static_cast<size_t>(L);
 
     Tensor relevance_in(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
     relevance_in.fill(0.0f);
 
     // Two carried accumulators, mirroring backward()'s dh_next/dc_next: the relevance a
@@ -433,78 +374,63 @@ Tensor LSTMModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
     Tensor R_c_next(Shape({N, hidden_size_}), backend_);
     R_c_next.fill(0.0f);
 
+    // Contiguous (N, H) copy of timestep t of an (N, L, H) cache.
+    auto load_step = [&](const Tensor& seq, size_t tu) {
+        Tensor out(Shape({N, hidden_size_}), backend_);
+        backend_->copy_2d(out.data(), h, seq.data() + tu * h, lu * h, n, h);
+        return out;
+    };
+
     for (int64_t t = L - 1; t >= 0; --t) {
+        const auto tu = static_cast<size_t>(t);
         Tensor x_t(Shape({N, input_size_}), backend_);
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t i = 0; i < input_size_; ++i) {
-                x_t.data()[n * input_size_ + i] = last_input_.data()[(n * L + t) * input_size_ + i];
-            }
-        }
+        backend_->copy_2d(x_t.data(), d, last_input_.data() + tu * d, lu * d, n, d);
         Tensor h_prev(Shape({N, hidden_size_}), backend_);
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t k = 0; k < hidden_size_; ++k) {
-                h_prev.data()[n * hidden_size_ + k] = last_hidden_states_.data()[(n * (L + 1) + t) * hidden_size_ + k];
-            }
-        }
+        backend_->copy_2d(h_prev.data(), h, last_hidden_states_.data() + tu * h, (lu + 1) * h, n, h);
+        Tensor c_prev(Shape({N, hidden_size_}), backend_);
+        backend_->copy_2d(c_prev.data(), h, last_cell_states_.data() + tu * h, (lu + 1) * h, n, h);
+        Tensor c_t(Shape({N, hidden_size_}), backend_);
+        backend_->copy_2d(c_t.data(), h, last_cell_states_.data() + (tu + 1) * h, (lu + 1) * h, n, h);
 
-        Tensor R_x(Shape({N, input_size_}), backend_);
-        R_x.fill(0.0f);
-        Tensor R_hprev(Shape({N, hidden_size_}), backend_);
-        R_hprev.fill(0.0f);
+        Tensor r_t = load_step(relevance_out, tu);
+        Tensor i_t = load_step(last_gate_i_, tu);
+        Tensor f_t = load_step(last_gate_f_, tu);
+        Tensor g_t = load_step(last_gate_g_, tu);
+        Tensor z_g = load_step(last_pre_activation_g_, tu);
+
+        // h_t = o_t * tanh(c_t): o_t is a pure gate (Arras et al. 2019), so ALL of R(h_t)
+        // passes to the single signal tanh(c_t), and tanh is an identity pass-through onto
+        // c_t. Nothing is assigned to o_t at any point. c_t = f_t*c_{t-1} + i_t*g_t is a
+        // two-term weighted sum whose denominator is exactly c_t; the gate values f_t/i_t are
+        // multiplicative weights there, not relevance recipients -- only the signals c_{t-1}
+        // and g_t receive (LstmLrp).
+        Tensor R_g(Shape({N, hidden_size_}), backend_);
         Tensor R_cprev(Shape({N, hidden_size_}), backend_);
-        R_cprev.fill(0.0f);
+        RecurrentCellArgs args;
+        args.in[0] = r_t.data();
+        args.in[1] = R_h_next.data();
+        args.in[2] = R_c_next.data();
+        args.in[3] = i_t.data();
+        args.in[4] = f_t.data();
+        args.in[5] = g_t.data();
+        args.in[6] = c_prev.data();
+        args.in[7] = c_t.data();
+        args.out[0] = R_g.data();
+        args.out[1] = R_cprev.data();
+        args.eps = config.epsilon;
+        backend_->recurrent_cell(RecurrentCellOp::LstmLrp, args, n * h);
 
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t k = 0; k < hidden_size_; ++k) {
-                const int64_t idx = n * hidden_size_ + k;
-                const int64_t seq_idx = (n * L + t) * hidden_size_ + k;
+        // g_t = tanh(z_g): tanh identity pass-through, then the same epsilon/z-rule over two
+        // weighted sources (x_t, h_{t-1}) RNNModule uses. z_g excludes bias, so this step
+        // conserves exactly.
+        Tensor R_x(Shape({N, input_size_}), backend_);
+        backend_->lrp_linear(x_t.data(), weight_xg_.data(), z_g.data(), R_g.data(), R_x.data(), n, d, h,
+                             config.epsilon);
+        Tensor R_hprev(Shape({N, hidden_size_}), backend_);
+        backend_->lrp_linear(h_prev.data(), weight_hg_.data(), z_g.data(), R_g.data(), R_hprev.data(), n, h, h,
+                             config.epsilon);
 
-                const float i_t = last_gate_i_.data()[seq_idx];
-                const float f_t = last_gate_f_.data()[seq_idx];
-                const float g_t = last_gate_g_.data()[seq_idx];
-                const float c_prev = last_cell_states_.data()[(n * (L + 1) + t) * hidden_size_ + k];
-                const float c_t = last_cell_states_.data()[(n * (L + 1) + t + 1) * hidden_size_ + k];
-
-                // h_t = o_t * tanh(c_t): o_t is a pure gate (Arras et al. 2019), so ALL of
-                // R(h_t) passes to the single signal tanh(c_t), and tanh is an identity
-                // pass-through onto c_t. Nothing is assigned to o_t at any point.
-                const float R_h = relevance_out.data()[seq_idx] + R_h_next.data()[idx];
-                const float R_c = R_h + R_c_next.data()[idx];
-
-                // c_t = f_t*c_{t-1} + i_t*g_t: two-term weighted sum whose denominator is
-                // exactly c_t. The gate values f_t/i_t are multiplicative weights here, not
-                // relevance recipients -- only the signals c_{t-1} and g_t receive.
-                const float cell_sign = (c_t >= 0.0f) ? 1.0f : -1.0f;
-                const float cell_denom = c_t + config.epsilon * cell_sign;
-                const float R_c_from_prev = (f_t * c_prev / cell_denom) * R_c;
-                const float R_g = (i_t * g_t / cell_denom) * R_c;
-                R_cprev.data()[idx] += R_c_from_prev;
-
-                // g_t = tanh(z_g): tanh identity pass-through, then the same epsilon/z-rule
-                // over two weighted sources (x_t, h_{t-1}) RNNModule uses. z_g excludes
-                // bias, so this step conserves exactly.
-                const float z_g = last_pre_activation_g_.data()[seq_idx];
-                const float sign = (z_g >= 0.0f) ? 1.0f : -1.0f;
-                const float denom = z_g + config.epsilon * sign;
-
-                for (int64_t i = 0; i < input_size_; ++i) {
-                    const float w = weight_xg_.data()[i * hidden_size_ + k];
-                    const float x = x_t.data()[n * input_size_ + i];
-                    R_x.data()[n * input_size_ + i] += (x * w / denom) * R_g;
-                }
-                for (int64_t kk = 0; kk < hidden_size_; ++kk) {
-                    const float w2 = weight_hg_.data()[kk * hidden_size_ + k];
-                    const float hp = h_prev.data()[n * hidden_size_ + kk];
-                    R_hprev.data()[n * hidden_size_ + kk] += (hp * w2 / denom) * R_g;
-                }
-            }
-        }
-
-        for (int64_t n = 0; n < N; ++n) {
-            for (int64_t i = 0; i < input_size_; ++i) {
-                relevance_in.data()[(n * L + t) * input_size_ + i] = R_x.data()[n * input_size_ + i];
-            }
-        }
+        backend_->copy_2d(relevance_in.data() + tu * d, lu * d, R_x.data(), d, n, d);
         R_h_next = R_hprev;
         R_c_next = R_cprev;
     }
