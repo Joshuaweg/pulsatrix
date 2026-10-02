@@ -51,7 +51,7 @@ struct LRPTarget {
  *        the LRPRuleConfig that module applies.
  * @note LRP calls a composite exactly once per module, in ascending index order starting at 0,
  *       on every explain() -- presets that depend on position (epsilon_gamma_box's "first
- *       layer") rely on that order.
+ *       Conv2D") rely on that order.
  * @note Applied to the ExplainerContext's top-level modules: a SequentialModule receives one
  *       config, which it forwards to all of its layers (it supports a rule only if they all do).
  */
@@ -69,10 +69,6 @@ using LRPComposite = std::function<LRPRuleConfig(size_t layer_index, const Modul
 namespace lrp_composite {
 
 namespace detail {
-inline bool is_affine(const Module& module) {
-    return dynamic_cast<const LinearModule*>(&module) != nullptr ||
-           dynamic_cast<const Conv2DModule*>(&module) != nullptr;
-}
 inline bool is_conv(const Module& module) { return dynamic_cast<const Conv2DModule*>(&module) != nullptr; }
 inline LRPRuleConfig zennit_epsilon(float epsilon) {
     LRPRuleConfig config{epsilon};
@@ -103,31 +99,32 @@ inline LRPComposite epsilon_alpha2_beta1(float epsilon = 1e-6f) {
 }
 
 /**
- * @brief Zennit EpsilonGammaBox: ZBox(low, high) for the first Linear/Conv2D layer (lowest
- *        index), Gamma(gamma) for every other Conv2D, Epsilon for every other Linear.
- * @note Remembers the first affine layer it has seen since the last index-0 call (see
- *       LRPComposite's calling order).
+ * @brief Zennit EpsilonGammaBox: ZBox(low, high) for the first Conv2D layer (lowest index),
+ *        Gamma(gamma) for every other Conv2D, Epsilon for every Linear.
+ * @note As in Zennit 1.0.0, whose first_map holds only Convolution: a Linear is never ZBox'd,
+ *       even when it is the first layer, so on a Conv2D-free network this preset is Epsilon on
+ *       every layer (checked against Zennit in tests/lrp_reference_test.cpp).
+ * @note Remembers the first Conv2D it has seen since the last index-0 call (see LRPComposite's
+ *       calling order).
  */
 inline LRPComposite epsilon_gamma_box(float low, float high, float gamma = 0.25f, float epsilon = 1e-6f) {
-    auto first_affine_seen = std::make_shared<bool>(false);
+    auto first_conv_seen = std::make_shared<bool>(false);
     return [=](size_t layer_index, const Module& module) {
         if (layer_index == 0) {
-            *first_affine_seen = false;
+            *first_conv_seen = false;
         }
-        if (!detail::is_affine(module)) {
+        if (!detail::is_conv(module)) {
             return detail::zennit_epsilon(epsilon);
         }
         LRPRuleConfig config{epsilon};
-        if (!*first_affine_seen) {
-            *first_affine_seen = true;
+        if (!*first_conv_seen) {
+            *first_conv_seen = true;
             config.rule = LRPRule::ZBox;
             config.low = low;
             config.high = high;
-        } else if (detail::is_conv(module)) {
+        } else {
             config.rule = LRPRule::Gamma;
             config.gamma = gamma;
-        } else {
-            config = detail::zennit_epsilon(epsilon);
         }
         return config;
     };

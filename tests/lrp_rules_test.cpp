@@ -479,13 +479,14 @@ TEST_F(LRPCompositeTest, PresetsAssignTheDocumentedRules) {
         // Running twice gives the same rules (epsilon_gamma_box's first-layer state resets).
         EXPECT_EQ(c.lrp.explain(ctx, x, 1, &backend).metadata.at("rules"), c.rules);
     }
-    // A Linear-first network: ZBox lands on the first Linear, Epsilon on the others.
+    // A Conv2D-free network: like Zennit's EpsilonGammaBox (first_map = Convolution only), no ZBox
+    // at all -- Epsilon on every Linear.
     LinearModule a(3, 2, &backend), b(2, 2, &backend);
     ReluModule relu(&backend);
     ExplainerContext dense({&a, &relu, &b});
     Attribution d = LRP::epsilon_gamma_box(-1.0f, 1.0f).explain(dense, Tensor(Shape({1, 3}), &backend,
                                                                              {0.5f, -0.5f, 0.25f}), 0, &backend);
-    EXPECT_EQ(d.metadata.at("rules"), "zbox,epsilon,epsilon");
+    EXPECT_EQ(d.metadata.at("rules"), "epsilon,epsilon,epsilon");
     // The uniform LRP reports its own rule.
     EXPECT_EQ(LRP(gamma_rule(0.25f)).explain(ctx, x, 1, &backend).metadata.at("rules"),
               "gamma,gamma,gamma,gamma,gamma,gamma");
