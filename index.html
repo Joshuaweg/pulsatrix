@@ -883,9 +883,12 @@
 </p>
 
 <p><strong>ExAI-first C++ deep learning library</strong> — explainability as a first-class property of the
-computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited,
-conservation-tested Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward
-math — never a placeholder or a post-hoc explainer bolted on afterward.</p>
+computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited
+Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward math — never a
+placeholder or a post-hoc explainer bolted on afterward. Rules that conserve relevance by
+construction are conservation-tested; the AttnLRP rules for softmax and attention do not conserve
+exactly, and their tests report the measured gap rather than assert it away. LRP currently
+implements the ε-rule family only.</p>
 <p><a href="https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml/badge.svg" /></a></p>
 <h2 id="whats-here">What's here<a class="headerlink" href="#whats-here" title="Permanent link">&para;</a></h2>
 <p><strong><a href="deep-learning/">Deep Learning Modules and Layers</a></strong>: the <code>Tensor</code>/<code>Shape</code>/
@@ -894,14 +897,15 @@ math — never a placeholder or a post-hoc explainer bolted on afterward.</p>
 attention (<code>MultiHeadAttentionModule</code>, <code>TransformerBlock</code>, <code>MambaModule</code>, <code>RWKVModule</code>,
 <code>RetNetModule</code>); <code>SGDOptimizer</code>/<code>AdamOptimizer</code>; losses including <code>CalibrationLoss</code>; and VAE/
 GAN/Diffusion building blocks (<code>Reparameterize</code>, <code>NoiseSchedule</code>,
-<code>SinusoidalTimestepEmbedding</code>). Modern architectures with LRP explicitly deferred
-(<code>propagate_relevance</code> throws rather than approximates) are noted per-layer.</p>
+<code>SinusoidalTimestepEmbedding</code>). The VAE/GAN/Diffusion pieces are losses and sampling/noise
+steps rather than <code>Module</code>s, so they carry no LRP rule.</p>
 <p><strong><a href="interpretability/">Ad-hoc Interpretability</a></strong>: post-hoc explainers, split into
 <strong>Model-Agnostic</strong> (<code>KernelSHAP</code>, <code>LIME</code>, <code>PDP</code>) and <strong>Deep Learning Approaches</strong>
 (<code>Saliency</code>, <code>IntegratedGradients</code>, <code>GradCAM</code>) — distinct from the per-layer LRP
 (Layer-wise Relevance Propagation) rule every relevance-bearing layer carries alongside its
 forward/backward math (Arras et al. for RNN/LSTM/GRU, AttnLRP for <code>TransformerBlock</code>,
-MambaLRP for <code>MambaModule</code> — every rule real, cited, and conservation-tested).</p>
+MambaLRP for <code>MambaModule</code> — every rule real and cited; conservation-tested where the rule
+conserves by construction).</p>
 <p><strong><a href="reinforcement-learning/">Reinforcement Learning</a></strong>: gymnasium-API-shaped
 <code>Environment</code>/<code>Agent</code> interfaces, <code>CartPoleEnv</code>/<code>ContinuousCartPoleEnv</code>, <code>ReplayBuffer</code>/
 <code>RolloutBuffer</code>, DQN (+ Double DQN), REINFORCE, A2C, PPO, SAC — every algorithm trained
