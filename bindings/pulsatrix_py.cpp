@@ -341,8 +341,7 @@ PYBIND11_MODULE(pulsatrix_py, m) {
                     "Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D.")
         .def_static("epsilon_gamma_box", &pulsatrix::LRP::epsilon_gamma_box, py::arg("low"), py::arg("high"),
                     py::arg("gamma") = 0.25f, py::arg("epsilon") = 1e-6f,
-                    "Zennit EpsilonGammaBox: ZBox on the first Linear/Conv2D, Gamma on other Conv2D, Epsilon on "
-                    "other Linear.")
+                    "Zennit EpsilonGammaBox: ZBox on the first Conv2D, Gamma on other Conv2D, Epsilon on Linear.")
         .def(
             "explain",
             [](const pulsatrix::LRP& self, pulsatrix::ExplainerContext& ctx, const pulsatrix::Tensor& input,
