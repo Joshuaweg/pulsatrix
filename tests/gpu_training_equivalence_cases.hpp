@@ -28,14 +28,19 @@
 #include "pulsatrix/dqn_target.hpp"
 #include "pulsatrix/dropout_module.hpp"
 #include "pulsatrix/embedding_module.hpp"
+#include "pulsatrix/explainer_context.hpp"
 #include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/grad_cam.hpp"
 #include "pulsatrix/gae.hpp"
 #include "pulsatrix/gflownet_forward_policy.hpp"
 #include "pulsatrix/gflownet_trajectory.hpp"
 #include "pulsatrix/gru_module.hpp"
 #include "pulsatrix/group_norm_module.hpp"
 #include "pulsatrix/hypergrid_env.hpp"
+#include "pulsatrix/integrated_gradients.hpp"
+#include "pulsatrix/kernel_shap.hpp"
 #include "pulsatrix/layer_norm_module.hpp"
+#include "pulsatrix/lime.hpp"
 #include "pulsatrix/lstm_module.hpp"
 #include "pulsatrix/mamba_module.hpp"
 #include "pulsatrix/lrp_conservation.hpp"
@@ -44,6 +49,7 @@
 #include "pulsatrix/rms_norm_module.hpp"
 #include "pulsatrix/rope_module.hpp"
 #include "pulsatrix/rwkv_module.hpp"
+#include "pulsatrix/saliency.hpp"
 #include "pulsatrix/tanh_gaussian_policy.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -51,6 +57,7 @@
 #include "pulsatrix/neuro_symbolic_datalog_bridge.hpp"
 #include "pulsatrix/neuro_symbolic_toy_kb.hpp"
 #include "pulsatrix/noise_schedule.hpp"
+#include "pulsatrix/pdp.hpp"
 #include "pulsatrix/policy_gradient_loss.hpp"
 #include "pulsatrix/polyak_update.hpp"
 #include "pulsatrix/ppo_clipped_loss.hpp"
@@ -456,6 +463,63 @@ inline void LRPExplainerMatches(DeviceBackend& gpu) {
         EXPECT_EQ(ga.values.device(), gpu.device());
         ExpectRelevanceAgrees(ca.values, ga.values);
     }
+}
+
+// The six post-hoc explainers on a GPU network: the forward/backward runs on the device and
+// the explainers' own bookkeeping crosses a host boundary, so every result must match the CPU
+// and stay on the device. Gradient methods compare at kTolerance; the surrogate fits (LIME,
+// KernelSHAP) solve a small regression whose conditioning amplifies the forward's rounding, so
+// they get 1e-3.
+inline void PosthocExplainersMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cl1(4, 6, &cpu), gl1(4, 6, &gpu), cl2(6, 3, &cpu), gl2(6, 3, &gpu);
+    ReluModule cr(&cpu), gr(&gpu);
+    RandomizeAndMirror(cl1, gl1, 1200);
+    RandomizeAndMirror(cl2, gl2, 1210);
+    ExplainerContext cctx({&cl1, &cr, &cl2}), gctx({&gl1, &gr, &gl2});
+    auto expect_match = [&](const Attribution& c, const Attribution& g, float tol) {
+        EXPECT_EQ(c.method, g.method);
+        EXPECT_EQ(g.values.device(), gpu.device()) << g.method << " result left the device";
+        ExpectNear(c.values, g.values, tol);
+    };
+
+    std::vector<float> x = Random(2 * 4, 1220);
+    Tensor cx(Shape({2, 4}), &cpu, x), gx(Shape({2, 4}), &gpu, x);
+    Tensor cb(Shape({2, 4}), &cpu), gb(Shape({2, 4}), &gpu);
+    expect_match(Saliency{}.explain(cctx, cx, 1, &cpu), Saliency{}.explain(gctx, gx, 1, &gpu), kTolerance);
+    expect_match(IntegratedGradients{}.explain(cctx, cx, cb, 2, 16, &cpu),
+                 IntegratedGradients{}.explain(gctx, gx, gb, 2, 16, &gpu), kTolerance);
+
+    // Surrogates on one example (flat target index into a (1, 3) output), same seeds/params.
+    std::vector<float> x1 = Random(4, 1230);
+    Tensor cx1(Shape({1, 4}), &cpu, x1), gx1(Shape({1, 4}), &gpu, x1);
+    Tensor cb1(Shape({1, 4}), &cpu), gb1(Shape({1, 4}), &gpu);
+    auto cpredict = [&](const Tensor& t) { return cctx.forward_pass(t); };
+    auto gpredict = [&](const Tensor& t) { return gctx.forward_pass(t); };
+    expect_match(LIME{}.explain(cpredict, cx1, 0, 64, 0.5f, 0.01f, 7u, &cpu),
+                 LIME{}.explain(gpredict, gx1, 0, 64, 0.5f, 0.01f, 7u, &gpu), 1e-3f);
+    expect_match(KernelSHAP{}.explain(cpredict, cx1, cb1, 2, &cpu),
+                 KernelSHAP{}.explain(gpredict, gx1, gb1, 2, &gpu), 1e-3f);
+    std::vector<Tensor> cbackground, gbackground;
+    for (unsigned b = 0; b < 3; ++b) {
+        std::vector<float> v = Random(4, 1240 + b);
+        cbackground.emplace_back(Shape({1, 4}), &cpu, v);
+        gbackground.emplace_back(Shape({1, 4}), &gpu, v);
+    }
+    expect_match(PDP{}.explain(cpredict, cbackground, 2, 1, -1.0f, 1.0f, 5, &cpu),
+                 PDP{}.explain(gpredict, gbackground, 2, 1, -1.0f, 1.0f, 5, &gpu), kTolerance);
+
+    // Grad-CAM over a Conv2D -> ReLU -> Flatten -> Linear model (the Captum benchmark's shape).
+    Conv2DModule cconv(1, 2, 2, 2, &cpu), gconv(1, 2, 2, 2, &gpu);
+    ReluModule ccr(&cpu), gcr(&gpu);
+    FlattenModule cf(&cpu), gf(&gpu);
+    LinearModule chead(2 * 3 * 3, 3, &cpu), ghead(2 * 3 * 3, 3, &gpu);
+    RandomizeAndMirror(cconv, gconv, 1250);
+    RandomizeAndMirror(chead, ghead, 1260);
+    ExplainerContext ccnn({&cconv, &ccr, &cf, &chead}), gcnn({&gconv, &gcr, &gf, &ghead});
+    std::vector<float> img = Random(2 * 4 * 4, 1270);
+    Tensor cimg(Shape({2, 1, 4, 4}), &cpu, img), gimg(Shape({2, 1, 4, 4}), &gpu, img);
+    expect_match(GradCAM{}.explain(ccnn, cimg, 1, &cpu), GradCAM{}.explain(gcnn, gimg, 1, &gpu), kTolerance);
 }
 
 // Forward on both sides, then propagate_relevance with the same random relevance.
@@ -1151,6 +1215,9 @@ inline void LRPRulesMatch(DeviceBackend& gpu) {
 // Instantiates every case for one GPU fixture. FIXTURE must expose the GPU backend as MEMBER.
 #define PULSATRIX_TRAINING_EQUIVALENCE_TESTS(FIXTURE, MEMBER)                                        \
     TEST_F(FIXTURE, LRPExplainerMatchesCPU) { ::pulsatrix::training_equivalence::LRPExplainerMatches(MEMBER); } \
+    TEST_F(FIXTURE, PosthocExplainersMatchCPU) {                                                     \
+        ::pulsatrix::training_equivalence::PosthocExplainersMatch(MEMBER);                           \
+    }                                                                                                \
     TEST_F(FIXTURE, LinearBackwardAccumulatesLikeCPU) {                                              \
         ::pulsatrix::training_equivalence::LinearBackwardAccumulates(MEMBER);                        \
     }                                                                                                \
