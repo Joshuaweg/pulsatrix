@@ -271,5 +271,23 @@ TEST_F(ConjunctionModuleTest, ForwardRejectsNonStackedInputWithWrongLeadingDimen
     EXPECT_THROW({ (void)conj.forward(not_stacked); }, std::invalid_argument);
 }
 
+// Active region (a + b > 1): the bias-excluded epsilon rule must hand out the output relevance,
+// not (a + b) / (a + b - 1) times it. Before the fix the denominator included the -1 bias:
+// 2.25x at a = b = 0.9 and ~2000x at a + b - 1 = 5e-4. The 0.5005 + 0.5 case sits just above the
+// threshold, where that amplification was largest.
+TEST_F(ConjunctionModuleTest, LukasiewiczPropagateRelevanceConservesInActiveRegion) {
+    ConjunctionModule m(&backend, ConjunctionModule::TNorm::Lukasiewicz);
+    Tensor a(Shape({4}), &backend, {0.9f, 0.5005f, 0.7f, 0.95f});
+    Tensor b(Shape({4}), &backend, {0.9f, 0.5f, 0.6f, 0.3f});
+    (void)m.forward(a, b);
+    Tensor relevance_out(Shape({4}), &backend, {1.0f, -0.5f, 2.0f, 0.25f});
+    Tensor relevance_in = m.propagate_relevance(relevance_out, LRPRuleConfig{});
+
+    for (int64_t i = 0; i < 4; ++i) {
+        const float sum = relevance_in.data()[i] + relevance_in.data()[4 + i];
+        EXPECT_NEAR(sum, relevance_out.data()[i], 1e-4f) << "index " << i;
+    }
+}
+
 }  // namespace
 }  // namespace pulsatrix
