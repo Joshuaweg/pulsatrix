@@ -164,6 +164,7 @@ add_executable(pulsatrix_tests
     sparse_autoencoder_test.cpp
     saliency_test.cpp
     lrp_test.cpp
+    lrp_rules_test.cpp
     integrated_gradients_test.cpp
     flatten_module_test.cpp
     grad_cam_test.cpp

@@ -284,3 +284,60 @@ def test_lrp_rejects_out_of_range_target():
     x = pulsatrix_py.Tensor.from_values([1, 3], [1.0, -1.0, 2.0])
     with pytest.raises(ValueError):
         pulsatrix_py.LRP().explain(ctx, x, [5])
+
+
+# LRP-rules Mission 2: Zennit-compatible rules and composite presets.
+
+
+def _single_output_ctx():
+    # W = [1, -2, -1]^T, b = 0.5, x = [2, -1, 1]: xW = 3, z = 3.5 (see tests/lrp_rules_test.cpp).
+    linear = pulsatrix_py.LinearModule(3, 1)
+    linear.set_weight([1.0, -2.0, -1.0])
+    linear.set_bias([0.5])
+    ctx = pulsatrix_py.ExplainerContext([linear])
+    x = pulsatrix_py.Tensor.from_values([1, 3], [2.0, -1.0, 1.0])
+    return linear, ctx, x
+
+
+def test_lrp_rules_match_hand_computed_values():
+    linear, ctx, x = _single_output_ctx()
+    one_hot = pulsatrix_py.LRPSeed.OneHot
+    cases = [
+        (pulsatrix_py.LRP(rule=pulsatrix_py.LRPRule.Gamma, gamma=0.5), [3 / 5.75, 3 / 5.75, -1 / 5.75], "gamma"),
+        (pulsatrix_py.LRP(rule=pulsatrix_py.LRPRule.AlphaBeta, alpha=2.0, beta=1.0), [4 / 4.5, 4 / 4.5, -1.0],
+         "alpha_beta"),
+        (pulsatrix_py.LRP(rule=pulsatrix_py.LRPRule.ZBox, low=-1.0, high=2.0), [0.3, 0.6, 0.1], "zbox"),
+        (pulsatrix_py.LRP(epsilon_bias_in_denominator=True), [2 / 3.5, 2 / 3.5, -1 / 3.5], "epsilon"),
+        (pulsatrix_py.LRP(1e-6), [2 / 3, 2 / 3, -1 / 3], "epsilon"),
+    ]
+    for lrp, expected, rule in cases:
+        attr = lrp.explain(ctx, x, [0], seed=one_hot)
+        np.testing.assert_allclose(flat(attr.values), expected, atol=1e-5)
+        assert attr.metadata["rule"] == rule
+
+    with pytest.raises(ValueError):
+        pulsatrix_py.LRP(rule=pulsatrix_py.LRPRule.AlphaBeta, alpha=2.0, beta=0.0).explain(ctx, x, [0])
+
+
+def test_lrp_composite_presets_assign_per_layer_rules():
+    conv = pulsatrix_py.Conv2DModule(1, 2, 2, 2)
+    conv.set_kernel([0.5, -0.3, 0.8, 0.2, -0.4, 0.6, 0.3, 0.7])
+    conv.set_bias([0.05, 0.1])
+    relu = pulsatrix_py.ReluModule()
+    flatten = pulsatrix_py.FlattenModule()
+    linear = pulsatrix_py.LinearModule(8, 3)
+    linear.set_weight([0.1 * ((i * 7) % 11) - 0.5 for i in range(24)])
+    ctx = pulsatrix_py.ExplainerContext([conv, relu, flatten, linear])
+    x = pulsatrix_py.Tensor.from_values([1, 1, 3, 3], [0.9, 0.1, 0.5, 0.3, 0.7, 0.2, 0.8, 0.4, 0.6])
+
+    cases = [
+        (pulsatrix_py.LRP.epsilon_plus(), "epsilon_plus", "alpha_beta,epsilon,epsilon,epsilon"),
+        (pulsatrix_py.LRP.epsilon_alpha2_beta1(), "epsilon_alpha2_beta1", "alpha_beta,epsilon,epsilon,epsilon"),
+        (pulsatrix_py.LRP.epsilon_gamma_box(low=0.0, high=1.0), "epsilon_gamma_box", "zbox,epsilon,epsilon,epsilon"),
+    ]
+    for lrp, name, rules in cases:
+        attr = lrp.explain(ctx, x, [1])
+        assert attr.metadata["rule"] == "composite:" + name
+        assert attr.metadata["rules"] == rules
+        assert flat(attr.values).shape == (9,)
+        assert np.all(np.isfinite(flat(attr.values)))

@@ -60,6 +60,16 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
+    /** @brief A rule is supported iff every contained layer supports it (the config is forwarded to all). */
+    [[nodiscard]] bool supports_lrp_rule(LRPRule rule) const override {
+        for (const Module* layer : layers_) {
+            if (!layer->supports_lrp_rule(rule)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** @brief Concatenates every contained layer's own parameters(). */
     [[nodiscard]] std::vector<ParamRef> parameters() override;
 

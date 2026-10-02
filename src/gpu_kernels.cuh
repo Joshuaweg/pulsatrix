@@ -719,6 +719,14 @@ __global__ void lrp_conv_kernel(const float* col, const float* kernel, const flo
     }
 }
 
+__global__ void lrp_stabilized_divide_kernel(const float* r, const float* denom, const float* gate, float* out,
+                                             size_t n, float eps, int gate_mode) {
+    size_t i = global_index();
+    if (i < n) {
+        out[i] = lrp::stabilized_divide(r[i], denom[i], gate_mode == 0 ? 0.0f : gate[i], gate_mode, eps);
+    }
+}
+
 __global__ void max_pool_forward_kernel(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w,
                                         size_t kh, size_t kw) {
     const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;

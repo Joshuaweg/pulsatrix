@@ -49,6 +49,13 @@ enum class ElementwiseOp {
     Exp       ///< exp(x) -- GPU-native-kernels Mission 1b (Reparameterize, KL divergence)
 };
 
+/** @brief Elementwise boolean gate for DeviceBackend::lrp_stabilized_divide(). */
+enum class LrpGate {
+    None,      ///< every element passes
+    Positive,  ///< passes where gate > 0
+    Negative   ///< passes where gate < 0
+};
+
 /**
  * @brief Elementwise passes of the fuzzy-logic modules, for DeviceBackend::logic_pointwise.
  * @note Paired with a norm index: 0 Product, 1 Lukasiewicz, 2 Godel -- the declaration order
@@ -551,6 +558,16 @@ public:
      */
     virtual void lrp_conv(const float* col, const float* kernel, const float* pre_bias, const float* r, float* r_col,
                           size_t n, size_t out_channels, size_t p, size_t q, float eps) = 0;
+
+    // ---- LRP-rules campaign Mission 2: Zennit-compatible Gamma / AlphaBeta / ZBox ----------
+    /**
+     * @brief Gated stabilized division, the one non-gemm step of the affine LRP rules:
+     *        out[i] = passes(gate[i]) ? r[i] / (denom[i] + eps sign(denom[i])) : 0, sign(0) = +1.
+     * @param gate Read only when gate_mode != LrpGate::None (may then be nullptr).
+     * @note out may alias r or denom.
+     */
+    virtual void lrp_stabilized_divide(const float* r, const float* denom, const float* gate, float* out, size_t n,
+                                       float eps, LrpGate gate_mode) = 0;
 
     /** @brief Non-overlapping max pool over planes of (h, w); argmax = flat in-plane index (first max wins). */
     virtual void max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w, size_t

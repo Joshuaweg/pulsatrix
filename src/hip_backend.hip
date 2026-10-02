@@ -540,6 +540,17 @@ void HIPBackend::lrp_conv(const float* col, const float* kernel, const float* pr
     PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
 }
 
+void HIPBackend::lrp_stabilized_divide(const float* r, const float* denom, const float* gate, float* out, size_t n,
+                                       float eps, LrpGate gate_mode) {
+    if (n == 0) {
+        return;
+    }
+    gpu::lrp_stabilized_divide_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(
+        r, denom, gate, out, n, eps, static_cast<int>(gate_mode));
+    PULSATRIX_HIP_CHECK(hipGetLastError());
+    PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_));
+}
+
 void HIPBackend::max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w, size_t
                                   kh, size_t kw) {
     if (planes == 0) {
