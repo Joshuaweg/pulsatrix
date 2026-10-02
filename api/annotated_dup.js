@@ -19,7 +19,12 @@ var annotated_dup =
         [ "WeightedFactDatabase", "classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html", "classpulsatrix_1_1datalog_1_1WeightedFactDatabase" ]
       ] ],
       [ "detail", "namespacepulsatrix_1_1detail.html", [
-        [ "ASHACandidate", "structpulsatrix_1_1detail_1_1ASHACandidate.html", "structpulsatrix_1_1detail_1_1ASHACandidate" ]
+        [ "AmdGpuDevice", "structpulsatrix_1_1detail_1_1AmdGpuDevice.html", "structpulsatrix_1_1detail_1_1AmdGpuDevice" ],
+        [ "ASHACandidate", "structpulsatrix_1_1detail_1_1ASHACandidate.html", "structpulsatrix_1_1detail_1_1ASHACandidate" ],
+        [ "CpuTimes", "structpulsatrix_1_1detail_1_1CpuTimes.html", "structpulsatrix_1_1detail_1_1CpuTimes" ],
+        [ "LinuxSources", "classpulsatrix_1_1detail_1_1LinuxSources.html", "classpulsatrix_1_1detail_1_1LinuxSources" ],
+        [ "PlatformSources", "classpulsatrix_1_1detail_1_1PlatformSources.html", "classpulsatrix_1_1detail_1_1PlatformSources" ],
+        [ "RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", "structpulsatrix_1_1detail_1_1RawReading" ]
       ] ],
       [ "ActivationSnapshot", "classpulsatrix_1_1ActivationSnapshot.html", "classpulsatrix_1_1ActivationSnapshot" ],
       [ "AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", "classpulsatrix_1_1AdamOptimizer" ],
@@ -89,6 +94,7 @@ var annotated_dup =
       [ "GFlowNetForwardPolicy", "classpulsatrix_1_1GFlowNetForwardPolicy.html", "classpulsatrix_1_1GFlowNetForwardPolicy" ],
       [ "GFlowNetSampledAction", "structpulsatrix_1_1GFlowNetSampledAction.html", "structpulsatrix_1_1GFlowNetSampledAction" ],
       [ "GFlowNetTrajectory", "structpulsatrix_1_1GFlowNetTrajectory.html", "structpulsatrix_1_1GFlowNetTrajectory" ],
+      [ "GpuSample", "structpulsatrix_1_1GpuSample.html", "structpulsatrix_1_1GpuSample" ],
       [ "GradCAM", "classpulsatrix_1_1GradCAM.html", "classpulsatrix_1_1GradCAM" ],
       [ "GroupNormModule", "classpulsatrix_1_1GroupNormModule.html", "classpulsatrix_1_1GroupNormModule" ],
       [ "GRUModule", "classpulsatrix_1_1GRUModule.html", "classpulsatrix_1_1GRUModule" ],
@@ -120,6 +126,7 @@ var annotated_dup =
       [ "LSTMModule", "classpulsatrix_1_1LSTMModule.html", "classpulsatrix_1_1LSTMModule" ],
       [ "MambaModule", "classpulsatrix_1_1MambaModule.html", "classpulsatrix_1_1MambaModule" ],
       [ "MaxPool2DModule", "classpulsatrix_1_1MaxPool2DModule.html", "classpulsatrix_1_1MaxPool2DModule" ],
+      [ "MetricCapability", "structpulsatrix_1_1MetricCapability.html", "structpulsatrix_1_1MetricCapability" ],
       [ "MetricRecord", "structpulsatrix_1_1MetricRecord.html", "structpulsatrix_1_1MetricRecord" ],
       [ "MetricsSink", "classpulsatrix_1_1MetricsSink.html", "classpulsatrix_1_1MetricsSink" ],
       [ "MnistConvNet", "classpulsatrix_1_1MnistConvNet.html", "classpulsatrix_1_1MnistConvNet" ],
@@ -188,6 +195,8 @@ var annotated_dup =
       [ "SubTBLoss", "classpulsatrix_1_1SubTBLoss.html", "classpulsatrix_1_1SubTBLoss" ],
       [ "SuccessiveHalvingResult", "structpulsatrix_1_1SuccessiveHalvingResult.html", "structpulsatrix_1_1SuccessiveHalvingResult" ],
       [ "SwiGLUModule", "classpulsatrix_1_1SwiGLUModule.html", "classpulsatrix_1_1SwiGLUModule" ],
+      [ "SystemMonitor", "classpulsatrix_1_1SystemMonitor.html", "classpulsatrix_1_1SystemMonitor" ],
+      [ "SystemSample", "structpulsatrix_1_1SystemSample.html", "structpulsatrix_1_1SystemSample" ],
       [ "TanhGaussianGrad", "structpulsatrix_1_1TanhGaussianGrad.html", "structpulsatrix_1_1TanhGaussianGrad" ],
       [ "TanhGaussianPolicy", "classpulsatrix_1_1TanhGaussianPolicy.html", "classpulsatrix_1_1TanhGaussianPolicy" ],
       [ "TanhGaussianSample", "structpulsatrix_1_1TanhGaussianSample.html", "structpulsatrix_1_1TanhGaussianSample" ],

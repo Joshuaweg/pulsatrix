@@ -74,6 +74,7 @@ var namespacepulsatrix =
     [ "GFlowNetForwardPolicy", "classpulsatrix_1_1GFlowNetForwardPolicy.html", "classpulsatrix_1_1GFlowNetForwardPolicy" ],
     [ "GFlowNetSampledAction", "structpulsatrix_1_1GFlowNetSampledAction.html", "structpulsatrix_1_1GFlowNetSampledAction" ],
     [ "GFlowNetTrajectory", "structpulsatrix_1_1GFlowNetTrajectory.html", "structpulsatrix_1_1GFlowNetTrajectory" ],
+    [ "GpuSample", "structpulsatrix_1_1GpuSample.html", "structpulsatrix_1_1GpuSample" ],
     [ "GradCAM", "classpulsatrix_1_1GradCAM.html", "classpulsatrix_1_1GradCAM" ],
     [ "GroupNormModule", "classpulsatrix_1_1GroupNormModule.html", "classpulsatrix_1_1GroupNormModule" ],
     [ "GRUModule", "classpulsatrix_1_1GRUModule.html", "classpulsatrix_1_1GRUModule" ],
@@ -105,6 +106,7 @@ var namespacepulsatrix =
     [ "LSTMModule", "classpulsatrix_1_1LSTMModule.html", "classpulsatrix_1_1LSTMModule" ],
     [ "MambaModule", "classpulsatrix_1_1MambaModule.html", "classpulsatrix_1_1MambaModule" ],
     [ "MaxPool2DModule", "classpulsatrix_1_1MaxPool2DModule.html", "classpulsatrix_1_1MaxPool2DModule" ],
+    [ "MetricCapability", "structpulsatrix_1_1MetricCapability.html", "structpulsatrix_1_1MetricCapability" ],
     [ "MetricRecord", "structpulsatrix_1_1MetricRecord.html", "structpulsatrix_1_1MetricRecord" ],
     [ "MetricsSink", "classpulsatrix_1_1MetricsSink.html", "classpulsatrix_1_1MetricsSink" ],
     [ "MnistConvNet", "classpulsatrix_1_1MnistConvNet.html", "classpulsatrix_1_1MnistConvNet" ],
@@ -173,6 +175,8 @@ var namespacepulsatrix =
     [ "SubTBLoss", "classpulsatrix_1_1SubTBLoss.html", "classpulsatrix_1_1SubTBLoss" ],
     [ "SuccessiveHalvingResult", "structpulsatrix_1_1SuccessiveHalvingResult.html", "structpulsatrix_1_1SuccessiveHalvingResult" ],
     [ "SwiGLUModule", "classpulsatrix_1_1SwiGLUModule.html", "classpulsatrix_1_1SwiGLUModule" ],
+    [ "SystemMonitor", "classpulsatrix_1_1SystemMonitor.html", "classpulsatrix_1_1SystemMonitor" ],
+    [ "SystemSample", "structpulsatrix_1_1SystemSample.html", "structpulsatrix_1_1SystemSample" ],
     [ "TanhGaussianGrad", "structpulsatrix_1_1TanhGaussianGrad.html", "structpulsatrix_1_1TanhGaussianGrad" ],
     [ "TanhGaussianPolicy", "classpulsatrix_1_1TanhGaussianPolicy.html", "classpulsatrix_1_1TanhGaussianPolicy" ],
     [ "TanhGaussianSample", "structpulsatrix_1_1TanhGaussianSample.html", "structpulsatrix_1_1TanhGaussianSample" ],
@@ -227,6 +231,10 @@ var namespacepulsatrix =
       [ "Sigmoid", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4", null ],
       [ "Silu", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf", null ],
       [ "Exp", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0", null ]
+    ] ],
+    [ "LogFormat", "group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871", [
+      [ "JsonLines", "group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871aaaffc9a26d918147e8944a8fd5e231b9", null ],
+      [ "Csv", "group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871ab20daea8bfacec3891fcf5b7be4adca0", null ]
     ] ],
     [ "LogicOp", "namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e", [
       [ "ConjunctionForward", "namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9eab09c932ce0af7600b64c202bc1f7c4f3", null ],
@@ -352,6 +360,7 @@ var namespacepulsatrix =
     [ "FixedTopologyXORFitness", "namespacepulsatrix.html#a05933484afd79bc12781dcf580b6fce2", null ],
     [ "FixedTopologyXORForward", "namespacepulsatrix.html#a416909cba1eaf572fc95d96d7495a0dc", null ],
     [ "FlattenParameters", "namespacepulsatrix.html#a2f695053d9e163e67bfe799afd300f9a", null ],
+    [ "format_iso8601_utc", "namespacepulsatrix.html#aae7427cc91bd5f0149c81c3c9251897a", null ],
     [ "GaussianKdeDensity", "namespacepulsatrix.html#ab1858561757f00aeb2d092ed10325f76", null ],
     [ "GaussianMutation", "namespacepulsatrix.html#ab4c2230dcac5c55349d824fd7e7bf797", null ],
     [ "GaussianMutationByNoise", "namespacepulsatrix.html#a39f4305db741695aecae5cf5f02a1a8c", null ],
@@ -396,6 +405,7 @@ var namespacepulsatrix =
     [ "RunSuccessiveHalvingOnConfigs", "namespacepulsatrix.html#aa54b946112a389becc102e114672dcbd", null ],
     [ "RunTPELoop", "namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92", null ],
     [ "sample_gflownet_trajectory", "namespacepulsatrix.html#a2300465dae625e63a4c68b003cdcfc49", null ],
+    [ "sample_to_json", "namespacepulsatrix.html#aba113e4a47a13ae03ade3411dc53a115", null ],
     [ "SimulatedBinaryCrossover", "namespacepulsatrix.html#a96bead736f7e1d68ad0c425a63cb2bac", null ],
     [ "SimulatedBinaryCrossoverByDraw", "namespacepulsatrix.html#a299a5c9f4f89d5956e23456968301439", null ],
     [ "SinusoidalTimestepEmbedding", "namespacepulsatrix.html#a9db00216eaf37da6e93cdbc40371c65e", null ],

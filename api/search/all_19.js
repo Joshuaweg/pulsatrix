@@ -1,20 +1,8 @@
 var searchData=
 [
-  ['_7eagent_0',['~Agent',['../classpulsatrix_1_1Agent.html#ade03610cfcc04baf81ae26aae01afba7',1,'pulsatrix::Agent']]],
-  ['_7ecudabackend_1',['~CUDABackend',['../classpulsatrix_1_1CUDABackend.html#ab6d01f76bd0f38e16c723599a0b1ec91',1,'pulsatrix::CUDABackend']]],
-  ['_7edataset_2',['~Dataset',['../classpulsatrix_1_1Dataset.html#aede324cc847f11c60a7dbcf0c8675c67',1,'pulsatrix::Dataset']]],
-  ['_7edatathreadpool_3',['~DataThreadPool',['../classpulsatrix_1_1DataThreadPool.html#aa48ac96899b114d063e4f3a8cbb32c89',1,'pulsatrix::DataThreadPool']]],
-  ['_7edevicebackend_4',['~DeviceBackend',['../classpulsatrix_1_1DeviceBackend.html#a2feea27fda55c8c0addf4e7c3864f2aa',1,'pulsatrix::DeviceBackend']]],
-  ['_7eenvironment_5',['~Environment',['../classpulsatrix_1_1Environment.html#a62af9e8af8cbe3f24da91fbe296208f5',1,'pulsatrix::Environment']]],
-  ['_7ehipbackend_6',['~HIPBackend',['../classpulsatrix_1_1HIPBackend.html#afe3d4438b733cc7574987043859872e3',1,'pulsatrix::HIPBackend']]],
-  ['_7eiterabledataset_7',['~IterableDataset',['../classpulsatrix_1_1IterableDataset.html#a9c6792df2eecb7ee7685855fa54a800d',1,'pulsatrix::IterableDataset']]],
-  ['_7emetricssink_8',['~MetricsSink',['../classpulsatrix_1_1MetricsSink.html#add45ab2d67ff49bb11f799833b17b6de',1,'pulsatrix::MetricsSink']]],
-  ['_7emodule_9',['~Module',['../classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809',1,'pulsatrix::Module']]],
-  ['_7epbtresumabletrial_10',['~PBTResumableTrial',['../classpulsatrix_1_1PBTResumableTrial.html#a954876f98f763fb8c542c7eb938e13e4',1,'pulsatrix::PBTResumableTrial']]],
-  ['_7eresumabletrial_11',['~ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html#af932576b9615280b8fc7d253c366e864',1,'pulsatrix::ResumableTrial']]],
-  ['_7esampler_12',['~Sampler',['../classpulsatrix_1_1Sampler.html#ad66a2ce7685160289151eca01299eef7',1,'pulsatrix::Sampler']]],
-  ['_7etensor_13',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
-  ['_7etexturecache_14',['~TextureCache',['../classpulsatrix_1_1TextureCache.html#a631a6a08f474232801eba06be1cd4e9b',1,'pulsatrix::TextureCache']]],
-  ['_7etransform_15',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]],
-  ['_7evizwindow_16',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
+  ['zbox_0',['ZBox',['../namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3',1,'pulsatrix']]],
+  ['zennit_5fepsilon_1',['zennit_epsilon',['../namespacepulsatrix_1_1lrp__composite_1_1detail.html#a58891fe3960d80c0b05f47040d13aace',1,'pulsatrix::lrp_composite::detail']]],
+  ['zero_2',['zero',['../structpulsatrix_1_1datalog_1_1DualSemiring.html#a33bc8507181d27a5e776a4f5fa7f22cf',1,'pulsatrix::datalog::DualSemiring::zero()'],['../structpulsatrix_1_1datalog_1_1BooleanSemiring.html#a7e72b0eca58818e3e4f5dd8db3973e3c',1,'pulsatrix::datalog::BooleanSemiring::zero()'],['../structpulsatrix_1_1datalog_1_1RealSemiring.html#a3fd70778ebf31e5a93179770abbc2862',1,'pulsatrix::datalog::RealSemiring::zero()']]],
+  ['zero_5fgrad_3',['zero_grad',['../classpulsatrix_1_1AdamOptimizer.html#a5ae29a0ec977e5c281c60c08c4c52450',1,'pulsatrix::AdamOptimizer::zero_grad()'],['../classpulsatrix_1_1LearnableScalar.html#a9af339c6e66063de8427473acacddb61',1,'pulsatrix::LearnableScalar::zero_grad()'],['../classpulsatrix_1_1SGDOptimizer.html#acae45b0c72bf4c7a3ec17c8ad5f2bac6',1,'pulsatrix::SGDOptimizer::zero_grad()']]],
+  ['zeromodulegradients_4',['ZeroModuleGradients',['../namespacepulsatrix.html#ab80c96d8d4b45a6185d821cb5c24804a',1,'pulsatrix']]]
 ];

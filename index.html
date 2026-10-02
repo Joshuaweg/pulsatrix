@@ -941,6 +941,9 @@ ImPlot, opt-in via <code>PULSATRIX_ENABLE_VIZ</code>) turning <code>Attribution<
 data into charts — feature-importance bars, waterfalls, saliency heatmaps, a circuit-graph
 view, and a live <code>TrainingDashboard</code> — built on a pure, always-available data-transform layer
 that stays unit-tested independent of the GUI stack.</p>
+<p><strong>System monitoring</strong>: <code>SystemMonitor</code> samples CPU/GPU utilization, memory and temperatures
+live (Linux /proc + hwmon + amdgpu sysfs, Windows Win32, NVIDIA via runtime-loaded NVML) and
+streams them to a JSON Lines/CSV log; unreadable metrics are reported as missing, never as zero.</p>
 <p><strong>Bindings</strong>: pybind11 (<code>bindings/pulsatrix_py.cpp</code>) exposing <code>Tensor</code>, core modules, and the
 explainer suite to Python.</p>
 <p>1700+ tests, green in both Debug and Release, on Windows and Linux.</p>

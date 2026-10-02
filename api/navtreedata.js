@@ -45,7 +45,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ]
       ] ]
@@ -72,11 +72,12 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1NoiseSchedule.html#a7145582f7bd8664edef3ae9fa06f33cc",
 "classpulsatrix_1_1ResizeTransform.html",
 "classpulsatrix_1_1SwiGLUModule.html#aabebe9bd5eb5e02e33ad0fecbd635492",
-"classpulsatrix_1_1XorNetwork.html#aea8944b7f9aa6259490ff2d4410b8dc1",
-"learnable__scalar_8hpp.html",
-"namespacepulsatrix_1_1datalog.html#a0854f4411fd0167576e73dbb4f0bebd9",
-"structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html#a6423c01999e2c60d7b6cf15881981ad7",
-"structpulsatrix_1_1StepResult.html"
+"classpulsatrix_1_1Vocabulary.html#a55f6602cda48cf696647aa88b7f8300b",
+"functions_vars.html",
+"namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a",
+"structpulsatrix_1_1ConservationResult.html#add420648be792522a5b8a2914ca79437",
+"structpulsatrix_1_1ReparamGrad.html#ae5a4d22298fdb71fa94b20796596cfc6",
+"structpulsatrix_1_1detail_1_1RawReading.html#a86f508d8f6f14a59f22b1a3ced963c38"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

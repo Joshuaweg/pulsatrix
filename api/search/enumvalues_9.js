@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['mambabackward_0',['MambaBackward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aafd6ee7fcd70442a7b08a77881574ab2',1,'pulsatrix']]],
-  ['mambaforward_1',['MambaForward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4',1,'pulsatrix']]],
-  ['mambagradbc_2',['MambaGradBC',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aa4c2ce7fcd5cbf8e07420e447bac3987',1,'pulsatrix']]],
-  ['mambalrp_3',['MambaLrp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aaca452419514797385505efded2e0473',1,'pulsatrix']]],
-  ['minimax_4',['Minimax',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b',1,'pulsatrix']]]
+  ['leastsquares_0',['LeastSquares',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46',1,'pulsatrix']]],
+  ['linear_1',['Linear',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b',1,'pulsatrix']]],
+  ['loguniform_2',['LogUniform',['../namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045',1,'pulsatrix']]],
+  ['lstmbackward_3',['LstmBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887',1,'pulsatrix']]],
+  ['lstmforward_4',['LstmForward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959',1,'pulsatrix']]],
+  ['lstmlrp_5',['LstmLrp',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731',1,'pulsatrix']]],
+  ['lukasiewicz_6',['lukasiewicz',['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fad0f758f4f092310da74b1523c78793bb',1,'pulsatrix::ConjunctionModule::Lukasiewicz'],['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ead0f758f4f092310da74b1523c78793bb',1,'pulsatrix::DisjunctionModule::Lukasiewicz']]]
 ];

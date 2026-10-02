@@ -154,6 +154,8 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "successive_halving.hpp", "successive__halving_8hpp.html", "successive__halving_8hpp" ],
     [ "survivor_selection.hpp", "survivor__selection_8hpp.html", "survivor__selection_8hpp" ],
     [ "swiglu_module.hpp", "swiglu__module_8hpp.html", "swiglu__module_8hpp" ],
+    [ "system_monitor.hpp", "system__monitor_8hpp.html", "system__monitor_8hpp" ],
+    [ "system_monitor_detail.hpp", "system__monitor__detail_8hpp.html", "system__monitor__detail_8hpp" ],
     [ "tanh_gaussian_policy.hpp", "tanh__gaussian__policy_8hpp.html", "tanh__gaussian__policy_8hpp" ],
     [ "tensor.hpp", "tensor_8hpp.html", "tensor_8hpp" ],
     [ "text_collate.hpp", "text__collate_8hpp.html", "text__collate_8hpp" ],
