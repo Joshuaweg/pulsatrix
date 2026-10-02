@@ -31,7 +31,12 @@ steps rather than `Module`s, so they carry no LRP rule.
 (Layer-wise Relevance Propagation) rule every relevance-bearing layer carries alongside its
 forward/backward math (Arras et al. for RNN/LSTM/GRU, AttnLRP for `TransformerBlock`,
 MambaLRP for `MambaModule` — every rule real and cited; conservation-tested where the rule
-conserves by construction).
+conserves by construction). Whole-model
+`LRP::explain()` is checked against Zennit 1.0.0 (Epsilon, ZPlus, AlphaBeta, Gamma and the
+`EpsilonPlus` / `EpsilonAlpha2Beta1` / `EpsilonGammaBox` presets on an MLP and a CNN) and against
+LXT 2.1's AttnLRP rules (`MultiHeadAttentionModule`, `TransformerBlock`, RoPE / QK-Norm off) to
+float32 precision, with the epsilon rule's bias in the denominator as both libraries use it — see
+`tests/lrp_reference_test.cpp` and the README's "LRP validated against Zennit / LXT".
 
 **[Reinforcement Learning](reinforcement-learning/index.md)**: gymnasium-API-shaped
 `Environment`/`Agent` interfaces, `CartPoleEnv`/`ContinuousCartPoleEnv`, `ReplayBuffer`/
