@@ -383,22 +383,5 @@ TEST_F(CategoricalPolicyAgentTest, WorksWithAMultiLayerSequentialPolicyNetwork) 
     EXPECT_LT(agent.log_prob(), 0.0f);
 }
 
-using CategoricalPolicyAgentDeathTest = CategoricalPolicyAgentTest;
-
-// act() runs a stabilized softmax and an inverse-CDF scan in raw host loops over
-// Tensor::data(); that output inherits its device from the observation, so a CUDA-backed
-// observation is silent UB (mission_host_loop_guards.md). One death test, per the mission's
-// one-per-entry-point rule and DQNAgentDeathTest's identical precedent: act() has exactly one
-// caller-supplied Tensor argument, and act_greedy() reaches the same guarded argument role
-// through the same helper, so a second case would re-cover a path rather than cover a new one.
-TEST_F(CategoricalPolicyAgentDeathTest, ActAbortsOnNonCpuObservation) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    CategoricalPolicyAgent agent(&policy_network, kActionDim, &backend);
-    Tensor cuda_observation(Shape({1, kObsDim}), &backend, {0.3f, -0.7f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)agent.act(cuda_observation); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

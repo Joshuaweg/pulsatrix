@@ -2,8 +2,8 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -60,22 +60,19 @@ Tensor ContinuousCartPoleEnv::reset(const Tensor& initial_state) {
     if (initial_state.rank() != 2 || initial_state.shape().dim(0) != 1 || initial_state.shape().dim(1) != 4) {
         throw std::invalid_argument("ContinuousCartPoleEnv::reset: initial_state must have shape (1, 4)");
     }
-    PULSATRIX_REQUIRE_HOST(initial_state);
+    // Host boundary (GPU-native-kernels Mission 7): one device->host copy of the 4 values.
+    const std::vector<float> state = initial_state.to_host_vector();
 
-    x_ = static_cast<double>(initial_state.data()[0]);
-    x_dot_ = static_cast<double>(initial_state.data()[1]);
-    theta_ = static_cast<double>(initial_state.data()[2]);
-    theta_dot_ = static_cast<double>(initial_state.data()[3]);
+    x_ = static_cast<double>(state[0]);
+    x_dot_ = static_cast<double>(state[1]);
+    theta_ = static_cast<double>(state[2]);
+    theta_dot_ = static_cast<double>(state[3]);
     step_count_ = 0;
     has_reset_ = true;
     return observation();
 }
 
 StepResult ContinuousCartPoleEnv::step(const Tensor& action) {
-    // Raw host loop over Tensor::data() -- undefined behavior on a CUDA-backed Tensor.
-    // See mission_host_loop_guards.md; same guard as CartPoleEnv and every prior module.
-    PULSATRIX_REQUIRE_HOST(action);
-
     if (!has_reset_) {
         throw std::invalid_argument("ContinuousCartPoleEnv::step called before reset");
     }
@@ -86,7 +83,9 @@ StepResult ContinuousCartPoleEnv::step(const Tensor& action) {
     // Widened to double before the range check: 1.0f + 1e-4f rounds to the same float as
     // 1.0001f, so comparing in float would accept an out-of-range action. Phrased as "must be
     // inside the band" so a NaN action (for which every comparison is false) is rejected too.
-    const double requested = static_cast<double>(action.data()[0]);
+    // Host boundary (GPU-native-kernels Mission 7): the action may live on any device and is
+    // read back with one device->host copy; the physics runs on the host in double.
+    const double requested = static_cast<double>(action.to_host_vector()[0]);
     if (!(requested >= -1.0 - kActionRangeTolerance && requested <= 1.0 + kActionRangeTolerance)) {
         throw std::invalid_argument(
             "ContinuousCartPoleEnv::step: action must be a force fraction in [-1, 1] (within 1e-4)");
@@ -101,8 +100,8 @@ StepResult ContinuousCartPoleEnv::step(const Tensor& action) {
     const double sintheta = std::sin(theta_);
 
     const double temp = (force + kPoleMassLength * theta_dot_ * theta_dot_ * sintheta) / kTotalMass;
-    const double thetaacc =
-        (kGravity * sintheta - costheta * temp) / (kLength * (4.0 / 3.0 - kMassPole * costheta * costheta / kTotalMass));
+    const double thetaacc = (kGravity * sintheta - costheta * temp) /
+                            (kLength * (4.0 / 3.0 - kMassPole * costheta * costheta / kTotalMass));
     const double xacc = temp - kPoleMassLength * thetaacc * costheta / kTotalMass;
 
     // Explicit (forward) Euler, in Gym's exact order: positions advance using the

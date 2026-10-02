@@ -134,6 +134,16 @@ public:
      */
     [[nodiscard]] float read_element(int64_t flat_index) const;
 
+    /**
+     * @brief Copies the whole buffer to a host vector through the owning backend, on any device.
+     * @return numel() floats in row-major order (empty for a zero-element tensor).
+     * @note One synchronous copy (HostToHost on Cpu, DeviceToHost otherwise) -- the explicit
+     *       transfer a deliberate host boundary (an environment, a replay buffer, an agent's
+     *       action selection; GPU-native-kernels Mission 7) uses to read a possibly-device
+     *       tensor once, instead of dereferencing data() in a host loop.
+     */
+    [[nodiscard]] std::vector<float> to_host_vector() const;
+
     /** @brief Writes one element from the host through the owning backend, on any device. */
     void write_element(int64_t flat_index, float value);
 

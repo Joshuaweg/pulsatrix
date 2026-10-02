@@ -12,10 +12,9 @@ namespace pulsatrix {
 namespace {
 
 // Renders a Shape as "(a, b, ...)" for an error message. Deliberately duplicated from
-// dqn_target.cpp's own TU-local helper rather than promoted to a shared header: promoting it
-// would mean editing dqn_target.cpp, which this mission explicitly does not touch
-// (SyncTargetNetwork is not modified). Two five-line formatters are cheaper than a speculative
-// "shape formatting" utility header; if a third caller appears, that is the moment to hoist it.
+// dqn_target.cpp's own TU-local helper rather than promoted to a shared header: two five-line
+// formatters are cheaper than a speculative "shape formatting" utility header; if a third
+// caller appears, that is the moment to hoist it.
 std::string shape_to_string(const Shape& shape) {
     std::string out = "(";
     for (int64_t i = 0; i < shape.rank(); ++i) {
@@ -60,13 +59,27 @@ void PolyakUpdate(Module& source, Module& destination, float tau) {
         // already holding ParamRefs into them -- point at. The destination's current value is
         // also a read operand here, which is what makes successive calls an exponential moving
         // average rather than a sequence of independent writes.
-        // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-        // (GPU-native-kernels campaign, Mission 0 O4).
-        PULSATRIX_REQUIRE_HOST(from);
-        PULSATRIX_REQUIRE_HOST(into);
-        for (int64_t e = 0; e < from.numel(); ++e) {
-            into.data()[e] = tau * from.data()[e] + (1.0f - tau) * into.data()[e];
+        // Device-generic (GPU-native-kernels Mission 7): one rl_rows(PolyakBlend) pass through
+        // the destination's backend, `tau * from + (1 - tau) * into` per element exactly as the
+        // original loop evaluated it. A source on another device is first staged onto the
+        // destination's.
+        if (from.numel() == 0) {
+            continue;
         }
+        DeviceBackend* backend = into.backend();
+        const Tensor* source_values = &from;
+        Tensor staged(Shape({0}), backend);
+        if (from.device() != into.device()) {
+            staged = Tensor(from.shape(), backend, from.to_host_vector(), into.device());
+            source_values = &staged;
+        }
+        RlRowArgs args;
+        args.in[0] = source_values->data();
+        args.in[1] = into.data();
+        args.out[0] = into.data();
+        args.rows = into.numel();
+        args.tau = tau;
+        backend->rl_rows(RlRowOp::PolyakBlend, args);
     }
 }
 

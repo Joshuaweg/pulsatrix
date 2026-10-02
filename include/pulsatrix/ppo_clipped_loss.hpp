@@ -82,12 +82,10 @@ public:
      *         if a decoded index falls outside [0, action_dim), or if clip_epsilon is outside
      *         (0, 1) -- all external boundaries. The integer tolerance is byte-for-byte
      *         PolicyGradientLoss::forward()'s (itself DQNLoss's, itself CartPoleEnv::step()'s).
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host loops
-     *       (a row-wise stabilized softmax and a per-row gather at a data-dependent column have
-     *       no DeviceBackend primitive). PULSATRIX_REQUIRE_HOST on all four
-     *       inputs guards against silent UB on a CUDA-backed Tensor; see
-     *       mission_host_loop_guards.md. Do not remove these guards without actually
-     *       retrofitting the method to route through DeviceBackend.
+     * @note Device-generic (GPU-native-kernels Mission 7): the N encoded actions are copied to
+     *       the host once for validation, then the row softmax, ratio, clip mask and loss terms
+     *       run through DeviceBackend::rl_rows(PpoLoss) and are summed with column_sums in row
+     *       order.
      */
     [[nodiscard]] float forward(const Tensor& new_logits, const Tensor& actions, const Tensor& old_log_probs,
                                 const Tensor& advantages, float clip_epsilon);
@@ -119,10 +117,8 @@ public:
      * @note The `1/N` factor is the batch-mean scaling; N is the number of rollout steps, not
      *       the element count, because the mean is taken over steps -- identical reasoning to
      *       PolicyGradientLoss's and DQNLoss's.
-     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
-     *       guards on the cached state and on the freshly allocated gradient(s). forward()'s
-     *       guard covers only the caller's tensors; the gradient is allocated through backend_,
-     *       which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
+     * @note Device-generic: one DeviceBackend::rl_rows(PpoGrad) lane per row writes the dense
+     *       gradient row.
      */
     [[nodiscard]] Tensor backward() const;
 
@@ -131,15 +127,16 @@ private:
     /** @brief Row-wise softmax probabilities of the last forward()'s logits, (N, action_dim). */
     Tensor last_probs_;
     Tensor last_advantages_;
-    /** @brief Per-row probability ratio from the last forward() -- cached rather than
+    /** @brief Per-row probability ratio from the last forward(), (N, 1) -- cached rather than
      *         recomputed, since backward() needs the exact value forward() masked against. */
-    std::vector<float> last_ratios_;
+    Tensor last_ratios_;
     /** @brief Per-row clip mask, 0.0f or 1.0f, decided in forward() where `clip_epsilon` is in
      *         scope. Caching the decision rather than the epsilon keeps backward() free of the
-     *         region logic and makes the mask directly assertable in tests via the gradient. */
-    std::vector<float> last_masks_;
-    /** @brief Decoded, already-validated action index per rollout step. */
-    std::vector<int64_t> last_action_indices_;
+     *         region logic and makes the mask directly assertable in tests via the gradient. (N, 1). */
+    Tensor last_masks_;
+    /** @brief Decoded, already-validated action index per rollout step, (N, 1) whole-number
+     *         floats on backend_'s device. */
+    Tensor last_action_indices_;
     bool has_forwarded_ = false;
 };
 

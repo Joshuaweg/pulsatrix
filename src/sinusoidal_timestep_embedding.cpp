@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <vector>
 
 #include "pulsatrix/shape.hpp"
 
@@ -15,10 +16,9 @@ Tensor SinusoidalTimestepEmbedding(int64_t t, int64_t embedding_dim, DeviceBacke
         throw std::invalid_argument("SinusoidalTimestepEmbedding: embedding_dim must be even");
     }
 
-    Tensor embedding(Shape({1, embedding_dim}), backend);
-    // Allocated through backend, so a GPU backend tags it Cuda/Hip -- the host writes below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(embedding);
+    // Host boundary (GPU-native-kernels Mission 7): computed on the host in double, then
+    // uploaded once through `backend`.
+    std::vector<float> embedding(static_cast<size_t>(embedding_dim));
     const float t_value = static_cast<float>(t);
     for (int64_t i = 0; i < embedding_dim / 2; ++i) {
         // Frequency of pair i: t / base^(2i/embedding_dim). Computed in double and narrowed
@@ -27,10 +27,10 @@ Tensor SinusoidalTimestepEmbedding(int64_t t, int64_t embedding_dim, DeviceBacke
         // encoding's high-index pairs would lose their (already small) angular resolution.
         const double exponent = static_cast<double>(2 * i) / static_cast<double>(embedding_dim);
         const double frequency = static_cast<double>(t_value) / std::pow(static_cast<double>(base), exponent);
-        embedding.data()[2 * i] = static_cast<float>(std::sin(frequency));
-        embedding.data()[2 * i + 1] = static_cast<float>(std::cos(frequency));
+        embedding[static_cast<size_t>(2 * i)] = static_cast<float>(std::sin(frequency));
+        embedding[static_cast<size_t>(2 * i + 1)] = static_cast<float>(std::cos(frequency));
     }
-    return embedding;
+    return Tensor(Shape({1, embedding_dim}), backend, embedding);
 }
 
 }  // namespace pulsatrix

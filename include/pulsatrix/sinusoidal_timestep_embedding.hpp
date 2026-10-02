@@ -44,9 +44,9 @@ namespace pulsatrix {
  *       this result is concatenate it onto each row of an `(N, D)` batch of noisy samples.
  *       A `(1, embedding_dim)` row is directly that row; a rank-1 result would make every
  *       caller reshape first.
- * @note Writes through Tensor::data() on a tensor it allocates itself, which is therefore
- *       always Cpu-resident -- unlike NoiseSchedule's methods there is no caller-supplied
- *       tensor whose device could be wrong, so there is nothing here to device-guard.
+ * @note Host boundary (GPU-native-kernels Mission 7): the embedding is computed on the host in
+ *       double (one sin/cos pair per frequency) and uploaded once through `backend`, so a GPU
+ *       backend receives a device-resident result.
  */
 [[nodiscard]] Tensor SinusoidalTimestepEmbedding(int64_t t, int64_t embedding_dim, DeviceBackend* backend,
                                                  float base = 10000.0f);

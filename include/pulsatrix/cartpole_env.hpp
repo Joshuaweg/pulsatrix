@@ -95,10 +95,9 @@ public:
      *         action's shape is not (1, 1), or if the decoded index is not within 1e-4 of
      *         an integer in [0, action_dim()). All external boundary: an action can
      *         originate from an untrusted policy output or, eventually, Python bindings.
-     * @note PULSATRIX_REQUIRE_HOST(action) -- this is a raw host-loop
-     *       physics update dereferencing Tensor::data() directly, not yet backend-generic,
-     *       so a CUDA-backed action Tensor would be silent UB. Same convention as every
-     *       prior module; do not remove without actually routing through DeviceBackend.
+     * @note Host boundary (GPU-native-kernels Mission 7): the physics is a scalar double-precision
+     *       update on the host. `action` may live on any device -- one device->host copy of it
+     *       per call -- and the observation is returned through this environment's own backend.
      * @note Stepping past a done=true result is allowed and keeps integrating; enforcing
      *       "reset after done" would be a second precondition with no caller to serve, and
      *       Gym itself only warns. The episode loop is the caller's responsibility.
