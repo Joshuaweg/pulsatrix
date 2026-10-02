@@ -69,15 +69,15 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1GRUModule.html#adb25792a0cd537e916e603feaa970057",
 "classpulsatrix_1_1ImPlotMetricsSink.html#af6a14d7b939a99acbee3607c1e6c2f7e",
 "classpulsatrix_1_1MSELoss.html#a6d5585d30079af244aaf7bf8202378ea",
-"classpulsatrix_1_1NoiseSchedule.html#a7145582f7bd8664edef3ae9fa06f33cc",
-"classpulsatrix_1_1ResizeTransform.html",
-"classpulsatrix_1_1SwiGLUModule.html#aabebe9bd5eb5e02e33ad0fecbd635492",
-"classpulsatrix_1_1Vocabulary.html#a55f6602cda48cf696647aa88b7f8300b",
-"functions_vars.html",
-"namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a",
-"structpulsatrix_1_1ConservationResult.html#add420648be792522a5b8a2914ca79437",
-"structpulsatrix_1_1ReparamGrad.html#ae5a4d22298fdb71fa94b20796596cfc6",
-"structpulsatrix_1_1detail_1_1RawReading.html#a86f508d8f6f14a59f22b1a3ced963c38"
+"classpulsatrix_1_1NoiseSchedule.html#a62eeb0e2312ef57ee8418fe40980b0ce",
+"classpulsatrix_1_1ResidualModule.html#aff80847126102d8c3e5af7ababb72f8a",
+"classpulsatrix_1_1SwiGLUModule.html#a8a476b5d2e6e47da7c26d6399184c793",
+"classpulsatrix_1_1VizWindow.html#af24d3a1ef37b1d9fadcd1f9ff14573ad",
+"functions_r.html",
+"namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a",
+"structpulsatrix_1_1ConnectionGene.html#ae8cfc87807eb7600e16bf96a4f65650e",
+"structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1",
+"structpulsatrix_1_1detail_1_1ASHACandidate.html#ad9cb9bcfc8bfab59b8fe57a0d32bc26e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

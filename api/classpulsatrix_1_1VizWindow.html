@@ -119,6 +119,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c7208c9be6720936abc4648d5202cd5" id="r_a1c7208c9be6720936abc4648d5202cd5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html#a1c7208c9be6720936abc4648d5202cd5">run</a> (const std::function&lt; void()&gt; &amp;draw_frame)</td></tr>
 <tr class="memdesc:a1c7208c9be6720936abc4648d5202cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the main loop, calling draw_frame() once per frame between ImGui::NewFrame()/ImGui::Render(), until the window is closed.  <br /></td></tr>
 <tr class="separator:a1c7208c9be6720936abc4648d5202cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f85929a9f9358dd05c9b7de7e381d5" id="r_a33f85929a9f9358dd05c9b7de7e381d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html#a33f85929a9f9358dd05c9b7de7e381d5">run</a> (const std::function&lt; void()&gt; &amp;draw_frame, const std::function&lt; void(int, int)&gt; &amp;after_render)</td></tr>
+<tr class="memdesc:a33f85929a9f9358dd05c9b7de7e381d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as run(draw_frame), plus after_render(framebuffer_width, framebuffer_height) called once per frame after ImGui's draw data has been rendered into the back buffer and before the buffer swap &ndash; the one point where glReadPixels sees the finished frame (e.g. for writing screenshots).  <br /></td></tr>
+<tr class="separator:a33f85929a9f9358dd05c9b7de7e381d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad447ed9b3ff31bb50bcc15f0fe68042" id="r_aad447ed9b3ff31bb50bcc15f0fe68042"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html#aad447ed9b3ff31bb50bcc15f0fe68042">request_close</a> ()</td></tr>
+<tr class="memdesc:aad447ed9b3ff31bb50bcc15f0fe68042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks the main loop to exit after the current frame (e.g. a scripted/screenshot run).  <br /></td></tr>
+<tr class="separator:aad447ed9b3ff31bb50bcc15f0fe68042"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Owns a GLFW window, OpenGL3 context, and ImGui/ImPlot context for the lifetime of one demo app. Every examples/viz/*_demo.cpp uses this instead of hand-rolling the standard imgui_impl_glfw_opengl3 boilerplate. </p>
@@ -236,8 +242,27 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aad447ed9b3ff31bb50bcc15f0fe68042" name="aad447ed9b3ff31bb50bcc15f0fe68042"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad447ed9b3ff31bb50bcc15f0fe68042">&#9670;&#160;</a></span>request_close()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::VizWindow::request_close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Asks the main loop to exit after the current frame (e.g. a scripted/screenshot run). </p>
+
+</div>
+</div>
 <a id="a1c7208c9be6720936abc4648d5202cd5" name="a1c7208c9be6720936abc4648d5202cd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c7208c9be6720936abc4648d5202cd5">&#9670;&#160;</a></span>run()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c7208c9be6720936abc4648d5202cd5">&#9670;&#160;</a></span>run() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -259,6 +284,36 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a33f85929a9f9358dd05c9b7de7e381d5" name="a33f85929a9f9358dd05c9b7de7e381d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33f85929a9f9358dd05c9b7de7e381d5">&#9670;&#160;</a></span>run() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::VizWindow::run </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; void()&gt; &amp;&#160;</td>
+          <td class="paramname"><em>draw_frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; void(int, int)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>after_render</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as run(draw_frame), plus after_render(framebuffer_width, framebuffer_height) called once per frame after ImGui's draw data has been rendered into the back buffer and before the buffer swap &ndash; the one point where glReadPixels sees the finished frame (e.g. for writing screenshots). </p>
 
 </div>
 </div>

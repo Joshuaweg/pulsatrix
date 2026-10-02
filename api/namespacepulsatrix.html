@@ -194,7 +194,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance score, plus the weighted edges between them.  <a href="classpulsatrix_1_1CircuitGraph.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CircuitGraphView.html">CircuitGraphView</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a> as a node-link diagram: node position is topological depth (x-axis), node size and color encode ablation_effect via length/area AND Viridis (unsigned magnitude &ndash; never hue-for-magnitude, hc_information_visualization.md SS1), edge thickness encodes weight.  <a href="classpulsatrix_1_1CircuitGraphView.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a> as a node-link diagram: node position is topological depth (x-axis), node size and color encode ablation_effect via length/area AND Viridis (unsigned magnitude &ndash; never hue-for-magnitude, hc_information_visualization.md SS1), edge thickness encodes weight. Each node is captioned with CircuitNodeDisplayLabel (its own label, else op type + id) above and its ablation effect below.  <a href="classpulsatrix_1_1CircuitGraphView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitNode.html">CircuitNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One node of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>: a computation-graph node plus its importance score.  <a href="structpulsatrix_1_1CircuitNode.html#details">More...</a><br /></td></tr>
@@ -341,6 +341,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GRUModule.html">GRUModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard GRU recurrence (Cho et al. 2014), h_0 = 0 (zero-initialized, not learnable &ndash; the same deliberate scope cut RNNModule/LSTMModule made, and the same thing that makes this module's conservation exact; see the <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> note below): z_t = sigmoid(x_t @ W_xz + h_{t-1} @ W_hz + b_z) (update gate), r_t = sigmoid(x_t @ W_xr + h_{t-1} @ W_hr + b_r) (reset gate), hn_prev_t = h_{t-1} @ W_hn (internal projection, no bias), n_t = tanh(x_t @ W_xn + r_t * hn_prev_t + b_n) (candidate), h_t = (1 - z_t) * h_{t-1} + z_t * n_t. Note the reset gate multiplies the <em>projected</em> previous hidden state <code>hn_prev_t</code>, not <code>h_{t-1}</code> itself &ndash; that projection is a distinct cached intermediate, and it is what gives GRU's <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule a different shape from LSTM's. Input (N, L, input_size) -&gt; output (N, L, hidden_size), the full hidden-state sequence (matches <a class="el" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t-1} @ W_hh + b_h), h_0 = 0 (zero-initialized, not learnable – a deliberat...">RNNModule</a>'s/LSTMModule's convention). Single layer, no bidirectional/multi-layer/variable-length support.  <a href="classpulsatrix_1_1GRUModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapColorScale.html">HeatmapColorScale</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color-scale range and colormap family a heatmap's values call for.  <a href="structpulsatrix_1_1HeatmapColorScale.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A row-major 2D grid of unsigned magnitude values, ready for a heatmap plot.  <a href="structpulsatrix_1_1HeatmapGrid.html#details">More...</a><br /></td></tr>
@@ -572,7 +575,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">ExplainerContext::backward_pass</a> with a one-hot vector at target_index.  <a href="classpulsatrix_1_1Saliency.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SaliencyHeatmapView.html">SaliencyHeatmapView</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a 2D saliency heatmap with Viridis (perceptually uniform, colorblind-safe &ndash; hc_information_visualization.md SS4) for unsigned magnitude.  <a href="classpulsatrix_1_1SaliencyHeatmapView.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a 2D saliency heatmap plus a colormap scale bar. Unsigned magnitudes (e.g. Grad-CAM) use Viridis (perceptually uniform, colorblind-safe &ndash; hc_information_visualization.md SS4) over [0, max]; signed attributions (any negative value &ndash; gradients, IG, <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>, SHAP) use the blue-white-red DivergingColormap over the symmetric range [-max|v|, +max|v|], so zero is always the neutral midpoint. The choice is ComputeHeatmapColorScale's (<a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>, unit-tested). Row 0 of the grid is drawn at the top (image convention) with square cells.  <a href="classpulsatrix_1_1SaliencyHeatmapView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Sample.html">Sample</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One dataset sample: an ordered list of <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> fields (e.g. {features, label} or {image, label}). Field order/count is a contract between a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> implementation and whatever CollateFn (<a class="el" href="collate_8hpp.html" title="Batch assembly – Batch, CollateFn, DefaultCollate.">collate.hpp</a>) later assembles samples into a <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>.  <a href="structpulsatrix_1_1Sample.html#details">More...</a><br /></td></tr>
@@ -697,6 +700,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Token&lt;-&gt;index lookup table. Index 0 is always the reserved "&lt;unk&gt;" token &ndash; guaranteed by construction, not caller convention: the constructor takes the ranked list of <em>real</em> tokens and prepends "&lt;unk&gt;" itself.  <a href="classpulsatrix_1_1Vocabulary.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WaterfallBar.html">WaterfallBar</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One floating waterfall bar: spans [bottom, top] on the value axis.  <a href="structpulsatrix_1_1WaterfallBar.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WaterfallStep.html">WaterfallStep</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One waterfall step: a labeled delta and the running cumulative value after it.  <a href="structpulsatrix_1_1WaterfallStep.html#details">More...</a><br /></td></tr>
@@ -1243,13 +1249,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a8a0d96ad60ab368e82e5e29aa3605bbb" id="r_a8a0d96ad60ab368e82e5e29aa3605bbb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1WaterfallStep.html">WaterfallStep</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8a0d96ad60ab368e82e5e29aa3605bbb">ToWaterfallSteps</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, float baseline_value)</td></tr>
 <tr class="memdesc:a8a0d96ad60ab368e82e5e29aa3605bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into a cascading waterfall from a real baseline to the final prediction (hc_information_visualization.md SS5/SS6: the one case where a bar chart legitimately does not start at zero, since the baseline itself is the meaningful reference point &ndash; Tufte's lie-factor rule is satisfied relative to that baseline, not to zero).  <br /></td></tr>
 <tr class="separator:a8a0d96ad60ab368e82e5e29aa3605bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9144018b68abf504509c787f8ec3dd7d" id="r_a9144018b68abf504509c787f8ec3dd7d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1WaterfallBar.html">WaterfallBar</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9144018b68abf504509c787f8ec3dd7d">ToWaterfallBars</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1WaterfallStep.html">WaterfallStep</a> &gt; &amp;steps, float baseline_value)</td></tr>
+<tr class="memdesc:a9144018b68abf504509c787f8ec3dd7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts waterfall steps into floating bars, each spanning from the previous running total to its own running total &ndash; i.e. bar i covers [min(c_{i-1}, c_i), max(c_{i-1}, c_i)] with c_{-1} = baseline_value. Correct for any sign of baseline or running total: a cascade that starts below zero, crosses zero, or stays negative (e.g. explaining a negative logit) floats exactly where the running total is, rather than being anchored at zero the way stacked bar segments are.  <br /></td></tr>
+<tr class="separator:a9144018b68abf504509c787f8ec3dd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15e90a1cd35213623915bb921dc29117" id="r_a15e90a1cd35213623915bb921dc29117"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a15e90a1cd35213623915bb921dc29117">ToSaliencyHeatmap</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr)</td></tr>
 <tr class="memdesc:a15e90a1cd35213623915bb921dc29117"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reshapes an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s values into a 2D grid for a saliency overlay heatmap.  <br /></td></tr>
 <tr class="separator:a15e90a1cd35213623915bb921dc29117"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af765440a538b633fed0f32b756f97a3b" id="r_af765440a538b633fed0f32b756f97a3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HeatmapColorScale.html">HeatmapColorScale</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af765440a538b633fed0f32b756f97a3b">ComputeHeatmapColorScale</a> (const <a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a> &amp;grid)</td></tr>
+<tr class="memdesc:af765440a538b633fed0f32b756f97a3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chooses a heatmap's color scale from its values (hc_information_visualization.md SS4: sequential maps for unsigned magnitude, diverging maps centred on the meaningful midpoint &ndash; zero &ndash; for signed quantities).  <br /></td></tr>
+<tr class="separator:af765440a538b633fed0f32b756f97a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01b52699d2edf209e0fa4a98e4d8fc99" id="r_a01b52699d2edf209e0fa4a98e4d8fc99"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1BeeswarmPoint.html">BeeswarmPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a01b52699d2edf209e0fa4a98e4d8fc99">ToBeeswarmPoints</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; &amp;runs, int64_t feature_index)</td></tr>
 <tr class="memdesc:a01b52699d2edf209e0fa4a98e4d8fc99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts one feature's attribution value across many repeated/independent runs into jittered (x, y) points for a beeswarm plot &ndash; the global-explanation distribution view (hc_information_visualization.md SS5: "SHAP beeswarm plot...
        each point is one prediction; x-position is the SHAP value"). Deterministic, density-based jitter: points are binned along x, then colliding points within a bin are alternately offset above/below y=0 so they read as spread rather than overlapping &ndash; not a random jitter, so two calls with the same input always produce the same layout.  <br /></td></tr>
 <tr class="separator:a01b52699d2edf209e0fa4a98e4d8fc99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1753b46ac2c61a1b20581a38bc7d3d1b" id="r_a1753b46ac2c61a1b20581a38bc7d3d1b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1753b46ac2c61a1b20581a38bc7d3d1b">CircuitNodeDisplayLabel</a> (const <a class="el" href="structpulsatrix_1_1CircuitNode.html">CircuitNode</a> &amp;node)</td></tr>
+<tr class="memdesc:a1753b46ac2c61a1b20581a38bc7d3d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Human-readable label for a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a> node: the node's own label when it has one, otherwise its operation type and id (e.g. "Conv #1", "Activation #2") &ndash; so an unlabeled <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> still renders as a readable layer diagram rather than a row of anonymous "node_&lt;id&gt;" markers.  <br /></td></tr>
+<tr class="separator:a1753b46ac2c61a1b20581a38bc7d3d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ad3bf2421f5a44990ec5c97c07c6ce0" id="r_a6ad3bf2421f5a44990ec5c97c07c6ce0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HistogramBins.html">HistogramBins</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6ad3bf2421f5a44990ec5c97c07c6ce0">ToFieldHistogramBins</a> (const <a class="el" href="classpulsatrix_1_1Dataset.html">Dataset</a> &amp;dataset, int64_t field_index, int num_bins)</td></tr>
 <tr class="memdesc:a6ad3bf2421f5a44990ec5c97c07c6ce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bins one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field's values (flattened across every sample's <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> at that field position, mirroring <a class="el" href="classpulsatrix_1_1DatasetValidator.html" title="Generic data validation over any Dataset implementation – descriptive statistics and missingness/outl...">DatasetValidator</a>'s aggregation convention) into num_bins equal-width bins, for a per-field distribution histogram (hc_information_visualization.md's data-preview touchpoint).  <br /></td></tr>
 <tr class="separator:a6ad3bf2421f5a44990ec5c97c07c6ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2365,6 +2380,26 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a1753b46ac2c61a1b20581a38bc7d3d1b" name="a1753b46ac2c61a1b20581a38bc7d3d1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1753b46ac2c61a1b20581a38bc7d3d1b">&#9670;&#160;</a></span>CircuitNodeDisplayLabel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::CircuitNodeDisplayLabel </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitNode.html">CircuitNode</a> &amp;&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Human-readable label for a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a> node: the node's own label when it has one, otherwise its operation type and id (e.g. "Conv #1", "Activation #2") &ndash; so an unlabeled <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> still renders as a readable layer diagram rather than a row of anonymous "node_&lt;id&gt;" markers. </p>
+
+</div>
+</div>
 <a id="ad9528e51695652a2d616c9044deae579" name="ad9528e51695652a2d616c9044deae579"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9528e51695652a2d616c9044deae579">&#9670;&#160;</a></span>CombinedFitness()</h2>
 
@@ -2822,6 +2857,27 @@ A <code>dones[t] == 1</code> row cuts <em>both</em> the bootstrap and the trace 
 A free function rather than a class: a pure reduction with no state to carry, matching <a class="el" href="namespacepulsatrix.html#a6176ba0afe78bd0aa69aec2b670d5b8c" title="Vanilla DQN Bellman target (Mnih et al. 2015): targets[b,0] = rewards[b,0] + gamma * (1 - dones[b,...">ComputeDQNTarget()</a>/ComputeDoubleDQNTarget()'s own free-function precedent. </dd>
 <dd>
 Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recursion over one rollout. The inputs may live on any device &ndash; one device-&gt;host copy of each of rewards, dones and values per call &ndash; and both results are uploaded through <code>backend</code>. </dd></dl>
+
+</div>
+</div>
+<a id="af765440a538b633fed0f32b756f97a3b" name="af765440a538b633fed0f32b756f97a3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af765440a538b633fed0f32b756f97a3b">&#9670;&#160;</a></span>ComputeHeatmapColorScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HeatmapColorScale.html">HeatmapColorScale</a> pulsatrix::ComputeHeatmapColorScale </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a> &amp;&#160;</td>
+          <td class="paramname"><em>grid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Chooses a heatmap's color scale from its values (hc_information_visualization.md SS4: sequential maps for unsigned magnitude, diverging maps centred on the meaningful midpoint &ndash; zero &ndash; for signed quantities). </p>
+<dl class="section return"><dt>Returns</dt><dd>For an all-non-negative grid, [0, max] with is_signed == false. For a grid with any negative value, the symmetric range [-max|v|, +max|v|] with is_signed == true, so zero always lands on the diverging map's neutral midpoint and equal magnitudes of opposite sign get equal color intensity. A degenerate all-zero (or empty) grid returns [0, 1] rather than a zero-width range. </dd></dl>
 
 </div>
 </div>
@@ -6915,13 +6971,13 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 <p>Reshapes an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s values into a 2D grid for a saliency overlay heatmap. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">attr</td><td>A rank-2 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>, or a rank-3 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> whose leading (channel) dimension is 1 (single-channel saliency map, squeezed). </td></tr>
+    <tr><td class="paramname">attr</td><td>A rank-2 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>, a rank-3 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> whose leading (channel or batch) dimension is 1 (single-channel saliency map, or Grad-CAM's batch-1 (1, H, W) map, squeezed), or a rank-4 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> of shape (1, 1, H, W) &ndash; the shape every input-space image explainer (<a class="el" href="classpulsatrix_1_1Saliency.html" title="Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding ExplainerContext::backwa...">Saliency</a>, <a class="el" href="classpulsatrix_1_1IntegratedGradients.html" title="IG_i(x) = (x_i - baseline_i) * (1/steps) * sum_{k=1}^{steps} d(F(baseline + (k/steps)(x - baseline)))...">IntegratedGradients</a>, <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>, <a class="el" href="classpulsatrix_1_1KernelSHAP.html" title="Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression,...">KernelSHAP</a>) returns for a single batched single-channel image such as an MNIST digit. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if attr.values is not reshapable to a 2D grid by the rules above (e.g. rank 1, or rank 3 with more than one channel). </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if attr.values is not reshapable to a 2D grid by the rules above (e.g. rank 1, rank 3 with more than one channel, or rank 4 with a batch or channel dimension other than 1). </td></tr>
   </table>
   </dd>
 </dl>
@@ -6979,6 +7035,43 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>tournament_size == population.size() draws every individual exactly once (without replacement), so it always returns the global-best index regardless of the RNG stream &ndash; this operator's own hand-verifiable correctness case, independent of which RNG or seed is used. </dd></dl>
+
+</div>
+</div>
+<a id="a9144018b68abf504509c787f8ec3dd7d" name="a9144018b68abf504509c787f8ec3dd7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9144018b68abf504509c787f8ec3dd7d">&#9670;&#160;</a></span>ToWaterfallBars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1WaterfallBar.html">WaterfallBar</a> &gt; pulsatrix::ToWaterfallBars </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1WaterfallStep.html">WaterfallStep</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>steps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>baseline_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts waterfall steps into floating bars, each spanning from the previous running total to its own running total &ndash; i.e. bar i covers [min(c_{i-1}, c_i), max(c_{i-1}, c_i)] with c_{-1} = baseline_value. Correct for any sign of baseline or running total: a cascade that starts below zero, crosses zero, or stays negative (e.g. explaining a negative logit) floats exactly where the running total is, rather than being anchored at zero the way stacked bar segments are. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">steps</td><td>ToWaterfallSteps's output. </td></tr>
+    <tr><td class="paramname">baseline_value</td><td>The same baseline passed to ToWaterfallSteps. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

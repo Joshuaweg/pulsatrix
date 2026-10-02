@@ -122,6 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a59f018c5008b98d48f49d73c06f37f7e" id="r_a59f018c5008b98d48f49d73c06f37f7e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a59f018c5008b98d48f49d73c06f37f7e">classifier_weight</a> () const</td></tr>
 <tr class="memdesc:a59f018c5008b98d48f49d73c06f37f7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test/inspection accessor.  <br /></td></tr>
 <tr class="separator:a59f018c5008b98d48f49d73c06f37f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a675cb0f030115bfefb7b8d8073f3e2da" id="r_a675cb0f030115bfefb7b8d8073f3e2da"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistConvNet.html#a675cb0f030115bfefb7b8d8073f3e2da">modules</a> ()</td></tr>
+<tr class="memdesc:a675cb0f030115bfefb7b8d8073f3e2da"><td class="mdescLeft">&#160;</td><td class="mdescRight">The network's layers in forward order (Conv2D, ReLU, Flatten, Linear), for building an <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a> over the trained model &ndash; so every explainer (<a class="el" href="classpulsatrix_1_1Saliency.html" title="Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding ExplainerContext::backwa...">Saliency</a>, <a class="el" href="classpulsatrix_1_1IntegratedGradients.html" title="IG_i(x) = (x_i - baseline_i) * (1/steps) * sum_{k=1}^{steps} d(F(baseline + (k/steps)(x - baseline)))...">IntegratedGradients</a>, <a class="el" href="classpulsatrix_1_1GradCAM.html" title="L^c = ReLU(sum_k alpha^c_k * A^k), where alpha^c_k = mean_ij(d(y^c)/d(A^k_ij)) and A is the last OpTy...">GradCAM</a>, <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, ...) and build_circuit_graph() can run on exactly the weights <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a985a7b6504845708e4fe12795f17d3ec" title="Runs one training step: forward, cross-entropy loss, backward through every layer,...">train_step()</a> learned. The pointers alias this object's members: they stay valid only while this <a class="el" href="classpulsatrix_1_1MnistConvNet.html" title="Conv2D(1,8,5,5) -&gt; ReLU -&gt; Flatten -&gt; Linear(4608,10), trained via CrossEntropyLoss + Adam,...">MnistConvNet</a> is alive.  <br /></td></tr>
+<tr class="separator:a675cb0f030115bfefb7b8d8073f3e2da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Conv2D(1,8,5,5) -&gt; ReLU -&gt; Flatten -&gt; <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(4608,10)</a>, trained via <a class="el" href="classpulsatrix_1_1CrossEntropyLoss.html" title="loss = -log(softmax(logits)[target_class]), combined for numerical stability (subtract the max logit ...">CrossEntropyLoss</a> + Adam, one real MNIST image at a time (this library has no batch dimension anywhere, same constraint <a class="el" href="classpulsatrix_1_1XorNetwork.html" title="A tiny MLP (Linear(2,4) -&gt; ReLU -&gt; Linear(4,1)) trained on XOR – the canonical not-linearly-separable...">XorNetwork</a> already works under). </p>
@@ -226,6 +229,33 @@ Random (not hand-picked) initial weights &ndash; unlike <a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> (10,) raw logits (pre-softmax). </dd></dl>
+
+</div>
+</div>
+<a id="a675cb0f030115bfefb7b8d8073f3e2da" name="a675cb0f030115bfefb7b8d8073f3e2da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a675cb0f030115bfefb7b8d8073f3e2da">&#9670;&#160;</a></span>modules()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; pulsatrix::MnistConvNet::modules </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The network's layers in forward order (Conv2D, ReLU, Flatten, Linear), for building an <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a> over the trained model &ndash; so every explainer (<a class="el" href="classpulsatrix_1_1Saliency.html" title="Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding ExplainerContext::backwa...">Saliency</a>, <a class="el" href="classpulsatrix_1_1IntegratedGradients.html" title="IG_i(x) = (x_i - baseline_i) * (1/steps) * sum_{k=1}^{steps} d(F(baseline + (k/steps)(x - baseline)))...">IntegratedGradients</a>, <a class="el" href="classpulsatrix_1_1GradCAM.html" title="L^c = ReLU(sum_k alpha^c_k * A^k), where alpha^c_k = mean_ij(d(y^c)/d(A^k_ij)) and A is the last OpTy...">GradCAM</a>, <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, ...) and build_circuit_graph() can run on exactly the weights <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a985a7b6504845708e4fe12795f17d3ec" title="Runs one training step: forward, cross-entropy loss, backward through every layer,...">train_step()</a> learned. The pointers alias this object's members: they stay valid only while this <a class="el" href="classpulsatrix_1_1MnistConvNet.html" title="Conv2D(1,8,5,5) -&gt; ReLU -&gt; Flatten -&gt; Linear(4608,10), trained via CrossEntropyLoss + Adam,...">MnistConvNet</a> is alive. </p>
 
 </div>
 </div>

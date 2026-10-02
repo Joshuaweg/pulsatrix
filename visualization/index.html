@@ -778,6 +778,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mnist-gallery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MNIST gallery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MNIST gallery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#screenshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Screenshots
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recipes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -927,6 +955,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mnist-gallery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MNIST gallery
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MNIST gallery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#screenshots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Screenshots
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recipes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -969,9 +1025,12 @@ same plugin-boundary discipline as the Python bindings (<code>pulsatrix_py</code
 <p><strong>Data transforms</strong> (<code>plot_data.hpp</code>, <code>colormap.hpp</code>) — pure functions with no ImGui/ImPlot
 include, always built as part of <code>pulsatrix_core</code>, unit-tested directly:</p>
 <ul>
-<li><code>ToFeatureImportanceBars</code> / <code>ToWaterfallSteps</code> — an <code>Attribution</code>'s values into sorted bars
-  or a baseline-to-prediction cascade</li>
-<li><code>ToSaliencyHeatmap</code> — an <code>Attribution</code>'s values into a 2D grid</li>
+<li><code>ToFeatureImportanceBars</code> / <code>ToWaterfallSteps</code> / <code>ToWaterfallBars</code> — an <code>Attribution</code>'s
+  values into sorted bars, or a baseline-to-prediction cascade and its floating bars</li>
+<li><code>CircuitNodeDisplayLabel</code> — a readable label for a <code>CircuitGraph</code> node</li>
+<li><code>ToSaliencyHeatmap</code> / <code>ComputeHeatmapColorScale</code> — an <code>Attribution</code>'s values into a 2D grid,
+  and the colour scale it calls for (symmetric diverging range when any value is negative,
+  <code>[0, max]</code> sequential otherwise)</li>
 <li><code>ToBeeswarmPoints</code> — many <code>Attribution</code>s' values for one feature into deterministic,
   collision-avoiding jittered points</li>
 <li><code>ToFieldHistogramBins</code> — a <code>Dataset</code> field's values into equal-width histogram bins</li>
@@ -1039,6 +1098,126 @@ current step) followed by one small-multiple line chart per tag. Because logging
 logging half works and is unit-tested even in a build with <code>PULSATRIX_ENABLE_VIZ=OFF</code> — only
 the actual <code>Draw()</code> call needs the GUI stack.</p>
 <p>Recipe: <a href="../recipes/visualization/training_dashboard/">Training dashboard</a>.</p>
+<h2 id="mnist-gallery">MNIST gallery<a class="headerlink" href="#mnist-gallery" title="Permanent link">&para;</a></h2>
+<p><code>mnist_viz_gallery</code> runs every widget in the pack against real MNIST test digits, end to end:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>tools/fetch_mnist.py<span class="w">              </span><span class="c1"># once: data/MNIST/raw/ (gitignored)</span>
+cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build-viz<span class="w"> </span>-DPULSATRIX_ENABLE_VIZ<span class="o">=</span>ON<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release
+cmake<span class="w"> </span>--build<span class="w"> </span>build-viz<span class="w"> </span>--target<span class="w"> </span>mnist_viz_gallery<span class="w"> </span>-j
+./build-viz/mnist_viz_gallery<span class="w">                          </span><span class="c1"># interactive</span>
+./build-viz/mnist_viz_gallery<span class="w"> </span>--screenshot<span class="w"> </span>out/<span class="w">        </span><span class="c1"># one PNG per page, then exit</span>
+</code></pre></div>
+<p>Run it from the repository root (or pass <code>--data DIR</code>). Options: <code>--epochs N</code> (default 1),
+<code>--train N</code> training digits (default 60000, ~25 s per epoch on one CPU core), <code>--images N</code>
+test digits explained with every method (default 4; the first misclassified test digit is
+added when none of those is wrong), <code>--eval N</code> held-out digits for the accuracy curve,
+<code>--beeswarm N</code> digits behind each beeswarm (default 200).</p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Widgets</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training</td>
+<td><code>ImPlotMetricsSink</code>, <code>TrainingDashboard</code></td>
+<td><code>MnistConvNet</code> (Conv2D(1,8,5x5) -&gt; ReLU -&gt; Flatten -&gt; Linear) trained live: 100-step mean loss, held-out accuracy, final conv-kernel and classifier-weight histograms</td>
+</tr>
+<tr>
+<td>Dataset</td>
+<td><code>DatasetStatisticsView</code>, <code>ImageGridView</code>, <code>TextureCache</code></td>
+<td>pixel/label histograms of the first 1000 test digits; 32 test digits captioned with true/predicted label</td>
+</tr>
+<tr>
+<td>Prediction</td>
+<td><code>ConfidenceMeter</code></td>
+<td>10-class softmax of the selected digit</td>
+</tr>
+<tr>
+<td>Heatmaps</td>
+<td><code>SaliencyHeatmapView</code></td>
+<td>Saliency, IG, Grad-CAM, LRP epsilon / EpsilonPlus / EpsilonAlpha2Beta1 / EpsilonGammaBox(0,1), LIME, KernelSHAP side by side</td>
+</tr>
+<tr>
+<td>Bar + waterfall</td>
+<td><code>AttributionBarChart</code>, <code>AttributionWaterfallChart</code></td>
+<td>top-12 features of the selected method, cascading from its reference value (black-image logit for IG/SHAP, 0 otherwise)</td>
+</tr>
+<tr>
+<td>LRP score cards</td>
+<td><code>ExplanationScoreCard</code></td>
+<td>one card per LRP rule set, shared scale: confidence, top relevance, conservation delta, stability over repeated runs</td>
+</tr>
+<tr>
+<td>Beeswarm</td>
+<td><code>AttributionBeeswarmView</code></td>
+<td>the 4 highest-mean-|attribution| pixels across 200 test digits, per gradient/LRP method</td>
+</tr>
+<tr>
+<td>Circuit graph</td>
+<td><code>CircuitGraphView</code></td>
+<td><code>ExplainerContext::build_circuit_graph</code> on the CNN: per-layer zero-ablation effect</td>
+</tr>
+</tbody>
+</table>
+<p>Explainer budgets: IG uses 128 steps from a black baseline. Grad-CAM's 24x24 map is
+zero-padded 2 px onto the 28x28 grid (each cell sits on its 5x5 receptive-field centre).
+LIME and KernelSHAP run on 16 superpixels (a 4x4 grid of 7x7 patches): KernelSHAP enumerates
+all 2^16 coalitions exactly (absent patch = black), LIME uses 2000 samples with sigma 0.5.
+Pixel-level LIME is not meaningful with this library's LIME: its locality kernel width equals
+the perturbation sigma, so on 784 inputs every sample weight underflows to zero. The gallery
+prints test accuracy and, per explainer, the attribution sum, max |attribution|, and the
+IG-completeness / SHAP-efficiency / LRP-conservation checks to stdout.</p>
+<p>Signed attributions are drawn with the blue-white-red diverging map centred on zero, unsigned
+ones (Grad-CAM) with Viridis -- <code>SaliencyHeatmapView</code> picks the map via
+<code>ComputeHeatmapColorScale</code>.</p>
+<h3 id="screenshots">Screenshots<a class="headerlink" href="#screenshots" title="Permanent link">&para;</a></h3>
+<p>Captured with <code>--screenshot</code> on a model trained for one epoch (96.78% test accuracy), test
+digit #0 (a 7):</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Training dashboard" src="../assets/visualization/mnist_gallery/01_training.png" /></td>
+<td><img alt="Dataset statistics and image grid" src="../assets/visualization/mnist_gallery/02_dataset.png" /></td>
+</tr>
+<tr>
+<td>Training: live loss, held-out accuracy, weight histograms</td>
+<td>Dataset: pixel/label histograms, captioned test digits (X = misclassified)</td>
+</tr>
+<tr>
+<td><img alt="Heatmaps for every explainer" src="../assets/visualization/mnist_gallery/04_heatmaps.png" /></td>
+<td><img alt="LRP epsilon bar and waterfall charts" src="../assets/visualization/mnist_gallery/11_charts_lrp_epsilon.png" /></td>
+</tr>
+<tr>
+<td>Heatmaps: all nine explainers side by side</td>
+<td>LRP epsilon: heatmap, top-12 bars, waterfall to the 2.436 logit</td>
+</tr>
+<tr>
+<td><img alt="LRP score cards" src="../assets/visualization/mnist_gallery/17_lrp_score_cards.png" /></td>
+<td><img alt="Beeswarm for LRP epsilon" src="../assets/visualization/mnist_gallery/21_beeswarm_lrp_epsilon.png" /></td>
+</tr>
+<tr>
+<td>Score cards: one per LRP rule set, conservation and stability</td>
+<td>Beeswarm: top-4 pixels across 200 test digits</td>
+</tr>
+<tr>
+<td><img alt="Circuit graph" src="../assets/visualization/mnist_gallery/25_circuit.png" /></td>
+<td></td>
+</tr>
+<tr>
+<td>Circuit graph: per-layer zero-ablation effect (the output node is the reference, not ablated)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../recipes/visualization/training_dashboard/">Training dashboard</a></li>
