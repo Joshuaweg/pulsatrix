@@ -5,9 +5,12 @@
 </p>
 
 **ExAI-first C++ deep learning library** — explainability as a first-class property of the
-computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited,
-conservation-tested Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward
-math — never a placeholder or a post-hoc explainer bolted on afterward.
+computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited
+Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward math — never a
+placeholder or a post-hoc explainer bolted on afterward. Rules that conserve relevance by
+construction are conservation-tested; the AttnLRP rules for softmax and attention do not conserve
+exactly, and their tests report the measured gap rather than assert it away. LRP currently
+implements the ε-rule family only.
 
 [![CI](https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml)
 
@@ -19,15 +22,16 @@ math — never a placeholder or a post-hoc explainer bolted on afterward.
 attention (`MultiHeadAttentionModule`, `TransformerBlock`, `MambaModule`, `RWKVModule`,
 `RetNetModule`); `SGDOptimizer`/`AdamOptimizer`; losses including `CalibrationLoss`; and VAE/
 GAN/Diffusion building blocks (`Reparameterize`, `NoiseSchedule`,
-`SinusoidalTimestepEmbedding`). Modern architectures with LRP explicitly deferred
-(`propagate_relevance` throws rather than approximates) are noted per-layer.
+`SinusoidalTimestepEmbedding`). The VAE/GAN/Diffusion pieces are losses and sampling/noise
+steps rather than `Module`s, so they carry no LRP rule.
 
 **[Ad-hoc Interpretability](interpretability/index.md)**: post-hoc explainers, split into
 **Model-Agnostic** (`KernelSHAP`, `LIME`, `PDP`) and **Deep Learning Approaches**
 (`Saliency`, `IntegratedGradients`, `GradCAM`) — distinct from the per-layer LRP
 (Layer-wise Relevance Propagation) rule every relevance-bearing layer carries alongside its
 forward/backward math (Arras et al. for RNN/LSTM/GRU, AttnLRP for `TransformerBlock`,
-MambaLRP for `MambaModule` — every rule real, cited, and conservation-tested).
+MambaLRP for `MambaModule` — every rule real and cited; conservation-tested where the rule
+conserves by construction).
 
 **[Reinforcement Learning](reinforcement-learning/index.md)**: gymnasium-API-shaped
 `Environment`/`Agent` interfaces, `CartPoleEnv`/`ContinuousCartPoleEnv`, `ReplayBuffer`/
