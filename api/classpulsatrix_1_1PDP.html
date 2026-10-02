@@ -117,7 +117,9 @@ Public Member Functions</h2></td></tr>
 <dd>
 Takes a caller-supplied background set, not a dataset loader &ndash; no dataset infrastructure exists in this codebase (same gap real-MNIST-training discussions surfaced), same "caller supplies reference data" pattern <a class="el" href="classpulsatrix_1_1IntegratedGradients.html" title="IG_i(x) = (x_i - baseline_i) * (1/steps) * sum_{k=1}^{steps} d(F(baseline + (k/steps)(x - baseline)))...">IntegratedGradients</a>' baseline and <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>'s perturbation-around-x already established. </dd>
 <dd>
-Takes a forward-pass callable, not <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>&amp; &ndash; model-agnosticism by construction, same pattern as LIME/KernelSHAP. </dd></dl>
+Takes a forward-pass callable, not <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>&amp; &ndash; model-agnosticism by construction, same pattern as LIME/KernelSHAP. </dd>
+<dd>
+Device-generic host boundary: each background instance is read to the host once; the swept copies are uploaded beside it and only f(z)[target] is read back. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa6f5bb5e6cb1a2751afb6bbadbeb988a" name="aa6f5bb5e6cb1a2751afb6bbadbeb988a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6f5bb5e6cb1a2751afb6bbadbeb988a">&#9670;&#160;</a></span>explain()</h2>

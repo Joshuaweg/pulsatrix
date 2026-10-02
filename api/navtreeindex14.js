@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8":[3,0,0,0,7,1],
+"structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8":[4,0,0,0,7,1],
 "structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#adc4546f4598f6e602cb107d071fc9d91":[3,0,0,0,7,0],
 "structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#adc4546f4598f6e602cb107d071fc9d91":[4,0,0,0,7,0],
 "structpulsatrix_1_1datalog_1_1NeuralPredicateRelevanceResult.html":[3,0,0,0,8],

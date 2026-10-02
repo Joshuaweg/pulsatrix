@@ -119,7 +119,7 @@ Correctness is verified via the completeness axiom (sum(IG(x)) == F(x) - F(basel
 <dd>
 A pure graph walker built entirely against ExplainerContext/Saliency's public interfaces &ndash; no core (Tensor/ComputationGraph/Autograd/Module) changes needed. </dd>
 <dd>
-The final interpolation/scaling arithmetic is a raw host loop over input/baseline/accumulated-gradient buffers &ndash; <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> has no tensor-tensor subtract or scalar-multiply primitive, and this campaign's Phase 1.5-style device guards weren't extended to Phase 2's new explainer code (no CUDA explainer work exists yet to require it). CPU-only until that need arises. </dd></dl>
+Device-generic host boundary: input/baseline are read to the host once, each interpolated point is uploaded beside the input, gradients accumulate on the device, and the final (x - baseline) * avg_grad product runs on one host read of the sum. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="affd1e5ac2533c1b2c1c6911cb278551f" name="affd1e5ac2533c1b2c1c6911cb278551f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#affd1e5ac2533c1b2c1c6911cb278551f">&#9670;&#160;</a></span>explain()</h2>

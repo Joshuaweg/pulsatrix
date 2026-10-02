@@ -117,7 +117,9 @@ Public Member Functions</h2></td></tr>
 <dd>
 Full 2^n enumeration, not sampling &ndash; exact at this codebase's small feature counts (mathematically equivalent to the definitional Shapley formula at full enumeration), not the charter's excluded O(2^n)/O(n!) brute-force-at-scale case. </dd>
 <dd>
-Takes a forward-pass callable, not <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>&amp; &ndash; model-agnosticism by construction, same pattern as <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>. </dd></dl>
+Takes a forward-pass callable, not <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>&amp; &ndash; model-agnosticism by construction, same pattern as <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>. </dd>
+<dd>
+Device-generic host boundary: coalitions are built on the host from one read of input/baseline, uploaded beside the input, and only f(z)[target] is read back. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5dab4fed1a768722277916b14fee0d33" name="a5dab4fed1a768722277916b14fee0d33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5dab4fed1a768722277916b14fee0d33">&#9670;&#160;</a></span>explain()</h2>

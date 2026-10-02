@@ -117,7 +117,9 @@ Public Member Functions</h2></td></tr>
 <dd>
 Targets are centered on f(x) (not fit with a separate intercept term) &ndash; the local linear model is g(z) = f(x) + w^T(z-x), so g(x) = f(x) trivially; only w (the local sensitivity, this method's actual <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>) needs fitting. </dd>
 <dd>
-A pure graph-free explainer &ndash; no core (Tensor/ComputationGraph/Autograd/Module) or <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a> changes needed. </dd></dl>
+A pure graph-free explainer &ndash; no core (Tensor/ComputationGraph/Autograd/Module) or <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a> changes needed. </dd>
+<dd>
+Device-generic host boundary: perturbation and the surrogate fit run on the host; each perturbed sample is uploaded beside the input and only f(z)[target] is read back. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a567e20df12b7965504e16d3e7e638c0a" name="a567e20df12b7965504e16d3e7e638c0a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a567e20df12b7965504e16d3e7e638c0a">&#9670;&#160;</a></span>explain()</h2>
