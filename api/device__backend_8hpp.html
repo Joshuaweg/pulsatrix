@@ -269,6 +269,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">pulsatrix::RecurrentCellArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd" title="One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).">DeviceBackend::recurrent_cell</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RecurrentCellArgs.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">pulsatrix::DeviceBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vendor-agnostic compute/memory backend. <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a> (Phase 1.5), and <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a> (Phase 1.6) all implement this contract; <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> and <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> depend only on this interface, never on a concrete backend's types.  <a href="classpulsatrix_1_1DeviceBackend.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -317,6 +320,18 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a23ce7985a73e7df95c9467eac40d5d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elementwise passes of the fuzzy-logic modules, for DeviceBackend::logic_pointwise.  <a href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">More...</a><br /></td></tr>
 <tr class="separator:a23ce7985a73e7df95c9467eac40d5d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac55b0127cfe9bf4ce7793fef9db97400" id="r_ac55b0127cfe9bf4ce7793fef9db97400"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">pulsatrix::RecurrentCellOp</a> { <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64">pulsatrix::RnnBackward</a>
+, <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959">pulsatrix::LstmForward</a>
+, <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887">pulsatrix::LstmBackward</a>
+, <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731">pulsatrix::LstmLrp</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185">pulsatrix::GruBackward</a>
+, <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44">pulsatrix::GruLrp</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:ac55b0127cfe9bf4ce7793fef9db97400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused per-element recurrent-cell passes, for DeviceBackend::recurrent_cell. Slots (in[] / out[]), all (rows x hidden) per timestep unless noted:  <a href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">More...</a><br /></td></tr>
+<tr class="separator:ac55b0127cfe9bf4ce7793fef9db97400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract interface isolating vendor-specific memory/compute operations from Tensor/ComputationGraph. </p>

@@ -63,19 +63,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CPUBackend.html#a97e95494b2b5da4e167a638ff76bbe70",
-"classpulsatrix_1_1ConjunctionModule.html#aba4fd149e206388d240d58d5e25eb4f9",
-"classpulsatrix_1_1DeviceBackend.html#ac999ba54cd93f4e923cfc145f3057359",
-"classpulsatrix_1_1GroupNormModule.html#a588bb3cc2bd016f7eac5f22f8856ce0b",
-"classpulsatrix_1_1LSTMModule.html#a390ad9b34a8ffd9d8174127f2e5ddf48",
-"classpulsatrix_1_1MetricsSink.html#add45ab2d67ff49bb11f799833b17b6de",
-"classpulsatrix_1_1RNNModule.html#a9748e457d163fdc0a12b66c8dd88c6e4",
-"classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba",
-"classpulsatrix_1_1TextureCache.html#a4207d8ce795f62dca26c89563c4cf452",
-"classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html#add756da9f1669fe38935934a80ffb972",
-"namespacepulsatrix.html#a5e7eb5721b3a5ef9281c8ac3906d05b1",
-"structpulsatrix_1_1CsvTable.html#a382cf4a2da8b53e079dae6ef705f8c8d",
-"structpulsatrix_1_1ScoreCardScaleContext.html"
+"classpulsatrix_1_1CPUBackend.html#a87694cc02322f218e4e7de852c53f892",
+"classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd",
+"classpulsatrix_1_1DeviceBackend.html#aa3ba042f812493990e3735459a6ffd1c",
+"classpulsatrix_1_1GeneratorPopulation.html#a67432725273117cb25bd98ba17c5f000",
+"classpulsatrix_1_1KLDivergenceLoss.html",
+"classpulsatrix_1_1MambaModule.html#addb70c1ed3ee72e027a9c1f7bb86b138",
+"classpulsatrix_1_1RMSNormModule.html#a61a7cf02b3a5480f3d5e50046812a9d8",
+"classpulsatrix_1_1RoPEModule.html#a90556c7db2828a357ba1e048e64fbd19",
+"classpulsatrix_1_1Tensor.html#aaf0157d3b4c2e8f59c5b2df9ed0021a6",
+"classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c",
+"namespacepulsatrix.html#a38de2549fafa7ece476360793b7b1ccb",
+"structpulsatrix_1_1CircuitEdge.html#a77fafe24bfaef222e75479a5a62f6708",
+"structpulsatrix_1_1ReplayBatch.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

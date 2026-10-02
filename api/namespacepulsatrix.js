@@ -125,6 +125,7 @@ var namespacepulsatrix =
     [ "PDP", "classpulsatrix_1_1PDP.html", "classpulsatrix_1_1PDP" ],
     [ "PolicyGradientLoss", "classpulsatrix_1_1PolicyGradientLoss.html", "classpulsatrix_1_1PolicyGradientLoss" ],
     [ "PPOClippedLoss", "classpulsatrix_1_1PPOClippedLoss.html", "classpulsatrix_1_1PPOClippedLoss" ],
+    [ "RecurrentCellArgs", "structpulsatrix_1_1RecurrentCellArgs.html", "structpulsatrix_1_1RecurrentCellArgs" ],
     [ "ReluModule", "classpulsatrix_1_1ReluModule.html", "classpulsatrix_1_1ReluModule" ],
     [ "Reparameterize", "classpulsatrix_1_1Reparameterize.html", "classpulsatrix_1_1Reparameterize" ],
     [ "ReparamGrad", "structpulsatrix_1_1ReparamGrad.html", "structpulsatrix_1_1ReparamGrad" ],
@@ -249,6 +250,14 @@ var namespacepulsatrix =
       [ "LogUniform", "namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045", null ],
       [ "Integer", "namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044", null ],
       [ "Categorical", "namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c", null ]
+    ] ],
+    [ "RecurrentCellOp", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400", [
+      [ "RnnBackward", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64", null ],
+      [ "LstmForward", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959", null ],
+      [ "LstmBackward", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887", null ],
+      [ "LstmLrp", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731", null ],
+      [ "GruBackward", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185", null ],
+      [ "GruLrp", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44", null ]
     ] ],
     [ "AllocateOffspringCounts", "namespacepulsatrix.html#aba26bb47a841c985070a3d37cff2a423", null ],
     [ "AskGivenSamples", "namespacepulsatrix.html#a314a4a59c2e126269885c0c51ffbd6bc", null ],

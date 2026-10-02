@@ -152,6 +152,7 @@ var hierarchy =
     [ "pulsatrix::GaussianProcessRegressor::Posterior", "structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html", null ],
     [ "pulsatrix::PPOClippedLoss", "classpulsatrix_1_1PPOClippedLoss.html", null ],
     [ "pulsatrix::datalog::RealSemiring< T >", "structpulsatrix_1_1datalog_1_1RealSemiring.html", null ],
+    [ "pulsatrix::RecurrentCellArgs", "structpulsatrix_1_1RecurrentCellArgs.html", null ],
     [ "pulsatrix::datalog::RelevanceResult", "structpulsatrix_1_1datalog_1_1RelevanceResult.html", null ],
     [ "pulsatrix::Reparameterize", "classpulsatrix_1_1Reparameterize.html", null ],
     [ "pulsatrix::ReparamGrad", "structpulsatrix_1_1ReparamGrad.html", null ],

@@ -1,6 +1,7 @@
 var classpulsatrix_1_1DeviceBackend =
 [
     [ "~DeviceBackend", "classpulsatrix_1_1DeviceBackend.html#a2feea27fda55c8c0addf4e7c3864f2aa", null ],
+    [ "accumulate_rows", "classpulsatrix_1_1DeviceBackend.html#a5fadffb2f2ecdaff1cc4c109d2d7cf87", null ],
     [ "adam_step", "classpulsatrix_1_1DeviceBackend.html#af911088cd492ed287da35639ea846eca", null ],
     [ "add", "classpulsatrix_1_1DeviceBackend.html#a7b12eb6a75b3363fc2cc34b0df91cf62", null ],
     [ "add_channel_vector", "classpulsatrix_1_1DeviceBackend.html#a32e266a78258691ede4444063ce9904d", null ],
@@ -19,6 +20,7 @@ var classpulsatrix_1_1DeviceBackend =
     [ "col2im_add", "classpulsatrix_1_1DeviceBackend.html#aae06a09bb2c8ff1af025db51c9b7569f", null ],
     [ "column_sums", "classpulsatrix_1_1DeviceBackend.html#a23304707c57a62c3603bb2a04bef29c0", null ],
     [ "copy", "classpulsatrix_1_1DeviceBackend.html#a8aa836582db51b3f87c225695bbbc0d8", null ],
+    [ "copy_2d", "classpulsatrix_1_1DeviceBackend.html#a0610860a8a7378e6a797e35b4b745f54", null ],
     [ "device", "classpulsatrix_1_1DeviceBackend.html#a39732e9839303fa0e9c872e24e41b283", null ],
     [ "dot", "classpulsatrix_1_1DeviceBackend.html#a765dfca9460f519ad89cac13ee523be8", null ],
     [ "dropout_forward", "classpulsatrix_1_1DeviceBackend.html#a31e8fa0c05497c6d6fbef96b6d9e1636", null ],
@@ -31,6 +33,7 @@ var classpulsatrix_1_1DeviceBackend =
     [ "gemm_ex", "classpulsatrix_1_1DeviceBackend.html#ae11eb20165162a07132507fdf873e29e", null ],
     [ "group_norm_backward", "classpulsatrix_1_1DeviceBackend.html#af5d4d8089df6e52c40a415b4a2eaeb88", null ],
     [ "group_norm_forward", "classpulsatrix_1_1DeviceBackend.html#ac999ba54cd93f4e923cfc145f3057359", null ],
+    [ "gru_lrp_hprev", "classpulsatrix_1_1DeviceBackend.html#aeeb7cce77ae8202c7054497028e5a2c6", null ],
     [ "im2col", "classpulsatrix_1_1DeviceBackend.html#ae82d916f6a34883c2ee1a9b995b4f288", null ],
     [ "layer_norm_backward", "classpulsatrix_1_1DeviceBackend.html#a12257f548f7c4bad4bb1f23eb59cab85", null ],
     [ "layer_norm_forward", "classpulsatrix_1_1DeviceBackend.html#a38b296811eeb119921ee5dc1de13ee5f", null ],
@@ -48,6 +51,7 @@ var classpulsatrix_1_1DeviceBackend =
     [ "max_unpool", "classpulsatrix_1_1DeviceBackend.html#a5a4d0bd5e7fe34a61dd88e8e5f7e7991", null ],
     [ "mul", "classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d", null ],
     [ "permute_0213", "classpulsatrix_1_1DeviceBackend.html#a441f01bb9aa5581f616d15a8d898d6bd", null ],
+    [ "recurrent_cell", "classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd", null ],
     [ "rms_norm_backward", "classpulsatrix_1_1DeviceBackend.html#a2690e8ead52d949537d29e45690bf207", null ],
     [ "rms_norm_forward", "classpulsatrix_1_1DeviceBackend.html#a8c27211ec8f3074b8fa17da3b05d2704", null ],
     [ "rope_rotate", "classpulsatrix_1_1DeviceBackend.html#a639a0825620484b5f514f4b9ed8ce6c2", null ],
