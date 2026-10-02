@@ -102,18 +102,23 @@ PULSATRIX_HOST_DEVICE inline void cell(RecurrentCellOp op, const RecurrentCellAr
 }
 
 // GRU's R_hprev[n][kk]: the recurrent epsilon-rule sum over k ascending, with element kk's own
-// direct term inserted at k == kk -- exactly where the original loop added it.
+// direct term added just before term kk -- exactly where the original loop added it.
+// Written as two loops around the direct term rather than one loop with `if (k == kk)`: the
+// additions and their order are identical, but nvcc 12.6 (sm_86, RTX 3060) produced NaN for every
+// element from the single-loop form when it formed the whole kernel body, while CPU and HIP
+// computed it correctly -- reproduced in isolation on the laptop node (GPU-native-kernels
+// Mission 5).
 PULSATRIX_HOST_DEVICE inline float gru_lrp_hprev(const float* h_prev_row, const float* w_hn, const float* hn_row,
                                                  const float* r_term_b_row, const float* direct_row, int64_t kk,
                                                  int64_t hidden, float eps) {
     float acc = 0.0f;
     const float hp = h_prev_row[kk];
-    for (int64_t k = 0; k < hidden; ++k) {
-        if (k == kk) {
-            acc += direct_row[kk];
-        }
-        const float hn_denom = lrp::stabilize(hn_row[k], eps);
-        acc += (hp * w_hn[kk * hidden + k] / hn_denom) * r_term_b_row[k];
+    for (int64_t k = 0; k < kk; ++k) {
+        acc += (hp * w_hn[kk * hidden + k] / lrp::stabilize(hn_row[k], eps)) * r_term_b_row[k];
+    }
+    acc += direct_row[kk];
+    for (int64_t k = kk; k < hidden; ++k) {
+        acc += (hp * w_hn[kk * hidden + k] / lrp::stabilize(hn_row[k], eps)) * r_term_b_row[k];
     }
     return acc;
 }
