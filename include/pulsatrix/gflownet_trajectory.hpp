@@ -46,6 +46,9 @@ struct GFlowNetTrajectory {
  *        progress is discarded.
  * @param forward_policy The forward policy sampling each step's action.
  * @return The full trajectory, per GFlowNetTrajectory's fields above.
+ * @note Host boundary (GPU-native-kernels Mission 7): the rollout loop is host control flow.
+ *       env and forward_policy may use any backend; each step reads the sampled action back
+ *       with one device->host copy.
  */
 [[nodiscard]] GFlowNetTrajectory sample_gflownet_trajectory(HyperGridEnv& env, GFlowNetForwardPolicy& forward_policy);
 

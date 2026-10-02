@@ -4,6 +4,7 @@
 #include "cnn_math.hpp"
 #include "lrp_math.hpp"
 #include "recurrent_math.hpp"
+#include "rl_math.hpp"
 #include "row_math.hpp"
 #include "ssm_math.hpp"
 
@@ -739,6 +740,14 @@ void CPUBackend::ssm_pass(SsmPassOp op, const SsmPassArgs& args) {
     const int64_t lanes = ssm::lanes(op, args);
     for (int64_t lane = 0; lane < lanes; ++lane) {
         ssm::pass(op, args, lane);
+    }
+}
+
+// ---- GPU-native-kernels Mission 7 ----------------------------------------------------------
+
+void CPUBackend::rl_rows(RlRowOp op, const RlRowArgs& args) {
+    for (int64_t b = 0; b < args.rows; ++b) {
+        rl::row(op, args, b);
     }
 }
 

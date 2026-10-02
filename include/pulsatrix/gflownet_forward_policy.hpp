@@ -39,6 +39,10 @@ struct GFlowNetSampledAction {
  * @note Returns `{action, log_prob}` directly from `sample()` rather than `CategoricalPolicyAgent`'s
  *       stateful `act()` + separate `log_prob()` accessor -- a cleaner API this new class is
  *       free to choose, since nothing else depends on matching that older class's shape.
+ * @note Host boundary (GPU-native-kernels Mission 7): masking, softmax and the inverse-CDF scan
+ *       against the LCG draw are host logic. The network may run on any device; sample() and
+ *       masked_probs() copy its (1, action_dim) logits to the host once per call, and the
+ *       sampled action is returned through this policy's own backend.
  */
 class GFlowNetForwardPolicy {
 public:

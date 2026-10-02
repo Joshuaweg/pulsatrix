@@ -34,9 +34,9 @@ namespace pulsatrix {
  *       is a hard cut, not a heavy discount, and is tested as an exact equality.
  * @note `dones` is used as a plain multiplier, not thresholded -- 0.0f/1.0f is the documented
  *       encoding, and silently reinterpreting anything else would hide a caller's bug.
- * @note Raw host loop over Tensor::data() (a row-wise max at a data-dependent column has no
- *       DeviceBackend primitive) -- PULSATRIX_REQUIRE_HOST guards against
- *       silent UB on a CUDA-backed Tensor; see mission_host_loop_guards.md.
+ * @note Device-generic (GPU-native-kernels Mission 7): one DeviceBackend::rl_rows(DqnTarget)
+ *       lane per transition (row argmax, ties to the lowest index) through `backend`, which
+ *       must address the inputs' device; the result is allocated through it too.
  */
 [[nodiscard]] Tensor ComputeDQNTarget(const Tensor& next_q_target, const Tensor& rewards, const Tensor& dones,
                                       float gamma, DeviceBackend* backend);
@@ -95,9 +95,9 @@ namespace pulsatrix {
  *       storage. Replacing the Tensors would dangle every outstanding ParamRef.
  * @note Gradients are untouched. This is a pure value copy and has nothing to do with
  *       zero_grad(); a target network is never backpropagated through in DQN anyway.
- * @note Dereferences every parameter's Tensor::data() in a raw host loop, so it guards each
- *       source/destination parameter with PULSATRIX_REQUIRE_HOST: a Module built on a GPU
- *       backend holds Cuda/Hip-tagged parameters (GPU-native-kernels campaign, Mission 0 O4).
+ * @note Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
+ *       through the destination parameter's own backend (HostToHost / DeviceToDevice), staged
+ *       through the host only when source and destination live on different devices.
  */
 void SyncTargetNetwork(Module& source, Module& destination);
 

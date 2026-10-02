@@ -118,11 +118,9 @@ public:
      *         action's shape is not (1, 1), or if the action is outside the tolerated range.
      *         All external boundary: an action can originate from an untrusted policy output
      *         or, eventually, Python bindings.
-     * @note PULSATRIX_REQUIRE_HOST(action) -- this is a raw host-loop
-     *       physics update dereferencing Tensor::data() directly, not yet backend-generic, so
-     *       a CUDA-backed action Tensor would be silent UB. Same convention as CartPoleEnv
-     *       and every prior module; do not remove without actually routing through
-     *       DeviceBackend.
+     * @note Host boundary (GPU-native-kernels Mission 7): the physics is a scalar double-precision
+     *       update on the host. `action` may live on any device -- one device->host copy of it
+     *       per call -- and the observation is returned through this environment's own backend.
      * @note NaN actions are rejected: every comparison against a NaN is false, so the
      *       range check is written as "reject unless inside the band" rather than "reject if
      *       outside it," which would let NaN through and poison the state permanently.

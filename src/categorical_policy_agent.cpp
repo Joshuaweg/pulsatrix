@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -51,36 +50,29 @@ Tensor CategoricalPolicyAgent::policy_logits(const Tensor& observation) {
         throw std::invalid_argument("CategoricalPolicyAgent: policy_network must produce output of shape "
                                     "(1, action_dim)");
     }
-    // The network may run on a GPU backend even when observation is host-resident; the
-    // caller's raw host loop over logits would then be UB (GPU-native-kernels campaign,
-    // Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(logits);
     return logits;
 }
 
 Tensor CategoricalPolicyAgent::act(const Tensor& observation) {
-    // The softmax and the inverse-CDF scan below are raw host loops over Tensor::data(); the
-    // network output inherits its device from this observation. Undefined behavior on a
-    // CUDA-backed Tensor -- see mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(observation);
-
-    const Tensor logits = policy_logits(observation);
+    // Host boundary (GPU-native-kernels Mission 7): the network may run on any device; its
+    // action_dim logits are copied to the host once for the softmax and the inverse-CDF scan.
+    const std::vector<float> logits = policy_logits(observation).to_host_vector();
 
     // Numerically stable softmax: subtract the row max before exponentiating, exactly the
     // pattern CrossEntropyLoss::forward established.
-    float max_logit = logits.data()[0];
+    float max_logit = logits[0];
     for (int64_t a = 1; a < action_dim_; ++a) {
-        max_logit = std::max(max_logit, logits.data()[a]);
+        max_logit = std::max(max_logit, logits[static_cast<size_t>(a)]);
     }
     float exp_sum = 0.0f;
     for (int64_t a = 0; a < action_dim_; ++a) {
-        exp_sum += std::exp(logits.data()[a] - max_logit);
+        exp_sum += std::exp(logits[static_cast<size_t>(a)] - max_logit);
     }
     const float log_exp_sum = std::log(exp_sum);
 
     std::vector<float> log_softmax(static_cast<size_t>(action_dim_));
     for (int64_t a = 0; a < action_dim_; ++a) {
-        log_softmax[static_cast<size_t>(a)] = logits.data()[a] - max_logit - log_exp_sum;
+        log_softmax[static_cast<size_t>(a)] = logits[static_cast<size_t>(a)] - max_logit - log_exp_sum;
     }
 
     // The draw is taken unconditionally, before the scan, so the stream advances by exactly one
@@ -110,16 +102,15 @@ Tensor CategoricalPolicyAgent::act(const Tensor& observation) {
 }
 
 Tensor CategoricalPolicyAgent::act_greedy(const Tensor& observation) {
-    PULSATRIX_REQUIRE_HOST(observation);
-
-    const Tensor logits = policy_logits(observation);
+    // Host boundary: one device->host copy of the action_dim logits.
+    const std::vector<float> logits = policy_logits(observation).to_host_vector();
 
     // argmax over logits == argmax over softmax(logits): softmax is strictly monotone, so no
     // exponentiation is needed. Ties resolve to the lowest index (strict >), the same rule
     // DQNAgent::greedy_action uses.
     int64_t best = 0;
     for (int64_t a = 1; a < action_dim_; ++a) {
-        if (logits.data()[a] > logits.data()[best]) {
+        if (logits[static_cast<size_t>(a)] > logits[static_cast<size_t>(best)]) {
             best = a;
         }
     }

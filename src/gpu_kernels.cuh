@@ -20,6 +20,7 @@
 #include "lrp_math.hpp"
 #include "pointwise_math.hpp"
 #include "recurrent_math.hpp"
+#include "rl_math.hpp"
 #include "row_math.hpp"
 #include "ssm_math.hpp"
 #include "pulsatrix/device_backend.hpp"
@@ -888,6 +889,16 @@ __global__ void ssm_pass_kernel(int op, SsmPassArgs args, int64_t lanes) {
     const auto lane = static_cast<int64_t>(global_index());
     if (lane < lanes) {
         ssm::pass(static_cast<SsmPassOp>(op), args, lane);
+    }
+}
+
+// ---- GPU-native-kernels Mission 7 ----------------------------------------------------------
+
+// One thread per row (per element for PolyakBlend): the row's reductions and writes are its own.
+__global__ void rl_rows_kernel(int op, RlRowArgs args) {
+    const auto b = static_cast<int64_t>(global_index());
+    if (b < args.rows) {
+        rl::row(static_cast<RlRowOp>(op), args, b);
     }
 }
 

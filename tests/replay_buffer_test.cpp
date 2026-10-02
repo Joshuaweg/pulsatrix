@@ -300,41 +300,5 @@ TEST_F(ReplayBufferTest, DoneIsStoredAsAFloatFlag) {
     EXPECT_FLOAT_EQ(buffer.sample(1).dones.data()[0], 0.0f);
 }
 
-using ReplayBufferDeathTest = ReplayBufferTest;
-
-// add() copies rows out of Tensor::data() in a raw host loop -- undefined behavior on a
-// CUDA-backed Tensor, so all three tensor arguments are PULSATRIX_ASSERT-guarded
-// (mission_host_loop_guards.md). No real GPU needed: see LinearModuleDeathTest for the
-// mislabeled-Tensor testing pattern this reuses.
-//
-// Two death tests, not three and not one. MSELoss's precedent is one death test per
-// *distinct* guarded argument role (prediction, target), not one per line of guard code;
-// add() has only two distinct roles -- an observation-shaped tensor and an action-shaped
-// tensor. `next_observation` is structurally identical to `observation` (same width, same
-// validation path, adjacent guard line), so a third case would re-exercise a path already
-// covered rather than cover a new one. The mission's own requirement of exactly 2 and
-// MSELoss's precedent agree on that reading.
-TEST_F(ReplayBufferDeathTest, AddAbortsOnNonCpuObservation) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    ReplayBuffer buffer(4, kObsDim, kActDim, &backend);
-    Tensor observation(Shape({1, kObsDim}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    Tensor action(Shape({1, kActDim}), &backend, {0.0f});
-    Tensor next_observation(Shape({1, kObsDim}), &backend, {3.0f, 4.0f});
-    EXPECT_DEATH({ buffer.add(observation, action, 1.0f, next_observation, false); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(ReplayBufferDeathTest, AddAbortsOnNonCpuAction) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    ReplayBuffer buffer(4, kObsDim, kActDim, &backend);
-    Tensor observation(Shape({1, kObsDim}), &backend, {1.0f, 2.0f});
-    Tensor action(Shape({1, kActDim}), &backend, {0.0f}, DeviceType::Cuda);
-    Tensor next_observation(Shape({1, kObsDim}), &backend, {3.0f, 4.0f});
-    EXPECT_DEATH({ buffer.add(observation, action, 1.0f, next_observation, false); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix
