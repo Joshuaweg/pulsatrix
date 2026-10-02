@@ -138,7 +138,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1765630d257b0ef94ac4bfd5892cbb54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pooling per charter's closed OpType set.  <br /></td></tr>
 <tr class="separator:a1765630d257b0ef94ac4bfd5892cbb54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac54e81ee70da4787d926ef9cd7dd9095" id="r_ac54e81ee70da4787d926ef9cd7dd9095"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AvgPool2DModule.html#ac54e81ee70da4787d926ef9cd7dd9095">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
-<tr class="memdesc:ac54e81ee70da4787d926ef9cd7dd9095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon/z-rule LRP relevance propagation, weight = 1/K (Bach et al. 2015).  <br /></td></tr>
+<tr class="memdesc:ac54e81ee70da4787d926ef9cd7dd9095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon/z-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation, weight = 1/K (Bach et al. 2015).  <br /></td></tr>
 <tr class="separator:ac54e81ee70da4787d926ef9cd7dd9095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
 <tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
@@ -213,7 +213,7 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramname">kernel_h</td><td>Window height. Also the vertical stride (non-overlapping). </td></tr>
     <tr><td class="paramname">kernel_w</td><td>Window width. Also the horizontal stride (non-overlapping). </td></tr>
     <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this module. </td></tr>
-    <tr><td class="paramname">eps</td><td>Stabilizer added inside the LRP z-rule's denominator. Defaults to 1e-6, matching every other epsilon-rule module in this codebase. </td></tr>
+    <tr><td class="paramname">eps</td><td>Stabilizer added inside the <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> z-rule's denominator. Defaults to 1e-6, matching every other epsilon-rule module in this codebase. </td></tr>
   </table>
   </dd>
 </dl>
@@ -372,7 +372,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Epsilon/z-rule LRP relevance propagation, weight = 1/K (Bach et al. 2015). </p>
+<p>Epsilon/z-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation, weight = 1/K (Bach et al. 2015). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">relevance_out</td><td>Relevance at this module's output. Must match the shape of the most recent <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> call's output. </td></tr>

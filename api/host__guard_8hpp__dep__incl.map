@@ -1,134 +1,135 @@
 <map id="include/pulsatrix/host_guard.hpp" name="include/pulsatrix/host_guard.hpp">
-<area shape="rect" id="Node000001" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="2368,5,2531,45"/>
-<area shape="rect" id="Node000002" href="$tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="2348,93,2551,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2452,59,2452,93,2447,93,2447,59"/>
-<area shape="rect" id="Node000003" href="$activation__snapshot_8hpp.html" title="Self&#45;contained, enumerable copy of one forward pass&#39;s cached activations." alt="" coords="910,255,1109,295"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="2334,110,2031,113,1652,122,1469,130,1309,140,1186,153,1144,161,1116,169,1086,187,1060,210,1023,256,1019,253,1056,206,1083,183,1113,164,1142,155,1186,148,1308,134,1468,124,1652,117,2031,108,2334,105"/>
-<area shape="rect" id="Node000004" href="$explainer__context_8hpp.html" title="Stable interface every explainer gets, regardless of type (charter Part 2 SS2)." alt="" coords="860,343,1055,383"/>
-<area shape="poly" id="edge48_Node000002_Node000004" title=" " alt="" coords="2334,112,2020,118,1624,130,1264,147,1134,157,1058,169,1006,182,964,195,930,216,899,256,895,267,895,278,902,301,917,322,935,340,932,344,913,326,897,303,889,279,890,266,895,253,927,213,962,190,1004,177,1057,164,1134,152,1264,142,1624,125,2020,113,2334,107"/>
-<area shape="rect" id="Node000005" href="$grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="741,431,904,471"/>
-<area shape="poly" id="edge53_Node000002_Node000005" title=" " alt="" coords="2334,111,1979,117,1528,128,1130,145,998,156,957,163,936,169,905,194,880,226,861,263,847,301,831,375,826,431,820,430,826,375,842,300,856,261,876,224,901,191,933,164,956,157,997,151,1130,140,1528,123,1979,112,2334,106"/>
-<area shape="rect" id="Node000006" href="$integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="633,519,834,559"/>
-<area shape="poly" id="edge56_Node000002_Node000006" title=" " alt="" coords="2334,112,2027,118,1648,129,1318,146,1210,157,1177,163,1160,169,1146,182,1139,195,1133,224,1132,257,1122,296,1100,343,1069,384,1039,415,1014,436,949,473,883,501,817,521,815,516,881,496,947,468,1011,432,1036,411,1064,381,1095,340,1117,294,1127,257,1128,224,1134,194,1142,179,1157,164,1175,158,1209,151,1318,141,1648,124,2027,112,2334,106"/>
-<area shape="rect" id="Node000007" href="$saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="258,438,473,463"/>
-<area shape="poly" id="edge77_Node000002_Node000007" title=" " alt="" coords="2334,111,1856,115,1204,125,592,142,369,155,238,169,169,180,113,189,88,197,66,210,44,229,22,256,12,275,8,293,10,309,16,324,43,352,83,376,132,396,186,413,289,435,288,441,184,418,130,401,80,381,39,356,12,327,5,310,3,292,7,273,18,253,40,225,62,205,86,192,111,184,168,175,237,164,369,149,592,137,1203,120,1856,110,2334,105"/>
-<area shape="rect" id="Node000008" href="$agent_8hpp.html" title="Abstract RL agent interface – the inference&#45;time policy contract, act() only." alt="" coords="1283,262,1482,287"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="2334,113,1863,133,1639,149,1559,159,1513,169,1487,185,1455,211,1396,264,1393,260,1451,207,1484,180,1511,164,1559,153,1639,144,1863,128,2334,108"/>
-<area shape="rect" id="Node000009" href="$categorical__policy__agent_8hpp.html" title="Stochastic categorical (discrete&#45;action) policy over a logit&#45;producing Module." alt="" coords="1143,343,1350,383"/>
-<area shape="poly" id="edge33_Node000002_Node000009" title=" " alt="" coords="2334,113,1832,132,1591,149,1505,158,1454,169,1439,177,1429,187,1419,198,1404,209,1365,223,1332,227,1302,234,1287,243,1273,256,1260,277,1253,299,1248,343,1243,342,1247,298,1255,274,1268,253,1284,238,1300,229,1331,222,1364,218,1401,204,1415,194,1425,183,1436,173,1452,164,1504,153,1590,143,1832,127,2334,108"/>
-<area shape="rect" id="Node000010" href="$dqn__agent_8hpp.html" title="Epsilon&#45;greedy DQN policy over an arbitrary Q&#45;network Module." alt="" coords="1374,343,1533,383"/>
-<area shape="poly" id="edge39_Node000002_Node000010" title=" " alt="" coords="2334,114,2004,133,1840,149,1773,158,1722,169,1668,185,1628,202,1590,224,1546,257,1500,301,1468,344,1464,341,1496,298,1542,253,1587,219,1626,197,1667,180,1721,164,1772,153,1839,143,2004,127,2334,109"/>
-<area shape="rect" id="Node000011" href="$attribution_8hpp.html" title="First&#45;class explanation result type – values, method, and metadata together." alt="" coords="395,174,626,199"/>
-<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="2334,112,1648,128,1185,145,713,169,622,177,621,171,713,164,1185,139,1648,122,2334,106"/>
-<area shape="rect" id="Node000014" href="$kernel__shap_8hpp.html" title="KernelSHAP – model&#45;agnostic Shapley value approximation via weighted linear regression (charter Part ..." alt="" coords="33,255,207,295"/>
-<area shape="poly" id="edge57_Node000002_Node000014" title=" " alt="" coords="2334,110,1876,114,1257,123,679,141,468,154,394,161,344,169,289,187,235,210,150,257,148,252,233,205,287,182,343,164,393,156,468,148,678,135,1257,118,1876,109,2334,105"/>
-<area shape="rect" id="Node000015" href="$lime_8hpp.html" title="LIME – local interpretable model&#45;agnostic explanations (charter Part 1, Phase 3; theory: xai_context...." alt="" coords="231,262,422,287"/>
-<area shape="poly" id="edge59_Node000002_Node000015" title=" " alt="" coords="2334,110,1863,112,1231,121,925,128,663,138,473,152,414,160,384,169,362,189,347,215,331,263,326,261,342,213,358,186,381,164,413,155,473,147,663,133,925,123,1231,115,1863,107,2334,105"/>
-<area shape="rect" id="Node000016" href="$pdp_8hpp.html" title="Partial Dependence Plot – a global marginal&#45;effect technique, sweeping one feature&#39;s value while aver..." alt="" coords="599,262,785,287"/>
-<area shape="poly" id="edge70_Node000002_Node000016" title=" " alt="" coords="2334,109,1966,110,1490,117,1257,124,1053,135,896,150,841,159,805,169,771,189,741,215,701,264,697,260,738,211,768,185,803,164,840,154,895,145,1052,130,1257,119,1490,112,1966,105,2334,104"/>
-<area shape="rect" id="Node000022" href="$autograd_8hpp.html" title="Reverse&#45;mode autodiff – walks a ComputationGraph backward, accumulating gradients via per&#45;node backwa..." alt="" coords="1171,174,1391,199"/>
-<area shape="poly" id="edge18_Node000002_Node000022" title=" " alt="" coords="2334,113,1926,131,1669,147,1411,169,1353,177,1352,171,1410,164,1669,142,1926,126,2334,108"/>
-<area shape="rect" id="Node000023" href="$module_8hpp.html" title="Abstract base every layer subclasses – NVI forward(), pure&#45;virtual LRP contract." alt="" coords="1556,262,1767,287"/>
-<area shape="poly" id="edge64_Node000002_Node000023" title=" " alt="" coords="2334,112,2193,117,2035,127,1889,144,1830,155,1786,169,1750,190,1717,216,1672,264,1668,260,1714,212,1747,185,1784,164,1829,150,1888,138,2034,122,2193,112,2334,107"/>
-<area shape="rect" id="Node000035" href="$dqn__target_8hpp.html" title="DQN Bellman target computation (vanilla + Double DQN) and target&#45;network hard sync." alt="" coords="1557,343,1715,383"/>
-<area shape="poly" id="edge41_Node000002_Node000035" title=" " alt="" coords="2334,114,2222,121,2100,132,1991,147,1947,157,1914,169,1890,182,1872,197,1845,228,1820,262,1780,297,1733,324,1687,345,1685,340,1731,319,1777,293,1816,258,1841,225,1868,193,1887,178,1912,164,1946,152,1990,142,2100,126,2221,115,2334,109"/>
-<area shape="rect" id="Node000037" href="$egan__mutation_8hpp.html" title="E&#45;GAN&#39;s own three named &quot;mutation&quot; objectives (Wang et al. 2019, &quot;Evolutionary &#160;&#160;&#160;&#160;&#160;&#160;&#160;Generative Adve..." alt="" coords="2177,343,2343,383"/>
-<area shape="poly" id="edge42_Node000002_Node000037" title=" " alt="" coords="2334,118,2176,137,2106,152,2057,169,2029,186,2010,204,1996,225,1984,256,1977,276,1978,284,1983,293,2004,301,2052,313,2177,341,2176,347,2051,319,2002,306,1979,297,1973,286,1972,275,1979,254,1992,223,2006,200,2026,182,2055,164,2104,146,2175,132,2333,113"/>
-<area shape="rect" id="Node000041" href="$generator__population_8hpp.html" title="E&#45;GAN&#39;s own population&#45;of&#45;generators infrastructure (Wang et al. 2019, &quot;Evolutionary &#160;&#160;&#160;&#160;&#160;&#160;&#160;Generativ..." alt="" coords="1740,343,1937,383"/>
-<area shape="poly" id="edge50_Node000002_Node000041" title=" " alt="" coords="2334,113,2232,118,2124,129,2028,145,1990,156,1963,169,1939,187,1919,208,1885,257,1861,305,1847,343,1842,341,1856,303,1880,254,1915,205,1936,183,1960,164,1988,151,2027,140,2123,123,2232,113,2334,107"/>
-<area shape="rect" id="Node000042" href="$gflownet__forward__policy_8hpp.html" title="Masked stochastic categorical policy over a logit&#45;producing Module – P_F for GFlowNet training object..." alt="" coords="1962,343,2153,383"/>
-<area shape="poly" id="edge51_Node000002_Node000042" title=" " alt="" coords="2334,112,2240,117,2142,127,2057,144,2025,155,2001,169,1975,196,1961,226,1961,257,1973,293,1993,320,2020,340,2017,345,1990,324,1968,296,1955,258,1956,224,1970,193,1998,165,2023,150,2056,138,2142,121,2240,111,2334,106"/>
-<area shape="rect" id="Node000043" href="$gflownet__trajectory_8hpp.html" title="Rolls out one full HyperGrid episode under a GFlowNetForwardPolicy." alt="" coords="2286,431,2477,471"/>
-<area shape="poly" id="edge52_Node000002_Node000043" title=" " alt="" coords="2335,120,2238,139,2200,152,2177,168,2169,187,2177,205,2196,223,2217,231,2239,232,2263,229,2287,227,2311,228,2334,235,2356,253,2371,274,2381,297,2391,347,2391,394,2387,431,2382,430,2386,394,2386,347,2376,299,2366,276,2353,256,2332,240,2310,233,2287,232,2263,235,2239,237,2216,236,2193,227,2172,208,2164,187,2172,165,2198,147,2237,133,2334,115"/>
-<area shape="rect" id="Node000069" href="$bce__with__logits__loss_8hpp.html" title="Binary cross&#45;entropy on raw logits – combined sigmoid + BCE, numerically stable." alt="" coords="1994,255,2155,295"/>
-<area shape="poly" id="edge29_Node000002_Node000069" title=" " alt="" coords="2334,112,2257,118,2181,128,2116,145,2093,156,2077,168,2066,188,2063,211,2071,254,2065,255,2058,211,2061,187,2072,165,2090,151,2114,140,2180,123,2257,113,2334,107"/>
-<area shape="rect" id="Node000070" href="$calibration__loss_8hpp.html" title="Brier score – a proper&#45;scoring&#45;rule calibration loss (Brier, 1950)." alt="" coords="2567,167,2769,207"/>
-<area shape="poly" id="edge31_Node000002_Node000070" title=" " alt="" coords="2495,121,2616,164,2614,169,2493,126"/>
-<area shape="rect" id="Node000071" href="$cartpole__env_8hpp.html" title="CartPole&#45;v1 environment – classic cart&#45;pole balancing physics, discrete actions." alt="" coords="2639,255,2825,295"/>
-<area shape="poly" id="edge32_Node000002_Node000071" title=" " alt="" coords="2346,124,2292,137,2249,154,2235,165,2227,177,2227,190,2237,205,2249,216,2265,225,2308,237,2361,245,2419,248,2536,248,2625,252,2639,254,2638,259,2625,257,2536,254,2419,253,2361,250,2307,243,2263,229,2246,220,2232,208,2222,191,2222,175,2231,161,2246,150,2291,131,2345,119"/>
-<area shape="rect" id="Node000072" href="$collate_8hpp.html" title="Batch assembly – Batch, CollateFn, DefaultCollate." alt="" coords="3079,262,3286,287"/>
-<area shape="poly" id="edge34_Node000002_Node000072" title=" " alt="" coords="2564,111,2672,129,2729,144,2782,164,2798,174,2808,185,2818,195,2833,204,2874,215,2947,230,3114,259,3113,265,2946,235,2873,221,2831,209,2815,199,2805,188,2795,178,2780,169,2727,149,2671,134,2564,117"/>
-<area shape="rect" id="Node000076" href="$continuous__cartpole__env_8hpp.html" title="Continuous&#45;action variant of CartPoleEnv – identical physics, force is a fraction." alt="" coords="2849,255,3055,295"/>
-<area shape="poly" id="edge35_Node000002_Node000076" title=" " alt="" coords="2471,127,2515,172,2556,204,2850,254,2849,259,2553,209,2512,176,2467,131"/>
-<area shape="rect" id="Node000077" href="$cross__entropy__loss_8hpp.html" title="Softmax + negative log&#45;likelihood classification loss." alt="" coords="3079,167,3247,207"/>
-<area shape="poly" id="edge36_Node000002_Node000077" title=" " alt="" coords="2564,112,2797,132,3067,164,3079,166,3078,171,3066,169,2796,137,2564,118"/>
-<area shape="rect" id="Node000078" href="$dataset_8hpp.html" title="Random&#45;access dataset abstraction – Sample, Dataset (size()/get())." alt="" coords="2844,174,3055,199"/>
-<area shape="poly" id="edge37_Node000002_Node000078" title=" " alt="" coords="2535,118,2877,171,2876,177,2535,123"/>
-<area shape="rect" id="Node000093" href="$dqn__loss_8hpp.html" title="DQN&#39;s masked&#45;MSE Bellman loss – squared error on the taken action only." alt="" coords="3271,167,3430,207"/>
-<area shape="poly" id="edge40_Node000002_Node000093" title=" " alt="" coords="2564,108,2878,126,3069,142,3259,164,3271,166,3270,171,3258,169,3068,147,2878,131,2564,114"/>
-<area shape="rect" id="Node000094" href="$environment_8hpp.html" title="Abstract RL environment interface (gymnasium&#45;shaped reset/step) + StepResult." alt="" coords="2247,174,2492,199"/>
-<area shape="poly" id="edge43_Node000002_Node000094" title=" " alt="" coords="2429,130,2383,176,2379,172,2426,127"/>
-<area shape="rect" id="Node000095" href="$hypergrid__env_8hpp.html" title="HyperGrid – the standard minimal GFlowNet correctness&#45;check environment." alt="" coords="2418,255,2614,295"/>
-<area shape="poly" id="edge54_Node000002_Node000095" title=" " alt="" coords="2334,118,2268,128,2213,146,2194,157,2183,171,2182,186,2192,205,2217,213,2272,226,2418,254,2417,259,2271,231,2215,218,2189,209,2177,187,2178,169,2190,153,2210,141,2267,123,2334,112"/>
-<area shape="rect" id="Node000096" href="$gae_8hpp.html" title="Generalized Advantage Estimation (Schulman et al. 2016) over a stored rollout." alt="" coords="3455,174,3641,199"/>
-<area shape="poly" id="edge49_Node000002_Node000096" title=" " alt="" coords="2564,107,2954,124,3197,140,3441,164,3490,171,3489,177,3441,169,3197,146,2953,129,2564,113"/>
-<area shape="rect" id="Node000097" href="$image__decoder_8hpp.html" title="Decodes image files (PNG/JPEG/BMP/etc.) into Tensors via stb_image." alt="" coords="3666,167,3841,207"/>
-<area shape="poly" id="edge55_Node000002_Node000097" title=" " alt="" coords="2564,105,2769,109,3040,118,3346,135,3653,164,3666,166,3665,171,3653,169,3345,141,3040,123,2769,114,2564,111"/>
-<area shape="rect" id="Node000098" href="$kl__divergence__loss_8hpp.html" title="VAE KL&#45;divergence&#45;to&#45;standard&#45;normal loss term." alt="" coords="3883,255,4045,295"/>
-<area shape="poly" id="edge58_Node000002_Node000098" title=" " alt="" coords="2565,105,2882,108,3282,116,3476,124,3646,134,3776,147,3822,155,3853,164,3874,178,3900,202,3949,253,3945,256,3897,206,3871,183,3851,169,3821,160,3775,153,3645,139,3476,129,3282,122,2882,113,2564,110"/>
-<area shape="rect" id="Node000099" href="$lrp__conservation_8hpp.html" title="Production API for LRP&#39;s conservation&#45;delta audit metric (charter Phase 4)." alt="" coords="4203,167,4354,207"/>
-<area shape="poly" id="edge60_Node000002_Node000099" title=" " alt="" coords="2564,106,2916,111,3385,122,3850,139,4044,151,4191,164,4203,166,4202,171,4190,169,4043,156,3850,145,3385,127,2916,117,2564,111"/>
-<area shape="rect" id="Node000100" href="$metrics__sink_8hpp.html" title="Keeps monitoring/visualization tools out of the training core – same OCP/DIP pattern as DeviceBackend..." alt="" coords="4430,167,4613,207"/>
-<area shape="poly" id="edge61_Node000002_Node000100" title=" " alt="" coords="2565,106,3489,123,4021,141,4243,151,4411,164,4430,166,4429,172,4410,169,4242,157,4021,146,3488,129,2565,111"/>
-<area shape="rect" id="Node000101" href="$implot__metrics__sink_8hpp.html" title="Concrete MetricsSink that buffers training scalars/histograms for live plotting." alt="" coords="4363,255,4549,295"/>
-<area shape="poly" id="edge82_Node000002_Node000101" title=" " alt="" coords="2564,106,3004,111,3585,122,4106,139,4281,150,4336,157,4366,164,4394,183,4417,206,4449,253,4444,256,4413,210,4391,187,4364,169,4335,162,4281,156,4106,144,3585,127,3004,116,2564,111"/>
-<area shape="rect" id="Node000103" href="$mnist__loader_8hpp.html" title="Parses real MNIST IDX/ubyte files (fetched by tools/fetch_mnist.py) into Tensor images and integer la..." alt="" coords="4637,167,4808,207"/>
-<area shape="poly" id="edge63_Node000002_Node000103" title=" " alt="" coords="2565,105,2994,110,3589,119,4186,137,4435,149,4624,164,4637,166,4637,171,4624,169,4435,154,4186,142,3588,125,2994,115,2564,111"/>
-<area shape="rect" id="Node000104" href="$mse__loss_8hpp.html" title="Mean squared error loss." alt="" coords="2180,255,2343,295"/>
-<area shape="poly" id="edge65_Node000002_Node000104" title=" " alt="" coords="2334,113,2261,119,2189,130,2128,146,2106,156,2091,168,2083,182,2083,194,2089,206,2101,217,2137,237,2182,252,2180,257,2135,242,2098,221,2085,209,2078,196,2078,181,2087,165,2103,152,2127,141,2188,124,2261,114,2334,108"/>
-<area shape="rect" id="Node000051" href="$neuro__symbolic__datalog__bridge_8hpp.html" title="Wires a real neural predicate (LinearModule + sigmoid, reusing Phase 1 Mission 2&#39;s ToyKnowledgeBase p..." alt="" coords="4833,167,5053,207"/>
-<area shape="poly" id="edge67_Node000002_Node000051" title=" " alt="" coords="2564,106,3028,111,3679,121,4337,139,4612,150,4820,164,4833,165,4832,171,4820,169,4612,156,4337,144,3679,127,3027,116,2564,111"/>
-<area shape="rect" id="Node000029" href="$neuro__symbolic__toy__kb_8hpp.html" title="Toy knowledge&#45;base training demo – Phase 1 Mission 2 of campaign_exai_dl_library_neuro_symbolic (diff..." alt="" coords="5076,255,5247,295"/>
-<area shape="poly" id="edge68_Node000002_Node000029" title=" " alt="" coords="2564,105,3145,107,3954,115,4351,122,4694,133,4944,146,5023,155,5065,164,5094,182,5119,206,5153,253,5148,256,5115,210,5091,187,5063,169,5022,160,4943,152,4693,138,4351,128,3954,120,3145,112,2564,110"/>
-<area shape="rect" id="Node000105" href="$noise__schedule_8hpp.html" title="DDPM linear noise schedule: precomputed beta/alpha/alpha_bar, forward noising and reverse sampling st..." alt="" coords="5363,167,5533,207"/>
-<area shape="poly" id="edge69_Node000002_Node000105" title=" " alt="" coords="2564,104,3119,105,3925,112,4349,119,4747,130,5091,145,5351,164,5363,166,5363,171,5350,169,5091,150,4747,135,4348,125,3925,117,3119,111,2564,110"/>
-<area shape="rect" id="Node000106" href="$policy__gradient__loss_8hpp.html" title="REINFORCE&#39;s return&#45;weighted negative log&#45;likelihood loss over a batched rollout." alt="" coords="5557,167,5731,207"/>
-<area shape="poly" id="edge71_Node000002_Node000106" title=" " alt="" coords="2564,104,3152,104,4015,111,4469,118,4897,129,5267,144,5545,164,5557,165,5556,171,5545,169,5266,149,4897,134,4469,123,4015,116,3152,110,2564,110"/>
-<area shape="rect" id="Node000107" href="$ppo__clipped__loss_8hpp.html" title="PPO&#39;s clipped surrogate objective (Schulman et al. 2017) over a batched rollout." alt="" coords="5755,167,5914,207"/>
-<area shape="poly" id="edge72_Node000002_Node000107" title=" " alt="" coords="2564,105,4238,123,5187,141,5536,152,5743,164,5755,166,5755,171,5742,169,5536,157,5187,146,4238,128,2564,111"/>
-<area shape="rect" id="Node000108" href="$reparameterize_8hpp.html" title="VAE reparameterization trick: z = mu + exp(log_sigma) * epsilon." alt="" coords="3917,174,4179,199"/>
-<area shape="poly" id="edge73_Node000002_Node000108" title=" " alt="" coords="2564,106,3137,121,3515,138,3897,164,3967,171,3966,177,3897,169,3514,144,3137,127,2564,111"/>
-<area shape="rect" id="Node000109" href="$replay__buffer_8hpp.html" title="Off&#45;policy experience replay: fixed&#45;capacity circular transition store + sampling." alt="" coords="5938,167,6113,207"/>
-<area shape="poly" id="edge75_Node000002_Node000109" title=" " alt="" coords="2564,105,4329,123,5337,141,5708,152,5927,164,5938,165,5937,171,5926,169,5707,157,5337,146,4329,129,2564,111"/>
-<area shape="rect" id="Node000110" href="$rollout__buffer_8hpp.html" title="On&#45;policy trajectory storage: fill&#45;once fixed&#45;length rollout + discounted returns." alt="" coords="6137,167,6313,207"/>
-<area shape="poly" id="edge76_Node000002_Node000110" title=" " alt="" coords="2564,105,4428,122,5499,140,5893,151,6125,164,6137,165,6137,171,6125,169,5892,157,5498,145,4428,128,2564,111"/>
-<area shape="rect" id="Node000028" href="$satisfaction__loss_8hpp.html" title="Real&#45;Logic&#45;style knowledge&#45;base satisfaction loss – Phase 1 Mission 1 of campaign_exai_dl_library_neu..." alt="" coords="5128,167,5339,207"/>
-<area shape="poly" id="edge78_Node000002_Node000028" title=" " alt="" coords="2564,105,3078,109,3813,119,4561,137,4873,149,5109,164,5128,166,5127,171,5109,169,4873,154,4560,142,3813,125,3078,115,2564,111"/>
-<area shape="rect" id="Node000111" href="$sinusoidal__timestep__embedding_8hpp.html" title="Fixed sinusoidal encoding of a diffusion timestep, for conditioning a denoiser." alt="" coords="6337,167,6537,207"/>
-<area shape="poly" id="edge80_Node000002_Node000111" title=" " alt="" coords="2564,105,4527,123,5661,141,6079,152,6325,164,6337,165,6337,171,6325,169,6078,157,5661,146,4527,129,2564,111"/>
-<area shape="rect" id="Node000112" href="$tanh__gaussian__policy_8hpp.html" title="SAC&#39;s reparameterized, tanh&#45;squashed Gaussian policy sampling (action + log&#45;prob)." alt="" coords="6561,167,6724,207"/>
-<area shape="poly" id="edge81_Node000002_Node000112" title=" " alt="" coords="2564,105,3393,109,4639,119,5843,137,6287,149,6549,164,6561,165,6560,171,6549,169,6287,155,5843,142,4639,125,3393,115,2564,110"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="993,308,971,344,966,341,988,305"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="917,393,854,433,851,428,914,388"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="955,397,942,436,932,455,918,473,877,502,831,521,829,516,874,497,914,469,927,452,937,434,949,395"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="847,383,444,441,444,435,846,377"/>
-<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="428,464,653,516,652,521,427,469"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="1354,297,1278,345,1275,340,1351,293"/>
-<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="1403,296,1439,340,1435,344,1399,300"/>
-<area shape="poly" id="edge12_Node000011_Node000005" title=" " alt="" coords="526,210,553,251,588,293,638,335,692,373,786,428,784,433,689,377,635,339,585,297,548,254,522,213"/>
-<area shape="poly" id="edge13_Node000011_Node000006" title=" " alt="" coords="519,212,532,251,550,293,592,361,639,425,718,517,714,520,635,428,588,364,545,296,527,253,514,214"/>
-<area shape="poly" id="edge17_Node000011_Node000007" title=" " alt="" coords="500,213,374,439,369,437,495,210"/>
-<area shape="poly" id="edge14_Node000011_Node000014" title=" " alt="" coords="446,205,206,257,205,252,445,200"/>
-<area shape="poly" id="edge15_Node000011_Node000015" title=" " alt="" coords="474,208,353,264,350,259,472,203"/>
-<area shape="poly" id="edge16_Node000011_Node000016" title=" " alt="" coords="548,203,668,259,666,264,546,208"/>
-<area shape="poly" id="edge19_Node000022_Node000004" title=" " alt="" coords="1257,210,1196,252,1121,297,1065,323,1011,345,1009,340,1063,319,1119,292,1193,247,1254,205"/>
-<area shape="poly" id="edge20_Node000022_Node000023" title=" " alt="" coords="1346,200,1611,259,1610,265,1345,205"/>
-<area shape="poly" id="edge25_Node000023_Node000004" title=" " alt="" coords="1554,292,1055,352,1055,347,1554,286"/>
-<area shape="poly" id="edge21_Node000023_Node000009" title=" " alt="" coords="1593,293,1338,345,1337,340,1592,288"/>
-<area shape="poly" id="edge22_Node000023_Node000010" title=" " alt="" coords="1622,295,1500,345,1498,340,1620,290"/>
-<area shape="poly" id="edge23_Node000023_Node000035" title=" " alt="" coords="1656,301,1644,343,1639,341,1651,300"/>
-<area shape="poly" id="edge24_Node000023_Node000037" title=" " alt="" coords="1774,286,1957,310,2164,340,2177,342,2176,347,2163,345,1956,315,1773,292"/>
-<area shape="poly" id="edge26_Node000023_Node000041" title=" " alt="" coords="1699,291,1801,340,1798,345,1696,296"/>
-<area shape="poly" id="edge27_Node000023_Node000042" title=" " alt="" coords="1728,288,1971,340,1970,345,1727,293"/>
-<area shape="poly" id="edge28_Node000042_Node000043" title=" " alt="" coords="2142,384,2311,428,2310,433,2141,389"/>
-<area shape="poly" id="edge30_Node000069_Node000037" title=" " alt="" coords="2129,298,2220,340,2218,345,2127,303"/>
-<area shape="poly" id="edge38_Node000078_Node000072" title=" " alt="" coords="2994,202,3152,259,3150,264,2993,207"/>
-<area shape="poly" id="edge44_Node000094_Node000071" title=" " alt="" coords="2432,200,2653,252,2652,257,2430,205"/>
-<area shape="poly" id="edge45_Node000094_Node000076" title=" " alt="" coords="2466,199,2838,252,2849,254,2848,259,2837,257,2466,204"/>
-<area shape="poly" id="edge46_Node000094_Node000095" title=" " alt="" coords="2402,204,2485,252,2482,257,2399,209"/>
-<area shape="poly" id="edge47_Node000095_Node000043" title=" " alt="" coords="2495,307,2398,432,2394,429,2491,304"/>
-<area shape="poly" id="edge62_Node000100_Node000101" title=" " alt="" coords="4501,219,4472,256,4468,253,4496,216"/>
-<area shape="poly" id="edge66_Node000104_Node000037" title=" " alt="" coords="2263,309,2263,342,2257,342,2258,309"/>
-<area shape="poly" id="edge74_Node000108_Node000098" title=" " alt="" coords="4029,211,3985,256,3981,252,4025,207"/>
-<area shape="poly" id="edge79_Node000028_Node000029" title=" " alt="" coords="5211,219,5179,256,5175,253,5206,215"/>
+<area shape="rect" id="Node000001" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="2463,5,2625,45"/>
+<area shape="rect" id="Node000002" href="$tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="2443,93,2645,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2547,59,2547,93,2541,93,2541,59"/>
+<area shape="rect" id="Node000003" href="$activation__snapshot_8hpp.html" title="Self&#45;contained, enumerable copy of one forward pass&#39;s cached activations." alt="" coords="971,255,1170,295"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="2429,111,2122,114,1736,123,1387,141,1262,153,1218,161,1189,169,1157,187,1129,210,1086,256,1082,253,1125,206,1154,182,1187,164,1217,156,1261,148,1386,135,1736,118,2121,109,2429,105"/>
+<area shape="rect" id="Node000004" href="$explainer__context_8hpp.html" title="Stable interface every explainer gets, regardless of type (charter Part 2 SS2)." alt="" coords="999,343,1193,383"/>
+<area shape="poly" id="edge50_Node000002_Node000004" title=" " alt="" coords="2429,112,2119,119,1736,130,1402,147,1291,158,1257,163,1240,169,1225,182,1216,196,1208,226,1202,260,1195,278,1183,296,1157,323,1129,345,1126,340,1154,319,1179,293,1190,275,1197,258,1202,225,1211,193,1221,178,1237,164,1256,158,1291,152,1401,142,1736,125,2119,113,2429,107"/>
+<area shape="rect" id="Node000005" href="$grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="499,431,661,471"/>
+<area shape="poly" id="edge55_Node000002_Node000005" title=" " alt="" coords="2429,111,1947,115,1288,126,669,143,444,155,311,169,239,179,180,188,154,195,130,208,106,228,84,256,70,283,65,306,69,327,81,346,100,363,125,378,189,402,266,420,348,433,498,445,498,450,348,438,265,426,187,407,122,383,97,367,77,349,64,329,60,306,65,281,79,253,103,224,127,204,152,190,178,182,238,174,310,164,444,150,669,138,1288,120,1947,110,2429,105"/>
+<area shape="rect" id="Node000006" href="$integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="627,519,829,559"/>
+<area shape="poly" id="edge58_Node000002_Node000006" title=" " alt="" coords="2429,111,1888,115,1142,125,464,142,235,155,163,162,125,169,79,187,41,205,27,217,17,232,10,250,8,273,8,364,13,386,26,405,47,424,76,440,150,468,242,490,343,507,446,519,627,531,627,537,446,524,343,512,241,496,149,473,73,445,44,428,22,409,8,388,3,364,3,273,5,249,12,229,24,214,38,201,77,182,123,164,162,156,235,149,464,137,1142,120,1887,110,2429,105"/>
+<area shape="rect" id="Node000007" href="$lrp_8hpp.html" title="LRP – whole&#45;model Layer&#45;wise Relevance Propagation explainer." alt="" coords="685,438,864,463"/>
+<area shape="poly" id="edge62_Node000002_Node000007" title=" " alt="" coords="2429,112,1706,130,1338,147,1206,158,1127,169,1076,185,1039,202,1003,225,960,257,904,305,853,358,785,440,781,436,849,355,900,302,957,253,1000,220,1036,197,1075,180,1126,164,1205,152,1338,142,1706,125,2429,107"/>
+<area shape="rect" id="Node000008" href="$saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="889,438,1103,463"/>
+<area shape="poly" id="edge79_Node000002_Node000008" title=" " alt="" coords="2429,112,1776,132,1463,149,1360,158,1312,169,1286,192,1270,217,1262,243,1257,271,1253,300,1246,329,1232,357,1207,385,1179,405,1147,420,1083,441,1081,435,1145,416,1176,400,1204,381,1227,354,1241,327,1248,299,1252,270,1257,242,1266,214,1282,188,1309,164,1359,153,1463,143,1776,127,2429,107"/>
+<area shape="rect" id="Node000009" href="$agent_8hpp.html" title="Abstract RL agent interface – the inference&#45;time policy contract, act() only." alt="" coords="1395,262,1594,287"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="2429,109,2236,111,2007,120,1894,127,1791,138,1703,152,1637,169,1581,208,1511,264,1507,260,1578,204,1635,164,1702,146,1790,132,1894,122,2007,114,2236,106,2429,104"/>
+<area shape="rect" id="Node000010" href="$categorical__policy__agent_8hpp.html" title="Stochastic categorical (discrete&#45;action) policy over a logit&#45;producing Module." alt="" coords="1289,343,1495,383"/>
+<area shape="poly" id="edge35_Node000002_Node000010" title=" " alt="" coords="2429,111,2138,117,1784,127,1479,144,1379,156,1349,162,1335,169,1323,188,1318,210,1320,234,1328,258,1352,305,1378,341,1374,344,1347,307,1323,260,1315,235,1313,210,1318,186,1332,165,1348,157,1379,150,1479,139,1784,122,2138,111,2429,106"/>
+<area shape="rect" id="Node000011" href="$dqn__agent_8hpp.html" title="Epsilon&#45;greedy DQN policy over an arbitrary Q&#45;network Module." alt="" coords="1519,343,1678,383"/>
+<area shape="poly" id="edge41_Node000002_Node000011" title=" " alt="" coords="2429,114,2108,133,1948,149,1884,159,1834,169,1780,184,1738,199,1700,221,1658,257,1640,277,1626,301,1607,344,1602,341,1621,298,1636,274,1654,253,1697,216,1735,194,1778,179,1833,164,1883,153,1948,144,2107,128,2429,109"/>
+<area shape="rect" id="Node000012" href="$attribution_8hpp.html" title="First&#45;class explanation result type – values, method, and metadata together." alt="" coords="487,174,718,199"/>
+<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="2429,112,1749,129,1291,146,825,169,718,177,718,172,825,164,1291,141,1749,124,2429,107"/>
+<area shape="rect" id="Node000015" href="$kernel__shap_8hpp.html" title="KernelSHAP – model&#45;agnostic Shapley value approximation via weighted linear regression (charter Part ..." alt="" coords="94,255,269,295"/>
+<area shape="poly" id="edge59_Node000002_Node000015" title=" " alt="" coords="2429,111,1969,115,1345,125,763,142,551,154,426,169,366,187,307,210,214,257,212,252,305,205,364,182,425,164,550,149,763,137,1345,119,1969,109,2429,105"/>
+<area shape="rect" id="Node000016" href="$lime_8hpp.html" title="LIME – local interpretable model&#45;agnostic explanations (charter Part 1, Phase 3; theory: xai_context...." alt="" coords="293,262,483,287"/>
+<area shape="poly" id="edge61_Node000002_Node000016" title=" " alt="" coords="2429,111,1958,115,1327,125,758,142,567,154,507,162,476,169,448,189,424,215,395,263,391,261,420,212,444,185,474,164,506,156,566,149,758,137,1327,119,1958,110,2429,105"/>
+<area shape="rect" id="Node000017" href="$pdp_8hpp.html" title="Partial Dependence Plot – a global marginal&#45;effect technique, sweeping one feature&#39;s value while aver..." alt="" coords="711,262,897,287"/>
+<area shape="poly" id="edge72_Node000002_Node000017" title=" " alt="" coords="2429,109,2065,110,1594,117,1364,125,1162,135,1007,150,953,159,917,169,883,189,854,215,814,264,810,260,850,211,880,185,915,164,951,154,1006,145,1161,130,1363,119,1593,112,2065,105,2429,104"/>
+<area shape="rect" id="Node000023" href="$autograd_8hpp.html" title="Reverse&#45;mode autodiff – walks a ComputationGraph backward, accumulating gradients via per&#45;node backwa..." alt="" coords="1346,174,1566,199"/>
+<area shape="poly" id="edge20_Node000002_Node000023" title=" " alt="" coords="2429,114,2053,133,1820,149,1586,169,1528,177,1527,171,1585,164,1820,143,2053,127,2428,109"/>
+<area shape="rect" id="Node000024" href="$module_8hpp.html" title="Abstract base every layer subclasses – NVI forward(), pure&#45;virtual LRP contract." alt="" coords="1668,262,1879,287"/>
+<area shape="poly" id="edge66_Node000002_Node000024" title=" " alt="" coords="2429,112,2292,117,2138,128,1998,144,1941,156,1898,169,1862,190,1830,216,1784,264,1780,260,1826,212,1859,185,1896,164,1940,151,1997,139,2138,122,2292,112,2429,107"/>
+<area shape="rect" id="Node000036" href="$dqn__target_8hpp.html" title="DQN Bellman target computation (vanilla + Double DQN) and target&#45;network hard sync." alt="" coords="1702,343,1861,383"/>
+<area shape="poly" id="edge43_Node000002_Node000036" title=" " alt="" coords="2429,115,2322,122,2207,133,2103,148,2062,158,2030,169,1987,196,1959,227,1932,260,1892,297,1817,345,1815,340,1889,293,1928,256,1954,223,1983,192,2028,164,2060,153,2102,143,2206,128,2321,117,2429,110"/>
+<area shape="rect" id="Node000038" href="$egan__mutation_8hpp.html" title="E&#45;GAN&#39;s own three named &quot;mutation&quot; objectives (Wang et al. 2019, &quot;Evolutionary &#160;&#160;&#160;&#160;&#160;&#160;&#160;Generative Adve..." alt="" coords="2322,343,2489,383"/>
+<area shape="poly" id="edge44_Node000002_Node000038" title=" " alt="" coords="2429,120,2333,139,2295,152,2271,168,2256,193,2255,200,2258,204,2272,210,2297,213,2362,220,2393,231,2418,253,2428,275,2428,300,2417,343,2412,342,2423,299,2422,277,2414,256,2390,236,2361,225,2297,218,2271,215,2254,208,2250,201,2251,191,2267,165,2292,147,2331,133,2428,115"/>
+<area shape="rect" id="Node000042" href="$generator__population_8hpp.html" title="E&#45;GAN&#39;s own population&#45;of&#45;generators infrastructure (Wang et al. 2019, &quot;Evolutionary &#160;&#160;&#160;&#160;&#160;&#160;&#160;Generativ..." alt="" coords="1885,343,2083,383"/>
+<area shape="poly" id="edge52_Node000002_Node000042" title=" " alt="" coords="2429,112,2329,116,2224,126,2132,143,2097,155,2071,169,2051,187,2035,208,2010,257,1996,305,1989,343,1984,342,1991,304,2005,255,2030,206,2047,183,2068,164,2095,150,2131,138,2224,121,2329,111,2429,106"/>
+<area shape="rect" id="Node000043" href="$gflownet__forward__policy_8hpp.html" title="Masked stochastic categorical policy over a logit&#45;producing Module – P_F for GFlowNet training object..." alt="" coords="2107,343,2298,383"/>
+<area shape="poly" id="edge53_Node000002_Node000043" title=" " alt="" coords="2429,120,2267,139,2194,153,2142,169,2108,186,2083,202,2063,223,2045,256,2039,275,2045,293,2058,309,2073,321,2110,340,2107,345,2070,326,2054,312,2040,296,2034,275,2040,254,2059,220,2079,198,2106,181,2140,164,2192,148,2266,134,2429,114"/>
+<area shape="rect" id="Node000044" href="$gflownet__trajectory_8hpp.html" title="Rolls out one full HyperGrid episode under a GFlowNetForwardPolicy." alt="" coords="2482,431,2673,471"/>
+<area shape="poly" id="edge54_Node000002_Node000044" title=" " alt="" coords="2440,124,2387,136,2344,154,2329,165,2322,177,2322,190,2331,205,2351,224,2372,236,2393,243,2415,245,2460,240,2507,228,2555,216,2601,211,2624,213,2646,220,2668,233,2689,253,2702,276,2703,301,2696,327,2682,352,2644,397,2604,433,2600,429,2640,394,2678,349,2691,325,2698,301,2697,278,2685,256,2665,238,2644,225,2623,218,2601,216,2556,221,2509,233,2461,246,2415,251,2392,248,2370,241,2348,228,2327,208,2317,191,2317,175,2326,161,2341,150,2385,131,2439,119"/>
+<area shape="rect" id="Node000070" href="$bce__with__logits__loss_8hpp.html" title="Binary cross&#45;entropy on raw logits – combined sigmoid + BCE, numerically stable." alt="" coords="2055,255,2217,295"/>
+<area shape="poly" id="edge31_Node000002_Node000070" title=" " alt="" coords="2429,115,2354,122,2279,133,2214,148,2190,158,2172,169,2157,188,2147,210,2139,255,2134,254,2142,209,2152,185,2169,165,2188,153,2213,143,2278,127,2353,117,2428,110"/>
+<area shape="rect" id="Node000071" href="$calibration__loss_8hpp.html" title="Brier score – a proper&#45;scoring&#45;rule calibration loss (Brier, 1950)." alt="" coords="2712,167,2915,207"/>
+<area shape="poly" id="edge33_Node000002_Node000071" title=" " alt="" coords="2597,120,2749,164,2748,169,2595,125"/>
+<area shape="rect" id="Node000072" href="$cartpole__env_8hpp.html" title="CartPole&#45;v1 environment – classic cart&#45;pole balancing physics, discrete actions." alt="" coords="2751,255,2937,295"/>
+<area shape="poly" id="edge34_Node000002_Node000072" title=" " alt="" coords="2565,127,2606,166,2657,204,2714,232,2772,252,2770,257,2712,237,2655,209,2602,170,2562,131"/>
+<area shape="rect" id="Node000073" href="$collate_8hpp.html" title="Batch assembly – Batch, CollateFn, DefaultCollate." alt="" coords="3191,262,3398,287"/>
+<area shape="poly" id="edge36_Node000002_Node000073" title=" " alt="" coords="2659,107,2722,113,2791,124,2861,140,2928,164,2944,174,2954,185,2964,195,2978,204,3082,230,3234,259,3233,265,3081,235,2976,209,2960,199,2950,188,2940,178,2926,169,2859,145,2790,129,2721,118,2658,113"/>
+<area shape="rect" id="Node000077" href="$continuous__cartpole__env_8hpp.html" title="Continuous&#45;action variant of CartPoleEnv – identical physics, force is a fraction." alt="" coords="2961,255,3167,295"/>
+<area shape="poly" id="edge37_Node000002_Node000077" title=" " alt="" coords="2580,123,2651,165,2676,186,2686,196,2701,204,2797,224,2961,253,2960,258,2796,229,2699,209,2683,200,2672,190,2648,169,2578,128"/>
+<area shape="rect" id="Node000078" href="$cross__entropy__loss_8hpp.html" title="Softmax + negative log&#45;likelihood classification loss." alt="" coords="3224,167,3392,207"/>
+<area shape="poly" id="edge38_Node000002_Node000078" title=" " alt="" coords="2659,111,2913,131,3063,145,3212,164,3224,166,3223,171,3212,169,3063,151,2913,136,2659,117"/>
+<area shape="rect" id="Node000079" href="$dataset_8hpp.html" title="Random&#45;access dataset abstraction – Sample, Dataset (size()/get())." alt="" coords="2989,174,3200,199"/>
+<area shape="poly" id="edge39_Node000002_Node000079" title=" " alt="" coords="2642,118,2971,164,3020,171,3020,177,2970,169,2641,123"/>
+<area shape="rect" id="Node000094" href="$dqn__loss_8hpp.html" title="DQN&#39;s masked&#45;MSE Bellman loss – squared error on the taken action only." alt="" coords="3417,167,3575,207"/>
+<area shape="poly" id="edge42_Node000002_Node000094" title=" " alt="" coords="2659,108,2994,125,3199,141,3404,164,3417,166,3416,171,3404,169,3199,146,2994,130,2659,113"/>
+<area shape="rect" id="Node000095" href="$environment_8hpp.html" title="Abstract RL environment interface (gymnasium&#45;shaped reset/step) + StepResult." alt="" coords="2341,174,2587,199"/>
+<area shape="poly" id="edge45_Node000002_Node000095" title=" " alt="" coords="2524,130,2478,176,2474,172,2520,127"/>
+<area shape="rect" id="Node000096" href="$hypergrid__env_8hpp.html" title="HyperGrid – the standard minimal GFlowNet correctness&#45;check environment." alt="" coords="2479,255,2675,295"/>
+<area shape="poly" id="edge56_Node000002_Node000096" title=" " alt="" coords="2429,117,2363,128,2308,146,2289,157,2278,171,2277,186,2287,205,2311,217,2358,230,2480,255,2479,260,2356,235,2309,222,2283,209,2272,187,2273,169,2285,153,2306,141,2362,123,2428,112"/>
+<area shape="rect" id="Node000097" href="$gae_8hpp.html" title="Generalized Advantage Estimation (Schulman et al. 2016) over a stored rollout." alt="" coords="3600,174,3787,199"/>
+<area shape="poly" id="edge51_Node000002_Node000097" title=" " alt="" coords="2659,107,3069,123,3327,139,3587,164,3636,171,3635,177,3586,169,3327,145,3069,128,2659,112"/>
+<area shape="rect" id="Node000098" href="$image__decoder_8hpp.html" title="Decodes image files (PNG/JPEG/BMP/etc.) into Tensors via stb_image." alt="" coords="3811,167,3986,207"/>
+<area shape="poly" id="edge57_Node000002_Node000098" title=" " alt="" coords="2659,105,2872,108,3155,117,3476,134,3799,164,3811,166,3811,171,3798,169,3475,140,3155,122,2872,113,2659,110"/>
+<area shape="rect" id="Node000099" href="$kl__divergence__loss_8hpp.html" title="VAE KL&#45;divergence&#45;to&#45;standard&#45;normal loss term." alt="" coords="4028,255,4191,295"/>
+<area shape="poly" id="edge60_Node000002_Node000099" title=" " alt="" coords="2659,105,2987,107,3403,115,3605,123,3782,133,3918,147,3966,155,3998,164,4020,178,4046,202,4095,253,4091,256,4042,206,4017,183,3996,169,3965,160,3918,152,3782,138,3605,128,3403,121,2987,112,2659,110"/>
+<area shape="rect" id="Node000100" href="$lrp__conservation_8hpp.html" title="Production API for LRP&#39;s conservation&#45;delta audit metric (charter Phase 4)." alt="" coords="4349,167,4499,207"/>
+<area shape="poly" id="edge63_Node000002_Node000100" title=" " alt="" coords="2659,106,3019,111,3503,121,3984,139,4184,150,4336,164,4349,166,4348,171,4336,169,4184,156,3984,144,3503,127,3019,116,2659,111"/>
+<area shape="rect" id="Node000101" href="$metrics__sink_8hpp.html" title="Keeps monitoring/visualization tools out of the training core – same OCP/DIP pattern as DeviceBackend..." alt="" coords="4523,167,4706,207"/>
+<area shape="poly" id="edge64_Node000002_Node000101" title=" " alt="" coords="2659,106,3586,122,4120,140,4342,151,4511,164,4523,165,4523,171,4510,169,4342,156,4120,145,3586,128,2659,111"/>
+<area shape="rect" id="Node000104" href="$mnist__loader_8hpp.html" title="Parses real MNIST IDX/ubyte files (fetched by tools/fetch_mnist.py) into Tensor images and integer la..." alt="" coords="4731,167,4901,207"/>
+<area shape="poly" id="edge65_Node000002_Node000104" title=" " alt="" coords="2659,105,3088,110,3683,119,4280,137,4529,149,4718,164,4731,166,4730,171,4717,169,4529,154,4280,142,3683,125,3088,115,2659,111"/>
+<area shape="rect" id="Node000105" href="$mse__loss_8hpp.html" title="Mean squared error loss." alt="" coords="2241,255,2404,295"/>
+<area shape="poly" id="edge67_Node000002_Node000105" title=" " alt="" coords="2429,113,2356,119,2284,130,2223,146,2201,156,2186,168,2179,181,2179,193,2184,204,2195,215,2227,235,2265,252,2263,257,2224,240,2191,219,2180,207,2174,194,2174,179,2182,165,2198,152,2221,141,2283,124,2356,114,2429,108"/>
+<area shape="rect" id="Node000052" href="$neuro__symbolic__datalog__bridge_8hpp.html" title="Wires a real neural predicate (LinearModule + sigmoid, reusing Phase 1 Mission 2&#39;s ToyKnowledgeBase p..." alt="" coords="4926,167,5146,207"/>
+<area shape="poly" id="edge69_Node000002_Node000052" title=" " alt="" coords="2659,106,3123,111,3774,121,4431,139,4706,150,4914,164,4926,165,4925,171,4913,169,4705,156,4431,144,3774,127,3122,116,2659,111"/>
+<area shape="rect" id="Node000030" href="$neuro__symbolic__toy__kb_8hpp.html" title="Toy knowledge&#45;base training demo – Phase 1 Mission 2 of campaign_exai_dl_library_neuro_symbolic (diff..." alt="" coords="5169,255,5340,295"/>
+<area shape="poly" id="edge70_Node000002_Node000030" title=" " alt="" coords="2659,105,3239,107,4048,115,4445,122,4787,133,5037,146,5116,155,5158,164,5187,182,5212,206,5246,253,5242,256,5208,210,5184,187,5156,169,5115,160,5037,152,4787,138,4445,128,4048,120,3239,112,2659,110"/>
+<area shape="rect" id="Node000106" href="$noise__schedule_8hpp.html" title="DDPM linear noise schedule: precomputed beta/alpha/alpha_bar, forward noising and reverse sampling st..." alt="" coords="5457,167,5626,207"/>
+<area shape="poly" id="edge71_Node000002_Node000106" title=" " alt="" coords="2659,104,3214,105,4019,112,4443,119,4841,130,5185,145,5444,164,5457,166,5456,171,5444,169,5184,150,4841,135,4443,125,4019,117,3214,111,2659,110"/>
+<area shape="rect" id="Node000107" href="$policy__gradient__loss_8hpp.html" title="REINFORCE&#39;s return&#45;weighted negative log&#45;likelihood loss over a batched rollout." alt="" coords="5651,167,5824,207"/>
+<area shape="poly" id="edge73_Node000002_Node000107" title=" " alt="" coords="2659,104,3247,104,4109,111,4563,118,4991,129,5360,144,5639,164,5651,165,5650,171,5638,169,5360,149,4991,134,4563,123,4109,116,3247,110,2659,110"/>
+<area shape="rect" id="Node000108" href="$ppo__clipped__loss_8hpp.html" title="PPO&#39;s clipped surrogate objective (Schulman et al. 2017) over a batched rollout." alt="" coords="5849,167,6007,207"/>
+<area shape="poly" id="edge74_Node000002_Node000108" title=" " alt="" coords="2659,105,4332,123,5281,141,5630,152,5836,164,5849,166,5848,171,5836,169,5630,157,5281,146,4332,128,2659,111"/>
+<area shape="rect" id="Node000109" href="$reparameterize_8hpp.html" title="VAE reparameterization trick: z = mu + exp(log_sigma) * epsilon." alt="" coords="4062,174,4325,199"/>
+<area shape="poly" id="edge75_Node000002_Node000109" title=" " alt="" coords="2659,106,2909,111,3252,121,3645,138,4043,164,4112,171,4111,177,4042,169,3644,143,3252,126,2909,116,2659,111"/>
+<area shape="rect" id="Node000110" href="$replay__buffer_8hpp.html" title="Off&#45;policy experience replay: fixed&#45;capacity circular transition store + sampling." alt="" coords="6031,167,6206,207"/>
+<area shape="poly" id="edge77_Node000002_Node000110" title=" " alt="" coords="2659,105,4423,123,5431,141,5801,152,6020,164,6031,165,6031,171,6020,169,5801,157,5431,146,4423,129,2659,111"/>
+<area shape="rect" id="Node000111" href="$rollout__buffer_8hpp.html" title="On&#45;policy trajectory storage: fill&#45;once fixed&#45;length rollout + discounted returns." alt="" coords="6231,167,6407,207"/>
+<area shape="poly" id="edge78_Node000002_Node000111" title=" " alt="" coords="2659,105,4522,122,5592,140,5986,151,6219,164,6231,165,6230,171,6218,169,5986,157,5592,145,4522,128,2659,111"/>
+<area shape="rect" id="Node000029" href="$satisfaction__loss_8hpp.html" title="Real&#45;Logic&#45;style knowledge&#45;base satisfaction loss – Phase 1 Mission 1 of campaign_exai_dl_library_neu..." alt="" coords="5221,167,5432,207"/>
+<area shape="poly" id="edge80_Node000002_Node000029" title=" " alt="" coords="2659,105,3172,109,3907,119,4654,137,4967,149,5203,164,5222,166,5221,171,5202,169,4966,154,4654,142,3907,125,3172,115,2659,111"/>
+<area shape="rect" id="Node000112" href="$sinusoidal__timestep__embedding_8hpp.html" title="Fixed sinusoidal encoding of a diffusion timestep, for conditioning a denoiser." alt="" coords="6431,167,6631,207"/>
+<area shape="poly" id="edge82_Node000002_Node000112" title=" " alt="" coords="2659,105,4622,123,5755,141,6172,152,6419,164,6431,165,6430,171,6418,169,6172,157,5755,146,4621,129,2659,111"/>
+<area shape="rect" id="Node000113" href="$tanh__gaussian__policy_8hpp.html" title="SAC&#39;s reparameterized, tanh&#45;squashed Gaussian policy sampling (action + log&#45;prob)." alt="" coords="6655,167,6817,207"/>
+<area shape="poly" id="edge83_Node000002_Node000113" title=" " alt="" coords="2659,105,3488,109,4733,119,5937,137,6381,149,6643,164,6655,165,6654,171,6642,169,6381,155,5937,142,4733,125,3488,115,2659,110"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1083,307,1093,342,1088,343,1078,309"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="985,383,674,433,662,435,661,430,673,428,985,378"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="1116,394,1127,433,1126,454,1117,472,1098,488,1070,500,997,519,912,531,829,537,829,532,911,525,996,514,1068,495,1095,483,1113,469,1121,453,1122,434,1111,396"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="1013,389,818,441,817,435,1012,384"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="1065,394,1012,440,1008,436,1062,390"/>
+<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="947,470,788,521,786,516,946,465"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="1472,298,1416,345,1413,340,1468,294"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="1521,294,1577,340,1574,345,1517,298"/>
+<area shape="poly" id="edge13_Node000012_Node000005" title=" " alt="" coords="603,213,584,431,579,430,598,213"/>
+<area shape="poly" id="edge14_Node000012_Node000006" title=" " alt="" coords="582,211,538,261,514,293,493,328,477,365,470,401,473,436,489,469,509,485,543,498,628,519,627,525,541,503,507,489,485,472,468,438,464,401,472,363,488,326,510,290,534,258,578,208"/>
+<area shape="poly" id="edge17_Node000012_Node000007" title=" " alt="" coords="615,211,633,251,657,293,717,377,766,436,762,440,713,380,652,296,629,253,610,214"/>
+<area shape="poly" id="edge19_Node000012_Node000008" title=" " alt="" coords="621,209,655,250,700,293,771,341,846,381,967,436,965,440,843,386,768,345,697,297,651,254,617,212"/>
+<area shape="poly" id="edge15_Node000012_Node000015" title=" " alt="" coords="533,205,269,258,268,253,532,200"/>
+<area shape="poly" id="edge16_Node000012_Node000016" title=" " alt="" coords="562,207,418,264,416,259,560,202"/>
+<area shape="poly" id="edge18_Node000012_Node000017" title=" " alt="" coords="643,202,778,259,776,264,641,207"/>
+<area shape="poly" id="edge21_Node000023_Node000004" title=" " alt="" coords="1421,208,1136,345,1134,340,1419,203"/>
+<area shape="poly" id="edge22_Node000023_Node000024" title=" " alt="" coords="1513,200,1731,259,1730,264,1511,206"/>
+<area shape="poly" id="edge27_Node000024_Node000004" title=" " alt="" coords="1670,292,1194,352,1193,346,1669,286"/>
+<area shape="poly" id="edge23_Node000024_Node000010" title=" " alt="" coords="1710,293,1476,345,1475,340,1709,288"/>
+<area shape="poly" id="edge24_Node000024_Node000011" title=" " alt="" coords="1739,296,1638,345,1636,340,1736,291"/>
+<area shape="poly" id="edge25_Node000024_Node000036" title=" " alt="" coords="1778,301,1782,342,1777,342,1773,301"/>
+<area shape="poly" id="edge26_Node000024_Node000038" title=" " alt="" coords="1893,286,2089,309,2310,340,2322,342,2321,347,2309,345,2088,314,1892,291"/>
+<area shape="poly" id="edge28_Node000024_Node000042" title=" " alt="" coords="1815,290,1939,340,1937,345,1813,295"/>
+<area shape="poly" id="edge29_Node000024_Node000043" title=" " alt="" coords="1845,287,2109,340,2108,345,1844,293"/>
+<area shape="poly" id="edge30_Node000043_Node000044" title=" " alt="" coords="2299,383,2496,428,2495,433,2297,388"/>
+<area shape="poly" id="edge32_Node000070_Node000038" title=" " alt="" coords="2209,296,2347,340,2346,345,2207,301"/>
+<area shape="poly" id="edge40_Node000079_Node000073" title=" " alt="" coords="3135,202,3269,259,3266,264,3133,207"/>
+<area shape="poly" id="edge46_Node000095_Node000072" title=" " alt="" coords="2529,200,2761,252,2760,257,2527,205"/>
+<area shape="poly" id="edge47_Node000095_Node000077" title=" " alt="" coords="2566,199,2950,252,2961,254,2960,259,2949,257,2565,204"/>
+<area shape="poly" id="edge48_Node000095_Node000096" title=" " alt="" coords="2492,205,2554,252,2551,257,2488,210"/>
+<area shape="poly" id="edge49_Node000096_Node000044" title=" " alt="" coords="2580,308,2580,430,2575,430,2575,308"/>
+<area shape="poly" id="edge68_Node000105_Node000038" title=" " alt="" coords="2353,303,2389,341,2385,344,2349,307"/>
+<area shape="poly" id="edge76_Node000109_Node000099" title=" " alt="" coords="4174,211,4130,256,4126,252,4171,207"/>
+<area shape="poly" id="edge81_Node000029_Node000030" title=" " alt="" coords="5304,219,5273,256,5269,253,5300,215"/>
 </map>

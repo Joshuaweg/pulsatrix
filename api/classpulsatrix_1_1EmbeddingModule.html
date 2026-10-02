@@ -148,7 +148,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adf38cf3614ca1e6931eda0bfb981f609" id="r_adf38cf3614ca1e6931eda0bfb981f609"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EmbeddingModule.html#adf38cf3614ca1e6931eda0bfb981f609">weight_grad</a> () const</td></tr>
 <tr class="separator:adf38cf3614ca1e6931eda0bfb981f609"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36e97f51ac2b0e4c79620456ff1f13c9" id="r_a36e97f51ac2b0e4c79620456ff1f13c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EmbeddingModule.html#a36e97f51ac2b0e4c79620456ff1f13c9">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
-<tr class="memdesc:a36e97f51ac2b0e4c79620456ff1f13c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sum-over-embedding-dimension LRP relevance aggregation (Arras et al. 2017).  <br /></td></tr>
+<tr class="memdesc:a36e97f51ac2b0e4c79620456ff1f13c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sum-over-embedding-dimension <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance aggregation (Arras et al. 2017).  <br /></td></tr>
 <tr class="separator:a36e97f51ac2b0e4c79620456ff1f13c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa078a2a769f961028cdf6d6b8e06c17a" id="r_aa078a2a769f961028cdf6d6b8e06c17a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EmbeddingModule.html#aa078a2a769f961028cdf6d6b8e06c17a">parameters</a> () override</td></tr>
 <tr class="memdesc:aa078a2a769f961028cdf6d6b8e06c17a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
@@ -411,7 +411,7 @@ propagate_relevance sums relevance over the embedding dimension per (n, l) posit
 </table>
 </div><div class="memdoc">
 
-<p>Sum-over-embedding-dimension LRP relevance aggregation (Arras et al. 2017). </p>
+<p>Sum-over-embedding-dimension <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance aggregation (Arras et al. 2017). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">relevance_out</td><td>Relevance at this module's output. Must be (N, L, embedding_dim) matching the most recent <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> call's output shape. </td></tr>

@@ -97,6 +97,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "linear_algebra.hpp", "linear__algebra_8hpp.html", "linear__algebra_8hpp" ],
     [ "linear_module.hpp", "linear__module_8hpp.html", "linear__module_8hpp" ],
     [ "linear_probe.hpp", "linear__probe_8hpp.html", "linear__probe_8hpp" ],
+    [ "lrp.hpp", "lrp_8hpp.html", "lrp_8hpp" ],
     [ "lrp_conservation.hpp", "lrp__conservation_8hpp.html", "lrp__conservation_8hpp" ],
     [ "lrp_rule_config.hpp", "lrp__rule__config_8hpp.html", "lrp__rule__config_8hpp" ],
     [ "lstm_module.hpp", "lstm__module_8hpp.html", "lstm__module_8hpp" ],

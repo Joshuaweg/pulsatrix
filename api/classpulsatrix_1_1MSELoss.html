@@ -119,7 +119,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>MSE = mean((prediction - target)^2). </p>
-<dl class="section note"><dt>Note</dt><dd>Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> subclass. Losses are the seed point relevance/gradient propagation starts from, not something a <code>propagate_relevance</code> rule is defined for &ndash; LRP explains a model's prediction, not the loss function used to train it. Deliberate scope decision (see mission_conv2d_losses.md's Objective 1), not an oversight. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> subclass. Losses are the seed point relevance/gradient propagation starts from, not something a <code>propagate_relevance</code> rule is defined for &ndash; <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> explains a model's prediction, not the loss function used to train it. Deliberate scope decision (see mission_conv2d_losses.md's Objective 1), not an oversight. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac5f20c73b4057154df59e8428759f721" name="ac5f20c73b4057154df59e8428759f721"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac5f20c73b4057154df59e8428759f721">&#9670;&#160;</a></span>MSELoss()</h2>

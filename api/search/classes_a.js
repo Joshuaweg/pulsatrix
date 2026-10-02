@@ -5,6 +5,8 @@ var searchData=
   ['lime_2',['LIME',['../classpulsatrix_1_1LIME.html',1,'pulsatrix']]],
   ['linearmodule_3',['LinearModule',['../classpulsatrix_1_1LinearModule.html',1,'pulsatrix']]],
   ['linearprobe_4',['LinearProbe',['../classpulsatrix_1_1LinearProbe.html',1,'pulsatrix']]],
-  ['lrpruleconfig_5',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
-  ['lstmmodule_6',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
+  ['lrp_5',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
+  ['lrpruleconfig_6',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
+  ['lrptarget_7',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
+  ['lstmmodule_8',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
 ];
