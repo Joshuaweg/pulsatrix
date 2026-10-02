@@ -112,9 +112,11 @@ public:
      *   structure to a t-norm's elementwise product is the novel step (no literature
      *   applies AttnLRP-style bilinear splitting to fuzzy logic operators).
      * - **Lukasiewicz** (`y = max(0, a+b-1)`): active region (`a+b-1 > 0`) is exactly
-     *   LinearModule's own bias-excluded epsilon rule with `z = a+b-1` (the `-1` bias
-     *   absorbed, not distributed, same convention as LinearModule's pre-bias `z_j`):
-     *   `R_a = a/(z+eps*sign(z)) * R_out`, `R_b = b/(z+eps*sign(z)) * R_out`. Inactive region
+     *   LinearModule's own bias-excluded epsilon rule. The pre-bias value is `z = a+b` (the
+     *   `-1` is the bias, absorbed rather than distributed, same convention as LinearModule's
+     *   pre-bias `z_j`): `R_a = a/(z+eps*sign(z)) * R_out`, `R_b = b/(z+eps*sign(z)) * R_out`,
+     *   so `R_a + R_b = R_out * z/(z+eps)` -- conservative. (Before 2026-10 the denominator used
+     *   the biased `a+b-1`, which created relevance: `(a+b)/(a+b-1)` times `R_out`.) Inactive region
      *   (`a+b-1 <= 0`, `y = 0`): both operands' local derivative is 0 (matches backward()'s
      *   own gradient there), so both receive 0 -- ReluModule's "blocked" convention,
      *   deliberately kept consistent with backward() rather than force-conserving through a
