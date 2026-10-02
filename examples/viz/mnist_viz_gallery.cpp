@@ -878,8 +878,14 @@ void Gallery::PrintSummary() {
         }
         if (rec.circuit) {
             std::printf("  circuit (zero-ablation effect on logits, L2):");
-            for (const CircuitNode& node : rec.circuit->nodes()) {
-                std::printf(" %s=%.3f", CircuitNodeDisplayLabel(node).c_str(), static_cast<double>(node.ablation_effect));
+            const auto& nodes = rec.circuit->nodes();
+            for (size_t i = 0; i < nodes.size(); ++i) {
+                if (i + 1 == nodes.size()) {  // build_circuit_graph never ablates the output node
+                    std::printf(" %s=(output, not ablated)", CircuitNodeDisplayLabel(nodes[i]).c_str());
+                } else {
+                    std::printf(" %s=%.3f", CircuitNodeDisplayLabel(nodes[i]).c_str(),
+                                static_cast<double>(nodes[i].ablation_effect));
+                }
             }
             std::printf("\n");
         }
@@ -1208,18 +1214,24 @@ void Gallery::DrawCircuitPage() {
     const ImageRecord& rec = records_[static_cast<size_t>(selected_image_)];
     ImGui::TextWrapped("CircuitGraphView -- ExplainerContext::build_circuit_graph on the full CNN for test #%lld: each "
                        "node is one layer output, sized/coloured by its zero-ablation effect (L2 change of the 10 "
-                       "logits when that activation is replaced by zeros).",
+                       "logits when that activation is replaced by zeros). The output node is the reference the "
+                       "effect is measured on, so it is never ablated and draws at 0.",
                        static_cast<long long>(rec.test_index));
     if (!rec.circuit) return;
     if (ImGui::BeginTable("nodes", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_SizingFixedFit)) {
         ImGui::TableSetupColumn("node");
         ImGui::TableSetupColumn("ablation effect");
         ImGui::TableHeadersRow();
-        for (const CircuitNode& n : rec.circuit->nodes()) {
+        const auto& nodes = rec.circuit->nodes();
+        for (size_t i = 0; i < nodes.size(); ++i) {
             ImGui::TableNextColumn();
-            ImGui::TextUnformatted(CircuitNodeDisplayLabel(n).c_str());
+            ImGui::TextUnformatted(CircuitNodeDisplayLabel(nodes[i]).c_str());
             ImGui::TableNextColumn();
-            ImGui::Text("%.4f", static_cast<double>(n.ablation_effect));
+            if (i + 1 == nodes.size()) {
+                ImGui::TextUnformatted("n/a (output node, not ablated)");
+            } else {
+                ImGui::Text("%.4f", static_cast<double>(nodes[i].ablation_effect));
+            }
         }
         ImGui::EndTable();
     }
