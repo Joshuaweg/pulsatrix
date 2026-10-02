@@ -4,6 +4,9 @@
  */
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "pulsatrix/dataset.hpp"
 #include "pulsatrix/viz/texture_cache.hpp"
 
@@ -28,9 +31,13 @@ public:
      * @param count How many samples to display, in a fixed-column grid.
      * @param columns Number of images per row.
      * @param thumbnail_size Displayed width/height in pixels per thumbnail.
+     * @param captions Optional per-thumbnail caption drawn under each image (e.g.
+     *        "true 7 / pred 7"); captions[k] labels sample start_index + k. Thumbnails past
+     *        the end of captions get no caption. nullptr (default) draws images only.
      */
     static void Draw(const char* title, const Dataset& dataset, TextureCache& cache, int64_t start_index,
-                      int64_t count, int columns = 4, float thumbnail_size = 96.0f);
+                      int64_t count, int columns = 4, float thumbnail_size = 96.0f,
+                      const std::vector<std::string>* captions = nullptr);
 };
 
 }  // namespace pulsatrix

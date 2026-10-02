@@ -155,6 +155,107 @@ TEST_F(PlotDataTest, ToSaliencyHeatmapSqueezesSingleChannelRank3Tensor) {
     ASSERT_EQ(grid.values.size(), 4u);
 }
 
+TEST_F(PlotDataTest, ToWaterfallBarsFloatBetweenConsecutiveRunningTotals) {
+    Attribution attr{"ig", Tensor(Shape({3}), &backend, {0.5f, -2.0f, 3.0f}), {}};
+    std::vector<WaterfallStep> steps = ToWaterfallSteps(attr, 1.0f);
+
+    std::vector<WaterfallBar> bars = ToWaterfallBars(steps, 1.0f);
+
+    ASSERT_EQ(bars.size(), 3u);
+    EXPECT_FLOAT_EQ(bars[0].bottom, 1.0f);
+    EXPECT_FLOAT_EQ(bars[0].top, 1.5f);
+    EXPECT_TRUE(bars[0].increase);
+    EXPECT_FLOAT_EQ(bars[1].bottom, -0.5f);
+    EXPECT_FLOAT_EQ(bars[1].top, 1.5f);
+    EXPECT_FALSE(bars[1].increase);
+    EXPECT_FLOAT_EQ(bars[2].bottom, -0.5f);
+    EXPECT_FLOAT_EQ(bars[2].top, 2.5f);
+    EXPECT_TRUE(bars[2].increase);
+}
+
+TEST_F(PlotDataTest, ToWaterfallBarsStayBelowZeroForAnAllNegativeCascade) {
+    // Regression: stacked bar segments anchor at zero, so a cascade explaining a negative
+    // logit (baseline -3, running totals -2.5 then -4) was drawn from 0 instead of floating
+    // at its real running totals.
+    Attribution attr{"lrp", Tensor(Shape({2}), &backend, {0.5f, -1.5f}), {}};
+    std::vector<WaterfallStep> steps = ToWaterfallSteps(attr, -3.0f);
+
+    std::vector<WaterfallBar> bars = ToWaterfallBars(steps, -3.0f);
+
+    ASSERT_EQ(bars.size(), 2u);
+    EXPECT_FLOAT_EQ(bars[0].bottom, -3.0f);
+    EXPECT_FLOAT_EQ(bars[0].top, -2.5f);
+    EXPECT_FLOAT_EQ(bars[1].bottom, -4.0f);
+    EXPECT_FLOAT_EQ(bars[1].top, -2.5f);
+    for (const WaterfallBar& bar : bars) {
+        EXPECT_LT(bar.top, 0.0f);
+    }
+}
+
+TEST_F(PlotDataTest, CircuitNodeDisplayLabelPrefersOwnLabelElseOpTypeAndId) {
+    CircuitNode labeled{0, OpType::Elementwise, std::string("input"), 1.0f};
+    CircuitNode conv{1, OpType::Conv, std::nullopt, 2.0f};
+    CircuitNode relu{2, OpType::Activation, std::string(""), 2.0f};
+
+    EXPECT_EQ(CircuitNodeDisplayLabel(labeled), "input");
+    EXPECT_EQ(CircuitNodeDisplayLabel(conv), "Conv #1");
+    EXPECT_EQ(CircuitNodeDisplayLabel(relu), "Activation #2");
+}
+
+TEST_F(PlotDataTest, ToSaliencyHeatmapSqueezesBatchOneSingleChannelRank4Tensor) {
+    // (1, 1, H, W) is what every input-space image explainer returns for one batched
+    // single-channel image (e.g. an MNIST digit) -- the heatmap must take it directly.
+    Attribution attr{"saliency", Tensor(Shape({1, 1, 2, 3}), &backend, {1, 2, 3, 4, 5, 6}), {}};
+
+    HeatmapGrid grid = ToSaliencyHeatmap(attr);
+
+    EXPECT_EQ(grid.rows, 2);
+    EXPECT_EQ(grid.cols, 3);
+    ASSERT_EQ(grid.values.size(), 6u);
+    EXPECT_FLOAT_EQ(grid.values[0], 1.0f);
+    EXPECT_FLOAT_EQ(grid.values[5], 6.0f);
+}
+
+TEST_F(PlotDataTest, ToSaliencyHeatmapThrowsOnRank4WithMoreThanOneBatchOrChannel) {
+    Attribution batch2{"saliency", Tensor(Shape({2, 1, 1, 2}), &backend, {1, 2, 3, 4}), {}};
+    EXPECT_THROW(ToSaliencyHeatmap(batch2), std::invalid_argument);
+
+    Attribution channel2{"saliency", Tensor(Shape({1, 2, 1, 2}), &backend, {1, 2, 3, 4}), {}};
+    EXPECT_THROW(ToSaliencyHeatmap(channel2), std::invalid_argument);
+}
+
+TEST_F(PlotDataTest, ComputeHeatmapColorScaleIsUnsignedZeroToMaxForNonNegativeValues) {
+    HeatmapGrid grid{{0.0f, 0.5f, 2.0f, 1.0f}, 2, 2};
+
+    HeatmapColorScale scale = ComputeHeatmapColorScale(grid);
+
+    EXPECT_FALSE(scale.is_signed);
+    EXPECT_FLOAT_EQ(scale.scale_min, 0.0f);
+    EXPECT_FLOAT_EQ(scale.scale_max, 2.0f);
+}
+
+TEST_F(PlotDataTest, ComputeHeatmapColorScaleIsSymmetricAroundZeroForSignedValues) {
+    // A signed attribution (gradient, IG, LRP) must not be squashed onto [0, max]: its
+    // negative evidence would all clamp to the colormap's bottom, indistinguishable from zero.
+    HeatmapGrid grid{{-3.0f, 0.5f, 1.0f, 0.0f}, 2, 2};
+
+    HeatmapColorScale scale = ComputeHeatmapColorScale(grid);
+
+    EXPECT_TRUE(scale.is_signed);
+    EXPECT_FLOAT_EQ(scale.scale_min, -3.0f);
+    EXPECT_FLOAT_EQ(scale.scale_max, 3.0f);
+}
+
+TEST_F(PlotDataTest, ComputeHeatmapColorScaleHandlesAllZeroGridWithoutZeroWidthRange) {
+    HeatmapGrid grid{{0.0f, 0.0f}, 1, 2};
+
+    HeatmapColorScale scale = ComputeHeatmapColorScale(grid);
+
+    EXPECT_FALSE(scale.is_signed);
+    EXPECT_FLOAT_EQ(scale.scale_min, 0.0f);
+    EXPECT_FLOAT_EQ(scale.scale_max, 1.0f);
+}
+
 TEST_F(PlotDataTest, ToSaliencyHeatmapThrowsOnIncompatibleRank) {
     Attribution attr1{"saliency", Tensor(Shape({4}), &backend, {1, 2, 3, 4}), {}};
     EXPECT_THROW(ToSaliencyHeatmap(attr1), std::invalid_argument);

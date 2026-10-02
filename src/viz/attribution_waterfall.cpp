@@ -10,76 +10,62 @@
 #include "pulsatrix/viz/plot_data.hpp"
 
 namespace pulsatrix {
-namespace {
-
-// Registered once (function-local static, thread-safe init) the first time a waterfall is
-// drawn -- requires an active ImPlot context, which VizWindow guarantees by the time any
-// Draw() call happens. base is fully transparent (a floating bar's invisible "floor"); the
-// other two use the same diverging-colormap endpoints as AttributionBarChart, so a positive
-// or negative contribution reads identically across every chart type in this module.
-ImPlotColormap WaterfallColormap() {
-    static const ImPlotColormap kColormap = [] {
-        RgbColor pos = DivergingColormap(1.0f);
-        RgbColor neg = DivergingColormap(-1.0f);
-        ImVec4 cols[3] = {
-            ImVec4(0.0f, 0.0f, 0.0f, 0.0f),
-            ImVec4(pos.r, pos.g, pos.b, 1.0f),
-            ImVec4(neg.r, neg.g, neg.b, 1.0f),
-        };
-        return ImPlot::AddColormap("pulsatrix_waterfall", cols, 3, true);
-    }();
-    return kColormap;
-}
-
-}  // namespace
 
 void AttributionWaterfallChart::Draw(const char* title, const Attribution& attr, float baseline_value) {
     std::vector<WaterfallStep> steps = ToWaterfallSteps(attr, baseline_value);
     if (steps.empty()) {
         return;
     }
+    // Floating bars (ToWaterfallBars), not stacked bar groups: ImPlot stacks positive and
+    // negative segments separately from zero, which mis-draws any cascade whose running total
+    // is below zero (e.g. a negative baseline or a negative logit being explained).
+    std::vector<WaterfallBar> bars = ToWaterfallBars(steps, baseline_value);
 
     int n = static_cast<int>(steps.size());
-    std::vector<float> base(static_cast<size_t>(n));
-    std::vector<float> pos_delta(static_cast<size_t>(n));
-    std::vector<float> neg_delta(static_cast<size_t>(n));
     std::vector<double> positions(static_cast<size_t>(n));
     std::vector<const char*> label_ptrs(static_cast<size_t>(n));
-
-    float cumulative_prev = baseline_value;
     for (int i = 0; i < n; ++i) {
-        size_t idx = static_cast<size_t>(i);
-        float delta = steps[idx].delta;
-        float cumulative = steps[idx].cumulative;
-        base[idx] = std::min(cumulative_prev, cumulative);
-        if (delta >= 0.0f) {
-            pos_delta[idx] = delta;
-            neg_delta[idx] = 0.0f;
-        } else {
-            neg_delta[idx] = -delta;
-            pos_delta[idx] = 0.0f;
-        }
-        positions[idx] = static_cast<double>(i);
-        label_ptrs[idx] = steps[idx].label.c_str();
-        cumulative_prev = cumulative;
+        positions[static_cast<size_t>(i)] = static_cast<double>(i);
+        label_ptrs[static_cast<size_t>(i)] = steps[static_cast<size_t>(i)].label.c_str();
     }
 
-    std::vector<float> stacked_values;
-    stacked_values.reserve(static_cast<size_t>(n) * 3);
-    stacked_values.insert(stacked_values.end(), base.begin(), base.end());
-    stacked_values.insert(stacked_values.end(), pos_delta.begin(), pos_delta.end());
-    stacked_values.insert(stacked_values.end(), neg_delta.begin(), neg_delta.end());
+    const RgbColor pos = DivergingColormap(1.0f);
+    const RgbColor neg = DivergingColormap(-1.0f);
+    constexpr double kHalfWidth = 0.335;
 
-    static const char* kItemLabels[3] = {"##base", "Increase", "Decrease"};
+    // Explicit padded limits: AutoFit would put the cascade's extreme bar (and the baseline,
+    // when it is the extreme) exactly on the plot border.
+    float lo = baseline_value;
+    float hi = baseline_value;
+    for (const WaterfallBar& bar : bars) {
+        lo = std::min(lo, bar.bottom);
+        hi = std::max(hi, bar.top);
+    }
+    double pad = 0.06 * std::max(static_cast<double>(hi - lo), 1e-6);
 
-    ImPlot::PushColormap(WaterfallColormap());
     if (ImPlot::BeginPlot(title, ImVec2(-1, 0))) {
-        ImPlot::SetupAxes(nullptr, "Value", ImPlotAxisFlags_AutoFit, ImPlotAxisFlags_AutoFit);
+        ImPlot::SetupAxes(nullptr, "Value", 0, 0);
+        ImPlot::SetupAxesLimits(-0.5, static_cast<double>(n) - 0.5, static_cast<double>(lo) - pad,
+                                static_cast<double>(hi) + pad, ImPlotCond_Always);
         ImPlot::SetupAxisTicks(ImAxis_X1, positions.data(), n, label_ptrs.data());
-        ImPlot::PlotBarGroups(kItemLabels, stacked_values.data(), 3, n, 0.67, 0, ImPlotBarGroupsFlags_Stacked);
+
+        // Reference line at the baseline the cascade starts from.
+        double ref_x[2] = {-0.5, static_cast<double>(n) - 0.5};
+        double ref_y[2] = {static_cast<double>(baseline_value), static_cast<double>(baseline_value)};
+        ImPlot::SetNextLineStyle(ImVec4(0.6f, 0.6f, 0.6f, 0.8f), 1.0f);
+        ImPlot::PlotLine("Baseline", ref_x, ref_y, 2);
+
+        for (int i = 0; i < n; ++i) {
+            const WaterfallBar& bar = bars[static_cast<size_t>(i)];
+            double xs[2] = {i - kHalfWidth, i + kHalfWidth};
+            double lo[2] = {static_cast<double>(bar.bottom), static_cast<double>(bar.bottom)};
+            double hi[2] = {static_cast<double>(bar.top), static_cast<double>(bar.top)};
+            const RgbColor& c = bar.increase ? pos : neg;
+            ImPlot::SetNextFillStyle(ImVec4(c.r, c.g, c.b, 1.0f));
+            ImPlot::PlotShaded(bar.increase ? "Increase" : "Decrease", xs, lo, hi, 2);
+        }
         ImPlot::EndPlot();
     }
-    ImPlot::PopColormap();
 }
 
 }  // namespace pulsatrix

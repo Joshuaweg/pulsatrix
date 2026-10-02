@@ -8,7 +8,8 @@
 namespace pulsatrix {
 
 void ImageGridView::Draw(const char* title, const Dataset& dataset, TextureCache& cache, int64_t start_index,
-                          int64_t count, int columns, float thumbnail_size) {
+                          int64_t count, int columns, float thumbnail_size,
+                          const std::vector<std::string>* captions) {
     int64_t size = dataset.size();
     if (size == 0 || start_index >= size) {
         return;
@@ -22,8 +23,16 @@ void ImageGridView::Draw(const char* title, const Dataset& dataset, TextureCache
             continue;
         }
         TextureId texture = cache.GetOrUpload(i, sample.fields[0]);
+        ImGui::BeginGroup();
         ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<intptr_t>(texture)),
                      ImVec2(thumbnail_size, thumbnail_size));
+        size_t caption_index = static_cast<size_t>(i - start_index);
+        if (captions != nullptr && caption_index < captions->size()) {
+            ImGui::PushTextWrapPos(ImGui::GetCursorPosX() + thumbnail_size);
+            ImGui::TextUnformatted((*captions)[caption_index].c_str());
+            ImGui::PopTextWrapPos();
+        }
+        ImGui::EndGroup();
 
         bool last_in_row = ((i - start_index + 1) % columns) == 0;
         bool last_overall = (i + 1) == end_index;
