@@ -485,4 +485,158 @@ void CUDABackend::aggregator_lrp(const float* x, const float* mean_pow, const fl
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
+// ---- GPU-native-kernels Mission 4 (kernels in gpu_kernels.cuh) ---------------------------
+
+void CUDABackend::im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) {
+    if (n == 0 || c == 0) {
+        return;
+    }
+    const size_t total = n * c * kh * kw * (h - kh + 1) * (w - kw + 1);
+    gpu::im2col_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(
+        in, col, n, c, h, w, kh, kw);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)
+                             {
+    if (n == 0 || c == 0) {
+        return;
+    }
+    gpu::col2im_add_kernel<<<gpu::grid_size_for(n * c * h * w), gpu::kBlockSize, 0, stream_>>>(
+        col, out, n, c, h, w, kh, kw);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::add_channel_vector(const float* in, const float* vec, float* out, size_t n, size_t c, size_t inner) {
+    if (n * c * inner == 0) {
+        return;
+    }
+    gpu::add_channel_vector_kernel<<<gpu::grid_size_for(n * c * inner), gpu::kBlockSize, 0, stream_>>>(
+        in, vec, out, n, c, inner);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::lrp_conv(const float* col, const float* kernel, const float* pre_bias, const float* r, float* r_col,
+                           size_t n, size_t out_channels, size_t p, size_t q, float eps) {
+    if (n * p * q == 0) {
+        return;
+    }
+    gpu::lrp_conv_kernel<<<gpu::grid_size_for(n * p * q), gpu::kBlockSize, 0, stream_>>>(
+        col, kernel, pre_bias, r, r_col, n, out_channels, p, q, eps);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w, size_t
+                                   kh, size_t kw) {
+    if (planes == 0) {
+        return;
+    }
+    const size_t total = planes * ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
+    gpu::max_pool_forward_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(
+        in, out, argmax, planes, h, w, kh, kw);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w,
+                             size_t kh, size_t kw) {
+    if (planes == 0) {
+        return;
+    }
+    const size_t out_plane = ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
+    gpu::max_unpool_kernel<<<gpu::grid_size_for(planes * out_plane), gpu::kBlockSize, 0, stream_>>>(
+        src, argmax, dst, planes, h, w, out_plane);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::avg_pool_forward(const float* in, float* out, size_t planes, size_t h, size_t w, size_t kh, size_t kw)
+                                   {
+    if (planes == 0) {
+        return;
+    }
+    const size_t total = planes * ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
+    gpu::avg_pool_forward_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(
+        in, out, planes, h, w, kh, kw);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::avg_pool_backward(const float* grad_out, float* grad_in, size_t planes, size_t h, size_t w, size_t kh,
+                                    size_t kw) {
+    if (planes == 0) {
+        return;
+    }
+    const size_t total = planes * ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
+    gpu::avg_pool_backward_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(
+        grad_out, grad_in, planes, h, w, kh, kw);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::lrp_avg_pool(const float* x, const float* r, float* r_in, size_t planes, size_t h, size_t w, size_t
+                               kh, size_t kw, float eps) {
+    if (planes == 0) {
+        return;
+    }
+    const size_t total = planes * ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
+    gpu::lrp_avg_pool_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(
+        x, r, r_in, planes, h, w, kh, kw, eps);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::batch_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                                     float* channel_std, size_t n, size_t c, size_t spatial, float eps) {
+    if (c == 0) {
+        return;
+    }
+    gpu::batch_norm_forward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        in, gamma, beta, xhat, out, channel_std, n, c, spatial, eps);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::batch_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float*
+                                      channel_std, float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t
+                                      c, size_t spatial) {
+    if (c == 0) {
+        return;
+    }
+    gpu::batch_norm_backward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad, n, c, spatial);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                                     float* group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps)
+                                     {
+    if (n * num_groups == 0) {
+        return;
+    }
+    gpu::group_norm_forward_kernel<<<gpu::grid_size_for(n * num_groups), gpu::kBlockSize, 0, stream_>>>(
+        in, gamma, beta, xhat, out, group_std, n, c, spatial, num_groups, eps);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::group_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float*
+                                      group_std, float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t
+                                      c, size_t spatial, size_t num_groups) {
+    if (n * num_groups == 0) {
+        return;
+    }
+    gpu::group_norm_param_grads_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        grad_out, xhat, gamma_grad, beta_grad, n, c, spatial);
+    gpu::group_norm_backward_kernel<<<gpu::grid_size_for(n * num_groups), gpu::kBlockSize, 0, stream_>>>(
+        grad_out, gamma, xhat, group_std, grad_in, n, c, spatial, num_groups);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
 }  // namespace pulsatrix

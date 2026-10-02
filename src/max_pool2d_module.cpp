@@ -17,9 +17,6 @@ MaxPool2DModule::MaxPool2DModule(int64_t kernel_h, int64_t kernel_w, DeviceBacke
 }
 
 Tensor MaxPool2DModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly -- not yet backend-generic. See
-    // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision.
-    PULSATRIX_REQUIRE_HOST(input);
 
     // External boundary -- input can originate from Phase 5's Python bindings with no
     // upstream validation.
@@ -41,43 +38,12 @@ Tensor MaxPool2DModule::forward_impl(const Tensor& input) {
     last_input_shape_ = input.shape();
     last_out_h_ = out_h;
     last_out_w_ = out_w;
-    argmax_flat_index_.assign(static_cast<size_t>(N * C * out_plane), 0);
-
-    Tensor output(Shape({N, C, out_h, out_w}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(output);
-
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t c = 0; c < C; ++c) {
-            const float* plane = input.data() + (n * C + c) * in_plane;
-            for (int64_t oh = 0; oh < out_h; ++oh) {
-                for (int64_t ow = 0; ow < out_w; ++ow) {
-                    float best = -std::numeric_limits<float>::infinity();
-                    int64_t best_flat = 0;
-                    const int64_t ih0 = oh * kernel_h_;
-                    const int64_t iw0 = ow * kernel_w_;
-                    for (int64_t i = 0; i < kernel_h_; ++i) {
-                        for (int64_t j = 0; j < kernel_w_; ++j) {
-                            int64_t ih = ih0 + i;
-                            int64_t iw = iw0 + j;
-                            int64_t flat = ih * W + iw;
-                            float v = plane[flat];
-                            if (v > best) {
-                                best = v;
-                                best_flat = flat;
-                            }
-                        }
-                    }
-                    int64_t out_idx = (n * C + c) * out_plane + oh * out_w + ow;
-                    output.data()[out_idx] = best;
-                    argmax_flat_index_[static_cast<size_t>(out_idx)] = best_flat;
-                }
-            }
-        }
-    }
-
+    // Device-generic (GPU-native-kernels Mission 4): one thread per pooled element.
+    const auto planes = static_cast<size_t>(N * C);
+    argmax_flat_index_ = Tensor(Shape({N, C, out_h, out_w}), backend_, input.device());
+    Tensor output(Shape({N, C, out_h, out_w}), backend_, input.device());
+    backend_->max_pool_forward(input.data(), output.data(), argmax_flat_index_.data(), planes, static_cast<size_t>(H),
+                               static_cast<size_t>(W), static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
     has_forwarded_ = true;
     return output;
 }
@@ -94,36 +60,18 @@ Tensor MaxPool2DModule::backward(const Tensor& grad_output) {
             "MaxPool2DModule::backward: grad_output must be rank-4 (N, C, out_h, out_w) matching the cached "
             "forward shape");
     }
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t H = last_input_shape_.dim(2);
     const int64_t W = last_input_shape_.dim(3);
     const int64_t in_plane = H * W;
     const int64_t out_plane = last_out_h_ * last_out_w_;
 
-    Tensor grad_input(last_input_shape_, backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
+    // Everything to the window's argmax, nothing elsewhere (windows never overlap).
+    Tensor grad_input(last_input_shape_, backend_, grad_output.device());
     grad_input.fill(0.0f);
-
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t c = 0; c < C; ++c) {
-            float* in_plane_ptr = grad_input.data() + (n * C + c) * in_plane;
-            const float* out_plane_ptr = grad_output.data() + (n * C + c) * out_plane;
-            for (int64_t q = 0; q < out_plane; ++q) {
-                int64_t out_idx = (n * C + c) * out_plane + q;
-                int64_t flat = argmax_flat_index_[static_cast<size_t>(out_idx)];
-                // Non-overlapping windows (stride == kernel) -> each input position belongs
-                // to exactly one window, so direct assignment is correct (no scatter-sum
-                // needed, unlike Conv2DModule's overlapping-window col2im_into).
-                in_plane_ptr[flat] = out_plane_ptr[q];
-            }
-        }
-    }
-
+    backend_->max_unpool(grad_output.data(), argmax_flat_index_.data(), grad_input.data(), static_cast<size_t>(N * C),
+                         static_cast<size_t>(H), static_cast<size_t>(W), static_cast<size_t>(kernel_h_),
+                         static_cast<size_t>(kernel_w_));
     return grad_input;
 }
 
@@ -139,34 +87,18 @@ Tensor MaxPool2DModule::propagate_relevance(const Tensor& relevance_out, const L
             "MaxPool2DModule::propagate_relevance: relevance_out must be rank-4 (N, C, out_h, out_w) matching the "
             "cached forward shape");
     }
-    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t H = last_input_shape_.dim(2);
     const int64_t W = last_input_shape_.dim(3);
     const int64_t in_plane = H * W;
     const int64_t out_plane = last_out_h_ * last_out_w_;
 
-    Tensor relevance_in(last_input_shape_, backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
+    // Everything to the window's argmax, nothing elsewhere (windows never overlap).
+    Tensor relevance_in(last_input_shape_, backend_, relevance_out.device());
     relevance_in.fill(0.0f);
-
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t c = 0; c < C; ++c) {
-            float* in_plane_ptr = relevance_in.data() + (n * C + c) * in_plane;
-            const float* out_plane_ptr = relevance_out.data() + (n * C + c) * out_plane;
-            for (int64_t q = 0; q < out_plane; ++q) {
-                int64_t out_idx = (n * C + c) * out_plane + q;
-                int64_t flat = argmax_flat_index_[static_cast<size_t>(out_idx)];
-                // Winner-take-all: the argmax position receives all of this window's
-                // relevance; every other position stays 0. Conserves trivially.
-                in_plane_ptr[flat] = out_plane_ptr[q];
-            }
-        }
-    }
-
+    backend_->max_unpool(relevance_out.data(), argmax_flat_index_.data(), relevance_in.data(), static_cast<size_t>(N * C),
+                         static_cast<size_t>(H), static_cast<size_t>(W), static_cast<size_t>(kernel_h_),
+                         static_cast<size_t>(kernel_w_));
     return relevance_in;
 }
 

@@ -16,8 +16,6 @@ AvgPool2DModule::AvgPool2DModule(int64_t kernel_h, int64_t kernel_w, DeviceBacke
 }
 
 Tensor AvgPool2DModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(input);
 
     if (input.rank() != 4) {
         throw std::invalid_argument("AvgPool2DModule::forward: input must be rank-4 (N, C, H, W)");
@@ -39,31 +37,10 @@ Tensor AvgPool2DModule::forward_impl(const Tensor& input) {
     last_out_h_ = out_h;
     last_out_w_ = out_w;
 
-    Tensor output(Shape({N, C, out_h, out_w}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(output);
-
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t c = 0; c < C; ++c) {
-            const float* plane = input.data() + (n * C + c) * in_plane;
-            for (int64_t oh = 0; oh < out_h; ++oh) {
-                for (int64_t ow = 0; ow < out_w; ++ow) {
-                    float sum = 0.0f;
-                    const int64_t ih0 = oh * kernel_h_;
-                    const int64_t iw0 = ow * kernel_w_;
-                    for (int64_t i = 0; i < kernel_h_; ++i) {
-                        for (int64_t j = 0; j < kernel_w_; ++j) {
-                            sum += plane[(ih0 + i) * W + (iw0 + j)];
-                        }
-                    }
-                    output.data()[(n * C + c) * out_plane + oh * out_w + ow] = sum / static_cast<float>(K);
-                }
-            }
-        }
-    }
-
+    // Device-generic (GPU-native-kernels Mission 4): one thread per pooled element.
+    Tensor output(Shape({N, C, out_h, out_w}), backend_, input.device());
+    backend_->avg_pool_forward(input.data(), output.data(), static_cast<size_t>(N * C), static_cast<size_t>(H),
+                               static_cast<size_t>(W), static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
     has_forwarded_ = true;
     return output;
 }
@@ -80,7 +57,6 @@ Tensor AvgPool2DModule::backward(const Tensor& grad_output) {
             "AvgPool2DModule::backward: grad_output must be rank-4 (N, C, out_h, out_w) matching the cached "
             "forward shape");
     }
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t H = last_input_.shape().dim(2);
     const int64_t W = last_input_.shape().dim(3);
@@ -88,34 +64,11 @@ Tensor AvgPool2DModule::backward(const Tensor& grad_output) {
     const int64_t out_plane = last_out_h_ * last_out_w_;
     const int64_t K = kernel_h_ * kernel_w_;
 
-    Tensor grad_input(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
-    grad_input.fill(0.0f);
-
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t c = 0; c < C; ++c) {
-            float* in_plane_ptr = grad_input.data() + (n * C + c) * in_plane;
-            const float* out_plane_ptr = grad_output.data() + (n * C + c) * out_plane;
-            for (int64_t oh = 0; oh < last_out_h_; ++oh) {
-                for (int64_t ow = 0; ow < last_out_w_; ++ow) {
-                    float g = out_plane_ptr[oh * last_out_w_ + ow] / static_cast<float>(K);
-                    const int64_t ih0 = oh * kernel_h_;
-                    const int64_t iw0 = ow * kernel_w_;
-                    // Non-overlapping windows -> direct assignment is correct (no
-                    // scatter-sum needed, unlike Conv2DModule's overlapping-window case).
-                    for (int64_t i = 0; i < kernel_h_; ++i) {
-                        for (int64_t j = 0; j < kernel_w_; ++j) {
-                            in_plane_ptr[(ih0 + i) * W + (iw0 + j)] = g;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+    Tensor grad_input(last_input_.shape(), backend_, grad_output.device());
+    grad_input.fill(0.0f);  // pixels outside every window (trailing rows/columns) get 0
+    backend_->avg_pool_backward(grad_output.data(), grad_input.data(), static_cast<size_t>(N * C),
+                                static_cast<size_t>(H), static_cast<size_t>(W), static_cast<size_t>(kernel_h_),
+                                static_cast<size_t>(kernel_w_));
     return grad_input;
 }
 
@@ -131,7 +84,6 @@ Tensor AvgPool2DModule::propagate_relevance(const Tensor& relevance_out, const L
             "AvgPool2DModule::propagate_relevance: relevance_out must be rank-4 (N, C, out_h, out_w) matching the "
             "cached forward shape");
     }
-    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t H = last_input_.shape().dim(2);
     const int64_t W = last_input_.shape().dim(3);
@@ -140,47 +92,11 @@ Tensor AvgPool2DModule::propagate_relevance(const Tensor& relevance_out, const L
     const int64_t K = kernel_h_ * kernel_w_;
     const float inv_k = 1.0f / static_cast<float>(K);
 
-    Tensor relevance_in(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
+    Tensor relevance_in(last_input_.shape(), backend_, relevance_out.device());
     relevance_in.fill(0.0f);
-
-    for (int64_t n = 0; n < N; ++n) {
-        for (int64_t c = 0; c < C; ++c) {
-            const float* in_plane_ptr = last_input_.data() + (n * C + c) * in_plane;
-            float* relevance_plane_ptr = relevance_in.data() + (n * C + c) * in_plane;
-            const float* out_plane_ptr = relevance_out.data() + (n * C + c) * out_plane;
-            for (int64_t oh = 0; oh < last_out_h_; ++oh) {
-                for (int64_t ow = 0; ow < last_out_w_; ++ow) {
-                    const int64_t ih0 = oh * kernel_h_;
-                    const int64_t iw0 = ow * kernel_w_;
-
-                    // z = sum(x_i * (1/K)) -- this window's pre-activation, same value as
-                    // forward()'s own output for this window.
-                    float z = 0.0f;
-                    for (int64_t i = 0; i < kernel_h_; ++i) {
-                        for (int64_t j = 0; j < kernel_w_; ++j) {
-                            z += in_plane_ptr[(ih0 + i) * W + (iw0 + j)] * inv_k;
-                        }
-                    }
-                    float sign = (z >= 0.0f) ? 1.0f : -1.0f;
-                    float denom = z + config.epsilon * sign;
-                    float r = out_plane_ptr[oh * last_out_w_ + ow];
-
-                    for (int64_t i = 0; i < kernel_h_; ++i) {
-                        for (int64_t j = 0; j < kernel_w_; ++j) {
-                            int64_t idx = (ih0 + i) * W + (iw0 + j);
-                            float a = in_plane_ptr[idx];
-                            relevance_plane_ptr[idx] = (a * inv_k / denom) * r;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+    backend_->lrp_avg_pool(last_input_.data(), relevance_out.data(), relevance_in.data(), static_cast<size_t>(N * C),
+                           static_cast<size_t>(H), static_cast<size_t>(W), static_cast<size_t>(kernel_h_),
+                           static_cast<size_t>(kernel_w_), config.epsilon);
     return relevance_in;
 }
 

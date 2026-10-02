@@ -58,9 +58,7 @@ public:
      *        most recent forward() call's output.
      * @return Gradient w.r.t. this module's input.
      * @throws std::logic_error if forward() has never been called.
-     * @note Not yet backend-generic -- raw host loop, PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor, matching
-     *       every existing Module subclass's Phase 1.5 scope decision.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -112,7 +110,7 @@ private:
     Tensor beta_grad_;
     Tensor last_input_;      // (N, num_channels, H, W)
     Tensor last_xhat_;       // (N, num_channels, H, W)
-    std::vector<float> last_group_std_;  // N*num_groups entries, indexed n*num_groups+g
+    Tensor last_group_std_;  // (N, num_groups), on the module's device
     int64_t last_h_ = 0;
     int64_t last_w_ = 0;
     bool has_forwarded_ = false;

@@ -224,17 +224,5 @@ TEST_F(BatchNormModuleTest, ParametersExposesGammaAndBetaByPointer) {
 
 using BatchNormModuleDeathTest = BatchNormModuleTest;
 
-TEST_F(BatchNormModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    BatchNormModule norm(2, &backend);
-    Tensor x(Shape({2, 2, 1, 1}), &backend, {1.0f, 0.0f, 3.0f, 4.0f});
-    (void)norm.forward(x);
-
-    Tensor grad_output(Shape({2, 2, 1, 1}), &backend, {1.0f, 1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)norm.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

@@ -16,6 +16,7 @@
 #include <cstddef>
 #include <stdexcept>
 
+#include "cnn_math.hpp"
 #include "lrp_math.hpp"
 #include "pointwise_math.hpp"
 #include "row_math.hpp"
@@ -658,6 +659,181 @@ __global__ void aggregator_lrp_kernel(const float* x, const float* mean_pow, con
     if (j < cols) {
         lrp::aggregator_lrp_column(x, mean_pow, r_out, r_in, static_cast<int64_t>(n), static_cast<int64_t>(cols),
                                    static_cast<int64_t>(j), p, eps);
+    }
+}
+
+// ---- GPU-native-kernels Mission 4 ----------------------------------------------------------
+
+__global__ void im2col_kernel(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh,
+                              size_t kw) {
+    const size_t out_w = w - kw + 1;
+    const size_t P = c * kh * kw, Q = (h - kh + 1) * out_w;
+    size_t idx = global_index();
+    if (idx < n * P * Q) {
+        const size_t e = idx / (P * Q);
+        const size_t p = (idx / Q) % P;
+        const size_t q = idx % Q;
+        col[idx] = cnn::im2col_element(in + e * c * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w),
+                                       static_cast<int64_t>(kh), static_cast<int64_t>(kw), static_cast<int64_t>(out_w),
+                                       static_cast<int64_t>(p), static_cast<int64_t>(q));
+    }
+}
+
+__global__ void col2im_add_kernel(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh,
+                                  size_t kw) {
+    const size_t P = c * kh * kw, Q = (h - kh + 1) * (w - kw + 1);
+    size_t idx = global_index();  // flat (n, c, h, w) pixel
+    if (idx < n * c * h * w) {
+        const size_t iw = idx % w;
+        const size_t ih = (idx / w) % h;
+        const size_t ch = (idx / (w * h)) % c;
+        const size_t e = idx / (w * h * c);
+        out[idx] = cnn::col2im_pixel(col + e * P * Q, out[idx], static_cast<int64_t>(h), static_cast<int64_t>(w),
+                                     static_cast<int64_t>(kh), static_cast<int64_t>(kw), static_cast<int64_t>(ch),
+                                     static_cast<int64_t>(ih), static_cast<int64_t>(iw));
+    }
+}
+
+__global__ void add_channel_vector_kernel(const float* in, const float* vec, float* out, size_t n, size_t c,
+                                          size_t inner) {
+    size_t idx = global_index();
+    if (idx < n * c * inner) {
+        out[idx] = in[idx] + vec[(idx / inner) % c];
+    }
+}
+
+__global__ void lrp_conv_kernel(const float* col, const float* kernel, const float* pre_bias, const float* r,
+                                float* r_col, size_t n, size_t out_channels, size_t p, size_t q, float eps) {
+    size_t idx = global_index();
+    if (idx < n * p * q) {
+        const size_t e = idx / (p * q);
+        const size_t pi = (idx / q) % p;
+        const size_t qi = idx % q;
+        r_col[idx] = cnn::conv_lrp_col(col + e * p * q, kernel, pre_bias + e * out_channels * q,
+                                       r + e * out_channels * q,
+                                       static_cast<int64_t>(pi), static_cast<int64_t>(qi), static_cast<int64_t>(p),
+                                       static_cast<int64_t>(q), static_cast<int64_t>(out_channels), eps);
+    }
+}
+
+__global__ void max_pool_forward_kernel(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w,
+                                        size_t kh, size_t kw) {
+    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+    size_t o = global_index();
+    if (o < planes * out_h * out_w) {
+        const size_t pl = o / (out_h * out_w);
+        const size_t oh = (o / out_w) % out_h;
+        const size_t ow = o % out_w;
+        cnn::max_pool_window(in + pl * h * w, static_cast<int64_t>(w), static_cast<int64_t>(kh),
+                             static_cast<int64_t>(kw), static_cast<int64_t>(oh), static_cast<int64_t>(ow), out + o,
+                             argmax + o);
+    }
+}
+
+// Windows never overlap (stride == kernel), so each destination is written by at most one thread.
+__global__ void max_unpool_kernel(const float* src, const float* argmax, float* dst, size_t planes, size_t h,
+                                  size_t w, size_t out_plane) {
+    size_t o = global_index();
+    if (o < planes * out_plane) {
+        const size_t pl = o / out_plane;
+        dst[pl * h * w + static_cast<size_t>(argmax[o])] = src[o];
+    }
+}
+
+__global__ void avg_pool_forward_kernel(const float* in, float* out, size_t planes, size_t h, size_t w, size_t kh,
+                                        size_t kw) {
+    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+    size_t o = global_index();
+    if (o < planes * out_h * out_w) {
+        const size_t pl = o / (out_h * out_w);
+        out[o] = cnn::avg_pool_window(in + pl * h * w, static_cast<int64_t>(w), static_cast<int64_t>(kh),
+                                      static_cast<int64_t>(kw), static_cast<int64_t>((o / out_w) % out_h),
+                                      static_cast<int64_t>(o % out_w));
+    }
+}
+
+__global__ void avg_pool_backward_kernel(const float* grad_out, float* grad_in, size_t planes, size_t h, size_t w,
+                                         size_t kh, size_t kw) {
+    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+    size_t o = global_index();
+    if (o < planes * out_h * out_w) {
+        const size_t pl = o / (out_h * out_w);
+        const size_t oh = (o / out_w) % out_h;
+        const size_t ow = o % out_w;
+        const float g = grad_out[o] / static_cast<float>(kh * kw);
+        for (size_t i = 0; i < kh; ++i) {
+            for (size_t j = 0; j < kw; ++j) {
+                grad_in[pl * h * w + (oh * kh + i) * w + (ow * kw + j)] = g;
+            }
+        }
+    }
+}
+
+__global__ void lrp_avg_pool_kernel(const float* x, const float* r, float* r_in, size_t planes, size_t h, size_t w,
+                                    size_t kh, size_t kw, float eps) {
+    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+    size_t o = global_index();
+    if (o < planes * out_h * out_w) {
+        const size_t pl = o / (out_h * out_w);
+        cnn::avg_pool_lrp_window(x + pl * h * w, r_in + pl * h * w, static_cast<int64_t>(w), static_cast<int64_t>(kh),
+                                 static_cast<int64_t>(kw), static_cast<int64_t>((o / out_w) % out_h),
+                                 static_cast<int64_t>(o % out_w), r[o], eps);
+    }
+}
+
+__global__ void batch_norm_forward_kernel(const float* in, const float* gamma, const float* beta, float* xhat,
+                                          float* out, float* channel_std, size_t n, size_t c, size_t spatial,
+                                          float eps) {
+    size_t ch = global_index();
+    if (ch < c) {
+        cnn::batch_norm_forward_channel(in, gamma, beta, xhat, out, channel_std, static_cast<int64_t>(n),
+                                        static_cast<int64_t>(c), static_cast<int64_t>(spatial),
+                                        static_cast<int64_t>(ch), eps);
+    }
+}
+
+__global__ void batch_norm_backward_kernel(const float* grad_out, const float* gamma, const float* xhat,
+                                           const float* channel_std, float* grad_in, float* gamma_grad,
+                                           float* beta_grad, size_t n, size_t c, size_t spatial) {
+    size_t ch = global_index();
+    if (ch < c) {
+        cnn::batch_norm_backward_channel(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad,
+                                         static_cast<int64_t>(n), static_cast<int64_t>(c),
+                                         static_cast<int64_t>(spatial), static_cast<int64_t>(ch));
+    }
+}
+
+__global__ void group_norm_forward_kernel(const float* in, const float* gamma, const float* beta, float* xhat,
+                                          float* out, float* group_std, size_t n, size_t c, size_t spatial,
+                                          size_t num_groups, float eps) {
+    size_t idx = global_index();  // (example, group)
+    if (idx < n * num_groups) {
+        cnn::group_norm_forward_group(in, gamma, beta, xhat, out, group_std, static_cast<int64_t>(c),
+                                      static_cast<int64_t>(spatial), static_cast<int64_t>(num_groups),
+                                      static_cast<int64_t>(c / num_groups), static_cast<int64_t>(idx / num_groups),
+                                      static_cast<int64_t>(idx % num_groups), eps);
+    }
+}
+
+__global__ void group_norm_backward_kernel(const float* grad_out, const float* gamma, const float* xhat,
+                                           const float* group_std, float* grad_in, size_t n, size_t c,
+                                           size_t spatial, size_t num_groups) {
+    size_t idx = global_index();
+    if (idx < n * num_groups) {
+        cnn::group_norm_backward_group(grad_out, gamma, xhat, group_std, grad_in, static_cast<int64_t>(c),
+                                       static_cast<int64_t>(spatial), static_cast<int64_t>(num_groups),
+                                       static_cast<int64_t>(c / num_groups), static_cast<int64_t>(idx / num_groups),
+                                       static_cast<int64_t>(idx % num_groups));
+    }
+}
+
+__global__ void group_norm_param_grads_kernel(const float* grad_out, const float* xhat, float* gamma_grad,
+                                              float* beta_grad, size_t n, size_t c, size_t spatial) {
+    size_t ch = global_index();
+    if (ch < c) {
+        cnn::group_norm_param_grads_channel(grad_out, xhat, gamma_grad, beta_grad, static_cast<int64_t>(n),
+                                            static_cast<int64_t>(c), static_cast<int64_t>(spatial),
+                                            static_cast<int64_t>(ch));
     }
 }
 
