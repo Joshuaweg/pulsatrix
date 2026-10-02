@@ -40,6 +40,59 @@ ExAI-first C++ deep learning library — explainability as a first-class propert
 1700+ tests, green in both Debug and Release, on Windows (MSVC) and Linux (GCC) — see the
 [CI workflow](.github/workflows/ci.yml).
 
+## System monitoring
+
+`SystemMonitor` ([`include/pulsatrix/system_monitor.hpp`](include/pulsatrix/system_monitor.hpp)) samples
+CPU/GPU utilization, memory and temperatures on a background thread and streams every sample to a
+log as it is taken (flushed per record, so `tail -f` follows it live):
+
+```cpp
+#include "pulsatrix/system_monitor.hpp"
+
+pulsatrix::SystemMonitor::Options opts;
+opts.interval = std::chrono::milliseconds(1000);
+opts.log_path = "run.jsonl";              // or LogFormat::Csv via opts.format
+pulsatrix::SystemMonitor monitor(opts);
+monitor.start();
+monitor.mark("epoch 1");                  // tags subsequent samples; writes a "mark" record
+// ... train ...
+auto last = monitor.latest();             // std::optional<SystemSample>
+auto all = monitor.history();             // bounded ring buffer (Options::history_capacity)
+monitor.stop();                           // returns within milliseconds
+```
+
+Also `sample_now()` (one synchronous reading, no thread needed), `on_sample(callback)` (runs on the
+monitor thread; exceptions are caught and reported once) and `capabilities()` (per-metric
+availability with the source, or the reason it is missing). Python: `pulsatrix_py.SystemMonitor(
+interval_ms=1000, log_path="", format="jsonl"|"csv")`, usable as `with SystemMonitor(...) as m:`,
+samples as dicts. Demo: [`examples/system_monitor_demo.cpp`](examples/system_monitor_demo.cpp).
+
+JSON Lines log (one object per line; ISO-8601 UTC timestamps with ms):
+
+```json
+{"event":"mark","timestamp":"2026-10-02T18:52:48.529Z","elapsed_seconds":0.000,"label":"idle"}
+{"event":"sample","timestamp":"2026-10-02T18:52:49.530Z","elapsed_seconds":1.001,"label":"idle","cpu_utilization_percent":4.698,"process_cpu_percent":0,"memory_used_bytes":11615903744,"memory_total_bytes":32723628032,"process_rss_bytes":199770112,"cpu_temperature_c":86.625,"gpus":[{"index":0,"name":"AMD GPU 0x1586 (card1)","vendor":"AMD","utilization_percent":0,"memory_used_bytes":52692738048,"memory_total_bytes":103079215104,"memory_gtt_used_bytes":94412800,"temperature_c":42,"power_watts":34.032}]}
+```
+
+**No fake zeros.** A metric the platform cannot read is `std::nullopt` in C++, `null` in JSON, an
+empty CSV cell and `None` in Python -- never `0` or an estimate. `capabilities()` says why (e.g.
+`"Windows: CPU temperature not available without WMI/admin"`). CPU rates are computed from counter
+deltas: `start()` takes a baseline and the first background sample comes one interval later.
+`process_cpu_percent` is relative to one logical CPU, so it can exceed 100 on a multi-core machine.
+
+| Metric | Linux | Windows | Other |
+|---|---|---|---|
+| System CPU % | `/proc/stat` | `GetSystemTimes` | -- |
+| Process CPU %, RSS | `/proc/self/stat`, `/proc/self/status` | `GetProcessTimes`, `GetProcessMemoryInfo` | -- |
+| Memory used/total | `/proc/meminfo` (MemTotal - MemAvailable) | `GlobalMemoryStatusEx` | -- |
+| CPU temperature | hwmon `k10temp`/`zenpower`/`coretemp`/`cpu_thermal` (Tctl/Package preferred), `acpitz` last | -- (needs WMI/admin) | -- |
+| AMD GPU util/VRAM/GTT/temp/power | amdgpu sysfs (`/sys/class/drm/card<N>/device`) | -- | -- |
+| NVIDIA GPU util/memory/temp/power | NVML, `dlopen("libnvidia-ml.so.1")` | NVML, `LoadLibrary("nvml.dll")` | -- |
+
+Everything is detected at runtime: no NVIDIA/AMD SDK is needed to build, and a missing driver just
+means no GPU entries plus a capability reason. On an AMD APU the amdgpu power reading covers the whole
+SoC package, not just the GPU.
+
 ## Status / limitations
 
 - CI covers Windows (MSVC, Visual Studio generator auto-detected) and Linux (GCC, Unix

@@ -9,6 +9,9 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include <chrono>
+#include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -31,6 +34,7 @@
 #include "pulsatrix/relu_module.hpp"
 #include "pulsatrix/saliency.hpp"
 #include "pulsatrix/shape.hpp"
+#include "pulsatrix/system_monitor.hpp"
 #include "pulsatrix/tensor.hpp"
 
 #ifdef PULSATRIX_PY_WITH_CUDA
@@ -172,6 +176,46 @@ public:
         PYBIND11_OVERRIDE_PURE(void, pulsatrix::MetricsSink, log_histogram, tag, values, step);
     }
 };
+
+// SystemMonitor samples cross into Python as plain dicts; a missing reading (std::nullopt in
+// C++) is None, never 0 -- the same no-fake-values rule the C++ API and the log follow.
+py::object optional_to_py(const std::optional<double>& value) {
+    return value ? py::object(py::float_(*value)) : py::object(py::none());
+}
+
+py::dict gpu_to_dict(const pulsatrix::GpuSample& gpu) {
+    py::dict d;
+    d["index"] = gpu.index;
+    d["name"] = gpu.name;
+    d["vendor"] = gpu.vendor;
+    d["utilization_percent"] = optional_to_py(gpu.utilization_percent);
+    d["memory_used_bytes"] = optional_to_py(gpu.memory_used_bytes);
+    d["memory_total_bytes"] = optional_to_py(gpu.memory_total_bytes);
+    d["memory_gtt_used_bytes"] = optional_to_py(gpu.memory_gtt_used_bytes);
+    d["temperature_c"] = optional_to_py(gpu.temperature_c);
+    d["power_watts"] = optional_to_py(gpu.power_watts);
+    return d;
+}
+
+py::dict sample_to_dict(const pulsatrix::SystemSample& s) {
+    py::dict d;
+    d["timestamp"] = pulsatrix::format_iso8601_utc(s.timestamp);
+    d["timestamp_unix"] = std::chrono::duration<double>(s.timestamp.time_since_epoch()).count();
+    d["elapsed_seconds"] = s.elapsed_seconds;
+    d["label"] = s.label;
+    d["cpu_utilization_percent"] = optional_to_py(s.cpu_utilization_percent);
+    d["process_cpu_percent"] = optional_to_py(s.process_cpu_percent);
+    d["memory_used_bytes"] = optional_to_py(s.memory_used_bytes);
+    d["memory_total_bytes"] = optional_to_py(s.memory_total_bytes);
+    d["process_rss_bytes"] = optional_to_py(s.process_rss_bytes);
+    d["cpu_temperature_c"] = optional_to_py(s.cpu_temperature_c);
+    py::list gpus;
+    for (const pulsatrix::GpuSample& gpu : s.gpus) {
+        gpus.append(gpu_to_dict(gpu));
+    }
+    d["gpus"] = gpus;
+    return d;
+}
 
 }  // namespace
 
@@ -435,4 +479,78 @@ PYBIND11_MODULE(pulsatrix_py, m) {
         sink.log_scalar("loss", 0.5, 3);
         sink.log_histogram("weights", values, 3);
     });
+
+    // SystemMonitor. on_sample is deliberately NOT bound: the callback runs on the monitor
+    // thread, and a Python callable there would need the GIL while a Python-side stop() or
+    // garbage collection of the monitor holds it and joins that thread -- a deadlock
+    // pybind11 cannot rule out. Python callers poll latest()/history() or tail the log.
+    py::class_<pulsatrix::SystemMonitor>(m, "SystemMonitor")
+        .def(py::init([](int interval_ms, const std::string& log_path, const std::string& format, bool append,
+                         std::size_t history_capacity) {
+                 pulsatrix::SystemMonitor::Options options;
+                 options.interval = std::chrono::milliseconds(interval_ms);
+                 options.log_path = log_path;
+                 if (format == "jsonl") {
+                     options.format = pulsatrix::LogFormat::JsonLines;
+                 } else if (format == "csv") {
+                     options.format = pulsatrix::LogFormat::Csv;
+                 } else {
+                     throw std::invalid_argument("pulsatrix_py.SystemMonitor: format must be 'jsonl' or 'csv', got '" +
+                                                 format + "'");
+                 }
+                 options.append = append;
+                 options.history_capacity = history_capacity;
+                 return std::make_unique<pulsatrix::SystemMonitor>(options);
+             }),
+             py::arg("interval_ms") = 1000, py::arg("log_path") = "", py::arg("format") = "jsonl",
+             py::arg("append") = false, py::arg("history_capacity") = 3600)
+        .def("start", &pulsatrix::SystemMonitor::start)
+        .def("stop", &pulsatrix::SystemMonitor::stop, py::call_guard<py::gil_scoped_release>())
+        .def_property_readonly("running", &pulsatrix::SystemMonitor::running)
+        .def("sample_now",
+             [](pulsatrix::SystemMonitor& self) {
+                 pulsatrix::SystemSample s;
+                 {
+                     py::gil_scoped_release release;
+                     s = self.sample_now();
+                 }
+                 return sample_to_dict(s);
+             })
+        .def("latest",
+             [](const pulsatrix::SystemMonitor& self) -> py::object {
+                 const auto s = self.latest();
+                 return s ? py::object(sample_to_dict(*s)) : py::object(py::none());
+             })
+        .def("history",
+             [](const pulsatrix::SystemMonitor& self) {
+                 py::list out;
+                 for (const pulsatrix::SystemSample& s : self.history()) {
+                     out.append(sample_to_dict(s));
+                 }
+                 return out;
+             })
+        .def("mark", &pulsatrix::SystemMonitor::mark, py::arg("label"))
+        .def("capabilities",
+             [](const pulsatrix::SystemMonitor& self) {
+                 py::list out;
+                 for (const pulsatrix::MetricCapability& cap : self.capabilities()) {
+                     py::dict d;
+                     d["metric"] = cap.metric;
+                     d["available"] = cap.available;
+                     d["detail"] = cap.detail;
+                     out.append(d);
+                 }
+                 return out;
+             })
+        .def("__enter__",
+             [](pulsatrix::SystemMonitor& self) -> pulsatrix::SystemMonitor& {
+                 self.start();
+                 return self;
+             },
+             py::return_value_policy::reference)
+        .def("__exit__",
+             [](pulsatrix::SystemMonitor& self, const py::object&, const py::object&, const py::object&) {
+                 py::gil_scoped_release release;
+                 self.stop();
+             });
 }
