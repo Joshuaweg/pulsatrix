@@ -171,11 +171,14 @@ PULSATRIX_HOST_DEVICE inline void conjunction_lrp(int norm, float a, float b, fl
             return;
         }
         case 1: {
-            // Active region: LinearModule-style bias-excluded epsilon rule on z = a + b - 1.
+            // Active region: LinearModule-style bias-excluded epsilon rule. y = (a + b) - 1, so
+            // the pre-bias sum the shares are normalised by is a + b -- NOT y. Dividing by the
+            // biased y (as this rule originally did) hands out (a + b) / (a + b - 1) times the
+            // relevance: 2.25x at a = b = 0.9, unbounded as a + b -> 1+.
             // Inactive region: both local derivatives are 0 (matches backward), so both get 0.
             const float z = a + b - 1.0f;
             if (z > 0.0f) {
-                const float denom = z + eps;  // z > 0 here, sign(z) == +1
+                const float denom = lrp::stabilize(a + b, eps);
                 *ra = (a / denom) * r;
                 *rb = (b / denom) * r;
             } else {
