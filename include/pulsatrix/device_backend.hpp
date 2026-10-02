@@ -64,6 +64,28 @@ enum class LogicOp {
 };
 
 /**
+ * @brief Fused per-element recurrent-cell passes, for DeviceBackend::recurrent_cell.
+ *        Slots (in[] / out[]), all (rows x hidden) per timestep unless noted:
+ * - RnnBackward:  in g, dh_next, h                            -> out dz
+ * - LstmForward:  in i, f, g, o (activated gates), c_prev      -> out c, tanh(c), h
+ * - LstmBackward: in g, dh_next, dc_next, i, f, g, o, tanh_c, c_prev
+ *                 -> out dz_i, dz_f, dz_g, dz_o, dc_prev
+ * - LstmLrp:      in r, R_h_next, R_c_next, i, f, g, c_prev, c  -> out R_g, R_c_prev
+ * - GruBackward:  in g, dh_next, z, r, n, hn, h_prev
+ *                 -> out dh_prev_direct, dz_pre, dn_pre, dr_pre, dhn_prev
+ * - GruLrp:       in r, R_h_next, z, r_gate, n, hn, h_prev, h, n_pre
+ *                 -> out R_hprev_direct, R_n, R_term_b
+ */
+enum class RecurrentCellOp { RnnBackward, LstmForward, LstmBackward, LstmLrp, GruBackward, GruLrp };
+
+/** @brief Operand pointers for DeviceBackend::recurrent_cell (passed to kernels by value). */
+struct RecurrentCellArgs {
+    const float* in[10] = {};
+    float* out[6] = {};
+    float eps = 0.0f;  ///< LRP stabilizer (LstmLrp, GruLrp)
+};
+
+/**
  * @brief Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and
  *        HIPBackend (Phase 1.6) all implement this contract; Tensor and ComputationGraph
  *        depend only on this interface, never on a concrete backend's types.
@@ -465,6 +487,33 @@ public:
     virtual void group_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float*
                                      group_std, float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t c,
                                      size_t spatial, size_t num_groups) = 0;
+
+    // ---- GPU-native-kernels Mission 5: recurrent networks ------------------------------------
+
+    /**
+     * @brief Strided 2-D copy: rows of cols floats from src (row stride src_stride) to dst (row
+     *        stride dst_stride) -- e.g. one timestep of an (N, L, D) sequence.
+     */
+    virtual void copy_2d(float* dst, size_t dst_stride, const float* src, size_t src_stride, size_t rows,
+                         size_t cols) = 0;
+
+    /**
+     * @brief out[j] += in[i][j] for i = 0..rows-1 in order, accumulating straight into out.
+     * @note Unlike column_sums(beta = 1), which adds a finished column sum to out, this adds
+     *       row by row into the running value -- the association the recurrent modules' bias
+     *       gradients always used.
+     */
+    virtual void accumulate_rows(const float* in, float* out, size_t rows, size_t cols) = 0;
+
+    /** @brief One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots). */
+    virtual void recurrent_cell(RecurrentCellOp op, const RecurrentCellArgs& args, size_t n) = 0;
+
+    /**
+     * @brief GRU's R_hprev for (rows, hidden): the recurrent epsilon-rule sum through W_hn, with
+     *        each element's direct term inserted where the original loop added it.
+     */
+    virtual void gru_lrp_hprev(const float* h_prev, const float* w_hn, const float* hn, const float* r_term_b,
+                               const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) = 0;
 };
 
 }  // namespace pulsatrix

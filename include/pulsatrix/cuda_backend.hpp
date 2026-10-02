@@ -125,6 +125,12 @@ public:
     void group_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float* group_std,
                              float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t c, size_t spatial,
                              size_t num_groups) override;
+    void copy_2d(float* dst, size_t dst_stride, const float* src, size_t src_stride, size_t rows,
+                 size_t cols) override;
+    void accumulate_rows(const float* in, float* out, size_t rows, size_t cols) override;
+    void recurrent_cell(RecurrentCellOp op, const RecurrentCellArgs& args, size_t n) override;
+    void gru_lrp_hprev(const float* h_prev, const float* w_hn, const float* hn, const float* r_term_b,
+                       const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) override;
 
 private:
     cudaStream_t stream_;

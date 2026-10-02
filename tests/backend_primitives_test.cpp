@@ -274,5 +274,25 @@ TEST_F(BackendPrimitivesTest, RopeRotateInverseUndoesForward) {
     }
 }
 
+// ---- Mission 5 -----------------------------------------------------------------------------
+
+TEST_F(BackendPrimitivesTest, Copy2dExtractsAndWritesOneTimestep) {
+    // (N=2, L=3, D=2): extract t=1, then write it to t=2 of another sequence.
+    std::vector<float> seq = {0, 1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15};
+    std::vector<float> step(4);
+    cpu.copy_2d(step.data(), 2, seq.data() + 1 * 2, 3 * 2, 2, 2);
+    EXPECT_EQ(step, (std::vector<float>{2, 3, 12, 13}));
+    std::vector<float> dst(12, 0.0f);
+    cpu.copy_2d(dst.data() + 2 * 2, 3 * 2, step.data(), 2, 2, 2);
+    EXPECT_EQ(dst, (std::vector<float>{0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 12, 13}));
+}
+
+TEST_F(BackendPrimitivesTest, AccumulateRowsAddsIntoTheRunningValueRowByRow) {
+    std::vector<float> in = {1, 2, 3, 4};  // 2 rows x 2
+    std::vector<float> out = {10, 20};
+    cpu.accumulate_rows(in.data(), out.data(), 2, 2);
+    EXPECT_EQ(out, (std::vector<float>{14, 26}));
+}
+
 }  // namespace
 }  // namespace pulsatrix
