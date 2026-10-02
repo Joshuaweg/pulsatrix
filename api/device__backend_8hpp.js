@@ -1,5 +1,6 @@
 var device__backend_8hpp =
 [
+    [ "pulsatrix::RecurrentCellArgs", "structpulsatrix_1_1RecurrentCellArgs.html", "structpulsatrix_1_1RecurrentCellArgs" ],
     [ "pulsatrix::DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", "classpulsatrix_1_1DeviceBackend" ],
     [ "CopyDirection", "device__backend_8hpp.html#a5d9adebabff0df0875f22a763d77ad6b", [
       [ "HostToDevice", "device__backend_8hpp.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92", null ],
@@ -27,5 +28,13 @@ var device__backend_8hpp =
       [ "DisjunctionForward", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c", null ],
       [ "DisjunctionBackward", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454", null ],
       [ "DisjunctionLrp", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f", null ]
+    ] ],
+    [ "RecurrentCellOp", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400", [
+      [ "RnnBackward", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64", null ],
+      [ "LstmForward", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959", null ],
+      [ "LstmBackward", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887", null ],
+      [ "LstmLrp", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731", null ],
+      [ "GruBackward", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185", null ],
+      [ "GruLrp", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44", null ]
     ] ]
 ];

@@ -489,6 +489,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PPOClippedLoss.html">PPOClippedLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean_b( -min( r_b * A_b, clamp(r_b, 1-eps, 1+eps) * A_b ) ), where <code>r_b = pi_new(a_b|s_b) / pi_old(a_b|s_b)</code> &ndash; the clipped surrogate objective of Schulman et al. 2017 (arXiv:1707.06347), negated so that minimizing it maximizes the objective the paper states.  <a href="classpulsatrix_1_1PPOClippedLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">RecurrentCellArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd" title="One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).">DeviceBackend::recurrent_cell</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RecurrentCellArgs.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReluModule.html">ReluModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = max(x, 0), elementwise. No parameters, no parameter gradients.  <a href="classpulsatrix_1_1ReluModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -740,6 +743,18 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a23ce7985a73e7df95c9467eac40d5d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elementwise passes of the fuzzy-logic modules, for DeviceBackend::logic_pointwise.  <a href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">More...</a><br /></td></tr>
 <tr class="separator:a23ce7985a73e7df95c9467eac40d5d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac55b0127cfe9bf4ce7793fef9db97400" id="r_ac55b0127cfe9bf4ce7793fef9db97400"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">RecurrentCellOp</a> { <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64">RnnBackward</a>
+, <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959">LstmForward</a>
+, <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887">LstmBackward</a>
+, <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731">LstmLrp</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185">GruBackward</a>
+, <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44">GruLrp</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:ac55b0127cfe9bf4ce7793fef9db97400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused per-element recurrent-cell passes, for DeviceBackend::recurrent_cell. Slots (in[] / out[]), all (rows x hidden) per timestep unless noted:  <a href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">More...</a><br /></td></tr>
+<tr class="separator:ac55b0127cfe9bf4ce7793fef9db97400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab997921e8dd2fcb16daefdcc05ce6550" id="r_ab997921e8dd2fcb16daefdcc05ce6550"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">MutationObjective</a> { <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b">Minimax</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763">Heuristic</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46">LeastSquares</a>
@@ -1517,6 +1532,46 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045" name="abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045"></a>LogUniform&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044" name="abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044"></a>Integer&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c" name="abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c"></a>Categorical&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ac55b0127cfe9bf4ce7793fef9db97400" name="ac55b0127cfe9bf4ce7793fef9db97400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac55b0127cfe9bf4ce7793fef9db97400">&#9670;&#160;</a></span>RecurrentCellOp</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">pulsatrix::RecurrentCellOp</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fused per-element recurrent-cell passes, for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd" title="One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).">DeviceBackend::recurrent_cell</a>. Slots (in[] / out[]), all (rows x hidden) per timestep unless noted: </p>
+<ul>
+<li>RnnBackward: in g, dh_next, h -&gt; out dz</li>
+<li>LstmForward: in i, f, g, o (activated gates), c_prev -&gt; out c, tanh(c), h</li>
+<li>LstmBackward: in g, dh_next, dc_next, i, f, g, o, tanh_c, c_prev -&gt; out dz_i, dz_f, dz_g, dz_o, dc_prev</li>
+<li>LstmLrp: in r, R_h_next, R_c_next, i, f, g, c_prev, c -&gt; out R_g, R_c_prev</li>
+<li>GruBackward: in g, dh_next, z, r, n, hn, h_prev -&gt; out dh_prev_direct, dz_pre, dn_pre, dr_pre, dhn_prev</li>
+<li>GruLrp: in r, R_h_next, z, r_gate, n, hn, h_prev, h, n_pre -&gt; out R_hprev_direct, R_n, R_term_b </li>
+</ul>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64" name="ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64"></a>RnnBackward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959" name="ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959"></a>LstmForward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887" name="ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887"></a>LstmBackward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731" name="ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731"></a>LstmLrp&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185" name="ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185"></a>GruBackward&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44" name="ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44"></a>GruLrp&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>

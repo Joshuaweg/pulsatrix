@@ -291,6 +291,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af5d4d8089df6e52c40a415b4a2eaeb88" id="r_af5d4d8089df6e52c40a415b4a2eaeb88"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#af5d4d8089df6e52c40a415b4a2eaeb88">group_norm_backward</a> (const float *grad_out, const float *gamma, const float *xhat, const float *group_std, float *grad_in, float *gamma_grad, float *beta_grad, size_t n, size_t c, size_t spatial, size_t num_groups)=0</td></tr>
 <tr class="memdesc:af5d4d8089df6e52c40a415b4a2eaeb88"><td class="mdescLeft">&#160;</td><td class="mdescRight">GroupNorm input gradient plus this call's gamma/beta gradients (overwritten, per channel).  <br /></td></tr>
 <tr class="separator:af5d4d8089df6e52c40a415b4a2eaeb88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0610860a8a7378e6a797e35b4b745f54" id="r_a0610860a8a7378e6a797e35b4b745f54"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a0610860a8a7378e6a797e35b4b745f54">copy_2d</a> (float *dst, size_t dst_stride, const float *src, size_t src_stride, size_t rows, size_t cols)=0</td></tr>
+<tr class="memdesc:a0610860a8a7378e6a797e35b4b745f54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strided 2-D copy: rows of cols floats from src (row stride src_stride) to dst (row stride dst_stride) &ndash; e.g. one timestep of an (N, L, D) sequence.  <br /></td></tr>
+<tr class="separator:a0610860a8a7378e6a797e35b4b745f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fadffb2f2ecdaff1cc4c109d2d7cf87" id="r_a5fadffb2f2ecdaff1cc4c109d2d7cf87"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a5fadffb2f2ecdaff1cc4c109d2d7cf87">accumulate_rows</a> (const float *in, float *out, size_t rows, size_t cols)=0</td></tr>
+<tr class="memdesc:a5fadffb2f2ecdaff1cc4c109d2d7cf87"><td class="mdescLeft">&#160;</td><td class="mdescRight">out[j] += in[i][j] for i = 0..rows-1 in order, accumulating straight into out.  <br /></td></tr>
+<tr class="separator:a5fadffb2f2ecdaff1cc4c109d2d7cf87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f1a7579cba30481c5bc8cfab97c5bbd" id="r_a3f1a7579cba30481c5bc8cfab97c5bbd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd">recurrent_cell</a> (<a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">RecurrentCellOp</a> op, const <a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">RecurrentCellArgs</a> &amp;args, size_t n)=0</td></tr>
+<tr class="memdesc:a3f1a7579cba30481c5bc8cfab97c5bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).  <br /></td></tr>
+<tr class="separator:a3f1a7579cba30481c5bc8cfab97c5bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeb7cce77ae8202c7054497028e5a2c6" id="r_aeeb7cce77ae8202c7054497028e5a2c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#aeeb7cce77ae8202c7054497028e5a2c6">gru_lrp_hprev</a> (const float *h_prev, const float *w_hn, const float *hn, const float *r_term_b, const float *direct, float *r_hprev, size_t rows, size_t hidden, float eps)=0</td></tr>
+<tr class="memdesc:aeeb7cce77ae8202c7054497028e5a2c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">GRU's R_hprev for (rows, hidden): the recurrent epsilon-rule sum through W_hn, with each element's direct term inserted where the original loop added it.  <br /></td></tr>
+<tr class="separator:aeeb7cce77ae8202c7054497028e5a2c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Vendor-agnostic compute/memory backend. <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a> (Phase 1.5), and <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a> (Phase 1.6) all implement this contract; <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> and <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> depend only on this interface, never on a concrete backend's types. </p>
@@ -322,6 +334,59 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5fadffb2f2ecdaff1cc4c109d2d7cf87" name="a5fadffb2f2ecdaff1cc4c109d2d7cf87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fadffb2f2ecdaff1cc4c109d2d7cf87">&#9670;&#160;</a></span>accumulate_rows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::accumulate_rows </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>out[j] += in[i][j] for i = 0..rows-1 in order, accumulating straight into out. </p>
+<dl class="section note"><dt>Note</dt><dd>Unlike column_sums(beta = 1), which adds a finished column sum to out, this adds row by row into the running value &ndash; the association the recurrent modules' bias gradients always used. </dd></dl>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a565faff7fa010250d37b62bcbb5303a0">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a1b81fbc1960fcad6ce2c8c0bb3f1c180">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a1e7e195e194d509257e0c213ce66ce20">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
 <a id="af911088cd492ed287da35639ea846eca" name="af911088cd492ed287da35639ea846eca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af911088cd492ed287da35639ea846eca">&#9670;&#160;</a></span>adam_step()</h2>
 
@@ -1553,6 +1618,70 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a0610860a8a7378e6a797e35b4b745f54" name="a0610860a8a7378e6a797e35b4b745f54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0610860a8a7378e6a797e35b4b745f54">&#9670;&#160;</a></span>copy_2d()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::copy_2d </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>dst_stride</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>src_stride</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Strided 2-D copy: rows of cols floats from src (row stride src_stride) to dst (row stride dst_stride) &ndash; e.g. one timestep of an (N, L, D) sequence. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a388f0b7504913b8ca4f0576dedef6712">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a9f307478d15f2087cefdf34c8c04142c">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a2563f2857e9f0a1a79eb7a669763bad5">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
 <a id="a39732e9839303fa0e9c872e24e41b283" name="a39732e9839303fa0e9c872e24e41b283"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a39732e9839303fa0e9c872e24e41b283">&#9670;&#160;</a></span>device()</h2>
 
@@ -2329,6 +2458,88 @@ Public Member Functions</h2></td></tr>
 <p>GroupNorm per (example, group) of (n, c, spatial) data; group_std is (n, num_groups). </p>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a4bb586b266546ee1e81a9aa35a86c46d">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a70c93a40ab4bab07208d598d61856463">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#ae0595643fb50f5942c2e3fc209f4cc1f">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="aeeb7cce77ae8202c7054497028e5a2c6" name="aeeb7cce77ae8202c7054497028e5a2c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeeb7cce77ae8202c7054497028e5a2c6">&#9670;&#160;</a></span>gru_lrp_hprev()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::gru_lrp_hprev </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>h_prev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>w_hn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>hn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>r_term_b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>direct</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>r_hprev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>hidden</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>GRU's R_hprev for (rows, hidden): the recurrent epsilon-rule sum through W_hn, with each element's direct term inserted where the original loop added it. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a63bb86606f4125c9891f3c097f79f41c">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a95e160f94f1807c18c2656fee3a1f2c4">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a646c90fd66bc896db59ae635e96e77e4">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>
@@ -3636,6 +3847,52 @@ Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Attention's head split ((N, L, H, D) -&gt; (N, H, L, D)) and merge (the reverse) are both this permutation. out must not alias in. </dd></dl>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a1c34c38027eb73943a6139e0e53a081c">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#af58a07153b514b48724c91fe03d8a0ee">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a601b2d10748f931a38f03260a52495ad">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a3f1a7579cba30481c5bc8cfab97c5bbd" name="a3f1a7579cba30481c5bc8cfab97c5bbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f1a7579cba30481c5bc8cfab97c5bbd">&#9670;&#160;</a></span>recurrent_cell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::recurrent_cell </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">RecurrentCellOp</a>&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">RecurrentCellArgs</a> &amp;&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots). </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a55b2f5343e16e66540d2787d94f739ee">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a6e51344618bf599e9116e1a0d860b223">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#ad50e3f528ef1f0d903316a21946b6e8a">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>

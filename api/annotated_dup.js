@@ -144,6 +144,7 @@ var annotated_dup =
       [ "PDP", "classpulsatrix_1_1PDP.html", "classpulsatrix_1_1PDP" ],
       [ "PolicyGradientLoss", "classpulsatrix_1_1PolicyGradientLoss.html", "classpulsatrix_1_1PolicyGradientLoss" ],
       [ "PPOClippedLoss", "classpulsatrix_1_1PPOClippedLoss.html", "classpulsatrix_1_1PPOClippedLoss" ],
+      [ "RecurrentCellArgs", "structpulsatrix_1_1RecurrentCellArgs.html", "structpulsatrix_1_1RecurrentCellArgs" ],
       [ "ReluModule", "classpulsatrix_1_1ReluModule.html", "classpulsatrix_1_1ReluModule" ],
       [ "Reparameterize", "classpulsatrix_1_1Reparameterize.html", "classpulsatrix_1_1Reparameterize" ],
       [ "ReparamGrad", "structpulsatrix_1_1ReparamGrad.html", "structpulsatrix_1_1ReparamGrad" ],
