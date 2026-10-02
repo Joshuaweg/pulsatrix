@@ -80,8 +80,10 @@ public:
      * @throws std::logic_error if the most recent step already reported `done=true` -- a
      *         GFlowNet trajectory has no meaning past its terminal state; unlike CartPoleEnv,
      *         this is enforced here rather than left to the caller.
-     * @note PULSATRIX_REQUIRE_HOST(action) -- raw host loop over
-     *       Tensor::data(), same convention as every other Environment in this codebase.
+     * @note Host boundary (GPU-native-kernels Mission 7): the grid walk is integer host logic.
+     *       `action` (and every `state` argument of reset()/reward()/backward_log_prob()/
+     *       valid_actions_mask()) may live on any device -- one device->host copy per call --
+     *       and observations are returned through this environment's own backend.
      */
     [[nodiscard]] StepResult step(const Tensor& action) override;
 

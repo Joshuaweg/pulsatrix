@@ -17,14 +17,24 @@
 #include "pulsatrix/avg_pool2d_module.hpp"
 #include "pulsatrix/batch_norm_module.hpp"
 #include "pulsatrix/calibration_loss.hpp"
+#include "pulsatrix/cartpole_env.hpp"
+#include "pulsatrix/categorical_policy_agent.hpp"
 #include "pulsatrix/conjunction_module.hpp"
+#include "pulsatrix/continuous_cartpole_env.hpp"
 #include "pulsatrix/conv2d_module.hpp"
 #include "pulsatrix/disjunction_module.hpp"
+#include "pulsatrix/dqn_agent.hpp"
+#include "pulsatrix/dqn_loss.hpp"
+#include "pulsatrix/dqn_target.hpp"
 #include "pulsatrix/dropout_module.hpp"
 #include "pulsatrix/embedding_module.hpp"
 #include "pulsatrix/flatten_module.hpp"
+#include "pulsatrix/gae.hpp"
+#include "pulsatrix/gflownet_forward_policy.hpp"
+#include "pulsatrix/gflownet_trajectory.hpp"
 #include "pulsatrix/gru_module.hpp"
 #include "pulsatrix/group_norm_module.hpp"
+#include "pulsatrix/hypergrid_env.hpp"
 #include "pulsatrix/layer_norm_module.hpp"
 #include "pulsatrix/lstm_module.hpp"
 #include "pulsatrix/mamba_module.hpp"
@@ -41,6 +51,10 @@
 #include "pulsatrix/neuro_symbolic_datalog_bridge.hpp"
 #include "pulsatrix/neuro_symbolic_toy_kb.hpp"
 #include "pulsatrix/noise_schedule.hpp"
+#include "pulsatrix/policy_gradient_loss.hpp"
+#include "pulsatrix/polyak_update.hpp"
+#include "pulsatrix/ppo_clipped_loss.hpp"
+#include "pulsatrix/replay_buffer.hpp"
 #include "pulsatrix/reparameterize.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/cross_entropy_loss.hpp"
@@ -50,8 +64,10 @@
 #include "pulsatrix/residual_module.hpp"
 #include "pulsatrix/retnet_module.hpp"
 #include "pulsatrix/rnn_module.hpp"
+#include "pulsatrix/rollout_buffer.hpp"
 #include "pulsatrix/sequential_module.hpp"
 #include "pulsatrix/sgd_optimizer.hpp"
+#include "pulsatrix/sinusoidal_timestep_embedding.hpp"
 #include "pulsatrix/softmax_module.hpp"
 #include "pulsatrix/swiglu_module.hpp"
 #include "pulsatrix/tensor.hpp"
@@ -744,6 +760,273 @@ inline void ScanModuleTrainsToSameParameters(CPUBackend& cpu, DeviceBackend& gpu
 }
 
 
+// ---- Mission 7: reinforcement learning -----------------------------------------------------------
+
+// Whole-number action indices in [0, action_dim), as floats.
+inline std::vector<float> RandomActions(size_t n, int64_t action_dim, unsigned seed) {
+    std::mt19937 rng(seed);
+    std::uniform_int_distribution<int64_t> dist(0, action_dim - 1);
+    std::vector<float> v(n);
+    for (auto& a : v) {
+        a = static_cast<float>(dist(rng));
+    }
+    return v;
+}
+
+// DQN / policy-gradient / PPO losses: forward value and gradient. N = 37 rows spans several
+// rl_rows lanes; PPO's old log-probs are spread so some rows clip on each side.
+inline void RlLossesMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const int64_t n = 37, a = 5;
+    std::vector<float> q = Random(n * a, 1100, -2.0f, 2.0f), actions = RandomActions(n, a, 1101);
+    std::vector<float> targets = Random(n, 1102, -2.0f, 2.0f), weights = Random(n, 1103, -1.5f, 1.5f);
+    std::vector<float> old_log_probs = Random(n, 1104, -3.0f, -0.2f);
+    Tensor cq(Shape({n, a}), &cpu, q), gq(Shape({n, a}), &gpu, q);
+    Tensor ca(Shape({n, 1}), &cpu, actions), ga(Shape({n, 1}), &gpu, actions);  // read back for validation
+    Tensor ct(Shape({n, 1}), &cpu, targets), gt(Shape({n, 1}), &gpu, targets);
+    Tensor cw(Shape({n, 1}), &cpu, weights), gw(Shape({n, 1}), &gpu, weights);
+    Tensor co(Shape({n, 1}), &cpu, old_log_probs), go(Shape({n, 1}), &gpu, old_log_probs);
+
+    DQNLoss cd(&cpu), gd(&gpu);
+    EXPECT_NEAR(cd.forward(cq, ca, ct), gd.forward(gq, ga, gt), kTolerance);
+    ExpectNear(cd.backward(), gd.backward());
+
+    PolicyGradientLoss cp(&cpu), gp(&gpu);
+    EXPECT_NEAR(cp.forward(cq, ca, cw), gp.forward(gq, ga, gw), kTolerance);
+    ExpectNear(cp.backward(), gp.backward());
+
+    PPOClippedLoss cc(&cpu), gc(&gpu);
+    EXPECT_NEAR(cc.forward(cq, ca, co, cw, 0.2f), gc.forward(gq, ga, go, gw, 0.2f), kTolerance);
+    ExpectNear(cc.backward(), gc.backward());
+}
+
+// Vanilla and Double DQN targets, with terminal rows.
+inline void DqnTargetsMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const int64_t n = 41, a = 4;
+    std::vector<float> online = Random(n * a, 1110), target = Random(n * a, 1111), rewards = Random(n, 1112);
+    std::vector<float> dones(n);
+    for (int64_t i = 0; i < n; ++i) {
+        dones[static_cast<size_t>(i)] = (i % 3 == 0) ? 1.0f : 0.0f;
+    }
+    Tensor con(Shape({n, a}), &cpu, online), gon(Shape({n, a}), &gpu, online);
+    Tensor cta(Shape({n, a}), &cpu, target), gta(Shape({n, a}), &gpu, target);
+    Tensor cr(Shape({n, 1}), &cpu, rewards), gr(Shape({n, 1}), &gpu, rewards);
+    Tensor cd(Shape({n, 1}), &cpu, dones), gd(Shape({n, 1}), &gpu, dones);
+    ExpectNear(ComputeDQNTarget(cta, cr, cd, 0.9f, &cpu), ComputeDQNTarget(gta, gr, gd, 0.9f, &gpu));
+    ExpectNear(ComputeDoubleDQNTarget(con, cta, cr, cd, 0.9f, &cpu),
+               ComputeDoubleDQNTarget(gon, gta, gr, gd, 0.9f, &gpu));
+}
+
+// PolyakUpdate and SyncTargetNetwork through GPU parameters, and a CPU -> GPU sync.
+inline void TargetNetworkUpdatesMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cs(5, 3, &cpu), gs(5, 3, &gpu), cd(5, 3, &cpu), gd(5, 3, &gpu);
+    RandomizeAndMirror(cs, gs, 1120);
+    RandomizeAndMirror(cd, gd, 1121);
+    PolyakUpdate(cs, cd, 0.3f);
+    PolyakUpdate(gs, gd, 0.3f);
+    auto cp = cd.parameters(), gp = gd.parameters();
+    for (size_t i = 0; i < cp.size(); ++i) {
+        ExpectNear(*cp[i].value, *gp[i].value);
+    }
+    LinearModule gfresh(5, 3, &gpu);
+    SyncTargetNetwork(gs, gfresh);  // device -> device
+    SyncTargetNetwork(cd, gd);      // host -> device
+    auto sp = cs.parameters(), fp = gfresh.parameters(), dp = gd.parameters();
+    for (size_t i = 0; i < sp.size(); ++i) {
+        ExpectNear(*sp[i].value, *fp[i].value, 0.0f);
+        ExpectNear(*cp[i].value, *dp[i].value, 0.0f);
+    }
+}
+
+// The host-boundary classes accept device tensors and hand back tensors on their own device,
+// with the CPU's values: replay/rollout buffers, GAE, the environments, the timestep embedding.
+inline void HostBoundariesMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    ReplayBuffer creplay(8, 3, 1, &cpu, 7), greplay(8, 3, 1, &gpu, 7);
+    RolloutBuffer croll(10, 3, 1, &cpu), groll(10, 3, 1, &gpu);
+    for (int i = 0; i < 10; ++i) {
+        std::vector<float> obs = Random(3, 1130 + static_cast<unsigned>(i)), act = {static_cast<float>(i % 2)};
+        Tensor co(Shape({1, 3}), &cpu, obs), go(Shape({1, 3}), &gpu, obs);
+        Tensor ca(Shape({1, 1}), &cpu, act), ga(Shape({1, 1}), &gpu, act);
+        creplay.add(co, ca, 0.5f * static_cast<float>(i), co, i % 4 == 3);
+        greplay.add(go, ga, 0.5f * static_cast<float>(i), go, i % 4 == 3);
+        croll.add(co, ca, 0.5f * static_cast<float>(i), -0.1f * static_cast<float>(i), i % 4 == 3);
+        groll.add(go, ga, 0.5f * static_cast<float>(i), -0.1f * static_cast<float>(i), i % 4 == 3);
+    }
+    const ReplayBatch cb = creplay.sample(6), gb = greplay.sample(6);
+    EXPECT_EQ(gb.observations.device(), gpu.device());
+    ExpectNear(cb.observations, gb.observations, 0.0f);
+    ExpectNear(cb.actions, gb.actions, 0.0f);
+    ExpectNear(cb.rewards, gb.rewards, 0.0f);
+    ExpectNear(cb.next_observations, gb.next_observations, 0.0f);
+    ExpectNear(cb.dones, gb.dones, 0.0f);
+    const RolloutBatch crb = croll.compute_returns(0.9f), grb = groll.compute_returns(0.9f);
+    EXPECT_EQ(grb.returns.device(), gpu.device());
+    ExpectNear(crb.observations, grb.observations, 0.0f);
+    ExpectNear(crb.returns, grb.returns, 0.0f);
+    ExpectNear(crb.log_probs, grb.log_probs, 0.0f);
+
+    std::vector<float> values = Random(10, 1140);
+    Tensor cv(Shape({10, 1}), &cpu, values), gv(Shape({10, 1}), &gpu, values);
+    const GAEResult cg = ComputeGAE(croll.rewards(), croll.dones(), cv, 0.25f, 0.95f, 0.9f, &cpu);
+    const GAEResult gg = ComputeGAE(groll.rewards(), groll.dones(), gv, 0.25f, 0.95f, 0.9f, &gpu);
+    ExpectNear(cg.advantages, gg.advantages, 0.0f);
+    ExpectNear(cg.returns, gg.returns, 0.0f);
+
+    CartPoleEnv ccart(&cpu, 50, 3), gcart(&gpu, 50, 3);
+    ContinuousCartPoleEnv ccont(&cpu, 50, 3), gcont(&gpu, 50, 3);
+    std::vector<float> state = {0.01f, -0.02f, 0.03f, 0.0f};
+    ExpectNear(ccart.reset(Tensor(Shape({1, 4}), &cpu, state)), gcart.reset(Tensor(Shape({1, 4}), &gpu, state)), 0.0f);
+    (void)ccont.reset();
+    (void)gcont.reset();
+    for (int i = 0; i < 5; ++i) {
+        std::vector<float> discrete = {static_cast<float>(i % 2)}, force = {0.4f - 0.2f * static_cast<float>(i)};
+        const StepResult c1 = ccart.step(Tensor(Shape({1, 1}), &cpu, discrete));
+        const StepResult g1 = gcart.step(Tensor(Shape({1, 1}), &gpu, discrete));
+        EXPECT_EQ(g1.observation.device(), gpu.device());
+        ExpectNear(c1.observation, g1.observation, 0.0f);
+        ExpectNear(ccont.step(Tensor(Shape({1, 1}), &cpu, force)).observation,
+                   gcont.step(Tensor(Shape({1, 1}), &gpu, force)).observation, 0.0f);
+    }
+
+    const Tensor ge = SinusoidalTimestepEmbedding(17, 8, &gpu);
+    EXPECT_EQ(ge.device(), gpu.device());
+    ExpectNear(SinusoidalTimestepEmbedding(17, 8, &cpu), ge, 0.0f);
+}
+
+// The agents and the GFlowNet sampler acting from networks on the GPU (action selection stays
+// on the host): same actions and log-probabilities as the CPU for the same seeds.
+inline void RlAgentsMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cnet(3, 4, &cpu), gnet(3, 4, &gpu);
+    RandomizeAndMirror(cnet, gnet, 1150);
+    DQNAgent cdqn(&cnet, 4, 0.3f, &cpu, 5), gdqn(&gnet, 4, 0.3f, &gpu, 5);
+    CategoricalPolicyAgent ccat(&cnet, 4, &cpu, 6), gcat(&gnet, 4, &gpu, 6);
+    for (int i = 0; i < 8; ++i) {
+        std::vector<float> obs = Random(3, 1160 + static_cast<unsigned>(i));
+        Tensor co(Shape({1, 3}), &cpu, obs), go(Shape({1, 3}), &gpu, obs);
+        const Tensor ga = gdqn.act(go);
+        EXPECT_EQ(ga.device(), gpu.device());
+        ExpectNear(cdqn.act(co), ga, 0.0f);
+        ExpectNear(ccat.act(co), gcat.act(go), 0.0f);
+        EXPECT_NEAR(ccat.log_prob(), gcat.log_prob(), kTolerance);
+        ExpectNear(ccat.act_greedy(co), gcat.act_greedy(go), 0.0f);
+    }
+
+    HyperGridEnv cenv(&cpu, 2, 6), genv(&gpu, 2, 6);
+    LinearModule cpol(2, 3, &cpu), gpol(2, 3, &gpu);
+    RandomizeAndMirror(cpol, gpol, 1170);
+    GFlowNetForwardPolicy cfp(&cpol, 3, &cpu, 9), gfp(&gpol, 3, &gpu, 9);
+    for (int episode = 0; episode < 4; ++episode) {
+        const GFlowNetTrajectory ct = sample_gflownet_trajectory(cenv, cfp);
+        const GFlowNetTrajectory gt = sample_gflownet_trajectory(genv, gfp);
+        EXPECT_EQ(ct.actions, gt.actions);
+        EXPECT_NEAR(ct.sum_log_pf, gt.sum_log_pf, kTolerance);
+        EXPECT_FLOAT_EQ(ct.sum_log_pb, gt.sum_log_pb);
+        EXPECT_FLOAT_EQ(ct.terminal_reward, gt.terminal_reward);
+    }
+}
+
+// Mission 7 gate: a DQN Q-network (Double-DQN targets from a Polyak-tracked target network)
+// trained with Adam on GPU ends with the CPU's parameters.
+inline void DqnTrainsToSameParameters(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cq(4, 3, &cpu), gq(4, 3, &gpu), ct(4, 3, &cpu), gt(4, 3, &gpu);
+    RandomizeAndMirror(cq, gq, 1180);
+    SyncTargetNetwork(cq, ct);
+    SyncTargetNetwork(gq, gt);
+    AdamOptimizer copt(0.01f, &cpu), gopt(0.01f, &gpu);
+    DQNLoss closs(&cpu), gloss(&gpu);
+    const int64_t n = 16;
+    std::vector<float> obs = Random(n * 4, 1181), next = Random(n * 4, 1182), rewards = Random(n, 1183);
+    std::vector<float> actions = RandomActions(n, 3, 1184), dones(n, 0.0f);
+    dones[3] = dones[9] = 1.0f;
+    Tensor co(Shape({n, 4}), &cpu, obs), go(Shape({n, 4}), &gpu, obs);
+    Tensor cn(Shape({n, 4}), &cpu, next), gn(Shape({n, 4}), &gpu, next);
+    Tensor cr(Shape({n, 1}), &cpu, rewards), gr(Shape({n, 1}), &gpu, rewards);
+    Tensor ca(Shape({n, 1}), &cpu, actions), ga(Shape({n, 1}), &gpu, actions);
+    Tensor cd(Shape({n, 1}), &cpu, dones), gd(Shape({n, 1}), &gpu, dones);
+    float first_loss = 0.0f, last_loss = 0.0f;
+    for (int step = 0; step < 15; ++step) {
+        const Tensor c_target = ComputeDoubleDQNTarget(cq.forward(cn), ct.forward(cn), cr, cd, 0.9f, &cpu);
+        const Tensor g_target = ComputeDoubleDQNTarget(gq.forward(gn), gt.forward(gn), gr, gd, 0.9f, &gpu);
+        copt.zero_grad(cq);
+        gopt.zero_grad(gq);
+        const float lc = closs.forward(cq.forward(co), ca, c_target);
+        const float lg = gloss.forward(gq.forward(go), ga, g_target);
+        EXPECT_NEAR(lc, lg, 1e-3f) << "loss diverged at step " << step;
+        (void)cq.backward(closs.backward());
+        (void)gq.backward(gloss.backward());
+        copt.step(cq);
+        gopt.step(gq);
+        PolyakUpdate(cq, ct, 0.1f);
+        PolyakUpdate(gq, gt, 0.1f);
+        if (step == 0) {
+            first_loss = lc;
+        }
+        last_loss = lc;
+    }
+    EXPECT_LT(last_loss, first_loss) << "the Q-network did not actually train";
+    ExpectParametersNear(cq, gq, 1e-3f);
+}
+
+
+// Mission 7 gate: a full DQN loop -- CartPole environment, epsilon-greedy agent, replay buffer,
+// Bellman targets, DQN loss, Adam -- run in lockstep on CPU and on the GPU backend (every
+// component built on that backend) ends with the same network. Same seeds on both sides, so
+// the environment, exploration and replay sampling streams agree.
+inline void DqnLoopTrainsToSameParameters(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cl1(4, 16, &cpu), gl1(4, 16, &gpu);
+    ReluModule cr1(&cpu), gr1(&gpu);
+    LinearModule cl2(16, 2, &cpu), gl2(16, 2, &gpu);
+    SequentialModule cnet({&cl1, &cr1, &cl2}), gnet({&gl1, &gr1, &gl2});
+    RandomizeAndMirror(cnet, gnet, 1120);
+    LinearModule ct1(4, 16, &cpu), gt1(4, 16, &gpu);
+    ReluModule ctr(&cpu), gtr(&gpu);
+    LinearModule ct2(16, 2, &cpu), gt2(16, 2, &gpu);
+    SequentialModule ctarget({&ct1, &ctr, &ct2}), gtarget({&gt1, &gtr, &gt2});
+    SyncTargetNetwork(cnet, ctarget);
+    SyncTargetNetwork(gnet, gtarget);
+
+    CartPoleEnv cenv(&cpu, 200, 7), genv(&gpu, 200, 7);
+    DQNAgent cagent(&cnet, 2, 0.3f, &cpu, 11), gagent(&gnet, 2, 0.3f, &gpu, 11);
+    ReplayBuffer cbuf(256, 4, 1, &cpu, 13), gbuf(256, 4, 1, &gpu, 13);
+    AdamOptimizer copt(1e-3f, &cpu), gopt(1e-3f, &gpu);
+    DQNLoss closs(&cpu), gloss(&gpu);
+
+    Tensor cobs = cenv.reset(), gobs = genv.reset();
+    EXPECT_EQ(gobs.device(), gpu.device());
+    for (int step = 0; step < 60; ++step) {
+        Tensor ca = cagent.act(cobs), ga = gagent.act(gobs);
+        ASSERT_EQ(ToHost(ca), ToHost(ga)) << "agents chose different actions at step " << step;
+        StepResult cs = cenv.step(ca), gs = genv.step(ga);
+        ASSERT_EQ(cs.done, gs.done);
+        cbuf.add(cobs, ca, cs.reward, cs.observation, cs.done);
+        gbuf.add(gobs, ga, gs.reward, gs.observation, gs.done);
+        cobs = cs.done ? cenv.reset() : cs.observation;
+        gobs = gs.done ? genv.reset() : gs.observation;
+
+        if (cbuf.size() >= 16) {
+            ReplayBatch cb = cbuf.sample(16), gb = gbuf.sample(16);
+            ExpectNear(cb.observations, gb.observations, 1e-3f);
+            Tensor cy = ComputeDQNTarget(ctarget.forward(cb.next_observations), cb.rewards, cb.dones, 0.99f, &cpu);
+            Tensor gy = ComputeDQNTarget(gtarget.forward(gb.next_observations), gb.rewards, gb.dones, 0.99f, &gpu);
+            copt.zero_grad(cnet);
+            gopt.zero_grad(gnet);
+            const float lc = closs.forward(cnet.forward(cb.observations), cb.actions, cy);
+            const float lg = gloss.forward(gnet.forward(gb.observations), gb.actions, gy);
+            EXPECT_NEAR(lc, lg, 1e-3f) << "TD loss diverged at step " << step;
+            (void)cnet.backward(closs.backward());
+            (void)gnet.backward(gloss.backward());
+            copt.step(cnet);
+            gopt.step(gnet);
+        }
+    }
+    ExpectParametersNear(cnet, gnet, 1e-3f);
+}
 
 // The mission's integration gate: the same small MLP, same init, same data, trained for
 // several steps on each backend, ends with the same parameters.
@@ -907,6 +1190,19 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
         training_equivalence::ScanModuleTrainsToSameParameters(cpu, MEMBER, cr, gr, 1040);           \
         RetNetModule ct(6, 4, 0.8f, &cpu), gt(6, 4, 0.8f, &MEMBER);                                  \
         training_equivalence::ScanModuleTrainsToSameParameters(cpu, MEMBER, ct, gt, 1050);           \
+    }                                                                                                \
+    TEST_F(FIXTURE, RlLossesMatchCPU) { ::pulsatrix::training_equivalence::RlLossesMatch(MEMBER); }   \
+    TEST_F(FIXTURE, DqnTargetsMatchCPU) { ::pulsatrix::training_equivalence::DqnTargetsMatch(MEMBER); } \
+    TEST_F(FIXTURE, TargetNetworkUpdatesMatchCPU) {                                                  \
+        ::pulsatrix::training_equivalence::TargetNetworkUpdatesMatch(MEMBER);                        \
+    }                                                                                                \
+    TEST_F(FIXTURE, RlHostBoundariesMatchCPU) { ::pulsatrix::training_equivalence::HostBoundariesMatch(MEMBER); } \
+    TEST_F(FIXTURE, RlAgentsMatchCPU) { ::pulsatrix::training_equivalence::RlAgentsMatch(MEMBER); }  \
+    TEST_F(FIXTURE, DqnTrainedWithAdamEndsWithCPUParameters) {                                       \
+        ::pulsatrix::training_equivalence::DqnTrainsToSameParameters(MEMBER);                        \
+    }                                                                                                \
+    TEST_F(FIXTURE, DqnLoopOnGpuEndsWithCPUParameters) {                                             \
+        ::pulsatrix::training_equivalence::DqnLoopTrainsToSameParameters(MEMBER);                    \
     }                                                                                                \
     TEST_F(FIXTURE, MlpTrainedWithSGDEndsWithCPUParameters) {                                        \
         ::pulsatrix::SGDOptimizer cpu_opt(0.05f), gpu_opt(0.05f);                                    \

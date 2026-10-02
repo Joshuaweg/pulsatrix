@@ -1,8 +1,8 @@
 #include "pulsatrix/dqn_agent.hpp"
 
 #include <stdexcept>
+#include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -62,16 +62,15 @@ Tensor DQNAgent::greedy_action(const Tensor& observation) {
     if (q_values.rank() != 2 || q_values.shape().dim(0) != 1 || q_values.shape().dim(1) != action_dim_) {
         throw std::invalid_argument("DQNAgent: q_network must produce output of shape (1, action_dim)");
     }
-    // Reads Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4). q_network_ may run on a GPU backend even
-    // when observation is host-resident.
-    PULSATRIX_REQUIRE_HOST(q_values);
+    // Host boundary (GPU-native-kernels Mission 7): q_network_ may run on any device; its
+    // action_dim Q-values are copied to the host once for the argmax.
+    const std::vector<float> q = q_values.to_host_vector();
 
     // Ties resolve to the lowest index (strict >), the same rule ComputeDQNTarget and
     // ComputeDoubleDQNTarget use, so policy and target agree on a tied row by construction.
     int64_t best = 0;
     for (int64_t a = 1; a < action_dim_; ++a) {
-        if (q_values.data()[a] > q_values.data()[best]) {
+        if (q[static_cast<size_t>(a)] > q[static_cast<size_t>(best)]) {
             best = a;
         }
     }
@@ -79,11 +78,6 @@ Tensor DQNAgent::greedy_action(const Tensor& observation) {
 }
 
 Tensor DQNAgent::act(const Tensor& observation) {
-    // The argmax below is a raw host loop over Tensor::data(); the network output inherits
-    // its device from this observation. Undefined behavior on a CUDA-backed Tensor -- see
-    // mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(observation);
-
     // The coin flip is drawn unconditionally, before the branch, so the stream advances by a
     // known amount regardless of which way it goes.
     const float u = next_unit();
@@ -93,9 +87,7 @@ Tensor DQNAgent::act(const Tensor& observation) {
     return greedy_action(observation);
 }
 
-Tensor DQNAgent::act_greedy(const Tensor& observation) {
-    PULSATRIX_REQUIRE_HOST(observation);
-    return greedy_action(observation);
+Tensor DQNAgent::act_greedy(const Tensor& observation) {    return greedy_action(observation);
 }
 
 void DQNAgent::set_epsilon(float epsilon) {

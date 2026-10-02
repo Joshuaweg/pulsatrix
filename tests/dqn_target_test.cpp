@@ -361,36 +361,5 @@ TEST_F(SyncTargetNetworkTest, SyncingAParameterlessModulePairIsALegalNoOp) {
     EXPECT_NO_THROW({ SyncTargetNetwork(a, b); });
 }
 
-using DQNTargetDeathTest = DQNTargetTest;
-
-// One death test per raw-host-loop entry point, per the mission's Requirements section: the
-// row-wise max/argmax dereferences Tensor::data() directly, which is undefined behavior on a
-// CUDA-backed Tensor (mission_host_loop_guards.md). Within each function the guards are
-// adjacent lines on one entry path covering a single guarded-argument role. SyncTargetNetwork
-// has no death test of its own by design: it takes no caller-supplied Tensor, only Modules,
-// whose parameter buffers were validated at construction -- a guard there would be untestable
-// dead code.
-TEST_F(DQNTargetDeathTest, ComputeDQNTargetAbortsOnNonCpuNextQTarget) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor cuda_q(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    Tensor rewards(Shape({1, 1}), &backend, {0.0f});
-    Tensor dones(Shape({1, 1}), &backend, {0.0f});
-    EXPECT_DEATH({ (void)ComputeDQNTarget(cuda_q, rewards, dones, 0.9f, &backend); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(DQNTargetDeathTest, ComputeDoubleDQNTargetAbortsOnNonCpuNextQOnline) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor cuda_q(Shape({1, 2}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    Tensor host_q(Shape({1, 2}), &backend, {1.0f, 2.0f});
-    Tensor rewards(Shape({1, 1}), &backend, {0.0f});
-    Tensor dones(Shape({1, 1}), &backend, {0.0f});
-    EXPECT_DEATH({ (void)ComputeDoubleDQNTarget(cuda_q, host_q, rewards, dones, 0.9f, &backend); },
-                 "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

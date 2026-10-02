@@ -194,6 +194,16 @@ float Tensor::read_element(int64_t flat_index) const {
     return value;
 }
 
+std::vector<float> Tensor::to_host_vector() const {
+    std::vector<float> values(static_cast<size_t>(numel()));
+    if (data_ != nullptr) {
+        const CopyDirection dir =
+            (device_ == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::DeviceToHost;
+        backend_->copy(values.data(), data_, values.size() * sizeof(float), dir);
+    }
+    return values;
+}
+
 void Tensor::write_element(int64_t flat_index, float value) {
     PULSATRIX_ASSERT(flat_index >= 0 && flat_index < numel());
     const CopyDirection dir = (device_ == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::HostToDevice;
