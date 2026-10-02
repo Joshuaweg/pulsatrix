@@ -46,12 +46,7 @@ public:
      *        the most recent forward() call's output.
      * @return Gradient w.r.t. this module's input.
      * @note Must be called after forward() -- uses the input/im2col cached from that call.
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host
-     *       loops (via transpose2d()/col2im() helpers). PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      * @throws std::logic_error if forward() has never been called -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      */
@@ -89,12 +84,7 @@ public:
      *       touched a given input pixel, the same overlap-handling backward() already
      *       needed for gradients. Bias is excluded from z, same rationale as LinearModule.
      *       Must be called after forward().
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in raw host
-     *       loops (via col2im()). PULSATRIX_REQUIRE_HOST(relevance_out)
-     *       guards against silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      * @throws std::logic_error if forward() has never been called -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      */
@@ -107,13 +97,7 @@ public:
 protected:
     /**
      * @brief The actual forward computation (im2col + gemm + per-channel bias add).
-     * @note Not yet backend-generic -- unlike LinearModule/ReluModule's forward_impl, this
-     *       one dereferences Tensor::data() directly (its bias-add loop, plus the im2col()
-     *       helper). PULSATRIX_REQUIRE_HOST(input) guards against silent
-     *       UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not
-     *       remove this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      * @throws std::invalid_argument if input isn't rank-4 (N, in_channels, H, W), its
      *         channel count doesn't match in_channels_, or the kernel is larger than the
      *         input (kernel_h_ &gt; H or kernel_w_ &gt; W) -- see

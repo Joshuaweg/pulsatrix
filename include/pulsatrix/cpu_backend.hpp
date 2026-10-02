@@ -79,6 +79,32 @@ public:
                              size_t cols, float p) override;
     void aggregator_lrp(const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n, size_t cols,
                         float p, float eps) override;
+    void im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) override;
+    void col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)
+                    override;
+    void add_channel_vector(const float* in, const float* vec, float* out, size_t n, size_t c, size_t inner) override;
+    void lrp_conv(const float* col, const float* kernel, const float* pre_bias, const float* r, float* r_col, size_t n,
+                  size_t out_channels, size_t p, size_t q, float eps) override;
+    void max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w, size_t kh,
+                          size_t kw) override;
+    void max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w, size_t kh,
+                    size_t kw) override;
+    void avg_pool_forward(const float* in, float* out, size_t planes, size_t h, size_t w, size_t kh, size_t kw)
+                          override;
+    void avg_pool_backward(const float* grad_out, float* grad_in, size_t planes, size_t h, size_t w, size_t kh, size_t
+                           kw) override;
+    void lrp_avg_pool(const float* x, const float* r, float* r_in, size_t planes, size_t h, size_t w, size_t kh, size_t
+                      kw, float eps) override;
+    void batch_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out, float*
+                            channel_std, size_t n, size_t c, size_t spatial, float eps) override;
+    void batch_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float* channel_std,
+                             float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t c, size_t spatial)
+                             override;
+    void group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out, float*
+                            group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps) override;
+    void group_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float* group_std,
+                             float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t c, size_t spatial,
+                             size_t num_groups) override;
 };
 
 }  // namespace pulsatrix

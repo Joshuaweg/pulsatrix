@@ -6,92 +6,6 @@
 
 namespace pulsatrix {
 
-namespace {
-
-// input (C,H,W) -> matrix (C*kh*kw, out_h*out_w); column q holds the flattened receptive
-// field for output position q, in (channel, row, col) order -- matching kernel_'s own
-// row-major (out_channels, in_channels, kh, kw) layout so kernel_.data() can be read
-// directly as an (out_channels, P) matrix with no reshape.
-// @note Takes a raw pointer (not a Tensor&), operating on one example's worth of a
-// possibly-batched buffer -- campaign_exai_dl_library_batch_dimension_support's batching
-// approach (a per-example loop over this exact unbatched pipeline, not a new primitive).
-Tensor im2col(const float* input_data, int64_t C, int64_t H, int64_t W, int64_t kh, int64_t kw, int64_t out_h,
-              int64_t out_w, DeviceBackend* backend) {
-    int64_t P = C * kh * kw;
-    int64_t Q = out_h * out_w;
-    Tensor col(Shape({P, Q}), backend);
-    // Writes Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4). col is allocated through backend, so a GPU
-    // backend tags it Cuda/Hip; the caller-side guards (which cover input_data's source
-    // tensor) cannot cover it.
-    PULSATRIX_REQUIRE_HOST(col);
-    for (int64_t oh = 0; oh < out_h; ++oh) {
-        for (int64_t ow = 0; ow < out_w; ++ow) {
-            int64_t q = oh * out_w + ow;
-            int64_t p = 0;
-            for (int64_t c = 0; c < C; ++c) {
-                for (int64_t i = 0; i < kh; ++i) {
-                    for (int64_t j = 0; j < kw; ++j) {
-                        int64_t ih = oh + i;
-                        int64_t iw = ow + j;
-                        col.data()[p * Q + q] = input_data[(c * H + ih) * W + iw];
-                        ++p;
-                    }
-                }
-            }
-        }
-    }
-    return col;
-}
-
-// Inverse of im2col -- scatter-accumulates a (P,Q) matrix into a caller-provided (C,H,W)
-// output buffer (must already be zeroed -- this function only adds into it), SUMMING
-// contributions at any input position touched by more than one output position (stride <
-// kernel size always produces overlap). This overlap-summing is exactly what both
-// gradient backprop and LRP relevance redistribution need on the way back to input space.
-// @note Writes into out_data directly (rather than allocating and returning a small (C,H,W)
-// Tensor) so a per-example batching loop can accumulate straight into the right slice of a
-// batched (N,C,H,W) tensor with no extra copy.
-void col2im_into(const float* col_data, float* out_data, int64_t C, int64_t H, int64_t W, int64_t kh, int64_t kw,
-                  int64_t out_h, int64_t out_w) {
-    int64_t Q = out_h * out_w;
-    for (int64_t oh = 0; oh < out_h; ++oh) {
-        for (int64_t ow = 0; ow < out_w; ++ow) {
-            int64_t q = oh * out_w + ow;
-            int64_t p = 0;
-            for (int64_t c = 0; c < C; ++c) {
-                for (int64_t i = 0; i < kh; ++i) {
-                    for (int64_t j = 0; j < kw; ++j) {
-                        int64_t ih = oh + i;
-                        int64_t iw = ow + j;
-                        out_data[(c * H + ih) * W + iw] += col_data[p * Q + q];
-                        ++p;
-                    }
-                }
-            }
-        }
-    }
-}
-
-// Transposes a (rows x cols) row-major buffer into a (cols x rows) row-major buffer.
-// Same helper shape as LinearModule's -- CPUBackend::gemm has no transpose flag.
-Tensor transpose2d(const float* data, int64_t rows, int64_t cols, DeviceBackend* backend) {
-    Tensor out(Shape({cols, rows}), backend);
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
-    // backend tags it Cuda/Hip; the caller-side guards (which cover data's
-    // source tensor) cannot cover it.
-    PULSATRIX_REQUIRE_HOST(out);
-    for (int64_t r = 0; r < rows; ++r) {
-        for (int64_t c = 0; c < cols; ++c) {
-            out.data()[c * rows + r] = data[r * cols + c];
-        }
-    }
-    return out;
-}
-
-}  // namespace
-
 Conv2DModule::Conv2DModule(int64_t in_channels, int64_t out_channels, int64_t kernel_h, int64_t kernel_w,
                             DeviceBackend* backend)
     : in_channels_(in_channels),
@@ -124,10 +38,6 @@ void Conv2DModule::set_bias(const std::vector<float>& values) {
 }
 
 Tensor Conv2DModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly (bias-add loop, plus im2col()) -- not yet
-    // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
-    // decision and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(input);
 
     // External boundary (campaign_exai_dl_library_adversarial_hardening.md, Mission 1,
     // findings 1/6; shape generalized to (N, in_channels, H, W) by
@@ -151,41 +61,24 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
     const int64_t in_stride = in_channels_ * H * W;
     const int64_t out_stride = out_channels_ * Q;
 
+    // Device-generic (GPU-native-kernels Mission 4): one im2col over the whole batch, a gemm
+    // per example, then the per-channel bias broadcast.
+    const DeviceType device = kernel_.device();
+    const auto n = static_cast<size_t>(N), p = static_cast<size_t>(P), q = static_cast<size_t>(Q),
+               oc = static_cast<size_t>(out_channels_);
     last_input_ = input;
     last_out_h_ = out_h;
     last_out_w_ = out_w;
-    last_im2col_ = Tensor(Shape({N, P, Q}), backend_);
-    last_pre_bias_output_ = Tensor(Shape({N, out_channels_, out_h, out_w}), backend_);
-
-    Tensor output(Shape({N, out_channels_, out_h, out_w}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(output);
-
-    // Per-example loop over the existing unbatched im2col/gemm pipeline -- each im2col
-    // column is independent of every other, so this is exactly equivalent to a single
-    // larger gemm with Q extended to N*Q, without needing a new backend primitive or a
-    // batch-aware im2col.
-    for (int64_t n = 0; n < N; ++n) {
-        const float* input_n = input.data() + n * in_stride;
-        Tensor col = im2col(input_n, in_channels_, H, W, kernel_h_, kernel_w_, out_h, out_w, backend_);
-        for (int64_t i = 0; i < P * Q; ++i) {
-            last_im2col_.data()[n * P * Q + i] = col.data()[i];
-        }
-
-        backend_->gemm(kernel_.data(), col.data(), last_pre_bias_output_.data() + n * out_stride,
-                        static_cast<size_t>(out_channels_), static_cast<size_t>(P), static_cast<size_t>(Q));
-
-        for (int64_t oc = 0; oc < out_channels_; ++oc) {
-            float b = bias_.data()[oc];
-            for (int64_t q = 0; q < Q; ++q) {
-                int64_t idx = n * out_stride + oc * Q + q;
-                output.data()[idx] = last_pre_bias_output_.data()[idx] + b;
-            }
-        }
+    last_im2col_ = Tensor(Shape({N, P, Q}), backend_, device);
+    backend_->im2col(input.data(), last_im2col_.data(), n, static_cast<size_t>(in_channels_), static_cast<size_t>(H),
+                     static_cast<size_t>(W), static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
+    last_pre_bias_output_ = Tensor(Shape({N, out_channels_, out_h, out_w}), backend_, device);
+    for (int64_t e = 0; e < N; ++e) {
+        backend_->gemm(kernel_.data(), last_im2col_.data() + e * P * Q, last_pre_bias_output_.data() + e * out_stride,
+                       oc, p, q);
     }
-
+    Tensor output(Shape({N, out_channels_, out_h, out_w}), backend_, device);
+    backend_->add_channel_vector(last_pre_bias_output_.data(), bias_.data(), output.data(), n, oc, q);
     has_forwarded_ = true;
     return output;
 }
@@ -206,11 +99,6 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
             "Conv2DModule::backward: grad_output must be rank-4 (N, out_channels, out_h, out_w) matching the "
             "cached forward shape");
     }
-    // Dereferences Tensor::data() directly (transpose2d()/col2im_into() helpers, plus its
-    // own bias-grad loop) -- not yet backend-generic. See
-    // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
-    // mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(grad_output);
 
     const int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     const int64_t Q = last_out_h_ * last_out_w_;
@@ -219,46 +107,30 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     const int64_t in_stride = in_channels_ * H * W;
     const int64_t out_stride = out_channels_ * Q;
 
-    Tensor grad_input(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
-    grad_input.fill(0.0f);
-
-    Tensor kernel_t = transpose2d(kernel_.data(), out_channels_, P, backend_);  // (out_channels,P) -> (P,out_channels)
-
-    for (int64_t n = 0; n < N; ++n) {
-        const float* grad_out_n = grad_output.data() + n * out_stride;
-        const float* col_n = last_im2col_.data() + n * P * Q;
-
-        // grad_kernel += grad_out_n(out_channels,Q) @ col_n^T(Q,P) = (out_channels,P)
-        Tensor col_t = transpose2d(col_n, P, Q, backend_);  // (P,Q) -> (Q,P)
-        Tensor per_example_kernel_grad(Shape({out_channels_, in_channels_, kernel_h_, kernel_w_}), backend_);
-        backend_->gemm(grad_out_n, col_t.data(), per_example_kernel_grad.data(), static_cast<size_t>(out_channels_),
-                        static_cast<size_t>(Q), static_cast<size_t>(P));
+    // Device-generic (GPU-native-kernels Mission 4). Per example, as before: the kernel and bias
+    // gradients are computed into per-example temporaries and accumulated (the original
+    // association); dY @ col^T and K^T @ dY read their transposed operand in place.
+    const DeviceType device = kernel_.device();
+    const auto p = static_cast<size_t>(P), q = static_cast<size_t>(Q), oc = static_cast<size_t>(out_channels_);
+    Tensor ones(Shape({Q, 1}), backend_, device);
+    ones.fill(1.0f);
+    Tensor grad_cols(Shape({N, P, Q}), backend_, device);
+    Tensor per_example_kernel_grad(kernel_.shape(), backend_, device);
+    Tensor per_example_bias_grad(Shape({out_channels_}), backend_, device);
+    for (int64_t e = 0; e < N; ++e) {
+        const float* grad_out_e = grad_output.data() + e * out_stride;
+        backend_->gemm_ex(grad_out_e, false, last_im2col_.data() + e * P * Q, true, per_example_kernel_grad.data(), oc,
+                          q, p, 0.0f);
         kernel_grad_.accumulate(per_example_kernel_grad);
-
-        // grad_bias[oc] += sum over Q of grad_out_n[oc][q]
-        Tensor per_example_bias_grad(Shape({out_channels_}), backend_);
-        for (int64_t oc = 0; oc < out_channels_; ++oc) {
-            float sum = 0.0f;
-            for (int64_t q = 0; q < Q; ++q) {
-                sum += grad_out_n[oc * Q + q];
-            }
-            per_example_bias_grad.data()[oc] = sum;
-        }
+        backend_->gemm_ex(grad_out_e, false, ones.data(), false, per_example_bias_grad.data(), oc, q, 1, 0.0f);
         bias_grad_.accumulate(per_example_bias_grad);
-
-        // grad_col = kernel^T(P,out_channels) @ grad_out_n(out_channels,Q) = (P,Q)
-        Tensor grad_col(Shape({P, Q}), backend_);
-        backend_->gemm(kernel_t.data(), grad_out_n, grad_col.data(), static_cast<size_t>(P),
-                        static_cast<size_t>(out_channels_), static_cast<size_t>(Q));
-
-        col2im_into(grad_col.data(), grad_input.data() + n * in_stride, in_channels_, H, W, kernel_h_, kernel_w_,
-                    last_out_h_, last_out_w_);
+        backend_->gemm_ex(kernel_.data(), true, grad_out_e, false, grad_cols.data() + e * P * Q, p, oc, q, 0.0f);
     }
-
+    Tensor grad_input(last_input_.shape(), backend_, device);
+    grad_input.fill(0.0f);
+    backend_->col2im_add(grad_cols.data(), grad_input.data(), static_cast<size_t>(N),
+                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W),
+                         static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
     return grad_input;
 }
 
@@ -276,10 +148,6 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
             "matching the cached forward shape");
     }
 
-    // Dereferences Tensor::data() directly (its own loop, plus col2im_into()) -- not yet
-    // backend-generic. See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
-    // decision.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     const int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     const int64_t Q = last_out_h_ * last_out_w_;
@@ -288,43 +156,18 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     const int64_t in_stride = in_channels_ * H * W;
     const int64_t out_stride = out_channels_ * Q;
 
-    Tensor relevance_in(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
+    // Device-generic (GPU-native-kernels Mission 4): the epsilon rule in patch space (one GPU
+    // thread per patch element, output channels summed in the original order), then folded back.
+    const DeviceType device = kernel_.device();
+    Tensor relevance_cols(Shape({N, P, Q}), backend_, device);
+    backend_->lrp_conv(last_im2col_.data(), kernel_.data(), last_pre_bias_output_.data(), relevance_out.data(),
+                       relevance_cols.data(), static_cast<size_t>(N), static_cast<size_t>(out_channels_),
+                       static_cast<size_t>(P), static_cast<size_t>(Q), config.epsilon);
+    Tensor relevance_in(last_input_.shape(), backend_, device);
     relevance_in.fill(0.0f);
-
-    // Applied independently per example -- each row's relevance redistribution uses only
-    // that row's own cached z/x (last_pre_bias_output_/last_im2col_), no cross-example
-    // coupling.
-    for (int64_t n = 0; n < N; ++n) {
-        const float* relevance_out_n = relevance_out.data() + n * out_stride;
-        const float* pre_bias_n = last_pre_bias_output_.data() + n * out_stride;
-        const float* col_n = last_im2col_.data() + n * P * Q;
-
-        Tensor relevance_col(Shape({P, Q}), backend_);
-        relevance_col.fill(0.0f);
-
-        for (int64_t q = 0; q < Q; ++q) {
-            for (int64_t oc = 0; oc < out_channels_; ++oc) {
-                float z = pre_bias_n[oc * Q + q];
-                float sign = (z >= 0.0f) ? 1.0f : -1.0f;
-                float denom = z + config.epsilon * sign;
-                float r = relevance_out_n[oc * Q + q];
-
-                for (int64_t p = 0; p < P; ++p) {
-                    float w = kernel_.data()[oc * P + p];
-                    float a = col_n[p * Q + q];
-                    relevance_col.data()[p * Q + q] += (a * w / denom) * r;
-                }
-            }
-        }
-
-        col2im_into(relevance_col.data(), relevance_in.data() + n * in_stride, in_channels_, H, W, kernel_h_,
-                    kernel_w_, last_out_h_, last_out_w_);
-    }
-
+    backend_->col2im_add(relevance_cols.data(), relevance_in.data(), static_cast<size_t>(N),
+                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W),
+                         static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
     return relevance_in;
 }
 

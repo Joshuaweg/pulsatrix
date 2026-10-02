@@ -44,9 +44,7 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached forward
      *         output shape.
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(grad_output.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor, matching
-     *       every existing Module subclass's Phase 1.5 scope decision.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -73,8 +71,7 @@ protected:
      *        element for backward()/propagate_relevance() to reuse.
      * @throws std::invalid_argument if input isn't rank-4 (N, C, H, W), or the kernel is
      *         larger than the input (kernel_h &gt; H or kernel_w &gt; W).
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(input.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
@@ -88,7 +85,10 @@ private:
     // Flat (within-window) offset of the argmax for each output element, indexed the same
     // way as the output buffer (n, c, oh, ow) -- row-major flat index into (H, W) input
     // plane, i.e. ih * W + iw. Sized N*C*out_h*out_w after a real forward() call.
-    std::vector<int64_t> argmax_flat_index_;
+    // Stored as whole-number floats on the input's device (exact below 2^24 -- far above any
+    // plane this module pools), consumed by DeviceBackend::max_unpool (GPU-native-kernels
+    // Mission 4).
+    Tensor argmax_flat_index_ = Tensor(Shape({0}), backend_);
     bool has_forwarded_ = false;
 };
 
