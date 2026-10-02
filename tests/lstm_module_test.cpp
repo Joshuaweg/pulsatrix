@@ -374,45 +374,5 @@ TEST_F(LSTMModuleTest, RelevanceSeededAtLastStepReachesEarlierTimesteps) {
     EXPECT_GT(early, 1e-6f);
 }
 
-using LSTMModuleDeathTest = LSTMModuleTest;
-
-// forward_impl/backward/propagate_relevance all dereference Tensor::data() in raw host
-// loops (including the sigmoid/tanh workarounds) -- undefined behavior on a CUDA-backed
-// Tensor. See RNNModuleDeathTest for the mislabeled-Tensor testing pattern this reuses.
-// Written from the start of this mission, not deferred -- the exact discipline Mission 7's
-// remediation established.
-TEST_F(LSTMModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    LSTMModule lstm(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)lstm.forward(input); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(LSTMModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    LSTMModule lstm(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)lstm.forward(input);
-
-    Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)lstm.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(LSTMModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    LSTMModule lstm(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)lstm.forward(input);
-
-    Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)lstm.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

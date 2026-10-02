@@ -3,6 +3,7 @@
 #include "pointwise_math.hpp"
 #include "cnn_math.hpp"
 #include "lrp_math.hpp"
+#include "recurrent_math.hpp"
 #include "row_math.hpp"
 
 #include <algorithm>
@@ -692,6 +693,41 @@ void CPUBackend::group_norm_backward(const float* grad_out, const float* gamma, 
                                            static_cast<int64_t>(spatial), static_cast<int64_t>(num_groups),
                                            static_cast<int64_t>(group_size), static_cast<int64_t>(e),
                                            static_cast<int64_t>(g));
+        }
+    }
+}
+
+// ---- GPU-native-kernels Mission 5 ----------------------------------------------------------
+
+void CPUBackend::copy_2d(float* dst, size_t dst_stride, const float* src, size_t src_stride, size_t rows,
+                         size_t cols) {
+    for (size_t r = 0; r < rows; ++r) {
+        std::memcpy(dst + r * dst_stride, src + r * src_stride, cols * sizeof(float));
+    }
+}
+
+void CPUBackend::accumulate_rows(const float* in, float* out, size_t rows, size_t cols) {
+    for (size_t r = 0; r < rows; ++r) {
+        for (size_t j = 0; j < cols; ++j) {
+            out[j] += in[r * cols + j];
+        }
+    }
+}
+
+void CPUBackend::recurrent_cell(RecurrentCellOp op, const RecurrentCellArgs& args, size_t n) {
+    for (size_t i = 0; i < n; ++i) {
+        recurrent::cell(op, args, static_cast<int64_t>(i));
+    }
+}
+
+void CPUBackend::gru_lrp_hprev(const float* h_prev, const float* w_hn, const float* hn, const float* r_term_b,
+                               const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) {
+    for (size_t n = 0; n < rows; ++n) {
+        for (size_t kk = 0; kk < hidden; ++kk) {
+            r_hprev[n * hidden + kk] =
+                recurrent::gru_lrp_hprev(h_prev + n * hidden, w_hn, hn + n * hidden, r_term_b + n * hidden,
+                                         direct + n * hidden, static_cast<int64_t>(kk), static_cast<int64_t>(hidden),
+                                         eps);
         }
     }
 }

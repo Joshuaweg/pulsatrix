@@ -241,44 +241,5 @@ TEST_F(RNNModuleTest, PropagateRelevanceConservesExactly) {
     EXPECT_NEAR(sum_in, sum_out, 1e-2f);
 }
 
-using RNNModuleDeathTest = RNNModuleTest;
-
-// forward_impl/backward/propagate_relevance all dereference Tensor::data() in raw host
-// loops -- undefined behavior on a CUDA-backed Tensor. See LinearModuleDeathTest for the
-// mislabeled-Tensor testing pattern this reuses. Written from the start of this mission,
-// not deferred -- the exact discipline Mission 7's remediation established.
-TEST_F(RNNModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RNNModule rnn(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rnn.forward(input); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(RNNModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RNNModule rnn(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)rnn.forward(input);
-
-    Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rnn.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(RNNModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RNNModule rnn(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)rnn.forward(input);
-
-    Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rnn.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix
