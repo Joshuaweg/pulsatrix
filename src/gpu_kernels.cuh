@@ -19,6 +19,7 @@
 #include "cnn_math.hpp"
 #include "lrp_math.hpp"
 #include "pointwise_math.hpp"
+#include "recurrent_math.hpp"
 #include "row_math.hpp"
 #include "pulsatrix/device_backend.hpp"
 
@@ -834,6 +835,48 @@ __global__ void group_norm_param_grads_kernel(const float* grad_out, const float
         cnn::group_norm_param_grads_channel(grad_out, xhat, gamma_grad, beta_grad, static_cast<int64_t>(n),
                                             static_cast<int64_t>(c), static_cast<int64_t>(spatial),
                                             static_cast<int64_t>(ch));
+    }
+}
+
+// ---- GPU-native-kernels Mission 5 ----------------------------------------------------------
+
+__global__ void copy_2d_kernel(float* dst, size_t dst_stride, const float* src, size_t src_stride, size_t rows,
+                               size_t cols) {
+    size_t idx = global_index();
+    if (idx < rows * cols) {
+        const size_t r = idx / cols;
+        const size_t c = idx % cols;
+        dst[r * dst_stride + c] = src[r * src_stride + c];
+    }
+}
+
+// One thread per column, rows in order -- the CPU's association.
+__global__ void accumulate_rows_kernel(const float* in, float* out, size_t rows, size_t cols) {
+    size_t j = global_index();
+    if (j < cols) {
+        float acc = out[j];
+        for (size_t r = 0; r < rows; ++r) {
+            acc += in[r * cols + j];
+        }
+        out[j] = acc;
+    }
+}
+
+__global__ void recurrent_cell_kernel(int op, RecurrentCellArgs args, size_t n) {
+    size_t i = global_index();
+    if (i < n) {
+        recurrent::cell(static_cast<RecurrentCellOp>(op), args, static_cast<int64_t>(i));
+    }
+}
+
+__global__ void gru_lrp_hprev_kernel(const float* h_prev, const float* w_hn, const float* hn, const float* r_term_b,
+                                     const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) {
+    size_t idx = global_index();
+    if (idx < rows * hidden) {
+        const size_t n = idx / hidden;
+        r_hprev[idx] = recurrent::gru_lrp_hprev(h_prev + n * hidden, w_hn, hn + n * hidden, r_term_b + n * hidden,
+                                                direct + n * hidden, static_cast<int64_t>(idx % hidden),
+                                                static_cast<int64_t>(hidden), eps);
     }
 }
 

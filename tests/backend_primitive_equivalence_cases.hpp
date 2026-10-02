@@ -7,6 +7,7 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <memory>
 #include <random>
 #include <vector>
 
@@ -249,6 +250,75 @@ inline void PermuteGatherScatter(DeviceBackend& gpu) {
     EXPECT_EQ(acc, dtable.host());  // same accumulation order: bit-exact, not merely close
 }
 
+// ---- Mission 5 -----------------------------------------------------------------------------
+
+inline void Copy2dAndAccumulateRows(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const size_t rows = 5, cols = 7, src_stride = 21, dst_stride = 9;
+    std::vector<float> src = Random(rows * src_stride, 800), dst = Random(rows * dst_stride, 801);
+    std::vector<float> cpu_dst = dst;
+    cpu.copy_2d(cpu_dst.data() + 1, dst_stride, src.data() + 3, src_stride, rows, cols);
+    DeviceBuffer dsrc(gpu, src), ddst(gpu, dst);
+    gpu.copy_2d(ddst.get() + 1, dst_stride, dsrc.get() + 3, src_stride, rows, cols);
+    EXPECT_EQ(cpu_dst, ddst.host());
+
+    std::vector<float> in = Random(9 * 6, 802), out = Random(6, 803);
+    std::vector<float> cpu_out = out;
+    cpu.accumulate_rows(in.data(), cpu_out.data(), 9, 6);
+    DeviceBuffer din(gpu, in), dout(gpu, out);
+    gpu.accumulate_rows(din.get(), dout.get(), 9, 6);
+    EXPECT_EQ(cpu_out, dout.host());  // same association: bit-exact
+}
+
+// Every RecurrentCellOp on random inputs (gates in (0,1), activations in (-1,1)).
+inline void RecurrentCells(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const size_t n = 300;
+    for (RecurrentCellOp op : {RecurrentCellOp::RnnBackward, RecurrentCellOp::LstmForward,
+                               RecurrentCellOp::LstmBackward, RecurrentCellOp::LstmLrp,
+                               RecurrentCellOp::GruBackward, RecurrentCellOp::GruLrp}) {
+        std::vector<std::vector<float>> ins, cpu_outs(6, std::vector<float>(n, 0.0f));
+        for (unsigned k = 0; k < 10; ++k) {
+            ins.push_back(Random(n, 810 + k, 0.05f, 0.95f));
+        }
+        RecurrentCellArgs ca;
+        for (size_t k = 0; k < 10; ++k) {
+            ca.in[k] = ins[k].data();
+        }
+        for (size_t k = 0; k < 6; ++k) {
+            ca.out[k] = cpu_outs[k].data();
+        }
+        ca.eps = 1e-6f;
+        cpu.recurrent_cell(op, ca, n);
+
+        std::vector<std::unique_ptr<DeviceBuffer>> din, dout;
+        RecurrentCellArgs ga;
+        for (size_t k = 0; k < 10; ++k) {
+            din.push_back(std::make_unique<DeviceBuffer>(gpu, ins[k]));
+            ga.in[k] = din.back()->get();
+        }
+        for (size_t k = 0; k < 6; ++k) {
+            dout.push_back(std::make_unique<DeviceBuffer>(gpu, std::vector<float>(n, 0.0f)));
+            ga.out[k] = dout.back()->get();
+        }
+        ga.eps = 1e-6f;
+        gpu.recurrent_cell(op, ga, n);
+        for (size_t k = 0; k < 6; ++k) {
+            ExpectNear(cpu_outs[k], dout[k]->host());
+        }
+    }
+
+    const size_t rows = 4, hidden = 8;
+    std::vector<float> hp = Random(rows * hidden, 830), w = Random(hidden * hidden, 831),
+                       hn = Random(rows * hidden, 832), rtb = Random(rows * hidden, 833),
+                       direct = Random(rows * hidden, 834), out(rows * hidden);
+    cpu.gru_lrp_hprev(hp.data(), w.data(), hn.data(), rtb.data(), direct.data(), out.data(), rows, hidden, 1e-6f);
+    DeviceBuffer dhp(gpu, hp), dw(gpu, w), dhn(gpu, hn), drtb(gpu, rtb), ddirect(gpu, direct),
+        dres(gpu, std::vector<float>(rows * hidden));
+    gpu.gru_lrp_hprev(dhp.get(), dw.get(), dhn.get(), drtb.get(), ddirect.get(), dres.get(), rows, hidden, 1e-6f);
+    ExpectNear(out, dres.host(), 1e-3f);  // epsilon-rule ratios: relevance-scale bound
+}
+
 }  // namespace primitive_equivalence
 }  // namespace pulsatrix
 
@@ -287,6 +357,10 @@ inline void PermuteGatherScatter(DeviceBackend& gpu) {
         ::pulsatrix::primitive_equivalence::DropoutMasksAreBitIdentical(MEMBER);                   \
     }                                                                                               \
     TEST_F(FIXTURE, BceWithLogitsMatchesCPU) { ::pulsatrix::primitive_equivalence::BceWithLogits(MEMBER); } \
+    TEST_F(FIXTURE, Copy2dAndAccumulateRowsMatchCPUBitExactly) {                                    \
+        ::pulsatrix::primitive_equivalence::Copy2dAndAccumulateRows(MEMBER);                       \
+    }                                                                                               \
+    TEST_F(FIXTURE, RecurrentCellOpsMatchCPU) { ::pulsatrix::primitive_equivalence::RecurrentCells(MEMBER); } \
     TEST_F(FIXTURE, PermuteGatherScatterMatchCPUBitExactly) {                                       \
         ::pulsatrix::primitive_equivalence::PermuteGatherScatter(MEMBER);                          \
     }
