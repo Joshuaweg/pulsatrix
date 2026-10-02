@@ -9,8 +9,9 @@ computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a
 Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward math — never a
 placeholder or a post-hoc explainer bolted on afterward. Rules that conserve relevance by
 construction are conservation-tested; the AttnLRP rules for softmax and attention do not conserve
-exactly, and their tests report the measured gap rather than assert it away. LRP currently
-implements the ε-rule family only.
+exactly, and their tests report the measured gap rather than assert it away. Linear and Conv2D
+layers support the ε, γ, α-β (including z⁺) and ZBox rules, assignable per layer through
+Zennit-style composites; every other layer uses its own fixed rule.
 
 [![CI](https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml)
 
