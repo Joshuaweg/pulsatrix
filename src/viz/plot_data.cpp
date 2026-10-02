@@ -94,6 +94,39 @@ std::vector<WaterfallStep> ToWaterfallSteps(const Attribution& attr, float basel
     return steps;
 }
 
+std::vector<WaterfallBar> ToWaterfallBars(const std::vector<WaterfallStep>& steps, float baseline_value) {
+    std::vector<WaterfallBar> bars;
+    bars.reserve(steps.size());
+    float previous = baseline_value;
+    for (const WaterfallStep& step : steps) {
+        bars.push_back(WaterfallBar{std::min(previous, step.cumulative), std::max(previous, step.cumulative),
+                                    step.delta >= 0.0f});
+        previous = step.cumulative;
+    }
+    return bars;
+}
+
+std::string CircuitNodeDisplayLabel(const CircuitNode& node) {
+    if (node.label.has_value() && !node.label->empty()) {
+        return *node.label;
+    }
+    const char* op = "Op";
+    switch (node.op_type) {
+        case OpType::Linear: op = "Linear"; break;
+        case OpType::Conv: op = "Conv"; break;
+        case OpType::Activation: op = "Activation"; break;
+        case OpType::Elementwise: op = "Elementwise"; break;
+        case OpType::Reduction: op = "Reduction"; break;
+        case OpType::Normalization: op = "Normalization"; break;
+        case OpType::Pooling: op = "Pooling"; break;
+        case OpType::Embedding: op = "Embedding"; break;
+        case OpType::Composite: op = "Composite"; break;
+        case OpType::Recurrent: op = "Recurrent"; break;
+        case OpType::Attention: op = "Attention"; break;
+    }
+    return std::string(op) + " #" + std::to_string(node.id);
+}
+
 HeatmapGrid ToSaliencyHeatmap(const Attribution& attr) {
     const Shape& shape = attr.values.shape();
     int64_t rows;
@@ -104,9 +137,13 @@ HeatmapGrid ToSaliencyHeatmap(const Attribution& attr) {
     } else if (shape.rank() == 3 && shape.dim(0) == 1) {
         rows = shape.dim(1);
         cols = shape.dim(2);
+    } else if (shape.rank() == 4 && shape.dim(0) == 1 && shape.dim(1) == 1) {
+        rows = shape.dim(2);
+        cols = shape.dim(3);
     } else {
         throw std::invalid_argument(
-            "ToSaliencyHeatmap: attr.values must be rank 2, or rank 3 with a single leading channel");
+            "ToSaliencyHeatmap: attr.values must be rank 2, rank 3 with a single leading channel, or "
+            "rank 4 of shape (1, 1, H, W)");
     }
 
     HeatmapGrid grid;
@@ -114,6 +151,22 @@ HeatmapGrid ToSaliencyHeatmap(const Attribution& attr) {
     grid.cols = cols;
     grid.values.assign(attr.values.data(), attr.values.data() + attr.values.numel());
     return grid;
+}
+
+HeatmapColorScale ComputeHeatmapColorScale(const HeatmapGrid& grid) {
+    float max_abs = 0.0f;
+    bool any_negative = false;
+    for (float v : grid.values) {
+        max_abs = std::max(max_abs, std::abs(v));
+        any_negative = any_negative || v < 0.0f;
+    }
+    if (max_abs <= 0.0f) {
+        return HeatmapColorScale{0.0f, 1.0f, false};
+    }
+    if (any_negative) {
+        return HeatmapColorScale{-max_abs, max_abs, true};
+    }
+    return HeatmapColorScale{0.0f, max_abs, false};
 }
 
 RgbImageBuffer ToRgbImageBuffer(const Tensor& image_chw) {
