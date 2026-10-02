@@ -82,3 +82,10 @@
  *        (Successive Halving, Hyperband, ASHA) -- also consumed directly by @ref evolutionary
  *        CMA-ES and Population Based Training.
  */
+
+/**
+ * @defgroup system_monitoring System Monitoring
+ * @brief Live CPU/GPU utilization, memory and temperature sampling with a streaming JSON
+ *        Lines / CSV log (SystemMonitor). Every metric a platform cannot read is reported as
+ *        missing (std::nullopt) with a discoverable reason -- never as a fabricated zero.
+ */

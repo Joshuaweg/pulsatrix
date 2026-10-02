@@ -143,6 +143,9 @@ add_library(pulsatrix_core
     src/lrp_conservation.cpp
     src/lrp_rules.cpp
     src/explainer_stability.cpp
+    src/system_monitor.cpp
+    src/system_monitor_linux.cpp
+    src/system_monitor_host.cpp
     src/implot_metrics_sink.cpp
     src/viz/colormap.cpp
     src/viz/plot_data.cpp
@@ -155,6 +158,14 @@ target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
 # library linked explicitly (not implicit via any other dependency).
 find_package(Threads REQUIRED)
 target_link_libraries(pulsatrix_core PUBLIC Threads::Threads)
+
+# SystemMonitor loads NVML at runtime (dlopen / LoadLibrary) -- never a link-time NVIDIA
+# dependency. CMAKE_DL_LIBS is libdl on glibc < 2.34 and empty where dlopen is in libc;
+# psapi (GetProcessMemoryInfo) is a Windows system library.
+target_link_libraries(pulsatrix_core PRIVATE ${CMAKE_DL_LIBS})
+if(WIN32)
+    target_link_libraries(pulsatrix_core PRIVATE psapi)
+endif()
 
 # stb_image (public-domain, single-header image decoder) -- campaign_exai_dl_library_data_pipeline
 # Phase 2 Decision Point 2: chosen over OpenCV (disproportionate build/dependency footprint
@@ -421,6 +432,15 @@ if(PULSATRIX_BUILD_EXAMPLES)
 
     add_executable(sac_continuous_cartpole_demo examples/sac_continuous_cartpole_demo.cpp)
     target_link_libraries(sac_continuous_cartpole_demo PRIVATE pulsatrix_core)
+
+    # Runs its gemm workload on the GPU backend this build has (HIP, else CUDA, else CPU).
+    add_executable(system_monitor_demo examples/system_monitor_demo.cpp)
+    target_link_libraries(system_monitor_demo PRIVATE pulsatrix_core)
+    if(PULSATRIX_ENABLE_HIP)
+        target_compile_definitions(system_monitor_demo PRIVATE PULSATRIX_DEMO_WITH_HIP)
+    elseif(PULSATRIX_ENABLE_CUDA)
+        target_compile_definitions(system_monitor_demo PRIVATE PULSATRIX_DEMO_WITH_CUDA)
+    endif()
 
     # Recipes (docs campaign) -- small, didactic, one-tool-at-a-time programs, each paired
     # with a docs/recipes/<section>/<name>.md page. See docs/recipes/index.md.

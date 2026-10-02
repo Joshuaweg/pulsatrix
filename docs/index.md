@@ -74,6 +74,10 @@ data into charts — feature-importance bars, waterfalls, saliency heatmaps, a c
 view, and a live `TrainingDashboard` — built on a pure, always-available data-transform layer
 that stays unit-tested independent of the GUI stack.
 
+**System monitoring**: `SystemMonitor` samples CPU/GPU utilization, memory and temperatures
+live (Linux /proc + hwmon + amdgpu sysfs, Windows Win32, NVIDIA via runtime-loaded NVML) and
+streams them to a JSON Lines/CSV log; unreadable metrics are reported as missing, never as zero.
+
 **Bindings**: pybind11 (`bindings/pulsatrix_py.cpp`) exposing `Tensor`, core modules, and the
 explainer suite to Python.
 
