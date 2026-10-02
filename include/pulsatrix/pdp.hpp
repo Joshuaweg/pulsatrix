@@ -31,6 +31,8 @@ namespace pulsatrix {
  *       baseline and LIME's perturbation-around-x already established.
  * @note Takes a forward-pass callable, not ExplainerContext& -- model-agnosticism by
  *       construction, same pattern as LIME/KernelSHAP.
+ * @note Device-generic host boundary: each background instance is read to the host once; the
+ *       swept copies are uploaded beside it and only f(z)[target] is read back.
  */
 class PDP {
 public:
@@ -63,23 +65,32 @@ public:
         PULSATRIX_ASSERT(grid_size >= 1);
         PULSATRIX_ASSERT(feature_index >= 0 && feature_index < background[0].numel());
 
-        Tensor curve(Shape({grid_size}), backend);
+        std::vector<std::vector<float>> background_values;
+        background_values.reserve(background.size());
+        for (const Tensor& instance : background) {
+            background_values.push_back(instance.to_host_vector());
+        }
+        std::vector<float> curve(static_cast<size_t>(grid_size));
 
         for (int64_t k = 0; k < grid_size; ++k) {
             float v = (grid_size == 1) ? grid_min : grid_min + static_cast<float>(k) * (grid_max - grid_min) /
                                                                     static_cast<float>(grid_size - 1);
 
             float sum = 0.0f;
-            for (const Tensor& instance : background) {
-                Tensor perturbed(instance);
-                perturbed.data()[feature_index] = v;
+            for (size_t b = 0; b < background.size(); ++b) {
+                const Tensor& instance = background[b];
+                std::vector<float> perturbed_values = background_values[b];
+                perturbed_values[static_cast<size_t>(feature_index)] = v;
+                Tensor perturbed(instance.shape(), instance.backend(), perturbed_values, instance.device());
                 Tensor output = predict(perturbed);
-                sum += output.data()[target_index];
+                sum += output.read_element(target_index);
             }
-            curve.data()[k] = sum / static_cast<float>(background.size());
+            curve[static_cast<size_t>(k)] = sum / static_cast<float>(background.size());
         }
 
-        return Attribution{"pdp", std::move(curve),
+        Tensor curve_tensor(Shape({grid_size}), explainer_detail::backend_beside(background[0], backend), curve,
+                            background[0].device());
+        return Attribution{"pdp", std::move(curve_tensor),
                             {{"feature_index", std::to_string(feature_index)},
                              {"target_index", std::to_string(target_index)},
                              {"grid_size", std::to_string(grid_size)}}};

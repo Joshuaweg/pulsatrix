@@ -35,6 +35,8 @@ namespace pulsatrix {
  *       (the local sensitivity, this method's actual Attribution) needs fitting.
  * @note A pure graph-free explainer -- no core (Tensor/ComputationGraph/Autograd/Module)
  *       or ExplainerContext changes needed.
+ * @note Device-generic host boundary: perturbation and the surrogate fit run on the host;
+ *       each perturbed sample is uploaded beside the input and only f(z)[target] is read back.
  */
 class LIME {
 public:
@@ -70,9 +72,11 @@ public:
 
         Tensor base_output = predict(input);
         PULSATRIX_ASSERT(target_index >= 0 && target_index < base_output.numel());
-        float base_value = base_output.data()[target_index];
+        float base_value = base_output.read_element(target_index);
 
         int64_t n_features = input.numel();
+        const std::vector<float> input_values = input.to_host_vector();
+        DeviceBackend* input_backend = explainer_detail::backend_beside(input, backend);
         std::mt19937 rng(seed);
         std::normal_distribution<float> noise(0.0f, sigma);
 
@@ -84,18 +88,19 @@ public:
         weights.reserve(static_cast<size_t>(num_samples));
 
         for (int64_t s = 0; s < num_samples; ++s) {
-            Tensor perturbed(input.shape(), backend);
+            std::vector<float> perturbed_values(static_cast<size_t>(n_features));
             std::vector<float> delta(static_cast<size_t>(n_features));
             float squared_distance = 0.0f;
             for (int64_t i = 0; i < n_features; ++i) {
                 float d = noise(rng);
                 delta[static_cast<size_t>(i)] = d;
-                perturbed.data()[i] = input.data()[i] + d;
+                perturbed_values[static_cast<size_t>(i)] = input_values[static_cast<size_t>(i)] + d;
                 squared_distance += d * d;
             }
+            Tensor perturbed(input.shape(), input_backend, perturbed_values, input.device());
 
             Tensor output = predict(perturbed);
-            float centered_target = output.data()[target_index] - base_value;
+            float centered_target = output.read_element(target_index) - base_value;
             float weight = std::exp(-squared_distance / (2.0f * sigma * sigma));
 
             samples.push_back(std::move(delta));
@@ -105,10 +110,8 @@ public:
 
         std::vector<float> coefficients = fit_weighted_linear_regression(samples, targets, weights, l2_lambda);
 
-        Tensor values(input.shape(), backend);
-        for (int64_t i = 0; i < n_features; ++i) {
-            values.data()[i] = coefficients[static_cast<size_t>(i)];
-        }
+        coefficients.resize(static_cast<size_t>(n_features));
+        Tensor values(input.shape(), input_backend, coefficients, input.device());
 
         return Attribution{"lime", std::move(values),
                             {{"target_index", std::to_string(target_index)},

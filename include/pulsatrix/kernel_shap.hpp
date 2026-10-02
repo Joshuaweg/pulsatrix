@@ -59,6 +59,8 @@ inline float ShapKernelWeight(int64_t n, int64_t coalition_size) {
  *       enumeration), not the charter's excluded O(2^n)/O(n!) brute-force-at-scale case.
  * @note Takes a forward-pass callable, not ExplainerContext& -- model-agnosticism by
  *       construction, same pattern as LIME.
+ * @note Device-generic host boundary: coalitions are built on the host from one read of
+ *       input/baseline, uploaded beside the input, and only f(z)[target] is read back.
  */
 class KernelSHAP {
 public:
@@ -84,14 +86,20 @@ public:
             throw std::invalid_argument("KernelSHAP::explain: input feature count must be in [1, 20]");
         }
 
+        const std::vector<float> input_values = input.to_host_vector();
+        const std::vector<float> baseline_values = baseline.to_host_vector();
+        DeviceBackend* input_backend = explainer_detail::backend_beside(input, backend);
+        std::vector<float> z_values(static_cast<size_t>(n));
+
         auto coalition_value = [&](uint64_t mask) {
-            Tensor z(input.shape(), backend);
             for (int64_t i = 0; i < n; ++i) {
                 bool active = ((mask >> i) & 1u) != 0;
-                z.data()[i] = active ? input.data()[i] : baseline.data()[i];
+                const auto idx = static_cast<size_t>(i);
+                z_values[idx] = active ? input_values[idx] : baseline_values[idx];
             }
+            Tensor z(input.shape(), input_backend, z_values, input.device());
             Tensor out = predict(z);
-            return out.data()[target_index];
+            return out.read_element(target_index);
         };
 
         const float f_baseline = coalition_value(0);
@@ -140,10 +148,7 @@ public:
             phi[static_cast<size_t>(n - 1)] = total_diff - sum_reduced;
         }
 
-        Tensor values(input.shape(), backend);
-        for (int64_t i = 0; i < n; ++i) {
-            values.data()[i] = phi[static_cast<size_t>(i)];
-        }
+        Tensor values(input.shape(), input_backend, phi, input.device());
 
         return Attribution{"kernel_shap", std::move(values), {{"target_index", std::to_string(target_index)}}};
     }
