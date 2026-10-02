@@ -13,6 +13,7 @@ var classpulsatrix_1_1LinearModule =
     [ "set_bias", "classpulsatrix_1_1LinearModule.html#aadfa38a958379182534527247154e29e", null ],
     [ "set_weight", "classpulsatrix_1_1LinearModule.html#a9aee297a7e982b199628e1e64b1c08bf", null ],
     [ "set_weight", "classpulsatrix_1_1LinearModule.html#af067e137629aa0a2abafa8dddd557c95", null ],
+    [ "supports_lrp_rule", "classpulsatrix_1_1LinearModule.html#a7e120c973f4f9ead0b886e490039866a", null ],
     [ "weight", "classpulsatrix_1_1LinearModule.html#a29fa2150e40fca9d7af1b9efa4ca097c", null ],
     [ "weight_grad", "classpulsatrix_1_1LinearModule.html#ae14ee1e63296f573f6411a5f275b48ae", null ]
 ];

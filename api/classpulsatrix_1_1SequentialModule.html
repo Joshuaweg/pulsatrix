@@ -140,6 +140,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa47cc87098f611d4f7222654b2f60f8c" id="r_aa47cc87098f611d4f7222654b2f60f8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html#aa47cc87098f611d4f7222654b2f60f8c">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:aa47cc87098f611d4f7222654b2f60f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chains <a class="el" href="classpulsatrix_1_1SequentialModule.html#aa47cc87098f611d4f7222654b2f60f8c" title="Chains propagate_relevance() across layers_ in reverse order.">propagate_relevance()</a> across layers_ in reverse order.  <br /></td></tr>
 <tr class="separator:aa47cc87098f611d4f7222654b2f60f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bc86e038503cc22bb6949cc768b71f4" id="r_a1bc86e038503cc22bb6949cc768b71f4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html#a1bc86e038503cc22bb6949cc768b71f4">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule) const override</td></tr>
+<tr class="memdesc:a1bc86e038503cc22bb6949cc768b71f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A rule is supported iff every contained layer supports it (the config is forwarded to all).  <br /></td></tr>
+<tr class="separator:a1bc86e038503cc22bb6949cc768b71f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3faf46a52d7f3913ca95d2c66802bf5" id="r_ad3faf46a52d7f3913ca95d2c66802bf5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html#ad3faf46a52d7f3913ca95d2c66802bf5">parameters</a> () override</td></tr>
 <tr class="memdesc:ad3faf46a52d7f3913ca95d2c66802bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenates every contained layer's own <a class="el" href="classpulsatrix_1_1SequentialModule.html#ad3faf46a52d7f3913ca95d2c66802bf5" title="Concatenates every contained layer&#39;s own parameters().">parameters()</a>.  <br /></td></tr>
 <tr class="separator:ad3faf46a52d7f3913ca95d2c66802bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -468,6 +471,36 @@ propagate_relevance needs no new <a class="el" href="classpulsatrix_1_1LRP.html"
 </dl>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a1bc86e038503cc22bb6949cc768b71f4" name="a1bc86e038503cc22bb6949cc768b71f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bc86e038503cc22bb6949cc768b71f4">&#9670;&#160;</a></span>supports_lrp_rule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::SequentialModule::supports_lrp_rule </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A rule is supported iff every contained layer supports it (the config is forwarded to all). </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

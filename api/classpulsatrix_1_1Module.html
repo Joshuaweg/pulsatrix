@@ -185,6 +185,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0b8ddb1d24d145f5c55479433847e683" id="r_a0b8ddb1d24d145f5c55479433847e683"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config)=0</td></tr>
 <tr class="memdesc:a0b8ddb1d24d145f5c55479433847e683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes this module's contribution to <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation.  <br /></td></tr>
 <tr class="separator:a0b8ddb1d24d145f5c55479433847e683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad2aa6565d456d5a57be421c05537b6" id="r_acad2aa6565d456d5a57be421c05537b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule) const</td></tr>
+<tr class="memdesc:acad2aa6565d456d5a57be421c05537b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">propagate_relevance()</a> implements <code>rule</code> (no silent fallback: callers such as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass()</a> throw rather than run a module on a rule it does not implement).  <br /></td></tr>
+<tr class="separator:acad2aa6565d456d5a57be421c05537b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6f8219e36c1822dbdd24e0c98e78b8a" id="r_ac6f8219e36c1822dbdd24e0c98e78b8a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output)=0</td></tr>
 <tr class="memdesc:ac6f8219e36c1822dbdd24e0c98e78b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input, given the gradient w.r.t. its output. Must be called after <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> &ndash; uses state cached from that call.  <br /></td></tr>
 <tr class="separator:ac6f8219e36c1822dbdd24e0c98e78b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -579,6 +582,37 @@ A module does not build or own graph structure itself &ndash; <a class="el" href
 Deliberately NOT extended to <a class="el" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e...">BatchNormModule</a>'s running-mean/variance question (flagged, still open) &ndash; that is additive numerical-tracking state, a genuinely different scope than this boolean toggle, and touching a closed mission's module is its own decision, not bundled in here. </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a5949a91915019e6d0067f167f908c180">pulsatrix::MultiHeadAttentionModule</a>, <a class="el" href="classpulsatrix_1_1ResidualModule.html#a366cf671459f34f026677d08d6bbc48a">pulsatrix::ResidualModule</a>, <a class="el" href="classpulsatrix_1_1SequentialModule.html#a8a42d07df52692b897ccf0b5ab9891a7">pulsatrix::SequentialModule</a>, and <a class="el" href="classpulsatrix_1_1TransformerBlock.html#af80237833850ddabf8613bfeacb16879">pulsatrix::TransformerBlock</a>.</p>
+
+</div>
+</div>
+<a id="acad2aa6565d456d5a57be421c05537b6" name="acad2aa6565d456d5a57be421c05537b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acad2aa6565d456d5a57be421c05537b6">&#9670;&#160;</a></span>supports_lrp_rule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool pulsatrix::Module::supports_lrp_rule </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">propagate_relevance()</a> implements <code>rule</code> (no silent fallback: callers such as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass()</a> throw rather than run a module on a rule it does not implement). </p>
+<dl class="section note"><dt>Note</dt><dd>Default: only <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa99f2b3f30bec5a8826333eaec7ce7044">LRPRule::Epsilon</a>, the rule every module implements. Overridden by <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> / <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a> (all rules), by parameter-free pass-through modules whose relevance rule does not read the config at all, and by <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> (all layers). </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classpulsatrix_1_1SequentialModule.html#a1bc86e038503cc22bb6949cc768b71f4">pulsatrix::SequentialModule</a>, <a class="el" href="classpulsatrix_1_1Conv2DModule.html#a645f7dcb0204de2ec34ca34432d56f58">pulsatrix::Conv2DModule</a>, <a class="el" href="classpulsatrix_1_1DropoutModule.html#a78a8b39c25c5e743f86420a564bb9430">pulsatrix::DropoutModule</a>, <a class="el" href="classpulsatrix_1_1FlattenModule.html#ab1a96e1b510bdbabb96cf21a26f70b1d">pulsatrix::FlattenModule</a>, <a class="el" href="classpulsatrix_1_1LinearModule.html#a7e120c973f4f9ead0b886e490039866a">pulsatrix::LinearModule</a>, <a class="el" href="classpulsatrix_1_1MaxPool2DModule.html#a3701b7315d03d027f9872886bf5e2f95">pulsatrix::MaxPool2DModule</a>, and <a class="el" href="classpulsatrix_1_1ReluModule.html#a5692ab8c875f1d17d627a6795f01694b">pulsatrix::ReluModule</a>.</p>
 
 </div>
 </div>

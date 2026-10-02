@@ -8,5 +8,6 @@ var searchData=
   ['reward_5',['reward',['../structpulsatrix_1_1StepResult.html#a6d4011aa309bc30601915d87dab33383',1,'pulsatrix::StepResult']]],
   ['rewards_6',['rewards',['../structpulsatrix_1_1ReplayBatch.html#a5b67f2f762ea75616afd4f1fe9cfd12c',1,'pulsatrix::ReplayBatch']]],
   ['rows_7',['rows',['../structpulsatrix_1_1CsvTable.html#a382cf4a2da8b53e079dae6ef705f8c8d',1,'pulsatrix::CsvTable::rows'],['../structpulsatrix_1_1RlRowArgs.html#a3cc8d89e08f6f3425270bc2f0d58af3e',1,'pulsatrix::RlRowArgs::rows'],['../structpulsatrix_1_1HeatmapGrid.html#aaed2dbeebcfc74ae63b85207681232ae',1,'pulsatrix::HeatmapGrid::rows']]],
-  ['rung_8',['rung',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a3ca06fb5b61ce6ea3a425b909a43c99f',1,'pulsatrix::detail::ASHACandidate']]]
+  ['rule_8',['rule',['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig']]],
+  ['rung_9',['rung',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a3ca06fb5b61ce6ea3a425b909a43c99f',1,'pulsatrix::detail::ASHACandidate']]]
 ];

@@ -49,6 +49,7 @@ var classpulsatrix_1_1CUDABackend =
     [ "lrp_residual_split", "classpulsatrix_1_1CUDABackend.html#a3509ea39cd8cf23b816b2292f774bed4", null ],
     [ "lrp_rope", "classpulsatrix_1_1CUDABackend.html#a33d3c592d9ffb44de369c6ced6fb3f9d", null ],
     [ "lrp_softmax_rows", "classpulsatrix_1_1CUDABackend.html#abe1294ec5de2d1366f8bafd46423d63d", null ],
+    [ "lrp_stabilized_divide", "classpulsatrix_1_1CUDABackend.html#a71b749c1f3494ccf836424138b9f11a6", null ],
     [ "max_pool_forward", "classpulsatrix_1_1CUDABackend.html#a3b3ec19f4a1c07a89e4501fb6e657c0e", null ],
     [ "max_unpool", "classpulsatrix_1_1CUDABackend.html#aa7fc84741c1cbfca957f5e9b978532bc", null ],
     [ "mul", "classpulsatrix_1_1CUDABackend.html#aa91c1767a9c559e2fe39c2cd6971c7fa", null ],

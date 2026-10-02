@@ -9,5 +9,6 @@ var classpulsatrix_1_1Module =
     [ "op_type", "classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e", null ],
     [ "parameters", "classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f", null ],
     [ "propagate_relevance", "classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683", null ],
-    [ "set_training", "classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5", null ]
+    [ "set_training", "classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5", null ],
+    [ "supports_lrp_rule", "classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6", null ]
 ];

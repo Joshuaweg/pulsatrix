@@ -113,6 +113,9 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacepulsatrix_1_1explainer__detail" id="r_namespacepulsatrix_1_1explainer__detail"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1explainer__detail.html">explainer_detail</a></td></tr>
 <tr class="memdesc:namespacepulsatrix_1_1explainer__detail"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared helpers for the post-hoc explainers' host boundary. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacepulsatrix_1_1lrp__composite" id="r_namespacepulsatrix_1_1lrp__composite"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1lrp__composite.html">lrp_composite</a></td></tr>
+<tr class="memdesc:namespacepulsatrix_1_1lrp__composite"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit 1.0.0's composite presets (zennit.composites), mapped onto pulsatrix modules by type: <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> = torch Linear, <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a> = torch Conv2d; every other module gets the epsilon rule (the pass-through modules &ndash; ReLU, Flatten, Dropout, MaxPool &ndash; ignore it, as Zennit's Pass rule / plain gradient does). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -406,7 +409,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whole-model <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to the input through every module's own propagate_relevance() rule.  <a href="classpulsatrix_1_1LRP.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation. Selects <em>which</em> rule variant to apply (currently: epsilon rule only); it never changes <em>whether</em> a module supports <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> &ndash; that's guaranteed at compile time by <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">Module::propagate_relevance</a> being pure-virtual. Gamma/alpha-beta fields are added when a module first needs them, not speculatively now.  <a href="structpulsatrix_1_1LRPRuleConfig.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration for <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation: which rule a module applies and its hyperparameters. A module that does not implement the requested rule throws (see <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6" title="Whether propagate_relevance() implements rule (no silent fallback: callers such as ExplainerContext::...">Module::supports_lrp_rule()</a>) &ndash; the rule is never silently substituted.  <a href="structpulsatrix_1_1LRPRuleConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPTarget.html">LRPTarget</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> explains: one target class (and optionally one contrast class) per row of the network's (N, num_classes) output.  <a href="structpulsatrix_1_1LRPTarget.html#details">More...</a><br /></td></tr>
@@ -701,6 +704,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a062f52068d0980a5b3771b192f0f0250" id="r_a062f52068d0980a5b3771b192f0f0250"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>(std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt;, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *)&gt;</td></tr>
 <tr class="memdesc:a062f52068d0980a5b3771b192f0f0250"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function assembling a list of Samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a> &ndash; pulsatrix's analogue of PyTorch's collate_fn. The standard extension point for ragged/variable-length modalities (text padding, variable-length audio): a caller-supplied CollateFn replacing DefaultCollate, not a subclass hierarchy.  <br /></td></tr>
 <tr class="separator:a062f52068d0980a5b3771b192f0f0250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc17b0f5a8717d9ef75f08182d273a4d" id="r_abc17b0f5a8717d9ef75f08182d273a4d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>(size_t layer_index, const <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)&gt;</td></tr>
+<tr class="memdesc:abc17b0f5a8717d9ef75f08182d273a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-layer <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule choice: maps (top-level module index in forward order, module) to the <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html" title="Configuration for LRP relevance propagation: which rule a module applies and its hyperparameters....">LRPRuleConfig</a> that module applies.  <br /></td></tr>
+<tr class="separator:abc17b0f5a8717d9ef75f08182d273a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b8dc3d7d2cef35f192d191f09156e67" id="r_a2b8dc3d7d2cef35f192d191f09156e67"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> = size_t</td></tr>
 <tr class="memdesc:a2b8dc3d7d2cef35f192d191f09156e67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stable identifier for a <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> within its owning <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a>.  <br /></td></tr>
 <tr class="separator:a2b8dc3d7d2cef35f192d191f09156e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -746,6 +752,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afec27fa326532e4ad62b32d54558b503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary elementwise operations supported by DeviceBackend::elementwise().  <a href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">More...</a><br /></td></tr>
 <tr class="separator:afec27fa326532e4ad62b32d54558b503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeafb34c87ad858963e6f06a87ee9bbc3" id="r_aeafb34c87ad858963e6f06a87ee9bbc3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aeafb34c87ad858963e6f06a87ee9bbc3">LrpGate</a> { <a class="el" href="namespacepulsatrix.html#aeafb34c87ad858963e6f06a87ee9bbc3a6adf97f83acf6453d4a6a4b1070f3754">None</a>
+, <a class="el" href="namespacepulsatrix.html#aeafb34c87ad858963e6f06a87ee9bbc3a3289297424e01eda5b788c083bbf3147">Positive</a>
+, <a class="el" href="namespacepulsatrix.html#aeafb34c87ad858963e6f06a87ee9bbc3affb9356ff2b7da85c75c92fa7ea03b8b">Negative</a>
+ }</td></tr>
+<tr class="memdesc:aeafb34c87ad858963e6f06a87ee9bbc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elementwise boolean gate for DeviceBackend::lrp_stabilized_divide().  <a href="namespacepulsatrix.html#aeafb34c87ad858963e6f06a87ee9bbc3">More...</a><br /></td></tr>
+<tr class="separator:aeafb34c87ad858963e6f06a87ee9bbc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23ce7985a73e7df95c9467eac40d5d9e" id="r_a23ce7985a73e7df95c9467eac40d5d9e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">LogicOp</a> { <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9eab09c932ce0af7600b64c202bc1f7c4f3">ConjunctionForward</a>
 , <a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9ea228e1fd8b35a176d23bf8f941ff0c77e">ConjunctionBackward</a>
@@ -829,6 +841,13 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a189de4428b3209ea42fe9421d70329fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">How LRP seeds relevance at the target output.  <a href="namespacepulsatrix.html#a189de4428b3209ea42fe9421d70329fc">More...</a><br /></td></tr>
 <tr class="separator:a189de4428b3209ea42fe9421d70329fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4c5ed2bc6fef2b50c34076c222872aa" id="r_aa4c5ed2bc6fef2b50c34076c222872aa"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> { <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa99f2b3f30bec5a8826333eaec7ce7044">Epsilon</a>
+, <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5">Gamma</a>
+, <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a">AlphaBeta</a>
+, <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3">ZBox</a>
+ }</td></tr>
+<tr class="memdesc:aa4c5ed2bc6fef2b50c34076c222872aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The LRP rule family a module applies. Semantics follow Zennit 1.0.0 exactly (Anders et al. 2021); every rule other than Epsilon is defined only for affine layers (LinearModule, Conv2DModule) &ndash; see Module::supports_lrp_rule().  <a href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">More...</a><br /></td></tr>
+<tr class="separator:aa4c5ed2bc6fef2b50c34076c222872aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94d9ac6240473b5362d1e8e5c11157bb" id="r_a94d9ac6240473b5362d1e8e5c11157bb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a> { <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear</a>
 , <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbacc31a669f6d086f816852dda3290a3ef">Conv</a>
@@ -1041,6 +1060,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a65a61a87205c4d889e1c16baf4d439a9" id="r_a65a61a87205c4d889e1c16baf4d439a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ConservationResult.html">ConservationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a65a61a87205c4d889e1c16baf4d439a9">ComputeConservation</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_in, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out)</td></tr>
 <tr class="memdesc:a65a61a87205c4d889e1c16baf4d439a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sums relevance_in and relevance_out independently and reports their gap.  <br /></td></tr>
 <tr class="separator:a65a61a87205c4d889e1c16baf4d439a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70d91036da1e9b810ec33f0b81f04cc7" id="r_a70d91036da1e9b810ec33f0b81f04cc7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a70d91036da1e9b810ec33f0b81f04cc7">lrp_rule_name</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule)</td></tr>
+<tr class="memdesc:a70d91036da1e9b810ec33f0b81f04cc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lower-case rule name ("epsilon", "gamma", "alpha_beta", "zbox") for messages/metadata.  <br /></td></tr>
+<tr class="separator:a70d91036da1e9b810ec33f0b81f04cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88c88a8898d6848d8a6a21e268ef4035" id="r_a88c88a8898d6848d8a6a21e268ef4035"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a88c88a8898d6848d8a6a21e268ef4035">BitFlipMutationByMask</a> (const std::vector&lt; bool &gt; &amp;genotype, const std::vector&lt; bool &gt; &amp;flip_mask)</td></tr>
 <tr class="memdesc:a88c88a8898d6848d8a6a21e268ef4035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flips each gene where flip_mask is true, leaves the rest unchanged.  <br /></td></tr>
 <tr class="separator:a88c88a8898d6848d8a6a21e268ef4035"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1273,6 +1295,26 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="abc17b0f5a8717d9ef75f08182d273a4d" name="abc17b0f5a8717d9ef75f08182d273a4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc17b0f5a8717d9ef75f08182d273a4d">&#9670;&#160;</a></span>LRPComposite</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">pulsatrix::LRPComposite</a> = typedef std::function&lt;<a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>(size_t layer_index, const <a class="el" href="classpulsatrix_1_1Module.html">Module</a>&amp; module)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Per-layer <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule choice: maps (top-level module index in forward order, module) to the <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html" title="Configuration for LRP relevance propagation: which rule a module applies and its hyperparameters....">LRPRuleConfig</a> that module applies. </p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> calls a composite exactly once per module, in ascending index order starting at 0, on every explain() &ndash; presets that depend on position (epsilon_gamma_box's "first
+      Conv2D") rely on that order. </dd>
+<dd>
+Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>'s top-level modules: a <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> receives one config, which it forwards to all of its layers (it supports a rule only if they all do). </dd></dl>
+
+</div>
+</div>
 <a id="a2b8dc3d7d2cef35f192d191f09156e67" name="a2b8dc3d7d2cef35f192d191f09156e67"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b8dc3d7d2cef35f192d191f09156e67">&#9670;&#160;</a></span>NodeId</h2>
 
@@ -1493,6 +1535,72 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c" name="a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c"></a>DisjunctionForward&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454" name="a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454"></a>DisjunctionBackward&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f" name="a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f"></a>DisjunctionLrp&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="aeafb34c87ad858963e6f06a87ee9bbc3" name="aeafb34c87ad858963e6f06a87ee9bbc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeafb34c87ad858963e6f06a87ee9bbc3">&#9670;&#160;</a></span>LrpGate</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#aeafb34c87ad858963e6f06a87ee9bbc3">pulsatrix::LrpGate</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Elementwise boolean gate for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a77612025e700b66c51c33cdc3af043f0" title="Gated stabilized division, the one non-gemm step of the affine LRP rules: out[i] = passes(gate[i]) ?...">DeviceBackend::lrp_stabilized_divide()</a>. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aeafb34c87ad858963e6f06a87ee9bbc3a6adf97f83acf6453d4a6a4b1070f3754" name="aeafb34c87ad858963e6f06a87ee9bbc3a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>every element passes </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aeafb34c87ad858963e6f06a87ee9bbc3a3289297424e01eda5b788c083bbf3147" name="aeafb34c87ad858963e6f06a87ee9bbc3a3289297424e01eda5b788c083bbf3147"></a>Positive&#160;</td><td class="fielddoc"><p>passes where gate &gt; 0 </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aeafb34c87ad858963e6f06a87ee9bbc3affb9356ff2b7da85c75c92fa7ea03b8b" name="aeafb34c87ad858963e6f06a87ee9bbc3affb9356ff2b7da85c75c92fa7ea03b8b"></a>Negative&#160;</td><td class="fielddoc"><p>passes where gate &lt; 0 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="aa4c5ed2bc6fef2b50c34076c222872aa" name="aa4c5ed2bc6fef2b50c34076c222872aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4c5ed2bc6fef2b50c34076c222872aa">&#9670;&#160;</a></span>LRPRule</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">pulsatrix::LRPRule</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule family a module applies. Semantics follow Zennit 1.0.0 exactly (Anders et al. 2021); every rule other than Epsilon is defined only for affine layers (<a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>, <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>) &ndash; see <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6" title="Whether propagate_relevance() implements rule (no silent fallback: callers such as ExplainerContext::...">Module::supports_lrp_rule()</a>. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa4c5ed2bc6fef2b50c34076c222872aaa99f2b3f30bec5a8826333eaec7ce7044" name="aa4c5ed2bc6fef2b50c34076c222872aaa99f2b3f30bec5a8826333eaec7ce7044"></a>Epsilon&#160;</td><td class="fielddoc"><p>R_in = x * ((R / stab(z)) @ W^T). The bias is left out of z unless <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#ace420e2114f01fc83687eeed487884fc" title="Epsilon rule only, honoured by LinearModule / Conv2DModule: include the bias in the denominator,...">LRPRuleConfig::epsilon_bias_in_denominator</a> is set (Zennit's Epsilon includes it). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5" name="aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5"></a>Gamma&#160;</td><td class="fielddoc"><p>Zennit's generalized Gamma rule: weights W + gamma W^+ / W + gamma W^-, split by the sign of the input and of the original output (Montavon et al. 2019, generalized to negative activations). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a" name="aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a"></a>AlphaBeta&#160;</td><td class="fielddoc"><p>Alpha-beta rule (Bach et al. 2015) with alpha - beta == 1; alpha 1, beta 0 is ZPlus. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3" name="aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3"></a>ZBox&#160;</td><td class="fielddoc"><p>Z^B rule (Montavon et al. 2017) for a box-bounded input [low, high]; meant for the input layer. </p>
+</td></tr>
 </table>
 
 </div>
@@ -3961,6 +4069,34 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Per-parameter bandwidth for Continuous is 0.2 * (upper - lower); for LogUniform, 0.2 * (log(upper) - log(lower)), applied after taking the log of both the bandwidth basis and every observed/candidate value (consistent with this campaign's own established log-space convention for LogUniform elsewhere &ndash; GridSample/RandomSample/ UnitCubeToConfiguration); for Integer, 0.2 * (upper - lower), floored at 1.0 (a sub-1.0 bandwidth over integer-valued data would make the KDE unreasonably peaked). </dd></dl>
+
+</div>
+</div>
+<a id="a70d91036da1e9b810ec33f0b81f04cc7" name="a70d91036da1e9b810ec33f0b81f04cc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70d91036da1e9b810ec33f0b81f04cc7">&#9670;&#160;</a></span>lrp_rule_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::lrp_rule_name </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Lower-case rule name ("epsilon", "gamma", "alpha_beta", "zbox") for messages/metadata. </p>
 
 </div>
 </div>

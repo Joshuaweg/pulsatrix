@@ -29,13 +29,14 @@ var searchData=
   ['integratedgradients_26',['IntegratedGradients',['../classpulsatrix_1_1IntegratedGradients.html',1,'pulsatrix']]],
   ['interpretability_27',['interpretability',['../group__interpretability.html',1,'Ad-hoc Interpretability'],['../group__mech__interp.html',1,'Mechanistic Interpretability']]],
   ['is_5fconstant_28',['is_constant',['../classpulsatrix_1_1datalog_1_1Term.html#aa6f2dac97acb9153d6084bd624d341d2',1,'pulsatrix::datalog::Term']]],
-  ['is_5fdeterministic_29',['is_deterministic',['../structpulsatrix_1_1StabilityResult.html#a0773c6e9a6fd800eb0971458fe978d6a',1,'pulsatrix::StabilityResult']]],
-  ['is_5fdiscrete_30',['is_discrete',['../classpulsatrix_1_1CartPoleEnv.html#a193b5e93c1a93b650f73e5f84cb40934',1,'pulsatrix::CartPoleEnv::is_discrete()'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a5c86895031203c20eac310c981a90012',1,'pulsatrix::ContinuousCartPoleEnv::is_discrete()'],['../classpulsatrix_1_1Environment.html#a36ca00c1b8ae9f3cd7870a41f06ce6b6',1,'pulsatrix::Environment::is_discrete()'],['../classpulsatrix_1_1HyperGridEnv.html#a0e92e59096b17fcbf3b349ad1b32ecaf',1,'pulsatrix::HyperGridEnv::is_discrete()']]],
-  ['is_5fground_31',['is_ground',['../classpulsatrix_1_1datalog_1_1Atom.html#af03cd9a955535b571af5d5784276ae56',1,'pulsatrix::datalog::Atom']]],
-  ['is_5freshape_5fcompatible_32',['is_reshape_compatible',['../classpulsatrix_1_1Shape.html#a8d623d00d5f760cf2f218b8be91869ab',1,'pulsatrix::Shape']]],
-  ['is_5ftraining_33',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]],
-  ['is_5fvariable_34',['is_variable',['../classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c',1,'pulsatrix::datalog::Term']]],
-  ['iterable_5fdataset_2ehpp_35',['iterable_dataset.hpp',['../iterable__dataset_8hpp.html',1,'']]],
-  ['iterabledataset_36',['IterableDataset',['../classpulsatrix_1_1IterableDataset.html',1,'pulsatrix']]],
-  ['iterations_5frun_37',['iterations_run',['../structpulsatrix_1_1ESResult.html#a31146b96c141e95037758a8434f20741',1,'pulsatrix::ESResult']]]
+  ['is_5fconv_29',['is_conv',['../namespacepulsatrix_1_1lrp__composite_1_1detail.html#a48f3124006591765e4cd5f8b118a5ab4',1,'pulsatrix::lrp_composite::detail']]],
+  ['is_5fdeterministic_30',['is_deterministic',['../structpulsatrix_1_1StabilityResult.html#a0773c6e9a6fd800eb0971458fe978d6a',1,'pulsatrix::StabilityResult']]],
+  ['is_5fdiscrete_31',['is_discrete',['../classpulsatrix_1_1CartPoleEnv.html#a193b5e93c1a93b650f73e5f84cb40934',1,'pulsatrix::CartPoleEnv::is_discrete()'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a5c86895031203c20eac310c981a90012',1,'pulsatrix::ContinuousCartPoleEnv::is_discrete()'],['../classpulsatrix_1_1Environment.html#a36ca00c1b8ae9f3cd7870a41f06ce6b6',1,'pulsatrix::Environment::is_discrete()'],['../classpulsatrix_1_1HyperGridEnv.html#a0e92e59096b17fcbf3b349ad1b32ecaf',1,'pulsatrix::HyperGridEnv::is_discrete()']]],
+  ['is_5fground_32',['is_ground',['../classpulsatrix_1_1datalog_1_1Atom.html#af03cd9a955535b571af5d5784276ae56',1,'pulsatrix::datalog::Atom']]],
+  ['is_5freshape_5fcompatible_33',['is_reshape_compatible',['../classpulsatrix_1_1Shape.html#a8d623d00d5f760cf2f218b8be91869ab',1,'pulsatrix::Shape']]],
+  ['is_5ftraining_34',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]],
+  ['is_5fvariable_35',['is_variable',['../classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c',1,'pulsatrix::datalog::Term']]],
+  ['iterable_5fdataset_2ehpp_36',['iterable_dataset.hpp',['../iterable__dataset_8hpp.html',1,'']]],
+  ['iterabledataset_37',['IterableDataset',['../classpulsatrix_1_1IterableDataset.html',1,'pulsatrix']]],
+  ['iterations_5frun_38',['iterations_run',['../structpulsatrix_1_1ESResult.html#a31146b96c141e95037758a8434f20741',1,'pulsatrix::ESResult']]]
 ];
