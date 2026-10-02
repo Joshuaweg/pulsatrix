@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1SaliencyHeatmapView.
 </div><!--header-->
 <div class="contents">
 
-<p>Draws a 2D saliency heatmap with Viridis (perceptually uniform, colorblind-safe &ndash; hc_information_visualization.md SS4) for unsigned magnitude.  
+<p>Draws a 2D saliency heatmap plus a colormap scale bar. Unsigned magnitudes (e.g. Grad-CAM) use Viridis (perceptually uniform, colorblind-safe &ndash; hc_information_visualization.md SS4) over [0, max]; signed attributions (any negative value &ndash; gradients, IG, <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>, SHAP) use the blue-white-red DivergingColormap over the symmetric range [-max|v|, +max|v|], so zero is always the neutral midpoint. The choice is ComputeHeatmapColorScale's (<a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>, unit-tested). Row 0 of the grid is drawn at the top (image convention) with square cells.  
  <a href="classpulsatrix_1_1SaliencyHeatmapView.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="saliency__heatmap__view_8hpp_source.html">saliency_heatmap_view.hpp</a>&gt;</code></p>
@@ -111,7 +111,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ad0cff6981aa902ba77c97139817e4a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Draws a 2D saliency heatmap with Viridis (perceptually uniform, colorblind-safe &ndash; hc_information_visualization.md SS4) for unsigned magnitude. </p>
+<div class="textblock"><p>Draws a 2D saliency heatmap plus a colormap scale bar. Unsigned magnitudes (e.g. Grad-CAM) use Viridis (perceptually uniform, colorblind-safe &ndash; hc_information_visualization.md SS4) over [0, max]; signed attributions (any negative value &ndash; gradients, IG, <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>, SHAP) use the blue-white-red DivergingColormap over the symmetric range [-max|v|, +max|v|], so zero is always the neutral midpoint. The choice is ComputeHeatmapColorScale's (<a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>, unit-tested). Row 0 of the grid is drawn at the top (image convention) with square cells. </p>
 <dl class="section note"><dt>Note</dt><dd>v1 scope: the standalone heatmap only. Overlaying it atop a source image (the design doc's "overlay heatmap... sufficient figure/ground contrast" guidance) needs an OpenGL texture upload path &ndash; deferred to Phase C's <a class="el" href="classpulsatrix_1_1TextureCache.html" title="Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e....">TextureCache</a> infrastructure (see plans/okay-we-have-now-buzzing-moth.md), not built here. </dd>
 <dd>
 Deliberately not unit-tested &ndash; see <a class="el" href="classpulsatrix_1_1AttributionBarChart.html" title="Draws a horizontal bar chart of an Attribution&#39;s top-k features (hc_information_visualization....">AttributionBarChart</a>'s note. All real logic (reshaping) lives in <a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>'s ToSaliencyHeatmap, which is. </dd></dl>
@@ -152,7 +152,7 @@ Deliberately not unit-tested &ndash; see <a class="el" href="classpulsatrix_1_1A
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">title</td><td>ImPlot plot title/id. </td></tr>
-    <tr><td class="paramname">attr</td><td>A rank-2 (or single-channel rank-3) <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>. </td></tr>
+    <tr><td class="paramname">attr</td><td>A rank-2, single-channel rank-3, or (1, 1, H, W) rank-4 <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> &ndash; see ToSaliencyHeatmap. Fills the available content region (minus the scale bar). </td></tr>
   </table>
   </dd>
 </dl>

@@ -20,7 +20,7 @@ var searchData=
   ['mnistconvnet_17',['MnistConvNet',['../classpulsatrix_1_1MnistConvNet.html#ab875d757bc6fa5291918559a008c0ad9',1,'pulsatrix::MnistConvNet']]],
   ['mnistdatasetadapter_18',['MnistDatasetAdapter',['../classpulsatrix_1_1MnistDatasetAdapter.html#ac53eabd75ea8866f0b7dced74e148fd6',1,'pulsatrix::MnistDatasetAdapter']]],
   ['module_5ftype_5fname_19',['module_type_name',['../namespacepulsatrix_1_1detail.html#a1497a7c5a8bce93d9130ee4ddae5dd1a',1,'pulsatrix::detail']]],
-  ['modules_20',['modules',['../classpulsatrix_1_1ExplainerContext.html#ae3dcf514789cfbb8cf982888270f82a7',1,'pulsatrix::ExplainerContext']]],
+  ['modules_20',['modules',['../classpulsatrix_1_1ExplainerContext.html#ae3dcf514789cfbb8cf982888270f82a7',1,'pulsatrix::ExplainerContext::modules()'],['../classpulsatrix_1_1MnistConvNet.html#a675cb0f030115bfefb7b8d8073f3e2da',1,'pulsatrix::MnistConvNet::modules()']]],
   ['mseloss_21',['MSELoss',['../classpulsatrix_1_1MSELoss.html#ac5f20c73b4057154df59e8428759f721',1,'pulsatrix::MSELoss']]],
   ['mu_5fk_22',['mu_k',['../classpulsatrix_1_1RWKVModule.html#a748454131223b6d41b5fc68155d16352',1,'pulsatrix::RWKVModule']]],
   ['mu_5fk_5fgrad_23',['mu_k_grad',['../classpulsatrix_1_1RWKVModule.html#a2b8f36ba6f3acdad3d3ca41a9b9bc6be',1,'pulsatrix::RWKVModule']]],

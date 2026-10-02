@@ -107,15 +107,15 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1ImageGridView.html',
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:afb59530f8b8eb95687074070d1a81876" id="r_afb59530f8b8eb95687074070d1a81876"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImageGridView.html#afb59530f8b8eb95687074070d1a81876">Draw</a> (const char *title, const <a class="el" href="classpulsatrix_1_1Dataset.html">Dataset</a> &amp;dataset, <a class="el" href="classpulsatrix_1_1TextureCache.html">TextureCache</a> &amp;cache, int64_t start_index, int64_t count, int columns=4, float thumbnail_size=96.0f)</td></tr>
-<tr class="separator:afb59530f8b8eb95687074070d1a81876"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd1e8d166761880d9ac5ffa5d0f35a1" id="r_a3bd1e8d166761880d9ac5ffa5d0f35a1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImageGridView.html#a3bd1e8d166761880d9ac5ffa5d0f35a1">Draw</a> (const char *title, const <a class="el" href="classpulsatrix_1_1Dataset.html">Dataset</a> &amp;dataset, <a class="el" href="classpulsatrix_1_1TextureCache.html">TextureCache</a> &amp;cache, int64_t start_index, int64_t count, int columns=4, float thumbnail_size=96.0f, const std::vector&lt; std::string &gt; *captions=nullptr)</td></tr>
+<tr class="separator:a3bd1e8d166761880d9ac5ffa5d0f35a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Draws a grid of image samples from a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> whose first <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field is a decoded (1,C,H,W) or (C,H,W) image tensor (e.g. <a class="el" href="classpulsatrix_1_1ImageFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;image_file&gt;, mirroring torchvision&#39;s...">ImageFolderDataset</a>) &ndash; the data-loading "preview what you're about to train on" touchpoint. </p>
 <dl class="section note"><dt>Note</dt><dd>Deliberately not unit-tested &ndash; see <a class="el" href="classpulsatrix_1_1AttributionBarChart.html" title="Draws a horizontal bar chart of an Attribution&#39;s top-k features (hc_information_visualization....">AttributionBarChart</a>'s note. Pixel-format conversion is <a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>'s ToRgbImageBuffer (unit-tested); this only lays out already-cached GL textures. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="afb59530f8b8eb95687074070d1a81876" name="afb59530f8b8eb95687074070d1a81876"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb59530f8b8eb95687074070d1a81876">&#9670;&#160;</a></span>Draw()</h2>
+<a id="a3bd1e8d166761880d9ac5ffa5d0f35a1" name="a3bd1e8d166761880d9ac5ffa5d0f35a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bd1e8d166761880d9ac5ffa5d0f35a1">&#9670;&#160;</a></span>Draw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,7 +163,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>thumbnail_size</em> = <code>96.0f</code>&#160;</td>
+          <td class="paramname"><em>thumbnail_size</em> = <code>96.0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; *&#160;</td>
+          <td class="paramname"><em>captions</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -186,6 +192,7 @@ Static Public Member Functions</h2></td></tr>
     <tr><td class="paramname">count</td><td>How many samples to display, in a fixed-column grid. </td></tr>
     <tr><td class="paramname">columns</td><td>Number of images per row. </td></tr>
     <tr><td class="paramname">thumbnail_size</td><td>Displayed width/height in pixels per thumbnail. </td></tr>
+    <tr><td class="paramname">captions</td><td>Optional per-thumbnail caption drawn under each image (e.g. "true 7 / pred 7"); captions[k] labels sample start_index + k. Thumbnails past the end of captions get no caption. nullptr (default) draws images only. </td></tr>
   </table>
   </dd>
 </dl>
