@@ -39,12 +39,11 @@ namespace pulsatrix {
  * @note h_0 = 0, zero-initialized and not learnable -- same scope cut as every prior
  *       recurrent module, and the thing that makes this module's conservation exact rather
  *       than merely approximate (see the LRP note below).
- * @note softplus (and its derivative sigmoid) and exp are computed in raw host loops here,
- *       PULSATRIX_REQUIRE_HOST-guarded on every entry point.
- *       DeviceBackend::elementwise has no Softplus/Exp op; this is the *first* consumer
- *       needing softplus, so it gets the first-occurrence workaround RNNModule's Mission 0
- *       used for tanh, not a speculative new backend primitive. Adding one is the
- *       repeat-trigger's job, not this mission's.
+ * @note Device-generic (GPU-native-kernels Mission 6): forward, backward and
+ *       propagate_relevance run entirely through DeviceBackend -- the projections through
+ *       gemm/gemm_ex, the selective scan (softplus, exp, the h_t recurrence), its BPTT and its
+ *       LRP through DeviceBackend::ssm_pass (one lane per (batch, channel), sequential over
+ *       time) -- so the module runs on CPU, CUDA and HIP with no host round-trip.
  * @note LRP rule (MambaLRP -- Rezaei Jafari, Montavon, Müller, Eberle,
  *       "MambaLRP: Explaining Selective State Space Sequence Models", arXiv:2406.07592,
  *       NeurIPS 2024). MambaLRP's central finding: naive LRP breaks conservation on the
@@ -102,9 +101,7 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached forward
      *         output shape.
-     * @note Not yet backend-generic -- raw host loops for the recurrence and the exp/sigmoid
-     *       math. PULSATRIX_REQUIRE_HOST(grad_output) guards against
-     *       silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -165,8 +162,7 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if relevance_out's shape doesn't match the cached
      *         forward output shape.
-     * @note Not yet backend-generic -- raw host loop. PULSATRIX_ASSERT(relevance_out.device() ==
-     *       DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
@@ -180,9 +176,7 @@ protected:
      * @brief The actual forward computation -- per-timestep tied-weight selective scan.
      * @throws std::invalid_argument if input isn't rank-3 (N, L, d_model), or its last
      *         dimension doesn't match d_model.
-     * @note Not yet backend-generic -- raw host loops (softplus/exp have no backend
-     *       primitive). PULSATRIX_REQUIRE_HOST(input) guards against
-     *       silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 

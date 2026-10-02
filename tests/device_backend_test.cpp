@@ -146,6 +146,7 @@ public:
                 (const float* h_prev, const float* w_hn, const float* hn, const float* r_term_b, const float* direct,
                  float* r_hprev, size_t rows, size_t hidden, float eps),
                 (override));
+    MOCK_METHOD(void, ssm_pass, (SsmPassOp op, const SsmPassArgs& args), (override));
     MOCK_METHOD(void, aggregator_lrp,
                 (const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n, size_t cols,
                  float p, float eps),

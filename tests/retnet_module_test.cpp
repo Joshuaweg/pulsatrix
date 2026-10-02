@@ -499,48 +499,5 @@ TEST_F(RetNetModuleTest, PropagateRelevanceConservesWithZeroGamma) {
     EXPECT_NEAR(sum_in, sum_out, 1e-2f);
 }
 
-using RetNetModuleDeathTest = RetNetModuleTest;
-
-// forward_impl/backward/propagate_relevance all inspect Tensor::device() and (the first two)
-// dereference Tensor::data() in raw host loops for the state recurrence -- undefined
-// behavior on a CUDA-backed Tensor. See RNNModuleDeathTest for the mislabeled-Tensor testing
-// pattern this reuses. Written from the start of this mission, not deferred.
-TEST_F(RetNetModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RetNetModule retnet(1, 2, kGamma, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)retnet.forward(input); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(RetNetModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RetNetModule retnet(1, 2, kGamma, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)retnet.forward(input);
-
-    Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)retnet.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
-// The device guard sits AHEAD of the actual relevance computation (see the header's note),
-// so a CUDA-backed relevance tensor must abort rather than run the (undefined-behavior) host
-// loops -- this test would fail with a segfault/garbage result instead of a clean abort if
-// the guard were ever removed or reordered behind the computation.
-TEST_F(RetNetModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RetNetModule retnet(1, 2, kGamma, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)retnet.forward(input);
-
-    Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)retnet.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

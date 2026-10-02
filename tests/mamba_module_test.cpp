@@ -529,44 +529,5 @@ TEST_F(MambaModuleTest, SkipWeightDoesInfluenceRelevance) {
     EXPECT_GT(max_delta, 1e-4f);
 }
 
-using MambaModuleDeathTest = MambaModuleTest;
-
-// forward_impl/backward/propagate_relevance all dereference Tensor::data() in raw host
-// loops (softplus/exp have no DeviceBackend primitive) -- undefined behavior on a
-// CUDA-backed Tensor. See RNNModuleDeathTest for the mislabeled-Tensor testing pattern
-// this reuses. Written from the start of this mission, not deferred.
-TEST_F(MambaModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    MambaModule mamba(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mamba.forward(input); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(MambaModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    MambaModule mamba(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)mamba.forward(input);
-
-    Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mamba.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(MambaModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    MambaModule mamba(1, 1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)mamba.forward(input);
-
-    Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)mamba.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

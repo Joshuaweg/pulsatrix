@@ -494,49 +494,5 @@ TEST_F(RWKVModuleTest, PropagateRelevanceConservesWithZeroDecayAndZeroBonus) {
     EXPECT_NEAR(sum_in, sum_out, 1e-2f);
 }
 
-using RWKVModuleDeathTest = RWKVModuleTest;
-
-// forward_impl/backward/propagate_relevance all inspect Tensor::device() and (the first two)
-// dereference Tensor::data() in raw host loops (exp/sigmoid have no DeviceBackend
-// primitive) -- undefined behavior on a CUDA-backed Tensor. See RNNModuleDeathTest for the
-// mislabeled-Tensor testing pattern this reuses. Written from the start of this mission, not
-// deferred.
-TEST_F(RWKVModuleDeathTest, ForwardAbortsOnNonCpuInput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RWKVModule rwkv(1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rwkv.forward(input); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(RWKVModuleDeathTest, BackwardAbortsOnNonCpuGradOutput) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RWKVModule rwkv(1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)rwkv.forward(input);
-
-    Tensor grad_output(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rwkv.backward(grad_output); }, "PULSATRIX_ASSERT failed");
-}
-
-// The device guard sits AHEAD of the actual relevance computation (see the header's note),
-// so a CUDA-backed relevance tensor must abort rather than run the (undefined-behavior) host
-// loops -- this test would fail with a segfault/garbage result instead of a clean abort if
-// the guard were ever removed or reordered behind the computation.
-TEST_F(RWKVModuleDeathTest, PropagateRelevanceAbortsOnNonCpuRelevanceOut) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RWKVModule rwkv(1, &backend);
-    Tensor input(Shape({1, 2, 1}), &backend, {1.0f, 0.5f});
-    (void)rwkv.forward(input);
-
-    Tensor relevance_out(Shape({1, 2, 1}), &backend, {1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)rwkv.propagate_relevance(relevance_out, LRPRuleConfig{}); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

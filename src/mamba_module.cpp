@@ -1,50 +1,18 @@
 #include "pulsatrix/mamba_module.hpp"
 
-#include <cmath>
 #include <stdexcept>
-
-#include "pulsatrix/assert.hpp"
 
 namespace pulsatrix {
 
 namespace {
-// Transposes a (rows x cols) row-major buffer into a (cols x rows) row-major buffer --
-// same helper shape as LinearModule's/Conv2DModule's/RNNModule's/LSTMModule's/GRUModule's
-// own transpose() (CPUBackend::gemm has no transpose flag).
-Tensor transpose(const Tensor& m, int64_t rows, int64_t cols, DeviceBackend* backend) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4). out is allocated through backend, so a GPU
-    // backend tags it Cuda/Hip; callers' own guards cannot cover it.
-    PULSATRIX_REQUIRE_HOST(m);
-    Tensor out(Shape({cols, rows}), backend);
-    PULSATRIX_REQUIRE_HOST(out);
-    for (int64_t r = 0; r < rows; ++r) {
-        for (int64_t c = 0; c < cols; ++c) {
-            out.data()[c * rows + r] = m.data()[r * cols + c];
-        }
-    }
-    return out;
-}
-
-// softplus(z) = log(1 + exp(z)), in the numerically stable branch form: for large z the
-// naive exp(z) overflows while log1p(exp(z)) -> z to within float precision. No
-// DeviceBackend::elementwise op exists for this (first consumer -- see the class note),
-// so it is a raw host function, PULSATRIX_ASSERT-guarded at every entry point that calls it.
-float softplus(float z) {
-    return (z > 20.0f) ? z : std::log1p(std::exp(z));
-}
-
-// d(softplus)/dz = sigmoid(z). Computed from the pre-activation rather than from the
-// cached forward output, because softplus is not invertible cheaply the way tanh's
-// 1 - h^2 identity is.
-float sigmoid(float z) {
-    return 1.0f / (1.0f + std::exp(-z));
-}
-
-// Epsilon-stabilized LRP denominator, sign-preserving -- the exact same shape every other
-// module here uses (RNNModule::propagate_relevance included).
-float stabilize(float value, float epsilon) {
-    return value + epsilon * ((value >= 0.0f) ? 1.0f : -1.0f);
+// Operand dims for every SsmPassOp this module issues.
+SsmPassArgs pass_dims(int64_t N, int64_t L, int64_t D, int64_t S) {
+    SsmPassArgs args;
+    args.n = N;
+    args.l = L;
+    args.d = D;
+    args.s = S;
+    return args;
 }
 }  // namespace
 
@@ -122,10 +90,6 @@ void MambaModule::set_D(const std::vector<float>& values) {
 }
 
 Tensor MambaModule::forward_impl(const Tensor& input) {
-    // Dereferences Tensor::data() directly, and computes softplus/exp in raw host loops
-    // (no DeviceBackend primitive exists for either) -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(input);
-
     if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
         throw std::invalid_argument("MambaModule::forward: input must be rank-3 (N, L, d_model)");
     }
@@ -133,6 +97,9 @@ Tensor MambaModule::forward_impl(const Tensor& input) {
     const int64_t L = input.shape().dim(1);
     const int64_t D = d_model_;
     const int64_t S = state_size_;
+    const auto rows = static_cast<size_t>(N * L);
+    const auto d = static_cast<size_t>(D);
+    const auto s = static_cast<size_t>(S);
 
     last_input_ = input;
     last_L_ = L;
@@ -145,65 +112,32 @@ Tensor MambaModule::forward_impl(const Tensor& input) {
     last_c_ = Tensor(Shape({N, L, S}), backend_);
 
     Tensor output(Shape({N, L, D}), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(output);
 
-    for (int64_t t = 0; t < L; ++t) {
-        // x_t, gathered into a contiguous (N, d_model) buffer so the three selective
-        // projections can go through backend_->gemm rather than hand-rolled loops.
-        Tensor x_t(Shape({N, D}), backend_);
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t e = 0; e < D; ++e) {
-                x_t.data()[b * D + e] = input.data()[(b * L + t) * D + e];
-            }
-        }
+    // The three selective projections, over every (b, t) row at once: gemm's per-element dot
+    // product does not depend on how many rows it is given, so this equals the per-timestep form.
+    // Delta_t's projection is the one selective projection WITH a bias.
+    Tensor z_raw(Shape({N, L, D}), backend_);
+    backend_->gemm(input.data(), w_delta_.data(), z_raw.data(), rows, d, d);
+    backend_->add_row_vector(z_raw.data(), bias_delta_.data(), last_z_delta_.data(), rows, d);
+    backend_->gemm(input.data(), w_b_.data(), last_b_.data(), rows, d, s);
+    backend_->gemm(input.data(), w_c_.data(), last_c_.data(), rows, d, s);
 
-        Tensor z_delta(Shape({N, D}), backend_);
-        backend_->gemm(x_t.data(), w_delta_.data(), z_delta.data(), static_cast<size_t>(N),
-                       static_cast<size_t>(D), static_cast<size_t>(D));
-        Tensor b_proj(Shape({N, S}), backend_);
-        backend_->gemm(x_t.data(), w_b_.data(), b_proj.data(), static_cast<size_t>(N), static_cast<size_t>(D),
-                       static_cast<size_t>(S));
-        Tensor c_proj(Shape({N, S}), backend_);
-        backend_->gemm(x_t.data(), w_c_.data(), c_proj.data(), static_cast<size_t>(N), static_cast<size_t>(D),
-                       static_cast<size_t>(S));
-
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t d = 0; d < D; ++d) {
-                // Delta_t's projection is the one selective projection WITH a bias.
-                float z = z_delta.data()[b * D + d] + bias_delta_.data()[d];
-                last_z_delta_.data()[(b * L + t) * D + d] = z;
-                last_delta_.data()[(b * L + t) * D + d] = softplus(z);
-            }
-            for (int64_t s = 0; s < S; ++s) {
-                last_b_.data()[(b * L + t) * S + s] = b_proj.data()[b * S + s];
-                last_c_.data()[(b * L + t) * S + s] = c_proj.data()[b * S + s];
-            }
-        }
-
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t d = 0; d < D; ++d) {
-                const float delta = last_delta_.data()[(b * L + t) * D + d];
-                const float x = x_t.data()[b * D + d];
-                float y = d_.data()[d] * x;  // the D skip/feedthrough path
-                for (int64_t s = 0; s < S; ++s) {
-                    const int64_t scan_idx = ((b * L + t) * D + d) * S + s;
-                    const float abar = std::exp(delta * a_.data()[d * S + s]);
-                    const float bbar = delta * last_b_.data()[(b * L + t) * S + s];
-                    last_abar_.data()[scan_idx] = abar;
-                    last_bbar_.data()[scan_idx] = bbar;
-
-                    const float h_prev = last_states_.data()[((b * (L + 1) + t) * D + d) * S + s];
-                    const float h = abar * h_prev + bbar * x;
-                    last_states_.data()[((b * (L + 1) + t + 1) * D + d) * S + s] = h;
-                    y += last_c_.data()[(b * L + t) * S + s] * h;
-                }
-                output.data()[(b * L + t) * D + d] = y;
-            }
-        }
-    }
+    // Delta_t = softplus(z), Abar_t = exp(Delta_t*A), Bbar_t = Delta_t*B_t,
+    // h_t = Abar_t*h_{t-1} + Bbar_t*x_t, y_t = sum_n(C_t*h_t) + D*x_t -- one lane per (b, d),
+    // sequential over t.
+    SsmPassArgs args = pass_dims(N, L, D, S);
+    args.in[0] = input.data();
+    args.in[1] = last_z_delta_.data();
+    args.in[2] = last_b_.data();
+    args.in[3] = last_c_.data();
+    args.in[4] = a_.data();
+    args.in[5] = d_.data();
+    args.out[0] = last_delta_.data();
+    args.out[1] = last_abar_.data();
+    args.out[2] = last_bbar_.data();
+    args.out[3] = last_states_.data();
+    args.out[4] = output.data();
+    backend_->ssm_pass(SsmPassOp::MambaForward, args);
 
     // y_t is propagate_relevance's step-1 denominator, so the output is cached in its own
     // right rather than recomputed.
@@ -225,15 +159,13 @@ Tensor MambaModule::backward(const Tensor& grad_output) {
         throw std::invalid_argument(
             "MambaModule::backward: grad_output must be (N, L, d_model) matching the cached forward shape");
     }
-    // Dereferences Tensor::data() directly, and computes exp/sigmoid in raw host loops --
-    // not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(grad_output);
+    const auto n = static_cast<size_t>(N);
+    const auto lu = static_cast<size_t>(L);
+    const auto d = static_cast<size_t>(D);
+    const auto s = static_cast<size_t>(S);
+    const size_t rows = n * lu;
 
     Tensor grad_input(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(grad_input);
     Tensor local_w_delta_grad(w_delta_.shape(), backend_);
     Tensor local_bias_delta_grad(bias_delta_.shape(), backend_);
     Tensor local_w_b_grad(w_b_.shape(), backend_);
@@ -241,120 +173,98 @@ Tensor MambaModule::backward(const Tensor& grad_output) {
     Tensor local_a_grad(a_.shape(), backend_);
     Tensor local_d_grad(d_.shape(), backend_);
 
-    // The carried state-gradient accumulator, dh_carry[b,d,n], threaded from t+1 back to t.
+    // Steps 1-5, one lane per (b, d) over t descending: y_t = sum_n(C_t*h_t) + D*x_t, then
+    // h_t = Abar_t*h_{t-1} + Bbar_t*x_t, Bbar_t = Delta_t*B_t, Abar_t = exp(Delta_t*A) and
+    // Delta_t = softplus(z_delta_t) (d/dz = sigmoid(z)). dh_carry is the carried state-gradient
+    // accumulator dh_carry[b,d,n], threaded from t+1 back to t.
+    Tensor dx_direct(Shape({N, L, D}), backend_);
+    Tensor dz_delta(Shape({N, L, D}), backend_);
+    Tensor dh_total(Shape({N, L, D, S}), backend_);
+    Tensor a_terms(Shape({N, L, D, S}), backend_);
     Tensor dh_carry(Shape({N, D, S}), backend_);
+    SsmPassArgs args = pass_dims(N, L, D, S);
+    args.in[0] = grad_output.data();
+    args.in[1] = last_input_.data();
+    args.in[2] = last_delta_.data();
+    args.in[3] = last_z_delta_.data();
+    args.in[4] = last_states_.data();
+    args.in[5] = last_abar_.data();
+    args.in[6] = last_bbar_.data();
+    args.in[7] = last_b_.data();
+    args.in[8] = last_c_.data();
+    args.in[9] = a_.data();
+    args.in[10] = d_.data();
+    args.out[0] = dx_direct.data();
+    args.out[1] = dz_delta.data();
+    args.out[2] = dh_total.data();
+    args.out[3] = a_terms.data();
+    args.out[4] = dh_carry.data();
+    backend_->ssm_pass(SsmPassOp::MambaBackward, args);
 
+    // dB_t and dC_t, each summed over d by its own lane.
+    Tensor d_b(Shape({N, L, S}), backend_);
+    Tensor d_c(Shape({N, L, S}), backend_);
+    SsmPassArgs bc = pass_dims(N, L, D, S);
+    bc.in[0] = grad_output.data();
+    bc.in[1] = last_input_.data();
+    bc.in[2] = last_delta_.data();
+    bc.in[3] = last_states_.data();
+    bc.in[4] = dh_total.data();
+    bc.out[0] = d_b.data();
+    bc.out[1] = d_c.data();
+    backend_->ssm_pass(SsmPassOp::MambaGradBC, bc);
+
+    // A's and D's gradients: per-step terms summed in the original (t descending, b ascending)
+    // accumulation order.
+    SsmPassArgs a_sum = pass_dims(N, L, D * S, 0);
+    a_sum.in[0] = a_terms.data();
+    a_sum.out[0] = local_a_grad.data();
+    backend_->ssm_pass(SsmPassOp::ReverseTimeSum, a_sum);
+    Tensor d_terms(Shape({N, L, D}), backend_);
+    backend_->mul(grad_output.data(), last_input_.data(), d_terms.data(), rows * d);
+    SsmPassArgs d_sum = pass_dims(N, L, D, 0);
+    d_sum.in[0] = d_terms.data();
+    d_sum.out[0] = local_d_grad.data();
+    backend_->ssm_pass(SsmPassOp::ReverseTimeSum, d_sum);
+
+    // Step 6: the three linear projections' parameter gradients, per timestep in the original
+    // t-descending accumulation order.
     for (int64_t t = L - 1; t >= 0; --t) {
+        const auto tu = static_cast<size_t>(t);
         Tensor x_t(Shape({N, D}), backend_);
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t e = 0; e < D; ++e) {
-                x_t.data()[b * D + e] = last_input_.data()[(b * L + t) * D + e];
-            }
-        }
-
-        Tensor dx_t(Shape({N, D}), backend_);
-        Tensor d_b(Shape({N, S}), backend_);
-        Tensor d_c(Shape({N, S}), backend_);
-        Tensor d_delta(Shape({N, D}), backend_);
-        Tensor dh_carry_next(Shape({N, D, S}), backend_);
-
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t d = 0; d < D; ++d) {
-                const float gy = grad_output.data()[(b * L + t) * D + d];
-                const float x = x_t.data()[b * D + d];
-                const float delta = last_delta_.data()[(b * L + t) * D + d];
-
-                // Step 1: y_t = sum_n(C_t*h_t) + D*x_t.
-                local_d_grad.data()[d] += gy * x;
-                dx_t.data()[b * D + d] += gy * d_.data()[d];
-
-                for (int64_t s = 0; s < S; ++s) {
-                    const int64_t scan_idx = ((b * L + t) * D + d) * S + s;
-                    const float h_t = last_states_.data()[((b * (L + 1) + t + 1) * D + d) * S + s];
-                    const float h_prev = last_states_.data()[((b * (L + 1) + t) * D + d) * S + s];
-                    const float abar = last_abar_.data()[scan_idx];
-                    const float bbar = last_bbar_.data()[scan_idx];
-                    const float c_val = last_c_.data()[(b * L + t) * S + s];
-                    const float b_val = last_b_.data()[(b * L + t) * S + s];
-
-                    d_c.data()[b * S + s] += gy * h_t;
-                    const float dh_total = gy * c_val + dh_carry.data()[(b * D + d) * S + s];
-
-                    // Step 2: h_t = Abar_t*h_{t-1} + Bbar_t*x_t.
-                    dh_carry_next.data()[(b * D + d) * S + s] = dh_total * abar;
-                    const float d_abar = dh_total * h_prev;
-                    const float d_bbar = dh_total * x;
-                    dx_t.data()[b * D + d] += dh_total * bbar;
-
-                    // Step 3: Bbar_t = Delta_t*B_t.
-                    d_delta.data()[b * D + d] += d_bbar * b_val;
-                    d_b.data()[b * S + s] += d_bbar * delta;
-
-                    // Step 4: Abar_t = exp(Delta_t*A), so d(Abar)/d(Delta) = Abar*A and
-                    // d(Abar)/d(A) = Abar*Delta.
-                    d_delta.data()[b * D + d] += d_abar * abar * a_.data()[d * S + s];
-                    local_a_grad.data()[d * S + s] += d_abar * abar * delta;
-                }
-            }
-        }
-
-        // Step 5: Delta_t = softplus(z_delta_t), d(softplus)/dz = sigmoid(z).
-        Tensor dz_delta(Shape({N, D}), backend_);
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t d = 0; d < D; ++d) {
-                dz_delta.data()[b * D + d] =
-                    d_delta.data()[b * D + d] * sigmoid(last_z_delta_.data()[(b * L + t) * D + d]);
-            }
-        }
-
-        // Step 6: the three linear projections' parameter gradients and their shares of dx_t.
-        Tensor x_t_T = transpose(x_t, N, D, backend_);
+        backend_->copy_2d(x_t.data(), d, last_input_.data() + tu * d, lu * d, n, d);
+        Tensor dz_t(Shape({N, D}), backend_);
+        backend_->copy_2d(dz_t.data(), d, dz_delta.data() + tu * d, lu * d, n, d);
+        Tensor db_t(Shape({N, S}), backend_);
+        backend_->copy_2d(db_t.data(), s, d_b.data() + tu * s, lu * s, n, s);
+        Tensor dc_t(Shape({N, S}), backend_);
+        backend_->copy_2d(dc_t.data(), s, d_c.data() + tu * s, lu * s, n, s);
 
         Tensor gw_delta(w_delta_.shape(), backend_);
-        backend_->gemm(x_t_T.data(), dz_delta.data(), gw_delta.data(), static_cast<size_t>(D),
-                       static_cast<size_t>(N), static_cast<size_t>(D));
+        backend_->gemm_ex(x_t.data(), true, dz_t.data(), false, gw_delta.data(), d, n, d, 0.0f);
         local_w_delta_grad.accumulate(gw_delta);
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t d = 0; d < D; ++d) {
-                local_bias_delta_grad.data()[d] += dz_delta.data()[b * D + d];
-            }
-        }
+        backend_->accumulate_rows(dz_t.data(), local_bias_delta_grad.data(), n, d);
 
         Tensor gw_b(w_b_.shape(), backend_);
-        backend_->gemm(x_t_T.data(), d_b.data(), gw_b.data(), static_cast<size_t>(D), static_cast<size_t>(N),
-                       static_cast<size_t>(S));
+        backend_->gemm_ex(x_t.data(), true, db_t.data(), false, gw_b.data(), d, n, s, 0.0f);
         local_w_b_grad.accumulate(gw_b);
 
         Tensor gw_c(w_c_.shape(), backend_);
-        backend_->gemm(x_t_T.data(), d_c.data(), gw_c.data(), static_cast<size_t>(D), static_cast<size_t>(N),
-                       static_cast<size_t>(S));
+        backend_->gemm_ex(x_t.data(), true, dc_t.data(), false, gw_c.data(), d, n, s, 0.0f);
         local_w_c_grad.accumulate(gw_c);
-
-        Tensor w_delta_T = transpose(w_delta_, D, D, backend_);
-        Tensor gx_delta(Shape({N, D}), backend_);
-        backend_->gemm(dz_delta.data(), w_delta_T.data(), gx_delta.data(), static_cast<size_t>(N),
-                       static_cast<size_t>(D), static_cast<size_t>(D));
-        dx_t.accumulate(gx_delta);
-
-        Tensor w_b_T = transpose(w_b_, D, S, backend_);
-        Tensor gx_b(Shape({N, D}), backend_);
-        backend_->gemm(d_b.data(), w_b_T.data(), gx_b.data(), static_cast<size_t>(N), static_cast<size_t>(S),
-                       static_cast<size_t>(D));
-        dx_t.accumulate(gx_b);
-
-        Tensor w_c_T = transpose(w_c_, D, S, backend_);
-        Tensor gx_c(Shape({N, D}), backend_);
-        backend_->gemm(d_c.data(), w_c_T.data(), gx_c.data(), static_cast<size_t>(N), static_cast<size_t>(S),
-                       static_cast<size_t>(D));
-        dx_t.accumulate(gx_c);
-
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t e = 0; e < D; ++e) {
-                grad_input.data()[(b * L + t) * D + e] = dx_t.data()[b * D + e];
-            }
-        }
-        dh_carry = dh_carry_next;
     }
+
+    // ...and their shares of dx_t, over every (b, t) row at once, added onto the direct share in
+    // the original order (delta, then B, then C).
+    Tensor gx_delta(Shape({N, L, D}), backend_);
+    backend_->gemm_ex(dz_delta.data(), false, w_delta_.data(), true, gx_delta.data(), rows, d, d, 0.0f);
+    Tensor gx_b(Shape({N, L, D}), backend_);
+    backend_->gemm_ex(d_b.data(), false, w_b_.data(), true, gx_b.data(), rows, s, d, 0.0f);
+    Tensor gx_c(Shape({N, L, D}), backend_);
+    backend_->gemm_ex(d_c.data(), false, w_c_.data(), true, gx_c.data(), rows, s, d, 0.0f);
+    backend_->add(dx_direct.data(), gx_delta.data(), grad_input.data(), rows * d);
+    backend_->add(grad_input.data(), gx_b.data(), grad_input.data(), rows * d);
+    backend_->add(grad_input.data(), gx_c.data(), grad_input.data(), rows * d);
 
     w_delta_grad_.accumulate(local_w_delta_grad);
     bias_delta_grad_.accumulate(local_bias_delta_grad);
@@ -380,14 +290,8 @@ Tensor MambaModule::propagate_relevance(const Tensor& relevance_out, const LRPRu
             "MambaModule::propagate_relevance: relevance_out must be (N, L, d_model) matching the cached "
             "forward shape");
     }
-    // Dereferences Tensor::data() directly -- not yet backend-generic.
-    PULSATRIX_REQUIRE_HOST(relevance_out);
 
     Tensor relevance_in(last_input_.shape(), backend_);
-    // Allocated through backend_ with no device tag, so a GPU backend tags it Cuda/Hip; every
-    // later backend_-allocated temporary here shares that device. The raw host loops below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(relevance_in);
 
     // The carried state-relevance accumulator, R(h_t)[b,d,n] arriving from step t+1. Zero
     // at t = L-1, and (by h_0 == 0) it carries nothing out past t = 0.
@@ -398,49 +302,23 @@ Tensor MambaModule::propagate_relevance(const Tensor& relevance_out, const LRPRu
     // referenced anywhere below. Delta_t/B_t/C_t are pure conductors, consumed only through
     // the cached, *detached* Abar_t/Bbar_t/C_t forward values. Only a_ (via Abar_t) and d_
     // (the skip path, a genuine weighted connection from x_t to y_t) participate.
-    for (int64_t t = L - 1; t >= 0; --t) {
-        Tensor r_x(Shape({N, D}), backend_);
-        Tensor r_h_prev(Shape({N, D, S}), backend_);
-
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t d = 0; d < D; ++d) {
-                const float x = last_input_.data()[(b * L + t) * D + d];
-                const float y = last_output_.data()[(b * L + t) * D + d];
-                const float denom_y = stabilize(y, config.epsilon);
-                const float r_y = relevance_out.data()[(b * L + t) * D + d];
-
-                // Step 1: y_t = sum_n(C_t*h_t) + D*x_t -- an (state_size + 1)-way weighted
-                // sum sharing one output. The D skip term's share lands straight on R(x_t).
-                r_x.data()[b * D + d] += (d_.data()[d] * x / denom_y) * r_y;
-
-                for (int64_t s = 0; s < S; ++s) {
-                    const int64_t scan_idx = ((b * L + t) * D + d) * S + s;
-                    const float h_t = last_states_.data()[((b * (L + 1) + t + 1) * D + d) * S + s];
-                    const float h_prev = last_states_.data()[((b * (L + 1) + t) * D + d) * S + s];
-                    const float abar = last_abar_.data()[scan_idx];
-                    const float bbar = last_bbar_.data()[scan_idx];
-                    const float c_val = last_c_.data()[(b * L + t) * S + s];
-
-                    // R(h_t) = this step's share of R(y_t), plus whatever step t+1 carried
-                    // back into this same state element.
-                    const float r_h = (c_val * h_t / denom_y) * r_y + r_h_carry.data()[(b * D + d) * S + s];
-
-                    // Step 2: h_t = Abar_t*h_{t-1} + Bbar_t*x_t -- the two-weighted-source
-                    // epsilon/z-rule, denominator h_t itself.
-                    const float denom_h = stabilize(h_t, config.epsilon);
-                    r_h_prev.data()[(b * D + d) * S + s] = (abar * h_prev / denom_h) * r_h;
-                    r_x.data()[b * D + d] += (bbar * x / denom_h) * r_h;
-                }
-            }
-        }
-
-        for (int64_t b = 0; b < N; ++b) {
-            for (int64_t e = 0; e < D; ++e) {
-                relevance_in.data()[(b * L + t) * D + e] = r_x.data()[b * D + e];
-            }
-        }
-        r_h_carry = r_h_prev;
-    }
+    //
+    // Per (b, d) lane, t descending: step 1 splits y_t = sum_n(C_t*h_t) + D*x_t (the D skip
+    // share lands straight on R(x_t)); step 2 splits h_t = Abar_t*h_{t-1} + Bbar_t*x_t with the
+    // two-weighted-source epsilon/z-rule, denominator h_t itself.
+    SsmPassArgs args = pass_dims(N, L, D, S);
+    args.eps = config.epsilon;
+    args.in[0] = last_input_.data();
+    args.in[1] = last_output_.data();
+    args.in[2] = relevance_out.data();
+    args.in[3] = last_states_.data();
+    args.in[4] = last_abar_.data();
+    args.in[5] = last_bbar_.data();
+    args.in[6] = last_c_.data();
+    args.in[7] = d_.data();
+    args.out[0] = relevance_in.data();
+    args.out[1] = r_h_carry.data();
+    backend_->ssm_pass(SsmPassOp::MambaLrp, args);
 
     return relevance_in;
 }
