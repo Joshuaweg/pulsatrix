@@ -47,7 +47,11 @@ VizWindow::~VizWindow() {
     glfwTerminate();
 }
 
-void VizWindow::run(const std::function<void()>& draw_frame) {
+void VizWindow::run(const std::function<void()>& draw_frame) { run(draw_frame, nullptr); }
+
+void VizWindow::request_close() { glfwSetWindowShouldClose(window_, GLFW_TRUE); }
+
+void VizWindow::run(const std::function<void()>& draw_frame, const std::function<void(int, int)>& after_render) {
     while (!glfwWindowShouldClose(window_)) {
         glfwPollEvents();
 
@@ -65,6 +69,9 @@ void VizWindow::run(const std::function<void()>& draw_frame) {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        if (after_render) {
+            after_render(display_w, display_h);
+        }
 
         glfwSwapBuffers(window_);
     }

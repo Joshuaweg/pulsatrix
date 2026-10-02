@@ -46,6 +46,17 @@ public:
      */
     void run(const std::function<void()>& draw_frame);
 
+    /**
+     * @brief Same as run(draw_frame), plus after_render(framebuffer_width, framebuffer_height)
+     *        called once per frame after ImGui's draw data has been rendered into the back
+     *        buffer and before the buffer swap -- the one point where glReadPixels sees the
+     *        finished frame (e.g. for writing screenshots).
+     */
+    void run(const std::function<void()>& draw_frame, const std::function<void(int, int)>& after_render);
+
+    /** @brief Asks the main loop to exit after the current frame (e.g. a scripted/screenshot run). */
+    void request_close();
+
 private:
     GLFWwindow* window_;
 };

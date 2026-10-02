@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include "pulsatrix/adam_optimizer.hpp"
 #include "pulsatrix/conv2d_module.hpp"
 #include "pulsatrix/cross_entropy_loss.hpp"
@@ -67,6 +69,15 @@ public:
 
     /** @brief Test/inspection accessor. */
     [[nodiscard]] const Tensor& classifier_weight() const { return classifier_.weight(); }
+
+    /**
+     * @brief The network's layers in forward order (Conv2D, ReLU, Flatten, Linear), for
+     *        building an ExplainerContext over the trained model -- so every explainer
+     *        (Saliency, IntegratedGradients, GradCAM, LRP, ...) and build_circuit_graph() can
+     *        run on exactly the weights train_step() learned. The pointers alias this object's
+     *        members: they stay valid only while this MnistConvNet is alive.
+     */
+    [[nodiscard]] std::vector<Module*> modules() { return {&conv_, &relu_, &flatten_, &classifier_}; }
 
 private:
     DeviceBackend* backend_;

@@ -29,6 +29,10 @@ TextureId TextureCache::GetOrUpload(int64_t key, const Tensor& image_chw) {
     glBindTexture(GL_TEXTURE_2D, gl_id);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // Rows of a tightly packed RGB buffer are width*3 bytes, which is not a multiple of GL's
+    // default 4-byte unpack alignment for most widths -- without this, odd-width images upload
+    // skewed/sheared.
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, static_cast<GLsizei>(buffer.width), static_cast<GLsizei>(buffer.height), 0,
                  GL_RGB, GL_UNSIGNED_BYTE, buffer.pixels.data());
 
