@@ -45,10 +45,9 @@ private:
 rule is a compile error, not a runtime "no default rule" exception. This is deliberate: it's
 the specific failure mode (silently falling back to a generic/undefined rule) this project
 exists to avoid, the way Captum/Zennit-style post-hoc tools can. If a new layer's correct LRP
-rule genuinely isn't known yet, `propagate_relevance()` should `throw` explicitly (see
-`RWKVModule`/`RetNetModule` in [Deep Learning Modules and Layers](../deep-learning/index.md)
-for real examples of a documented, intentional "not yet derived" throw) rather than being
-skipped or stubbed with a plausible-looking approximation.
+rule genuinely isn't known yet, `propagate_relevance()` should `throw` explicitly, with a
+message saying the rule is not yet derived, rather than being skipped or stubbed with a
+plausible-looking approximation.
 
 If your layer needs a **selectable rule variant** rather than one fixed formula (see
 `ConjunctionModule::TNorm`'s `Product`/`Lukasiewicz`/`Godel` choice in
