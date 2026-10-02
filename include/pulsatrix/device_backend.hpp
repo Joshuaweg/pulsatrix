@@ -86,6 +86,78 @@ struct RecurrentCellArgs {
 };
 
 /**
+ * @brief Fused passes of the state-space / linear-recurrence modules (MambaModule, RWKVModule,
+ *        RetNetModule), for DeviceBackend::ssm_pass. Dims come from SsmPassArgs: n batch, l
+ *        sequence length, d d_model (or C for ReverseTimeSum), s Mamba's state_size / RetNet's
+ *        key_dim. Sequences are (n, l, X) row-major; "states" buffers are (n, l + 1, ...) with
+ *        the zero initial state at index 0. Lanes and slots (in[] -> out[]):
+ * - MambaForward  (n*d lanes, t ascending): in input, z_delta (bias added), B, C, A (d, s), D (d)
+ *                 -> out delta, Abar, Bbar (n, l, d, s), states (n, l+1, d, s), output
+ * - MambaBackward (n*d lanes, t descending): in grad_output, input, delta, z_delta, states, Abar,
+ *                 Bbar, B, C, A, D -> out dx_direct, dz_delta, dh_total, A_terms (n, l, d, s),
+ *                 carry scratch (n, d, s), zero-filled by the caller
+ * - MambaGradBC   (n*l*s lanes): in grad_output, input, delta, states, dh_total -> out dB, dC
+ * - MambaLrp      (n*d lanes, t descending): in input, output, relevance_out, states, Abar, Bbar,
+ *                 C, D -> out relevance_in, carry scratch (n, d, s), zero-filled (uses eps)
+ * - RwkvTokenShift    (n*l*d): in input, mu_r, mu_k, mu_v -> out xr, xk, xv
+ * - RwkvForward       (n*d lanes, t ascending): in z_r, k, v, u, w
+ *                     -> out r, e, num, den, wkv, kk, a states, b states (n, l+1, d), gated
+ * - RwkvBackward      (n*d lanes, t descending): in g_gated, r, v, e, kk, num, den, a states,
+ *                     b states, wkv, w -> out dz_r, dk, dv, u_terms, w_terms
+ * - RwkvShiftBackward (n*l*d): in input, g_xr, g_xk, g_xv, mu_r, mu_k, mu_v
+ *                     -> out grad_input, mu_r_terms, mu_k_terms, mu_v_terms
+ * - RwkvLrp           (n*d lanes, t descending): in r_gated, a states, den, e, v, wkv, kk, w
+ *                     -> out v_relevance (uses eps)
+ * - RwkvShiftLrp      (n*l*d): in input, xv, r_xv_raw, mu_v -> out relevance_in (uses eps)
+ * - StabilizedDiv     (n*l*d): in r, z -> out r / (z + eps*sign(z))
+ * - RetnetForward     (n*d lanes, t ascending): in q, k, v -> out states (n, l+1, s, d), output
+ *                     (uses gamma)
+ * - RetnetStateGrad   (n*s*d lanes, t descending): in grad_output, q -> out dS (n, l, s, d)
+ *                     (uses gamma)
+ * - RetnetGradQK      (n*l*s): in grad_output, states, dS, v -> out dq, dk
+ * - RetnetGradV       (n*l*d): in dS, k -> out dv
+ * - RetnetScores      (n*l*l): in q, k -> out QK, G = gamma^(t-s) QK (both 0 for s > t)
+ * - RetnetReadout     (n*l*d): in G, v -> out Y = G @ V over s <= t
+ * - RetnetLrpInput    (n*l*d): in input, W_q, W_k, W_v, q, k, v, r_q, r_k, r_v
+ *                     -> out relevance_in (uses eps)
+ * - ReverseTimeSum    (d lanes): in terms (n, l, d) -> out[c] = sum over t descending, b
+ *                     ascending -- a backward loop's parameter-gradient accumulation order
+ */
+enum class SsmPassOp {
+    MambaForward,
+    MambaBackward,
+    MambaGradBC,
+    MambaLrp,
+    RwkvTokenShift,
+    RwkvForward,
+    RwkvBackward,
+    RwkvShiftBackward,
+    RwkvLrp,
+    RwkvShiftLrp,
+    StabilizedDiv,
+    RetnetForward,
+    RetnetStateGrad,
+    RetnetGradQK,
+    RetnetGradV,
+    RetnetScores,
+    RetnetReadout,
+    RetnetLrpInput,
+    ReverseTimeSum
+};
+
+/** @brief Operand pointers and dims for DeviceBackend::ssm_pass (passed to kernels by value). */
+struct SsmPassArgs {
+    const float* in[12] = {};
+    float* out[10] = {};
+    int64_t n = 0;
+    int64_t l = 0;
+    int64_t d = 0;
+    int64_t s = 0;
+    float eps = 0.0f;    ///< LRP stabilizer
+    float gamma = 0.0f;  ///< RetNet decay
+};
+
+/**
  * @brief Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and
  *        HIPBackend (Phase 1.6) all implement this contract; Tensor and ComputationGraph
  *        depend only on this interface, never on a concrete backend's types.
@@ -514,6 +586,17 @@ public:
      */
     virtual void gru_lrp_hprev(const float* h_prev, const float* w_hn, const float* hn, const float* r_term_b,
                                const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) = 0;
+
+    // ---- GPU-native-kernels Mission 6: state-space models -------------------------------------
+    // Shared per-lane source in src/ssm_math.hpp; deterministic, no atomics.
+
+    /**
+     * @brief One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).
+     * @note Recurrences run one lane per independent (batch, channel[, state]) sequence, walking
+     *       time in order inside the lane -- parallel over lanes, sequential over time, the CPU's
+     *       order. Every reduction is owned by one lane and summed in the original loop order.
+     */
+    virtual void ssm_pass(SsmPassOp op, const SsmPassArgs& args) = 0;
 };
 
 }  // namespace pulsatrix

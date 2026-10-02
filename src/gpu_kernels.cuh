@@ -21,6 +21,7 @@
 #include "pointwise_math.hpp"
 #include "recurrent_math.hpp"
 #include "row_math.hpp"
+#include "ssm_math.hpp"
 #include "pulsatrix/device_backend.hpp"
 
 namespace pulsatrix {
@@ -877,6 +878,16 @@ __global__ void gru_lrp_hprev_kernel(const float* h_prev, const float* w_hn, con
         r_hprev[idx] = recurrent::gru_lrp_hprev(h_prev + n * hidden, w_hn, hn + n * hidden, r_term_b + n * hidden,
                                                 direct + n * hidden, static_cast<int64_t>(idx % hidden),
                                                 static_cast<int64_t>(hidden), eps);
+    }
+}
+
+// ---- GPU-native-kernels Mission 6 ----------------------------------------------------------
+
+// One thread per lane (see SsmPassOp): a recurrence lane walks time in order inside the thread.
+__global__ void ssm_pass_kernel(int op, SsmPassArgs args, int64_t lanes) {
+    const auto lane = static_cast<int64_t>(global_index());
+    if (lane < lanes) {
+        ssm::pass(static_cast<SsmPassOp>(op), args, lane);
     }
 }
 

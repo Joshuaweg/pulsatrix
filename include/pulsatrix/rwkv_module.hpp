@@ -47,11 +47,12 @@ namespace pulsatrix {
  *       and MambaModule's Euler-approximated Bbar.
  * @note a_0 = b_0 = 0 and x_0 = 0, zero-initialized and not learnable -- the same scope cut
  *       every prior recurrent module makes for its own initial state.
- * @note exp and sigmoid are computed in raw host loops here, PULSATRIX_ASSERT(... .device() ==
- *       DeviceType::Cpu)-guarded on every entry point. DeviceBackend::elementwise has no
- *       Exp/Sigmoid op; this follows MambaModule's first-occurrence-per-need disposition
- *       (which did the same for softplus/exp) rather than speculatively adding backend
- *       primitives in a module mission.
+ * @note Device-generic (GPU-native-kernels Mission 6): forward, backward and
+ *       propagate_relevance run entirely through DeviceBackend -- the projections through
+ *       gemm/gemm_ex, the token shift, the WKV recurrence (exp, sigmoid, the a_t/b_t carry), its
+ *       BPTT and its LRP through DeviceBackend::ssm_pass (one lane per (batch, channel),
+ *       sequential over time) -- so the module runs on CPU, CUDA and HIP with no host
+ *       round-trip.
  * @note **LRP rule -- original derivation (2026-09-27, operator-directed reassessment
  *       following campaign_exai_dl_library_phase6_modern_architectures's Decision Point 2
  *       and RetNet's own resolved derivation).** The mission's a-priori hypothesis was that
@@ -111,9 +112,7 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached forward
      *         output shape.
-     * @note Not yet backend-generic -- raw host loops for the recurrence and the exp/sigmoid
-     *       math. PULSATRIX_REQUIRE_HOST(grad_output) guards against silent
-     *       UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -218,9 +217,7 @@ public:
      *       only to reconstruct the detached `decay` value, not to compute its own
      *       relevance share -- see the class-level note. Only `w_v_`, `w_o_`, `mu_v_`
      *       (and `w_` for `decay`) participate.
-     * @note Not yet backend-generic -- raw host loops, mirroring forward_impl()/backward().
-     *       PULSATRIX_REQUIRE_HOST(relevance_out) guards against silent
-     *       UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      * @note Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the
      *       usual epsilon stabilizers -- NOT a known non-conserving approximation like
      *       SoftmaxModule's Eq. 13.
@@ -238,9 +235,7 @@ protected:
      * @brief The actual forward computation -- per-timestep tied-weight WKV recurrence.
      * @throws std::invalid_argument if input isn't rank-3 (N, L, d_model), or its last
      *         dimension doesn't match d_model.
-     * @note Not yet backend-generic -- raw host loops (exp/sigmoid have no backend
-     *       primitive). PULSATRIX_REQUIRE_HOST(input) guards against
-     *       silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
