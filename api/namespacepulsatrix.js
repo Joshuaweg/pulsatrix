@@ -2,6 +2,9 @@ var namespacepulsatrix =
 [
     [ "datalog", "namespacepulsatrix_1_1datalog.html", "namespacepulsatrix_1_1datalog" ],
     [ "detail", "namespacepulsatrix_1_1detail.html", "namespacepulsatrix_1_1detail" ],
+    [ "explainer_detail", "namespacepulsatrix_1_1explainer__detail.html", [
+      [ "backend_beside", "namespacepulsatrix_1_1explainer__detail.html#a35309abfd652dbb89c6d1bab85169af9", null ]
+    ] ],
     [ "ActivationSnapshot", "classpulsatrix_1_1ActivationSnapshot.html", "classpulsatrix_1_1ActivationSnapshot" ],
     [ "AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", "classpulsatrix_1_1AdamOptimizer" ],
     [ "Agent", "classpulsatrix_1_1Agent.html", "classpulsatrix_1_1Agent" ],

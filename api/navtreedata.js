@@ -74,9 +74,9 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d",
 "classpulsatrix_1_1datalog_1_1FactDatabase.html#aceea37e0dc1072535bd08c7431c40ea0",
 "namespacepulsatrix.html#a03f5550dab9961a6e7f1b6d5e7f5befd",
-"rope__module_8hpp.html",
-"structpulsatrix_1_1MnistDataset.html#a4521c6bdaefaaf2ef59389848ada7295",
-"structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#adc4546f4598f6e602cb107d071fc9d91"
+"rnn__module_8hpp.html",
+"structpulsatrix_1_1MnistDataset.html",
+"structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

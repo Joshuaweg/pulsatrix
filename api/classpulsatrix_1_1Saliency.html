@@ -113,7 +113,9 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">ExplainerContext::backward_pass</a> with a one-hot vector at target_index. </p>
-<dl class="section note"><dt>Note</dt><dd>A pure graph walker built entirely against <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>'s public interface &ndash; no core (Tensor/ComputationGraph/Autograd/Module) changes needed, per the charter's own red-flag check for explainer additions. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>A pure graph walker built entirely against <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>'s public interface &ndash; no core (Tensor/ComputationGraph/Autograd/Module) changes needed, per the charter's own red-flag check for explainer additions. </dd>
+<dd>
+Device-generic: forward/backward run on the network's device; only the one-hot seed is built on the host and uploaded beside the output (<a class="el" href="namespacepulsatrix_1_1explainer__detail.html" title="Shared helpers for the post-hoc explainers&#39; host boundary.">explainer_detail</a> host boundary). </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8bf60072cd33a12ba4e13b725874ab0d" name="a8bf60072cd33a12ba4e13b725874ab0d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8bf60072cd33a12ba4e13b725874ab0d">&#9670;&#160;</a></span>explain()</h2>
@@ -167,7 +169,7 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">ctx</td><td>Context to run the forward/backward pass through. </td></tr>
     <tr><td class="paramname">input</td><td>Input to explain. </td></tr>
     <tr><td class="paramname">target_index</td><td>Which output element's gradient to compute (0-based, flat index into the network's output). </td></tr>
-    <tr><td class="paramname">backend</td><td>Backend to allocate the one-hot seed tensor through. </td></tr>
+    <tr><td class="paramname">backend</td><td>Backend to allocate the one-hot seed tensor through (the output's own backend is used instead when this one serves a different device). </td></tr>
   </table>
   </dd>
 </dl>

@@ -119,7 +119,9 @@ Public Member Functions</h2></td></tr>
 Reads the target node's own activation/gradient as <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> tagged it &ndash; in this codebase Conv and its following ReLU are separate graph nodes, so "the
       last conv layer" here means the pre-ReLU conv output specifically. This is a legitimate placement (Grad-CAM's formula doesn't require a post-ReLU activation), just worth noting for a reader used to "conv block" framing elsewhere. </dd>
 <dd>
-A pure graph walker built entirely against <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>'s public interface &ndash; no core (Tensor/ComputationGraph/Autograd/Module) changes needed. </dd></dl>
+A pure graph walker built entirely against <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a>'s public interface &ndash; no core (Tensor/ComputationGraph/Autograd/Module) changes needed. </dd>
+<dd>
+Device-generic: the CAM weighting runs on host copies of the target node's activation/gradient; the seed and the CAM are uploaded beside the network's tensors. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="addf8b756810847f14a9dca10d2faab70" name="addf8b756810847f14a9dca10d2faab70"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#addf8b756810847f14a9dca10d2faab70">&#9670;&#160;</a></span>explain()</h2>
