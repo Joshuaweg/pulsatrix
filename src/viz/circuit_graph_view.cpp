@@ -1,6 +1,7 @@
 #include "pulsatrix/viz/circuit_graph_view.hpp"
 
 #include <algorithm>
+#include <cstdio>
 #include <string>
 #include <unordered_map>
 
@@ -8,6 +9,7 @@
 #include <implot.h>
 
 #include "pulsatrix/viz/colormap.hpp"
+#include "pulsatrix/viz/plot_data.hpp"
 
 namespace pulsatrix {
 
@@ -33,8 +35,12 @@ void CircuitGraphView::Draw(const char* title, const CircuitGraph& graph) {
     }
 
     if (ImPlot::BeginPlot(title, ImVec2(-1, -1), ImPlotFlags_NoLegend)) {
-        ImPlot::SetupAxes("Depth", nullptr, ImPlotAxisFlags_AutoFit,
-                           ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_NoDecorations);
+        // Fixed limits: every node sits at y = 0, and AutoFit on a constant series pins that
+        // row to the plot border (markers clipped in half); a node at the end of the row would
+        // likewise sit on the x border.
+        ImPlot::SetupAxes("Depth", nullptr, 0, ImPlotAxisFlags_NoDecorations);
+        ImPlot::SetupAxesLimits(-0.5, static_cast<double>(nodes.size()) - 0.5, -1.0, 1.0, ImPlotCond_Always);
+        ImPlot::SetupAxisTicks(ImAxis_X1, 0.0, static_cast<double>(nodes.size()) - 1.0, static_cast<int>(nodes.size()));
 
         // Edges first so node markers draw on top of them.
         for (const CircuitEdge& edge : edges) {
@@ -58,13 +64,18 @@ void CircuitGraphView::Draw(const char* title, const CircuitGraph& graph) {
             double x = static_cast<double>(i);
             double y = 0.0;
 
-            ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle, marker_size, ImVec4(color.r, color.g, color.b, 1.0f),
-                                        1.0f);
+            // Outline set explicitly: otherwise ImPlot outlines each one-point series in the next
+            // auto colormap color, adding a meaningless categorical hue around every node.
+            ImVec4 fill(color.r, color.g, color.b, 1.0f);
+            ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle, marker_size, fill, 1.0f, fill);
             std::string series_id = "##node" + std::to_string(i);
             ImPlot::PlotScatter(series_id.c_str(), &x, &y, 1);
 
-            std::string label = node.label.value_or("node_" + std::to_string(node.id));
-            ImPlot::PlotText(label.c_str(), x, y, ImVec2(0, -20));
+            std::string label = CircuitNodeDisplayLabel(node);
+            ImPlot::PlotText(label.c_str(), x, y, ImVec2(0, -(marker_size + 12.0f)));
+            char effect[32];
+            std::snprintf(effect, sizeof(effect), "%.3g", static_cast<double>(node.ablation_effect));
+            ImPlot::PlotText(effect, x, y, ImVec2(0, marker_size + 12.0f));
         }
         ImPlot::EndPlot();
     }

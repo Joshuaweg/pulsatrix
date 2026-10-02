@@ -4,6 +4,7 @@
 
 #include "pulsatrix/adam_optimizer.hpp"
 #include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/explainer_context.hpp"
 #include "pulsatrix/metrics_sink.hpp"
 #include "pulsatrix/mnist_classifier_example.hpp"
 
@@ -38,6 +39,24 @@ TEST_F(MnistConvNetTest, ForwardProducesTenClassLogits) {
     Tensor logits = net.forward(image);
 
     EXPECT_EQ(logits.shape(), Shape({1, 10}));
+}
+
+TEST_F(MnistConvNetTest, ModulesBuildAnExplainerContextMatchingForward) {
+    // modules() exposes the trained layers so explainers run on exactly the model
+    // train_step() learned -- an ExplainerContext over them must reproduce forward().
+    MnistConvNet net(&backend);
+    Tensor image = SyntheticImage(&backend, 3);
+
+    std::vector<Module*> modules = net.modules();
+    ASSERT_EQ(modules.size(), 4u);
+    ExplainerContext ctx(modules);
+    Tensor via_context = ctx.forward_pass(image);
+    Tensor via_net = net.forward(image);
+
+    ASSERT_EQ(via_context.shape(), via_net.shape());
+    for (int64_t i = 0; i < via_net.numel(); ++i) {
+        EXPECT_FLOAT_EQ(via_context.data()[i], via_net.data()[i]);
+    }
 }
 
 TEST_F(MnistConvNetTest, PredictReturnsValidClassIndex) {

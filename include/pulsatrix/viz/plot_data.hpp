@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "pulsatrix/attribution.hpp"
+#include "pulsatrix/circuit_graph.hpp"
 #include "pulsatrix/dataset.hpp"
 
 namespace pulsatrix {
@@ -60,6 +61,26 @@ struct WaterfallStep {
  */
 [[nodiscard]] std::vector<WaterfallStep> ToWaterfallSteps(const Attribution& attr, float baseline_value);
 
+/** @brief One floating waterfall bar: spans [bottom, top] on the value axis. */
+struct WaterfallBar {
+    float bottom;
+    float top;
+    /** @brief True for a non-negative delta (drawn in the "increase" color). */
+    bool increase;
+};
+
+/**
+ * @brief Converts waterfall steps into floating bars, each spanning from the previous running
+ *        total to its own running total -- i.e. bar i covers [min(c_{i-1}, c_i), max(c_{i-1},
+ *        c_i)] with c_{-1} = baseline_value. Correct for any sign of baseline or running total:
+ *        a cascade that starts below zero, crosses zero, or stays negative (e.g. explaining a
+ *        negative logit) floats exactly where the running total is, rather than being anchored
+ *        at zero the way stacked bar segments are.
+ * @param steps ToWaterfallSteps's output.
+ * @param baseline_value The same baseline passed to ToWaterfallSteps.
+ */
+[[nodiscard]] std::vector<WaterfallBar> ToWaterfallBars(const std::vector<WaterfallStep>& steps, float baseline_value);
+
 /** @brief A row-major 2D grid of unsigned magnitude values, ready for a heatmap plot. */
 struct HeatmapGrid {
     std::vector<float> values;
@@ -69,12 +90,41 @@ struct HeatmapGrid {
 
 /**
  * @brief Reshapes an Attribution's values into a 2D grid for a saliency overlay heatmap.
- * @param attr A rank-2 Attribution, or a rank-3 Attribution whose leading (channel)
- *        dimension is 1 (single-channel saliency map, squeezed).
+ * @param attr A rank-2 Attribution, a rank-3 Attribution whose leading (channel or batch)
+ *        dimension is 1 (single-channel saliency map, or Grad-CAM's batch-1 (1, H, W) map,
+ *        squeezed), or a rank-4 Attribution of shape (1, 1, H, W) -- the shape every
+ *        input-space image explainer (Saliency, IntegratedGradients, LRP, LIME, KernelSHAP)
+ *        returns for a single batched single-channel image such as an MNIST digit.
  * @throws std::invalid_argument if attr.values is not reshapable to a 2D grid by the rules
- *         above (e.g. rank 1, or rank 3 with more than one channel).
+ *         above (e.g. rank 1, rank 3 with more than one channel, or rank 4 with a batch or
+ *         channel dimension other than 1).
  */
 [[nodiscard]] HeatmapGrid ToSaliencyHeatmap(const Attribution& attr);
+
+/** @brief The color-scale range and colormap family a heatmap's values call for. */
+struct HeatmapColorScale {
+    /** @brief Value mapped to the colormap's low end. */
+    float scale_min;
+    /** @brief Value mapped to the colormap's high end. */
+    float scale_max;
+    /** @brief True iff the grid has any negative value: the caller must then use a diverging
+     *         colormap (DivergingColormap) centred on zero, since scale_min == -scale_max. When
+     *         false, values are unsigned magnitudes and a sequential colormap (Viridis) over
+     *         [0, scale_max] is correct. */
+    bool is_signed;
+};
+
+/**
+ * @brief Chooses a heatmap's color scale from its values (hc_information_visualization.md SS4:
+ *        sequential maps for unsigned magnitude, diverging maps centred on the meaningful
+ *        midpoint -- zero -- for signed quantities).
+ * @return For an all-non-negative grid, [0, max] with is_signed == false. For a grid with any
+ *         negative value, the symmetric range [-max|v|, +max|v|] with is_signed == true, so
+ *         zero always lands on the diverging map's neutral midpoint and equal magnitudes of
+ *         opposite sign get equal color intensity. A degenerate all-zero (or empty) grid
+ *         returns [0, 1] rather than a zero-width range.
+ */
+[[nodiscard]] HeatmapColorScale ComputeHeatmapColorScale(const HeatmapGrid& grid);
 
 /** @brief One beeswarm point: the attribution value (x) and a collision-avoidance vertical offset (y). */
 struct BeeswarmPoint {
@@ -99,6 +149,14 @@ struct BeeswarmPoint {
  * @throws std::out_of_range if feature_index is out of range for any run's Attribution.
  */
 [[nodiscard]] std::vector<BeeswarmPoint> ToBeeswarmPoints(const std::vector<Attribution>& runs, int64_t feature_index);
+
+/**
+ * @brief Human-readable label for a CircuitGraph node: the node's own label when it has one,
+ *        otherwise its operation type and id (e.g. "Conv #1", "Activation #2") -- so an
+ *        unlabeled ComputationGraph still renders as a readable layer diagram rather than a
+ *        row of anonymous "node_<id>" markers.
+ */
+[[nodiscard]] std::string CircuitNodeDisplayLabel(const CircuitNode& node);
 
 /** @brief Equal-width histogram bins: rows.size() == counts.size() + 1 edges. */
 struct HistogramBins {

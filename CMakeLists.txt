@@ -357,6 +357,13 @@ if(PULSATRIX_ENABLE_VIZ)
 
     add_executable(live_inference_demo examples/viz/live_inference_demo.cpp)
     target_link_libraries(live_inference_demo PRIVATE pulsatrix_viz)
+
+    # Every viz widget against real MNIST test digits (needs data/MNIST/raw, see
+    # tools/fetch_mnist.py). --screenshot writes PNGs through the stb_image_write header the
+    # already-fetched stb dependency ships (no new dependency).
+    add_executable(mnist_viz_gallery examples/viz/mnist_viz_gallery.cpp)
+    target_link_libraries(mnist_viz_gallery PRIVATE pulsatrix_viz)
+    target_include_directories(mnist_viz_gallery SYSTEM PRIVATE ${stb_SOURCE_DIR})
 endif()
 
 find_package(Doxygen QUIET)
