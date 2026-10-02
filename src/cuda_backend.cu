@@ -692,4 +692,14 @@ void CUDABackend::ssm_pass(SsmPassOp op, const SsmPassArgs& args) {
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
+void CUDABackend::rl_rows(RlRowOp op, const RlRowArgs& args) {
+    if (args.rows <= 0) {
+        return;
+    }
+    const auto n = static_cast<size_t>(args.rows);
+    gpu::rl_rows_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(static_cast<int>(op), args);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
 }  // namespace pulsatrix

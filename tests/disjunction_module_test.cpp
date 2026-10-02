@@ -261,5 +261,21 @@ TEST_F(DisjunctionModuleTest, ForwardRejectsNonStackedInputWithWrongLeadingDimen
     EXPECT_THROW({ (void)disj.forward(not_stacked); }, std::invalid_argument);
 }
 
+// Active region (a + b < 1): y = a + b with no bias, so the epsilon rule conserves (up to eps),
+// including just below the clip at 1.
+TEST_F(DisjunctionModuleTest, LukasiewiczPropagateRelevanceConservesInActiveRegion) {
+    DisjunctionModule m(&backend, DisjunctionModule::TConorm::Lukasiewicz);
+    Tensor a(Shape({4}), &backend, {0.1f, 0.4995f, 0.3f, 0.05f});
+    Tensor b(Shape({4}), &backend, {0.2f, 0.5f, 0.6f, 0.9f});
+    (void)m.forward(a, b);
+    Tensor relevance_out(Shape({4}), &backend, {1.0f, -0.5f, 2.0f, 0.25f});
+    Tensor relevance_in = m.propagate_relevance(relevance_out, LRPRuleConfig{});
+
+    for (int64_t i = 0; i < 4; ++i) {
+        const float sum = relevance_in.data()[i] + relevance_in.data()[4 + i];
+        EXPECT_NEAR(sum, relevance_out.data()[i], 1e-4f) << "index " << i;
+    }
+}
+
 }  // namespace
 }  // namespace pulsatrix

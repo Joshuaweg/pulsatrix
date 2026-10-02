@@ -57,12 +57,9 @@ public:
      *         established for decoding a discrete action: loose enough to tolerate a policy's
      *         float round-trip, tight enough to catch a genuinely fractional "action" (an
      *         un-argmaxed probability, say).
-     * @note Not yet backend-generic -- dereferences Tensor::data() directly in a raw host
-     *       loop. PULSATRIX_REQUIRE_HOST on the inputs guards against
-     *       silent UB on a CUDA-backed Tensor; see
-     *       campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove
-     *       this guard without actually retrofitting the method to route through
-     *       DeviceBackend.
+     * @note Device-generic (GPU-native-kernels Mission 7): the N encoded actions are copied to
+     *       the host once for validation, then the squared TD errors run through
+     *       DeviceBackend::rl_rows(DqnLoss) and are summed with column_sums in row order.
      */
     [[nodiscard]] float forward(const Tensor& q_values, const Tensor& actions, const Tensor& targets);
 
@@ -75,10 +72,8 @@ public:
      * @note The `2/N` factor is the same mean-square scaling MSELoss::backward() already
      *       folds in; N is the batch size, not the element count, because the mean is taken
      *       over transitions (one squared error each), not over all N*action_dim Q-values.
-     * @note Dereferences Tensor::data() directly, so it carries its own PULSATRIX_REQUIRE_HOST
-     *       guards on the cached state and on the freshly allocated gradient(s). forward()'s
-     *       guard covers only the caller's tensors; the gradient is allocated through backend_,
-     *       which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4).
+     * @note Device-generic: one DeviceBackend::rl_rows(DqnGrad) pass writes the taken action's
+     *       element of each row into the zero-initialized gradient.
      */
     [[nodiscard]] Tensor backward() const;
 
@@ -86,9 +81,10 @@ private:
     DeviceBackend* backend_;
     Tensor last_q_values_;
     Tensor last_targets_;
-    /** @brief Decoded, already-validated action index per batch row -- decoded once in
-     *         forward() rather than re-derived (and re-validated) in backward(). */
-    std::vector<int64_t> last_action_indices_;
+    /** @brief Decoded, already-validated action index per batch row, shape (N, 1), as
+     *         whole-number floats on backend_'s device -- decoded once in forward() rather than
+     *         re-derived (and re-validated) in backward(). */
+    Tensor last_action_indices_;
     bool has_forwarded_ = false;
 };
 
