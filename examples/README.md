@@ -25,6 +25,12 @@ below, each paired with a walkthrough page under
 | `sequence_model_demo` | Trains `RNNModule`, `LSTMModule`, and `GRUModule` side by side on a synthetic running-parity task, and prints their loss curves — shows the two gated modules solving it exactly while the vanilla RNN provably plateaus. |
 | `transformer_block_demo` | Runs a small `TransformerBlock` (multi-head attention + SwiGLU + residual) forward pass over a toy sequence and prints its attention weights and LRP relevance attribution. |
 
+## System monitoring
+
+| Target | What it demonstrates |
+|---|---|
+| `system_monitor_demo` | `SystemMonitor` logging to `system_monitor.jsonl` while an idle phase, a CPU gemm phase and a GPU gemm phase (HIP/CUDA backend if built, else CPU) run, with `mark()` around each phase. Prints capabilities first, then a live one-line status per second. Usage: `system_monitor_demo [seconds=10]`. |
+
 ## Explainability
 
 | Target | What it demonstrates |

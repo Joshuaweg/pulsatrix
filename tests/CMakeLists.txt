@@ -12,6 +12,7 @@ add_executable(pulsatrix_tests
     collate_test.cpp
     bounded_queue_test.cpp
     data_thread_pool_test.cpp
+    system_monitor_test.cpp
     data_loader_test.cpp
     csv_reader_test.cpp
     csv_dataset_test.cpp
