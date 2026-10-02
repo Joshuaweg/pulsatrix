@@ -58,6 +58,9 @@ public:
         return relevance_in;
     }
 
+    /** @brief A reshape is the same under every rule: supports all of them. */
+    [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
+
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override {
         last_input_shape_ = input.shape();

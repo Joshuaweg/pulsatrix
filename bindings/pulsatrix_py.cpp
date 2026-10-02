@@ -307,9 +307,42 @@ PYBIND11_MODULE(pulsatrix_py, m) {
         .value("OutputValue", pulsatrix::LRPSeed::OutputValue)
         .value("OneHot", pulsatrix::LRPSeed::OneHot);
 
+    // LRP-rules Mission 2: rule choice (uniform, via keyword arguments) and Zennit's composite
+    // presets (per-layer rules, as static factories). Invalid alpha/beta and unsupported rules
+    // raise ValueError (std::invalid_argument) at explain().
+    py::enum_<pulsatrix::LRPRule>(m, "LRPRule")
+        .value("Epsilon", pulsatrix::LRPRule::Epsilon)
+        .value("Gamma", pulsatrix::LRPRule::Gamma)
+        .value("AlphaBeta", pulsatrix::LRPRule::AlphaBeta)
+        .value("ZBox", pulsatrix::LRPRule::ZBox);
+
+    const pulsatrix::LRPRuleConfig lrp_defaults{};
     py::class_<pulsatrix::LRP>(m, "LRP")
-        .def(py::init([](float epsilon) { return pulsatrix::LRP(pulsatrix::LRPRuleConfig{epsilon}); }),
-             py::arg("epsilon") = pulsatrix::LRPRuleConfig{}.epsilon)
+        .def(py::init([](float epsilon, pulsatrix::LRPRule rule, float gamma, float alpha, float beta, float low,
+                         float high, bool epsilon_bias_in_denominator) {
+                 pulsatrix::LRPRuleConfig config{epsilon};
+                 config.rule = rule;
+                 config.gamma = gamma;
+                 config.alpha = alpha;
+                 config.beta = beta;
+                 config.low = low;
+                 config.high = high;
+                 config.epsilon_bias_in_denominator = epsilon_bias_in_denominator;
+                 return pulsatrix::LRP(config);
+             }),
+             py::arg("epsilon") = lrp_defaults.epsilon, py::kw_only(), py::arg("rule") = lrp_defaults.rule,
+             py::arg("gamma") = lrp_defaults.gamma, py::arg("alpha") = lrp_defaults.alpha,
+             py::arg("beta") = lrp_defaults.beta, py::arg("low") = lrp_defaults.low,
+             py::arg("high") = lrp_defaults.high,
+             py::arg("epsilon_bias_in_denominator") = lrp_defaults.epsilon_bias_in_denominator)
+        .def_static("epsilon_plus", &pulsatrix::LRP::epsilon_plus, py::arg("epsilon") = 1e-6f,
+                    "Zennit EpsilonPlus: Epsilon for Linear, ZPlus for Conv2D.")
+        .def_static("epsilon_alpha2_beta1", &pulsatrix::LRP::epsilon_alpha2_beta1, py::arg("epsilon") = 1e-6f,
+                    "Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D.")
+        .def_static("epsilon_gamma_box", &pulsatrix::LRP::epsilon_gamma_box, py::arg("low"), py::arg("high"),
+                    py::arg("gamma") = 0.25f, py::arg("epsilon") = 1e-6f,
+                    "Zennit EpsilonGammaBox: ZBox on the first Linear/Conv2D, Gamma on other Conv2D, Epsilon on "
+                    "other Linear.")
         .def(
             "explain",
             [](const pulsatrix::LRP& self, pulsatrix::ExplainerContext& ctx, const pulsatrix::Tensor& input,

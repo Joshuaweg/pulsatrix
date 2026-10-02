@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+#include "lrp_rules.hpp"
 #include "pulsatrix/assert.hpp"
 
 namespace pulsatrix {
@@ -156,13 +157,43 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     const int64_t in_stride = in_channels_ * H * W;
     const int64_t out_stride = out_channels_ * Q;
 
+    lrp_rules::validate(config, "Conv2DModule");
+
     // Device-generic (GPU-native-kernels Mission 4): the epsilon rule in patch space (one GPU
     // thread per patch element, output channels summed in the original order), then folded back.
     const DeviceType device = kernel_.device();
     Tensor relevance_cols(Shape({N, P, Q}), backend_, device);
-    backend_->lrp_conv(last_im2col_.data(), kernel_.data(), last_pre_bias_output_.data(), relevance_out.data(),
-                       relevance_cols.data(), static_cast<size_t>(N), static_cast<size_t>(out_channels_),
-                       static_cast<size_t>(P), static_cast<size_t>(Q), config.epsilon);
+    if (lrp_rules::is_legacy_epsilon(config)) {
+        backend_->lrp_conv(last_im2col_.data(), kernel_.data(), last_pre_bias_output_.data(), relevance_out.data(),
+                           relevance_cols.data(), static_cast<size_t>(N), static_cast<size_t>(out_channels_),
+                           static_cast<size_t>(P), static_cast<size_t>(Q), config.epsilon);
+    } else {
+        // Zennit-compatible rules (LRP-rules Mission 2) in patch space: per example, the layer is
+        // out_e = K (OC x P) @ col_e (P x Q) + b, so the patches are the rule's input operand.
+        const auto n = static_cast<size_t>(N), p = static_cast<size_t>(P), q = static_cast<size_t>(Q),
+                   oc = static_cast<size_t>(out_channels_);
+        DeviceBackend* be = backend_;
+        lrp_rules::AffineOp op;
+        op.backend = be;
+        op.device = device;
+        op.input_numel = n * p * q;
+        op.output_numel = n * oc * q;
+        op.weight_numel = oc * p;
+        op.bias_numel = oc;
+        op.forward = [=](const float* col, const float* k, float* y) {
+            for (size_t e = 0; e < n; ++e) {
+                be->gemm(k, col + e * p * q, y + e * oc * q, oc, p, q);
+            }
+        };
+        op.backward = [=](const float* g, const float* k, float* gcol) {
+            for (size_t e = 0; e < n; ++e) {
+                be->gemm_ex(k, true, g + e * oc * q, false, gcol + e * p * q, p, oc, q, 0.0f);
+            }
+        };
+        op.add_bias = [=](const float* y, const float* b, float* o) { be->add_channel_vector(y, b, o, n, oc, q); };
+        lrp_rules::apply(op, last_im2col_.data(), kernel_.data(), bias_.data(), last_pre_bias_output_.data(),
+                         relevance_out.data(), relevance_cols.data(), config);
+    }
     Tensor relevance_in(last_input_.shape(), backend_, device);
     relevance_in.fill(0.0f);
     backend_->col2im_add(relevance_cols.data(), relevance_in.data(), static_cast<size_t>(N),

@@ -141,6 +141,7 @@ add_library(pulsatrix_core
     src/video_transforms.cpp
     src/dataset_validator.cpp
     src/lrp_conservation.cpp
+    src/lrp_rules.cpp
     src/explainer_stability.cpp
     src/implot_metrics_sink.cpp
     src/viz/colormap.cpp

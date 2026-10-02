@@ -54,6 +54,9 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
+    /** @brief Pass-through relevance is the same under every rule: supports all of them. */
+    [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
+
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
