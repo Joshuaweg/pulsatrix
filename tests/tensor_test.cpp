@@ -153,6 +153,7 @@ public:
                  float* r_hprev, size_t rows, size_t hidden, float eps),
                 (override));
     MOCK_METHOD(void, ssm_pass, (SsmPassOp op, const SsmPassArgs& args), (override));
+    MOCK_METHOD(void, rl_rows, (RlRowOp op, const RlRowArgs& args), (override));
     MOCK_METHOD(void, aggregator_lrp,
                 (const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n, size_t cols,
                  float p, float eps),
@@ -441,6 +442,18 @@ TEST_F(TensorTest, FillOnZeroElementTensorIsSafe) {
     EXPECT_NO_THROW(t.fill(1.0f));
 }
 
+// GPU-native-kernels Mission 7: the explicit transfer every host-boundary RL class uses.
+TEST_F(TensorTest, ToHostVectorCopiesEveryElementInRowMajorOrder) {
+    Tensor t(Shape({2, 2}), &backend, {1.0f, -2.0f, 3.5f, 4.0f});
+    const std::vector<float> host = t.to_host_vector();
+    EXPECT_EQ(host, (std::vector<float>{1.0f, -2.0f, 3.5f, 4.0f}));
+}
+
+TEST_F(TensorTest, ToHostVectorOnZeroElementTensorIsEmpty) {
+    Tensor t(Shape({0}), &backend);
+    EXPECT_TRUE(t.to_host_vector().empty());
+}
+
 TEST_F(TensorTest, ReshapePreservesDataForCompatibleShape) {
     Tensor t(Shape({2, 3}), &backend, {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
     t.reshape(Shape({3, 2}));
@@ -567,6 +580,18 @@ TEST_F(TensorTest, ToHostCopiesDeviceToHostThroughSourceBackend) {
     EXPECT_TRUE(host.directions.empty());
     EXPECT_FLOAT_EQ(t.data()[0], 4.0f);
     EXPECT_FLOAT_EQ(t.data()[1], 5.0f);
+}
+
+TEST_F(TensorTest, ToHostVectorUsesDeviceToHostForNonCpuTensor) {
+    RecordingBackend device;
+    Tensor t(Shape({2}), &device, {4.0f, 5.0f}, DeviceType::Cuda);
+    device.directions.clear();
+
+    const std::vector<float> host = t.to_host_vector();
+
+    ASSERT_EQ(device.directions.size(), 1u);
+    EXPECT_EQ(device.directions[0], CopyDirection::DeviceToHost);
+    EXPECT_EQ(host, (std::vector<float>{4.0f, 5.0f}));
 }
 
 TEST_F(TensorTest, ToBetweenGpuVendorsStagesThroughHost) {

@@ -158,6 +158,37 @@ struct SsmPassArgs {
 };
 
 /**
+ * @brief Fused per-row reinforcement-learning passes, for DeviceBackend::rl_rows. One lane per
+ *        batch row (per element for PolyakBlend); rows x cols from RlRowArgs. Index slots hold
+ *        validated whole-number action indices as floats. Slots (in[] -> out[]):
+ * - DqnLoss:     in q (rows, cols), indices, targets -> out per-row squared TD error
+ * - DqnGrad:     in q, indices, targets -> out grad (rows, cols), caller-zeroed; only the taken
+ *                action's element is written (uses scale)
+ * - PgLoss:      in logits, indices, returns -> out probs (rows, cols), per-row loss term
+ * - PgGrad:      in probs, indices, returns -> out grad (dense; uses scale)
+ * - PpoLoss:     in logits, indices, old_log_probs, advantages -> out probs, per-row loss term,
+ *                ratio, mask (uses lower, upper)
+ * - PpoGrad:     in probs, indices, advantages, ratios, masks -> out grad (dense; uses scale)
+ * - DqnTarget:   in q_select, q_eval (both rows x cols), rewards, dones -> out target (uses gamma)
+ * - PolyakBlend: in source, destination -> out tau*source + (1 - tau)*destination over rows
+ *                elements (out may alias destination; uses tau)
+ */
+enum class RlRowOp { DqnLoss, DqnGrad, PgLoss, PgGrad, PpoLoss, PpoGrad, DqnTarget, PolyakBlend };
+
+/** @brief Operand pointers and dims for DeviceBackend::rl_rows (passed to kernels by value). */
+struct RlRowArgs {
+    const float* in[5] = {};
+    float* out[4] = {};
+    int64_t rows = 0;
+    int64_t cols = 0;
+    float scale = 0.0f;  ///< gradient batch-mean scale (1/N or 2/N)
+    float lower = 0.0f;  ///< PPO 1 - clip_epsilon
+    float upper = 0.0f;  ///< PPO 1 + clip_epsilon
+    float gamma = 0.0f;  ///< discount factor
+    float tau = 0.0f;    ///< Polyak blend factor
+};
+
+/**
  * @brief Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and
  *        HIPBackend (Phase 1.6) all implement this contract; Tensor and ComputationGraph
  *        depend only on this interface, never on a concrete backend's types.
@@ -597,6 +628,17 @@ public:
      *       order. Every reduction is owned by one lane and summed in the original loop order.
      */
     virtual void ssm_pass(SsmPassOp op, const SsmPassArgs& args) = 0;
+
+    // ---- GPU-native-kernels Mission 7: reinforcement learning -----------------------------------
+    // Shared per-row source in src/rl_math.hpp; deterministic, no atomics.
+
+    /**
+     * @brief One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots).
+     * @note One lane per row: a row's softmax, argmax and gradient writes are owned by its lane and
+     *       walk the columns in the original loop order. Per-row loss terms are reduced by the
+     *       caller with column_sums, which adds rows in increasing order like the original loop.
+     */
+    virtual void rl_rows(RlRowOp op, const RlRowArgs& args) = 0;
 };
 
 }  // namespace pulsatrix

@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -31,12 +30,6 @@ void require_unit_interval(float value, const char* what) {
 
 GAEResult ComputeGAE(const Tensor& rewards, const Tensor& dones, const Tensor& values, float bootstrap_value,
                      float gamma, float lambda, DeviceBackend* backend) {
-    // Raw host loop over Tensor::data() (a reverse-order recursion has no DeviceBackend
-    // primitive) -- undefined behavior on a CUDA-backed Tensor. See mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(rewards);
-    PULSATRIX_REQUIRE_HOST(dones);
-    PULSATRIX_REQUIRE_HOST(values);
-
     if (rewards.rank() != 2 || rewards.shape().dim(1) != 1) {
         throw std::invalid_argument("ComputeGAE: rewards must have shape (N, 1)");
     }
@@ -49,6 +42,13 @@ GAEResult ComputeGAE(const Tensor& rewards, const Tensor& dones, const Tensor& v
     require_unit_interval(gamma, "gamma");
     require_unit_interval(lambda, "lambda");
 
+    // Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recursion over
+    // a short rollout. One device->host copy of each input column, the original loop on the
+    // host, and the two results uploaded through `backend`.
+    const std::vector<float> reward_values = rewards.to_host_vector();
+    const std::vector<float> done_values = dones.to_host_vector();
+    const std::vector<float> value_values = values.to_host_vector();
+
     std::vector<float> advantages(static_cast<size_t>(batch_size));
     std::vector<float> returns(static_cast<size_t>(batch_size));
 
@@ -59,17 +59,19 @@ GAEResult ComputeGAE(const Tensor& rewards, const Tensor& dones, const Tensor& v
     // different recurrence inside it.
     float running = 0.0f;
     for (int64_t t = batch_size - 1; t >= 0; --t) {
-        const float not_done = 1.0f - dones.data()[t];
+        const float not_done = 1.0f - done_values[static_cast<size_t>(t)];
         // V_next: the next stored step's own value for every step but the last, and the
         // caller-supplied bootstrap for the last -- RolloutBuffer stores no next_observation,
         // so the final successor's value can only come from outside.
-        const float next_value = (t + 1 < batch_size) ? values.data()[t + 1] : bootstrap_value;
-        const float delta = rewards.data()[t] + gamma * not_done * next_value - values.data()[t];
+        const float next_value =
+            (t + 1 < batch_size) ? value_values[static_cast<size_t>(t + 1)] : bootstrap_value;
+        const float delta = reward_values[static_cast<size_t>(t)] + gamma * not_done * next_value -
+                            value_values[static_cast<size_t>(t)];
         running = delta + gamma * lambda * not_done * running;
         advantages[static_cast<size_t>(t)] = running;
         // The GAE identity: the critic regresses onto its own current estimate corrected by
         // the advantage, not onto a raw Monte-Carlo return.
-        returns[static_cast<size_t>(t)] = running + values.data()[t];
+        returns[static_cast<size_t>(t)] = running + value_values[static_cast<size_t>(t)];
     }
 
     return GAEResult{Tensor(Shape({batch_size, 1}), backend, advantages),

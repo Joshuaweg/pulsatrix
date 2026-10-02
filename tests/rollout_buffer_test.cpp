@@ -453,32 +453,5 @@ TEST_F(RolloutBufferTest, ComputeReturnsOnAnEmptyBufferYieldsAnEmptyBatch) {
     EXPECT_EQ(batch.log_probs.shape().dim(0), 0);
 }
 
-using RolloutBufferDeathTest = RolloutBufferTest;
-
-// add() copies rows out of Tensor::data() in a raw host loop -- undefined behavior on a
-// CUDA-backed Tensor, so both tensor arguments are PULSATRIX_ASSERT-guarded
-// (mission_host_loop_guards.md). No real GPU needed: see LinearModuleDeathTest for the
-// mislabeled-Tensor testing pattern this reuses. One death test per distinct guarded argument
-// role, as in ReplayBufferDeathTest: an observation-shaped tensor and an action-shaped one.
-TEST_F(RolloutBufferDeathTest, AddAbortsOnNonCpuObservation) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RolloutBuffer buffer(4, kObsDim, kActDim, &backend);
-    Tensor observation(Shape({1, kObsDim}), &backend, {1.0f, 2.0f}, DeviceType::Cuda);
-    Tensor action(Shape({1, kActDim}), &backend, {0.0f});
-    EXPECT_DEATH({ buffer.add(observation, action, 1.0f, 0.0f, false); }, "PULSATRIX_ASSERT failed");
-}
-
-TEST_F(RolloutBufferDeathTest, AddAbortsOnNonCpuAction) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    RolloutBuffer buffer(4, kObsDim, kActDim, &backend);
-    Tensor observation(Shape({1, kObsDim}), &backend, {1.0f, 2.0f});
-    Tensor action(Shape({1, kActDim}), &backend, {0.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ buffer.add(observation, action, 1.0f, 0.0f, false); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

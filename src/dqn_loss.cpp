@@ -3,8 +3,8 @@
 #include <cmath>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -30,17 +30,12 @@ void require_matrix_shape(const Tensor& tensor, int64_t rows, int64_t expected_w
 }  // namespace
 
 DQNLoss::DQNLoss(DeviceBackend* backend)
-    : backend_(backend), last_q_values_(Shape({0}), backend), last_targets_(Shape({0}), backend) {}
+    : backend_(backend),
+      last_q_values_(Shape({0}), backend),
+      last_targets_(Shape({0}), backend),
+      last_action_indices_(Shape({0}), backend) {}
 
 float DQNLoss::forward(const Tensor& q_values, const Tensor& actions, const Tensor& targets) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic (a
-    // per-row gather at a data-dependent column has no DeviceBackend primitive). See
-    // campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision and
-    // mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(q_values);
-    PULSATRIX_REQUIRE_HOST(actions);
-    PULSATRIX_REQUIRE_HOST(targets);
-
     if (q_values.rank() != 2) {
         throw std::invalid_argument("DQNLoss::forward: q_values must have shape (N, action_dim)");
     }
@@ -53,10 +48,12 @@ float DQNLoss::forward(const Tensor& q_values, const Tensor& actions, const Tens
     require_matrix_shape(targets, batch_size, 1, "targets");
 
     // Decode (and fully validate) every action index before touching any Q-value, so a
-    // malformed batch throws without leaving a half-populated cache behind.
-    std::vector<int64_t> indices(static_cast<size_t>(batch_size));
+    // malformed batch throws without leaving a half-populated cache behind. Validation can
+    // throw per element, so it runs on the host: one device->host copy of the N actions.
+    const std::vector<float> encoded_actions = actions.to_host_vector();
+    std::vector<float> indices(static_cast<size_t>(batch_size));
     for (int64_t b = 0; b < batch_size; ++b) {
-        const float encoded = actions.data()[b];
+        const float encoded = encoded_actions[static_cast<size_t>(b)];
         const float rounded = std::round(encoded);
         if (std::abs(encoded - rounded) > kActionIntegerTolerance) {
             throw std::invalid_argument("DQNLoss::forward: actions must encode whole-number action indices");
@@ -65,23 +62,30 @@ float DQNLoss::forward(const Tensor& q_values, const Tensor& actions, const Tens
         if (index < 0 || index >= action_dim) {
             throw std::invalid_argument("DQNLoss::forward: action index out of range [0, action_dim)");
         }
-        indices[static_cast<size_t>(b)] = index;
+        indices[static_cast<size_t>(b)] = static_cast<float>(index);
     }
 
     last_q_values_ = q_values;
     last_targets_ = targets;
-    last_action_indices_ = std::move(indices);
+    last_action_indices_ = Tensor(Shape({batch_size, 1}), backend_, indices);
     has_forwarded_ = true;
 
-    // Mean over *transitions*, not over all N*action_dim Q-values: each transition
-    // contributes exactly one squared TD error, on the action it actually took.
-    float sum_squared = 0.0f;
-    for (int64_t b = 0; b < batch_size; ++b) {
-        const float selected = q_values.data()[b * action_dim + last_action_indices_[static_cast<size_t>(b)]];
-        const float diff = selected - targets.data()[b];
-        sum_squared += diff * diff;
-    }
-    return sum_squared / static_cast<float>(batch_size);
+    // Device-generic (GPU-native-kernels Mission 7). Mean over *transitions*, not over all
+    // N*action_dim Q-values: each transition contributes exactly one squared TD error, on the
+    // action it actually took. rl_rows writes the per-row squared errors; column_sums adds them
+    // in increasing row order from 0.0f -- the original `sum_squared += diff * diff` order.
+    Tensor squared(Shape({batch_size, 1}), backend_);
+    RlRowArgs args;
+    args.in[0] = q_values.data();
+    args.in[1] = last_action_indices_.data();
+    args.in[2] = targets.data();
+    args.out[0] = squared.data();
+    args.rows = batch_size;
+    args.cols = action_dim;
+    backend_->rl_rows(RlRowOp::DqnLoss, args);
+    Tensor sum_squared(Shape({1}), backend_);
+    backend_->column_sums(squared.data(), sum_squared.data(), static_cast<size_t>(batch_size), 1, 0.0f);
+    return sum_squared.read_element(0) / static_cast<float>(batch_size);
 }
 
 Tensor DQNLoss::backward() const {
@@ -94,20 +98,19 @@ Tensor DQNLoss::backward() const {
     const float scale = 2.0f / static_cast<float>(batch_size);
 
     // Zero-initialized by Tensor's own contract, so the non-selected columns are already
-    // exactly 0.0f -- only the taken action's column is written. That untouched-zero pattern
-    // is the masking: the Q-network's backward() receives gradient signal solely for the
-    // action the behaviour policy actually took.
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(last_q_values_);
-    PULSATRIX_REQUIRE_HOST(last_targets_);
+    // exactly 0.0f -- only the taken action's column is written (one rl_rows lane per row).
+    // That untouched-zero pattern is the masking: the Q-network's backward() receives gradient
+    // signal solely for the action the behaviour policy actually took.
     Tensor grad(last_q_values_.shape(), backend_);
-    PULSATRIX_REQUIRE_HOST(grad);
-    for (int64_t b = 0; b < batch_size; ++b) {
-        const int64_t index = last_action_indices_[static_cast<size_t>(b)];
-        const float selected = last_q_values_.data()[b * action_dim + index];
-        grad.data()[b * action_dim + index] = scale * (selected - last_targets_.data()[b]);
-    }
+    RlRowArgs args;
+    args.in[0] = last_q_values_.data();
+    args.in[1] = last_action_indices_.data();
+    args.in[2] = last_targets_.data();
+    args.out[0] = grad.data();
+    args.rows = batch_size;
+    args.cols = action_dim;
+    args.scale = scale;
+    backend_->rl_rows(RlRowOp::DqnGrad, args);
     return grad;
 }
 
