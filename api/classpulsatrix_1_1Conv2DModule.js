@@ -13,5 +13,6 @@ var classpulsatrix_1_1Conv2DModule =
     [ "set_bias", "classpulsatrix_1_1Conv2DModule.html#a8bf7eccc3df66273dc7698b113c8ed18", null ],
     [ "set_bias", "classpulsatrix_1_1Conv2DModule.html#aa494491c6d33fa8c831fe8d9c94e8ddb", null ],
     [ "set_kernel", "classpulsatrix_1_1Conv2DModule.html#a4cd0352a65362b75d0aeb1ac822d12d1", null ],
-    [ "set_kernel", "classpulsatrix_1_1Conv2DModule.html#ab4616dd53b3080cd35a6e7cdbc88aabd", null ]
+    [ "set_kernel", "classpulsatrix_1_1Conv2DModule.html#ab4616dd53b3080cd35a6e7cdbc88aabd", null ],
+    [ "supports_lrp_rule", "classpulsatrix_1_1Conv2DModule.html#a645f7dcb0204de2ec34ca34432d56f58", null ]
 ];

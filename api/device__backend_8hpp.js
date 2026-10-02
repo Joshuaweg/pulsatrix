@@ -31,6 +31,11 @@ var device__backend_8hpp =
       [ "DisjunctionBackward", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454", null ],
       [ "DisjunctionLrp", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f", null ]
     ] ],
+    [ "LrpGate", "device__backend_8hpp.html#aeafb34c87ad858963e6f06a87ee9bbc3", [
+      [ "None", "device__backend_8hpp.html#aeafb34c87ad858963e6f06a87ee9bbc3a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Positive", "device__backend_8hpp.html#aeafb34c87ad858963e6f06a87ee9bbc3a3289297424e01eda5b788c083bbf3147", null ],
+      [ "Negative", "device__backend_8hpp.html#aeafb34c87ad858963e6f06a87ee9bbc3affb9356ff2b7da85c75c92fa7ea03b8b", null ]
+    ] ],
     [ "RecurrentCellOp", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400", [
       [ "RnnBackward", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64", null ],
       [ "LstmForward", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400ab17570322128d1651d18c17847ead959", null ],

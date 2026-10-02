@@ -46,6 +46,7 @@ var classpulsatrix_1_1CPUBackend =
     [ "lrp_residual_split", "classpulsatrix_1_1CPUBackend.html#a76bd3dc6c56c05820aef7e94abf5a381", null ],
     [ "lrp_rope", "classpulsatrix_1_1CPUBackend.html#a7e81fae85df1e313c27fb52c2d9ecf10", null ],
     [ "lrp_softmax_rows", "classpulsatrix_1_1CPUBackend.html#ae08fdaea15f5b0b066aebcfaf351a9c1", null ],
+    [ "lrp_stabilized_divide", "classpulsatrix_1_1CPUBackend.html#ae654855306f168b3cb3cc58d3acf295e", null ],
     [ "max_pool_forward", "classpulsatrix_1_1CPUBackend.html#a201e3f2637dd66de583fbb1d697d2874", null ],
     [ "max_unpool", "classpulsatrix_1_1CPUBackend.html#a62a13772a9b4e60e6f24625ac3ad3e6d", null ],
     [ "mul", "classpulsatrix_1_1CPUBackend.html#a19efc91d50ebf477bbc01af80cbada3d", null ],

@@ -12,5 +12,7 @@ var classpulsatrix_1_1ExplainerContext =
     [ "graph", "classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088", null ],
     [ "layer_label", "classpulsatrix_1_1ExplainerContext.html#ae65d5fc0ee75deda3c5e895ec5b01991", null ],
     [ "logit_lens", "classpulsatrix_1_1ExplainerContext.html#a02eb3a3c5c8302a0beaa6dd3740451df", null ],
-    [ "relevance_pass", "classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b", null ]
+    [ "modules", "classpulsatrix_1_1ExplainerContext.html#ae3dcf514789cfbb8cf982888270f82a7", null ],
+    [ "relevance_pass", "classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b", null ],
+    [ "relevance_pass", "classpulsatrix_1_1ExplainerContext.html#afa1f8a65fa88e5799e8b750c65de51f9", null ]
 ];

@@ -64,19 +64,19 @@ var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
 "classpulsatrix_1_1CPUBackend.html#a805dbc60d8b59e886f325d3dc3d6d172",
-"classpulsatrix_1_1ComputationGraph.html#ab5e326cc6109e5677eb114e0a85f6b05",
-"classpulsatrix_1_1DeviceBackend.html#a96b91d19e3f763089db8add216159296",
-"classpulsatrix_1_1GaussianProcessRegressor.html#a13bd1fbee7736cb4c707aeaced1ee689",
-"classpulsatrix_1_1InnovationTracker.html#a33dc673626ea4d9739ecd45384b391a7",
-"classpulsatrix_1_1MambaModule.html#a6f6fe8f3522406f5bc1116e2eb0e48d1",
-"classpulsatrix_1_1PPOClippedLoss.html",
-"classpulsatrix_1_1RetNetModule.html#a8c91944e8614c706043b86711aff29b4",
-"classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d",
-"classpulsatrix_1_1datalog_1_1FactDatabase.html#aceea37e0dc1072535bd08c7431c40ea0",
-"namespacepulsatrix.html#a03f5550dab9961a6e7f1b6d5e7f5befd",
-"rnn__module_8hpp.html",
-"structpulsatrix_1_1MnistDataset.html",
-"structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8"
+"classpulsatrix_1_1Compose.html#ac9ef5828a5a5d68a2d2490a628c29162",
+"classpulsatrix_1_1DeviceBackend.html#a8c27211ec8f3074b8fa17da3b05d2704",
+"classpulsatrix_1_1GRUModule.html#adb25792a0cd537e916e603feaa970057",
+"classpulsatrix_1_1ImPlotMetricsSink.html#af6a14d7b939a99acbee3607c1e6c2f7e",
+"classpulsatrix_1_1MSELoss.html#a6d5585d30079af244aaf7bf8202378ea",
+"classpulsatrix_1_1NoiseSchedule.html#a7145582f7bd8664edef3ae9fa06f33cc",
+"classpulsatrix_1_1ResizeTransform.html",
+"classpulsatrix_1_1SwiGLUModule.html#aabebe9bd5eb5e02e33ad0fecbd635492",
+"classpulsatrix_1_1XorNetwork.html#aea8944b7f9aa6259490ff2d4410b8dc1",
+"learnable__scalar_8hpp.html",
+"namespacepulsatrix_1_1datalog.html#a0854f4411fd0167576e73dbb4f0bebd9",
+"structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html#a6423c01999e2c60d7b6cf15881981ad7",
+"structpulsatrix_1_1StepResult.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

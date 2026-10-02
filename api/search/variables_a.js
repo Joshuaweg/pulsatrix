@@ -5,5 +5,6 @@ var searchData=
   ['labels_2',['labels',['../structpulsatrix_1_1MnistDataset.html#a84784f8903ae0e3fef56ee7f1b1edc42',1,'pulsatrix::MnistDataset::labels'],['../structpulsatrix_1_1BarSeries.html#a54c248cc5f459a097c00efa2af543a8f',1,'pulsatrix::BarSeries::labels']]],
   ['log_5fprob_3',['log_prob',['../structpulsatrix_1_1GFlowNetSampledAction.html#a7e0cc52da8670414c733ef3feabeb52d',1,'pulsatrix::GFlowNetSampledAction::log_prob'],['../structpulsatrix_1_1TanhGaussianSample.html#a6835f03acd0b953261580d8a009ff442',1,'pulsatrix::TanhGaussianSample::log_prob']]],
   ['log_5fprobs_4',['log_probs',['../structpulsatrix_1_1RolloutBatch.html#a1cf2be7bec3e8a07ca8b57920bd83b46',1,'pulsatrix::RolloutBatch']]],
-  ['lower_5',['lower',['../structpulsatrix_1_1RlRowArgs.html#a011a51dacb5a353a7c528e6bec15388f',1,'pulsatrix::RlRowArgs::lower'],['../structpulsatrix_1_1ParameterSpec.html#ab0ae31653eac46516d022779b5a87b23',1,'pulsatrix::ParameterSpec::lower']]]
+  ['low_5',['low',['../structpulsatrix_1_1LRPRuleConfig.html#a1b5c9c82b341f76234eeb5358ab63209',1,'pulsatrix::LRPRuleConfig']]],
+  ['lower_6',['lower',['../structpulsatrix_1_1RlRowArgs.html#a011a51dacb5a353a7c528e6bec15388f',1,'pulsatrix::RlRowArgs::lower'],['../structpulsatrix_1_1ParameterSpec.html#ab0ae31653eac46516d022779b5a87b23',1,'pulsatrix::ParameterSpec::lower']]]
 ];

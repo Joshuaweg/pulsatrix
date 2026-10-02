@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1LRP.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classpulsatrix_1_1LRP-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::LRP Class Reference</div></div>
 </div><!--header-->
@@ -108,7 +109,11 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1LRP.html',''); initR
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a16aa830497cd53d6038a9e275ffacabb" id="r_a16aa830497cd53d6038a9e275ffacabb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a16aa830497cd53d6038a9e275ffacabb">LRP</a> (<a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> <a class="el" href="classpulsatrix_1_1LRP.html#af224aaf3c5d9e98b6482eb2a65685621">config</a>=<a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>{})</td></tr>
+<tr class="memdesc:a16aa830497cd53d6038a9e275ffacabb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uniform rule: every module applies <code>config</code>.  <br /></td></tr>
 <tr class="separator:a16aa830497cd53d6038a9e275ffacabb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a298209dfa626e0b453ff3b49bf1fad2f" id="r_a298209dfa626e0b453ff3b49bf1fad2f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a298209dfa626e0b453ff3b49bf1fad2f">LRP</a> (<a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a> <a class="el" href="classpulsatrix_1_1LRP.html#a97476550eec9c971173e891a43fe35d8">composite</a>, std::string name=&quot;custom&quot;)</td></tr>
+<tr class="memdesc:a298209dfa626e0b453ff3b49bf1fad2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-layer rules from a composite; <code>name</code> is reported as "composite:&lt;name&gt;".  <br /></td></tr>
+<tr class="separator:a298209dfa626e0b453ff3b49bf1fad2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecd0567125d3e4bb778c71366b681fde" id="r_aecd0567125d3e4bb778c71366b681fde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde">explain</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t target_index, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend) const</td></tr>
 <tr class="memdesc:aecd0567125d3e4bb778c71366b681fde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains <code>target_index</code> for every row, OutputValue seed.  <br /></td></tr>
 <tr class="separator:aecd0567125d3e4bb778c71366b681fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,16 +121,32 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9dd1211ba1782bfbdd05fb1a5b69b91b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains the given target(s) / contrast(s).  <br /></td></tr>
 <tr class="separator:a9dd1211ba1782bfbdd05fb1a5b69b91b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af224aaf3c5d9e98b6482eb2a65685621" id="r_af224aaf3c5d9e98b6482eb2a65685621"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#af224aaf3c5d9e98b6482eb2a65685621">config</a> () const</td></tr>
+<tr class="memdesc:af224aaf3c5d9e98b6482eb2a65685621"><td class="mdescLeft">&#160;</td><td class="mdescRight">The uniform config (default-constructed when this <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> uses a composite).  <br /></td></tr>
 <tr class="separator:af224aaf3c5d9e98b6482eb2a65685621"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97476550eec9c971173e891a43fe35d8" id="r_a97476550eec9c971173e891a43fe35d8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a97476550eec9c971173e891a43fe35d8">composite</a> () const</td></tr>
+<tr class="memdesc:a97476550eec9c971173e891a43fe35d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The composite, or an empty function for a uniform-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>.  <br /></td></tr>
+<tr class="separator:a97476550eec9c971173e891a43fe35d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a6370aa4cd308e67af1ddc9817c4e1466" id="r_a6370aa4cd308e67af1ddc9817c4e1466"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a6370aa4cd308e67af1ddc9817c4e1466">epsilon_plus</a> (float epsilon=1e-6f)</td></tr>
+<tr class="memdesc:a6370aa4cd308e67af1ddc9817c4e1466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonPlus preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5" title="Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D.">lrp_composite::epsilon_plus</a>).  <br /></td></tr>
+<tr class="separator:a6370aa4cd308e67af1ddc9817c4e1466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ed6b03b955a4098f12a7cb0dbc5f484" id="r_a6ed6b03b955a4098f12a7cb0dbc5f484"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a6ed6b03b955a4098f12a7cb0dbc5f484">epsilon_gamma_box</a> (float low, float high, float gamma=0.25f, float epsilon=1e-6f)</td></tr>
+<tr class="memdesc:a6ed6b03b955a4098f12a7cb0dbc5f484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonGammaBox preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#a35db92169a6e3bf6eea6fe5a7abe8d76" title="Zennit EpsilonGammaBox: ZBox(low, high) for the first Conv2D layer (lowest index),...">lrp_composite::epsilon_gamma_box</a>).  <br /></td></tr>
+<tr class="separator:a6ed6b03b955a4098f12a7cb0dbc5f484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27d15989de1278df96628ae232992c35" id="r_a27d15989de1278df96628ae232992c35"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a27d15989de1278df96628ae232992c35">epsilon_alpha2_beta1</a> (float epsilon=1e-6f)</td></tr>
+<tr class="memdesc:a27d15989de1278df96628ae232992c35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonAlpha2Beta1 preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39" title="Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D.">lrp_composite::epsilon_alpha2_beta1</a>).  <br /></td></tr>
+<tr class="separator:a27d15989de1278df96628ae232992c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Whole-model <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to the input through every module's own propagate_relevance() rule. </p>
-<dl class="section note"><dt>Note</dt><dd>The per-layer rules are the ones each <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> implements (currently the epsilon-rule family &ndash; see each module's propagate_relevance() doc); <code>config</code> is passed to all of them. Bias terms absorb relevance under the epsilon rule, and the AttnLRP softmax / attention rules do not conserve exactly, so <code>sum(values)</code> matches the seeded total only for bias-free, conservative stacks. The <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s metadata reports both sums. </dd>
+<dl class="section note"><dt>Note</dt><dd>The per-layer rules are the ones each <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> implements (see each module's propagate_relevance() doc); either one <code>config</code> is passed to all of them, or an LRPComposite chooses one per module. A module asked for a rule it does not implement throws (<a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass</a>) &ndash; there is no silent fallback to epsilon. Bias terms absorb relevance under the epsilon rule, and the AttnLRP softmax / attention rules do not conserve exactly, so <code>sum(values)</code> matches the seeded total only for bias-free, conservative stacks. The <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s metadata reports both sums. </dd>
 <dd>
 Device-generic: the seed is assembled on the host (one device-&gt;host copy of the network output when seeding with output values) and uploaded through <code>backend</code>, which must be the backend the network's output lives on. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a16aa830497cd53d6038a9e275ffacabb" name="a16aa830497cd53d6038a9e275ffacabb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16aa830497cd53d6038a9e275ffacabb">&#9670;&#160;</a></span>LRP()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a16aa830497cd53d6038a9e275ffacabb">&#9670;&#160;</a></span>LRP() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,9 +169,82 @@ Device-generic: the seed is assembled on the host (one device-&gt;host copy of t
 </table>
 </div><div class="memdoc">
 
+<p>Uniform rule: every module applies <code>config</code>. </p>
+
+</div>
+</div>
+<a id="a298209dfa626e0b453ff3b49bf1fad2f" name="a298209dfa626e0b453ff3b49bf1fad2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a298209dfa626e0b453ff3b49bf1fad2f">&#9670;&#160;</a></span>LRP() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::LRP::LRP </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a>&#160;</td>
+          <td class="paramname"><em>composite</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em> = <code>&quot;custom&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Per-layer rules from a composite; <code>name</code> is reported as "composite:&lt;name&gt;". </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if composite is empty. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a97476550eec9c971173e891a43fe35d8" name="a97476550eec9c971173e891a43fe35d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97476550eec9c971173e891a43fe35d8">&#9670;&#160;</a></span>composite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a> &amp; pulsatrix::LRP::composite </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The composite, or an empty function for a uniform-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>. </p>
+
+</div>
+</div>
 <a id="af224aaf3c5d9e98b6482eb2a65685621" name="af224aaf3c5d9e98b6482eb2a65685621"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af224aaf3c5d9e98b6482eb2a65685621">&#9670;&#160;</a></span>config()</h2>
 
@@ -173,6 +267,114 @@ Device-generic: the seed is assembled on the host (one device-&gt;host copy of t
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>The uniform config (default-constructed when this <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> uses a composite). </p>
+
+</div>
+</div>
+<a id="a27d15989de1278df96628ae232992c35" name="a27d15989de1278df96628ae232992c35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27d15989de1278df96628ae232992c35">&#9670;&#160;</a></span>epsilon_alpha2_beta1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> pulsatrix::LRP::epsilon_alpha2_beta1 </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>epsilon</em> = <code>1e-6f</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Zennit EpsilonAlpha2Beta1 preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39" title="Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D.">lrp_composite::epsilon_alpha2_beta1</a>). </p>
+
+</div>
+</div>
+<a id="a6ed6b03b955a4098f12a7cb0dbc5f484" name="a6ed6b03b955a4098f12a7cb0dbc5f484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ed6b03b955a4098f12a7cb0dbc5f484">&#9670;&#160;</a></span>epsilon_gamma_box()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> pulsatrix::LRP::epsilon_gamma_box </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>low</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>high</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>gamma</em> = <code>0.25f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>epsilon</em> = <code>1e-6f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Zennit EpsilonGammaBox preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#a35db92169a6e3bf6eea6fe5a7abe8d76" title="Zennit EpsilonGammaBox: ZBox(low, high) for the first Conv2D layer (lowest index),...">lrp_composite::epsilon_gamma_box</a>). </p>
+
+</div>
+</div>
+<a id="a6370aa4cd308e67af1ddc9817c4e1466" name="a6370aa4cd308e67af1ddc9817c4e1466"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6370aa4cd308e67af1ddc9817c4e1466">&#9670;&#160;</a></span>epsilon_plus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a> pulsatrix::LRP::epsilon_plus </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>epsilon</em> = <code>1e-6f</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Zennit EpsilonPlus preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5" title="Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D.">lrp_composite::epsilon_plus</a>). </p>
 
 </div>
 </div>
@@ -223,10 +425,10 @@ Device-generic: the seed is assembled on the host (one device-&gt;host copy of t
 </div><div class="memdoc">
 
 <p>Explains the given target(s) / contrast(s). </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>{"lrp", relevance (input's shape), metadata}: rule, epsilon, seed, targets, contrasts, relevance_out_sum, relevance_in_sum. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>{"lrp", relevance (input's shape), metadata}: rule (the uniform rule's name, or "composite:&lt;name&gt;"), rules (each module's rule, comma-separated, forward order), epsilon (the uniform config's), seed, targets, contrasts, relevance_out_sum, relevance_in_sum. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if the network output isn't rank-2, a target/contrast list has neither 1 nor N entries, an index is out of range, or a row's contrast equals its target (that seed is all zeros and explains nothing). </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if the network output isn't rank-2, a target/contrast list has neither 1 nor N entries, an index is out of range, or a row's contrast equals its target (that seed is all zeros and explains nothing), a module does not implement its rule, or a rule's parameters are invalid. </td></tr>
     <tr><td class="paramname">std::logic_error</td><td>if the context's last forward pass was patched (relevance_pass()). </td></tr>
   </table>
   </dd>

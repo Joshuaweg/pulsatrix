@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1LRPRuleConfig.html'
 </div><!--header-->
 <div class="contents">
 
-<p>Configuration for <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation. Selects <em>which</em> rule variant to apply (currently: epsilon rule only); it never changes <em>whether</em> a module supports <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> &ndash; that's guaranteed at compile time by <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">Module::propagate_relevance</a> being pure-virtual. Gamma/alpha-beta fields are added when a module first needs them, not speculatively now.  
+<p>Configuration for <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation: which rule a module applies and its hyperparameters. A module that does not implement the requested rule throws (see <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6" title="Whether propagate_relevance() implements rule (no silent fallback: callers such as ExplainerContext::...">Module::supports_lrp_rule()</a>) &ndash; the rule is never silently substituted.  
  <a href="structpulsatrix_1_1LRPRuleConfig.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="lrp__rule__config_8hpp_source.html">lrp_rule_config.hpp</a>&gt;</code></p>
@@ -108,12 +108,66 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1LRPRuleConfig.html'
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a41a03360ab748cd978bea186731a1750" id="r_a41a03360ab748cd978bea186731a1750"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#a41a03360ab748cd978bea186731a1750">epsilon</a> = 1e-6f</td></tr>
-<tr class="memdesc:a41a03360ab748cd978bea186731a1750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stabilizer added to the epsilon rule's denominator, signed to match z_j.  <br /></td></tr>
+<tr class="memdesc:a41a03360ab748cd978bea186731a1750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stabilizer added to every rule's denominator: z + epsilon * sign(z), sign(0) = +1.  <br /></td></tr>
 <tr class="separator:a41a03360ab748cd978bea186731a1750"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2058e16402ec127db79a8f37bdaf489" id="r_af2058e16402ec127db79a8f37bdaf489"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489">rule</a> = <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa99f2b3f30bec5a8826333eaec7ce7044">LRPRule::Epsilon</a></td></tr>
+<tr class="memdesc:af2058e16402ec127db79a8f37bdaf489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which rule to apply.  <br /></td></tr>
+<tr class="separator:af2058e16402ec127db79a8f37bdaf489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d65fffbd435bcc131073f7100573ab9" id="r_a8d65fffbd435bcc131073f7100573ab9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#a8d65fffbd435bcc131073f7100573ab9">gamma</a> = 0.25f</td></tr>
+<tr class="memdesc:a8d65fffbd435bcc131073f7100573ab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gamma rule: weight of the positive (or negative) part added to the weights.  <br /></td></tr>
+<tr class="separator:a8d65fffbd435bcc131073f7100573ab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdf40c00ebb6e7ff9d6372ae9a66d0f3" id="r_acdf40c00ebb6e7ff9d6372ae9a66d0f3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#acdf40c00ebb6e7ff9d6372ae9a66d0f3">alpha</a> = 1.0f</td></tr>
+<tr class="memdesc:acdf40c00ebb6e7ff9d6372ae9a66d0f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">AlphaBeta rule: weight of the positive contributions. Needs alpha, beta &gt;= 0, alpha - beta == 1.  <br /></td></tr>
+<tr class="separator:acdf40c00ebb6e7ff9d6372ae9a66d0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2b564702fc0049fe1699a895fd63812" id="r_ab2b564702fc0049fe1699a895fd63812"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#ab2b564702fc0049fe1699a895fd63812">beta</a> = 0.0f</td></tr>
+<tr class="memdesc:ab2b564702fc0049fe1699a895fd63812"><td class="mdescLeft">&#160;</td><td class="mdescRight">AlphaBeta rule: weight of the negative contributions.  <br /></td></tr>
+<tr class="separator:ab2b564702fc0049fe1699a895fd63812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b5c9c82b341f76234eeb5358ab63209" id="r_a1b5c9c82b341f76234eeb5358ab63209"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#a1b5c9c82b341f76234eeb5358ab63209">low</a> = 0.0f</td></tr>
+<tr class="memdesc:a1b5c9c82b341f76234eeb5358ab63209"><td class="mdescLeft">&#160;</td><td class="mdescRight">ZBox rule: lowest admissible input value (scalar, applied to every input element).  <br /></td></tr>
+<tr class="separator:a1b5c9c82b341f76234eeb5358ab63209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2d7caeadd3b4bc6ec0f7e10425bd9eb" id="r_ab2d7caeadd3b4bc6ec0f7e10425bd9eb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#ab2d7caeadd3b4bc6ec0f7e10425bd9eb">high</a> = 1.0f</td></tr>
+<tr class="memdesc:ab2d7caeadd3b4bc6ec0f7e10425bd9eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">ZBox rule: highest admissible input value.  <br /></td></tr>
+<tr class="separator:ab2d7caeadd3b4bc6ec0f7e10425bd9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace420e2114f01fc83687eeed487884fc" id="r_ace420e2114f01fc83687eeed487884fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#ace420e2114f01fc83687eeed487884fc">epsilon_bias_in_denominator</a> = false</td></tr>
+<tr class="memdesc:ace420e2114f01fc83687eeed487884fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon rule only, honoured by <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> / <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>: include the bias in the denominator, z = xW + b (Zennit's Epsilon). The default (false) keeps this codebase's conservative pre-bias z = xW, under which the bias absorbs no relevance.  <br /></td></tr>
+<tr class="separator:ace420e2114f01fc83687eeed487884fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Configuration for <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation. Selects <em>which</em> rule variant to apply (currently: epsilon rule only); it never changes <em>whether</em> a module supports <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> &ndash; that's guaranteed at compile time by <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">Module::propagate_relevance</a> being pure-virtual. Gamma/alpha-beta fields are added when a module first needs them, not speculatively now. </p>
+<div class="textblock"><p>Configuration for <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation: which rule a module applies and its hyperparameters. A module that does not implement the requested rule throws (see <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6" title="Whether propagate_relevance() implements rule (no silent fallback: callers such as ExplainerContext::...">Module::supports_lrp_rule()</a>) &ndash; the rule is never silently substituted. </p>
+<dl class="section note"><dt>Note</dt><dd><code>epsilon</code> stays the first member so aggregate initialization <code><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html" title="Configuration for LRP relevance propagation: which rule a module applies and its hyperparameters....">LRPRuleConfig</a>{0.01f}</code> keeps meaning "epsilon rule, epsilon 0.01". It is also the denominator stabilizer of Gamma / AlphaBeta / ZBox (Zennit's <code>stabilizer</code>, default 1e-6 there as well). </dd></dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="acdf40c00ebb6e7ff9d6372ae9a66d0f3" name="acdf40c00ebb6e7ff9d6372ae9a66d0f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdf40c00ebb6e7ff9d6372ae9a66d0f3">&#9670;&#160;</a></span>alpha</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::LRPRuleConfig::alpha = 1.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AlphaBeta rule: weight of the positive contributions. Needs alpha, beta &gt;= 0, alpha - beta == 1. </p>
+
+</div>
+</div>
+<a id="ab2b564702fc0049fe1699a895fd63812" name="ab2b564702fc0049fe1699a895fd63812"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2b564702fc0049fe1699a895fd63812">&#9670;&#160;</a></span>beta</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::LRPRuleConfig::beta = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AlphaBeta rule: weight of the negative contributions. </p>
+
+</div>
+</div>
 <a id="a41a03360ab748cd978bea186731a1750" name="a41a03360ab748cd978bea186731a1750"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41a03360ab748cd978bea186731a1750">&#9670;&#160;</a></span>epsilon</h2>
 
@@ -126,7 +180,87 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Stabilizer added to the epsilon rule's denominator, signed to match z_j. </p>
+<p>Stabilizer added to every rule's denominator: z + epsilon * sign(z), sign(0) = +1. </p>
+
+</div>
+</div>
+<a id="ace420e2114f01fc83687eeed487884fc" name="ace420e2114f01fc83687eeed487884fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace420e2114f01fc83687eeed487884fc">&#9670;&#160;</a></span>epsilon_bias_in_denominator</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::LRPRuleConfig::epsilon_bias_in_denominator = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Epsilon rule only, honoured by <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> / <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>: include the bias in the denominator, z = xW + b (Zennit's Epsilon). The default (false) keeps this codebase's conservative pre-bias z = xW, under which the bias absorbs no relevance. </p>
+
+</div>
+</div>
+<a id="a8d65fffbd435bcc131073f7100573ab9" name="a8d65fffbd435bcc131073f7100573ab9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d65fffbd435bcc131073f7100573ab9">&#9670;&#160;</a></span>gamma</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::LRPRuleConfig::gamma = 0.25f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gamma rule: weight of the positive (or negative) part added to the weights. </p>
+
+</div>
+</div>
+<a id="ab2d7caeadd3b4bc6ec0f7e10425bd9eb" name="ab2d7caeadd3b4bc6ec0f7e10425bd9eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2d7caeadd3b4bc6ec0f7e10425bd9eb">&#9670;&#160;</a></span>high</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::LRPRuleConfig::high = 1.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ZBox rule: highest admissible input value. </p>
+
+</div>
+</div>
+<a id="a1b5c9c82b341f76234eeb5358ab63209" name="a1b5c9c82b341f76234eeb5358ab63209"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b5c9c82b341f76234eeb5358ab63209">&#9670;&#160;</a></span>low</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::LRPRuleConfig::low = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ZBox rule: lowest admissible input value (scalar, applied to every input element). </p>
+
+</div>
+</div>
+<a id="af2058e16402ec127db79a8f37bdaf489" name="af2058e16402ec127db79a8f37bdaf489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2058e16402ec127db79a8f37bdaf489">&#9670;&#160;</a></span>rule</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> pulsatrix::LRPRuleConfig::rule = <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa99f2b3f30bec5a8826333eaec7ce7044">LRPRule::Epsilon</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Which rule to apply. </p>
 
 </div>
 </div>

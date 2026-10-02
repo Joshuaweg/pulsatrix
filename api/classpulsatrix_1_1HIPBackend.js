@@ -49,6 +49,7 @@ var classpulsatrix_1_1HIPBackend =
     [ "lrp_residual_split", "classpulsatrix_1_1HIPBackend.html#a0f880acdcd5aeb75025a467123aab981", null ],
     [ "lrp_rope", "classpulsatrix_1_1HIPBackend.html#a361610459c5eb1002c8a2164d550322b", null ],
     [ "lrp_softmax_rows", "classpulsatrix_1_1HIPBackend.html#ab619972ebf26be22346239c0c6d31453", null ],
+    [ "lrp_stabilized_divide", "classpulsatrix_1_1HIPBackend.html#a51ff4d2935a21266fb35204c01f1f7cd", null ],
     [ "max_pool_forward", "classpulsatrix_1_1HIPBackend.html#adba9dcd4dccc0c483e50483fc767a513", null ],
     [ "max_unpool", "classpulsatrix_1_1HIPBackend.html#a40bdb4d0b5425510b833a7e30fc5dd06", null ],
     [ "mul", "classpulsatrix_1_1HIPBackend.html#a8d1e6e52eb84ed7e21535e9bed152478", null ],
