@@ -27,11 +27,13 @@
 #include "pulsatrix/group_norm_module.hpp"
 #include "pulsatrix/layer_norm_module.hpp"
 #include "pulsatrix/lstm_module.hpp"
+#include "pulsatrix/mamba_module.hpp"
 #include "pulsatrix/lrp_conservation.hpp"
 #include "pulsatrix/max_pool2d_module.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
 #include "pulsatrix/rms_norm_module.hpp"
 #include "pulsatrix/rope_module.hpp"
+#include "pulsatrix/rwkv_module.hpp"
 #include "pulsatrix/tanh_gaussian_policy.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -46,6 +48,7 @@
 #include "pulsatrix/mse_loss.hpp"
 #include "pulsatrix/relu_module.hpp"
 #include "pulsatrix/residual_module.hpp"
+#include "pulsatrix/retnet_module.hpp"
 #include "pulsatrix/rnn_module.hpp"
 #include "pulsatrix/sequential_module.hpp"
 #include "pulsatrix/sgd_optimizer.hpp"
@@ -690,6 +693,58 @@ inline void RecurrentTrainsToSameParameters(DeviceBackend& gpu, unsigned seed) {
 }
 
 
+// ---- Mission 6: SSM / linear-attention scans ---------------------------------------------------
+
+// Forward, backward, parameter gradients and relevance over an (N, L, d_model) sequence. L = 7
+// so each scan carries state across several steps, both directions.
+// cpu must be the backend cm was built on (cm caches tensors owned by it).
+template <typename Module>
+inline void ScanModuleMatches(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Module& gm, unsigned seed) {
+    RandomizeAndMirror(cm, gm, seed);
+    std::vector<float> x = Random(2 * 7 * 6, seed + 100);
+    Tensor cx(Shape({2, 7, 6}), &cpu, x), gx(Shape({2, 7, 6}), &gpu, x);
+    Tensor cy = cm.forward(cx);
+    Tensor gy = gm.forward(gx);
+    ExpectNear(cy, gy);
+    std::vector<float> dy = Random(static_cast<size_t>(cy.numel()), seed + 200);
+    Tensor cdy(cy.shape(), &cpu, dy), gdy(gy.shape(), &gpu, dy);
+    ExpectNear(cm.backward(cdy), gm.backward(gdy));
+    ExpectParametersNear(cm, gm, kTolerance);
+    ExpectRelevanceAgrees(cm.propagate_relevance(cdy, LRPRuleConfig{}), gm.propagate_relevance(gdy, LRPRuleConfig{}));
+}
+
+// Mission 6 gate: each scan model trained with Adam on GPU ends with the CPU's parameters.
+template <typename Module>
+inline void ScanModuleTrainsToSameParameters(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Module& gm,
+                                             unsigned seed) {
+    RandomizeAndMirror(cm, gm, seed);
+    AdamOptimizer copt(0.01f, &cpu), gopt(0.01f, &gpu);
+    MSELoss closs(&cpu), gloss(&gpu);
+    std::vector<float> x = Random(2 * 5 * 6, seed + 1), y = Random(2 * 5 * 6, seed + 2);
+    Tensor cx(Shape({2, 5, 6}), &cpu, x), gx(Shape({2, 5, 6}), &gpu, x);
+    Tensor cy(Shape({2, 5, 6}), &cpu, y), gy(Shape({2, 5, 6}), &gpu, y);
+    float first_loss = 0.0f, last_loss = 0.0f;
+    for (int step = 0; step < 10; ++step) {
+        copt.zero_grad(cm);
+        gopt.zero_grad(gm);
+        const float lc = closs.forward(cm.forward(cx), cy);
+        const float lg = gloss.forward(gm.forward(gx), gy);
+        EXPECT_NEAR(lc, lg, 1e-3f) << "loss diverged at step " << step;
+        (void)cm.backward(closs.backward());
+        (void)gm.backward(gloss.backward());
+        copt.step(cm);
+        gopt.step(gm);
+        if (step == 0) {
+            first_loss = lc;
+        }
+        last_loss = lc;
+    }
+    EXPECT_LT(last_loss, first_loss) << "the scan model did not actually train";
+    ExpectParametersNear(cm, gm, 1e-3f);
+}
+
+
+
 // The mission's integration gate: the same small MLP, same init, same data, trained for
 // several steps on each backend, ends with the same parameters.
 template <typename Optimizer>
@@ -827,6 +882,31 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
         ::pulsatrix::training_equivalence::RecurrentTrainsToSameParameters<::pulsatrix::RNNModule>(MEMBER, 930); \
         ::pulsatrix::training_equivalence::RecurrentTrainsToSameParameters<::pulsatrix::LSTMModule>(MEMBER, 940); \
         ::pulsatrix::training_equivalence::RecurrentTrainsToSameParameters<::pulsatrix::GRUModule>(MEMBER, 950); \
+    }                                                                                                \
+    TEST_F(FIXTURE, MambaMatchesCPU) {                                                               \
+        ::pulsatrix::CPUBackend cpu;                                                                 \
+        ::pulsatrix::MambaModule cm(6, 4, &cpu), gm(6, 4, &MEMBER);                                  \
+        ::pulsatrix::training_equivalence::ScanModuleMatches(cpu, MEMBER, cm, gm, 1000);             \
+    }                                                                                                \
+    TEST_F(FIXTURE, RWKVMatchesCPU) {                                                                \
+        ::pulsatrix::CPUBackend cpu;                                                                 \
+        ::pulsatrix::RWKVModule cm(6, &cpu), gm(6, &MEMBER);                                         \
+        ::pulsatrix::training_equivalence::ScanModuleMatches(cpu, MEMBER, cm, gm, 1010);             \
+    }                                                                                                \
+    TEST_F(FIXTURE, RetNetMatchesCPU) {                                                              \
+        ::pulsatrix::CPUBackend cpu;                                                                 \
+        ::pulsatrix::RetNetModule cm(6, 4, 0.8f, &cpu), gm(6, 4, 0.8f, &MEMBER);                     \
+        ::pulsatrix::training_equivalence::ScanModuleMatches(cpu, MEMBER, cm, gm, 1020);             \
+    }                                                                                                \
+    TEST_F(FIXTURE, ScanModelsTrainedWithAdamEndWithCPUParameters) {                                 \
+        using namespace ::pulsatrix;                                                                 \
+        CPUBackend cpu;                                                                              \
+        MambaModule cm(6, 4, &cpu), gm(6, 4, &MEMBER);                                               \
+        training_equivalence::ScanModuleTrainsToSameParameters(cpu, MEMBER, cm, gm, 1030);           \
+        RWKVModule cr(6, &cpu), gr(6, &MEMBER);                                                      \
+        training_equivalence::ScanModuleTrainsToSameParameters(cpu, MEMBER, cr, gr, 1040);           \
+        RetNetModule ct(6, 4, 0.8f, &cpu), gt(6, 4, 0.8f, &MEMBER);                                  \
+        training_equivalence::ScanModuleTrainsToSameParameters(cpu, MEMBER, ct, gt, 1050);           \
     }                                                                                                \
     TEST_F(FIXTURE, MlpTrainedWithSGDEndsWithCPUParameters) {                                        \
         ::pulsatrix::SGDOptimizer cpu_opt(0.05f), gpu_opt(0.05f);                                    \

@@ -131,6 +131,7 @@ public:
     void recurrent_cell(RecurrentCellOp op, const RecurrentCellArgs& args, size_t n) override;
     void gru_lrp_hprev(const float* h_prev, const float* w_hn, const float* hn, const float* r_term_b,
                        const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) override;
+    void ssm_pass(SsmPassOp op, const SsmPassArgs& args) override;
 
 private:
     cudaStream_t stream_;

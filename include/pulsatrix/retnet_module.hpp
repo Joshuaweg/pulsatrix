@@ -51,10 +51,13 @@ namespace pulsatrix {
  *       recurrent module makes for its own initial state.
  * @note There is no nonlinearity anywhere in this recurrence (it is purely linear in x
  *       through the projections and bilinear in Q/K/V through the state), so unlike
- *       MambaModule/RWKVModule no raw-loop-nonlinearity workaround is needed. The
- *       recurrence itself is still a raw host loop over Tensor::data(), so every entry point
- *       carries the PULSATRIX_REQUIRE_HOST guard the rest of the
- *       not-yet-backend-generic modules use.
+ *       MambaModule/RWKVModule there is no elementwise nonlinearity to fuse.
+ * @note Device-generic (GPU-native-kernels Mission 6): forward, backward and
+ *       propagate_relevance run entirely through DeviceBackend -- the projections through
+ *       gemm/gemm_ex, the retention-state recurrence and its BPTT through
+ *       DeviceBackend::ssm_pass (one lane per (batch, channel), sequential over time), and
+ *       the LRP chain through ssm_pass plus lrp_bilinear_matmul -- so the module runs on CPU,
+ *       CUDA and HIP with no host round-trip.
  * @note **LRP rule -- original derivation (2026-09-27, operator-directed follow-on to
  *       campaign_exai_dl_library_phase6_modern_architectures's Decision Point 2, which found
  *       no *published* citable rule for RetNet -- a literature-search result, not a
@@ -107,9 +110,7 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if grad_output's shape doesn't match the cached forward
      *         output shape.
-     * @note Not yet backend-generic -- raw host loops for the recurrence. The projections
-     *       themselves do go through DeviceBackend::gemm. PULSATRIX_ASSERT(grad_output.device()
-     *       == DeviceType::Cpu) guards against silent UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
 
@@ -166,9 +167,7 @@ public:
      * @throws std::logic_error if forward() has never been called.
      * @throws std::invalid_argument if relevance_out's shape doesn't match the cached
      *         forward output shape.
-     * @note Not yet backend-generic -- raw host loops, mirroring forward_impl()/backward().
-     *       PULSATRIX_REQUIRE_HOST(relevance_out) guards against silent
-     *       UB on a CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      * @note Conserves near-exactly (measured in retnet_module_test.cpp), gated only by the
      *       usual epsilon stabilizers -- see the class-level note for why every composed
      *       step is exact or near-exact. Unlike SoftmaxModule/MultiHeadAttentionModule/
@@ -185,9 +184,7 @@ protected:
      * @brief The actual forward computation -- per-timestep tied-weight retention recurrence.
      * @throws std::invalid_argument if input isn't rank-3 (N, L, d_model), or its last
      *         dimension doesn't match d_model.
-     * @note Not yet backend-generic -- raw host loops for the state recurrence.
-     *       PULSATRIX_REQUIRE_HOST(input) guards against silent UB on a
-     *       CUDA-backed Tensor.
+     * @note Device-generic (GPU-native-kernels Mission 6) -- see the class-level note.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 

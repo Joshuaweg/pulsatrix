@@ -5,6 +5,7 @@
 #include "lrp_math.hpp"
 #include "recurrent_math.hpp"
 #include "row_math.hpp"
+#include "ssm_math.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -729,6 +730,15 @@ void CPUBackend::gru_lrp_hprev(const float* h_prev, const float* w_hn, const flo
                                          direct + n * hidden, static_cast<int64_t>(kk), static_cast<int64_t>(hidden),
                                          eps);
         }
+    }
+}
+
+// ---- GPU-native-kernels Mission 6 ----------------------------------------------------------
+
+void CPUBackend::ssm_pass(SsmPassOp op, const SsmPassArgs& args) {
+    const int64_t lanes = ssm::lanes(op, args);
+    for (int64_t lane = 0; lane < lanes; ++lane) {
+        ssm::pass(op, args, lane);
     }
 }
 

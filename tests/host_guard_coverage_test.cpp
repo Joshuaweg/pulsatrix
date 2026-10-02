@@ -43,7 +43,6 @@
 #include "pulsatrix/layer_norm_module.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/lrp_conservation.hpp"
-#include "pulsatrix/mamba_module.hpp"
 #include "pulsatrix/max_pool2d_module.hpp"
 #include "pulsatrix/mse_loss.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
@@ -54,11 +53,9 @@
 #include "pulsatrix/relu_module.hpp"
 #include "pulsatrix/reparameterize.hpp"
 #include "pulsatrix/replay_buffer.hpp"
-#include "pulsatrix/retnet_module.hpp"
 #include "pulsatrix/rms_norm_module.hpp"
 #include "pulsatrix/rollout_buffer.hpp"
 #include "pulsatrix/rope_module.hpp"
-#include "pulsatrix/rwkv_module.hpp"
 #include "pulsatrix/sinusoidal_timestep_embedding.hpp"
 #include "pulsatrix/softmax_module.hpp"
 #include "pulsatrix/tanh_gaussian_policy.hpp"
@@ -203,26 +200,6 @@ TEST_F(HostGuardCoverageDeathTest, RolloutBufferDonesAbortsOnGpuBackendStorage) 
 
 TEST_F(HostGuardCoverageDeathTest, SinusoidalTimestepEmbeddingAbortsOnGpuBackend) {
     EXPECT_HOST_GUARD_DEATH({ (void)SinusoidalTimestepEmbedding(3, 4, &hip); }, "embedding");
-}
-
-// ---- Layers whose output / scratch is allocated through a GPU backend ----
-
-TEST_F(HostGuardCoverageDeathTest, MambaForwardAbortsOnGpuBackendOutput) {
-    MambaModule mamba(2, 2, &hip);
-    Tensor x = host(Shape({1, 2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)mamba.forward(x); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, RetNetForwardAbortsOnGpuBackendOutput) {
-    RetNetModule retnet(2, 2, 0.7f, &hip);
-    Tensor x = host(Shape({1, 2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)retnet.forward(x); }, "output");
-}
-
-TEST_F(HostGuardCoverageDeathTest, RWKVForwardAbortsOnGpuBackendOutput) {
-    RWKVModule rwkv(2, &hip);
-    Tensor x = host(Shape({1, 2, 2}), {1, 2, 3, 4});
-    EXPECT_HOST_GUARD_DEATH({ (void)rwkv.forward(x); }, "output");
 }
 
 }  // namespace
