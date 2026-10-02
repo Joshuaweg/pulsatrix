@@ -138,6 +138,7 @@ var namespacepulsatrix =
     [ "RetNetModule", "classpulsatrix_1_1RetNetModule.html", "classpulsatrix_1_1RetNetModule" ],
     [ "RgbColor", "structpulsatrix_1_1RgbColor.html", "structpulsatrix_1_1RgbColor" ],
     [ "RgbImageBuffer", "structpulsatrix_1_1RgbImageBuffer.html", "structpulsatrix_1_1RgbImageBuffer" ],
+    [ "RlRowArgs", "structpulsatrix_1_1RlRowArgs.html", "structpulsatrix_1_1RlRowArgs" ],
     [ "RMSNormModule", "classpulsatrix_1_1RMSNormModule.html", "classpulsatrix_1_1RMSNormModule" ],
     [ "RNNModule", "classpulsatrix_1_1RNNModule.html", "classpulsatrix_1_1RNNModule" ],
     [ "RolloutBatch", "structpulsatrix_1_1RolloutBatch.html", "structpulsatrix_1_1RolloutBatch" ],
@@ -259,6 +260,16 @@ var namespacepulsatrix =
       [ "LstmLrp", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731", null ],
       [ "GruBackward", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185", null ],
       [ "GruLrp", "namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44", null ]
+    ] ],
+    [ "RlRowOp", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930", [
+      [ "DqnLoss", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a968bf24ac72a6aace6ce47990ee9787f", null ],
+      [ "DqnGrad", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930ab3bad3db141dca05dac2e9ec9067afe1", null ],
+      [ "PgLoss", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930ab760ac927f4ec969409760e2f044e09f", null ],
+      [ "PgGrad", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930adc1f63481ef485e13b060c446d273bbf", null ],
+      [ "PpoLoss", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a8bc4fa0f592f03c568063df4971d27f9", null ],
+      [ "PpoGrad", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536", null ],
+      [ "DqnTarget", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87", null ],
+      [ "PolyakBlend", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9", null ]
     ] ],
     [ "SsmPassOp", "namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883", [
       [ "MambaForward", "namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4", null ],

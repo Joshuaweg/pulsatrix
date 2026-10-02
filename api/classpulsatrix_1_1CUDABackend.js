@@ -55,6 +55,7 @@ var classpulsatrix_1_1CUDABackend =
     [ "operator=", "classpulsatrix_1_1CUDABackend.html#a2c630c7ce8e88657fda085bc4e8d31b4", null ],
     [ "permute_0213", "classpulsatrix_1_1CUDABackend.html#af58a07153b514b48724c91fe03d8a0ee", null ],
     [ "recurrent_cell", "classpulsatrix_1_1CUDABackend.html#a6e51344618bf599e9116e1a0d860b223", null ],
+    [ "rl_rows", "classpulsatrix_1_1CUDABackend.html#a18f3e6c440264b5593697e194c1dd69d", null ],
     [ "rms_norm_backward", "classpulsatrix_1_1CUDABackend.html#abbebb1abcdc2bcf0852488211c346deb", null ],
     [ "rms_norm_forward", "classpulsatrix_1_1CUDABackend.html#ac61a67f643ba6232a29115ec6bf3e41c", null ],
     [ "rope_rotate", "classpulsatrix_1_1CUDABackend.html#ad008c5ec809c6bbe93aa6367f7b05fe8", null ],

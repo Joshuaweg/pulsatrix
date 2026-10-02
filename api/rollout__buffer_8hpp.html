@@ -103,6 +103,7 @@ $(document).ready(function(){initNavTree('rollout__buffer_8hpp.html',''); initRe
 <p>On-policy trajectory storage: fill-once fixed-length rollout + discounted returns.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="device__backend_8hpp_source.html">pulsatrix/device_backend.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tensor_8hpp_source.html">pulsatrix/tensor.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -110,44 +111,45 @@ Include dependency graph for rollout_buffer.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="rollout__buffer_8hpp__incl.png" border="0" usemap="#ainclude_2pulsatrix_2rollout__buffer_8hpp" alt=""/></div>
 <map name="ainclude_2pulsatrix_2rollout__buffer_8hpp" id="ainclude_2pulsatrix_2rollout__buffer_8hpp">
-<area shape="rect" title="On&#45;policy trajectory storage: fill&#45;once fixed&#45;length rollout + discounted returns." alt="" coords="24,5,200,45"/>
-<area shape="rect" title=" " alt="" coords="28,313,95,339"/>
-<area shape="poly" title=" " alt="" coords="101,47,54,129,29,183,11,241,8,253,10,264,22,285,37,302,34,306,18,288,5,266,3,253,5,239,24,181,49,126,97,44"/>
-<area shape="rect" href="device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="21,240,235,265"/>
-<area shape="poly" title=" " alt="" coords="116,45,129,226,124,226,111,46"/>
-<area shape="rect" href="tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="346,93,497,119"/>
-<area shape="poly" title=" " alt="" coords="187,43,363,87,362,92,185,48"/>
-<area shape="poly" title=" " alt="" coords="119,267,83,305,80,301,115,264"/>
-<area shape="rect" title=" " alt="" coords="119,313,190,339"/>
-<area shape="poly" title=" " alt="" coords="135,265,148,300,143,302,130,267"/>
-<area shape="poly" title=" " alt="" coords="346,116,267,133,227,148,190,169,161,197,141,229,137,226,157,194,186,165,224,143,265,128,345,110"/>
-<area shape="rect" title=" " alt="" coords="362,240,473,265"/>
-<area shape="poly" title=" " alt="" coords="424,119,421,226,415,226,418,119"/>
-<area shape="rect" title=" " alt="" coords="497,240,559,265"/>
-<area shape="poly" title=" " alt="" coords="432,118,513,227,509,230,428,121"/>
-<area shape="rect" href="assert_8hpp.html" title="PULSATRIX_ASSERT – debug&#45;only invariant check for programmer errors, distinct from throw (used for ca..." alt="" coords="927,240,1078,265"/>
-<area shape="poly" title=" " alt="" coords="485,116,591,137,711,164,844,200,955,233,953,238,842,205,710,169,590,142,484,121"/>
-<area shape="rect" href="host__guard_8hpp.html" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="201,167,383,192"/>
-<area shape="poly" title=" " alt="" coords="402,121,327,162,324,157,399,116"/>
-<area shape="rect" href="shape_8hpp.html" title="Tensor dimension arithmetic – rank, element count, per&#45;dimension access." alt="" coords="547,167,698,192"/>
-<area shape="poly" title=" " alt="" coords="455,116,578,159,576,165,453,121"/>
-<area shape="rect" title=" " alt="" coords="403,313,464,339"/>
-<area shape="poly" title=" " alt="" coords="927,267,916,268,478,322,478,317,916,263,927,261"/>
-<area shape="rect" title=" " alt="" coords="809,313,874,339"/>
-<area shape="poly" title=" " alt="" coords="978,268,881,310,879,305,976,263"/>
-<area shape="poly" title=" " alt="" coords="267,194,168,237,166,232,265,190"/>
-<area shape="poly" title=" " alt="" coords="293,192,294,227,298,246,307,264,325,281,345,295,390,313,388,318,343,300,321,285,303,267,293,248,289,228,288,192"/>
-<area shape="poly" title=" " alt="" coords="299,191,317,228,332,247,351,263,386,278,436,291,560,308,691,317,795,321,795,327,690,323,559,313,435,296,385,283,348,268,328,251,313,231,294,194"/>
-<area shape="poly" title=" " alt="" coords="622,193,606,231,592,251,573,268,534,285,481,296,420,303,354,306,220,309,108,316,108,311,220,304,354,301,420,297,480,291,532,280,571,263,588,248,601,228,617,191"/>
-<area shape="poly" title=" " alt="" coords="591,195,464,238,463,233,589,189"/>
-<area shape="poly" title=" " alt="" coords="609,194,556,234,553,229,606,190"/>
-<area shape="poly" title=" " alt="" coords="684,189,928,235,927,240,683,195"/>
-<area shape="rect" title=" " alt="" coords="635,240,693,265"/>
-<area shape="poly" title=" " alt="" coords="632,191,653,227,648,229,627,194"/>
-<area shape="rect" title=" " alt="" coords="717,240,792,265"/>
-<area shape="poly" title=" " alt="" coords="645,190,722,231,720,236,643,194"/>
-<area shape="rect" title=" " alt="" coords="817,240,903,265"/>
-<area shape="poly" title=" " alt="" coords="662,189,809,233,808,239,660,195"/>
+<area shape="rect" title="On&#45;policy trajectory storage: fill&#45;once fixed&#45;length rollout + discounted returns." alt="" coords="215,5,391,45"/>
+<area shape="rect" title=" " alt="" coords="89,313,156,339"/>
+<area shape="poly" title=" " alt="" coords="254,48,193,76,125,118,91,144,60,173,33,205,12,241,8,253,10,263,24,282,48,297,77,309,75,314,46,302,20,285,5,265,3,252,7,239,29,202,56,169,88,140,122,114,191,72,251,43"/>
+<area shape="rect" title=" " alt="" coords="22,240,85,265"/>
+<area shape="poly" title=" " alt="" coords="283,47,78,232,75,228,280,43"/>
+<area shape="rect" href="device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="866,240,1081,265"/>
+<area shape="poly" title=" " alt="" coords="391,24,505,31,572,40,643,53,715,71,787,95,856,126,920,165,948,194,966,226,961,229,944,197,917,169,853,131,785,100,714,76,641,58,571,45,504,37,391,29"/>
+<area shape="rect" href="tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="434,93,585,119"/>
+<area shape="poly" title=" " alt="" coords="353,43,467,86,465,91,351,48"/>
+<area shape="poly" title=" " alt="" coords="866,266,170,323,169,318,865,260"/>
+<area shape="rect" title=" " alt="" coords="938,313,1009,339"/>
+<area shape="poly" title=" " alt="" coords="976,266,976,300,971,300,971,266"/>
+<area shape="poly" title=" " alt="" coords="451,121,362,141,262,169,169,203,91,237,89,232,167,198,260,164,360,136,450,116"/>
+<area shape="poly" title=" " alt="" coords="585,104,651,108,728,117,807,135,884,164,926,194,958,227,954,231,923,198,881,169,806,140,727,123,650,113,584,109"/>
+<area shape="rect" title=" " alt="" coords="454,240,565,265"/>
+<area shape="poly" title=" " alt="" coords="512,119,512,226,507,226,507,119"/>
+<area shape="rect" href="assert_8hpp.html" title="PULSATRIX_ASSERT – debug&#45;only invariant check for programmer errors, distinct from throw (used for ca..." alt="" coords="589,240,739,265"/>
+<area shape="poly" title=" " alt="" coords="524,117,643,228,640,232,520,121"/>
+<area shape="rect" href="host__guard_8hpp.html" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="687,167,870,192"/>
+<area shape="poly" title=" " alt="" coords="553,116,723,161,721,166,552,121"/>
+<area shape="rect" href="shape_8hpp.html" title="Tensor dimension arithmetic – rank, element count, per&#45;dimension access." alt="" coords="274,167,425,192"/>
+<area shape="poly" title=" " alt="" coords="485,121,389,163,387,159,482,116"/>
+<area shape="rect" title=" " alt="" coords="760,313,821,339"/>
+<area shape="poly" title=" " alt="" coords="685,263,759,304,756,309,683,268"/>
+<area shape="rect" title=" " alt="" coords="650,313,715,339"/>
+<area shape="poly" title=" " alt="" coords="670,265,679,300,673,301,664,266"/>
+<area shape="poly" title=" " alt="" coords="811,190,930,233,928,238,809,195"/>
+<area shape="poly" title=" " alt="" coords="786,192,798,240,800,271,797,300,792,299,795,271,793,240,780,193"/>
+<area shape="poly" title=" " alt="" coords="779,193,772,228,754,267,735,289,714,307,710,303,731,285,750,264,767,226,774,192"/>
+<area shape="poly" title=" " alt="" coords="274,188,242,195,208,205,177,221,150,242,140,255,133,270,126,300,121,299,128,268,135,252,146,238,174,216,206,200,240,190,273,183"/>
+<area shape="poly" title=" " alt="" coords="302,195,98,243,97,238,301,189"/>
+<area shape="poly" title=" " alt="" coords="376,190,472,232,470,237,374,194"/>
+<area shape="poly" title=" " alt="" coords="400,189,600,234,599,240,399,195"/>
+<area shape="rect" title=" " alt="" coords="371,240,429,265"/>
+<area shape="poly" title=" " alt="" coords="360,191,386,227,382,230,355,194"/>
+<area shape="rect" title=" " alt="" coords="160,240,235,265"/>
+<area shape="poly" title=" " alt="" coords="326,194,235,237,233,232,324,190"/>
+<area shape="rect" title=" " alt="" coords="259,240,346,265"/>
+<area shape="poly" title=" " alt="" coords="344,194,320,230,315,227,339,191"/>
 </map>
 </div>
 </div>

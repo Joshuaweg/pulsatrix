@@ -63,19 +63,20 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CPUBackend.html#a86bf28b857b3dd0cc31f7cf544d42353",
-"classpulsatrix_1_1ComputationGraph.html#ae89e87cf4f94476c1eb5e277ca493619",
-"classpulsatrix_1_1DeviceBackend.html#a99082aad9af2353a8133a6b871724bce",
-"classpulsatrix_1_1GeneratorPopulation.html#a0b183a919ab743786a020c0072b86dc2",
-"classpulsatrix_1_1IterableDataset.html",
-"classpulsatrix_1_1MambaModule.html#ac9b8c9fdab107d2bb5356352524e208b",
-"classpulsatrix_1_1RMSNormModule.html#a118b29388de9e763cdc090a665e83831",
-"classpulsatrix_1_1RetNetModule.html#aee87498dec9a66621bb79cbd8035ee27",
-"classpulsatrix_1_1Tensor.html#a903dae02b55d8eb93709bf2c0a399d85",
-"classpulsatrix_1_1datalog_1_1Rule.html#a1bdf21f58b3a0210aa66e55cc2aaedd4",
-"namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67",
-"structpulsatrix_1_1BarSeries.html",
-"structpulsatrix_1_1ParamRef.html#afdf2da37358479b58e19f1b0468a03d0"
+"classpulsatrix_1_1CPUBackend.html#a805dbc60d8b59e886f325d3dc3d6d172",
+"classpulsatrix_1_1ComputationGraph.html#ab5e326cc6109e5677eb114e0a85f6b05",
+"classpulsatrix_1_1DeviceBackend.html#a96b91d19e3f763089db8add216159296",
+"classpulsatrix_1_1GaussianProcessRegressor.html#a1d2e6b45c1f9a49af49c0085e7fb04f1",
+"classpulsatrix_1_1InnovationTracker.html#a731384e6c7ed43ba0f55719f19d6433d",
+"classpulsatrix_1_1MambaModule.html#a903be339d437bb4bd93ada1f9c920161",
+"classpulsatrix_1_1PolicyGradientLoss.html#a761eca7ab97d8858662b5a66308d5f8a",
+"classpulsatrix_1_1RetNetModule.html#acf0ef91ab5f972a44bf29da8ecc32c19",
+"classpulsatrix_1_1Tensor.html#a66cf64adde5d5ab375ffe88edddfb7de",
+"classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html#a2d6d4ee8f68e1be6698e0cd235e64670",
+"namespacepulsatrix.html#a2300465dae625e63a4c68b003cdcfc49",
+"structpulsatrix_1_1ASHAResult.html#aca4c069b0a03729638d36e004d845bfb",
+"structpulsatrix_1_1PBTResult.html",
+"structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -28,5 +28,6 @@ var classpulsatrix_1_1Tensor =
     [ "shape", "classpulsatrix_1_1Tensor.html#a966fcddb4620f766ff0248daeeaee223", null ],
     [ "to", "classpulsatrix_1_1Tensor.html#ac6f088bd4ae54d5640d889a93fe362df", null ],
     [ "to", "classpulsatrix_1_1Tensor.html#a1543d456329dbde308e401ac744f31d9", null ],
+    [ "to_host_vector", "classpulsatrix_1_1Tensor.html#ad4060ef56f1b272ba2869db187b2af8f", null ],
     [ "write_element", "classpulsatrix_1_1Tensor.html#acbbf07280c7edc4d610b94c94dba3e9b", null ]
 ];

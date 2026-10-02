@@ -192,7 +192,7 @@ Not a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for e
 <dd>
 The <code>1/N</code> factor is the batch-mean scaling; N is the number of rollout steps, not the element count, because the mean is taken over steps (one log-probability each), not over all N*action_dim logits &ndash; identical reasoning to <a class="el" href="classpulsatrix_1_1DQNLoss.html" title="loss = mean_b( (q_values[b, a_b] - targets[b,0])^2 ), where a_b is the action actually taken on trans...">DQNLoss</a>'s <code>2/N</code>. </dd>
 <dd>
-Dereferences <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly, so it carries its own PULSATRIX_REQUIRE_HOST guards on the cached state and on the freshly allocated gradient(s). <a class="el" href="classpulsatrix_1_1PolicyGradientLoss.html#a761eca7ab97d8858662b5a66308d5f8a" title="Computes the return-weighted negative log-likelihood and caches what backward() needs.">forward()</a>'s guard covers only the caller's tensors; the gradient is allocated through backend_, which a GPU backend tags Cuda/Hip (GPU-native-kernels campaign, Mission 0 O4). </dd></dl>
+Device-generic: one DeviceBackend::rl_rows(PgGrad) lane per row writes the dense gradient row. </dd></dl>
 
 </div>
 </div>
@@ -244,7 +244,7 @@ Dereferences <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face435689
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Not yet backend-generic &ndash; dereferences <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly in raw host loops (a row-wise softmax and a per-row gather at a data-dependent column have no <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> primitive). PULSATRIX_REQUIRE_HOST on all three inputs guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see campaign_exai_dl_library_phase1_5_cuda_backend.md's scope decision. Do not remove these guards without actually retrofitting the method to route through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic (GPU-native-kernels Mission 7): the N encoded actions are copied to the host once for validation, then the row softmax and loss terms run through DeviceBackend::rl_rows(PgLoss) and are summed with column_sums in row order. </dd></dl>
 
 </div>
 </div>

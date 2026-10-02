@@ -51,6 +51,7 @@ var classpulsatrix_1_1CPUBackend =
     [ "mul", "classpulsatrix_1_1CPUBackend.html#a19efc91d50ebf477bbc01af80cbada3d", null ],
     [ "permute_0213", "classpulsatrix_1_1CPUBackend.html#a1c34c38027eb73943a6139e0e53a081c", null ],
     [ "recurrent_cell", "classpulsatrix_1_1CPUBackend.html#a55b2f5343e16e66540d2787d94f739ee", null ],
+    [ "rl_rows", "classpulsatrix_1_1CPUBackend.html#a5636611d7e3c7c185a7d435a20794323", null ],
     [ "rms_norm_backward", "classpulsatrix_1_1CPUBackend.html#a69a4b3f71cf828e214f485cd80b16e82", null ],
     [ "rms_norm_forward", "classpulsatrix_1_1CPUBackend.html#a92611b2d68ae4d30b2228729d72fcf53", null ],
     [ "rope_rotate", "classpulsatrix_1_1CPUBackend.html#a762c65c26fc683d13817339a16b734ab", null ],
