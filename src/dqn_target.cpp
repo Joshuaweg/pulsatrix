@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -22,6 +21,23 @@ std::string shape_to_string(const Shape& shape) {
         out += std::to_string(shape.dim(static_cast<size_t>(i)));
     }
     return out + ")";
+}
+
+// Copies every element of `from` into `into`'s existing buffer, on any devices.
+void copy_parameter(const Tensor& from, Tensor& into) {
+    const size_t bytes = static_cast<size_t>(from.numel()) * sizeof(float);
+    if (bytes == 0 || from.data() == into.data()) {
+        return;  // nothing to copy, or a network synced onto itself
+    }
+    const bool into_is_host = into.device() == DeviceType::Cpu;
+    if (from.device() == into.device()) {
+        into.backend()->copy(into.data(), from.data(), bytes,
+                             into_is_host ? CopyDirection::HostToHost : CopyDirection::DeviceToDevice);
+        return;
+    }
+    const std::vector<float> staged = from.to_host_vector();
+    into.backend()->copy(into.data(), staged.data(), bytes,
+                         into_is_host ? CopyDirection::HostToHost : CopyDirection::HostToDevice);
 }
 
 // Validates a (N, action_dim) Q-value block and returns its dimensions.
@@ -53,29 +69,28 @@ void require_gamma(float gamma, const char* function_name) {
     }
 }
 
-// Index of the largest element in row `b` of a (N, action_dim) block. Ties resolve to the
-// lowest index (strict >), the same tie rule DQNAgent's argmax uses.
-int64_t argmax_in_row(const Tensor& block, int64_t b, int64_t action_dim) {
-    const float* row = block.data() + b * action_dim;
-    int64_t best = 0;
-    for (int64_t a = 1; a < action_dim; ++a) {
-        if (row[a] > row[best]) {
-            best = a;
-        }
-    }
-    return best;
+// One rl_rows(DqnTarget) lane per transition: argmax of the selection row (ties to the lowest
+// index, strict >, the same tie rule DQNAgent's argmax uses), evaluated in the evaluation row.
+Tensor dqn_target_rows(const Tensor& q_select, const Tensor& q_eval, const Tensor& rewards, const Tensor& dones,
+                       float gamma, int64_t batch_size, int64_t action_dim, DeviceBackend* backend) {
+    Tensor targets(Shape({batch_size, 1}), backend);
+    RlRowArgs args;
+    args.in[0] = q_select.data();
+    args.in[1] = q_eval.data();
+    args.in[2] = rewards.data();
+    args.in[3] = dones.data();
+    args.out[0] = targets.data();
+    args.rows = batch_size;
+    args.cols = action_dim;
+    args.gamma = gamma;
+    backend->rl_rows(RlRowOp::DqnTarget, args);
+    return targets;
 }
 
 }  // namespace
 
 Tensor ComputeDQNTarget(const Tensor& next_q_target, const Tensor& rewards, const Tensor& dones, float gamma,
                         DeviceBackend* backend) {
-    // Raw host loop over Tensor::data() (a row-wise max has no DeviceBackend primitive) --
-    // undefined behavior on a CUDA-backed Tensor. See mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(next_q_target);
-    PULSATRIX_REQUIRE_HOST(rewards);
-    PULSATRIX_REQUIRE_HOST(dones);
-
     int64_t batch_size = 0;
     int64_t action_dim = 0;
     require_q_block(next_q_target, "ComputeDQNTarget", "next_q_target", batch_size, action_dim);
@@ -83,25 +98,15 @@ Tensor ComputeDQNTarget(const Tensor& next_q_target, const Tensor& rewards, cons
     require_column(dones, batch_size, "ComputeDQNTarget", "dones");
     require_gamma(gamma, "ComputeDQNTarget");
 
-    std::vector<float> targets(static_cast<size_t>(batch_size));
-    for (int64_t b = 0; b < batch_size; ++b) {
-        const float best_value = next_q_target.data()[b * action_dim + argmax_in_row(next_q_target, b, action_dim)];
-        // (1 - done) zeroes the bootstrapped term *exactly* on a terminal transition: with
-        // done == 1.0f the whole product is 0.0f and the target is the bare reward, bit for
-        // bit, not merely close to it.
-        const float bootstrap = gamma * (1.0f - dones.data()[b]) * best_value;
-        targets[static_cast<size_t>(b)] = rewards.data()[b] + bootstrap;
-    }
-    return Tensor(Shape({batch_size, 1}), backend, targets);
+    // Device-generic (GPU-native-kernels Mission 7): the max is the target network's value at
+    // its own argmax. (1 - done) zeroes the bootstrapped term *exactly* on a terminal
+    // transition: with done == 1.0f the whole product is 0.0f and the target is the bare reward,
+    // bit for bit, not merely close to it.
+    return dqn_target_rows(next_q_target, next_q_target, rewards, dones, gamma, batch_size, action_dim, backend);
 }
 
 Tensor ComputeDoubleDQNTarget(const Tensor& next_q_online, const Tensor& next_q_target, const Tensor& rewards,
                               const Tensor& dones, float gamma, DeviceBackend* backend) {
-    PULSATRIX_REQUIRE_HOST(next_q_online);
-    PULSATRIX_REQUIRE_HOST(next_q_target);
-    PULSATRIX_REQUIRE_HOST(rewards);
-    PULSATRIX_REQUIRE_HOST(dones);
-
     int64_t batch_size = 0;
     int64_t action_dim = 0;
     require_q_block(next_q_online, "ComputeDoubleDQNTarget", "next_q_online", batch_size, action_dim);
@@ -112,16 +117,9 @@ Tensor ComputeDoubleDQNTarget(const Tensor& next_q_online, const Tensor& next_q_
     require_column(dones, batch_size, "ComputeDoubleDQNTarget", "dones");
     require_gamma(gamma, "ComputeDoubleDQNTarget");
 
-    std::vector<float> targets(static_cast<size_t>(batch_size));
-    for (int64_t b = 0; b < batch_size; ++b) {
-        // Selection from the online network, evaluation from the target network -- the whole
-        // of van Hasselt et al. 2016. Note which tensor each of the two lines reads.
-        const int64_t best_action = argmax_in_row(next_q_online, b, action_dim);
-        const float evaluated = next_q_target.data()[b * action_dim + best_action];
-        const float bootstrap = gamma * (1.0f - dones.data()[b]) * evaluated;
-        targets[static_cast<size_t>(b)] = rewards.data()[b] + bootstrap;
-    }
-    return Tensor(Shape({batch_size, 1}), backend, targets);
+    // Selection from the online network, evaluation from the target network -- the whole of
+    // van Hasselt et al. 2016. Note which tensor fills which slot.
+    return dqn_target_rows(next_q_online, next_q_target, rewards, dones, gamma, batch_size, action_dim, backend);
 }
 
 void SyncTargetNetwork(Module& source, Module& destination) {
@@ -143,16 +141,12 @@ void SyncTargetNetwork(Module& source, Module& destination) {
                                         " has shape " + shape_to_string(from.shape()) + " in source but " +
                                         shape_to_string(into.shape()) + " in destination");
         }
-        // Element-wise into the *existing* buffer, never `into = from`: destination's
-        // parameter Tensors must remain the same objects its own parameters() -- and any
-        // optimizer already holding ParamRefs into them -- point at.
-        // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-        // (GPU-native-kernels campaign, Mission 0 O4).
-        PULSATRIX_REQUIRE_HOST(from);
-        PULSATRIX_REQUIRE_HOST(into);
-        for (int64_t e = 0; e < from.numel(); ++e) {
-            into.data()[e] = from.data()[e];
-        }
+        // Into the *existing* buffer, never `into = from`: destination's parameter Tensors must
+        // remain the same objects its own parameters() -- and any optimizer already holding
+        // ParamRefs into them -- point at. Device-generic (GPU-native-kernels Mission 7): one
+        // buffer copy through the destination's backend, staged through the host only when the
+        // two networks live on different devices.
+        copy_parameter(from, into);
     }
 }
 

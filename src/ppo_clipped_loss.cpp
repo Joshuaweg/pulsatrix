@@ -1,11 +1,11 @@
 #include "pulsatrix/ppo_clipped_loss.hpp"
 
-#include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <string>
+#include <utility>
+#include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -28,18 +28,15 @@ void require_matrix_shape(const Tensor& tensor, int64_t rows, int64_t expected_w
 }  // namespace
 
 PPOClippedLoss::PPOClippedLoss(DeviceBackend* backend)
-    : backend_(backend), last_probs_(Shape({0}), backend), last_advantages_(Shape({0}), backend) {}
+    : backend_(backend),
+      last_probs_(Shape({0}), backend),
+      last_advantages_(Shape({0}), backend),
+      last_ratios_(Shape({0}), backend),
+      last_masks_(Shape({0}), backend),
+      last_action_indices_(Shape({0}), backend) {}
 
 float PPOClippedLoss::forward(const Tensor& new_logits, const Tensor& actions, const Tensor& old_log_probs,
                               const Tensor& advantages, float clip_epsilon) {
-    // Dereferences Tensor::data() directly in raw host loops -- not yet backend-generic (a
-    // row-wise stabilized softmax and a per-row gather at a data-dependent column have no
-    // DeviceBackend primitive). See mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(new_logits);
-    PULSATRIX_REQUIRE_HOST(actions);
-    PULSATRIX_REQUIRE_HOST(old_log_probs);
-    PULSATRIX_REQUIRE_HOST(advantages);
-
     if (new_logits.rank() != 2) {
         throw std::invalid_argument("PPOClippedLoss::forward: new_logits must have shape (N, action_dim)");
     }
@@ -56,10 +53,12 @@ float PPOClippedLoss::forward(const Tensor& new_logits, const Tensor& actions, c
     }
 
     // Decode (and fully validate) every action index before touching any logit, so a malformed
-    // rollout throws without leaving a half-populated cache behind.
-    std::vector<int64_t> indices(static_cast<size_t>(batch_size));
+    // rollout throws without leaving a half-populated cache behind. Validation can throw per
+    // element, so it runs on the host: one device->host copy of the N actions.
+    const std::vector<float> encoded_actions = actions.to_host_vector();
+    std::vector<float> indices(static_cast<size_t>(batch_size));
     for (int64_t b = 0; b < batch_size; ++b) {
-        const float encoded = actions.data()[b];
+        const float encoded = encoded_actions[static_cast<size_t>(b)];
         const float rounded = std::round(encoded);
         if (std::abs(encoded - rounded) > kActionIntegerTolerance) {
             throw std::invalid_argument("PPOClippedLoss::forward: actions must encode whole-number action indices");
@@ -68,76 +67,52 @@ float PPOClippedLoss::forward(const Tensor& new_logits, const Tensor& actions, c
         if (index < 0 || index >= action_dim) {
             throw std::invalid_argument("PPOClippedLoss::forward: action index out of range [0, action_dim)");
         }
-        indices[static_cast<size_t>(b)] = index;
+        indices[static_cast<size_t>(b)] = static_cast<float>(index);
     }
+    Tensor index_tensor(Shape({batch_size, 1}), backend_, indices);
 
     const float lower = 1.0f - clip_epsilon;
     const float upper = 1.0f + clip_epsilon;
 
+    // Device-generic (GPU-native-kernels Mission 7): one rl_rows(PpoLoss) lane per row runs
+    // PolicyGradientLoss::forward()'s row-wise stabilized softmax byte for byte, forms the
+    // probability ratio in log space and exponentiates it once (never a quotient of two
+    // probabilities), and writes PPO's pessimistic term -min(unclipped, clipped) together with
+    // the row's ratio and clip mask. The mask is 0 exactly where the row has already exceeded
+    // the trust region *in the direction that would increase the objective further* -- there
+    // the min selects the clipped branch, which is constant in the ratio. column_sums adds the
+    // per-row terms in increasing row order from 0.0f -- the original `loss_sum += term` order.
     Tensor probs(new_logits.shape(), backend_);
-    // Allocated through backend_, so a GPU backend tags it Cuda/Hip -- the host write below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(probs);
-    std::vector<float> ratios(static_cast<size_t>(batch_size));
-    std::vector<float> masks(static_cast<size_t>(batch_size));
-    float loss_sum = 0.0f;
-
-    for (int64_t b = 0; b < batch_size; ++b) {
-        const float* row = new_logits.data() + b * action_dim;
-
-        // Row-wise numerically stable softmax: subtract the row max before exponentiating,
-        // PolicyGradientLoss::forward()'s pattern byte for byte. The selected action's
-        // log-probability is read off the stabilized expression directly, never as log(p[a]),
-        // so a probability that underflowed to zero cannot produce an infinite ratio exponent.
-        float max_logit = row[0];
-        for (int64_t a = 1; a < action_dim; ++a) {
-            max_logit = std::max(max_logit, row[a]);
-        }
-        float exp_sum = 0.0f;
-        for (int64_t a = 0; a < action_dim; ++a) {
-            exp_sum += std::exp(row[a] - max_logit);
-        }
-        const float log_exp_sum = std::log(exp_sum);
-
-        for (int64_t a = 0; a < action_dim; ++a) {
-            probs.data()[b * action_dim + a] = std::exp(row[a] - max_logit) / exp_sum;
-        }
-
-        const int64_t index = indices[static_cast<size_t>(b)];
-        const float new_log_prob = row[index] - max_logit - log_exp_sum;
-
-        // The probability ratio, formed in log space and exponentiated once -- never as a
-        // quotient of two probabilities, which would be the same number with two extra
-        // roundings and an overflow mode when the denominator underflows.
-        const float ratio = std::exp(new_log_prob - old_log_probs.data()[b]);
-        const float advantage = advantages.data()[b];
-
-        const float unclipped = ratio * advantage;
-        const float clipped = std::min(std::max(ratio, lower), upper) * advantage;
-        // PPO's pessimistic bound: the objective is min(unclipped, clipped), and the loss is
-        // its negation.
-        loss_sum += -std::min(unclipped, clipped);
-
-        // The clip-and-mask rule. The gradient is zeroed exactly where the row has already
-        // exceeded the trust region *in the direction that would increase the objective
-        // further* -- there the min selects the clipped branch, which is constant in the ratio.
-        // Everywhere else (inside the trust region, or outside it in the direction that hurts
-        // the objective and should be pulled back) the unclipped gradient stands in full.
-        const bool clipped_out = (advantage >= 0.0f && ratio > upper) || (advantage < 0.0f && ratio < lower);
-        ratios[static_cast<size_t>(b)] = ratio;
-        masks[static_cast<size_t>(b)] = clipped_out ? 0.0f : 1.0f;
-    }
+    Tensor terms(Shape({batch_size, 1}), backend_);
+    Tensor ratios(Shape({batch_size, 1}), backend_);
+    Tensor masks(Shape({batch_size, 1}), backend_);
+    RlRowArgs args;
+    args.in[0] = new_logits.data();
+    args.in[1] = index_tensor.data();
+    args.in[2] = old_log_probs.data();
+    args.in[3] = advantages.data();
+    args.out[0] = probs.data();
+    args.out[1] = terms.data();
+    args.out[2] = ratios.data();
+    args.out[3] = masks.data();
+    args.rows = batch_size;
+    args.cols = action_dim;
+    args.lower = lower;
+    args.upper = upper;
+    backend_->rl_rows(RlRowOp::PpoLoss, args);
+    Tensor loss_sum(Shape({1}), backend_);
+    backend_->column_sums(terms.data(), loss_sum.data(), static_cast<size_t>(batch_size), 1, 0.0f);
 
     last_probs_ = probs;
     last_advantages_ = advantages;
     last_ratios_ = std::move(ratios);
     last_masks_ = std::move(masks);
-    last_action_indices_ = std::move(indices);
+    last_action_indices_ = std::move(index_tensor);
     has_forwarded_ = true;
 
     // Mean over rollout *steps*, not over all N*action_dim logits: each step contributes
     // exactly one clipped surrogate term, for the action it actually took.
-    return loss_sum / static_cast<float>(batch_size);
+    return loss_sum.read_element(0) / static_cast<float>(batch_size);
 }
 
 Tensor PPOClippedLoss::backward() const {
@@ -152,22 +127,19 @@ Tensor PPOClippedLoss::backward() const {
     // Dense across every action column, unlike DQNLoss::backward()'s masked write: pushing
     // probability onto the taken action takes it from every other action. A masked-out *row*
     // is a different thing entirely -- there the whole row is exactly 0.0f by construction,
-    // because `weight` is exactly 0.0f.
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(last_probs_);
-    PULSATRIX_REQUIRE_HOST(last_advantages_);
+    // because `weight` is exactly 0.0f. One rl_rows(PpoGrad) lane per row.
     Tensor grad(last_probs_.shape(), backend_);
-    PULSATRIX_REQUIRE_HOST(grad);
-    for (int64_t b = 0; b < batch_size; ++b) {
-        const int64_t index = last_action_indices_[static_cast<size_t>(b)];
-        const float weight = -last_masks_[static_cast<size_t>(b)] * last_advantages_.data()[b] *
-                             last_ratios_[static_cast<size_t>(b)] * scale;
-        for (int64_t k = 0; k < action_dim; ++k) {
-            const float indicator = (k == index) ? 1.0f : 0.0f;
-            grad.data()[b * action_dim + k] = weight * (indicator - last_probs_.data()[b * action_dim + k]);
-        }
-    }
+    RlRowArgs args;
+    args.in[0] = last_probs_.data();
+    args.in[1] = last_action_indices_.data();
+    args.in[2] = last_advantages_.data();
+    args.in[3] = last_ratios_.data();
+    args.in[4] = last_masks_.data();
+    args.out[0] = grad.data();
+    args.rows = batch_size;
+    args.cols = action_dim;
+    args.scale = scale;
+    backend_->rl_rows(RlRowOp::PpoGrad, args);
     return grad;
 }
 

@@ -1,11 +1,11 @@
 #include "pulsatrix/policy_gradient_loss.hpp"
 
-#include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <string>
+#include <utility>
+#include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -29,17 +29,12 @@ void require_matrix_shape(const Tensor& tensor, int64_t rows, int64_t expected_w
 }  // namespace
 
 PolicyGradientLoss::PolicyGradientLoss(DeviceBackend* backend)
-    : backend_(backend), last_probs_(Shape({0}), backend), last_returns_(Shape({0}), backend) {}
+    : backend_(backend),
+      last_probs_(Shape({0}), backend),
+      last_returns_(Shape({0}), backend),
+      last_action_indices_(Shape({0}), backend) {}
 
 float PolicyGradientLoss::forward(const Tensor& logits, const Tensor& actions, const Tensor& returns) {
-    // Dereferences Tensor::data() directly in raw host loops -- not yet backend-generic (a
-    // row-wise stabilized softmax and a per-row gather at a data-dependent column have no
-    // DeviceBackend primitive). See campaign_exai_dl_library_phase1_5_cuda_backend.md's scope
-    // decision and mission_host_loop_guards.md.
-    PULSATRIX_REQUIRE_HOST(logits);
-    PULSATRIX_REQUIRE_HOST(actions);
-    PULSATRIX_REQUIRE_HOST(returns);
-
     if (logits.rank() != 2) {
         throw std::invalid_argument("PolicyGradientLoss::forward: logits must have shape (N, action_dim)");
     }
@@ -52,10 +47,12 @@ float PolicyGradientLoss::forward(const Tensor& logits, const Tensor& actions, c
     require_matrix_shape(returns, batch_size, 1, "returns");
 
     // Decode (and fully validate) every action index before touching any logit, so a malformed
-    // rollout throws without leaving a half-populated cache behind.
-    std::vector<int64_t> indices(static_cast<size_t>(batch_size));
+    // rollout throws without leaving a half-populated cache behind. Validation can throw per
+    // element, so it runs on the host: one device->host copy of the N actions.
+    const std::vector<float> encoded_actions = actions.to_host_vector();
+    std::vector<float> indices(static_cast<size_t>(batch_size));
     for (int64_t b = 0; b < batch_size; ++b) {
-        const float encoded = actions.data()[b];
+        const float encoded = encoded_actions[static_cast<size_t>(b)];
         const float rounded = std::round(encoded);
         if (std::abs(encoded - rounded) > kActionIntegerTolerance) {
             throw std::invalid_argument("PolicyGradientLoss::forward: actions must encode whole-number action indices");
@@ -64,49 +61,39 @@ float PolicyGradientLoss::forward(const Tensor& logits, const Tensor& actions, c
         if (index < 0 || index >= action_dim) {
             throw std::invalid_argument("PolicyGradientLoss::forward: action index out of range [0, action_dim)");
         }
-        indices[static_cast<size_t>(b)] = index;
+        indices[static_cast<size_t>(b)] = static_cast<float>(index);
     }
+    Tensor index_tensor(Shape({batch_size, 1}), backend_, indices);
 
-    // Row-wise numerically stable softmax: subtract the row max before exponentiating, the
-    // pattern CrossEntropyLoss::forward established -- applied per row here rather than to one
-    // vector. The selected action's log-probability is read off the stabilized expression
-    // directly, never as log(p[a]), so a probability that underflowed to zero cannot produce an
-    // infinite loss.
+    // Device-generic (GPU-native-kernels Mission 7). Row-wise numerically stable softmax:
+    // subtract the row max before exponentiating, the pattern CrossEntropyLoss::forward
+    // established -- applied per row here rather than to one vector. The selected action's
+    // log-probability is read off the stabilized expression directly, never as log(p[a]), so a
+    // probability that underflowed to zero cannot produce an infinite loss. rl_rows(PgLoss)
+    // writes probs and the per-row terms; column_sums adds the terms in increasing row order
+    // from 0.0f -- the original `loss_sum += term` order.
     Tensor probs(logits.shape(), backend_);
-    // Allocated through backend_, so a GPU backend tags it Cuda/Hip -- the host write below
-    // would be UB (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(probs);
-    float loss_sum = 0.0f;
-    for (int64_t b = 0; b < batch_size; ++b) {
-        const float* row = logits.data() + b * action_dim;
-
-        float max_logit = row[0];
-        for (int64_t a = 1; a < action_dim; ++a) {
-            max_logit = std::max(max_logit, row[a]);
-        }
-        float exp_sum = 0.0f;
-        for (int64_t a = 0; a < action_dim; ++a) {
-            exp_sum += std::exp(row[a] - max_logit);
-        }
-        const float log_exp_sum = std::log(exp_sum);
-
-        for (int64_t a = 0; a < action_dim; ++a) {
-            probs.data()[b * action_dim + a] = std::exp(row[a] - max_logit) / exp_sum;
-        }
-
-        const int64_t index = indices[static_cast<size_t>(b)];
-        const float log_softmax_selected = row[index] - max_logit - log_exp_sum;
-        loss_sum += -log_softmax_selected * returns.data()[b];
-    }
+    Tensor terms(Shape({batch_size, 1}), backend_);
+    RlRowArgs args;
+    args.in[0] = logits.data();
+    args.in[1] = index_tensor.data();
+    args.in[2] = returns.data();
+    args.out[0] = probs.data();
+    args.out[1] = terms.data();
+    args.rows = batch_size;
+    args.cols = action_dim;
+    backend_->rl_rows(RlRowOp::PgLoss, args);
+    Tensor loss_sum(Shape({1}), backend_);
+    backend_->column_sums(terms.data(), loss_sum.data(), static_cast<size_t>(batch_size), 1, 0.0f);
 
     last_probs_ = probs;
     last_returns_ = returns;
-    last_action_indices_ = std::move(indices);
+    last_action_indices_ = std::move(index_tensor);
     has_forwarded_ = true;
 
     // Mean over rollout *steps*, not over all N*action_dim logits: each step contributes
     // exactly one return-weighted log-probability, for the action it actually took.
-    return loss_sum / static_cast<float>(batch_size);
+    return loss_sum.read_element(0) / static_cast<float>(batch_size);
 }
 
 Tensor PolicyGradientLoss::backward() const {
@@ -121,21 +108,17 @@ Tensor PolicyGradientLoss::backward() const {
     // Every element is written, unlike DQNLoss::backward()'s masked write: the policy gradient
     // is dense across all actions, because pushing probability onto the taken action takes it
     // from every other action. The `- 1` term applies only in the taken action's column; the
-    // `p[b,k]` term applies everywhere.
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(last_probs_);
-    PULSATRIX_REQUIRE_HOST(last_returns_);
+    // `p[b,k]` term applies everywhere. One rl_rows(PgGrad) lane per row.
     Tensor grad(last_probs_.shape(), backend_);
-    PULSATRIX_REQUIRE_HOST(grad);
-    for (int64_t b = 0; b < batch_size; ++b) {
-        const int64_t index = last_action_indices_[static_cast<size_t>(b)];
-        const float weight = last_returns_.data()[b] * scale;
-        for (int64_t k = 0; k < action_dim; ++k) {
-            const float indicator = (k == index) ? 1.0f : 0.0f;
-            grad.data()[b * action_dim + k] = weight * (last_probs_.data()[b * action_dim + k] - indicator);
-        }
-    }
+    RlRowArgs args;
+    args.in[0] = last_probs_.data();
+    args.in[1] = last_action_indices_.data();
+    args.in[2] = last_returns_.data();
+    args.out[0] = grad.data();
+    args.rows = batch_size;
+    args.cols = action_dim;
+    args.scale = scale;
+    backend_->rl_rows(RlRowOp::PgGrad, args);
     return grad;
 }
 

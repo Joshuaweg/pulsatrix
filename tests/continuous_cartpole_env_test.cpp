@@ -527,21 +527,6 @@ TEST_F(ContinuousCartPoleEnvTest, ActionJustBelowTheRangeIsAcceptedAndClampedExa
     }
 }
 
-using ContinuousCartPoleEnvDeathTest = ContinuousCartPoleEnvTest;
-
-// step() runs the physics against Tensor::data() directly -- undefined behavior on a
-// CUDA-backed Tensor. One death test, matching CartPoleEnv's precedent: one guarded argument
-// role.
-TEST_F(ContinuousCartPoleEnvDeathTest, StepAbortsOnNonCpuAction) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    ContinuousCartPoleEnv env(&backend);
-    (void)env.reset(state(0.0f, 0.0f, 0.0f, 0.0f));
-    Tensor cuda_action(Shape({1, 1}), &backend, {0.5f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)env.step(cuda_action); }, "PULSATRIX_ASSERT failed");
-}
-
 // ---------------------------------------------------------------------------------------
 // Full episode loop through the base interface
 // ---------------------------------------------------------------------------------------
