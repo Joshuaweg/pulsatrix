@@ -4,8 +4,8 @@
 #include <cmath>
 #include <limits>
 #include <stdexcept>
+#include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
@@ -41,8 +41,6 @@ float GFlowNetForwardPolicy::next_unit() {
 
 GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
                                                      const std::vector<bool>& valid_actions) {
-    PULSATRIX_REQUIRE_HOST(observation);
-
     if (static_cast<int64_t>(valid_actions.size()) != action_dim_) {
         throw std::invalid_argument("GFlowNetForwardPolicy::sample: valid_actions must have size action_dim()");
     }
@@ -55,10 +53,9 @@ GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
         throw std::invalid_argument("GFlowNetForwardPolicy: policy_network must produce output of shape "
                                      "(1, action_dim)");
     }
-    // The network may run on a GPU backend even when observation is host-resident; the raw
-    // host loop over logits below would then be UB (GPU-native-kernels campaign,
-    // Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(logits);
+    // Host boundary (GPU-native-kernels Mission 7): the network may run on any device; its
+    // action_dim logits are copied to the host once for the masked softmax.
+    const std::vector<float> logit_values = logits.to_host_vector();
 
     // Additive-mask technique: an invalid action's logit is driven to the lowest representable
     // float before softmax, giving it ~0 probability without risking a NaN from actual -infinity
@@ -66,7 +63,8 @@ GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
     std::vector<float> masked_logits(static_cast<size_t>(action_dim_));
     for (int64_t a = 0; a < action_dim_; ++a) {
         masked_logits[static_cast<size_t>(a)] =
-            valid_actions[static_cast<size_t>(a)] ? logits.data()[a] : std::numeric_limits<float>::lowest();
+            valid_actions[static_cast<size_t>(a)] ? logit_values[static_cast<size_t>(a)]
+                                                  : std::numeric_limits<float>::lowest();
     }
 
     // Numerically stable softmax over the masked logits -- same pattern as
@@ -121,8 +119,6 @@ GFlowNetSampledAction GFlowNetForwardPolicy::sample(const Tensor& observation,
 
 std::vector<float> GFlowNetForwardPolicy::masked_probs(const Tensor& observation,
                                                         const std::vector<bool>& valid_actions) {
-    PULSATRIX_REQUIRE_HOST(observation);
-
     if (static_cast<int64_t>(valid_actions.size()) != action_dim_) {
         throw std::invalid_argument("GFlowNetForwardPolicy::masked_probs: valid_actions must have size action_dim()");
     }
@@ -136,15 +132,15 @@ std::vector<float> GFlowNetForwardPolicy::masked_probs(const Tensor& observation
         throw std::invalid_argument("GFlowNetForwardPolicy: policy_network must produce output of shape "
                                      "(1, action_dim)");
     }
-    // The network may run on a GPU backend even when observation is host-resident; the raw
-    // host loop over logits below would then be UB (GPU-native-kernels campaign,
-    // Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(logits);
+    // Host boundary (GPU-native-kernels Mission 7): the network may run on any device; its
+    // action_dim logits are copied to the host once for the masked softmax.
+    const std::vector<float> logit_values = logits.to_host_vector();
 
     std::vector<float> masked_logits(static_cast<size_t>(action_dim_));
     for (int64_t a = 0; a < action_dim_; ++a) {
         masked_logits[static_cast<size_t>(a)] =
-            valid_actions[static_cast<size_t>(a)] ? logits.data()[a] : std::numeric_limits<float>::lowest();
+            valid_actions[static_cast<size_t>(a)] ? logit_values[static_cast<size_t>(a)]
+                                                  : std::numeric_limits<float>::lowest();
     }
 
     float max_logit = masked_logits[0];

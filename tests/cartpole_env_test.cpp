@@ -315,21 +315,6 @@ TEST_F(CartPoleEnvTest, StepAcceptsNearIntegerActionEncoding) {
     EXPECT_NO_THROW({ (void)env.step(action(1.00001f)); });
 }
 
-using CartPoleEnvDeathTest = CartPoleEnvTest;
-
-// step() runs the physics against Tensor::data() directly -- undefined behavior on a
-// CUDA-backed Tensor. Same mislabeled-Tensor pattern as every other host-loop death test in
-// this suite (see RNNModuleDeathTest).
-TEST_F(CartPoleEnvDeathTest, StepAbortsOnNonCpuAction) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    CartPoleEnv env(&backend);
-    (void)env.reset(state(0.0f, 0.0f, 0.0f, 0.0f));
-    Tensor cuda_action(Shape({1, 1}), &backend, {1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)env.step(cuda_action); }, "PULSATRIX_ASSERT failed");
-}
-
 // ---------------------------------------------------------------------------------------
 // Environment + Agent loop
 // ---------------------------------------------------------------------------------------

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "pulsatrix/device_backend.hpp"
 #include "pulsatrix/tensor.hpp"
@@ -52,13 +53,18 @@ struct ReplayBatch {
  *       action_dim integers, not from an Environment&, so it neither depends on nor
  *       outlives any particular environment; CartPoleEnv is simply one source of the
  *       tensors a caller happens to add().
- * @note Storage is five pre-allocated (capacity, *)-shaped Tensors written into at a
- *       circular index, not a std::vector of per-transition tensors. That is one allocation
+ * @note Storage is five pre-allocated (capacity, *)-shaped row-major host blocks written into
+ *       at a circular index, not a std::vector of per-transition tensors. That is one allocation
  *       per field for the buffer's whole lifetime instead of five per stored transition,
  *       and it makes sample() a set of row-gathers rather than a loop of tensor copies.
  * @note Discrete and continuous actions are stored identically, as action_dim floats -- a
  *       discrete action is its single-element encoded index, exactly as Environment::step()
  *       already accepts it. No buffer-side special-casing.
+ * @note Host boundary (GPU-native-kernels Mission 7): the store is only ever read and written
+ *       by the host (the circular write and the LCG-driven gather), so it lives in host memory.
+ *       add() accepts rows on any device (one device->host copy of each row per call);
+ *       sample() hands back a ReplayBatch uploaded through the buffer's own backend, so a
+ *       buffer built with a GPU backend hands out GPU tensors.
  */
 class ReplayBuffer {
 public:
@@ -86,11 +92,8 @@ public:
      * @throws std::invalid_argument if any of the three tensors has the wrong shape --
      *         external boundary: a mismatched-shape Tensor can arrive from any caller, and
      *         silently writing it would corrupt neighbouring rows of the storage block.
-     * @note PULSATRIX_REQUIRE_HOST on all three tensor arguments --
-     *       this is a raw host-loop row copy dereferencing Tensor::data() directly, not yet
-     *       backend-generic, so a CUDA-backed Tensor would be silent UB. Same convention as
-     *       every prior host-loop site (mission_host_loop_guards.md); do not remove without
-     *       actually routing the copy through DeviceBackend.
+     * @note Host boundary: the three tensors may live on any device; each is copied to the
+     *       host once (Tensor::to_host_vector()).
      */
     void add(const Tensor& observation, const Tensor& action, float reward, const Tensor& next_observation,
              bool done);
@@ -139,11 +142,12 @@ private:
     int64_t size_ = 0;
     int64_t write_index_ = 0;
 
-    Tensor observations_;
-    Tensor actions_;
-    Tensor rewards_;
-    Tensor next_observations_;
-    Tensor dones_;
+    // Host-side (capacity, width) row-major storage -- see the class's host-boundary note.
+    std::vector<float> observations_;
+    std::vector<float> actions_;
+    std::vector<float> rewards_;
+    std::vector<float> next_observations_;
+    std::vector<float> dones_;
 };
 
 }  // namespace pulsatrix

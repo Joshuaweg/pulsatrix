@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "pulsatrix/device_backend.hpp"
 #include "pulsatrix/tensor.hpp"
@@ -69,10 +70,15 @@ struct RolloutBatch {
  *       into Module would put a pure-virtual propagate_relevance() on a type for which the
  *       concept is undefined, exactly the failure mode module.hpp's charter note rules out.
  *       Same disposition as ReplayBuffer, MSELoss and Reparameterize: a plain utility class.
- * @note Storage is five pre-allocated (max_length, *)-shaped Tensors written into at the
- *       current length, not a std::vector of per-step tensors -- one allocation per field
- *       for the buffer's whole lifetime. clear() resets the length only; it never
+ * @note Storage is five pre-allocated (max_length, *)-shaped row-major host blocks written
+ *       into at the current length, not a std::vector of per-step tensors -- one allocation
+ *       per field for the buffer's whole lifetime. clear() resets the length only; it never
  *       deallocates, so a training loop's repeated rollouts allocate nothing.
+ * @note Host boundary (GPU-native-kernels Mission 7): the store is only ever read and written
+ *       by the host, so it lives in host memory. add() accepts rows on any device (one
+ *       device->host copy of each row per call); compute_returns(), rewards() and dones() hand
+ *       back tensors uploaded through the buffer's own backend, so a buffer built with a GPU
+ *       backend hands out GPU tensors.
  */
 class RolloutBuffer {
 public:
@@ -100,11 +106,8 @@ public:
      * @throws std::logic_error if size() already equals max_length(). See the class note:
      *         a full rollout is a protocol violation, not a malformed argument, and the two
      *         exception types are distinct so a caller can tell them apart.
-     * @note PULSATRIX_REQUIRE_HOST on both tensor arguments -- this is
-     *       a raw host-loop row copy dereferencing Tensor::data() directly, not yet
-     *       backend-generic, so a CUDA-backed Tensor would be silent UB. Same convention as
-     *       every prior host-loop site (mission_host_loop_guards.md); do not remove without
-     *       actually routing the copy through DeviceBackend.
+     * @note Host boundary: `observation` and `action` may live on any device; each is copied
+     *       to the host once (Tensor::to_host_vector()).
      */
     void add(const Tensor& observation, const Tensor& action, float reward, float log_prob, bool done);
 
@@ -157,7 +160,7 @@ public:
 
     /**
      * @brief Empties the rollout, making the buffer reusable for the next one.
-     * @note Resets the length to 0 only. The storage Tensors stay allocated at max_length()
+     * @note Resets the length to 0 only. The storage blocks stay allocated at max_length()
      *       capacity and their stale contents are simply unreachable, since every read path
      *       is bounded by size(); zero-filling them would be work no observer can detect.
      */
@@ -183,11 +186,12 @@ private:
 
     int64_t size_ = 0;
 
-    Tensor observations_;
-    Tensor actions_;
-    Tensor rewards_;
-    Tensor log_probs_;
-    Tensor dones_;
+    // Host-side (max_length, width) row-major storage -- see the class's host-boundary note.
+    std::vector<float> observations_;
+    std::vector<float> actions_;
+    std::vector<float> rewards_;
+    std::vector<float> log_probs_;
+    std::vector<float> dones_;
 };
 
 }  // namespace pulsatrix

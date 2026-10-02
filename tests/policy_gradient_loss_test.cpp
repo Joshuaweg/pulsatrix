@@ -286,28 +286,5 @@ TEST_F(PolicyGradientLossTest, SingleActionDimensionHasZeroLossAndZeroGradient) 
     EXPECT_NEAR(grad.data()[1], 0.0f, kTol);
 }
 
-using PolicyGradientLossDeathTest = PolicyGradientLossTest;
-
-// forward() reads all three tensors in raw host loops over Tensor::data() -- undefined behavior
-// on a CUDA-backed Tensor, so each is PULSATRIX_ASSERT-guarded (mission_host_loop_guards.md). No
-// real GPU needed: this reuses LinearModuleDeathTest's mislabeled-Tensor pattern.
-//
-// One death test, not three -- byte-for-byte DQNLossDeathTest's own count decision and
-// reasoning, which this class's forward() structurally mirrors. The mission fixes the count at
-// one per raw-host-loop *entry point*, and the three guards here are adjacent lines on a single
-// entry path covering one guarded-argument role: a caller-supplied host tensor read by the same
-// loops. ReplayBuffer's precedent (two tests for three guards, because `next_observation`
-// re-exercised `observation`'s path) points the same way; `actions` and `returns` are both
-// (N, 1) columns validated identically, so extra cases would re-cover a path rather than cover
-// a new one.
-TEST_F(PolicyGradientLossDeathTest, ForwardAbortsOnNonCpuLogits) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    PolicyGradientLoss loss(&backend);
-    Tensor cuda_logits(Shape({2, 3}), &backend, {1.0f, 2.0f, 3.0f, 1.0f, 1.0f, 1.0f}, DeviceType::Cuda);
-    EXPECT_DEATH({ (void)loss.forward(cuda_logits, actions(), returns()); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix

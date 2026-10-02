@@ -4,18 +4,16 @@
 #include <string>
 #include <vector>
 
-#include "pulsatrix/assert.hpp"
 #include "pulsatrix/shape.hpp"
 
 namespace pulsatrix {
 namespace {
 
 // Validates the three dimension arguments and echoes the first one back, so it can be
-// called from the constructor's *initializer list*. The storage Tensors are members and are
+// called from the constructor's *initializer list*. The storage blocks are members and are
 // therefore constructed before the constructor body ever runs; a negative capacity would
-// reach Shape's own "dimensions must be non-negative" throw first, reporting the wrong error
-// from the wrong class. Validating inside the initializer list keeps ReplayBuffer's own
-// message authoritative.
+// reach std::vector's own size error first, reporting the wrong error from the wrong place.
+// Validating inside the initializer list keeps ReplayBuffer's own message authoritative.
 int64_t validated_capacity(int64_t capacity, int64_t observation_dim, int64_t action_dim) {
     if (capacity <= 0) {
         throw std::invalid_argument("ReplayBuffer: capacity must be >= 1");
@@ -37,28 +35,19 @@ void require_row_shape(const Tensor& tensor, int64_t expected_width, const char*
     }
 }
 
-// Copies one (1, width) row into row `row` of a (capacity, width) storage block.
-void write_row(Tensor& storage, int64_t row, const Tensor& source, int64_t width) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(storage);
-    PULSATRIX_REQUIRE_HOST(source);
-    float* destination = storage.data() + row * width;
-    const float* values = source.data();
+// Copies one (1, width) row (already on the host) into row `row` of a (capacity, width) host
+// storage block.
+void write_row(std::vector<float>& storage, int64_t row, const std::vector<float>& values, int64_t width) {
     for (int64_t i = 0; i < width; ++i) {
-        destination[i] = values[i];
+        storage[static_cast<size_t>(row * width + i)] = values[static_cast<size_t>(i)];
     }
 }
 
-// Copies row `row` of a (capacity, width) storage block into `out` at offset `out_row`.
-void gather_row(std::vector<float>& out, int64_t out_row, const Tensor& storage, int64_t row, int64_t width) {
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4).
-    PULSATRIX_REQUIRE_HOST(storage);
-    const float* source = storage.data() + row * width;
-    float* destination = out.data() + out_row * width;
+// Copies row `row` of a (capacity, width) host storage block into `out` at offset `out_row`.
+void gather_row(std::vector<float>& out, int64_t out_row, const std::vector<float>& storage, int64_t row,
+                int64_t width) {
     for (int64_t i = 0; i < width; ++i) {
-        destination[i] = source[i];
+        out[static_cast<size_t>(out_row * width + i)] = storage[static_cast<size_t>(row * width + i)];
     }
 }
 
@@ -71,11 +60,11 @@ ReplayBuffer::ReplayBuffer(int64_t capacity, int64_t observation_dim, int64_t ac
       action_dim_(action_dim),
       backend_(backend),
       lcg_state_(seed),
-      observations_(Shape({capacity, observation_dim}), backend),
-      actions_(Shape({capacity, action_dim}), backend),
-      rewards_(Shape({capacity, 1}), backend),
-      next_observations_(Shape({capacity, observation_dim}), backend),
-      dones_(Shape({capacity, 1}), backend) {}
+      observations_(static_cast<size_t>(capacity * observation_dim), 0.0f),
+      actions_(static_cast<size_t>(capacity * action_dim), 0.0f),
+      rewards_(static_cast<size_t>(capacity), 0.0f),
+      next_observations_(static_cast<size_t>(capacity * observation_dim), 0.0f),
+      dones_(static_cast<size_t>(capacity), 0.0f) {}
 
 int64_t ReplayBuffer::next_index(int64_t bound) {
     // Numerical Recipes LCG constants -- byte-for-byte the generator CartPoleEnv::reset()
@@ -93,30 +82,17 @@ int64_t ReplayBuffer::next_index(int64_t bound) {
 
 void ReplayBuffer::add(const Tensor& observation, const Tensor& action, float reward, const Tensor& next_observation,
                        bool done) {
-    // Raw host-loop row copies over Tensor::data() -- undefined behavior on a CUDA-backed
-    // Tensor. See mission_host_loop_guards.md; same guard as every prior host-loop site.
-    PULSATRIX_REQUIRE_HOST(observation);
-    PULSATRIX_REQUIRE_HOST(action);
-    PULSATRIX_REQUIRE_HOST(next_observation);
-
     require_row_shape(observation, observation_dim_, "observation");
     require_row_shape(action, action_dim_, "action");
     require_row_shape(next_observation, observation_dim_, "next_observation");
 
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4). The storage tensors are allocated through
-    // backend_, so a GPU backend tags them Cuda/Hip.
-    PULSATRIX_REQUIRE_HOST(observations_);
-    PULSATRIX_REQUIRE_HOST(actions_);
-    PULSATRIX_REQUIRE_HOST(rewards_);
-    PULSATRIX_REQUIRE_HOST(next_observations_);
-    PULSATRIX_REQUIRE_HOST(dones_);
-
-    write_row(observations_, write_index_, observation, observation_dim_);
-    write_row(actions_, write_index_, action, action_dim_);
-    write_row(next_observations_, write_index_, next_observation, observation_dim_);
-    rewards_.data()[write_index_] = reward;
-    dones_.data()[write_index_] = done ? 1.0f : 0.0f;
+    // Host boundary (GPU-native-kernels Mission 7): one device->host copy of each row, then the
+    // host-side store.
+    write_row(observations_, write_index_, observation.to_host_vector(), observation_dim_);
+    write_row(actions_, write_index_, action.to_host_vector(), action_dim_);
+    write_row(next_observations_, write_index_, next_observation.to_host_vector(), observation_dim_);
+    rewards_[static_cast<size_t>(write_index_)] = reward;
+    dones_[static_cast<size_t>(write_index_)] = done ? 1.0f : 0.0f;
 
     write_index_ = (write_index_ + 1) % capacity_;
     if (size_ < capacity_) {
@@ -133,15 +109,6 @@ ReplayBatch ReplayBuffer::sample(int64_t batch_size) {
                                     ") exceeds the number of stored transitions (" + std::to_string(size_) + ")");
     }
 
-    // Dereferences Tensor::data() directly in a raw host loop -- not yet backend-generic
-    // (GPU-native-kernels campaign, Mission 0 O4). The storage tensors are allocated through
-    // backend_, so a GPU backend tags them Cuda/Hip.
-    PULSATRIX_REQUIRE_HOST(observations_);
-    PULSATRIX_REQUIRE_HOST(actions_);
-    PULSATRIX_REQUIRE_HOST(rewards_);
-    PULSATRIX_REQUIRE_HOST(next_observations_);
-    PULSATRIX_REQUIRE_HOST(dones_);
-
     std::vector<float> observations(static_cast<size_t>(batch_size * observation_dim_));
     std::vector<float> actions(static_cast<size_t>(batch_size * action_dim_));
     std::vector<float> rewards(static_cast<size_t>(batch_size));
@@ -157,8 +124,8 @@ ReplayBatch ReplayBuffer::sample(int64_t batch_size) {
         gather_row(observations, b, observations_, index, observation_dim_);
         gather_row(actions, b, actions_, index, action_dim_);
         gather_row(next_observations, b, next_observations_, index, observation_dim_);
-        rewards[static_cast<size_t>(b)] = rewards_.data()[index];
-        dones[static_cast<size_t>(b)] = dones_.data()[index];
+        rewards[static_cast<size_t>(b)] = rewards_[static_cast<size_t>(index)];
+        dones[static_cast<size_t>(b)] = dones_[static_cast<size_t>(index)];
     }
 
     return ReplayBatch{Tensor(Shape({batch_size, observation_dim_}), backend_, observations),

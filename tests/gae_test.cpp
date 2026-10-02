@@ -191,27 +191,5 @@ TEST_F(GAETest, RejectsMalformedShapesAndOutOfRangeDiscounts) {
     EXPECT_NO_THROW((void)ComputeGAE(r, d, v, 0.0f, 1.0f, 1.0f, &backend));
 }
 
-using GAEDeathTest = GAETest;
-
-// ComputeGAE reads all three tensors in a raw host loop over Tensor::data() -- undefined
-// behavior on a CUDA-backed Tensor, so each is PULSATRIX_ASSERT-guarded
-// (mission_host_loop_guards.md). No real GPU needed: this reuses LinearModuleDeathTest's
-// mislabeled-Tensor pattern.
-//
-// One death test, not three -- DQNTargetDeathTest's and PolicyGradientLossDeathTest's own count
-// decision and reasoning, which this function structurally mirrors. The mission fixes the count
-// at one per raw-host-loop *entry point*; the three guards here are adjacent lines on a single
-// entry path covering one guarded-argument role (a caller-supplied (N, 1) host column read by
-// the same loop), so extra cases would re-cover a path rather than cover a new one.
-TEST_F(GAEDeathTest, ComputeGAEAbortsOnNonCpuRewards) {
-#ifdef NDEBUG
-    GTEST_SKIP() << "PULSATRIX_ASSERT is a no-op under NDEBUG (Release) by design -- see assert.hpp";
-#endif
-    Tensor cuda_rewards(Shape({1, 1}), &backend, {1.0f}, DeviceType::Cuda);
-    Tensor d(Shape({1, 1}), &backend, {0.0f});
-    Tensor v(Shape({1, 1}), &backend, {0.0f});
-    EXPECT_DEATH({ (void)ComputeGAE(cuda_rewards, d, v, 0.0f, 0.9f, 0.9f, &backend); }, "PULSATRIX_ASSERT failed");
-}
-
 }  // namespace
 }  // namespace pulsatrix
