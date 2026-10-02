@@ -155,6 +155,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9a2059bfdff6da4fd98a44bd2aaba9f5" id="r_a9a2059bfdff6da4fd98a44bd2aaba9f5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#a9a2059bfdff6da4fd98a44bd2aaba9f5">read_element</a> (int64_t flat_index) const</td></tr>
 <tr class="memdesc:a9a2059bfdff6da4fd98a44bd2aaba9f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads one element to the host through the owning backend, on any device.  <br /></td></tr>
 <tr class="separator:a9a2059bfdff6da4fd98a44bd2aaba9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4060ef56f1b272ba2869db187b2af8f" id="r_ad4060ef56f1b272ba2869db187b2af8f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#ad4060ef56f1b272ba2869db187b2af8f">to_host_vector</a> () const</td></tr>
+<tr class="memdesc:ad4060ef56f1b272ba2869db187b2af8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the whole buffer to a host vector through the owning backend, on any device.  <br /></td></tr>
+<tr class="separator:ad4060ef56f1b272ba2869db187b2af8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbbf07280c7edc4d610b94c94dba3e9b" id="r_acbbf07280c7edc4d610b94c94dba3e9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#acbbf07280c7edc4d610b94c94dba3e9b">write_element</a> (int64_t flat_index, float value)</td></tr>
 <tr class="memdesc:acbbf07280c7edc4d610b94c94dba3e9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes one element from the host through the owning backend, on any device.  <br /></td></tr>
 <tr class="separator:acbbf07280c7edc4d610b94c94dba3e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1104,6 +1107,27 @@ A no-op when target == <a class="el" href="classpulsatrix_1_1Tensor.html#a3603ac
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ad4060ef56f1b272ba2869db187b2af8f" name="ad4060ef56f1b272ba2869db187b2af8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4060ef56f1b272ba2869db187b2af8f">&#9670;&#160;</a></span>to_host_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::Tensor::to_host_vector </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies the whole buffer to a host vector through the owning backend, on any device. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classpulsatrix_1_1Tensor.html#a903dae02b55d8eb93709bf2c0a399d85" title="Total element count – shape().numel().">numel()</a> floats in row-major order (empty for a zero-element tensor). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>One synchronous copy (HostToHost on Cpu, DeviceToHost otherwise) &ndash; the explicit transfer a deliberate host boundary (an environment, a replay buffer, an agent's action selection; GPU-native-kernels Mission 7) uses to read a possibly-device tensor once, instead of dereferencing <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">data()</a> in a host loop. </dd></dl>
 
 </div>
 </div>

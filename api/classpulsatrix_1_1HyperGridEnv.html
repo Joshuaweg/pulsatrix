@@ -628,7 +628,7 @@ Reward is 0 at every non-terminal step and R(x) only at the terminal state (the 
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(action)</a> &ndash; raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a>, same convention as every other <a class="el" href="classpulsatrix_1_1Environment.html" title="Base class for every RL environment (CartPoleEnv, and whatever later phases add).">Environment</a> in this codebase. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Host boundary (GPU-native-kernels Mission 7): the grid walk is integer host logic. <code>action</code> (and every <code>state</code> argument of <a class="el" href="classpulsatrix_1_1HyperGridEnv.html#a45414c5c0e4d796308d326d821ea1438" title="Starts a new episode at the origin (0, ..., 0).">reset()</a>/reward()/backward_log_prob()/ <a class="el" href="classpulsatrix_1_1HyperGridEnv.html#a2b57c2915f085f7603bd58c4758c0761" title="Which actions are legal to take from an arbitrary valid state.">valid_actions_mask()</a>) may live on any device &ndash; one device-&gt;host copy per call &ndash; and observations are returned through this environment's own backend. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Environment.html#ad9703da6e1184b3b0d470d61c5fc552d">pulsatrix::Environment</a>.</p>
 

@@ -306,6 +306,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abc129d15ef202aaa72b9d969c0d600dd" id="r_abc129d15ef202aaa72b9d969c0d600dd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd">ssm_pass</a> (<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">SsmPassOp</a> op, const <a class="el" href="structpulsatrix_1_1SsmPassArgs.html">SsmPassArgs</a> &amp;args)=0</td></tr>
 <tr class="memdesc:abc129d15ef202aaa72b9d969c0d600dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).  <br /></td></tr>
 <tr class="separator:abc129d15ef202aaa72b9d969c0d600dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acddc3cd836958deac213a50a9dcf757a" id="r_acddc3cd836958deac213a50a9dcf757a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#acddc3cd836958deac213a50a9dcf757a">rl_rows</a> (<a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">RlRowOp</a> op, const <a class="el" href="structpulsatrix_1_1RlRowArgs.html">RlRowArgs</a> &amp;args)=0</td></tr>
+<tr class="memdesc:acddc3cd836958deac213a50a9dcf757a"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots).  <br /></td></tr>
+<tr class="separator:acddc3cd836958deac213a50a9dcf757a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Vendor-agnostic compute/memory backend. <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a> (Phase 1.5), and <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a> (Phase 1.6) all implement this contract; <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> and <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> depend only on this interface, never on a concrete backend's types. </p>
@@ -3896,6 +3899,47 @@ Public Member Functions</h2></td></tr>
 <p>One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots). </p>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a55b2f5343e16e66540d2787d94f739ee">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a6e51344618bf599e9116e1a0d860b223">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#ad50e3f528ef1f0d903316a21946b6e8a">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="acddc3cd836958deac213a50a9dcf757a" name="acddc3cd836958deac213a50a9dcf757a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acddc3cd836958deac213a50a9dcf757a">&#9670;&#160;</a></span>rl_rows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::rl_rows </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">RlRowOp</a>&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1RlRowArgs.html">RlRowArgs</a> &amp;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots). </p>
+<dl class="section note"><dt>Note</dt><dd>One lane per row: a row's softmax, argmax and gradient writes are owned by its lane and walk the columns in the original loop order. Per-row loss terms are reduced by the caller with column_sums, which adds rows in increasing order like the original loop. </dd></dl>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a5636611d7e3c7c185a7d435a20794323">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a18f3e6c440264b5593697e194c1dd69d">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a17da8da2ad21e998ecfe3fe42408999d">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>

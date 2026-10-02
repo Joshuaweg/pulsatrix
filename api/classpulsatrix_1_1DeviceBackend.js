@@ -52,6 +52,7 @@ var classpulsatrix_1_1DeviceBackend =
     [ "mul", "classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d", null ],
     [ "permute_0213", "classpulsatrix_1_1DeviceBackend.html#a441f01bb9aa5581f616d15a8d898d6bd", null ],
     [ "recurrent_cell", "classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd", null ],
+    [ "rl_rows", "classpulsatrix_1_1DeviceBackend.html#acddc3cd836958deac213a50a9dcf757a", null ],
     [ "rms_norm_backward", "classpulsatrix_1_1DeviceBackend.html#a2690e8ead52d949537d29e45690bf207", null ],
     [ "rms_norm_forward", "classpulsatrix_1_1DeviceBackend.html#a8c27211ec8f3074b8fa17da3b05d2704", null ],
     [ "rope_rotate", "classpulsatrix_1_1DeviceBackend.html#a639a0825620484b5f514f4b9ed8ce6c2", null ],

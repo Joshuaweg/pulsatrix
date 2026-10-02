@@ -163,6 +163,7 @@ var hierarchy =
     ] ],
     [ "pulsatrix::RgbColor", "structpulsatrix_1_1RgbColor.html", null ],
     [ "pulsatrix::RgbImageBuffer", "structpulsatrix_1_1RgbImageBuffer.html", null ],
+    [ "pulsatrix::RlRowArgs", "structpulsatrix_1_1RlRowArgs.html", null ],
     [ "pulsatrix::RolloutBatch", "structpulsatrix_1_1RolloutBatch.html", null ],
     [ "pulsatrix::RolloutBuffer", "classpulsatrix_1_1RolloutBuffer.html", null ],
     [ "pulsatrix::datalog::Rule", "classpulsatrix_1_1datalog_1_1Rule.html", null ],

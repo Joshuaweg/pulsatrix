@@ -15,11 +15,12 @@ var searchData=
   ['retnetmodule_12',['RetNetModule',['../classpulsatrix_1_1RetNetModule.html',1,'pulsatrix']]],
   ['rgbcolor_13',['RgbColor',['../structpulsatrix_1_1RgbColor.html',1,'pulsatrix']]],
   ['rgbimagebuffer_14',['RgbImageBuffer',['../structpulsatrix_1_1RgbImageBuffer.html',1,'pulsatrix']]],
-  ['rmsnormmodule_15',['RMSNormModule',['../classpulsatrix_1_1RMSNormModule.html',1,'pulsatrix']]],
-  ['rnnmodule_16',['RNNModule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix']]],
-  ['rolloutbatch_17',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
-  ['rolloutbuffer_18',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
-  ['ropemodule_19',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
-  ['rule_20',['Rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog']]],
-  ['rwkvmodule_21',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
+  ['rlrowargs_15',['RlRowArgs',['../structpulsatrix_1_1RlRowArgs.html',1,'pulsatrix']]],
+  ['rmsnormmodule_16',['RMSNormModule',['../classpulsatrix_1_1RMSNormModule.html',1,'pulsatrix']]],
+  ['rnnmodule_17',['RNNModule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix']]],
+  ['rolloutbatch_18',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
+  ['rolloutbuffer_19',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
+  ['ropemodule_20',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
+  ['rule_21',['Rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog']]],
+  ['rwkvmodule_22',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
 ];

@@ -157,6 +157,7 @@ var annotated_dup =
       [ "RetNetModule", "classpulsatrix_1_1RetNetModule.html", "classpulsatrix_1_1RetNetModule" ],
       [ "RgbColor", "structpulsatrix_1_1RgbColor.html", "structpulsatrix_1_1RgbColor" ],
       [ "RgbImageBuffer", "structpulsatrix_1_1RgbImageBuffer.html", "structpulsatrix_1_1RgbImageBuffer" ],
+      [ "RlRowArgs", "structpulsatrix_1_1RlRowArgs.html", "structpulsatrix_1_1RlRowArgs" ],
       [ "RMSNormModule", "classpulsatrix_1_1RMSNormModule.html", "classpulsatrix_1_1RMSNormModule" ],
       [ "RNNModule", "classpulsatrix_1_1RNNModule.html", "classpulsatrix_1_1RNNModule" ],
       [ "RolloutBatch", "structpulsatrix_1_1RolloutBatch.html", "structpulsatrix_1_1RolloutBatch" ],

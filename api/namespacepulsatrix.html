@@ -529,6 +529,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RgbImageBuffer.html">RgbImageBuffer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An interleaved-RGB, row-major byte buffer ready for a texture upload.  <a href="structpulsatrix_1_1RgbImageBuffer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RlRowArgs.html">RlRowArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers and dims for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#acddc3cd836958deac213a50a9dcf757a" title="One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots).">DeviceBackend::rl_rows</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RlRowArgs.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html">RMSNormModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps), computed independently per batch row n. Batched ((N, num_features)), migrated from the original unbatched (rank-1) scope by campaign_exai_dl_library_batch_dimension_support &ndash; no mean-centering, no beta/bias term (RMSNorm's defining simplification vs. LayerNorm).  <a href="classpulsatrix_1_1RMSNormModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -786,6 +789,20 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a9ea30dd018ca9a3db2acc46af2880883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused passes of the state-space / linear-recurrence modules (MambaModule, RWKVModule, RetNetModule), for DeviceBackend::ssm_pass. Dims come from SsmPassArgs: n batch, l sequence length, d d_model (or C for ReverseTimeSum), s Mamba's state_size / RetNet's key_dim. Sequences are (n, l, X) row-major; "states" buffers are (n, l + 1, ...) with the zero initial state at index 0. Lanes and slots (in[] -&gt; out[]):  <a href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">More...</a><br /></td></tr>
 <tr class="separator:a9ea30dd018ca9a3db2acc46af2880883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af72bbbb89c154b30ca26561ab2f87930" id="r_af72bbbb89c154b30ca26561ab2f87930"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">RlRowOp</a> { <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a968bf24ac72a6aace6ce47990ee9787f">DqnLoss</a>
+, <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930ab3bad3db141dca05dac2e9ec9067afe1">DqnGrad</a>
+, <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930ab760ac927f4ec969409760e2f044e09f">PgLoss</a>
+, <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930adc1f63481ef485e13b060c446d273bbf">PgGrad</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a8bc4fa0f592f03c568063df4971d27f9">PpoLoss</a>
+, <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536">PpoGrad</a>
+, <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87">DqnTarget</a>
+, <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9">PolyakBlend</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:af72bbbb89c154b30ca26561ab2f87930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused per-row reinforcement-learning passes, for DeviceBackend::rl_rows. One lane per batch row (per element for PolyakBlend); rows x cols from RlRowArgs. Index slots hold validated whole-number action indices as floats. Slots (in[] -&gt; out[]):  <a href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">More...</a><br /></td></tr>
+<tr class="separator:af72bbbb89c154b30ca26561ab2f87930"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab997921e8dd2fcb16daefdcc05ce6550" id="r_ab997921e8dd2fcb16daefdcc05ce6550"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">MutationObjective</a> { <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b">Minimax</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763">Heuristic</a>
 , <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46">LeastSquares</a>
@@ -1603,6 +1620,50 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731" name="ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731"></a>LstmLrp&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185" name="ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185"></a>GruBackward&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44" name="ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44"></a>GruLrp&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="af72bbbb89c154b30ca26561ab2f87930" name="af72bbbb89c154b30ca26561ab2f87930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af72bbbb89c154b30ca26561ab2f87930">&#9670;&#160;</a></span>RlRowOp</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">pulsatrix::RlRowOp</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fused per-row reinforcement-learning passes, for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#acddc3cd836958deac213a50a9dcf757a" title="One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots).">DeviceBackend::rl_rows</a>. One lane per batch row (per element for PolyakBlend); rows x cols from <a class="el" href="structpulsatrix_1_1RlRowArgs.html" title="Operand pointers and dims for DeviceBackend::rl_rows (passed to kernels by value).">RlRowArgs</a>. Index slots hold validated whole-number action indices as floats. Slots (in[] -&gt; out[]): </p>
+<ul>
+<li>DqnLoss: in q (rows, cols), indices, targets -&gt; out per-row squared TD error</li>
+<li>DqnGrad: in q, indices, targets -&gt; out grad (rows, cols), caller-zeroed; only the taken action's element is written (uses scale)</li>
+<li>PgLoss: in logits, indices, returns -&gt; out probs (rows, cols), per-row loss term</li>
+<li>PgGrad: in probs, indices, returns -&gt; out grad (dense; uses scale)</li>
+<li>PpoLoss: in logits, indices, old_log_probs, advantages -&gt; out probs, per-row loss term, ratio, mask (uses lower, upper)</li>
+<li>PpoGrad: in probs, indices, advantages, ratios, masks -&gt; out grad (dense; uses scale)</li>
+<li>DqnTarget: in q_select, q_eval (both rows x cols), rewards, dones -&gt; out target (uses gamma)</li>
+<li>PolyakBlend: in source, destination -&gt; out tau*source + (1 - tau)*destination over rows elements (out may alias destination; uses tau) </li>
+</ul>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a968bf24ac72a6aace6ce47990ee9787f" name="af72bbbb89c154b30ca26561ab2f87930a968bf24ac72a6aace6ce47990ee9787f"></a>DqnLoss&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930ab3bad3db141dca05dac2e9ec9067afe1" name="af72bbbb89c154b30ca26561ab2f87930ab3bad3db141dca05dac2e9ec9067afe1"></a>DqnGrad&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930ab760ac927f4ec969409760e2f044e09f" name="af72bbbb89c154b30ca26561ab2f87930ab760ac927f4ec969409760e2f044e09f"></a>PgLoss&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930adc1f63481ef485e13b060c446d273bbf" name="af72bbbb89c154b30ca26561ab2f87930adc1f63481ef485e13b060c446d273bbf"></a>PgGrad&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a8bc4fa0f592f03c568063df4971d27f9" name="af72bbbb89c154b30ca26561ab2f87930a8bc4fa0f592f03c568063df4971d27f9"></a>PpoLoss&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536" name="af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536"></a>PpoGrad&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87" name="af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87"></a>DqnTarget&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9" name="af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9"></a>PolyakBlend&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -2491,7 +2552,7 @@ A free function rather than a class or an enum-flagged variant of ComputeDQNTarg
 <dd>
 <code>dones</code> is used as a plain multiplier, not thresholded &ndash; 0.0f/1.0f is the documented encoding, and silently reinterpreting anything else would hide a caller's bug. </dd>
 <dd>
-Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> (a row-wise max at a data-dependent column has no <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> primitive) &ndash; PULSATRIX_REQUIRE_HOST guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see mission_host_loop_guards.md. </dd></dl>
+Device-generic (GPU-native-kernels Mission 7): one DeviceBackend::rl_rows(DqnTarget) lane per transition (row argmax, ties to the lowest index) through <code>backend</code>, which must address the inputs' device; the result is allocated through it too. </dd></dl>
 
 </div>
 </div>
@@ -2585,7 +2646,7 @@ A <code>dones[t] == 1</code> row cuts <em>both</em> the bootstrap and the trace 
 <dd>
 A free function rather than a class: a pure reduction with no state to carry, matching <a class="el" href="namespacepulsatrix.html#a6176ba0afe78bd0aa69aec2b670d5b8c" title="Vanilla DQN Bellman target (Mnih et al. 2015): targets[b,0] = rewards[b,0] + gamma * (1 - dones[b,...">ComputeDQNTarget()</a>/ComputeDoubleDQNTarget()'s own free-function precedent. </dd>
 <dd>
-Raw host loop over <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> (a reverse-order recursion has no <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> primitive) &ndash; PULSATRIX_REQUIRE_HOST guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>; see mission_host_loop_guards.md. </dd></dl>
+Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recursion over one rollout. The inputs may live on any device &ndash; one device-&gt;host copy of each of rewards, dones and values per call &ndash; and both results are uploaded through <code>backend</code>. </dd></dl>
 
 </div>
 </div>
@@ -4241,9 +4302,7 @@ template&lt;typename T &gt; </div>
 <dd>
 Gradients are untouched. This is a pure value blend and has nothing to do with zero_grad(); a target network is never backpropagated through. </dd>
 <dd>
-Dereferences every parameter's <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> in a raw host loop, so it guards each source/destination parameter with PULSATRIX_REQUIRE_HOST: a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> built on a GPU backend holds Cuda/Hip-tagged parameters (GPU-native-kernels campaign, Mission 0 O4). </dd>
-<dd>
-A free function, not a class: there is no state to carry between calls (the state <em>is</em> the destination network's own parameters), matching SyncTargetNetwork's shape. </dd></dl>
+Device-generic (GPU-native-kernels Mission 7): one DeviceBackend::rl_rows(PolyakBlend) pass per parameter through the destination parameter's own backend, evaluating <code>tau * source + (1 - tau) * destination</code> per element exactly as the original host loop did. A source parameter on a different device is staged onto the destination's first. </dd></dl>
 
 </div>
 </div>
@@ -5900,6 +5959,7 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The full trajectory, per <a class="el" href="structpulsatrix_1_1GFlowNetTrajectory.html" title="One full sampled trajectory: every state the forward policy acted from, the action taken at each,...">GFlowNetTrajectory</a>'s fields above. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Host boundary (GPU-native-kernels Mission 7): the rollout loop is host control flow. env and forward_policy may use any backend; each step reads the sampled action back with one device-&gt;host copy. </dd></dl>
 
 </div>
 </div>
@@ -6070,7 +6130,7 @@ child1_i + child2_i == parent1_i + parent2_i for any beta_q (and therefore any e
 </dl>
 <dl class="section note"><dt>Note</dt><dd><b><a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> is <code>(1, embedding_dim)</code>, not rank-1 <code>(embedding_dim,)</code>.</b> This codebase is always-batched (a single example is N = 1, not a structurally different case &ndash; campaign_exai_dl_library_batch_dimension_support), and the one thing callers do with this result is concatenate it onto each row of an <code>(N, D)</code> batch of noisy samples. A <code>(1, embedding_dim)</code> row is directly that row; a rank-1 result would make every caller reshape first. </dd>
 <dd>
-Writes through <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> on a tensor it allocates itself, which is therefore always Cpu-resident &ndash; unlike <a class="el" href="classpulsatrix_1_1NoiseSchedule.html" title="The DDPM (Ho et al. 2020, arXiv:2006.11239) linear variance schedule plus the two tensor operations d...">NoiseSchedule</a>'s methods there is no caller-supplied tensor whose device could be wrong, so there is nothing here to device-guard. </dd></dl>
+Host boundary (GPU-native-kernels Mission 7): the embedding is computed on the host in double (one sin/cos pair per frequency) and uploaded once through <code>backend</code>, so a GPU backend receives a device-resident result. </dd></dl>
 
 </div>
 </div>
@@ -6341,7 +6401,7 @@ The copy is element-wise into <code>destination</code>'s existing parameter buff
 <dd>
 Gradients are untouched. This is a pure value copy and has nothing to do with zero_grad(); a target network is never backpropagated through in DQN anyway. </dd>
 <dd>
-Dereferences every parameter's <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> in a raw host loop, so it guards each source/destination parameter with PULSATRIX_REQUIRE_HOST: a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> built on a GPU backend holds Cuda/Hip-tagged parameters (GPU-native-kernels campaign, Mission 0 O4). </dd></dl>
+Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy through the destination parameter's own backend (HostToHost / DeviceToDevice), staged through the host only when source and destination live on different devices. </dd></dl>
 
 </div>
 </div>

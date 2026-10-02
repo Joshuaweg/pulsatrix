@@ -318,6 +318,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3ea8a77ff98aecaae782c43f54a74666" id="r_a3ea8a77ff98aecaae782c43f54a74666"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a3ea8a77ff98aecaae782c43f54a74666">ssm_pass</a> (<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">SsmPassOp</a> op, const <a class="el" href="structpulsatrix_1_1SsmPassArgs.html">SsmPassArgs</a> &amp;args) override</td></tr>
 <tr class="memdesc:a3ea8a77ff98aecaae782c43f54a74666"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).  <br /></td></tr>
 <tr class="separator:a3ea8a77ff98aecaae782c43f54a74666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f3e6c440264b5593697e194c1dd69d" id="r_a18f3e6c440264b5593697e194c1dd69d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a18f3e6c440264b5593697e194c1dd69d">rl_rows</a> (<a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">RlRowOp</a> op, const <a class="el" href="structpulsatrix_1_1RlRowArgs.html">RlRowArgs</a> &amp;args) override</td></tr>
+<tr class="memdesc:a18f3e6c440264b5593697e194c1dd69d"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots).  <br /></td></tr>
+<tr class="separator:a18f3e6c440264b5593697e194c1dd69d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1DeviceBackend"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1DeviceBackend')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1DeviceBackend.html">pulsatrix::DeviceBackend</a></td></tr>
 <tr class="memitem:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend" id="r_a2feea27fda55c8c0addf4e7c3864f2aa"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a2feea27fda55c8c0addf4e7c3864f2aa">~DeviceBackend</a> ()=default</td></tr>
 <tr class="separator:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3982,6 +3985,47 @@ This is the first of two currently-supported concrete <a class="el" href="classp
 <p>One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots). </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a18f3e6c440264b5593697e194c1dd69d" name="a18f3e6c440264b5593697e194c1dd69d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18f3e6c440264b5593697e194c1dd69d">&#9670;&#160;</a></span>rl_rows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CUDABackend::rl_rows </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">RlRowOp</a>&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1RlRowArgs.html">RlRowArgs</a> &amp;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots). </p>
+<dl class="section note"><dt>Note</dt><dd>One lane per row: a row's softmax, argmax and gradient writes are owned by its lane and walk the columns in the original loop order. Per-row loss terms are reduced by the caller with column_sums, which adds rows in increasing order like the original loop. </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#acddc3cd836958deac213a50a9dcf757a">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>

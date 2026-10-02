@@ -465,7 +465,7 @@ Physics is computed in double and stored in double; only the observation <a clas
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(action)</a> &ndash; this is a raw host-loop physics update dereferencing <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly, not yet backend-generic, so a CUDA-backed action <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> would be silent UB. Same convention as every prior module; do not remove without actually routing through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a>. </dd>
+<dl class="section note"><dt>Note</dt><dd>Host boundary (GPU-native-kernels Mission 7): the physics is a scalar double-precision update on the host. <code>action</code> may live on any device &ndash; one device-&gt;host copy of it per call &ndash; and the observation is returned through this environment's own backend. </dd>
 <dd>
 Stepping past a done=true result is allowed and keeps integrating; enforcing "reset after done" would be a second precondition with no caller to serve, and Gym itself only warns. The episode loop is the caller's responsibility. </dd></dl>
 

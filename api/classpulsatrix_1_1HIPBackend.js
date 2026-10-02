@@ -55,6 +55,7 @@ var classpulsatrix_1_1HIPBackend =
     [ "operator=", "classpulsatrix_1_1HIPBackend.html#a986e88f107512b4f5272d7e8843bef3c", null ],
     [ "permute_0213", "classpulsatrix_1_1HIPBackend.html#a601b2d10748f931a38f03260a52495ad", null ],
     [ "recurrent_cell", "classpulsatrix_1_1HIPBackend.html#ad50e3f528ef1f0d903316a21946b6e8a", null ],
+    [ "rl_rows", "classpulsatrix_1_1HIPBackend.html#a17da8da2ad21e998ecfe3fe42408999d", null ],
     [ "rms_norm_backward", "classpulsatrix_1_1HIPBackend.html#add0f9702c6be74b40467f7fc23570364", null ],
     [ "rms_norm_forward", "classpulsatrix_1_1HIPBackend.html#abbd17f551b50802df4eab83d188d1dc8", null ],
     [ "rope_rotate", "classpulsatrix_1_1HIPBackend.html#a09a3bb7946a4dc029a4dac7b5d2e6522", null ],
