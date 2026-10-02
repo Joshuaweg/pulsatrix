@@ -234,7 +234,7 @@ Discretization scope cut: <code>Bbar</code> uses the first-order/Euler approxima
 <dd>
 h_0 = 0, zero-initialized and not learnable &ndash; same scope cut as every prior recurrent module, and the thing that makes this module's conservation exact rather than merely approximate (see the LRP note below). </dd>
 <dd>
-softplus (and its derivative sigmoid) and exp are computed in raw host loops here, PULSATRIX_REQUIRE_HOST-guarded on every entry point. <a class="el" href="classpulsatrix_1_1DeviceBackend.html#aadd18aba9ba182e82ba34147900f1377" title="Applies a unary elementwise operation to every element of a buffer.">DeviceBackend::elementwise</a> has no Softplus/Exp op; this is the <em>first</em> consumer needing softplus, so it gets the first-occurrence workaround <a class="el" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t-1} @ W_hh + b_h), h_0 = 0 (zero-initialized, not learnable – a deliberat...">RNNModule</a>'s Mission 0 used for tanh, not a speculative new backend primitive. Adding one is the repeat-trigger's job, not this mission's. </dd>
+Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_relevance run entirely through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> &ndash; the projections through gemm/gemm_ex, the selective scan (softplus, exp, the h_t recurrence), its BPTT and its LRP through <a class="el" href="classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd" title="One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).">DeviceBackend::ssm_pass</a> (one lane per (batch, channel), sequential over time) &ndash; so the module runs on CPU, CUDA and HIP with no host round-trip. </dd>
 <dd>
 LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: Explaining Selective State Space Sequence Models", arXiv:2406.07592, NeurIPS 2024). MambaLRP's central finding: naive LRP breaks conservation on the selective scan because the discrete recurrence parameters (Abar_t, Bbar_t, C_t) are themselves functions of the input via their own learned projections, and redistributing "through" that input-dependence corrupts the redistribution. The fix is to treat Abar_t/Bbar_t/C_t (and A, D) as <em>detached</em> fixed multiplicative constants during relevance propagation &ndash; exactly the way every existing module here already treats its weight matrices. That collapses the recurrence into the familiar weighted-sum shape, so no new rule <em>shape</em> is needed; the novelty is specifically <em>what gets detached</em>. Per timestep, in reverse time order:<ol type="1">
 <li>y_t = sum_n(C_t*h_t) + D*x_t is an (state_size + 1)-way weighted sum sharing one output; the epsilon/z-rule (denominator y_t itself, epsilon-stabilized) splits R(y_t) across the state_size state terms and the D skip term in proportion to their values. The skip share lands directly on R(x_t).</li>
@@ -384,7 +384,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Not yet backend-generic &ndash; raw host loops for the recurrence and the exp/sigmoid math. <a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(grad_output)</a> guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic (GPU-native-kernels Mission 6) &ndash; see the class-level note. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
 
@@ -521,7 +521,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Not yet backend-generic &ndash; raw host loops (softplus/exp have no backend primitive). <a class="el" href="host__guard_8hpp.html#a332dc5ab5135c0c3268f56c70243b61a" title="Aborts if tensor is not Cpu-resident. Unlike PULSATRIX_ASSERT this is NOT compiled out under NDEBUG.">PULSATRIX_REQUIRE_HOST(input)</a> guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic (GPU-native-kernels Mission 6) &ndash; see the class-level note. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a64d2dd3268af1b112aaeb1c8286351a9">pulsatrix::Module</a>.</p>
 
@@ -637,7 +637,7 @@ LRP rule (MambaLRP &ndash; Rezaei Jafari, Montavon, Müller, Eberle, "MambaLRP: 
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Not yet backend-generic &ndash; raw host loop. PULSATRIX_ASSERT(relevance_out.device() == <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">DeviceType::Cpu</a>) guards against silent UB on a CUDA-backed <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Device-generic (GPU-native-kernels Mission 6) &ndash; see the class-level note. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>.</p>
 

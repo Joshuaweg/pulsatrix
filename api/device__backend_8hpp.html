@@ -272,6 +272,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">pulsatrix::RecurrentCellArgs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd" title="One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).">DeviceBackend::recurrent_cell</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RecurrentCellArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SsmPassArgs.html">pulsatrix::SsmPassArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers and dims for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd" title="One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).">DeviceBackend::ssm_pass</a> (passed to kernels by value).  <a href="structpulsatrix_1_1SsmPassArgs.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">pulsatrix::DeviceBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vendor-agnostic compute/memory backend. <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a> (Phase 1.5), and <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a> (Phase 1.6) all implement this contract; <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> and <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> depend only on this interface, never on a concrete backend's types.  <a href="classpulsatrix_1_1DeviceBackend.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,6 +335,34 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ac55b0127cfe9bf4ce7793fef9db97400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused per-element recurrent-cell passes, for DeviceBackend::recurrent_cell. Slots (in[] / out[]), all (rows x hidden) per timestep unless noted:  <a href="namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400">More...</a><br /></td></tr>
 <tr class="separator:ac55b0127cfe9bf4ce7793fef9db97400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ea30dd018ca9a3db2acc46af2880883" id="r_a9ea30dd018ca9a3db2acc46af2880883"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">pulsatrix::SsmPassOp</a> { <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4">pulsatrix::MambaForward</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aafd6ee7fcd70442a7b08a77881574ab2">pulsatrix::MambaBackward</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aa4c2ce7fcd5cbf8e07420e447bac3987">pulsatrix::MambaGradBC</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aaca452419514797385505efded2e0473">pulsatrix::MambaLrp</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abcdd6c9e1928960ed3f5a5f38cc9b8d1">pulsatrix::RwkvTokenShift</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a02074e773654d60be53588a7c551717e">pulsatrix::RwkvForward</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ad67af2133293778b01e15a50778282d7">pulsatrix::RwkvBackward</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac4e80c16787796dda381d1515c6af876">pulsatrix::RwkvShiftBackward</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac5aa76383a18f79f619e4523207ad4d5">pulsatrix::RwkvLrp</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a5df15a49eb81d6e7b5c201c81d93b364">pulsatrix::RwkvShiftLrp</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883af7357d9f8c4df9c447eaaec3710f1a2f">pulsatrix::StabilizedDiv</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ae540a55d2cfff0c1b3c1fdaa6ea86072">pulsatrix::RetnetForward</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a9ae91a09f05f50ad5e936dbcc8dd137a">pulsatrix::RetnetStateGrad</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a">pulsatrix::RetnetGradQK</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a03d4e7d6d672e547c44f37cd463c518b">pulsatrix::RetnetGradV</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a00b785050045bc646eeac7d9b576b822">pulsatrix::RetnetScores</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f">pulsatrix::RetnetReadout</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97">pulsatrix::RetnetLrpInput</a>
+, <a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3">pulsatrix::ReverseTimeSum</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a9ea30dd018ca9a3db2acc46af2880883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused passes of the state-space / linear-recurrence modules (MambaModule, RWKVModule, RetNetModule), for DeviceBackend::ssm_pass. Dims come from SsmPassArgs: n batch, l sequence length, d d_model (or C for ReverseTimeSum), s Mamba's state_size / RetNet's key_dim. Sequences are (n, l, X) row-major; "states" buffers are (n, l + 1, ...) with the zero initial state at index 0. Lanes and slots (in[] -&gt; out[]):  <a href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">More...</a><br /></td></tr>
+<tr class="separator:a9ea30dd018ca9a3db2acc46af2880883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract interface isolating vendor-specific memory/compute operations from Tensor/ComputationGraph. </p>

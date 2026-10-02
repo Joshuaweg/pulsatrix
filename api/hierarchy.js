@@ -181,6 +181,7 @@ var hierarchy =
     [ "pulsatrix::Shape", "classpulsatrix_1_1Shape.html", null ],
     [ "pulsatrix::SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html", null ],
     [ "pulsatrix::SpeciesAssignment", "structpulsatrix_1_1SpeciesAssignment.html", null ],
+    [ "pulsatrix::SsmPassArgs", "structpulsatrix_1_1SsmPassArgs.html", null ],
     [ "pulsatrix::StabilityResult", "structpulsatrix_1_1StabilityResult.html", null ],
     [ "pulsatrix::StepResult", "structpulsatrix_1_1StepResult.html", null ],
     [ "pulsatrix::SubTBLoss", "classpulsatrix_1_1SubTBLoss.html", null ],

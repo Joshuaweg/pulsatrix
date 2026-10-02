@@ -1,6 +1,7 @@
 var device__backend_8hpp =
 [
     [ "pulsatrix::RecurrentCellArgs", "structpulsatrix_1_1RecurrentCellArgs.html", "structpulsatrix_1_1RecurrentCellArgs" ],
+    [ "pulsatrix::SsmPassArgs", "structpulsatrix_1_1SsmPassArgs.html", "structpulsatrix_1_1SsmPassArgs" ],
     [ "pulsatrix::DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", "classpulsatrix_1_1DeviceBackend" ],
     [ "CopyDirection", "device__backend_8hpp.html#a5d9adebabff0df0875f22a763d77ad6b", [
       [ "HostToDevice", "device__backend_8hpp.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92", null ],
@@ -36,5 +37,26 @@ var device__backend_8hpp =
       [ "LstmLrp", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400a651b9b5b61c6f9c608a91c977f1d1731", null ],
       [ "GruBackward", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185", null ],
       [ "GruLrp", "device__backend_8hpp.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44", null ]
+    ] ],
+    [ "SsmPassOp", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883", [
+      [ "MambaForward", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4", null ],
+      [ "MambaBackward", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883aafd6ee7fcd70442a7b08a77881574ab2", null ],
+      [ "MambaGradBC", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883aa4c2ce7fcd5cbf8e07420e447bac3987", null ],
+      [ "MambaLrp", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883aaca452419514797385505efded2e0473", null ],
+      [ "RwkvTokenShift", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883abcdd6c9e1928960ed3f5a5f38cc9b8d1", null ],
+      [ "RwkvForward", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883a02074e773654d60be53588a7c551717e", null ],
+      [ "RwkvBackward", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883ad67af2133293778b01e15a50778282d7", null ],
+      [ "RwkvShiftBackward", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883ac4e80c16787796dda381d1515c6af876", null ],
+      [ "RwkvLrp", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883ac5aa76383a18f79f619e4523207ad4d5", null ],
+      [ "RwkvShiftLrp", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883a5df15a49eb81d6e7b5c201c81d93b364", null ],
+      [ "StabilizedDiv", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883af7357d9f8c4df9c447eaaec3710f1a2f", null ],
+      [ "RetnetForward", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883ae540a55d2cfff0c1b3c1fdaa6ea86072", null ],
+      [ "RetnetStateGrad", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883a9ae91a09f05f50ad5e936dbcc8dd137a", null ],
+      [ "RetnetGradQK", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a", null ],
+      [ "RetnetGradV", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883a03d4e7d6d672e547c44f37cd463c518b", null ],
+      [ "RetnetScores", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883a00b785050045bc646eeac7d9b576b822", null ],
+      [ "RetnetReadout", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f", null ],
+      [ "RetnetLrpInput", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97", null ],
+      [ "ReverseTimeSum", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3", null ]
     ] ]
 ];

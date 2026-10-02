@@ -58,6 +58,7 @@ var classpulsatrix_1_1DeviceBackend =
     [ "scatter_add_rows", "classpulsatrix_1_1DeviceBackend.html#a0648bb7791647dac6ae2f95bcd6a45e8", null ],
     [ "softmax_rows", "classpulsatrix_1_1DeviceBackend.html#a4a41fb8f954595ee69e766dd03d731d5", null ],
     [ "softmax_rows_backward", "classpulsatrix_1_1DeviceBackend.html#a95d257c0de48811b0201092b62b50417", null ],
+    [ "ssm_pass", "classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd", null ],
     [ "sum", "classpulsatrix_1_1DeviceBackend.html#a6ea46da74ce088bde77a22e71da700cb", null ],
     [ "tanh_gaussian_backward", "classpulsatrix_1_1DeviceBackend.html#ac34c79379b3561f790ffe1a4881a45f7", null ],
     [ "tanh_gaussian_forward", "classpulsatrix_1_1DeviceBackend.html#a8aa3070ea46a64395fb350095cfe7e83", null ]

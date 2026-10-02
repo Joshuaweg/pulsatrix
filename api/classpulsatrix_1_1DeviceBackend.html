@@ -303,6 +303,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeeb7cce77ae8202c7054497028e5a2c6" id="r_aeeb7cce77ae8202c7054497028e5a2c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#aeeb7cce77ae8202c7054497028e5a2c6">gru_lrp_hprev</a> (const float *h_prev, const float *w_hn, const float *hn, const float *r_term_b, const float *direct, float *r_hprev, size_t rows, size_t hidden, float eps)=0</td></tr>
 <tr class="memdesc:aeeb7cce77ae8202c7054497028e5a2c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">GRU's R_hprev for (rows, hidden): the recurrent epsilon-rule sum through W_hn, with each element's direct term inserted where the original loop added it.  <br /></td></tr>
 <tr class="separator:aeeb7cce77ae8202c7054497028e5a2c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc129d15ef202aaa72b9d969c0d600dd" id="r_abc129d15ef202aaa72b9d969c0d600dd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd">ssm_pass</a> (<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">SsmPassOp</a> op, const <a class="el" href="structpulsatrix_1_1SsmPassArgs.html">SsmPassArgs</a> &amp;args)=0</td></tr>
+<tr class="memdesc:abc129d15ef202aaa72b9d969c0d600dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).  <br /></td></tr>
+<tr class="separator:abc129d15ef202aaa72b9d969c0d600dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Vendor-agnostic compute/memory backend. <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a> (Phase 1.5), and <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a> (Phase 1.6) all implement this contract; <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> and <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> depend only on this interface, never on a concrete backend's types. </p>
@@ -4293,6 +4296,47 @@ Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>dx must not alias y or dy. </dd></dl>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a62db75ddf9548dbbb6d55315310fa6c0">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a4a9d9c27b30d1b2b79d0a0e7326e316a">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a1d98152f685f2efc6e27a7f4e77ea121">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="abc129d15ef202aaa72b9d969c0d600dd" name="abc129d15ef202aaa72b9d969c0d600dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc129d15ef202aaa72b9d969c0d600dd">&#9670;&#160;</a></span>ssm_pass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::ssm_pass </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">SsmPassOp</a>&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SsmPassArgs.html">SsmPassArgs</a> &amp;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots). </p>
+<dl class="section note"><dt>Note</dt><dd>Recurrences run one lane per independent (batch, channel[, state]) sequence, walking time in order inside the lane &ndash; parallel over lanes, sequential over time, the CPU's order. Every reduction is owned by one lane and summed in the original loop order. </dd></dl>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a55052ced9a75ab656d317a9f89ba8447">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a3ea8a77ff98aecaae782c43f54a74666">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#aabc96f3cfbd96ef5ceffc04d3201a1c9">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>

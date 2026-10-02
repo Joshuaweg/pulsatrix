@@ -315,6 +315,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a95e160f94f1807c18c2656fee3a1f2c4" id="r_a95e160f94f1807c18c2656fee3a1f2c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a95e160f94f1807c18c2656fee3a1f2c4">gru_lrp_hprev</a> (const float *h_prev, const float *w_hn, const float *hn, const float *r_term_b, const float *direct, float *r_hprev, size_t rows, size_t hidden, float eps) override</td></tr>
 <tr class="memdesc:a95e160f94f1807c18c2656fee3a1f2c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">GRU's R_hprev for (rows, hidden): the recurrent epsilon-rule sum through W_hn, with each element's direct term inserted where the original loop added it.  <br /></td></tr>
 <tr class="separator:a95e160f94f1807c18c2656fee3a1f2c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ea8a77ff98aecaae782c43f54a74666" id="r_a3ea8a77ff98aecaae782c43f54a74666"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CUDABackend.html#a3ea8a77ff98aecaae782c43f54a74666">ssm_pass</a> (<a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">SsmPassOp</a> op, const <a class="el" href="structpulsatrix_1_1SsmPassArgs.html">SsmPassArgs</a> &amp;args) override</td></tr>
+<tr class="memdesc:a3ea8a77ff98aecaae782c43f54a74666"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).  <br /></td></tr>
+<tr class="separator:a3ea8a77ff98aecaae782c43f54a74666"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1DeviceBackend"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1DeviceBackend')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1DeviceBackend.html">pulsatrix::DeviceBackend</a></td></tr>
 <tr class="memitem:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend" id="r_a2feea27fda55c8c0addf4e7c3864f2aa"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a2feea27fda55c8c0addf4e7c3864f2aa">~DeviceBackend</a> ()=default</td></tr>
 <tr class="separator:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4379,6 +4382,47 @@ This is the first of two currently-supported concrete <a class="el" href="classp
 <dl class="section note"><dt>Note</dt><dd>dx must not alias y or dy. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a95d257c0de48811b0201092b62b50417">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a3ea8a77ff98aecaae782c43f54a74666" name="a3ea8a77ff98aecaae782c43f54a74666"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ea8a77ff98aecaae782c43f54a74666">&#9670;&#160;</a></span>ssm_pass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CUDABackend::ssm_pass </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883">SsmPassOp</a>&#160;</td>
+          <td class="paramname"><em>op</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SsmPassArgs.html">SsmPassArgs</a> &amp;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots). </p>
+<dl class="section note"><dt>Note</dt><dd>Recurrences run one lane per independent (batch, channel[, state]) sequence, walking time in order inside the lane &ndash; parallel over lanes, sequential over time, the CPU's order. Every reduction is owned by one lane and summed in the original loop order. </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
