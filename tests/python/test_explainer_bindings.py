@@ -243,3 +243,44 @@ def test_pdp_raises_on_empty_background():
     pdp = pulsatrix_py.PDP()
     with pytest.raises(ValueError):
         pdp.explain(linear.forward, [], feature_index=0, target_index=0, grid_min=0.0, grid_max=1.0, grid_size=5)
+
+
+# LRP campaign Mission 1: whole-model LRP.
+
+
+def test_lrp_single_linear_layer_matches_hand_computed_contributions():
+    linear = pulsatrix_py.LinearModule(3, 2)
+    linear.set_weight([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])  # (in=3, out=2), row-major
+    linear.set_bias([0.0, 0.0])
+    ctx = pulsatrix_py.ExplainerContext([linear])
+    x = pulsatrix_py.Tensor.from_values([1, 3], [1.0, -1.0, 2.0])
+
+    attr = pulsatrix_py.LRP().explain(ctx, x, [1])
+
+    assert attr.method == "lrp"
+    np.testing.assert_allclose(flat(attr.values), [2.0, -4.0, 12.0], atol=1e-5)
+    assert attr.metadata["seed"] == "output_value"
+
+
+def test_lrp_one_hot_seed_and_contrast():
+    linear = pulsatrix_py.LinearModule(3, 2)
+    linear.set_weight([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+    linear.set_bias([0.0, 0.0])
+    ctx = pulsatrix_py.ExplainerContext([linear])
+    x = pulsatrix_py.Tensor.from_values([1, 3], [1.0, -1.0, 2.0])
+
+    one_hot = pulsatrix_py.LRP().explain(ctx, x, [1], seed=pulsatrix_py.LRPSeed.OneHot)
+    assert flat(one_hot.values).sum() == pytest.approx(1.0, abs=1e-4)
+
+    t = flat(pulsatrix_py.LRP().explain(ctx, x, [1]).values)
+    c = flat(pulsatrix_py.LRP().explain(ctx, x, [0]).values)
+    both = flat(pulsatrix_py.LRP().explain(ctx, x, [1], contrasts=[0]).values)
+    np.testing.assert_allclose(both, t - c, atol=1e-5)
+
+
+def test_lrp_rejects_out_of_range_target():
+    linear = pulsatrix_py.LinearModule(3, 2)
+    ctx = pulsatrix_py.ExplainerContext([linear])
+    x = pulsatrix_py.Tensor.from_values([1, 3], [1.0, -1.0, 2.0])
+    with pytest.raises(ValueError):
+        pulsatrix_py.LRP().explain(ctx, x, [5])

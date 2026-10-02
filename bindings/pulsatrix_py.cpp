@@ -23,6 +23,7 @@
 #include "pulsatrix/integrated_gradients.hpp"
 #include "pulsatrix/kernel_shap.hpp"
 #include "pulsatrix/lime.hpp"
+#include "pulsatrix/lrp.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/metrics_sink.hpp"
 #include "pulsatrix/module.hpp"
@@ -300,6 +301,26 @@ PYBIND11_MODULE(pulsatrix_py, m) {
     // subclass constructor (Python callers have no CUDABackend concept exposed at all,
     // so this parameter has exactly one reachable value from Python; not a core change,
     // the C++ signature itself is untouched).
+    // LRP campaign Mission 1: whole-model LRP. Seeds are "output_value" (relevance starts as the
+    // explained logit) or "one_hot" (unit relevance -- Zennit/LXT's convention).
+    py::enum_<pulsatrix::LRPSeed>(m, "LRPSeed")
+        .value("OutputValue", pulsatrix::LRPSeed::OutputValue)
+        .value("OneHot", pulsatrix::LRPSeed::OneHot);
+
+    py::class_<pulsatrix::LRP>(m, "LRP")
+        .def(py::init([](float epsilon) { return pulsatrix::LRP(pulsatrix::LRPRuleConfig{epsilon}); }),
+             py::arg("epsilon") = pulsatrix::LRPRuleConfig{}.epsilon)
+        .def(
+            "explain",
+            [](const pulsatrix::LRP& self, pulsatrix::ExplainerContext& ctx, const pulsatrix::Tensor& input,
+               std::vector<int64_t> targets, std::vector<int64_t> contrasts, pulsatrix::LRPSeed seed) {
+                pulsatrix::LRPTarget target{std::move(targets), std::move(contrasts), seed};
+                return self.explain(ctx, input, target, input.backend());
+            },
+            py::arg("ctx"), py::arg("input"), py::arg("targets"), py::arg("contrasts") = std::vector<int64_t>{},
+            py::arg("seed") = pulsatrix::LRPSeed::OutputValue,
+            "targets / contrasts: one index for every row, or one per row of the output.");
+
     py::class_<pulsatrix::Saliency>(m, "Saliency")
         .def(py::init<>())
         .def(
