@@ -119,6 +119,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6c37420ba0cf1a181dabf903a9fdb558" id="r_a6c37420ba0cf1a181dabf903a9fdb558"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558">backward_pass</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;output_grad)</td></tr>
 <tr class="memdesc:a6c37420ba0cf1a181dabf903a9fdb558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <a class="el" href="classpulsatrix_1_1Autograd.html#a0fe33728c369fd30caf3b5b0439561eb" title="Runs backward from a single root, seeding its gradient with grad_output.">Autograd::backward</a> from the most recent <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a96409d2bd7b29e914b3281105cf97c4e" title="Runs the full module chain forward, building a fresh graph and caching every node&#39;s activation value ...">forward_pass()</a>'s output node.  <br /></td></tr>
 <tr class="separator:a6c37420ba0cf1a181dabf903a9fdb558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2523c0bf46521532e9aa406efc7558b" id="r_aa2523c0bf46521532e9aa406efc7558b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b">relevance_pass</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;output_relevance, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:aa2523c0bf46521532e9aa406efc7558b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Propagates <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance from the network output back to the input through every module's own propagate_relevance(), in reverse order &ndash; the relevance counterpart of <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">backward_pass()</a>, and what <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">LRP::explain()</a> runs.  <br /></td></tr>
+<tr class="separator:aa2523c0bf46521532e9aa406efc7558b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b650e6b358c23b82b1033ba5f139088" id="r_a2b650e6b358c23b82b1033ba5f139088"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088">graph</a> () const</td></tr>
 <tr class="memdesc:a2b650e6b358c23b82b1033ba5f139088"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current graph (from the most recent <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a96409d2bd7b29e914b3281105cf97c4e" title="Runs the full module chain forward, building a fresh graph and caching every node&#39;s activation value ...">forward_pass()</a> call).  <br /></td></tr>
 <tr class="separator:a2b650e6b358c23b82b1033ba5f139088"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -634,6 +637,58 @@ Applied to that same node, this returns the real forward pass's output exactly: 
 const with respect to <em>this</em> &ndash; no <a class="el" href="classpulsatrix_1_1ExplainerContext.html" title="Wraps an ordered chain of Modules, running them via Module::forward_traced to build a real Computatio...">ExplainerContext</a> state is read-modified. It does run the head module's own forward(), which overwrites that module's internal forward cache (so a subsequent head.backward() would refer to this call's input). Same caveat this campaign's <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#aab2de8d942a7bcbfb32d837139fa970d" title="The SAE&#39;s reconstruction of a batch – the encoder-&gt;ReLU-&gt;decoder forward path, forward-only: no loss,...">SparseAutoencoder::reconstruct()</a> mission already documented and accepted for read-only scoring paths. </dd>
 <dd>
 The head is the chain's literal last module, not a separately designated "unembedding" &ndash; this codebase has no such distinct concept. A caller-specifiable head would be an explicit future extension, not assumed here. </dd></dl>
+
+</div>
+</div>
+<a id="aa2523c0bf46521532e9aa406efc7558b" name="aa2523c0bf46521532e9aa406efc7558b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2523c0bf46521532e9aa406efc7558b">&#9670;&#160;</a></span>relevance_pass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::ExplainerContext::relevance_pass </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_relevance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Propagates <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance from the network output back to the input through every module's own propagate_relevance(), in reverse order &ndash; the relevance counterpart of <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">backward_pass()</a>, and what <a class="el" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde" title="Explains target_index for every row, OutputValue seed.">LRP::explain()</a> runs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">output_relevance</td><td>Relevance at the network output, same shape as the most recent <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a96409d2bd7b29e914b3281105cf97c4e" title="Runs the full module chain forward, building a fresh graph and caching every node&#39;s activation value ...">forward_pass()</a>'s output. </td></tr>
+    <tr><td class="paramname">config</td><td><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule configuration handed to every module. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Relevance at the input, same shape as the input to that <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a96409d2bd7b29e914b3281105cf97c4e" title="Runs the full module chain forward, building a fresh graph and caching every node&#39;s activation value ...">forward_pass()</a>. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if the most recent forward pass was <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a1ac14511465d4d7a1d970e90e54c90f2" title="Runs the full module chain forward, substituting patch_value for the natural output of the module tha...">forward_pass_with_patch()</a>, for the same reason <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">backward_pass()</a> refuses: the modules' cached state would describe a computation the input did not produce. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

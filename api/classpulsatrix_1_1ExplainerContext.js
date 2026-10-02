@@ -11,5 +11,6 @@ var classpulsatrix_1_1ExplainerContext =
     [ "gradient", "classpulsatrix_1_1ExplainerContext.html#a092855583e219e35269f06b916ac5c0c", null ],
     [ "graph", "classpulsatrix_1_1ExplainerContext.html#a2b650e6b358c23b82b1033ba5f139088", null ],
     [ "layer_label", "classpulsatrix_1_1ExplainerContext.html#ae65d5fc0ee75deda3c5e895ec5b01991", null ],
-    [ "logit_lens", "classpulsatrix_1_1ExplainerContext.html#a02eb3a3c5c8302a0beaa6dd3740451df", null ]
+    [ "logit_lens", "classpulsatrix_1_1ExplainerContext.html#a02eb3a3c5c8302a0beaa6dd3740451df", null ],
+    [ "relevance_pass", "classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b", null ]
 ];

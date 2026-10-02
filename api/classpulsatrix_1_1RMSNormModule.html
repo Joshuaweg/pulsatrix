@@ -151,7 +151,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af88db1f2da306fa931b21d8374751ef7" id="r_af88db1f2da306fa931b21d8374751ef7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#af88db1f2da306fa931b21d8374751ef7">gamma_grad</a> () const</td></tr>
 <tr class="separator:af88db1f2da306fa931b21d8374751ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a118b29388de9e763cdc090a665e83831" id="r_a118b29388de9e763cdc090a665e83831"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#a118b29388de9e763cdc090a665e83831">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
-<tr class="memdesc:a118b29388de9e763cdc090a665e83831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identity-rule LRP relevance propagation (AttnLRP, Achtibat et al. 2024).  <br /></td></tr>
+<tr class="memdesc:a118b29388de9e763cdc090a665e83831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identity-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation (AttnLRP, Achtibat et al. 2024).  <br /></td></tr>
 <tr class="separator:a118b29388de9e763cdc090a665e83831"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4188d56cbc80898c515664412beba931" id="r_a4188d56cbc80898c515664412beba931"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#a4188d56cbc80898c515664412beba931">parameters</a> () override</td></tr>
 <tr class="memdesc:a4188d56cbc80898c515664412beba931"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
@@ -488,7 +488,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Identity-rule LRP relevance propagation (AttnLRP, Achtibat et al. 2024). </p>
+<p>Identity-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation (AttnLRP, Achtibat et al. 2024). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">relevance_out</td><td>Relevance at this module's output. Must match num_features. </td></tr>

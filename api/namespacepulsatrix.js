@@ -95,7 +95,9 @@ var namespacepulsatrix =
     [ "LIME", "classpulsatrix_1_1LIME.html", "classpulsatrix_1_1LIME" ],
     [ "LinearModule", "classpulsatrix_1_1LinearModule.html", "classpulsatrix_1_1LinearModule" ],
     [ "LinearProbe", "classpulsatrix_1_1LinearProbe.html", "classpulsatrix_1_1LinearProbe" ],
+    [ "LRP", "classpulsatrix_1_1LRP.html", "classpulsatrix_1_1LRP" ],
     [ "LRPRuleConfig", "structpulsatrix_1_1LRPRuleConfig.html", "structpulsatrix_1_1LRPRuleConfig" ],
+    [ "LRPTarget", "structpulsatrix_1_1LRPTarget.html", "structpulsatrix_1_1LRPTarget" ],
     [ "LSTMModule", "classpulsatrix_1_1LSTMModule.html", "classpulsatrix_1_1LSTMModule" ],
     [ "MambaModule", "classpulsatrix_1_1MambaModule.html", "classpulsatrix_1_1MambaModule" ],
     [ "MaxPool2DModule", "classpulsatrix_1_1MaxPool2DModule.html", "classpulsatrix_1_1MaxPool2DModule" ],
@@ -228,6 +230,10 @@ var namespacepulsatrix =
       [ "DisjunctionForward", "namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c", null ],
       [ "DisjunctionBackward", "namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9ea726f8215d974d8309f5e669c1c715454", null ],
       [ "DisjunctionLrp", "namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9eae93a7af9d2b5ab7e9b0c969635cf7d3f", null ]
+    ] ],
+    [ "LRPSeed", "namespacepulsatrix.html#a189de4428b3209ea42fe9421d70329fc", [
+      [ "OutputValue", "namespacepulsatrix.html#a189de4428b3209ea42fe9421d70329fca110eaf940a77d3832e0bea6decf34db0", null ],
+      [ "OneHot", "namespacepulsatrix.html#a189de4428b3209ea42fe9421d70329fca188783a09cf2ec779aef37b6858b9d09", null ]
     ] ],
     [ "MutationObjective", "namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550", [
       [ "Minimax", "namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b", null ],

@@ -92,7 +92,9 @@ var hierarchy =
     [ "pulsatrix::LearnableScalar", "classpulsatrix_1_1LearnableScalar.html", null ],
     [ "pulsatrix::LIME", "classpulsatrix_1_1LIME.html", null ],
     [ "pulsatrix::LinearProbe", "classpulsatrix_1_1LinearProbe.html", null ],
+    [ "pulsatrix::LRP", "classpulsatrix_1_1LRP.html", null ],
     [ "pulsatrix::LRPRuleConfig", "structpulsatrix_1_1LRPRuleConfig.html", null ],
+    [ "pulsatrix::LRPTarget", "structpulsatrix_1_1LRPTarget.html", null ],
     [ "pulsatrix::MetricRecord", "structpulsatrix_1_1MetricRecord.html", null ],
     [ "pulsatrix::MetricsSink", "classpulsatrix_1_1MetricsSink.html", [
       [ "pulsatrix::ImPlotMetricsSink", "classpulsatrix_1_1ImPlotMetricsSink.html", null ],

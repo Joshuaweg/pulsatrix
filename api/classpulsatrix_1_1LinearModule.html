@@ -161,7 +161,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adec11485fb93f5c6ae0ff4840747849a" id="r_adec11485fb93f5c6ae0ff4840747849a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#adec11485fb93f5c6ae0ff4840747849a">bias_grad</a> () const</td></tr>
 <tr class="separator:adec11485fb93f5c6ae0ff4840747849a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a171e265daec59933d3a066bd5f368316" id="r_a171e265daec59933d3a066bd5f368316"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a171e265daec59933d3a066bd5f368316">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
-<tr class="memdesc:a171e265daec59933d3a066bd5f368316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon-rule LRP relevance propagation (Bach et al. 2015), applied independently per example in the batch.  <br /></td></tr>
+<tr class="memdesc:a171e265daec59933d3a066bd5f368316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation (Bach et al. 2015), applied independently per example in the batch.  <br /></td></tr>
 <tr class="separator:a171e265daec59933d3a066bd5f368316"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79dde038410ec9f7988f068825e4b919" id="r_a79dde038410ec9f7988f068825e4b919"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a79dde038410ec9f7988f068825e4b919">parameters</a> () override</td></tr>
 <tr class="memdesc:a79dde038410ec9f7988f068825e4b919"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
@@ -504,7 +504,7 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 </table>
 </div><div class="memdoc">
 
-<p>Epsilon-rule LRP relevance propagation (Bach et al. 2015), applied independently per example in the batch. </p>
+<p>Epsilon-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation (Bach et al. 2015), applied independently per example in the batch. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">relevance_out</td><td>Relevance at this module's output. Must be (N, out_features), matching the cached <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> batch size. </td></tr>
