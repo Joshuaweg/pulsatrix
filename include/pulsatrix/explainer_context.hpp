@@ -18,6 +18,7 @@
 #include "pulsatrix/autograd.hpp"
 #include "pulsatrix/circuit_graph.hpp"
 #include "pulsatrix/computation_graph.hpp"
+#include "pulsatrix/lrp_rule_config.hpp"
 #include "pulsatrix/module.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
 #include "pulsatrix/tensor.hpp"
@@ -191,6 +192,32 @@ public:
         }
         autograd_.backward(graph_, output_node_, output_grad);
         return Tensor(autograd_.gradient(input_node_));
+    }
+
+    /**
+     * @brief Propagates LRP relevance from the network output back to the input through every
+     *        module's own propagate_relevance(), in reverse order -- the relevance counterpart of
+     *        backward_pass(), and what LRP::explain() runs.
+     * @param output_relevance Relevance at the network output, same shape as the most recent
+     *        forward_pass()'s output.
+     * @param config LRP rule configuration handed to every module.
+     * @return Relevance at the input, same shape as the input to that forward_pass().
+     * @throws std::logic_error if the most recent forward pass was forward_pass_with_patch(), for
+     *         the same reason backward_pass() refuses: the modules' cached state would describe a
+     *         computation the input did not produce.
+     */
+    Tensor relevance_pass(const Tensor& output_relevance, const LRPRuleConfig& config) {
+        if (last_forward_was_patched_) {
+            throw std::logic_error(
+                "ExplainerContext::relevance_pass: the most recent forward pass was "
+                "forward_pass_with_patch(); relevance through a patched activation would describe a "
+                "computation the input did not produce. Run an unpatched forward_pass() first.");
+        }
+        Tensor relevance = output_relevance;
+        for (auto it = modules_.rbegin(); it != modules_.rend(); ++it) {
+            relevance = (*it)->propagate_relevance(relevance, config);
+        }
+        return relevance;
     }
 
     /** @brief The current graph (from the most recent forward_pass() call). */

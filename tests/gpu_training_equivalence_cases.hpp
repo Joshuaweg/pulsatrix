@@ -45,6 +45,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/cross_entropy_loss.hpp"
 #include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/lrp.hpp"
 #include "pulsatrix/mse_loss.hpp"
 #include "pulsatrix/relu_module.hpp"
 #include "pulsatrix/residual_module.hpp"
@@ -421,6 +422,26 @@ inline void ExpectRelevanceAgrees(const Tensor& cpu, const Tensor& gpu) {
     }
 }
 
+// LRP campaign Mission 1: whole-model LRP::explain on the GPU, every seed mode and a contrast.
+inline void LRPExplainerMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cl1(5, 8, &cpu), gl1(5, 8, &gpu);
+    ReluModule cr(&cpu), gr(&gpu);
+    LinearModule cl2(8, 3, &cpu), gl2(8, 3, &gpu);
+    RandomizeAndMirror(cl1, gl1, 1200);
+    RandomizeAndMirror(cl2, gl2, 1201);
+    ExplainerContext cctx({&cl1, &cr, &cl2}), gctx({&gl1, &gr, &gl2});
+    std::vector<float> x = Random(4 * 5, 1202);
+    Tensor cx(Shape({4, 5}), &cpu, x), gx(Shape({4, 5}), &gpu, x);
+    for (const LRPTarget& t : {LRPTarget{{2}}, LRPTarget{{0, 1, 2, 0}, {}, LRPSeed::OneHot},
+                               LRPTarget{{1}, {2}}}) {
+        Attribution ca = LRP().explain(cctx, cx, t, &cpu);
+        Attribution ga = LRP().explain(gctx, gx, t, &gpu);
+        EXPECT_EQ(ga.values.device(), gpu.device());
+        ExpectRelevanceAgrees(ca.values, ga.values);
+    }
+}
+
 // Forward on both sides, then propagate_relevance with the same random relevance.
 template <typename Module>
 inline void ModuleRelevance(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Module& gm, const Shape& in_shape,
@@ -791,6 +812,7 @@ inline void MlpTrainsToSameParameters(DeviceBackend& gpu, Optimizer& cpu_opt, Op
 
 // Instantiates every case for one GPU fixture. FIXTURE must expose the GPU backend as MEMBER.
 #define PULSATRIX_TRAINING_EQUIVALENCE_TESTS(FIXTURE, MEMBER)                                        \
+    TEST_F(FIXTURE, LRPExplainerMatchesCPU) { ::pulsatrix::training_equivalence::LRPExplainerMatches(MEMBER); } \
     TEST_F(FIXTURE, LinearBackwardAccumulatesLikeCPU) {                                              \
         ::pulsatrix::training_equivalence::LinearBackwardAccumulates(MEMBER);                        \
     }                                                                                                \
