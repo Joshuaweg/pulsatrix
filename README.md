@@ -7,7 +7,7 @@
   <a href="https://joshuaweg.github.io/pulsatrix/"><img src="https://img.shields.io/badge/docs-mkdocs--material-306E22" alt="Docs"></a>
 </p>
 
-ExAI-first C++ deep learning library — explainability as a first-class property of the computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward math — never a placeholder or a post-hoc explainer bolted on afterward. Rules that conserve relevance by construction are conservation-tested; the AttnLRP rules for softmax and attention do not conserve exactly, and their tests report the measured conservation gap rather than assert it away. LRP currently implements the ε-rule family only.
+ExAI-first C++ deep learning library — explainability as a first-class property of the computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward math — never a placeholder or a post-hoc explainer bolted on afterward. Rules that conserve relevance by construction are conservation-tested; the AttnLRP rules for softmax and attention do not conserve exactly, and their tests report the measured conservation gap rather than assert it away. Linear and Conv2D layers support the ε, γ, α-β (including z⁺) and ZBox rules, assignable per layer through Zennit-style composites; every other layer uses the fixed rule listed for it below.
 
 ## What's here
 
