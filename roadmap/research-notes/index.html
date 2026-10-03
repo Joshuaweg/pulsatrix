@@ -1,0 +1,2406 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ExAI-first C++ deep learning library">
+      
+      
+      
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/roadmap/research-notes/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/pulsatrix_icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Research Notes - Pulsatrix</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#roadmap-research-notes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pulsatrix
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Research Notes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    Pulsatrix
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Learning Modules and Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Loading, Transformation & Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer-wise Relevance Propagation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/model-agnostic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model-Agnostic Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpretability/deep-learning-approaches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gradient-Based Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanistic Interpretability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../neuro-symbolic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neuro-Symbolic Reasoning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evolutionary-computation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolutionary Computation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hyperparameter-optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hyperparameter Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recipes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recipes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/xor_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XOR Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN vs. LSTM vs. GRU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Residual and Normalization Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CSV + DataLoader Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/mnist_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on MNIST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saliency and Integrated Gradients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grad-CAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KernelSHAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/lime_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIME
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DQN on CartPole
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAE and PPO Clipping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sparse Autoencoder + Probe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalog LRP Bridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/visualization/training_dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cross-cutting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-cutting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fnd-foundations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FND: Foundations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#io-serialization-and-model-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IO: Serialization and model import
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trn-training-and-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TRN: Training and fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-running-real-language-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM: Running real language models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xai-question-driven-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XAI: Question-driven framework
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int-embedding-and-representation-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INT: Embedding and representation analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tda-topological-data-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TDA: Topological data analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kd-surrogates-and-student-teacher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KD: Surrogates and student-teacher
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feat-featurizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT: Featurizers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arch-new-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ARCH: New architectures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viz-visualization-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIZ: Visualization pack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nb-notebook-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NB: Notebook layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hip-training-efficiency-on-amd-gpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP: Training efficiency on AMD GPUs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT: Agents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ks-kitchen-sink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KS: Kitchen sink
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cross-cutting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-cutting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fnd-foundations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FND: Foundations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#io-serialization-and-model-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IO: Serialization and model import
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trn-training-and-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TRN: Training and fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-running-real-language-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM: Running real language models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xai-question-driven-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XAI: Question-driven framework
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int-embedding-and-representation-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INT: Embedding and representation analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tda-topological-data-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TDA: Topological data analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kd-surrogates-and-student-teacher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KD: Surrogates and student-teacher
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feat-featurizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT: Featurizers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arch-new-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ARCH: New architectures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viz-visualization-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIZ: Visualization pack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nb-notebook-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NB: Notebook layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hip-training-efficiency-on-amd-gpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP: Training efficiency on AMD GPUs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT: Agents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ks-kitchen-sink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KS: Kitchen sink
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="roadmap-research-notes">Roadmap Research Notes<a class="headerlink" href="#roadmap-research-notes" title="Permanent link">&para;</a></h1>
+<p>This page holds the evidence behind the <a href="../">Roadmap</a>. The research was done on
+2026-10-03. For each item it gives:</p>
+<ul>
+<li><strong>Source:</strong> the primary source and its date.</li>
+<li><strong>Falsifier:</strong> the result that would tell us not to build the item, or that it doesn't work.</li>
+<li><strong>Fails when:</strong> known failure modes from papers, issue trackers and post-mortems.</li>
+</ul>
+<p>Some claims about AMD's gfx1151 rest on community reports rather than AMD documentation, so they
+carry tags:</p>
+<ul>
+<li><strong>[V]</strong>: verified in a primary source (vendor docs, a spec, a paper).</li>
+<li><strong>[C]</strong>: a community report (a GitHub issue or benchmark). Real, but not reproduced by us.</li>
+<li><strong>[I]</strong>: our own inference. Treat every speedup estimate as [I] until HIP-1 measures it.</li>
+</ul>
+<p>Sources and tools age quickly in this field. Check the date before relying on one.</p>
+<h2 id="cross-cutting">Cross-cutting<a class="headerlink" href="#cross-cutting" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Random networks give plausible explanations.</strong></li>
+<li>Méloux et al., "The Dead Salmons of AI Interpretability", arXiv 2512.18792 (2025-12): attribution, probing, sparse autoencoders and causal analyses all produce plausible output on randomly initialized networks.</li>
+<li>Adebayo et al., "Sanity Checks for Saliency Maps", NeurIPS 2018: some saliency methods barely change when the model's weights are randomized.</li>
+<li>Heap et al., arXiv 2501.17727 (2025-01): SAEs on randomly initialized transformers produce features that look interpretable.</li>
+</ul>
+<p>This is the basis for the baseline rule and for XAI-6.
+- <strong>Explainers disagree with each other.</strong> Krishna et al., "The Disagreement Problem in Explainable Machine Learning", arXiv 2202.01602 (2022-02).
+- <strong>Surrogates can be fooled.</strong> Slack et al., AIES 2020: a model can be built to look innocent to LIME and SHAP while staying biased.</p>
+<h2 id="fnd-foundations">FND: Foundations<a class="headerlink" href="#fnd-foundations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>FND-1, FND-2.</strong> <code>Module::parameters()</code> returns <code>std::vector&lt;ParamRef&gt;</code> with no names (<code>include/pulsatrix/module.hpp:140</code>).</li>
+<li><strong>Falsifier for freezing:</strong> a frozen parameter's bytes change after N steps, or the input gradient no longer matches finite differences.</li>
+<li><strong>FND-3, FND-4.</strong> The demand for these comes from items in other epics. FEAT-2 (Gao et al., TopK SAE, arXiv 2406.04093, 2024-06) and ARCH-3 need top-k. INT-5, FEAT-6, TRN-9 (Wu et al., ReFT, arXiv 2404.03592, 2024-04) and TRN-11 (Shuttleworth et al., arXiv 2410.21228, 2024-10) need an eigensolver or SVD. <code>linear_algebra.hpp</code> currently has only a dense solve.</li>
+<li><strong>Fails when:</strong> eigenvector sign and order are arbitrary, so tests must align them before comparing.</li>
+<li><strong>FND-5.</strong></li>
+<li><strong>Sources:</strong> <code>plans/lrp_issues.md</code> #8. Zennit's canonizers fold BatchNorm into the preceding layer before LRP.</li>
+<li><strong>Falsifier:</strong> none. Explanations that depend on the rest of the batch are a correctness bug.</li>
+<li><strong>FND-6.</strong> VGG and ResNet are the standard LRP benchmark models, and both need stride and padding.</li>
+<li><strong>FND-7.</strong> <code>plans/gpu_review.md</code> lists "no atomics, so deterministic" as a current strength. Keep that.</li>
+<li><strong>FND-8.</strong> <code>plans/gpu_review.md</code> #1 (no device check in <code>Module::forward</code>) and #2 (<code>Tensor::Stack</code> tags the wrong device).</li>
+</ul>
+<h2 id="io-serialization-and-model-import">IO: Serialization and model import<a class="headerlink" href="#io-serialization-and-model-import" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>IO-1.</strong></li>
+<li><strong>Format:</strong> huggingface/safetensors (Apache-2.0) is an 8-byte length, a JSON header, then a packed data section. The header is at most 100 MB, and <code>__metadata__</code> maps strings to strings.</li>
+<li><strong>Audit:</strong> Trail of Bits audited the format (published 2023-05).</li>
+<li><strong>Option:</strong> the header-only C++ reader safetensors-cpp (MIT) exists, but its README says shape validation and mmap are incomplete. Fuzz both it and a hand-written reader before choosing.</li>
+<li><strong>Fails when:</strong> an offset runs past the end of the file, ranges overlap, or the element-count product overflows.</li>
+<li><strong>IO-2.</strong> <strong>Falsifier:</strong> save, then load, doesn't give a bit-identical forward pass, or resumed training doesn't reproduce the loss curve.</li>
+<li><strong>IO-3: pickle is code.</strong></li>
+<li>CVE-2025-32434 (GHSA-53q9-r3pm-6pq6, 2025-04, CVSS 9.8): <code>torch.load(weights_only=True)</code> was remote code execution before torch 2.6.0.</li>
+<li>Scanners get bypassed. "nullifAI" (ReversingLabs, 2025-02) used broken pickles and 7z-compressed <code>.pt</code> files; CVE-2025-46417 is another bypass; ShadowPickle (arXiv 2607.17503, 2026-07) shows evasion continues.</li>
+<li><strong>Format:</strong> <code>torch.save</code> writes a zip of <code>data.pkl</code> plus storage blobs, and tensors are rebuilt with explicit strides. Non-contiguous tensors must be made contiguous before writing.</li>
+<li><strong>IO-4: layout bugs load fine and give garbage.</strong></li>
+<li>A missing Q/K RoPE permutation gives fluent nonsense (huggingface/transformers #25199). Random-weight tests can't catch it.</li>
+<li>Llama 3.2's <code>rope_scaling</code> factor is 32, not 8; the wrong value only hurts past about 80k tokens (meta-llama/llama-models #241).</li>
+<li>GPT-2's <code>c_attn</code> is a Conv1D stored <code>[in, out]</code>, the opposite of <code>nn.Linear</code>.</li>
+<li>Gemma's RMSNorm multiplies by <code>(1 + w)</code>.</li>
+<li><code>rms_norm_eps</code> is 1e-5 for Llama and SmolLM2, 1e-6 for Qwen3 and Gemma 3.</li>
+<li><strong>IO-5.</strong> These are Hugging Face <code>config.json</code> fields, fetched from the Hub on 2026-10-03:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Notable config</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SmolLM2-135M</td>
+<td>d=576, 9 heads / 3 KV heads, tied, theta 1e5</td>
+</tr>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td>QKV bias, theta 1e6</td>
+</tr>
+<tr>
+<td>Llama-3.2-1B</td>
+<td><code>rope_scaling</code> llama3, factor 32</td>
+</tr>
+<tr>
+<td>Qwen3-0.6B</td>
+<td><code>head_dim</code> 128 ≠ d/h, QK-norm</td>
+</tr>
+<tr>
+<td>Gemma 3 270M</td>
+<td><code>head_dim</code> 256, sliding window 512</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>IO-6.</strong> bf16 to fp32 is a 16-bit shift, so it's exact. fp16 to fp32 is also exact.</li>
+<li><strong>IO-7.</strong> NumPy's format spec covers the <code>.npy</code> header. <code>allow_pickle</code> code execution has existed since CVE-2019-6446, so never accept the object dtype.</li>
+<li><strong>IO-8.</strong> onnx/onnx (Apache-2.0). Protobuf caps a message at 2 GB, so larger models use external data (onnx #3273). External-data paths had a path-traversal CVE (CVE-2024-27318, fixed in onnx 1.16).</li>
+<li><strong>IO-9.</strong> The format spec is <code>docs/gguf.md</code> in ggml-org/ggml (MIT). Its parsers have a long CVE history:</li>
+<li>TALOS-2024-1913 and TALOS-2024-1914 (2024-03);</li>
+<li>CVE-2025-53630 (integer overflow in <code>gguf_init_from_file_impl</code>);</li>
+<li>CVE-2026-27940 (a heap overflow);</li>
+<li>six more posted to oss-security on 2026-05-15.</li>
+<li><strong>IO-10.</strong> Keras's <code>safe_mode</code> keeps being bypassed: CVE-2025-1550, then CVE-2025-8747 (which bypassed that fix), then CVE-2025-9905 (<code>.h5</code> loading ignores <code>safe_mode</code>).</li>
+<li><strong>IO-11.</strong> TorchScript is deprecated as of PyTorch 2.10 (release blog); 2.11 recommends <code>torch.export</code>.</li>
+</ul>
+<h2 id="trn-training-and-fine-tuning">TRN: Training and fine-tuning<a class="headerlink" href="#trn-training-and-fine-tuning" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Overall falsifier:</strong> Shuttleworth et al. (arXiv 2601.22708, 2026-01) found that with a tuned learning rate, plain LoRA matches or beats most of its variants. If a variant doesn't beat tuned vanilla LoRA on our benchmark, don't ship it.</li>
+<li><strong>"LoRA Without Regret"</strong> (Thinking Machines, 2025-09-29):</li>
+<li>Attention-only LoRA underperforms; apply it to all layers.</li>
+<li>The best learning rate is about 10× full fine-tuning's.</li>
+<li>LoRA tolerates large batches worse.</li>
+<li>Rank 1 is enough for RL.</li>
+<li><strong>"LoRA learns less and forgets less"</strong> (Biderman et al., arXiv 2405.09673, 2024-05): LoRA is clearly worse than full fine-tuning on code and math, and it forgets less.</li>
+<li><strong>TRN-2.</strong> Loshchilov and Hutter, "Decoupled Weight Decay Regularization", arXiv 1711.05101. <strong>Test:</strong> decay is applied as <code>w -= lr * wd * w</code>, not added to the gradient.</li>
+<li><strong>TRN-3, TRN-4.</strong> Global-norm clipping and warmup-plus-cosine schedules are the defaults in every recipe cited above (for example "LoRA Without Regret"). Clip after accumulation and before the optimizer step.</li>
+<li><strong>TRN-6.</strong> Full fine-tuning is the baseline in Biderman et al. and in "LoRA Without Regret". Adam in fp32 needs about 16 bytes per parameter plus activations: about 2.2 GB for 135M parameters, about 16 GB for 1B.</li>
+<li><strong>TRN-5.</strong> Hugging Face Trainer fixed this gradient-accumulation normalization bug in v4.46 (2024-10). <strong>Falsifier:</strong> 4×8 accumulated doesn't equal 1×32 on ragged batches.</li>
+<li><strong>TRN-7.</strong> Hu et al., "LoRA", arXiv 2106.09685 (2021-06).</li>
+<li>Merging into a quantized base changes the outputs (huggingface/peft #2321), so merge in fp32.</li>
+<li><strong>Falsifier:</strong> merged and unmerged outputs differ by more than 1e-5.</li>
+<li><strong>TRN-8.</strong> Under the epsilon rule, LRP is linear in the contributions, so relevance splits exactly between W₀x and the adapter term. This is our own derivation and needs a numerical check. Gamma and z+ act on the positive part of the summed weight, so merged and unmerged models give different maps.</li>
+<li><strong>Related:</strong> Soligo et al., arXiv 2506.11618 (2025-06), read rank-1 LoRA adapters as interpretable directions.</li>
+<li><strong>TRN-9.</strong> Wu et al., "ReFT", arXiv 2404.03592 (2024-04).</li>
+<li>It fails on arithmetic (GSM8K).</li>
+<li>It fails badly at concept suppression compared with rank-1 steering vectors (arXiv 2505.20809, 2025-05).</li>
+<li><strong>TRN-10.</strong> Liu et al., "IA³", arXiv 2205.05638 (2022-05).</li>
+<li><strong>TRN-11.</strong></li>
+<li>Shuttleworth et al., "LoRA vs Full Fine-tuning: An Illusion of Equivalence", arXiv 2410.21228 (2024-10): LoRA introduces "intruder" singular vectors.</li>
+<li>Minder et al., arXiv 2510.13900 (ICLR 2026): narrow fine-tunes leave readable traces in activation differences. Mixing pretraining data into the fine-tune removes the trace, so a null diff doesn't prove nothing changed.</li>
+<li><strong>TRN-12.</strong> Activation checkpointing conflicts with LRP's cached activations.</li>
+<li><strong>TRN-13.</strong></li>
+<li>rsLoRA: Kalajdzievski, arXiv 2312.03732 (2023-12).</li>
+<li>LoRA+: Hayou et al., arXiv 2402.12354 (2024-02).</li>
+<li>DoRA: Liu et al., arXiv 2402.09353 (2024-02).</li>
+<li><strong>TRN-14.</strong></li>
+<li>PiSSA: arXiv 2404.02948.</li>
+<li>VeRA: arXiv 2310.11454.</li>
+<li>AdaLoRA: arXiv 2303.10512.</li>
+<li>GaLore: arXiv 2403.03507.</li>
+<li>QLoRA: arXiv 2305.14314.</li>
+<li>Prefix tuning: arXiv 2101.00190.</li>
+<li>Prompt tuning: arXiv 2104.08691.</li>
+<li>BitFit: arXiv 2106.10199. Most modern LLMs have no biases, so BitFit is nearly useless for them.</li>
+<li>Houlsby adapters: arXiv 1902.00751.</li>
+<li><strong>bf16 updates round away small steps.</strong> Zamirai et al., arXiv 2010.06192. Keep fp32 master weights.</li>
+</ul>
+<h2 id="llm-running-real-language-models">LLM: Running real language models<a class="headerlink" href="#llm-running-real-language-models" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>LLM-1.</strong> SmolLM2 needs grouped-query attention. Qwen3 and Gemma 3 need <code>head_dim</code> separate from <code>d_model / num_heads</code>.</li>
+<li>pulsatrix's <code>RoPEModule</code> rotates adjacent pairs, while Hugging Face Llama-family checkpoints use "rotate half".</li>
+<li><strong>Fails when:</strong> the AttnLRP rules stop conserving relevance under a mask. Re-validate against LXT.</li>
+<li><strong>LLM-2.</strong> SmolLM2, Qwen3 and Gemma 3 set <code>tie_word_embeddings</code>. Without views, an untied copy of Gemma 3 270M's embedding would cost about 680 MB in fp32.</li>
+<li><strong>LLM-3.</strong></li>
+<li>mlc-ai/tokenizers-cpp (Apache-2.0) exists but wraps the Rust tokenizers library, which pulls in a Rust toolchain.</li>
+<li>A C++ port of the Hugging Face tokenizer found double-space mismatches in 4 of 15 million lines (wangkuiyi/huggingface-tokenizer-in-cxx).</li>
+<li><strong>Falsifier:</strong> id mismatches on the 10,000-line corpus.</li>
+<li><strong>LLM-4.</strong> Sampling must use the seeded RNG from FND-7 so generations are reproducible.</li>
+<li><strong>LLM-5.</strong> <strong>Falsifier:</strong> cached and uncached logits differ.</li>
+<li><strong>LLM-6.</strong> The threshold (fp32, max abs diff under 1e-3) follows from IO-4's layout pitfalls: random-weight tests miss them, real weights on real text don't.</li>
+<li><strong>LLM-7.</strong></li>
+<li>Achtibat et al., "AttnLRP", arXiv 2402.05602 (ICML 2024).</li>
+<li>LXT 2.1 (2025-07-10) supports Gemma 3 and Qwen3, and marks Qwen3 experimental with attribution skewed toward the first token.</li>
+<li><strong>Falsifier:</strong> per-token relevance correlation with LXT is below 0.99 on Llama-family models.</li>
+<li><strong>LLM-8.</strong></li>
+<li>Tuned lens: Belrose et al., arXiv 2303.08112 (2023-03).</li>
+<li>AtP*: Kramár et al., arXiv 2403.00745 (2024-03). Plain attribution patching misses effects through attention saturation.</li>
+<li><strong>LLM-9.</strong> Gemma 3 technical report, arXiv 2503.19786 (2025-03). Gemma Scope 2 (Google DeepMind, 2025-12) publishes SAEs and transcoders for every layer of Gemma 3 270M and 1B.</li>
+</ul>
+<h2 id="xai-question-driven-framework">XAI: Question-driven framework<a class="headerlink" href="#xai-question-driven-framework" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Four reasons to explain.</strong> Adadi and Berrada, "Peeking Inside the Black-Box", IEEE Access 6 (2018): justify, control, improve, discover. The exact wording comes from secondary summaries; the PDF section still needs reading.</li>
+<li><strong>Nine question categories.</strong> Liao, Gruen and Miller, "Questioning the AI", CHI 2020, arXiv 2001.02478. The categories were checked against the paper's Figure 1.</li>
+<li>Designers report that "why not" questions are common and poorly served.</li>
+<li><strong>Question-to-method mapping.</strong> Liao et al., "Question-Driven Design Process for Explainable AI User Experiences", arXiv 2104.03483 (2021-04). It notes an "availability bias": practitioners default to LIME and SHAP.</li>
+<li><strong>Evaluation levels.</strong> Doshi-Velez and Kim, arXiv 1702.08608 (2017-02): application-grounded, human-grounded and functionally grounded evaluation. A library can only own the functionally grounded level.</li>
+<li><strong>XAI-1.</strong> The enums mirror Liao et al. (2020) and Adadi and Berrada (2018) exactly, so reports can be compared against the papers' question bank.</li>
+<li><strong>XAI-2, XAI-3.</strong> <strong>Falsifier:</strong> users ignore the planner and call LRP directly. That's why the planner is optional and never hides the direct APIs.</li>
+<li><strong>XAI-4.</strong></li>
+<li>Counterfactuals: Wachter et al., arXiv 1711.00399 (2017-11). DiCE: Mothilal et al., arXiv 1905.07697. On image models counterfactuals turn into adversarial examples (Freiesleben, arXiv 2009.05487).</li>
+<li>Anchors: Ribeiro et al., AAAI 2018. Coverage can be tiny, and precision is estimated, not guaranteed.</li>
+<li>TREPAN surrogates: Craven and Shavlik, NeurIPS 1996. <strong>Falsifier:</strong> fidelity under about 85% at a depth a person can read.</li>
+<li>Pertinent negatives (CEM): Dhurandhar et al., NeurIPS 2018.</li>
+<li>ProtoDash: Gurumoorthy et al., ICDM 2019.</li>
+<li><strong>XAI-5.</strong></li>
+<li>Quantus: Hedström et al., JMLR 2023, arXiv 2202.06861. It groups metrics into six families: faithfulness, robustness, localisation, complexity, randomisation and axiomatic.</li>
+<li>ROAD: Rong et al., ICML 2022.</li>
+<li>The model-parameter randomization test comes from Adebayo et al., NeurIPS 2018.</li>
+<li><strong>XAI-6.</strong> See the cross-cutting section above.</li>
+</ul>
+<h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>INT-1.</strong> Huh et al., "Platonic Representation Hypothesis", arXiv 2405.07987 (2024-05), defines mutual-kNN alignment.</li>
+<li><strong>Fails when:</strong> a few points become everyone's neighbor in high dimensions (hubness).</li>
+<li><strong>INT-2.</strong> Kornblith et al., ICML 2019, arXiv 1905.00414.</li>
+<li><strong>Falsifier:</strong> CKA between a trained and a random-init network stays high. That would mean it measures the architecture, not the learning.</li>
+<li><strong>Fails when:</strong> outliers sway it, and it can be manipulated (Davari et al., arXiv 2210.16156).</li>
+<li><strong>INT-3.</strong> Hewitt and Liang, EMNLP 2019. MDL probing: Voita and Titov, EMNLP 2020.</li>
+<li><strong>INT-4.</strong></li>
+<li>Anisotropy: Ethayarajh, EMNLP 2019.</li>
+<li>TwoNN: Facco et al., Scientific Reports 2017; applied to deep networks by Ansuini et al., NeurIPS 2019.</li>
+<li><strong>INT-6.</strong></li>
+<li>TCAV: Kim et al., ICML 2018, arXiv 1711.11279. Concept vectors are unstable across random negative sets.</li>
+<li>CRP: Achtibat et al., Nature Machine Intelligence 2023, arXiv 2206.03208.</li>
+<li><strong>INT-7.</strong></li>
+<li>RSA: Kriegeskorte et al., 2008.</li>
+<li>SVCCA: Raghu et al., NeurIPS 2017.</li>
+<li>PWCCA: Morcos et al., NeurIPS 2018.</li>
+<li><strong>INT-8.</strong> t-SNE and UMAP distort global distances and cluster sizes (Wattenberg et al., Distill 2016; Chari and Pachter, PLoS Comp Bio 2023).</li>
+</ul>
+<h2 id="tda-topological-data-analysis">TDA: Topological data analysis<a class="headerlink" href="#tda-topological-data-analysis" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Core theory.</strong></li>
+<li>Persistent homology: Edelsbrunner, Letscher and Zomorodian, DCG 2002; Zomorodian and Carlsson, DCG 2005.</li>
+<li>Stability: Cohen-Steiner, Edelsbrunner and Harer, DCG 2007.</li>
+<li>Persistence modules as functors, and the interleaving distance: Chazal, de Silva, Glisse and Oudot, <em>The Structure and Stability of Persistence Modules</em> (2016).</li>
+<li>Single linkage is the unique stable functorial clustering: Carlsson and Mémoli, JMLR 2010.</li>
+<li>Mapper as a cosheaf: de Silva, Munch and Patel, DCG 2016.</li>
+<li><strong>TDA-2, TDA-3.</strong> Distances via ‖x‖² + ‖y‖² − 2xyᵀ suffer fp32 cancellation for near-duplicate points; clamp at zero and carry the error as a diagram bound (stability gives d_B ≤ ‖D − D′‖∞). H0 equals single-linkage clustering, which is the minimum spanning tree (Carlsson and Mémoli 2010).</li>
+<li><strong>TDA-4.</strong> Ripser: Bauer, JACT 2021, arXiv 1908.02518. MIT, about 1000 lines, no dependencies.</li>
+<li>giotto-ph is AGPLv3, so it can't be vendored.</li>
+<li>GUDHI's CGAL-dependent modules are GPLv3.</li>
+<li>Practical limits on CPU [I]: H1 up to about 2–5k points, H2 up to about 1k.</li>
+<li><strong>TDA-5.</strong></li>
+<li>Bottleneck distance: Kerber, Morozov and Nigmetov 2017.</li>
+<li>Wasserstein stability: Skraba and Turner, arXiv 2006.16824.</li>
+<li><strong>TDA-6.</strong></li>
+<li>Persistence landscapes: Bubenik, JMLR 2015.</li>
+<li>Persistence images: Adams et al., JMLR 2017.</li>
+<li>Betti curves are not stable under the bottleneck distance.</li>
+<li><strong>TDA-7.</strong> The landmark subsampling error is at most twice the covering radius. Witness complexes: de Silva and Carlsson 2004.</li>
+<li><strong>TDA-8.</strong></li>
+<li>Bootstrap confidence sets: Fasy et al., Annals of Statistics 2014.</li>
+<li>Permutation tests: Robinson and Turner 2017.</li>
+<li>The universal null: Bobrowski and Skraba 2023.</li>
+<li><strong>TDA-9.</strong> Barcodes and persistence diagrams follow VIZ-1's JSON format; the significance band from TDA-8 is drawn on the diagram.</li>
+<li><strong>TDA-10.</strong></li>
+<li>Engels et al., "Not All Language Model Features Are Linear", ICLR 2025, arXiv 2405.14860: days of the week and months form circles in GPT-2 and Mistral.</li>
+<li>Goodfire's BSF vision post (2026-07-07) measures block dimension by stable rank, a linear measure.</li>
+<li>Circular coordinates: de Silva, Morozov and Vejdemo-Johansson, DCG 2011.</li>
+<li><strong>Falsifier:</strong> the dominant H1 bar isn't significant against the null, or it also appears on random-init activations.</li>
+<li><strong>TDA-11.</strong> RTD: Barannikov, Trofimov et al., ICML 2022.</li>
+<li><strong>TDA-12.</strong> Naitzat, Zhitnikov and Lim, "Topology of Deep Neural Networks", JMLR 2020, arXiv 2004.06093.</li>
+<li><strong>TDA-13.</strong></li>
+<li>Distance concentration hides loops in high dimensions: Damrich, Berens and Kobak, NeurIPS 2024, arXiv 2311.03087.</li>
+<li>Distance-to-measure: Chazal, Cohen-Steiner and Mérigot 2011.</li>
+<li><strong>TDA-14.</strong></li>
+<li>Mapper: Singh, Mémoli and Carlsson 2007.</li>
+<li>Instability and parameter dependence: Belchí et al., JMLR 2020; Carrière, Michel and Oudot, JMLR 2018.</li>
+<li><strong>TDA-15.</strong> Carrière et al., ICML 2021. Topological autoencoders: Moor et al., ICML 2020.</li>
+<li><strong>TDA-16.</strong> TopoTroj: Zheng et al., NeurIPS 2021, arXiv 2106.06469.</li>
+<li><strong>Falsifier:</strong> a probe on norms or kNN distances matches it.</li>
+<li><strong>TDA-17 to TDA-19.</strong> Zigzag persistence on LLM layers: Gardinazzi et al., ICML 2025, arXiv 2410.11042. Multiparameter persistence has no complete invariant (Carlsson and Zomorodian 2009).</li>
+<li><strong>Neural persistence.</strong> Rieck et al., ICLR 2019. It mostly reduces to weight variance (Girrbach et al., arXiv 2307.10865, 2023).</li>
+<li><strong>Caution on recent LLM-topology papers.</strong> Most from 2025–26 use H0 only and are unreviewed preprints. H0 is a function of the minimum spanning tree, so check those results against plain kNN statistics.</li>
+</ul>
+<h2 id="kd-surrogates-and-student-teacher">KD: Surrogates and student-teacher<a class="headerlink" href="#kd-surrogates-and-student-teacher" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>KD-1.</strong> Hinton, Vinyals and Dean, arXiv 1503.02531 (2015-03).</li>
+<li>Students often don't match teachers even with enough capacity: Stanton et al., "Does Knowledge Distillation Really Work?", NeurIPS 2021.</li>
+<li><strong>KD-2.</strong> If prediction agreement is high but explanation agreement is low, that is the interesting signal, not a bug.</li>
+<li><strong>KD-3.</strong></li>
+<li>FitNets: arXiv 1412.6550.</li>
+<li>Attention transfer: arXiv 1612.03928.</li>
+<li>Soft decision trees: Frosst and Hinton, arXiv 1711.09784.</li>
+<li>Boolean rule column generation: Dash, Günlük and Wei, NeurIPS 2018.</li>
+<li><strong>KD-4.</strong></li>
+<li>Born-again networks: Furlanello et al., arXiv 1805.04770.</li>
+<li>DistilBERT: Sanh et al., arXiv 1910.01108.</li>
+</ul>
+<h2 id="feat-featurizers">FEAT: Featurizers<a class="headerlink" href="#feat-featurizers" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>FEAT-6, BSF.</strong></li>
+<li>Fel et al., "Structuring Sparsity: Block-Sparse Featurizers Capture Visual Concept Manifolds", arXiv 2606.25234 (2026-06-23).</li>
+<li>The code is at github.com/goodfire-ai/block-sparse-featurizer. The variants are:<ul>
+<li><strong>vanilla:</strong> keep the top-k blocks by norm;</li>
+<li><strong>Grassmannian:</strong> tied, with orthonormal block frames;</li>
+<li><strong>group lasso:</strong> a block soft-threshold.</li>
+</ul>
+</li>
+<li>The paper evaluates with minimum description length and stable rank.</li>
+<li>The follow-up, Jerpelea and Ananthram, "A Deeper Analysis of Block-Sparse Featurizers", arXiv 2608.27515 (2026-08-27), reports that BSF still suffers from feature splitting and composition, and proposes tournament top-k.</li>
+<li><strong>Falsifier:</strong> on pulsatrix-scale models, BSF fails to beat a TopK SAE at matched L0.</li>
+<li><strong>FEAT-2.</strong> Gao et al., arXiv 2406.04093 (2024-06), introduces the auxiliary loss for dead latents.</li>
+<li><strong>FEAT-3.</strong></li>
+<li>SAEBench: Karvonen et al., arXiv 2503.09532 (2025-03). Its authors note that proxy metrics don't reliably predict usefulness.</li>
+<li>Feature absorption: Chanin et al., arXiv 2409.14507.</li>
+<li><strong>FEAT-4.</strong></li>
+<li>BatchTopK: arXiv 2412.06410.</li>
+<li>JumpReLU: arXiv 2407.14435.</li>
+<li>Matryoshka: arXiv 2503.17547.</li>
+<li><strong>FEAT-5.</strong></li>
+<li>Transcoders: Dunefsky et al., arXiv 2406.11944.</li>
+<li>"Transcoders Beat Sparse Autoencoders for Interpretability": Paulo et al., arXiv 2501.18823.</li>
+<li><strong>FEAT-7.</strong> AxBench (Wu et al., arXiv 2501.17148, 2025-01): SAE steering underperforms simple baselines. Steering vectors are unreliable in distribution and misgeneralize out of it (Tan et al., NeurIPS 2024).</li>
+<li><strong>FEAT-8.</strong> Crosscoders: Lindsey et al., Transformer Circuits (2024-10). Delta-Crosscoder: arXiv 2603.04426 (2026-03).</li>
+<li><strong>FEAT-9.</strong></li>
+<li>APD: arXiv 2501.14926.</li>
+<li>SPD: Bushnaq, Braun and Sharkey, arXiv 2506.20790.</li>
+<li>VPD: Goodfire (2026-05). Its technical report URL returned 404, so the details are unverified.</li>
+<li><strong>FEAT-10.</strong> Ameisen, Lindsey et al., "Circuit Tracing", Transformer Circuits (2025-03-27). The authors list limits: QK circuits aren't explained, there is reconstruction error, and inactive features are missed.</li>
+<li><strong>SAE limits.</strong></li>
+<li>Linear probes beat SAE probes out of distribution: DeepMind, "Negative Results for SAEs on Downstream Tasks" (2025-03-26). After this the team deprioritized SAE research.</li>
+<li>SAEs trained on different seeds don't agree: Paulo and Belrose, arXiv 2501.16615.</li>
+<li>Position SAEs as discovery tools: Peng et al., arXiv 2506.23845.</li>
+</ul>
+<h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>ARCH-1.</strong> B-cos: Böhle, Fritz and Schiele, CVPR 2022, arXiv 2205.10268. B-cos language models: arXiv 2502.12992.</li>
+<li><strong>ARCH-2.</strong> Koh et al., ICML 2020, arXiv 2007.04612. Concept leakage: Mahinpei et al., arXiv 2106.13314.</li>
+<li><strong>ARCH-3.</strong> Switch Transformer: arXiv 2101.03961. OLMoE router analysis: arXiv 2409.02060. Experts tend to specialize by token and syntax rather than domain.</li>
+<li><strong>ARCH-4.</strong> ProtoPNet: arXiv 1806.10574. Human and model similarity don't always match: Hoffmann et al., arXiv 2105.02968.</li>
+<li><strong>ARCH-5.</strong></li>
+<li>GNNExplainer: arXiv 1903.03894.</li>
+<li>GNN-LRP: Schnake et al., TPAMI 2021.</li>
+<li>Explainer benchmarks are unreliable: Faber et al. 2021.</li>
+<li><strong>ARCH-6.</strong> Dao and Gu, arXiv 2405.21060. No SSD LRP reference implementation was found.</li>
+<li><strong>ARCH-7.</strong> Beck et al., NeurIPS 2024, arXiv 2405.04517.</li>
+<li><strong>ARCH-8.</strong> KAN: arXiv 2404.19756. In "KAN or MLP: A Fairer Comparison", arXiv 2407.16674, KANs lose outside symbolic formulas.</li>
+<li><strong>ARCH-9.</strong> Peebles and Xie, arXiv 2212.09748.</li>
+<li><strong>ARCH-10.</strong></li>
+<li>Gated DeltaNet: arXiv 2412.06464.</li>
+<li>Titans: arXiv 2501.00663.</li>
+<li>Hopfield layers: arXiv 2008.02217.</li>
+<li>V-JEPA 2: arXiv 2506.09985.</li>
+<li>SENN: arXiv 1806.07538.</li>
+<li>Hypernetworks: arXiv 1609.09106.</li>
+<li>Neural ODEs: arXiv 1806.07366.</li>
+<li>Liquid time-constant networks: arXiv 2006.04439.</li>
+</ul>
+<h2 id="viz-visualization-pack">VIZ: Visualization pack<a class="headerlink" href="#viz-visualization-pack" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Tools go stale.</strong> CircuitsVis's last release was about a year ago, and token-hover regressions are still open (#98) [C]. Captum Insights was deprecated in Captum 0.8 (2025-03) [C].</li>
+<li><strong>VIZ-1.</strong></li>
+<li><strong>Fails when:</strong> NaN and infinity appear in JSON (they're invalid), or the schema churns. Version it from day one and add golden-file tests.</li>
+<li><strong>VIZ-2.</strong> ImPlot has no vector export, so publication figures need a separate renderer [I]. Share <code>colormap.hpp</code> so SVG and ImGui colors match.</li>
+<li><strong>VIZ-3.</strong> Vega-Lite embedding docs. Inlining the JavaScript adds roughly 800 KB per file [I].</li>
+<li><strong>VIZ-4.</strong> circuit-tracer (Anthropic open-sourced it, 2025). Neuronpedia publishes an attribution-graph JSON schema and a validator at neuronpedia.org/graph/validator.</li>
+<li><strong>Falsifier:</strong> the schema needs transcoder-specific fields pulsatrix can't fill. Check against the validator first.</li>
+<li><strong>VIZ-6.</strong> Reference designs: SAEDashboard (jbloomAus), Neuronpedia feature pages, the TensorBoard projector, and SHAP's plots.</li>
+<li><strong>VIZ-7.</strong></li>
+<li>imnodes: maintained, but has no zoom.</li>
+<li>imgui-node-editor: upstream is stale; the imgui_bundle fork is maintained (discussion #428, 2026-01) [C].</li>
+</ul>
+<h2 id="nb-notebook-layer">NB: Notebook layer<a class="headerlink" href="#nb-notebook-layer" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>NB-1.</strong> xeus-cpp's <code>xcpp::display</code> calls <code>mime_bundle_repr</code> without qualification, so argument-dependent lookup finds an overload in the <code>pulsatrix</code> namespace. This was read from <code>include/xcpp/xdisplay.hpp</code>.</li>
+<li><strong>Falsifier:</strong> <code>xcpp::display(tensor)</code> in xeus-cpp 0.10 doesn't pick up the overload.</li>
+<li><strong>NB-2.</strong> The nbformat v4 format description: since 4.5, every cell needs an <code>id</code>. MIME types ending in <code>+json</code> are stored as objects, and PNG data is base64.</li>
+<li><strong>Falsifier:</strong> the output fails <code>nbformat.validate</code>, or doesn't render on GitHub.</li>
+<li><strong>NB-3.</strong> anywidget (MIT, 0.11.0, 2026-04-27) works in Jupyter, JupyterLab, Colab, VS Code and marimo.</li>
+<li><strong>NB-4.</strong> xeus-cpp 0.10.0 (BSD-3-Clause, released 2026-04-02).</li>
+<li><strong>Kernel crashes:</strong> a segfault or failed assert restarts the kernel (#434), and lambdas with xwidgets crash it (#476).</li>
+<li><strong>GPU:</strong> CUDA math functions return 0 inside JIT-compiled kernels (#467).</li>
+<li><strong>Windows:</strong> "Does not work on Windows" is still open (#144).</li>
+<li>xeus-cling hasn't been updated since 2025-10, so don't target it.</li>
+<li><strong>NB-5.</strong> xeus-cpp-lite (Jupyter blog, 2025-06-19) loads libraries as emscripten-forge side modules. Threads need SharedArrayBuffer headers [I].</li>
+</ul>
+<h2 id="hip-training-efficiency-on-amd-gpus">HIP: Training efficiency on AMD GPUs<a class="headerlink" href="#hip-training-efficiency-on-amd-gpus" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Hardware ceiling.</strong></li>
+<li>Memory bandwidth: 256 GB/s theoretical (LPDDR5X-8000, 256-bit), about 212 GB/s measured on the GPU [C] (llm-tracker Strix Halo page).</li>
+<li>fp16/bf16 peak: about 59 TFLOPS from WMMA [V] (GPUOpen, "WMMA on RDNA3"). About 37 TFLOPS bf16 measured with an optimized stack [C].</li>
+<li>fp32 peak: about 15 TFLOPS without dual issue [I].</li>
+<li>So nearly every non-GEMM kernel is bandwidth-bound or worse [I].</li>
+<li><strong>warpSize and shuffles.</strong> In ROCm 7.0, <code>warpSize</code> is no longer <code>constexpr</code>, and <code>*_sync</code> shuffles take 64-bit masks [V] (ROCm 7.0 release notes; ROCm/HIP #3667).</li>
+<li><strong>gfx1151 ISA.</strong> The LLVM AMDGPU target table lists gfx1151 as an APU with no XNACK [V] (LLVM AMDGPUUsage).</li>
+<li><strong>HIP-1.</strong></li>
+<li>rocprofv3 (ROCprofiler-SDK) is the standard profiler in ROCm 10.0 [V].</li>
+<li>rocprof-compute support on gfx115x landed in TheRock PR #8299 [C]. ROCm 10.0 fixed its roofline precision list [V]. It's unverified on 7.2.4.</li>
+<li><strong>HIP-2.</strong></li>
+<li><strong>Falsifier:</strong> rocprofv3 shows these kernels take under 5% of step time on real workloads.</li>
+<li><strong>Fails when:</strong><ul>
+<li>a 32-bit mask truncates the shuffle on 64-wide waves;</li>
+<li>results differ from the CPU in the last bit (use tolerances);</li>
+<li>a wave64 build changes the reduction order.</li>
+</ul>
+</li>
+<li><strong>HIP-3.</strong></li>
+<li><strong>Design:</strong> PyTorch's caching allocator, described by Zach DeVito (2022) and in the PyTorch devlog on fragmentation (2026-06-01).</li>
+<li><strong>Avoid <code>hipMallocAsync</code> on RDNA</strong> [C]:<ul>
+<li>silent corruption on gfx1030 (CTranslate2 #2090);</li>
+<li>OOM reported while memory is still consumed (rocm-systems #11642);</li>
+<li>double free on pool failure (rocm-systems PR #11643).</li>
+</ul>
+</li>
+<li><strong>VRAM on the APU</strong> [C]:<ul>
+<li>ROCm adds VRAM and GTT together when reporting capacity, which overstates what can be allocated (ROCm #6004).</li>
+<li>AMD recommends a 0.5 GB carve-out on Strix Halo [V] (AMD Strix Halo system optimization guide).</li>
+</ul>
+</li>
+<li><strong>HIP-4.</strong> <strong>Falsifier:</strong> the GPU is already more than 90% busy with the syncs in place.</li>
+<li><strong>Fails when:</strong> the host reads stale data, or an error surfaces in a later op.</li>
+<li><strong>HIP-5.</strong> <code>dot</code> and <code>sum</code> launch a single 256-thread block today (<code>src/gpu_kernels.cuh</code>). Use per-block partials and a second pass; no atomics, to keep results deterministic.</li>
+<li><strong>HIP-6.</strong> <strong>Fails when:</strong> the fused training path and the unfused explain path drift apart numerically. Gate them with a conservation test.</li>
+<li><strong>HIP-7.</strong> At N=64, a 3×3 kernel on 224×224 input needs about 350 MB of im2col buffer [I].</li>
+<li>MIOpen on gfx1151 has a history of trouble [C]: missing Composable Kernel libraries (TheRock #5105, closed), and a Winograd lockup (TheRock #5581).</li>
+<li><strong>HIP-8.</strong> Sources disagree [C].</li>
+<li>Against: ROCm #5643 (ROCm 7.1.0) reports "unsupported architecture".</li>
+<li>For: the changelog and community guides say ROCm 7.2.4 ships gfx1151 kernels.</li>
+<li>An older run measured hipBLASLt slower than rocBLAS.</li>
+<li>A 30-line probe settles it.</li>
+<li><strong>HIP-9.</strong></li>
+<li>ROCm 10.0.0 (2026-08-26) is the first release whose notes list the Ryzen AI Max parts as gfx1151 [V] (release notes, compatibility matrix).</li>
+<li>ROCm 7.2 page faults on host-to-device copies (ROCm #5890, open) [C].</li>
+<li>A wrong VGPR count crashed gfx1151 through ROCm 7.1.x. The user-mode fix landed in 7.2; the kernel-mode fix needs Ubuntu's OEM kernel 1018 or newer (TheRock #2991) [C].</li>
+<li>AMD asks for host kernel 6.18.4 or newer on other distributions [V].</li>
+<li><strong>HIP-10.</strong> HIP's unified-memory documentation [V]: without XNACK, <code>hipMallocManaged</code> and <code>hipHostMalloc</code> give pinned, zero-copy host memory.</li>
+<li><strong>HIP-11.</strong> LRP's stabilized divisions and conservation checks degrade in bf16, which has an 8-bit mantissa [I]. That's why the rule is to explain in fp32.</li>
+<li><strong>HIP-12.</strong> Reports that this work may not pay off [C]:</li>
+<li>hipGraph is 2–5% slower than eager execution on gfx11 (legacy-rocm-build #6685);</li>
+<li>HIP graph branches get serialized on gfx1201 (rocm-systems #12330);</li>
+<li>Composable Kernel's flash attention on RDNA3 is forward-only (CK #1434);</li>
+<li>rocWMMA flash attention regresses prefill by 41% on gfx1151 (llama.cpp #24437).</li>
+</ul>
+<h2 id="agt-agents">AGT: Agents<a class="headerlink" href="#agt-agents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>No official C++ SDKs.</strong></li>
+<li>Anthropic's official SDKs are Python, TypeScript, C#, Go, Java, PHP and Ruby [V] (client SDK docs, checked 2026-10-03).</li>
+<li>MCP's official SDK tiers [V] (modelcontextprotocol.io/docs/sdk):<ul>
+<li>Tier 1: TypeScript, Python, C#, Go, Rust and Ruby.</li>
+<li>Tier 2: Java.</li>
+<li>Tier 3: Swift, PHP and Kotlin.</li>
+</ul>
+</li>
+<li><strong>Community C++ MCP libraries.</strong></li>
+<li>gopher-mcp (Apache-2.0, v0.1.18): its own issue #294 says 2026-07-28 support had only been tested against itself.</li>
+<li>cpp-mcp (MIT): targets older spec revisions.</li>
+<li>Neumann-Labs/mcp-cpp: GPL-3.0, so it can't go into an MIT library.</li>
+<li><strong>AGT-1.</strong> nlohmann/json (MIT, v3.12.0). xeus-cpp's display API also uses it, so one dependency serves AGT, VIZ-1 and NB-1. Throughput doesn't matter at these payload sizes.</li>
+<li><strong>AGT-2.</strong></li>
+<li>cpp-httplib (MIT, v0.59.0): requires OpenSSL 3.0 or newer. Issue #2596 (opened 2026-09-29) reports Windows certificate verification failures.</li>
+<li>cpr (MIT-style) wraps libcurl, which can use Windows' own TLS stack.</li>
+<li><strong>Falsifier:</strong> Windows CI fails to verify <code>api.anthropic.com</code>. Then switch the default to libcurl.</li>
+<li><strong>AGT-3: Anthropic API behavior</strong> [V] (define-tools, handle-tool-calls, rate-limits and streaming docs, 2026-10-03):</li>
+<li><code>tool_choice: any</code> and <code>tool_choice: tool</code> return HTTP 400 on the current 5.x models.</li>
+<li><code>tool_result</code> blocks must come first in the next user message.</li>
+<li>A 429 from a spend limit has error code <code>enforced_spend_limit_reached</code> and no <code>retry-after</code> header.</li>
+<li>New stream event types can appear at any time.</li>
+<li>Streamed tool input arrives as <code>input_json_delta</code> fragments, parsed at <code>content_block_stop</code>.</li>
+<li><strong>AGT-4.</strong></li>
+<li>MCP schemas default to JSON Schema 2020-12, but the main C++ validator (pboettch/json-schema-validator 2.4.0) supports draft-7 only.</li>
+<li><strong>Falsifier:</strong> more than two real tools need <code>$ref</code> or <code>oneOf</code>.</li>
+<li><strong>AGT-5.</strong></li>
+<li>MCP 2026-07-28 changelog [V]: no <code>initialize</code> handshake, no sessions, and <code>server/discover</code> is required.</li>
+<li>stdio transport [V]: nothing but protocol messages on stdout, and no embedded newlines.</li>
+<li>tools spec [V]: servers must validate inputs, apply access controls, rate-limit and sanitize output.</li>
+<li>Security statistics about popular MCP servers (for example, 43% with command injection) come from secondary vendor reports (Checkmarx), not primary scans.</li>
+<li><strong>AGT-6.</strong></li>
+<li>Grammar-constrained decoding is fragile at the edges of the schema language (llama.cpp #25923, #22314, #29006).</li>
+<li>XGrammar (Apache-2.0, v0.2.8) has a C++ core.</li>
+<li>SmolLM2-135M reaches about 22% exact match on xLAM function calling even after full fine-tuning (chloe-mp/smollm2-xlam-function-calling) [C]. Grammar constraints guarantee well-formed calls, not correct ones.</li>
+<li><strong>AGT-7.</strong> No prior art or benchmark was found for attributing an agent's tool choice. The falsifier is the deletion test in the roadmap.</li>
+<li><strong>AGT-8.</strong></li>
+<li>"Language Models Can Explain Neurons": Bills et al., OpenAI (2023-05).</li>
+<li>Delphi: Paulo et al., arXiv 2410.13928 (2024-10). Its explanations fail about 38% of the time (arXiv 2605.01555, 2026-05).</li>
+<li>Output-centric descriptions: arXiv 2501.08319.</li>
+<li><strong>AGT-9.</strong> MAIA: Shaham et al., arXiv 2404.14394 (ICML 2024). Transluce's Docent (Apache-2.0) analyzes agent transcripts.</li>
+<li><strong>Prior art.</strong> mozilla-ai/agent.cpp (MIT, 2025-12) is a C++17 agent loop tied to llama.cpp, with no MCP. It's a design reference, not a dependency.</li>
+</ul>
+<h2 id="ks-kitchen-sink">KS: Kitchen sink<a class="headerlink" href="#ks-kitchen-sink" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>KS-1.</strong> The README says "There's no <code>install()</code> step yet."</li>
+<li><strong>KS-2.</strong> The benchmark suite provides the numbers HIP-1 through HIP-8 are judged by, plus conservation error so performance work can't silently break LRP.</li>
+<li><strong>KS-3.</strong></li>
+<li>Monte Carlo dropout: Gal and Ghahramani 2016.</li>
+<li>Deep ensembles: Lakshminarayanan et al. 2017.</li>
+<li>Split conformal prediction: Vovk et al.; Angelopoulos and Bates, arXiv 2107.07511.</li>
+<li><strong>KS-4.</strong></li>
+<li>FGSM: Goodfellow et al., arXiv 1412.6572.</li>
+<li>PGD: Madry et al., arXiv 1706.06083.</li>
+<li><strong>KS-5.</strong> TracIn: Pruthi et al., NeurIPS 2020. Captum 0.8 added influence functions [C]. Kronfluence's EK-FAC covers only linear and conv layers [C].</li>
+<li><strong>KS-6.</strong> <code>docs/data-pipeline/index.md</code> currently calls drift detection and fairness metrics out of scope. Model cards: Mitchell et al., FAT* 2019.</li>
+<li><strong>KS-7.</strong> <code>DataThreadPool</code> and <code>BoundedQueue</code> exist but aren't wired into <code>DataLoader</code> (<code>data_loader.hpp</code>).</li>
+<li><strong>KS-8.</strong> The HIP backend is tested on real gfx1151 hardware but not in CI (README Status).</li>
+<li><strong>Risk:</strong> runner flakiness from the gfx1151 driver issues listed under HIP-9.</li>
+<li><strong>KS-9.</strong> Llama 3.2 is under the Llama 3.2 Community License. Ship converters, not converted weights.</li>
+<li><strong>KS-11.</strong> Python wheels with GPU backends are the hard part. A CPU-only wheel and a vcpkg port (mlpack and dlib both ship one) come first.</li>
+<li><strong>KS-10, KS-12.</strong> These close gaps against the other libraries we compared:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Library</th>
+<th>What it has that pulsatrix lacks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PyTorch, JAX</td>
+<td>Views, broadcasting, op-level autograd</td>
+</tr>
+<tr>
+<td>tinygrad</td>
+<td>Automatic fusion</td>
+</tr>
+<tr>
+<td>ggml and llama.cpp</td>
+<td>GGUF and quantization</td>
+</tr>
+<tr>
+<td>Captum</td>
+<td>Influence functions</td>
+</tr>
+<tr>
+<td>Quantus</td>
+<td>Evaluation metrics</td>
+</tr>
+<tr>
+<td>TransformerLens and nnsight</td>
+<td>Hook points</td>
+</tr>
+<tr>
+<td>SAELens</td>
+<td>SAE training at scale</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

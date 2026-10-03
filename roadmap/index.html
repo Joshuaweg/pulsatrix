@@ -1,0 +1,3860 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ExAI-first C++ deep learning library">
+      
+      
+      
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/roadmap/">
+      
+      
+        <link rel="prev" href="../recipes/visualization/training_dashboard/">
+      
+      
+        <link rel="next" href="research-notes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/pulsatrix_icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Overview - Pulsatrix</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#roadmap" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pulsatrix
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+      
+  <img src="../assets/pulsatrix_icon.png" alt="logo">
+
+    </a>
+    Pulsatrix
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Joshuaweg/pulsatrix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Joshuaweg/pulsatrix
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Learning Modules and Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Loading, Transformation & Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interpretability/lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer-wise Relevance Propagation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interpretability/model-agnostic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model-Agnostic Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interpretability/deep-learning-approaches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gradient-Based Explainers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reinforcement Learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanistic Interpretability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../neuro-symbolic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neuro-Symbolic Reasoning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evolutionary-computation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evolutionary Computation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hyperparameter-optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hyperparameter Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../system-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recipes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recipes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/deep-learning/xor_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XOR Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN vs. LSTM vs. GRU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Residual and Normalization Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CSV + DataLoader Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/mnist_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on MNIST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saliency and Integrated Gradients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grad-CAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KernelSHAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/lime_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIME
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/rl/dqn_cartpole/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DQN on CartPole
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAE and PPO Clipping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sparse Autoencoder + Probe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalog LRP Bridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/visualization/training_dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Roadmap
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-v10-stands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where v1.0 stands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-that-orders-this-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The goal that orders this list
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-read-this-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to read this page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-that-apply-to-every-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules that apply to every item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-each-requested-area-went" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where each requested area went
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Milestones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Milestones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v11-foundations-and-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.1 "Foundations and trust"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v12-real-pretrained-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.2 "Real pretrained models"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v13-tune-and-explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.3 "Tune and explain"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v14-features-and-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.4 "Features and agents"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backlog-not-yet-scheduled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backlog, not yet scheduled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fnd-foundations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FND: Foundations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#io-serialization-and-model-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IO: Serialization and model import
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trn-training-and-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TRN: Training and fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-running-real-language-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM: Running real language models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xai-question-driven-explainability-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XAI: Question-driven explainability framework
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int-embedding-and-representation-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INT: Embedding and representation analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tda-topological-data-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TDA: Topological data analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kd-surrogates-and-student-teacher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KD: Surrogates and student-teacher
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT: Featurizers, sparse autoencoders and Goodfire BSF
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arch-new-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ARCH: New architectures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viz-visualization-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIZ: Visualization pack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nb-notebook-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NB: Notebook layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hip-training-efficiency-on-amd-gpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP: Training efficiency on AMD GPUs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-agents-native-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT: Agents, native C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ks-kitchen-sink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KS: Kitchen sink
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="research-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-v10-stands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where v1.0 stands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-that-orders-this-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The goal that orders this list
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-read-this-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to read this page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rules-that-apply-to-every-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules that apply to every item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-each-requested-area-went" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where each requested area went
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Milestones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Milestones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v11-foundations-and-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.1 "Foundations and trust"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v12-real-pretrained-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.2 "Real pretrained models"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v13-tune-and-explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.3 "Tune and explain"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v14-features-and-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.4 "Features and agents"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backlog-not-yet-scheduled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backlog, not yet scheduled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fnd-foundations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FND: Foundations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#io-serialization-and-model-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IO: Serialization and model import
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trn-training-and-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TRN: Training and fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#llm-running-real-language-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM: Running real language models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xai-question-driven-explainability-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XAI: Question-driven explainability framework
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#int-embedding-and-representation-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INT: Embedding and representation analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tda-topological-data-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TDA: Topological data analysis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kd-surrogates-and-student-teacher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KD: Surrogates and student-teacher
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEAT: Featurizers, sparse autoencoders and Goodfire BSF
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arch-new-architectures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ARCH: New architectures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viz-visualization-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VIZ: Visualization pack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nb-notebook-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NB: Notebook layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hip-training-efficiency-on-amd-gpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP: Training efficiency on AMD GPUs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agt-agents-native-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGT: Agents, native C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ks-kitchen-sink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KS: Kitchen sink
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h1>
+<p>This page is the backlog for pulsatrix after v1.0. It says what we plan to build, in what order,
+and why. Every item has an ID (for example <code>FND-1</code>) so issues, pull requests and chronicles can
+point at it. The evidence behind each item, including its sources, how we would know it was a
+mistake, and how it is known to fail, lives in <a href="research-notes/">Research Notes</a>.</p>
+<p>Nothing here is a promise. Priorities move as items land and as measurements come in.</p>
+<h2 id="where-v10-stands">Where v1.0 stands<a class="headerlink" href="#where-v10-stands" title="Permanent link">&para;</a></h2>
+<p>v1.0 is strong on explainability and thin on the foundations that larger models need.</p>
+<ul>
+<li><strong>Strong.</strong> LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
+  Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
+  activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.</li>
+<li><strong>Missing.</strong> There is no way to save or load model weights, no import from PyTorch or Hugging
+  Face, and everything is <code>float32</code>. Tensors have no views or broadcasting. There are no
+  learning-rate schedulers, no AdamW, no parameter freezing and no LoRA. Attention has no mask,
+  BatchNorm has no running statistics, and Conv2D has no stride or padding.</li>
+<li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo), but every op synchronizes the stream,
+  reductions run one thread per row or channel, and every tensor is a raw <code>hipMalloc</code>.</li>
+</ul>
+<h2 id="the-goal-that-orders-this-list">The goal that orders this list<a class="headerlink" href="#the-goal-that-orders-this-list" title="Permanent link">&para;</a></h2>
+<p><strong>Explain real pretrained models.</strong> That means you can load a Hugging Face model (a small LLM
+such as SmolLM2-135M, or a vision model such as ResNet18), fine-tune it with LoRA on a Strix Halo
+machine, and explain it with the tools pulsatrix already has. Items on that path come first.</p>
+<h2 id="how-to-read-this-page">How to read this page<a class="headerlink" href="#how-to-read-this-page" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>ID.</strong> The epic prefix plus a number, for example <code>TRN-7</code>.</li>
+<li><strong>Priority.</strong> P0 means the next release depends on it. P1 means it's important and planned.
+  P2 means valuable but it can wait. P3 means maybe, or only if someone needs it.</li>
+<li><strong>Effort.</strong> S is under a week, M is one to three weeks, L is one to two months, and XL is
+  longer than that. These are rough and assume one person.</li>
+<li><strong>Depends on.</strong> The IDs that have to land first.</li>
+</ul>
+<h2 id="rules-that-apply-to-every-item">Rules that apply to every item<a class="headerlink" href="#rules-that-apply-to-every-item" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Every new interpretability tool ships with baselines.</strong> Run it on a randomly initialized
+   copy of the model and compare it with a plain linear probe. Attribution maps, probes and
+   sparse autoencoders all produce plausible-looking output on random networks, so a result that
+   looks the same on a random network means nothing.</li>
+<li><strong>Train in bf16, explain in fp32.</strong> Once mixed precision exists, LRP, Integrated Gradients
+   and the conservation checks still run in fp32. LRP's stabilized divisions and conservation
+   tests don't survive bf16's 8-bit mantissa.</li>
+<li><strong>Never unpickle in C++.</strong> <code>.pt</code>, <code>.pth</code> and <code>.pkl</code> files are code, not data. They go through
+   an optional converter that uses PyTorch's restricted loader. The C++ side reads safetensors
+   only.</li>
+<li><strong>Every importer passes a golden-logit test.</strong> "It loaded" is not a test. Compare logits
+   against Hugging Face Transformers on real weights and real text. A wrong RoPE layout loads
+   fine and produces fluent-looking nonsense.</li>
+<li><strong>Every new module implements <code>propagate_relevance</code> and has a conservation test.</strong> This is
+   what makes pulsatrix pulsatrix.</li>
+<li><strong>Python is optional.</strong> Agents, the MCP server, notebook output and model loading for
+   safetensors checkpoints are native C++. Python appears only in the legacy-pickle converter
+   and in optional notebook conveniences on top of the existing bindings.</li>
+</ol>
+<h2 id="where-each-requested-area-went">Where each requested area went<a class="headerlink" href="#where-each-requested-area-went" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Epics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. New tools: embedding analysis, Goodfire BSF, surrogates, student-teacher</td>
+<td><a href="#int-embedding-and-representation-analysis">INT</a>, <a href="#tda-topological-data-analysis">TDA</a>, <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT</a>, <a href="#kd-surrogates-and-student-teacher">KD</a></td>
+</tr>
+<tr>
+<td>2. Fine-tuning methods</td>
+<td><a href="#trn-training-and-fine-tuning">TRN</a></td>
+</tr>
+<tr>
+<td>3. Translating model files</td>
+<td><a href="#io-serialization-and-model-import">IO</a></td>
+</tr>
+<tr>
+<td>4. Visualization pack</td>
+<td><a href="#viz-visualization-pack">VIZ</a>, <a href="#nb-notebook-layer">NB</a></td>
+</tr>
+<tr>
+<td>5. LLMs and agent orchestration</td>
+<td><a href="#llm-running-real-language-models">LLM</a>, <a href="#agt-agents-native-c">AGT</a></td>
+</tr>
+<tr>
+<td>6. Built-in XAI framework (4 reasons, 9 question categories)</td>
+<td><a href="#xai-question-driven-explainability-framework">XAI</a></td>
+</tr>
+<tr>
+<td>7. New patterns and architectures</td>
+<td><a href="#arch-new-architectures">ARCH</a></td>
+</tr>
+<tr>
+<td>8. Kitchen sink</td>
+<td><a href="#ks-kitchen-sink">KS</a>, <a href="#fnd-foundations">FND</a></td>
+</tr>
+<tr>
+<td>9. HIP efficiency for training and tuning</td>
+<td><a href="#hip-training-efficiency-on-amd-gpus">HIP</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="milestones">Milestones<a class="headerlink" href="#milestones" title="Permanent link">&para;</a></h2>
+<p>Each milestone lists the items it contains. The order follows the dependencies.</p>
+<h3 id="v11-foundations-and-trust">v1.1 "Foundations and trust"<a class="headerlink" href="#v11-foundations-and-trust" title="Permanent link">&para;</a></h3>
+<p>The plumbing everything else needs, plus the checks that keep explanations honest.</p>
+<ul>
+<li>FND-1 to FND-8: named parameters, freezing, top-k, eigensolver, BatchNorm eval mode, Conv2D
+  stride and padding, seeding, device checks</li>
+<li>IO-1, IO-2: safetensors and the native checkpoint format</li>
+<li>TRN-1 to TRN-6: parameter groups, AdamW, clipping, schedulers, gradient accumulation, full
+  fine-tuning</li>
+<li>XAI-5, XAI-6: explanation-quality metrics and the random-model baseline harness</li>
+<li>HIP-1, HIP-2, HIP-4, HIP-5: profiling, parallel reductions, fewer syncs, multi-block <code>dot</code>/<code>sum</code></li>
+<li>VIZ-1, VIZ-2: the JSON export format and the SVG renderer</li>
+<li>KS-1, KS-2: <code>install()</code> and a benchmark suite</li>
+<li>HIP-9: a ROCm 10.0 evaluation image and a pinned host kernel</li>
+</ul>
+<h3 id="v12-real-pretrained-models">v1.2 "Real pretrained models"<a class="headerlink" href="#v12-real-pretrained-models" title="Permanent link">&para;</a></h3>
+<p>Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.</p>
+<ul>
+<li>IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast</li>
+<li>LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizer, generation, KV cache, the
+  golden-logit harness, AttnLRP parity with LXT</li>
+<li>HIP-3, HIP-6, HIP-7: caching allocator, fused kernels, bounded-memory Conv2D</li>
+<li>VIZ-3, VIZ-6a: Vega-Lite HTML and the token relevance view</li>
+<li>NB-1, NB-2: native rich display and the <code>.ipynb</code>/HTML report writer</li>
+<li>AGT-1 to AGT-4: the native orchestrator core</li>
+<li>KS-8, KS-9: GPU CI on gfx1151 and a model zoo (ResNet18, SmolLM2)</li>
+</ul>
+<h3 id="v13-tune-and-explain">v1.3 "Tune and explain"<a class="headerlink" href="#v13-tune-and-explain" title="Permanent link">&para;</a></h3>
+<p>Fine-tune the models from v1.2 and explain what the fine-tuning changed.</p>
+<ul>
+<li>TRN-7 to TRN-11: LoRA, LRP through LoRA, LoReFT, IA³, model diffing</li>
+<li>KD-1, KD-2: distillation and teacher–student explanation agreement</li>
+<li>XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
+  Anchors</li>
+<li>INT-1 to INT-6: neighbors, CKA, probe controls, intrinsic dimension, PCA, TCAV and CRP</li>
+<li>TDA-1 to TDA-8, TDA-11: persistent homology and RTD</li>
+<li>KS-3, KS-4: uncertainty and adversarial robustness</li>
+<li>Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test</li>
+</ul>
+<h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
+<p>Feature discovery on real models, and agents that can drive the library.</p>
+<ul>
+<li>FEAT-1 to FEAT-7: the featurizer interface, TopK and its family, metrics, transcoders, BSF,
+  steering</li>
+<li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
+  topology</li>
+<li>VIZ-4, VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector</li>
+<li>AGT-5, AGT-8: the native MCP server and automated feature descriptions</li>
+<li>NB-3: Python notebook display</li>
+<li>LLM-8, LLM-9: tuned lens, AtP*, Gemma 3</li>
+<li>KS-5: TracIn data attribution</li>
+<li>IO-7: <code>.npy</code>/<code>.npz</code>, for published SAE dictionaries</li>
+<li>ARCH-1 to ARCH-3: B-cos layers, concept bottleneck models, mixture of experts</li>
+<li>HIP-8: hipBLASLt and bf16 GEMM</li>
+</ul>
+<h3 id="backlog-not-yet-scheduled">Backlog, not yet scheduled<a class="headerlink" href="#backlog-not-yet-scheduled" title="Permanent link">&para;</a></h3>
+<p>These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
+IO-11, INT-7, INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8, ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
+<h3 id="v20">v2.0<a class="headerlink" href="#v20" title="Permanent link">&para;</a></h3>
+<p>Larger changes that touch every module or backend.</p>
+<ul>
+<li>A dtype system and full bf16 training (HIP-11)</li>
+<li>Strided views and broadcasting (KS-10)</li>
+<li>Op-level autograd (KS-12)</li>
+<li>WMMA, HIP graphs and FlashAttention for training only (HIP-12)</li>
+<li>Attribution graphs and parameter decomposition (FEAT-9, FEAT-10)</li>
+<li>ARCH items at P1 and P2</li>
+<li>ONNX, GGUF and QLoRA (IO-8, IO-9, TRN-14)</li>
+<li>Python wheels and a vcpkg port (KS-11)</li>
+</ul>
+<h2 id="fnd-foundations">FND: Foundations<a class="headerlink" href="#fnd-foundations" title="Permanent link">&para;</a></h2>
+<p>These unblock most of the other epics. <code>named_parameters()</code> alone blocks saving, freezing, LoRA,
+Hugging Face import and optimizer parameter groups, because <code>Module::parameters()</code>
+(<code>module.hpp:140</code>) returns parameters with no names.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FND-1</td>
+<td><code>named_parameters()</code> with hierarchical names (<code>blocks.3.attn.q_proj.weight</code>)</td>
+<td>Saving, loading, freezing by name, LoRA targeting and Hugging Face name mapping all need names</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FND-2</td>
+<td>Parameter freezing: a per-parameter <code>requires_grad</code> flag, and a "skip the weight gradient, still compute the input gradient" branch in every backward</td>
+<td>Fine-tuning and LoRA. Skipping <code>dW</code> is where the memory and compute savings come from</td>
+<td>FND-1</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FND-3</td>
+<td>Top-k selection, on the host first and then on the device</td>
+<td>TopK and BSF featurizers, MoE routers, top-k sampling, nearest neighbors, landmarks</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FND-4</td>
+<td>Symmetric eigensolver, power iteration, and a small SVD/QR (Jacobi)</td>
+<td>PCA, BSF stable rank, LoReFT's orthonormal projection, PiSSA, intruder-dimension checks, spectral distances</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FND-5</td>
+<td>BatchNorm running statistics and an eval mode, plus a canonizer that folds BatchNorm into the previous layer before LRP (<code>plans/lrp_issues.md</code> #8)</td>
+<td>Today a sample's explanation depends on the rest of its batch</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>FND-6</td>
+<td>Conv2D stride and padding</td>
+<td>Needed to load VGG and ResNet, the standard LRP benchmark models</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FND-7</td>
+<td>A seeding and determinism API (<code>set_seed</code>, a flag that forbids nondeterministic paths)</td>
+<td>Reproducible explanations. Most of the pieces already exist</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>FND-8</td>
+<td>Device-consistency checks at module and loss boundaries, and fix <code>Tensor::Stack</code> tagging (<code>plans/gpu_review.md</code> #1, #2)</td>
+<td>A CPU tensor fed to a GPU module aborts the process on gfx1151</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+</tbody>
+</table>
+<h2 id="io-serialization-and-model-import">IO: Serialization and model import<a class="headerlink" href="#io-serialization-and-model-import" title="Permanent link">&para;</a></h2>
+<p>One format does everything: <strong>safetensors</strong>. It is a small JSON header followed by raw
+little-endian data, it cannot run code, and nearly every Hugging Face model ships in it. It covers
+pulsatrix's own checkpoints, optimizer state, LoRA adapters, imported models, published sparse
+autoencoder dictionaries and a model zoo.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IO-1</td>
+<td>Native safetensors reader and writer. Check every offset against the file size, reject overlaps and holes, and use overflow-safe size arithmetic</td>
+<td>The single file format</td>
+<td>—</td>
+<td>P0</td>
+<td>S–M</td>
+</tr>
+<tr>
+<td>IO-2</td>
+<td>Native checkpoint format: safetensors with <code>format_version</code> metadata, optimizer state in a sibling file, and a migration table between versions</td>
+<td>Save and resume training; the passing test is a bit-identical forward pass and loss curve after reload</td>
+<td>IO-1, FND-1</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>IO-3</td>
+<td>An optional converter for legacy pickle files (<code>.pt</code>, <code>.pth</code>, <code>.pkl</code>). It uses <code>torch.load(weights_only=True)</code> with torch 2.6 or newer and writes safetensors</td>
+<td>Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors</td>
+<td>IO-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>IO-4</td>
+<td>A name-mapping manifest with transforms: transpose (pulsatrix <code>Linear</code> stores <code>(in, out)</code>, PyTorch stores <code>(out, in)</code>), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys</td>
+<td>Turns Hugging Face names and layouts into pulsatrix modules</td>
+<td>FND-1, IO-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>IO-5</td>
+<td>Read Hugging Face <code>config.json</code> and sharded <code>model.safetensors.index.json</code></td>
+<td>Every small LLM on the Hub uses these</td>
+<td>IO-1</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>IO-6</td>
+<td>Upcast bf16 and fp16 weights to fp32 on load (exact)</td>
+<td>Most published weights are bf16</td>
+<td>IO-1</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>IO-7</td>
+<td><code>.npy</code> and <code>.npz</code> reading, with object and big-endian dtypes rejected</td>
+<td>Many SAE dictionaries and Python users' arrays</td>
+<td>—</td>
+<td>P1</td>
+<td>S–M</td>
+</tr>
+<tr>
+<td>IO-8</td>
+<td>ONNX import, weights only</td>
+<td>Graph import would mean pattern-matching ONNX ops back into modules, which is research</td>
+<td>IO-1</td>
+<td>P3</td>
+<td>M</td>
+</tr>
+<tr>
+<td>IO-9</td>
+<td>GGUF import for F32, F16 and Q8_0, with every count and size checked for overflow</td>
+<td>Some small models only exist as GGUF. GGUF parsers have a long CVE history</td>
+<td>IO-1</td>
+<td>P3</td>
+<td>M</td>
+</tr>
+<tr>
+<td>IO-10</td>
+<td>Keras and TensorFlow weights, through the Python converter only. Never call <code>load_model</code> on an untrusted file</td>
+<td>Small user base, repeated <code>safe_mode</code> bypasses</td>
+<td>IO-3</td>
+<td>P3</td>
+<td>M</td>
+</tr>
+<tr>
+<td>IO-11</td>
+<td>joblib/sklearn pickles and TorchScript: not supported. Document how to export from them instead</td>
+<td>TorchScript is deprecated upstream. Pickle is code</td>
+<td>—</td>
+<td>P3</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="trn-training-and-fine-tuning">TRN: Training and fine-tuning<a class="headerlink" href="#trn-training-and-fine-tuning" title="Permanent link">&para;</a></h2>
+<p>The infrastructure comes first. Most LoRA failures in the literature are configuration problems,
+not method problems: a study of LoRA variants from January 2026 found that, once the learning
+rate is tuned, plain LoRA matches or beats most of them.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TRN-1</td>
+<td>Optimizer parameter groups, each with its own learning rate and weight decay</td>
+<td>No weight decay on norms and biases; LoRA+</td>
+<td>FND-1</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TRN-2</td>
+<td>AdamW (decoupled weight decay) and SGD with momentum and Nesterov</td>
+<td>The default for transformer fine-tuning</td>
+<td>TRN-1</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TRN-3</td>
+<td>Global gradient-norm clipping</td>
+<td>Stability at LoRA's higher learning rates</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TRN-4</td>
+<td>Learning-rate schedulers: warmup, cosine, linear, constant</td>
+<td>Every published recipe assumes them</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TRN-5</td>
+<td>Gradient accumulation that divides by the total token count, not the mean of micro-batch means</td>
+<td>Averaging micro-batch means is wrong when sequence lengths vary</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TRN-6</td>
+<td>A full fine-tuning recipe on a small pretrained model</td>
+<td>The baseline every other method is compared against</td>
+<td>FND-2, IO-2</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TRN-7</td>
+<td><code>LoRALinear</code>: a frozen base weight plus a low-rank update, with merge and unmerge, adapter save and load using PEFT key names, and PEFT's defaults. Documentation follows "LoRA Without Regret": apply it to all layers, use about 10× the full fine-tuning learning rate</td>
+<td>The main fine-tuning method</td>
+<td>FND-2, IO-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TRN-8</td>
+<td>LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters</td>
+<td>Shows what the fine-tuning changed, per input. No other library does this</td>
+<td>TRN-7</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TRN-9</td>
+<td>LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact</td>
+<td>Fine-tuning that is itself an interpretable subspace</td>
+<td>FND-4</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TRN-10</td>
+<td>IA³ (learned rescaling vectors)</td>
+<td>Tiny and trivially explainable</td>
+<td>FND-2</td>
+<td>P2</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TRN-11</td>
+<td>Model diffing: relevance of the fine-tuned model minus relevance of the base model, plus an intruder-dimension check on the weights</td>
+<td>Shows what a fine-tune changed across a dataset</td>
+<td>TRN-8, FND-4</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TRN-12</td>
+<td>Activation checkpointing per block. Off in explain mode, because LRP needs the cached activations</td>
+<td>Memory for 1B-parameter models</td>
+<td>—</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TRN-13</td>
+<td>rsLoRA, LoRA+ and DoRA</td>
+<td>Small gains that a tuned learning rate often matches</td>
+<td>TRN-7</td>
+<td>P2</td>
+<td>S–M</td>
+</tr>
+<tr>
+<td>TRN-14</td>
+<td>PiSSA, VeRA, AdaLoRA, GaLore, QLoRA, prefix and prompt tuning, BitFit, adapter layers, and 2025–26 LoRA variants</td>
+<td>Low value per the 2026 variant study, or blocked by missing dtypes</td>
+<td>TRN-7</td>
+<td>P3</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="llm-running-real-language-models">LLM: Running real language models<a class="headerlink" href="#llm-running-real-language-models" title="Permanent link">&para;</a></h2>
+<p>Target order: SmolLM2-135M, then Qwen2.5-0.5B, Llama-3.2-1B, Qwen3-0.6B and Gemma 3 270M. SmolLM2
+needs the fewest changes. Gemma 3 has the most quirks, but Google's Gemma Scope 2 publishes sparse
+autoencoders and transcoders for every layer, so it pays off for the FEAT epic.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM-1</td>
+<td>Attention upgrade: grouped-query attention (<code>num_kv_heads</code>), <code>head_dim</code> separate from <code>d_model / num_heads</code>, optional QKV bias, causal and padding masks, a RoPE layout flag (Hugging Face "rotate half" vs. adjacent pairs), and a position offset</td>
+<td>Without these, no current small LLM loads</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>LLM-2</td>
+<td>A tied LM head that shares the embedding matrix</td>
+<td>SmolLM2, Qwen3 and Gemma 3 all tie their embeddings</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>LLM-3</td>
+<td>A native byte-level BPE tokenizer that reads Hugging Face <code>tokenizer.json</code>, with a hand-written pre-tokenizer and a generated Unicode category table (<code>std::regex</code> can't match Unicode categories). It passes when its ids match Hugging Face on a 10,000-line multilingual corpus</td>
+<td>No Python needed to tokenize</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>LLM-4</td>
+<td>Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling</td>
+<td>Run the model, not just score it</td>
+<td>LLM-1, FND-3</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>LLM-5</td>
+<td>A preallocated KV cache</td>
+<td>Generation without recomputing the whole prefix</td>
+<td>LLM-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>LLM-6</td>
+<td>Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3</td>
+<td>Catches layout bugs that still "load"</td>
+<td>IO-4</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>LLM-7</td>
+<td>AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads</td>
+<td>The headline result: pulsatrix explains a real LLM and matches the reference</td>
+<td>LLM-1 to LLM-3, LLM-6</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>LLM-8</td>
+<td>Tuned lens and AtP* (corrected attribution patching)</td>
+<td>Better versions of the logit lens and patching that already exist</td>
+<td>LLM-1</td>
+<td>P2</td>
+<td>S–M</td>
+</tr>
+<tr>
+<td>LLM-9</td>
+<td>Gemma 3 support: sliding-window attention, <code>(1 + w)</code> RMSNorm, embedding scaling</td>
+<td>Unlocks Gemma Scope 2 dictionaries</td>
+<td>LLM-1</td>
+<td>P3</td>
+<td>M</td>
+</tr>
+</tbody>
+</table>
+<h2 id="xai-question-driven-explainability-framework">XAI: Question-driven explainability framework<a class="headerlink" href="#xai-question-driven-explainability-framework" title="Permanent link">&para;</a></h2>
+<p>This epic builds two frameworks into the library:</p>
+<ul>
+<li><strong>Four reasons to explain</strong> (Adadi and Berrada, 2018): to <em>justify</em> a decision, to <em>control</em>
+  the model (find its flaws), to <em>improve</em> it, and to <em>discover</em> something new from it.</li>
+<li><strong>Nine question categories</strong> (Liao, Gruen and Miller, CHI 2020): Input (data), Output,
+  Performance, How (global), Why, Why not, What if, How to be that (a different prediction), and
+  How to still be this (the same prediction).</li>
+</ul>
+<p>You state the question and the reason. Pulsatrix picks the explainers that answer that question,
+runs the checks that reason requires, and returns a report that says what the result does and
+doesn't support.</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Primary method</th>
+<th>Status in pulsatrix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Why</td>
+<td>LRP composites, Integrated Gradients</td>
+<td>Have</td>
+</tr>
+<tr>
+<td>Why not</td>
+<td>Contrastive LRP (relevance of logit P minus logit Q)</td>
+<td>Have</td>
+</tr>
+<tr>
+<td>What if</td>
+<td>PDP and ICE, re-running with an edited input</td>
+<td>Have</td>
+</tr>
+<tr>
+<td>How (global)</td>
+<td>Global surrogate tree, PDP, TCAV, CRP</td>
+<td>Partial; XAI-4, INT-6</td>
+</tr>
+<tr>
+<td>How to be that</td>
+<td>Counterfactual search</td>
+<td>Gap; XAI-4</td>
+</tr>
+<tr>
+<td>How to still be this</td>
+<td>Anchors</td>
+<td>Gap; XAI-4</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Metrics, calibration, per-slice error, uncertainty</td>
+<td>Partial; KS-3</td>
+</tr>
+<tr>
+<td>Input (data)</td>
+<td>Dataset statistics, nearest training examples, data attribution</td>
+<td>Partial; INT-1, KS-5</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Output schema and label documentation</td>
+<td>Template only</td>
+</tr>
+</tbody>
+</table>
+<p>The reason changes the defaults:</p>
+<ul>
+<li><strong>Justify:</strong> faithfulness and stability metrics are required, and the report carries
+  uncertainty.</li>
+<li><strong>Control:</strong> the model-randomization test and per-slice error are required.</li>
+<li><strong>Improve:</strong> attributions are aggregated over the dataset to surface spurious features.</li>
+<li><strong>Discover:</strong> concept and featurizer tools run, each with a random-model baseline.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XAI-1</td>
+<td><code>XaiQuestion</code> (9 values) and <code>XaiReason</code> (4 values), and a <code>capabilities()</code> declaration on every explainer</td>
+<td>Machine-readable "what this explainer answers"</td>
+<td>—</td>
+<td>P0–P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>XAI-2</td>
+<td><code>ExplanationPlanner::plan(question, reason, model_traits)</code>, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs</td>
+<td>The framework users actually call</td>
+<td>XAI-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>XAI-3</td>
+<td>An <code>Explanation</code> report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes</td>
+<td>Explanations that say what they don't support</td>
+<td>XAI-2</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>XAI-4</td>
+<td>The missing explainers: counterfactuals (gradient-based first, then a diverse variant), a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives</td>
+<td>Covers How to be that, How to still be this and How (global)</td>
+<td>XAI-1, INT-1</td>
+<td>P1</td>
+<td>M each</td>
+</tr>
+<tr>
+<td>XAI-5</td>
+<td>Explanation-quality metrics in the Quantus families: deletion and insertion curves (with the ROAD correction), the model-parameter randomization test, sparseness and complexity</td>
+<td>Today pulsatrix has conservation and stability checks only</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>XAI-6</td>
+<td><code>NullModelBaseline</code>: re-run any explainer, probe or featurizer on a re-initialized copy of the model and report the difference</td>
+<td>The baseline rule above, as one call</td>
+<td>FND-1</td>
+<td>P0</td>
+<td>S–M</td>
+</tr>
+</tbody>
+</table>
+<h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>INT-1</td>
+<td>Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering</td>
+<td>The cheapest useful embedding tool; also a cross-model alignment score</td>
+<td>FND-3</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>INT-2</td>
+<td>Linear CKA (debiased)</td>
+<td>Compare layers across models, training runs and backends</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>INT-3</td>
+<td>Control tasks for <code>LinearProbe</code> (selectivity = probe accuracy minus control accuracy)</td>
+<td>High probe accuracy can come from the probe, not the representation</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>INT-4</td>
+<td>Anisotropy, effective rank and TwoNN intrinsic dimension</td>
+<td>Explains why raw cosine similarity misleads; one number per layer</td>
+<td>INT-1</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>INT-5</td>
+<td>PCA projections</td>
+<td>2D and 3D views, steering directions, preprocessing for TDA</td>
+<td>FND-4</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>INT-6</td>
+<td>TCAV (with significance against random concepts) and Concept Relevance Propagation</td>
+<td>Concept-level explanations, and CRP reuses pulsatrix's LRP rules</td>
+<td>INT-3</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>INT-7</td>
+<td>RSA and SVCCA</td>
+<td>Mostly covered by CKA</td>
+<td>FND-4</td>
+<td>P2</td>
+<td>—</td>
+</tr>
+<tr>
+<td>INT-8</td>
+<td>UMAP and t-SNE: export the data only, don't implement</td>
+<td>Expensive, and they distort distances and cluster sizes</td>
+<td>VIZ-1</td>
+<td>P3</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tda-topological-data-analysis">TDA: Topological data analysis<a class="headerlink" href="#tda-topological-data-analysis" title="Permanent link">&para;</a></h2>
+<p>Persistent homology measures the shape of a point cloud: its clusters (H0), loops (H1) and
+voids (H2), and how long each one lasts as the scale grows. The plan treats it as a typed
+pipeline:</p>
+<div class="highlight"><pre><span></span><code>PointCloud → DistanceMatrix → Filtration → Diagram → Vectorization
+</code></pre></div>
+<p>The category theory pays off in one place: <strong>stability</strong>. Each stage has a bound on how much its
+output can move when its input moves, and those bounds compose. So every result carries a
+certified error bar (<code>Certified&lt;T&gt;{value, bound, provenance}</code>) that adds up the fp32 distance
+error, the subsampling error and the vectorization error. The API doesn't expose <code>Functor</code>
+classes that nothing checks.</p>
+<p>Pulsatrix writes H0 itself (a minimum spanning tree, on CPU and GPU), vendors Ripser (MIT) for H1
+and H2, and writes the distances, vectorizations and significance tests itself. GUDHI's
+GPL-licensed parts and giotto-ph (AGPL) are avoided.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TDA-1</td>
+<td>A <code>PointCloud</code> built from <code>ActivationSnapshot</code>s, with flatten and pooling options, concatenated across batches</td>
+<td>The input to everything below</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TDA-2</td>
+<td>Pairwise distances via GEMM on every backend, with an fp32 error bound</td>
+<td>Distances are the only part that touches the model's dimension</td>
+<td>TDA-1</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TDA-3</td>
+<td>H0 as a minimum spanning tree</td>
+<td>Exact, fast and GPU-friendly</td>
+<td>TDA-2</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TDA-4</td>
+<td>Vendored Ripser for H1 and H2, returning critical edges and cocycles</td>
+<td>Loops and voids</td>
+<td>TDA-2</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-5</td>
+<td><code>Diagram</code>, bottleneck and Wasserstein distances, <code>Certified&lt;T&gt;</code>, and property tests for stability</td>
+<td>Compare layers, models and seeds with certified error</td>
+<td>TDA-3, TDA-4</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-6</td>
+<td>Betti curves, persistence landscapes, persistence images, persistent entropy</td>
+<td>Turn diagrams into numbers for probes and plots</td>
+<td>TDA-5</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TDA-7</td>
+<td>Farthest-point landmarks, which give the subsampling error bound</td>
+<td>Persistent homology can't run on 100,000 activations</td>
+<td>FND-3</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TDA-8</td>
+<td>Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines</td>
+<td>Every reported loop needs a p-value</td>
+<td>TDA-5</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-9</td>
+<td>Barcode, persistence diagram and Betti curve views, with JSON and SVG export</td>
+<td>See the result</td>
+<td>TDA-5, VIZ-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-10</td>
+<td><strong>A manifold verifier for featurizer blocks:</strong> decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control</td>
+<td>Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new</td>
+<td>TDA-4, TDA-7, TDA-8, FEAT-6</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-11</td>
+<td>Representation Topology Divergence next to CKA in one <code>compare_representations()</code> report</td>
+<td>Catches clusters and loops that CKA misses</td>
+<td>TDA-4, INT-2</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>TDA-12</td>
+<td>Betti numbers layer by layer through a network, with a random-network baseline</td>
+<td>Reproduces "topology simplifies through the layers" (Naitzat et al., 2020)</td>
+<td>TDA-7, TDA-8</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-13</td>
+<td>Spectral and distance-to-measure distances</td>
+<td>Raw distances concentrate in high dimensions and hide loops</td>
+<td>INT-1, FND-4</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-14</td>
+<td>Mapper, with an instability score and a parameter sweep, never a single graph</td>
+<td>Mapper output depends heavily on its parameters</td>
+<td>FND-4, TDA-3</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-15</td>
+<td>A differentiable persistence loss</td>
+<td>Topology as a training signal</td>
+<td>TDA-4</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-16</td>
+<td>Probes on diagram features for out-of-distribution and trojan detection, compared against non-topological features</td>
+<td>Only worth it if it beats simpler statistics</td>
+<td>TDA-6</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>TDA-17 to TDA-19</td>
+<td>Image/kernel persistence across layers, zigzag persistence, multiparameter persistence</td>
+<td>Research-grade</td>
+<td>TDA-4</td>
+<td>P3</td>
+<td>L–XL</td>
+</tr>
+</tbody>
+</table>
+<p>Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
+weight variance.</p>
+<h2 id="kd-surrogates-and-student-teacher">KD: Surrogates and student-teacher<a class="headerlink" href="#kd-surrogates-and-student-teacher" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KD-1</td>
+<td>A knowledge-distillation loss (softened teacher outputs, with the T² scaling)</td>
+<td>A wrapper around the existing <code>KLDivergenceLoss</code></td>
+<td>—</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>KD-2</td>
+<td>A teacher–student explanation-agreement test: compare LRP or IG maps with CKA or rank correlation</td>
+<td>Turns distillation into a test of whether the student uses the same evidence</td>
+<td>KD-1, INT-2</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>KD-3</td>
+<td>Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine</td>
+<td>Interpretable students; rules connect to pulsatrix's neuro-symbolic side</td>
+<td>KD-1</td>
+<td>P2</td>
+<td>—</td>
+</tr>
+<tr>
+<td>KD-4</td>
+<td>Born-again networks and a DistilBERT-style recipe</td>
+<td>Small and inconsistent gains</td>
+<td>KD-1, IO-2</td>
+<td>P3</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT: Featurizers, sparse autoencoders and Goodfire BSF<a class="headerlink" href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" title="Permanent link">&para;</a></h2>
+<p>Goodfire's <strong>Block-Sparse Featurizers</strong> (BSF, June 2026) are like sparse autoencoders, except
+the unit of sparsity is a small block of 2–4 dimensions rather than one direction. That lets one
+feature be a curve or a circle instead of a line. BSF is the newest member of a family pulsatrix
+can't represent yet, so the plan builds the family first, behind one interface.</p>
+<p>Sparse autoencoders have real limits: they lose to linear probes out of distribution, steering
+with their features loses to simple difference-of-means vectors, and BSF still splits features.
+They ship here as discovery tools with metrics and baselines, not as detectors.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FEAT-1</td>
+<td>A <code>Featurizer</code> interface (encode, decode, loss, decoder normalization), with the existing SAE ported to it and given unit-norm decoders, an L0 metric and dead-latent tracking</td>
+<td>One interface for the whole family</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FEAT-2</td>
+<td>TopK SAE with the auxiliary loss for dead latents</td>
+<td>Removes L1 shrinkage; sets sparsity directly</td>
+<td>FEAT-1, FND-3</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FEAT-3</td>
+<td>Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default</td>
+<td>Without these, no featurizer result can be trusted</td>
+<td>FEAT-1, XAI-6</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FEAT-4</td>
+<td>BatchTopK, JumpReLU and Matryoshka SAEs</td>
+<td>Fix specific failures of TopK</td>
+<td>FEAT-2</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td>FEAT-5</td>
+<td>Transcoders and skip transcoders</td>
+<td>Reported to be more interpretable than SAEs</td>
+<td>FEAT-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>FEAT-6</td>
+<td>BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics</td>
+<td>The newest member of the family</td>
+<td>FEAT-2, FND-4</td>
+<td>P1</td>
+<td>L</td>
+</tr>
+<tr>
+<td>FEAT-7</td>
+<td>Steering with difference-of-means by default and featurizer directions as an option, with a reliability report</td>
+<td>The simple baseline usually wins</td>
+<td>FEAT-1</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>FEAT-8</td>
+<td>Crosscoders, including the Delta-Crosscoder for fine-tuning diffs</td>
+<td>Model diffing across layers and models</td>
+<td>FEAT-1, IO-2</td>
+<td>P2</td>
+<td>—</td>
+</tr>
+<tr>
+<td>FEAT-9</td>
+<td>Parameter decomposition (SPD and VPD)</td>
+<td>Interpretability in weight space; few libraries have it</td>
+<td>FND-4</td>
+<td>P2</td>
+<td>L–XL</td>
+</tr>
+<tr>
+<td>FEAT-10</td>
+<td>Attribution graphs with cross-layer transcoders</td>
+<td>The existing circuit graph plus LRP may cover most of the value first</td>
+<td>FEAT-5</td>
+<td>P2</td>
+<td>XL</td>
+</tr>
+</tbody>
+</table>
+<p>Open: no LRP rule exists yet for propagating relevance through a block top-k. FEAT-6 needs one.</p>
+<h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>
+<p>These are ranked by how well they fit an explainability-first library.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARCH-1</td>
+<td>B-cos layers</td>
+<td>Self-explaining networks whose explanation can be compared directly with LRP</td>
+<td>—</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>ARCH-2</td>
+<td>Concept bottleneck models</td>
+<td>Supports "what if this concept were true" interventions. Watch for concept leakage</td>
+<td>—</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>ARCH-3</td>
+<td>Mixture of experts with router attribution</td>
+<td>The router's choice is a free, discrete explanation</td>
+<td>FND-3</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>ARCH-4</td>
+<td>Prototype networks (ProtoPNet)</td>
+<td>"This looks like that" explanations</td>
+<td>INT-1</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>ARCH-5</td>
+<td>Graph neural networks with GNN-LRP</td>
+<td>A new data type; <code>gather_rows</code> and <code>scatter_add_rows</code> already exist</td>
+<td>—</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>ARCH-6</td>
+<td>Mamba-2 / SSD</td>
+<td>Extends the existing Mamba and MambaLRP</td>
+<td>—</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>ARCH-7</td>
+<td>xLSTM</td>
+<td>Extends the recurrent family</td>
+<td>—</td>
+<td>P2–P3</td>
+</tr>
+<tr>
+<td>ARCH-8</td>
+<td>Kolmogorov–Arnold networks</td>
+<td>Interpretable by construction, but they lose to MLPs outside symbolic tasks</td>
+<td>—</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>ARCH-9</td>
+<td>Diffusion transformers (adaLN)</td>
+<td>The timestep embedding and noise schedules already exist</td>
+<td>—</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>ARCH-10</td>
+<td>Gated DeltaNet and Titans, Hopfield layers, JEPA, self-explaining neural networks, hypernetworks, neural ODEs and liquid networks</td>
+<td>Lower fit or poor match with hand-written backward passes</td>
+<td>—</td>
+<td>P3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="viz-visualization-pack">VIZ: Visualization pack<a class="headerlink" href="#viz-visualization-pack" title="Permanent link">&para;</a></h2>
+<p>Interactive visualization libraries for interpretability tend to go stale, while stable data
+formats last. The plan keeps ImGui for live views and puts every view on top of a versioned JSON
+format, with static and web renderers next to it.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VIZ-1</td>
+<td>A versioned JSON document model (<code>pulsatrix.&lt;kind&gt;.v1</code>) for attributions, heatmaps, token relevance, circuit graphs, training logs and feature dashboards. The ImGui widgets read it too. NaN and infinity encode as null plus a flag</td>
+<td>One source of truth for every renderer</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>VIZ-2</td>
+<td>A dependency-free SVG renderer: bar, waterfall, heatmap, token strip, beeswarm</td>
+<td>Publication figures with no GPU or display, including in CI</td>
+<td>VIZ-1</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>VIZ-3</td>
+<td>Self-contained Vega-Lite HTML, with the JavaScript inlined or loaded from a CDN</td>
+<td>Hover, zoom and export for free, in a browser or notebook</td>
+<td>VIZ-1</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>VIZ-4</td>
+<td>Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read</td>
+<td>Large graphs get a mature viewer for free</td>
+<td>VIZ-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>VIZ-6</td>
+<td>New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots</td>
+<td>Fill the gaps between the current widgets and the reference tools</td>
+<td>VIZ-1</td>
+<td>P2</td>
+<td>M each</td>
+</tr>
+<tr>
+<td>VIZ-7</td>
+<td>A node editor for circuit graphs</td>
+<td>Only if graphs outgrow the current view; VIZ-4 covers large ones</td>
+<td>—</td>
+<td>P3</td>
+<td>M</td>
+</tr>
+</tbody>
+</table>
+<p>(VIZ-5, the notebook path, moved to the NB epic.)</p>
+<h2 id="nb-notebook-layer">NB: Notebook layer<a class="headerlink" href="#nb-notebook-layer" title="Permanent link">&para;</a></h2>
+<p>Notebook output needs neither Python nor a running kernel. The layers build on each other. ImGui
+can't draw inline in a notebook, so it stays the desktop tool and shares the VIZ-1 data.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NB-1</td>
+<td><code>pulsatrix::mime_bundle_repr(const T&amp;)</code> overloads that return MIME bundles: tensor summaries, attribution heatmaps as SVG, token relevance, circuit graphs and persistence diagrams as Vega-Lite. The C++ Jupyter kernel xeus-cpp finds them automatically, so pulsatrix doesn't depend on it</td>
+<td>Rich display in a C++ notebook</td>
+<td>VIZ-1, VIZ-2</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>NB-2</td>
+<td>A C++ <code>Report</code> builder that writes <code>.ipynb</code> files (nbformat 4.5) and self-contained HTML: markdown, code shown as text, and rich outputs</td>
+<td>Notebook-format results with no Python and no kernel; they render on GitHub, in VS Code and in Quarto</td>
+<td>NB-1</td>
+<td>P1</td>
+<td>S–M</td>
+</tr>
+<tr>
+<td>NB-3</td>
+<td>Python <code>_repr_mimebundle_</code> on the bound types, delegating to NB-1 so both languages render the same (golden test), then interactive views with anywidget</td>
+<td>Notebook users on the Python side</td>
+<td>NB-1</td>
+<td>P2</td>
+<td>S → M</td>
+</tr>
+<tr>
+<td>NB-4</td>
+<td>xeus-cpp support: a <code>pulsatrix_notebook.hpp</code> header, example notebooks, and a Linux CI smoke test. Windows and GPU code inside notebook cells are marked experimental. Every precondition reachable from a cell throws instead of aborting, because a crash kills the kernel</td>
+<td>Run pulsatrix interactively in C++</td>
+<td>NB-1</td>
+<td>P3</td>
+<td>M</td>
+</tr>
+<tr>
+<td>NB-5</td>
+<td>A WebAssembly build of the CPU backend for JupyterLite</td>
+<td>Notebooks in the browser with nothing installed</td>
+<td>NB-4</td>
+<td>Deferred</td>
+<td>XL</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hip-training-efficiency-on-amd-gpus">HIP: Training efficiency on AMD GPUs<a class="headerlink" href="#hip-training-efficiency-on-amd-gpus" title="Permanent link">&para;</a></h2>
+<p>The bottlenecks are structural, so measure first and fix those before anything exotic. On the
+gfx1151 APU almost every non-GEMM kernel in pulsatrix is limited by memory bandwidth at best. In
+practice they are limited by launch and sync overhead and by too little parallelism.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HIP-1</td>
+<td><code>scripts/profile_hip.sh</code>: a rocprofv3 wrapper that writes kernel time per op type to CSV</td>
+<td>The baseline, and the falsifier for every item below</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>HIP-2</td>
+<td>Reductions with one workgroup or one wave per row or channel (softmax, norms, column sums): wave shuffles using the runtime <code>warpSize</code> and 64-bit masks, then a shared-memory stage. Small channel counts get a deterministic two-stage grid reduction, no atomics</td>
+<td>BatchNorm at N=64, C=3, 224×224 currently runs 3 threads over 3.2 million elements</td>
+<td>HIP-1</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>HIP-3</td>
+<td>A caching allocator: size classes, a pool per stream, and a configurable budget instead of <code>hipMemGetInfo</code>, which overstates what the APU can allocate. Don't use <code>hipMallocAsync</code> (open corruption bugs on RDNA)</td>
+<td>Raw <code>hipMalloc</code> and <code>hipFree</code> on every tensor</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+</tr>
+<tr>
+<td>HIP-4</td>
+<td>Remove the 56 per-op <code>hipStreamSynchronize</code> calls. Sync only when the host reads a result, and add <code>PULSATRIX_HIP_SYNC_DEBUG=1</code> to bring them back for debugging</td>
+<td>Launch and sync cost more than the kernels on small models</td>
+<td>HIP-3, FND-8</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>HIP-5</td>
+<td><code>dot</code> and <code>sum</code> across many blocks (partials, then a second pass), deterministic</td>
+<td>They run on a single block today</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>HIP-6</td>
+<td>Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs</td>
+<td>Fewer launches and less memory traffic</td>
+<td>TRN-2</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td>HIP-7</td>
+<td>Conv2D that runs im2col and GEMM in batch chunks</td>
+<td>The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU</td>
+<td>FND-6</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>HIP-8</td>
+<td>A hipBLASLt probe on the pinned container, then bf16 GEMM through <code>hipblasGemmEx</code></td>
+<td>Reports conflict on whether hipBLASLt works on gfx1151 in ROCm 7.2.4; measure it</td>
+<td>HIP-1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td>HIP-9</td>
+<td>A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix)</td>
+<td>Known gfx1151 crashes depend on both</td>
+<td>—</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>HIP-10</td>
+<td>Zero-copy staging buffers on APUs, enabled only when the device reports itself as integrated</td>
+<td>Saves a copy on Strix Halo without slowing discrete GPUs</td>
+<td>HIP-3</td>
+<td>P2</td>
+<td>—</td>
+</tr>
+<tr>
+<td>HIP-11</td>
+<td>Full bf16 training</td>
+<td>Halves memory traffic and reaches the matrix cores. Needs a dtype in <code>Tensor</code></td>
+<td>IO-6</td>
+<td>P2</td>
+<td>XL</td>
+</tr>
+<tr>
+<td>HIP-12</td>
+<td>HIP graphs, WMMA or rocWMMA kernels, FlashAttention for training only, MIOpen</td>
+<td>Last: graphs have measured slowdowns on gfx11, and FlashAttention never builds the attention matrix that AttnLRP needs</td>
+<td>HIP-4</td>
+<td>P3</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="agt-agents-native-c">AGT: Agents, native C++<a class="headerlink" href="#agt-agents-native-c" title="Permanent link">&para;</a></h2>
+<p>Pulsatrix can run its own agent orchestrator without Python. There is no official C++ SDK for
+the Anthropic API or for MCP, but neither is hard to write against. The plain HTTP and JSON API is
+stable, and the 2026-07-28 MCP specification dropped the handshake and sessions, so a stdio server
+that only offers tools is small. The genuinely hard parts are narrow:</p>
+<ul>
+<li>TLS certificate trust on Windows and macOS;</li>
+<li>validating JSON Schema 2020-12;</li>
+<li>getting a 135M-parameter model to pick tools reliably.</li>
+</ul>
+<p>LLM agents live in <code>pulsatrix::orch</code> (target <code>pulsatrix_orchestrator</code>), because
+<code>pulsatrix::Agent</code> already names the reinforcement-learning policy contract.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AGT-1</td>
+<td>An optional <code>PULSATRIX_ENABLE_ORCHESTRATOR</code> target, off by default, with nlohmann/json (MIT). The same JSON library serves VIZ-1 and NB-1</td>
+<td>Keeps the core free of networking dependencies</td>
+<td>—</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>AGT-2</td>
+<td>An <code>HttpTransport</code> interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types</td>
+<td>Streaming LLM responses</td>
+<td>AGT-1</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>AGT-3</td>
+<td>Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format</td>
+<td>The orchestrator itself</td>
+<td>AGT-2</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>AGT-4</td>
+<td>A tool registry: name, description, input schema and a <code>std::function</code>. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry</td>
+<td>Define a tool once, use it everywhere</td>
+<td>AGT-1</td>
+<td>P1</td>
+<td>S–M</td>
+</tr>
+<tr>
+<td>AGT-5</td>
+<td>A native MCP server over stdio (2026-07-28 specification, with a fallback for older clients) that exposes explain, attribute, logit lens, patching and featurizer tools</td>
+<td>Lets Claude and other agents drive pulsatrix</td>
+<td>AGT-4, IO-1</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>AGT-6</td>
+<td>A local provider that runs pulsatrix's own LLM, with tool calls constrained by a token-level mask</td>
+<td>Agents with no network, and a model pulsatrix can explain</td>
+<td>LLM-1 to LLM-5, AGT-4</td>
+<td>P3</td>
+<td>M</td>
+</tr>
+<tr>
+<td>AGT-7</td>
+<td><strong>Explain an agent's tool choice:</strong> run AttnLRP from the logit of the first token that distinguishes the chosen tool, back over the prompt, the tool descriptions and the history. It passes if deleting the top-attributed tokens flips the choice more often than deleting random tokens</td>
+<td>No other library can explain why an agent picked a tool</td>
+<td>AGT-6, LLM-7</td>
+<td>P3</td>
+<td>L</td>
+</tr>
+<tr>
+<td>AGT-8</td>
+<td>Automated descriptions of featurizer latents: an LLM describes the top activations, then the description is scored by how well it predicts activations</td>
+<td>Labels thousands of features</td>
+<td>AGT-3, FEAT-1</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>AGT-9</td>
+<td>An interpretability agent that runs experiments on the model (MAIA-style)</td>
+<td>Research-grade</td>
+<td>AGT-3, AGT-4</td>
+<td>P3</td>
+<td>L</td>
+</tr>
+</tbody>
+</table>
+<p>AGT-3 has to follow the current Anthropic API rules:</p>
+<ul>
+<li>Forcing a specific tool returns HTTP 400 on the current Claude models; use automatic tool
+  choice with strict tool schemas instead.</li>
+<li>Tool results come first in the next user message.</li>
+<li>A 429 from a spend limit has no <code>retry-after</code> header and must not be retried.</li>
+<li>Back off with jitter on 5xx, 529 and mid-stream overload errors.</li>
+<li>Cache the system prompt and tool definitions.</li>
+<li>Read the API key from the environment and never log it.</li>
+</ul>
+<p>AGT-5 has to follow these security rules:</p>
+<ul>
+<li>Write nothing to stdout except protocol messages.</li>
+<li>Resolve every path and confine it to allowed directories.</li>
+<li>Load safetensors, GGUF and pulsatrix-native formats only, never pickle.</li>
+<li>Cap tensor and request sizes.</li>
+<li>Use opaque handles that expire.</li>
+<li>Treat tool output as untrusted.</li>
+</ul>
+<h2 id="ks-kitchen-sink">KS: Kitchen sink<a class="headerlink" href="#ks-kitchen-sink" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KS-1</td>
+<td>CMake <code>install()</code> and a package config, so other projects can <code>find_package(pulsatrix)</code></td>
+<td>There's no install step today</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+</tr>
+<tr>
+<td>KS-2</td>
+<td>A benchmark suite: step time, explanation time, conservation error</td>
+<td>Measures every HIP item and catches regressions</td>
+<td>—</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>KS-3</td>
+<td>Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction</td>
+<td>Answers the Performance question</td>
+<td>—</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>KS-4</td>
+<td>FGSM and PGD attacks, also used as a robustness test for explanations</td>
+<td>Robustness and the Control reason</td>
+<td>—</td>
+<td>P1</td>
+<td>S</td>
+</tr>
+<tr>
+<td>KS-5</td>
+<td>TracIn data attribution</td>
+<td>Answers "which training examples caused this"</td>
+<td>FND-1</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>KS-6</td>
+<td>Fairness metrics, drift detection and a model-card generator</td>
+<td>The Input question, and documentation</td>
+<td>—</td>
+<td>P2</td>
+<td>S each</td>
+</tr>
+<tr>
+<td>KS-7</td>
+<td>Wire the existing thread pool into <code>DataLoader</code>'s <code>num_workers</code></td>
+<td>Built but not connected</td>
+<td>—</td>
+<td>P2</td>
+<td>M</td>
+</tr>
+<tr>
+<td>KS-8</td>
+<td>GPU CI on a self-hosted gfx1151 runner</td>
+<td>The HIP backend is only tested by hand today</td>
+<td>HIP-9</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>KS-9</td>
+<td>A model zoo: ResNet18, VGG16 and SmolLM2 with reference heatmaps</td>
+<td>Reproducible examples on real models</td>
+<td>IO-4, FND-6</td>
+<td>P1</td>
+<td>M</td>
+</tr>
+<tr>
+<td>KS-10</td>
+<td>Strided views and broadcasting</td>
+<td>Removes copies everywhere; touches every kernel</td>
+<td>—</td>
+<td>P2</td>
+<td>L</td>
+</tr>
+<tr>
+<td>KS-11</td>
+<td>Python wheels and a vcpkg port</td>
+<td>Easier installation</td>
+<td>KS-1</td>
+<td>P2</td>
+<td>—</td>
+</tr>
+<tr>
+<td>KS-12</td>
+<td>EK-FAC influence functions, quantization, op-level autograd, distributed training</td>
+<td>Large or low priority for an explainability library</td>
+<td>—</td>
+<td>P3 / v2</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="open-questions">Open questions<a class="headerlink" href="#open-questions" title="Permanent link">&para;</a></h2>
+<p>These came up in the research and aren't settled yet.</p>
+<ul>
+<li><strong>BSF details.</strong> The exact MDL formula and the block-size defaults beyond the published example
+  need a full read of the papers.</li>
+<li><strong>Missing LRP rules.</strong> No published rule exists for relevance through a block top-k (BSF),
+  through a LoReFT intervention, or through LoRA under the gamma rule. The epsilon-rule split for
+  LoRA is our own derivation and needs a numerical check.</li>
+<li><strong>Qwen3 in LXT.</strong> LXT marks Qwen3 as experimental, with relevance skewed toward the first
+  token. The cause isn't documented.</li>
+<li><strong>hipBLASLt on gfx1151.</strong> Sources disagree on whether it works on ROCm 7.2.4. HIP-8 settles it.</li>
+<li><strong>rsLoRA scaling.</strong> It conflicts with the claim that 1/r scaling makes the learning rate
+  independent of rank. Only an experiment settles it.</li>
+<li><strong>Licenses.</strong> Llama 3.2's license terms for redistributing converted weights: ship converters,
+  not weights. The licenses of PHAT, Dionysus, Hera and Eirene weren't checked; none are needed
+  for the plan.</li>
+<li><strong>Mamba-2 and xLSTM.</strong> No published LRP rules found.</li>
+<li><strong>MCP security statistics.</strong> The figures cited come from secondary reports, not primary scans.</li>
+<li><strong>xeus-cpp.</strong> How version 0.10 loads prebuilt libraries, and whether prebuilt HIP kernels can
+  be called from notebook cells, needs a hands-on test.</li>
+<li><strong>Windows TLS.</strong> Whether the open cpp-httplib Windows certificate issue affects
+  <code>api.anthropic.com</code> needs a CI probe.</li>
+<li><strong>TDA numerics.</strong> The fp32 distance error between near-duplicate activations hasn't been
+  measured. Don't trust loops smaller than that error.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
