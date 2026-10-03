@@ -490,6 +490,9 @@ if(PULSATRIX_BUILD_EXAMPLES)
 
     add_executable(datalog_lrp_bridge_recipe examples/recipes/datalog_lrp_bridge.cpp)
     target_link_libraries(datalog_lrp_bridge_recipe PRIVATE pulsatrix_core)
+
+    add_executable(mnist_lrp_recipe examples/recipes/mnist_lrp.cpp)
+    target_link_libraries(mnist_lrp_recipe PRIVATE pulsatrix_core)
 endif()
 
 if(PULSATRIX_BUILD_TESTS)
