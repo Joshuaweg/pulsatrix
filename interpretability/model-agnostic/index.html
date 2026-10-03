@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/interpretability/model-agnostic/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../lrp/">
       
       
         <link rel="next" href="../deep-learning-approaches/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>Model-Agnostic - Pulsatrix</title>
+        <title>Model-Agnostic Explainers - Pulsatrix</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ad-hoc-interpretability-model-agnostic" class="md-skip">
+        <a href="#model-agnostic-explainers" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Model-Agnostic
+              Model-Agnostic Explainers
             
           </span>
         </div>
@@ -314,33 +314,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../customization/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Customization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../deep-learning/" class="md-nav__link">
         
   
@@ -405,17 +378,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
     
   
-    Ad-hoc Interpretability
+    Interpretability
   
 
     
@@ -426,12 +399,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Ad-hoc Interpretability
+    Interpretability
   
 
           </label>
@@ -469,6 +442,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer-wise Relevance Propagation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -488,7 +489,7 @@
   <span class="md-ellipsis">
     
   
-    Model-Agnostic
+    Model-Agnostic Explainers
   
 
     
@@ -506,7 +507,7 @@
   <span class="md-ellipsis">
     
   
-    Model-Agnostic
+    Model-Agnostic Explainers
   
 
     
@@ -543,6 +544,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#when-to-use-which" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use which
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-to-implement" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -570,6 +582,17 @@
     <span class="md-ellipsis">
       
         LIME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PDP
       
     </span>
   </a>
@@ -615,7 +638,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Learning Approaches
+    Gradient-Based Explainers
   
 
     
@@ -805,8 +828,73 @@
   
   
     <li class="md-nav__item">
-      <a href="../../recipes/" class="md-nav__link">
+      <a href="../../system-monitoring/" class="md-nav__link">
         
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -820,7 +908,471 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recipes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/xor_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XOR Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN vs. LSTM vs. GRU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Residual and Normalization Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CSV + DataLoader Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/mnist_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on MNIST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saliency and Integrated Gradients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grad-CAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KernelSHAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/interpretability/lime_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIME
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DQN on CartPole
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAE and PPO Clipping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sparse Autoencoder + Probe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalog LRP Bridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/visualization/training_dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -890,6 +1442,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#when-to-use-which" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to use which
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-to-implement" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -917,6 +1480,17 @@
     <span class="md-ellipsis">
       
         LIME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PDP
       
     </span>
   </a>
@@ -959,71 +1533,120 @@
   
 
 
-<h1 id="ad-hoc-interpretability-model-agnostic">Ad-hoc Interpretability — Model-Agnostic<a class="headerlink" href="#ad-hoc-interpretability-model-agnostic" title="Permanent link">&para;</a></h1>
-<p>These explainers treat the model as a black box: they only call it as
-<code>std::function&lt;Tensor(const Tensor&amp;)&gt;</code>, never touch its <code>ComputationGraph</code> or gradients, and
-so work with any callable — including non-pulsatrix models wrapped in a lambda. That's what
-"model-agnostic" means by construction here, not just in intent.</p>
+<h1 id="model-agnostic-explainers">Model-Agnostic Explainers<a class="headerlink" href="#model-agnostic-explainers" title="Permanent link">&para;</a></h1>
+<p>These explainers treat the model as a black box. They only call it as a
+<code>std::function&lt;Tensor(const Tensor&amp;)&gt;</code>: change the input, watch the output. They never touch
+its <code>ComputationGraph</code> or gradients, so they work with any callable, including non-pulsatrix
+models wrapped in a lambda.</p>
 <h2 id="whats-inside">What's inside<a class="headerlink" href="#whats-inside" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>KernelSHAP</code></strong> (<code>kernel_shap.hpp</code>) — Shapley value approximation via full 2ⁿ coalition
-  enumeration + SHAP-kernel-weighted linear regression (exact at this codebase's small
-  feature counts, not a sampling approximation).</li>
-<li><strong><code>LIME</code></strong> (<code>lime.hpp</code>) — fits a locality-weighted linear surrogate around one input by
-  Gaussian perturbation.</li>
-<li><strong><code>PDP</code></strong> (<code>pdp.hpp</code>) — Partial Dependence Plots: how the prediction changes as one
-  feature varies, averaged over the rest.</li>
-<li><strong><code>fit_weighted_linear_regression</code></strong> (<code>weighted_linear_regression.hpp</code>) — the shared ridge
-  regression solver both <code>KernelSHAP</code> and <code>LIME</code> reduce to.</li>
+<li><strong><code>KernelSHAP</code></strong> (<code>kernel_shap.hpp</code>): computes Shapley values, each feature's fair share of
+  the prediction. It enumerates all 2ⁿ feature coalitions and fits a SHAP-kernel-weighted
+  linear regression. The result is exact (no sampling), so it is limited to 20 features.</li>
+<li><strong><code>LIME</code></strong> (<code>lime.hpp</code>): fits a simple linear model around one input, using random Gaussian
+  perturbations weighted by how close they stay to that input.</li>
+<li><strong><code>PDP</code></strong> (<code>pdp.hpp</code>): a Partial Dependence Plot. It shows how the prediction changes as one
+  feature varies, averaged over a set of background inputs.</li>
+<li><strong><code>fit_weighted_linear_regression</code></strong> (<code>weighted_linear_regression.hpp</code>): the shared ridge
+  regression solver that <code>KernelSHAP</code> and <code>LIME</code> both use. It returns one coefficient per
+  feature and fits no intercept.</li>
 </ul>
 <p>Full API reference: <a href="../api/group__interpretability__agnostic.html">Doxygen: Model-Agnostic</a></p>
+<h2 id="when-to-use-which">When to use which<a class="headerlink" href="#when-to-use-which" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Scope</th>
+<th>Good for</th>
+<th>Watch out for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>KernelSHAP</code></td>
+<td>One input</td>
+<td>Exact additive attributions that sum to <code>f(input) - f(baseline)</code></td>
+<td>2ⁿ model calls; at most 20 features</td>
+</tr>
+<tr>
+<td><code>LIME</code></td>
+<td>One input</td>
+<td>A fast local linear approximation</td>
+<td>Random: fix <code>seed</code>; results depend on <code>sigma</code></td>
+</tr>
+<tr>
+<td><code>PDP</code></td>
+<td>Whole dataset</td>
+<td>The average effect of one feature on the output</td>
+<td>Hides interactions between features</td>
+</tr>
+</tbody>
+</table>
 <h2 id="how-to-implement">How to implement<a class="headerlink" href="#how-to-implement" title="Permanent link">&para;</a></h2>
-<h3 id="kernelshap">KernelSHAP<a class="headerlink" href="#kernelshap" title="Permanent link">&para;</a></h3>
+<p>The snippets below share this setup. Any callable that maps a <code>Tensor</code> to a <code>Tensor</code> works as
+<code>predict</code>; here it wraps a single pulsatrix layer.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/kernel_shap.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/linear_module.hpp"</span>
 
 <span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
 
 <span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">predict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">my_network</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="n">LinearModule</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// stand-in for your model: 3 features in, 2 scores out</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">predict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
 
-<span class="n">Tensor</span><span class="w"> </span><span class="nf">input</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">3</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">});</span>
-<span class="n">Tensor</span><span class="w"> </span><span class="nf">baseline</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">3</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">});</span><span class="w">  </span><span class="c1">// "feature absent" reference</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="nf">input</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">});</span>
+</code></pre></div>
+<p><code>target_index</code> is a flat index into the model's output: which output value to explain.</p>
+<h3 id="kernelshap">KernelSHAP<a class="headerlink" href="#kernelshap" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/kernel_shap.hpp"</span>
+
+<span class="n">Tensor</span><span class="w"> </span><span class="nf">baseline</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">});</span><span class="w">  </span><span class="c1">// the "feature absent" reference</span>
 
 <span class="n">KernelSHAP</span><span class="w"> </span><span class="n">shap</span><span class="p">;</span>
 <span class="n">Attribution</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shap</span><span class="p">.</span><span class="n">explain</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">baseline</span><span class="p">,</span><span class="w"> </span><span class="cm">/*target_index=*/</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
 <span class="c1">// result.values: per-feature Shapley values, same shape as input</span>
 </code></pre></div>
-<p><strong>What's happening:</strong> <code>explain()</code> enumerates every coalition of "present"/"baseline" features
-(2ⁿ − 2 of them, excluding the empty and full coalitions, which are pinned exactly), weights
-each by the SHAP kernel π(z′), and fits the reduced (n−1)-dimensional regression problem the
-efficiency axiom produces via <code>fit_weighted_linear_regression</code>. Capped at <code>n ≤ 20</code> features —
-full enumeration, not a sampling scheme, so it doesn't scale past that.</p>
+<p><strong>What's happening:</strong> a coalition is a set of features kept at their <code>input</code> values, with the
+rest set to <code>baseline</code>. <code>explain()</code> evaluates every coalition. The empty and full coalitions are
+pinned exactly, and the other 2ⁿ − 2 are weighted by the SHAP kernel π(z′). It then solves the
+resulting weighted regression with <code>fit_weighted_linear_regression</code>. The input must have
+between 1 and 20 features, or <code>explain()</code> throws <code>std::invalid_argument</code>.</p>
 <p>Test reference: <code>tests/kernel_shap_test.cpp</code>. Recipe:
 <a href="../../recipes/interpretability/kernel_shap_basics/">KernelSHAP basics</a>.</p>
 <h3 id="lime">LIME<a class="headerlink" href="#lime" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/lime.hpp"</span>
-
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
-
-<span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">predict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">my_network</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
-
-<span class="n">Tensor</span><span class="w"> </span><span class="nf">input</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">3</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">});</span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/lime.hpp"</span>
 
 <span class="n">LIME</span><span class="w"> </span><span class="n">lime</span><span class="p">;</span>
 <span class="n">Attribution</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lime</span><span class="p">.</span><span class="n">explain</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="cm">/*target_index=*/</span><span class="mi">0</span><span class="p">,</span>
-<span class="w">                                   </span><span class="cm">/*num_samples=*/</span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="cm">/*sigma=*/</span><span class="mf">0.25f</span><span class="p">,</span>
-<span class="w">                                   </span><span class="cm">/*l2_lambda=*/</span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">42</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="w">                                  </span><span class="cm">/*num_samples=*/</span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="cm">/*sigma=*/</span><span class="mf">0.25f</span><span class="p">,</span>
+<span class="w">                                  </span><span class="cm">/*l2_lambda=*/</span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">42</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
 <span class="c1">// result.values: local linear coefficients, same shape as input</span>
 </code></pre></div>
-<p><strong>What's happening:</strong> <code>explain()</code> draws <code>num_samples</code> Gaussian perturbations of <code>input</code>
-(std. dev. <code>sigma</code>), weights each by an exponential locality kernel of the same <code>sigma</code>, and
-fits a ridge-regularized local linear model <code>g(z) = f(x) + wᵀ(z − x)</code> — so <code>w</code> (the
-attribution) is the model's local sensitivity around <code>x</code>, not a global explanation.</p>
+<p><strong>What's happening:</strong> <code>explain()</code> draws <code>num_samples</code> Gaussian perturbations of <code>input</code> with
+standard deviation <code>sigma</code>. It weights each one by a Gaussian locality kernel of the same
+width. It then fits a ridge-regularized linear model <code>g(z) = f(x) + wᵀ(z − x)</code>. The coefficients
+<code>w</code> are the attribution: the model's local sensitivity around <code>x</code>, not a global explanation.</p>
 <p>Test reference: <code>tests/lime_test.cpp</code>. Recipe:
 <a href="../../recipes/interpretability/lime_basics/">LIME basics</a>.</p>
+<h3 id="pdp">PDP<a class="headerlink" href="#pdp" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/pdp.hpp"</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="o">&gt;</span><span class="w"> </span><span class="n">background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// reference inputs to average over, all the same shape</span>
+<span class="w">    </span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.5f</span><span class="p">}),</span>
+<span class="w">    </span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">}),</span>
+<span class="p">};</span>
+
+<span class="n">PDP</span><span class="w"> </span><span class="n">pdp</span><span class="p">;</span>
+<span class="n">Attribution</span><span class="w"> </span><span class="n">curve</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pdp</span><span class="p">.</span><span class="n">explain</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">background</span><span class="p">,</span><span class="w"> </span><span class="cm">/*feature_index=*/</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="cm">/*target_index=*/</span><span class="mi">0</span><span class="p">,</span>
+<span class="w">                                </span><span class="cm">/*grid_min=*/</span><span class="mf">-2.0f</span><span class="p">,</span><span class="w"> </span><span class="cm">/*grid_max=*/</span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="cm">/*grid_size=*/</span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="c1">// curve.values: (grid_size,) average prediction as feature 0 sweeps from grid_min to grid_max</span>
+</code></pre></div>
+<p><strong>What's happening:</strong> for each of <code>grid_size</code> evenly spaced values, <code>explain()</code> sets
+<code>feature_index</code> to that value in every background input, runs the model, and averages the
+<code>target_index</code> output. Unlike the other explainers, this is a global view of the model, not an
+explanation of one input. <code>background</code> must not be empty.</p>
+<p>Test reference: <code>tests/pdp_test.cpp</code>.</p>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../recipes/interpretability/kernel_shap_basics/">KernelSHAP basics</a></li>

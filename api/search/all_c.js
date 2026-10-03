@@ -47,7 +47,7 @@ var searchData=
   ['mnistdataset_44',['MnistDataset',['../structpulsatrix_1_1MnistDataset.html',1,'pulsatrix']]],
   ['mnistdatasetadapter_45',['mnistdatasetadapter',['../classpulsatrix_1_1MnistDatasetAdapter.html',1,'pulsatrix::MnistDatasetAdapter'],['../classpulsatrix_1_1MnistDatasetAdapter.html#ac53eabd75ea8866f0b7dced74e148fd6',1,'pulsatrix::MnistDatasetAdapter::MnistDatasetAdapter()']]],
   ['mnistidxloader_46',['MnistIdxLoader',['../classpulsatrix_1_1MnistIdxLoader.html',1,'pulsatrix']]],
-  ['model_20agnostic_47',['Model-Agnostic',['../group__interpretability__agnostic.html',1,'']]],
+  ['model_20agnostic_20explainers_47',['Model-Agnostic Explainers',['../group__interpretability__agnostic.html',1,'']]],
   ['module_48',['Module',['../classpulsatrix_1_1Module.html',1,'pulsatrix']]],
   ['module_2ehpp_49',['module.hpp',['../module_8hpp.html',1,'']]],
   ['module_5ftype_5fname_50',['module_type_name',['../namespacepulsatrix_1_1detail.html#a1497a7c5a8bce93d9130ee4ddae5dd1a',1,'pulsatrix::detail']]],

@@ -16,7 +16,7 @@
         <link rel="prev" href="..">
       
       
-        <link rel="next" href="../customization/">
+        <link rel="next" href="../deep-learning/">
       
       
         
@@ -347,28 +347,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#clone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Clone
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#a-minimal-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A minimal example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -380,10 +358,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configure-build-test" class="md-nav__link">
+  <a href="#build-and-test" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configure, build, test
+        Build and test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-your-first-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run your first example
       
     </span>
   </a>
@@ -395,6 +384,89 @@
     <span class="md-ellipsis">
       
         Build options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpu-backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU backends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GPU backends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CUDA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hip-rocm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP / ROCm
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-bindings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python bindings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mnist-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MNIST data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-pulsatrix-in-your-own-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using pulsatrix in your own project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the API reference
       
     </span>
   </a>
@@ -416,33 +488,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../customization/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Customization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -516,17 +561,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
     
   
-    Ad-hoc Interpretability
+    Interpretability
   
 
     
@@ -537,12 +582,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Ad-hoc Interpretability
+    Interpretability
   
 
           </label>
@@ -583,6 +628,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../interpretability/lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layer-wise Relevance Propagation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../interpretability/model-agnostic/" class="md-nav__link">
         
   
@@ -590,7 +663,7 @@
   <span class="md-ellipsis">
     
   
-    Model-Agnostic
+    Model-Agnostic Explainers
   
 
     
@@ -618,7 +691,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Learning Approaches
+    Gradient-Based Explainers
   
 
     
@@ -808,8 +881,73 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/" class="md-nav__link">
+      <a href="../system-monitoring/" class="md-nav__link">
         
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -823,7 +961,471 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Recipes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/deep-learning/xor_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XOR Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RNN vs. LSTM vs. GRU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Residual and Normalization Layers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CSV + DataLoader Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/mnist_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on MNIST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Saliency and Integrated Gradients
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grad-CAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KernelSHAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/lime_basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIME
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/rl/dqn_cartpole/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DQN on CartPole
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GAE and PPO Clipping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sparse Autoencoder + Probe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNet on HyperGrid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datalog LRP Bridge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/visualization/training_dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -882,28 +1484,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#clone" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Clone
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#a-minimal-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A minimal example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -915,10 +1495,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configure-build-test" class="md-nav__link">
+  <a href="#build-and-test" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configure, build, test
+        Build and test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-your-first-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run your first example
       
     </span>
   </a>
@@ -930,6 +1521,89 @@
     <span class="md-ellipsis">
       
         Build options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpu-backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU backends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GPU backends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CUDA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hip-rocm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP / ROCm
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-bindings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python bindings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mnist-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MNIST data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-pulsatrix-in-your-own-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using pulsatrix in your own project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the API reference
       
     </span>
   </a>
@@ -968,12 +1642,45 @@
 
 
 <h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
-<h2 id="clone">Clone<a class="headerlink" href="#clone" title="Permanent link">&para;</a></h2>
+<p>This page takes you from a fresh clone to a working build, and covers the optional GPU, Python
+and visualization builds.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://cmake.org/download/">CMake</a> 3.20 or newer</li>
+<li>A C++17 compiler:<ul>
+<li><strong>Windows</strong>: Visual Studio 2022 or newer (tested in CI)</li>
+<li><strong>Linux</strong>: GCC 11+ (tested in CI) or Clang 14+</li>
+<li><strong>macOS</strong>: Clang 14+ (Xcode 14+), which should work but isn't tested in CI</li>
+</ul>
+</li>
+<li>Network access the first time you configure. CMake downloads GoogleTest, plus pybind11 or
+  the GUI libraries if you turn those options on.</li>
+</ul>
+<h2 id="build-and-test">Build and test<a class="headerlink" href="#build-and-test" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Joshuaweg/pulsatrix.git
 <span class="nb">cd</span><span class="w"> </span>pulsatrix
 </code></pre></div>
-<h2 id="a-minimal-example">A minimal example<a class="headerlink" href="#a-minimal-example" title="Permanent link">&para;</a></h2>
-<p>Train a tiny network on XOR and print predictions (the full, runnable version is
+<p><strong>Linux / macOS</strong></p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>-j
+ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>--output-on-failure
+</code></pre></div>
+<p>Makefiles and Ninja build one configuration per directory. For a Debug build, use a second
+directory, e.g. <code>cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug</code>.</p>
+<p><strong>Windows</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">cmake</span> <span class="n">-S</span> <span class="p">.</span> <span class="n">-B</span> <span class="n">build</span> <span class="n">-A</span> <span class="n">x64</span>
+<span class="n">cmake</span> <span class="p">-</span><span class="n">-build</span> <span class="n">build</span> <span class="p">-</span><span class="n">-config</span> <span class="n">Release</span>
+<span class="n">ctest</span> <span class="p">-</span><span class="n">-test-dir</span> <span class="n">build</span> <span class="n">-C</span> <span class="n">Release</span> <span class="p">-</span><span class="n">-output-on-failure</span>
+</code></pre></div>
+<p>CMake picks the installed Visual Studio version automatically, so you don't need <code>-G</code>.
+Visual Studio builds hold every configuration in one directory, and you choose one with
+<code>--config</code> and <code>-C</code>.</p>
+<h2 id="run-your-first-example">Run your first example<a class="headerlink" href="#run-your-first-example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>./build/xor_demo<span class="w">                 </span><span class="c1"># Linux / macOS</span>
+build<span class="se">\R</span>elease<span class="se">\x</span>or_demo.exe<span class="w">       </span><span class="c1"># Windows</span>
+</code></pre></div>
+<p><code>xor_demo</code> trains a two-layer network on XOR and prints the loss as it falls, then the
+network's predictions. The core of it looks like this (full source:
 <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp"><code>examples/xor_demo.cpp</code></a>):</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/adam_optimizer.hpp"</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
@@ -986,98 +1693,143 @@
 <span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">optimizer</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
 
 <span class="n">Tensor</span><span class="w"> </span><span class="nf">input</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">});</span>
-<span class="n">Tensor</span><span class="w"> </span><span class="n">pred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input</span><span class="p">);</span><span class="w">      </span><span class="c1">// forward pass</span>
-<span class="c1">// net.train_step(input, target, optimizer, sink, step) runs forward + backward + update</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="n">pred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="c1">// net.train_step(input, target, optimizer, sink, step) runs forward, backward and one Adam update</span>
 </code></pre></div>
-<p>Build it and run it yourself:</p>
+<p>Every demo is built the same way, and you can build a single one with <code>--target</code>:</p>
 <div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>xor_demo<span class="w"> </span>--config<span class="w"> </span>Release
-build/Release/xor_demo.exe
 </code></pre></div>
-<p>See <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/README.md"><code>examples/README.md</code></a>
-for the full list of 16 runnable demos (layers, sequence models, transformers, explainers,
-five RL algorithms, and four opt-in visualization demos).</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>Where to go next:</p>
 <ul>
-<li><a href="https://cmake.org/download/">CMake</a> 3.20 or newer</li>
-<li>A C++17 compiler:<ul>
-<li><strong>Windows</strong>: Visual Studio 2022+ (MSVC 19.4x) — CI-verified</li>
-<li><strong>Linux</strong>: GCC 11+ or Clang 14+ — CI-verified (GCC)</li>
-<li><strong>macOS</strong>: Clang 14+ (Xcode 14+) — community-untested, not yet CI-verified</li>
+<li><a href="https://github.com/Joshuaweg/pulsatrix/tree/master/examples">Examples</a>: the full list of demos.</li>
+<li><a href="../recipes/">Recipes</a>: short programs that each show one feature, with a walkthrough.</li>
+<li><a href="../interpretability/lrp/">LRP</a>: explain your model's predictions.</li>
 </ul>
-</li>
-<li>Network access at configure time (GoogleTest is fetched automatically via CMake <code>FetchContent</code>)</li>
-</ul>
-<h2 id="configure-build-test">Configure, build, test<a class="headerlink" href="#configure-build-test" title="Permanent link">&para;</a></h2>
-<p><strong>Windows:</strong></p>
-<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-A<span class="w"> </span>x64
-cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--config<span class="w"> </span>Release
-ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>-C<span class="w"> </span>Release<span class="w"> </span>--output-on-failure
-</code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>No <code>-G</code> is needed — CMake auto-detects whichever Visual Studio version is installed.</p>
-</div>
-<p><strong>Linux / macOS:</strong></p>
-<p>Unix Makefiles/Ninja are single-config generators, so Debug and Release live in separate
-build directories rather than one <code>-C &lt;cfg&gt;</code> selecting between them:</p>
-<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release
-cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>-j
-ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>--output-on-failure
-</code></pre></div>
 <h2 id="build-options">Build options<a class="headerlink" href="#build-options" title="Permanent link">&para;</a></h2>
-<p>All default to the values shown; pass <code>-D&lt;OPTION&gt;=ON/OFF</code> at configure time to change them.</p>
+<p>Pass <code>-D&lt;OPTION&gt;=ON</code> or <code>OFF</code> when you configure.</p>
 <table>
 <thead>
 <tr>
 <th>Option</th>
 <th>Default</th>
-<th>Notes</th>
+<th>What it does</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>PULSATRIX_BUILD_TESTS</code></td>
 <td><code>ON</code></td>
-<td>Builds the GoogleTest suite (fetched automatically).</td>
+<td>Builds the GoogleTest suite.</td>
 </tr>
 <tr>
 <td><code>PULSATRIX_BUILD_EXAMPLES</code></td>
 <td><code>ON</code></td>
-<td>Builds the demo executables in <code>examples/</code>.</td>
+<td>Builds the demos in <code>examples/</code> and the recipes in <code>examples/recipes/</code>.</td>
 </tr>
 <tr>
 <td><code>PULSATRIX_ENABLE_CUDA</code></td>
 <td><code>OFF</code></td>
-<td>Builds the CUDA <code>DeviceBackend</code>. Requires the CUDA Toolkit. Defaults to <code>CMAKE_CUDA_ARCHITECTURES=native</code>.</td>
+<td>Builds the CUDA backend. See <a href="#gpu-backends">GPU backends</a>.</td>
 </tr>
 <tr>
 <td><code>PULSATRIX_ENABLE_HIP</code></td>
 <td><code>OFF</code></td>
-<td>Builds the HIP/ROCm <code>DeviceBackend</code>. Requires a ROCm toolchain. Defaults <code>CMAKE_HIP_ARCHITECTURES</code> to <code>gfx1151</code>.</td>
+<td>Builds the HIP/ROCm backend for AMD GPUs. See <a href="#gpu-backends">GPU backends</a>.</td>
 </tr>
 <tr>
 <td><code>PULSATRIX_ENABLE_PYTHON</code></td>
 <td><code>OFF</code></td>
-<td>Builds the pybind11 Python bindings. Requires <code>-DPYTHON_EXECUTABLE=&lt;path&gt;</code> (or <code>PULSATRIX_PYTHON_EXECUTABLE</code>) pointing at a Python install with dev headers.</td>
+<td>Builds the <code>pulsatrix_py</code> Python module. See <a href="#python-bindings">Python bindings</a>.</td>
+</tr>
+<tr>
+<td><code>PULSATRIX_ENABLE_VIZ</code></td>
+<td><code>OFF</code></td>
+<td>Builds the Dear ImGui + ImPlot visualization module and its GUI demos. See <a href="../visualization/">Visualization</a>.</td>
 </tr>
 </tbody>
 </table>
+<h2 id="gpu-backends">GPU backends<a class="headerlink" href="#gpu-backends" title="Permanent link">&para;</a></h2>
+<h3 id="cuda">CUDA<a class="headerlink" href="#cuda" title="Permanent link">&para;</a></h3>
+<p>Install the CUDA Toolkit that matches your driver, then configure with
+<code>-DPULSATRIX_ENABLE_CUDA=ON</code>. By default the build targets the GPU in your machine
+(<code>CMAKE_CUDA_ARCHITECTURES=native</code>). Set <code>CMAKE_CUDA_ARCHITECTURES</code> yourself to build for
+other GPUs.</p>
+<h3 id="hip-rocm">HIP / ROCm<a class="headerlink" href="#hip-rocm" title="Permanent link">&para;</a></h3>
+<p>Configure with <code>-DPULSATRIX_ENABLE_HIP=ON</code>. You need an AMD GPU and a ROCm install at
+<code>/opt/rocm</code>, or set <code>ROCM_PATH</code>. The default target is <code>gfx1151</code>; set
+<code>CMAKE_HIP_ARCHITECTURES</code> for other GPUs.</p>
+<p>We recommend building inside the pinned ROCm container. <code>scripts/rocm-build.sh</code> runs a
+command in it with your GPU passed through, and builds the image on first use:</p>
+<div class="highlight"><pre><span></span><code>scripts/rocm-build.sh<span class="w"> </span><span class="s1">'cmake -S . -B build-hip -DCMAKE_BUILD_TYPE=Release -DPULSATRIX_ENABLE_HIP=ON'</span>
+scripts/rocm-build.sh<span class="w"> </span><span class="s1">'cmake --build build-hip -j"$(nproc)"'</span>
+scripts/rocm-build.sh<span class="w"> </span><span class="s1">'./build-hip/tests/pulsatrix_tests'</span>
+</code></pre></div>
+<p>The container pins ROCm 7.2.4 because ROCm 7.1.x crashes on gfx1151, and Ubuntu's packages are
+7.1.x. The header of <code>docker/Dockerfile.rocm</code> has the details. The HIP tests run on real
+hardware, not a mock.</p>
+<h2 id="python-bindings">Python bindings<a class="headerlink" href="#python-bindings" title="Permanent link">&para;</a></h2>
+<p>The <code>pulsatrix_py</code> module exposes <code>Tensor</code>, the core layers, LRP and the other explainers, and
+<code>SystemMonitor</code>. Point <code>PYTHON_EXECUTABLE</code> at a Python install that has development headers:</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DPULSATRIX_ENABLE_PYTHON<span class="o">=</span>ON<span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>-DPYTHON_EXECUTABLE<span class="o">=</span><span class="s2">"</span><span class="k">$(</span>which<span class="w"> </span>python3<span class="k">)</span><span class="s2">"</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>pulsatrix_py<span class="w"> </span>-j
+<span class="nv">PYTHONPATH</span><span class="o">=</span>build<span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import pulsatrix_py; print(pulsatrix_py.compiled_devices())"</span>
+</code></pre></div>
+<p>With Visual Studio the module is usually written to <code>build/Release/</code>, so put that directory on <code>PYTHONPATH</code> instead.</p>
+<p>A short example:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pulsatrix_py</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+
+<span class="n">fc1</span><span class="p">,</span> <span class="n">relu</span><span class="p">,</span> <span class="n">fc2</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">LinearModule</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">px</span><span class="o">.</span><span class="n">ReluModule</span><span class="p">(),</span> <span class="n">px</span><span class="o">.</span><span class="n">LinearModule</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">fc1</span><span class="o">.</span><span class="n">set_weight</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
+<span class="n">fc2</span><span class="o">.</span><span class="n">set_weight</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">])</span>
+
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">ExplainerContext</span><span class="p">([</span><span class="n">fc1</span><span class="p">,</span> <span class="n">relu</span><span class="p">,</span> <span class="n">fc2</span><span class="p">])</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">Tensor</span><span class="o">.</span><span class="n">from_values</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+<span class="n">attr</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">LRP</span><span class="p">()</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="p">[</span><span class="n">attr</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">at</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
+</code></pre></div>
+<p>Tensors support the buffer protocol, so <code>numpy.asarray(attr.values)</code> works on CPU tensors.
+The tests in <code>tests/python/</code> show the rest of the API. Run them with
+<code>PYTHONPATH=build python3 -m pytest tests/python</code> (needs <code>numpy</code> and <code>pytest</code>).</p>
+<h2 id="mnist-data">MNIST data<a class="headerlink" href="#mnist-data" title="Permanent link">&para;</a></h2>
+<p>The MNIST demos, recipes and tests need the MNIST files, which aren't in the repository.
+Download them once with:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>torchvision
+python3<span class="w"> </span>tools/fetch_mnist.py<span class="w">     </span><span class="c1"># Windows: py tools/fetch_mnist.py</span>
+</code></pre></div>
+<p>This writes the original IDX files to <code>data/MNIST/raw/</code>. After that, nothing in the C++ build
+or tests needs Python. Run the MNIST programs from the repository root so they find
+<code>data/MNIST/raw/</code>.</p>
+<h2 id="using-pulsatrix-in-your-own-project">Using pulsatrix in your own project<a class="headerlink" href="#using-pulsatrix-in-your-own-project" title="Permanent link">&para;</a></h2>
+<p>There's no <code>install()</code> step yet, so <code>find_package(pulsatrix)</code> doesn't work. Add the repository
+to your CMake tree and link <code>pulsatrix_core</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="s">PULSATRIX_BUILD_TESTS</span><span class="w"> </span><span class="s">OFF</span><span class="w"> </span><span class="s">CACHE</span><span class="w"> </span><span class="s">BOOL</span><span class="w"> </span><span class="s2">""</span><span class="w"> </span><span class="s">FORCE</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">PULSATRIX_BUILD_EXAMPLES</span><span class="w"> </span><span class="s">OFF</span><span class="w"> </span><span class="s">CACHE</span><span class="w"> </span><span class="s">BOOL</span><span class="w"> </span><span class="s2">""</span><span class="w"> </span><span class="s">FORCE</span><span class="p">)</span>
+<span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">third_party/pulsatrix</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">pulsatrix_core</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="building-the-api-reference">Building the API reference<a class="headerlink" href="#building-the-api-reference" title="Permanent link">&para;</a></h2>
+<p>The <a href="api/index.html">API reference</a> is generated by Doxygen. The published site includes it.
+To build it locally, install <a href="https://www.doxygen.nl/">Doxygen</a> and run:</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>docs<span class="w">   </span><span class="c1"># output: build/html/index.html</span>
+</code></pre></div>
+<p>If you preview this site with <code>mkdocs serve</code>, the API reference links stay empty until you copy
+<code>build/html/</code> into <code>site/api/</code>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Configure fails trying to fetch GoogleTest</strong> — <code>PULSATRIX_BUILD_TESTS</code> is <code>ON</code> by default
-  and clones GoogleTest from GitHub via <code>FetchContent</code> at configure time. Check network
-  access, or configure with <code>-DPULSATRIX_BUILD_TESTS=OFF</code>.</li>
-<li><strong><code>PULSATRIX_ENABLE_PYTHON=ON</code> doesn't pick up your Python install</strong> — pass
-  <code>-DPYTHON_EXECUTABLE=&lt;path&gt;</code>, not <code>-DPython3_EXECUTABLE=&lt;path&gt;</code>.</li>
-<li><strong><code>mnist_*</code> tests fail or find no data</strong> — run <code>py -3.11 tools/fetch_mnist.py</code> once
-  (requires <code>torchvision</code>) to populate <code>data/MNIST/raw/</code>, then rebuild.</li>
-<li><strong>CUDA build can't find the toolkit</strong> — install the CUDA Toolkit matching your driver,
-  discoverable via <code>find_package(CUDAToolkit)</code>.</li>
-<li><strong>HIP build can't find <code>hip</code>/<code>hipblas</code></strong> — set <code>ROCM_PATH</code> (or install at the conventional
-  <code>/opt/rocm</code>).</li>
-</ul>
-<p>For the HIP/ROCm pinned-container workflow, see the
-<a href="https://github.com/Joshuaweg/pulsatrix#hiprocm-backend-pulsatrix_enable_hipon">README's HIP/ROCm section</a>.</p>
+<p><strong>Configure fails while downloading GoogleTest.</strong>
+Check your network access to GitHub. If you only want the library and examples, configure with
+<code>-DPULSATRIX_BUILD_TESTS=OFF</code>.</p>
+<p><strong><code>PULSATRIX_ENABLE_PYTHON=ON</code> doesn't find your Python.</strong>
+Pass <code>-DPYTHON_EXECUTABLE=&lt;path&gt;</code>, not <code>-DPython3_EXECUTABLE=&lt;path&gt;</code>. You can also set the
+<code>PULSATRIX_PYTHON_EXECUTABLE</code> environment variable.</p>
+<p><strong>MNIST tests or demos fail or find no data.</strong>
+Run <code>tools/fetch_mnist.py</code> (see <a href="#mnist-data">MNIST data</a>) and run the program from the
+repository root. CI skips the MNIST tests for the same reason.</p>
+<p><strong>CMake can't find the CUDA toolkit.</strong>
+Install the CUDA Toolkit for your driver version and make sure CMake's
+<code>find_package(CUDAToolkit)</code> can see it. On Linux this usually means <code>nvcc</code> is on your <code>PATH</code>.</p>
+<p><strong>CMake can't find the <code>hip</code> or <code>hipblas</code> packages.</strong>
+Set <code>ROCM_PATH</code> to your ROCm install, or use the <a href="#hip-rocm">ROCm container</a>.</p>
 
 
 

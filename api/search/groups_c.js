@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['transformation_20validation_0',['Data Loading, Transformation &amp; Validation',['../group__data__pipeline.html',1,'']]]
+  ['propagation_0',['Layer-wise Relevance Propagation',['../group__interpretability__lrp.html',1,'']]]
 ];

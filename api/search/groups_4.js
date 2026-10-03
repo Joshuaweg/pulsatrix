@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['hoc_20interpretability_0',['Ad-hoc Interpretability',['../group__interpretability.html',1,'']]],
-  ['hyperparameter_20optimization_1',['Hyperparameter Optimization',['../group__hyperparameter__optimization.html',1,'']]]
+  ['evolutionary_20computation_0',['Evolutionary Computation',['../group__evolutionary.html',1,'']]],
+  ['explainers_1',['explainers',['../group__interpretability__dl.html',1,'Gradient-Based Explainers'],['../group__interpretability__agnostic.html',1,'Model-Agnostic Explainers']]]
 ];

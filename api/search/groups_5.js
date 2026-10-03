@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['interpretability_0',['interpretability',['../group__interpretability.html',1,'Ad-hoc Interpretability'],['../group__mech__interp.html',1,'Mechanistic Interpretability']]]
+  ['gradient_20based_20explainers_0',['Gradient-Based Explainers',['../group__interpretability__dl.html',1,'']]]
 ];
