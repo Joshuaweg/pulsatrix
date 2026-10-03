@@ -1,9 +1,11 @@
 # Recipe: LIME Basics
 
-**What you'll build:** `LIME` explaining a purely linear network, where weighted least
-squares on noise-free linear data recovers the true weights almost exactly.
+**What you'll build:** `LIME` explaining a purely linear network. Weighted least squares on
+noise-free linear data recovers the true weights almost exactly.
 
 CMake target: `lime_basics_recipe` (`examples/recipes/lime_basics.cpp`).
+
+Run it: `./build/lime_basics_recipe` (Windows: `build\Release\lime_basics_recipe.exe`).
 
 ## Code
 
@@ -33,14 +35,17 @@ feature    LIME coeff  true weight
 x0             2.0000          2.0
 x1             4.0000          4.0
 x2             6.0000          6.0
+...
 ```
 
 ## What's happening
 
-`LIME::explain()` draws 300 Gaussian perturbations of the input (std. dev. `sigma=1.0`),
-weights each by an exponential locality kernel of the same width, and fits a local linear
-surrogate `g(z) = f(x) + w^T(z - x)`. Against a network that is already exactly linear, `w`
-matches the true weight column to four decimal places, regardless of the large, irrelevant
-bias — the surrogate only ever sees output *differences*, so any constant term cancels.
+`LIME::explain()` draws 300 Gaussian perturbations of the input (standard deviation
+`sigma=1.0`). It weights each one with an exponential locality kernel of the same width. Then it
+fits a local linear surrogate model `g(z) = f(x) + w^T(z - x)`.
 
-See also: [Ad-hoc Interpretability — Model-Agnostic](../../interpretability/model-agnostic.md#lime).
+The network is already exactly linear, so `w` matches the true weight column to four decimal
+places. The large bias doesn't matter: the surrogate only sees output *differences*, so any
+constant term cancels.
+
+See also: [Model-Agnostic Explainers](../../interpretability/model-agnostic.md#lime).

@@ -1,11 +1,14 @@
 # Recipe: GAE and PPO's Clipped Objective
 
-**What you'll build:** `ComputeGAE` over a 6-step synthetic rollout, then `PPOClippedLoss`
-using those advantages — comparing an unchanged policy (every ratio exactly 1) against one
-that has drifted since the rollout was collected.
+**What you'll build:** `ComputeGAE` (Generalized Advantage Estimation) over a 6-step synthetic
+rollout, then `PPOClippedLoss` using those advantages. It compares an unchanged policy (every
+probability ratio exactly 1) with one that has drifted since the rollout was collected.
 
 CMake target: `gae_and_ppo_clipped_recipe`
 (`examples/recipes/gae_and_ppo_clipped.cpp`).
+
+Run it: `./build/gae_and_ppo_clipped_recipe` (Windows:
+`build\Release\gae_and_ppo_clipped_recipe.exe`).
 
 ## Code
 
@@ -26,6 +29,8 @@ Full source: [`examples/recipes/gae_and_ppo_clipped.cpp`](https://github.com/Jos
 ## Expected output
 
 ```
+GAE recipe -- 6-step synthetic rollout, gamma=0.99, lambda=0.95
+
 step    reward     done    value  advantage     return
 0         0.00        0     0.20     1.4255     1.6255
 1         0.00        0     0.30     1.4125     1.7125
@@ -37,21 +42,27 @@ step    reward     done    value  advantage     return
 PPO clipped surrogate, comparing the current policy to the data-collecting one:
   policy unchanged (ratio == 1 everywhere): loss = -1.216702
   policy drifted (taken action's logit +3): loss = -1.460042
+...
 ```
 
 ## What's happening
 
-`ComputeGAE` walks the rollout backward once, blending each step's one-step TD residual into
-an exponentially-decayed running advantage (`lambda=0.95`). Step 5 is terminal
-(`dones[5]=1`), so its advantage collapses to exactly the raw TD residual (`return - value =
-1.0 - 0.7 = 0.3`) with no bootstrap or backward trace crossing the terminal boundary — the
-`return` column is `advantages + values`, the critic's regression target.
+**GAE.** A step's one-step TD residual is `reward + gamma * next_value - value`: how much
+better the step went than the critic predicted. `ComputeGAE` walks the rollout backward once and
+blends these residuals into an exponentially decayed running advantage (`lambda=0.95`).
 
-At ratio `== 1` (the "unchanged" policy) `PPOClippedLoss` degenerates to
-`PolicyGradientLoss`'s own advantage-weighted surrogate — the clip never activates. Once the
-current policy's taken-action logits are pushed up (the "drifted" policy), some per-step
-ratios exceed `1 + clip_epsilon`; those rows contribute a flat (zero-gradient) term instead of
-their raw ratio-weighted term, which is exactly the mechanism that bounds how far a single
-PPO update can move the policy from the data that collected it.
+Step 5 is terminal (`dones[5]=1`), so nothing is bootstrapped past it. Its advantage is just
+`reward - value = 1.0 - 0.7 = 0.3`. The `return` column is `advantages + values`, the target
+the critic is trained toward.
+
+**PPO.** The surrogate loss weights each step's advantage by the ratio between the current
+policy's probability of the taken action and the old policy's. When the policy is unchanged,
+every ratio is 1 and the clip never activates. `PPOClippedLoss` then equals
+`PolicyGradientLoss`'s advantage-weighted surrogate.
+
+In the drifted policy, the taken action's logit is pushed up by 3. Every per-step ratio now
+exceeds `1 + clip_epsilon`, so each row is clipped to `1.2 * advantage`. The loss is exactly 1.2×
+the unchanged one (−1.216702 × 1.2 = −1.460042). Clipped rows contribute no gradient, which is
+what limits how far one PPO update can move the policy away from the data that collected it.
 
 See also: [Reinforcement Learning](../../reinforcement-learning/index.md#generalized-advantage-estimation).
