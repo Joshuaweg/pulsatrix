@@ -65,5 +65,6 @@ var searchData=
   ['where_20to_20go_20next_62',['Where to go next',['../index.html#mainpage_start',1,'']]],
   ['width_63',['width',['../structpulsatrix_1_1RgbImageBuffer.html#aaa6dc3c779d05dbcfb9b0e94ed1c3f82',1,'pulsatrix::RgbImageBuffer']]],
   ['window_2ehpp_64',['window.hpp',['../window_8hpp.html',1,'']]],
-  ['write_5felement_65',['write_element',['../classpulsatrix_1_1Tensor.html#acbbf07280c7edc4d610b94c94dba3e9b',1,'pulsatrix::Tensor']]]
+  ['wise_20relevance_20propagation_65',['Layer-wise Relevance Propagation',['../group__interpretability__lrp.html',1,'']]],
+  ['write_5felement_66',['write_element',['../classpulsatrix_1_1Tensor.html#acbbf07280c7edc4d610b94c94dba3e9b',1,'pulsatrix::Tensor']]]
 ];

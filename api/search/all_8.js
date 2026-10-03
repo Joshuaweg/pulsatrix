@@ -29,7 +29,7 @@ var searchData=
   ['integer_26',['Integer',['../namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044',1,'pulsatrix']]],
   ['integrated_5fgradients_2ehpp_27',['integrated_gradients.hpp',['../integrated__gradients_8hpp.html',1,'']]],
   ['integratedgradients_28',['IntegratedGradients',['../classpulsatrix_1_1IntegratedGradients.html',1,'pulsatrix']]],
-  ['interpretability_29',['interpretability',['../group__interpretability.html',1,'Ad-hoc Interpretability'],['../group__mech__interp.html',1,'Mechanistic Interpretability']]],
+  ['interpretability_29',['interpretability',['../group__interpretability.html',1,'Interpretability'],['../group__mech__interp.html',1,'Mechanistic Interpretability']]],
   ['interval_30',['interval',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a58164a0a2597183f05e897ad303af19c',1,'pulsatrix::SystemMonitor::Options']]],
   ['is_5fconstant_31',['is_constant',['../classpulsatrix_1_1datalog_1_1Term.html#aa6f2dac97acb9153d6084bd624d341d2',1,'pulsatrix::datalog::Term']]],
   ['is_5fconv_32',['is_conv',['../namespacepulsatrix_1_1lrp__composite_1_1detail.html#a48f3124006591765e4cd5f8b118a5ab4',1,'pulsatrix::lrp_composite::detail']]],
