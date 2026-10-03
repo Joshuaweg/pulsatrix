@@ -183,3 +183,4 @@ Known differences and gaps:
 - [Recipe: LRP on a trained MNIST classifier](../recipes/interpretability/mnist_lrp.md)
 - [Recipe: tracing relevance through a Datalog derivation](../recipes/neuro-symbolic/datalog_lrp_bridge.md)
 - [Customization](../customization/index.md#adding-a-new-layer): writing `propagate_relevance()` for your own layer
+- [API reference: Layer-wise Relevance Propagation](../api/group__interpretability__lrp.html)

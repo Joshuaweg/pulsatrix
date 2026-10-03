@@ -1,6 +1,6 @@
 /** @file lrp.hpp
  *  @brief LRP -- whole-model Layer-wise Relevance Propagation explainer.
- *  @ingroup dl_explainers
+ *  @ingroup interpretability_lrp
  */
 #pragma once
 
@@ -139,9 +139,10 @@ inline LRPComposite epsilon_gamma_box(float low, float high, float gamma = 0.25f
  *       propagate_relevance() doc); either one `config` is passed to all of them, or an
  *       LRPComposite chooses one per module. A module asked for a rule it does not implement
  *       throws (ExplainerContext::relevance_pass) -- there is no silent fallback to epsilon.
- *       Bias terms absorb relevance under the epsilon rule, and the AttnLRP softmax /
- *       attention rules do not conserve exactly, so `sum(values)` matches the seeded total only
- *       for bias-free, conservative stacks. The Attribution's metadata reports both sums.
+ *       With LRPRuleConfig::epsilon_bias_in_denominator set, bias terms absorb relevance, and
+ *       the AttnLRP softmax / attention rules do not conserve exactly, so `sum(values)` matches
+ *       the seeded total only for conservative stacks. The Attribution's metadata reports both
+ *       sums.
  * @note Device-generic: the seed is assembled on the host (one device->host copy of the
  *       network output when seeding with output values) and uploaded through `backend`, which
  *       must be the backend the network's output lives on.
