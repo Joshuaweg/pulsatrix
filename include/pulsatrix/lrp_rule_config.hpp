@@ -1,6 +1,6 @@
 /** @file lrp_rule_config.hpp
  *  @brief Selects which LRP rule variant a Module::propagate_relevance() call uses.
- *  @ingroup interpretability_dl
+ *  @ingroup interpretability_lrp
  *  @see Module::propagate_relevance(), and the per-layer LRP rule implementations in
  *       @ref dl_modules (e.g. LinearModule, Conv2DModule, TransformerBlock) -- LRP rules
  *       live alongside each layer's forward/backward math, not in a separate file.

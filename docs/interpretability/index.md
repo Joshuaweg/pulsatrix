@@ -1,33 +1,37 @@
-# Ad-hoc Interpretability
+# Interpretability
 
-"Ad-hoc" here means *post-hoc*: these are explanation methods applied to an already-trained
-model from the outside, as opposed to the LRP (Layer-wise Relevance Propagation) rule every
-layer in [Deep Learning Modules and Layers](../deep-learning/index.md) carries as part of
-its own `propagate_relevance()` implementation. Pulsatrix ships both, because they answer
-different questions: LRP explains *this specific forward pass, exactly*, using the model's
-real computation graph; the explainers here approximate an explanation using only a model's
-input/output behavior or its gradients, which generalizes to any model but trades off exact
-faithfulness for that generality.
+These are post-hoc explanation methods: you apply them to an already-trained model to see
+which input features drove a prediction. Use them to debug a model, check that it relies on
+sensible features, or show a user why it made a decision.
 
-This section splits into two families:
+This section has three parts:
 
-- **[Model-Agnostic](model-agnostic.md)** — perturb-and-observe methods that only need a
-  callable model (no gradients, no internal access): `KernelSHAP`, `LIME`, `PDP`, backed by
-  `WeightedLinearRegression`.
-- **[Deep Learning Approaches](deep-learning-approaches.md)** — methods that use gradients
-  or cached activations directly: `Saliency`, `IntegratedGradients`, `GradCAM`.
+- **[Layer-wise Relevance Propagation (LRP)](lrp.md)**: passes the prediction's score back
+  through the network, layer by layer, using a rule chosen for each layer. Every pulsatrix
+  layer implements an LRP rule, so any network you build can be explained with it.
+- **[Model-Agnostic Explainers](model-agnostic.md)**: `KernelSHAP`, `LIME` and `PDP`. They only
+  call the model, perturbing the input and watching the output. Use them for any model,
+  including ones not built with pulsatrix.
+- **[Gradient-Based Explainers](deep-learning-approaches.md)**: `Saliency`,
+  `IntegratedGradients` and `GradCAM`. They read a pulsatrix network's gradients and
+  activations, so they are faster and see inside the model.
 
-Full API reference: [Doxygen: Ad-hoc Interpretability](../api/group__interpretability.html)
+Full API reference: [Doxygen: Interpretability](../api/group__interpretability.html)
 
 ## Shared infrastructure
 
-Both families return the same result type, `Attribution` (`include/pulsatrix/attribution.hpp`)
-— values, method name, and metadata together, so downstream code doesn't need a different
-code path per explainer. `ExplainerContext` (`include/pulsatrix/explainer_context.hpp`) wires
-a `Module`/`ComputationGraph` pair into whichever explainer needs gradient or activation
-access, keeping that plumbing out of each explainer's own implementation.
+- **`Attribution`** (`include/pulsatrix/attribution.hpp`): the result type every explainer
+  returns, LRP included. It holds the attribution `values`, the `method` name and a `metadata`
+  map, so downstream code needs only one code path for all explainers.
+- **`ExplainerContext`** (`include/pulsatrix/explainer_context.hpp`): wraps your network's
+  modules, given as a `std::vector<Module*>` in forward order. It runs traced forward,
+  backward and relevance passes and exposes per-node activations and gradients. LRP and
+  the gradient-based explainers take it as their first argument.
 
 ## Recipes
 
-See the recipe lists on [Model-Agnostic](model-agnostic.md#recipes) and
-[Deep Learning Approaches](deep-learning-approaches.md#recipes).
+New here? Start with the
+[Saliency and Integrated Gradients recipe](../recipes/interpretability/saliency_and_integrated_gradients.md).
+See the full recipe lists on [LRP](lrp.md#see-also),
+[Model-Agnostic Explainers](model-agnostic.md#recipes) and
+[Gradient-Based Explainers](deep-learning-approaches.md#recipes).

@@ -1,11 +1,12 @@
 # Recipe: KernelSHAP Basics
 
-**What you'll build:** `KernelSHAP` explaining a purely linear network, where the true
-Shapley values have a known closed form — so you can check the explainer's output exactly
-rather than just trusting it.
+**What you'll build:** `KernelSHAP` explaining a purely linear network. For a linear model the
+true Shapley values have a known closed form, so you can check the explainer's output exactly.
 
 CMake target: `kernel_shap_basics_recipe`
 (`examples/recipes/kernel_shap_basics.cpp`).
+
+Run it: `./build/kernel_shap_basics_recipe` (Windows: `build\Release\kernel_shap_basics_recipe.exe`).
 
 ## Code
 
@@ -35,16 +36,16 @@ feature  phi (SHAP)    w*(x-b)
 x0           2.0000     2.0000
 x1          -6.0000    -6.0000
 x2          15.0000    15.0000
+...
 ```
 
 ## What's happening
 
-For a linear model, Shapley's efficiency axiom collapses to the exact per-feature
-contribution `w_i * (x_i - baseline_i)`. `KernelSHAP::explain()` enumerates every coalition
-of "present"/"baseline" features, weights each by the SHAP kernel, and fits the reduced
-regression problem the efficiency-axiom substitution produces — against a linear model this
-recovers the closed form exactly (the `phi` column matches `w*(x-b)` to four decimal places),
-and the large, irrelevant bias cancels out because it appears identically in every
-coalition's `f(S)`.
+For a linear model, the Shapley value of feature `i` is exactly `w_i * (x_i - baseline_i)`.
+`KernelSHAP::explain()` evaluates every coalition (each mix of "present" and "baseline"
+features). It weights each coalition by the SHAP kernel and solves a weighted regression.
 
-See also: [Ad-hoc Interpretability — Model-Agnostic](../../interpretability/model-agnostic.md#kernelshap).
+On a linear model this recovers the closed form exactly: the `phi` column matches `w*(x-b)` to
+four decimal places. The large bias appears in every coalition's `f(S)`, so it cancels out.
+
+See also: [Model-Agnostic Explainers](../../interpretability/model-agnostic.md#kernelshap).

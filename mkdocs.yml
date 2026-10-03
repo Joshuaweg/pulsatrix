@@ -41,18 +41,36 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
-  - Customization: customization/index.md
   - Deep Learning Modules and Layers: deep-learning/index.md
   - Data Loading, Transformation & Validation: data-pipeline/index.md
-  - Ad-hoc Interpretability:
+  - Interpretability:
       - Overview: interpretability/index.md
-      - Model-Agnostic: interpretability/model-agnostic.md
-      - Deep Learning Approaches: interpretability/deep-learning-approaches.md
+      - Layer-wise Relevance Propagation: interpretability/lrp.md
+      - Model-Agnostic Explainers: interpretability/model-agnostic.md
+      - Gradient-Based Explainers: interpretability/deep-learning-approaches.md
   - Reinforcement Learning: reinforcement-learning/index.md
   - Mechanistic Interpretability: mechanistic-interpretability/index.md
   - Neuro-Symbolic Reasoning: neuro-symbolic/index.md
   - Evolutionary Computation: evolutionary-computation/index.md
   - Hyperparameter Optimization: hyperparameter-optimization/index.md
   - Visualization: visualization/index.md
-  - Recipes: recipes/index.md
+  - System Monitoring: system-monitoring.md
+  - Customization: customization/index.md
+  - Recipes:
+      - Overview: recipes/index.md
+      - XOR Training: recipes/deep-learning/xor_training.md
+      - RNN vs. LSTM vs. GRU: recipes/deep-learning/sequence_models_rnn_lstm_gru.md
+      - Residual and Normalization Layers: recipes/deep-learning/residual_and_norm_layers.md
+      - CSV + DataLoader Training: recipes/data-pipeline/csv_dataloader_training.md
+      - LRP on MNIST: recipes/interpretability/mnist_lrp.md
+      - Saliency and Integrated Gradients: recipes/interpretability/saliency_and_integrated_gradients.md
+      - Grad-CAM: recipes/interpretability/grad_cam_walkthrough.md
+      - KernelSHAP: recipes/interpretability/kernel_shap_basics.md
+      - LIME: recipes/interpretability/lime_basics.md
+      - DQN on CartPole: recipes/rl/dqn_cartpole.md
+      - GAE and PPO Clipping: recipes/rl/gae_and_ppo_clipped.md
+      - Sparse Autoencoder + Probe: recipes/mechanistic-interpretability/sparse_autoencoder_probe.md
+      - GFlowNet on HyperGrid: recipes/mechanistic-interpretability/gflownet_hypergrid.md
+      - Datalog LRP Bridge: recipes/neuro-symbolic/datalog_lrp_bridge.md
+      - Training Dashboard: recipes/visualization/training_dashboard.md
   - API Reference: api/index.html
