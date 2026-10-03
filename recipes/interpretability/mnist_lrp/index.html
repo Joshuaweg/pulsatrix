@@ -10,29 +10,27 @@
       
       
       
-        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/recipes/">
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/recipes/interpretability/mnist_lrp/">
       
-      
-        <link rel="prev" href="../visualization/">
       
       
       
         
       
       
-      <link rel="icon" href="../assets/pulsatrix_icon.png">
+      <link rel="icon" href="../../../assets/pulsatrix_icon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Recipes - Pulsatrix</title>
+        <title>Recipe: LRP on a Trained MNIST Classifier - Pulsatrix</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,9 +49,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#recipes" class="md-skip">
+        <a href="#recipe-lrp-on-a-trained-mnist-classifier" class="md-skip">
           Skip to content
         </a>
       
@@ -94,9 +92,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+    <a href="../../.." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
       
-  <img src="../assets/pulsatrix_icon.png" alt="logo">
+  <img src="../../../assets/pulsatrix_icon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -113,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Recipes
+              Recipe: LRP on a Trained MNIST Classifier
             
           </span>
         </div>
@@ -229,9 +227,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+    <a href="../../.." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
       
-  <img src="../assets/pulsatrix_icon.png" alt="logo">
+  <img src="../../../assets/pulsatrix_icon.png" alt="logo">
 
     </a>
     Pulsatrix
@@ -258,7 +256,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -285,7 +283,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/" class="md-nav__link">
+      <a href="../../../getting-started/" class="md-nav__link">
         
   
   
@@ -312,7 +310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../customization/" class="md-nav__link">
+      <a href="../../../customization/" class="md-nav__link">
         
   
   
@@ -339,7 +337,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deep-learning/" class="md-nav__link">
+      <a href="../../../deep-learning/" class="md-nav__link">
         
   
   
@@ -366,7 +364,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data-pipeline/" class="md-nav__link">
+      <a href="../../../data-pipeline/" class="md-nav__link">
         
   
   
@@ -440,7 +438,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interpretability/" class="md-nav__link">
+      <a href="../../../interpretability/" class="md-nav__link">
         
   
   
@@ -468,7 +466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interpretability/model-agnostic/" class="md-nav__link">
+      <a href="../../../interpretability/model-agnostic/" class="md-nav__link">
         
   
   
@@ -496,7 +494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interpretability/deep-learning-approaches/" class="md-nav__link">
+      <a href="../../../interpretability/deep-learning-approaches/" class="md-nav__link">
         
   
   
@@ -531,7 +529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reinforcement-learning/" class="md-nav__link">
+      <a href="../../../reinforcement-learning/" class="md-nav__link">
         
   
   
@@ -558,7 +556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/" class="md-nav__link">
+      <a href="../../../mechanistic-interpretability/" class="md-nav__link">
         
   
   
@@ -585,7 +583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../neuro-symbolic/" class="md-nav__link">
+      <a href="../../../neuro-symbolic/" class="md-nav__link">
         
   
   
@@ -612,7 +610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../evolutionary-computation/" class="md-nav__link">
+      <a href="../../../evolutionary-computation/" class="md-nav__link">
         
   
   
@@ -639,7 +637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../hyperparameter-optimization/" class="md-nav__link">
+      <a href="../../../hyperparameter-optimization/" class="md-nav__link">
         
   
   
@@ -666,7 +664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../visualization/" class="md-nav__link">
+      <a href="../../../visualization/" class="md-nav__link">
         
   
   
@@ -690,37 +688,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Recipes
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
         
   
   
@@ -736,92 +707,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#deep-learning-modules-and-layers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Deep Learning Modules and Layers
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-loading-transformation-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data Loading, Transformation &amp; Validation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ad-hoc-interpretability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ad-hoc Interpretability
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reinforcement-learning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reinforcement Learning
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mechanistic-interpretability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Mechanistic Interpretability
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#neuro-symbolic-reasoning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Neuro-Symbolic Reasoning
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -833,7 +718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/index.html" class="md-nav__link">
+      <a href="../../../api/index.html" class="md-nav__link">
         
   
   
@@ -880,10 +765,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#deep-learning-modules-and-layers" class="md-nav__link">
+  <a href="#code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deep Learning Modules and Layers
+        Code
       
     </span>
   </a>
@@ -891,10 +776,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#data-loading-transformation-validation" class="md-nav__link">
+  <a href="#expected-output" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Data Loading, Transformation &amp; Validation
+        Expected output
       
     </span>
   </a>
@@ -902,43 +787,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ad-hoc-interpretability" class="md-nav__link">
+  <a href="#whats-happening" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ad-hoc Interpretability
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reinforcement-learning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reinforcement Learning
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mechanistic-interpretability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Mechanistic Interpretability
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#neuro-symbolic-reasoning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Neuro-Symbolic Reasoning
+        What's happening
       
     </span>
   </a>
@@ -965,49 +817,83 @@
   
 
 
-<h1 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h1>
-<p>Small, runnable, self-contained programs — each a real CMake target under
-<code>examples/recipes/</code>, not a code snippet — demonstrating one tool at a time. Every recipe pairs
-a <code>.cpp</code> file with the page below it: what you'll build, the code, the expected output, and
-what's happening. Build any recipe directly instead of the whole project:</p>
-<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>&lt;recipe_target&gt;<span class="w"> </span>--config<span class="w"> </span>Release
+<h1 id="recipe-lrp-on-a-trained-mnist-classifier">Recipe: LRP on a Trained MNIST Classifier<a class="headerlink" href="#recipe-lrp-on-a-trained-mnist-classifier" title="Permanent link">&para;</a></h1>
+<p><strong>What you'll build:</strong> a <code>Conv2DModule -&gt; ReluModule -&gt; FlattenModule -&gt; LinearModule</code>
+classifier (<code>MnistConvNet</code>) trained on real MNIST digits, then explained with whole-model
+Layer-wise Relevance Propagation (<code>LRP::explain</code>), one held-out digit per class: why the
+network predicts its class <em>rather than the runner-up</em>, under the plain epsilon rule and under
+Zennit's <code>EpsilonPlus</code> composite.</p>
+<p>CMake target: <code>mnist_lrp_recipe</code>
+(<code>examples/recipes/mnist_lrp.cpp</code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Needs the real MNIST IDX files in <code>data/MNIST/raw/</code>. Run <code>tools/fetch_mnist.py</code> once
+first (the same requirement as <code>examples/mnist_training_demo.cpp</code>). Run the recipe from
+the repository root so the relative data path resolves. Training takes about 10 seconds on
+a CPU.</p>
+</div>
+<h2 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">MnistConvNet</span><span class="w"> </span><span class="nf">net</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// Conv2D(1,8,5,5) -&gt; ReLU -&gt; Flatten -&gt; Linear(4608,10)</span>
+<span class="c1">// ... net.train_step(image, label, optimizer, sink, step) over the training set ...</span>
+
+<span class="n">ExplainerContext</span><span class="w"> </span><span class="nf">ctx</span><span class="p">(</span><span class="n">net</span><span class="p">.</span><span class="n">modules</span><span class="p">());</span><span class="w">          </span><span class="c1">// the trained layers, in forward order</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">.</span><span class="n">to_host_vector</span><span class="p">());</span><span class="w">  </span><span class="c1">// batched: output is (1, 10)</span>
+
+<span class="c1">// "Why pred rather than runner_up?": target and contrast, seeded with the two logits.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">LRPTarget</span><span class="w"> </span><span class="n">target</span><span class="p">{{</span><span class="n">pred</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">runner_up</span><span class="p">}};</span>
+<span class="n">Attribution</span><span class="w"> </span><span class="n">eps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LRP</span><span class="p">().</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">                       </span><span class="c1">// epsilon everywhere</span>
+<span class="n">Attribution</span><span class="w"> </span><span class="n">eps_plus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LRP</span><span class="o">::</span><span class="n">epsilon_plus</span><span class="p">().</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">    </span><span class="c1">// ZPlus on Conv2D</span>
+<span class="c1">// eps.values has the image's shape: one relevance value per pixel.</span>
+<span class="c1">// eps.metadata["relevance_in_sum"] vs. the logit margin shows how well relevance was conserved.</span>
 </code></pre></div>
-<p>These are deliberately smaller and more didactic than the full demos in
-<a href="https://github.com/Joshuaweg/pulsatrix/tree/master/examples"><code>examples/</code></a> (see
-<a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/README.md"><code>examples/README.md</code></a>
-for those) — the existing demos stay as-is and are cross-linked here where relevant.</p>
-<h2 id="deep-learning-modules-and-layers">Deep Learning Modules and Layers<a class="headerlink" href="#deep-learning-modules-and-layers" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="deep-learning/xor_training/">XOR training walkthrough</a></li>
-<li><a href="deep-learning/sequence_models_rnn_lstm_gru/">RNN vs. LSTM vs. GRU on a parity task</a></li>
-<li><a href="deep-learning/residual_and_norm_layers/">Residual connections and normalization layers</a></li>
-</ul>
-<h2 id="data-loading-transformation-validation">Data Loading, Transformation &amp; Validation<a class="headerlink" href="#data-loading-transformation-validation" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="data-pipeline/csv_dataloader_training/">CSV + DataLoader training</a></li>
-</ul>
-<h2 id="ad-hoc-interpretability">Ad-hoc Interpretability<a class="headerlink" href="#ad-hoc-interpretability" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="interpretability/kernel_shap_basics/">KernelSHAP basics</a></li>
-<li><a href="interpretability/lime_basics/">LIME basics</a></li>
-<li><a href="interpretability/saliency_and_integrated_gradients/">Saliency and Integrated Gradients</a></li>
-<li><a href="interpretability/grad_cam_walkthrough/">Grad-CAM walkthrough</a></li>
-<li><a href="interpretability/mnist_lrp/">LRP on a trained MNIST classifier</a></li>
-</ul>
-<h2 id="reinforcement-learning">Reinforcement Learning<a class="headerlink" href="#reinforcement-learning" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="rl/dqn_cartpole/">DQN on CartPole</a></li>
-<li><a href="rl/gae_and_ppo_clipped/">GAE and PPO's clipped objective</a></li>
-</ul>
-<h2 id="mechanistic-interpretability">Mechanistic Interpretability<a class="headerlink" href="#mechanistic-interpretability" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="mechanistic-interpretability/sparse_autoencoder_probe/">Sparse autoencoder + linear probe</a></li>
-<li><a href="mechanistic-interpretability/gflownet_hypergrid/">GFlowNet on HyperGrid</a></li>
-</ul>
-<h2 id="neuro-symbolic-reasoning">Neuro-Symbolic Reasoning<a class="headerlink" href="#neuro-symbolic-reasoning" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="neuro-symbolic/datalog_lrp_bridge/">Datalog LRP bridge</a></li>
-</ul>
+<p>Full source: <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/recipes/mnist_lrp.cpp"><code>examples/recipes/mnist_lrp.cpp</code></a>.</p>
+<h2 id="expected-output">Expected output<a class="headerlink" href="#expected-output" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>epoch 1 | mean train loss 0.2653 | test accuracy 95.6%
+epoch 2 | mean train loss 0.1039 | test accuracy 95.4%
+epoch 3 | mean train loss 0.0590 | test accuracy 96.0%
+
+label  pred  runner-up   margin   sum(R) eps  sum(R) eps-plus
+7      7     2           17.466    17.363594        17.264297
+2      2     6            2.737     3.723733         3.578975
+1      1     8            5.609     6.890915         7.359929
+0      0     6            9.759     9.837962         9.564141
+4      4     9            8.495     9.635921         9.480172
+9      9     4            6.131     5.523613         5.190765
+5      6     5            2.697     2.386827         2.447210   &lt;- misclassified
+6      6     0            1.210     1.283611         1.300158
+3      8     5            0.648     0.826104         0.532464   &lt;- misclassified
+8      8     2           13.095    13.480010        12.657933
+</code></pre></div>
+<p>The recipe also prints the digit-0 relevance maps for both rule sets side by side as ASCII
+(<code>+</code> evidence for 0, <code>-</code> evidence for the runner-up).</p>
+<h2 id="whats-happening">What's happening<a class="headerlink" href="#whats-happening" title="Permanent link">&para;</a></h2>
+<p><strong>Why a contrastive target instead of the raw logit.</strong> LRP redistributes whatever score you seed
+it with. A trained logit can be positive only because of its bias, while the epsilon rule
+redistributes over the <em>pre-bias</em> sum, so seeding the raw winning logit (or a unit one-hot seed)
+can flip the sign of the whole heatmap. <code>LRPTarget{{pred}, {runner_up}}</code> asks the more useful
+question, "why this class rather than the next best one?". LRP is linear in the seed, so the
+result is exactly explanation(pred) − explanation(runner-up), and the explained score is the
+logit margin, which is positive whenever the prediction wins.</p>
+<p><strong>Rule choice.</strong> <code>LRP()</code> applies the epsilon rule on every layer. <code>LRP::epsilon_plus()</code> is
+Zennit's <code>EpsilonPlus</code> composite: ZPlus (α=1, β=0) on the convolution, which keeps only
+positive contributions and gives a less noisy map, and epsilon with the bias in the denominator
+on the classifier.</p>
+<p><strong>Conservation.</strong> <code>sum(R)</code> over the 784 pixels tracks the margin, but not exactly, and the gap
+is largest when the margin is small. Under epsilon, the classifier, ReLU and Flatten conserve
+exactly. The whole gap comes from <code>Conv2DModule</code> units in the blank background around the digit:
+their input patch is all zeros, so they're active only because of their bias. They still receive
+relevance from the classifier, but with zero input there's nothing to redistribute it to, so it's
+dropped. That dropped relevance can be positive or negative, which is why <code>sum(R)</code> lands on either
+side of the margin. (Checked on the first four digits, 7, 2, 1 and 0: the gap equals the relevance on those units
+to four decimals.) <code>EpsilonPlus</code> also keeps the classifier's bias in the denominator, so the bias's share
+of the margin is absorbed as well.</p>
+<p><strong>The misclassified digits.</strong> The 5 the network calls a 6 has the true class as its runner-up, so
+its contrastive map shows exactly which strokes tipped it from 5 to 6 (margin 2.7). The 3 called
+an 8 is a near tie with 5 (margin 0.65), and its true class isn't even second; to ask "why 8 rather
+than 3", pass the true label as the contrast instead of the runner-up.</p>
+<p>See also: <a href="../grad_cam_walkthrough/">Grad-CAM walkthrough</a> for the same architecture explained
+with gradients instead of relevance, and the <a href="../../../visualization/#mnist-gallery">MNIST gallery</a>
+for every explainer on this model rendered as heatmaps.</p>
 
 
 
@@ -1063,10 +949,10 @@ for those) — the existing demos stay as-is and are cross-linked here where rel
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
