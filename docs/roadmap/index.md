@@ -1,0 +1,522 @@
+# Roadmap
+
+This page is the backlog for pulsatrix after v1.0. It says what we plan to build, in what order,
+and why. Every item has an ID (for example `FND-1`) so issues, pull requests and chronicles can
+point at it. The evidence behind each item, including its sources, how we would know it was a
+mistake, and how it is known to fail, lives in [Research Notes](research-notes.md).
+
+Nothing here is a promise. Priorities move as items land and as measurements come in.
+
+## Where v1.0 stands
+
+v1.0 is strong on explainability and thin on the foundations that larger models need.
+
+- **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
+  Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
+  activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.
+- **Missing.** There is no way to save or load model weights, no import from PyTorch or Hugging
+  Face, and everything is `float32`. Tensors have no views or broadcasting. There are no
+  learning-rate schedulers, no AdamW, no parameter freezing and no LoRA. Attention has no mask,
+  BatchNorm has no running statistics, and Conv2D has no stride or padding.
+- **HIP backend.** It works on gfx1151 (Strix Halo), but every op synchronizes the stream,
+  reductions run one thread per row or channel, and every tensor is a raw `hipMalloc`.
+
+## The goal that orders this list
+
+**Explain real pretrained models.** That means you can load a Hugging Face model (a small LLM
+such as SmolLM2-135M, or a vision model such as ResNet18), fine-tune it with LoRA on a Strix Halo
+machine, and explain it with the tools pulsatrix already has. Items on that path come first.
+
+## How to read this page
+
+- **ID.** The epic prefix plus a number, for example `TRN-7`.
+- **Priority.** P0 means the next release depends on it. P1 means it's important and planned.
+  P2 means valuable but it can wait. P3 means maybe, or only if someone needs it.
+- **Effort.** S is under a week, M is one to three weeks, L is one to two months, and XL is
+  longer than that. These are rough and assume one person.
+- **Depends on.** The IDs that have to land first.
+
+## Rules that apply to every item
+
+1. **Every new interpretability tool ships with baselines.** Run it on a randomly initialized
+   copy of the model and compare it with a plain linear probe. Attribution maps, probes and
+   sparse autoencoders all produce plausible-looking output on random networks, so a result that
+   looks the same on a random network means nothing.
+2. **Train in bf16, explain in fp32.** Once mixed precision exists, LRP, Integrated Gradients
+   and the conservation checks still run in fp32. LRP's stabilized divisions and conservation
+   tests don't survive bf16's 8-bit mantissa.
+3. **Never unpickle in C++.** `.pt`, `.pth` and `.pkl` files are code, not data. They go through
+   an optional converter that uses PyTorch's restricted loader. The C++ side reads safetensors
+   only.
+4. **Every importer passes a golden-logit test.** "It loaded" is not a test. Compare logits
+   against Hugging Face Transformers on real weights and real text. A wrong RoPE layout loads
+   fine and produces fluent-looking nonsense.
+5. **Every new module implements `propagate_relevance` and has a conservation test.** This is
+   what makes pulsatrix pulsatrix.
+6. **Python is optional.** Agents, the MCP server, notebook output and model loading for
+   safetensors checkpoints are native C++. Python appears only in the legacy-pickle converter
+   and in optional notebook conveniences on top of the existing bindings.
+
+## Where each requested area went
+
+| Area | Epics |
+|---|---|
+| 1. New tools: embedding analysis, Goodfire BSF, surrogates, student-teacher | [INT](#int-embedding-and-representation-analysis), [TDA](#tda-topological-data-analysis), [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf), [KD](#kd-surrogates-and-student-teacher) |
+| 2. Fine-tuning methods | [TRN](#trn-training-and-fine-tuning) |
+| 3. Translating model files | [IO](#io-serialization-and-model-import) |
+| 4. Visualization pack | [VIZ](#viz-visualization-pack), [NB](#nb-notebook-layer) |
+| 5. LLMs and agent orchestration | [LLM](#llm-running-real-language-models), [AGT](#agt-agents-native-c) |
+| 6. Built-in XAI framework (4 reasons, 9 question categories) | [XAI](#xai-question-driven-explainability-framework) |
+| 7. New patterns and architectures | [ARCH](#arch-new-architectures) |
+| 8. Kitchen sink | [KS](#ks-kitchen-sink), [FND](#fnd-foundations) |
+| 9. HIP efficiency for training and tuning | [HIP](#hip-training-efficiency-on-amd-gpus) |
+
+## Milestones
+
+Each milestone lists the items it contains. The order follows the dependencies.
+
+### v1.1 "Foundations and trust"
+
+The plumbing everything else needs, plus the checks that keep explanations honest.
+
+- FND-1 to FND-8: named parameters, freezing, top-k, eigensolver, BatchNorm eval mode, Conv2D
+  stride and padding, seeding, device checks
+- IO-1, IO-2: safetensors and the native checkpoint format
+- TRN-1 to TRN-6: parameter groups, AdamW, clipping, schedulers, gradient accumulation, full
+  fine-tuning
+- XAI-5, XAI-6: explanation-quality metrics and the random-model baseline harness
+- HIP-1, HIP-2, HIP-4, HIP-5: profiling, parallel reductions, fewer syncs, multi-block `dot`/`sum`
+- VIZ-1, VIZ-2: the JSON export format and the SVG renderer
+- KS-1, KS-2: `install()` and a benchmark suite
+- HIP-9: a ROCm 10.0 evaluation image and a pinned host kernel
+
+### v1.2 "Real pretrained models"
+
+Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.
+
+- IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast
+- LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizer, generation, KV cache, the
+  golden-logit harness, AttnLRP parity with LXT
+- HIP-3, HIP-6, HIP-7: caching allocator, fused kernels, bounded-memory Conv2D
+- VIZ-3, VIZ-6a: Vega-Lite HTML and the token relevance view
+- NB-1, NB-2: native rich display and the `.ipynb`/HTML report writer
+- AGT-1 to AGT-4: the native orchestrator core
+- KS-8, KS-9: GPU CI on gfx1151 and a model zoo (ResNet18, SmolLM2)
+
+### v1.3 "Tune and explain"
+
+Fine-tune the models from v1.2 and explain what the fine-tuning changed.
+
+- TRN-7 to TRN-11: LoRA, LRP through LoRA, LoReFT, IA³, model diffing
+- KD-1, KD-2: distillation and teacher–student explanation agreement
+- XAI-1 to XAI-4: the question-driven planner, explanation reports, counterfactuals, surrogates,
+  Anchors
+- INT-1 to INT-6: neighbors, CKA, probe controls, intrinsic dimension, PCA, TCAV and CRP
+- TDA-1 to TDA-8, TDA-11: persistent homology and RTD
+- KS-3, KS-4: uncertainty and adversarial robustness
+- Llama-3.2-1B and Qwen2.5-0.5B pass the golden-logit test
+
+### v1.4 "Features and agents"
+
+Feature discovery on real models, and agents that can drive the library.
+
+- FEAT-1 to FEAT-7: the featurizer interface, TopK and its family, metrics, transcoders, BSF,
+  steering
+- TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
+  topology
+- VIZ-4, VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector
+- AGT-5, AGT-8: the native MCP server and automated feature descriptions
+- NB-3: Python notebook display
+- LLM-8, LLM-9: tuned lens, AtP*, Gemma 3
+- KS-5: TracIn data attribution
+- IO-7: `.npy`/`.npz`, for published SAE dictionaries
+- ARCH-1 to ARCH-3: B-cos layers, concept bottleneck models, mixture of experts
+- HIP-8: hipBLASLt and bf16 GEMM
+
+### Backlog, not yet scheduled
+
+These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
+IO-11, INT-7, INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8, ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.
+
+### v2.0
+
+Larger changes that touch every module or backend.
+
+- A dtype system and full bf16 training (HIP-11)
+- Strided views and broadcasting (KS-10)
+- Op-level autograd (KS-12)
+- WMMA, HIP graphs and FlashAttention for training only (HIP-12)
+- Attribution graphs and parameter decomposition (FEAT-9, FEAT-10)
+- ARCH items at P1 and P2
+- ONNX, GGUF and QLoRA (IO-8, IO-9, TRN-14)
+- Python wheels and a vcpkg port (KS-11)
+
+## FND: Foundations
+
+These unblock most of the other epics. `named_parameters()` alone blocks saving, freezing, LoRA,
+Hugging Face import and optimizer parameter groups, because `Module::parameters()`
+(`module.hpp:140`) returns parameters with no names.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| FND-1 | `named_parameters()` with hierarchical names (`blocks.3.attn.q_proj.weight`) | Saving, loading, freezing by name, LoRA targeting and Hugging Face name mapping all need names | — | P0 | M |
+| FND-2 | Parameter freezing: a per-parameter `requires_grad` flag, and a "skip the weight gradient, still compute the input gradient" branch in every backward | Fine-tuning and LoRA. Skipping `dW` is where the memory and compute savings come from | FND-1 | P0 | M |
+| FND-3 | Top-k selection, on the host first and then on the device | TopK and BSF featurizers, MoE routers, top-k sampling, nearest neighbors, landmarks | — | P0 | M |
+| FND-4 | Symmetric eigensolver, power iteration, and a small SVD/QR (Jacobi) | PCA, BSF stable rank, LoReFT's orthonormal projection, PiSSA, intruder-dimension checks, spectral distances | — | P0 | M |
+| FND-5 | BatchNorm running statistics and an eval mode, plus a canonizer that folds BatchNorm into the previous layer before LRP (`plans/lrp_issues.md` #8) | Today a sample's explanation depends on the rest of its batch | — | P0 | S |
+| FND-6 | Conv2D stride and padding | Needed to load VGG and ResNet, the standard LRP benchmark models | — | P0 | M |
+| FND-7 | A seeding and determinism API (`set_seed`, a flag that forbids nondeterministic paths) | Reproducible explanations. Most of the pieces already exist | — | P0 | S |
+| FND-8 | Device-consistency checks at module and loss boundaries, and fix `Tensor::Stack` tagging (`plans/gpu_review.md` #1, #2) | A CPU tensor fed to a GPU module aborts the process on gfx1151 | — | P0 | S |
+
+## IO: Serialization and model import
+
+One format does everything: **safetensors**. It is a small JSON header followed by raw
+little-endian data, it cannot run code, and nearly every Hugging Face model ships in it. It covers
+pulsatrix's own checkpoints, optimizer state, LoRA adapters, imported models, published sparse
+autoencoder dictionaries and a model zoo.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| IO-1 | Native safetensors reader and writer. Check every offset against the file size, reject overlaps and holes, and use overflow-safe size arithmetic | The single file format | — | P0 | S–M |
+| IO-2 | Native checkpoint format: safetensors with `format_version` metadata, optimizer state in a sibling file, and a migration table between versions | Save and resume training; the passing test is a bit-identical forward pass and loss curve after reload | IO-1, FND-1 | P0 | M |
+| IO-3 | An optional converter for legacy pickle files (`.pt`, `.pth`, `.pkl`). It uses `torch.load(weights_only=True)` with torch 2.6 or newer and writes safetensors | Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors | IO-1 | P1 | M |
+| IO-4 | A name-mapping manifest with transforms: transpose (pulsatrix `Linear` stores `(in, out)`, PyTorch stores `(out, in)`), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys | Turns Hugging Face names and layouts into pulsatrix modules | FND-1, IO-1 | P1 | M |
+| IO-5 | Read Hugging Face `config.json` and sharded `model.safetensors.index.json` | Every small LLM on the Hub uses these | IO-1 | P1 | S |
+| IO-6 | Upcast bf16 and fp16 weights to fp32 on load (exact) | Most published weights are bf16 | IO-1 | P1 | S |
+| IO-7 | `.npy` and `.npz` reading, with object and big-endian dtypes rejected | Many SAE dictionaries and Python users' arrays | — | P1 | S–M |
+| IO-8 | ONNX import, weights only | Graph import would mean pattern-matching ONNX ops back into modules, which is research | IO-1 | P3 | M |
+| IO-9 | GGUF import for F32, F16 and Q8_0, with every count and size checked for overflow | Some small models only exist as GGUF. GGUF parsers have a long CVE history | IO-1 | P3 | M |
+| IO-10 | Keras and TensorFlow weights, through the Python converter only. Never call `load_model` on an untrusted file | Small user base, repeated `safe_mode` bypasses | IO-3 | P3 | M |
+| IO-11 | joblib/sklearn pickles and TorchScript: not supported. Document how to export from them instead | TorchScript is deprecated upstream. Pickle is code | — | P3 | — |
+
+## TRN: Training and fine-tuning
+
+The infrastructure comes first. Most LoRA failures in the literature are configuration problems,
+not method problems: a study of LoRA variants from January 2026 found that, once the learning
+rate is tuned, plain LoRA matches or beats most of them.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| TRN-1 | Optimizer parameter groups, each with its own learning rate and weight decay | No weight decay on norms and biases; LoRA+ | FND-1 | P0 | S |
+| TRN-2 | AdamW (decoupled weight decay) and SGD with momentum and Nesterov | The default for transformer fine-tuning | TRN-1 | P0 | S |
+| TRN-3 | Global gradient-norm clipping | Stability at LoRA's higher learning rates | — | P0 | S |
+| TRN-4 | Learning-rate schedulers: warmup, cosine, linear, constant | Every published recipe assumes them | — | P0 | S |
+| TRN-5 | Gradient accumulation that divides by the total token count, not the mean of micro-batch means | Averaging micro-batch means is wrong when sequence lengths vary | — | P0 | S |
+| TRN-6 | A full fine-tuning recipe on a small pretrained model | The baseline every other method is compared against | FND-2, IO-2 | P0 | S |
+| TRN-7 | `LoRALinear`: a frozen base weight plus a low-rank update, with merge and unmerge, adapter save and load using PEFT key names, and PEFT's defaults. Documentation follows "LoRA Without Regret": apply it to all layers, use about 10× the full fine-tuning learning rate | The main fine-tuning method | FND-2, IO-1 | P1 | M |
+| TRN-8 | LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters | Shows what the fine-tuning changed, per input. No other library does this | TRN-7 | P1 | M |
+| TRN-9 | LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact | Fine-tuning that is itself an interpretable subspace | FND-4 | P1 | M |
+| TRN-10 | IA³ (learned rescaling vectors) | Tiny and trivially explainable | FND-2 | P2 | S |
+| TRN-11 | Model diffing: relevance of the fine-tuned model minus relevance of the base model, plus an intruder-dimension check on the weights | Shows what a fine-tune changed across a dataset | TRN-8, FND-4 | P2 | M |
+| TRN-12 | Activation checkpointing per block. Off in explain mode, because LRP needs the cached activations | Memory for 1B-parameter models | — | P2 | M |
+| TRN-13 | rsLoRA, LoRA+ and DoRA | Small gains that a tuned learning rate often matches | TRN-7 | P2 | S–M |
+| TRN-14 | PiSSA, VeRA, AdaLoRA, GaLore, QLoRA, prefix and prompt tuning, BitFit, adapter layers, and 2025–26 LoRA variants | Low value per the 2026 variant study, or blocked by missing dtypes | TRN-7 | P3 | — |
+
+## LLM: Running real language models
+
+Target order: SmolLM2-135M, then Qwen2.5-0.5B, Llama-3.2-1B, Qwen3-0.6B and Gemma 3 270M. SmolLM2
+needs the fewest changes. Gemma 3 has the most quirks, but Google's Gemma Scope 2 publishes sparse
+autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| LLM-1 | Attention upgrade: grouped-query attention (`num_kv_heads`), `head_dim` separate from `d_model / num_heads`, optional QKV bias, causal and padding masks, a RoPE layout flag (Hugging Face "rotate half" vs. adjacent pairs), and a position offset | Without these, no current small LLM loads | — | P0 | M |
+| LLM-2 | A tied LM head that shares the embedding matrix | SmolLM2, Qwen3 and Gemma 3 all tie their embeddings | — | P0 | S |
+| LLM-3 | A native byte-level BPE tokenizer that reads Hugging Face `tokenizer.json`, with a hand-written pre-tokenizer and a generated Unicode category table (`std::regex` can't match Unicode categories). It passes when its ids match Hugging Face on a 10,000-line multilingual corpus | No Python needed to tokenize | — | P0 | M |
+| LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S |
+| LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M |
+| LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3 | Catches layout bugs that still "load" | IO-4 | P0 | S |
+| LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1 to LLM-3, LLM-6 | P1 | M |
+| LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M |
+| LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M |
+
+## XAI: Question-driven explainability framework
+
+This epic builds two frameworks into the library:
+
+- **Four reasons to explain** (Adadi and Berrada, 2018): to *justify* a decision, to *control*
+  the model (find its flaws), to *improve* it, and to *discover* something new from it.
+- **Nine question categories** (Liao, Gruen and Miller, CHI 2020): Input (data), Output,
+  Performance, How (global), Why, Why not, What if, How to be that (a different prediction), and
+  How to still be this (the same prediction).
+
+You state the question and the reason. Pulsatrix picks the explainers that answer that question,
+runs the checks that reason requires, and returns a report that says what the result does and
+doesn't support.
+
+| Question | Primary method | Status in pulsatrix |
+|---|---|---|
+| Why | LRP composites, Integrated Gradients | Have |
+| Why not | Contrastive LRP (relevance of logit P minus logit Q) | Have |
+| What if | PDP and ICE, re-running with an edited input | Have |
+| How (global) | Global surrogate tree, PDP, TCAV, CRP | Partial; XAI-4, INT-6 |
+| How to be that | Counterfactual search | Gap; XAI-4 |
+| How to still be this | Anchors | Gap; XAI-4 |
+| Performance | Metrics, calibration, per-slice error, uncertainty | Partial; KS-3 |
+| Input (data) | Dataset statistics, nearest training examples, data attribution | Partial; INT-1, KS-5 |
+| Output | Output schema and label documentation | Template only |
+
+The reason changes the defaults:
+
+- **Justify:** faithfulness and stability metrics are required, and the report carries
+  uncertainty.
+- **Control:** the model-randomization test and per-slice error are required.
+- **Improve:** attributions are aggregated over the dataset to surface spurious features.
+- **Discover:** concept and featurizer tools run, each with a random-model baseline.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S |
+| XAI-2 | `ExplanationPlanner::plan(question, reason, model_traits)`, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs | The framework users actually call | XAI-1 | P1 | M |
+| XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M |
+| XAI-4 | The missing explainers: counterfactuals (gradient-based first, then a diverse variant), a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to be that, How to still be this and How (global) | XAI-1, INT-1 | P1 | M each |
+| XAI-5 | Explanation-quality metrics in the Quantus families: deletion and insertion curves (with the ROAD correction), the model-parameter randomization test, sparseness and complexity | Today pulsatrix has conservation and stability checks only | — | P0 | M |
+| XAI-6 | `NullModelBaseline`: re-run any explainer, probe or featurizer on a re-initialized copy of the model and report the difference | The baseline rule above, as one call | FND-1 | P0 | S–M |
+
+## INT: Embedding and representation analysis
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| INT-1 | Nearest neighbors and mutual nearest neighbors over embeddings or activations, with optional mean-centering | The cheapest useful embedding tool; also a cross-model alignment score | FND-3 | P0 | S |
+| INT-2 | Linear CKA (debiased) | Compare layers across models, training runs and backends | — | P0 | S |
+| INT-3 | Control tasks for `LinearProbe` (selectivity = probe accuracy minus control accuracy) | High probe accuracy can come from the probe, not the representation | — | P0 | S |
+| INT-4 | Anisotropy, effective rank and TwoNN intrinsic dimension | Explains why raw cosine similarity misleads; one number per layer | INT-1 | P1 | S |
+| INT-5 | PCA projections | 2D and 3D views, steering directions, preprocessing for TDA | FND-4 | P1 | M |
+| INT-6 | TCAV (with significance against random concepts) and Concept Relevance Propagation | Concept-level explanations, and CRP reuses pulsatrix's LRP rules | INT-3 | P1 | M |
+| INT-7 | RSA and SVCCA | Mostly covered by CKA | FND-4 | P2 | — |
+| INT-8 | UMAP and t-SNE: export the data only, don't implement | Expensive, and they distort distances and cluster sizes | VIZ-1 | P3 | — |
+
+## TDA: Topological data analysis
+
+Persistent homology measures the shape of a point cloud: its clusters (H0), loops (H1) and
+voids (H2), and how long each one lasts as the scale grows. The plan treats it as a typed
+pipeline:
+
+```
+PointCloud → DistanceMatrix → Filtration → Diagram → Vectorization
+```
+
+The category theory pays off in one place: **stability**. Each stage has a bound on how much its
+output can move when its input moves, and those bounds compose. So every result carries a
+certified error bar (`Certified<T>{value, bound, provenance}`) that adds up the fp32 distance
+error, the subsampling error and the vectorization error. The API doesn't expose `Functor`
+classes that nothing checks.
+
+Pulsatrix writes H0 itself (a minimum spanning tree, on CPU and GPU), vendors Ripser (MIT) for H1
+and H2, and writes the distances, vectorizations and significance tests itself. GUDHI's
+GPL-licensed parts and giotto-ph (AGPL) are avoided.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| TDA-1 | A `PointCloud` built from `ActivationSnapshot`s, with flatten and pooling options, concatenated across batches | The input to everything below | — | P0 | S |
+| TDA-2 | Pairwise distances via GEMM on every backend, with an fp32 error bound | Distances are the only part that touches the model's dimension | TDA-1 | P0 | S |
+| TDA-3 | H0 as a minimum spanning tree | Exact, fast and GPU-friendly | TDA-2 | P0 | S |
+| TDA-4 | Vendored Ripser for H1 and H2, returning critical edges and cocycles | Loops and voids | TDA-2 | P0 | M |
+| TDA-5 | `Diagram`, bottleneck and Wasserstein distances, `Certified<T>`, and property tests for stability | Compare layers, models and seeds with certified error | TDA-3, TDA-4 | P0 | M |
+| TDA-6 | Betti curves, persistence landscapes, persistence images, persistent entropy | Turn diagrams into numbers for probes and plots | TDA-5 | P0 | S |
+| TDA-7 | Farthest-point landmarks, which give the subsampling error bound | Persistent homology can't run on 100,000 activations | FND-3 | P0 | S |
+| TDA-8 | Significance tests: a universal null distribution, bootstrap confidence bands, Gaussian and random-network baselines | Every reported loop needs a p-value | TDA-5 | P0 | M |
+| TDA-9 | Barcode, persistence diagram and Betti curve views, with JSON and SVG export | See the result | TDA-5, VIZ-1 | P1 | M |
+| TDA-10 | **A manifold verifier for featurizer blocks:** decide whether a BSF or SAE block forms a circle or a torus, and recover a circular coordinate to steer along. It passes by reproducing the GPT-2 day-of-week circle (Engels et al.) against a random-network control | Goodfire measures block dimension with a linear method. Nobody has published a topological check, so this is new | TDA-4, TDA-7, TDA-8, FEAT-6 | P1 | M |
+| TDA-11 | Representation Topology Divergence next to CKA in one `compare_representations()` report | Catches clusters and loops that CKA misses | TDA-4, INT-2 | P1 | S |
+| TDA-12 | Betti numbers layer by layer through a network, with a random-network baseline | Reproduces "topology simplifies through the layers" (Naitzat et al., 2020) | TDA-7, TDA-8 | P1 | M |
+| TDA-13 | Spectral and distance-to-measure distances | Raw distances concentrate in high dimensions and hide loops | INT-1, FND-4 | P2 | M |
+| TDA-14 | Mapper, with an instability score and a parameter sweep, never a single graph | Mapper output depends heavily on its parameters | FND-4, TDA-3 | P2 | M |
+| TDA-15 | A differentiable persistence loss | Topology as a training signal | TDA-4 | P2 | M |
+| TDA-16 | Probes on diagram features for out-of-distribution and trojan detection, compared against non-topological features | Only worth it if it beats simpler statistics | TDA-6 | P2 | M |
+| TDA-17 to TDA-19 | Image/kernel persistence across layers, zigzag persistence, multiparameter persistence | Research-grade | TDA-4 | P3 | L–XL |
+
+Not planned: "neural persistence" on weight graphs. A 2023 follow-up showed it mostly measures
+weight variance.
+
+## KD: Surrogates and student-teacher
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| KD-1 | A knowledge-distillation loss (softened teacher outputs, with the T² scaling) | A wrapper around the existing `KLDivergenceLoss` | — | P1 | S |
+| KD-2 | A teacher–student explanation-agreement test: compare LRP or IG maps with CKA or rank correlation | Turns distillation into a test of whether the student uses the same evidence | KD-1, INT-2 | P1 | S |
+| KD-3 | Feature and attention distillation, soft decision trees, and rule extraction that feeds the Datalog engine | Interpretable students; rules connect to pulsatrix's neuro-symbolic side | KD-1 | P2 | — |
+| KD-4 | Born-again networks and a DistilBERT-style recipe | Small and inconsistent gains | KD-1, IO-2 | P3 | — |
+
+## FEAT: Featurizers, sparse autoencoders and Goodfire BSF
+
+Goodfire's **Block-Sparse Featurizers** (BSF, June 2026) are like sparse autoencoders, except
+the unit of sparsity is a small block of 2–4 dimensions rather than one direction. That lets one
+feature be a curve or a circle instead of a line. BSF is the newest member of a family pulsatrix
+can't represent yet, so the plan builds the family first, behind one interface.
+
+Sparse autoencoders have real limits: they lose to linear probes out of distribution, steering
+with their features loses to simple difference-of-means vectors, and BSF still splits features.
+They ship here as discovery tools with metrics and baselines, not as detectors.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| FEAT-1 | A `Featurizer` interface (encode, decode, loss, decoder normalization), with the existing SAE ported to it and given unit-norm decoders, an L0 metric and dead-latent tracking | One interface for the whole family | — | P0 | M |
+| FEAT-2 | TopK SAE with the auxiliary loss for dead latents | Removes L1 shrinkage; sets sparsity directly | FEAT-1, FND-3 | P0 | M |
+| FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M |
+| FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — |
+| FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M |
+| FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L |
+| FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S |
+| FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — |
+| FEAT-9 | Parameter decomposition (SPD and VPD) | Interpretability in weight space; few libraries have it | FND-4 | P2 | L–XL |
+| FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first | FEAT-5 | P2 | XL |
+
+Open: no LRP rule exists yet for propagating relevance through a block top-k. FEAT-6 needs one.
+
+## ARCH: New architectures
+
+These are ranked by how well they fit an explainability-first library.
+
+| ID | Item | Why | Depends on | P |
+|---|---|---|---|---|
+| ARCH-1 | B-cos layers | Self-explaining networks whose explanation can be compared directly with LRP | — | P1 |
+| ARCH-2 | Concept bottleneck models | Supports "what if this concept were true" interventions. Watch for concept leakage | — | P1 |
+| ARCH-3 | Mixture of experts with router attribution | The router's choice is a free, discrete explanation | FND-3 | P1 |
+| ARCH-4 | Prototype networks (ProtoPNet) | "This looks like that" explanations | INT-1 | P2 |
+| ARCH-5 | Graph neural networks with GNN-LRP | A new data type; `gather_rows` and `scatter_add_rows` already exist | — | P2 |
+| ARCH-6 | Mamba-2 / SSD | Extends the existing Mamba and MambaLRP | — | P2 |
+| ARCH-7 | xLSTM | Extends the recurrent family | — | P2–P3 |
+| ARCH-8 | Kolmogorov–Arnold networks | Interpretable by construction, but they lose to MLPs outside symbolic tasks | — | P2 |
+| ARCH-9 | Diffusion transformers (adaLN) | The timestep embedding and noise schedules already exist | — | P2 |
+| ARCH-10 | Gated DeltaNet and Titans, Hopfield layers, JEPA, self-explaining neural networks, hypernetworks, neural ODEs and liquid networks | Lower fit or poor match with hand-written backward passes | — | P3 |
+
+## VIZ: Visualization pack
+
+Interactive visualization libraries for interpretability tend to go stale, while stable data
+formats last. The plan keeps ImGui for live views and puts every view on top of a versioned JSON
+format, with static and web renderers next to it.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| VIZ-1 | A versioned JSON document model (`pulsatrix.<kind>.v1`) for attributions, heatmaps, token relevance, circuit graphs, training logs and feature dashboards. The ImGui widgets read it too. NaN and infinity encode as null plus a flag | One source of truth for every renderer | — | P0 | M |
+| VIZ-2 | A dependency-free SVG renderer: bar, waterfall, heatmap, token strip, beeswarm | Publication figures with no GPU or display, including in CI | VIZ-1 | P0 | M |
+| VIZ-3 | Self-contained Vega-Lite HTML, with the JavaScript inlined or loaded from a CDN | Hover, zoom and export for free, in a browser or notebook | VIZ-1 | P1 | S |
+| VIZ-4 | Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read | Large graphs get a mature viewer for free | VIZ-1 | P1 | M |
+| VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each |
+| VIZ-7 | A node editor for circuit graphs | Only if graphs outgrow the current view; VIZ-4 covers large ones | — | P3 | M |
+
+(VIZ-5, the notebook path, moved to the NB epic.)
+
+## NB: Notebook layer
+
+Notebook output needs neither Python nor a running kernel. The layers build on each other. ImGui
+can't draw inline in a notebook, so it stays the desktop tool and shares the VIZ-1 data.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| NB-1 | `pulsatrix::mime_bundle_repr(const T&)` overloads that return MIME bundles: tensor summaries, attribution heatmaps as SVG, token relevance, circuit graphs and persistence diagrams as Vega-Lite. The C++ Jupyter kernel xeus-cpp finds them automatically, so pulsatrix doesn't depend on it | Rich display in a C++ notebook | VIZ-1, VIZ-2 | P1 | S |
+| NB-2 | A C++ `Report` builder that writes `.ipynb` files (nbformat 4.5) and self-contained HTML: markdown, code shown as text, and rich outputs | Notebook-format results with no Python and no kernel; they render on GitHub, in VS Code and in Quarto | NB-1 | P1 | S–M |
+| NB-3 | Python `_repr_mimebundle_` on the bound types, delegating to NB-1 so both languages render the same (golden test), then interactive views with anywidget | Notebook users on the Python side | NB-1 | P2 | S → M |
+| NB-4 | xeus-cpp support: a `pulsatrix_notebook.hpp` header, example notebooks, and a Linux CI smoke test. Windows and GPU code inside notebook cells are marked experimental. Every precondition reachable from a cell throws instead of aborting, because a crash kills the kernel | Run pulsatrix interactively in C++ | NB-1 | P3 | M |
+| NB-5 | A WebAssembly build of the CPU backend for JupyterLite | Notebooks in the browser with nothing installed | NB-4 | Deferred | XL |
+
+## HIP: Training efficiency on AMD GPUs
+
+The bottlenecks are structural, so measure first and fix those before anything exotic. On the
+gfx1151 APU almost every non-GEMM kernel in pulsatrix is limited by memory bandwidth at best. In
+practice they are limited by launch and sync overhead and by too little parallelism.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| HIP-1 | `scripts/profile_hip.sh`: a rocprofv3 wrapper that writes kernel time per op type to CSV | The baseline, and the falsifier for every item below | — | P0 | S |
+| HIP-2 | Reductions with one workgroup or one wave per row or channel (softmax, norms, column sums): wave shuffles using the runtime `warpSize` and 64-bit masks, then a shared-memory stage. Small channel counts get a deterministic two-stage grid reduction, no atomics | BatchNorm at N=64, C=3, 224×224 currently runs 3 threads over 3.2 million elements | HIP-1 | P0 | M |
+| HIP-3 | A caching allocator: size classes, a pool per stream, and a configurable budget instead of `hipMemGetInfo`, which overstates what the APU can allocate. Don't use `hipMallocAsync` (open corruption bugs on RDNA) | Raw `hipMalloc` and `hipFree` on every tensor | — | P0 | M |
+| HIP-4 | Remove the 56 per-op `hipStreamSynchronize` calls. Sync only when the host reads a result, and add `PULSATRIX_HIP_SYNC_DEBUG=1` to bring them back for debugging | Launch and sync cost more than the kernels on small models | HIP-3, FND-8 | P0 | S |
+| HIP-5 | `dot` and `sum` across many blocks (partials, then a second pass), deterministic | They run on a single block today | — | P0 | S |
+| HIP-6 | Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs | Fewer launches and less memory traffic | TRN-2 | P1 | — |
+| HIP-7 | Conv2D that runs im2col and GEMM in batch chunks | The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU | FND-6 | P1 | S |
+| HIP-8 | A hipBLASLt probe on the pinned container, then bf16 GEMM through `hipblasGemmEx` | Reports conflict on whether hipBLASLt works on gfx1151 in ROCm 7.2.4; measure it | HIP-1 | P1 | — |
+| HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S |
+| HIP-10 | Zero-copy staging buffers on APUs, enabled only when the device reports itself as integrated | Saves a copy on Strix Halo without slowing discrete GPUs | HIP-3 | P2 | — |
+| HIP-11 | Full bf16 training | Halves memory traffic and reaches the matrix cores. Needs a dtype in `Tensor` | IO-6 | P2 | XL |
+| HIP-12 | HIP graphs, WMMA or rocWMMA kernels, FlashAttention for training only, MIOpen | Last: graphs have measured slowdowns on gfx11, and FlashAttention never builds the attention matrix that AttnLRP needs | HIP-4 | P3 | — |
+
+## AGT: Agents, native C++
+
+Pulsatrix can run its own agent orchestrator without Python. There is no official C++ SDK for
+the Anthropic API or for MCP, but neither is hard to write against. The plain HTTP and JSON API is
+stable, and the 2026-07-28 MCP specification dropped the handshake and sessions, so a stdio server
+that only offers tools is small. The genuinely hard parts are narrow:
+
+- TLS certificate trust on Windows and macOS;
+- validating JSON Schema 2020-12;
+- getting a 135M-parameter model to pick tools reliably.
+
+LLM agents live in `pulsatrix::orch` (target `pulsatrix_orchestrator`), because
+`pulsatrix::Agent` already names the reinforcement-learning policy contract.
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| AGT-1 | An optional `PULSATRIX_ENABLE_ORCHESTRATOR` target, off by default, with nlohmann/json (MIT). The same JSON library serves VIZ-1 and NB-1 | Keeps the core free of networking dependencies | — | P1 | S |
+| AGT-2 | An `HttpTransport` interface. cpp-httplib by default, with an optional libcurl backend that uses the operating system's TLS on Windows. A shared server-sent-events parser that ignores unknown event types | Streaming LLM responses | AGT-1 | P1 | M |
+| AGT-3 | Providers and the tool loop: an Anthropic provider and an OpenAI-compatible provider (llama-server, vLLM, Ollama), with one internal message format | The orchestrator itself | AGT-2 | P1 | M |
+| AGT-4 | A tool registry: name, description, input schema and a `std::function`. Schemas use only the keywords that mean the same in JSON Schema draft-7 and 2020-12, checked by a small built-in validator. The MCP server and the in-process loop share one registry | Define a tool once, use it everywhere | AGT-1 | P1 | S–M |
+| AGT-5 | A native MCP server over stdio (2026-07-28 specification, with a fallback for older clients) that exposes explain, attribute, logit lens, patching and featurizer tools | Lets Claude and other agents drive pulsatrix | AGT-4, IO-1 | P2 | M |
+| AGT-6 | A local provider that runs pulsatrix's own LLM, with tool calls constrained by a token-level mask | Agents with no network, and a model pulsatrix can explain | LLM-1 to LLM-5, AGT-4 | P3 | M |
+| AGT-7 | **Explain an agent's tool choice:** run AttnLRP from the logit of the first token that distinguishes the chosen tool, back over the prompt, the tool descriptions and the history. It passes if deleting the top-attributed tokens flips the choice more often than deleting random tokens | No other library can explain why an agent picked a tool | AGT-6, LLM-7 | P3 | L |
+| AGT-8 | Automated descriptions of featurizer latents: an LLM describes the top activations, then the description is scored by how well it predicts activations | Labels thousands of features | AGT-3, FEAT-1 | P2 | M |
+| AGT-9 | An interpretability agent that runs experiments on the model (MAIA-style) | Research-grade | AGT-3, AGT-4 | P3 | L |
+
+AGT-3 has to follow the current Anthropic API rules:
+
+- Forcing a specific tool returns HTTP 400 on the current Claude models; use automatic tool
+  choice with strict tool schemas instead.
+- Tool results come first in the next user message.
+- A 429 from a spend limit has no `retry-after` header and must not be retried.
+- Back off with jitter on 5xx, 529 and mid-stream overload errors.
+- Cache the system prompt and tool definitions.
+- Read the API key from the environment and never log it.
+
+AGT-5 has to follow these security rules:
+
+- Write nothing to stdout except protocol messages.
+- Resolve every path and confine it to allowed directories.
+- Load safetensors, GGUF and pulsatrix-native formats only, never pickle.
+- Cap tensor and request sizes.
+- Use opaque handles that expire.
+- Treat tool output as untrusted.
+
+## KS: Kitchen sink
+
+| ID | Item | Why | Depends on | P | Effort |
+|---|---|---|---|---|---|
+| KS-1 | CMake `install()` and a package config, so other projects can `find_package(pulsatrix)` | There's no install step today | — | P0 | S |
+| KS-2 | A benchmark suite: step time, explanation time, conservation error | Measures every HIP item and catches regressions | — | P1 | S |
+| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S |
+| KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S |
+| KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M |
+| KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each |
+| KS-7 | Wire the existing thread pool into `DataLoader`'s `num_workers` | Built but not connected | — | P2 | M |
+| KS-8 | GPU CI on a self-hosted gfx1151 runner | The HIP backend is only tested by hand today | HIP-9 | P1 | M |
+| KS-9 | A model zoo: ResNet18, VGG16 and SmolLM2 with reference heatmaps | Reproducible examples on real models | IO-4, FND-6 | P1 | M |
+| KS-10 | Strided views and broadcasting | Removes copies everywhere; touches every kernel | — | P2 | L |
+| KS-11 | Python wheels and a vcpkg port | Easier installation | KS-1 | P2 | — |
+| KS-12 | EK-FAC influence functions, quantization, op-level autograd, distributed training | Large or low priority for an explainability library | — | P3 / v2 | — |
+
+## Open questions
+
+These came up in the research and aren't settled yet.
+
+- **BSF details.** The exact MDL formula and the block-size defaults beyond the published example
+  need a full read of the papers.
+- **Missing LRP rules.** No published rule exists for relevance through a block top-k (BSF),
+  through a LoReFT intervention, or through LoRA under the gamma rule. The epsilon-rule split for
+  LoRA is our own derivation and needs a numerical check.
+- **Qwen3 in LXT.** LXT marks Qwen3 as experimental, with relevance skewed toward the first
+  token. The cause isn't documented.
+- **hipBLASLt on gfx1151.** Sources disagree on whether it works on ROCm 7.2.4. HIP-8 settles it.
+- **rsLoRA scaling.** It conflicts with the claim that 1/r scaling makes the learning rate
+  independent of rank. Only an experiment settles it.
+- **Licenses.** Llama 3.2's license terms for redistributing converted weights: ship converters,
+  not weights. The licenses of PHAT, Dionysus, Hera and Eirene weren't checked; none are needed
+  for the plan.
+- **Mamba-2 and xLSTM.** No published LRP rules found.
+- **MCP security statistics.** The figures cited come from secondary reports, not primary scans.
+- **xeus-cpp.** How version 0.10 loads prebuilt libraries, and whether prebuilt HIP kernels can
+  be called from notebook cells, needs a hands-on test.
+- **Windows TLS.** Whether the open cpp-httplib Windows certificate issue affects
+  `api.anthropic.com` needs a CI probe.
+- **TDA numerics.** The fp32 distance error between near-duplicate activations hasn't been
+  measured. Don't trust loops smaller than that error.

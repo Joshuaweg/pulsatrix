@@ -140,6 +140,8 @@ target_link_libraries(my_app PRIVATE pulsatrix_core)
 ## Status
 
 - Version 1. The API may still change between minor versions.
+- What's planned next, and why, is in the
+  [Roadmap](https://joshuaweg.github.io/pulsatrix/roadmap/).
 - 2,000+ tests. CI builds and tests every push and pull request on Windows (MSVC) and Linux
   (GCC), and compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.
