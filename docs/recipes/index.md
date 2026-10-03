@@ -30,6 +30,7 @@ for those) — the existing demos stay as-is and are cross-linked here where rel
 - [LIME basics](../recipes/interpretability/lime_basics.md)
 - [Saliency and Integrated Gradients](../recipes/interpretability/saliency_and_integrated_gradients.md)
 - [Grad-CAM walkthrough](../recipes/interpretability/grad_cam_walkthrough.md)
+- [LRP on a trained MNIST classifier](../recipes/interpretability/mnist_lrp.md)
 
 ## Reinforcement Learning
 
