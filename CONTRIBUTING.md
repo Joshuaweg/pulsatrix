@@ -1,45 +1,62 @@
 # Contributing to Pulsatrix
 
+Thanks for your interest. Bug reports, fixes, docs improvements and new features are all
+welcome.
+
 ## Building and testing
 
-See the [README](README.md#build) for full build instructions. In short:
+The full instructions, including GPU and Python builds, are in
+[Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/). In short:
 
-```
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64   # Windows
+```bash
+# Linux / macOS
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+ctest --test-dir build --output-on-failure
+
+# Windows
+cmake -S . -B build -A x64
 cmake --build build --config Release
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-## Development practice
+## How we work
 
-This codebase is built test-first: every behavior change ships with a failing
-test written before the implementation (red), then the minimal implementation
-to pass it (green). PRs that add or change behavior should follow the same
-pattern — please include tests, not just implementation.
+**Tests come first.** Every behavior change starts with a test that fails, followed by the
+smallest change that makes it pass. Please include tests with any PR that adds or changes
+behavior.
 
-A few conventions worth knowing before you dive in:
-- Public headers live in `include/pulsatrix/`, implementations in `src/`.
-- Every layer that participates in relevance propagation implements a real,
-  cited LRP rule (see the README's "What's here" section for references) —
-  no placeholder/no-op implementations.
-- Numerical algorithms (RL agents, sequence models, etc.) use this codebase's
-  deterministic LCG convention instead of `<random>` so runs are reproducible;
-  follow the same pattern for new stochastic code.
-- Extension always happens through compile-time polymorphism (subclassing
-  `Module`/`MetricsSink`/`DeviceBackend`, or an enum-selected variant) — there
-  is no runtime plugin/factory registry. See
-  [Customization](https://joshuaweg.github.io/pulsatrix/customization/) for
-  the full pattern and why, before adding a new layer, LRP rule variant,
-  metrics sink, or device backend.
+Conventions to know before you start:
+
+- **Layout.** Public headers live in `include/pulsatrix/`, implementations in `src/`, and tests
+  in `tests/`.
+- **Every layer needs an LRP rule.** `Module::propagate_relevance()` is a required method.
+  Implement a rule from the literature and cite it in the header. If the right rule isn't known
+  yet, throw with a clear message instead of guessing. See the
+  [LRP guide](https://joshuaweg.github.io/pulsatrix/interpretability/lrp/) for the existing rules.
+- **Deterministic randomness.** Stochastic code (RL agents, sequence models, and so on) uses a
+  seeded linear congruential generator (LCG), as the existing RL code does, instead of
+  `<random>`. That keeps runs reproducible. Follow the same pattern in new code.
+- **Extend by subclassing.** New layers, metrics sinks and device backends subclass `Module`,
+  `MetricsSink` or `DeviceBackend`. There is no runtime plugin registry.
+  [Customization](https://joshuaweg.github.io/pulsatrix/customization/) explains the pattern
+  and why.
 
 ## Submitting a change
 
-1. Fork the repo and create a branch for your change.
+1. Fork the repository and create a branch.
 2. Write a failing test, then make it pass.
-3. Run the full test suite (`ctest ...`) and confirm it's green.
-4. Open a PR describing what changed and why.
+3. Run the full test suite and make sure it passes.
+4. Open a pull request that explains what changed and why.
+
+CI builds and tests every pull request on Windows and Linux.
 
 ## Reporting bugs
 
-Open a GitHub issue with a minimal repro (a failing test is ideal) and the
-platform/compiler you're building with.
+Open a [GitHub issue](https://github.com/Joshuaweg/pulsatrix/issues) with:
+
+- a minimal way to reproduce the bug (a failing test is ideal),
+- your OS, compiler and version, and
+- the CMake options you used.
+
+For security issues, follow [SECURITY.md](SECURITY.md) instead of opening a public issue.

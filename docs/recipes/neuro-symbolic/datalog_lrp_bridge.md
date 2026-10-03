@@ -1,13 +1,16 @@
-# Recipe: Datalog LRP bridge
+# Recipe: Datalog LRP Bridge
 
-**What you'll build:** a `NeuralPredicateDatalogBridge` wiring a real neural predicate's output
-into a Datalog derivation (`ancestor(a,d)` over a diamond-graph `edge`/`ancestor` program), then
-LRP relevance traced from the derived query fact back through the Datalog circuit and into the
-predicate's own raw input — reusing the hand-derived closed form from
+**What you'll build:** a `NeuralPredicateDatalogBridge` that feeds a neural predicate's output
+into a Datalog derivation: `ancestor(a,d)` over a diamond-shaped `edge`/`ancestor` program. LRP
+relevance is then traced from the derived query fact, back through the Datalog rules, and into
+the predicate's own input. The numbers match the hand-derived closed form in
 `tests/neuro_symbolic_datalog_bridge_test.cpp`.
 
 CMake target: `datalog_lrp_bridge_recipe`
 (`examples/recipes/datalog_lrp_bridge.cpp`).
+
+Run it: `./build/datalog_lrp_bridge_recipe` (Windows:
+`build\Release\datalog_lrp_bridge_recipe.exe`).
 
 ## Code
 
@@ -49,19 +52,29 @@ conservation check: other base facts + relevance at x = 0.999993 (should equal s
 
 ## What's happening
 
-`edge(a,b)`'s weight is a real `LinearModule(1,1)` + sigmoid neural predicate's output; the
-other three edges are constants. `ancestor(a,d)` is reachable via two derivation paths
-(`edge(a,b)*edge(b,d)` and `edge(a,c)*edge(c,d)`), so its weight is `0.6*s + 0.12` where `s` is
-the predicate's sigmoid output — `evaluate()` computes this and its exact derivative with
-respect to `s` in one pass via a forward-mode-AD provenance semiring (`DualSemiring<double>`).
-`propagate_relevance()` then splits the seeded relevance across the two derivation paths
-(weighted-sum/epsilon-rule split) and each path's two factors (bilinear split) — the same
-composition Layer-wise Relevance Propagation uses for `+` and `x` elsewhere in this codebase,
-reapplied to a Datalog derivation instead of a `Module` chain. Because `edge(a,b)` is the one
-neural-predicate-weighted fact, its relevance doesn't stop there: it continues on through the
-predicate's own `LinearModule::propagate_relevance()`, giving a genuine end-to-end trace from a
-symbolic query back to the neural network's raw input. The conservation check confirms this:
-every other base fact's relevance plus the relevance reaching `x` sums back to the seeded
-relevance (up to the small epsilon-rule absorption).
+**Forward: the query weight and its gradient.** The weight of `edge(a,b)` is the output of a
+neural predicate: a `LinearModule(1,1)` followed by a sigmoid. The other three edges are
+constants. `ancestor(a,d)` can be derived along two paths, `edge(a,b)*edge(b,d)` and
+`edge(a,c)*edge(c,d)`. So its weight is `0.6*s + 0.12`, where `s` is the predicate's sigmoid
+output.
+
+`evaluate()` computes this weight and its exact derivative with respect to `s` in one pass. It
+does this by carrying a value and its derivative together through the derivation
+(forward-mode automatic differentiation, via `DualSemiring<double>`).
+
+**Backward: relevance.** `propagate_relevance()` splits the seeded relevance in two stages:
+
+1. across the two derivation paths, in proportion to each path's contribution (the epsilon rule
+   for a sum), and
+2. between the two factors within each path (the rule for a product).
+
+These are the same rules LRP uses for `+` and `×` elsewhere in this codebase, applied to a
+Datalog derivation instead of a `Module` chain.
+
+`edge(a,b)` is the one fact that comes from the neural predicate, so its relevance keeps going.
+It continues through the predicate's own `LinearModule::propagate_relevance()`, giving an
+end-to-end trace from a symbolic query back to the network's input. The conservation check
+confirms this. The other base facts' relevance plus the relevance reaching `x` adds back up to
+the seed, minus the small amount the epsilon rule absorbs.
 
 See also: [Neuro-Symbolic Reasoning](../../neuro-symbolic/index.md#bridging-a-neural-predicate-into-a-datalog-derivation).

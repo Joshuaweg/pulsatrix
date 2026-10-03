@@ -10,7 +10,7 @@ library you link into your own application's trust boundary.
 If you find a security issue (memory-safety bug, unsafe deserialization path,
 etc.), please report it privately rather than opening a public issue:
 
-- Preferred: open a [GitHub Security Advisory](../../security/advisories/new)
+- Preferred: open a private [GitHub Security Advisory](https://github.com/Joshuaweg/pulsatrix/security/advisories/new)
   on this repository.
 - Alternative: email the maintainer directly (see the GitHub profile for
   contact info).
