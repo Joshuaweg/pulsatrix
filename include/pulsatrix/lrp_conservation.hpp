@@ -1,6 +1,6 @@
 /** @file lrp_conservation.hpp
  *  @brief Production API for LRP's conservation-delta audit metric (charter Phase 4).
- *  @ingroup interpretability_dl
+ *  @ingroup interpretability_lrp
  */
 #pragma once
 

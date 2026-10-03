@@ -5,23 +5,31 @@
  */
 
 /**
- * @defgroup interpretability Ad-hoc Interpretability
- * @brief Post-hoc explanation methods applied to an already-trained model, as opposed to
- *        the LRP relevance propagation built into each layer in @ref dl_modules.
+ * @defgroup interpretability Interpretability
+ * @brief Post-hoc explanation methods applied to an already-trained model: whole-model LRP
+ *        over the rules built into each layer in @ref dl_modules, plus model-agnostic and
+ *        gradient-based explainers.
  */
 
 /**
- * @defgroup interpretability_agnostic Model-Agnostic
+ * @defgroup interpretability_agnostic Model-Agnostic Explainers
  * @ingroup interpretability
  * @brief Explainers that only need a model's input/output behavior (perturb-and-observe),
  *        with no access to gradients or internal activations.
  */
 
 /**
- * @defgroup interpretability_dl Deep Learning Approaches
+ * @defgroup interpretability_dl Gradient-Based Explainers
  * @ingroup interpretability
  * @brief Explainers that use a model's gradients, activations, or internal structure
  *        directly.
+ */
+
+/**
+ * @defgroup interpretability_lrp Layer-wise Relevance Propagation
+ * @ingroup interpretability
+ * @brief Whole-model LRP (LRP, LRPTarget, LRPSeed), rule selection (LRPRule, LRPRuleConfig),
+ *        Zennit-style composites (lrp_composite) and conservation checks.
  */
 
 /**
