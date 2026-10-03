@@ -1,9 +1,11 @@
 # Recipe: XOR Training Walkthrough
 
-**What you'll build:** a tiny `Linear(2,4) -> ReLU -> Linear(4,1)` network trained on XOR —
-the canonical not-linearly-separable case, exactly representable by a small MLP.
+**What you'll build:** a tiny `Linear(2,4) -> ReLU -> Linear(4,1)` network trained on XOR. XOR is
+the classic problem a single linear layer can't solve, but a small MLP can represent exactly.
 
 CMake target: `xor_training_recipe` (`examples/recipes/xor_training.cpp`).
+
+Run it: `./build/xor_training_recipe` (Windows: `build\Release\xor_training_recipe.exe`).
 
 ## Code
 
@@ -50,11 +52,15 @@ Final predictions:
 
 ## What's happening
 
-`XorNetwork` owns its `LinearModule`/`ReluModule` layers as plain members and wires each op
-onto its own `ComputationGraph` as `forward()` runs. `train_step()` additionally computes the
-MSE loss, walks the graph backward via `backward()` to populate every parameter's gradient,
-and applies one `AdamOptimizer` update per layer. The loss collapses to (numerically) zero
-well before 300 epochs — XOR is exactly representable by this network's hidden layer, so
-there's no approximation error left to converge past.
+`XorNetwork` chains its `LinearModule` and `ReluModule` layers directly. Each `train_step()` call:
+
+1. zeroes the gradients,
+2. runs the forward pass and computes the MSE loss,
+3. calls each layer's `backward()` in reverse order to fill its parameter gradients,
+4. applies one `AdamOptimizer` step per `LinearModule`, and
+5. logs the loss to the metrics sink.
+
+The loss drops to (numerically) zero well before 300 epochs. This network can represent XOR
+exactly, so there's no approximation error left to converge past.
 
 See also: [Deep Learning Modules and Layers](../../deep-learning/index.md#building-and-training-a-small-network).

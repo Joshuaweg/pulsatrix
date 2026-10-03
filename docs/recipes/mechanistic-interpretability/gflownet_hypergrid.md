@@ -1,12 +1,14 @@
 # Recipe: GFlowNet on HyperGrid
 
-**What you'll build:** a `GFlowNetForwardPolicy` trained via `TrajectoryBalanceLoss` on
-`HyperGridEnv`, showing training shifts sampling toward the reward's far corner — reusing the
-exact training loop and hyperparameters from
-`tests/trajectory_balance_integration_test.cpp`.
+**What you'll build:** a `GFlowNetForwardPolicy` trained with `TrajectoryBalanceLoss` on
+`HyperGridEnv`. It shows that training shifts sampling toward the grid's far corner. The training
+loop and hyperparameters are the same as in `tests/trajectory_balance_integration_test.cpp`.
 
 CMake target: `gflownet_hypergrid_recipe`
 (`examples/recipes/gflownet_hypergrid.cpp`).
+
+Run it: `./build/gflownet_hypergrid_recipe` (Windows:
+`build\Release\gflownet_hypergrid_recipe.exe`).
 
 ## Code
 
@@ -33,20 +35,29 @@ GFlowNet HyperGrid recipe -- Trajectory Balance, 5x5 grid
 
 untrained policy:  far-corner visitation rate over 500 trajectories: 5.2%
 trained policy:    far-corner visitation rate over 500 trajectories: 10.4%
+...
 ```
 
 ## What's happening
 
-`sample_gflownet_trajectory` resets the environment, then repeatedly samples a masked action
-from `forward_policy` and steps the environment until termination, accumulating
-`sum_log_pf`/`sum_log_pb` along the way. All 4 corners of this 5x5 grid share the same
-maximum reward, so a GFlowNet trained to convergence should sample all 4 with roughly equal
-frequency — but reaching the far corner needs 8 consecutive non-stop actions in exactly the
-right split, astronomically unlikely under an untrained (uniform-at-every-state) policy.
-`TrajectoryBalanceLoss` trains `log Zθ` and the policy network jointly to minimize
-`Δ(τ) = log Zθ + Σ log P_F − log R(x) − Σ log P_B`, which — unlike a reward-maximizing
-objective — pushes the policy to sample trajectories *proportional to* `R(x)`, not to hunt for
-the single best one. The measured far-corner rate roughly doubles after training, the same
-qualitative shift the underlying integration test asserts more strictly.
+A GFlowNet learns a policy that builds objects step by step, so that each finished object is
+sampled with probability *proportional to* its reward `R(x)`. Here the object is a cell on a 5x5
+grid. Each trajectory starts at the origin, and each action either increments one coordinate
+or stops.
+
+`sample_gflownet_trajectory` resets the environment and samples allowed actions from the policy
+until it stops. Along the way it adds up `sum_log_pf` (the forward policy's log-probabilities)
+and `sum_log_pb` (the backward policy's).
+
+All 4 corners of the grid share the same maximum reward. A fully trained GFlowNet should sample
+them with roughly equal frequency. The rate printed here counts the far-corner region (both
+coordinates ≥ 3). Reaching it takes 6 to 8 non-stop actions in a row. An untrained policy tends
+to stop early, so it rarely gets there.
+
+`TrajectoryBalanceLoss` trains the policy network together with `log Z`, a learned estimate of
+the log of the total reward. It minimizes `Δ(τ) = log Z + Σ log P_F − log R(x) − Σ log P_B` for
+each trajectory `τ`. Unlike a reward-maximizing objective, this pushes the policy to sample in
+proportion to `R(x)` rather than hunting for the single best cell. The far-corner rate roughly
+doubles after training. The integration test asserts the same shift with stricter thresholds.
 
 See also: [Mechanistic Interpretability](../../mechanistic-interpretability/index.md#sampling-a-gflownet-trajectory).

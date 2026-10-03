@@ -1,11 +1,14 @@
-# Recipe: CSV + DataLoader training
+# Recipe: CSV + DataLoader Training
 
 **What you'll build:** a `LinearModule(2,1)` regressor trained to recover `y = 2*x1 - 3*x2 + 1`
-from a synthetic CSV file, pulling shuffled batches through `CsvDataset` + `DataLoader`
-instead of hand-building `Tensor`s in code (contrast with the
-[XOR recipe](../deep-learning/xor_training.md)'s hardcoded four-example dataset).
+from a synthetic CSV file. It pulls shuffled batches through `CsvDataset` + `DataLoader` instead
+of building `Tensor`s by hand (compare the [XOR recipe](../deep-learning/xor_training.md)'s
+hardcoded four-example dataset).
 
 CMake target: `csv_dataloader_training_recipe` (`examples/recipes/csv_dataloader_training.cpp`).
+
+Run it: `./build/csv_dataloader_training_recipe` (Windows:
+`build\Release\csv_dataloader_training_recipe.exe`).
 
 ## Code
 
@@ -52,14 +55,16 @@ epoch 50 | mean batch MSE 0.0374
 
 ## What's happening
 
-The recipe writes its own 20-row CSV fixture at startup (recipes are self-contained — no
-external file to fetch), then loads it through `CsvDataset`, which tokenizes each row into a
-`(1, 2)` feature `Tensor` and a `(1,)` label `Tensor`. A fresh `DataLoader` is constructed each
-epoch — `ShuffleSampler` reseeds and reshuffles on every `DataLoader` construction, so each
-epoch sees a different batch order, the same regularization effect any framework's per-epoch
-reshuffling gives you. `LinearModule` starts zero-initialized (no random init needed here —
-unlike a multi-layer network with `ReLU` in between, a single linear layer's gradient doesn't
-vanish at zero weights, so training starts from an honest "knows nothing" state) and converges
-to the true `y = 2*x1 - 3*x2 + 1` relationship purely from the batches `DataLoader` produces.
+At startup the recipe writes a 20-row CSV file, `csv_dataloader_training_recipe_data.csv`, into
+the current working directory. It deletes the file on exit, so there's nothing to download.
+
+`CsvDataset` loads the file and turns each row into a `(1, 2)` feature `Tensor` and a `(1,)`
+label `Tensor`. A new `DataLoader` is built each epoch. Its `ShuffleSampler` reshuffles on every
+construction, so each epoch sees the batches in a different order.
+
+`LinearModule` starts with all weights at zero. That's fine for a single linear layer, whose
+gradient doesn't vanish at zero weights (unlike a multi-layer network with `ReLU` in between).
+Training converges toward the true `y = 2*x1 - 3*x2 + 1` using only the batches `DataLoader`
+produces.
 
 See also: [Data Loading, Transformation & Validation](../../data-pipeline/index.md#loading-a-csv-file-through-dataloader).

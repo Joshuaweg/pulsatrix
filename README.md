@@ -5,181 +5,163 @@
 <p align="center">
   <a href="https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml"><img src="https://github.com/Joshuaweg/pulsatrix/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://joshuaweg.github.io/pulsatrix/"><img src="https://img.shields.io/badge/docs-mkdocs--material-306E22" alt="Docs"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
 </p>
 
-ExAI-first C++ deep learning library — explainability as a first-class property of the computation graph, not a post-hoc wrapper. Every relevance-bearing layer ships a real, cited Layer-wise Relevance Propagation (LRP) rule alongside its forward/backward math — never a placeholder or a post-hoc explainer bolted on afterward. Rules that conserve relevance by construction are conservation-tested; the AttnLRP rules for softmax and attention do not conserve exactly, and their tests report the measured conservation gap rather than assert it away. Linear and Conv2D layers support the ε, γ, α-β (including z⁺) and ZBox rules, assignable per layer through Zennit-style composites; every other layer uses the fixed rule listed for it below.
+**Pulsatrix is a C++17 deep learning library built around explainability.** Every layer
+implements Layer-wise Relevance Propagation (LRP) next to its forward and backward pass, so any
+network you build can explain its own predictions without a separate tool.
 
-## What's here
+- **Explainable by construction.** `propagate_relevance()` is a required method on every
+  `Module`. A layer can't be added without saying how relevance flows through it.
+- **Checked against the reference libraries.** `LRP::explain()` matches
+  [Zennit](https://github.com/chr5tphr/zennit) and [LXT](https://github.com/rachtibat/LRP-eXplains-Transformers)
+  to float32 precision on MLPs, CNNs and attention blocks.
+- **More than LRP.** Saliency, Integrated Gradients, Grad-CAM, LIME, KernelSHAP and PDP are
+  included, along with reinforcement learning, mechanistic interpretability, neuro-symbolic
+  reasoning, evolutionary computation and hyperparameter optimization.
+- **CPU, CUDA and ROCm.** One `DeviceBackend` interface, with optional Python bindings.
 
-**Core**: `Tensor`/`Shape` (RAII), `DeviceBackend` (CPU + CUDA), `ComputationGraph`/`Autograd`, `Module` (NVI forward, pure-virtual LRP contract), `SGDOptimizer`/`AdamOptimizer`.
+📖 **Documentation:** <https://joshuaweg.github.io/pulsatrix/>
 
-**Layers**: `LinearModule`, `Conv2DModule`, `ReluModule`, `FlattenModule`, `SequentialModule`; normalization (`LayerNorm`/`RMSNorm`/`GroupNorm`/`BatchNorm`); pooling (`MaxPool2D`/`AvgPool2D`); `DropoutModule`, `EmbeddingModule`, `ResidualModule`.
+## Quick start
 
-**Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule` (Arras et al. LRP), `SoftmaxModule`, `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock` (AttnLRP, validated against an independent reference implementation), `MambaModule` (S6 selective scan, MambaLRP), `RetNetModule` (AttnLRP-style rule over its `Q@K^T`-shaped retention scores), `RWKVModule` (MambaLRP-style detach-gate rule adapted to its WKV quotient).
+You need [CMake](https://cmake.org/download/) 3.20+ and a C++17 compiler (MSVC 2022, GCC 11+ or
+Clang 14+). The first configure downloads GoogleTest, so it needs network access.
 
-**Explainers**: `Saliency`, `IntegratedGradients`, `GradCAM`, `LIME`, `KernelSHAP`, `PDP`.
+**Linux / macOS**
 
-**LRP validated against Zennit / LXT**: whole-model `LRP::explain()` (one-hot seed) is checked against hardcoded values from the reference implementations in [`tests/lrp_reference_test.cpp`](tests/lrp_reference_test.cpp), generated offline by [`tools/generate_lrp_reference_values.py`](tools/generate_lrp_reference_values.py) in the environment pinned by [`tools/lrp_reference.Dockerfile`](tools/lrp_reference.Dockerfile) (torch 2.14.1+cpu, zennit 1.0.0, lxt 2.1). Compared: Zennit's `Gradient` attributor on an MLP and a two-conv CNN (nonzero biases, mixed-sign inputs) for uniform Epsilon (ε = 1e-6 and 0.25), ZPlus, AlphaBeta(2,1), Gamma(0.25) and the `EpsilonPlus` / `EpsilonAlpha2Beta1` / `EpsilonGammaBox` presets; and LXT's explicit AttnLRP rules (epsilon linear, softmax DTD rule, matmul epsilon + uniform split, RMSNorm identity, residual epsilon split, SwiGLU uniform split + SiLU identity) on `MultiHeadAttentionModule` and `TransformerBlock` (RoPE and QK-Norm off), each followed by Flatten → Linear. Tolerance is float32 vs float32, `1e-4·max(1, |ref|)`; observed max abs error ≤ 1e-5. Matching requires `LRPRuleConfig::epsilon_bias_in_denominator = true`: Zennit's and LXT's epsilon rules keep the bias in the denominator, whereas pulsatrix's default epsilon rule leaves it out and therefore differs from both on biased layers. Like Zennit, `EpsilonGammaBox` puts ZBox only on the first Conv2D (on a network without convolutions it is Epsilon everywhere). Remaining known difference: LXT stabilizes with z + ε for every sign of z, pulsatrix and Zennit with z + ε·sign(z); the two differ only where |z| is on the order of ε. Not covered: RoPE, QK-Norm, LayerNorm, the recurrent/SSM rules, and LXT's HF-patching (`lxt.efficient`) path.
-
-**Generative building blocks without an LRP rule** (real forward/backward; these are losses and sampling/noise steps, not `Module`s, so they expose no `propagate_relevance` — a loss is where relevance propagation starts, and no attribution rule is defined for the stochastic steps): VAE (`Reparameterize`, `KLDivergenceLoss`); GAN (`BCEWithLogitsLoss`); Diffusion/DDPM (`NoiseSchedule`, `SinusoidalTimestepEmbedding`).
-
-**Data pipeline**: `Dataset`/`IterableDataset`/`DataLoader`/`Transform`/`Compose`/`CollateFn` core, needing zero interface changes across every modality below; `CsvDataset` (tabular); `ImageDecoder`/`ImageFolderDataset`/image transforms (stb_image-backed); `Tokenizer`/`Vocabulary`/`TextDataset`/`PadCollate` (text); `WavReader`/`AudioFolderDataset`/`ResampleTransform`/`AudioPadCollate` (audio); `VideoFrameDirectoryDataset`/`UniformFrameSampleTransform` (video, reduced-scope pre-extracted-frames stub); `DatasetValidator` (descriptive statistics, missingness/outlier detection).
-
-**Reinforcement learning** (`Environment`/`Agent` interfaces, gymnasium-API-shaped): `CartPoleEnv`/`ContinuousCartPoleEnv`, `ReplayBuffer`/`RolloutBuffer`, DQN (+ Double DQN), REINFORCE, A2C, PPO (GAE + clipped surrogate objective), SAC (twin critics, reparameterized tanh-squashed policy, entropy regularization) — every algorithm trained end-to-end and verified against a fixed, pre-declared performance bar on a real environment, not just unit-tested in isolation.
-
-**Neuro-symbolic reasoning** (see [docs](https://joshuaweg.github.io/pulsatrix/neuro-symbolic/)): a differentiable fuzzy-logic core (`ConjunctionModule`/`DisjunctionModule`/`NegationModule`/`AggregatorModule`, Logic Tensor Networks-shaped) trainable via ordinary gradient descent; a from-scratch Datalog engine (`naive_evaluate`/`semi_naive_evaluate`, a real-valued/weighted generalization, and a hand-derived LRP rule for the derivation circuit); and `NeuralPredicateDatalogBridge`, wiring a real neural predicate's output into a Datalog derivation with relevance tracing end-to-end.
-
-**Evolutionary computation** (see [docs](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/)): a from-scratch, DEAP-free genetic-algorithm core (population/fitness/selection/crossover/mutation, NSGA-II); neuroevolution (`NEATGenome` + structural mutation + speciation, and Evolution Strategies, zero RL dependency); evolutionary hyperparameter optimization (`CMAES`); Population Based Training (`RunPBT`); and evolutionary generative-model training (`GeneratorPopulation`, E-GAN's Minimax/Heuristic/LeastSquares mutation objectives).
-
-**Hyperparameter optimization** (see [docs](https://joshuaweg.github.io/pulsatrix/hyperparameter-optimization/)): a typed `SearchSpace`/`Configuration`/`Trial` core; grid/random search; Bayesian optimization (`GaussianProcessRegressor` + EI/PI/UCB acquisition functions, and TPE); bandit-based early stopping (Successive Halving, Hyperband, ASHA via a caller-owned `ResumableTrial` abstraction) — every algorithm a from-scratch reimplementation, never a runtime dependency on a Python HPO library.
-
-**Bindings**: pybind11 (`bindings/pulsatrix_py.cpp`) exposing `Tensor`, core modules, and the explainer suite to Python.
-
-**Examples** (`examples/`): see [`examples/README.md`](examples/README.md) for what each one demonstrates and how to run it.
-
-1700+ tests, green in both Debug and Release, on Windows (MSVC) and Linux (GCC) — see the
-[CI workflow](.github/workflows/ci.yml).
-
-## System monitoring
-
-`SystemMonitor` ([`include/pulsatrix/system_monitor.hpp`](include/pulsatrix/system_monitor.hpp)) samples
-CPU/GPU utilization, memory and temperatures on a background thread and streams every sample to a
-log as it is taken (flushed per record, so `tail -f` follows it live):
-
-```cpp
-#include "pulsatrix/system_monitor.hpp"
-
-pulsatrix::SystemMonitor::Options opts;
-opts.interval = std::chrono::milliseconds(1000);
-opts.log_path = "run.jsonl";              // or LogFormat::Csv via opts.format
-pulsatrix::SystemMonitor monitor(opts);
-monitor.start();
-monitor.mark("epoch 1");                  // tags subsequent samples; writes a "mark" record
-// ... train ...
-auto last = monitor.latest();             // std::optional<SystemSample>
-auto all = monitor.history();             // bounded ring buffer (Options::history_capacity)
-monitor.stop();                           // returns within milliseconds
-```
-
-Also `sample_now()` (one synchronous reading, no thread needed), `on_sample(callback)` (runs on the
-monitor thread; exceptions are caught and reported once) and `capabilities()` (per-metric
-availability with the source, or the reason it is missing). Python: `pulsatrix_py.SystemMonitor(
-interval_ms=1000, log_path="", format="jsonl"|"csv")`, usable as `with SystemMonitor(...) as m:`,
-samples as dicts. Demo: [`examples/system_monitor_demo.cpp`](examples/system_monitor_demo.cpp).
-
-JSON Lines log (one object per line; ISO-8601 UTC timestamps with ms):
-
-```json
-{"event":"mark","timestamp":"2026-10-02T18:52:48.529Z","elapsed_seconds":0.000,"label":"idle"}
-{"event":"sample","timestamp":"2026-10-02T18:52:49.530Z","elapsed_seconds":1.001,"label":"idle","cpu_utilization_percent":4.698,"process_cpu_percent":0,"memory_used_bytes":11615903744,"memory_total_bytes":32723628032,"process_rss_bytes":199770112,"cpu_temperature_c":86.625,"gpus":[{"index":0,"name":"AMD GPU 0x1586 (card1)","vendor":"AMD","utilization_percent":0,"memory_used_bytes":52692738048,"memory_total_bytes":103079215104,"memory_gtt_used_bytes":94412800,"temperature_c":42,"power_watts":34.032}]}
-```
-
-**No fake zeros.** A metric the platform cannot read is `std::nullopt` in C++, `null` in JSON, an
-empty CSV cell and `None` in Python -- never `0` or an estimate. `capabilities()` says why (e.g.
-`"Windows: CPU temperature not available without WMI/admin"`). CPU rates are computed from counter
-deltas: `start()` takes a baseline and the first background sample comes one interval later.
-`process_cpu_percent` is relative to one logical CPU, so it can exceed 100 on a multi-core machine.
-
-| Metric | Linux | Windows | Other |
-|---|---|---|---|
-| System CPU % | `/proc/stat` | `GetSystemTimes` | -- |
-| Process CPU %, RSS | `/proc/self/stat`, `/proc/self/status` | `GetProcessTimes`, `GetProcessMemoryInfo` | -- |
-| Memory used/total | `/proc/meminfo` (MemTotal - MemAvailable) | `GlobalMemoryStatusEx` | -- |
-| CPU temperature | hwmon `k10temp`/`zenpower`/`coretemp`/`cpu_thermal` (Tctl/Package preferred), `acpitz` last | -- (needs WMI/admin) | -- |
-| AMD GPU util/VRAM/GTT/temp/power | amdgpu sysfs (`/sys/class/drm/card<N>/device`) | -- | -- |
-| NVIDIA GPU util/memory/temp/power | NVML, `dlopen("libnvidia-ml.so.1")` | NVML, `LoadLibrary("nvml.dll")` | -- |
-
-Everything is detected at runtime: no NVIDIA/AMD SDK is needed to build, and a missing driver just
-means no GPU entries plus a capability reason. On an AMD APU the amdgpu power reading covers the whole
-SoC package, not just the GPU.
-
-## Status / limitations
-
-- CI covers Windows (MSVC, Visual Studio generator auto-detected) and Linux (GCC, Unix
-  Makefiles) on every push to `master` and every pull request.
-- There's no `install()`/export step yet — the supported way to consume this library today is building it as part of your own CMake tree (e.g. `add_subdirectory`), not `find_package(pulsatrix)` against a system-installed copy.
-
-## Getting started
-
-```
-git clone https://github.com/Joshuaweg/cpp_exai_library.git pulsatrix
+```bash
+git clone https://github.com/Joshuaweg/pulsatrix.git
 cd pulsatrix
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+ctest --test-dir build --output-on-failure   # optional: run the test suite
+./build/xor_demo
 ```
 
-A minimal end-to-end example — train a tiny network on XOR and print predictions
-(the full, runnable version is [`examples/xor_demo.cpp`](examples/xor_demo.cpp)):
+**Windows** (Developer PowerShell or any shell with CMake on the path)
+
+```powershell
+git clone https://github.com/Joshuaweg/pulsatrix.git
+cd pulsatrix
+cmake -S . -B build -A x64
+cmake --build build --config Release
+ctest --test-dir build -C Release --output-on-failure   # optional
+build\Release\xor_demo.exe
+```
+
+`xor_demo` trains a tiny network on XOR and prints the loss curve and its predictions. See
+[Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/) for build options
+(CUDA, ROCm, Python, visualization) and troubleshooting.
+
+## Explaining a prediction
 
 ```cpp
-#include "pulsatrix/adam_optimizer.hpp"
 #include "pulsatrix/cpu_backend.hpp"
-#include "pulsatrix/xor_training_example.hpp"
+#include "pulsatrix/explainer_context.hpp"
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/lrp.hpp"
+#include "pulsatrix/relu_module.hpp"
 
 using namespace pulsatrix;
 
 CPUBackend backend;
-XorNetwork net(&backend);              // Linear(2,4) -> ReLU -> Linear(4,1)
-AdamOptimizer optimizer(0.01f, &backend);
+LinearModule fc1(2, 4, &backend);
+ReluModule relu(&backend);
+LinearModule fc2(4, 2, &backend);
+// ... train or load weights ...
 
-Tensor input(Shape({1, 2}), &backend, {1.0f, 0.0f});
-Tensor pred = net.forward(input);      // forward pass
-// net.train_step(input, target, optimizer, sink, step) runs forward + backward + update
+ExplainerContext ctx({&fc1, &relu, &fc2});
+Tensor input(Shape({1, 2}), &backend, {1.0f, 0.5f});
+
+// Which input features pushed class 1 up?
+Attribution eps = LRP().explain(ctx, input, /*target_index=*/1, &backend);   // epsilon rule
+Attribution plus = LRP::epsilon_plus().explain(ctx, input, 1, &backend);    // Zennit preset
+// eps.values has the input's shape: one relevance score per input feature.
 ```
 
-Build it and run it yourself:
+The same thing from Python:
 
-```
-cmake --build build --target xor_demo --config Release
-build/Release/xor_demo.exe
-```
+```python
+import pulsatrix_py as px
 
-See [`examples/README.md`](examples/README.md) for the full list of 16 runnable
-demos (layers, sequence models, transformers, explainers, five RL algorithms, and four opt-in
-visualization demos).
-
-## Build
-
-- [CMake](https://cmake.org/download/) 3.20+ and a C++17 compiler (MSVC 2022, GCC 11+, or
-  Clang 14+). Network access is needed at configure time (GoogleTest is fetched automatically).
-
-```
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64   # Windows
-cmake --build build --config Release
-ctest --test-dir build -C Release --output-on-failure
+ctx = px.ExplainerContext([fc1, relu, fc2])
+attr = px.LRP().explain(ctx, px.Tensor.from_values([1, 2], [1.0, 0.5]), [1])
 ```
 
-See **[Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/)** for the full
-walkthrough — Linux/macOS commands, the build options table (`PULSATRIX_ENABLE_CUDA`/
-`_HIP`/`_PYTHON`, etc.), and a build-troubleshooting FAQ.
+The [LRP guide](https://joshuaweg.github.io/pulsatrix/interpretability/lrp/) covers the
+available rules (Epsilon, Gamma, AlphaBeta/ZPlus, ZBox), per-layer composites, contrastive
+explanations and how the results were validated. For a full worked example, see the
+[MNIST LRP recipe](https://joshuaweg.github.io/pulsatrix/recipes/interpretability/mnist_lrp/).
 
-### HIP/ROCm backend (`PULSATRIX_ENABLE_HIP=ON`)
+## What's included
 
-Needs an AMD GPU and a ROCm toolchain. Use the pinned container — see the header of
-`docker/Dockerfile.rocm` for why the ROCm version is pinned and why installing ROCm from a
-distro package manager is not an equivalent substitute:
+| Area | Highlights | Docs |
+|---|---|---|
+| Core | `Tensor`, autograd (`ComputationGraph`), `Module`, SGD/Adam, CPU/CUDA/HIP backends | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Layers | Linear, Conv2D, normalization, pooling, dropout, embeddings, residual blocks | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Sequence models | RNN/LSTM/GRU, multi-head attention, `TransformerBlock`, Mamba, RetNet, RWKV | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Generative blocks | VAE, GAN and diffusion losses and sampling steps | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| LRP | Epsilon, Gamma, AlphaBeta, ZBox; Zennit composites; AttnLRP, MambaLRP | [LRP](https://joshuaweg.github.io/pulsatrix/interpretability/lrp/) |
+| Other explainers | Saliency, Integrated Gradients, Grad-CAM, LIME, KernelSHAP, PDP | [Interpretability](https://joshuaweg.github.io/pulsatrix/interpretability/) |
+| Data pipeline | `Dataset`/`DataLoader`; CSV, image, text, audio and video-frame datasets; dataset validation | [Data pipeline](https://joshuaweg.github.io/pulsatrix/data-pipeline/) |
+| Reinforcement learning | CartPole environments, DQN, REINFORCE, A2C, PPO, SAC | [RL](https://joshuaweg.github.io/pulsatrix/reinforcement-learning/) |
+| Mechanistic interpretability | Activation caching, linear probes, sparse autoencoders, circuit graphs, GFlowNets | [Mech interp](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/) |
+| Neuro-symbolic | Differentiable fuzzy logic, a Datalog engine, LRP through Datalog derivations | [Neuro-symbolic](https://joshuaweg.github.io/pulsatrix/neuro-symbolic/) |
+| Evolutionary computation | Genetic algorithms, NSGA-II, NEAT, Evolution Strategies, CMA-ES, PBT, E-GAN | [Evolutionary](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/) |
+| Hyperparameter optimization | Grid/random search, Gaussian-process BO, TPE, Successive Halving, Hyperband, ASHA | [HPO](https://joshuaweg.github.io/pulsatrix/hyperparameter-optimization/) |
+| Visualization (opt-in) | Dear ImGui + ImPlot charts, heatmaps, circuit graphs, a live training dashboard | [Visualization](https://joshuaweg.github.io/pulsatrix/visualization/) |
+| System monitoring | Live CPU/GPU utilization, memory and temperature logging | [System monitoring](https://joshuaweg.github.io/pulsatrix/system-monitoring/) |
+| Python bindings | `Tensor`, core layers, LRP and every explainer, `SystemMonitor` | [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#python-bindings) |
 
+Everything is implemented in C++ with no Python dependency at runtime. Every RL algorithm is
+trained end to end in its tests and has to reach a fixed score on CartPole.
+
+## Examples and recipes
+
+- [`examples/`](examples/README.md): demo programs you can build and run, from `xor_demo` to
+  five CartPole agents and the visualization demos.
+- [Recipes](https://joshuaweg.github.io/pulsatrix/recipes/): short programs that each show one
+  feature, with a walkthrough page for each.
+
+## Using pulsatrix in your project
+
+There's no `install()` step yet, so `find_package(pulsatrix)` doesn't work. Add the repository
+to your CMake tree instead and link the core library:
+
+```cmake
+set(PULSATRIX_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(PULSATRIX_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(third_party/pulsatrix)
+target_link_libraries(my_app PRIVATE pulsatrix_core)
 ```
-scripts/rocm-build.sh 'cmake -S . -B build-hip -DCMAKE_BUILD_TYPE=Debug -DPULSATRIX_ENABLE_HIP=ON'
-scripts/rocm-build.sh 'cmake --build build-hip -j"$(nproc)"'
-scripts/rocm-build.sh './build-hip/tests/pulsatrix_tests'
+
+## Status
+
+- Version 1. The API may still change between minor versions.
+- 2,000+ tests. CI builds and tests every push and pull request on Windows (MSVC) and Linux
+  (GCC), and compiles the CUDA and HIP backends.
+- macOS with Clang should work but isn't tested in CI.
+- The HIP/ROCm backend is tested on real AMD hardware (gfx1151), not in CI. See
+  [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#gpu-backends) for
+  the pinned ROCm container.
+
+## API reference
+
+The [API reference](https://joshuaweg.github.io/pulsatrix/api/index.html) is generated by
+Doxygen and published with the docs site. To build it locally (requires
+[Doxygen](https://www.doxygen.nl/)):
+
+```bash
+cmake --build build --target docs   # output: build/html/index.html
 ```
 
-`ROCM_PATH` may be set if ROCm is not installed at `/opt/rocm`. Verified directly on real
-gfx1151 hardware — the HIP tests run against the actual device, there is no mocked path.
+## Contributing
 
-### Troubleshooting
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). To report a security
+issue, see [SECURITY.md](SECURITY.md).
 
-- **Configure fails trying to fetch GoogleTest** — `PULSATRIX_BUILD_TESTS` is `ON` by default and clones GoogleTest from GitHub via `FetchContent` at configure time. Check network access / GitHub reachability, or configure with `-DPULSATRIX_BUILD_TESTS=OFF` if you just want to build the library and examples.
-- **`PULSATRIX_ENABLE_PYTHON=ON` doesn't pick up your Python install** — make sure you're passing `-DPYTHON_EXECUTABLE=<path>`, not `-DPython3_EXECUTABLE=<path>`. See the build options table above.
-- **`mnist_training_demo`, `mnist_loader_test`, or `mnist_classifier_example_test` fail or find no data** — these need real MNIST files that aren't checked into the repo. Run `py -3.11 tools/fetch_mnist.py` once (requires `torchvision` installed in that Python environment) to populate `data/MNIST/raw/`, then rebuild/rerun. This is a one-time, offline data-acquisition step — nothing at C++ build or test time depends on Python afterward.
-- **CUDA build can't find the toolkit** — `PULSATRIX_ENABLE_CUDA=ON` requires a working CUDA Toolkit install discoverable by CMake's `find_package(CUDAToolkit)`; install the toolkit matching your driver version first.
-- **HIP build can't find `hip`/`hipblas` packages** — `PULSATRIX_ENABLE_HIP=ON` requires a ROCm install discoverable via `ROCM_PATH` (or the conventional `/opt/rocm`); see the "HIP/ROCm backend" section above.
+## License
 
-## Documentation
-
-API documentation is generated on demand via Doxygen (not committed to the repo). If you have [Doxygen](https://www.doxygen.nl/) installed:
-
-```
-cmake --build build --target docs
-```
-
-Generated docs land in `build/docs/`.
+[MIT](LICENSE)

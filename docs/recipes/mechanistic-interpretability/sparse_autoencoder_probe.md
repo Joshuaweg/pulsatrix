@@ -1,11 +1,14 @@
 # Recipe: Sparse Autoencoder + Linear Probe
 
-**What you'll build:** a `SparseAutoencoder` trained to reconstruct synthetic activations,
-then a `LinearProbe` trained on the same activations to test whether a concept baked into
-their construction (dimension 0's sign) is linearly decodable.
+**What you'll build:** a `SparseAutoencoder` trained to reconstruct synthetic activations. Then a
+`LinearProbe` is trained on the same activations to test whether a concept built into them (the
+sign of dimension 0) can be read out with a linear classifier.
 
 CMake target: `sparse_autoencoder_probe_recipe`
 (`examples/recipes/sparse_autoencoder_probe.cpp`).
+
+Run it: `./build/sparse_autoencoder_probe_recipe` (Windows:
+`build\Release\sparse_autoencoder_probe_recipe.exe`).
 
 ## Code
 
@@ -29,30 +32,40 @@ Full source: [`examples/recipes/sparse_autoencoder_probe.cpp`](https://github.co
 ## Expected output
 
 ```
+Sparse autoencoder + linear probe recipe
+
 === SparseAutoencoder (dim=4, hidden_dim=12, l1_lambda=0.01) ===
-epoch   0 | reconstruction loss 0.542100 | mean hidden activation 0.1737
-epoch 100 | reconstruction loss 0.004179 | mean hidden activation 0.2805
-epoch 200 | reconstruction loss 0.001678 | mean hidden activation 0.1961
-epoch 300 | reconstruction loss 0.001107 | mean hidden activation 0.1599
-final reconstruction error: 0.001104
+epoch   0 | reconstruction loss 0.449937 | mean hidden activation 0.1743
+epoch 100 | reconstruction loss 0.005154 | mean hidden activation 0.2456
+epoch 200 | reconstruction loss 0.001135 | mean hidden activation 0.1759
+epoch 300 | reconstruction loss 0.000665 | mean hidden activation 0.1412
+final reconstruction error: 0.000660
 
 === LinearProbe (activation_dim=4) ===
-probe accuracy: 100.0% (chance level is 50%)
+probe accuracy: 93.8% (chance level is 50%)
+...
 ```
+
+Exact numbers vary by compiler and standard library, because the synthetic data comes from
+`std::normal_distribution`. This output is from GCC on Linux; MSVC gives, for example, a probe
+accuracy of 100.0%.
 
 ## What's happening
 
-The `SparseAutoencoder` is `LinearModule(4,12) -> ReLU -> LinearModule(12,4)` (an
-overcomplete, 3x-wider hidden basis), trained with MSE to reconstruct its own input while an
-L1 penalty on the hidden ReLU activation pushes the mean hidden activation down over
-training. The `LinearProbe` is a separate, much simpler model —
-`LinearModule(4,1) + BCEWithLogitsLoss` — trained on the *same* activations against a binary
-label. Because this recipe constructs the concept to be linearly separable (positive
-examples have dimension 0 shifted positive, negative examples shifted negative, both with
-noise), the probe reaches 100% accuracy: the concept **is** linearly decodable from these
-activations. A negative control — labels independent of every feature — would instead
-plateau near chance (50%); see `tests/linear_probe_test.cpp` for that paired comparison,
-which is what actually validates the probe methodology rather than its ability to fit
-anything.
+The `SparseAutoencoder` is `LinearModule(4,12) -> ReLU -> LinearModule(12,4)`. Its hidden layer
+is overcomplete: 3x wider than the input. It is trained with MSE to reconstruct its own input.
+An L1 penalty on the hidden ReLU activations keeps them sparse.
+
+The `LinearProbe` is a separate, simpler model: `LinearModule(4,1)` trained with
+`BCEWithLogitsLoss` on the *same* activations against a binary label. The data is built so the
+label follows the sign of dimension 0. Positive examples are shifted to +1 on that dimension and
+negative examples to -1, with Gaussian noise (standard deviation 0.5) on every dimension. The
+noise can push a few points across the boundary, so the classes aren't guaranteed to be
+perfectly separable.
+
+The probe scores well above chance (50%), so the concept is linearly decodable from these
+activations. A negative control, with labels independent of every feature, would stay near
+chance. `tests/linear_probe_test.cpp` runs that paired comparison. The control is what shows the
+probe isn't just fitting noise.
 
 See also: [Mechanistic Interpretability](../../mechanistic-interpretability/index.md#probing-for-a-linearly-decodable-concept).

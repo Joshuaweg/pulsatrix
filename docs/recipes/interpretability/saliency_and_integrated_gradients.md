@@ -1,11 +1,13 @@
 # Recipe: Saliency and Integrated Gradients
 
-**What you'll build:** both gradient-based explainers run against the same small
-`Linear(2,4) -> ReLU -> Linear(4,1)` network, for one input — and a check that Integrated
-Gradients' attributions actually sum to `F(x) - F(baseline)`.
+**What you'll build:** both gradient-based explainers run on the same small
+`Linear(2,4) -> ReLU -> Linear(4,1)` network for one input. The recipe also checks that the
+Integrated Gradients attributions sum to `F(x) - F(baseline)`.
 
 CMake target: `saliency_and_ig_recipe`
 (`examples/recipes/saliency_and_integrated_gradients.cpp`).
+
+Run it: `./build/saliency_and_ig_recipe` (Windows: `build\Release\saliency_and_ig_recipe.exe`).
 
 ## Code
 
@@ -26,20 +28,26 @@ Full source: [`examples/recipes/saliency_and_integrated_gradients.cpp`](https://
 ## Expected output
 
 ```
+Saliency and Integrated Gradients recipe -- Linear(2,4)->ReLU->Linear(4,1)
+
 input (1, 1) -> output 0.3200
 
 saliency:             d(out)/d(in) = [0.4200, -0.1000]
 integrated gradients: IG = [0.4200, -0.1000], sum=0.3200 (F(x)-F(baseline)=0.3200)
+...
 ```
 
 ## What's happening
 
 `Saliency::explain()` seeds a one-hot vector at `target_index` and calls
-`ctx.backward_pass()` — the gradient that comes back *is* the saliency map.
-`IntegratedGradients` instead averages the gradient along the straight-line path from
-`baseline` to `input` over 200 steps. On this particular input the two happen to agree
-(the ReLU doesn't clip along the path here), but IG's defining property is the completeness
-axiom: the printed `sum` of its attributions matches `F(x) - F(baseline)` exactly, a
-guarantee raw Saliency does not carry when a path crosses a ReLU's kink.
+`ctx.backward_pass()`. The gradient that comes back *is* the saliency map.
 
-See also: [Ad-hoc Interpretability — Deep Learning Approaches](../../interpretability/deep-learning-approaches.md#saliency).
+`IntegratedGradients` instead averages the gradient along the straight-line path from
+`baseline` to `input`, over 200 steps. On this input the two methods happen to agree, because
+the ReLU doesn't switch on or off along the path.
+
+IG's defining property is completeness: the printed `sum` of its attributions equals
+`F(x) - F(baseline)`. Saliency has no such guarantee. It is the gradient at a single point, so
+it can miss parts of the path where a ReLU switches on or off.
+
+See also: [Gradient-Based Explainers](../../interpretability/deep-learning-approaches.md#saliency).

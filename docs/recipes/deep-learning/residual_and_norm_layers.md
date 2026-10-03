@@ -1,11 +1,14 @@
 # Recipe: Residual Connections and Normalization Layers
 
 **What you'll build:** a `ResidualModule` wrapping a small `LinearModule`, and a
-`BatchNormModule` standardizing a synthetic per-channel batch — both forward-only, no
-training needed to see what they compute.
+`BatchNormModule` standardizing a synthetic per-channel batch. Both run forward only, so no
+training is needed to see what they compute.
 
 CMake target: `residual_and_norm_layers_recipe`
 (`examples/recipes/residual_and_norm_layers.cpp`).
+
+Run it: `./build/residual_and_norm_layers_recipe` (Windows:
+`build\Release\residual_and_norm_layers_recipe.exe`).
 
 ## Code
 
@@ -32,6 +35,8 @@ Full source: [`examples/recipes/residual_and_norm_layers.cpp`](https://github.co
 ## Expected output
 
 ```
+Residual connections and normalization layers recipe
+
 === ResidualModule ===
 inner = Linear(identity weight, bias=[0.5, -0.5])
 x = [1.0, 2.0]
@@ -41,15 +46,17 @@ y = x + inner->forward(x) = [2.5, 3.5]
 === BatchNormModule ===
 channel 0: input mean 11.00 -> normalized mean 0.0000 (expect ~0.0)
 channel 1: input mean -4.00 -> normalized mean 0.0000 (expect ~0.0)
+...
 ```
 
 ## What's happening
 
-`ResidualModule` computes `y = x + inner->forward(x)` for any already-built `Module` —
-here `inner` is set to an identity weight plus a bias, so the result is simply `x` plus the
-bias, plus `x` again. `BatchNormModule` computes `mu_c`/`std_c` over every `(batch, height,
-width)` element for each channel jointly (unlike `GroupNormModule`'s per-row statistics), so
-with `gamma=1`/`beta=0` each channel's output is exactly mean-zero regardless of that
-channel's original scale (channel 0 centered at 10, channel 1 at -5 — both land at 0).
+`ResidualModule` computes `y = x + inner->forward(x)` for any `Module`. Here `inner` is an
+identity weight plus a bias, so `y = 2x + bias = [2.5, 3.5]`.
 
-See also: [Deep Learning Modules and Layers](../../deep-learning/index.md#choosing-a-normalizationpooling-layer).
+`BatchNormModule` computes a mean and standard deviation per channel, over every batch row and
+spatial position of that channel. With `gamma=1` and `beta=0`, each channel's output is exactly
+mean-zero, whatever its original scale. Channel 0 is centered near 10 and channel 1 near -5, and
+both land at 0.
+
+See also: [Deep Learning Modules and Layers](../../deep-learning/index.md#choosing-a-normalization-layer).
