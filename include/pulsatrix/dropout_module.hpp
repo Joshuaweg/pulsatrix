@@ -32,8 +32,8 @@ public:
      * @brief Constructs a dropout layer.
      * @param p Drop probability, must be in [0, 1).
      * @param backend Backend to compute through. Not owned; must outlive this module.
-     * @param seed RNG seed. Defaults to a fixed value for reproducibility -- callers
-     *        needing independent randomness across instances should pass distinct seeds.
+     * @param seed RNG seed for the masks. The two-argument constructor draws one from the
+     *        global seed stream instead (next_seed(), FND-7).
      *        Masks come from DeviceBackend::dropout_forward's counter-based generator
      *        (element k of the stream is a pure function of (seed, k)), so the same seed
      *        produces the same masks on every backend. Each training forward() advances the
@@ -44,7 +44,11 @@ public:
      * @note No device parameter: the cached mask is allocated per forward() on the input's
      *       own device, same reasoning as ReluModule's forward_impl.
      */
-    explicit DropoutModule(float p, DeviceBackend* backend, uint64_t seed = 42);
+    DropoutModule(float p, DeviceBackend* backend, uint64_t seed);
+
+    /** @brief Seeded from the global seed stream (next_seed(), FND-7), so every layer built
+     *         this way draws its own masks -- reproducibly for a given set_seed(). */
+    DropoutModule(float p, DeviceBackend* backend);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input: grad_output * mask * scale,

@@ -91,6 +91,27 @@ members (see `include/pulsatrix/xor_training_example.hpp`). `forward()` chains
 Runnable version: [`examples/xor_demo.cpp`](https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp)
 (CMake target `xor_demo`). See also the [recipe](../recipes/deep-learning/xor_training.md).
 
+### Reproducibility
+
+Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
+`set_seed` sets one global seed (default 0). Anything built without its own seed, such as a
+`DropoutModule`, `LinearProbe`, `SparseAutoencoder` or a shuffling `DataLoader`, draws a distinct
+seed from it in construction order:
+
+```cpp
+#include "pulsatrix/determinism.hpp"
+
+set_seed(1234);  // same seed + same construction order = same weights, masks and shuffles
+DropoutModule a(0.5f, &backend), b(0.5f, &backend);  // different masks, both reproducible
+DropoutModule c(0.5f, &backend, /*seed=*/7);           // an explicit seed ignores the global one
+```
+
+Deterministic mode is on by default (`set_deterministic(false)` turns it off). pulsatrix's own
+kernels use no atomics, so they always give the same result. In deterministic mode the GPU
+backends also forbid atomics in hipBLAS and cuBLAS, so matrix products are reproducible too.
+Random draws that use standard-library distributions (`std::normal_distribution` and friends)
+are reproducible on one platform, but not between libstdc++ and MSVC.
+
 ### Freezing parameters
 
 Every parameter has a name (`named_parameters()`), and `set_requires_grad` freezes or unfreezes
