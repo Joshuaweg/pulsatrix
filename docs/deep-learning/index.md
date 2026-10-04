@@ -175,6 +175,29 @@ decay to the gradient, where Adam's normalization would rescale it. Its default 
 0.01, as in PyTorch. `SGDOptimizer(lr, momentum, nesterov)` adds momentum and Nesterov momentum,
 with the same buffer rule as `torch.optim.SGD`.
 
+### Learning-rate schedules
+
+`LRSchedule` gives a multiplier per step, with the formulas of Hugging Face's
+`get_*_schedule_with_warmup`: `Constant(warmup)`, `Linear(warmup, total)` and
+`Cosine(warmup, total, min_ratio)`. Warmup ramps from 0 to 1, then linear decays to 0 at `total`
+and cosine to `min_ratio`. `LRScheduler` applies one to an optimizer: every rate, including each
+parameter group's, becomes its starting rate times the multiplier.
+
+```cpp
+#include "pulsatrix/lr_scheduler.hpp"
+
+AdamWOptimizer opt(3e-4f, &backend);
+LRScheduler scheduler(opt, LRSchedule::Cosine(/*warmup=*/100, /*total=*/10000));
+for (int64_t step = 0; step < 10000; ++step) {
+    // ... forward, backward, ClipGradNorm ...
+    opt.step(model);
+    scheduler.step();
+}
+```
+
+Set up parameter groups before building the scheduler. To resume, call
+`scheduler.set_last_step(n)`.
+
 ### Gradient clipping
 
 `ClipGradNorm(model, max_norm)` scales all trainable gradients by one factor so their global L2
