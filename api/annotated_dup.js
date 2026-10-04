@@ -47,6 +47,7 @@ var annotated_dup =
       [ "BCEWithLogitsLoss", "classpulsatrix_1_1BCEWithLogitsLoss.html", "classpulsatrix_1_1BCEWithLogitsLoss" ],
       [ "BeeswarmPoint", "structpulsatrix_1_1BeeswarmPoint.html", "structpulsatrix_1_1BeeswarmPoint" ],
       [ "BoundedQueue", "classpulsatrix_1_1BoundedQueue.html", "classpulsatrix_1_1BoundedQueue" ],
+      [ "CachingAllocator", "classpulsatrix_1_1CachingAllocator.html", "classpulsatrix_1_1CachingAllocator" ],
       [ "CalibrationLoss", "classpulsatrix_1_1CalibrationLoss.html", "classpulsatrix_1_1CalibrationLoss" ],
       [ "CartPoleEnv", "classpulsatrix_1_1CartPoleEnv.html", "classpulsatrix_1_1CartPoleEnv" ],
       [ "CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", "classpulsatrix_1_1CategoricalPolicyAgent" ],

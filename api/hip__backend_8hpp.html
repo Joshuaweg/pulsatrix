@@ -102,25 +102,40 @@ $(document).ready(function(){initNavTree('hip__backend_8hpp.html',''); initResiz
 
 <p>HIP/ROCm implementation of DeviceBackend. Only compiled when PULSATRIX_ENABLE_HIP is set.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;hip/hip_runtime.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;hip/hip_runtime.h&gt;</code><br />
 <code>#include &lt;hipblas/hipblas.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="caching__allocator_8hpp_source.html">pulsatrix/caching_allocator.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="device__backend_8hpp_source.html">pulsatrix/device_backend.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for hip_backend.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="hip__backend_8hpp__incl.png" border="0" usemap="#ainclude_2pulsatrix_2hip__backend_8hpp" alt=""/></div>
 <map name="ainclude_2pulsatrix_2hip__backend_8hpp" id="ainclude_2pulsatrix_2hip__backend_8hpp">
-<area shape="rect" title="HIP/ROCm implementation of DeviceBackend. Only compiled when PULSATRIX_ENABLE_HIP is set." alt="" coords="155,5,309,45"/>
-<area shape="rect" title=" " alt="" coords="5,93,141,119"/>
-<area shape="poly" title=" " alt="" coords="195,48,110,90,108,85,193,43"/>
-<area shape="rect" title=" " alt="" coords="166,93,298,119"/>
-<area shape="poly" title=" " alt="" coords="235,46,235,79,229,79,229,46"/>
-<area shape="rect" href="device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="322,93,537,119"/>
-<area shape="poly" title=" " alt="" coords="280,43,388,86,386,91,278,48"/>
-<area shape="rect" title=" " alt="" coords="347,167,418,192"/>
-<area shape="poly" title=" " alt="" coords="424,120,400,157,396,154,419,118"/>
-<area shape="rect" title=" " alt="" coords="443,167,509,192"/>
-<area shape="poly" title=" " alt="" coords="439,118,463,154,459,157,435,120"/>
+<area shape="rect" title="HIP/ROCm implementation of DeviceBackend. Only compiled when PULSATRIX_ENABLE_HIP is set." alt="" coords="256,5,411,45"/>
+<area shape="rect" title=" " alt="" coords="5,93,83,119"/>
+<area shape="poly" title=" " alt="" coords="265,48,97,93,95,88,263,43"/>
+<area shape="rect" title=" " alt="" coords="107,93,243,119"/>
+<area shape="poly" title=" " alt="" coords="297,48,211,90,209,85,294,43"/>
+<area shape="rect" title=" " alt="" coords="267,93,399,119"/>
+<area shape="poly" title=" " alt="" coords="336,46,336,79,331,79,331,46"/>
+<area shape="rect" href="caching__allocator_8hpp.html" title="A caching device&#45;memory allocator (roadmap HIP&#45;3): freed blocks are kept and reused for later request..." alt="" coords="424,93,648,119"/>
+<area shape="poly" title=" " alt="" coords="383,43,494,86,492,91,381,48"/>
+<area shape="rect" href="device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="673,93,887,119"/>
+<area shape="poly" title=" " alt="" coords="412,38,702,88,701,94,411,43"/>
+<area shape="rect" title=" " alt="" coords="709,167,779,192"/>
+<area shape="poly" title=" " alt="" coords="570,116,698,160,696,165,569,121"/>
+<area shape="rect" title=" " alt="" coords="274,167,361,192"/>
+<area shape="poly" title=" " alt="" coords="502,121,367,165,365,160,500,116"/>
+<area shape="rect" title=" " alt="" coords="385,167,449,192"/>
+<area shape="poly" title=" " alt="" coords="518,121,450,162,447,157,516,116"/>
+<area shape="rect" title=" " alt="" coords="474,167,598,192"/>
+<area shape="poly" title=" " alt="" coords="539,119,539,153,533,153,533,119"/>
+<area shape="rect" title=" " alt="" coords="622,167,685,192"/>
+<area shape="poly" title=" " alt="" coords="556,116,624,157,621,162,553,121"/>
+<area shape="poly" title=" " alt="" coords="776,120,758,156,754,153,772,118"/>
+<area shape="rect" title=" " alt="" coords="804,167,871,192"/>
+<area shape="poly" title=" " alt="" coords="792,117,821,154,817,158,787,121"/>
 </map>
 </div>
 </div>

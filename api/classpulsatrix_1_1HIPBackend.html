@@ -139,11 +139,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab5f1e6f94bbcde729d57089a347530f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which device this backend's buffers reside on.  <br /></td></tr>
 <tr class="separator:ab5f1e6f94bbcde729d57089a347530f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff78faa24ac9c1246184103ff88e3c40" id="r_aff78faa24ac9c1246184103ff88e3c40"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#aff78faa24ac9c1246184103ff88e3c40">allocate</a> (size_t bytes) override</td></tr>
-<tr class="memdesc:aff78faa24ac9c1246184103ff88e3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a buffer of the given size.  <br /></td></tr>
+<tr class="memdesc:aff78faa24ac9c1246184103ff88e3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">From the caching allocator (HIP-3): a freed block of the same size class is reused instead of calling hipMalloc.  <br /></td></tr>
 <tr class="separator:aff78faa24ac9c1246184103ff88e3c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4312ed55031f1dcfabb3f26d709b6229" id="r_a4312ed55031f1dcfabb3f26d709b6229"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a4312ed55031f1dcfabb3f26d709b6229">free</a> (void *ptr) noexcept override</td></tr>
-<tr class="memdesc:a4312ed55031f1dcfabb3f26d709b6229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees a buffer previously returned by <a class="el" href="classpulsatrix_1_1HIPBackend.html#aff78faa24ac9c1246184103ff88e3c40" title="Allocates a buffer of the given size.">allocate()</a>. Safe to call with nullptr.  <br /></td></tr>
+<tr class="memdesc:a4312ed55031f1dcfabb3f26d709b6229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the block to the caching allocator; the memory stays with this backend.  <br /></td></tr>
 <tr class="separator:a4312ed55031f1dcfabb3f26d709b6229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5239ae031074cf0488832d510d6f7e8" id="r_ac5239ae031074cf0488832d510d6f7e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CachingAllocator_1_1Stats.html">CachingAllocator::Stats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#ac5239ae031074cf0488832d510d6f7e8">memory_stats</a> () const</td></tr>
+<tr class="memdesc:ac5239ae031074cf0488832d510d6f7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The caching allocator's counters: bytes in use and cached, peak, raw hipMalloc/hipFree calls and cache hits.  <br /></td></tr>
+<tr class="separator:ac5239ae031074cf0488832d510d6f7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0363db06589805d10b192adb18004ef4" id="r_a0363db06589805d10b192adb18004ef4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a0363db06589805d10b192adb18004ef4">empty_cache</a> ()</td></tr>
+<tr class="memdesc:a0363db06589805d10b192adb18004ef4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all cached (unused) blocks to the driver, after synchronizing.  <br /></td></tr>
+<tr class="separator:a0363db06589805d10b192adb18004ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81330c6468b8ae1e65ffcbbf9586f6eb" id="r_a81330c6468b8ae1e65ffcbbf9586f6eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a81330c6468b8ae1e65ffcbbf9586f6eb">set_memory_budget</a> (size_t bytes)</td></tr>
+<tr class="memdesc:a81330c6468b8ae1e65ffcbbf9586f6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Caps the memory this backend holds, in use plus cached (0: no cap). Defaults to PULSATRIX_HIP_MEMORY_BUDGET_MB if set. On an APU, hipMemGetInfo overstates what can be allocated, so a budget is the reliable limit.  <br /></td></tr>
+<tr class="separator:a81330c6468b8ae1e65ffcbbf9586f6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39894c414cbd933c2dd517e427687c29" id="r_a39894c414cbd933c2dd517e427687c29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a39894c414cbd933c2dd517e427687c29">copy</a> (void *dst, const void *src, size_t bytes, <a class="el" href="namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6b">CopyDirection</a> dir) override</td></tr>
 <tr class="memdesc:a39894c414cbd933c2dd517e427687c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies bytes between buffers.  <br /></td></tr>
 <tr class="separator:a39894c414cbd933c2dd517e427687c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -995,20 +1004,7 @@ The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsa
 </table>
 </div><div class="memdoc">
 
-<p>Allocates a buffer of the given size. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bytes</td><td>Number of bytes to allocate. A request of 0 bytes returns nullptr by convention (not an error) — there is nothing to allocate. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to the allocated buffer, or nullptr iff bytes == 0. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>if a nonzero-size allocation fails. Never silently returns nullptr for a nonzero request. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>From the caching allocator (HIP-3): a freed block of the same size class is reused instead of calling hipMalloc. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a1af6d806be26395c4114f96727149c88">pulsatrix::DeviceBackend</a>.</p>
 
@@ -2299,6 +2295,33 @@ The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsa
 
 </div>
 </div>
+<a id="a0363db06589805d10b192adb18004ef4" name="a0363db06589805d10b192adb18004ef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0363db06589805d10b192adb18004ef4">&#9670;&#160;</a></span>empty_cache()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::HIPBackend::empty_cache </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns all cached (unused) blocks to the driver, after synchronizing. </p>
+
+</div>
+</div>
 <a id="a3cb4bc1c028c8676510ce3e1a5c3b326" name="a3cb4bc1c028c8676510ce3e1a5c3b326"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3cb4bc1c028c8676510ce3e1a5c3b326">&#9670;&#160;</a></span>fill()</h2>
 
@@ -2377,7 +2400,7 @@ The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsa
 </table>
 </div><div class="memdoc">
 
-<p>Frees a buffer previously returned by <a class="el" href="classpulsatrix_1_1HIPBackend.html#aff78faa24ac9c1246184103ff88e3c40" title="Allocates a buffer of the given size.">allocate()</a>. Safe to call with nullptr. </p>
+<p>Returns the block to the caching allocator; the memory stays with this backend. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a8ea09040ed6b2be802daa25af3a9c33c">pulsatrix::DeviceBackend</a>.</p>
 
@@ -4131,6 +4154,33 @@ The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsa
 
 </div>
 </div>
+<a id="ac5239ae031074cf0488832d510d6f7e8" name="ac5239ae031074cf0488832d510d6f7e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5239ae031074cf0488832d510d6f7e8">&#9670;&#160;</a></span>memory_stats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CachingAllocator_1_1Stats.html">CachingAllocator::Stats</a> pulsatrix::HIPBackend::memory_stats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The caching allocator's counters: bytes in use and cached, peak, raw hipMalloc/hipFree calls and cache hits. </p>
+
+</div>
+</div>
 <a id="a8d1e6e52eb84ed7e21535e9bed152478" name="a8d1e6e52eb84ed7e21535e9bed152478"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8d1e6e52eb84ed7e21535e9bed152478">&#9670;&#160;</a></span>mul()</h2>
 
@@ -4657,6 +4707,34 @@ The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsa
 <dl class="section note"><dt>Note</dt><dd>Deterministic: the GPU kernel runs one thread per column and walks i in order &ndash; repeated indices accumulate in the same order as the CPU, no atomics. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a0648bb7791647dac6ae2f95bcd6a45e8">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a81330c6468b8ae1e65ffcbbf9586f6eb" name="a81330c6468b8ae1e65ffcbbf9586f6eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81330c6468b8ae1e65ffcbbf9586f6eb">&#9670;&#160;</a></span>set_memory_budget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::HIPBackend::set_memory_budget </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>bytes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Caps the memory this backend holds, in use plus cached (0: no cap). Defaults to PULSATRIX_HIP_MEMORY_BUDGET_MB if set. On an APU, hipMemGetInfo overstates what can be allocated, so a budget is the reliable limit. </p>
 
 </div>
 </div>

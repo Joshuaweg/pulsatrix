@@ -64,23 +64,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CPUBackend.html#a1c34c38027eb73943a6139e0e53a081c",
-"classpulsatrix_1_1CUDABackend.html#af3b83c006aafa62eea5046cab2747e32",
-"classpulsatrix_1_1DetailedBalanceLoss.html#a643e0f63e74a8b2390e150e6e277c6b3",
-"classpulsatrix_1_1ExplainerContext.html#ae2c2aaa6651042487e50af68132b8974",
-"classpulsatrix_1_1HIPBackend.html#a962d11d69b008038bd01d9e3b502b232",
-"classpulsatrix_1_1LSTMModule.html#ac169161bca38e2673e3349413065b0cf",
-"classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40",
-"classpulsatrix_1_1RNNModule.html#a6600f2dae5fd9287f99cd6a5ef0b65e4",
-"classpulsatrix_1_1RolloutBuffer.html#a0ee4b75f9f704ec19caa7a743b9ebd0d",
-"classpulsatrix_1_1SystemMonitor.html#ad3df3c66accb381e03828d3902271510",
-"classpulsatrix_1_1VizWindow.html#a1c7208c9be6720936abc4648d5202cd5",
-"functions_func_z.html",
-"namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3",
-"residual__module_8hpp.html",
-"structpulsatrix_1_1GFlowNetSampledAction.html#a0ef43c53f1e24e21891f5de8bb8dd341",
-"structpulsatrix_1_1RandomizationResult.html",
-"structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#a1f88a8558770a28d059ea75ff32716c8"
+"classpulsatrix_1_1CPUBackend.html#a1b24e2297de68d62cc299ec47db753ac",
+"classpulsatrix_1_1CUDABackend.html#af1c5bb1be33c2844a652e6d4e9fc75b4",
+"classpulsatrix_1_1DataThreadPool.html#a047967107c774d52146df7eed807cfed",
+"classpulsatrix_1_1Environment.html#aa5ac9b99c6499d9abb7c87e514a59e0f",
+"classpulsatrix_1_1HIPBackend.html#a40bdb4d0b5425510b833a7e30fc5dd06",
+"classpulsatrix_1_1LSTMModule.html#a6ec20f93fa7601ff8b71c7076f37a7f0",
+"classpulsatrix_1_1MetricsSink.html#add45ab2d67ff49bb11f799833b17b6de",
+"classpulsatrix_1_1RMSNormModule.html#a118b29388de9e763cdc090a665e83831",
+"classpulsatrix_1_1RetNetModule.html#aaf7b4972686dc4df85bdbf664862cbbc",
+"classpulsatrix_1_1SwiGLUModule.html#a24c800df4d2674cc4ee49afc3cb1a057",
+"classpulsatrix_1_1Trial.html#a2c0b7ede6ba782bc85e2276faff75c37",
+"flatten__module_8hpp.html",
+"namespacepulsatrix.html#a440d49a4d556810d54bd803b384b14e6",
+"namespacepulsatrix_1_1lrp__composite_1_1detail.html",
+"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa",
+"structpulsatrix_1_1ParamGroupSet_1_1Assignment.html",
+"structpulsatrix_1_1WaterfallBar.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

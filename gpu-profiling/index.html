@@ -838,6 +838,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-3-a-caching-allocator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-3: a caching allocator
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1627,6 +1638,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-3-a-caching-allocator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-3: a caching allocator
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1681,6 +1703,13 @@ backward, AdamW):</p>
   <a href="../recipes/deep-learning/tagger_finetune/">full fine-tuning recipe</a>.</li>
 <li><strong><code>reduce</code>:</strong> <code>DeviceBackend::dot</code> and <code>sum</code> over 16M floats, a microbenchmark for HIP-5.</li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Other programs on the GPU skew timings</p>
+<p>Step times and kernel times shift when other programs use the GPU; a local LLM server is
+enough to triple them. Compare two builds by interleaving their runs (old, new, old, new...)
+and taking medians, so both see the same load. The allocator counters
+(<code>hip_profile_workloads</code> prints them) don't depend on load.</p>
+</div>
 <h2 id="baseline-gfx1151-rocm-724-20-steps">Baseline (gfx1151, ROCm 7.2.4, 20 steps)<a class="headerlink" href="#baseline-gfx1151-rocm-724-20-steps" title="Permanent link">&para;</a></h2>
 <p>Measured 2026-10-04 on the Radeon 8060S (Strix Halo), Release build, before any of the HIP
 performance work.</p>
@@ -1792,6 +1821,43 @@ overhead is now the larger cost, which is HIP-4's target.</p>
 while the CPU adds them one at a time. Both are deterministic. Softmax, layer and RMS norms, and
 column sums keep their kernels: at current shapes each call takes about 5 µs, which is launch
 overhead rather than missing parallelism (the roadmap's falsifier for HIP-2).</p>
+<h3 id="hip-3-a-caching-allocator">HIP-3: a caching allocator<a class="headerlink" href="#hip-3-a-caching-allocator" title="Permanent link">&para;</a></h3>
+<p>Every tensor used to be a fresh <code>hipMalloc</code>, and every free a <code>hipFree</code>, which waits for the GPU
+to finish. Now <code>HIPBackend</code> keeps freed blocks and reuses them for the same size class (512-byte
+steps below 1 MiB, then steps of an eighth of a power of two). Over 20 steps:</p>
+<table>
+<thead>
+<tr>
+<th>Workload</th>
+<th>Allocations</th>
+<th><code>hipMalloc</code> calls now</th>
+<th>Median step time, interleaved A/B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mlp</code></td>
+<td>618</td>
+<td>48</td>
+<td>4% faster</td>
+</tr>
+<tr>
+<td><code>cnn</code></td>
+<td>1,124</td>
+<td>86</td>
+<td>12% faster</td>
+</tr>
+<tr>
+<td><code>tagger</code></td>
+<td>5,359</td>
+<td>156</td>
+<td>7% faster</td>
+</tr>
+</tbody>
+</table>
+<p>The gains are modest because every op still synchronizes the stream. Removing those syncs is
+HIP-4. Cap the memory a backend holds with <code>set_memory_budget()</code> or
+<code>PULSATRIX_HIP_MEMORY_BUDGET_MB</code>, and return cached blocks with <code>empty_cache()</code>.</p>
 
 
 

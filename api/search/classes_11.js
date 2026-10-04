@@ -20,11 +20,12 @@ var searchData=
   ['speciesassignment_17',['SpeciesAssignment',['../structpulsatrix_1_1SpeciesAssignment.html',1,'pulsatrix']]],
   ['ssmpassargs_18',['SsmPassArgs',['../structpulsatrix_1_1SsmPassArgs.html',1,'pulsatrix']]],
   ['stabilityresult_19',['StabilityResult',['../structpulsatrix_1_1StabilityResult.html',1,'pulsatrix']]],
-  ['stepresult_20',['StepResult',['../structpulsatrix_1_1StepResult.html',1,'pulsatrix']]],
-  ['subtbloss_21',['SubTBLoss',['../classpulsatrix_1_1SubTBLoss.html',1,'pulsatrix']]],
-  ['successivehalvingresult_22',['SuccessiveHalvingResult',['../structpulsatrix_1_1SuccessiveHalvingResult.html',1,'pulsatrix']]],
-  ['svdresult_23',['SVDResult',['../structpulsatrix_1_1SVDResult.html',1,'pulsatrix']]],
-  ['swiglumodule_24',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]],
-  ['systemmonitor_25',['SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html',1,'pulsatrix']]],
-  ['systemsample_26',['SystemSample',['../structpulsatrix_1_1SystemSample.html',1,'pulsatrix']]]
+  ['stats_20',['Stats',['../structpulsatrix_1_1CachingAllocator_1_1Stats.html',1,'pulsatrix::CachingAllocator']]],
+  ['stepresult_21',['StepResult',['../structpulsatrix_1_1StepResult.html',1,'pulsatrix']]],
+  ['subtbloss_22',['SubTBLoss',['../classpulsatrix_1_1SubTBLoss.html',1,'pulsatrix']]],
+  ['successivehalvingresult_23',['SuccessiveHalvingResult',['../structpulsatrix_1_1SuccessiveHalvingResult.html',1,'pulsatrix']]],
+  ['svdresult_24',['SVDResult',['../structpulsatrix_1_1SVDResult.html',1,'pulsatrix']]],
+  ['swiglumodule_25',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]],
+  ['systemmonitor_26',['SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html',1,'pulsatrix']]],
+  ['systemsample_27',['SystemSample',['../structpulsatrix_1_1SystemSample.html',1,'pulsatrix']]]
 ];

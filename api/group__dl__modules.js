@@ -6,6 +6,7 @@ var group__dl__modules =
     [ "avg_pool2d_module.hpp", "avg__pool2d__module_8hpp.html", null ],
     [ "batch_norm_module.hpp", "batch__norm__module_8hpp.html", null ],
     [ "bce_with_logits_loss.hpp", "bce__with__logits__loss_8hpp.html", null ],
+    [ "caching_allocator.hpp", "caching__allocator_8hpp.html", null ],
     [ "calibration_loss.hpp", "calibration__loss_8hpp.html", null ],
     [ "checkpoint.hpp", "checkpoint_8hpp.html", null ],
     [ "computation_graph.hpp", "computation__graph_8hpp.html", null ],
