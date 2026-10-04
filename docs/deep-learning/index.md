@@ -147,6 +147,28 @@ backends also forbid atomics in hipBLAS and cuBLAS, so matrix products are repro
 Random draws that use standard-library distributions (`std::normal_distribution` and friends)
 are reproducible on one platform, but not between libstdc++ and MSVC.
 
+### Parameter groups and weight decay
+
+`SGDOptimizer` and `AdamOptimizer` take a learning rate and weight decay per group of
+parameters, chosen by name. Each parameter joins the first group that selects it; the rest use
+the optimizer's own settings. The usual transformer recipe decays the weight matrices but not the
+biases or normalization scales:
+
+```cpp
+#include "pulsatrix/param_groups.hpp"
+
+AdamOptimizer adam(3e-4f, &backend);
+adam.set_weight_decay(0.01f);  // the default group: every parameter no group selects
+adam.set_param_groups({
+    {"no decay", param_select::one_dimensional(), 3e-4f, 0.0f},             // biases, norm scales
+    {"head", param_select::name_prefix("blocks.11"), 1e-3f, 0.01f},         // a faster last block
+});
+```
+
+Weight decay works as in PyTorch's SGD and Adam: the step uses `grad + weight_decay * value`,
+and the stored gradient is left unchanged. A group's `learning_rate` and `weight_decay` can be
+changed between steps through `param_groups()`.
+
 ### Freezing parameters
 
 Every parameter has a name (`named_parameters()`), and `set_requires_grad` freezes or unfreezes
