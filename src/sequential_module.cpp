@@ -51,6 +51,14 @@ Tensor SequentialModule::propagate_relevance(const Tensor& relevance_out, const 
     return relevance;
 }
 
+std::vector<NamedBufferRef> SequentialModule::named_buffers() {
+    std::vector<NamedBufferRef> result;
+    for (size_t i = 0; i < layers_.size(); ++i) {
+        append_named_buffers(result, std::to_string(i), *layers_[i]);
+    }
+    return result;
+}
+
 std::vector<NamedParamRef> SequentialModule::named_parameters() {
     std::vector<NamedParamRef> result;
     for (size_t i = 0; i < layers_.size(); ++i) {

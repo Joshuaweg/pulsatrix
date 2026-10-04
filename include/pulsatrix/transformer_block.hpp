@@ -96,6 +96,9 @@ public:
     /** @brief norm1_'s, mha_'s, norm2_'s, and swiglu_'s parameters, flattened. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
+    /** @brief Every layer's named_buffers(), prefixed the same way as named_parameters(). */
+    [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;
+
     /** @brief Cascades to every sub-module, the same way SequentialModule/MultiHeadAttentionModule do. */
     void set_training(bool training) override;
 
