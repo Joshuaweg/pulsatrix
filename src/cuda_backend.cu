@@ -713,4 +713,17 @@ void CUDABackend::rl_rows(RlRowOp op, const RlRowArgs& args) {
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
+// ---- FND-3: selection ----------------------------------------------------------------------
+
+void CUDABackend::top_k_rows(const float* in, float* values, float* indices, size_t rows, size_t cols, size_t k,
+                            bool largest) {
+    if (rows == 0) {
+        return;
+    }
+    gpu::top_k_rows_kernel<<<gpu::grid_size_for(rows), gpu::kBlockSize, 0, stream_>>>(
+        in, values, indices, static_cast<int64_t>(rows), static_cast<int64_t>(cols), static_cast<int64_t>(k), largest);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
 }  // namespace pulsatrix
