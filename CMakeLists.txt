@@ -96,6 +96,7 @@ add_library(pulsatrix_core
     src/safetensors.cpp
     src/checkpoint.cpp
     src/grad_clipping.cpp
+    src/token_cross_entropy_loss.cpp
     src/rnn_module.cpp
     src/lstm_module.cpp
     src/gru_module.cpp
