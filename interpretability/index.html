@@ -496,6 +496,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Checking an explanation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-null-model-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The null-model baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1538,6 +1555,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Checking an explanation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-null-model-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The null-model baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1626,6 +1660,26 @@ measures this, with metrics from the Quantus families. They work with any explai
 <span class="n">RandomizationResult</span><span class="w"> </span><span class="n">sanity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ModelParameterRandomizationTest</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">explain</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">0</span><span class="p">);</span>
 <span class="c1">// sanity.similarity[i]: rank correlation with the original after randomizing layers[0..i]</span>
 </code></pre></div>
+<h3 id="the-null-model-baseline">The null-model baseline<a class="headerlink" href="#the-null-model-baseline" title="Permanent link">&para;</a></h3>
+<p>Attribution maps, probes and sparse autoencoders all produce plausible-looking output on a
+network with random weights ("The Dead Salmons of AI Interpretability", 2025). So every result
+should be compared against the same analysis of a randomly re-initialized model.
+<code>NullModelBaseline</code> does that in one call, for any analysis. It runs the analysis on the trained
+model and on a re-initialized one, then restores the model exactly:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/null_model_baseline.hpp"</span>
+
+<span class="c1">// Any analysis, any result type: here a probe's accuracy on the model's activations.</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">probe_accuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">TrainProbeAndScore</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="n">NullModelComparison</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NullModelBaseline</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">probe_accuracy</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">0</span><span class="p">);</span>
+<span class="c1">// acc.trained vs acc.null_model: an accuracy the null model also reaches isn't evidence</span>
+
+<span class="c1">// An explanation: also reports how similar the null model's explanation is.</span>
+<span class="n">AttributionNullReport</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NullModelBaseline</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">explain</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">0</span><span class="p">);</span>
+<span class="c1">// r.rank_similarity close to 1: the explanation doesn't depend on what the model learned</span>
+</code></pre></div>
+<p>Re-initialization replaces each parameter tensor with Gaussian noise at that tensor's own scale,
+and leaves buffers such as BatchNorm's running statistics alone. <code>ParameterSnapshot</code> and
+<code>ReinitializeParameters</code> are available separately.</p>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <p>New here? Start with the
 <a href="../recipes/interpretability/saliency_and_integrated_gradients/">Saliency and Integrated Gradients recipe</a>.

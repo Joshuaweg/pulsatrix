@@ -13,5 +13,6 @@ var searchData=
   ['nodemetadata_10',['NodeMetadata',['../structpulsatrix_1_1ActivationSnapshot_1_1NodeMetadata.html',1,'pulsatrix::ActivationSnapshot']]],
   ['noiseschedule_11',['NoiseSchedule',['../classpulsatrix_1_1NoiseSchedule.html',1,'pulsatrix']]],
   ['noopmetricssink_12',['NoOpMetricsSink',['../classpulsatrix_1_1NoOpMetricsSink.html',1,'pulsatrix']]],
-  ['normalizetransform_13',['NormalizeTransform',['../classpulsatrix_1_1NormalizeTransform.html',1,'pulsatrix']]]
+  ['normalizetransform_13',['NormalizeTransform',['../classpulsatrix_1_1NormalizeTransform.html',1,'pulsatrix']]],
+  ['nullmodelcomparison_14',['NullModelComparison',['../structpulsatrix_1_1NullModelComparison.html',1,'pulsatrix']]]
 ];

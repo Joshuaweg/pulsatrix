@@ -149,6 +149,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionBeeswarmView.html">AttributionBeeswarmView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a beeswarm plot for one feature's attribution values across many samples/predictions &ndash; the global "how does the model behave overall" view (hc_information_visualization.md SS5), complementing <a class="el" href="classpulsatrix_1_1AttributionBarChart.html" title="Draws a horizontal bar chart of an Attribution&#39;s top-k features (hc_information_visualization....">AttributionBarChart</a>'s single-prediction "why this one" view.  <a href="classpulsatrix_1_1AttributionBeeswarmView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttributionNullReport.html">AttributionNullReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a3f819c9e8327878579023bf846100400" title="Runs analysis() on model, then again after ReinitializeParameters(model, seed), then restores the mod...">NullModelBaseline()</a> for an explanation of one input.  <a href="structpulsatrix_1_1AttributionNullReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionWaterfallChart.html">AttributionWaterfallChart</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a waterfall chart cascading from baseline_value to the final prediction (hc_information_visualization.md SS5: "correct for local explanation with
        directional attribution... bars cascade from base rate to prediction; color
@@ -524,6 +527,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NormalizeTransform.html">NormalizeTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-channel normalization: pixel = (pixel - mean[c]) / std[c]. In-place, no backend needed (same shape in and out).  <a href="classpulsatrix_1_1NormalizeTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NullModelComparison.html">NullModelComparison</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a3f819c9e8327878579023bf846100400" title="Runs analysis() on model, then again after ReinitializeParameters(model, seed), then restores the mod...">NullModelBaseline()</a>'s result: the analysis on the trained model and on the null model.  <a href="structpulsatrix_1_1NullModelComparison.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ParameterSnapshot.html">ParameterSnapshot</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves every parameter of a module and restores them exactly when it goes out of scope.  <a href="classpulsatrix_1_1ParameterSnapshot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ParameterSpec.html">ParameterSpec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One named parameter's description: its kind plus the bounds/categories that kind needs. Only the fields relevant to <code>kind</code> are meaningful (e.g. <code>categories</code> is empty/unused for <code>Continuous</code>) &ndash; this is a description, not a union, since a <code><a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a></code>'s own accessors (below) are the only place callers read it back.  <a href="structpulsatrix_1_1ParameterSpec.html#details">More...</a><br /></td></tr>
@@ -1337,6 +1346,16 @@ Functions</h2></td></tr>
 <tr class="memitem:a0ca5dc3ab6c1058deba60ef545d4e34b"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, <a class="el" href="namespacepulsatrix.html#ac73b402dce78109b0c9a151410e96eb9">Objectives</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0ca5dc3ab6c1058deba60ef545d4e34b">NSGA2Replacement</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, <a class="el" href="namespacepulsatrix.html#ac73b402dce78109b0c9a151410e96eb9">Objectives</a> &gt; &gt; &amp;population, std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, <a class="el" href="namespacepulsatrix.html#ac73b402dce78109b0c9a151410e96eb9">Objectives</a> &gt; &gt; offspring, size_t mu)</td></tr>
 <tr class="memdesc:a0ca5dc3ab6c1058deba60ef545d4e34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">NSGA-II survivor selection: combines population and offspring, fast-non-dominated- sorts the pool, includes whole fronts (best first) until the next front would overflow mu, then fills the remainder from that final front by crowding distance (largest first &ndash; more diverse/isolated solutions preferred).  <br /></td></tr>
 <tr class="separator:a0ca5dc3ab6c1058deba60ef545d4e34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27ada5559b2ea9d71fdb73638e9e0101" id="r_a27ada5559b2ea9d71fdb73638e9e0101"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a27ada5559b2ea9d71fdb73638e9e0101">ReinitializeParameters</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, uint64_t seed, const std::string &amp;prefix=&quot;&quot;)</td></tr>
+<tr class="memdesc:a27ada5559b2ea9d71fdb73638e9e0101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces each parameter tensor with Gaussian noise of mean 0 and that tensor's own standard deviation, from a portable generator seeded by <code>seed</code>.  <br /></td></tr>
+<tr class="separator:a27ada5559b2ea9d71fdb73638e9e0101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f819c9e8327878579023bf846100400" id="r_a3f819c9e8327878579023bf846100400"><td class="memTemplParams" colspan="2">template&lt;typename Analysis &gt; </td></tr>
+<tr class="memitem:a3f819c9e8327878579023bf846100400"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3f819c9e8327878579023bf846100400">NullModelBaseline</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, Analysis &amp;&amp;analysis, uint64_t seed) -&gt; <a class="el" href="structpulsatrix_1_1NullModelComparison.html">NullModelComparison</a>&lt; std::decay_t&lt; std::invoke_result_t&lt; Analysis &amp; &gt; &gt; &gt;</td></tr>
+<tr class="memdesc:a3f819c9e8327878579023bf846100400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>analysis()</code> on <code>model</code>, then again after ReinitializeParameters(model, seed), then restores the model exactly (also if <code>analysis</code> throws).  <br /></td></tr>
+<tr class="separator:a3f819c9e8327878579023bf846100400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a0a9b185c3ac04de53996b17a5a485f" id="r_a1a0a9b185c3ac04de53996b17a5a485f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttributionNullReport.html">AttributionNullReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1a0a9b185c3ac04de53996b17a5a485f">NullModelBaseline</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;explain, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, uint64_t seed)</td></tr>
+<tr class="memdesc:a1a0a9b185c3ac04de53996b17a5a485f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains <code>input</code> with the trained and the null model and compares the two.  <br /></td></tr>
+<tr class="separator:a1a0a9b185c3ac04de53996b17a5a485f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91c49223bc2b354ad8ed7a7c4f2c6ef1" id="r_a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a91c49223bc2b354ad8ed7a7c4f2c6ef1">check_optimizer_setting</a> (float value, const std::string &amp;what)</td></tr>
 <tr class="memdesc:a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws std::invalid_argument unless <code>value</code> is finite and non-negative.  <br /></td></tr>
 <tr class="separator:a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5419,6 +5438,92 @@ template&lt;typename Genotype &gt; </div>
 
 </div>
 </div>
+<a id="a3f819c9e8327878579023bf846100400" name="a3f819c9e8327878579023bf846100400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f819c9e8327878579023bf846100400">&#9670;&#160;</a></span>NullModelBaseline() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Analysis &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto pulsatrix::NullModelBaseline </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Analysis &amp;&amp;&#160;</td>
+          <td class="paramname"><em>analysis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="structpulsatrix_1_1NullModelComparison.html">NullModelComparison</a>&lt;std::decay_t&lt;std::invoke_result_t&lt;Analysis&amp;&gt;&gt;&gt; </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs <code>analysis()</code> on <code>model</code>, then again after ReinitializeParameters(model, seed), then restores the model exactly (also if <code>analysis</code> throws). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">analysis</td><td>Anything callable with no arguments that reads the model: an explainer run, a probe's accuracy, a featurizer's statistics. Its return type is the result type. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1a0a9b185c3ac04de53996b17a5a485f" name="a1a0a9b185c3ac04de53996b17a5a485f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a0a9b185c3ac04de53996b17a5a485f">&#9670;&#160;</a></span>NullModelBaseline() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AttributionNullReport.html">AttributionNullReport</a> pulsatrix::NullModelBaseline </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;&#160;</td>
+          <td class="paramname"><em>explain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explains <code>input</code> with the trained and the null model and compares the two. </p>
+
+</div>
+</div>
 <a id="a483abfbd086c7839885d1d1b944fa976" name="a483abfbd086c7839885d1d1b944fa976"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a483abfbd086c7839885d1d1b944fa976">&#9670;&#160;</a></span>OnePointCrossover()</h2>
 
@@ -6042,6 +6147,49 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a27ada5559b2ea9d71fdb73638e9e0101" name="a27ada5559b2ea9d71fdb73638e9e0101"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27ada5559b2ea9d71fdb73638e9e0101">&#9670;&#160;</a></span>ReinitializeParameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::ReinitializeParameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>prefix</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Replaces each parameter tensor with Gaussian noise of mean 0 and that tensor's own standard deviation, from a portable generator seeded by <code>seed</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">prefix</td><td>Only parameters named <code>prefix</code> or under it (dot boundaries); empty means all. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Keeps each tensor's scale, so activations stay in a realistic range. A tensor whose values are all equal (a zero bias, say) has standard deviation 0 and becomes all zeros. Buffers, such as BatchNorm's running statistics, are left alone. </dd></dl>
 
 </div>
 </div>

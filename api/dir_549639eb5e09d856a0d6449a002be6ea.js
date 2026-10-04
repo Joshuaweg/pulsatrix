@@ -129,6 +129,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "node.hpp", "node_8hpp.html", "node_8hpp" ],
     [ "noise_schedule.hpp", "noise__schedule_8hpp.html", "noise__schedule_8hpp" ],
     [ "nsga2.hpp", "nsga2_8hpp.html", "nsga2_8hpp" ],
+    [ "null_model_baseline.hpp", "null__model__baseline_8hpp.html", "null__model__baseline_8hpp" ],
     [ "op_type.hpp", "op__type_8hpp.html", "op__type_8hpp" ],
     [ "param_groups.hpp", "param__groups_8hpp.html", "param__groups_8hpp" ],
     [ "pbt.hpp", "pbt_8hpp.html", "pbt_8hpp" ],
