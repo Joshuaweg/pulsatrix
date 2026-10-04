@@ -11,39 +11,58 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # No -G on Windows: windows-latest's bundled Visual Studio version is a moving
-          # target GitHub updates on its own schedule (it jumped from VS2022 to VS2026
-          # under this exact label, breaking a hardcoded "Visual Studio 17 2022" generator
-          # name with no code change on our side). Omitting -G lets CMake auto-detect
-          # whichever VS version is actually installed on the runner.
           - os: windows-latest
-            generator: ""
-            extra-configure-args: -A x64
+            launcher: sccache
+            compilers: -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl
           - os: ubuntu-latest
-            generator: "Unix Makefiles"
-            extra-configure-args: -DCMAKE_BUILD_TYPE=Release
+            launcher: ccache
+            compilers: ""
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure
+      # Ninja on both platforms. It builds in parallel by default and, unlike the Visual Studio
+      # generator, supports a compiler launcher (the cache below). It also sidesteps the old
+      # problem of windows-latest moving between Visual Studio versions: Ninja uses whichever
+      # MSVC msvc-dev-cmd finds.
+      - name: Set up MSVC
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install Ninja
         shell: bash
         run: |
-          if [ -n "${{ matrix.generator }}" ]; then
-            cmake -S . -B build -G "${{ matrix.generator }}" ${{ matrix.extra-configure-args }}
-          else
-            cmake -S . -B build ${{ matrix.extra-configure-args }}
+          if ! command -v ninja >/dev/null; then
+            if [ "$RUNNER_OS" = "Windows" ]; then choco install ninja -y --no-progress; else sudo apt-get install -y -qq ninja-build; fi
           fi
+          ninja --version
+
+      # Restores the object cache from this branch, or master's for a new branch, and saves it
+      # after the job. A PR that touches a few files recompiles only those.
+      - name: Compiler cache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: build-and-test-${{ matrix.os }}
+          variant: ${{ matrix.launcher }}
+          max-size: 500M
+
+      - name: Configure
+        shell: bash
+        run: >
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release ${{ matrix.compilers }}
+          -DCMAKE_C_COMPILER_LAUNCHER=${{ matrix.launcher }}
+          -DCMAKE_CXX_COMPILER_LAUNCHER=${{ matrix.launcher }}
 
       - name: Build
-        run: cmake --build build --config Release
+        run: cmake --build build --parallel
 
       # mnist_loader_test / mnist_classifier_example_test need real MNIST files that
       # tools/fetch_mnist.py populates manually (see that script's docstring: "Not run
       # by CTest/CI -- this is a data-acquisition tool, not a test dependency"). Excluded
-      # here by design, not an oversight.
+      # here by design, not an oversight. Tests run 4 at a time, one per runner core; every
+      # test that writes files uses its own temporary path.
       - name: Test
-        run: ctest --test-dir build -C Release --output-on-failure -E "Mnist"
+        run: ctest --test-dir build --output-on-failure -E "Mnist" --parallel 4
 
   # The pytest suite was never run in CI and drifted out of date when LinearModule/Conv2D
   # moved to batched inputs. CPU-only here; GPU binding tests skip themselves when the build
@@ -86,5 +105,15 @@ jobs:
       - name: Free disk space
         run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
 
+      # ccache inside the toolchain container, persisted between runs like the job above.
+      - name: Compiler cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/ccache
+          key: gpu-${{ matrix.backend }}-${{ github.sha }}
+          restore-keys: gpu-${{ matrix.backend }}-
+
       - name: Compile ${{ matrix.backend }} backend
+        env:
+          CCACHE_HOST_DIR: ${{ runner.temp }}/ccache
         run: scripts/ci-gpu-compile.sh ${{ matrix.backend }}
