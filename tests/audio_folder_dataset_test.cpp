@@ -19,7 +19,9 @@ using ::pulsatrix::test::WriteWav;
 class AudioFolderDatasetTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        root_ = fs::path(::testing::TempDir()) / "pulsatrix_audio_folder_test";
+        // One directory per test: ctest runs tests in parallel processes, and a shared one races.
+        root_ = fs::path(::testing::TempDir()) /
+                ("pulsatrix_audio_folder_test_" + std::string(::testing::UnitTest::GetInstance()->current_test_info()->name()));
         fs::remove_all(root_);
         fs::create_directories(root_ / "bark");
         fs::create_directories(root_ / "meow");
