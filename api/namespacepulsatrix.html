@@ -330,6 +330,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FieldStatistics.html">FieldStatistics</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptive statistics for one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position, aggregated across a whole <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>.  <a href="structpulsatrix_1_1FieldStatistics.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FineTuneConfig.html">FineTuneConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Training settings. The defaults are the recipe's.  <a href="structpulsatrix_1_1FineTuneConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FlattenModule.html">FlattenModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = reshape(x, {N, x.numel()/N}), N = x.shape().dim(0). No parameters, no gradient math beyond reshaping.  <a href="classpulsatrix_1_1FlattenModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -695,6 +698,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SystemSample.html">SystemSample</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One point-in-time measurement of the host.  <a href="structpulsatrix_1_1SystemSample.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TaggingBatch.html">TaggingBatch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ragged sequences: real tokens 1..kVocab-1 followed by padding (input 0, target -100).  <a href="structpulsatrix_1_1TaggingBatch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TanhGaussianGrad.html">TanhGaussianGrad</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The (grad_mean, grad_log_std) pair <a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html#a91c0bdf9f5c3a45065361f3f35706e09" title="Gradients w.r.t. mean and log_std, combining the two gradients that arrive at this step&#39;s two outputs...">TanhGaussianPolicy::backward()</a> produces &ndash; both (N, action_dim), the shape of the forward's own <code>mean</code>/<code>log_std</code>.  <a href="structpulsatrix_1_1TanhGaussianGrad.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -712,6 +718,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextureCache.html">TextureCache</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e.g. a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> index) so a scrolling image grid doesn't re-upload the same image every frame.  <a href="classpulsatrix_1_1TextureCache.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Embedding -&gt; <a class="el" href="classpulsatrix_1_1TransformerBlock.html" title="y1 = x + MHA(RMSNorm(x)), y2 = y1 + SwiGLU(RMSNorm(y1)). Shape (N, L, d_model) -&gt; (N,...">TransformerBlock</a> -&gt; per-token Linear head: (N, L) tokens to (N, L, C) logits.  <a href="classpulsatrix_1_1TinyTagger.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html">TokenCrossEntropyLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">sum over tokens of -log softmax(logits)[target], divided by a normalizer; tokens whose target is the ignore index (padding) contribute nothing.  <a href="classpulsatrix_1_1TokenCrossEntropyLoss.html#details">More...</a><br /></td></tr>
@@ -979,6 +988,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ga36063879210fbfeed97464b5b089b871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log record encoding.  <a href="group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871">More...</a><br /></td></tr>
 <tr class="separator:ga36063879210fbfeed97464b5b089b871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae999cb7b2d1c9ba912797e3319968107" id="r_ae999cb7b2d1c9ba912797e3319968107"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">TaggingRule</a> { <a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1">SumWithPrevious</a>
+, <a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107a09a12a079bf46e996fea54fa0d53783a">DifferenceWithPrevious</a>
+ }</td></tr>
+<tr class="memdesc:ae999cb7b2d1c9ba912797e3319968107"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a token's tag follows from it and the token before it (the first token's predecessor is 0). Tags are modulo kClasses.  <a href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">More...</a><br /></td></tr>
+<tr class="separator:ae999cb7b2d1c9ba912797e3319968107"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -1361,6 +1375,18 @@ Functions</h2></td></tr>
 <tr class="memitem:aba113e4a47a13ae03ade3411dc53a115" id="r_aba113e4a47a13ae03ade3411dc53a115"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aba113e4a47a13ae03ade3411dc53a115">sample_to_json</a> (const <a class="el" href="structpulsatrix_1_1SystemSample.html">SystemSample</a> &amp;sample)</td></tr>
 <tr class="memdesc:aba113e4a47a13ae03ade3411dc53a115"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes <code>sample</code> as one JSON object (no trailing newline), the JSON Lines log record.  <br /></td></tr>
 <tr class="separator:aba113e4a47a13ae03ade3411dc53a115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c958ae5a99df9dd3b742c74911b541" id="r_a30c958ae5a99df9dd3b742c74911b541"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a30c958ae5a99df9dd3b742c74911b541">InitTagger</a> (<a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a> &amp;tagger, uint64_t seed)</td></tr>
+<tr class="memdesc:a30c958ae5a99df9dd3b742c74911b541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the tagger's parameters reproducibly on every platform: matrices uniform in +-1/sqrt(fan_in), normalization gains 1, biases 0.  <br /></td></tr>
+<tr class="separator:a30c958ae5a99df9dd3b742c74911b541"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af53e6ecf02fb76a731ba39e140ba653d" id="r_af53e6ecf02fb76a731ba39e140ba653d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TaggingBatch.html">TaggingBatch</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af53e6ecf02fb76a731ba39e140ba653d">MakeTaggingBatch</a> (<a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">TaggingRule</a> rule, int64_t batch_size, uint64_t seed, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend=nullptr)</td></tr>
+<tr class="memdesc:af53e6ecf02fb76a731ba39e140ba653d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A deterministic, platform-independent batch; lengths are 5 to kSeqLen.  <br /></td></tr>
+<tr class="separator:af53e6ecf02fb76a731ba39e140ba653d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ff85e7419fb2e792707fa0d479a3457" id="r_a8ff85e7419fb2e792707fa0d479a3457"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8ff85e7419fb2e792707fa0d479a3457">TrainTagger</a> (<a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a> &amp;tagger, <a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">TaggingRule</a> rule, const <a class="el" href="structpulsatrix_1_1FineTuneConfig.html">FineTuneConfig</a> &amp;config, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a8ff85e7419fb2e792707fa0d479a3457"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trains every parameter of <code>tagger</code> on <code>rule</code> with the whole v1.1 training stack: AdamW with parameter groups, warmup plus cosine, gradient accumulation normalized by the window's token count, and gradient clipping.  <br /></td></tr>
+<tr class="separator:a8ff85e7419fb2e792707fa0d479a3457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d5b21b37e5d559fd4c837fecbfcfd3b" id="r_a0d5b21b37e5d559fd4c837fecbfcfd3b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0d5b21b37e5d559fd4c837fecbfcfd3b">TaggingAccuracy</a> (<a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a> &amp;tagger, <a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">TaggingRule</a> rule, int64_t num_sequences)</td></tr>
+<tr class="memdesc:a0d5b21b37e5d559fd4c837fecbfcfd3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fraction of real tokens tagged correctly on <code>num_sequences</code> fresh sequences.  <br /></td></tr>
+<tr class="separator:a0d5b21b37e5d559fd4c837fecbfcfd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71ec5781347ddf2db42af3e5675d3748" id="r_a71ec5781347ddf2db42af3e5675d3748"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a71ec5781347ddf2db42af3e5675d3748">require_device</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> expected, const char *where)</td></tr>
 <tr class="memdesc:a71ec5781347ddf2db42af3e5675d3748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws unless <code>t</code> lives on <code>expected</code> &ndash; the check every module and loss runs on the tensors handed to it (roadmap FND-8, gpu_review #1).  <br /></td></tr>
 <tr class="separator:a71ec5781347ddf2db42af3e5675d3748"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2135,6 +2161,34 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f" name="a9ea30dd018ca9a3db2acc46af2880883af885ed8e459ad9321616f3ce9e71e97f"></a>RetnetReadout&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97" name="a9ea30dd018ca9a3db2acc46af2880883a08ac54865c115b01837b65f79eb12f97"></a>RetnetLrpInput&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3" name="a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3"></a>ReverseTimeSum&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ae999cb7b2d1c9ba912797e3319968107" name="ae999cb7b2d1c9ba912797e3319968107"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae999cb7b2d1c9ba912797e3319968107">&#9670;&#160;</a></span>TaggingRule</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">pulsatrix::TaggingRule</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How a token's tag follows from it and the token before it (the first token's predecessor is 0). Tags are modulo kClasses. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1" name="ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1"></a>SumWithPrevious&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae999cb7b2d1c9ba912797e3319968107a09a12a079bf46e996fea54fa0d53783a" name="ae999cb7b2d1c9ba912797e3319968107a09a12a079bf46e996fea54fa0d53783a"></a>DifferenceWithPrevious&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -4605,6 +4659,36 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a30c958ae5a99df9dd3b742c74911b541" name="a30c958ae5a99df9dd3b742c74911b541"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30c958ae5a99df9dd3b742c74911b541">&#9670;&#160;</a></span>InitTagger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::InitTagger </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a> &amp;&#160;</td>
+          <td class="paramname"><em>tagger</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fills the tagger's parameters reproducibly on every platform: matrices uniform in +-1/sqrt(fan_in), normalization gains 1, biases 0. </p>
+
+</div>
+</div>
 <a id="a862a61bf00880ccd8d58cdbb43eaae15" name="a862a61bf00880ccd8d58cdbb43eaae15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a862a61bf00880ccd8d58cdbb43eaae15">&#9670;&#160;</a></span>LoadCheckpoint() <span class="overload">[1/2]</span></h2>
 
@@ -4786,6 +4870,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Lower-case rule name ("epsilon", "gamma", "alpha_beta", "zbox") for messages/metadata. </p>
+
+</div>
+</div>
+<a id="af53e6ecf02fb76a731ba39e140ba653d" name="af53e6ecf02fb76a731ba39e140ba653d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af53e6ecf02fb76a731ba39e140ba653d">&#9670;&#160;</a></span>MakeTaggingBatch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TaggingBatch.html">TaggingBatch</a> pulsatrix::MakeTaggingBatch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">TaggingRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A deterministic, platform-independent batch; lengths are 5 to kSeqLen. </p>
 
 </div>
 </div>
@@ -7726,6 +7852,42 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a0d5b21b37e5d559fd4c837fecbfcfd3b" name="a0d5b21b37e5d559fd4c837fecbfcfd3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d5b21b37e5d559fd4c837fecbfcfd3b">&#9670;&#160;</a></span>TaggingAccuracy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::TaggingAccuracy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a> &amp;&#160;</td>
+          <td class="paramname"><em>tagger</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">TaggingRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_sequences</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fraction of real tokens tagged correctly on <code>num_sequences</code> fresh sequences. </p>
+
+</div>
+</div>
 <a id="a35ece12427833bb65b0071348e83bdc3" name="a35ece12427833bb65b0071348e83bdc3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35ece12427833bb65b0071348e83bdc3">&#9670;&#160;</a></span>TellGivenSamples()</h2>
 
@@ -8191,6 +8353,50 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8ff85e7419fb2e792707fa0d479a3457" name="a8ff85e7419fb2e792707fa0d479a3457"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ff85e7419fb2e792707fa0d479a3457">&#9670;&#160;</a></span>TrainTagger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::TrainTagger </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a> &amp;&#160;</td>
+          <td class="paramname"><em>tagger</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107">TaggingRule</a>&#160;</td>
+          <td class="paramname"><em>rule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1FineTuneConfig.html">FineTuneConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Trains every parameter of <code>tagger</code> on <code>rule</code> with the whole v1.1 training stack: AdamW with parameter groups, warmup plus cosine, gradient accumulation normalized by the window's token count, and gradient clipping. </p>
+<dl class="section return"><dt>Returns</dt><dd>The loss of each step run (the window mean over its real tokens). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Each step's data depends only on (data_seed, step), so a resumed run sees exactly the batches an uninterrupted one would. </dd></dl>
 
 </div>
 </div>

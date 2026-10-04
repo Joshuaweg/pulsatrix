@@ -59,6 +59,7 @@ var group__dl__modules =
     [ "sinusoidal_timestep_embedding.hpp", "sinusoidal__timestep__embedding_8hpp.html", null ],
     [ "softmax_module.hpp", "softmax__module_8hpp.html", null ],
     [ "swiglu_module.hpp", "swiglu__module_8hpp.html", null ],
+    [ "tagger_finetune_example.hpp", "tagger__finetune__example_8hpp.html", null ],
     [ "tensor.hpp", "tensor_8hpp.html", null ],
     [ "token_cross_entropy_loss.hpp", "token__cross__entropy__loss_8hpp.html", null ],
     [ "top_k.hpp", "top__k_8hpp.html", null ],
