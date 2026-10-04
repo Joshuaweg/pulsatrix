@@ -1854,10 +1854,12 @@ carry tags:</p>
 - <strong>Explainers disagree with each other.</strong> Krishna et al., "The Disagreement Problem in Explainable Machine Learning", arXiv 2202.01602 (2022-02).
 - <strong>Surrogates can be fooled.</strong> Slack et al., AIES 2020: a model can be built to look innocent to LIME and SHAP while staying biased.</p>
 <h2 id="fnd-foundations">FND: Foundations<a class="headerlink" href="#fnd-foundations" title="Permanent link">&para;</a></h2>
+<p>All FND items are done; see the roadmap's FND section for what changed from the plan. The notes
+below record the reasoning they were built on.</p>
 <ul>
-<li><strong>FND-1, FND-2.</strong> <code>Module::parameters()</code> returns <code>std::vector&lt;ParamRef&gt;</code> with no names (<code>include/pulsatrix/module.hpp:140</code>).</li>
+<li><strong>FND-1, FND-2.</strong> <code>Module::parameters()</code> returned <code>std::vector&lt;ParamRef&gt;</code> with no names. It is now derived from <code>named_parameters()</code>.</li>
 <li><strong>Falsifier for freezing:</strong> a frozen parameter's bytes change after N steps, or the input gradient no longer matches finite differences.</li>
-<li><strong>FND-3, FND-4.</strong> The demand for these comes from items in other epics. FEAT-2 (Gao et al., TopK SAE, arXiv 2406.04093, 2024-06) and ARCH-3 need top-k. INT-5, FEAT-6, TRN-9 (Wu et al., ReFT, arXiv 2404.03592, 2024-04) and TRN-11 (Shuttleworth et al., arXiv 2410.21228, 2024-10) need an eigensolver or SVD. <code>linear_algebra.hpp</code> currently has only a dense solve.</li>
+<li><strong>FND-3, FND-4.</strong> The demand for these comes from items in other epics. FEAT-2 (Gao et al., TopK SAE, arXiv 2406.04093, 2024-06) and ARCH-3 need top-k. INT-5, FEAT-6, TRN-9 (Wu et al., ReFT, arXiv 2404.03592, 2024-04) and TRN-11 (Shuttleworth et al., arXiv 2410.21228, 2024-10) need an eigensolver or SVD. <code>linear_algebra.hpp</code> had only a dense solve; <code>matrix_decompositions.hpp</code> now has the rest.</li>
 <li><strong>Fails when:</strong> eigenvector sign and order are arbitrary, so tests must align them before comparing.</li>
 <li><strong>FND-5.</strong></li>
 <li><strong>Sources:</strong> <code>plans/lrp_issues.md</code> #8. Zennit's canonizers fold BatchNorm into the preceding layer before LRP.</li>
