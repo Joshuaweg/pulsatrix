@@ -72,14 +72,14 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1LayerNormModule.html#a63dda6117e9e3148f458747c449522ea",
 "classpulsatrix_1_1MultiHeadAttentionModule.html#a5949a91915019e6d0067f167f908c180",
 "classpulsatrix_1_1RWKVModule.html#a77bcf685f363b7c51932f9b64619817e",
-"classpulsatrix_1_1SearchSpace.html#ae4583caf96d0516b8d0ef42864fe4fa3",
-"classpulsatrix_1_1TextureCache.html#ae7d32c3dff82c75654fd51de8359b6a7",
-"classpulsatrix_1_1detail_1_1LinuxSources.html",
-"namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e",
-"namespacepulsatrix_1_1detail.html#a35b3c134fdd7ea35dbd7a20005e2fadd",
-"structpulsatrix_1_1GFlowNetTrajectory.html",
-"structpulsatrix_1_1RolloutBatch.html#a1cf2be7bec3e8a07ca8b57920bd83b46",
-"window_8hpp.html"
+"classpulsatrix_1_1SatisfactionLoss.html#ad04f5ca39298452cb5084c11c6d6cbc1",
+"classpulsatrix_1_1TextDataset.html#adb902ad1d0b4e655003ce6fa720c421b",
+"classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html#a6cabbbc3e358b14ed284a65656514fbb",
+"mse__loss_8hpp.html",
+"namespacepulsatrix.html#afcbb0593c7f9f2201095dbf4675a7cff",
+"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a5cc0627fbdbed23c8324f07e0b597705",
+"structpulsatrix_1_1RgbColor.html#ab7cf0a6380926071d0c80730b45612e3",
+"structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

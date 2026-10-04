@@ -589,6 +589,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html">RWKVModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core RWKV-4 time-mixing block (Peng et al. 2023, arXiv:2305.13048), input (N, L, d_model) -&gt; output (N, L, d_model).  <a href="classpulsatrix_1_1RWKVModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parsed, fully validated safetensors file held in memory.  <a href="classpulsatrix_1_1SafetensorsFile.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SafetensorsTensorInfo.html">SafetensorsTensorInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One tensor's header entry. Offsets are relative to the start of the data section.  <a href="structpulsatrix_1_1SafetensorsTensorInfo.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Saliency.html">Saliency</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding <a class="el" href="classpulsatrix_1_1ExplainerContext.html#a6c37420ba0cf1a181dabf903a9fdb558" title="Runs Autograd::backward from the most recent forward_pass()&#39;s output node.">ExplainerContext::backward_pass</a> with a one-hot vector at target_index.  <a href="classpulsatrix_1_1Saliency.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -908,6 +914,29 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a94d9ac6240473b5362d1e8e5c11157bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The op-type tag a Node carries. Charter Part 2 §3: nodes are tagged by a small closed set of op types rather than by concrete layer class, so a query like "find the last conv layer's activations" (Grad-CAM) works by querying op type, not by string-matching a layer name.  <a href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">More...</a><br /></td></tr>
 <tr class="separator:a94d9ac6240473b5362d1e8e5c11157bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4635e5585e80a55ee96adcfd4f80b57b" id="r_a4635e5585e80a55ee96adcfd4f80b57b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57b">SafetensorsDtype</a> { <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac26f15e86e3de4c398a8273272aba034">Bool</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba6669348b484e3008dca2bfa8e85e40b5">U8</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba5aef4e3ea379fa0eb2bf42d979443902">I8</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57babcd774f891b5f9df7099f3ea75dadf8d">I16</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57baef9ef3ebca4d2b64b6ec83808bafa5f2">U16</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bad878ea6016bfe01729548bf442de5a8b">I32</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac8bd5bedff8ef192d39a962afc0e19ee">U32</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bae7e62f6928f76df671b5a0379793fab6">I64</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba31d65cccd6593e4101db93fb878abcaa">U64</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac9380ca0127510f76c06ade6b81271ab">F8_E4M3</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba06a19e218a0cc6bb001b6403c5ed75b2">F8_E5M2</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba56d8353718e6fdc78b8d69078a2cdb94">F16</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57baf656bbf613964dcf710b771b0918ab30">BF16</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba44ad4ef5a76e6aa6fb3e3fa079a54fda">F32</a>
+, <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba1ad5f6f3069070ec4cbbdc94d5e61e0e">F64</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a4635e5585e80a55ee96adcfd4f80b57b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element types a safetensors file can declare. Only F32 converts to a Tensor so far.  <a href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57b">More...</a><br /></td></tr>
+<tr class="separator:a4635e5585e80a55ee96adcfd4f80b57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb575cb311c04812afe7f12350d86eec" id="r_abb575cb311c04812afe7f12350d86eec"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eec">ParameterKind</a> { <a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca535863a82f163709557e59e2eb8139a7">Continuous</a>
 , <a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045">LogUniform</a>
 , <a class="el" href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044">Integer</a>
@@ -1224,6 +1253,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a04988305f3fb93fa30aa30cfcbb09a6e" id="r_a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e">PolyakUpdate</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;source, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;destination, float tau)</td></tr>
 <tr class="memdesc:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Soft target-network update (Lillicrap et al. 2016 / Haarnoja et al. 2018): <code>destination_param[i] = tau * source_param[i] + (1 - tau) * destination_param[i]</code>, element-wise and in place.  <br /></td></tr>
 <tr class="separator:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b2ebcf822ff6e68e95388365ae2774c" id="r_a3b2ebcf822ff6e68e95388365ae2774c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3b2ebcf822ff6e68e95388365ae2774c">SerializeSafetensors</a> (const std::vector&lt; std::pair&lt; std::string, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> * &gt; &gt; &amp;tensors, const std::map&lt; std::string, std::string &gt; &amp;metadata={})</td></tr>
+<tr class="memdesc:a3b2ebcf822ff6e68e95388365ae2774c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes tensors (as F32) and string metadata into safetensors bytes.  <br /></td></tr>
+<tr class="separator:a3b2ebcf822ff6e68e95388365ae2774c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2f426e066a256c2ca12b2b8a5ec3d0b" id="r_ae2f426e066a256c2ca12b2b8a5ec3d0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae2f426e066a256c2ca12b2b8a5ec3d0b">WriteSafetensors</a> (const std::string &amp;path, const std::vector&lt; std::pair&lt; std::string, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> * &gt; &gt; &amp;tensors, const std::map&lt; std::string, std::string &gt; &amp;metadata={})</td></tr>
+<tr class="memdesc:ae2f426e066a256c2ca12b2b8a5ec3d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a3b2ebcf822ff6e68e95388365ae2774c" title="Serializes tensors (as F32) and string metadata into safetensors bytes.">SerializeSafetensors()</a> written to <code>path</code>.  <br /></td></tr>
+<tr class="separator:ae2f426e066a256c2ca12b2b8a5ec3d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a974487e04bed881f9e921fdb7f938ab5" id="r_a974487e04bed881f9e921fdb7f938ab5"><td class="memTemplParams" colspan="2">template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </td></tr>
 <tr class="memitem:a974487e04bed881f9e921fdb7f938ab5"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a974487e04bed881f9e921fdb7f938ab5">TournamentSelect</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt; &amp;population, size_t tournament_size, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a974487e04bed881f9e921fdb7f938ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tournament selection: draw tournament_size individuals without replacement from population and return the index of the fittest among them.  <br /></td></tr>
@@ -1917,6 +1952,47 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536" name="af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536"></a>PpoGrad&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87" name="af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87"></a>DqnTarget&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9" name="af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9"></a>PolyakBlend&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a4635e5585e80a55ee96adcfd4f80b57b" name="a4635e5585e80a55ee96adcfd4f80b57b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4635e5585e80a55ee96adcfd4f80b57b">&#9670;&#160;</a></span>SafetensorsDtype</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57b">pulsatrix::SafetensorsDtype</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Element types a safetensors file can declare. Only F32 converts to a <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> so far. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57bac26f15e86e3de4c398a8273272aba034" name="a4635e5585e80a55ee96adcfd4f80b57bac26f15e86e3de4c398a8273272aba034"></a>Bool&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57ba6669348b484e3008dca2bfa8e85e40b5" name="a4635e5585e80a55ee96adcfd4f80b57ba6669348b484e3008dca2bfa8e85e40b5"></a>U8&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57ba5aef4e3ea379fa0eb2bf42d979443902" name="a4635e5585e80a55ee96adcfd4f80b57ba5aef4e3ea379fa0eb2bf42d979443902"></a>I8&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57babcd774f891b5f9df7099f3ea75dadf8d" name="a4635e5585e80a55ee96adcfd4f80b57babcd774f891b5f9df7099f3ea75dadf8d"></a>I16&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57baef9ef3ebca4d2b64b6ec83808bafa5f2" name="a4635e5585e80a55ee96adcfd4f80b57baef9ef3ebca4d2b64b6ec83808bafa5f2"></a>U16&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57bad878ea6016bfe01729548bf442de5a8b" name="a4635e5585e80a55ee96adcfd4f80b57bad878ea6016bfe01729548bf442de5a8b"></a>I32&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57bac8bd5bedff8ef192d39a962afc0e19ee" name="a4635e5585e80a55ee96adcfd4f80b57bac8bd5bedff8ef192d39a962afc0e19ee"></a>U32&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57bae7e62f6928f76df671b5a0379793fab6" name="a4635e5585e80a55ee96adcfd4f80b57bae7e62f6928f76df671b5a0379793fab6"></a>I64&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57ba31d65cccd6593e4101db93fb878abcaa" name="a4635e5585e80a55ee96adcfd4f80b57ba31d65cccd6593e4101db93fb878abcaa"></a>U64&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57bac9380ca0127510f76c06ade6b81271ab" name="a4635e5585e80a55ee96adcfd4f80b57bac9380ca0127510f76c06ade6b81271ab"></a>F8_E4M3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57ba06a19e218a0cc6bb001b6403c5ed75b2" name="a4635e5585e80a55ee96adcfd4f80b57ba06a19e218a0cc6bb001b6403c5ed75b2"></a>F8_E5M2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57ba56d8353718e6fdc78b8d69078a2cdb94" name="a4635e5585e80a55ee96adcfd4f80b57ba56d8353718e6fdc78b8d69078a2cdb94"></a>F16&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57baf656bbf613964dcf710b771b0918ab30" name="a4635e5585e80a55ee96adcfd4f80b57baf656bbf613964dcf710b771b0918ab30"></a>BF16&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57ba44ad4ef5a76e6aa6fb3e3fa079a54fda" name="a4635e5585e80a55ee96adcfd4f80b57ba44ad4ef5a76e6aa6fb3e3fa079a54fda"></a>F32&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4635e5585e80a55ee96adcfd4f80b57ba1ad5f6f3069070ec4cbbdc94d5e61e0e" name="a4635e5585e80a55ee96adcfd4f80b57ba1ad5f6f3069070ec4cbbdc94d5e61e0e"></a>F64&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -6605,6 +6681,50 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a3b2ebcf822ff6e68e95388365ae2774c" name="a3b2ebcf822ff6e68e95388365ae2774c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b2ebcf822ff6e68e95388365ae2774c">&#9670;&#160;</a></span>SerializeSafetensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; pulsatrix::SerializeSafetensors </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::pair&lt; std::string, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> * &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tensors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>metadata</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Serializes tensors (as F32) and string metadata into safetensors bytes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tensors</td><td>Name and tensor pairs, stored in this order. Tensors on a GPU are copied back. </td></tr>
+    <tr><td class="paramname">metadata</td><td>Stored as <code>__metadata__</code>; omitted when empty. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The header is padded with spaces so the data section starts on an 8-byte boundary, as the reference implementation does. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a name repeats, is <code>__metadata__</code>, or (like any metadata key or value) is not valid UTF-8. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a603c363069db16131ca2d0c90cfc7a8b" name="a603c363069db16131ca2d0c90cfc7a8b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a603c363069db16131ca2d0c90cfc7a8b">&#9670;&#160;</a></span>set_deterministic()</h2>
 
@@ -7940,6 +8060,48 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Deliberately never a rainbow/jet map &ndash; see the design doc's SS4 "Rainbow (Jet)
       Colormap Problem". Approximates matplotlib's Viridis via a small set of anchor colors with linear interpolation between them; exact per-channel fidelity against ImPlot's own built-in ImPlotColormap_Viridis is an open verification item (plan Open Risk 4), not assumed here. </dd></dl>
+
+</div>
+</div>
+<a id="ae2f426e066a256c2ca12b2b8a5ec3d0b" name="ae2f426e066a256c2ca12b2b8a5ec3d0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2f426e066a256c2ca12b2b8a5ec3d0b">&#9670;&#160;</a></span>WriteSafetensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::WriteSafetensors </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::pair&lt; std::string, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> * &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tensors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>metadata</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacepulsatrix.html#a3b2ebcf822ff6e68e95388365ae2774c" title="Serializes tensors (as F32) and string metadata into safetensors bytes.">SerializeSafetensors()</a> written to <code>path</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if the file can't be written; otherwise as <a class="el" href="namespacepulsatrix.html#a3b2ebcf822ff6e68e95388365ae2774c" title="Serializes tensors (as F32) and string metadata into safetensors bytes.">SerializeSafetensors()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -160,6 +160,8 @@ var namespacepulsatrix =
     [ "RolloutBuffer", "classpulsatrix_1_1RolloutBuffer.html", "classpulsatrix_1_1RolloutBuffer" ],
     [ "RoPEModule", "classpulsatrix_1_1RoPEModule.html", "classpulsatrix_1_1RoPEModule" ],
     [ "RWKVModule", "classpulsatrix_1_1RWKVModule.html", "classpulsatrix_1_1RWKVModule" ],
+    [ "SafetensorsFile", "classpulsatrix_1_1SafetensorsFile.html", "classpulsatrix_1_1SafetensorsFile" ],
+    [ "SafetensorsTensorInfo", "structpulsatrix_1_1SafetensorsTensorInfo.html", "structpulsatrix_1_1SafetensorsTensorInfo" ],
     [ "Saliency", "classpulsatrix_1_1Saliency.html", "classpulsatrix_1_1Saliency" ],
     [ "SaliencyHeatmapView", "classpulsatrix_1_1SaliencyHeatmapView.html", null ],
     [ "Sample", "structpulsatrix_1_1Sample.html", "structpulsatrix_1_1Sample" ],
@@ -311,6 +313,23 @@ var namespacepulsatrix =
       [ "DqnTarget", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87", null ],
       [ "PolyakBlend", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9", null ]
     ] ],
+    [ "SafetensorsDtype", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57b", [
+      [ "Bool", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac26f15e86e3de4c398a8273272aba034", null ],
+      [ "U8", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba6669348b484e3008dca2bfa8e85e40b5", null ],
+      [ "I8", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba5aef4e3ea379fa0eb2bf42d979443902", null ],
+      [ "I16", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57babcd774f891b5f9df7099f3ea75dadf8d", null ],
+      [ "U16", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57baef9ef3ebca4d2b64b6ec83808bafa5f2", null ],
+      [ "I32", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bad878ea6016bfe01729548bf442de5a8b", null ],
+      [ "U32", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac8bd5bedff8ef192d39a962afc0e19ee", null ],
+      [ "I64", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bae7e62f6928f76df671b5a0379793fab6", null ],
+      [ "U64", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba31d65cccd6593e4101db93fb878abcaa", null ],
+      [ "F8_E4M3", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac9380ca0127510f76c06ade6b81271ab", null ],
+      [ "F8_E5M2", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba06a19e218a0cc6bb001b6403c5ed75b2", null ],
+      [ "F16", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba56d8353718e6fdc78b8d69078a2cdb94", null ],
+      [ "BF16", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57baf656bbf613964dcf710b771b0918ab30", null ],
+      [ "F32", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba44ad4ef5a76e6aa6fb3e3fa079a54fda", null ],
+      [ "F64", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba1ad5f6f3069070ec4cbbdc94d5e61e0e", null ]
+    ] ],
     [ "SsmPassOp", "namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883", [
       [ "MambaForward", "namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4", null ],
       [ "MambaBackward", "namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aafd6ee7fcd70442a7b08a77881574ab2", null ],
@@ -426,6 +445,7 @@ var namespacepulsatrix =
     [ "RunTPELoop", "namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92", null ],
     [ "sample_gflownet_trajectory", "namespacepulsatrix.html#a2300465dae625e63a4c68b003cdcfc49", null ],
     [ "sample_to_json", "namespacepulsatrix.html#aba113e4a47a13ae03ade3411dc53a115", null ],
+    [ "SerializeSafetensors", "namespacepulsatrix.html#a3b2ebcf822ff6e68e95388365ae2774c", null ],
     [ "set_deterministic", "namespacepulsatrix.html#a603c363069db16131ca2d0c90cfc7a8b", null ],
     [ "set_seed", "namespacepulsatrix.html#aa8b6d579f43a06291616012e22b33c46", null ],
     [ "SimulatedBinaryCrossover", "namespacepulsatrix.html#a96bead736f7e1d68ad0c425a63cb2bac", null ],
@@ -456,6 +476,7 @@ var namespacepulsatrix =
     [ "UnitCubeToConfiguration", "namespacepulsatrix.html#a8eb8e19a5d9ca776142a658c4e5adbb5", null ],
     [ "UpperConfidenceBound", "namespacepulsatrix.html#a3de09b80f2b9d5933d7f452615305b59", null ],
     [ "ViridisColormap", "namespacepulsatrix.html#a24584d97c280e278c14a60b8841de0f9", null ],
+    [ "WriteSafetensors", "namespacepulsatrix.html#ae2f426e066a256c2ca12b2b8a5ec3d0b", null ],
     [ "XORFitness", "namespacepulsatrix.html#abfe03e4b59e544ec28edddfd5afd1ad6", null ],
     [ "ZeroModuleGradients", "namespacepulsatrix.html#ab80c96d8d4b45a6185d821cb5c24804a", null ],
     [ "kFixedTopologyXORNumParams", "namespacepulsatrix.html#abdfe136720681063b92cf1cda99ccfa5", null ]

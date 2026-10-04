@@ -142,6 +142,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "rollout_buffer.hpp", "rollout__buffer_8hpp.html", "rollout__buffer_8hpp" ],
     [ "rope_module.hpp", "rope__module_8hpp.html", "rope__module_8hpp" ],
     [ "rwkv_module.hpp", "rwkv__module_8hpp.html", "rwkv__module_8hpp" ],
+    [ "safetensors.hpp", "safetensors_8hpp.html", "safetensors_8hpp" ],
     [ "saliency.hpp", "saliency_8hpp.html", "saliency_8hpp" ],
     [ "sampler.hpp", "sampler_8hpp.html", "sampler_8hpp" ],
     [ "satisfaction_loss.hpp", "satisfaction__loss_8hpp.html", "satisfaction__loss_8hpp" ],
