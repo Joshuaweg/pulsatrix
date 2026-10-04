@@ -105,6 +105,7 @@ add_executable(pulsatrix_tests
     embedding_module_test.cpp
     dropout_module_test.cpp
     sequential_module_test.cpp
+    named_parameters_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
     gru_module_test.cpp
