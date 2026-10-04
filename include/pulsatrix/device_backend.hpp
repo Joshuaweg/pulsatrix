@@ -598,6 +598,22 @@ public:
                                      channel_std, float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t
                                      c, size_t spatial) = 0;
 
+    /** @brief Folds this batch's per-channel mean and unbiased variance into the running ones
+     *         (PyTorch's momentum rule; the variance is kept when a channel has one value). FND-5. */
+    virtual void batch_norm_update_running(const float* in, float* running_mean, float* running_var, size_t n,
+                                           size_t c, size_t spatial, float momentum) = 0;
+
+    /** @brief Eval-mode BatchNorm from the running statistics: a per-channel affine map. FND-5. */
+    virtual void batch_norm_eval_forward(const float* in, const float* gamma, const float* beta,
+                                         const float* running_mean, const float* running_var, float* xhat, float* out,
+                                         float* channel_std, size_t n, size_t c, size_t spatial, float eps) = 0;
+
+    /** @brief Eval-mode BatchNorm gradient: grad_out * gamma / std, plus gamma/beta gradients
+     *         (overwritten, per channel). FND-5. */
+    virtual void batch_norm_eval_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                          const float* channel_std, float* grad_in, float* gamma_grad,
+                                          float* beta_grad, size_t n, size_t c, size_t spatial) = 0;
+
     /** @brief GroupNorm per (example, group) of (n, c, spatial) data; group_std is (n, num_groups). */
     virtual void group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
                                     float* group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps)

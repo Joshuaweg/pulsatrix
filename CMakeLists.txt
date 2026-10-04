@@ -89,6 +89,7 @@ add_library(pulsatrix_core
     src/sequential_module.cpp
     src/top_k.cpp
     src/matrix_decompositions.cpp
+    src/batch_norm_fold.cpp
     src/rnn_module.cpp
     src/lstm_module.cpp
     src/gru_module.cpp

@@ -189,6 +189,81 @@ PULSATRIX_HOST_DEVICE inline void batch_norm_backward_channel(const float* grad_
     }
 }
 
+// Folds this batch's channel statistics into the running ones (FND-5), PyTorch's rule:
+// running = (1 - momentum) * running + momentum * batch, with the unbiased batch variance. The
+// mean is summed in batch_norm_forward_channel's order, so it is the mean that forward used.
+// With one value per channel the variance is undefined and the running variance is kept.
+PULSATRIX_HOST_DEVICE inline void batch_norm_update_running_channel(const float* x, float* running_mean,
+                                                                    float* running_var, int64_t N, int64_t C,
+                                                                    int64_t spatial, int64_t c, float momentum) {
+    const int64_t per_example = C * spatial;
+    const int64_t count = N * spatial;
+    const auto M = static_cast<float>(count);
+    float sum = 0.0f;
+    for (int64_t n = 0; n < N; ++n) {
+        for (int64_t s = 0; s < spatial; ++s) {
+            sum += x[n * per_example + c * spatial + s];
+        }
+    }
+    const float mu = sum / M;
+    running_mean[c] = (1.0f - momentum) * running_mean[c] + momentum * mu;
+    if (count < 2) {
+        return;
+    }
+    float sum_sq_diff = 0.0f;
+    for (int64_t n = 0; n < N; ++n) {
+        for (int64_t s = 0; s < spatial; ++s) {
+            const float d = x[n * per_example + c * spatial + s] - mu;
+            sum_sq_diff += d * d;
+        }
+    }
+    running_var[c] = (1.0f - momentum) * running_var[c] + momentum * (sum_sq_diff / (M - 1.0f));
+}
+
+// Eval-mode BatchNorm: a fixed per-channel affine map from the running statistics, so every
+// element depends only on itself -- never on the rest of the batch.
+PULSATRIX_HOST_DEVICE inline void batch_norm_eval_forward_channel(const float* x, const float* gamma,
+                                                                  const float* beta, const float* running_mean,
+                                                                  const float* running_var, float* xhat, float* out,
+                                                                  float* std_out, int64_t N, int64_t C,
+                                                                  int64_t spatial, int64_t c, float eps) {
+    const int64_t per_example = C * spatial;
+    const float mu = running_mean[c];
+    const float std_dev = sqrtf(running_var[c] + eps);
+    std_out[c] = std_dev;
+    for (int64_t n = 0; n < N; ++n) {
+        for (int64_t s = 0; s < spatial; ++s) {
+            const int64_t idx = n * per_example + c * spatial + s;
+            const float xh = (x[idx] - mu) / std_dev;
+            xhat[idx] = xh;
+            out[idx] = gamma[c] * xh + beta[c];
+        }
+    }
+}
+
+// Gradient of the eval-mode affine map: the statistics are constants, so the input gradient is
+// grad_out * gamma / std, with no batch coupling. gamma/beta gradients overwritten, per channel.
+PULSATRIX_HOST_DEVICE inline void batch_norm_eval_backward_channel(const float* grad_out, const float* gamma,
+                                                                   const float* xhat, const float* std_in,
+                                                                   float* grad_in, float* gamma_grad,
+                                                                   float* beta_grad, int64_t N, int64_t C,
+                                                                   int64_t spatial, int64_t c) {
+    const int64_t per_example = C * spatial;
+    const float scale = gamma[c] / std_in[c];
+    float gsum = 0.0f;
+    float bsum = 0.0f;
+    for (int64_t n = 0; n < N; ++n) {
+        for (int64_t s = 0; s < spatial; ++s) {
+            const int64_t idx = n * per_example + c * spatial + s;
+            gsum += grad_out[idx] * xhat[idx];
+            bsum += grad_out[idx];
+            grad_in[idx] = grad_out[idx] * scale;
+        }
+    }
+    gamma_grad[c] = gsum;
+    beta_grad[c] = bsum;
+}
+
 // ---- GroupNorm (per (example, group) over (group_size channels, spatial)) ------------------------
 
 PULSATRIX_HOST_DEVICE inline void group_norm_forward_group(const float* x, const float* gamma, const float* beta,
