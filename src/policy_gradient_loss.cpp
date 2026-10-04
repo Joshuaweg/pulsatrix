@@ -35,6 +35,9 @@ PolicyGradientLoss::PolicyGradientLoss(DeviceBackend* backend)
       last_action_indices_(Shape({0}), backend) {}
 
 float PolicyGradientLoss::forward(const Tensor& logits, const Tensor& actions, const Tensor& returns) {
+    require_device(logits, backend_->device(), "PolicyGradientLoss::forward");
+    require_device(actions, backend_->device(), "PolicyGradientLoss::forward");
+    require_device(returns, backend_->device(), "PolicyGradientLoss::forward");
     if (logits.rank() != 2) {
         throw std::invalid_argument("PolicyGradientLoss::forward: logits must have shape (N, action_dim)");
     }

@@ -46,6 +46,10 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
 The CPU backend is always built. To build the GPU backends, configure CMake with
 `-DPULSATRIX_ENABLE_CUDA=ON` or `-DPULSATRIX_ENABLE_HIP=ON`.
 
+Every layer and loss checks that the tensors it's given live on its own device, and throws
+`std::invalid_argument` if not; move a tensor first with `Tensor::to()`. `EmbeddingModule` is the
+exception: it accepts its indices from any device.
+
 Full API reference: [Doxygen: Deep Learning Modules and Layers](../api/group__dl__modules.html)
 
 ## How to implement

@@ -51,6 +51,7 @@ Tensor SoftmaxModule::forward_impl(const Tensor& input) {
 }
 
 Tensor SoftmaxModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "SoftmaxModule::backward");
     PULSATRIX_ASSERT(grad_output.shape() == last_output_.shape());
 
     const RowLayout layout = row_layout_of(grad_output.shape());
@@ -63,6 +64,7 @@ Tensor SoftmaxModule::backward(const Tensor& grad_output) {
 }
 
 Tensor SoftmaxModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
+    require_device(relevance_out, *compute_device(), "SoftmaxModule::propagate_relevance");
     PULSATRIX_ASSERT(relevance_out.shape() == last_output_.shape());
 
     // Device-generic (GPU-native-kernels Mission 3).

@@ -53,6 +53,7 @@ Tensor RMSNormModule::forward_impl(const Tensor& input) {
 }
 
 Tensor RMSNormModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "RMSNormModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("RMSNormModule::backward: called before any forward()");
     }
@@ -82,6 +83,7 @@ Tensor RMSNormModule::backward(const Tensor& grad_output) {
 }
 
 Tensor RMSNormModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
+    require_device(relevance_out, *compute_device(), "RMSNormModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("RMSNormModule::propagate_relevance: called before any forward()");
     }

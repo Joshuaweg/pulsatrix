@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <optional>
 #include "pulsatrix/module.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
 #include "pulsatrix/rms_norm_module.hpp"
@@ -107,6 +108,10 @@ public:
     [[nodiscard]] RMSNormModule& norm2() { return norm2_; }
     [[nodiscard]] SwiGLUModule& swiglu() { return swiglu_; }
     ///@}
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     /**

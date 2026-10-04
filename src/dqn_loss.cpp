@@ -36,6 +36,9 @@ DQNLoss::DQNLoss(DeviceBackend* backend)
       last_action_indices_(Shape({0}), backend) {}
 
 float DQNLoss::forward(const Tensor& q_values, const Tensor& actions, const Tensor& targets) {
+    require_device(q_values, backend_->device(), "DQNLoss::forward");
+    require_device(actions, backend_->device(), "DQNLoss::forward");
+    require_device(targets, backend_->device(), "DQNLoss::forward");
     if (q_values.rank() != 2) {
         throw std::invalid_argument("DQNLoss::forward: q_values must have shape (N, action_dim)");
     }

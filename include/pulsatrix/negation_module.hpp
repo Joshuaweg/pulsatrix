@@ -5,6 +5,7 @@
  */
 #pragma once
 
+#include <optional>
 #include "pulsatrix/module.hpp"
 
 namespace pulsatrix {
@@ -52,6 +53,10 @@ public:
      *       denominator is the pre-bias `z_j`, not the post-bias output).
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

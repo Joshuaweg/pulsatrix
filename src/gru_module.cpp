@@ -187,6 +187,7 @@ Tensor GRUModule::forward_impl(const Tensor& input) {
 }
 
 Tensor GRUModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "GRUModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("GRUModule::backward: called before any forward()");
     }
@@ -354,6 +355,7 @@ Tensor GRUModule::backward(const Tensor& grad_output) {
 }
 
 Tensor GRUModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "GRUModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("GRUModule::propagate_relevance: called before any forward()");
     }
