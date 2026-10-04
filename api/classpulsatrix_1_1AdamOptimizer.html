@@ -96,6 +96,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1AdamOptimizer.html',
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classpulsatrix_1_1AdamOptimizer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::AdamOptimizer Class Reference</div></div>
 </div><!--header-->
@@ -105,6 +106,16 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1AdamOptimizer.html',
  <a href="classpulsatrix_1_1AdamOptimizer.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="adam__optimizer_8hpp_source.html">adam_optimizer.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for pulsatrix::AdamOptimizer:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpulsatrix_1_1AdamOptimizer__inherit__graph.png" border="0" usemap="#apulsatrix_1_1AdamOptimizer_inherit__map" alt="Inheritance graph"/></div>
+<map name="apulsatrix_1_1AdamOptimizer_inherit__map" id="apulsatrix_1_1AdamOptimizer_inherit__map">
+<area shape="rect" title="Adam (Kingma &amp; Ba, 2015): per&#45;parameter moving averages of gradient (m) and squared gradient (v),..." alt="" coords="12,5,201,31"/>
+<area shape="rect" href="classpulsatrix_1_1AdamWOptimizer.html" title="AdamW (Loshchilov &amp; Hutter, &quot;Decoupled Weight Decay Regularization&quot;, arXiv 1711.05101): Adam whose we..." alt="" coords="5,79,208,104"/>
+<area shape="poly" title=" " alt="" coords="109,44,109,79,104,79,104,44"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -145,6 +156,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2624efcc0c69e4536d3e72e1628ba759" id="r_a2624efcc0c69e4536d3e72e1628ba759"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a2624efcc0c69e4536d3e72e1628ba759">set_state</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *parameter, <a class="el" href="structpulsatrix_1_1AdamOptimizer_1_1AdamState.html">AdamState</a> <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a833f9c797b5ebe17679712e469522c02">state</a>)</td></tr>
 <tr class="memdesc:a2624efcc0c69e4536d3e72e1628ba759"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the state for <code>parameter</code>, e.g. when resuming from a checkpoint.  <br /></td></tr>
 <tr class="separator:a2624efcc0c69e4536d3e72e1628ba759"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a4ae2b5701df74a948365f5e0dcd1b990" id="r_a4ae2b5701df74a948365f5e0dcd1b990"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a4ae2b5701df74a948365f5e0dcd1b990">set_decoupled_weight_decay</a> (bool decoupled)</td></tr>
+<tr class="memdesc:a4ae2b5701df74a948365f5e0dcd1b990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switches weight decay from L2 (Adam) to decoupled (AdamW).  <br /></td></tr>
+<tr class="separator:a4ae2b5701df74a948365f5e0dcd1b990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Adam (Kingma &amp; Ba, 2015): per-parameter moving averages of gradient (m) and squared gradient (v), with bias correction. </p>
@@ -266,6 +283,34 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ae2b5701df74a948365f5e0dcd1b990" name="a4ae2b5701df74a948365f5e0dcd1b990"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ae2b5701df74a948365f5e0dcd1b990">&#9670;&#160;</a></span>set_decoupled_weight_decay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::AdamOptimizer::set_decoupled_weight_decay </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>decoupled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Switches weight decay from L2 (Adam) to decoupled (AdamW). </p>
 
 </div>
 </div>

@@ -73,5 +73,5 @@ var searchData=
   ['trialfactory_70',['TrialFactory',['../namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f',1,'pulsatrix']]],
   ['twopointcrossover_71',['TwoPointCrossover',['../namespacepulsatrix.html#a00dc6490fb03959b449db691a86eeead',1,'pulsatrix']]],
   ['twopointcrossoveratpoints_72',['TwoPointCrossoverAtPoints',['../namespacepulsatrix.html#afcbb0593c7f9f2201095dbf4675a7cff',1,'pulsatrix']]],
-  ['type_73',['type',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4',1,'pulsatrix::NodeGene::Type'],['../structpulsatrix_1_1NodeGene.html#a112e84f4b4f12e605da66760b07b2f5a',1,'pulsatrix::NodeGene::type']]]
+  ['type_73',['type',['../structpulsatrix_1_1NodeGene.html#a112e84f4b4f12e605da66760b07b2f5a',1,'pulsatrix::NodeGene::type'],['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4',1,'pulsatrix::NodeGene::Type']]]
 ];
