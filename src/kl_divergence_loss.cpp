@@ -11,6 +11,8 @@ KLDivergenceLoss::KLDivergenceLoss(DeviceBackend* backend)
     : backend_(backend), last_mu_(Shape({0}), backend), last_log_sigma_(Shape({0}), backend) {}
 
 float KLDivergenceLoss::forward(const Tensor& mu, const Tensor& log_sigma) {
+    require_device(mu, backend_->device(), "KLDivergenceLoss::forward");
+    require_device(log_sigma, backend_->device(), "KLDivergenceLoss::forward");
     if (mu.rank() != 2) {
         throw std::invalid_argument("KLDivergenceLoss::forward: mu must be rank-2 (N, latent_dim)");
     }

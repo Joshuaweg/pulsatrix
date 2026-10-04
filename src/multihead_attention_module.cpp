@@ -190,6 +190,7 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
 }
 
 Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "MultiHeadAttentionModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("MultiHeadAttentionModule::backward: called before any forward()");
     }
@@ -275,6 +276,7 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
 }
 
 Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "MultiHeadAttentionModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("MultiHeadAttentionModule::propagate_relevance: called before any forward()");
     }

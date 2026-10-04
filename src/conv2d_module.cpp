@@ -8,11 +8,13 @@
 namespace pulsatrix {
 
 Conv2DModule::Conv2DModule(int64_t in_channels, int64_t out_channels, int64_t kernel_h, int64_t kernel_w,
-                            DeviceBackend* backend)
+                            DeviceBackend* backend, int64_t stride, int64_t padding)
     : in_channels_(in_channels),
       out_channels_(out_channels),
       kernel_h_(kernel_h),
       kernel_w_(kernel_w),
+      stride_(stride),
+      padding_(padding),
       backend_(backend),
       kernel_(Shape({out_channels, in_channels, kernel_h, kernel_w}), backend),
       bias_(Shape({out_channels}), backend),
@@ -20,7 +22,14 @@ Conv2DModule::Conv2DModule(int64_t in_channels, int64_t out_channels, int64_t ke
       bias_grad_(Shape({out_channels}), backend),
       last_input_(Shape({0}), backend),
       last_im2col_(Shape({0}), backend),
-      last_pre_bias_output_(Shape({0}), backend) {}
+      last_pre_bias_output_(Shape({0}), backend) {
+    if (stride < 1) {
+        throw std::invalid_argument("Conv2DModule: stride must be >= 1");
+    }
+    if (padding < 0) {
+        throw std::invalid_argument("Conv2DModule: padding must be >= 0");
+    }
+}
 
 void Conv2DModule::set_kernel(std::initializer_list<float> values) {
     kernel_ = Tensor(kernel_.shape(), backend_, values);
@@ -52,11 +61,11 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
     const int64_t N = input.shape().dim(0);
     const int64_t H = input.shape().dim(2);
     const int64_t W = input.shape().dim(3);
-    if (kernel_h_ > H || kernel_w_ > W) {
-        throw std::invalid_argument("Conv2DModule::forward: kernel is larger than the input");
+    if (kernel_h_ > H + 2 * padding_ || kernel_w_ > W + 2 * padding_) {
+        throw std::invalid_argument("Conv2DModule::forward: kernel is larger than the padded input");
     }
-    const int64_t out_h = H - kernel_h_ + 1;
-    const int64_t out_w = W - kernel_w_ + 1;
+    const int64_t out_h = (H + 2 * padding_ - kernel_h_) / stride_ + 1;
+    const int64_t out_w = (W + 2 * padding_ - kernel_w_) / stride_ + 1;
     const int64_t P = in_channels_ * kernel_h_ * kernel_w_;
     const int64_t Q = out_h * out_w;
     const int64_t in_stride = in_channels_ * H * W;
@@ -72,7 +81,7 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
     last_out_w_ = out_w;
     last_im2col_ = Tensor(Shape({N, P, Q}), backend_, device);
     backend_->im2col(input.data(), last_im2col_.data(), n, static_cast<size_t>(in_channels_), static_cast<size_t>(H),
-                     static_cast<size_t>(W), static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
+                     static_cast<size_t>(W), geometry());
     last_pre_bias_output_ = Tensor(Shape({N, out_channels_, out_h, out_w}), backend_, device);
     for (int64_t e = 0; e < N; ++e) {
         backend_->gemm(kernel_.data(), last_im2col_.data() + e * P * Q, last_pre_bias_output_.data() + e * out_stride,
@@ -85,6 +94,7 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
 }
 
 Tensor Conv2DModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "Conv2DModule::backward");
     // Finding 12: calling backward() before any forward() previously silently computed a
     // meaningless answer from zero-initialized cached state instead of erroring.
     if (!has_forwarded_) {
@@ -120,22 +130,27 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     Tensor per_example_bias_grad(Shape({out_channels_}), backend_, device);
     for (int64_t e = 0; e < N; ++e) {
         const float* grad_out_e = grad_output.data() + e * out_stride;
-        backend_->gemm_ex(grad_out_e, false, last_im2col_.data() + e * P * Q, true, per_example_kernel_grad.data(), oc,
-                          q, p, 0.0f);
-        kernel_grad_.accumulate(per_example_kernel_grad);
-        backend_->gemm_ex(grad_out_e, false, ones.data(), false, per_example_bias_grad.data(), oc, q, 1, 0.0f);
-        bias_grad_.accumulate(per_example_bias_grad);
+        // Frozen parameters (FND-2) skip their gradient GEMMs; the input gradient below doesn't need them.
+        if (kernel_.requires_grad()) {
+            backend_->gemm_ex(grad_out_e, false, last_im2col_.data() + e * P * Q, true,
+                              per_example_kernel_grad.data(), oc, q, p, 0.0f);
+            kernel_grad_.accumulate(per_example_kernel_grad);
+        }
+        if (bias_.requires_grad()) {
+            backend_->gemm_ex(grad_out_e, false, ones.data(), false, per_example_bias_grad.data(), oc, q, 1, 0.0f);
+            bias_grad_.accumulate(per_example_bias_grad);
+        }
         backend_->gemm_ex(kernel_.data(), true, grad_out_e, false, grad_cols.data() + e * P * Q, p, oc, q, 0.0f);
     }
     Tensor grad_input(last_input_.shape(), backend_, device);
     grad_input.fill(0.0f);
     backend_->col2im_add(grad_cols.data(), grad_input.data(), static_cast<size_t>(N),
-                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W),
-                         static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
+                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W), geometry());
     return grad_input;
 }
 
 Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "Conv2DModule::propagate_relevance");
     // Finding 12: see backward()'s identical guard above.
     if (!has_forwarded_) {
         throw std::logic_error("Conv2DModule::propagate_relevance: called before any forward()");
@@ -191,14 +206,22 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
             }
         };
         op.add_bias = [=](const float* y, const float* b, float* o) { be->add_channel_vector(y, b, o, n, oc, q); };
+        // ZBox bounds are images unfolded like the input, so padding taps get a zero bound.
+        const Shape input_shape = last_input_.shape();
+        const auto in_c = static_cast<size_t>(in_channels_), h = static_cast<size_t>(H), w = static_cast<size_t>(W);
+        const ConvGeometry g = geometry();
+        op.fill_bound = [=](float value, float* col) {
+            Tensor bound(input_shape, be, device);
+            bound.fill(value);
+            be->im2col(bound.data(), col, n, in_c, h, w, g);
+        };
         lrp_rules::apply(op, last_im2col_.data(), kernel_.data(), bias_.data(), last_pre_bias_output_.data(),
                          relevance_out.data(), relevance_cols.data(), config);
     }
     Tensor relevance_in(last_input_.shape(), backend_, device);
     relevance_in.fill(0.0f);
     backend_->col2im_add(relevance_cols.data(), relevance_in.data(), static_cast<size_t>(N),
-                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W),
-                         static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
+                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W), geometry());
     return relevance_in;
 }
 

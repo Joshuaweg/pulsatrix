@@ -319,6 +319,77 @@ inline void RecurrentCells(DeviceBackend& gpu) {
     ExpectNear(out, dres.host(), 1e-3f);  // epsilon-rule ratios: relevance-scale bound
 }
 
+// FND-3: top_k_rows is pure selection (no arithmetic), so the GPU must match the CPU bit for bit,
+// including tie order (lower index first) and NaN placement (above every number). Rows span
+// several thread blocks; values are coarsely quantized so ties are common.
+inline void TopKRows(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const size_t rows = 300, cols = 129;
+    std::vector<float> in(rows * cols);
+    std::mt19937 rng(41);
+    for (auto& x : in) {
+        x = static_cast<float>(static_cast<int>(rng() % 9) - 4) * 0.5f;
+    }
+    in[3] = std::nanf("");
+    in[cols + 7] = INFINITY;
+    in[2 * cols + 1] = -INFINITY;
+    DeviceBuffer din(gpu, in);
+    for (bool largest : {true, false}) {
+        for (size_t k : {size_t{1}, size_t{7}, cols}) {
+            std::vector<float> cpu_values(rows * k), cpu_indices(rows * k);
+            cpu.top_k_rows(in.data(), cpu_values.data(), cpu_indices.data(), rows, cols, k, largest);
+            DeviceBuffer dvalues(gpu, std::vector<float>(rows * k, 0.0f));
+            DeviceBuffer dindices(gpu, std::vector<float>(rows * k, 0.0f));
+            gpu.top_k_rows(din.get(), dvalues.get(), dindices.get(), rows, cols, k, largest);
+            std::vector<float> gpu_values = dvalues.host(), gpu_indices = dindices.host();
+            ASSERT_EQ(cpu_indices, gpu_indices) << "largest=" << largest << " k=" << k;
+            for (size_t i = 0; i < cpu_values.size(); ++i) {
+                ASSERT_TRUE(cpu_values[i] == gpu_values[i] || (std::isnan(cpu_values[i]) && std::isnan(gpu_values[i])))
+                    << "largest=" << largest << " k=" << k << " flat index " << i;
+            }
+        }
+    }
+}
+
+// FND-5: BatchNorm running-statistics update and the eval-mode forward/backward. One thread per
+// channel walking the CPU's loop order, so the results agree at rounding level at most.
+inline void BatchNormEvalFamily(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const size_t n = 3, c = 5, spatial = 7, total = n * c * spatial;
+    std::vector<float> x = Random(total, 51), gamma = Random(c, 52), beta = Random(c, 53);
+    std::vector<float> mean = Random(c, 54), var = Random(c, 55, 0.1f, 2.0f), g = Random(total, 56);
+
+    std::vector<float> cpu_mean = mean, cpu_var = var;
+    cpu.batch_norm_update_running(x.data(), cpu_mean.data(), cpu_var.data(), n, c, spatial, 0.1f);
+    DeviceBuffer dx(gpu, x), dmean(gpu, mean), dvar(gpu, var);
+    gpu.batch_norm_update_running(dx.get(), dmean.get(), dvar.get(), n, c, spatial, 0.1f);
+    ExpectNear(cpu_mean, dmean.host());
+    ExpectNear(cpu_var, dvar.host());
+
+    std::vector<float> cpu_xhat(total), cpu_out(total), cpu_std(c);
+    cpu.batch_norm_eval_forward(x.data(), gamma.data(), beta.data(), mean.data(), var.data(), cpu_xhat.data(),
+                                cpu_out.data(), cpu_std.data(), n, c, spatial, 1e-6f);
+    DeviceBuffer dgamma(gpu, gamma), dbeta(gpu, beta), dmean0(gpu, mean), dvar0(gpu, var);
+    DeviceBuffer dxhat(gpu, std::vector<float>(total)), dout(gpu, std::vector<float>(total)),
+        dstd(gpu, std::vector<float>(c));
+    gpu.batch_norm_eval_forward(dx.get(), dgamma.get(), dbeta.get(), dmean0.get(), dvar0.get(), dxhat.get(),
+                                dout.get(), dstd.get(), n, c, spatial, 1e-6f);
+    ExpectNear(cpu_xhat, dxhat.host());
+    ExpectNear(cpu_out, dout.host());
+    ExpectNear(cpu_std, dstd.host());
+
+    std::vector<float> cpu_grad_in(total), cpu_gamma_grad(c), cpu_beta_grad(c);
+    cpu.batch_norm_eval_backward(g.data(), gamma.data(), cpu_xhat.data(), cpu_std.data(), cpu_grad_in.data(),
+                                 cpu_gamma_grad.data(), cpu_beta_grad.data(), n, c, spatial);
+    DeviceBuffer dg(gpu, g), dgrad_in(gpu, std::vector<float>(total)), dgamma_grad(gpu, std::vector<float>(c)),
+        dbeta_grad(gpu, std::vector<float>(c));
+    gpu.batch_norm_eval_backward(dg.get(), dgamma.get(), dxhat.get(), dstd.get(), dgrad_in.get(), dgamma_grad.get(),
+                                 dbeta_grad.get(), n, c, spatial);
+    ExpectNear(cpu_grad_in, dgrad_in.host());
+    ExpectNear(cpu_gamma_grad, dgamma_grad.host());
+    ExpectNear(cpu_beta_grad, dbeta_grad.host());
+}
+
 }  // namespace primitive_equivalence
 }  // namespace pulsatrix
 
@@ -363,4 +434,8 @@ inline void RecurrentCells(DeviceBackend& gpu) {
     TEST_F(FIXTURE, RecurrentCellOpsMatchCPU) { ::pulsatrix::primitive_equivalence::RecurrentCells(MEMBER); } \
     TEST_F(FIXTURE, PermuteGatherScatterMatchCPUBitExactly) {                                       \
         ::pulsatrix::primitive_equivalence::PermuteGatherScatter(MEMBER);                          \
+    }                                                                                               \
+    TEST_F(FIXTURE, TopKRowsMatchCPUBitExactly) { ::pulsatrix::primitive_equivalence::TopKRows(MEMBER); } \
+    TEST_F(FIXTURE, BatchNormEvalFamilyMatchesCPU) {                                                \
+        ::pulsatrix::primitive_equivalence::BatchNormEvalFamily(MEMBER);                           \
     }

@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 
+#include "pulsatrix/determinism.hpp"
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/conv2d_module.hpp"
@@ -231,6 +232,14 @@ PYBIND11_MODULE(pulsatrix_py, m) {
           "Devices this build has a backend for. Cpu is always present; a GPU device listed here "
           "can still fail on first use if no matching GPU is visible at runtime.");
 
+    // FND-7: the global seed stream and deterministic mode.
+    m.def("set_seed", &pulsatrix::set_seed, py::arg("seed"),
+          "Sets the global seed. Components built without an explicit seed draw from it.");
+    m.def("global_seed", &pulsatrix::global_seed);
+    m.def("set_deterministic", &pulsatrix::set_deterministic, py::arg("enabled"),
+          "On (the default): forbid nondeterministic paths, including GPU BLAS atomics.");
+    m.def("deterministic", &pulsatrix::deterministic);
+
     py::class_<pulsatrix::Tensor>(m, "Tensor", py::buffer_protocol())
         .def(py::init([](const std::vector<int64_t>& dims) {
                  return pulsatrix::Tensor(shape_from_list(dims), &default_backend());
@@ -307,10 +316,15 @@ PYBIND11_MODULE(pulsatrix_py, m) {
         .def(py::init([]() { return new pulsatrix::FlattenModule(&default_backend()); }));
 
     py::class_<pulsatrix::Conv2DModule, pulsatrix::Module>(m, "Conv2DModule")
-        .def(py::init([](int64_t in_channels, int64_t out_channels, int64_t kernel_h, int64_t kernel_w) {
-                 return new pulsatrix::Conv2DModule(in_channels, out_channels, kernel_h, kernel_w, &default_backend());
+        .def(py::init([](int64_t in_channels, int64_t out_channels, int64_t kernel_h, int64_t kernel_w, int64_t stride,
+                         int64_t padding) {
+                 return new pulsatrix::Conv2DModule(in_channels, out_channels, kernel_h, kernel_w, &default_backend(),
+                                                    stride, padding);
              }),
-             py::arg("in_channels"), py::arg("out_channels"), py::arg("kernel_h"), py::arg("kernel_w"))
+             py::arg("in_channels"), py::arg("out_channels"), py::arg("kernel_h"), py::arg("kernel_w"),
+             py::arg("stride") = 1, py::arg("padding") = 0)
+        .def_property_readonly("stride", &pulsatrix::Conv2DModule::stride)
+        .def_property_readonly("padding", &pulsatrix::Conv2DModule::padding)
         .def("set_kernel",
              static_cast<void (pulsatrix::Conv2DModule::*)(const std::vector<float>&)>(&pulsatrix::Conv2DModule::set_kernel))
         .def("set_bias",

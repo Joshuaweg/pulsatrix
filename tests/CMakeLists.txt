@@ -106,6 +106,13 @@ add_executable(pulsatrix_tests
     dropout_module_test.cpp
     sequential_module_test.cpp
     named_parameters_test.cpp
+    parameter_freezing_test.cpp
+    top_k_test.cpp
+    matrix_decompositions_test.cpp
+    batch_norm_eval_test.cpp
+    conv2d_stride_padding_test.cpp
+    determinism_test.cpp
+    device_consistency_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
     gru_module_test.cpp

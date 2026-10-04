@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <optional>
 #include <initializer_list>
 #include <vector>
 
@@ -237,6 +238,10 @@ public:
             {"mu_v", {&mu_v_, &mu_v_grad_}},
         };
     }
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     /**

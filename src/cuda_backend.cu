@@ -6,8 +6,20 @@
 
 #include "pulsatrix/cublas_check.hpp"
 #include "pulsatrix/cuda_check.hpp"
+#include "pulsatrix/determinism.hpp"
 
 namespace pulsatrix {
+
+namespace {
+
+// FND-7: deterministic mode forbids BLAS atomics, which can reorder floating-point sums from run
+// to run. Read on every call, so set_deterministic() takes effect without rebuilding backends.
+void set_blas_atomics_mode(cublasHandle_t handle) {
+    PULSATRIX_CUBLAS_CHECK(
+        cublasSetAtomicsMode(handle, deterministic() ? CUBLAS_ATOMICS_NOT_ALLOWED : CUBLAS_ATOMICS_ALLOWED));
+}
+
+}  // namespace
 
 CUDABackend::CUDABackend() {
     PULSATRIX_CUDA_CHECK(cudaStreamCreate(&stream_));
@@ -74,6 +86,7 @@ void CUDABackend::gemm(const float* a, const float* b, float* out, size_t m, siz
     // gpu_backend_programming/context_gpu_cublas_cudnn_integration.md's Column-Major Trap.
     const float alpha = 1.0f;
     const float beta = 0.0f;
+    set_blas_atomics_mode(cublas_handle_);
     PULSATRIX_CUBLAS_CHECK(cublasSgemm(cublas_handle_, CUBLAS_OP_N, CUBLAS_OP_N, static_cast<int>(n),
                                    static_cast<int>(m), static_cast<int>(k), &alpha, b,
                                    static_cast<int>(n), a, static_cast<int>(k), &beta, out,
@@ -124,6 +137,7 @@ void CUDABackend::gemm_ex(const float* a, bool transpose_a, const float* b, bool
     // transposed operand becomes a plain one in BLAS's view and vice versa -- hence op(B) maps
     // to OP_T exactly when transpose_b, with the leading dimension of the *stored* layout.
     const float alpha = 1.0f;
+    set_blas_atomics_mode(cublas_handle_);
     PULSATRIX_CUBLAS_CHECK(cublasSgemm(cublas_handle_, transpose_b ? CUBLAS_OP_T : CUBLAS_OP_N, transpose_a ? CUBLAS_OP_T : CUBLAS_OP_N,
                                  static_cast<int>(n), static_cast<int>(m), static_cast<int>(k), &alpha, b,
                                  static_cast<int>(transpose_b ? k : n), a, static_cast<int>(transpose_a ? m : k),
@@ -487,24 +501,27 @@ void CUDABackend::aggregator_lrp(const float* x, const float* mean_pow, const fl
 
 // ---- GPU-native-kernels Mission 4 (kernels in gpu_kernels.cuh) ---------------------------
 
-void CUDABackend::im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) {
+void CUDABackend::im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, const ConvGeometry& g) {
     if (n == 0 || c == 0) {
         return;
     }
-    const size_t total = n * c * kh * kw * (h - kh + 1) * (w - kw + 1);
-    gpu::im2col_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(
-        in, col, n, c, h, w, kh, kw);
+    const size_t out_h = (h + 2 * g.pad_h - g.kh) / g.stride_h + 1;
+    const size_t out_w = (w + 2 * g.pad_w - g.kw) / g.stride_w + 1;
+    const size_t total = n * c * g.kh * g.kw * out_h * out_w;
+    gpu::im2col_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(in, col, n, c, h, w, g, out_h,
+                                                                                    out_w);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
-void CUDABackend::col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)
-                             {
+void CUDABackend::col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, const ConvGeometry& g) {
     if (n == 0 || c == 0) {
         return;
     }
-    gpu::col2im_add_kernel<<<gpu::grid_size_for(n * c * h * w), gpu::kBlockSize, 0, stream_>>>(
-        col, out, n, c, h, w, kh, kw);
+    const size_t out_h = (h + 2 * g.pad_h - g.kh) / g.stride_h + 1;
+    const size_t out_w = (w + 2 * g.pad_w - g.kw) / g.stride_w + 1;
+    gpu::col2im_add_kernel<<<gpu::grid_size_for(n * c * h * w), gpu::kBlockSize, 0, stream_>>>(col, out, n, c, h, w, g,
+                                                                                               out_h, out_w);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
@@ -624,6 +641,41 @@ void CUDABackend::batch_norm_backward(const float* grad_out, const float* gamma,
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
+void CUDABackend::batch_norm_update_running(const float* in, float* running_mean, float* running_var, size_t n, size_t c,
+                                           size_t spatial, float momentum) {
+    if (c == 0) {
+        return;
+    }
+    gpu::batch_norm_update_running_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        in, running_mean, running_var, n, c, spatial, momentum);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::batch_norm_eval_forward(const float* in, const float* gamma, const float* beta,
+                                         const float* running_mean, const float* running_var, float* xhat, float* out,
+                                         float* channel_std, size_t n, size_t c, size_t spatial, float eps) {
+    if (c == 0) {
+        return;
+    }
+    gpu::batch_norm_eval_forward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        in, gamma, beta, running_mean, running_var, xhat, out, channel_std, n, c, spatial, eps);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::batch_norm_eval_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                          const float* channel_std, float* grad_in, float* gamma_grad,
+                                          float* beta_grad, size_t n, size_t c, size_t spatial) {
+    if (c == 0) {
+        return;
+    }
+    gpu::batch_norm_eval_backward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad, n, c, spatial);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
 void CUDABackend::group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
                                      float* group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps)
                                      {
@@ -709,6 +761,19 @@ void CUDABackend::rl_rows(RlRowOp op, const RlRowArgs& args) {
     }
     const auto n = static_cast<size_t>(args.rows);
     gpu::rl_rows_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(static_cast<int>(op), args);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+// ---- FND-3: selection ----------------------------------------------------------------------
+
+void CUDABackend::top_k_rows(const float* in, float* values, float* indices, size_t rows, size_t cols, size_t k,
+                            bool largest) {
+    if (rows == 0) {
+        return;
+    }
+    gpu::top_k_rows_kernel<<<gpu::grid_size_for(rows), gpu::kBlockSize, 0, stream_>>>(
+        in, values, indices, static_cast<int64_t>(rows), static_cast<int64_t>(cols), static_cast<int64_t>(k), largest);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }

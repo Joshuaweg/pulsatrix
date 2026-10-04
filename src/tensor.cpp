@@ -99,17 +99,31 @@ Tensor Tensor::Stack(const std::vector<Tensor>& tensors, DeviceBackend* backend)
         out_dims.push_back(first_shape.dim(static_cast<size_t>(d)));
     }
 
-    Tensor result(Shape(out_dims), backend, device);
+    // The result lives where `backend` allocates (FND-8, gpu_review #2): tag it with that device,
+    // not the sources', and copy accordingly. Reads from a GPU into host memory go through the
+    // source's own backend, the only one that can read that memory; everything else through the
+    // destination's.
+    const DeviceType target = backend->device();
+    if (device != DeviceType::Cpu && target != DeviceType::Cpu && device != target) {
+        throw std::invalid_argument("Tensor::Stack: cannot copy directly between two different GPU types");
+    }
+    Tensor result(Shape(out_dims), backend, target);
     if (result.data() == nullptr) {
         return result;
     }
 
-    CopyDirection dir = (device == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::DeviceToDevice;
     float* dst = result.data();
     for (const Tensor& t : tensors) {
         int64_t chunk_numel = t.numel();
         if (chunk_numel > 0) {
-            backend->copy(dst, t.data(), static_cast<size_t>(chunk_numel) * sizeof(float), dir);
+            const size_t bytes = static_cast<size_t>(chunk_numel) * sizeof(float);
+            if (target == DeviceType::Cpu) {
+                t.backend()->copy(dst, t.data(), bytes,
+                                  device == DeviceType::Cpu ? CopyDirection::HostToHost : CopyDirection::DeviceToHost);
+            } else {
+                backend->copy(dst, t.data(), bytes,
+                              device == DeviceType::Cpu ? CopyDirection::HostToDevice : CopyDirection::DeviceToDevice);
+            }
             dst += chunk_numel;
         }
     }
@@ -117,7 +131,11 @@ Tensor Tensor::Stack(const std::vector<Tensor>& tensors, DeviceBackend* backend)
 }
 
 Tensor::Tensor(const Tensor& other)
-    : data_(nullptr), shape_(other.shape_), backend_(other.backend_), device_(other.device_) {
+    : data_(nullptr),
+      shape_(other.shape_),
+      backend_(other.backend_),
+      device_(other.device_),
+      requires_grad_(other.requires_grad_) {
     data_ = allocate_buffer(backend_, shape_.numel());
     if (data_ != nullptr) {
         // Both data_ and other.data_ live on the SAME device (both allocated by backend_).
@@ -137,7 +155,11 @@ Tensor& Tensor::operator=(const Tensor& other) {
 }
 
 Tensor::Tensor(Tensor&& other) noexcept
-    : data_(other.data_), shape_(std::move(other.shape_)), backend_(other.backend_), device_(other.device_) {
+    : data_(other.data_),
+      shape_(std::move(other.shape_)),
+      backend_(other.backend_),
+      device_(other.device_),
+      requires_grad_(other.requires_grad_) {
     other.data_ = nullptr;
     // Restore the class's own documented invariant ("data() == nullptr iff numel() == 0")
     // for the moved-from object. std::move on shape_ alone leaves an unspecified-but-valid
@@ -157,6 +179,7 @@ Tensor& Tensor::operator=(Tensor&& other) noexcept {
     shape_ = std::move(other.shape_);
     backend_ = other.backend_;
     device_ = other.device_;
+    // requires_grad_ deliberately not taken from other -- see requires_grad()'s note.
     other.data_ = nullptr;
     other.shape_ = Shape({0});  // see move ctor's note
     return *this;

@@ -138,8 +138,13 @@ void zbox(const AffineOp& op, const float* x, const float* w, const float* pre_b
     const size_t n_in = op.input_numel, n_w = op.weight_numel, n_out = op.output_numel;
     Tensor wp = positive_part(op, w, n_w), wn = negative_part(op, w, n_w);
     Tensor low = scratch(op, n_in), high = scratch(op, n_in);
-    low.fill(config.low);
-    high.fill(config.high);
+    if (op.fill_bound) {
+        op.fill_bound(config.low, low.data());
+        op.fill_bound(config.high, high.data());
+    } else {
+        low.fill(config.low);
+        high.fill(config.high);
+    }
 
     // den = xW - L W+ - H W-
     Tensor den = scratch(op, n_out);

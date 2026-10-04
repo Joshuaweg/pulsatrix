@@ -46,6 +46,7 @@ Tensor AvgPool2DModule::forward_impl(const Tensor& input) {
 }
 
 Tensor AvgPool2DModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "AvgPool2DModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("AvgPool2DModule::backward: called before any forward()");
     }
@@ -73,6 +74,7 @@ Tensor AvgPool2DModule::backward(const Tensor& grad_output) {
 }
 
 Tensor AvgPool2DModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "AvgPool2DModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("AvgPool2DModule::propagate_relevance: called before any forward()");
     }
