@@ -10,6 +10,8 @@ option(PULSATRIX_ENABLE_PYTHON "Build Python bindings via pybind11" OFF)
 option(PULSATRIX_ENABLE_VIZ "Build the Dear ImGui + ImPlot native visualization module" OFF)
 option(PULSATRIX_BUILD_TESTS "Build the GoogleTest suite" ON)
 option(PULSATRIX_BUILD_EXAMPLES "Build standalone example executables (examples/)" ON)
+option(PULSATRIX_BUILD_FUZZERS "Build fuzz targets (tools/fuzz/); add sanitizer flags yourself" OFF)
+option(PULSATRIX_FUZZ_STANDALONE "Fuzz targets get their own main() instead of libFuzzer's" OFF)
 
 if(PULSATRIX_ENABLE_CUDA)
     enable_language(CUDA)
@@ -91,6 +93,7 @@ add_library(pulsatrix_core
     src/matrix_decompositions.cpp
     src/batch_norm_fold.cpp
     src/determinism.cpp
+    src/safetensors.cpp
     src/rnn_module.cpp
     src/lstm_module.cpp
     src/gru_module.cpp
@@ -511,4 +514,14 @@ if(PULSATRIX_BUILD_TESTS)
 
     enable_testing()
     add_subdirectory(tests)
+endif()
+
+if(PULSATRIX_BUILD_FUZZERS)
+    add_executable(safetensors_fuzz tools/fuzz/safetensors_fuzz.cpp)
+    target_link_libraries(safetensors_fuzz PRIVATE pulsatrix_core)
+    if(PULSATRIX_FUZZ_STANDALONE)
+        target_compile_definitions(safetensors_fuzz PRIVATE PULSATRIX_FUZZ_STANDALONE)
+    else()
+        target_link_options(safetensors_fuzz PRIVATE -fsanitize=fuzzer)
+    endif()
 endif()
