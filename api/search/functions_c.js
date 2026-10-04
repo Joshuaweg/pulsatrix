@@ -34,7 +34,8 @@ var searchData=
   ['mucommalambdareplacement_31',['MuCommaLambdaReplacement',['../namespacepulsatrix.html#a469c1dd8905840b1f89ec4f05ff821b3',1,'pulsatrix']]],
   ['mul_32',['mul',['../classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d',1,'pulsatrix::DeviceBackend::mul()'],['../classpulsatrix_1_1HIPBackend.html#a8d1e6e52eb84ed7e21535e9bed152478',1,'pulsatrix::HIPBackend::mul()'],['../structpulsatrix_1_1datalog_1_1RealSemiring.html#a9f381c2b385873b6a337b96760dfd4ba',1,'pulsatrix::datalog::RealSemiring::mul()'],['../structpulsatrix_1_1datalog_1_1BooleanSemiring.html#ad7de922c581a6300612c17f458d2256e',1,'pulsatrix::datalog::BooleanSemiring::mul()'],['../structpulsatrix_1_1datalog_1_1DualSemiring.html#a4e09c198d6f75a6919f9a3f1ab28fb75',1,'pulsatrix::datalog::DualSemiring::mul()'],['../classpulsatrix_1_1CUDABackend.html#aa91c1767a9c559e2fe39c2cd6971c7fa',1,'pulsatrix::CUDABackend::mul()'],['../classpulsatrix_1_1CPUBackend.html#a19efc91d50ebf477bbc01af80cbada3d',1,'pulsatrix::CPUBackend::mul()']]],
   ['multiheadattentionmodule_33',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ae11c9bd2523df83bb01c90234a201f8d',1,'pulsatrix::MultiHeadAttentionModule']]],
-  ['mupluslambdareplacement_34',['MuPlusLambdaReplacement',['../namespacepulsatrix.html#ac8f3350b7e825b6d2397348086341e3d',1,'pulsatrix']]],
-  ['mutateweights_35',['MutateWeights',['../classpulsatrix_1_1NEATGenome.html#a51770b245d18515ac7b8641e5a21e83e',1,'pulsatrix::NEATGenome']]],
-  ['mutationloss_36',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html#a946fd0ccbaa5aad01897adb94a2e32d9',1,'pulsatrix::MutationLoss']]]
+  ['multiplier_34',['multiplier',['../classpulsatrix_1_1LRSchedule.html#ac17cda0013cd15a14fdac7ccddb99287',1,'pulsatrix::LRSchedule']]],
+  ['mupluslambdareplacement_35',['MuPlusLambdaReplacement',['../namespacepulsatrix.html#ac8f3350b7e825b6d2397348086341e3d',1,'pulsatrix']]],
+  ['mutateweights_36',['MutateWeights',['../classpulsatrix_1_1NEATGenome.html#a51770b245d18515ac7b8641e5a21e83e',1,'pulsatrix::NEATGenome']]],
+  ['mutationloss_37',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html#a946fd0ccbaa5aad01897adb94a2e32d9',1,'pulsatrix::MutationLoss']]]
 ];

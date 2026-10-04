@@ -441,6 +441,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#learning-rate-schedules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning-rate schedules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gradient-clipping" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1639,6 +1650,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#learning-rate-schedules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning-rate schedules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gradient-clipping" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1856,6 +1878,24 @@ and Hutter). It shrinks the weights directly, <code>w &lt;- (1 - lr * wd) * w</c
 decay to the gradient, where Adam's normalization would rescale it. Its default weight decay is
 0.01, as in PyTorch. <code>SGDOptimizer(lr, momentum, nesterov)</code> adds momentum and Nesterov momentum,
 with the same buffer rule as <code>torch.optim.SGD</code>.</p>
+<h3 id="learning-rate-schedules">Learning-rate schedules<a class="headerlink" href="#learning-rate-schedules" title="Permanent link">&para;</a></h3>
+<p><code>LRSchedule</code> gives a multiplier per step, with the formulas of Hugging Face's
+<code>get_*_schedule_with_warmup</code>: <code>Constant(warmup)</code>, <code>Linear(warmup, total)</code> and
+<code>Cosine(warmup, total, min_ratio)</code>. Warmup ramps from 0 to 1, then linear decays to 0 at <code>total</code>
+and cosine to <code>min_ratio</code>. <code>LRScheduler</code> applies one to an optimizer: every rate, including each
+parameter group's, becomes its starting rate times the multiplier.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/lr_scheduler.hpp"</span>
+
+<span class="n">AdamWOptimizer</span><span class="w"> </span><span class="nf">opt</span><span class="p">(</span><span class="mf">3e-4f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">LRScheduler</span><span class="w"> </span><span class="nf">scheduler</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span><span class="w"> </span><span class="n">LRSchedule</span><span class="o">::</span><span class="n">Cosine</span><span class="p">(</span><span class="cm">/*warmup=*/</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="cm">/*total=*/</span><span class="mi">10000</span><span class="p">));</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">step</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ... forward, backward, ClipGradNorm ...</span>
+<span class="w">    </span><span class="n">opt</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+<span class="w">    </span><span class="n">scheduler</span><span class="p">.</span><span class="n">step</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Set up parameter groups before building the scheduler. To resume, call
+<code>scheduler.set_last_step(n)</code>.</p>
 <h3 id="gradient-clipping">Gradient clipping<a class="headerlink" href="#gradient-clipping" title="Permanent link">&para;</a></h3>
 <p><code>ClipGradNorm(model, max_norm)</code> scales all trainable gradients by one factor so their global L2
 norm is at most <code>max_norm</code>, as <code>torch.nn.utils.clip_grad_norm_</code> does. It returns the norm before

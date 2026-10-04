@@ -9,5 +9,7 @@ var searchData=
   ['lrp_6',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
   ['lrpruleconfig_7',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
   ['lrptarget_8',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
-  ['lstmmodule_9',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
+  ['lrschedule_9',['LRSchedule',['../classpulsatrix_1_1LRSchedule.html',1,'pulsatrix']]],
+  ['lrscheduler_10',['LRScheduler',['../classpulsatrix_1_1LRScheduler.html',1,'pulsatrix']]],
+  ['lstmmodule_11',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
 ];

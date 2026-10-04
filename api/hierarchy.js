@@ -108,6 +108,8 @@ var hierarchy =
     [ "pulsatrix::LRP", "classpulsatrix_1_1LRP.html", null ],
     [ "pulsatrix::LRPRuleConfig", "structpulsatrix_1_1LRPRuleConfig.html", null ],
     [ "pulsatrix::LRPTarget", "structpulsatrix_1_1LRPTarget.html", null ],
+    [ "pulsatrix::LRSchedule", "classpulsatrix_1_1LRSchedule.html", null ],
+    [ "pulsatrix::LRScheduler< Optimizer >", "classpulsatrix_1_1LRScheduler.html", null ],
     [ "pulsatrix::MetricCapability", "structpulsatrix_1_1MetricCapability.html", null ],
     [ "pulsatrix::MetricRecord", "structpulsatrix_1_1MetricRecord.html", null ],
     [ "pulsatrix::MetricsSink", "classpulsatrix_1_1MetricsSink.html", [
