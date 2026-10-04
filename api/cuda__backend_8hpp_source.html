@@ -240,10 +240,14 @@ $(document).ready(function(){initNavTree('cuda__backend_8hpp_source.html',''); i
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="comment">// One device float that dot() reduces into before copying it to the host; allocated once</span></div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="comment">// so dot() costs no per-call device allocation.</span></div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordtype">float</span>* dot_result_ = <span class="keyword">nullptr</span>;  <span class="comment">// dot/sum scratch: result at [0], per-block partials after it (HIP-5)</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>};</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="comment">// Device scratch for per-channel reductions (HIP-2), grown on demand by reduce_scratch().</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordtype">float</span>* reduce_scratch_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordtype">size_t</span> reduce_scratch_floats_ = 0;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordtype">float</span>* reduce_scratch(<span class="keywordtype">size_t</span> floats);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>};</div>
 </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}  <span class="comment">// namespace pulsatrix</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>}  <span class="comment">// namespace pulsatrix</span></div>
 <div class="ttc" id="aclasspulsatrix_1_1CUDABackend_html"><div class="ttname"><a href="classpulsatrix_1_1CUDABackend.html">pulsatrix::CUDABackend</a></div><div class="ttdoc">CUDA-resident DeviceBackend implementation.</div><div class="ttdef"><b>Definition</b> cuda_backend.hpp:28</div></div>
 <div class="ttc" id="aclasspulsatrix_1_1CUDABackend_html_a0c2592cc1bcf55e0710d278562fcaa71"><div class="ttname"><a href="classpulsatrix_1_1CUDABackend.html#a0c2592cc1bcf55e0710d278562fcaa71">pulsatrix::CUDABackend::CUDABackend</a></div><div class="ttdeci">CUDABackend(const CUDABackend &amp;)=delete</div></div>
 <div class="ttc" id="aclasspulsatrix_1_1CUDABackend_html_a0e8e55829514c4fc48df409743381537"><div class="ttname"><a href="classpulsatrix_1_1CUDABackend.html#a0e8e55829514c4fc48df409743381537">pulsatrix::CUDABackend::group_norm_backward</a></div><div class="ttdeci">void group_norm_backward(const float *grad_out, const float *gamma, const float *xhat, const float *group_std, float *grad_in, float *gamma_grad, float *beta_grad, size_t n, size_t c, size_t spatial, size_t num_groups) override</div><div class="ttdoc">GroupNorm input gradient plus this call's gamma/beta gradients (overwritten, per channel).</div></div>
