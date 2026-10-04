@@ -34,6 +34,12 @@ backward, AdamW):
   [full fine-tuning recipe](recipes/deep-learning/tagger_finetune.md).
 - **`reduce`:** `DeviceBackend::dot` and `sum` over 16M floats, a microbenchmark for HIP-5.
 
+!!! warning "Other programs on the GPU skew timings"
+    Step times and kernel times shift when other programs use the GPU; a local LLM server is
+    enough to triple them. Compare two builds by interleaving their runs (old, new, old, new...)
+    and taking medians, so both see the same load. The allocator counters
+    (`hip_profile_workloads` prints them) don't depend on load.
+
 ## Baseline (gfx1151, ROCm 7.2.4, 20 steps)
 
 Measured 2026-10-04 on the Radeon 8060S (Strix Halo), Release build, before any of the HIP
@@ -91,3 +97,19 @@ Results now differ from the CPU in the last bits. The GPU adds each channel's va
 while the CPU adds them one at a time. Both are deterministic. Softmax, layer and RMS norms, and
 column sums keep their kernels: at current shapes each call takes about 5 µs, which is launch
 overhead rather than missing parallelism (the roadmap's falsifier for HIP-2).
+
+### HIP-3: a caching allocator
+
+Every tensor used to be a fresh `hipMalloc`, and every free a `hipFree`, which waits for the GPU
+to finish. Now `HIPBackend` keeps freed blocks and reuses them for the same size class (512-byte
+steps below 1 MiB, then steps of an eighth of a power of two). Over 20 steps:
+
+| Workload | Allocations | `hipMalloc` calls now | Median step time, interleaved A/B |
+|---|---|---|---|
+| `mlp` | 618 | 48 | 4% faster |
+| `cnn` | 1,124 | 86 | 12% faster |
+| `tagger` | 5,359 | 156 | 7% faster |
+
+The gains are modest because every op still synchronizes the stream. Removing those syncs is
+HIP-4. Cap the memory a backend holds with `set_memory_budget()` or
+`PULSATRIX_HIP_MEMORY_BUDGET_MB`, and return cached blocks with `empty_cache()`.

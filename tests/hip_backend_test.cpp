@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <new>
 #include <vector>
 
 #include "pulsatrix/cpu_backend.hpp"
@@ -26,6 +27,30 @@ class HIPBackendTest : public ::testing::Test {
 protected:
     HIPBackend backend;
 };
+
+// HIP-3: a freed block is reused, not returned to the driver.
+TEST_F(HIPBackendTest, CachingAllocatorReusesFreedBlocks) {
+    const CachingAllocator::Stats before = backend.memory_stats();
+    void* p = backend.allocate(1000);
+    backend.free(p);
+    void* q = backend.allocate(900);  // same 1024-byte class
+    EXPECT_EQ(q, p);
+    const CachingAllocator::Stats after = backend.memory_stats();
+    EXPECT_EQ(after.raw_allocs, before.raw_allocs + 1);
+    EXPECT_EQ(after.cache_hits, before.cache_hits + 1);
+    backend.free(q);
+    backend.empty_cache();
+    EXPECT_EQ(backend.memory_stats().cached_bytes, 0u);
+}
+
+TEST_F(HIPBackendTest, MemoryBudgetIsEnforced) {
+    backend.empty_cache();
+    backend.set_memory_budget(size_t{4} << 20);
+    void* p = backend.allocate(size_t{3} << 20);
+    EXPECT_THROW((void)backend.allocate(size_t{2} << 20), std::bad_alloc);
+    backend.free(p);
+    backend.set_memory_budget(0);
+}
 
 TEST_F(HIPBackendTest, AllocateReturnsNonNullForPositiveSize) {
     void* ptr = backend.allocate(64);

@@ -37,5 +37,5 @@ if [ -z "$trace" ]; then
     tail -20 "$tmp/command.log" >&2
     exit 1
 fi
-grep -E '^(step|tagger)' "$tmp/command.log" | tail -3 || true
+grep -E '^(step|tagger|allocator)' "$tmp/command.log" | tail -4 || true
 python3 "$(dirname "${BASH_SOURCE[0]}")/rocprof_summary.py" "$trace" "$out"
