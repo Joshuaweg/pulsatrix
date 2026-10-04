@@ -319,6 +319,38 @@ inline void RecurrentCells(DeviceBackend& gpu) {
     ExpectNear(out, dres.host(), 1e-3f);  // epsilon-rule ratios: relevance-scale bound
 }
 
+// FND-3: top_k_rows is pure selection (no arithmetic), so the GPU must match the CPU bit for bit,
+// including tie order (lower index first) and NaN placement (above every number). Rows span
+// several thread blocks; values are coarsely quantized so ties are common.
+inline void TopKRows(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const size_t rows = 300, cols = 129;
+    std::vector<float> in(rows * cols);
+    std::mt19937 rng(41);
+    for (auto& x : in) {
+        x = static_cast<float>(static_cast<int>(rng() % 9) - 4) * 0.5f;
+    }
+    in[3] = std::nanf("");
+    in[cols + 7] = INFINITY;
+    in[2 * cols + 1] = -INFINITY;
+    DeviceBuffer din(gpu, in);
+    for (bool largest : {true, false}) {
+        for (size_t k : {size_t{1}, size_t{7}, cols}) {
+            std::vector<float> cpu_values(rows * k), cpu_indices(rows * k);
+            cpu.top_k_rows(in.data(), cpu_values.data(), cpu_indices.data(), rows, cols, k, largest);
+            DeviceBuffer dvalues(gpu, std::vector<float>(rows * k, 0.0f));
+            DeviceBuffer dindices(gpu, std::vector<float>(rows * k, 0.0f));
+            gpu.top_k_rows(din.get(), dvalues.get(), dindices.get(), rows, cols, k, largest);
+            std::vector<float> gpu_values = dvalues.host(), gpu_indices = dindices.host();
+            ASSERT_EQ(cpu_indices, gpu_indices) << "largest=" << largest << " k=" << k;
+            for (size_t i = 0; i < cpu_values.size(); ++i) {
+                ASSERT_TRUE(cpu_values[i] == gpu_values[i] || (std::isnan(cpu_values[i]) && std::isnan(gpu_values[i])))
+                    << "largest=" << largest << " k=" << k << " flat index " << i;
+            }
+        }
+    }
+}
+
 }  // namespace primitive_equivalence
 }  // namespace pulsatrix
 
@@ -363,4 +395,5 @@ inline void RecurrentCells(DeviceBackend& gpu) {
     TEST_F(FIXTURE, RecurrentCellOpsMatchCPU) { ::pulsatrix::primitive_equivalence::RecurrentCells(MEMBER); } \
     TEST_F(FIXTURE, PermuteGatherScatterMatchCPUBitExactly) {                                       \
         ::pulsatrix::primitive_equivalence::PermuteGatherScatter(MEMBER);                          \
-    }
+    }                                                                                               \
+    TEST_F(FIXTURE, TopKRowsMatchCPUBitExactly) { ::pulsatrix::primitive_equivalence::TopKRows(MEMBER); }
