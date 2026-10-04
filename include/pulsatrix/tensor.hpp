@@ -128,6 +128,20 @@ public:
     [[nodiscard]] DeviceBackend* backend() const { return backend_; }
 
     /**
+     * @brief Whether a module's backward() should accumulate a gradient for this tensor when
+     *        it is a parameter, and whether optimizers should update it. Defaults to true.
+     * @note Meaningful only for parameters (roadmap FND-2); ignored everywhere else.
+     * @note The flag belongs to the object, not its values: copy and move construction carry
+     *       it over, but copy and move assignment keep the destination's own flag. Loading new
+     *       weights into a frozen parameter (`weight_ = loaded;`) therefore leaves it frozen,
+     *       matching PyTorch's `param.data = x`.
+     */
+    [[nodiscard]] bool requires_grad() const { return requires_grad_; }
+
+    /** @brief Sets requires_grad(); see there. */
+    void set_requires_grad(bool requires_grad) { requires_grad_ = requires_grad; }
+
+    /**
      * @brief Reads one element to the host through the owning backend, on any device.
      * @note One synchronous device-to-host copy -- for scalars (a loss value, a picked
      *       logit), never for loops. Bounds are PULSATRIX_ASSERT-checked like operator[].
@@ -255,6 +269,7 @@ private:
     Shape shape_;
     DeviceBackend* backend_;
     DeviceType device_;
+    bool requires_grad_ = true;
 };
 
 }  // namespace pulsatrix

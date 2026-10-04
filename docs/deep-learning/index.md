@@ -83,6 +83,23 @@ members (see `include/pulsatrix/xor_training_example.hpp`). `forward()` chains
 Runnable version: [`examples/xor_demo.cpp`](https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp)
 (CMake target `xor_demo`). See also the [recipe](../recipes/deep-learning/xor_training.md).
 
+### Freezing parameters
+
+Every parameter has a name (`named_parameters()`), and `set_requires_grad` freezes or unfreezes
+parameters by name. A name selects that parameter and everything under it:
+
+```cpp
+TransformerBlock block(64, 4, 256, &backend);
+block.set_requires_grad(false);              // freeze everything
+block.set_requires_grad(true, "mha.q_proj");  // then train only the query projection
+```
+
+A frozen parameter is never changed by `SGDOptimizer` or `AdamOptimizer`, and `backward()`
+doesn't add to its gradient. The gradient passed back to the previous layer is exactly the same
+as without freezing. `LinearModule`, `Conv2DModule` and `EmbeddingModule` skip computing a
+frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
+nothing throws `std::invalid_argument`, so a typo can't leave the model silently trainable.
+
 ### Choosing a normalization layer
 
 `LayerNormModule`, `RMSNormModule`, `GroupNormModule` and `BatchNormModule` all implement the

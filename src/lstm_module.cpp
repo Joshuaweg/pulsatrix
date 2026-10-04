@@ -330,18 +330,44 @@ Tensor LSTMModule::backward(const Tensor& grad_output) {
         dc_next = dc_prev;
     }
 
-    weight_xi_grad_.accumulate(local_wxi_grad);
-    weight_hi_grad_.accumulate(local_whi_grad);
-    bias_i_grad_.accumulate(local_bi_grad);
-    weight_xf_grad_.accumulate(local_wxf_grad);
-    weight_hf_grad_.accumulate(local_whf_grad);
-    bias_f_grad_.accumulate(local_bf_grad);
-    weight_xg_grad_.accumulate(local_wxg_grad);
-    weight_hg_grad_.accumulate(local_whg_grad);
-    bias_g_grad_.accumulate(local_bg_grad);
-    weight_xo_grad_.accumulate(local_wxo_grad);
-    weight_ho_grad_.accumulate(local_who_grad);
-    bias_o_grad_.accumulate(local_bo_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (weight_xi_.requires_grad()) {
+        weight_xi_grad_.accumulate(local_wxi_grad);
+    }
+    if (weight_hi_.requires_grad()) {
+        weight_hi_grad_.accumulate(local_whi_grad);
+    }
+    if (bias_i_.requires_grad()) {
+        bias_i_grad_.accumulate(local_bi_grad);
+    }
+    if (weight_xf_.requires_grad()) {
+        weight_xf_grad_.accumulate(local_wxf_grad);
+    }
+    if (weight_hf_.requires_grad()) {
+        weight_hf_grad_.accumulate(local_whf_grad);
+    }
+    if (bias_f_.requires_grad()) {
+        bias_f_grad_.accumulate(local_bf_grad);
+    }
+    if (weight_xg_.requires_grad()) {
+        weight_xg_grad_.accumulate(local_wxg_grad);
+    }
+    if (weight_hg_.requires_grad()) {
+        weight_hg_grad_.accumulate(local_whg_grad);
+    }
+    if (bias_g_.requires_grad()) {
+        bias_g_grad_.accumulate(local_bg_grad);
+    }
+    if (weight_xo_.requires_grad()) {
+        weight_xo_grad_.accumulate(local_wxo_grad);
+    }
+    if (weight_ho_.requires_grad()) {
+        weight_ho_grad_.accumulate(local_who_grad);
+    }
+    if (bias_o_.requires_grad()) {
+        bias_o_grad_.accumulate(local_bo_grad);
+    }
 
     return grad_input;
 }

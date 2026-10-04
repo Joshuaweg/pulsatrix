@@ -117,7 +117,11 @@ Tensor Tensor::Stack(const std::vector<Tensor>& tensors, DeviceBackend* backend)
 }
 
 Tensor::Tensor(const Tensor& other)
-    : data_(nullptr), shape_(other.shape_), backend_(other.backend_), device_(other.device_) {
+    : data_(nullptr),
+      shape_(other.shape_),
+      backend_(other.backend_),
+      device_(other.device_),
+      requires_grad_(other.requires_grad_) {
     data_ = allocate_buffer(backend_, shape_.numel());
     if (data_ != nullptr) {
         // Both data_ and other.data_ live on the SAME device (both allocated by backend_).
@@ -137,7 +141,11 @@ Tensor& Tensor::operator=(const Tensor& other) {
 }
 
 Tensor::Tensor(Tensor&& other) noexcept
-    : data_(other.data_), shape_(std::move(other.shape_)), backend_(other.backend_), device_(other.device_) {
+    : data_(other.data_),
+      shape_(std::move(other.shape_)),
+      backend_(other.backend_),
+      device_(other.device_),
+      requires_grad_(other.requires_grad_) {
     other.data_ = nullptr;
     // Restore the class's own documented invariant ("data() == nullptr iff numel() == 0")
     // for the moved-from object. std::move on shape_ alone leaves an unspecified-but-valid
@@ -157,6 +165,7 @@ Tensor& Tensor::operator=(Tensor&& other) noexcept {
     shape_ = std::move(other.shape_);
     backend_ = other.backend_;
     device_ = other.device_;
+    // requires_grad_ deliberately not taken from other -- see requires_grad()'s note.
     other.data_ = nullptr;
     other.shape_ = Shape({0});  // see move ctor's note
     return *this;

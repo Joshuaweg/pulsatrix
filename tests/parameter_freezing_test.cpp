@@ -58,6 +58,11 @@ bool all_zero(const Tensor& t) {
 // Roadmap FND-2's falsifier, per module: freezing every parameter must leave the input
 // gradient bit-identical to the trainable run, and leave every parameter gradient at zero.
 void expect_frozen_backward_matches(Module& module, const Tensor& input) {
+    // Some modules (Mamba, RWKV) start from all-zero weights, which zeroes every parameter
+    // gradient and would make this check vacuous. Small patterned values avoid that.
+    for (ParamRef p : module.parameters()) {
+        *p.value = patterned(p.value->shape(), input.backend(), 0.07f);
+    }
     Tensor output = module.forward(input);
     Tensor grad_output = patterned(output.shape(), input.backend(), 0.05f);
     zero_grads(module);

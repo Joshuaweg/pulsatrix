@@ -114,8 +114,14 @@ Tensor GroupNormModule::backward(const Tensor& grad_output) {
                                   grad_input.data(), local_gamma_grad.data(), local_beta_grad.data(),
                                   static_cast<size_t>(N), static_cast<size_t>(num_channels_),
                                   static_cast<size_t>(spatial), static_cast<size_t>(num_groups_));
-    gamma_grad_.accumulate(local_gamma_grad);
-    beta_grad_.accumulate(local_beta_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (gamma_.requires_grad()) {
+        gamma_grad_.accumulate(local_gamma_grad);
+    }
+    if (beta_.requires_grad()) {
+        beta_grad_.accumulate(local_beta_grad);
+    }
 
     return grad_input;
 }
