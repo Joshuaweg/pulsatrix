@@ -158,6 +158,15 @@ Tensor TransformerBlock::propagate_relevance(const Tensor& relevance_out, const 
     return r_x;
 }
 
+std::vector<NamedBufferRef> TransformerBlock::named_buffers() {
+    std::vector<NamedBufferRef> result;
+    append_named_buffers(result, "norm1", norm1_);
+    append_named_buffers(result, "mha", mha_);
+    append_named_buffers(result, "norm2", norm2_);
+    append_named_buffers(result, "swiglu", swiglu_);
+    return result;
+}
+
 std::vector<NamedParamRef> TransformerBlock::named_parameters() {
     std::vector<NamedParamRef> params;
     append_named_parameters(params, "norm1", norm1_);
