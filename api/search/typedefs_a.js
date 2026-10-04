@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['value_0',['value',['../structpulsatrix_1_1datalog_1_1DualSemiring.html#a6dc38122c2a28b9c01a03ee4e47c7122',1,'pulsatrix::datalog::DualSemiring::Value'],['../structpulsatrix_1_1datalog_1_1BooleanSemiring.html#ab61be8b32618294dfae4e40f7d0955de',1,'pulsatrix::datalog::BooleanSemiring::Value'],['../structpulsatrix_1_1datalog_1_1RealSemiring.html#a0bc467675571dbf7e928fc027aeaff40',1,'pulsatrix::datalog::RealSemiring::Value']]]
+  ['textureid_0',['TextureId',['../namespacepulsatrix.html#aae38e5361268c504e9b96249e75707a8',1,'pulsatrix']]],
+  ['trialfactory_1',['TrialFactory',['../namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f',1,'pulsatrix']]]
 ];
