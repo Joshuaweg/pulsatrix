@@ -14,12 +14,15 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
   activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.
-- **Missing.** There is no way to save or load model weights, no import from PyTorch or Hugging
-  Face, and everything is `float32`. Tensors have no views or broadcasting. There are no
-  learning-rate schedulers, no AdamW and no LoRA. Attention has no mask.
+- **Missing.** There is no import from PyTorch or Hugging Face, and everything is `float32`.
+  Tensors have no views or broadcasting. There is no LoRA. Attention has no mask.
 - **Done since v1.0.** The whole [FND epic](#fnd-foundations): named parameters, freezing, top-k,
   eigensolver/QR/SVD, BatchNorm eval mode and folding, Conv2D stride and padding, seeding and
-  deterministic mode, and device checks.
+  deterministic mode, and device checks. Saving and loading: safetensors and native checkpoints
+  with optimizer state ([IO-1, IO-2](#io-serialization-and-model-import)). The v1.1 training stack
+  ([TRN-1 to TRN-6](#trn-training-and-fine-tuning)): parameter groups, AdamW, SGD momentum,
+  gradient clipping, learning-rate schedules, token-accurate gradient accumulation and a full
+  fine-tuning recipe.
 - **HIP backend.** It works on gfx1151 (Strix Halo), but every op synchronizes the stream,
   reductions run one thread per row or channel, and every tensor is a raw `hipMalloc`.
 
@@ -83,8 +86,8 @@ The plumbing everything else needs, plus the checks that keep explanations hones
 
 - FND-1 to FND-8 (**done**): named parameters, freezing, top-k, eigensolver, BatchNorm eval
   mode, Conv2D stride and padding, seeding, device checks
-- IO-1, IO-2: safetensors and the native checkpoint format
-- TRN-1 to TRN-6: parameter groups, AdamW, clipping, schedulers, gradient accumulation, full
+- IO-1, IO-2 (**done**): safetensors and the native checkpoint format
+- TRN-1 to TRN-6 (**done**): parameter groups, AdamW, clipping, schedulers, gradient accumulation, full
   fine-tuning
 - XAI-5, XAI-6: explanation-quality metrics and the random-model baseline harness
 - HIP-1, HIP-2, HIP-4, HIP-5: profiling, parallel reductions, fewer syncs, multi-block `dot`/`sum`
@@ -198,19 +201,40 @@ little-endian data, it cannot run code, and nearly every Hugging Face model ship
 pulsatrix's own checkpoints, optimizer state, LoRA adapters, imported models, published sparse
 autoencoder dictionaries and a model zoo.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| IO-1 | Native safetensors reader and writer. Check every offset against the file size, reject overlaps and holes, and use overflow-safe size arithmetic | The single file format | — | P0 | S–M |
-| IO-2 | Native checkpoint format: safetensors with `format_version` metadata, optimizer state in a sibling file, and a migration table between versions | Save and resume training; the passing test is a bit-identical forward pass and loss curve after reload | IO-1, FND-1 | P0 | M |
-| IO-3 | An optional converter for legacy pickle files (`.pt`, `.pth`, `.pkl`). It uses `torch.load(weights_only=True)` with torch 2.6 or newer and writes safetensors | Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors | IO-1 | P1 | M |
-| IO-4 | A name-mapping manifest with transforms: transpose (pulsatrix `Linear` stores `(in, out)`, PyTorch stores `(out, in)`), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys | Turns Hugging Face names and layouts into pulsatrix modules | FND-1, IO-1 | P1 | M |
-| IO-5 | Read Hugging Face `config.json` and sharded `model.safetensors.index.json` | Every small LLM on the Hub uses these | IO-1 | P1 | S |
-| IO-6 | Upcast bf16 and fp16 weights to fp32 on load (exact) | Most published weights are bf16 | IO-1 | P1 | S |
-| IO-7 | `.npy` and `.npz` reading, with object and big-endian dtypes rejected | Many SAE dictionaries and Python users' arrays | — | P1 | S–M |
-| IO-8 | ONNX import, weights only | Graph import would mean pattern-matching ONNX ops back into modules, which is research | IO-1 | P3 | M |
-| IO-9 | GGUF import for F32, F16 and Q8_0, with every count and size checked for overflow | Some small models only exist as GGUF. GGUF parsers have a long CVE history | IO-1 | P3 | M |
-| IO-10 | Keras and TensorFlow weights, through the Python converter only. Never call `load_model` on an untrusted file | Small user base, repeated `safe_mode` bypasses | IO-3 | P3 | M |
-| IO-11 | joblib/sklearn pickles and TorchScript: not supported. Document how to export from them instead | TorchScript is deprecated upstream. Pickle is code | — | P3 | — |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| IO-1 | Native safetensors reader and writer. Check every offset against the file size, reject overlaps and holes, and use overflow-safe size arithmetic | The single file format | — | P0 | S–M | Done, [#43](https://github.com/Joshuaweg/pulsatrix/pull/43) (see below) |
+| IO-2 | Native checkpoint format: safetensors with `format_version` metadata, optimizer state in a sibling file, and a migration table between versions | Save and resume training; the passing test is a bit-identical forward pass and loss curve after reload | IO-1, FND-1 | P0 | M | Done, [#44](https://github.com/Joshuaweg/pulsatrix/pull/44) |
+| IO-3 | An optional converter for legacy pickle files (`.pt`, `.pth`, `.pkl`). It uses `torch.load(weights_only=True)` with torch 2.6 or newer and writes safetensors | Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors | IO-1 | P1 | M | |
+| IO-4 | A name-mapping manifest with transforms: transpose (pulsatrix `Linear` stores `(in, out)`, PyTorch stores `(out, in)`), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys | Turns Hugging Face names and layouts into pulsatrix modules | FND-1, IO-1 | P1 | M | |
+| IO-5 | Read Hugging Face `config.json` and sharded `model.safetensors.index.json` | Every small LLM on the Hub uses these | IO-1 | P1 | S | |
+| IO-6 | Upcast bf16 and fp16 weights to fp32 on load (exact) | Most published weights are bf16 | IO-1 | P1 | S | |
+| IO-7 | `.npy` and `.npz` reading, with object and big-endian dtypes rejected | Many SAE dictionaries and Python users' arrays | — | P1 | S–M | |
+| IO-8 | ONNX import, weights only | Graph import would mean pattern-matching ONNX ops back into modules, which is research | IO-1 | P3 | M | |
+| IO-9 | GGUF import for F32, F16 and Q8_0, with every count and size checked for overflow | Some small models only exist as GGUF. GGUF parsers have a long CVE history | IO-1 | P3 | M | |
+| IO-10 | Keras and TensorFlow weights, through the Python converter only. Never call `load_model` on an untrusted file | Small user base, repeated `safe_mode` bypasses | IO-3 | P3 | M | |
+| IO-11 | joblib/sklearn pickles and TorchScript: not supported. Document how to export from them instead | TorchScript is deprecated upstream. Pickle is code | — | P3 | — | |
+
+### How the IO work departed from the plan
+
+- **IO-1** is stricter than the reference implementation (huggingface/safetensors 0.8) in two
+  places. It rejects a tensor name that appears twice, where the reference keeps the last, so two
+  tools could disagree about one file's weights. It also rejects unknown fields in a tensor entry.
+  Every file the reference writes still loads. The header parser is hand-written for the format's
+  JSON subset rather than a JSON library, and is fuzzed under AddressSanitizer
+  (`tools/fuzz/safetensors_fuzz.cpp`).
+- **IO-2** records a checksum of the model file in the optimizer file, so stale optimizer state
+  from an earlier save is refused. A plain safetensors file with matching names loads as format
+  version 0.
+
+### Follow-ups the IO work surfaced
+
+| Follow-up | Belongs with |
+|---|---|
+| Memory-mapped reading; files are read whole for now | IO-5, for 1B-parameter models |
+| Checkpointing SGD's momentum buffers (Adam and AdamW are covered) | a small fix |
+| Checkpointing Dropout's mask counter; a resumed run with active dropout draws different masks | a small fix |
+| Running the safetensors writer's GPU path on hardware | HIP-9 or KS-8 |
 
 ## TRN: Training and fine-tuning
 
@@ -218,22 +242,41 @@ The infrastructure comes first. Most LoRA failures in the literature are configu
 not method problems: a study of LoRA variants from January 2026 found that, once the learning
 rate is tuned, plain LoRA matches or beats most of them.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| TRN-1 | Optimizer parameter groups, each with its own learning rate and weight decay | No weight decay on norms and biases; LoRA+ | FND-1 | P0 | S |
-| TRN-2 | AdamW (decoupled weight decay) and SGD with momentum and Nesterov | The default for transformer fine-tuning | TRN-1 | P0 | S |
-| TRN-3 | Global gradient-norm clipping | Stability at LoRA's higher learning rates | — | P0 | S |
-| TRN-4 | Learning-rate schedulers: warmup, cosine, linear, constant | Every published recipe assumes them | — | P0 | S |
-| TRN-5 | Gradient accumulation that divides by the total token count, not the mean of micro-batch means | Averaging micro-batch means is wrong when sequence lengths vary | — | P0 | S |
-| TRN-6 | A full fine-tuning recipe on a small pretrained model | The baseline every other method is compared against | FND-2, IO-2 | P0 | S |
-| TRN-7 | `LoRALinear`: a frozen base weight plus a low-rank update, with merge and unmerge, adapter save and load using PEFT key names, and PEFT's defaults. Documentation follows "LoRA Without Regret": apply it to all layers, use about 10× the full fine-tuning learning rate | The main fine-tuning method | FND-2, IO-1 | P1 | M |
-| TRN-8 | LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters | Shows what the fine-tuning changed, per input. No other library does this | TRN-7 | P1 | M |
-| TRN-9 | LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact | Fine-tuning that is itself an interpretable subspace | FND-4 | P1 | M |
-| TRN-10 | IA³ (learned rescaling vectors) | Tiny and trivially explainable | FND-2 | P2 | S |
-| TRN-11 | Model diffing: relevance of the fine-tuned model minus relevance of the base model, plus an intruder-dimension check on the weights | Shows what a fine-tune changed across a dataset | TRN-8, FND-4 | P2 | M |
-| TRN-12 | Activation checkpointing per block. Off in explain mode, because LRP needs the cached activations | Memory for 1B-parameter models | — | P2 | M |
-| TRN-13 | rsLoRA, LoRA+ and DoRA | Small gains that a tuned learning rate often matches | TRN-7 | P2 | S–M |
-| TRN-14 | PiSSA, VeRA, AdaLoRA, GaLore, QLoRA, prefix and prompt tuning, BitFit, adapter layers, and 2025–26 LoRA variants | Low value per the 2026 variant study, or blocked by missing dtypes | TRN-7 | P3 | — |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| TRN-1 | Optimizer parameter groups, each with its own learning rate and weight decay | No weight decay on norms and biases; LoRA+ | FND-1 | P0 | S | Done, [#46](https://github.com/Joshuaweg/pulsatrix/pull/46) |
+| TRN-2 | AdamW (decoupled weight decay) and SGD with momentum and Nesterov | The default for transformer fine-tuning | TRN-1 | P0 | S | Done, [#47](https://github.com/Joshuaweg/pulsatrix/pull/47) |
+| TRN-3 | Global gradient-norm clipping | Stability at LoRA's higher learning rates | — | P0 | S | Done, [#48](https://github.com/Joshuaweg/pulsatrix/pull/48) |
+| TRN-4 | Learning-rate schedulers: warmup, cosine, linear, constant | Every published recipe assumes them | — | P0 | S | Done, [#49](https://github.com/Joshuaweg/pulsatrix/pull/49) |
+| TRN-5 | Gradient accumulation that divides by the total token count, not the mean of micro-batch means | Averaging micro-batch means is wrong when sequence lengths vary | — | P0 | S | Done, [#50](https://github.com/Joshuaweg/pulsatrix/pull/50) |
+| TRN-6 | A full fine-tuning recipe on a small pretrained model | The baseline every other method is compared against | FND-2, IO-2 | P0 | S | Done, [#51](https://github.com/Joshuaweg/pulsatrix/pull/51) (see below) |
+| TRN-7 | `LoRALinear`: a frozen base weight plus a low-rank update, with merge and unmerge, adapter save and load using PEFT key names, and PEFT's defaults. Documentation follows "LoRA Without Regret": apply it to all layers, use about 10× the full fine-tuning learning rate | The main fine-tuning method | FND-2, IO-1 | P1 | M | |
+| TRN-8 | LRP through LoRA that splits relevance between the base path and the adapter path. Document that the gamma and z+ rules give different results for merged and unmerged adapters | Shows what the fine-tuning changed, per input. No other library does this | TRN-7 | P1 | M | |
+| TRN-9 | LoReFT (representation fine-tuning) and LRP through it. The intervention is affine, so the epsilon rule is exact | Fine-tuning that is itself an interpretable subspace | FND-4 | P1 | M | |
+| TRN-10 | IA³ (learned rescaling vectors) | Tiny and trivially explainable | FND-2 | P2 | S | |
+| TRN-11 | Model diffing: relevance of the fine-tuned model minus relevance of the base model, plus an intruder-dimension check on the weights | Shows what a fine-tune changed across a dataset | TRN-8, FND-4 | P2 | M | |
+| TRN-12 | Activation checkpointing per block. Off in explain mode, because LRP needs the cached activations | Memory for 1B-parameter models | — | P2 | M | |
+| TRN-13 | rsLoRA, LoRA+ and DoRA | Small gains that a tuned learning rate often matches | TRN-7 | P2 | S–M | |
+| TRN-14 | PiSSA, VeRA, AdaLoRA, GaLore, QLoRA, prefix and prompt tuning, BitFit, adapter layers, and 2025–26 LoRA variants | Low value per the 2026 variant study, or blocked by missing dtypes | TRN-7 | P3 | — | |
+
+### How the TRN work departed from the plan
+
+- **TRN-3.** `ClipGradNorm` leaves the gradients unchanged when their norm is NaN or infinite, so
+  the caller can skip the step. PyTorch scales them anyway, which spreads the NaN.
+- **TRN-5** needed a batched token loss, which didn't exist. `TokenCrossEntropyLoss` reuses the
+  policy-gradient row kernels, with a weight of 1 per real token and 0 per padding token.
+- **TRN-6** fine-tunes a model it pretrains itself, because importing real pretrained models is
+  v1.2. It is per-token tagging rather than next-token prediction, because attention has no causal
+  mask. After the same budget, the pretrained model scores 0.985 on the new rule and the model
+  trained from scratch 0.862.
+
+### Follow-ups the TRN work surfaced
+
+| Follow-up | Belongs with |
+|---|---|
+| A causal attention mask, which next-token language-model training needs | LLM-1 |
+| Rerun the TRN-6 recipe on SmolLM2-135M | after IO-5 and LLM-6 |
+| Checkpointing an `LRScheduler` with the model (TRN-6 stores the step as metadata itself) | IO-2 follow-up |
 
 ## LLM: Running real language models
 
