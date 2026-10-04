@@ -13,6 +13,7 @@ var searchData=
   ['top_5findices_10',['top_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ae15578eb7386bf5525a2e603960909a7',1,'pulsatrix::PBTTruncationGroups']]],
   ['total_11',['total',['../structpulsatrix_1_1detail_1_1CpuTimes.html#a32395487b178325aa5b2250127422ab0',1,'pulsatrix::detail::CpuTimes']]],
   ['total_5fepochs_5ftrained_12',['total_epochs_trained',['../structpulsatrix_1_1ASHAResult.html#aa4e1c451a9b29d6967de3d1e4c317fed',1,'pulsatrix::ASHAResult::total_epochs_trained'],['../structpulsatrix_1_1HyperbandResult.html#acd40476a190257ab40522f8246dd0d55',1,'pulsatrix::HyperbandResult::total_epochs_trained'],['../structpulsatrix_1_1SuccessiveHalvingResult.html#aacc6eded912dbc423fbcc5c4f6d7649f',1,'pulsatrix::SuccessiveHalvingResult::total_epochs_trained']]],
-  ['trial_13',['trial',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a',1,'pulsatrix::detail::ASHACandidate']]],
-  ['type_14',['type',['../structpulsatrix_1_1NodeGene.html#a112e84f4b4f12e605da66760b07b2f5a',1,'pulsatrix::NodeGene']]]
+  ['trained_13',['trained',['../structpulsatrix_1_1NullModelComparison.html#ab102dcaa22b20af2e9603fca4c8d0048',1,'pulsatrix::NullModelComparison::trained'],['../structpulsatrix_1_1AttributionNullReport.html#af38bb8accff63416f018ad9dba9a65fb',1,'pulsatrix::AttributionNullReport::trained']]],
+  ['trial_14',['trial',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a',1,'pulsatrix::detail::ASHACandidate']]],
+  ['type_15',['type',['../structpulsatrix_1_1NodeGene.html#a112e84f4b4f12e605da66760b07b2f5a',1,'pulsatrix::NodeGene']]]
 ];

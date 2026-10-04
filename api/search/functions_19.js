@@ -11,13 +11,14 @@ var searchData=
   ['_7eiterabledataset_8',['~IterableDataset',['../classpulsatrix_1_1IterableDataset.html#a9c6792df2eecb7ee7685855fa54a800d',1,'pulsatrix::IterableDataset']]],
   ['_7emetricssink_9',['~MetricsSink',['../classpulsatrix_1_1MetricsSink.html#add45ab2d67ff49bb11f799833b17b6de',1,'pulsatrix::MetricsSink']]],
   ['_7emodule_10',['~Module',['../classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809',1,'pulsatrix::Module']]],
-  ['_7epbtresumabletrial_11',['~PBTResumableTrial',['../classpulsatrix_1_1PBTResumableTrial.html#a954876f98f763fb8c542c7eb938e13e4',1,'pulsatrix::PBTResumableTrial']]],
-  ['_7eplatformsources_12',['~PlatformSources',['../classpulsatrix_1_1detail_1_1PlatformSources.html#a121bf764792b041fc6b417ca5a9ef488',1,'pulsatrix::detail::PlatformSources']]],
-  ['_7eresumabletrial_13',['~ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html#af932576b9615280b8fc7d253c366e864',1,'pulsatrix::ResumableTrial']]],
-  ['_7esampler_14',['~Sampler',['../classpulsatrix_1_1Sampler.html#ad66a2ce7685160289151eca01299eef7',1,'pulsatrix::Sampler']]],
-  ['_7esystemmonitor_15',['~SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html#a3478b0acf4887f5425cdb842121bde97',1,'pulsatrix::SystemMonitor']]],
-  ['_7etensor_16',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
-  ['_7etexturecache_17',['~TextureCache',['../classpulsatrix_1_1TextureCache.html#a631a6a08f474232801eba06be1cd4e9b',1,'pulsatrix::TextureCache']]],
-  ['_7etransform_18',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]],
-  ['_7evizwindow_19',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
+  ['_7eparametersnapshot_11',['~ParameterSnapshot',['../classpulsatrix_1_1ParameterSnapshot.html#ad079dbec925d9ab264dffad2fc573a4a',1,'pulsatrix::ParameterSnapshot']]],
+  ['_7epbtresumabletrial_12',['~PBTResumableTrial',['../classpulsatrix_1_1PBTResumableTrial.html#a954876f98f763fb8c542c7eb938e13e4',1,'pulsatrix::PBTResumableTrial']]],
+  ['_7eplatformsources_13',['~PlatformSources',['../classpulsatrix_1_1detail_1_1PlatformSources.html#a121bf764792b041fc6b417ca5a9ef488',1,'pulsatrix::detail::PlatformSources']]],
+  ['_7eresumabletrial_14',['~ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html#af932576b9615280b8fc7d253c366e864',1,'pulsatrix::ResumableTrial']]],
+  ['_7esampler_15',['~Sampler',['../classpulsatrix_1_1Sampler.html#ad66a2ce7685160289151eca01299eef7',1,'pulsatrix::Sampler']]],
+  ['_7esystemmonitor_16',['~SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html#a3478b0acf4887f5425cdb842121bde97',1,'pulsatrix::SystemMonitor']]],
+  ['_7etensor_17',['~Tensor',['../classpulsatrix_1_1Tensor.html#ac2343e739ce1f79370db2101fe563367',1,'pulsatrix::Tensor']]],
+  ['_7etexturecache_18',['~TextureCache',['../classpulsatrix_1_1TextureCache.html#a631a6a08f474232801eba06be1cd4e9b',1,'pulsatrix::TextureCache']]],
+  ['_7etransform_19',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]],
+  ['_7evizwindow_20',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
 ];
