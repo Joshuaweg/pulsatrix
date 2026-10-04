@@ -16,10 +16,13 @@ var classpulsatrix_1_1CUDABackend =
     [ "avg_pool_forward", "classpulsatrix_1_1CUDABackend.html#a7edb02bc7e3bd09d5edad87567249052", null ],
     [ "axpby", "classpulsatrix_1_1CUDABackend.html#a8f7d5e329a5f586840e68a93106084c2", null ],
     [ "batch_norm_backward", "classpulsatrix_1_1CUDABackend.html#a1b0e808f45717f4d8b6cd810a801aff5", null ],
+    [ "batch_norm_eval_backward", "classpulsatrix_1_1CUDABackend.html#a3867c1025681193ad1bf076b826e007f", null ],
+    [ "batch_norm_eval_forward", "classpulsatrix_1_1CUDABackend.html#ad907be329acba103b7cc2dc761204476", null ],
     [ "batch_norm_forward", "classpulsatrix_1_1CUDABackend.html#a23102929a6a283ff9360f81a20f090bf", null ],
+    [ "batch_norm_update_running", "classpulsatrix_1_1CUDABackend.html#a7d89bd32e1636752d137083bfdeab8a8", null ],
     [ "bce_with_logits", "classpulsatrix_1_1CUDABackend.html#a64ce9cd8c8654c7b7e57d59821408758", null ],
     [ "bce_with_logits_grad", "classpulsatrix_1_1CUDABackend.html#a434421c123368353f5265c4210f3248c", null ],
-    [ "col2im_add", "classpulsatrix_1_1CUDABackend.html#add5380451caf0be447625d636bb84f67", null ],
+    [ "col2im_add", "classpulsatrix_1_1CUDABackend.html#ac8d974401169935fa30e9db8f2b9ab92", null ],
     [ "column_sums", "classpulsatrix_1_1CUDABackend.html#a1607101006760f0b78356b875c873095", null ],
     [ "copy", "classpulsatrix_1_1CUDABackend.html#a5bb1c9ef2779b382555f212de0f50567", null ],
     [ "copy_2d", "classpulsatrix_1_1CUDABackend.html#a9f307478d15f2087cefdf34c8c04142c", null ],
@@ -36,7 +39,7 @@ var classpulsatrix_1_1CUDABackend =
     [ "group_norm_backward", "classpulsatrix_1_1CUDABackend.html#a0e8e55829514c4fc48df409743381537", null ],
     [ "group_norm_forward", "classpulsatrix_1_1CUDABackend.html#a70c93a40ab4bab07208d598d61856463", null ],
     [ "gru_lrp_hprev", "classpulsatrix_1_1CUDABackend.html#a95e160f94f1807c18c2656fee3a1f2c4", null ],
-    [ "im2col", "classpulsatrix_1_1CUDABackend.html#acf9d28f43f273854be2fb6fd89009f97", null ],
+    [ "im2col", "classpulsatrix_1_1CUDABackend.html#ad9e2c43e91be28322f7f1fd66796d48a", null ],
     [ "layer_norm_backward", "classpulsatrix_1_1CUDABackend.html#ae1350285d7edf35a3fcd60da2da7e138", null ],
     [ "layer_norm_forward", "classpulsatrix_1_1CUDABackend.html#a1a9970194ff51a86032acc6cc358a810", null ],
     [ "logic_pointwise", "classpulsatrix_1_1CUDABackend.html#ac21bc124e803aeaf1fd597634a251a43", null ],
@@ -66,5 +69,6 @@ var classpulsatrix_1_1CUDABackend =
     [ "ssm_pass", "classpulsatrix_1_1CUDABackend.html#a3ea8a77ff98aecaae782c43f54a74666", null ],
     [ "sum", "classpulsatrix_1_1CUDABackend.html#ace871d117e488a8d748e5e262f09eb3b", null ],
     [ "tanh_gaussian_backward", "classpulsatrix_1_1CUDABackend.html#aca1edf6f7bcb910acea442d266ea98ed", null ],
-    [ "tanh_gaussian_forward", "classpulsatrix_1_1CUDABackend.html#a171b7ee9b859b3d6a52c3b521bc4403c", null ]
+    [ "tanh_gaussian_forward", "classpulsatrix_1_1CUDABackend.html#a171b7ee9b859b3d6a52c3b521bc4403c", null ],
+    [ "top_k_rows", "classpulsatrix_1_1CUDABackend.html#a16ed0b9945a55e12e6276d0b0fa20032", null ]
 ];

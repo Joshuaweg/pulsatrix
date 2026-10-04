@@ -1,4 +1,20 @@
 var searchData=
 [
-  ['uniformframesampletransform_0',['UniformFrameSampleTransform',['../classpulsatrix_1_1UniformFrameSampleTransform.html',1,'pulsatrix']]]
+  ['tanhgaussiangrad_0',['TanhGaussianGrad',['../structpulsatrix_1_1TanhGaussianGrad.html',1,'pulsatrix']]],
+  ['tanhgaussianpolicy_1',['TanhGaussianPolicy',['../classpulsatrix_1_1TanhGaussianPolicy.html',1,'pulsatrix']]],
+  ['tanhgaussiansample_2',['TanhGaussianSample',['../structpulsatrix_1_1TanhGaussianSample.html',1,'pulsatrix']]],
+  ['tensor_3',['Tensor',['../classpulsatrix_1_1Tensor.html',1,'pulsatrix']]],
+  ['term_4',['Term',['../classpulsatrix_1_1datalog_1_1Term.html',1,'pulsatrix::datalog']]],
+  ['termhash_5',['TermHash',['../structpulsatrix_1_1datalog_1_1TermHash.html',1,'pulsatrix::datalog']]],
+  ['textdataset_6',['TextDataset',['../classpulsatrix_1_1TextDataset.html',1,'pulsatrix']]],
+  ['texturecache_7',['TextureCache',['../classpulsatrix_1_1TextureCache.html',1,'pulsatrix']]],
+  ['tokenizer_8',['Tokenizer',['../classpulsatrix_1_1Tokenizer.html',1,'pulsatrix']]],
+  ['topkresult_9',['TopKResult',['../structpulsatrix_1_1TopKResult.html',1,'pulsatrix']]],
+  ['toyknowledgebase_10',['ToyKnowledgeBase',['../classpulsatrix_1_1ToyKnowledgeBase.html',1,'pulsatrix']]],
+  ['trainingdashboard_11',['TrainingDashboard',['../classpulsatrix_1_1TrainingDashboard.html',1,'pulsatrix']]],
+  ['trajectorybalanceloss_12',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
+  ['transform_13',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
+  ['transformdataset_14',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
+  ['transformerblock_15',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
+  ['trial_16',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
 ];

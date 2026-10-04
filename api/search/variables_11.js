@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['s_0',['s',['../structpulsatrix_1_1HyperbandBracket.html#abb725edab5253663817a81a110f50bea',1,'pulsatrix::HyperbandBracket::s'],['../structpulsatrix_1_1SsmPassArgs.html#a86acf88d33644ea4c410f5db448cc6ad',1,'pulsatrix::SsmPassArgs::s']]],
+  ['s_0',['s',['../structpulsatrix_1_1HyperbandBracket.html#abb725edab5253663817a81a110f50bea',1,'pulsatrix::HyperbandBracket::s'],['../structpulsatrix_1_1SVDResult.html#a4bc6dba8a43c2b6eff142e9451362573',1,'pulsatrix::SVDResult::s'],['../structpulsatrix_1_1SsmPassArgs.html#a86acf88d33644ea4c410f5db448cc6ad',1,'pulsatrix::SsmPassArgs::s']]],
   ['sample_5findex_1',['sample_index',['../structpulsatrix_1_1ValidationIssue.html#a7e9ea9c75ba69a37b1b8121e4854d3fd',1,'pulsatrix::ValidationIssue']]],
   ['sample_5frate_2',['sample_rate',['../structpulsatrix_1_1WavData.html#a3252af24e220e3f9fa36c450029679ee',1,'pulsatrix::WavData']]],
   ['scale_3',['scale',['../structpulsatrix_1_1RlRowArgs.html#acbf361a8a47eb84dc6569f34f9743dbe',1,'pulsatrix::RlRowArgs']]],
@@ -8,7 +8,7 @@ var searchData=
   ['scale_5fmin_5',['scale_min',['../structpulsatrix_1_1HeatmapColorScale.html#ac8962b376e6dc1977f16c617e7108137',1,'pulsatrix::HeatmapColorScale']]],
   ['seed_6',['seed',['../structpulsatrix_1_1LRPTarget.html#aafd16a403953266aba2fc68448428f66',1,'pulsatrix::LRPTarget']]],
   ['shuffle_7',['shuffle',['../structpulsatrix_1_1DataLoaderOptions.html#a7699e789c8a5cb60d329965f6d70285a',1,'pulsatrix::DataLoaderOptions']]],
-  ['shuffle_5fseed_8',['shuffle_seed',['../structpulsatrix_1_1DataLoaderOptions.html#a901dad9331f7b642dac88c8197b6fdd2',1,'pulsatrix::DataLoaderOptions']]],
+  ['shuffle_5fseed_8',['shuffle_seed',['../structpulsatrix_1_1DataLoaderOptions.html#a37ba0a3426c5d2a60ee1e66d4994c9c3',1,'pulsatrix::DataLoaderOptions']]],
   ['sigma_9',['sigma',['../structpulsatrix_1_1CMAESState.html#a8aa21589dba05a6e8b1fdc0bee7aa1bb',1,'pulsatrix::CMAESState']]],
   ['species_10',['species',['../structpulsatrix_1_1SpeciesAssignment.html#a778ff84049c60fab8cfa48176aa234b5',1,'pulsatrix::SpeciesAssignment']]],
   ['stability_11',['stability',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a87231494ea921edd1b7579addef4c50f',1,'pulsatrix::ExplanationScoreCard::Input']]],
@@ -16,7 +16,9 @@ var searchData=
   ['std_5fdev_13',['std_dev',['../structpulsatrix_1_1FieldStatistics.html#a2b413581d3a165637bde3a9da6b0ce1c',1,'pulsatrix::FieldStatistics']]],
   ['step_14',['step',['../structpulsatrix_1_1MetricRecord.html#a5fe453b24af022d273c878aeda0ede88',1,'pulsatrix::MetricRecord']]],
   ['steps_15',['steps',['../structpulsatrix_1_1ScalarSeries.html#a5fde697796d2d474acba677283c12d30',1,'pulsatrix::ScalarSeries']]],
-  ['sum_5flog_5fpb_16',['sum_log_pb',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae8231cbd2a73c60f9c3041f28f1c7767',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['sum_5flog_5fpf_17',['sum_log_pf',['../structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['system_5fcpu_18',['system_cpu',['../structpulsatrix_1_1detail_1_1RawReading.html#a4c3598368c1f33ffb51e0d4781c23dda',1,'pulsatrix::detail::RawReading']]]
+  ['stride_5fh_16',['stride_h',['../structpulsatrix_1_1ConvGeometry.html#a8645a4ca83c4bd6c5d07150ca2874b86',1,'pulsatrix::ConvGeometry']]],
+  ['stride_5fw_17',['stride_w',['../structpulsatrix_1_1ConvGeometry.html#a3b57003c7aca0f87718b2964bd792761',1,'pulsatrix::ConvGeometry']]],
+  ['sum_5flog_5fpb_18',['sum_log_pb',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae8231cbd2a73c60f9c3041f28f1c7767',1,'pulsatrix::GFlowNetTrajectory']]],
+  ['sum_5flog_5fpf_19',['sum_log_pf',['../structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc',1,'pulsatrix::GFlowNetTrajectory']]],
+  ['system_5fcpu_20',['system_cpu',['../structpulsatrix_1_1detail_1_1RawReading.html#a4c3598368c1f33ffb51e0d4781c23dda',1,'pulsatrix::detail::RawReading']]]
 ];

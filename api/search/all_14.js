@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['u_0',['u',['../classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d',1,'pulsatrix::RWKVModule']]],
+  ['u_0',['u',['../structpulsatrix_1_1SVDResult.html#a83f441fd65542940c39bfa22ef015305',1,'pulsatrix::SVDResult::u'],['../classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d',1,'pulsatrix::RWKVModule::u() const']]],
   ['u_5fgrad_1',['u_grad',['../classpulsatrix_1_1RWKVModule.html#a73f07e3596bdc63240a5fda83eabc248',1,'pulsatrix::RWKVModule']]],
   ['uniformcrossover_2',['UniformCrossover',['../namespacepulsatrix.html#a10dd7a145810da84ac169f97e49fcd33',1,'pulsatrix']]],
   ['uniformcrossoverbymask_3',['UniformCrossoverByMask',['../namespacepulsatrix.html#a75813b858836280a5ecb4bb0a7269ed9',1,'pulsatrix']]],

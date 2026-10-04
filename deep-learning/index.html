@@ -408,6 +408,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reproducibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freezing-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Freezing parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#choosing-a-normalization-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1551,6 +1573,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reproducibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#freezing-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Freezing parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#choosing-a-normalization-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1619,7 +1663,8 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
 <li><strong>Layers</strong>: <code>LinearModule</code>, <code>Conv2DModule</code>, <code>ReluModule</code>, <code>FlattenModule</code>,
   <code>SequentialModule</code>, <code>DropoutModule</code>, <code>EmbeddingModule</code>, <code>ResidualModule</code>; normalization
   (<code>LayerNormModule</code>/<code>RMSNormModule</code>/<code>GroupNormModule</code>/<code>BatchNormModule</code>); pooling
-  (<code>MaxPool2DModule</code>/<code>AvgPool2DModule</code>)</li>
+  (<code>MaxPool2DModule</code>/<code>AvgPool2DModule</code>). <code>Conv2DModule</code> takes an optional <code>stride</code> and zero
+  <code>padding</code>, as in <code>torch.nn.Conv2d</code>, and every LRP rule handles both.</li>
 <li><strong>Sequence &amp; attention</strong>: <code>RNNModule</code>/<code>LSTMModule</code>/<code>GRUModule</code>, <code>SoftmaxModule</code>,
   <code>RoPEModule</code>, <code>MultiHeadAttentionModule</code>, <code>SwiGLUModule</code>, <code>TransformerBlock</code>,
   <code>MambaModule</code>, <code>RWKVModule</code>, <code>RetNetModule</code></li>
@@ -1628,11 +1673,21 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
 <li><strong>Generative building blocks</strong>: <code>Reparameterize</code> (VAE), <code>NoiseSchedule</code> and
   <code>SinusoidalTimestepEmbedding()</code> (diffusion)</li>
 <li><strong>Training utilities</strong>: <code>MetricsSink</code>/<code>NoOpMetricsSink</code> (where <code>train_step</code> logs its loss)</li>
+<li><strong>Selection</strong>: <code>top_k()</code>, the k largest or smallest entries of every row along the last
+  dimension, with their indices, on any device. NaN ranks above every number and ties keep the
+  lower index first, so every backend selects the same entries in the same order.</li>
+<li><strong>Matrix decompositions</strong> (CPU, for matrices up to a few hundred wide): <code>SymmetricEigen</code>,
+  <code>PowerIteration</code>, <code>QR</code> and <code>SVD</code>, the building blocks for PCA, stable rank and orthonormal
+  projections. Vector signs are fixed (each vector's largest entry is positive) and values come
+  largest first, so the same matrix always gives the same answer.</li>
 <li><strong>Ready-made examples</strong>: <code>XorNetwork</code> (a tiny MLP that learns XOR), <code>MnistConvNet</code> (a
   Conv2D MNIST classifier) and <code>MnistIdxLoader</code> (reads the MNIST IDX files)</li>
 </ul>
 <p>The CPU backend is always built. To build the GPU backends, configure CMake with
 <code>-DPULSATRIX_ENABLE_CUDA=ON</code> or <code>-DPULSATRIX_ENABLE_HIP=ON</code>.</p>
+<p>Every layer and loss checks that the tensors it's given live on its own device, and throws
+<code>std::invalid_argument</code> if not; move a tensor first with <code>Tensor::to()</code>. <code>EmbeddingModule</code> is the
+exception: it accepts its indices from any device.</p>
 <p>Full API reference: <a href="../api/group__dl__modules.html">Doxygen: Deep Learning Modules and Layers</a></p>
 <h2 id="how-to-implement">How to implement<a class="headerlink" href="#how-to-implement" title="Permanent link">&para;</a></h2>
 <h3 id="building-and-training-a-small-network">Building and training a small network<a class="headerlink" href="#building-and-training-a-small-network" title="Permanent link">&para;</a></h3>
@@ -1670,16 +1725,47 @@ members (see <code>include/pulsatrix/xor_training_example.hpp</code>). <code>for
 </ol>
 <p>Runnable version: <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp"><code>examples/xor_demo.cpp</code></a>
 (CMake target <code>xor_demo</code>). See also the <a href="../recipes/deep-learning/xor_training/">recipe</a>.</p>
+<h3 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h3>
+<p>Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
+<code>set_seed</code> sets one global seed (default 0). Anything built without its own seed, such as a
+<code>DropoutModule</code>, <code>LinearProbe</code>, <code>SparseAutoencoder</code> or a shuffling <code>DataLoader</code>, draws a distinct
+seed from it in construction order:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/determinism.hpp"</span>
+
+<span class="n">set_seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">);</span><span class="w">  </span><span class="c1">// same seed + same construction order = same weights, masks and shuffles</span>
+<span class="n">DropoutModule</span><span class="w"> </span><span class="nf">a</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">),</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// different masks, both reproducible</span>
+<span class="n">DropoutModule</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">7</span><span class="p">);</span><span class="w">           </span><span class="c1">// an explicit seed ignores the global one</span>
+</code></pre></div>
+<p>Deterministic mode is on by default (<code>set_deterministic(false)</code> turns it off). pulsatrix's own
+kernels use no atomics, so they always give the same result. In deterministic mode the GPU
+backends also forbid atomics in hipBLAS and cuBLAS, so matrix products are reproducible too.
+Random draws that use standard-library distributions (<code>std::normal_distribution</code> and friends)
+are reproducible on one platform, but not between libstdc++ and MSVC.</p>
+<h3 id="freezing-parameters">Freezing parameters<a class="headerlink" href="#freezing-parameters" title="Permanent link">&para;</a></h3>
+<p>Every parameter has a name (<code>named_parameters()</code>), and <code>set_requires_grad</code> freezes or unfreezes
+parameters by name. A name selects that parameter and everything under it:</p>
+<div class="highlight"><pre><span></span><code><span class="n">TransformerBlock</span><span class="w"> </span><span class="nf">block</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">block</span><span class="p">.</span><span class="n">set_requires_grad</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">              </span><span class="c1">// freeze everything</span>
+<span class="n">block</span><span class="p">.</span><span class="n">set_requires_grad</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="s">"mha.q_proj"</span><span class="p">);</span><span class="w">  </span><span class="c1">// then train only the query projection</span>
+</code></pre></div>
+<p>A frozen parameter is never changed by <code>SGDOptimizer</code> or <code>AdamOptimizer</code>, and <code>backward()</code>
+doesn't add to its gradient. The gradient passed back to the previous layer is exactly the same
+as without freezing. <code>LinearModule</code>, <code>Conv2DModule</code> and <code>EmbeddingModule</code> skip computing a
+frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
+nothing throws <code>std::invalid_argument</code>, so a typo can't leave the model silently trainable.</p>
 <h3 id="choosing-a-normalization-layer">Choosing a normalization layer<a class="headerlink" href="#choosing-a-normalization-layer" title="Permanent link">&para;</a></h3>
 <p><code>LayerNormModule</code>, <code>RMSNormModule</code>, <code>GroupNormModule</code> and <code>BatchNormModule</code> all implement the
 same <code>Module</code> contract (<code>forward()</code>, <code>backward()</code>, <code>propagate_relevance()</code>,
-<code>named_parameters()</code>). That makes them interchangeable in a <code>SequentialModule</code>. Pick one by what it normalizes over:</p>
+<code>named_parameters()</code>). That makes them interchangeable in a <code>SequentialModule</code>. Pick one by
+what it normalizes over:</p>
 <ul>
 <li><code>LayerNormModule</code> and <code>RMSNormModule</code>: each row's features (the last dimension).
   RMSNorm skips the mean-centering.</li>
 <li><code>GroupNormModule</code>: groups of channels, per example.</li>
-<li><code>BatchNormModule</code>: each channel across the whole batch and spatial dimensions. It has no
-  running statistics or eval mode; it always uses the current batch.</li>
+<li><code>BatchNormModule</code>: each channel across the whole batch and spatial dimensions. In training
+  mode it uses the current batch and updates running statistics (PyTorch's rule, momentum 0.1).
+  After <code>set_training(false)</code> it uses the running statistics, so each sample's output no longer
+  depends on the rest of its batch. Switch to eval mode before explaining a model.</li>
 </ul>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <ul>

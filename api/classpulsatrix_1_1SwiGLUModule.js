@@ -2,6 +2,7 @@ var classpulsatrix_1_1SwiGLUModule =
 [
     [ "SwiGLUModule", "classpulsatrix_1_1SwiGLUModule.html#a2d03328b608d219a5345599791fa4c0b", null ],
     [ "backward", "classpulsatrix_1_1SwiGLUModule.html#aabebe9bd5eb5e02e33ad0fecbd635492", null ],
+    [ "compute_device", "classpulsatrix_1_1SwiGLUModule.html#a24c800df4d2674cc4ee49afc3cb1a057", null ],
     [ "d_ff", "classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54", null ],
     [ "d_model", "classpulsatrix_1_1SwiGLUModule.html#abeed20e92962a694223e738f03668227", null ],
     [ "down_proj", "classpulsatrix_1_1SwiGLUModule.html#adbcbd3b22b47dd4ccecfc9907d4dc07a", null ],

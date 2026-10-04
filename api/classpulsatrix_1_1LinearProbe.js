@@ -1,6 +1,7 @@
 var classpulsatrix_1_1LinearProbe =
 [
-    [ "LinearProbe", "classpulsatrix_1_1LinearProbe.html#a14a3d5bc95c1c478a9e85ace4244f125", null ],
+    [ "LinearProbe", "classpulsatrix_1_1LinearProbe.html#a0397132512a316617933cce38cd02dbc", null ],
+    [ "LinearProbe", "classpulsatrix_1_1LinearProbe.html#af15297c970af954da6f130722b34d9f9", null ],
     [ "accuracy", "classpulsatrix_1_1LinearProbe.html#afea4b09549b8592980c96147d6cf1405", null ],
     [ "activation_dim", "classpulsatrix_1_1LinearProbe.html#a18aaf9a6f284fbde3bd164681c0eaa2f", null ],
     [ "classifier", "classpulsatrix_1_1LinearProbe.html#af6f05e1bc6e671a5a6fba1173a7aff13", null ],

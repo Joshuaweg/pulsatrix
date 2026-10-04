@@ -8,6 +8,7 @@ var classpulsatrix_1_1GRUModule =
     [ "bias_r_grad", "classpulsatrix_1_1GRUModule.html#a3e2c9940de80830b1119f36dfd2e5426", null ],
     [ "bias_z", "classpulsatrix_1_1GRUModule.html#a3fde723341f2167dafd1fe0431245a8f", null ],
     [ "bias_z_grad", "classpulsatrix_1_1GRUModule.html#a053c368baa9a134bae35771791174ff5", null ],
+    [ "compute_device", "classpulsatrix_1_1GRUModule.html#aeb015ccd9d3f35b902f9839b724e8803", null ],
     [ "forward_impl", "classpulsatrix_1_1GRUModule.html#a073a46b0c5f0d742237febd6a72f1c0c", null ],
     [ "named_parameters", "classpulsatrix_1_1GRUModule.html#afd8c7946865bb0947e9bc15a4a50781f", null ],
     [ "op_type", "classpulsatrix_1_1GRUModule.html#ac2d883bd2214de50c8984aa3ee7e7934", null ],

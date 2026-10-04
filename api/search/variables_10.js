@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['r_0',['r',['../structpulsatrix_1_1RgbColor.html#a40c72ad72648c0fccdbd93b03faca093',1,'pulsatrix::RgbColor']]],
+  ['r_0',['r',['../structpulsatrix_1_1QRResult.html#aeac6a8b4c200e79f2fc2fb41e1895474',1,'pulsatrix::QRResult::r'],['../structpulsatrix_1_1RgbColor.html#a40c72ad72648c0fccdbd93b03faca093',1,'pulsatrix::RgbColor::r']]],
   ['ref_1',['ref',['../structpulsatrix_1_1NamedParamRef.html#af2a7e12f96dfbc9c738b8d54ecd0fa6d',1,'pulsatrix::NamedParamRef']]],
   ['relevance_5fin_5fsum_2',['relevance_in_sum',['../structpulsatrix_1_1ConservationResult.html#a5b06706b66488e4f600032856347b9d1',1,'pulsatrix::ConservationResult']]],
   ['relevance_5fout_5fsum_3',['relevance_out_sum',['../structpulsatrix_1_1ConservationResult.html#a17301dc10e6817ddefbf9f16d9ab9da5',1,'pulsatrix::ConservationResult']]],

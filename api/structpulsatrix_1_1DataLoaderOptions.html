@@ -111,8 +111,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:adf09df853ba54564e67dfce8c56a78a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7699e789c8a5cb60d329965f6d70285a" id="r_a7699e789c8a5cb60d329965f6d70285a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DataLoaderOptions.html#a7699e789c8a5cb60d329965f6d70285a">shuffle</a> = false</td></tr>
 <tr class="separator:a7699e789c8a5cb60d329965f6d70285a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a901dad9331f7b642dac88c8197b6fdd2" id="r_a901dad9331f7b642dac88c8197b6fdd2"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DataLoaderOptions.html#a901dad9331f7b642dac88c8197b6fdd2">shuffle_seed</a> = 42</td></tr>
-<tr class="separator:a901dad9331f7b642dac88c8197b6fdd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37ba0a3426c5d2a60ee1e66d4994c9c3" id="r_a37ba0a3426c5d2a60ee1e66d4994c9c3"><td class="memItemLeft" align="right" valign="top">std::optional&lt; unsigned &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DataLoaderOptions.html#a37ba0a3426c5d2a60ee1e66d4994c9c3">shuffle_seed</a></td></tr>
+<tr class="memdesc:a37ba0a3426c5d2a60ee1e66d4994c9c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shuffle seed. Unset draws one from the global seed stream (<a class="el" href="namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b" title="The next seed in the global stream: a distinct, well-mixed 64-bit value per call, reproducible for a ...">next_seed()</a>, FND-7) when the loader is built, so loaders don't all share one shuffle order.  <br /></td></tr>
+<tr class="separator:a37ba0a3426c5d2a60ee1e66d4994c9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29bea0954a5203ba9b20f473c1dc8a05" id="r_a29bea0954a5203ba9b20f473c1dc8a05"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DataLoaderOptions.html#a29bea0954a5203ba9b20f473c1dc8a05">num_workers</a> = 0</td></tr>
 <tr class="memdesc:a29bea0954a5203ba9b20f473c1dc8a05"><td class="mdescLeft">&#160;</td><td class="mdescRight">0 = fully synchronous, no threads spawned (this phase's only exercised path).  <br /></td></tr>
 <tr class="separator:a29bea0954a5203ba9b20f473c1dc8a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,17 +213,19 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a901dad9331f7b642dac88c8197b6fdd2" name="a901dad9331f7b642dac88c8197b6fdd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a901dad9331f7b642dac88c8197b6fdd2">&#9670;&#160;</a></span>shuffle_seed</h2>
+<a id="a37ba0a3426c5d2a60ee1e66d4994c9c3" name="a37ba0a3426c5d2a60ee1e66d4994c9c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37ba0a3426c5d2a60ee1e66d4994c9c3">&#9670;&#160;</a></span>shuffle_seed</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned pulsatrix::DataLoaderOptions::shuffle_seed = 42</td>
+          <td class="memname">std::optional&lt;unsigned&gt; pulsatrix::DataLoaderOptions::shuffle_seed</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Shuffle seed. Unset draws one from the global seed stream (<a class="el" href="namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b" title="The next seed in the global stream: a distinct, well-mixed 64-bit value per call, reproducible for a ...">next_seed()</a>, FND-7) when the loader is built, so loaders don't all share one shuffle order. </p>
 
 </div>
 </div>

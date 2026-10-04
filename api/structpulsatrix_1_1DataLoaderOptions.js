@@ -6,5 +6,5 @@ var structpulsatrix_1_1DataLoaderOptions =
     [ "num_workers", "structpulsatrix_1_1DataLoaderOptions.html#a29bea0954a5203ba9b20f473c1dc8a05", null ],
     [ "prefetch_batches", "structpulsatrix_1_1DataLoaderOptions.html#a7ceefe8b1ecafbaef471af7126c0b809", null ],
     [ "shuffle", "structpulsatrix_1_1DataLoaderOptions.html#a7699e789c8a5cb60d329965f6d70285a", null ],
-    [ "shuffle_seed", "structpulsatrix_1_1DataLoaderOptions.html#a901dad9331f7b642dac88c8197b6fdd2", null ]
+    [ "shuffle_seed", "structpulsatrix_1_1DataLoaderOptions.html#a37ba0a3426c5d2a60ee1e66d4994c9c3", null ]
 ];

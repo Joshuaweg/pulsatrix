@@ -252,12 +252,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0f99c3bf8321cec4e22b56e3a3ded9e3" id="r_a0f99c3bf8321cec4e22b56e3a3ded9e3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a0f99c3bf8321cec4e22b56e3a3ded9e3">aggregator_lrp</a> (const float *x, const float *mean_pow, const float *r_out, float *r_in, size_t n, size_t cols, float p, float eps)=0</td></tr>
 <tr class="memdesc:a0f99c3bf8321cec4e22b56e3a3ded9e3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis....">AggregatorModule</a> epsilon rule, per column.  <br /></td></tr>
 <tr class="separator:a0f99c3bf8321cec4e22b56e3a3ded9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae82d916f6a34883c2ee1a9b995b4f288" id="r_ae82d916f6a34883c2ee1a9b995b4f288"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ae82d916f6a34883c2ee1a9b995b4f288">im2col</a> (const float *in, float *col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)=0</td></tr>
-<tr class="memdesc:ae82d916f6a34883c2ee1a9b995b4f288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches (stride 1, no padding).  <br /></td></tr>
-<tr class="separator:ae82d916f6a34883c2ee1a9b995b4f288"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae06a09bb2c8ff1af025db51c9b7569f" id="r_aae06a09bb2c8ff1af025db51c9b7569f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#aae06a09bb2c8ff1af025db51c9b7569f">col2im_add</a> (const float *col, float *out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)=0</td></tr>
-<tr class="memdesc:aae06a09bb2c8ff1af025db51c9b7569f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folds (n, c*kh*kw, out_h*out_w) patches back, adding into out (n, c, h, w).  <br /></td></tr>
-<tr class="separator:aae06a09bb2c8ff1af025db51c9b7569f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad42295ced5dffa73a26250d77fe3da97" id="r_ad42295ced5dffa73a26250d77fe3da97"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ad42295ced5dffa73a26250d77fe3da97">im2col</a> (const float *in, float *col, size_t n, size_t c, size_t h, size_t w, const <a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a> &amp;geometry)=0</td></tr>
+<tr class="memdesc:ad42295ced5dffa73a26250d77fe3da97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches, with out_h = (h + 2*pad_h - kh) / stride_h + 1 (likewise out_w). Taps that fall in the zero padding read 0.  <br /></td></tr>
+<tr class="separator:ad42295ced5dffa73a26250d77fe3da97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0597f227245271c94e81cd0cfae314b" id="r_ae0597f227245271c94e81cd0cfae314b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ae0597f227245271c94e81cd0cfae314b">col2im_add</a> (const float *col, float *out, size_t n, size_t c, size_t h, size_t w, const <a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a> &amp;geometry)=0</td></tr>
+<tr class="memdesc:ae0597f227245271c94e81cd0cfae314b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folds (n, c*kh*kw, out_h*out_w) patches back, adding into out (n, c, h, w).  <br /></td></tr>
+<tr class="separator:ae0597f227245271c94e81cd0cfae314b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32e266a78258691ede4444063ce9904d" id="r_a32e266a78258691ede4444063ce9904d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a32e266a78258691ede4444063ce9904d">add_channel_vector</a> (const float *in, const float *vec, float *out, size_t n, size_t c, size_t inner)=0</td></tr>
 <tr class="memdesc:a32e266a78258691ede4444063ce9904d"><td class="mdescLeft">&#160;</td><td class="mdescRight">out[i][ch][k] = in[i][ch][k] + vec[ch] over (n, c, inner). out may alias in.  <br /></td></tr>
 <tr class="separator:a32e266a78258691ede4444063ce9904d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -288,6 +288,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ce9fc8667dc5670a849771098bc1163" id="r_a4ce9fc8667dc5670a849771098bc1163"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a4ce9fc8667dc5670a849771098bc1163">batch_norm_backward</a> (const float *grad_out, const float *gamma, const float *xhat, const float *channel_std, float *grad_in, float *gamma_grad, float *beta_grad, size_t n, size_t c, size_t spatial)=0</td></tr>
 <tr class="memdesc:a4ce9fc8667dc5670a849771098bc1163"><td class="mdescLeft">&#160;</td><td class="mdescRight">BatchNorm input gradient plus this call's gamma/beta gradients (overwritten, per channel).  <br /></td></tr>
 <tr class="separator:a4ce9fc8667dc5670a849771098bc1163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae07f326e69208e361844b1e5ff772222" id="r_ae07f326e69208e361844b1e5ff772222"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ae07f326e69208e361844b1e5ff772222">batch_norm_update_running</a> (const float *in, float *running_mean, float *running_var, size_t n, size_t c, size_t spatial, float momentum)=0</td></tr>
+<tr class="memdesc:ae07f326e69208e361844b1e5ff772222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folds this batch's per-channel mean and unbiased variance into the running ones (PyTorch's momentum rule; the variance is kept when a channel has one value). FND-5.  <br /></td></tr>
+<tr class="separator:ae07f326e69208e361844b1e5ff772222"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab3caff48bb9647c69ac064baecd5820" id="r_aab3caff48bb9647c69ac064baecd5820"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#aab3caff48bb9647c69ac064baecd5820">batch_norm_eval_forward</a> (const float *in, const float *gamma, const float *beta, const float *running_mean, const float *running_var, float *xhat, float *out, float *channel_std, size_t n, size_t c, size_t spatial, float eps)=0</td></tr>
+<tr class="memdesc:aab3caff48bb9647c69ac064baecd5820"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eval-mode BatchNorm from the running statistics: a per-channel affine map. FND-5.  <br /></td></tr>
+<tr class="separator:aab3caff48bb9647c69ac064baecd5820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6706a7221ada0941f6f0d71bec2f8a6" id="r_af6706a7221ada0941f6f0d71bec2f8a6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#af6706a7221ada0941f6f0d71bec2f8a6">batch_norm_eval_backward</a> (const float *grad_out, const float *gamma, const float *xhat, const float *channel_std, float *grad_in, float *gamma_grad, float *beta_grad, size_t n, size_t c, size_t spatial)=0</td></tr>
+<tr class="memdesc:af6706a7221ada0941f6f0d71bec2f8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eval-mode BatchNorm gradient: grad_out * gamma / std, plus gamma/beta gradients (overwritten, per channel). FND-5.  <br /></td></tr>
+<tr class="separator:af6706a7221ada0941f6f0d71bec2f8a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac999ba54cd93f4e923cfc145f3057359" id="r_ac999ba54cd93f4e923cfc145f3057359"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#ac999ba54cd93f4e923cfc145f3057359">group_norm_forward</a> (const float *in, const float *gamma, const float *beta, float *xhat, float *out, float *group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps)=0</td></tr>
 <tr class="memdesc:ac999ba54cd93f4e923cfc145f3057359"><td class="mdescLeft">&#160;</td><td class="mdescRight">GroupNorm per (example, group) of (n, c, spatial) data; group_std is (n, num_groups).  <br /></td></tr>
 <tr class="separator:ac999ba54cd93f4e923cfc145f3057359"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -312,6 +321,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acddc3cd836958deac213a50a9dcf757a" id="r_acddc3cd836958deac213a50a9dcf757a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#acddc3cd836958deac213a50a9dcf757a">rl_rows</a> (<a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">RlRowOp</a> op, const <a class="el" href="structpulsatrix_1_1RlRowArgs.html">RlRowArgs</a> &amp;args)=0</td></tr>
 <tr class="memdesc:acddc3cd836958deac213a50a9dcf757a"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots).  <br /></td></tr>
 <tr class="separator:acddc3cd836958deac213a50a9dcf757a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a703e84656eb137fd2b963624daa26b87" id="r_a703e84656eb137fd2b963624daa26b87"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a703e84656eb137fd2b963624daa26b87">top_k_rows</a> (const float *in, float *values, float *indices, size_t rows, size_t cols, size_t k, bool largest)=0</td></tr>
+<tr class="memdesc:a703e84656eb137fd2b963624daa26b87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per row of a row-major (rows, cols) matrix: the k largest (or smallest) values in rank order into <code>values</code> (rows, k), and their column indices into <code>indices</code> (rows, k) as whole-number floats.  <br /></td></tr>
+<tr class="separator:a703e84656eb137fd2b963624daa26b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Vendor-agnostic compute/memory backend. <a class="el" href="classpulsatrix_1_1CPUBackend.html" title="CPU-resident DeviceBackend implementation. Reference implementation every other backend (CUDABackend,...">CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a> (Phase 1.5), and <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a> (Phase 1.6) all implement this contract; <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> and <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> depend only on this interface, never on a concrete backend's types. </p>
@@ -1231,6 +1243,194 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af6706a7221ada0941f6f0d71bec2f8a6" name="af6706a7221ada0941f6f0d71bec2f8a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6706a7221ada0941f6f0d71bec2f8a6">&#9670;&#160;</a></span>batch_norm_eval_backward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::batch_norm_eval_backward </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>grad_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>gamma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>xhat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>channel_std</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>grad_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>gamma_grad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>beta_grad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>spatial</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Eval-mode BatchNorm gradient: grad_out * gamma / std, plus gamma/beta gradients (overwritten, per channel). FND-5. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a90b4f23787352503c206eeb7e7478512">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a3867c1025681193ad1bf076b826e007f">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a0888d12c848fdc365bb1eb86ef7f8bf1">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="aab3caff48bb9647c69ac064baecd5820" name="aab3caff48bb9647c69ac064baecd5820"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab3caff48bb9647c69ac064baecd5820">&#9670;&#160;</a></span>batch_norm_eval_forward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::batch_norm_eval_forward </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>gamma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>beta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>running_mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>running_var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>xhat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>channel_std</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>spatial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Eval-mode BatchNorm from the running statistics: a per-channel affine map. FND-5. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ad645d87bf8960537b28cc8883f61abc0">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#ad907be329acba103b7cc2dc761204476">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a617f5a002e07d873b3687109bff15283">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
 <a id="aab621bc52e08f3591e3310f643f82af5" name="aab621bc52e08f3591e3310f643f82af5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab621bc52e08f3591e3310f643f82af5">&#9670;&#160;</a></span>batch_norm_forward()</h2>
 
@@ -1316,6 +1516,76 @@ Public Member Functions</h2></td></tr>
 <p>BatchNorm over (n, spatial) per channel of (n, c, spatial) data. </p>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ad39371da02c93af3533229027d0ef02a">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a23102929a6a283ff9360f81a20f090bf">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a136580585141344cc91039c6b78559e8">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="ae07f326e69208e361844b1e5ff772222" name="ae07f326e69208e361844b1e5ff772222"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae07f326e69208e361844b1e5ff772222">&#9670;&#160;</a></span>batch_norm_update_running()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::batch_norm_update_running </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>running_mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>running_var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>spatial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>momentum</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Folds this batch's per-channel mean and unbiased variance into the running ones (PyTorch's momentum rule; the variance is kept when a channel has one value). FND-5. </p>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a0570ae264edd058f4d4d7892109422c1">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a7d89bd32e1636752d137083bfdeab8a8">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a204f12c186cea0c8f5e7c931be22cb2c">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>
@@ -1430,8 +1700,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aae06a09bb2c8ff1af025db51c9b7569f" name="aae06a09bb2c8ff1af025db51c9b7569f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae06a09bb2c8ff1af025db51c9b7569f">&#9670;&#160;</a></span>col2im_add()</h2>
+<a id="ae0597f227245271c94e81cd0cfae314b" name="ae0597f227245271c94e81cd0cfae314b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0597f227245271c94e81cd0cfae314b">&#9670;&#160;</a></span>col2im_add()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1478,14 +1748,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kh</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kw</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a> &amp;&#160;</td>
+          <td class="paramname"><em>geometry</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1503,7 +1767,7 @@ Public Member Functions</h2></td></tr>
 <p>Folds (n, c*kh*kw, out_h*out_w) patches back, adding into out (n, c, h, w). </p>
 <dl class="section note"><dt>Note</dt><dd>A gather: one GPU thread per output pixel sums its window contributions in the same order the CPU scatter loop adds them &ndash; deterministic, no atomics. </dd></dl>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ad8cb9519f83b6423fbecce7093fb1af6">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#add5380451caf0be447625d636bb84f67">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#ad920714c56652279b50670492f1c70be">pulsatrix::HIPBackend</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a821dd50321167a7e6c0623e727a8ca89">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#ac8d974401169935fa30e9db8f2b9ab92">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#af63db9e4a5973aced4b843cf02db9ec8">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>
@@ -2552,8 +2816,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae82d916f6a34883c2ee1a9b995b4f288" name="ae82d916f6a34883c2ee1a9b995b4f288"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae82d916f6a34883c2ee1a9b995b4f288">&#9670;&#160;</a></span>im2col()</h2>
+<a id="ad42295ced5dffa73a26250d77fe3da97" name="ad42295ced5dffa73a26250d77fe3da97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad42295ced5dffa73a26250d77fe3da97">&#9670;&#160;</a></span>im2col()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2600,14 +2864,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kh</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kw</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a> &amp;&#160;</td>
+          <td class="paramname"><em>geometry</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2622,9 +2880,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches (stride 1, no padding). </p>
+<p>Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches, with out_h = (h + 2*pad_h - kh) / stride_h + 1 (likewise out_w). Taps that fall in the zero padding read 0. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#afe16fbb919c7763c3995873ce5ee425c">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#acf9d28f43f273854be2fb6fd89009f97">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#adbea9d15444c293ef38f92ac8c3af805">pulsatrix::HIPBackend</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a4abbc28f41bae1390956124821a0c6a1">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#ad9e2c43e91be28322f7f1fd66796d48a">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a56ad30d9e638846991f009a8abda266e">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>
@@ -4671,6 +4929,79 @@ Public Member Functions</h2></td></tr>
 <p><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html" title="SAC&#39;s reparameterized, tanh-squashed Gaussian policy sample (Haarnoja et al. 2018,...">TanhGaussianPolicy</a> sampling per (rows, cols) row: action = tanh(mean + exp(log_std)*eps), std_cache = exp(log_std), log_prob[r] accumulated in double. </p>
 
 <p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a4c2b28cadf9a10458aabaa4a2d7462f6">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a171b7ee9b859b3d6a52c3b521bc4403c">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a397a156e54f08ee5ecc4bda7c8358db4">pulsatrix::HIPBackend</a>.</p>
+
+</div>
+</div>
+<a id="a703e84656eb137fd2b963624daa26b87" name="a703e84656eb137fd2b963624daa26b87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a703e84656eb137fd2b963624daa26b87">&#9670;&#160;</a></span>top_k_rows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void pulsatrix::DeviceBackend::top_k_rows </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>largest</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Per row of a row-major (rows, cols) matrix: the k largest (or smallest) values in rank order into <code>values</code> (rows, k), and their column indices into <code>indices</code> (rows, k) as whole-number floats. </p>
+<dl class="section note"><dt>Note</dt><dd>Order: NaN ranks above every number; equal values keep the lower column index first. One lane per row, pure selection: every backend's output is bit-identical. </dd>
+<dd>
+Preconditions, validated by the caller (<a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45" title="Selects the k largest (or smallest) entries of every row along the last dimension.">top_k()</a>): 1 &lt;= k &lt;= cols, cols &lt;= 2^24. </dd></dl>
+
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#a0fe4df3890a09df45162da47ca64d8e7">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a16ed0b9945a55e12e6276d0b0fa20032">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a24e2113a6dfd331d063733be73396ec7">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>

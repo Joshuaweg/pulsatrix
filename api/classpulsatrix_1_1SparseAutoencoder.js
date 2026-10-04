@@ -1,6 +1,7 @@
 var classpulsatrix_1_1SparseAutoencoder =
 [
-    [ "SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html#af9ecd4633ab15d01eba6740a62f78ea3", null ],
+    [ "SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html#ab5b8c68a04f21c0312eeca0bb56458f7", null ],
+    [ "SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html#a58b6ef3c1627aac714ee4d2e4e6a6aa4", null ],
     [ "decoder", "classpulsatrix_1_1SparseAutoencoder.html#ace9b3723207021b67c6126f1c0d4f5c0", null ],
     [ "decoder", "classpulsatrix_1_1SparseAutoencoder.html#a1af230a4ca6ec3dd12ebae76f6e640fa", null ],
     [ "dim", "classpulsatrix_1_1SparseAutoencoder.html#a43f17ceaabf381782506c43c5a094830", null ],

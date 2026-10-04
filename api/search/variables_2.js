@@ -8,9 +8,10 @@ var searchData=
   ['config_5',['config',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#ad9cb9bcfc8bfab59b8fe57a0d32bc26e',1,'pulsatrix::detail::ASHACandidate']]],
   ['conservation_6',['conservation',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a161d678df9c1f5491015a0641e3b4897',1,'pulsatrix::ExplanationScoreCard::Input']]],
   ['contrasts_7',['contrasts',['../structpulsatrix_1_1LRPTarget.html#a05755018882813f8305957b9f3c6ce4a',1,'pulsatrix::LRPTarget']]],
-  ['count_8',['count',['../structpulsatrix_1_1FieldStatistics.html#a26910779103a3fd563541bdf0e40a5fc',1,'pulsatrix::FieldStatistics']]],
-  ['counts_9',['counts',['../structpulsatrix_1_1HistogramBins.html#a06c760e4f942b9b33e905729b574c93f',1,'pulsatrix::HistogramBins']]],
-  ['cpu_5ftemperature_5fc_10',['cpu_temperature_c',['../structpulsatrix_1_1SystemSample.html#a262e5c976fecba5d28dcd64476d843f0',1,'pulsatrix::SystemSample::cpu_temperature_c'],['../structpulsatrix_1_1detail_1_1RawReading.html#a216d87197dd892cec636c5ccbcf5ba53',1,'pulsatrix::detail::RawReading::cpu_temperature_c']]],
-  ['cpu_5futilization_5fpercent_11',['cpu_utilization_percent',['../structpulsatrix_1_1SystemSample.html#a232aec337561aaeccbec56c26e605adf',1,'pulsatrix::SystemSample']]],
-  ['cumulative_12',['cumulative',['../structpulsatrix_1_1WaterfallStep.html#a96cb8404e7625a062e06e885a3e4dc05',1,'pulsatrix::WaterfallStep']]]
+  ['converged_8',['converged',['../structpulsatrix_1_1DominantEigenResult.html#a470cb494c06c4abf99e220bf2b60dbdb',1,'pulsatrix::DominantEigenResult']]],
+  ['count_9',['count',['../structpulsatrix_1_1FieldStatistics.html#a26910779103a3fd563541bdf0e40a5fc',1,'pulsatrix::FieldStatistics']]],
+  ['counts_10',['counts',['../structpulsatrix_1_1HistogramBins.html#a06c760e4f942b9b33e905729b574c93f',1,'pulsatrix::HistogramBins']]],
+  ['cpu_5ftemperature_5fc_11',['cpu_temperature_c',['../structpulsatrix_1_1SystemSample.html#a262e5c976fecba5d28dcd64476d843f0',1,'pulsatrix::SystemSample::cpu_temperature_c'],['../structpulsatrix_1_1detail_1_1RawReading.html#a216d87197dd892cec636c5ccbcf5ba53',1,'pulsatrix::detail::RawReading::cpu_temperature_c']]],
+  ['cpu_5futilization_5fpercent_12',['cpu_utilization_percent',['../structpulsatrix_1_1SystemSample.html#a232aec337561aaeccbec56c26e605adf',1,'pulsatrix::SystemSample']]],
+  ['cumulative_13',['cumulative',['../structpulsatrix_1_1WaterfallStep.html#a96cb8404e7625a062e06e885a3e4dc05',1,'pulsatrix::WaterfallStep']]]
 ];

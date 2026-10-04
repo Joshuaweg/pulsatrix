@@ -1,7 +1,7 @@
 var searchData=
 [
   ['id_0',['id',['../classpulsatrix_1_1Node.html#abc08171b4256578a39edf3ef909e1932',1,'pulsatrix::Node']]],
-  ['im2col_1',['im2col',['../classpulsatrix_1_1CPUBackend.html#afe16fbb919c7763c3995873ce5ee425c',1,'pulsatrix::CPUBackend::im2col()'],['../classpulsatrix_1_1CUDABackend.html#acf9d28f43f273854be2fb6fd89009f97',1,'pulsatrix::CUDABackend::im2col()'],['../classpulsatrix_1_1DeviceBackend.html#ae82d916f6a34883c2ee1a9b995b4f288',1,'pulsatrix::DeviceBackend::im2col()'],['../classpulsatrix_1_1HIPBackend.html#adbea9d15444c293ef38f92ac8c3af805',1,'pulsatrix::HIPBackend::im2col()']]],
+  ['im2col_1',['im2col',['../classpulsatrix_1_1CPUBackend.html#a4abbc28f41bae1390956124821a0c6a1',1,'pulsatrix::CPUBackend::im2col()'],['../classpulsatrix_1_1CUDABackend.html#ad9e2c43e91be28322f7f1fd66796d48a',1,'pulsatrix::CUDABackend::im2col()'],['../classpulsatrix_1_1DeviceBackend.html#ad42295ced5dffa73a26250d77fe3da97',1,'pulsatrix::DeviceBackend::im2col()'],['../classpulsatrix_1_1HIPBackend.html#a56ad30d9e638846991f009a8abda266e',1,'pulsatrix::HIPBackend::im2col()']]],
   ['imagefolderdataset_2',['ImageFolderDataset',['../classpulsatrix_1_1ImageFolderDataset.html#ac1ca170369eafd598ede2aae874018d2',1,'pulsatrix::ImageFolderDataset']]],
   ['indexof_3',['IndexOf',['../classpulsatrix_1_1Vocabulary.html#aad956d5e6776e13be224d60b9de130cb',1,'pulsatrix::Vocabulary']]],
   ['inner_4',['inner',['../classpulsatrix_1_1ResidualModule.html#a5176ee3876dc7f536e1c785a42574328',1,'pulsatrix::ResidualModule']]],

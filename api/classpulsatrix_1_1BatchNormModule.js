@@ -1,18 +1,24 @@
 var classpulsatrix_1_1BatchNormModule =
 [
-    [ "BatchNormModule", "classpulsatrix_1_1BatchNormModule.html#af3537b8c1de9772fb710dbefe3d85e1e", null ],
+    [ "BatchNormModule", "classpulsatrix_1_1BatchNormModule.html#a1740c553b5208084940fcb87ab20ba58", null ],
     [ "BatchNormModule", "classpulsatrix_1_1BatchNormModule.html#a9ee47de3f21f1e929e20b47cda2acb5c", null ],
     [ "backward", "classpulsatrix_1_1BatchNormModule.html#a4e01e4931a75fd4d38d4fc1b4d26d4e7", null ],
     [ "beta", "classpulsatrix_1_1BatchNormModule.html#a027c367baec800783281f0c9cbe872da", null ],
     [ "beta_grad", "classpulsatrix_1_1BatchNormModule.html#a8bab8c454ff833788febac048ec7c160", null ],
+    [ "compute_device", "classpulsatrix_1_1BatchNormModule.html#ae61d327f211c3fa03e47068cb0444221", null ],
     [ "forward_impl", "classpulsatrix_1_1BatchNormModule.html#ad95412b6d5c90b9390a50bf3a965550b", null ],
     [ "gamma", "classpulsatrix_1_1BatchNormModule.html#aacd1ae0915213e8ae32dc634299e5949", null ],
     [ "gamma_grad", "classpulsatrix_1_1BatchNormModule.html#a8b48ff415461030cc9e8e843e8f90999", null ],
     [ "named_parameters", "classpulsatrix_1_1BatchNormModule.html#a6f5b048237238647f7bf378a0817e56f", null ],
     [ "op_type", "classpulsatrix_1_1BatchNormModule.html#a91cbc17b32b7f6c7cb98c41ef9f2bfb5", null ],
     [ "propagate_relevance", "classpulsatrix_1_1BatchNormModule.html#afd6e4948d9781cf38124f32455789746", null ],
+    [ "running_mean", "classpulsatrix_1_1BatchNormModule.html#af2cdade4fd06cfe7a2d8dde8cc461a50", null ],
+    [ "running_var", "classpulsatrix_1_1BatchNormModule.html#a6a9e2146420fe0b7a755be468bb0a443", null ],
     [ "set_beta", "classpulsatrix_1_1BatchNormModule.html#a4ff4fed5486da32fc368d3b966ef2785", null ],
     [ "set_beta", "classpulsatrix_1_1BatchNormModule.html#a3c2bb659f28f260ed61a4c01375cca53", null ],
     [ "set_gamma", "classpulsatrix_1_1BatchNormModule.html#ad5a8e306eebfc6627b53d36871a8aafb", null ],
-    [ "set_gamma", "classpulsatrix_1_1BatchNormModule.html#a319f01db0cef1438c7a314e4daf9ec2c", null ]
+    [ "set_gamma", "classpulsatrix_1_1BatchNormModule.html#a319f01db0cef1438c7a314e4daf9ec2c", null ],
+    [ "set_running_mean", "classpulsatrix_1_1BatchNormModule.html#aec48ff19943ba679aaf8b49379f7e21a", null ],
+    [ "set_running_var", "classpulsatrix_1_1BatchNormModule.html#a1f4bccfedb2239fed4797f149b74627a", null ],
+    [ "BatchNormFold", "classpulsatrix_1_1BatchNormModule.html#a41f240aac8f93f0df448efa26a173f06", null ]
 ];

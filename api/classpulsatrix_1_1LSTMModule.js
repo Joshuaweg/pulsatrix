@@ -10,6 +10,7 @@ var classpulsatrix_1_1LSTMModule =
     [ "bias_i_grad", "classpulsatrix_1_1LSTMModule.html#a86ac474f19b3b76362758c80741abbdb", null ],
     [ "bias_o", "classpulsatrix_1_1LSTMModule.html#a5d123cf2f22c84d21c83409f221734fa", null ],
     [ "bias_o_grad", "classpulsatrix_1_1LSTMModule.html#a3abc08d201b5b47f82618eefc8e247e3", null ],
+    [ "compute_device", "classpulsatrix_1_1LSTMModule.html#ab88540b5e249b34d330425684733a616", null ],
     [ "forward_impl", "classpulsatrix_1_1LSTMModule.html#a9e550d3b9e0024ab128c56355b5b45c4", null ],
     [ "named_parameters", "classpulsatrix_1_1LSTMModule.html#aa3b61a137ac8cb4be035c6cb44161433", null ],
     [ "op_type", "classpulsatrix_1_1LSTMModule.html#aeb45361c2604c6bd7bf69c0b715276e1", null ],

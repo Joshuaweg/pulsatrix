@@ -107,9 +107,11 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1LinearProbe.html',''
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a14a3d5bc95c1c478a9e85ace4244f125" id="r_a14a3d5bc95c1c478a9e85ace4244f125"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearProbe.html#a14a3d5bc95c1c478a9e85ace4244f125">LinearProbe</a> (int64_t <a class="el" href="classpulsatrix_1_1LinearProbe.html#a18aaf9a6f284fbde3bd164681c0eaa2f">activation_dim</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, unsigned seed=42)</td></tr>
-<tr class="memdesc:a14a3d5bc95c1c478a9e85ace4244f125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a probe over activations of a given dimension.  <br /></td></tr>
-<tr class="separator:a14a3d5bc95c1c478a9e85ace4244f125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0397132512a316617933cce38cd02dbc" id="r_a0397132512a316617933cce38cd02dbc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearProbe.html#a0397132512a316617933cce38cd02dbc">LinearProbe</a> (int64_t <a class="el" href="classpulsatrix_1_1LinearProbe.html#a18aaf9a6f284fbde3bd164681c0eaa2f">activation_dim</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a0397132512a316617933cce38cd02dbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a probe over activations of a given dimension.  <br /></td></tr>
+<tr class="separator:a0397132512a316617933cce38cd02dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af15297c970af954da6f130722b34d9f9" id="r_af15297c970af954da6f130722b34d9f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearProbe.html#af15297c970af954da6f130722b34d9f9">LinearProbe</a> (int64_t <a class="el" href="classpulsatrix_1_1LinearProbe.html#a18aaf9a6f284fbde3bd164681c0eaa2f">activation_dim</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, unsigned seed)</td></tr>
+<tr class="separator:af15297c970af954da6f130722b34d9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73a61af2a560b0b7b89c30be287eb389" id="r_a73a61af2a560b0b7b89c30be287eb389"><td class="memTemplParams" colspan="2">template&lt;typename OptimizerT &gt; </td></tr>
 <tr class="memitem:a73a61af2a560b0b7b89c30be287eb389"><td class="memTemplItemLeft" align="right" valign="top">float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearProbe.html#a73a61af2a560b0b7b89c30be287eb389">train_step</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;activation_batch, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;label_batch, OptimizerT &amp;optimizer)</td></tr>
 <tr class="memdesc:a73a61af2a560b0b7b89c30be287eb389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one training step: forward, BCE-with-logits loss, backward, one optimizer update of the probe's weight/bias.  <br /></td></tr>
@@ -136,8 +138,61 @@ Public Member Functions</h2></td></tr>
 <dd>
 Small <b>seeded random</b> weight init, not zero init. Unlike <a class="el" href="classpulsatrix_1_1XorNetwork.html" title="A tiny MLP (Linear(2,4) -&gt; ReLU -&gt; Linear(4,1)) trained on XOR – the canonical not-linearly-separable...">XorNetwork</a> there is no symmetry to break here &ndash; a single linear layer does receive non-zero gradients from all-zero weights (<code>grad_W = X^T (sigmoid(0) - y)</code>), so zero init would train fine. The reason is <a class="el" href="classpulsatrix_1_1LinearProbe.html#afea4b09549b8592980c96147d6cf1405" title="Fraction of the batch the probe classifies correctly.">accuracy()</a>: with all-zero weight and bias every logit is exactly 0, so every example's predicted probability is exactly 0.5, landing the entire batch precisely on the decision threshold. Small random init removes that degenerate tie at step 0 while keeping the probe fully reproducible. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a14a3d5bc95c1c478a9e85ace4244f125" name="a14a3d5bc95c1c478a9e85ace4244f125"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14a3d5bc95c1c478a9e85ace4244f125">&#9670;&#160;</a></span>LinearProbe()</h2>
+<a id="a0397132512a316617933cce38cd02dbc" name="a0397132512a316617933cce38cd02dbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0397132512a316617933cce38cd02dbc">&#9670;&#160;</a></span>LinearProbe() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::LinearProbe::LinearProbe </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>activation_dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a probe over activations of a given dimension. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">activation_dim</td><td>Width of the activation vectors this probe reads. Must be &gt; 0. </td></tr>
+    <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this probe. </td></tr>
+    <tr><td class="paramname">seed</td><td>RNG seed for weight initialization &ndash; same seed gives the same probe. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if activation_dim &lt;= 0. External boundary: a probe's dimension is caller-supplied (typically read off a snapshot tensor's shape), and nothing downstream rejects it &ndash; <code>LinearModule(0, 1, ...)</code> builds a well-formed zero-element weight and fails only later, confusingly.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Seeded from the global seed stream (<a class="el" href="namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b" title="The next seed in the global stream: a distinct, well-mixed 64-bit value per call, reproducible for a ...">next_seed()</a>, FND-7). </p>
+
+</div>
+</div>
+<a id="af15297c970af954da6f130722b34d9f9" name="af15297c970af954da6f130722b34d9f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af15297c970af954da6f130722b34d9f9">&#9670;&#160;</a></span>LinearProbe() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,7 +216,7 @@ Small <b>seeded random</b> weight init, not zero init. Unlike <a class="el" href
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>seed</em> = <code>42</code>&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -171,26 +226,10 @@ Small <b>seeded random</b> weight init, not zero init. Unlike <a class="el" href
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Constructs a probe over activations of a given dimension. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">activation_dim</td><td>Width of the activation vectors this probe reads. Must be &gt; 0. </td></tr>
-    <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this probe. </td></tr>
-    <tr><td class="paramname">seed</td><td>RNG seed for weight initialization &ndash; same seed gives the same probe. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if activation_dim &lt;= 0. External boundary: a probe's dimension is caller-supplied (typically read off a snapshot tensor's shape), and nothing downstream rejects it &ndash; <code>LinearModule(0, 1, ...)</code> builds a well-formed zero-element weight and fails only later, confusingly. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

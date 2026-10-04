@@ -154,6 +154,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7778e97108489df197d78580a5daf15c" id="r_a7778e97108489df197d78580a5daf15c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DisjunctionModule.html#a7778e97108489df197d78580a5daf15c">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:a7778e97108489df197d78580a5daf15c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation for the selected t-conorm &ndash; genuinely novel, no prior art (research_2026_neuro_symbolic_ai.md §3); hand-derived and conservation-tested before this implementation existed.  <br /></td></tr>
 <tr class="separator:a7778e97108489df197d78580a5daf15c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe7da5440f35645c75f2f05ea73fd893" id="r_abe7da5440f35645c75f2f05ea73fd893"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DisjunctionModule.html#abe7da5440f35645c75f2f05ea73fd893">compute_device</a> () const override</td></tr>
+<tr class="memdesc:abe7da5440f35645c75f2f05ea73fd893"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1DisjunctionModule.html#af0481a10cfb90d54dde5ef4739670c33" title="Convenience two-operand entry point – see ConjunctionModule::forward(a, b)&#39;s identical convention.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
+<tr class="separator:abe7da5440f35645c75f2f05ea73fd893"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cb3b4aac3d2364c973009413fde6a21" id="r_a5cb3b4aac3d2364c973009413fde6a21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DisjunctionModule.html#a5cb3b4aac3d2364c973009413fde6a21">forward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)</td></tr>
 <tr class="memdesc:a5cb3b4aac3d2364c973009413fde6a21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs this module's forward computation.  <br /></td></tr>
 <tr class="separator:a5cb3b4aac3d2364c973009413fde6a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,6 +178,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
 <tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module" id="r_a2a5c993f1497ed7cd88654d6058f80c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a2a5c993f1497ed7cd88654d6058f80c2">set_requires_grad</a> (bool requires_grad, const std::string &amp;prefix=&quot;&quot;)</td></tr>
+<tr class="memdesc:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Freezes (<code>false</code>) or unfreezes (<code>true</code>) parameters by name (roadmap FND-2).  <br /></td></tr>
+<tr class="separator:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (bool training)</td></tr>
 <tr class="memdesc:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default).  <br /></td></tr>
 <tr class="separator:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -312,6 +318,35 @@ Protected Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Same Godel/Lukasiewicz tie-breaking convention as <a class="el" href="classpulsatrix_1_1ConjunctionModule.html" title="y = a T b for a selected t-norm T, over two independent fuzzy-truth-valued operand tensors (values in...">ConjunctionModule</a>: ties go to the first operand (a). </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="abe7da5440f35645c75f2f05ea73fd893" name="abe7da5440f35645c75f2f05ea73fd893"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe7da5440f35645c75f2f05ea73fd893">&#9670;&#160;</a></span>compute_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt; pulsatrix::DisjunctionModule::compute_device </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where this layer computes, so <a class="el" href="classpulsatrix_1_1DisjunctionModule.html#af0481a10cfb90d54dde5ef4739670c33" title="Convenience two-operand entry point – see ConjunctionModule::forward(a, b)&#39;s identical convention.">forward()</a> rejects an input on another device (FND-8). </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afd37c963b83700f669591c3d619aea33">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

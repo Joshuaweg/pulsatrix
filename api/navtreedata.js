@@ -47,7 +47,8 @@ var NAVTREE =
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Typedefs", "functions_type.html", null ],
-        [ "Enumerations", "functions_enum.html", null ]
+        [ "Enumerations", "functions_enum.html", null ],
+        [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -63,21 +64,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CPUBackend.html#a805dbc60d8b59e886f325d3dc3d6d172",
-"classpulsatrix_1_1Compose.html#ac9ef5828a5a5d68a2d2490a628c29162",
-"classpulsatrix_1_1DeviceBackend.html#a8c27211ec8f3074b8fa17da3b05d2704",
-"classpulsatrix_1_1GRUModule.html#ade60c3c98243b649a0f4213dfa8eceb4",
-"classpulsatrix_1_1ImPlotMetricsSink.html#af6a14d7b939a99acbee3607c1e6c2f7e",
-"classpulsatrix_1_1MSELoss.html#a6d5585d30079af244aaf7bf8202378ea",
-"classpulsatrix_1_1NoiseSchedule.html#a2cccd62bc3bd208dd50c05be7a389dd5",
-"classpulsatrix_1_1ResidualModule.html#ac6ecb7aacdfdd5a827db5a76432b82a2",
-"classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54",
-"classpulsatrix_1_1VizWindow.html#aad447ed9b3ff31bb50bcc15f0fe68042",
-"functions_p.html",
-"namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa",
-"structpulsatrix_1_1ConservationResult.html#a5b06706b66488e4f600032856347b9d1",
-"structpulsatrix_1_1ParameterSpec.html#a64ac6009017302f66e9b3c0fa7319191",
-"structpulsatrix_1_1detail_1_1ASHACandidate.html#ad9cb9bcfc8bfab59b8fe57a0d32bc26e"
+"classpulsatrix_1_1CPUBackend.html#a5636611d7e3c7c185a7d435a20794323",
+"classpulsatrix_1_1CartPoleEnv.html#a0e6121c711ed0891f8822b4178343cdf",
+"classpulsatrix_1_1DeviceBackend.html#a171a50250bf4560d92c7e71da4cc1afa",
+"classpulsatrix_1_1FlattenModule.html#a7358a8d18620d98e71a05bf13730687f",
+"classpulsatrix_1_1HIPBackend.html#ab62ba66f083956b40cf612fd866cc2ac",
+"classpulsatrix_1_1LayerNormModule.html#a63dda6117e9e3148f458747c449522ea",
+"classpulsatrix_1_1MultiHeadAttentionModule.html#a5949a91915019e6d0067f167f908c180",
+"classpulsatrix_1_1RWKVModule.html#a77bcf685f363b7c51932f9b64619817e",
+"classpulsatrix_1_1SearchSpace.html#ae4583caf96d0516b8d0ef42864fe4fa3",
+"classpulsatrix_1_1TextureCache.html#ae7d32c3dff82c75654fd51de8359b6a7",
+"classpulsatrix_1_1detail_1_1LinuxSources.html",
+"namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e",
+"namespacepulsatrix_1_1detail.html#a35b3c134fdd7ea35dbd7a20005e2fadd",
+"structpulsatrix_1_1GFlowNetTrajectory.html",
+"structpulsatrix_1_1RolloutBatch.html#a1cf2be7bec3e8a07ca8b57920bd83b46",
+"window_8hpp.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -6,6 +6,7 @@ var classpulsatrix_1_1MambaModule =
     [ "backward", "classpulsatrix_1_1MambaModule.html#a7b6a0b112fb00485fc433fa0fc0ba660", null ],
     [ "bias_delta", "classpulsatrix_1_1MambaModule.html#a6f6fe8f3522406f5bc1116e2eb0e48d1", null ],
     [ "bias_delta_grad", "classpulsatrix_1_1MambaModule.html#aa8a11043b5a800c0cd0da82ecc1d20fb", null ],
+    [ "compute_device", "classpulsatrix_1_1MambaModule.html#a2fd45d1c467835ba0bff4a237636fb82", null ],
     [ "D", "classpulsatrix_1_1MambaModule.html#a32480c85733d598e342acdf296c7bf6c", null ],
     [ "D_grad", "classpulsatrix_1_1MambaModule.html#addb70c1ed3ee72e027a9c1f7bb86b138", null ],
     [ "forward_impl", "classpulsatrix_1_1MambaModule.html#ac9b8c9fdab107d2bb5356352524e208b", null ],

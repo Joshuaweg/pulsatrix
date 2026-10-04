@@ -2,6 +2,7 @@ var classpulsatrix_1_1RetNetModule =
 [
     [ "RetNetModule", "classpulsatrix_1_1RetNetModule.html#a0a11fc944f5185cbc27f3301ae3b4335", null ],
     [ "backward", "classpulsatrix_1_1RetNetModule.html#a219b3a595774a80c644c77efd3b00673", null ],
+    [ "compute_device", "classpulsatrix_1_1RetNetModule.html#a6a77fd33c7b5461343961cc30fa8e918", null ],
     [ "forward_impl", "classpulsatrix_1_1RetNetModule.html#a168847a676517863de4d18c3108cf044", null ],
     [ "gamma", "classpulsatrix_1_1RetNetModule.html#a62492d17ef3b95a50d56d1cca1b83158", null ],
     [ "named_parameters", "classpulsatrix_1_1RetNetModule.html#ac38f050e39a73d96e9626791cfd73672", null ],

@@ -7,6 +7,7 @@ var classpulsatrix_1_1DisjunctionModule =
     ] ],
     [ "DisjunctionModule", "classpulsatrix_1_1DisjunctionModule.html#a5ed328c5d5712cdda0796935fd439142", null ],
     [ "backward", "classpulsatrix_1_1DisjunctionModule.html#a937d5e34b99890cc347d877f724b0559", null ],
+    [ "compute_device", "classpulsatrix_1_1DisjunctionModule.html#abe7da5440f35645c75f2f05ea73fd893", null ],
     [ "forward", "classpulsatrix_1_1DisjunctionModule.html#af0481a10cfb90d54dde5ef4739670c33", null ],
     [ "forward", "classpulsatrix_1_1DisjunctionModule.html#a5cb3b4aac3d2364c973009413fde6a21", null ],
     [ "forward_impl", "classpulsatrix_1_1DisjunctionModule.html#a51c12264079ed70b3eb7053aa505d3ec", null ],

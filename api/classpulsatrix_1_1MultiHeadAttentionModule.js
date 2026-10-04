@@ -2,6 +2,7 @@ var classpulsatrix_1_1MultiHeadAttentionModule =
 [
     [ "MultiHeadAttentionModule", "classpulsatrix_1_1MultiHeadAttentionModule.html#ae11c9bd2523df83bb01c90234a201f8d", null ],
     [ "backward", "classpulsatrix_1_1MultiHeadAttentionModule.html#a6d70f8c38cec738bdbe53660fba5d3f9", null ],
+    [ "compute_device", "classpulsatrix_1_1MultiHeadAttentionModule.html#aa4cb6de3310ed22f1fb88821bfd7ca3b", null ],
     [ "d_model", "classpulsatrix_1_1MultiHeadAttentionModule.html#ad4b5ac0ec934a704a7f9f6025d83e2d5", null ],
     [ "forward_impl", "classpulsatrix_1_1MultiHeadAttentionModule.html#a56532c2f4e0f9c641d660aa0122a88fd", null ],
     [ "head_dim", "classpulsatrix_1_1MultiHeadAttentionModule.html#ab4b539122189354b1dcc365cc8681dae", null ],

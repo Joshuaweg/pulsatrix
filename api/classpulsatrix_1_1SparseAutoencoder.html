@@ -107,9 +107,11 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1SparseAutoencoder.ht
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af9ecd4633ab15d01eba6740a62f78ea3" id="r_af9ecd4633ab15d01eba6740a62f78ea3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#af9ecd4633ab15d01eba6740a62f78ea3">SparseAutoencoder</a> (int64_t <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a43f17ceaabf381782506c43c5a094830">dim</a>, int64_t <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec">hidden_dim</a>, float <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a855fe79c745c35fb7204b18199606fd5">l1_lambda</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, unsigned seed=42)</td></tr>
-<tr class="memdesc:af9ecd4633ab15d01eba6740a62f78ea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a sparse autoencoder over activations of a given dimension.  <br /></td></tr>
-<tr class="separator:af9ecd4633ab15d01eba6740a62f78ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5b8c68a04f21c0312eeca0bb56458f7" id="r_ab5b8c68a04f21c0312eeca0bb56458f7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ab5b8c68a04f21c0312eeca0bb56458f7">SparseAutoencoder</a> (int64_t <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a43f17ceaabf381782506c43c5a094830">dim</a>, int64_t <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec">hidden_dim</a>, float <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a855fe79c745c35fb7204b18199606fd5">l1_lambda</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:ab5b8c68a04f21c0312eeca0bb56458f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a sparse autoencoder over activations of a given dimension.  <br /></td></tr>
+<tr class="separator:ab5b8c68a04f21c0312eeca0bb56458f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58b6ef3c1627aac714ee4d2e4e6a6aa4" id="r_a58b6ef3c1627aac714ee4d2e4e6a6aa4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a58b6ef3c1627aac714ee4d2e4e6a6aa4">SparseAutoencoder</a> (int64_t <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a43f17ceaabf381782506c43c5a094830">dim</a>, int64_t <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec">hidden_dim</a>, float <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a855fe79c745c35fb7204b18199606fd5">l1_lambda</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, unsigned seed)</td></tr>
+<tr class="separator:a58b6ef3c1627aac714ee4d2e4e6a6aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad998baf773ce0b6e05bfbb0ee75fdd10" id="r_ad998baf773ce0b6e05bfbb0ee75fdd10"><td class="memTemplParams" colspan="2">template&lt;typename OptimizerT &gt; </td></tr>
 <tr class="memitem:ad998baf773ce0b6e05bfbb0ee75fdd10"><td class="memTemplItemLeft" align="right" valign="top">float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10">train_step</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input_batch, OptimizerT &amp;optimizer)</td></tr>
 <tr class="memdesc:ad998baf773ce0b6e05bfbb0ee75fdd10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injected at the hidden layer, one optimizer update of the encoder's and decoder's parameters.  <br /></td></tr>
@@ -158,8 +160,75 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
 <dd>
 <code>hidden_dim &gt; dim</code> is <b>not</b> enforced. An undercomplete or square autoencoder is still a well-formed object with well-defined training behavior; rejecting it would turn a modeling choice into a hard error for no correctness gain. Explicit decision (mission exit gate asked for it to be made, not assumed), pinned by ConstructorAcceptsAnUndercompleteHiddenDimension. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af9ecd4633ab15d01eba6740a62f78ea3" name="af9ecd4633ab15d01eba6740a62f78ea3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9ecd4633ab15d01eba6740a62f78ea3">&#9670;&#160;</a></span>SparseAutoencoder()</h2>
+<a id="ab5b8c68a04f21c0312eeca0bb56458f7" name="ab5b8c68a04f21c0312eeca0bb56458f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5b8c68a04f21c0312eeca0bb56458f7">&#9670;&#160;</a></span>SparseAutoencoder() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::SparseAutoencoder::SparseAutoencoder </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>hidden_dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>l1_lambda</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs a sparse autoencoder over activations of a given dimension. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dim</td><td>Width of the activation vectors this SAE reconstructs. Must be &gt; 0. </td></tr>
+    <tr><td class="paramname">hidden_dim</td><td>Width of the sparse hidden basis. Must be &gt; 0; normally &gt; dim. </td></tr>
+    <tr><td class="paramname">l1_lambda</td><td>Coefficient of the L1 penalty on the hidden activation. Must be &gt;= 0; 0 is a valid degenerate configuration (a plain autoencoder), which is precisely what the mission's no-penalty control trains. </td></tr>
+    <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this SAE. </td></tr>
+    <tr><td class="paramname">seed</td><td>RNG seed for weight initialization &ndash; same seed gives the same SAE. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if dim &lt;= 0, hidden_dim &lt;= 0, or l1_lambda &lt; 0. External boundary: all three are caller-supplied (the dimensions typically read off a snapshot tensor's shape) and nothing downstream rejects them &ndash; <code>LinearModule(0, h, ...)</code> builds a well-formed zero-element weight and fails only later, confusingly, and a negative lambda never fails at all: it <em>rewards</em> hidden activation without bound, so the run diverges silently rather than erroring.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Seeded from the global seed stream (<a class="el" href="namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b" title="The next seed in the global stream: a distinct, well-mixed 64-bit value per call, reproducible for a ...">next_seed()</a>, FND-7). </p>
+
+</div>
+</div>
+<a id="a58b6ef3c1627aac714ee4d2e4e6a6aa4" name="a58b6ef3c1627aac714ee4d2e4e6a6aa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58b6ef3c1627aac714ee4d2e4e6a6aa4">&#9670;&#160;</a></span>SparseAutoencoder() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,7 +264,7 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>seed</em> = <code>42</code>&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -209,24 +278,6 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Constructs a sparse autoencoder over activations of a given dimension. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dim</td><td>Width of the activation vectors this SAE reconstructs. Must be &gt; 0. </td></tr>
-    <tr><td class="paramname">hidden_dim</td><td>Width of the sparse hidden basis. Must be &gt; 0; normally &gt; dim. </td></tr>
-    <tr><td class="paramname">l1_lambda</td><td>Coefficient of the L1 penalty on the hidden activation. Must be &gt;= 0; 0 is a valid degenerate configuration (a plain autoencoder), which is precisely what the mission's no-penalty control trains. </td></tr>
-    <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this SAE. </td></tr>
-    <tr><td class="paramname">seed</td><td>RNG seed for weight initialization &ndash; same seed gives the same SAE. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if dim &lt;= 0, hidden_dim &lt;= 0, or l1_lambda &lt; 0. External boundary: all three are caller-supplied (the dimensions typically read off a snapshot tensor's shape) and nothing downstream rejects them &ndash; <code>LinearModule(0, h, ...)</code> builds a well-formed zero-element weight and fails only later, confusingly, and a negative lambda never fails at all: it <em>rewards</em> hidden activation without bound, so the run diverges silently rather than erroring. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

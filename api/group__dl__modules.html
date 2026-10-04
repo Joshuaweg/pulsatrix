@@ -146,6 +146,9 @@ Files</h2></td></tr>
 <tr class="memitem:cuda__check_8hpp" id="r_cuda__check_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cuda__check_8hpp.html">cuda_check.hpp</a></td></tr>
 <tr class="memdesc:cuda__check_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">PULSATRIX_CUDA_CHECK &ndash; converts a CUDA runtime failure into a thrown C++ exception at the DeviceBackend boundary, per gpu_backend_programming/context_gpu_cuda_kernel_mechanics.md's Error Checking pattern. Only compiled when PULSATRIX_ENABLE_CUDA is set. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:determinism_8hpp" id="r_determinism_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="determinism_8hpp.html">determinism.hpp</a></td></tr>
+<tr class="memdesc:determinism_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">One global seed for everything that isn't given its own, and a deterministic mode that forbids nondeterministic computation (roadmap FND-7). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:device__backend_8hpp" id="r_device__backend_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="device__backend_8hpp.html">device_backend.hpp</a></td></tr>
 <tr class="memdesc:device__backend_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract interface isolating vendor-specific memory/compute operations from Tensor/ComputationGraph. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,6 +268,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:tensor_8hpp" id="r_tensor_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tensor_8hpp.html">tensor.hpp</a></td></tr>
 <tr class="memdesc:tensor_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">N-dimensional tensor &ndash; owns a buffer via DeviceBackend*, RAII (Rule of Five). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:top__k_8hpp" id="r_top__k_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="top__k_8hpp.html">top_k.hpp</a></td></tr>
+<tr class="memdesc:top__k_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Top-k selection along a tensor's last dimension, on any device (roadmap FND-3). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:transformer__block_8hpp" id="r_transformer__block_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transformer__block_8hpp.html">transformer_block.hpp</a></td></tr>
 <tr class="memdesc:transformer__block_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre-LN transformer block &ndash; Phase 3's literal exit-gate deliverable, third and last composition mission (RMSNorm x2, MultiHeadAttentionModule, SwiGLUModule, plus the resolved residual-split LRP rule). <br /></td></tr>
