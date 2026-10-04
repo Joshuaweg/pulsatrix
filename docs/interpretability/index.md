@@ -59,6 +59,31 @@ RandomizationResult sanity = ModelParameterRandomizationTest(model, explain, ima
 // sanity.similarity[i]: rank correlation with the original after randomizing layers[0..i]
 ```
 
+### The null-model baseline
+
+Attribution maps, probes and sparse autoencoders all produce plausible-looking output on a
+network with random weights ("The Dead Salmons of AI Interpretability", 2025). So every result
+should be compared against the same analysis of a randomly re-initialized model.
+`NullModelBaseline` does that in one call, for any analysis. It runs the analysis on the trained
+model and on a re-initialized one, then restores the model exactly:
+
+```cpp
+#include "pulsatrix/null_model_baseline.hpp"
+
+// Any analysis, any result type: here a probe's accuracy on the model's activations.
+auto probe_accuracy = [&] { return TrainProbeAndScore(model, data); };
+NullModelComparison<float> acc = NullModelBaseline(model, probe_accuracy, /*seed=*/0);
+// acc.trained vs acc.null_model: an accuracy the null model also reaches isn't evidence
+
+// An explanation: also reports how similar the null model's explanation is.
+AttributionNullReport r = NullModelBaseline(model, explain, image, /*seed=*/0);
+// r.rank_similarity close to 1: the explanation doesn't depend on what the model learned
+```
+
+Re-initialization replaces each parameter tensor with Gaussian noise at that tensor's own scale,
+and leaves buffers such as BatchNorm's running statistics alone. `ParameterSnapshot` and
+`ReinitializeParameters` are available separately.
+
 ## Recipes
 
 New here? Start with the

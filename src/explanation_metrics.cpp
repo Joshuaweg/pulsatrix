@@ -2,30 +2,15 @@
 
 #include <algorithm>
 #include <cmath>
-#include <map>
 #include <numeric>
 #include <stdexcept>
 #include <utility>
 
+#include "portable_random.hpp"
+#include "pulsatrix/null_model_baseline.hpp"
+
 namespace pulsatrix {
 namespace {
-
-// Portable random numbers (std:: distributions differ between standard libraries).
-struct Rng {
-    uint64_t state;
-    uint64_t next() {
-        state += 0x9E3779B97F4A7C15ULL;
-        uint64_t z = state;
-        z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9ULL;
-        z = (z ^ (z >> 27)) * 0x94D049BB133111EBULL;
-        return z ^ (z >> 31);
-    }
-    double uniform() { return (static_cast<double>(next() >> 11) + 0.5) / static_cast<double>(1ULL << 53); }  // (0, 1)
-    double gaussian() {
-        constexpr double kTwoPi = 6.28318530717958647692;
-        return std::sqrt(-2.0 * std::log(uniform())) * std::cos(kTwoPi * uniform());
-    }
-};
 
 std::vector<double> magnitudes(const Attribution& a) {
     std::vector<double> m;
@@ -230,7 +215,7 @@ Tensor Impute(const Tensor& input, const std::vector<bool>& removed, const Imput
             impute_plane(x, removed, offset, h, w);
         }
         if (imputation.noise_std > 0.0f) {
-            Rng rng{imputation.seed};
+            PortableRng rng{imputation.seed};
             for (size_t i = 0; i < x.size(); ++i) {
                 if (removed[i]) {
                     x[i] += imputation.noise_std * rng.gaussian();
@@ -255,56 +240,30 @@ RandomizationResult ModelParameterRandomizationTest(Module& model, const Explain
                                                     uint64_t seed) {
     // Layers: first name segment, in parameters order; randomized from the last (output) down.
     std::vector<std::string> layers;
-    std::map<std::string, std::vector<Tensor*>> params_of;
     for (const NamedParamRef& p : model.named_parameters()) {
         const std::string layer = p.name.substr(0, p.name.find('.'));
-        if (params_of.find(layer) == params_of.end()) {
+        if (std::find(layers.begin(), layers.end(), layer) == layers.end()) {
             layers.push_back(layer);
         }
-        params_of[layer].push_back(p.ref.value);
     }
     std::reverse(layers.begin(), layers.end());
 
-    std::vector<std::pair<Tensor*, Tensor>> saved;
-    for (ParamRef p : model.parameters()) {
-        saved.emplace_back(p.value, *p.value);
+    ParameterSnapshot saved(model);  // restores the model however this returns
+    std::vector<float> original;
+    for (double v : magnitudes(explain(input))) {
+        original.push_back(static_cast<float>(v));
     }
-    auto restore = [&saved] {
-        for (auto& [target, value] : saved) {
-            *target = value;
-        }
-    };
-
     RandomizationResult result;
-    try {
-        std::vector<float> original;
+    PortableRng seeds{seed};
+    for (const std::string& layer : layers) {
+        ReinitializeParameters(model, seeds.next(), layer);
+        std::vector<float> now;
         for (double v : magnitudes(explain(input))) {
-            original.push_back(static_cast<float>(v));
+            now.push_back(static_cast<float>(v));
         }
-        Rng rng{seed};
-        for (const std::string& layer : layers) {
-            for (Tensor* t : params_of[layer]) {
-                std::vector<float> v = t->to_host_vector();
-                double mean = 0.0, sq = 0.0;
-                for (float e : v) mean += e;
-                mean /= static_cast<double>(v.size());
-                for (float e : v) sq += (e - mean) * (e - mean);
-                const double std_dev = std::sqrt(sq / static_cast<double>(v.size()));
-                for (float& e : v) e = static_cast<float>(std_dev * rng.gaussian());
-                *t = Tensor(t->shape(), t->backend(), v, t->device());
-            }
-            std::vector<float> now;
-            for (double v : magnitudes(explain(input))) {
-                now.push_back(static_cast<float>(v));
-            }
-            result.layers.push_back(layer);
-            result.similarity.push_back(SpearmanRankCorrelation(original, now));
-        }
-    } catch (...) {
-        restore();
-        throw;
+        result.layers.push_back(layer);
+        result.similarity.push_back(SpearmanRankCorrelation(original, now));
     }
-    restore();
     return result;
 }
 
