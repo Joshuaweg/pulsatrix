@@ -827,6 +827,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-2-batchnorm-as-parallel-per-channel-reductions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-2: BatchNorm as parallel per-channel reductions
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1605,6 +1616,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-2-batchnorm-as-parallel-per-channel-reductions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-2: BatchNorm as parallel per-channel reductions
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1733,6 +1755,43 @@ atomics. On the <code>reduce</code> workload (16M floats):</p>
 </table>
 <p>Both now run at the measured memory bandwidth of the gfx1151 (about 212 GB/s), so there is
 nothing left to gain on these two ops.</p>
+<h3 id="hip-2-batchnorm-as-parallel-per-channel-reductions">HIP-2: BatchNorm as parallel per-channel reductions<a class="headerlink" href="#hip-2-batchnorm-as-parallel-per-channel-reductions" title="Permanent link">&para;</a></h3>
+<p>BatchNorm ran one thread per channel over every element of that channel. Now each per-channel
+sum is a deterministic two-stage reduction: several blocks per channel produce partials, which one
+thread per channel then adds in order. Normalization and the input gradient run one thread per
+element. On the <code>cnn</code> workload:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step time</td>
+<td>about 27 ms</td>
+<td>about 10 ms (2.7×)</td>
+</tr>
+<tr>
+<td>BatchNorm kernels (20 steps)</td>
+<td>342 ms, 79% of kernel time</td>
+<td>about 3 ms</td>
+</tr>
+<tr>
+<td>GPU busy</td>
+<td>78.3%</td>
+<td>45.8%</td>
+</tr>
+</tbody>
+</table>
+<p>GEMM is now 84% of the CNN's kernel time. The drop in GPU busy time means launch and sync
+overhead is now the larger cost, which is HIP-4's target.</p>
+<p>Results now differ from the CPU in the last bits. The GPU adds each channel's values by a tree,
+while the CPU adds them one at a time. Both are deterministic. Softmax, layer and RMS norms, and
+column sums keep their kernels: at current shapes each call takes about 5 µs, which is launch
+overhead rather than missing parallelism (the roadmap's falsifier for HIP-2).</p>
 
 
 

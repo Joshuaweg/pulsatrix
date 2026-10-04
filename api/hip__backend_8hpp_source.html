@@ -240,10 +240,14 @@ $(document).ready(function(){initNavTree('hip__backend_8hpp_source.html',''); in
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="comment">// One device float that dot() reduces into before copying it to the host; allocated once</span></div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="comment">// so dot() costs no per-call device allocation.</span></div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="keywordtype">float</span>* dot_result_ = <span class="keyword">nullptr</span>;  <span class="comment">// dot/sum scratch: result at [0], per-block partials after it (HIP-5)</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>};</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="comment">// Device scratch for per-channel reductions (HIP-2), grown on demand by reduce_scratch().</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordtype">float</span>* reduce_scratch_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="keywordtype">size_t</span> reduce_scratch_floats_ = 0;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keywordtype">float</span>* reduce_scratch(<span class="keywordtype">size_t</span> floats);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>};</div>
 </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>}  <span class="comment">// namespace pulsatrix</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}  <span class="comment">// namespace pulsatrix</span></div>
 <div class="ttc" id="aclasspulsatrix_1_1DeviceBackend_html"><div class="ttname"><a href="classpulsatrix_1_1DeviceBackend.html">pulsatrix::DeviceBackend</a></div><div class="ttdoc">Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....</div><div class="ttdef"><b>Definition</b> device_backend.hpp:219</div></div>
 <div class="ttc" id="aclasspulsatrix_1_1HIPBackend_html"><div class="ttname"><a href="classpulsatrix_1_1HIPBackend.html">pulsatrix::HIPBackend</a></div><div class="ttdoc">HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.</div><div class="ttdef"><b>Definition</b> hip_backend.hpp:35</div></div>
 <div class="ttc" id="aclasspulsatrix_1_1HIPBackend_html_a0401ec38fd9c4fb2dd2fca20fb1fdeb1"><div class="ttname"><a href="classpulsatrix_1_1HIPBackend.html#a0401ec38fd9c4fb2dd2fca20fb1fdeb1">pulsatrix::HIPBackend::aggregator_lrp</a></div><div class="ttdeci">void aggregator_lrp(const float *x, const float *mean_pow, const float *r_out, float *r_in, size_t n, size_t cols, float p, float eps) override</div><div class="ttdoc">AggregatorModule epsilon rule, per column.</div></div>
