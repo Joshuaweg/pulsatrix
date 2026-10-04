@@ -223,12 +223,23 @@ __global__ void axpby_kernel(float alpha, const float* x, float beta, const floa
 }
 
 // Single block of kBlockSize threads: each thread sums a fixed stride, then a fixed tree.
-__global__ void dot_kernel(const float* a, const float* b, size_t n, float* result) {
+// HIP-5: dot and sum as two deterministic passes. Pass 1 runs reduce_blocks_for(n) blocks, each
+// grid-striding over the input and tree-reducing its share to one partial; pass 2 is one block
+// tree-reducing the partials in index order. The partition depends only on n, never on the
+// hardware, and there are no atomics, so the result is bit-identical run to run.
+constexpr size_t kMaxReduceBlocks = 1024;
+// Scratch a backend keeps for dot/sum: the result at [0], the partials after it.
+constexpr size_t kReduceScratchFloats = 1 + kMaxReduceBlocks;
+
+inline size_t reduce_blocks_for(size_t n) {
+    // About four grid-stride iterations per thread before the cap.
+    const size_t blocks = (n + 4 * kBlockSize - 1) / (4 * kBlockSize);
+    return blocks < 1 ? 1 : (blocks > kMaxReduceBlocks ? kMaxReduceBlocks : blocks);
+}
+
+// The block's threads' values, summed by a fixed tree into thread 0's return value.
+__device__ inline float block_tree_sum(float acc) {
     __shared__ float partial[kBlockSize];
-    float acc = 0.0f;
-    for (size_t i = threadIdx.x; i < n; i += kBlockSize) {
-        acc += a[i] * b[i];
-    }
     partial[threadIdx.x] = acc;
     __syncthreads();
     for (int stride = kBlockSize / 2; stride > 0; stride /= 2) {
@@ -237,8 +248,20 @@ __global__ void dot_kernel(const float* a, const float* b, size_t n, float* resu
         }
         __syncthreads();
     }
+    return partial[0];
+}
+
+__global__ void sum_kernel(const float* in, size_t n, float* result);  // defined below
+
+__global__ void dot_partials_kernel(const float* a, const float* b, size_t n, float* partials) {
+    float acc = 0.0f;
+    for (size_t i = static_cast<size_t>(blockIdx.x) * kBlockSize + threadIdx.x; i < n;
+         i += static_cast<size_t>(gridDim.x) * kBlockSize) {
+        acc += a[i] * b[i];
+    }
+    const float total = block_tree_sum(acc);
     if (threadIdx.x == 0) {
-        *result = partial[0];
+        partials[blockIdx.x] = total;
     }
 }
 
@@ -330,10 +353,12 @@ void launch_axpby(float alpha, const float* x, float beta, const float* y, float
     axpby_kernel<<<grid_size_for(n), kBlockSize, 0, stream>>>(alpha, x, beta, y, out, n);
 }
 
-// result is a one-float device buffer owned by the backend.
+// scratch is the backend's kReduceScratchFloats-float device buffer; the result lands in scratch[0].
 template <typename Stream>
-void launch_dot(const float* a, const float* b, size_t n, float* result, Stream stream) {
-    dot_kernel<<<1, kBlockSize, 0, stream>>>(a, b, n, result);
+void launch_dot(const float* a, const float* b, size_t n, float* scratch, Stream stream) {
+    const size_t blocks = reduce_blocks_for(n);
+    dot_partials_kernel<<<static_cast<unsigned>(blocks), kBlockSize, 0, stream>>>(a, b, n, scratch + 1);
+    sum_kernel<<<1, kBlockSize, 0, stream>>>(scratch + 1, blocks, scratch);
 }
 
 template <typename Stream>
@@ -361,23 +386,28 @@ void launch_adam_step(float* param, const float* grad, float* m, float* v, size_
 
 // ---- GPU-native-kernels Mission 1b ---------------------------------------------------------
 
-// Same single-block fixed-order tree as dot_kernel.
+// One block: thread t sums elements t, t + 256, ...; then the fixed tree. Pass 2 of dot and sum,
+// and pass 1's per-block work for sum via sum_partials_kernel.
 __global__ void sum_kernel(const float* in, size_t n, float* result) {
-    __shared__ float partial[kBlockSize];
     float acc = 0.0f;
     for (size_t i = threadIdx.x; i < n; i += kBlockSize) {
         acc += in[i];
     }
-    partial[threadIdx.x] = acc;
-    __syncthreads();
-    for (int stride = kBlockSize / 2; stride > 0; stride /= 2) {
-        if (static_cast<int>(threadIdx.x) < stride) {
-            partial[threadIdx.x] += partial[threadIdx.x + stride];
-        }
-        __syncthreads();
-    }
+    const float total = block_tree_sum(acc);
     if (threadIdx.x == 0) {
-        *result = partial[0];
+        *result = total;
+    }
+}
+
+__global__ void sum_partials_kernel(const float* in, size_t n, float* partials) {
+    float acc = 0.0f;
+    for (size_t i = static_cast<size_t>(blockIdx.x) * kBlockSize + threadIdx.x; i < n;
+         i += static_cast<size_t>(gridDim.x) * kBlockSize) {
+        acc += in[i];
+    }
+    const float total = block_tree_sum(acc);
+    if (threadIdx.x == 0) {
+        partials[blockIdx.x] = total;
     }
 }
 
@@ -407,8 +437,10 @@ __global__ void bce_with_logits_grad_kernel(const float* logits, const float* ta
 }
 
 template <typename Stream>
-void launch_sum(const float* in, size_t n, float* result, Stream stream) {
-    sum_kernel<<<1, kBlockSize, 0, stream>>>(in, n, result);
+void launch_sum(const float* in, size_t n, float* scratch, Stream stream) {
+    const size_t blocks = reduce_blocks_for(n);
+    sum_partials_kernel<<<static_cast<unsigned>(blocks), kBlockSize, 0, stream>>>(in, n, scratch + 1);
+    sum_kernel<<<1, kBlockSize, 0, stream>>>(scratch + 1, blocks, scratch);
 }
 
 template <typename Stream>

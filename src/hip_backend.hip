@@ -25,7 +25,7 @@ HIPBackend::HIPBackend() : stream_(nullptr), hipblas_handle_(nullptr) {
     PULSATRIX_HIP_CHECK(hipStreamCreate(&stream_));
     PULSATRIX_HIPBLAS_CHECK(hipblasCreate(&hipblas_handle_));
     PULSATRIX_HIPBLAS_CHECK(hipblasSetStream(hipblas_handle_, stream_));
-    PULSATRIX_HIP_CHECK(hipMalloc(&dot_result_, sizeof(float)));
+    PULSATRIX_HIP_CHECK(hipMalloc(&dot_result_, gpu::kReduceScratchFloats * sizeof(float)));
 }
 
 HIPBackend::~HIPBackend() {

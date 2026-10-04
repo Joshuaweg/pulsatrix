@@ -390,6 +390,30 @@ inline void BatchNormEvalFamily(DeviceBackend& gpu) {
     ExpectNear(cpu_beta_grad, dbeta_grad.host());
 }
 
+// HIP-5: dot and sum over many blocks. Sizes straddle the block and grid boundaries (256
+// threads; up to 1024 blocks of 4 chunks each), are checked against a double-precision
+// reference with a relative bound, and must be bit-identical run to run (fixed partition and
+// tree order, no atomics).
+inline void MultiBlockReductions(DeviceBackend& gpu) {
+    for (size_t n : {size_t{1023}, size_t{1024}, size_t{1025}, size_t{262143}, size_t{1048577}, size_t{3000001}}) {
+        std::vector<float> a = Random(n, 300), b = Random(n, 301);
+        double ref_dot = 0.0, ref_sum = 0.0, scale = 0.0;
+        for (size_t i = 0; i < n; ++i) {
+            ref_dot += static_cast<double>(a[i]) * b[i];
+            ref_sum += a[i];
+            scale += std::fabs(static_cast<double>(a[i]));
+        }
+        DeviceBuffer da(gpu, a), db(gpu, b);
+        const float dot = gpu.dot(da.get(), db.get(), n), sum = gpu.sum(da.get(), n);
+        // Float accumulation error grows like sqrt(n) for a tree; bound it relative to sum |a|.
+        const double bound = 1e-6 * scale + 1e-5;
+        EXPECT_NEAR(dot, ref_dot, bound) << "n=" << n;
+        EXPECT_NEAR(sum, ref_sum, bound) << "n=" << n;
+        EXPECT_EQ(gpu.dot(da.get(), db.get(), n), dot) << "dot not deterministic at n=" << n;
+        EXPECT_EQ(gpu.sum(da.get(), n), sum) << "sum not deterministic at n=" << n;
+    }
+}
+
 }  // namespace primitive_equivalence
 }  // namespace pulsatrix
 
@@ -436,6 +460,9 @@ inline void BatchNormEvalFamily(DeviceBackend& gpu) {
         ::pulsatrix::primitive_equivalence::PermuteGatherScatter(MEMBER);                          \
     }                                                                                               \
     TEST_F(FIXTURE, TopKRowsMatchCPUBitExactly) { ::pulsatrix::primitive_equivalence::TopKRows(MEMBER); } \
+    TEST_F(FIXTURE, MultiBlockReductionsAreAccurateAndDeterministic) {                              \
+        ::pulsatrix::primitive_equivalence::MultiBlockReductions(MEMBER);                          \
+    }                                                                                               \
     TEST_F(FIXTURE, BatchNormEvalFamilyMatchesCPU) {                                                \
         ::pulsatrix::primitive_equivalence::BatchNormEvalFamily(MEMBER);                           \
     }
