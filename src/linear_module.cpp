@@ -99,10 +99,16 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
     const auto out = static_cast<size_t>(out_features_);
 
     // grad_W += X^T @ grad_Y -- the batched sum of outer products is gemm's k-dimension sum.
-    backend_->gemm_ex(last_input_.data(), true, grad_output.data(), false, weight_grad_.data(), in, n, out, 1.0f);
+    // Skipped entirely for a frozen weight (FND-2): this GEMM is the saving freezing exists for.
+    if (weight_.requires_grad()) {
+        backend_->gemm_ex(last_input_.data(), true, grad_output.data(), false, weight_grad_.data(), in, n, out,
+                          1.0f);
+    }
 
     // grad_bias += sum over the batch of grad_Y.
-    backend_->column_sums(grad_output.data(), bias_grad_.data(), n, out, 1.0f);
+    if (bias_.requires_grad()) {
+        backend_->column_sums(grad_output.data(), bias_grad_.data(), n, out, 1.0f);
+    }
 
     // grad_X = grad_Y @ W^T
     Tensor grad_input(Shape({N, in_features_}), backend_, weight_.device());

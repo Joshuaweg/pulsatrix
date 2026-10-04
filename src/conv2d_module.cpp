@@ -120,11 +120,16 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     Tensor per_example_bias_grad(Shape({out_channels_}), backend_, device);
     for (int64_t e = 0; e < N; ++e) {
         const float* grad_out_e = grad_output.data() + e * out_stride;
-        backend_->gemm_ex(grad_out_e, false, last_im2col_.data() + e * P * Q, true, per_example_kernel_grad.data(), oc,
-                          q, p, 0.0f);
-        kernel_grad_.accumulate(per_example_kernel_grad);
-        backend_->gemm_ex(grad_out_e, false, ones.data(), false, per_example_bias_grad.data(), oc, q, 1, 0.0f);
-        bias_grad_.accumulate(per_example_bias_grad);
+        // Frozen parameters (FND-2) skip their gradient GEMMs; the input gradient below doesn't need them.
+        if (kernel_.requires_grad()) {
+            backend_->gemm_ex(grad_out_e, false, last_im2col_.data() + e * P * Q, true,
+                              per_example_kernel_grad.data(), oc, q, p, 0.0f);
+            kernel_grad_.accumulate(per_example_kernel_grad);
+        }
+        if (bias_.requires_grad()) {
+            backend_->gemm_ex(grad_out_e, false, ones.data(), false, per_example_bias_grad.data(), oc, q, 1, 0.0f);
+            bias_grad_.accumulate(per_example_bias_grad);
+        }
         backend_->gemm_ex(kernel_.data(), true, grad_out_e, false, grad_cols.data() + e * P * Q, p, oc, q, 0.0f);
     }
     Tensor grad_input(last_input_.shape(), backend_, device);

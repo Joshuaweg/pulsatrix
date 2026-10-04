@@ -73,7 +73,11 @@ Tensor RMSNormModule::backward(const Tensor& grad_output) {
                                 grad_input.data(), gamma_terms.data(), rows, cols);
     Tensor local_gamma_grad(Shape({num_features_}), backend_, device);
     backend_->column_sums(gamma_terms.data(), local_gamma_grad.data(), rows, cols, 0.0f);
-    gamma_grad_.accumulate(local_gamma_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (gamma_.requires_grad()) {
+        gamma_grad_.accumulate(local_gamma_grad);
+    }
     return grad_input;
 }
 
