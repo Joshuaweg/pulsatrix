@@ -19,7 +19,9 @@ namespace pulsatrix {
 struct DataLoaderOptions {
     int64_t batch_size = 1;
     bool shuffle = false;
-    unsigned shuffle_seed = 42;
+    /** @brief Shuffle seed. Unset draws one from the global seed stream (next_seed(), FND-7)
+     *         when the loader is built, so loaders don't all share one shuffle order. */
+    std::optional<unsigned> shuffle_seed;
     /** @brief 0 = fully synchronous, no threads spawned (this phase's only exercised path). */
     int num_workers = 0;
     int64_t prefetch_batches = 2;

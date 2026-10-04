@@ -6,8 +6,20 @@
 
 #include "pulsatrix/hip_check.hpp"
 #include "pulsatrix/hipblas_check.hpp"
+#include "pulsatrix/determinism.hpp"
 
 namespace pulsatrix {
+
+namespace {
+
+// FND-7: deterministic mode forbids BLAS atomics, which can reorder floating-point sums from run
+// to run. Read on every call, so set_deterministic() takes effect without rebuilding backends.
+void set_blas_atomics_mode(hipblasHandle_t handle) {
+    PULSATRIX_HIPBLAS_CHECK(
+        hipblasSetAtomicsMode(handle, deterministic() ? HIPBLAS_ATOMICS_NOT_ALLOWED : HIPBLAS_ATOMICS_ALLOWED));
+}
+
+}  // namespace
 
 HIPBackend::HIPBackend() : stream_(nullptr), hipblas_handle_(nullptr) {
     PULSATRIX_HIP_CHECK(hipStreamCreate(&stream_));
@@ -84,6 +96,7 @@ void HIPBackend::gemm(const float* a, const float* b, float* out, size_t m, size
     // correct result from a transposed one.
     const float alpha = 1.0f;
     const float beta = 0.0f;
+    set_blas_atomics_mode(hipblas_handle_);
     PULSATRIX_HIPBLAS_CHECK(hipblasSgemm(hipblas_handle_, HIPBLAS_OP_N, HIPBLAS_OP_N, static_cast<int>(n),
                                      static_cast<int>(m), static_cast<int>(k), &alpha, b,
                                      static_cast<int>(n), a, static_cast<int>(k), &beta, out,
@@ -134,6 +147,7 @@ void HIPBackend::gemm_ex(const float* a, bool transpose_a, const float* b, bool 
     // transposed operand becomes a plain one in BLAS's view and vice versa -- hence op(B) maps
     // to OP_T exactly when transpose_b, with the leading dimension of the *stored* layout.
     const float alpha = 1.0f;
+    set_blas_atomics_mode(hipblas_handle_);
     PULSATRIX_HIPBLAS_CHECK(hipblasSgemm(hipblas_handle_, transpose_b ? HIPBLAS_OP_T : HIPBLAS_OP_N, transpose_a ? HIPBLAS_OP_T : HIPBLAS_OP_N,
                                  static_cast<int>(n), static_cast<int>(m), static_cast<int>(k), &alpha, b,
                                  static_cast<int>(transpose_b ? k : n), a, static_cast<int>(transpose_a ? m : k),

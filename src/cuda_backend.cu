@@ -6,8 +6,20 @@
 
 #include "pulsatrix/cublas_check.hpp"
 #include "pulsatrix/cuda_check.hpp"
+#include "pulsatrix/determinism.hpp"
 
 namespace pulsatrix {
+
+namespace {
+
+// FND-7: deterministic mode forbids BLAS atomics, which can reorder floating-point sums from run
+// to run. Read on every call, so set_deterministic() takes effect without rebuilding backends.
+void set_blas_atomics_mode(cublasHandle_t handle) {
+    PULSATRIX_CUBLAS_CHECK(
+        cublasSetAtomicsMode(handle, deterministic() ? CUBLAS_ATOMICS_NOT_ALLOWED : CUBLAS_ATOMICS_ALLOWED));
+}
+
+}  // namespace
 
 CUDABackend::CUDABackend() {
     PULSATRIX_CUDA_CHECK(cudaStreamCreate(&stream_));
@@ -74,6 +86,7 @@ void CUDABackend::gemm(const float* a, const float* b, float* out, size_t m, siz
     // gpu_backend_programming/context_gpu_cublas_cudnn_integration.md's Column-Major Trap.
     const float alpha = 1.0f;
     const float beta = 0.0f;
+    set_blas_atomics_mode(cublas_handle_);
     PULSATRIX_CUBLAS_CHECK(cublasSgemm(cublas_handle_, CUBLAS_OP_N, CUBLAS_OP_N, static_cast<int>(n),
                                    static_cast<int>(m), static_cast<int>(k), &alpha, b,
                                    static_cast<int>(n), a, static_cast<int>(k), &beta, out,
@@ -124,6 +137,7 @@ void CUDABackend::gemm_ex(const float* a, bool transpose_a, const float* b, bool
     // transposed operand becomes a plain one in BLAS's view and vice versa -- hence op(B) maps
     // to OP_T exactly when transpose_b, with the leading dimension of the *stored* layout.
     const float alpha = 1.0f;
+    set_blas_atomics_mode(cublas_handle_);
     PULSATRIX_CUBLAS_CHECK(cublasSgemm(cublas_handle_, transpose_b ? CUBLAS_OP_T : CUBLAS_OP_N, transpose_a ? CUBLAS_OP_T : CUBLAS_OP_N,
                                  static_cast<int>(n), static_cast<int>(m), static_cast<int>(k), &alpha, b,
                                  static_cast<int>(transpose_b ? k : n), a, static_cast<int>(transpose_a ? m : k),

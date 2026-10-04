@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "pulsatrix/determinism.hpp"
 #include "pulsatrix/bce_with_logits_loss.hpp"
 #include "pulsatrix/linear_module.hpp"
 
@@ -62,7 +63,11 @@ public:
      *         and nothing downstream rejects it -- `LinearModule(0, 1, ...)` builds a
      *         well-formed zero-element weight and fails only later, confusingly.
      */
-    explicit LinearProbe(int64_t activation_dim, DeviceBackend* backend, unsigned seed = 42)
+    /** @brief Seeded from the global seed stream (next_seed(), FND-7). */
+    LinearProbe(int64_t activation_dim, DeviceBackend* backend)
+        : LinearProbe(activation_dim, backend, static_cast<unsigned>(next_seed())) {}
+
+    LinearProbe(int64_t activation_dim, DeviceBackend* backend, unsigned seed)
         : activation_dim_(activation_dim),
           // Clamped only so a rejected dimension can't reach LinearModule/Shape and throw
           // *their* message before the check below throws this class's own, clearer one --

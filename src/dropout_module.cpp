@@ -1,10 +1,14 @@
 #include "pulsatrix/dropout_module.hpp"
 
+#include "pulsatrix/determinism.hpp"
+
 #include <stdexcept>
 
 #include "pulsatrix/assert.hpp"
 
 namespace pulsatrix {
+
+DropoutModule::DropoutModule(float p, DeviceBackend* backend) : DropoutModule(p, backend, next_seed()) {}
 
 DropoutModule::DropoutModule(float p, DeviceBackend* backend, uint64_t seed)
     : p_(p),
