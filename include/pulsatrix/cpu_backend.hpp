@@ -79,9 +79,10 @@ public:
                              size_t cols, float p) override;
     void aggregator_lrp(const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n, size_t cols,
                         float p, float eps) override;
-    void im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) override;
-    void col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)
-                    override;
+    void im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w,
+                const ConvGeometry& geometry) override;
+    void col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w,
+                    const ConvGeometry& geometry) override;
     void add_channel_vector(const float* in, const float* vec, float* out, size_t n, size_t c, size_t inner) override;
     void lrp_conv(const float* col, const float* kernel, const float* pre_bias, const float* r, float* r_col, size_t n,
                   size_t out_channels, size_t p, size_t q, float eps) override;

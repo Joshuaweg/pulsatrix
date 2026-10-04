@@ -487,24 +487,27 @@ void CUDABackend::aggregator_lrp(const float* x, const float* mean_pow, const fl
 
 // ---- GPU-native-kernels Mission 4 (kernels in gpu_kernels.cuh) ---------------------------
 
-void CUDABackend::im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) {
+void CUDABackend::im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, const ConvGeometry& g) {
     if (n == 0 || c == 0) {
         return;
     }
-    const size_t total = n * c * kh * kw * (h - kh + 1) * (w - kw + 1);
-    gpu::im2col_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(
-        in, col, n, c, h, w, kh, kw);
+    const size_t out_h = (h + 2 * g.pad_h - g.kh) / g.stride_h + 1;
+    const size_t out_w = (w + 2 * g.pad_w - g.kw) / g.stride_w + 1;
+    const size_t total = n * c * g.kh * g.kw * out_h * out_w;
+    gpu::im2col_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(in, col, n, c, h, w, g, out_h,
+                                                                                    out_w);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
-void CUDABackend::col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)
-                             {
+void CUDABackend::col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, const ConvGeometry& g) {
     if (n == 0 || c == 0) {
         return;
     }
-    gpu::col2im_add_kernel<<<gpu::grid_size_for(n * c * h * w), gpu::kBlockSize, 0, stream_>>>(
-        col, out, n, c, h, w, kh, kw);
+    const size_t out_h = (h + 2 * g.pad_h - g.kh) / g.stride_h + 1;
+    const size_t out_w = (w + 2 * g.pad_w - g.kw) / g.stride_w + 1;
+    gpu::col2im_add_kernel<<<gpu::grid_size_for(n * c * h * w), gpu::kBlockSize, 0, stream_>>>(col, out, n, c, h, w, g,
+                                                                                               out_h, out_w);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
