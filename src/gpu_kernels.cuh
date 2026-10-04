@@ -23,6 +23,7 @@
 #include "rl_math.hpp"
 #include "row_math.hpp"
 #include "ssm_math.hpp"
+#include "top_k_math.hpp"
 #include "pulsatrix/device_backend.hpp"
 
 namespace pulsatrix {
@@ -907,6 +908,17 @@ __global__ void rl_rows_kernel(int op, RlRowArgs args) {
     const auto b = static_cast<int64_t>(global_index());
     if (b < args.rows) {
         rl::row(static_cast<RlRowOp>(op), args, b);
+    }
+}
+
+// ---- FND-3 ----------------------------------------------------------------------------------
+
+// One thread per row: the row's selection buffer is its own slice of the output.
+__global__ void top_k_rows_kernel(const float* in, float* values, float* indices, int64_t rows, int64_t cols,
+                                  int64_t k, bool largest) {
+    const auto r = static_cast<int64_t>(global_index());
+    if (r < rows) {
+        topk::row(in + r * cols, values + r * k, indices + r * k, cols, k, largest);
     }
 }
 

@@ -135,6 +135,8 @@ public:
                        const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) override;
     void ssm_pass(SsmPassOp op, const SsmPassArgs& args) override;
     void rl_rows(RlRowOp op, const RlRowArgs& args) override;
+    void top_k_rows(const float* in, float* values, float* indices, size_t rows, size_t cols, size_t k,
+                    bool largest) override;
 
 private:
     cudaStream_t stream_;
