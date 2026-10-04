@@ -76,10 +76,10 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d",
 "classpulsatrix_1_1datalog_1_1FactDatabase.html",
 "globals_defs.html",
-"namespacepulsatrix.html#aae38e5361268c504e9b96249e75707a8",
-"structpulsatrix_1_1ConnectionGene.html#a39c102f2cec9fb3c9c4cea8b4cd58758",
-"structpulsatrix_1_1NamedParamRef.html",
-"structpulsatrix_1_1TanhGaussianSample.html#a6835f03acd0b953261580d8a009ff442"
+"namespacepulsatrix.html#aaa378dea6ffac99ce61ce6a8237be8db",
+"structpulsatrix_1_1ConnectionGene.html",
+"structpulsatrix_1_1NamedBufferRef.html#a8078d5fe579437b09cef4b529fc2780b",
+"structpulsatrix_1_1TanhGaussianSample.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

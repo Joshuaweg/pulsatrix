@@ -441,6 +441,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#gradient-clipping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradient clipping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#freezing-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1628,6 +1639,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#gradient-clipping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradient clipping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#freezing-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1834,6 +1856,18 @@ and Hutter). It shrinks the weights directly, <code>w &lt;- (1 - lr * wd) * w</c
 decay to the gradient, where Adam's normalization would rescale it. Its default weight decay is
 0.01, as in PyTorch. <code>SGDOptimizer(lr, momentum, nesterov)</code> adds momentum and Nesterov momentum,
 with the same buffer rule as <code>torch.optim.SGD</code>.</p>
+<h3 id="gradient-clipping">Gradient clipping<a class="headerlink" href="#gradient-clipping" title="Permanent link">&para;</a></h3>
+<p><code>ClipGradNorm(model, max_norm)</code> scales all trainable gradients by one factor so their global L2
+norm is at most <code>max_norm</code>, as <code>torch.nn.utils.clip_grad_norm_</code> does. It returns the norm before
+clipping, which is worth logging. Call it after accumulating gradients and before the optimizer
+step:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/grad_clipping.hpp"</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">norm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClipGradNorm</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">isfinite</span><span class="p">(</span><span class="n">norm</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">model</span><span class="p">);</span><span class="w">  </span><span class="c1">// a NaN or infinite norm leaves the gradients alone: skip this step</span>
+<span class="p">}</span>
+</code></pre></div>
 <h3 id="freezing-parameters">Freezing parameters<a class="headerlink" href="#freezing-parameters" title="Permanent link">&para;</a></h3>
 <p>Every parameter has a name (<code>named_parameters()</code>), and <code>set_requires_grad</code> freezes or unfreezes
 parameters by name. A name selects that parameter and everything under it:</p>

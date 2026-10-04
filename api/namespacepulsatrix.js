@@ -376,6 +376,7 @@ var namespacepulsatrix =
     [ "check_deterministic_allowed", "namespacepulsatrix.html#a3aa6f8f77e253906541c671902ea6b23", null ],
     [ "check_optimizer_setting", "namespacepulsatrix.html#a91c49223bc2b354ad8ed7a7c4f2c6ef1", null ],
     [ "CircuitNodeDisplayLabel", "namespacepulsatrix.html#a1753b46ac2c61a1b20581a38bc7d3d1b", null ],
+    [ "ClipGradNorm", "namespacepulsatrix.html#a46dfb5346e61792a6c94f75b5b4d8105", null ],
     [ "CombinedFitness", "namespacepulsatrix.html#ad9528e51695652a2d616c9044deae579", null ],
     [ "CompatibilityDistance", "namespacepulsatrix.html#af5620627708fa92ae915cfe8d3b1d95c", null ],
     [ "ComputeAdjustedFitness", "namespacepulsatrix.html#a5c9798029a9f25743c1a1476d1da4f66", null ],

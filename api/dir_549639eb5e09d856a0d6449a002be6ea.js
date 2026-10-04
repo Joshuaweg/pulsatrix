@@ -76,6 +76,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "gflownet_trajectory.hpp", "gflownet__trajectory_8hpp.html", "gflownet__trajectory_8hpp" ],
     [ "gp_bo.hpp", "gp__bo_8hpp.html", "gp__bo_8hpp" ],
     [ "grad_cam.hpp", "grad__cam_8hpp.html", "grad__cam_8hpp" ],
+    [ "grad_clipping.hpp", "grad__clipping_8hpp.html", "grad__clipping_8hpp" ],
     [ "group_norm_module.hpp", "group__norm__module_8hpp.html", "group__norm__module_8hpp" ],
     [ "gru_module.hpp", "gru__module_8hpp.html", "gru__module_8hpp" ],
     [ "hip_backend.hpp", "hip__backend_8hpp.html", "hip__backend_8hpp" ],
