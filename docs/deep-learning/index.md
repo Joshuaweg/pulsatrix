@@ -169,6 +169,12 @@ Weight decay works as in PyTorch's SGD and Adam: the step uses `grad + weight_de
 and the stored gradient is left unchanged. A group's `learning_rate` and `weight_decay` can be
 changed between steps through `param_groups()`.
 
+For transformer fine-tuning, use `AdamWOptimizer` instead (decoupled weight decay, Loshchilov
+and Hutter). It shrinks the weights directly, `w <- (1 - lr * wd) * w`, rather than adding the
+decay to the gradient, where Adam's normalization would rescale it. Its default weight decay is
+0.01, as in PyTorch. `SGDOptimizer(lr, momentum, nesterov)` adds momentum and Nesterov momentum,
+with the same buffer rule as `torch.optim.SGD`.
+
 ### Freezing parameters
 
 Every parameter has a name (`named_parameters()`), and `set_requires_grad` freezes or unfreezes

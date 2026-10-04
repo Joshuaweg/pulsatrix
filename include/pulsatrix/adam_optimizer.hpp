@@ -110,16 +110,42 @@ public:
         state_.insert_or_assign(parameter, std::move(state));
     }
 
-private:
+protected:
+    /** @brief Switches weight decay from L2 (Adam) to decoupled (AdamW). */
+    void set_decoupled_weight_decay(bool decoupled) { decoupled_weight_decay_ = decoupled; }
 
+private:
     float learning_rate_;
     float weight_decay_ = 0.0f;
+    bool decoupled_weight_decay_ = false;
     ParamGroupSet groups_;
     DeviceBackend* backend_;
     float beta1_;
     float beta2_;
     float eps_;
     std::unordered_map<const Tensor*, AdamState> state_;
+};
+
+/**
+ * @brief AdamW (Loshchilov & Hutter, "Decoupled Weight Decay Regularization", arXiv 1711.05101):
+ *        Adam whose weight decay shrinks the weights directly, w <- (1 - lr * wd) * w, before the
+ *        Adam step, instead of adding wd * w to the gradient (roadmap TRN-2).
+ * @note The default for transformer fine-tuning. With weight_decay = 0 it is exactly Adam. Its
+ *       state is Adam's, so state(), set_state() and checkpoints (IO-2) work unchanged. Parameter
+ *       groups set the decay per group, as for Adam.
+ */
+class AdamWOptimizer : public AdamOptimizer {
+public:
+    /**
+     * @param weight_decay Default group's decoupled decay. Defaults to 0.01, like torch.optim.AdamW.
+     * @throws std::invalid_argument if weight_decay is negative or not finite.
+     */
+    AdamWOptimizer(float learning_rate, DeviceBackend* backend, float weight_decay = 0.01f, float beta1 = 0.9f,
+                   float beta2 = 0.999f, float eps = 1e-8f)
+        : AdamOptimizer(learning_rate, backend, beta1, beta2, eps) {
+        set_decoupled_weight_decay(true);
+        set_weight_decay(weight_decay);
+    }
 };
 
 }  // namespace pulsatrix
