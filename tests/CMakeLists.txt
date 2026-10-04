@@ -117,6 +117,7 @@ add_executable(pulsatrix_tests
     checkpoint_test.cpp
     param_groups_test.cpp
     adamw_sgd_momentum_test.cpp
+    grad_clipping_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
     gru_module_test.cpp

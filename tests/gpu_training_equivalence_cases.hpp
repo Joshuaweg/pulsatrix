@@ -11,6 +11,7 @@
 #include <random>
 #include <vector>
 
+#include "pulsatrix/grad_clipping.hpp"
 #include "pulsatrix/adam_optimizer.hpp"
 #include "pulsatrix/bce_with_logits_loss.hpp"
 #include "pulsatrix/aggregator_module.hpp"
@@ -1249,6 +1250,21 @@ inline void DeviceMismatchThrowsInsteadOfFaulting(DeviceBackend& gpu) {
     EXPECT_EQ(ToHost(back), (std::vector<float>{1, 2, 3, 4, 5, 6}));
 }
 
+// TRN-3: global-norm clipping on the device (per-parameter dot products, then one scale).
+inline void ClipGradNormMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule cm(5, 3, &cpu), gm(5, 3, &gpu);
+    const std::vector<float> gw = Random(15, 1600), gb = Random(3, 1601);
+    *cm.parameters()[0].grad = Tensor(Shape({5, 3}), &cpu, gw);
+    *gm.parameters()[0].grad = Tensor(Shape({5, 3}), &gpu, gw);
+    *cm.parameters()[1].grad = Tensor(Shape({3}), &cpu, gb);
+    *gm.parameters()[1].grad = Tensor(Shape({3}), &gpu, gb);
+    const float cn = ClipGradNorm(cm, 0.5f), gn = ClipGradNorm(gm, 0.5f);
+    EXPECT_NEAR(cn, gn, 1e-5f);
+    ExpectNear(*cm.parameters()[0].grad, *gm.parameters()[0].grad);
+    ExpectNear(*cm.parameters()[1].grad, *gm.parameters()[1].grad);
+}
+
 }  // namespace training_equivalence
 }  // namespace pulsatrix
 
@@ -1337,6 +1353,7 @@ inline void DeviceMismatchThrowsInsteadOfFaulting(DeviceBackend& gpu) {
         ::pulsatrix::training_equivalence::NeuroSymbolicPipelines(MEMBER);                           \
     }                                                                                                \
     TEST_F(FIXTURE, Conv2DMatchesCPU) { ::pulsatrix::training_equivalence::Conv2DMatches(MEMBER); }      \
+    TEST_F(FIXTURE, ClipGradNormMatchesCPU) { ::pulsatrix::training_equivalence::ClipGradNormMatches(MEMBER); } \
     TEST_F(FIXTURE, DeviceMismatchThrowsInsteadOfFaulting) {                                       \
         ::pulsatrix::training_equivalence::DeviceMismatchThrowsInsteadOfFaulting(MEMBER);         \
     }                                                                                               \
