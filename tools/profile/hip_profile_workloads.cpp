@@ -7,6 +7,7 @@
 //   cnn     Conv2D(3->16) -> BatchNorm -> ReLU -> Conv2D(16->32, stride 2) -> BatchNorm -> ReLU
 //           -> Flatten -> Linear, on 32 images of 3x32x32: im2col, col2im, per-channel norms
 //   mlp     Linear(256->512) -> ReLU -> Linear(512->512) -> ReLU -> Linear(512->10), batch 64
+//   reduce  DeviceBackend::dot and sum over 16M floats, the HIP-5 microbenchmark
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -116,6 +117,19 @@ int main(int argc, char** argv) {
         run_classifier(model, &backend, x, Tensor(Shape({n}), &backend, labels), steps);
         return 0;
     }
-    std::fprintf(stderr, "usage: %s <tagger|cnn|mlp> [steps]\n", argv[0]);
+    if (workload == "reduce") {
+        constexpr int64_t n = int64_t{1} << 24;
+        Tensor a(Shape({n}), &backend, pattern(static_cast<size_t>(n), 0.01f));
+        Tensor b(Shape({n}), &backend, pattern(static_cast<size_t>(n), 0.02f));
+        for (int step = 0; step < steps; ++step) {
+            const auto t0 = std::chrono::steady_clock::now();
+            const float d = backend.dot(a.data(), b.data(), static_cast<size_t>(n));
+            const float s = backend.sum(a.data(), static_cast<size_t>(n));
+            const double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
+            std::printf("step %d  dot %.3f  sum %.3f  %.3f ms\n", step, d, s, ms);
+        }
+        return 0;
+    }
+    std::fprintf(stderr, "usage: %s <tagger|cnn|mlp|reduce> [steps]\n", argv[0]);
     return 2;
 }
