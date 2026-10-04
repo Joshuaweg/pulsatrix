@@ -158,6 +158,19 @@ public:
                 (override));
     MOCK_METHOD(void, ssm_pass, (SsmPassOp op, const SsmPassArgs& args), (override));
     MOCK_METHOD(void, rl_rows, (RlRowOp op, const RlRowArgs& args), (override));
+    MOCK_METHOD(void, batch_norm_update_running,
+                (const float* in, float* running_mean, float* running_var, size_t n, size_t c, size_t spatial,
+                 float momentum),
+                (override));
+    MOCK_METHOD(void, batch_norm_eval_forward,
+                (const float* in, const float* gamma, const float* beta, const float* running_mean,
+                 const float* running_var, float* xhat, float* out, float* channel_std, size_t n, size_t c,
+                 size_t spatial, float eps),
+                (override));
+    MOCK_METHOD(void, batch_norm_eval_backward,
+                (const float* grad_out, const float* gamma, const float* xhat, const float* channel_std,
+                 float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t c, size_t spatial),
+                (override));
     MOCK_METHOD(void, top_k_rows,
                 (const float* in, float* values, float* indices, size_t rows, size_t cols, size_t k, bool largest),
                 (override));

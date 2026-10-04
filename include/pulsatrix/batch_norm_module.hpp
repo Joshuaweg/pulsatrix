@@ -13,6 +13,8 @@
 
 namespace pulsatrix {
 
+class BatchNormFold;
+
 /**
  * @brief y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed
  *        per channel c over every (n, h, w) element jointly -- BatchNorm's defining
@@ -26,14 +28,15 @@ namespace pulsatrix {
  *       architecturally the same normalization category, just a different statistic
  *       grouping (channel-over-batch-and-spatial instead of group-over-spatial-per-row).
  *       backward() is the real, undetached training gradient.
- * @note No running-mean/running-variance or train/eval mode -- this ships computing batch
- *       statistics from the current input on every call (the same behavior every other
- *       call site in this codebase already uses implicitly). A real BatchNorm eval-mode
- *       (exponential moving average statistics, frozen at inference) needs a train/eval
- *       toggle this codebase's Module hierarchy doesn't have yet (the same open design
- *       question already flagged for Dropout, campaign Decision Point 2) -- deliberately
- *       not built speculatively here; this is a real, documented scope cut, not an
- *       oversight.
+ * @note Training mode (the Module default) normalizes with the current batch's statistics
+ *       and folds them into running statistics with PyTorch's rule: running = (1 - momentum) *
+ *       running + momentum * batch, using the unbiased batch variance. Eval mode
+ *       (set_training(false)) normalizes with the running statistics instead, so each sample's
+ *       output depends only on that sample (roadmap FND-5, lrp_issues #8). Running statistics
+ *       start at mean 0, variance 1. Put the model in eval mode before explaining it.
+ * @note For LRP, fold an eval-mode BatchNorm into the Conv2D before it with BatchNormFold:
+ *       the convolution's rule then distributes relevance through the combined affine map,
+ *       and this module becomes an exact identity.
  */
 class BatchNormModule : public Module {
 public:
@@ -45,12 +48,15 @@ public:
      * @param eps Stabilizer added inside the sqrt. Defaults to 1e-6, matching
      *        RMSNormModule/LayerNormModule/GroupNormModule's default for consistency
      *        within this codebase's normalization family.
-     * @throws std::invalid_argument if num_channels <= 0 -- external boundary (construction
-     *         arguments can originate from Phase 5's Python bindings with no upstream
-     *         validation), per cpp_tdd/context_tdd_adversarial_boundary_testing.md.
+     * @param momentum Weight of each new batch in the running statistics, in (0, 1].
+     *        Defaults to 0.1, PyTorch's default.
+     * @throws std::invalid_argument if num_channels <= 0 or momentum is outside (0, 1] --
+     *         external boundary (construction arguments can originate from Phase 5's Python
+     *         bindings with no upstream validation), per
+     *         cpp_tdd/context_tdd_adversarial_boundary_testing.md.
      */
     BatchNormModule(int64_t num_channels, DeviceBackend* backend, DeviceType device,
-                     float eps = 1e-6f);
+                     float eps = 1e-6f, float momentum = 0.1f);
 
     /** @brief On backend's own device (backend->device()), default eps. Previously the device
      *        defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0). */
@@ -79,6 +85,22 @@ public:
     /** @brief Vector overload for runtime-sized sources -- see Tensor's own vector ctor. */
     void set_beta(const std::vector<float>& values);
 
+    /** @brief Per-channel running mean, used in eval mode. Shape (num_channels). */
+    [[nodiscard]] const Tensor& running_mean() const { return running_mean_; }
+    /** @brief Per-channel running variance, used in eval mode. Shape (num_channels). */
+    [[nodiscard]] const Tensor& running_var() const { return running_var_; }
+    /**
+     * @brief Overwrites the running mean, e.g. when loading a pretrained model.
+     * @throws std::invalid_argument on a size other than num_channels or a non-finite value.
+     */
+    void set_running_mean(const std::vector<float>& values);
+    /**
+     * @brief Overwrites the running variance, e.g. when loading a pretrained model.
+     * @throws std::invalid_argument on a size other than num_channels, or a negative or
+     *         non-finite value.
+     */
+    void set_running_var(const std::vector<float>& values);
+
     [[nodiscard]] const Tensor& gamma() const { return gamma_; }
     [[nodiscard]] const Tensor& beta() const { return beta_; }
     [[nodiscard]] const Tensor& gamma_grad() const { return gamma_grad_; }
@@ -104,8 +126,15 @@ protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
 private:
+    friend class BatchNormFold;
+
+    // Which statistics the cached forward used, so backward() matches it even if the mode
+    // changes in between.
+    enum class Mode { Batch, Running, Folded };
+
     int64_t num_channels_;
     float eps_;
+    float momentum_;
     DeviceBackend* backend_;
     Tensor gamma_;       // shape (num_channels,)
     Tensor beta_;        // shape (num_channels,)
@@ -114,7 +143,11 @@ private:
     Tensor last_input_;      // (N, num_channels, H, W)
     Tensor last_xhat_;       // (N, num_channels, H, W)
     Tensor last_std_;  // (num_channels,) one std per channel, on the module's device
+    Tensor running_mean_;  // (num_channels,)
+    Tensor running_var_;   // (num_channels,)
     bool has_forwarded_ = false;
+    Mode last_mode_ = Mode::Batch;
+    bool folded_ = false;  // set by BatchNormFold: forward/backward become the identity
 };
 
 }  // namespace pulsatrix

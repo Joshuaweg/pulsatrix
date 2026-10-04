@@ -122,6 +122,14 @@ public:
     void batch_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float* channel_std,
                              float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t c, size_t spatial)
                              override;
+    void batch_norm_update_running(const float* in, float* running_mean, float* running_var, size_t n, size_t c,
+                                   size_t spatial, float momentum) override;
+    void batch_norm_eval_forward(const float* in, const float* gamma, const float* beta, const float* running_mean,
+                                 const float* running_var, float* xhat, float* out, float* channel_std, size_t n,
+                                 size_t c, size_t spatial, float eps) override;
+    void batch_norm_eval_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                  const float* channel_std, float* grad_in, float* gamma_grad, float* beta_grad,
+                                  size_t n, size_t c, size_t spatial) override;
     void group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out, float*
                             group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps) override;
     void group_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float* group_std,
