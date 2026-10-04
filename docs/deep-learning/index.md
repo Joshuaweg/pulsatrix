@@ -95,6 +95,33 @@ members (see `include/pulsatrix/xor_training_example.hpp`). `forward()` chains
 Runnable version: [`examples/xor_demo.cpp`](https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp)
 (CMake target `xor_demo`). See also the [recipe](../recipes/deep-learning/xor_training.md).
 
+### Saving and loading weights
+
+Weights are stored as [safetensors](https://github.com/huggingface/safetensors), the format most
+Hugging Face models ship in. It holds only numbers, so loading a file can't run code, unlike a
+PyTorch pickle. Parameter names come from `named_parameters()`:
+
+```cpp
+#include "pulsatrix/safetensors.hpp"
+
+std::vector<std::pair<std::string, const Tensor*>> tensors;
+for (const NamedParamRef& p : model.named_parameters()) {
+    tensors.emplace_back(p.name, p.ref.value);
+}
+WriteSafetensors("model.safetensors", tensors, {{"format", "pulsatrix"}});
+
+SafetensorsFile file = SafetensorsFile::Read("model.safetensors");
+for (const NamedParamRef& p : model.named_parameters()) {
+    *p.ref.value = file.tensor(p.name, &backend);  // keeps the parameter's requires_grad flag
+}
+```
+
+The reader treats every file as untrusted, and throws `std::invalid_argument` for anything
+outside the format: offsets past the end of the file, overlapping or missing byte ranges, sizes
+that overflow, and malformed headers. It's fuzzed under AddressSanitizer
+(`tools/fuzz/safetensors_fuzz.cpp`). `tensor()` converts F32 only for now; other dtypes are
+readable as raw bytes with `bytes()`.
+
 ### Reproducibility
 
 Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
