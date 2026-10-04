@@ -11,6 +11,7 @@
 #include <random>
 #include <vector>
 
+#include "pulsatrix/token_cross_entropy_loss.hpp"
 #include "pulsatrix/grad_clipping.hpp"
 #include "pulsatrix/adam_optimizer.hpp"
 #include "pulsatrix/bce_with_logits_loss.hpp"
@@ -1265,6 +1266,19 @@ inline void ClipGradNormMatches(DeviceBackend& gpu) {
     ExpectNear(*cm.parameters()[1].grad, *gm.parameters()[1].grad);
 }
 
+// TRN-5: token cross-entropy (rl_rows PgLoss/PgGrad with 0/1 token weights), ignored tokens
+// and an explicit accumulation normalizer.
+inline void TokenCrossEntropyMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::vector<float> logits = Random(6 * 7, 1700);
+    const std::vector<float> targets = {3, -100, 0, 6, -100, 2};
+    TokenCrossEntropyLoss cl(&cpu), gl(&gpu);
+    const float cv = cl.forward(Tensor(Shape({2, 3, 7}), &cpu, logits), Tensor(Shape({2, 3}), &cpu, targets), 9.0f);
+    const float gv = gl.forward(Tensor(Shape({2, 3, 7}), &gpu, logits), Tensor(Shape({2, 3}), &gpu, targets), 9.0f);
+    EXPECT_NEAR(cv, gv, 1e-5f);
+    ExpectNear(cl.backward(), gl.backward());
+}
+
 }  // namespace training_equivalence
 }  // namespace pulsatrix
 
@@ -1354,6 +1368,9 @@ inline void ClipGradNormMatches(DeviceBackend& gpu) {
     }                                                                                                \
     TEST_F(FIXTURE, Conv2DMatchesCPU) { ::pulsatrix::training_equivalence::Conv2DMatches(MEMBER); }      \
     TEST_F(FIXTURE, ClipGradNormMatchesCPU) { ::pulsatrix::training_equivalence::ClipGradNormMatches(MEMBER); } \
+    TEST_F(FIXTURE, TokenCrossEntropyMatchesCPU) {                                                  \
+        ::pulsatrix::training_equivalence::TokenCrossEntropyMatches(MEMBER);                       \
+    }                                                                                               \
     TEST_F(FIXTURE, DeviceMismatchThrowsInsteadOfFaulting) {                                       \
         ::pulsatrix::training_equivalence::DeviceMismatchThrowsInsteadOfFaulting(MEMBER);         \
     }                                                                                               \
