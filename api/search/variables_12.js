@@ -2,7 +2,7 @@ var searchData=
 [
   ['t_0',['t',['../structpulsatrix_1_1AdamOptimizer_1_1AdamState.html#a3b33b62bfdef04a35ccdf661fdb8ea92',1,'pulsatrix::AdamOptimizer::AdamState']]],
   ['tag_1',['tag',['../structpulsatrix_1_1MetricRecord.html#a4d5f3bf936000c84853c76c22869ce8a',1,'pulsatrix::MetricRecord']]],
-  ['targets_2',['targets',['../structpulsatrix_1_1LRPTarget.html#ab821b684c62b52a32b26f9a84e8250fb',1,'pulsatrix::LRPTarget']]],
+  ['targets_2',['targets',['../structpulsatrix_1_1LRPTarget.html#ab821b684c62b52a32b26f9a84e8250fb',1,'pulsatrix::LRPTarget::targets'],['../structpulsatrix_1_1TaggingBatch.html#aba3336a63c459b510af14444eaed291e',1,'pulsatrix::TaggingBatch::targets']]],
   ['tau_3',['tau',['../structpulsatrix_1_1RlRowArgs.html#a35eb3d2086f33f71e18a61e01f256a2d',1,'pulsatrix::RlRowArgs']]],
   ['temperature_5fc_4',['temperature_c',['../structpulsatrix_1_1GpuSample.html#ae527c8a5721440505d6b852c651161f0',1,'pulsatrix::GpuSample']]],
   ['terminal_5freward_5',['terminal_reward',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae7394613c6b3469e69326d93da2a211a',1,'pulsatrix::GFlowNetTrajectory']]],

@@ -10,9 +10,10 @@ var searchData=
   ['initial_5fbudget_7',['initial_budget',['../structpulsatrix_1_1HyperbandBracket.html#aaada5818addba11ae405a0c0cec0b316',1,'pulsatrix::HyperbandBracket']]],
   ['innovation_8',['innovation',['../structpulsatrix_1_1ConnectionGene.html#ae90025353b0b375b46e7e39f8c3be7e4',1,'pulsatrix::ConnectionGene']]],
   ['input_5flabel_9',['input_label',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a5cc0627fbdbed23c8324f07e0b597705',1,'pulsatrix::ExplanationScoreCard::Input']]],
-  ['interval_10',['interval',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a58164a0a2597183f05e897ad303af19c',1,'pulsatrix::SystemMonitor::Options']]],
-  ['is_5fdeterministic_11',['is_deterministic',['../structpulsatrix_1_1StabilityResult.html#a0773c6e9a6fd800eb0971458fe978d6a',1,'pulsatrix::StabilityResult']]],
-  ['is_5fsigned_12',['is_signed',['../structpulsatrix_1_1HeatmapColorScale.html#abae34320f9cf364a55428b0367110661',1,'pulsatrix::HeatmapColorScale']]],
-  ['iterations_13',['iterations',['../structpulsatrix_1_1DominantEigenResult.html#a3d359b2cec1646ff33dcaf85ceff1cf3',1,'pulsatrix::DominantEigenResult']]],
-  ['iterations_5frun_14',['iterations_run',['../structpulsatrix_1_1ESResult.html#a31146b96c141e95037758a8434f20741',1,'pulsatrix::ESResult']]]
+  ['inputs_10',['inputs',['../structpulsatrix_1_1TaggingBatch.html#a314f1d2e41f1b00a623852e24939eeb1',1,'pulsatrix::TaggingBatch']]],
+  ['interval_11',['interval',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a58164a0a2597183f05e897ad303af19c',1,'pulsatrix::SystemMonitor::Options']]],
+  ['is_5fdeterministic_12',['is_deterministic',['../structpulsatrix_1_1StabilityResult.html#a0773c6e9a6fd800eb0971458fe978d6a',1,'pulsatrix::StabilityResult']]],
+  ['is_5fsigned_13',['is_signed',['../structpulsatrix_1_1HeatmapColorScale.html#abae34320f9cf364a55428b0367110661',1,'pulsatrix::HeatmapColorScale']]],
+  ['iterations_14',['iterations',['../structpulsatrix_1_1DominantEigenResult.html#a3d359b2cec1646ff33dcaf85ceff1cf3',1,'pulsatrix::DominantEigenResult']]],
+  ['iterations_5frun_15',['iterations_run',['../structpulsatrix_1_1ESResult.html#a31146b96c141e95037758a8434f20741',1,'pulsatrix::ESResult']]]
 ];

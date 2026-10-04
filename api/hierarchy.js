@@ -80,6 +80,7 @@ var hierarchy =
     [ "pulsatrix::ExplanationScoreCard", "classpulsatrix_1_1ExplanationScoreCard.html", null ],
     [ "pulsatrix::datalog::FactDatabase", "classpulsatrix_1_1datalog_1_1FactDatabase.html", null ],
     [ "pulsatrix::FieldStatistics", "structpulsatrix_1_1FieldStatistics.html", null ],
+    [ "pulsatrix::FineTuneConfig", "structpulsatrix_1_1FineTuneConfig.html", null ],
     [ "pulsatrix::GAEResult", "structpulsatrix_1_1GAEResult.html", null ],
     [ "pulsatrix::GaussianProcessRegressor", "classpulsatrix_1_1GaussianProcessRegressor.html", null ],
     [ "pulsatrix::GeneratorPopulation", "classpulsatrix_1_1GeneratorPopulation.html", null ],
@@ -148,6 +149,7 @@ var hierarchy =
       [ "pulsatrix::SequentialModule", "classpulsatrix_1_1SequentialModule.html", null ],
       [ "pulsatrix::SoftmaxModule", "classpulsatrix_1_1SoftmaxModule.html", null ],
       [ "pulsatrix::SwiGLUModule", "classpulsatrix_1_1SwiGLUModule.html", null ],
+      [ "pulsatrix::TinyTagger", "classpulsatrix_1_1TinyTagger.html", null ],
       [ "pulsatrix::TransformerBlock", "classpulsatrix_1_1TransformerBlock.html", null ]
     ] ],
     [ "pulsatrix::MSELoss", "classpulsatrix_1_1MSELoss.html", null ],
@@ -220,6 +222,7 @@ var hierarchy =
     [ "pulsatrix::SVDResult", "structpulsatrix_1_1SVDResult.html", null ],
     [ "pulsatrix::SystemMonitor", "classpulsatrix_1_1SystemMonitor.html", null ],
     [ "pulsatrix::SystemSample", "structpulsatrix_1_1SystemSample.html", null ],
+    [ "pulsatrix::TaggingBatch", "structpulsatrix_1_1TaggingBatch.html", null ],
     [ "pulsatrix::TanhGaussianGrad", "structpulsatrix_1_1TanhGaussianGrad.html", null ],
     [ "pulsatrix::TanhGaussianPolicy", "classpulsatrix_1_1TanhGaussianPolicy.html", null ],
     [ "pulsatrix::TanhGaussianSample", "structpulsatrix_1_1TanhGaussianSample.html", null ],

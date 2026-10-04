@@ -17,11 +17,12 @@ var searchData=
   ['states_14',['states',['../structpulsatrix_1_1GFlowNetTrajectory.html#af21519c66c389ecb50a6e48d5f2a0efc',1,'pulsatrix::GFlowNetTrajectory']]],
   ['std_5fdev_15',['std_dev',['../structpulsatrix_1_1FieldStatistics.html#a2b413581d3a165637bde3a9da6b0ce1c',1,'pulsatrix::FieldStatistics']]],
   ['step_16',['step',['../structpulsatrix_1_1MetricRecord.html#a5fe453b24af022d273c878aeda0ede88',1,'pulsatrix::MetricRecord']]],
-  ['steps_17',['steps',['../structpulsatrix_1_1ScalarSeries.html#a5fde697796d2d474acba677283c12d30',1,'pulsatrix::ScalarSeries']]],
-  ['strict_18',['strict',['../structpulsatrix_1_1CheckpointLoadOptions.html#a3717bf21bf521e3ae60b447a93a186bd',1,'pulsatrix::CheckpointLoadOptions']]],
-  ['stride_5fh_19',['stride_h',['../structpulsatrix_1_1ConvGeometry.html#a8645a4ca83c4bd6c5d07150ca2874b86',1,'pulsatrix::ConvGeometry']]],
-  ['stride_5fw_20',['stride_w',['../structpulsatrix_1_1ConvGeometry.html#a3b57003c7aca0f87718b2964bd792761',1,'pulsatrix::ConvGeometry']]],
-  ['sum_5flog_5fpb_21',['sum_log_pb',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae8231cbd2a73c60f9c3041f28f1c7767',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['sum_5flog_5fpf_22',['sum_log_pf',['../structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['system_5fcpu_23',['system_cpu',['../structpulsatrix_1_1detail_1_1RawReading.html#a4c3598368c1f33ffb51e0d4781c23dda',1,'pulsatrix::detail::RawReading']]]
+  ['steps_17',['steps',['../structpulsatrix_1_1FineTuneConfig.html#aca8555648c99f9b0679964d33cfac97d',1,'pulsatrix::FineTuneConfig::steps'],['../structpulsatrix_1_1ScalarSeries.html#a5fde697796d2d474acba677283c12d30',1,'pulsatrix::ScalarSeries::steps']]],
+  ['stop_5fafter_18',['stop_after',['../structpulsatrix_1_1FineTuneConfig.html#a433c65e90274562ce36cb474b31b3d8f',1,'pulsatrix::FineTuneConfig']]],
+  ['strict_19',['strict',['../structpulsatrix_1_1CheckpointLoadOptions.html#a3717bf21bf521e3ae60b447a93a186bd',1,'pulsatrix::CheckpointLoadOptions']]],
+  ['stride_5fh_20',['stride_h',['../structpulsatrix_1_1ConvGeometry.html#a8645a4ca83c4bd6c5d07150ca2874b86',1,'pulsatrix::ConvGeometry']]],
+  ['stride_5fw_21',['stride_w',['../structpulsatrix_1_1ConvGeometry.html#a3b57003c7aca0f87718b2964bd792761',1,'pulsatrix::ConvGeometry']]],
+  ['sum_5flog_5fpb_22',['sum_log_pb',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae8231cbd2a73c60f9c3041f28f1c7767',1,'pulsatrix::GFlowNetTrajectory']]],
+  ['sum_5flog_5fpf_23',['sum_log_pf',['../structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc',1,'pulsatrix::GFlowNetTrajectory']]],
+  ['system_5fcpu_24',['system_cpu',['../structpulsatrix_1_1detail_1_1RawReading.html#a4c3598368c1f33ffb51e0d4781c23dda',1,'pulsatrix::detail::RawReading']]]
 ];

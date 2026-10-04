@@ -31,7 +31,7 @@ var NAVTREE =
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
+        [ "All", "namespacemembers.html", "namespacemembers_dup" ],
         [ "Functions", "namespacemembers_func.html", null ],
         [ "Variables", "namespacemembers_vars.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
@@ -74,12 +74,13 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1RNNModule.html#aa9f50e78ceff911f625f0b85aa7b62fd",
 "classpulsatrix_1_1RolloutBuffer.html#a77ee138b973c11a778c50f0cb40434ac",
 "classpulsatrix_1_1TanhGaussianPolicy.html#a91c0bdf9f5c3a45065361f3f35706e09",
-"classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06",
-"functions_vars_m.html",
-"namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4",
-"structpulsatrix_1_1CMAESState.html#a8aa21589dba05a6e8b1fdc0bee7aa1bb",
-"structpulsatrix_1_1MetricRecord.html",
-"structpulsatrix_1_1SuccessiveHalvingResult.html#a57e706f43e946f8de6a474c235f7030a"
+"classpulsatrix_1_1Vocabulary.html",
+"functions_rela.html",
+"namespacepulsatrix.html#a6e0cd79959b261c8b59f554451342d31",
+"structpulsatrix_1_1ASHAResult.html#aca4c069b0a03729638d36e004d845bfb",
+"structpulsatrix_1_1HeatmapColorScale.html#a2ceb7cd7afd372b9029c2a6c2e73a370",
+"structpulsatrix_1_1SVDResult.html",
+"topics.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
