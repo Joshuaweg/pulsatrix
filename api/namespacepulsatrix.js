@@ -12,6 +12,7 @@ var namespacepulsatrix =
     ] ],
     [ "ActivationSnapshot", "classpulsatrix_1_1ActivationSnapshot.html", "classpulsatrix_1_1ActivationSnapshot" ],
     [ "AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", "classpulsatrix_1_1AdamOptimizer" ],
+    [ "AdamWOptimizer", "classpulsatrix_1_1AdamWOptimizer.html", "classpulsatrix_1_1AdamWOptimizer" ],
     [ "Agent", "classpulsatrix_1_1Agent.html", "classpulsatrix_1_1Agent" ],
     [ "AggregatorModule", "classpulsatrix_1_1AggregatorModule.html", "classpulsatrix_1_1AggregatorModule" ],
     [ "ASHAResult", "structpulsatrix_1_1ASHAResult.html", "structpulsatrix_1_1ASHAResult" ],

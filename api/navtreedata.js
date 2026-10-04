@@ -64,22 +64,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CPUBackend.html#a388f0b7504913b8ca4f0576dedef6712",
-"classpulsatrix_1_1CUDABackend.html#afae4a1ce5c056dfba98b9f1e956708c2",
-"classpulsatrix_1_1DetailedBalanceLoss.html#af1c1847fc1fcf93a2c269b51ecf0197a",
-"classpulsatrix_1_1ExplainerContext.html#ae65d5fc0ee75deda3c5e895ec5b01991",
-"classpulsatrix_1_1HIPBackend.html#aa0317a1bf0e8756958a81c06c5318e19",
-"classpulsatrix_1_1LSTMModule.html#afa3bb23f5ca6ab67330dfe994343f98a",
-"classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809",
-"classpulsatrix_1_1RWKVModule.html#a1cf2964d2a913912280f49b8ec68c56f",
-"classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba",
-"classpulsatrix_1_1Tensor.html#a66cf64adde5d5ab375ffe88edddfb7de",
-"classpulsatrix_1_1datalog_1_1FactDatabase.html#aceea37e0dc1072535bd08c7431c40ea0",
-"group__neuro__symbolic.html",
-"namespacepulsatrix.html#ab80c96d8d4b45a6185d821cb5c24804a",
-"structpulsatrix_1_1ConservationResult.html#a17301dc10e6817ddefbf9f16d9ab9da5",
-"structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a29c2c02a361c9d7028472e5d92cd4a54",
-"structpulsatrix_1_1ValidationIssue.html#a4e7d420ee76ec19d5ff166affd70c472"
+"classpulsatrix_1_1CPUBackend.html#a1c34c38027eb73943a6139e0e53a081c",
+"classpulsatrix_1_1CUDABackend.html#af3b83c006aafa62eea5046cab2747e32",
+"classpulsatrix_1_1DetailedBalanceLoss.html#a643e0f63e74a8b2390e150e6e277c6b3",
+"classpulsatrix_1_1ExplainerContext.html#ae2c2aaa6651042487e50af68132b8974",
+"classpulsatrix_1_1HIPBackend.html#a962d11d69b008038bd01d9e3b502b232",
+"classpulsatrix_1_1LSTMModule.html#aeff5385135b703c71650e57f8d7bcbf4",
+"classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879",
+"classpulsatrix_1_1RWKVModule.html#a0ffe0fa5412a02697b9326beb98be416",
+"classpulsatrix_1_1SGDOptimizer.html#a61f5b954c452e87f0db1c9084f7714d0",
+"classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d",
+"classpulsatrix_1_1datalog_1_1FactDatabase.html",
+"globals_defs.html",
+"namespacepulsatrix.html#aae38e5361268c504e9b96249e75707a8",
+"structpulsatrix_1_1ConnectionGene.html#a39c102f2cec9fb3c9c4cea8b4cd58758",
+"structpulsatrix_1_1NamedParamRef.html",
+"structpulsatrix_1_1TanhGaussianSample.html#a6835f03acd0b953261580d8a009ff442"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

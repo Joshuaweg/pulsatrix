@@ -1,7 +1,10 @@
 var classpulsatrix_1_1SGDOptimizer =
 [
-    [ "SGDOptimizer", "classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e", null ],
+    [ "SGDOptimizer", "classpulsatrix_1_1SGDOptimizer.html#ac10d9ba6d7b1b2334fbe0c0d632b84d3", null ],
     [ "learning_rate", "classpulsatrix_1_1SGDOptimizer.html#ae5186738110ba173facccbba74814438", null ],
+    [ "momentum", "classpulsatrix_1_1SGDOptimizer.html#ac26d56a3440fee2047a33f1081f984f8", null ],
+    [ "momentum_buffer", "classpulsatrix_1_1SGDOptimizer.html#a16681f8fca7daa4a4008d3ed2caa2e0d", null ],
+    [ "nesterov", "classpulsatrix_1_1SGDOptimizer.html#a6611f3a0715806ccfd6e44055c46bf5b", null ],
     [ "param_groups", "classpulsatrix_1_1SGDOptimizer.html#af1e5debbda7d36af5696d8f750785332", null ],
     [ "set_learning_rate", "classpulsatrix_1_1SGDOptimizer.html#a86fa59113de1831c0dd92c5878e6917d", null ],
     [ "set_param_groups", "classpulsatrix_1_1SGDOptimizer.html#a41665676abd385aeab7417118e4ec1db", null ],

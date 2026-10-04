@@ -107,9 +107,9 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1SGDOptimizer.html','
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9a9ad83442c30800d3ea68c8b00a143e" id="r_a9a9ad83442c30800d3ea68c8b00a143e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">SGDOptimizer</a> (float <a class="el" href="classpulsatrix_1_1SGDOptimizer.html#ae5186738110ba173facccbba74814438">learning_rate</a>)</td></tr>
-<tr class="memdesc:a9a9ad83442c30800d3ea68c8b00a143e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an SGD optimizer.  <br /></td></tr>
-<tr class="separator:a9a9ad83442c30800d3ea68c8b00a143e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac10d9ba6d7b1b2334fbe0c0d632b84d3" id="r_ac10d9ba6d7b1b2334fbe0c0d632b84d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#ac10d9ba6d7b1b2334fbe0c0d632b84d3">SGDOptimizer</a> (float <a class="el" href="classpulsatrix_1_1SGDOptimizer.html#ae5186738110ba173facccbba74814438">learning_rate</a>, float <a class="el" href="classpulsatrix_1_1SGDOptimizer.html#ac26d56a3440fee2047a33f1081f984f8">momentum</a>=0.0f, bool <a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a6611f3a0715806ccfd6e44055c46bf5b">nesterov</a>=false)</td></tr>
+<tr class="memdesc:ac10d9ba6d7b1b2334fbe0c0d632b84d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an SGD optimizer.  <br /></td></tr>
+<tr class="separator:ac10d9ba6d7b1b2334fbe0c0d632b84d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb568b004867804a44ad07a6d45f11ba" id="r_abb568b004867804a44ad07a6d45f11ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba">step</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)</td></tr>
 <tr class="memdesc:abb568b004867804a44ad07a6d45f11ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies one SGD update to every parameter the module exposes.  <br /></td></tr>
 <tr class="separator:abb568b004867804a44ad07a6d45f11ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,12 +131,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a41665676abd385aeab7417118e4ec1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1e5debbda7d36af5696d8f750785332" id="r_af1e5debbda7d36af5696d8f750785332"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#af1e5debbda7d36af5696d8f750785332">param_groups</a> ()</td></tr>
 <tr class="separator:af1e5debbda7d36af5696d8f750785332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac26d56a3440fee2047a33f1081f984f8" id="r_ac26d56a3440fee2047a33f1081f984f8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#ac26d56a3440fee2047a33f1081f984f8">momentum</a> () const</td></tr>
+<tr class="separator:ac26d56a3440fee2047a33f1081f984f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6611f3a0715806ccfd6e44055c46bf5b" id="r_a6611f3a0715806ccfd6e44055c46bf5b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a6611f3a0715806ccfd6e44055c46bf5b">nesterov</a> () const</td></tr>
+<tr class="separator:a6611f3a0715806ccfd6e44055c46bf5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16681f8fca7daa4a4008d3ed2caa2e0d" id="r_a16681f8fca7daa4a4008d3ed2caa2e0d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a16681f8fca7daa4a4008d3ed2caa2e0d">momentum_buffer</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *parameter) const</td></tr>
+<tr class="memdesc:a16681f8fca7daa4a4008d3ed2caa2e0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The momentum buffer for <code>parameter</code>, or nullptr before its first step (or with no momentum).  <br /></td></tr>
+<tr class="separator:a16681f8fca7daa4a4008d3ed2caa2e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>param -= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> exposes. Learning rate and weight decay can differ per parameter group (TRN-1). With no weight decay this is plain SGD. </p>
+<dl class="section note"><dt>Note</dt><dd>Optional momentum and Nesterov momentum follow torch.optim.SGD (dampening 0): with d = grad + weight_decay * param, the buffer is buf = d on a parameter's first step and buf = momentum * buf + d after; the step is -lr * buf, or -lr * (d + momentum * buf) with Nesterov (TRN-2). </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9a9ad83442c30800d3ea68c8b00a143e" name="a9a9ad83442c30800d3ea68c8b00a143e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a9ad83442c30800d3ea68c8b00a143e">&#9670;&#160;</a></span>SGDOptimizer()</h2>
+<a id="ac10d9ba6d7b1b2334fbe0c0d632b84d3" name="ac10d9ba6d7b1b2334fbe0c0d632b84d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac10d9ba6d7b1b2334fbe0c0d632b84d3">&#9670;&#160;</a></span>SGDOptimizer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,8 +156,24 @@ Public Member Functions</h2></td></tr>
           <td class="memname">pulsatrix::SGDOptimizer::SGDOptimizer </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>learning_rate</em></td><td>)</td>
+          <td class="paramname"><em>learning_rate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>momentum</em> = <code>0.0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>nesterov</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -163,6 +187,14 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">learning_rate</td><td>Step size. </td></tr>
+    <tr><td class="paramname">momentum</td><td>In [0, 1). 0 (the default) is plain SGD, with no per-parameter state. </td></tr>
+    <tr><td class="paramname">nesterov</td><td>Use Nesterov momentum. Needs momentum &gt; 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if momentum is outside [0, 1), or nesterov without momentum. </td></tr>
   </table>
   </dd>
 </dl>
@@ -194,6 +226,84 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The default group's learning rate (parameters no group selects). </p>
+
+</div>
+</div>
+<a id="ac26d56a3440fee2047a33f1081f984f8" name="ac26d56a3440fee2047a33f1081f984f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac26d56a3440fee2047a33f1081f984f8">&#9670;&#160;</a></span>momentum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::SGDOptimizer::momentum </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a16681f8fca7daa4a4008d3ed2caa2e0d" name="a16681f8fca7daa4a4008d3ed2caa2e0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16681f8fca7daa4a4008d3ed2caa2e0d">&#9670;&#160;</a></span>momentum_buffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> * pulsatrix::SGDOptimizer::momentum_buffer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>parameter</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The momentum buffer for <code>parameter</code>, or nullptr before its first step (or with no momentum). </p>
+
+</div>
+</div>
+<a id="a6611f3a0715806ccfd6e44055c46bf5b" name="a6611f3a0715806ccfd6e44055c46bf5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6611f3a0715806ccfd6e44055c46bf5b">&#9670;&#160;</a></span>nesterov()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::SGDOptimizer::nesterov </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

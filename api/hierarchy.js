@@ -1,7 +1,9 @@
 var hierarchy =
 [
     [ "pulsatrix::ActivationSnapshot", "classpulsatrix_1_1ActivationSnapshot.html", null ],
-    [ "pulsatrix::AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", null ],
+    [ "pulsatrix::AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", [
+      [ "pulsatrix::AdamWOptimizer", "classpulsatrix_1_1AdamWOptimizer.html", null ]
+    ] ],
     [ "pulsatrix::AdamOptimizer::AdamState", "structpulsatrix_1_1AdamOptimizer_1_1AdamState.html", null ],
     [ "pulsatrix::Agent", "classpulsatrix_1_1Agent.html", [
       [ "pulsatrix::CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", null ],
