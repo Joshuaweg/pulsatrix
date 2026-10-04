@@ -112,6 +112,7 @@ add_executable(pulsatrix_tests
     batch_norm_eval_test.cpp
     conv2d_stride_padding_test.cpp
     determinism_test.cpp
+    device_consistency_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
     gru_module_test.cpp
