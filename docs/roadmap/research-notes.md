@@ -29,9 +29,12 @@ Sources and tools age quickly in this field. Check the date before relying on on
 
 ## FND: Foundations
 
-- **FND-1, FND-2.** `Module::parameters()` returns `std::vector<ParamRef>` with no names (`include/pulsatrix/module.hpp:140`).
+All FND items are done; see the roadmap's FND section for what changed from the plan. The notes
+below record the reasoning they were built on.
+
+- **FND-1, FND-2.** `Module::parameters()` returned `std::vector<ParamRef>` with no names. It is now derived from `named_parameters()`.
   - **Falsifier for freezing:** a frozen parameter's bytes change after N steps, or the input gradient no longer matches finite differences.
-- **FND-3, FND-4.** The demand for these comes from items in other epics. FEAT-2 (Gao et al., TopK SAE, arXiv 2406.04093, 2024-06) and ARCH-3 need top-k. INT-5, FEAT-6, TRN-9 (Wu et al., ReFT, arXiv 2404.03592, 2024-04) and TRN-11 (Shuttleworth et al., arXiv 2410.21228, 2024-10) need an eigensolver or SVD. `linear_algebra.hpp` currently has only a dense solve.
+- **FND-3, FND-4.** The demand for these comes from items in other epics. FEAT-2 (Gao et al., TopK SAE, arXiv 2406.04093, 2024-06) and ARCH-3 need top-k. INT-5, FEAT-6, TRN-9 (Wu et al., ReFT, arXiv 2404.03592, 2024-04) and TRN-11 (Shuttleworth et al., arXiv 2410.21228, 2024-10) need an eigensolver or SVD. `linear_algebra.hpp` had only a dense solve; `matrix_decompositions.hpp` now has the rest.
   - **Fails when:** eigenvector sign and order are arbitrary, so tests must align them before comparing.
 - **FND-5.**
   - **Sources:** `plans/lrp_issues.md` #8. Zennit's canonizers fold BatchNorm into the preceding layer before LRP.
