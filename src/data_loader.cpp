@@ -1,5 +1,7 @@
 #include "pulsatrix/data_loader.hpp"
 
+#include "pulsatrix/determinism.hpp"
+
 #include <stdexcept>
 
 namespace pulsatrix {
@@ -19,7 +21,9 @@ DataLoader::DataLoader(std::shared_ptr<Dataset> dataset, DeviceBackend* backend,
     }
     ValidateCommonOptions(options_);
     if (options_.shuffle) {
-        sampler_ = std::make_unique<ShuffleSampler>(options_.shuffle_seed);
+        const unsigned seed =
+            options_.shuffle_seed ? *options_.shuffle_seed : static_cast<unsigned>(next_seed());
+        sampler_ = std::make_unique<ShuffleSampler>(seed);
     } else {
         sampler_ = std::make_unique<SequentialSampler>();
     }

@@ -82,7 +82,7 @@ TEST_F(DeterminismTest, DefaultSeededInitializationFollowsTheGlobalSeed) {
     auto probe_weights = [&](uint64_t seed) {
         set_seed(seed);
         LinearProbe probe(6, &backend);
-        return values_of(*probe.parameters()[0].value);
+        return values_of(probe.classifier().weight());
     };
     EXPECT_EQ(probe_weights(3), probe_weights(3));
     EXPECT_NE(probe_weights(3), probe_weights(4));
@@ -90,7 +90,7 @@ TEST_F(DeterminismTest, DefaultSeededInitializationFollowsTheGlobalSeed) {
     auto sae_weights = [&](uint64_t seed) {
         set_seed(seed);
         SparseAutoencoder sae(4, 8, 0.1f, &backend);
-        return values_of(*sae.parameters()[0].value);
+        return values_of(sae.encoder().weight());
     };
     EXPECT_EQ(sae_weights(3), sae_weights(3));
     EXPECT_NE(sae_weights(3), sae_weights(4));
@@ -110,7 +110,7 @@ private:
 
 std::vector<float> epoch_order(DataLoader& loader) {
     std::vector<float> order;
-    while (auto batch = loader.next()) {
+    while (auto batch = loader.next_batch()) {
         for (float v : values_of(batch->fields[0])) order.push_back(v);
     }
     return order;

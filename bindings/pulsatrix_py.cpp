@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 
+#include "pulsatrix/determinism.hpp"
 #include "pulsatrix/assert.hpp"
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/conv2d_module.hpp"
@@ -230,6 +231,14 @@ PYBIND11_MODULE(pulsatrix_py, m) {
     m.def("compiled_devices", &compiled_devices,
           "Devices this build has a backend for. Cpu is always present; a GPU device listed here "
           "can still fail on first use if no matching GPU is visible at runtime.");
+
+    // FND-7: the global seed stream and deterministic mode.
+    m.def("set_seed", &pulsatrix::set_seed, py::arg("seed"),
+          "Sets the global seed. Components built without an explicit seed draw from it.");
+    m.def("global_seed", &pulsatrix::global_seed);
+    m.def("set_deterministic", &pulsatrix::set_deterministic, py::arg("enabled"),
+          "On (the default): forbid nondeterministic paths, including GPU BLAS atomics.");
+    m.def("deterministic", &pulsatrix::deterministic);
 
     py::class_<pulsatrix::Tensor>(m, "Tensor", py::buffer_protocol())
         .def(py::init([](const std::vector<int64_t>& dims) {
