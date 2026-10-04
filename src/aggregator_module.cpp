@@ -57,6 +57,7 @@ Tensor AggregatorModule::forward_impl(const Tensor& input) {
 }
 
 Tensor AggregatorModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "AggregatorModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("AggregatorModule::backward: called before any forward()");
     }
@@ -73,6 +74,7 @@ Tensor AggregatorModule::backward(const Tensor& grad_output) {
 }
 
 Tensor AggregatorModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "AggregatorModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("AggregatorModule::propagate_relevance: called before any forward()");
     }

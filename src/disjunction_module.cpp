@@ -94,6 +94,7 @@ Tensor DisjunctionModule::forward_impl(const Tensor& input) {
 }
 
 Tensor DisjunctionModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "DisjunctionModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("DisjunctionModule::backward: called before any forward()");
     }
@@ -112,6 +113,7 @@ Tensor DisjunctionModule::backward(const Tensor& grad_output) {
 }
 
 Tensor DisjunctionModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "DisjunctionModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("DisjunctionModule::propagate_relevance: called before any forward()");
     }

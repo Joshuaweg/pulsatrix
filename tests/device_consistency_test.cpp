@@ -123,6 +123,8 @@ class DeviceConsistencyTest : public ::testing::Test {
 protected:
     CPUBackend cpu;
     FakeGpuBackend gpu;
+    // Residual's inner layers free through these backends, so release them first.
+    void TearDown() override { keep_alive().clear(); }
 };
 
 // gpu_review #1: a CPU tensor handed to a GPU module used to reach the GPU kernels as a host
@@ -169,7 +171,7 @@ TEST_F(DeviceConsistencyTest, ContainersRejectThroughTheirLayers) {
     EXPECT_THROW((void)seq.backward(filled(out.shape(), &cpu)), std::invalid_argument);
 }
 
-// A user module written without device_backend() is not checked, and keeps working.
+// A user module written without compute_device() is not checked, and keeps working.
 class UncheckedModule : public Module {
 public:
     [[nodiscard]] Tensor propagate_relevance(const Tensor& r, const LRPRuleConfig&) override { return r; }
@@ -180,7 +182,7 @@ protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override { return input; }
 };
 
-TEST_F(DeviceConsistencyTest, ModulesWithoutADeviceBackendAreNotChecked) {
+TEST_F(DeviceConsistencyTest, ModulesWithoutAComputeDeviceAreNotChecked) {
     UncheckedModule m;
     EXPECT_NO_THROW((void)m.forward(filled(Shape({2}), &gpu)));
     EXPECT_NO_THROW((void)m.forward(filled(Shape({2}), &cpu)));

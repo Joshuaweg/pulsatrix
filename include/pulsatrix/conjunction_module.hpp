@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <optional>
 #include "pulsatrix/module.hpp"
 
 namespace pulsatrix {
@@ -127,6 +128,10 @@ public:
      *   branch is a pure identity map on the winning operand.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     /**

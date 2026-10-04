@@ -107,6 +107,7 @@ Tensor RetNetModule::forward_impl(const Tensor& input) {
 }
 
 Tensor RetNetModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "RetNetModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("RetNetModule::backward: called before any forward()");
     }
@@ -214,6 +215,7 @@ Tensor RetNetModule::backward(const Tensor& grad_output) {
 }
 
 Tensor RetNetModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "RetNetModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("RetNetModule::propagate_relevance: called before any forward()");
     }

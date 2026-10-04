@@ -6,6 +6,7 @@
 #pragma once
 
 
+#include <optional>
 #include <cstdint>
 
 #include "pulsatrix/module.hpp"
@@ -86,6 +87,10 @@ public:
 
     /** @brief Pass-through relevance is the same under every rule: supports all of them. */
     [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     /**

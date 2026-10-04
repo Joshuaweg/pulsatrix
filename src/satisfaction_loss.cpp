@@ -7,6 +7,7 @@ namespace pulsatrix {
 SatisfactionLoss::SatisfactionLoss(DeviceBackend* backend, float p) : backend_(backend), aggregator_(backend, p) {}
 
 float SatisfactionLoss::forward(const Tensor& truth_values) {
+    require_device(truth_values, backend_->device(), "SatisfactionLoss::forward");
     if (truth_values.rank() != 1) {
         throw std::invalid_argument(
             "SatisfactionLoss::forward: truth_values must be rank 1 (a single formula's per-grounding truth "

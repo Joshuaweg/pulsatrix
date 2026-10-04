@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include <optional>
 #include "pulsatrix/module.hpp"
 
 namespace pulsatrix {
@@ -57,11 +58,16 @@ public:
     /** @brief Pass-through relevance is the same under every rule: supports all of them. */
     [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
 
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return device_; }
+
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
 private:
     DeviceBackend* backend_;
+    DeviceType device_;
     Tensor last_input_;
 };
 
