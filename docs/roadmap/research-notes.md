@@ -50,7 +50,7 @@ below record the reasoning they were built on.
   - **Audit:** Trail of Bits audited the format (published 2023-05).
   - **Option:** the header-only C++ reader safetensors-cpp (MIT) exists, but its README says shape validation and mmap are incomplete. Fuzz both it and a hand-written reader before choosing.
   - **Fails when:** an offset runs past the end of the file, ranges overlap, or the element-count product overflows.
-- **IO-2.** **Falsifier:** save, then load, doesn't give a bit-identical forward pass, or resumed training doesn't reproduce the loss curve.
+- **IO-2.** **Falsifier:** save, then load, doesn't give a bit-identical forward pass, or resumed training doesn't reproduce the loss curve. Both checks pass (#44).
 - **IO-3: pickle is code.**
   - CVE-2025-32434 (GHSA-53q9-r3pm-6pq6, 2025-04, CVSS 9.8): `torch.load(weights_only=True)` was remote code execution before torch 2.6.0.
   - Scanners get bypassed. "nullifAI" (ReversingLabs, 2025-02) used broken pickles and 7z-compressed `.pt` files; CVE-2025-46417 is another bypass; ShadowPickle (arXiv 2607.17503, 2026-07) shows evasion continues.
@@ -91,10 +91,10 @@ below record the reasoning they were built on.
   - LoRA tolerates large batches worse.
   - Rank 1 is enough for RL.
 - **"LoRA learns less and forgets less"** (Biderman et al., arXiv 2405.09673, 2024-05): LoRA is clearly worse than full fine-tuning on code and math, and it forgets less.
-- **TRN-2.** Loshchilov and Hutter, "Decoupled Weight Decay Regularization", arXiv 1711.05101. **Test:** decay is applied as `w -= lr * wd * w`, not added to the gradient.
-- **TRN-3, TRN-4.** Global-norm clipping and warmup-plus-cosine schedules are the defaults in every recipe cited above (for example "LoRA Without Regret"). Clip after accumulation and before the optimizer step.
+- **TRN-2.** Loshchilov and Hutter, "Decoupled Weight Decay Regularization", arXiv 1711.05101. **Test:** decay is applied as `w -= lr * wd * w`, not added to the gradient. The check passes (#47).
+- **TRN-3, TRN-4.** Global-norm clipping and warmup-plus-cosine schedules are the defaults in every recipe cited above (for example "LoRA Without Regret"). Clip after accumulation and before the optimizer step. Done (#48, #49).
 - **TRN-6.** Full fine-tuning is the baseline in Biderman et al. and in "LoRA Without Regret". Adam in fp32 needs about 16 bytes per parameter plus activations: about 2.2 GB for 135M parameters, about 16 GB for 1B.
-- **TRN-5.** Hugging Face Trainer fixed this gradient-accumulation normalization bug in v4.46 (2024-10). **Falsifier:** 4×8 accumulated doesn't equal 1×32 on ragged batches.
+- **TRN-5.** Hugging Face Trainer fixed this gradient-accumulation normalization bug in v4.46 (2024-10). **Falsifier:** 4×8 accumulated doesn't equal 1×32 on ragged batches. The check passes (#50).
 - **TRN-7.** Hu et al., "LoRA", arXiv 2106.09685 (2021-06).
   - Merging into a quantized base changes the outputs (huggingface/peft #2321), so merge in fp32.
   - **Falsifier:** merged and unmerged outputs differ by more than 1e-5.
