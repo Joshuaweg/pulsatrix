@@ -119,6 +119,11 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
+    /** @brief The running statistics, which checkpoints save but no optimizer updates (IO-2). */
+    [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override {
+        return {{"running_mean", &running_mean_}, {"running_var", &running_var_}};
+    }
+
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
         return {{"weight", {&gamma_, &gamma_grad_}}, {"bias", {&beta_, &beta_grad_}}};
     }

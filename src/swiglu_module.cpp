@@ -154,6 +154,14 @@ Tensor SwiGLUModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     return reshaped(relevance_in_flat, last_input_shape_);
 }
 
+std::vector<NamedBufferRef> SwiGLUModule::named_buffers() {
+    std::vector<NamedBufferRef> result;
+    append_named_buffers(result, "gate_proj", gate_proj_);
+    append_named_buffers(result, "up_proj", up_proj_);
+    append_named_buffers(result, "down_proj", down_proj_);
+    return result;
+}
+
 std::vector<NamedParamRef> SwiGLUModule::named_parameters() {
     std::vector<NamedParamRef> params;
     append_named_parameters(params, "gate_proj", gate_proj_);
