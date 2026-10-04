@@ -165,6 +165,19 @@ struct SsmPassArgs {
 };
 
 /**
+ * @brief Window geometry for DeviceBackend::im2col / col2im_add: kernel size, stride and zero
+ *        padding per axis. Defaults are stride 1 and no padding. Passed to kernels by value.
+ */
+struct ConvGeometry {
+    size_t kh;
+    size_t kw;
+    size_t stride_h = 1;
+    size_t stride_w = 1;
+    size_t pad_h = 0;
+    size_t pad_w = 0;
+};
+
+/**
  * @brief Fused per-row reinforcement-learning passes, for DeviceBackend::rl_rows. One lane per
  *        batch row (per element for PolyakBlend); rows x cols from RlRowArgs. Index slots hold
  *        validated whole-number action indices as floats. Slots (in[] -> out[]):
@@ -537,16 +550,21 @@ public:
     // ---- GPU-native-kernels Mission 4: convolution, pooling, spatial norms -----------------
     // Shared per-output source in src/cnn_math.hpp; deterministic, no atomics.
 
-    /** @brief Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches (stride 1, no padding). */
-    virtual void im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) = 0;
+    /**
+     * @brief Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches, with
+     *        out_h = (h + 2*pad_h - kh) / stride_h + 1 (likewise out_w). Taps that fall in the
+     *        zero padding read 0.
+     */
+    virtual void im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w,
+                        const ConvGeometry& geometry) = 0;
 
     /**
      * @brief Folds (n, c*kh*kw, out_h*out_w) patches back, adding into out (n, c, h, w).
      * @note A gather: one GPU thread per output pixel sums its window contributions in the same
      *       order the CPU scatter loop adds them -- deterministic, no atomics.
      */
-    virtual void col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)
-                            = 0;
+    virtual void col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w,
+                            const ConvGeometry& geometry) = 0;
 
     /** @brief out[i][ch][k] = in[i][ch][k] + vec[ch] over (n, c, inner). out may alias in. */
     virtual void add_channel_vector(const float* in, const float* vec, float* out, size_t n, size_t c, size_t inner) =

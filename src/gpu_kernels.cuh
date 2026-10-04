@@ -668,33 +668,30 @@ __global__ void aggregator_lrp_kernel(const float* x, const float* mean_pow, con
 
 // ---- GPU-native-kernels Mission 4 ----------------------------------------------------------
 
-__global__ void im2col_kernel(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh,
-                              size_t kw) {
-    const size_t out_w = w - kw + 1;
-    const size_t P = c * kh * kw, Q = (h - kh + 1) * out_w;
+__global__ void im2col_kernel(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, ConvGeometry g,
+                              size_t out_h, size_t out_w) {
+    const size_t P = c * g.kh * g.kw, Q = out_h * out_w;
     size_t idx = global_index();
     if (idx < n * P * Q) {
         const size_t e = idx / (P * Q);
         const size_t p = (idx / Q) % P;
         const size_t q = idx % Q;
-        col[idx] = cnn::im2col_element(in + e * c * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w),
-                                       static_cast<int64_t>(kh), static_cast<int64_t>(kw), static_cast<int64_t>(out_w),
-                                       static_cast<int64_t>(p), static_cast<int64_t>(q));
+        col[idx] = cnn::im2col_element(in + e * c * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w), g,
+                                       static_cast<int64_t>(out_w), static_cast<int64_t>(p), static_cast<int64_t>(q));
     }
 }
 
-__global__ void col2im_add_kernel(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh,
-                                  size_t kw) {
-    const size_t P = c * kh * kw, Q = (h - kh + 1) * (w - kw + 1);
+__global__ void col2im_add_kernel(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, ConvGeometry g,
+                                  size_t out_h, size_t out_w) {
+    const size_t P = c * g.kh * g.kw, Q = out_h * out_w;
     size_t idx = global_index();  // flat (n, c, h, w) pixel
     if (idx < n * c * h * w) {
         const size_t iw = idx % w;
         const size_t ih = (idx / w) % h;
         const size_t ch = (idx / (w * h)) % c;
         const size_t e = idx / (w * h * c);
-        out[idx] = cnn::col2im_pixel(col + e * P * Q, out[idx], static_cast<int64_t>(h), static_cast<int64_t>(w),
-                                     static_cast<int64_t>(kh), static_cast<int64_t>(kw), static_cast<int64_t>(ch),
-                                     static_cast<int64_t>(ih), static_cast<int64_t>(iw));
+        out[idx] = cnn::col2im_pixel(col + e * P * Q, out[idx], static_cast<int64_t>(h), static_cast<int64_t>(w), g,
+                                     static_cast<int64_t>(ch), static_cast<int64_t>(ih), static_cast<int64_t>(iw));
     }
 }
 
