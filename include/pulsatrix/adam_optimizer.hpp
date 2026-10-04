@@ -8,6 +8,7 @@
 #include <unordered_map>
 
 #include "pulsatrix/module.hpp"
+#include "pulsatrix/param_groups.hpp"
 
 namespace pulsatrix {
 
@@ -61,6 +62,20 @@ public:
      */
     void set_learning_rate(float learning_rate) { learning_rate_ = learning_rate; }
 
+    /** @brief The default group's weight decay: L2 added to the gradient, as PyTorch's Adam does
+     *         (decoupled decay is AdamW, TRN-2). Defaults to 0. @throws std::invalid_argument if
+     *         negative or not finite. */
+    [[nodiscard]] float weight_decay() const { return weight_decay_; }
+    void set_weight_decay(float weight_decay) {
+        check_optimizer_setting(weight_decay, "AdamOptimizer weight_decay");
+        weight_decay_ = weight_decay;
+    }
+
+    /** @brief Replaces the parameter groups; see ParamGroup. @throws std::invalid_argument on a
+     *         group without a selector or with an invalid setting. */
+    void set_param_groups(std::vector<ParamGroup> groups) { groups_.set(std::move(groups)); }
+    [[nodiscard]] std::vector<ParamGroup>& param_groups() { return groups_.groups(); }
+
     /** @brief One parameter's Adam state: first and second moments, and its step count. */
     struct AdamState {
         Tensor m;
@@ -98,6 +113,8 @@ public:
 private:
 
     float learning_rate_;
+    float weight_decay_ = 0.0f;
+    ParamGroupSet groups_;
     DeviceBackend* backend_;
     float beta1_;
     float beta2_;

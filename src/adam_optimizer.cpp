@@ -11,7 +11,8 @@ AdamOptimizer::AdamOptimizer(float learning_rate, DeviceBackend* backend, float 
     : learning_rate_(learning_rate), backend_(backend), beta1_(beta1), beta2_(beta2), eps_(eps) {}
 
 void AdamOptimizer::step(Module& module) {
-    for (ParamRef p : module.parameters()) {
+    for (const ParamGroupSet::Assignment& a : groups_.resolve(module, learning_rate_, weight_decay_)) {
+        const ParamRef p = a.ref;
         if (!p.value->requires_grad()) {
             continue;  // frozen (FND-2): never moved, and no moment state allocated or advanced
         }
@@ -37,8 +38,17 @@ void AdamOptimizer::step(Module& module) {
         // expressions the original per-element host loop evaluated.
         const float bias_correction1 = 1.0f - std::pow(beta1_, static_cast<float>(s.t));
         const float bias_correction2 = 1.0f - std::pow(beta2_, static_cast<float>(s.t));
-        backend_->adam_step(p.value->data(), p.grad->data(), s.m.data(), s.v.data(),
-                            static_cast<size_t>(p.value->numel()), learning_rate_, beta1_, beta2_, eps_,
+        // Weight decay as L2 (TRN-1, PyTorch's Adam): the step sees grad + wd * value. It goes into
+        // a temporary, so the stored gradient is left as backward() wrote it.
+        const auto n = static_cast<size_t>(p.value->numel());
+        const float* grad = p.grad->data();
+        Tensor decayed(Shape({0}), backend_);
+        if (a.weight_decay != 0.0f) {
+            decayed = Tensor(p.value->shape(), backend_);
+            backend_->axpby(a.weight_decay, p.value->data(), 1.0f, p.grad->data(), decayed.data(), n);
+            grad = decayed.data();
+        }
+        backend_->adam_step(p.value->data(), grad, s.m.data(), s.v.data(), n, a.learning_rate, beta1_, beta2_, eps_,
                             bias_correction1, bias_correction2);
     }
 }
