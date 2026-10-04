@@ -16,10 +16,13 @@ var classpulsatrix_1_1HIPBackend =
     [ "avg_pool_forward", "classpulsatrix_1_1HIPBackend.html#aed7299b00f38173e4ee9799e49ceefb9", null ],
     [ "axpby", "classpulsatrix_1_1HIPBackend.html#af6224fc26feb843529feb6afb107ffec", null ],
     [ "batch_norm_backward", "classpulsatrix_1_1HIPBackend.html#ab26aaef0f86377f8228eef15be9a49c9", null ],
+    [ "batch_norm_eval_backward", "classpulsatrix_1_1HIPBackend.html#a0888d12c848fdc365bb1eb86ef7f8bf1", null ],
+    [ "batch_norm_eval_forward", "classpulsatrix_1_1HIPBackend.html#a617f5a002e07d873b3687109bff15283", null ],
     [ "batch_norm_forward", "classpulsatrix_1_1HIPBackend.html#a136580585141344cc91039c6b78559e8", null ],
+    [ "batch_norm_update_running", "classpulsatrix_1_1HIPBackend.html#a204f12c186cea0c8f5e7c931be22cb2c", null ],
     [ "bce_with_logits", "classpulsatrix_1_1HIPBackend.html#a95b7c241d558f2cc9e4097fb804033b9", null ],
     [ "bce_with_logits_grad", "classpulsatrix_1_1HIPBackend.html#a152f37db69fae77c5d553796b3f9665d", null ],
-    [ "col2im_add", "classpulsatrix_1_1HIPBackend.html#ad920714c56652279b50670492f1c70be", null ],
+    [ "col2im_add", "classpulsatrix_1_1HIPBackend.html#af63db9e4a5973aced4b843cf02db9ec8", null ],
     [ "column_sums", "classpulsatrix_1_1HIPBackend.html#a58b3b5d40a4a84f862da2ee25aefc391", null ],
     [ "copy", "classpulsatrix_1_1HIPBackend.html#a39894c414cbd933c2dd517e427687c29", null ],
     [ "copy_2d", "classpulsatrix_1_1HIPBackend.html#a2563f2857e9f0a1a79eb7a669763bad5", null ],
@@ -36,7 +39,7 @@ var classpulsatrix_1_1HIPBackend =
     [ "group_norm_backward", "classpulsatrix_1_1HIPBackend.html#aa0317a1bf0e8756958a81c06c5318e19", null ],
     [ "group_norm_forward", "classpulsatrix_1_1HIPBackend.html#ae0595643fb50f5942c2e3fc209f4cc1f", null ],
     [ "gru_lrp_hprev", "classpulsatrix_1_1HIPBackend.html#a646c90fd66bc896db59ae635e96e77e4", null ],
-    [ "im2col", "classpulsatrix_1_1HIPBackend.html#adbea9d15444c293ef38f92ac8c3af805", null ],
+    [ "im2col", "classpulsatrix_1_1HIPBackend.html#a56ad30d9e638846991f009a8abda266e", null ],
     [ "layer_norm_backward", "classpulsatrix_1_1HIPBackend.html#a962d11d69b008038bd01d9e3b502b232", null ],
     [ "layer_norm_forward", "classpulsatrix_1_1HIPBackend.html#ab5094697a2864528146581fdd615ca72", null ],
     [ "logic_pointwise", "classpulsatrix_1_1HIPBackend.html#a9a293dbe3656cb0b25a66dba1241e2a4", null ],
@@ -66,5 +69,6 @@ var classpulsatrix_1_1HIPBackend =
     [ "ssm_pass", "classpulsatrix_1_1HIPBackend.html#aabc96f3cfbd96ef5ceffc04d3201a1c9", null ],
     [ "sum", "classpulsatrix_1_1HIPBackend.html#a0e7278da12745d1df0b0bcdd855b5501", null ],
     [ "tanh_gaussian_backward", "classpulsatrix_1_1HIPBackend.html#ab34d355116b31d8a411fccf90691c810", null ],
-    [ "tanh_gaussian_forward", "classpulsatrix_1_1HIPBackend.html#a397a156e54f08ee5ecc4bda7c8358db4", null ]
+    [ "tanh_gaussian_forward", "classpulsatrix_1_1HIPBackend.html#a397a156e54f08ee5ecc4bda7c8358db4", null ],
+    [ "top_k_rows", "classpulsatrix_1_1HIPBackend.html#a24e2113a6dfd331d063733be73396ec7", null ]
 ];

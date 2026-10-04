@@ -152,6 +152,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a68fcbaae50f4b8cbdb63b475fd27b891" id="r_a68fcbaae50f4b8cbdb63b475fd27b891"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#a68fcbaae50f4b8cbdb63b475fd27b891">backend</a> () const</td></tr>
 <tr class="memdesc:a68fcbaae50f4b8cbdb63b475fd27b891"><td class="mdescLeft">&#160;</td><td class="mdescRight">The backend that owns this tensor's buffer. Not owned by the <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>.  <br /></td></tr>
 <tr class="separator:a68fcbaae50f4b8cbdb63b475fd27b891"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c8fd66f6c088144a7aa72153c90d2c8" id="r_a6c8fd66f6c088144a7aa72153c90d2c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#a6c8fd66f6c088144a7aa72153c90d2c8">requires_grad</a> () const</td></tr>
+<tr class="memdesc:a6c8fd66f6c088144a7aa72153c90d2c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a module's backward() should accumulate a gradient for this tensor when it is a parameter, and whether optimizers should update it. Defaults to true.  <br /></td></tr>
+<tr class="separator:a6c8fd66f6c088144a7aa72153c90d2c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa37082efb170738704316e8b3af9cde9" id="r_aa37082efb170738704316e8b3af9cde9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#aa37082efb170738704316e8b3af9cde9">set_requires_grad</a> (bool <a class="el" href="classpulsatrix_1_1Tensor.html#a6c8fd66f6c088144a7aa72153c90d2c8">requires_grad</a>)</td></tr>
+<tr class="memdesc:aa37082efb170738704316e8b3af9cde9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <a class="el" href="classpulsatrix_1_1Tensor.html#a6c8fd66f6c088144a7aa72153c90d2c8" title="Whether a module&#39;s backward() should accumulate a gradient for this tensor when it is a parameter,...">requires_grad()</a>; see there.  <br /></td></tr>
+<tr class="separator:aa37082efb170738704316e8b3af9cde9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a2059bfdff6da4fd98a44bd2aaba9f5" id="r_a9a2059bfdff6da4fd98a44bd2aaba9f5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tensor.html#a9a2059bfdff6da4fd98a44bd2aaba9f5">read_element</a> (int64_t flat_index) const</td></tr>
 <tr class="memdesc:a9a2059bfdff6da4fd98a44bd2aaba9f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads one element to the host through the owning backend, on any device.  <br /></td></tr>
 <tr class="separator:a9a2059bfdff6da4fd98a44bd2aaba9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -915,6 +921,36 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a6c8fd66f6c088144a7aa72153c90d2c8" name="a6c8fd66f6c088144a7aa72153c90d2c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c8fd66f6c088144a7aa72153c90d2c8">&#9670;&#160;</a></span>requires_grad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::Tensor::requires_grad </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether a module's backward() should accumulate a gradient for this tensor when it is a parameter, and whether optimizers should update it. Defaults to true. </p>
+<dl class="section note"><dt>Note</dt><dd>Meaningful only for parameters (roadmap FND-2); ignored everywhere else. </dd>
+<dd>
+The flag belongs to the object, not its values: copy and move construction carry it over, but copy and move assignment keep the destination's own flag. Loading new weights into a frozen parameter (<code>weight_ = loaded;</code>) therefore leaves it frozen, matching PyTorch's <code>param.data = x</code>. </dd></dl>
+
+</div>
+</div>
 <a id="a000ba22a3b252dc2cf7219a78d7c1ce0" name="a000ba22a3b252dc2cf7219a78d7c1ce0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a000ba22a3b252dc2cf7219a78d7c1ce0">&#9670;&#160;</a></span>reshape()</h2>
 
@@ -945,6 +981,34 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa37082efb170738704316e8b3af9cde9" name="aa37082efb170738704316e8b3af9cde9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa37082efb170738704316e8b3af9cde9">&#9670;&#160;</a></span>set_requires_grad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::Tensor::set_requires_grad </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>requires_grad</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <a class="el" href="classpulsatrix_1_1Tensor.html#a6c8fd66f6c088144a7aa72153c90d2c8" title="Whether a module&#39;s backward() should accumulate a gradient for this tensor when it is a parameter,...">requires_grad()</a>; see there. </p>
 
 </div>
 </div>

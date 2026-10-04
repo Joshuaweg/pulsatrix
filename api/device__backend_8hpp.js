@@ -2,6 +2,7 @@ var device__backend_8hpp =
 [
     [ "pulsatrix::RecurrentCellArgs", "structpulsatrix_1_1RecurrentCellArgs.html", "structpulsatrix_1_1RecurrentCellArgs" ],
     [ "pulsatrix::SsmPassArgs", "structpulsatrix_1_1SsmPassArgs.html", "structpulsatrix_1_1SsmPassArgs" ],
+    [ "pulsatrix::ConvGeometry", "structpulsatrix_1_1ConvGeometry.html", "structpulsatrix_1_1ConvGeometry" ],
     [ "pulsatrix::RlRowArgs", "structpulsatrix_1_1RlRowArgs.html", "structpulsatrix_1_1RlRowArgs" ],
     [ "pulsatrix::DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", "classpulsatrix_1_1DeviceBackend" ],
     [ "CopyDirection", "device__backend_8hpp.html#a5d9adebabff0df0875f22a763d77ad6b", [

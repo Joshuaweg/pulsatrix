@@ -10,9 +10,10 @@ var searchData=
   ['detailedbalanceloss_7',['DetailedBalanceLoss',['../classpulsatrix_1_1DetailedBalanceLoss.html',1,'pulsatrix']]],
   ['devicebackend_8',['DeviceBackend',['../classpulsatrix_1_1DeviceBackend.html',1,'pulsatrix']]],
   ['disjunctionmodule_9',['DisjunctionModule',['../classpulsatrix_1_1DisjunctionModule.html',1,'pulsatrix']]],
-  ['dqnagent_10',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
-  ['dqnloss_11',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
-  ['dropoutmodule_12',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
-  ['dualnumber_13',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
-  ['dualsemiring_14',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
+  ['dominanteigenresult_10',['DominantEigenResult',['../structpulsatrix_1_1DominantEigenResult.html',1,'pulsatrix']]],
+  ['dqnagent_11',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
+  ['dqnloss_12',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
+  ['dropoutmodule_13',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
+  ['dualnumber_14',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
+  ['dualsemiring_15',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
 ];

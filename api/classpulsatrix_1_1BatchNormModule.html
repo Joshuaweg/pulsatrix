@@ -96,6 +96,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1BatchNormModule.html
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classpulsatrix_1_1BatchNormModule-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::BatchNormModule Class Reference</div></div>
 </div><!--header-->
@@ -128,9 +129,9 @@ Collaboration diagram for pulsatrix::BatchNormModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af3537b8c1de9772fb710dbefe3d85e1e" id="r_af3537b8c1de9772fb710dbefe3d85e1e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#af3537b8c1de9772fb710dbefe3d85e1e">BatchNormModule</a> (int64_t num_channels, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device, float eps=1e-6f)</td></tr>
-<tr class="memdesc:af3537b8c1de9772fb710dbefe3d85e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a BatchNorm layer with zero-initialized gamma and beta.  <br /></td></tr>
-<tr class="separator:af3537b8c1de9772fb710dbefe3d85e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1740c553b5208084940fcb87ab20ba58" id="r_a1740c553b5208084940fcb87ab20ba58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a1740c553b5208084940fcb87ab20ba58">BatchNormModule</a> (int64_t num_channels, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device, float eps=1e-6f, float momentum=0.1f)</td></tr>
+<tr class="memdesc:a1740c553b5208084940fcb87ab20ba58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a BatchNorm layer with zero-initialized gamma and beta.  <br /></td></tr>
+<tr class="separator:a1740c553b5208084940fcb87ab20ba58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ee47de3f21f1e929e20b47cda2acb5c" id="r_a9ee47de3f21f1e929e20b47cda2acb5c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a9ee47de3f21f1e929e20b47cda2acb5c">BatchNormModule</a> (int64_t num_channels, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a9ee47de3f21f1e929e20b47cda2acb5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">On backend's own device (backend-&gt;device()), default eps. Previously the device defaulted to Cpu regardless of backend (GPU-native-kernels Mission 0).  <br /></td></tr>
 <tr class="separator:a9ee47de3f21f1e929e20b47cda2acb5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,6 +153,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ff4fed5486da32fc368d3b966ef2785" id="r_a4ff4fed5486da32fc368d3b966ef2785"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a4ff4fed5486da32fc368d3b966ef2785">set_beta</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:a4ff4fed5486da32fc368d3b966ef2785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector overload for runtime-sized sources &ndash; see <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s own vector ctor.  <br /></td></tr>
 <tr class="separator:a4ff4fed5486da32fc368d3b966ef2785"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2cdade4fd06cfe7a2d8dde8cc461a50" id="r_af2cdade4fd06cfe7a2d8dde8cc461a50"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#af2cdade4fd06cfe7a2d8dde8cc461a50">running_mean</a> () const</td></tr>
+<tr class="memdesc:af2cdade4fd06cfe7a2d8dde8cc461a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-channel running mean, used in eval mode. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> (num_channels).  <br /></td></tr>
+<tr class="separator:af2cdade4fd06cfe7a2d8dde8cc461a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a9e2146420fe0b7a755be468bb0a443" id="r_a6a9e2146420fe0b7a755be468bb0a443"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a6a9e2146420fe0b7a755be468bb0a443">running_var</a> () const</td></tr>
+<tr class="memdesc:a6a9e2146420fe0b7a755be468bb0a443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-channel running variance, used in eval mode. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> (num_channels).  <br /></td></tr>
+<tr class="separator:a6a9e2146420fe0b7a755be468bb0a443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec48ff19943ba679aaf8b49379f7e21a" id="r_aec48ff19943ba679aaf8b49379f7e21a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#aec48ff19943ba679aaf8b49379f7e21a">set_running_mean</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memdesc:aec48ff19943ba679aaf8b49379f7e21a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the running mean, e.g. when loading a pretrained model.  <br /></td></tr>
+<tr class="separator:aec48ff19943ba679aaf8b49379f7e21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f4bccfedb2239fed4797f149b74627a" id="r_a1f4bccfedb2239fed4797f149b74627a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a1f4bccfedb2239fed4797f149b74627a">set_running_var</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
+<tr class="memdesc:a1f4bccfedb2239fed4797f149b74627a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the running variance, e.g. when loading a pretrained model.  <br /></td></tr>
+<tr class="separator:a1f4bccfedb2239fed4797f149b74627a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacd1ae0915213e8ae32dc634299e5949" id="r_aacd1ae0915213e8ae32dc634299e5949"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#aacd1ae0915213e8ae32dc634299e5949">gamma</a> () const</td></tr>
 <tr class="separator:aacd1ae0915213e8ae32dc634299e5949"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a027c367baec800783281f0c9cbe872da" id="r_a027c367baec800783281f0c9cbe872da"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a027c367baec800783281f0c9cbe872da">beta</a> () const</td></tr>
@@ -166,6 +179,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6f5b048237238647f7bf378a0817e56f" id="r_a6f5b048237238647f7bf378a0817e56f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a6f5b048237238647f7bf378a0817e56f">named_parameters</a> () override</td></tr>
 <tr class="memdesc:a6f5b048237238647f7bf378a0817e56f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
 <tr class="separator:a6f5b048237238647f7bf378a0817e56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae61d327f211c3fa03e47068cb0444221" id="r_ae61d327f211c3fa03e47068cb0444221"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#ae61d327f211c3fa03e47068cb0444221">compute_device</a> () const override</td></tr>
+<tr class="memdesc:ae61d327f211c3fa03e47068cb0444221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
+<tr class="separator:ae61d327f211c3fa03e47068cb0444221"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
 <tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
 <tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,6 +197,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
 <tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module" id="r_a2a5c993f1497ed7cd88654d6058f80c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a2a5c993f1497ed7cd88654d6058f80c2">set_requires_grad</a> (bool requires_grad, const std::string &amp;prefix=&quot;&quot;)</td></tr>
+<tr class="memdesc:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Freezes (<code>false</code>) or unfreezes (<code>true</code>) parameters by name (roadmap FND-2).  <br /></td></tr>
+<tr class="separator:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (bool training)</td></tr>
 <tr class="memdesc:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default).  <br /></td></tr>
 <tr class="separator:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,15 +212,22 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ad95412b6d5c90b9390a50bf3a965550b" id="r_ad95412b6d5c90b9390a50bf3a965550b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#ad95412b6d5c90b9390a50bf3a965550b">forward_impl</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input) override</td></tr>
 <tr class="memdesc:ad95412b6d5c90b9390a50bf3a965550b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The actual forward computation. Called by <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> after precondition checks.  <br /></td></tr>
 <tr class="separator:ad95412b6d5c90b9390a50bf3a965550b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a41f240aac8f93f0df448efa26a173f06" id="r_a41f240aac8f93f0df448efa26a173f06"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a41f240aac8f93f0df448efa26a173f06">BatchNormFold</a></td></tr>
+<tr class="separator:a41f240aac8f93f0df448efa26a173f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over every (n, h, w) element jointly &ndash; BatchNorm's defining statistic, and the reason this module didn't exist before campaign_exai_dl_library_batch_dimension_support: it has nothing to compute over without a real batch dimension. Input/output are rank-4 (N, channels, H, W), the same convention Conv2DModule/GroupNormModule already establish. </p>
 <dl class="section note"><dt>Note</dt><dd>propagate_relevance is an identity pass-through, cited to AttnLRP's normalization-layer treatment (Achtibat et al. 2024) &ndash; the same rule, same citation, RMSNormModule/LayerNormModule/GroupNormModule already use; BatchNorm is architecturally the same normalization category, just a different statistic grouping (channel-over-batch-and-spatial instead of group-over-spatial-per-row). <a class="el" href="classpulsatrix_1_1BatchNormModule.html#a4e01e4931a75fd4d38d4fc1b4d26d4e7" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates gamma&#39;s/ beta&#39;s gradients internall...">backward()</a> is the real, undetached training gradient. </dd>
 <dd>
-No running-mean/running-variance or train/eval mode &ndash; this ships computing batch statistics from the current input on every call (the same behavior every other call site in this codebase already uses implicitly). A real BatchNorm eval-mode (exponential moving average statistics, frozen at inference) needs a train/eval toggle this codebase's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> hierarchy doesn't have yet (the same open design question already flagged for Dropout, campaign Decision Point 2) &ndash; deliberately not built speculatively here; this is a real, documented scope cut, not an oversight. </dd></dl>
+Training mode (the <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default) normalizes with the current batch's statistics and folds them into running statistics with PyTorch's rule: running = (1 - momentum) * running + momentum * batch, using the unbiased batch variance. Eval mode (set_training(false)) normalizes with the running statistics instead, so each sample's output depends only on that sample (roadmap FND-5, lrp_issues #8). Running statistics start at mean 0, variance 1. Put the model in eval mode before explaining it. </dd>
+<dd>
+For <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, fold an eval-mode BatchNorm into the Conv2D before it with <a class="el" href="classpulsatrix_1_1BatchNormFold.html" title="While alive, merges bn&#39;s affine map into conv&#39;s weights and makes bn an exact identity; on destructio...">BatchNormFold</a>: the convolution's rule then distributes relevance through the combined affine map, and this module becomes an exact identity. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af3537b8c1de9772fb710dbefe3d85e1e" name="af3537b8c1de9772fb710dbefe3d85e1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3537b8c1de9772fb710dbefe3d85e1e">&#9670;&#160;</a></span>BatchNormModule() <span class="overload">[1/2]</span></h2>
+<a id="a1740c553b5208084940fcb87ab20ba58" name="a1740c553b5208084940fcb87ab20ba58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1740c553b5208084940fcb87ab20ba58">&#9670;&#160;</a></span>BatchNormModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +254,13 @@ No running-mean/running-variance or train/eval mode &ndash; this ships computing
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>eps</em> = <code>1e-6f</code>&#160;</td>
+          <td class="paramname"><em>eps</em> = <code>1e-6f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>momentum</em> = <code>0.1f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -245,12 +277,13 @@ No running-mean/running-variance or train/eval mode &ndash; this ships computing
     <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this module. </td></tr>
     <tr><td class="paramname">device</td><td>Which device every internal <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> member is tagged as. Defaults to Cpu. </td></tr>
     <tr><td class="paramname">eps</td><td>Stabilizer added inside the sqrt. Defaults to 1e-6, matching RMSNormModule/LayerNormModule/GroupNormModule's default for consistency within this codebase's normalization family. </td></tr>
+    <tr><td class="paramname">momentum</td><td>Weight of each new batch in the running statistics, in (0, 1]. Defaults to 0.1, PyTorch's default. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if num_channels &lt;= 0 &ndash; external boundary (construction arguments can originate from Phase 5's Python bindings with no upstream validation), per cpp_tdd/context_tdd_adversarial_boundary_testing.md. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if num_channels &lt;= 0 or momentum is outside (0, 1] &ndash; external boundary (construction arguments can originate from Phase 5's Python bindings with no upstream validation), per cpp_tdd/context_tdd_adversarial_boundary_testing.md. </td></tr>
   </table>
   </dd>
 </dl>
@@ -379,6 +412,35 @@ No running-mean/running-variance or train/eval mode &ndash; this ships computing
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae61d327f211c3fa03e47068cb0444221" name="ae61d327f211c3fa03e47068cb0444221"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae61d327f211c3fa03e47068cb0444221">&#9670;&#160;</a></span>compute_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt; pulsatrix::BatchNormModule::compute_device </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8). </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afd37c963b83700f669591c3d619aea33">pulsatrix::Module</a>.</p>
 
 </div>
 </div>
@@ -577,6 +639,60 @@ No running-mean/running-variance or train/eval mode &ndash; this ships computing
 
 </div>
 </div>
+<a id="af2cdade4fd06cfe7a2d8dde8cc461a50" name="af2cdade4fd06cfe7a2d8dde8cc461a50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2cdade4fd06cfe7a2d8dde8cc461a50">&#9670;&#160;</a></span>running_mean()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::BatchNormModule::running_mean </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Per-channel running mean, used in eval mode. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> (num_channels). </p>
+
+</div>
+</div>
+<a id="a6a9e2146420fe0b7a755be468bb0a443" name="a6a9e2146420fe0b7a755be468bb0a443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a9e2146420fe0b7a755be468bb0a443">&#9670;&#160;</a></span>running_var()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::BatchNormModule::running_var </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Per-channel running variance, used in eval mode. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> (num_channels). </p>
+
+</div>
+</div>
 <a id="a4ff4fed5486da32fc368d3b966ef2785" name="a4ff4fed5486da32fc368d3b966ef2785"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4ff4fed5486da32fc368d3b966ef2785">&#9670;&#160;</a></span>set_beta() <span class="overload">[1/2]</span></h2>
 
@@ -654,6 +770,81 @@ No running-mean/running-variance or train/eval mode &ndash; this ships computing
 </div><div class="memdoc">
 
 <p>Overwrites the per-channel gamma buffer &ndash; test/initialization use only. </p>
+
+</div>
+</div>
+<a id="aec48ff19943ba679aaf8b49379f7e21a" name="aec48ff19943ba679aaf8b49379f7e21a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec48ff19943ba679aaf8b49379f7e21a">&#9670;&#160;</a></span>set_running_mean()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::BatchNormModule::set_running_mean </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Overwrites the running mean, e.g. when loading a pretrained model. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>on a size other than num_channels or a non-finite value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1f4bccfedb2239fed4797f149b74627a" name="a1f4bccfedb2239fed4797f149b74627a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f4bccfedb2239fed4797f149b74627a">&#9670;&#160;</a></span>set_running_var()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::BatchNormModule::set_running_var </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>values</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Overwrites the running variance, e.g. when loading a pretrained model. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>on a size other than num_channels, or a negative or non-finite value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a41f240aac8f93f0df448efa26a173f06" name="a41f240aac8f93f0df448efa26a173f06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f240aac8f93f0df448efa26a173f06">&#9670;&#160;</a></span>BatchNormFold</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classpulsatrix_1_1BatchNormFold.html">BatchNormFold</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

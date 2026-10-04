@@ -1851,6 +1851,17 @@ the literature:</p>
 </tr>
 </tbody>
 </table>
+<p>Normalization layers pass relevance through unchanged. For a <code>BatchNormModule</code> after a
+<code>Conv2DModule</code>, fold the BatchNorm into the convolution while explaining, as Zennit's
+canonizer does. The convolution's rule then covers the combined affine map:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/batch_norm_fold.hpp"</span>
+
+<span class="n">bn</span><span class="p">.</span><span class="n">set_training</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">  </span><span class="c1">// BatchNorm must use its running statistics</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">BatchNormFold</span><span class="w"> </span><span class="nf">fold</span><span class="p">(</span><span class="n">conv</span><span class="p">,</span><span class="w"> </span><span class="n">bn</span><span class="p">);</span><span class="w">  </span><span class="c1">// conv's weights absorb bn; bn becomes the identity</span>
+<span class="w">    </span><span class="n">Attribution</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LRP</span><span class="p">().</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="cm">/*target_index=*/</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="p">}</span><span class="w">  </span><span class="c1">// both modules are restored exactly here</span>
+</code></pre></div>
 <p>Rules that conserve relevance by construction have conservation tests. The AttnLRP rules for
 softmax and attention don't conserve exactly; their tests measure and report the gap instead.</p>
 <p>The VAE, GAN and diffusion building blocks (<code>Reparameterize</code>, <code>KLDivergenceLoss</code>,

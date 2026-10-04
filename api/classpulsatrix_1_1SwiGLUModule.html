@@ -147,6 +147,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abeed20e92962a694223e738f03668227"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41c1b11b78ae3959c4235902cb989f54" id="r_a41c1b11b78ae3959c4235902cb989f54"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54">d_ff</a> () const</td></tr>
 <tr class="separator:a41c1b11b78ae3959c4235902cb989f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24c800df4d2674cc4ee49afc3cb1a057" id="r_a24c800df4d2674cc4ee49afc3cb1a057"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a24c800df4d2674cc4ee49afc3cb1a057">compute_device</a> () const override</td></tr>
+<tr class="memdesc:a24c800df4d2674cc4ee49afc3cb1a057"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
+<tr class="separator:a24c800df4d2674cc4ee49afc3cb1a057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Sub-module access &ndash; weight initialization from tests/loaders, and inspection.</div></td></tr>
 <tr class="memitem:ad391b4cbc3d882dced14df62613412cb" id="r_ad391b4cbc3d882dced14df62613412cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ad391b4cbc3d882dced14df62613412cb">gate_proj</a> ()</td></tr>
 <tr class="separator:ad391b4cbc3d882dced14df62613412cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +172,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
 <tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module" id="r_a2a5c993f1497ed7cd88654d6058f80c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a2a5c993f1497ed7cd88654d6058f80c2">set_requires_grad</a> (bool requires_grad, const std::string &amp;prefix=&quot;&quot;)</td></tr>
+<tr class="memdesc:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Freezes (<code>false</code>) or unfreezes (<code>true</code>) parameters by name (roadmap FND-2).  <br /></td></tr>
+<tr class="separator:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (bool training)</td></tr>
 <tr class="memdesc:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default).  <br /></td></tr>
 <tr class="separator:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,6 +290,35 @@ Protected Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Device-generic: the gate derivative is DeviceBackend::elementwise_backward(Silu), the products <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ab2d61bb06621a5a0b7934c6ed653708d" title="Elementwise binary (Hadamard) multiplication: out[i] = a[i] * b[i] for i in [0, n).">DeviceBackend::mul</a> (GPU-native-kernels Mission 1). </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a24c800df4d2674cc4ee49afc3cb1a057" name="a24c800df4d2674cc4ee49afc3cb1a057"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24c800df4d2674cc4ee49afc3cb1a057">&#9670;&#160;</a></span>compute_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt; pulsatrix::SwiGLUModule::compute_device </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8). </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afd37c963b83700f669591c3d619aea33">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

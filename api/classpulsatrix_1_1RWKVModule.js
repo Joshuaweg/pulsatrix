@@ -2,6 +2,7 @@ var classpulsatrix_1_1RWKVModule =
 [
     [ "RWKVModule", "classpulsatrix_1_1RWKVModule.html#aed8b3e16e6c2219ec6dc9eb0a8e7aa21", null ],
     [ "backward", "classpulsatrix_1_1RWKVModule.html#a0ffe0fa5412a02697b9326beb98be416", null ],
+    [ "compute_device", "classpulsatrix_1_1RWKVModule.html#a31026f991a4aa1f974ea1a68d3d68cb7", null ],
     [ "forward_impl", "classpulsatrix_1_1RWKVModule.html#aa216ec33479cac3640ce49811eb818e3", null ],
     [ "mu_k", "classpulsatrix_1_1RWKVModule.html#a748454131223b6d41b5fc68155d16352", null ],
     [ "mu_k_grad", "classpulsatrix_1_1RWKVModule.html#a2b8f36ba6f3acdad3d3ca41a9b9bc6be", null ],

@@ -128,129 +128,132 @@ Collaboration diagram for pulsatrix::RWKVModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aed8b3e16e6c2219ec6dc9eb0a8e7aa21" id="r_aed8b3e16e6c2219ec6dc9eb0a8e7aa21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aed8b3e16e6c2219ec6dc9eb0a8e7aa21">RWKVModule</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">int64_t</a> d_model, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memitem:aed8b3e16e6c2219ec6dc9eb0a8e7aa21" id="r_aed8b3e16e6c2219ec6dc9eb0a8e7aa21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aed8b3e16e6c2219ec6dc9eb0a8e7aa21">RWKVModule</a> (int64_t d_model, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:aed8b3e16e6c2219ec6dc9eb0a8e7aa21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an RWKV time-mixing layer with zero-initialized parameters.  <br /></td></tr>
 <tr class="separator:aed8b3e16e6c2219ec6dc9eb0a8e7aa21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ffe0fa5412a02697b9326beb98be416" id="r_a0ffe0fa5412a02697b9326beb98be416"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a0ffe0fa5412a02697b9326beb98be416">backward</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">grad_output</a>) <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">override</a></td></tr>
-<tr class="memdesc:a0ffe0fa5412a02697b9326beb98be416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real backpropagation-through-time across the WKV recurrence: accumulates all nine parameter gradients across every timestep into the same buffers via <a class="el" href="classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e" title="In-place elementwise accumulation: this[i] += other[i] for every element.">Tensor::accumulate()</a>. Differentiates through the sigmoid receptance gate, through both <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d" title="The per-channel current-token bonus u (d_model,).">exp()</a> nonlinearities (e_t and kk_t), through the num/den quotient and through the decayed a/b state carry, plus the three token-shift mixes.  <br /></td></tr>
+<tr class="memitem:a0ffe0fa5412a02697b9326beb98be416" id="r_a0ffe0fa5412a02697b9326beb98be416"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a0ffe0fa5412a02697b9326beb98be416">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
+<tr class="memdesc:a0ffe0fa5412a02697b9326beb98be416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real backpropagation-through-time across the WKV recurrence: accumulates all nine parameter gradients across every timestep into the same buffers via <a class="el" href="classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e" title="In-place elementwise accumulation: this[i] += other[i] for every element.">Tensor::accumulate()</a>. Differentiates through the sigmoid receptance gate, through both exp() nonlinearities (e_t and kk_t), through the num/den quotient and through the decayed a/b state carry, plus the three token-shift mixes.  <br /></td></tr>
 <tr class="separator:a0ffe0fa5412a02697b9326beb98be416"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1faf5ecfcb30a504bf4a87c80001cc4" id="r_aa1faf5ecfcb30a504bf4a87c80001cc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa1faf5ecfcb30a504bf4a87c80001cc4">op_type</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">override</a></td></tr>
+<tr class="memitem:aa1faf5ecfcb30a504bf4a87c80001cc4" id="r_aa1faf5ecfcb30a504bf4a87c80001cc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa1faf5ecfcb30a504bf4a87c80001cc4">op_type</a> () const override</td></tr>
 <tr class="memdesc:aa1faf5ecfcb30a504bf4a87c80001cc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recurrent per charter's closed OpType set &ndash; a compound accumulate-over-time operation, shared with RNNModule/LSTMModule/GRUModule/MambaModule (no enum change).  <br /></td></tr>
 <tr class="separator:aa1faf5ecfcb30a504bf4a87c80001cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d019510204ba85d90403d7b4ace3b69" id="r_a9d019510204ba85d90403d7b4ace3b69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a9d019510204ba85d90403d7b4ace3b69">set_W_r</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:a9d019510204ba85d90403d7b4ace3b69" id="r_a9d019510204ba85d90403d7b4ace3b69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a9d019510204ba85d90403d7b4ace3b69">set_W_r</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:a9d019510204ba85d90403d7b4ace3b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the receptance projection weight (d_model, d_model) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a9d019510204ba85d90403d7b4ace3b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60634c0257bb6a6977df4da726d25a80" id="r_a60634c0257bb6a6977df4da726d25a80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a60634c0257bb6a6977df4da726d25a80">set_W_k</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:a60634c0257bb6a6977df4da726d25a80" id="r_a60634c0257bb6a6977df4da726d25a80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a60634c0257bb6a6977df4da726d25a80">set_W_k</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:a60634c0257bb6a6977df4da726d25a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the key projection weight (d_model, d_model) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a60634c0257bb6a6977df4da726d25a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefa93d22b31dc81b3915283bf5acae42" id="r_aefa93d22b31dc81b3915283bf5acae42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aefa93d22b31dc81b3915283bf5acae42">set_W_v</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:aefa93d22b31dc81b3915283bf5acae42" id="r_aefa93d22b31dc81b3915283bf5acae42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aefa93d22b31dc81b3915283bf5acae42">set_W_v</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:aefa93d22b31dc81b3915283bf5acae42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the value projection weight (d_model, d_model) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:aefa93d22b31dc81b3915283bf5acae42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94fa71998cc252ffdb3291c7cbfae004" id="r_a94fa71998cc252ffdb3291c7cbfae004"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a94fa71998cc252ffdb3291c7cbfae004">set_W_o</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:a94fa71998cc252ffdb3291c7cbfae004" id="r_a94fa71998cc252ffdb3291c7cbfae004"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a94fa71998cc252ffdb3291c7cbfae004">set_W_o</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:a94fa71998cc252ffdb3291c7cbfae004"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the output projection weight (d_model, d_model) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a94fa71998cc252ffdb3291c7cbfae004"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac49df1440ea70c5a88dacecbc557dfb2" id="r_ac49df1440ea70c5a88dacecbc557dfb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ac49df1440ea70c5a88dacecbc557dfb2">set_w</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:ac49df1440ea70c5a88dacecbc557dfb2" id="r_ac49df1440ea70c5a88dacecbc557dfb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ac49df1440ea70c5a88dacecbc557dfb2">set_w</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:ac49df1440ea70c5a88dacecbc557dfb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the per-channel decay rate w (d_model,), decay = exp(-w) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:ac49df1440ea70c5a88dacecbc557dfb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06a4a23a5b38fd76d79c07372bafbe8c" id="r_a06a4a23a5b38fd76d79c07372bafbe8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a06a4a23a5b38fd76d79c07372bafbe8c">set_u</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:a06a4a23a5b38fd76d79c07372bafbe8c" id="r_a06a4a23a5b38fd76d79c07372bafbe8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a06a4a23a5b38fd76d79c07372bafbe8c">set_u</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:a06a4a23a5b38fd76d79c07372bafbe8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the per-channel current-token bonus u (d_model,) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a06a4a23a5b38fd76d79c07372bafbe8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a866d60d58f05a5e6efe77d18cfc18630" id="r_a866d60d58f05a5e6efe77d18cfc18630"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a866d60d58f05a5e6efe77d18cfc18630">set_mu_r</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:a866d60d58f05a5e6efe77d18cfc18630" id="r_a866d60d58f05a5e6efe77d18cfc18630"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a866d60d58f05a5e6efe77d18cfc18630">set_mu_r</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:a866d60d58f05a5e6efe77d18cfc18630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the receptance token-shift mix ratio (d_model,) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a866d60d58f05a5e6efe77d18cfc18630"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a422f4a981a3954d6c19ac7b344044516" id="r_a422f4a981a3954d6c19ac7b344044516"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a422f4a981a3954d6c19ac7b344044516">set_mu_k</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:a422f4a981a3954d6c19ac7b344044516" id="r_a422f4a981a3954d6c19ac7b344044516"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a422f4a981a3954d6c19ac7b344044516">set_mu_k</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:a422f4a981a3954d6c19ac7b344044516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the key token-shift mix ratio (d_model,) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:a422f4a981a3954d6c19ac7b344044516"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac1387935c50972075f855db081cbd82" id="r_aac1387935c50972075f855db081cbd82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aac1387935c50972075f855db081cbd82">set_mu_v</a> (std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; values)</td></tr>
+<tr class="memitem:aac1387935c50972075f855db081cbd82" id="r_aac1387935c50972075f855db081cbd82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aac1387935c50972075f855db081cbd82">set_mu_v</a> (std::initializer_list&lt; float &gt; values)</td></tr>
 <tr class="memdesc:aac1387935c50972075f855db081cbd82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the value token-shift mix ratio (d_model,) &ndash; test/initialization use only.  <br /></td></tr>
 <tr class="separator:aac1387935c50972075f855db081cbd82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1db71bd20bda44c39cacec865af96d1f" id="r_a1db71bd20bda44c39cacec865af96d1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a1db71bd20bda44c39cacec865af96d1f">set_W_r</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:a1db71bd20bda44c39cacec865af96d1f" id="r_a1db71bd20bda44c39cacec865af96d1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a1db71bd20bda44c39cacec865af96d1f">set_W_r</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:a1db71bd20bda44c39cacec865af96d1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#a9d019510204ba85d90403d7b4ace3b69" title="Overwrites the receptance projection weight (d_model, d_model) – test/initialization use only.">set_W_r()</a> &ndash; for callers building values programmatically.  <br /></td></tr>
 <tr class="separator:a1db71bd20bda44c39cacec865af96d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade17bcd2ccd6fdb723c69cd0460da474" id="r_ade17bcd2ccd6fdb723c69cd0460da474"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ade17bcd2ccd6fdb723c69cd0460da474">set_W_k</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:ade17bcd2ccd6fdb723c69cd0460da474" id="r_ade17bcd2ccd6fdb723c69cd0460da474"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ade17bcd2ccd6fdb723c69cd0460da474">set_W_k</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:ade17bcd2ccd6fdb723c69cd0460da474"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#a60634c0257bb6a6977df4da726d25a80" title="Overwrites the key projection weight (d_model, d_model) – test/initialization use only.">set_W_k()</a>.  <br /></td></tr>
 <tr class="separator:ade17bcd2ccd6fdb723c69cd0460da474"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86d7971c42ec455c3d148c101f0a796a" id="r_a86d7971c42ec455c3d148c101f0a796a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a86d7971c42ec455c3d148c101f0a796a">set_W_v</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:a86d7971c42ec455c3d148c101f0a796a" id="r_a86d7971c42ec455c3d148c101f0a796a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a86d7971c42ec455c3d148c101f0a796a">set_W_v</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:a86d7971c42ec455c3d148c101f0a796a"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#aefa93d22b31dc81b3915283bf5acae42" title="Overwrites the value projection weight (d_model, d_model) – test/initialization use only.">set_W_v()</a>.  <br /></td></tr>
 <tr class="separator:a86d7971c42ec455c3d148c101f0a796a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa62ca78df759fea3446508e1c8083171" id="r_aa62ca78df759fea3446508e1c8083171"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa62ca78df759fea3446508e1c8083171">set_W_o</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:aa62ca78df759fea3446508e1c8083171" id="r_aa62ca78df759fea3446508e1c8083171"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa62ca78df759fea3446508e1c8083171">set_W_o</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:aa62ca78df759fea3446508e1c8083171"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#a94fa71998cc252ffdb3291c7cbfae004" title="Overwrites the output projection weight (d_model, d_model) – test/initialization use only.">set_W_o()</a>.  <br /></td></tr>
 <tr class="separator:aa62ca78df759fea3446508e1c8083171"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae20101e1d2053c34e38b5d891ac487fc" id="r_ae20101e1d2053c34e38b5d891ac487fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ae20101e1d2053c34e38b5d891ac487fc">set_w</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:ae20101e1d2053c34e38b5d891ac487fc" id="r_ae20101e1d2053c34e38b5d891ac487fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ae20101e1d2053c34e38b5d891ac487fc">set_w</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:ae20101e1d2053c34e38b5d891ac487fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#ac49df1440ea70c5a88dacecbc557dfb2" title="Overwrites the per-channel decay rate w (d_model,), decay = exp(-w) – test/initialization use only.">set_w()</a>.  <br /></td></tr>
 <tr class="separator:ae20101e1d2053c34e38b5d891ac487fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c6e6beb53331b1cadce9fa4ac7e8c88" id="r_a9c6e6beb53331b1cadce9fa4ac7e8c88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a9c6e6beb53331b1cadce9fa4ac7e8c88">set_u</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:a9c6e6beb53331b1cadce9fa4ac7e8c88" id="r_a9c6e6beb53331b1cadce9fa4ac7e8c88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a9c6e6beb53331b1cadce9fa4ac7e8c88">set_u</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:a9c6e6beb53331b1cadce9fa4ac7e8c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#a06a4a23a5b38fd76d79c07372bafbe8c" title="Overwrites the per-channel current-token bonus u (d_model,) – test/initialization use only.">set_u()</a>.  <br /></td></tr>
 <tr class="separator:a9c6e6beb53331b1cadce9fa4ac7e8c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d73a896caafbd4c1e0fba453c55064e" id="r_a5d73a896caafbd4c1e0fba453c55064e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a5d73a896caafbd4c1e0fba453c55064e">set_mu_r</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:a5d73a896caafbd4c1e0fba453c55064e" id="r_a5d73a896caafbd4c1e0fba453c55064e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a5d73a896caafbd4c1e0fba453c55064e">set_mu_r</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:a5d73a896caafbd4c1e0fba453c55064e"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#a866d60d58f05a5e6efe77d18cfc18630" title="Overwrites the receptance token-shift mix ratio (d_model,) – test/initialization use only.">set_mu_r()</a>.  <br /></td></tr>
 <tr class="separator:a5d73a896caafbd4c1e0fba453c55064e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4f0a9eda32bcb024bf4efdfc132760b" id="r_aa4f0a9eda32bcb024bf4efdfc132760b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa4f0a9eda32bcb024bf4efdfc132760b">set_mu_k</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:aa4f0a9eda32bcb024bf4efdfc132760b" id="r_aa4f0a9eda32bcb024bf4efdfc132760b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa4f0a9eda32bcb024bf4efdfc132760b">set_mu_k</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:aa4f0a9eda32bcb024bf4efdfc132760b"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#a422f4a981a3954d6c19ac7b344044516" title="Overwrites the key token-shift mix ratio (d_model,) – test/initialization use only.">set_mu_k()</a>.  <br /></td></tr>
 <tr class="separator:aa4f0a9eda32bcb024bf4efdfc132760b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa61ea7f8400400566c16fe5ff6b5ad72" id="r_aa61ea7f8400400566c16fe5ff6b5ad72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa61ea7f8400400566c16fe5ff6b5ad72">set_mu_v</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;values)</td></tr>
+<tr class="memitem:aa61ea7f8400400566c16fe5ff6b5ad72" id="r_aa61ea7f8400400566c16fe5ff6b5ad72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa61ea7f8400400566c16fe5ff6b5ad72">set_mu_v</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:aa61ea7f8400400566c16fe5ff6b5ad72"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::vector overload of <a class="el" href="classpulsatrix_1_1RWKVModule.html#aac1387935c50972075f855db081cbd82" title="Overwrites the value token-shift mix ratio (d_model,) – test/initialization use only.">set_mu_v()</a>.  <br /></td></tr>
 <tr class="separator:aa61ea7f8400400566c16fe5ff6b5ad72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80d448b2b0b2b1857db1fcd03dd46373" id="r_a80d448b2b0b2b1857db1fcd03dd46373"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a80d448b2b0b2b1857db1fcd03dd46373">W_r</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a80d448b2b0b2b1857db1fcd03dd46373" id="r_a80d448b2b0b2b1857db1fcd03dd46373"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a80d448b2b0b2b1857db1fcd03dd46373">W_r</a> () const</td></tr>
 <tr class="memdesc:a80d448b2b0b2b1857db1fcd03dd46373"><td class="mdescLeft">&#160;</td><td class="mdescRight">The receptance projection weight (d_model, d_model).  <br /></td></tr>
 <tr class="separator:a80d448b2b0b2b1857db1fcd03dd46373"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab646d7cf807d6f6ce9afc9bf1a618401" id="r_ab646d7cf807d6f6ce9afc9bf1a618401"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab646d7cf807d6f6ce9afc9bf1a618401">W_k</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:ab646d7cf807d6f6ce9afc9bf1a618401" id="r_ab646d7cf807d6f6ce9afc9bf1a618401"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab646d7cf807d6f6ce9afc9bf1a618401">W_k</a> () const</td></tr>
 <tr class="memdesc:ab646d7cf807d6f6ce9afc9bf1a618401"><td class="mdescLeft">&#160;</td><td class="mdescRight">The key projection weight (d_model, d_model).  <br /></td></tr>
 <tr class="separator:ab646d7cf807d6f6ce9afc9bf1a618401"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a254679fad46eae00f031b0eb93c520e7" id="r_a254679fad46eae00f031b0eb93c520e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a254679fad46eae00f031b0eb93c520e7">W_v</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a254679fad46eae00f031b0eb93c520e7" id="r_a254679fad46eae00f031b0eb93c520e7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a254679fad46eae00f031b0eb93c520e7">W_v</a> () const</td></tr>
 <tr class="memdesc:a254679fad46eae00f031b0eb93c520e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value projection weight (d_model, d_model).  <br /></td></tr>
 <tr class="separator:a254679fad46eae00f031b0eb93c520e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a645d555c80eb5ddb8c0e5013a04caa32" id="r_a645d555c80eb5ddb8c0e5013a04caa32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a645d555c80eb5ddb8c0e5013a04caa32">W_o</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a645d555c80eb5ddb8c0e5013a04caa32" id="r_a645d555c80eb5ddb8c0e5013a04caa32"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a645d555c80eb5ddb8c0e5013a04caa32">W_o</a> () const</td></tr>
 <tr class="memdesc:a645d555c80eb5ddb8c0e5013a04caa32"><td class="mdescLeft">&#160;</td><td class="mdescRight">The output projection weight (d_model, d_model).  <br /></td></tr>
 <tr class="separator:a645d555c80eb5ddb8c0e5013a04caa32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cf2964d2a913912280f49b8ec68c56f" id="r_a1cf2964d2a913912280f49b8ec68c56f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a1cf2964d2a913912280f49b8ec68c56f">w</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a1cf2964d2a913912280f49b8ec68c56f" id="r_a1cf2964d2a913912280f49b8ec68c56f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a1cf2964d2a913912280f49b8ec68c56f">w</a> () const</td></tr>
 <tr class="memdesc:a1cf2964d2a913912280f49b8ec68c56f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The per-channel decay rate w (d_model,); the applied decay is exp(-w).  <br /></td></tr>
 <tr class="separator:a1cf2964d2a913912280f49b8ec68c56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7510e7540343bffe75454aef2f8180d" id="r_ab7510e7540343bffe75454aef2f8180d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">u</a> () const</td></tr>
 <tr class="memdesc:ab7510e7540343bffe75454aef2f8180d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The per-channel current-token bonus u (d_model,).  <br /></td></tr>
 <tr class="separator:ab7510e7540343bffe75454aef2f8180d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9de1c858f6b30a35bd6515bc9d09c249" id="r_a9de1c858f6b30a35bd6515bc9d09c249"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a9de1c858f6b30a35bd6515bc9d09c249">mu_r</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a9de1c858f6b30a35bd6515bc9d09c249" id="r_a9de1c858f6b30a35bd6515bc9d09c249"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a9de1c858f6b30a35bd6515bc9d09c249">mu_r</a> () const</td></tr>
 <tr class="memdesc:a9de1c858f6b30a35bd6515bc9d09c249"><td class="mdescLeft">&#160;</td><td class="mdescRight">The receptance token-shift mix ratio (d_model,).  <br /></td></tr>
 <tr class="separator:a9de1c858f6b30a35bd6515bc9d09c249"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a748454131223b6d41b5fc68155d16352" id="r_a748454131223b6d41b5fc68155d16352"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a748454131223b6d41b5fc68155d16352">mu_k</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a748454131223b6d41b5fc68155d16352" id="r_a748454131223b6d41b5fc68155d16352"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a748454131223b6d41b5fc68155d16352">mu_k</a> () const</td></tr>
 <tr class="memdesc:a748454131223b6d41b5fc68155d16352"><td class="mdescLeft">&#160;</td><td class="mdescRight">The key token-shift mix ratio (d_model,).  <br /></td></tr>
 <tr class="separator:a748454131223b6d41b5fc68155d16352"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88d85ab226f406887c3ec7593586bf44" id="r_a88d85ab226f406887c3ec7593586bf44"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a88d85ab226f406887c3ec7593586bf44">mu_v</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a88d85ab226f406887c3ec7593586bf44" id="r_a88d85ab226f406887c3ec7593586bf44"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a88d85ab226f406887c3ec7593586bf44">mu_v</a> () const</td></tr>
 <tr class="memdesc:a88d85ab226f406887c3ec7593586bf44"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value token-shift mix ratio (d_model,).  <br /></td></tr>
 <tr class="separator:a88d85ab226f406887c3ec7593586bf44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a207d65e7faf34c7c3a92b82157e90e6c" id="r_a207d65e7faf34c7c3a92b82157e90e6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a207d65e7faf34c7c3a92b82157e90e6c">W_r_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a207d65e7faf34c7c3a92b82157e90e6c" id="r_a207d65e7faf34c7c3a92b82157e90e6c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a207d65e7faf34c7c3a92b82157e90e6c">W_r_grad</a> () const</td></tr>
 <tr class="memdesc:a207d65e7faf34c7c3a92b82157e90e6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. W_r.  <br /></td></tr>
 <tr class="separator:a207d65e7faf34c7c3a92b82157e90e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a285e34f8be19c67210f4bc66e938608d" id="r_a285e34f8be19c67210f4bc66e938608d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a285e34f8be19c67210f4bc66e938608d">W_k_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a285e34f8be19c67210f4bc66e938608d" id="r_a285e34f8be19c67210f4bc66e938608d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a285e34f8be19c67210f4bc66e938608d">W_k_grad</a> () const</td></tr>
 <tr class="memdesc:a285e34f8be19c67210f4bc66e938608d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. W_k.  <br /></td></tr>
 <tr class="separator:a285e34f8be19c67210f4bc66e938608d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15ba4c3181bbb39a786a179322ea35ef" id="r_a15ba4c3181bbb39a786a179322ea35ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a15ba4c3181bbb39a786a179322ea35ef">W_v_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a15ba4c3181bbb39a786a179322ea35ef" id="r_a15ba4c3181bbb39a786a179322ea35ef"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a15ba4c3181bbb39a786a179322ea35ef">W_v_grad</a> () const</td></tr>
 <tr class="memdesc:a15ba4c3181bbb39a786a179322ea35ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. W_v.  <br /></td></tr>
 <tr class="separator:a15ba4c3181bbb39a786a179322ea35ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a594aa2845131eef3c34562378600d22d" id="r_a594aa2845131eef3c34562378600d22d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a594aa2845131eef3c34562378600d22d">W_o_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a594aa2845131eef3c34562378600d22d" id="r_a594aa2845131eef3c34562378600d22d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a594aa2845131eef3c34562378600d22d">W_o_grad</a> () const</td></tr>
 <tr class="memdesc:a594aa2845131eef3c34562378600d22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. W_o.  <br /></td></tr>
 <tr class="separator:a594aa2845131eef3c34562378600d22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abeb9908f53180d69aaa93154602eebd7" id="r_abeb9908f53180d69aaa93154602eebd7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#abeb9908f53180d69aaa93154602eebd7">w_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:abeb9908f53180d69aaa93154602eebd7" id="r_abeb9908f53180d69aaa93154602eebd7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#abeb9908f53180d69aaa93154602eebd7">w_grad</a> () const</td></tr>
 <tr class="memdesc:abeb9908f53180d69aaa93154602eebd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. w.  <br /></td></tr>
 <tr class="separator:abeb9908f53180d69aaa93154602eebd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73f07e3596bdc63240a5fda83eabc248" id="r_a73f07e3596bdc63240a5fda83eabc248"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a73f07e3596bdc63240a5fda83eabc248">u_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a73f07e3596bdc63240a5fda83eabc248" id="r_a73f07e3596bdc63240a5fda83eabc248"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a73f07e3596bdc63240a5fda83eabc248">u_grad</a> () const</td></tr>
 <tr class="memdesc:a73f07e3596bdc63240a5fda83eabc248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. u.  <br /></td></tr>
 <tr class="separator:a73f07e3596bdc63240a5fda83eabc248"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a86dec75cfc7df68c147054bcefebee" id="r_a1a86dec75cfc7df68c147054bcefebee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a1a86dec75cfc7df68c147054bcefebee">mu_r_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a1a86dec75cfc7df68c147054bcefebee" id="r_a1a86dec75cfc7df68c147054bcefebee"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a1a86dec75cfc7df68c147054bcefebee">mu_r_grad</a> () const</td></tr>
 <tr class="memdesc:a1a86dec75cfc7df68c147054bcefebee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. mu_r.  <br /></td></tr>
 <tr class="separator:a1a86dec75cfc7df68c147054bcefebee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b8f36ba6f3acdad3d3ca41a9b9bc6be" id="r_a2b8f36ba6f3acdad3d3ca41a9b9bc6be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a2b8f36ba6f3acdad3d3ca41a9b9bc6be">mu_k_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:a2b8f36ba6f3acdad3d3ca41a9b9bc6be" id="r_a2b8f36ba6f3acdad3d3ca41a9b9bc6be"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a2b8f36ba6f3acdad3d3ca41a9b9bc6be">mu_k_grad</a> () const</td></tr>
 <tr class="memdesc:a2b8f36ba6f3acdad3d3ca41a9b9bc6be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. mu_k.  <br /></td></tr>
 <tr class="separator:a2b8f36ba6f3acdad3d3ca41a9b9bc6be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae309359e828234f472601bf3b7ac4a6f" id="r_ae309359e828234f472601bf3b7ac4a6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ae309359e828234f472601bf3b7ac4a6f">mu_v_grad</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a></td></tr>
+<tr class="memitem:ae309359e828234f472601bf3b7ac4a6f" id="r_ae309359e828234f472601bf3b7ac4a6f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ae309359e828234f472601bf3b7ac4a6f">mu_v_grad</a> () const</td></tr>
 <tr class="memdesc:ae309359e828234f472601bf3b7ac4a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulated gradient w.r.t. mu_v.  <br /></td></tr>
 <tr class="separator:ae309359e828234f472601bf3b7ac4a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e5ec98bc554afe6a365289c9104fd57" id="r_a9e5ec98bc554afe6a365289c9104fd57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a9e5ec98bc554afe6a365289c9104fd57">propagate_relevance</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">relevance_out</a>, <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">override</a></td></tr>
+<tr class="memitem:a9e5ec98bc554afe6a365289c9104fd57" id="r_a9e5ec98bc554afe6a365289c9104fd57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a9e5ec98bc554afe6a365289c9104fd57">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:a9e5ec98bc554afe6a365289c9104fd57"><td class="mdescLeft">&#160;</td><td class="mdescRight">The original derived <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule (see the class-level note): MambaLRP's detach-the-gate technique adapted to the WKV quotient. Detaches the receptance gate <code>r_t</code> and the num/den weights (<code>e_t</code>, <code>kk_t</code>, <code>decay</code>) as constants, then applies the standard weighted-sum epsilon/z-rule to <code>wkv_t = num_t/den_t</code> and to the state carry <code>a_t = decay*a_{t-1} + kk_t*v_t</code>, threading a state- relevance carry backward across <code>t</code> (mirroring <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s <code>r_h_carry</code>), then the output/value projections' own no-bias z-rule and the value token-shift's weighted-sum split.  <br /></td></tr>
 <tr class="separator:a9e5ec98bc554afe6a365289c9104fd57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77bcf685f363b7c51932f9b64619817e" id="r_a77bcf685f363b7c51932f9b64619817e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a77bcf685f363b7c51932f9b64619817e">named_parameters</a> () <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">override</a></td></tr>
+<tr class="memitem:a77bcf685f363b7c51932f9b64619817e" id="r_a77bcf685f363b7c51932f9b64619817e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a77bcf685f363b7c51932f9b64619817e">named_parameters</a> () override</td></tr>
 <tr class="memdesc:a77bcf685f363b7c51932f9b64619817e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
 <tr class="separator:a77bcf685f363b7c51932f9b64619817e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31026f991a4aa1f974ea1a68d3d68cb7" id="r_a31026f991a4aa1f974ea1a68d3d68cb7"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#a31026f991a4aa1f974ea1a68d3d68cb7">compute_device</a> () const override</td></tr>
+<tr class="memdesc:a31026f991a4aa1f974ea1a68d3d68cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
+<tr class="separator:a31026f991a4aa1f974ea1a68d3d68cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
 <tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
 <tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,6 +269,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
 <tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module" id="r_a2a5c993f1497ed7cd88654d6058f80c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a2a5c993f1497ed7cd88654d6058f80c2">set_requires_grad</a> (bool requires_grad, const std::string &amp;prefix=&quot;&quot;)</td></tr>
+<tr class="memdesc:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Freezes (<code>false</code>) or unfreezes (<code>true</code>) parameters by name (roadmap FND-2).  <br /></td></tr>
+<tr class="separator:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (bool training)</td></tr>
 <tr class="memdesc:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default).  <br /></td></tr>
 <tr class="separator:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -275,7 +281,7 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa216ec33479cac3640ce49811eb818e3" id="r_aa216ec33479cac3640ce49811eb818e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa216ec33479cac3640ce49811eb818e3">forward_impl</a> (<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;<a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">input</a>) <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">override</a></td></tr>
+<tr class="memitem:aa216ec33479cac3640ce49811eb818e3" id="r_aa216ec33479cac3640ce49811eb818e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RWKVModule.html#aa216ec33479cac3640ce49811eb818e3">forward_impl</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input) override</td></tr>
 <tr class="memdesc:aa216ec33479cac3640ce49811eb818e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The actual forward computation &ndash; per-timestep tied-weight WKV recurrence.  <br /></td></tr>
 <tr class="separator:aa216ec33479cac3640ce49811eb818e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -285,13 +291,13 @@ Protected Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Scope cut, mirroring every prior recurrent module's own: this is the <em>time-mixing (WKV) block only</em>. A full RWKV layer additionally has a separate channel-mixing feedforward block, not built here &ndash; the same "core mechanism only, not the full
       published block" convention RNNModule/LSTMModule/GRUModule/MambaModule each follow. </dd>
 <dd>
-Numerical scope cut: the recurrence above is RWKV's <em>direct, unstabilized</em> running- sum form. RWKV's reference implementation additionally carries a running maximum M_t purely to keep <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d" title="The per-channel current-token bonus u (d_model,).">exp()</a> from overflowing float on very long sequences &ndash; a pure numerical-conditioning device that does not change the mathematical function being computed. It is deliberately omitted here (safe and exact at this project's test- scale sequence lengths); it would have to be added back before production-scale long-sequence use. Same class of documented simplification as <a class="el" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t-1} @ W_hh + b_h), h_0 = 0 (zero-initialized, not learnable – a deliberat...">RNNModule</a>'s zero h_0 and <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s Euler-approximated Bbar. </dd>
+Numerical scope cut: the recurrence above is RWKV's <em>direct, unstabilized</em> running- sum form. RWKV's reference implementation additionally carries a running maximum M_t purely to keep exp() from overflowing float on very long sequences &ndash; a pure numerical-conditioning device that does not change the mathematical function being computed. It is deliberately omitted here (safe and exact at this project's test- scale sequence lengths); it would have to be added back before production-scale long-sequence use. Same class of documented simplification as <a class="el" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t-1} @ W_hh + b_h), h_0 = 0 (zero-initialized, not learnable – a deliberat...">RNNModule</a>'s zero h_0 and <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s Euler-approximated Bbar. </dd>
 <dd>
 a_0 = b_0 = 0 and x_0 = 0, zero-initialized and not learnable &ndash; the same scope cut every prior recurrent module makes for its own initial state. </dd>
 <dd>
 Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_relevance run entirely through <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> &ndash; the projections through gemm/gemm_ex, the token shift, the WKV recurrence (exp, sigmoid, the a_t/b_t carry), its BPTT and its <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> through <a class="el" href="classpulsatrix_1_1DeviceBackend.html#abc129d15ef202aaa72b9d969c0d600dd" title="One fused Mamba / RWKV / RetNet pass (see SsmPassOp for lanes and slots).">DeviceBackend::ssm_pass</a> (one lane per (batch, channel), sequential over time) &ndash; so the module runs on CPU, CUDA and HIP with no host round-trip. </dd>
 <dd>
-<b><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule &ndash; original derivation (2026-09-27, operator-directed reassessment following campaign_exai_dl_library_phase6_modern_architectures's Decision Point 2 and RetNet's own resolved derivation).</b> The mission's a-priori hypothesis was that the WKV num/den quotient would inherit <a class="el" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati...">SoftmaxModule</a>'s non-conserving DTD- approximation shape; fresh re-derivation (not a re-run of the same guess) found otherwise. Unrolling: <code>num_t = a_{t-1} + e_t*v_t</code> and <code>den_t = b_{t-1} + e_t</code>, with <code>a_t = decay*a_{t-1} + kk_t*v_t</code> (<code>kk_t = exp(k_t)</code>, no bonus) &ndash; so <code>wkv_t = num_t/den_t</code> is, at every step, a <b>two-term weighted sum of <code>a_{t-1}</code> and <code>v_t</code></b> with weights <code>1/den_t</code> and <code>e_t/den_t</code> (which sum to exactly 1 by construction), and <code>a_t</code> is itself a two-term weighted sum of <code>a_{t-1}</code> and <code>v_t</code> with weights <code>decay</code> and <code>kk_t</code>. This is structurally <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s own <code>h_t = Abar_t*h_{t-1} + Bbar_t*x_t</code> shape, not softmax's cross-normalizing shape &ndash; so the <em>same</em> MambaLRP technique applies: <b>detach <code>e_t</code>, <code>kk_t</code>, <code>decay</code> (and the receptance gate <code>r_t</code>) as constants</b> (they are already data-dependent gates in Mamba's Abar/Bbar/C, detached there for the same reason), and apply the standard weighted-sum epsilon/z-rule to the two surviving weighted-sum nodes (<code>wkv_t</code>'s quotient and <code>a_t</code>'s carry), threading a state-relevance carry backward across <code>t</code> exactly the way <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s own <code>r_h_carry</code> does. Consequently <code>w_r_</code>, <code>mu_r_</code>, <code>w_k_</code>, <code>mu_k_</code>, <code>u_</code> never appear in <a class="el" href="classpulsatrix_1_1RWKVModule.html#a9e5ec98bc554afe6a365289c9104fd57" title="The original derived LRP rule (see the class-level note): MambaLRP&#39;s detach-the-gate technique adapte...">propagate_relevance()</a> at all &ndash; receptance and the key path are consumed only through their cached, <em>detached</em> forward values (<code>last_r_</code>, <code>last_e_</code>, <code>last_kk_</code>), mirroring <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s own identical treatment of <code>w_delta_</code>/<code>bias_delta_</code>/<code>w_b_</code>/<code>w_c_</code>. <code>w_</code> (the decay rate) is the one exception: <code>decay = exp(-w_)</code> is recomputed from the live parameter rather than cached, so it is technically referenced &ndash; but only to reconstruct a detached forward <em>value</em> used as a fixed weight, the same role every other detached gate plays, not to compute <code>w_</code>'s own relevance share (there is no such concept for any weight tensor in this codebase's <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rules). None of these six parameters ever receives a bilinear-split or weighted-sum relevance share of its own. Verified on a hand-worked single-channel, L=3 example before implementation (see the mission's Completion Summary): the composed rule conserves exactly there (mod the usual epsilon stabilizers), so <a class="el" href="classpulsatrix_1_1RWKVModule.html" title="Core RWKV-4 time-mixing block (Peng et al. 2023, arXiv:2305.13048), input (N, L, d_model) -&gt; output (...">RWKVModule</a> &ndash; like <a class="el" href="classpulsatrix_1_1RetNetModule.html" title="Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N,...">RetNetModule</a>, and unlike SoftmaxModule/MultiHeadAttentionModule &ndash; belongs in lrp_conservation_test.cpp's <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d" title="The per-channel current-token bonus u (d_model,).">AllModuleTypeCases()</a>. See the campaign's Decision Point 2 addendum for the full outcome, distinguishing this resolved case from RetNet's independently-resolved (and approximation-free) one. </dd></dl>
+<b><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule &ndash; original derivation (2026-09-27, operator-directed reassessment following campaign_exai_dl_library_phase6_modern_architectures's Decision Point 2 and RetNet's own resolved derivation).</b> The mission's a-priori hypothesis was that the WKV num/den quotient would inherit <a class="el" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati...">SoftmaxModule</a>'s non-conserving DTD- approximation shape; fresh re-derivation (not a re-run of the same guess) found otherwise. Unrolling: <code>num_t = a_{t-1} + e_t*v_t</code> and <code>den_t = b_{t-1} + e_t</code>, with <code>a_t = decay*a_{t-1} + kk_t*v_t</code> (<code>kk_t = exp(k_t)</code>, no bonus) &ndash; so <code>wkv_t = num_t/den_t</code> is, at every step, a <b>two-term weighted sum of <code>a_{t-1}</code> and <code>v_t</code></b> with weights <code>1/den_t</code> and <code>e_t/den_t</code> (which sum to exactly 1 by construction), and <code>a_t</code> is itself a two-term weighted sum of <code>a_{t-1}</code> and <code>v_t</code> with weights <code>decay</code> and <code>kk_t</code>. This is structurally <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s own <code>h_t = Abar_t*h_{t-1} + Bbar_t*x_t</code> shape, not softmax's cross-normalizing shape &ndash; so the <em>same</em> MambaLRP technique applies: <b>detach <code>e_t</code>, <code>kk_t</code>, <code>decay</code> (and the receptance gate <code>r_t</code>) as constants</b> (they are already data-dependent gates in Mamba's Abar/Bbar/C, detached there for the same reason), and apply the standard weighted-sum epsilon/z-rule to the two surviving weighted-sum nodes (<code>wkv_t</code>'s quotient and <code>a_t</code>'s carry), threading a state-relevance carry backward across <code>t</code> exactly the way <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s own <code>r_h_carry</code> does. Consequently <code>w_r_</code>, <code>mu_r_</code>, <code>w_k_</code>, <code>mu_k_</code>, <code>u_</code> never appear in <a class="el" href="classpulsatrix_1_1RWKVModule.html#a9e5ec98bc554afe6a365289c9104fd57" title="The original derived LRP rule (see the class-level note): MambaLRP&#39;s detach-the-gate technique adapte...">propagate_relevance()</a> at all &ndash; receptance and the key path are consumed only through their cached, <em>detached</em> forward values (<code>last_r_</code>, <code>last_e_</code>, <code>last_kk_</code>), mirroring <a class="el" href="classpulsatrix_1_1MambaModule.html" title="Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N,...">MambaModule</a>'s own identical treatment of <code>w_delta_</code>/<code>bias_delta_</code>/<code>w_b_</code>/<code>w_c_</code>. <code>w_</code> (the decay rate) is the one exception: <code>decay = exp(-w_)</code> is recomputed from the live parameter rather than cached, so it is technically referenced &ndash; but only to reconstruct a detached forward <em>value</em> used as a fixed weight, the same role every other detached gate plays, not to compute <code>w_</code>'s own relevance share (there is no such concept for any weight tensor in this codebase's <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rules). None of these six parameters ever receives a bilinear-split or weighted-sum relevance share of its own. Verified on a hand-worked single-channel, L=3 example before implementation (see the mission's Completion Summary): the composed rule conserves exactly there (mod the usual epsilon stabilizers), so <a class="el" href="classpulsatrix_1_1RWKVModule.html" title="Core RWKV-4 time-mixing block (Peng et al. 2023, arXiv:2305.13048), input (N, L, d_model) -&gt; output (...">RWKVModule</a> &ndash; like <a class="el" href="classpulsatrix_1_1RetNetModule.html" title="Core RetNet retention block (Sun et al. 2023, arXiv:2307.08621), recurrent mode, input (N,...">RetNetModule</a>, and unlike SoftmaxModule/MultiHeadAttentionModule &ndash; belongs in lrp_conservation_test.cpp's AllModuleTypeCases(). See the campaign's Decision Point 2 addendum for the full outcome, distinguishing this resolved case from RetNet's independently-resolved (and approximation-free) one. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aed8b3e16e6c2219ec6dc9eb0a8e7aa21" name="aed8b3e16e6c2219ec6dc9eb0a8e7aa21"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aed8b3e16e6c2219ec6dc9eb0a8e7aa21">&#9670;&#160;</a></span>RWKVModule()</h2>
@@ -302,7 +308,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
         <tr>
           <td class="memname">pulsatrix::RWKVModule::RWKVModule </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">int64_t</a>&#160;</td>
+          <td class="paramtype">int64_t&#160;</td>
           <td class="paramname"><em>d_model</em>, </td>
         </tr>
         <tr>
@@ -349,7 +355,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::RWKVModule::backward </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>grad_output</em></td><td>)</td>
           <td></td>
         </tr>
@@ -361,7 +367,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
 </table>
 </div><div class="memdoc">
 
-<p>Real backpropagation-through-time across the WKV recurrence: accumulates all nine parameter gradients across every timestep into the same buffers via <a class="el" href="classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e" title="In-place elementwise accumulation: this[i] += other[i] for every element.">Tensor::accumulate()</a>. Differentiates through the sigmoid receptance gate, through both <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d" title="The per-channel current-token bonus u (d_model,).">exp()</a> nonlinearities (e_t and kk_t), through the num/den quotient and through the decayed a/b state carry, plus the three token-shift mixes. </p>
+<p>Real backpropagation-through-time across the WKV recurrence: accumulates all nine parameter gradients across every timestep into the same buffers via <a class="el" href="classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e" title="In-place elementwise accumulation: this[i] += other[i] for every element.">Tensor::accumulate()</a>. Differentiates through the sigmoid receptance gate, through both exp() nonlinearities (e_t and kk_t), through the num/den quotient and through the decayed a/b state carry, plus the three token-shift mixes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">grad_output</td><td>Gradient w.r.t. this module's output. Must be (N, L, d_model) matching the most recent <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> call's output shape. </td></tr>
@@ -382,6 +388,35 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
 
 </div>
 </div>
+<a id="a31026f991a4aa1f974ea1a68d3d68cb7" name="a31026f991a4aa1f974ea1a68d3d68cb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31026f991a4aa1f974ea1a68d3d68cb7">&#9670;&#160;</a></span>compute_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt; pulsatrix::RWKVModule::compute_device </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8). </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afd37c963b83700f669591c3d619aea33">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
 <a id="aa216ec33479cac3640ce49811eb818e3" name="aa216ec33479cac3640ce49811eb818e3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa216ec33479cac3640ce49811eb818e3">&#9670;&#160;</a></span>forward_impl()</h2>
 
@@ -394,7 +429,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::RWKVModule::forward_impl </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>input</em></td><td>)</td>
           <td></td>
         </tr>
@@ -429,7 +464,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_k </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_k </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -456,7 +491,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_k_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_k_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -483,7 +518,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_r </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_r </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -510,7 +545,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_r_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_r_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -537,7 +572,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_v </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_v </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -564,7 +599,7 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_v_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::mu_v_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -653,13 +688,13 @@ Device-generic (GPU-native-kernels Mission 6): forward, backward and propagate_r
         <tr>
           <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::RWKVModule::propagate_relevance </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>relevance_out</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
           <td class="paramname"><em>config</em>&#160;</td>
         </tr>
         <tr>
@@ -708,9 +743,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_mu_k </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_mu_k </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -728,9 +763,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_mu_k </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_mu_k </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -748,9 +783,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_mu_r </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_mu_r </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -768,9 +803,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_mu_r </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_mu_r </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -788,9 +823,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_mu_v </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_mu_v </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -808,9 +843,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_mu_v </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_mu_v </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -828,9 +863,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_u </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_u </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -848,9 +883,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_u </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_u </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -868,9 +903,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_w </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_w </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -888,9 +923,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_w </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_w </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -908,9 +943,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_W_k </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_W_k </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -928,9 +963,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_W_k </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_W_k </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -948,9 +983,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_W_o </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_W_o </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -968,9 +1003,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_W_o </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_W_o </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -988,9 +1023,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_W_r </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_W_r </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1008,9 +1043,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_W_r </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_W_r </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1028,9 +1063,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_W_v </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_W_v </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> std::vector&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1048,9 +1083,9 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">void</a> pulsatrix::RWKVModule::set_W_v </td>
+          <td class="memname">void pulsatrix::RWKVModule::set_W_v </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">float</a> &gt;&#160;</td>
+          <td class="paramtype">std::initializer_list&lt; float &gt;&#160;</td>
           <td class="paramname"><em>values</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1098,7 +1133,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::u_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::u_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1125,7 +1160,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::w </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::w </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1152,7 +1187,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::w_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::w_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1179,7 +1214,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_k </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_k </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1206,7 +1241,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_k_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_k_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1233,7 +1268,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_o </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_o </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1260,7 +1295,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_o_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_o_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1287,7 +1322,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_r </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_r </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1314,7 +1349,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_r_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_r_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1341,7 +1376,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_v </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_v </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1368,7 +1403,7 @@ Conserves near-exactly (measured in rwkv_module_test.cpp), gated only by the usu
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d">const</a> <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_v_grad </td>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RWKVModule::W_v_grad </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

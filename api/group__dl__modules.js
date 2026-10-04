@@ -14,6 +14,7 @@ var group__dl__modules =
     [ "cublas_check.hpp", "cublas__check_8hpp.html", null ],
     [ "cuda_backend.hpp", "cuda__backend_8hpp.html", null ],
     [ "cuda_check.hpp", "cuda__check_8hpp.html", null ],
+    [ "determinism.hpp", "determinism_8hpp.html", null ],
     [ "device_backend.hpp", "device__backend_8hpp.html", null ],
     [ "dropout_module.hpp", "dropout__module_8hpp.html", null ],
     [ "embedding_module.hpp", "embedding__module_8hpp.html", null ],
@@ -54,6 +55,7 @@ var group__dl__modules =
     [ "softmax_module.hpp", "softmax__module_8hpp.html", null ],
     [ "swiglu_module.hpp", "swiglu__module_8hpp.html", null ],
     [ "tensor.hpp", "tensor_8hpp.html", null ],
+    [ "top_k.hpp", "top__k_8hpp.html", null ],
     [ "transformer_block.hpp", "transformer__block_8hpp.html", null ],
     [ "xor_training_example.hpp", "xor__training__example_8hpp.html", null ]
 ];

@@ -1,18 +1,21 @@
 var classpulsatrix_1_1Conv2DModule =
 [
-    [ "Conv2DModule", "classpulsatrix_1_1Conv2DModule.html#acf7ab197015971621118c010837c7437", null ],
+    [ "Conv2DModule", "classpulsatrix_1_1Conv2DModule.html#a691de589ccc0fcacf8ae54ddf71a0288", null ],
     [ "backward", "classpulsatrix_1_1Conv2DModule.html#a164d1f43ad74e4129a1f1483907f4471", null ],
     [ "bias", "classpulsatrix_1_1Conv2DModule.html#ac85c20caa8035025052f24ba19623292", null ],
     [ "bias_grad", "classpulsatrix_1_1Conv2DModule.html#a596bd4565ebc8b49d9e12e1c04ff2f19", null ],
+    [ "compute_device", "classpulsatrix_1_1Conv2DModule.html#a066997b678e8379252a0f6618ee505db", null ],
     [ "forward_impl", "classpulsatrix_1_1Conv2DModule.html#a840a9b6fcefbe43384f95a67218c4938", null ],
     [ "kernel", "classpulsatrix_1_1Conv2DModule.html#a2103a6c78801a8755d9113026f56992f", null ],
     [ "kernel_grad", "classpulsatrix_1_1Conv2DModule.html#a3617e19d036784171da4f7550f4f4743", null ],
     [ "named_parameters", "classpulsatrix_1_1Conv2DModule.html#a1d551f302f993c0d64897ab3b39f754a", null ],
     [ "op_type", "classpulsatrix_1_1Conv2DModule.html#a1e1aa28fddd446767064d32a51bf952e", null ],
+    [ "padding", "classpulsatrix_1_1Conv2DModule.html#a8560798e7b17877953ff7d0556923ecf", null ],
     [ "propagate_relevance", "classpulsatrix_1_1Conv2DModule.html#a41522f320ef28037d27888d42160801c", null ],
     [ "set_bias", "classpulsatrix_1_1Conv2DModule.html#a8bf7eccc3df66273dc7698b113c8ed18", null ],
     [ "set_bias", "classpulsatrix_1_1Conv2DModule.html#aa494491c6d33fa8c831fe8d9c94e8ddb", null ],
     [ "set_kernel", "classpulsatrix_1_1Conv2DModule.html#a4cd0352a65362b75d0aeb1ac822d12d1", null ],
     [ "set_kernel", "classpulsatrix_1_1Conv2DModule.html#ab4616dd53b3080cd35a6e7cdbc88aabd", null ],
+    [ "stride", "classpulsatrix_1_1Conv2DModule.html#a6617390d2321b00d3f3edc043a16d17a", null ],
     [ "supports_lrp_rule", "classpulsatrix_1_1Conv2DModule.html#a645f7dcb0204de2ec34ca34432d56f58", null ]
 ];

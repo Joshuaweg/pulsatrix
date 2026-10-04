@@ -4,6 +4,7 @@ var classpulsatrix_1_1RNNModule =
     [ "backward", "classpulsatrix_1_1RNNModule.html#afae63ab8d907280d51d058108d7501b6", null ],
     [ "bias", "classpulsatrix_1_1RNNModule.html#a4ce573de1179820cc0cc1a092b7137ee", null ],
     [ "bias_grad", "classpulsatrix_1_1RNNModule.html#a88c7a0ed74bb2e7d6f79709b2787cc8b", null ],
+    [ "compute_device", "classpulsatrix_1_1RNNModule.html#aebc7bc7273899282edecabb7f712ad39", null ],
     [ "forward_impl", "classpulsatrix_1_1RNNModule.html#a6600f2dae5fd9287f99cd6a5ef0b65e4", null ],
     [ "named_parameters", "classpulsatrix_1_1RNNModule.html#a74e591df51eff39d4c60ad7cc5170c7d", null ],
     [ "op_type", "classpulsatrix_1_1RNNModule.html#afbfb36a30b69659a1d0602fb5bf8e6c3", null ],

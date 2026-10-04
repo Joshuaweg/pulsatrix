@@ -256,12 +256,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a805dbc60d8b59e886f325d3dc3d6d172" id="r_a805dbc60d8b59e886f325d3dc3d6d172"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a805dbc60d8b59e886f325d3dc3d6d172">aggregator_lrp</a> (const float *x, const float *mean_pow, const float *r_out, float *r_in, size_t n, size_t cols, float p, float eps) override</td></tr>
 <tr class="memdesc:a805dbc60d8b59e886f325d3dc3d6d172"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1AggregatorModule.html" title="y = (mean(x^p))^(1/p), reduced over the leading (batch/grounding) axis – not the last axis....">AggregatorModule</a> epsilon rule, per column.  <br /></td></tr>
 <tr class="separator:a805dbc60d8b59e886f325d3dc3d6d172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe16fbb919c7763c3995873ce5ee425c" id="r_afe16fbb919c7763c3995873ce5ee425c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#afe16fbb919c7763c3995873ce5ee425c">im2col</a> (const float *in, float *col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) override</td></tr>
-<tr class="memdesc:afe16fbb919c7763c3995873ce5ee425c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches (stride 1, no padding).  <br /></td></tr>
-<tr class="separator:afe16fbb919c7763c3995873ce5ee425c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8cb9519f83b6423fbecce7093fb1af6" id="r_ad8cb9519f83b6423fbecce7093fb1af6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#ad8cb9519f83b6423fbecce7093fb1af6">col2im_add</a> (const float *col, float *out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) override</td></tr>
-<tr class="memdesc:ad8cb9519f83b6423fbecce7093fb1af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folds (n, c*kh*kw, out_h*out_w) patches back, adding into out (n, c, h, w).  <br /></td></tr>
-<tr class="separator:ad8cb9519f83b6423fbecce7093fb1af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4abbc28f41bae1390956124821a0c6a1" id="r_a4abbc28f41bae1390956124821a0c6a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a4abbc28f41bae1390956124821a0c6a1">im2col</a> (const float *in, float *col, size_t n, size_t c, size_t h, size_t w, const <a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a> &amp;geometry) override</td></tr>
+<tr class="memdesc:a4abbc28f41bae1390956124821a0c6a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches, with out_h = (h + 2*pad_h - kh) / stride_h + 1 (likewise out_w). Taps that fall in the zero padding read 0.  <br /></td></tr>
+<tr class="separator:a4abbc28f41bae1390956124821a0c6a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a821dd50321167a7e6c0623e727a8ca89" id="r_a821dd50321167a7e6c0623e727a8ca89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a821dd50321167a7e6c0623e727a8ca89">col2im_add</a> (const float *col, float *out, size_t n, size_t c, size_t h, size_t w, const <a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a> &amp;geometry) override</td></tr>
+<tr class="memdesc:a821dd50321167a7e6c0623e727a8ca89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folds (n, c*kh*kw, out_h*out_w) patches back, adding into out (n, c, h, w).  <br /></td></tr>
+<tr class="separator:a821dd50321167a7e6c0623e727a8ca89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aca89966f1eb0529b013daacbdc61f1" id="r_a3aca89966f1eb0529b013daacbdc61f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a3aca89966f1eb0529b013daacbdc61f1">add_channel_vector</a> (const float *in, const float *vec, float *out, size_t n, size_t c, size_t inner) override</td></tr>
 <tr class="memdesc:a3aca89966f1eb0529b013daacbdc61f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">out[i][ch][k] = in[i][ch][k] + vec[ch] over (n, c, inner). out may alias in.  <br /></td></tr>
 <tr class="separator:a3aca89966f1eb0529b013daacbdc61f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,6 +292,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaf3d54f08f5a1581313e0de62c3aa51f" id="r_aaf3d54f08f5a1581313e0de62c3aa51f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#aaf3d54f08f5a1581313e0de62c3aa51f">batch_norm_backward</a> (const float *grad_out, const float *gamma, const float *xhat, const float *channel_std, float *grad_in, float *gamma_grad, float *beta_grad, size_t n, size_t c, size_t spatial) override</td></tr>
 <tr class="memdesc:aaf3d54f08f5a1581313e0de62c3aa51f"><td class="mdescLeft">&#160;</td><td class="mdescRight">BatchNorm input gradient plus this call's gamma/beta gradients (overwritten, per channel).  <br /></td></tr>
 <tr class="separator:aaf3d54f08f5a1581313e0de62c3aa51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0570ae264edd058f4d4d7892109422c1" id="r_a0570ae264edd058f4d4d7892109422c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a0570ae264edd058f4d4d7892109422c1">batch_norm_update_running</a> (const float *in, float *running_mean, float *running_var, size_t n, size_t c, size_t spatial, float momentum) override</td></tr>
+<tr class="memdesc:a0570ae264edd058f4d4d7892109422c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Folds this batch's per-channel mean and unbiased variance into the running ones (PyTorch's momentum rule; the variance is kept when a channel has one value). FND-5.  <br /></td></tr>
+<tr class="separator:a0570ae264edd058f4d4d7892109422c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad645d87bf8960537b28cc8883f61abc0" id="r_ad645d87bf8960537b28cc8883f61abc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#ad645d87bf8960537b28cc8883f61abc0">batch_norm_eval_forward</a> (const float *in, const float *gamma, const float *beta, const float *running_mean, const float *running_var, float *xhat, float *out, float *channel_std, size_t n, size_t c, size_t spatial, float eps) override</td></tr>
+<tr class="memdesc:ad645d87bf8960537b28cc8883f61abc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eval-mode BatchNorm from the running statistics: a per-channel affine map. FND-5.  <br /></td></tr>
+<tr class="separator:ad645d87bf8960537b28cc8883f61abc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b4f23787352503c206eeb7e7478512" id="r_a90b4f23787352503c206eeb7e7478512"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a90b4f23787352503c206eeb7e7478512">batch_norm_eval_backward</a> (const float *grad_out, const float *gamma, const float *xhat, const float *channel_std, float *grad_in, float *gamma_grad, float *beta_grad, size_t n, size_t c, size_t spatial) override</td></tr>
+<tr class="memdesc:a90b4f23787352503c206eeb7e7478512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eval-mode BatchNorm gradient: grad_out * gamma / std, plus gamma/beta gradients (overwritten, per channel). FND-5.  <br /></td></tr>
+<tr class="separator:a90b4f23787352503c206eeb7e7478512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bb586b266546ee1e81a9aa35a86c46d" id="r_a4bb586b266546ee1e81a9aa35a86c46d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a4bb586b266546ee1e81a9aa35a86c46d">group_norm_forward</a> (const float *in, const float *gamma, const float *beta, float *xhat, float *out, float *group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps) override</td></tr>
 <tr class="memdesc:a4bb586b266546ee1e81a9aa35a86c46d"><td class="mdescLeft">&#160;</td><td class="mdescRight">GroupNorm per (example, group) of (n, c, spatial) data; group_std is (n, num_groups).  <br /></td></tr>
 <tr class="separator:a4bb586b266546ee1e81a9aa35a86c46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -316,6 +325,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5636611d7e3c7c185a7d435a20794323" id="r_a5636611d7e3c7c185a7d435a20794323"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a5636611d7e3c7c185a7d435a20794323">rl_rows</a> (<a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">RlRowOp</a> op, const <a class="el" href="structpulsatrix_1_1RlRowArgs.html">RlRowArgs</a> &amp;args) override</td></tr>
 <tr class="memdesc:a5636611d7e3c7c185a7d435a20794323"><td class="mdescLeft">&#160;</td><td class="mdescRight">One fused RL loss / target / Polyak pass (see RlRowOp for lanes and slots).  <br /></td></tr>
 <tr class="separator:a5636611d7e3c7c185a7d435a20794323"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fe4df3890a09df45162da47ca64d8e7" id="r_a0fe4df3890a09df45162da47ca64d8e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a0fe4df3890a09df45162da47ca64d8e7">top_k_rows</a> (const float *in, float *values, float *indices, size_t rows, size_t cols, size_t k, bool largest) override</td></tr>
+<tr class="memdesc:a0fe4df3890a09df45162da47ca64d8e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per row of a row-major (rows, cols) matrix: the k largest (or smallest) values in rank order into <code>values</code> (rows, k), and their column indices into <code>indices</code> (rows, k) as whole-number floats.  <br /></td></tr>
+<tr class="separator:a0fe4df3890a09df45162da47ca64d8e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1DeviceBackend"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1DeviceBackend')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1DeviceBackend.html">pulsatrix::DeviceBackend</a></td></tr>
 <tr class="memitem:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend" id="r_a2feea27fda55c8c0addf4e7c3864f2aa"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a2feea27fda55c8c0addf4e7c3864f2aa">~DeviceBackend</a> ()=default</td></tr>
 <tr class="separator:a2feea27fda55c8c0addf4e7c3864f2aa inherit pub_methods_classpulsatrix_1_1DeviceBackend"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1211,6 +1223,194 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a90b4f23787352503c206eeb7e7478512" name="a90b4f23787352503c206eeb7e7478512"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b4f23787352503c206eeb7e7478512">&#9670;&#160;</a></span>batch_norm_eval_backward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CPUBackend::batch_norm_eval_backward </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>grad_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>gamma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>xhat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>channel_std</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>grad_in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>gamma_grad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>beta_grad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>spatial</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Eval-mode BatchNorm gradient: grad_out * gamma / std, plus gamma/beta gradients (overwritten, per channel). FND-5. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#af6706a7221ada0941f6f0d71bec2f8a6">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="ad645d87bf8960537b28cc8883f61abc0" name="ad645d87bf8960537b28cc8883f61abc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad645d87bf8960537b28cc8883f61abc0">&#9670;&#160;</a></span>batch_norm_eval_forward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CPUBackend::batch_norm_eval_forward </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>gamma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>beta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>running_mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>running_var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>xhat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>channel_std</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>spatial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>eps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Eval-mode BatchNorm from the running statistics: a per-channel affine map. FND-5. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#aab3caff48bb9647c69ac064baecd5820">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
 <a id="ad39371da02c93af3533229027d0ef02a" name="ad39371da02c93af3533229027d0ef02a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad39371da02c93af3533229027d0ef02a">&#9670;&#160;</a></span>batch_norm_forward()</h2>
 
@@ -1296,6 +1496,76 @@ Public Member Functions</h2></td></tr>
 <p>BatchNorm over (n, spatial) per channel of (n, c, spatial) data. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#aab621bc52e08f3591e3310f643f82af5">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a0570ae264edd058f4d4d7892109422c1" name="a0570ae264edd058f4d4d7892109422c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0570ae264edd058f4d4d7892109422c1">&#9670;&#160;</a></span>batch_norm_update_running()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CPUBackend::batch_norm_update_running </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>running_mean</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>running_var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>spatial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>momentum</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Folds this batch's per-channel mean and unbiased variance into the running ones (PyTorch's momentum rule; the variance is kept when a channel has one value). FND-5. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ae07f326e69208e361844b1e5ff772222">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
@@ -1410,8 +1680,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad8cb9519f83b6423fbecce7093fb1af6" name="ad8cb9519f83b6423fbecce7093fb1af6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8cb9519f83b6423fbecce7093fb1af6">&#9670;&#160;</a></span>col2im_add()</h2>
+<a id="a821dd50321167a7e6c0623e727a8ca89" name="a821dd50321167a7e6c0623e727a8ca89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a821dd50321167a7e6c0623e727a8ca89">&#9670;&#160;</a></span>col2im_add()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1458,14 +1728,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kh</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kw</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a> &amp;&#160;</td>
+          <td class="paramname"><em>geometry</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1483,7 +1747,7 @@ Public Member Functions</h2></td></tr>
 <p>Folds (n, c*kh*kw, out_h*out_w) patches back, adding into out (n, c, h, w). </p>
 <dl class="section note"><dt>Note</dt><dd>A gather: one GPU thread per output pixel sums its window contributions in the same order the CPU scatter loop adds them &ndash; deterministic, no atomics. </dd></dl>
 
-<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#aae06a09bb2c8ff1af025db51c9b7569f">pulsatrix::DeviceBackend</a>.</p>
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ae0597f227245271c94e81cd0cfae314b">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
@@ -2532,8 +2796,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afe16fbb919c7763c3995873ce5ee425c" name="afe16fbb919c7763c3995873ce5ee425c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe16fbb919c7763c3995873ce5ee425c">&#9670;&#160;</a></span>im2col()</h2>
+<a id="a4abbc28f41bae1390956124821a0c6a1" name="a4abbc28f41bae1390956124821a0c6a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4abbc28f41bae1390956124821a0c6a1">&#9670;&#160;</a></span>im2col()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2580,14 +2844,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kh</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kw</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a> &amp;&#160;</td>
+          <td class="paramname"><em>geometry</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2602,9 +2860,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches (stride 1, no padding). </p>
+<p>Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches, with out_h = (h + 2*pad_h - kh) / stride_h + 1 (likewise out_w). Taps that fall in the zero padding read 0. </p>
 
-<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ae82d916f6a34883c2ee1a9b995b4f288">pulsatrix::DeviceBackend</a>.</p>
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ad42295ced5dffa73a26250d77fe3da97">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
@@ -4651,6 +4909,79 @@ Public Member Functions</h2></td></tr>
 <p><a class="el" href="classpulsatrix_1_1TanhGaussianPolicy.html" title="SAC&#39;s reparameterized, tanh-squashed Gaussian policy sample (Haarnoja et al. 2018,...">TanhGaussianPolicy</a> sampling per (rows, cols) row: action = tanh(mean + exp(log_std)*eps), std_cache = exp(log_std), log_prob[r] accumulated in double. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a8aa3070ea46a64395fb350095cfe7e83">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="a0fe4df3890a09df45162da47ca64d8e7" name="a0fe4df3890a09df45162da47ca64d8e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fe4df3890a09df45162da47ca64d8e7">&#9670;&#160;</a></span>top_k_rows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CPUBackend::top_k_rows </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>largest</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Per row of a row-major (rows, cols) matrix: the k largest (or smallest) values in rank order into <code>values</code> (rows, k), and their column indices into <code>indices</code> (rows, k) as whole-number floats. </p>
+<dl class="section note"><dt>Note</dt><dd>Order: NaN ranks above every number; equal values keep the lower column index first. One lane per row, pure selection: every backend's output is bit-identical. </dd>
+<dd>
+Preconditions, validated by the caller (<a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45" title="Selects the k largest (or smallest) entries of every row along the last dimension.">top_k()</a>): 1 &lt;= k &lt;= cols, cols &lt;= 2^24. </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a703e84656eb137fd2b963624daa26b87">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>

@@ -18,11 +18,12 @@ var searchData=
   ['conservationresult_15',['ConservationResult',['../structpulsatrix_1_1ConservationResult.html',1,'pulsatrix']]],
   ['continuouscartpoleenv_16',['ContinuousCartPoleEnv',['../classpulsatrix_1_1ContinuousCartPoleEnv.html',1,'pulsatrix']]],
   ['conv2dmodule_17',['Conv2DModule',['../classpulsatrix_1_1Conv2DModule.html',1,'pulsatrix']]],
-  ['cpubackend_18',['CPUBackend',['../classpulsatrix_1_1CPUBackend.html',1,'pulsatrix']]],
-  ['cputimes_19',['CpuTimes',['../structpulsatrix_1_1detail_1_1CpuTimes.html',1,'pulsatrix::detail']]],
-  ['crossentropyloss_20',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
-  ['csvdataset_21',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
-  ['csvreader_22',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
-  ['csvtable_23',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
-  ['cudabackend_24',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
+  ['convgeometry_18',['ConvGeometry',['../structpulsatrix_1_1ConvGeometry.html',1,'pulsatrix']]],
+  ['cpubackend_19',['CPUBackend',['../classpulsatrix_1_1CPUBackend.html',1,'pulsatrix']]],
+  ['cputimes_20',['CpuTimes',['../structpulsatrix_1_1detail_1_1CpuTimes.html',1,'pulsatrix::detail']]],
+  ['crossentropyloss_21',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
+  ['csvdataset_22',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
+  ['csvreader_23',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
+  ['csvtable_24',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
+  ['cudabackend_25',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
 ];
