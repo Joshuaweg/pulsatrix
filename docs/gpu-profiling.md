@@ -32,6 +32,7 @@ backward, AdamW):
   Flatten → Linear`, on 32 images of 3×32×32.
 - **`tagger`:** the transformer tagger from the
   [full fine-tuning recipe](recipes/deep-learning/tagger_finetune.md).
+- **`reduce`:** `DeviceBackend::dot` and `sum` over 16M floats, a microbenchmark for HIP-5.
 
 ## Baseline (gfx1151, ROCm 7.2.4, 20 steps)
 
@@ -53,3 +54,19 @@ What it shows:
   one thread per channel: 16 or 32 threads for 16,384 or 4,096 elements per channel (HIP-2).
 - **Fills and copies are a large share.** Many of them are temporaries a caching allocator and
   fused kernels would avoid (HIP-3, HIP-6).
+
+## Results
+
+### HIP-5: `dot` and `sum` across many blocks
+
+They used to run on a single 256-thread block. Now a first pass of up to 1024 blocks writes
+per-block partial sums, and one block adds those in a fixed order: still deterministic, no
+atomics. On the `reduce` workload (16M floats):
+
+| Op | Before | After | Effective bandwidth after |
+|---|---|---|---|
+| `dot` (reads 128 MB) | 17.7 ms | 0.61 ms (29×) | 211 GB/s |
+| `sum` (reads 64 MB) | 17.2 ms | 0.30 ms (58×) | 216 GB/s |
+
+Both now run at the measured memory bandwidth of the gfx1151 (about 212 GB/s), so there is
+nothing left to gain on these two ops.
