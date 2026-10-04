@@ -118,6 +118,7 @@ var namespacepulsatrix =
     [ "MSELoss", "classpulsatrix_1_1MSELoss.html", "classpulsatrix_1_1MSELoss" ],
     [ "MultiHeadAttentionModule", "classpulsatrix_1_1MultiHeadAttentionModule.html", "classpulsatrix_1_1MultiHeadAttentionModule" ],
     [ "MutationLoss", "classpulsatrix_1_1MutationLoss.html", "classpulsatrix_1_1MutationLoss" ],
+    [ "NamedParamRef", "structpulsatrix_1_1NamedParamRef.html", "structpulsatrix_1_1NamedParamRef" ],
     [ "NEATEvolutionResult", "structpulsatrix_1_1NEATEvolutionResult.html", "structpulsatrix_1_1NEATEvolutionResult" ],
     [ "NEATGenome", "classpulsatrix_1_1NEATGenome.html", "classpulsatrix_1_1NEATGenome" ],
     [ "NegationModule", "classpulsatrix_1_1NegationModule.html", "classpulsatrix_1_1NegationModule" ],
@@ -325,6 +326,7 @@ var namespacepulsatrix =
       [ "ReverseTimeSum", "namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3", null ]
     ] ],
     [ "AllocateOffspringCounts", "namespacepulsatrix.html#aba26bb47a841c985070a3d37cff2a423", null ],
+    [ "append_named_parameters", "namespacepulsatrix.html#a8d4d176932520c4b6229ffd1454471de", null ],
     [ "AskGivenSamples", "namespacepulsatrix.html#a314a4a59c2e126269885c0c51ffbd6bc", null ],
     [ "AudioPadCollate", "namespacepulsatrix.html#a6e0cd79959b261c8b59f554451342d31", null ],
     [ "BackwardThroughPopulation", "namespacepulsatrix.html#a4d24c20b7bf649bd1c0fc68714829b67", null ],

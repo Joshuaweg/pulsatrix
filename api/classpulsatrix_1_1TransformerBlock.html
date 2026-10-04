@@ -132,7 +132,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:acde60b9083910b814406bc6a10d7deee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a transformer block with zero-initialized sub-module parameters.  <br /></td></tr>
 <tr class="separator:acde60b9083910b814406bc6a10d7deee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc0a1563e2a85b6998d197edfcf9e861" id="r_abc0a1563e2a85b6998d197edfcf9e861"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#abc0a1563e2a85b6998d197edfcf9e861">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
-<tr class="memdesc:abc0a1563e2a85b6998d197edfcf9e861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside norm1_/mha_/norm2_/swiglu_ (reachable through <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a975b2286329610d1cf577905f26a0a35" title="norm1_&#39;s, mha_&#39;s, norm2_&#39;s, and swiglu_&#39;s parameters, flattened.">parameters()</a>).  <br /></td></tr>
+<tr class="memdesc:abc0a1563e2a85b6998d197edfcf9e861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside norm1_/mha_/norm2_/swiglu_ (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>).  <br /></td></tr>
 <tr class="separator:abc0a1563e2a85b6998d197edfcf9e861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ffc207019fabf83c19613c2d3e711b7" id="r_a5ffc207019fabf83c19613c2d3e711b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a5ffc207019fabf83c19613c2d3e711b7">op_type</a> () const override</td></tr>
 <tr class="memdesc:a5ffc207019fabf83c19613c2d3e711b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elementwise per this module's own <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a5ffc207019fabf83c19613c2d3e711b7" title="Elementwise per this module&#39;s own op_type() note above.">op_type()</a> note above.  <br /></td></tr>
@@ -140,9 +140,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae6ce7ebbbcae1b88709d0e9058652529" id="r_ae6ce7ebbbcae1b88709d0e9058652529"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#ae6ce7ebbbcae1b88709d0e9058652529">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:ae6ce7ebbbcae1b88709d0e9058652529"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation: two residual epsilon/z-rule splits composed with norm1_'s/mha_'s/norm2_'s/swiglu_'s own <a class="el" href="classpulsatrix_1_1TransformerBlock.html#ae6ce7ebbbcae1b88709d0e9058652529" title="LRP relevance propagation: two residual epsilon/z-rule splits composed with norm1_&#39;s/mha_&#39;s/norm2_&#39;s/...">propagate_relevance()</a>.  <br /></td></tr>
 <tr class="separator:ae6ce7ebbbcae1b88709d0e9058652529"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a975b2286329610d1cf577905f26a0a35" id="r_a975b2286329610d1cf577905f26a0a35"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a975b2286329610d1cf577905f26a0a35">parameters</a> () override</td></tr>
-<tr class="memdesc:a975b2286329610d1cf577905f26a0a35"><td class="mdescLeft">&#160;</td><td class="mdescRight">norm1_'s, mha_'s, norm2_'s, and swiglu_'s parameters, flattened.  <br /></td></tr>
-<tr class="separator:a975b2286329610d1cf577905f26a0a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0188111235c169804ad301202c7c91cf" id="r_a0188111235c169804ad301202c7c91cf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0188111235c169804ad301202c7c91cf">named_parameters</a> () override</td></tr>
+<tr class="memdesc:a0188111235c169804ad301202c7c91cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">norm1_'s, mha_'s, norm2_'s, and swiglu_'s parameters, flattened.  <br /></td></tr>
+<tr class="separator:a0188111235c169804ad301202c7c91cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af80237833850ddabf8613bfeacb16879" id="r_af80237833850ddabf8613bfeacb16879"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#af80237833850ddabf8613bfeacb16879">set_training</a> (bool training) override</td></tr>
 <tr class="memdesc:af80237833850ddabf8613bfeacb16879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cascades to every sub-module, the same way SequentialModule/MultiHeadAttentionModule do.  <br /></td></tr>
 <tr class="separator:af80237833850ddabf8613bfeacb16879"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +169,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module" id="r_acad2aa6565d456d5a57be421c05537b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule) const</td></tr>
 <tr class="memdesc:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">propagate_relevance()</a> implements <code>rule</code> (no silent fallback: callers such as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass()</a> throw rather than run a module on a rule it does not implement).  <br /></td></tr>
 <tr class="separator:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
+<tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
+<tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module" id="r_a708ed1a999e528bfa47ea8f341cee518"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518">is_training</a> () const</td></tr>
 <tr class="memdesc:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this module is currently in training mode.  <br /></td></tr>
 <tr class="separator:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -285,7 +288,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside norm1_/mha_/norm2_/swiglu_ (reachable through <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a975b2286329610d1cf577905f26a0a35" title="norm1_&#39;s, mha_&#39;s, norm2_&#39;s, and swiglu_&#39;s parameters, flattened.">parameters()</a>). </p>
+<p>Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside norm1_/mha_/norm2_/swiglu_ (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">grad_output</td><td>Gradient w.r.t. this module's output, shape <code>(N, L, d_model)</code> matching the cached forward shape. </td></tr>
@@ -399,6 +402,35 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a0188111235c169804ad301202c7c91cf" name="a0188111235c169804ad301202c7c91cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0188111235c169804ad301202c7c91cf">&#9670;&#160;</a></span>named_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; pulsatrix::TransformerBlock::named_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>norm1_'s, mha_'s, norm2_'s, and swiglu_'s parameters, flattened. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
 <a id="a1bbd0d5f3158fe58f3d69b119acba2e2" name="a1bbd0d5f3158fe58f3d69b119acba2e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1bbd0d5f3158fe58f3d69b119acba2e2">&#9670;&#160;</a></span>norm1()</h2>
 
@@ -475,35 +507,6 @@ Protected Member Functions</h2></td></tr>
 <p>Elementwise per this module's own <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a5ffc207019fabf83c19613c2d3e711b7" title="Elementwise per this module&#39;s own op_type() note above.">op_type()</a> note above. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">pulsatrix::Module</a>.</p>
-
-</div>
-</div>
-<a id="a975b2286329610d1cf577905f26a0a35" name="a975b2286329610d1cf577905f26a0a35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a975b2286329610d1cf577905f26a0a35">&#9670;&#160;</a></span>parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt; pulsatrix::TransformerBlock::parameters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>norm1_'s, mha_'s, norm2_'s, and swiglu_'s parameters, flattened. </p>
-
-<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

@@ -1700,8 +1700,21 @@ rather than a new <code>LRPRuleConfig</code> field. <code>ConjunctionModule::TNo
 (<code>Product</code>/<code>Lukasiewicz</code>/<code>Godel</code>, see <a href="../neuro-symbolic/">Neuro-Symbolic Reasoning</a>)
 is an example.</p>
 <h3 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h3>
-<p>If your layer has trainable parameters, override <code>parameters()</code> (the default returns none) so
-optimizers can update them.</p>
+<p>If your layer has trainable parameters, override <code>named_parameters()</code> (the default returns none)
+so optimizers can update them and checkpoints, freezing and parameter groups can find them by
+name. Use PyTorch's names where your layer has a PyTorch counterpart (<code>weight</code>, <code>bias</code>), and in a
+layer that holds other modules, add each child's parameters under its name with
+<code>append_named_parameters</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">NamedParamRef</span><span class="o">&gt;</span><span class="w"> </span><span class="n">named_parameters</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">NamedParamRef</span><span class="o">&gt;</span><span class="w"> </span><span class="n">params</span><span class="p">{{</span><span class="s">"scale"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="o">&amp;</span><span class="n">scale_</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">scale_grad_</span><span class="p">}}};</span>
+<span class="w">    </span><span class="n">append_named_parameters</span><span class="p">(</span><span class="n">params</span><span class="p">,</span><span class="w"> </span><span class="s">"proj"</span><span class="p">,</span><span class="w"> </span><span class="n">proj_</span><span class="p">);</span><span class="w">  </span><span class="c1">// proj.weight, proj.bias</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">params</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>parameters()</code> returns the same tensors in the same order without the names. Layers written
+before <code>named_parameters()</code> existed may still override <code>parameters()</code> instead; they keep
+training, but report no names of their own. Inside a container they get positional names
+(<code>2.0</code>, <code>2.1</code>, ...), which are stable only as long as the parameter order is.</p>
 <h2 id="adding-a-new-metrics-sink">Adding a new metrics sink<a class="headerlink" href="#adding-a-new-metrics-sink" title="Permanent link">&para;</a></h2>
 <p>Training loops report metrics such as the loss through a <code>MetricsSink</code>. To send them somewhere
 new, implement its two methods:</p>
