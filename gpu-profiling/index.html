@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/reinforcement-learning/">
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/gpu-profiling/">
       
       
-        <link rel="prev" href="../interpretability/deep-learning-approaches/">
+        <link rel="prev" href="../system-monitoring/">
       
       
-        <link rel="next" href="../mechanistic-interpretability/">
+        <link rel="next" href="../customization/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Reinforcement Learning - Pulsatrix</title>
+        <title>GPU Profiling (HIP) - Pulsatrix</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#reinforcement-learning" class="md-skip">
+        <a href="#gpu-profiling-hip" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Reinforcement Learning
+              GPU Profiling (HIP)
             
           </span>
         </div>
@@ -531,37 +531,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Reinforcement Learning
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../reinforcement-learning/" class="md-nav__link">
         
   
   
@@ -577,120 +550,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#which-algorithm-should-i-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Which algorithm should I use?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-inside" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's inside
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#runnable-demos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Runnable demos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-implement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to implement
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to implement">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#the-environmentagent-loop" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The environment/agent loop
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generalized-advantage-estimation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generalized Advantage Estimation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#soft-target-network-updates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Soft target-network updates
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recipes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recipes
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -861,10 +720,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../gpu-profiling/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU Profiling (HIP)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -880,6 +766,48 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#running-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#baseline-gfx1151-rocm-724-20-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Baseline (gfx1151, ROCm 7.2.4, 20 steps)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1605,10 +1533,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#which-algorithm-should-i-use" class="md-nav__link">
+  <a href="#running-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Which algorithm should I use?
+        Running it
       
     </span>
   </a>
@@ -1616,82 +1544,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-inside" class="md-nav__link">
+  <a href="#baseline-gfx1151-rocm-724-20-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's inside
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#runnable-demos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Runnable demos
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-implement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to implement
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How to implement">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#the-environmentagent-loop" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The environment/agent loop
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generalized-advantage-estimation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generalized Advantage Estimation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#soft-target-network-updates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Soft target-network updates
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#recipes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Recipes
+        Baseline (gfx1151, ROCm 7.2.4, 20 steps)
       
     </span>
   </a>
@@ -1718,196 +1574,76 @@
   
 
 
-<h1 id="reinforcement-learning">Reinforcement Learning<a class="headerlink" href="#reinforcement-learning" title="Permanent link">&para;</a></h1>
-<p>Use this section when you want an agent to learn by trial and error: it acts in an
-environment, receives rewards, and improves its policy (the rule that picks actions).
-Pulsatrix ships five algorithms: DQN (with Double DQN), REINFORCE, A2C, PPO, and SAC.</p>
-<p>Every network here is a plain <code>Module</code> from
-<a href="../deep-learning/">Deep Learning Modules and Layers</a>. You train it with the same
-<code>forward()</code>/<code>backward()</code>/optimizer loop as any other network. The environment and agent
-interfaces follow the shape of Gymnasium (the standard Python RL toolkit): <code>reset()</code>, <code>step()</code>,
-and <code>act()</code>.</p>
-<h2 id="which-algorithm-should-i-use">Which algorithm should I use?<a class="headerlink" href="#which-algorithm-should-i-use" title="Permanent link">&para;</a></h2>
+<h1 id="gpu-profiling-hip">GPU Profiling (HIP)<a class="headerlink" href="#gpu-profiling-hip" title="Permanent link">&para;</a></h1>
+<p><code>scripts/profile_hip.sh</code> runs a command under rocprofv3, groups its GPU kernels by op type and
+writes a CSV of where the time went. It also reports the GPU's <strong>busy time</strong> over the run's wall
+span. When that is low, the GPU is waiting on launches and synchronization, not computing.
+Measure before optimizing: every HIP performance item on the <a href="../roadmap/#hip-training-efficiency-on-amd-gpus">roadmap</a>
+is judged against these numbers.</p>
+<h2 id="running-it">Running it<a class="headerlink" href="#running-it" title="Permanent link">&para;</a></h2>
+<p>rocprofv3 is in the ROCm container, so run the script there:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># build the fixed training workloads once</span>
+scripts/rocm-build.sh<span class="w"> </span><span class="s1">'cmake -S . -B build-hip-release -DCMAKE_BUILD_TYPE=Release -DPULSATRIX_ENABLE_HIP=ON \</span>
+<span class="s1">    &amp;&amp; cmake --build build-hip-release -j"$(nproc)" --target hip_profile_workloads'</span>
+
+<span class="c1"># profile one: &lt;ops.csv&gt; -- &lt;command&gt;</span>
+scripts/rocm-build.sh<span class="w"> </span><span class="s1">'scripts/profile_hip.sh profile/cnn.csv -- ./build-hip-release/hip_profile_workloads cnn 20'</span>
+</code></pre></div>
+<p>Any command works in place of <code>hip_profile_workloads</code>, such as your own training program. The
+CSV has one row per op: <code>op, calls, total_us, mean_us, percent</code>. Op names come from the kernel
+name (<code>batch_norm_forward_kernel</code> becomes <code>batch_norm_forward</code>). All of hipBLAS's GEMM kernels
+are grouped as <code>gemm (hipBLAS)</code>, and HIP runtime helpers such as copies appear as <code>runtime: ...</code>.</p>
+<p><code>hip_profile_workloads</code> has three fixed workloads, each a full training step (forward, loss,
+backward, AdamW):</p>
+<ul>
+<li><strong><code>mlp</code>:</strong> <code>Linear(256→512) → ReLU → Linear(512→512) → ReLU → Linear(512→10)</code>, batch 64.</li>
+<li><strong><code>cnn</code>:</strong> <code>Conv2D(3→16) → BatchNorm → ReLU → Conv2D(16→32, stride 2) → BatchNorm → ReLU →
+  Flatten → Linear</code>, on 32 images of 3×32×32.</li>
+<li><strong><code>tagger</code>:</strong> the transformer tagger from the
+  <a href="../recipes/deep-learning/tagger_finetune/">full fine-tuning recipe</a>.</li>
+</ul>
+<h2 id="baseline-gfx1151-rocm-724-20-steps">Baseline (gfx1151, ROCm 7.2.4, 20 steps)<a class="headerlink" href="#baseline-gfx1151-rocm-724-20-steps" title="Permanent link">&para;</a></h2>
+<p>Measured 2026-10-04 on the Radeon 8060S (Strix Halo), Release build, before any of the HIP
+performance work.</p>
 <table>
 <thead>
 <tr>
-<th>Algorithm</th>
-<th>Action space</th>
-<th>Learns from</th>
-<th>Use it when</th>
+<th>Workload</th>
+<th>Step time</th>
+<th>GPU busy</th>
+<th>Biggest costs (share of kernel time)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>DQN / Double DQN</td>
-<td>Discrete</td>
-<td>Replayed past experience (off-policy)</td>
-<td>You have a small, discrete action set and want sample efficiency.</td>
+<td><code>mlp</code></td>
+<td>about 1.0 ms</td>
+<td>12.9%</td>
+<td>hipBLAS GEMM 56%, <code>fill</code> 11%, <code>column_sums</code> 8%, copies 7%</td>
 </tr>
 <tr>
-<td>REINFORCE</td>
-<td>Discrete</td>
-<td>Its own latest episodes (on-policy)</td>
-<td>You want the simplest policy-gradient baseline.</td>
+<td><code>cnn</code></td>
+<td>about 27 ms</td>
+<td>78.3%</td>
+<td><code>batch_norm_forward</code> 34%, <code>batch_norm_backward</code> 31%, hipBLAS GEMM 18%, <code>batch_norm_update_running</code> 14%</td>
 </tr>
 <tr>
-<td>A2C</td>
-<td>Discrete</td>
-<td>Its own latest rollouts (on-policy)</td>
-<td>You want lower variance than REINFORCE by adding a critic.</td>
-</tr>
-<tr>
-<td>PPO</td>
-<td>Discrete</td>
-<td>Its own latest rollouts (on-policy)</td>
-<td>You want a stable, general-purpose default.</td>
-</tr>
-<tr>
-<td>SAC</td>
-<td>Continuous</td>
-<td>Replayed past experience (off-policy)</td>
-<td>Your actions are real numbers (e.g. a force or a torque).</td>
+<td><code>tagger</code></td>
+<td>7.8 ms</td>
+<td>11.6%</td>
+<td>hipBLAS GEMM 38%, copies 15%, <code>fill</code> 14%, <code>column_sums</code> 12%</td>
 </tr>
 </tbody>
 </table>
-<p>Each algorithm has an integration test that must reach a fixed score on CartPole
-(<code>tests/*_cartpole_integration_test.cpp</code>).</p>
-<h2 id="whats-inside">What's inside<a class="headerlink" href="#whats-inside" title="Permanent link">&para;</a></h2>
+<p>What it shows:</p>
 <ul>
-<li><strong>Environments</strong>: <code>Environment</code> (interface), <code>CartPoleEnv</code>, <code>ContinuousCartPoleEnv</code></li>
-<li><strong>Agents</strong>: <code>Agent</code> (interface), <code>DQNAgent</code>, <code>CategoricalPolicyAgent</code> (REINFORCE/A2C/PPO)</li>
-<li><strong>Policies</strong>: <code>TanhGaussianPolicy</code>, SAC's continuous-action sampler. It is not a <code>Module</code> or
-  an <code>Agent</code>: it takes three tensors and returns two.</li>
-<li><strong>Buffers</strong>: <code>ReplayBuffer</code> (off-policy: DQN, SAC), <code>RolloutBuffer</code> (on-policy:
-  REINFORCE/A2C/PPO)</li>
-<li><strong>Value estimation</strong>: <code>ComputeGAE</code> (Generalized Advantage Estimation), <code>ComputeDQNTarget</code>/
-  <code>ComputeDoubleDQNTarget</code></li>
-<li><strong>Target-network updates</strong>: <code>SyncTargetNetwork</code> (hard periodic copy, used by DQN),
-  <code>PolyakUpdate</code> (small blend every step, used by SAC)</li>
-<li><strong>Losses</strong>: <code>DQNLoss</code>, <code>PolicyGradientLoss</code> (REINFORCE/A2C), <code>PPOClippedLoss</code></li>
-</ul>
-<p>Full API reference: <a href="../api/group__rl.html">Doxygen: Reinforcement Learning</a></p>
-<h2 id="runnable-demos">Runnable demos<a class="headerlink" href="#runnable-demos" title="Permanent link">&para;</a></h2>
-<p>Each algorithm has a demo target, built by default (<code>PULSATRIX_BUILD_EXAMPLES=ON</code>):</p>
-<table>
-<thead>
-<tr>
-<th>Target</th>
-<th>Algorithm</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dqn_cartpole_demo</code></td>
-<td>Double DQN on <code>CartPoleEnv</code></td>
-</tr>
-<tr>
-<td><code>reinforce_cartpole_demo</code></td>
-<td>REINFORCE on <code>CartPoleEnv</code></td>
-</tr>
-<tr>
-<td><code>a2c_cartpole_demo</code></td>
-<td>A2C on <code>CartPoleEnv</code></td>
-</tr>
-<tr>
-<td><code>ppo_cartpole_demo</code></td>
-<td>PPO on <code>CartPoleEnv</code></td>
-</tr>
-<tr>
-<td><code>sac_continuous_cartpole_demo</code></td>
-<td>SAC on <code>ContinuousCartPoleEnv</code></td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>ppo_cartpole_demo<span class="w"> </span>--config<span class="w"> </span>Release
-</code></pre></div>
-<h2 id="how-to-implement">How to implement<a class="headerlink" href="#how-to-implement" title="Permanent link">&para;</a></h2>
-<h3 id="the-environmentagent-loop">The environment/agent loop<a class="headerlink" href="#the-environmentagent-loop" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cartpole_env.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/categorical_policy_agent.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/linear_module.hpp"</span>
-
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
-
-<span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="n">CartPoleEnv</span><span class="w"> </span><span class="nf">env</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">                       </span><span class="c1">// 4-dim observation, 2 discrete actions</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">policy_net</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">         </span><span class="c1">// observation -&gt; action logits</span>
-<span class="n">CategoricalPolicyAgent</span><span class="w"> </span><span class="nf">agent</span><span class="p">(</span><span class="o">&amp;</span><span class="n">policy_net</span><span class="p">,</span><span class="w"> </span><span class="cm">/*action_dim=*/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-
-<span class="n">Tensor</span><span class="w"> </span><span class="n">obs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">env</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span><span class="w">                        </span><span class="c1">// shape (1, 4)</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">episode_return</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="o">!</span><span class="n">done</span><span class="p">;)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Tensor</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">agent</span><span class="p">.</span><span class="n">act</span><span class="p">(</span><span class="n">obs</span><span class="p">);</span><span class="w">              </span><span class="c1">// samples an action from the policy</span>
-<span class="w">    </span><span class="n">StepResult</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">env</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
-<span class="w">    </span><span class="n">episode_return</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">step</span><span class="p">.</span><span class="n">reward</span><span class="p">;</span>
-<span class="w">    </span><span class="n">obs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="p">.</span><span class="n">observation</span><span class="p">;</span>
-<span class="w">    </span><span class="n">done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="p">.</span><span class="n">done</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><strong>What's happening:</strong> <code>reset()</code> starts an episode and returns the first observation. Each
-<code>step()</code> applies one action and returns a <code>StepResult</code>: the next observation, the reward, and
-whether the episode ended. Training adds a buffer and a loss around this loop. The demos above
-show the full version for each algorithm.</p>
-<h3 id="generalized-advantage-estimation">Generalized Advantage Estimation<a class="headerlink" href="#generalized-advantage-estimation" title="Permanent link">&para;</a></h3>
-<p>An <em>advantage</em> measures how much better an action turned out than the critic (a network that
-predicts future reward) expected. Policy-gradient methods like A2C and PPO weight each update
-by it.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/gae.hpp"</span>
-
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
-
-<span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="c1">// One row per rollout step, each shape (N, 1). Here N = 3 and the last step ends the episode.</span>
-<span class="n">Tensor</span><span class="w"> </span><span class="nf">rewards</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">});</span>
-<span class="n">Tensor</span><span class="w"> </span><span class="nf">dones</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">});</span>
-<span class="n">Tensor</span><span class="w"> </span><span class="nf">values</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">2.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.8f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.9f</span><span class="p">});</span><span class="w">  </span><span class="c1">// critic's V(s_t)</span>
-
-<span class="n">GAEResult</span><span class="w"> </span><span class="n">gae</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputeGAE</span><span class="p">(</span><span class="n">rewards</span><span class="p">,</span><span class="w"> </span><span class="n">dones</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="cm">/*bootstrap_value=*/</span><span class="mf">0.0f</span><span class="p">,</span>
-<span class="w">                           </span><span class="cm">/*gamma=*/</span><span class="mf">0.99f</span><span class="p">,</span><span class="w"> </span><span class="cm">/*lambda=*/</span><span class="mf">0.95f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="c1">// gae.advantages: how much better each action was than the critic expected (actor weight)</span>
-<span class="c1">// gae.returns:    advantages + values, the critic's regression target</span>
-</code></pre></div>
-<p><strong>What's happening:</strong> <code>ComputeGAE</code> walks the rollout backward once. At each step it computes
-the one-step prediction error <code>delta[t] = r[t] + gamma * V[t+1] - V[t]</code> and adds it to a
-decaying running sum. <code>lambda</code> sets the trade-off:</p>
-<ul>
-<li><code>lambda == 0</code> uses only the one-step error: low variance, but biased by critic mistakes.</li>
-<li><code>lambda == 1</code> uses the full episode return: unbiased, but high variance.</li>
-</ul>
-<p>Most training loops pick something in between; 0.95 is PPO's usual default. A <code>done</code> flag
-stops the sum from crossing into the next episode.</p>
-<p>Recipe: <a href="../recipes/rl/gae_and_ppo_clipped/">GAE and PPO's clipped objective</a>.</p>
-<h3 id="soft-target-network-updates">Soft target-network updates<a class="headerlink" href="#soft-target-network-updates" title="Permanent link">&para;</a></h3>
-<p>Off-policy methods train against a <em>target network</em>: a slowly changing copy of the critic that
-keeps the learning target stable.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/linear_module.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/polyak_update.hpp"</span>
-
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
-
-<span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">online_critic</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">target_critic</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">     </span><span class="c1">// same architecture</span>
-
-<span class="n">PolyakUpdate</span><span class="p">(</span><span class="n">online_critic</span><span class="p">,</span><span class="w"> </span><span class="n">target_critic</span><span class="p">,</span><span class="w"> </span><span class="cm">/*tau=*/</span><span class="mf">0.005f</span><span class="p">);</span>
-<span class="c1">// target_critic moves 0.5% of the way toward online_critic; call this after every update</span>
-</code></pre></div>
-<p><strong>What's happening:</strong> <code>PolyakUpdate</code> blends each parameter in place:
-<code>target[i] = tau * online[i] + (1 - tau) * target[i]</code>. The target drifts a little on every
-step. <code>SyncTargetNetwork</code> instead copies the online network outright every <code>k</code> steps, so the
-target stays frozen and then jumps. SAC (like DDPG and TD3) uses the soft blend; DQN uses the
-hard copy. <code>tau</code> must be in <code>(0, 1]</code>, and both networks must have matching parameter shapes.</p>
-<p>The SAC demo (<code>sac_continuous_cartpole_demo</code>, training loop in
-<code>examples/sac_continuous_cartpole_training.hpp</code>) calls <code>SyncTargetNetwork</code> once at start-up and
-<code>PolyakUpdate</code> after every update. The <a href="../recipes/rl/dqn_cartpole/">DQN on CartPole</a> recipe
-uses the periodic <code>SyncTargetNetwork</code> copy.</p>
-<h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../recipes/rl/dqn_cartpole/">DQN on CartPole</a></li>
-<li><a href="../recipes/rl/gae_and_ppo_clipped/">GAE and PPO's clipped objective</a></li>
+<li><strong>The small models are bound by launch and sync overhead.</strong> The <code>mlp</code> and <code>tagger</code> GPUs are busy
+  only 12–13% of the time. The <code>tagger</code> launches 14,457 kernels in 20 steps, and every op waits
+  for the stream to finish (HIP-4).</li>
+<li><strong>BatchNorm dominates the CNN.</strong> Its three kernels take 79% of the kernel time, because each runs
+  one thread per channel: 16 or 32 threads for 16,384 or 4,096 elements per channel (HIP-2).</li>
+<li><strong>Fills and copies are a large share.</strong> Many of them are temporaries a caching allocator and
+  fused kernels would avoid (HIP-3, HIP-6).</li>
 </ul>
 
 
