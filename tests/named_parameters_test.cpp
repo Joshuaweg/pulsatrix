@@ -200,7 +200,7 @@ TEST_F(NamedParametersTest, NestedContainersComposeNames) {
 TEST_F(NamedParametersTest, AppendNamedParametersPrefixesWithDot) {
     LinearModule linear(2, 2, &backend);
     std::vector<NamedParamRef> out;
-    append_named_parameters(out, "layer", linear.named_parameters());
+    append_named_parameters(out, "layer", linear);
     ASSERT_EQ(out.size(), 2u);
     EXPECT_EQ(out[0].name, "layer.weight");
     EXPECT_EQ(out[1].name, "layer.bias");
@@ -234,6 +234,19 @@ TEST_F(NamedParametersTest, LegacyParametersOnlyOverrideStillTrains) {
     EXPECT_TRUE(legacy.named_parameters().empty());
     SGDOptimizer sgd(0.1f);
     sgd.step(legacy);
+    EXPECT_FLOAT_EQ(legacy.weight().data()[0], 1.0f - 0.1f * 0.5f);
+}
+
+// The same legacy module inside a container must not drop out of the optimizer's view: the
+// container falls back to positional names for a child that reports parameters() but no names.
+TEST_F(NamedParametersTest, LegacyChildInsideContainerStillTrains) {
+    LegacyParamsModule legacy(&backend);
+    LinearModule linear(1, 1, &backend);
+    SequentialModule seq({&linear, &legacy});
+    EXPECT_EQ(names_of(seq), (Names{"0.weight", "0.bias", "1.0"}));
+    expect_consistent(seq);
+    SGDOptimizer sgd(0.1f);
+    sgd.step(seq);
     EXPECT_FLOAT_EQ(legacy.weight().data()[0], 1.0f - 0.1f * 0.5f);
 }
 

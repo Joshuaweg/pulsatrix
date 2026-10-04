@@ -86,8 +86,8 @@ Runnable version: [`examples/xor_demo.cpp`](https://github.com/Joshuaweg/pulsatr
 ### Choosing a normalization layer
 
 `LayerNormModule`, `RMSNormModule`, `GroupNormModule` and `BatchNormModule` all implement the
-same `Module` contract (`forward()`, `backward()`, `propagate_relevance()`, `parameters()`).
-That makes them interchangeable in a `SequentialModule`. Pick one by what it normalizes over:
+same `Module` contract (`forward()`, `backward()`, `propagate_relevance()`,
+`named_parameters()`). That makes them interchangeable in a `SequentialModule`. Pick one by what it normalizes over:
 
 - `LayerNormModule` and `RMSNormModule`: each row's features (the last dimension).
   RMSNorm skips the mean-centering.

@@ -128,7 +128,7 @@ public:
 
     /** @brief Every sub-module's parameters, flattened -- Q/K/V/O weights and biases, plus
      *         the two QK-Norm gammas when enabled. RoPE and softmax contribute none. */
-    [[nodiscard]] std::vector<ParamRef> parameters() override;
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
     /** @brief Cascades to every sub-module, the same way SequentialModule does. */
     void set_training(bool training) override;

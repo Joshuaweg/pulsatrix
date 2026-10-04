@@ -150,11 +150,21 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override {
-        return {{&weight_xi_, &weight_xi_grad_}, {&weight_hi_, &weight_hi_grad_}, {&bias_i_, &bias_i_grad_},
-                {&weight_xf_, &weight_xf_grad_}, {&weight_hf_, &weight_hf_grad_}, {&bias_f_, &bias_f_grad_},
-                {&weight_xg_, &weight_xg_grad_}, {&weight_hg_, &weight_hg_grad_}, {&bias_g_, &bias_g_grad_},
-                {&weight_xo_, &weight_xo_grad_}, {&weight_ho_, &weight_ho_grad_}, {&bias_o_, &bias_o_grad_}};
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {
+            {"weight_xi", {&weight_xi_, &weight_xi_grad_}},
+            {"weight_hi", {&weight_hi_, &weight_hi_grad_}},
+            {"bias_i", {&bias_i_, &bias_i_grad_}},
+            {"weight_xf", {&weight_xf_, &weight_xf_grad_}},
+            {"weight_hf", {&weight_hf_, &weight_hf_grad_}},
+            {"bias_f", {&bias_f_, &bias_f_grad_}},
+            {"weight_xg", {&weight_xg_, &weight_xg_grad_}},
+            {"weight_hg", {&weight_hg_, &weight_hg_grad_}},
+            {"bias_g", {&bias_g_, &bias_g_grad_}},
+            {"weight_xo", {&weight_xo_, &weight_xo_grad_}},
+            {"weight_ho", {&weight_ho_, &weight_ho_grad_}},
+            {"bias_o", {&bias_o_, &bias_o_grad_}},
+        };
     }
 
 protected:

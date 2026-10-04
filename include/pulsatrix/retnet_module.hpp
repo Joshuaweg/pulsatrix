@@ -175,8 +175,8 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override {
-        return {{&w_q_, &w_q_grad_}, {&w_k_, &w_k_grad_}, {&w_v_, &w_v_grad_}};
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {{"w_q", {&w_q_, &w_q_grad_}}, {"w_k", {&w_k_, &w_k_grad_}}, {"w_v", {&w_v_, &w_v_grad_}}};
     }
 
 protected:
