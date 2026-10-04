@@ -71,8 +71,24 @@ is an example.
 
 ### Parameters
 
-If your layer has trainable parameters, override `parameters()` (the default returns none) so
-optimizers can update them.
+If your layer has trainable parameters, override `named_parameters()` (the default returns none)
+so optimizers can update them and checkpoints, freezing and parameter groups can find them by
+name. Use PyTorch's names where your layer has a PyTorch counterpart (`weight`, `bias`), and in a
+layer that holds other modules, add each child's parameters under its name with
+`append_named_parameters`:
+
+```cpp
+std::vector<NamedParamRef> named_parameters() override {
+    std::vector<NamedParamRef> params{{"scale", {&scale_, &scale_grad_}}};
+    append_named_parameters(params, "proj", proj_);  // proj.weight, proj.bias
+    return params;
+}
+```
+
+`parameters()` returns the same tensors in the same order without the names. Layers written
+before `named_parameters()` existed may still override `parameters()` instead; they keep
+training, but report no names of their own. Inside a container they get positional names
+(`2.0`, `2.1`, ...), which are stable only as long as the parameter order is.
 
 ## Adding a new metrics sink
 

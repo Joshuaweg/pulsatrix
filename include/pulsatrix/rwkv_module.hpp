@@ -224,10 +224,18 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override {
-        return {{&w_r_, &w_r_grad_},   {&w_k_, &w_k_grad_},   {&w_v_, &w_v_grad_},
-                {&w_o_, &w_o_grad_},   {&w_, &w_grad_},       {&u_, &u_grad_},
-                {&mu_r_, &mu_r_grad_}, {&mu_k_, &mu_k_grad_}, {&mu_v_, &mu_v_grad_}};
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {
+            {"w_r", {&w_r_, &w_r_grad_}},
+            {"w_k", {&w_k_, &w_k_grad_}},
+            {"w_v", {&w_v_, &w_v_grad_}},
+            {"w_o", {&w_o_, &w_o_grad_}},
+            {"w", {&w_, &w_grad_}},
+            {"u", {&u_, &u_grad_}},
+            {"mu_r", {&mu_r_, &mu_r_grad_}},
+            {"mu_k", {&mu_k_, &mu_k_grad_}},
+            {"mu_v", {&mu_v_, &mu_v_grad_}},
+        };
     }
 
 protected:

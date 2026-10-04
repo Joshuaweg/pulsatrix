@@ -166,9 +166,15 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override {
-        return {{&w_delta_, &w_delta_grad_}, {&bias_delta_, &bias_delta_grad_}, {&w_b_, &w_b_grad_},
-                {&w_c_, &w_c_grad_},         {&a_, &a_grad_},                   {&d_, &d_grad_}};
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {
+            {"w_delta", {&w_delta_, &w_delta_grad_}},
+            {"bias_delta", {&bias_delta_, &bias_delta_grad_}},
+            {"w_b", {&w_b_, &w_b_grad_}},
+            {"w_c", {&w_c_, &w_c_grad_}},
+            {"a", {&a_, &a_grad_}},
+            {"d", {&d_, &d_grad_}},
+        };
     }
 
 protected:

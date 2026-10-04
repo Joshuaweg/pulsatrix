@@ -92,8 +92,12 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override {
-        return {{&weight_xh_, &weight_xh_grad_}, {&weight_hh_, &weight_hh_grad_}, {&bias_, &bias_grad_}};
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {
+            {"weight_xh", {&weight_xh_, &weight_xh_grad_}},
+            {"weight_hh", {&weight_hh_, &weight_hh_grad_}},
+            {"bias", {&bias_, &bias_grad_}},
+        };
     }
 
 protected:

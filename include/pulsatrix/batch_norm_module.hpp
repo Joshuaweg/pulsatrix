@@ -96,8 +96,8 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override {
-        return {{&gamma_, &gamma_grad_}, {&beta_, &beta_grad_}};
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {{"weight", {&gamma_, &gamma_grad_}}, {"bias", {&beta_, &beta_grad_}}};
     }
 
 protected:

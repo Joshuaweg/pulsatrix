@@ -152,12 +152,11 @@ Tensor SwiGLUModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     return reshaped(relevance_in_flat, last_input_shape_);
 }
 
-std::vector<ParamRef> SwiGLUModule::parameters() {
-    std::vector<ParamRef> params;
-    for (auto* module : {&gate_proj_, &up_proj_, &down_proj_}) {
-        auto module_params = module->parameters();
-        params.insert(params.end(), module_params.begin(), module_params.end());
-    }
+std::vector<NamedParamRef> SwiGLUModule::named_parameters() {
+    std::vector<NamedParamRef> params;
+    append_named_parameters(params, "gate_proj", gate_proj_);
+    append_named_parameters(params, "up_proj", up_proj_);
+    append_named_parameters(params, "down_proj", down_proj_);
     return params;
 }
 
