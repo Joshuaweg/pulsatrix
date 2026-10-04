@@ -35,6 +35,10 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
 - **Selection**: `top_k()`, the k largest or smallest entries of every row along the last
   dimension, with their indices, on any device. NaN ranks above every number and ties keep the
   lower index first, so every backend selects the same entries in the same order.
+- **Matrix decompositions** (CPU, for matrices up to a few hundred wide): `SymmetricEigen`,
+  `PowerIteration`, `QR` and `SVD`, the building blocks for PCA, stable rank and orthonormal
+  projections. Vector signs are fixed (each vector's largest entry is positive) and values come
+  largest first, so the same matrix always gives the same answer.
 - **Ready-made examples**: `XorNetwork` (a tiny MLP that learns XOR), `MnistConvNet` (a
   Conv2D MNIST classifier) and `MnistIdxLoader` (reads the MNIST IDX files)
 
