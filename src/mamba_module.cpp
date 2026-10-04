@@ -266,12 +266,26 @@ Tensor MambaModule::backward(const Tensor& grad_output) {
     backend_->add(grad_input.data(), gx_b.data(), grad_input.data(), rows * d);
     backend_->add(grad_input.data(), gx_c.data(), grad_input.data(), rows * d);
 
-    w_delta_grad_.accumulate(local_w_delta_grad);
-    bias_delta_grad_.accumulate(local_bias_delta_grad);
-    w_b_grad_.accumulate(local_w_b_grad);
-    w_c_grad_.accumulate(local_w_c_grad);
-    a_grad_.accumulate(local_a_grad);
-    d_grad_.accumulate(local_d_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (w_delta_.requires_grad()) {
+        w_delta_grad_.accumulate(local_w_delta_grad);
+    }
+    if (bias_delta_.requires_grad()) {
+        bias_delta_grad_.accumulate(local_bias_delta_grad);
+    }
+    if (w_b_.requires_grad()) {
+        w_b_grad_.accumulate(local_w_b_grad);
+    }
+    if (w_c_.requires_grad()) {
+        w_c_grad_.accumulate(local_w_c_grad);
+    }
+    if (a_.requires_grad()) {
+        a_grad_.accumulate(local_a_grad);
+    }
+    if (d_.requires_grad()) {
+        d_grad_.accumulate(local_d_grad);
+    }
 
     return grad_input;
 }

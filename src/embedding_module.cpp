@@ -80,12 +80,15 @@ Tensor EmbeddingModule::backward(const Tensor& grad_output) {
     }
 
     // Scatter-add into a zeroed local, then accumulate -- the original association. The
-    // scatter walks tokens in order on every backend (deterministic; no atomics).
-    Tensor local_weight_grad(weight_.shape(), backend_, weight_.device());
-    local_weight_grad.fill(0.0f);
-    backend_->scatter_add_rows(grad_output.data(), last_indices_.data(), local_weight_grad.data(),
-                               static_cast<size_t>(N * L), static_cast<size_t>(embedding_dim_));
-    weight_grad_.accumulate(local_weight_grad);
+    // scatter walks tokens in order on every backend (deterministic; no atomics). Skipped for a
+    // frozen table (FND-2), which also skips allocating a vocabulary-sized temporary.
+    if (weight_.requires_grad()) {
+        Tensor local_weight_grad(weight_.shape(), backend_, weight_.device());
+        local_weight_grad.fill(0.0f);
+        backend_->scatter_add_rows(grad_output.data(), last_indices_.data(), local_weight_grad.data(),
+                                   static_cast<size_t>(N * L), static_cast<size_t>(embedding_dim_));
+        weight_grad_.accumulate(local_weight_grad);
+    }
 
     // Indices are not differentiable: the input gradient is zero by definition.
     Tensor grad_input(last_input_shape_, backend_, weight_.device());

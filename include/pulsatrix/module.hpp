@@ -173,6 +173,39 @@ public:
     }
 
     /**
+     * @brief Freezes (`false`) or unfreezes (`true`) parameters by name (roadmap FND-2).
+     * @param requires_grad The flag to set on every selected parameter's value tensor.
+     * @param prefix Empty selects every parameter. Otherwise selects the parameter named
+     *        exactly `prefix`, and every parameter under it (`mha.q_proj` selects
+     *        `mha.q_proj.weight` and `mha.q_proj.bias`, but `mha.q` selects nothing).
+     * @throws std::invalid_argument if a non-empty prefix selects nothing -- a mistyped name
+     *         would otherwise silently leave the model trainable. Nothing is changed then.
+     * @note A frozen parameter's gradient is not accumulated by backward() and is not
+     *       updated by an optimizer; the gradient w.r.t. the module's input is unchanged.
+     */
+    void set_requires_grad(bool requires_grad, const std::string& prefix = "") {
+        if (prefix.empty()) {
+            // parameters(), not named_parameters(): also reaches a legacy module that has no names.
+            for (ParamRef p : parameters()) {
+                p.value->set_requires_grad(requires_grad);
+            }
+            return;
+        }
+        std::vector<Tensor*> selected;
+        for (const NamedParamRef& p : named_parameters()) {
+            if (p.name == prefix || p.name.rfind(prefix + ".", 0) == 0) {
+                selected.push_back(p.ref.value);
+            }
+        }
+        if (selected.empty()) {
+            throw std::invalid_argument("Module::set_requires_grad: no parameter named or under '" + prefix + "'");
+        }
+        for (Tensor* value : selected) {
+            value->set_requires_grad(requires_grad);
+        }
+    }
+
+    /**
      * @brief Sets this module's training/eval mode. Defaults to training (matches every
      *        mainstream framework's Module default).
      * @note Virtual since Phase 6 Mission 6 (SequentialModule) -- Mission 5 originally

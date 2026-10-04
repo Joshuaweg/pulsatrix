@@ -170,9 +170,17 @@ Tensor RNNModule::backward(const Tensor& grad_output) {
         dh_next = dh_prev;
     }
 
-    weight_xh_grad_.accumulate(local_wxh_grad);
-    weight_hh_grad_.accumulate(local_whh_grad);
-    bias_grad_.accumulate(local_bh_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (weight_xh_.requires_grad()) {
+        weight_xh_grad_.accumulate(local_wxh_grad);
+    }
+    if (weight_hh_.requires_grad()) {
+        weight_hh_grad_.accumulate(local_whh_grad);
+    }
+    if (bias_.requires_grad()) {
+        bias_grad_.accumulate(local_bh_grad);
+    }
 
     return grad_input;
 }

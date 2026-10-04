@@ -198,9 +198,17 @@ Tensor RetNetModule::backward(const Tensor& grad_output) {
     backend_->add(dx_sum.data(), dx_v.data(), dx_sum.data(), rows * d);
     backend_->add(grad_input.data(), dx_sum.data(), grad_input.data(), rows * d);
 
-    w_q_grad_.accumulate(local_w_q_grad);
-    w_k_grad_.accumulate(local_w_k_grad);
-    w_v_grad_.accumulate(local_w_v_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (w_q_.requires_grad()) {
+        w_q_grad_.accumulate(local_w_q_grad);
+    }
+    if (w_k_.requires_grad()) {
+        w_k_grad_.accumulate(local_w_k_grad);
+    }
+    if (w_v_.requires_grad()) {
+        w_v_grad_.accumulate(local_w_v_grad);
+    }
 
     return grad_input;
 }

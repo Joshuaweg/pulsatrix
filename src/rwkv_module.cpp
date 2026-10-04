@@ -340,15 +340,35 @@ Tensor RWKVModule::backward(const Tensor& grad_output) {
     reverse_time_sum(backend_, mu_k_terms, local_mu_k_grad, N, L, D);
     reverse_time_sum(backend_, mu_v_terms, local_mu_v_grad, N, L, D);
 
-    w_r_grad_.accumulate(local_w_r_grad);
-    w_k_grad_.accumulate(local_w_k_grad);
-    w_v_grad_.accumulate(local_w_v_grad);
-    w_o_grad_.accumulate(local_w_o_grad);
-    w_grad_.accumulate(local_w_grad);
-    u_grad_.accumulate(local_u_grad);
-    mu_r_grad_.accumulate(local_mu_r_grad);
-    mu_k_grad_.accumulate(local_mu_k_grad);
-    mu_v_grad_.accumulate(local_mu_v_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (w_r_.requires_grad()) {
+        w_r_grad_.accumulate(local_w_r_grad);
+    }
+    if (w_k_.requires_grad()) {
+        w_k_grad_.accumulate(local_w_k_grad);
+    }
+    if (w_v_.requires_grad()) {
+        w_v_grad_.accumulate(local_w_v_grad);
+    }
+    if (w_o_.requires_grad()) {
+        w_o_grad_.accumulate(local_w_o_grad);
+    }
+    if (w_.requires_grad()) {
+        w_grad_.accumulate(local_w_grad);
+    }
+    if (u_.requires_grad()) {
+        u_grad_.accumulate(local_u_grad);
+    }
+    if (mu_r_.requires_grad()) {
+        mu_r_grad_.accumulate(local_mu_r_grad);
+    }
+    if (mu_k_.requires_grad()) {
+        mu_k_grad_.accumulate(local_mu_k_grad);
+    }
+    if (mu_v_.requires_grad()) {
+        mu_v_grad_.accumulate(local_mu_v_grad);
+    }
 
     return grad_input;
 }

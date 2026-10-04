@@ -92,8 +92,14 @@ Tensor LayerNormModule::backward(const Tensor& grad_output) {
     backend_->layer_norm_backward(grad_output.data(), gamma_.data(), last_xhat_.data(), last_std_.data(),
                                   grad_input.data(), rows, cols);
 
-    gamma_grad_.accumulate(local_gamma_grad);
-    beta_grad_.accumulate(local_beta_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (gamma_.requires_grad()) {
+        gamma_grad_.accumulate(local_gamma_grad);
+    }
+    if (beta_.requires_grad()) {
+        beta_grad_.accumulate(local_beta_grad);
+    }
     return grad_input;
 }
 
