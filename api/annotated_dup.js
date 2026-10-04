@@ -130,6 +130,8 @@ var annotated_dup =
       [ "LRP", "classpulsatrix_1_1LRP.html", "classpulsatrix_1_1LRP" ],
       [ "LRPRuleConfig", "structpulsatrix_1_1LRPRuleConfig.html", "structpulsatrix_1_1LRPRuleConfig" ],
       [ "LRPTarget", "structpulsatrix_1_1LRPTarget.html", "structpulsatrix_1_1LRPTarget" ],
+      [ "LRSchedule", "classpulsatrix_1_1LRSchedule.html", "classpulsatrix_1_1LRSchedule" ],
+      [ "LRScheduler", "classpulsatrix_1_1LRScheduler.html", "classpulsatrix_1_1LRScheduler" ],
       [ "LSTMModule", "classpulsatrix_1_1LSTMModule.html", "classpulsatrix_1_1LSTMModule" ],
       [ "MambaModule", "classpulsatrix_1_1MambaModule.html", "classpulsatrix_1_1MambaModule" ],
       [ "MaxPool2DModule", "classpulsatrix_1_1MaxPool2DModule.html", "classpulsatrix_1_1MaxPool2DModule" ],

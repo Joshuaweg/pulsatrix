@@ -69,17 +69,17 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1DetailedBalanceLoss.html#a643e0f63e74a8b2390e150e6e277c6b3",
 "classpulsatrix_1_1ExplainerContext.html#ae2c2aaa6651042487e50af68132b8974",
 "classpulsatrix_1_1HIPBackend.html#a962d11d69b008038bd01d9e3b502b232",
-"classpulsatrix_1_1LSTMModule.html#aeff5385135b703c71650e57f8d7bcbf4",
-"classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879",
-"classpulsatrix_1_1RWKVModule.html#a0ffe0fa5412a02697b9326beb98be416",
-"classpulsatrix_1_1SGDOptimizer.html#a61f5b954c452e87f0db1c9084f7714d0",
-"classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d",
-"classpulsatrix_1_1datalog_1_1FactDatabase.html",
-"globals_defs.html",
-"namespacepulsatrix.html#aaa378dea6ffac99ce61ce6a8237be8db",
-"structpulsatrix_1_1ConnectionGene.html",
-"structpulsatrix_1_1NamedBufferRef.html#a8078d5fe579437b09cef4b529fc2780b",
-"structpulsatrix_1_1TanhGaussianSample.html"
+"classpulsatrix_1_1LSTMModule.html#ac169161bca38e2673e3349413065b0cf",
+"classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40",
+"classpulsatrix_1_1RNNModule.html#aa9f50e78ceff911f625f0b85aa7b62fd",
+"classpulsatrix_1_1RolloutBuffer.html#a77ee138b973c11a778c50f0cb40434ac",
+"classpulsatrix_1_1TanhGaussianPolicy.html#a91c0bdf9f5c3a45065361f3f35706e09",
+"classpulsatrix_1_1datalog_1_1Atom.html#a11ad0291ae9925a780e03f61ee3c2871",
+"functions_vars_w.html",
+"namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a",
+"structpulsatrix_1_1CircuitEdge.html#aa5ed86f49caff54ad6a03ac4ddd4f3b2",
+"structpulsatrix_1_1MnistDataset.html#a84784f8903ae0e3fef56ee7f1b1edc42",
+"structpulsatrix_1_1SystemSample.html#a232aec337561aaeccbec56c26e605adf"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
