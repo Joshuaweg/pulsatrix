@@ -55,7 +55,9 @@ protected:
     CPUBackend backend;
     Tensor x{Shape({4, 1, 4, 4}), &backend, random_values(4 * 16, 100)};
     Tensor y{Shape({4, 2}), &backend, random_values(4 * 2, 101)};
-    std::string path = ::testing::TempDir() + "pulsatrix_checkpoint_test.safetensors";
+    // One file per test: ctest runs tests in parallel processes, and a shared path races.
+    std::string path = ::testing::TempDir() + "pulsatrix_checkpoint_" +
+                       ::testing::UnitTest::GetInstance()->current_test_info()->name() + ".safetensors";
 
     void TearDown() override {
         std::remove(path.c_str());

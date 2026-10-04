@@ -29,7 +29,9 @@ void WriteFrame(const std::string& path, unsigned char value) {
 class VideoFrameDirectoryDatasetTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        root_ = fs::path(::testing::TempDir()) / "pulsatrix_video_frame_dir_test";
+        // One directory per test: ctest runs tests in parallel processes, and a shared one races.
+        root_ = fs::path(::testing::TempDir()) /
+                ("pulsatrix_video_frame_dir_test_" + std::string(::testing::UnitTest::GetInstance()->current_test_info()->name()));
         fs::remove_all(root_);
         // cat/clip1 has 3 frames; dog/clip1 has 2 frames.
         fs::create_directories(root_ / "cat" / "clip1");
