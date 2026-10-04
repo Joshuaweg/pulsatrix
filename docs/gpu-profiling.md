@@ -113,3 +113,29 @@ steps below 1 MiB, then steps of an eighth of a power of two). Over 20 steps:
 The gains are modest because every op still synchronizes the stream. Removing those syncs is
 HIP-4. Cap the memory a backend holds with `set_memory_budget()` or
 `PULSATRIX_HIP_MEMORY_BUDGET_MB`, and return cached blocks with `empty_cache()`.
+
+### HIP-4: no per-op synchronization
+
+Every HIP op used to wait for the GPU to finish before returning: 59 synchronizations, one per
+kernel or hipBLAS call. Now ops are queued on the backend's stream, and the host waits only
+where it must:
+
+- **Copies to the host**, because the caller reads the result next. This includes `dot`, `sum`
+  and reading a loss value.
+- **Copies from the host**, because the source is often a temporary buffer.
+- **Releasing memory** to the driver.
+
+Interleaved A/B against HIP-3:
+
+| Workload | Before | After | Speedup |
+|---|---|---|---|
+| `mlp` | 0.70 ms/step | 0.35 ms/step | 2.0× |
+| `tagger` | 5.35 ms/step | 2.84 ms/step | 1.9× |
+| `cnn` | 7.28 ms/step | 5.24 ms/step | 1.4× |
+
+Set `PULSATRIX_HIP_SYNC_DEBUG=1` before creating the backend to restore the per-op waits. A
+failing kernel otherwise reports its error at the next wait, not at the op that caused it.
+
+The small models are still only about 20% busy. What's left is host-side work inside each step:
+reading the loss back, and losses that validate their targets on the host (one copy each step).
+Fused kernels (HIP-6) and keeping targets on the device are the next steps there.
