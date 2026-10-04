@@ -525,6 +525,12 @@ if(PULSATRIX_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
+# Fixed GPU training workloads for scripts/profile_hip.sh (HIP-1).
+if(PULSATRIX_ENABLE_HIP)
+    add_executable(hip_profile_workloads tools/profile/hip_profile_workloads.cpp)
+    target_link_libraries(hip_profile_workloads PRIVATE pulsatrix_core)
+endif()
+
 if(PULSATRIX_BUILD_FUZZERS)
     add_executable(safetensors_fuzz tools/fuzz/safetensors_fuzz.cpp)
     target_link_libraries(safetensors_fuzz PRIVATE pulsatrix_core)

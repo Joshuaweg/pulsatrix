@@ -13,11 +13,13 @@
 #     then does not matter -- per ROCm 6.4+, driver and userspace are decoupled and the host
 #     carries only the amdgpu/amdkfd driver.
 #
-# Only two packages are added. The base image has neither, and the project needs both:
+# Three packages are added. The base image has none of them, and the project needs all three:
 # cmake is the build system, git is required by FetchContent for GoogleTest (and pybind11
-# under PULSATRIX_ENABLE_PYTHON). Nothing about the ROCm stack itself is modified.
+# under PULSATRIX_ENABLE_PYTHON), and libdw1 is loaded by rocprofv3's tool library, without
+# which scripts/profile_hip.sh can't start ("libdw.so.1: cannot open shared object file").
+# Nothing about the ROCm stack itself is modified.
 FROM rocm/dev-ubuntu-24.04:7.2.4-complete
 
 RUN apt-get update \
- && apt-get install -y --no-install-recommends cmake git ca-certificates \
+ && apt-get install -y --no-install-recommends cmake git ca-certificates libdw1 \
  && rm -rf /var/lib/apt/lists/*
