@@ -121,6 +121,7 @@ add_executable(pulsatrix_tests
     lr_scheduler_test.cpp
     token_cross_entropy_test.cpp
     tagger_finetune_test.cpp
+    explanation_metrics_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
     gru_module_test.cpp
