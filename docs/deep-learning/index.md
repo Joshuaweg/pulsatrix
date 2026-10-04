@@ -95,6 +95,37 @@ members (see `include/pulsatrix/xor_training_example.hpp`). `forward()` chains
 Runnable version: [`examples/xor_demo.cpp`](https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp)
 (CMake target `xor_demo`). See also the [recipe](../recipes/deep-learning/xor_training.md).
 
+### Saving and loading weights
+
+Checkpoints are [safetensors](https://github.com/huggingface/safetensors) files, the format most
+Hugging Face models ship in. It holds only numbers, so loading a file can't run code, unlike a
+PyTorch pickle.
+
+```cpp
+#include "pulsatrix/checkpoint.hpp"
+
+SaveCheckpoint("model.safetensors", model, optimizer);  // also writes model.optim.safetensors
+// ... later, or in another process:
+LoadCheckpoint("model.safetensors", model, optimizer);  // training resumes exactly
+```
+
+- Every parameter and buffer (such as BatchNorm's running statistics) is stored under its
+  `named_parameters()` / `named_buffers()` name. Leave out the optimizer to save or load just
+  the model.
+- A resumed run reproduces the original loss curve bit for bit.
+- Loading is strict: a missing, unexpected or wrongly shaped entry throws, and nothing is changed.
+  Pass `CheckpointLoadOptions{false}` to skip missing and unexpected names. Shapes are always
+  checked.
+- Each file records a `format_version`. Older versions load through a migration table, and newer
+  ones are rejected. A plain safetensors file with matching names loads as version 0.
+- The optimizer file records which save of the model it belongs to, so stale optimizer state is
+  refused.
+
+The reader underneath (`safetensors.hpp`) treats every file as untrusted, and throws
+`std::invalid_argument` for anything outside the format: offsets past the end of the file,
+overlapping or missing byte ranges, sizes that overflow, and malformed headers. It's fuzzed under
+AddressSanitizer (`tools/fuzz/safetensors_fuzz.cpp`).
+
 ### Reproducibility
 
 Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.

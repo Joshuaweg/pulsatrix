@@ -131,6 +131,9 @@ public:
      *         the two QK-Norm gammas when enabled. RoPE and softmax contribute none. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
+    /** @brief Every layer's named_buffers(), prefixed the same way as named_parameters(). */
+    [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;
+
     /** @brief Cascades to every sub-module, the same way SequentialModule does. */
     void set_training(bool training) override;
 

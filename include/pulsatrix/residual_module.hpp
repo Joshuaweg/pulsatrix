@@ -83,6 +83,9 @@ public:
     /** @brief inner_'s own named_parameters(), prefixed `inner.` -- this module owns none of its own. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
+    /** @brief Every layer's named_buffers(), prefixed the same way as named_parameters(). */
+    [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;
+
     /** @brief Cascades to inner_, the same way SequentialModule/MultiHeadAttentionModule do. */
     void set_training(bool training) override;
 
