@@ -89,6 +89,12 @@ Tensor ResidualModule::propagate_relevance(const Tensor& relevance_out, const LR
     return r_x;
 }
 
+std::vector<NamedBufferRef> ResidualModule::named_buffers() {
+    std::vector<NamedBufferRef> result;
+    append_named_buffers(result, "inner", *inner_);
+    return result;
+}
+
 std::vector<NamedParamRef> ResidualModule::named_parameters() {
     std::vector<NamedParamRef> params;
     append_named_parameters(params, "inner", *inner_);

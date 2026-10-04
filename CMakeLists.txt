@@ -94,6 +94,7 @@ add_library(pulsatrix_core
     src/batch_norm_fold.cpp
     src/determinism.cpp
     src/safetensors.cpp
+    src/checkpoint.cpp
     src/rnn_module.cpp
     src/lstm_module.cpp
     src/gru_module.cpp

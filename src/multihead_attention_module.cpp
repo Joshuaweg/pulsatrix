@@ -348,6 +348,19 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
     return reshaped(relevance_in, Shape({N, L, d_model_}));
 }
 
+std::vector<NamedBufferRef> MultiHeadAttentionModule::named_buffers() {
+    std::vector<NamedBufferRef> result;
+    append_named_buffers(result, "q_proj", q_proj_);
+    append_named_buffers(result, "k_proj", k_proj_);
+    append_named_buffers(result, "v_proj", v_proj_);
+    append_named_buffers(result, "out_proj", out_proj_);
+    if (use_qk_norm_) {
+        append_named_buffers(result, "q_norm", *q_norm_);
+        append_named_buffers(result, "k_norm", *k_norm_);
+    }
+    return result;
+}
+
 std::vector<NamedParamRef> MultiHeadAttentionModule::named_parameters() {
     std::vector<NamedParamRef> params;
     append_named_parameters(params, "q_proj", q_proj_);

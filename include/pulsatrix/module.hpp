@@ -40,6 +40,15 @@ struct NamedParamRef {
 };
 
 /**
+ * @brief Module state that is saved with a model but never trained, such as BatchNorm's running
+ *        statistics, with its hierarchical name (roadmap IO-2). Named like parameters.
+ */
+struct NamedBufferRef {
+    std::string name;
+    Tensor* value;
+};
+
+/**
  * @brief Base class for every layer type (LinearModule, Conv2DModule, activations, ...).
  * @note `forward()`/`forward_impl()` is the NVI (non-virtual interface) idiom
  *       (`oop_design/context_oop_design_patterns.md`'s Template Method section): the
@@ -167,6 +176,14 @@ public:
     [[nodiscard]] virtual std::vector<NamedParamRef> named_parameters() { return {}; }
 
     /**
+     * @brief This module's buffers: state a checkpoint must save that no optimizer updates.
+     * @return {name, tensor} entries, named like named_parameters(), in a fixed order. Default:
+     *         empty. BatchNormModule reports its running statistics; containers prefix their
+     *         layers' buffers the way they prefix parameters.
+     */
+    [[nodiscard]] virtual std::vector<NamedBufferRef> named_buffers() { return {}; }
+
+    /**
      * @brief This module's trainable parameters and their gradients, for an optimizer to
      *        update uniformly across module types.
      * @return named_parameters() without the names -- same tensors, same order.
@@ -261,6 +278,13 @@ inline void append_named_parameters(std::vector<NamedParamRef>& out, const std::
     }
     for (NamedParamRef& p : named) {
         out.push_back({prefix + "." + p.name, p.ref});
+    }
+}
+
+/** @brief Appends `child`'s named buffers to `out`, each renamed to `prefix.name`. */
+inline void append_named_buffers(std::vector<NamedBufferRef>& out, const std::string& prefix, Module& child) {
+    for (NamedBufferRef& b : child.named_buffers()) {
+        out.push_back({prefix + "." + b.name, b.value});
     }
 }
 

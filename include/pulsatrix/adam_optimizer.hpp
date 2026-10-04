@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include <stdexcept>
 #include <unordered_map>
 
 #include "pulsatrix/module.hpp"
@@ -60,12 +61,41 @@ public:
      */
     void set_learning_rate(float learning_rate) { learning_rate_ = learning_rate; }
 
-private:
+    /** @brief One parameter's Adam state: first and second moments, and its step count. */
     struct AdamState {
         Tensor m;
         Tensor v;
         int64_t t = 0;
     };
+
+    /**
+     * @brief The state for `parameter` (a value tensor from Module::parameters()), or nullptr if
+     *        step() hasn't updated it yet. For checkpointing (IO-2).
+     */
+    [[nodiscard]] const AdamState* state(const Tensor* parameter) const {
+        auto it = state_.find(parameter);
+        return it == state_.end() ? nullptr : &it->second;
+    }
+
+    /**
+     * @brief Replaces the state for `parameter`, e.g. when resuming from a checkpoint.
+     * @throws std::invalid_argument if the moments' shapes differ from the parameter's, they are
+     *         not on the parameter's device, or t is negative.
+     */
+    void set_state(const Tensor* parameter, AdamState state) {
+        if (state.m.shape() != parameter->shape() || state.v.shape() != parameter->shape()) {
+            throw std::invalid_argument("AdamOptimizer::set_state: moments must have the parameter's shape");
+        }
+        if (state.m.device() != parameter->device() || state.v.device() != parameter->device()) {
+            throw std::invalid_argument("AdamOptimizer::set_state: moments must be on the parameter's device");
+        }
+        if (state.t < 0) {
+            throw std::invalid_argument("AdamOptimizer::set_state: step count must be non-negative");
+        }
+        state_.insert_or_assign(parameter, std::move(state));
+    }
+
+private:
 
     float learning_rate_;
     DeviceBackend* backend_;

@@ -73,6 +73,9 @@ public:
     /** @brief Every contained layer's named_parameters(), prefixed with its index (`0.weight`). */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
+    /** @brief Every layer's named_buffers(), prefixed the same way as named_parameters(). */
+    [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;
+
     /**
      * @brief Sets this container's own training flag and cascades to every contained layer.
      * @param training New training/eval mode.
