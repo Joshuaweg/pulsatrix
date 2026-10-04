@@ -402,6 +402,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html">ImPlotMetricsSink</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concrete <a class="el" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form...">MetricsSink</a> (<a class="el" href="metrics__sink_8hpp.html" title="Keeps monitoring/visualization tools out of the training core – same OCP/DIP pattern as DeviceBackend...">metrics_sink.hpp</a>'s own doc comment names this the expected extension point: "Concrete writers... implement this") that buffers every logged scalar into a per-tag time series, and keeps the latest histogram snapshot per tag, for live rendering by a training dashboard. Zero core changes needed &ndash; MetricsSink* is already threaded through every training loop in this codebase (<a class="el" href="classpulsatrix_1_1XorNetwork.html#aee7f8d2e4756c13ebe39075b7f4c92cf" title="Runs one training step: forward, loss, backward through every layer, one Adam update per layer&#39;s para...">XorNetwork::train_step</a>, <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a985a7b6504845708e4fe12795f17d3ec" title="Runs one training step: forward, cross-entropy loss, backward through every layer,...">MnistConvNet::train_step</a>).  <a href="classpulsatrix_1_1ImPlotMetricsSink.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Imputation.html">Imputation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a removed feature is filled in when perturbing an input.  <a href="structpulsatrix_1_1Imputation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Individual.html">Individual</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single candidate solution in a genetic algorithm population.  <a href="structpulsatrix_1_1Individual.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -546,6 +549,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PDP.html">PDP</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">PDP_j(v) = (1/|B|) * sum_{b in B} f(x_j=v, x_{-j}=b_{-j}) &ndash; for each grid value v, replace every background instance's feature j with v (keeping its other features), average the model's output over the whole background set.  <a href="classpulsatrix_1_1PDP.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PerturbationCurve.html">PerturbationCurve</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A perturbation curve: the target score after each fraction of features was changed.  <a href="structpulsatrix_1_1PerturbationCurve.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PerturbationOptions.html">PerturbationOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for <a class="el" href="namespacepulsatrix.html#a08ca823b9f2196df3e5f407dee95fcc5" title="Deletion (MoRF): removes features from most to least relevant, imputing them, and records the target ...">DeletionCurve()</a> and <a class="el" href="namespacepulsatrix.html#a165ca5a11779f2081a18fc5d7657c5cc" title="Insertion: starts from the fully imputed input and restores features from most to least relevant....">InsertionCurve()</a>.  <a href="structpulsatrix_1_1PerturbationOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PolicyGradientLoss.html">PolicyGradientLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean_b( -log pi(a_b | s_b) * G_b ), where <code>a_b</code> is the action actually taken on step <code>b</code> of a rollout and <code>G_b</code> its return &ndash; the REINFORCE policy-gradient surrogate of Williams 1992.  <a href="classpulsatrix_1_1PolicyGradientLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -554,6 +563,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1QRResult.html">QRResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a281ea330d1061f3fdd9fd8578e3b2c2f" title="Thin QR factorization by Householder reflections.">QR()</a>'s result, the thin factorization A = Q R.  <a href="structpulsatrix_1_1QRResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RandomizationResult.html">RandomizationResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model-parameter randomization test's result.  <a href="structpulsatrix_1_1RandomizationResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">RecurrentCellArgs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd" title="One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).">DeviceBackend::recurrent_cell</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RecurrentCellArgs.html#details">More...</a><br /></td></tr>
@@ -788,6 +800,12 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a062f52068d0980a5b3771b192f0f0250" id="r_a062f52068d0980a5b3771b192f0f0250"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>(std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt;, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *)&gt;</td></tr>
 <tr class="memdesc:a062f52068d0980a5b3771b192f0f0250"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function assembling a list of Samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a> &ndash; pulsatrix's analogue of PyTorch's collate_fn. The standard extension point for ragged/variable-length modalities (text padding, variable-length audio): a caller-supplied CollateFn replacing DefaultCollate, not a subclass hierarchy.  <br /></td></tr>
 <tr class="separator:a062f52068d0980a5b3771b192f0f0250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cfe98a4b9d257145af8f113d714d226" id="r_a0cfe98a4b9d257145af8f113d714d226"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">PredictFn</a> = std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)&gt;</td></tr>
+<tr class="memdesc:a0cfe98a4b9d257145af8f113d714d226"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model as a function: input (with a leading batch dimension of 1) to outputs.  <br /></td></tr>
+<tr class="separator:a0cfe98a4b9d257145af8f113d714d226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0e563c5452d92e9003dedfe6a588b6a" id="r_af0e563c5452d92e9003dedfe6a588b6a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)&gt;</td></tr>
+<tr class="memdesc:af0e563c5452d92e9003dedfe6a588b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains <code>input</code> using the model in its current state.  <br /></td></tr>
+<tr class="separator:af0e563c5452d92e9003dedfe6a588b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc17b0f5a8717d9ef75f08182d273a4d" id="r_abc17b0f5a8717d9ef75f08182d273a4d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>(size_t layer_index, const <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)&gt;</td></tr>
 <tr class="memdesc:abc17b0f5a8717d9ef75f08182d273a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-layer <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule choice: maps (top-level module index in forward order, module) to the <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html" title="Configuration for LRP relevance propagation: which rule a module applies and its hyperparameters....">LRPRuleConfig</a> that module applies.  <br /></td></tr>
 <tr class="separator:abc17b0f5a8717d9ef75f08182d273a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1153,6 +1171,28 @@ Functions</h2></td></tr>
 <tr class="memitem:abbbbc49f27d9abc30121803b8a105591" id="r_abbbbc49f27d9abc30121803b8a105591"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1StabilityResult.html">StabilityResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abbbbc49f27d9abc30121803b8a105591">ComputeAttributionStability</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &gt; &amp;repeated_runs)</td></tr>
 <tr class="memdesc:abbbbc49f27d9abc30121803b8a105591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures an explainer's stability across repeated runs on the same input (charter's "repeated-run variance measured and documented" audit category). Known-unstable methods (<a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>, <a class="el" href="classpulsatrix_1_1KernelSHAP.html" title="Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression,...">KernelSHAP</a>) are expected to show is_deterministic == false; every other native/surrogate explainer in this codebase is deterministic by construction.  <br /></td></tr>
 <tr class="separator:abbbbc49f27d9abc30121803b8a105591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a075765c1ff718201b05df992e65b2b71" id="r_a075765c1ff718201b05df992e65b2b71"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a075765c1ff718201b05df992e65b2b71">Sparseness</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attribution)</td></tr>
+<tr class="memdesc:a075765c1ff718201b05df992e65b2b71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gini index of the attribution magnitudes (Chalasani et al. 2020; Quantus Sparseness): 0 when relevance is spread evenly, approaching 1 when one feature holds it all.  <br /></td></tr>
+<tr class="separator:a075765c1ff718201b05df992e65b2b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa98337b15838b5b2a46c6ca782d4392d" id="r_aa98337b15838b5b2a46c6ca782d4392d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa98337b15838b5b2a46c6ca782d4392d">Complexity</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attribution)</td></tr>
+<tr class="memdesc:aa98337b15838b5b2a46c6ca782d4392d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entropy of the fractional contributions |a_i| / sum |a| (Bhatt et al. 2020; Quantus Complexity), natural log: 0 when one feature holds all relevance, ln n when spread evenly.  <br /></td></tr>
+<tr class="separator:aa98337b15838b5b2a46c6ca782d4392d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac661529a753d02d953fea71ff2b8165f" id="r_ac661529a753d02d953fea71ff2b8165f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac661529a753d02d953fea71ff2b8165f">SpearmanRankCorrelation</a> (const std::vector&lt; float &gt; &amp;x, const std::vector&lt; float &gt; &amp;y)</td></tr>
+<tr class="memdesc:ac661529a753d02d953fea71ff2b8165f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spearman rank correlation, with tied values given their average rank.  <br /></td></tr>
+<tr class="separator:ac661529a753d02d953fea71ff2b8165f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf06d2190bfb60cc8810fcf24d1e99b2" id="r_acf06d2190bfb60cc8810fcf24d1e99b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#acf06d2190bfb60cc8810fcf24d1e99b2">Impute</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const std::vector&lt; bool &gt; &amp;removed, const <a class="el" href="structpulsatrix_1_1Imputation.html">Imputation</a> &amp;imputation)</td></tr>
+<tr class="memdesc:acf06d2190bfb60cc8810fcf24d1e99b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>input</code> with every element whose <code>removed</code> flag is set filled by <code>imputation</code>.  <br /></td></tr>
+<tr class="separator:acf06d2190bfb60cc8810fcf24d1e99b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08ca823b9f2196df3e5f407dee95fcc5" id="r_a08ca823b9f2196df3e5f407dee95fcc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PerturbationCurve.html">PerturbationCurve</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a08ca823b9f2196df3e5f407dee95fcc5">DeletionCurve</a> (const <a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">PredictFn</a> &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attribution, const <a class="el" href="structpulsatrix_1_1PerturbationOptions.html">PerturbationOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a08ca823b9f2196df3e5f407dee95fcc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletion (MoRF): removes features from most to least relevant, imputing them, and records the target score. A faithful attribution makes the score drop fast: lower AUC is better.  <br /></td></tr>
+<tr class="separator:a08ca823b9f2196df3e5f407dee95fcc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a165ca5a11779f2081a18fc5d7657c5cc" id="r_a165ca5a11779f2081a18fc5d7657c5cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PerturbationCurve.html">PerturbationCurve</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a165ca5a11779f2081a18fc5d7657c5cc">InsertionCurve</a> (const <a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">PredictFn</a> &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attribution, const <a class="el" href="structpulsatrix_1_1PerturbationOptions.html">PerturbationOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a165ca5a11779f2081a18fc5d7657c5cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insertion: starts from the fully imputed input and restores features from most to least relevant. A faithful attribution makes the score rise fast: higher AUC is better.  <br /></td></tr>
+<tr class="separator:a165ca5a11779f2081a18fc5d7657c5cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a684eb4ee86d14926a8ed769bfe3fc93f" id="r_a684eb4ee86d14926a8ed769bfe3fc93f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RandomizationResult.html">RandomizationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a684eb4ee86d14926a8ed769bfe3fc93f">ModelParameterRandomizationTest</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;explain, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, uint64_t seed)</td></tr>
+<tr class="memdesc:a684eb4ee86d14926a8ed769bfe3fc93f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model-parameter randomization test (Adebayo et al., "Sanity Checks for Saliency
+       Maps", NeurIPS 2018), cascading: randomizes the model's layers from the output down, re-explains <code>input</code> after each, and measures how similar the explanation stays.  <br /></td></tr>
+<tr class="separator:a684eb4ee86d14926a8ed769bfe3fc93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a416909cba1eaf572fc95d96d7495a0dc" id="r_a416909cba1eaf572fc95d96d7495a0dc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a416909cba1eaf572fc95d96d7495a0dc">FixedTopologyXORForward</a> (const std::vector&lt; double &gt; &amp;theta, const std::array&lt; double, 2 &gt; &amp;inputs)</td></tr>
 <tr class="memdesc:a416909cba1eaf572fc95d96d7495a0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward pass: theta layout is [w1_00, w1_01, b1_0, w1_10, w1_11, b1_1, w2_0, w2_1, b2] &ndash; <code>h_j = sigmoid(w1_j0*x0 + w1_j1*x1 + b1_j)</code> for j in {0,1}, <code>y = sigmoid(w2_0*h0 + w2_1*h1 + b2)</code>.  <br /></td></tr>
 <tr class="separator:a416909cba1eaf572fc95d96d7495a0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1517,6 +1557,22 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="af0e563c5452d92e9003dedfe6a588b6a" name="af0e563c5452d92e9003dedfe6a588b6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0e563c5452d92e9003dedfe6a588b6a">&#9670;&#160;</a></span>ExplainFn</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">pulsatrix::ExplainFn</a> = typedef std::function&lt;<a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&amp; input)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explains <code>input</code> using the model in its current state. </p>
+
+</div>
+</div>
 <a id="abc17b0f5a8717d9ef75f08182d273a4d" name="abc17b0f5a8717d9ef75f08182d273a4d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abc17b0f5a8717d9ef75f08182d273a4d">&#9670;&#160;</a></span>LRPComposite</h2>
 
@@ -1580,6 +1636,22 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 </div><div class="memdoc">
 
 <p>Picks parameters by their named_parameters() name and value. </p>
+
+</div>
+</div>
+<a id="a0cfe98a4b9d257145af8f113d714d226" name="a0cfe98a4b9d257145af8f113d714d226"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cfe98a4b9d257145af8f113d714d226">&#9670;&#160;</a></span>PredictFn</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">pulsatrix::PredictFn</a> = typedef std::function&lt;<a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&amp; input)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The model as a function: input (with a leading batch dimension of 1) to outputs. </p>
 
 </div>
 </div>
@@ -2989,6 +3061,27 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 
 </div>
 </div>
+<a id="aa98337b15838b5b2a46c6ca782d4392d" name="aa98337b15838b5b2a46c6ca782d4392d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa98337b15838b5b2a46c6ca782d4392d">&#9670;&#160;</a></span>Complexity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::Complexity </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attribution</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Entropy of the fractional contributions |a_i| / sum |a| (Bhatt et al. 2020; Quantus Complexity), natural log: 0 when one feature holds all relevance, ln n when spread evenly. </p>
+<dl class="section return"><dt>Returns</dt><dd>0 for an all-zero attribution. </dd></dl>
+
+</div>
+</div>
 <a id="a5c9798029a9f25743c1a1476d1da4f66" name="a5c9798029a9f25743c1a1476d1da4f66"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5c9798029a9f25743c1a1476d1da4f66">&#9670;&#160;</a></span>ComputeAdjustedFitness()</h2>
 
@@ -3609,6 +3702,55 @@ If a front is uniform in some objective (max == min across the whole front), tha
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if samples is empty or samples have differing field counts &ndash; external boundary: the list of samples is assembled by a <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> from independently constructed <a class="el" href="classpulsatrix_1_1Dataset.html#acad0399caeb5991a661f55d539419300" title="Loads one sample by index.">Dataset::get()</a> results, not a compile-time-known invariant. Per-field shape/device mismatches are reported by <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a08ca823b9f2196df3e5f407dee95fcc5" name="a08ca823b9f2196df3e5f407dee95fcc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08ca823b9f2196df3e5f407dee95fcc5">&#9670;&#160;</a></span>DeletionCurve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1PerturbationCurve.html">PerturbationCurve</a> pulsatrix::DeletionCurve </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">PredictFn</a> &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attribution</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PerturbationOptions.html">PerturbationOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Deletion (MoRF): removes features from most to least relevant, imputing them, and records the target score. A faithful attribution makes the score drop fast: lower AUC is better. </p>
+<dl class="section note"><dt>Note</dt><dd>Features are the input's elements, ordered by attribution value (ties by index). </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the attribution's shape differs from the input's, steps &lt; 1, or target is outside the prediction. </td></tr>
   </table>
   </dd>
 </dl>
@@ -4659,6 +4801,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="acf06d2190bfb60cc8810fcf24d1e99b2" name="acf06d2190bfb60cc8810fcf24d1e99b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf06d2190bfb60cc8810fcf24d1e99b2">&#9670;&#160;</a></span>Impute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::Impute </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>removed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Imputation.html">Imputation</a> &amp;&#160;</td>
+          <td class="paramname"><em>imputation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns <code>input</code> with every element whose <code>removed</code> flag is set filled by <code>imputation</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>removed</code> doesn't have one flag per element, or NoisyLinear is used on an input of rank below 2. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a30c958ae5a99df9dd3b742c74911b541" name="a30c958ae5a99df9dd3b742c74911b541"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a30c958ae5a99df9dd3b742c74911b541">&#9670;&#160;</a></span>InitTagger()</h2>
 
@@ -4686,6 +4870,54 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Fills the tagger's parameters reproducibly on every platform: matrices uniform in +-1/sqrt(fan_in), normalization gains 1, biases 0. </p>
+
+</div>
+</div>
+<a id="a165ca5a11779f2081a18fc5d7657c5cc" name="a165ca5a11779f2081a18fc5d7657c5cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a165ca5a11779f2081a18fc5d7657c5cc">&#9670;&#160;</a></span>InsertionCurve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1PerturbationCurve.html">PerturbationCurve</a> pulsatrix::InsertionCurve </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226">PredictFn</a> &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attribution</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1PerturbationOptions.html">PerturbationOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Insertion: starts from the fully imputed input and restores features from most to least relevant. A faithful attribution makes the score rise fast: higher AUC is better. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="namespacepulsatrix.html#a08ca823b9f2196df3e5f407dee95fcc5" title="Deletion (MoRF): removes features from most to least relevant, imputing them, and records the target ...">DeletionCurve()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -4912,6 +5144,52 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>A deterministic, platform-independent batch; lengths are 5 to kSeqLen. </p>
+
+</div>
+</div>
+<a id="a684eb4ee86d14926a8ed769bfe3fc93f" name="a684eb4ee86d14926a8ed769bfe3fc93f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a684eb4ee86d14926a8ed769bfe3fc93f">&#9670;&#160;</a></span>ModelParameterRandomizationTest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RandomizationResult.html">RandomizationResult</a> pulsatrix::ModelParameterRandomizationTest </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;&#160;</td>
+          <td class="paramname"><em>explain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The model-parameter randomization test (Adebayo et al., "Sanity Checks for Saliency
+       Maps", NeurIPS 2018), cascading: randomizes the model's layers from the output down, re-explains <code>input</code> after each, and measures how similar the explanation stays. </p>
+<dl class="section note"><dt>Note</dt><dd>An explanation that stays similar after its model was randomized can't be explaining the model. Each parameter tensor is replaced by Gaussian noise with that tensor's own standard deviation, drawn from a portable generator seeded by <code>seed</code>. Layers are the first segment of named_parameters() names (a <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a>'s indices, for example). </dd>
+<dd>
+The model's parameters are restored exactly before returning, even if <code>explain</code> throws. </dd></dl>
 
 </div>
 </div>
@@ -7614,6 +7892,64 @@ Host boundary (GPU-native-kernels Mission 7): the embedding is computed on the h
 <dl class="section note"><dt>Note</dt><dd>A, b are taken by value &ndash; elimination is done in place on the local copies. </dd>
 <dd>
 Scoped to the small, dense, well-conditioned systems this codebase's callers actually produce &ndash; not a general-purpose numerics library. </dd></dl>
+
+</div>
+</div>
+<a id="a075765c1ff718201b05df992e65b2b71" name="a075765c1ff718201b05df992e65b2b71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a075765c1ff718201b05df992e65b2b71">&#9670;&#160;</a></span>Sparseness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::Sparseness </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attribution</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gini index of the attribution magnitudes (Chalasani et al. 2020; Quantus Sparseness): 0 when relevance is spread evenly, approaching 1 when one feature holds it all. </p>
+<dl class="section return"><dt>Returns</dt><dd>0 for an all-zero attribution (Quantus would return NaN). </dd></dl>
+
+</div>
+</div>
+<a id="ac661529a753d02d953fea71ff2b8165f" name="ac661529a753d02d953fea71ff2b8165f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac661529a753d02d953fea71ff2b8165f">&#9670;&#160;</a></span>SpearmanRankCorrelation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::SpearmanRankCorrelation </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spearman rank correlation, with tied values given their average rank. </p>
+<dl class="section return"><dt>Returns</dt><dd>0 when either input is constant. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the sizes differ or are below 2. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

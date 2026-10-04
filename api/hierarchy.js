@@ -96,6 +96,7 @@ var hierarchy =
     [ "pulsatrix::HyperbandResult", "structpulsatrix_1_1HyperbandResult.html", null ],
     [ "pulsatrix::ImageDecoder", "classpulsatrix_1_1ImageDecoder.html", null ],
     [ "pulsatrix::ImageGridView", "classpulsatrix_1_1ImageGridView.html", null ],
+    [ "pulsatrix::Imputation", "structpulsatrix_1_1Imputation.html", null ],
     [ "pulsatrix::Individual< Genotype, FitnessT >", "structpulsatrix_1_1Individual.html", null ],
     [ "pulsatrix::InnovationTracker", "classpulsatrix_1_1InnovationTracker.html", null ],
     [ "pulsatrix::ExplanationScoreCard::Input", "structpulsatrix_1_1ExplanationScoreCard_1_1Input.html", null ],
@@ -173,6 +174,8 @@ var hierarchy =
     [ "pulsatrix::PBTResult", "structpulsatrix_1_1PBTResult.html", null ],
     [ "pulsatrix::PBTTruncationGroups", "structpulsatrix_1_1PBTTruncationGroups.html", null ],
     [ "pulsatrix::PDP", "classpulsatrix_1_1PDP.html", null ],
+    [ "pulsatrix::PerturbationCurve", "structpulsatrix_1_1PerturbationCurve.html", null ],
+    [ "pulsatrix::PerturbationOptions", "structpulsatrix_1_1PerturbationOptions.html", null ],
     [ "pulsatrix::detail::PlatformSources", "classpulsatrix_1_1detail_1_1PlatformSources.html", [
       [ "pulsatrix::detail::LinuxSources", "classpulsatrix_1_1detail_1_1LinuxSources.html", null ]
     ] ],
@@ -180,6 +183,7 @@ var hierarchy =
     [ "pulsatrix::GaussianProcessRegressor::Posterior", "structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html", null ],
     [ "pulsatrix::PPOClippedLoss", "classpulsatrix_1_1PPOClippedLoss.html", null ],
     [ "pulsatrix::QRResult", "structpulsatrix_1_1QRResult.html", null ],
+    [ "pulsatrix::RandomizationResult", "structpulsatrix_1_1RandomizationResult.html", null ],
     [ "pulsatrix::detail::RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", null ],
     [ "pulsatrix::datalog::RealSemiring< T >", "structpulsatrix_1_1datalog_1_1RealSemiring.html", null ],
     [ "pulsatrix::RecurrentCellArgs", "structpulsatrix_1_1RecurrentCellArgs.html", null ],

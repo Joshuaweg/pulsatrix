@@ -488,6 +488,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#checking-an-explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking an explanation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recipes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1519,6 +1530,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#checking-an-explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking an explanation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recipes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1576,6 +1598,34 @@ sensible features, or show a user why it made a decision.</p>
   backward and relevance passes and exposes per-node activations and gradients. LRP and
   the gradient-based explainers take it as their first argument.</li>
 </ul>
+<h2 id="checking-an-explanation">Checking an explanation<a class="headerlink" href="#checking-an-explanation" title="Permanent link">&para;</a></h2>
+<p>An explanation can look plausible and still not reflect the model. <code>explanation_metrics.hpp</code>
+measures this, with metrics from the Quantus families. They work with any explainer:</p>
+<ul>
+<li><strong>Faithfulness: <code>DeletionCurve</code>, <code>InsertionCurve</code>.</strong> Remove the most relevant features first
+  (deletion) or restore them first (insertion), and record the prediction. A faithful explanation
+  makes the score fall fast (a low deletion AUC) or rise fast (a high insertion AUC).</li>
+<li><strong>ROAD imputation (<code>Imputation::NoisyLinear</code>, Rong et al. 2022).</strong> Use it for images. Filling
+  removed pixels with a constant leaks which pixels were removed through the shape of the hole;
+  ROAD fills them from their neighbors, plus a little noise.</li>
+<li><strong>Randomization: <code>ModelParameterRandomizationTest</code></strong> (Adebayo et al., "Sanity Checks for
+  Saliency Maps"). It randomizes the model's layers from the output down and re-explains. An
+  explanation that barely changes isn't explaining the model. The model is restored afterwards.</li>
+<li><strong>Complexity: <code>Sparseness</code> (Gini index) and <code>Complexity</code> (entropy).</strong> These measure how
+  concentrated the relevance is.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explanation_metrics.hpp"</span>
+
+<span class="n">PredictFn</span><span class="w"> </span><span class="n">predict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="n">PerturbationOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">  </span><span class="c1">// the class being explained</span>
+<span class="n">options</span><span class="p">.</span><span class="n">imputation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Imputation</span><span class="o">::</span><span class="n">NoisyLinear</span><span class="p">();</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">deletion_auc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeletionCurve</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">attribution</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">).</span><span class="n">auc</span><span class="p">;</span>
+
+<span class="n">ExplainFn</span><span class="w"> </span><span class="n">explain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">LRP</span><span class="p">().</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="n">RandomizationResult</span><span class="w"> </span><span class="n">sanity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ModelParameterRandomizationTest</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">explain</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">0</span><span class="p">);</span>
+<span class="c1">// sanity.similarity[i]: rank correlation with the original after randomizing layers[0..i]</span>
+</code></pre></div>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <p>New here? Start with the
 <a href="../recipes/interpretability/saliency_and_integrated_gradients/">Saliency and Integrated Gradients recipe</a>.
