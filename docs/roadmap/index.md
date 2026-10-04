@@ -16,8 +16,10 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.
 - **Missing.** There is no way to save or load model weights, no import from PyTorch or Hugging
   Face, and everything is `float32`. Tensors have no views or broadcasting. There are no
-  learning-rate schedulers, no AdamW, no parameter freezing and no LoRA. Attention has no mask,
-  BatchNorm has no running statistics, and Conv2D has no stride or padding.
+  learning-rate schedulers, no AdamW and no LoRA. Attention has no mask.
+- **Done since v1.0.** The whole [FND epic](#fnd-foundations): named parameters, freezing, top-k,
+  eigensolver/QR/SVD, BatchNorm eval mode and folding, Conv2D stride and padding, seeding and
+  deterministic mode, and device checks.
 - **HIP backend.** It works on gfx1151 (Strix Halo), but every op synchronizes the stream,
   reductions run one thread per row or channel, and every tensor is a raw `hipMalloc`.
 
@@ -79,8 +81,8 @@ Each milestone lists the items it contains. The order follows the dependencies.
 
 The plumbing everything else needs, plus the checks that keep explanations honest.
 
-- FND-1 to FND-8: named parameters, freezing, top-k, eigensolver, BatchNorm eval mode, Conv2D
-  stride and padding, seeding, device checks
+- FND-1 to FND-8 (**done**): named parameters, freezing, top-k, eigensolver, BatchNorm eval
+  mode, Conv2D stride and padding, seeding, device checks
 - IO-1, IO-2: safetensors and the native checkpoint format
 - TRN-1 to TRN-6: parameter groups, AdamW, clipping, schedulers, gradient accumulation, full
   fine-tuning
@@ -154,20 +156,40 @@ Larger changes that touch every module or backend.
 
 ## FND: Foundations
 
-These unblock most of the other epics. `named_parameters()` alone blocks saving, freezing, LoRA,
-Hugging Face import and optimizer parameter groups, because `Module::parameters()`
-(`module.hpp:140`) returns parameters with no names.
+These unblock most of the other epics. **All eight are done** (2026-10-04, PRs
+[#33](https://github.com/Joshuaweg/pulsatrix/pull/33) to
+[#41](https://github.com/Joshuaweg/pulsatrix/pull/41)).
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| FND-1 | `named_parameters()` with hierarchical names (`blocks.3.attn.q_proj.weight`) | Saving, loading, freezing by name, LoRA targeting and Hugging Face name mapping all need names | — | P0 | M |
-| FND-2 | Parameter freezing: a per-parameter `requires_grad` flag, and a "skip the weight gradient, still compute the input gradient" branch in every backward | Fine-tuning and LoRA. Skipping `dW` is where the memory and compute savings come from | FND-1 | P0 | M |
-| FND-3 | Top-k selection, on the host first and then on the device | TopK and BSF featurizers, MoE routers, top-k sampling, nearest neighbors, landmarks | — | P0 | M |
-| FND-4 | Symmetric eigensolver, power iteration, and a small SVD/QR (Jacobi) | PCA, BSF stable rank, LoReFT's orthonormal projection, PiSSA, intruder-dimension checks, spectral distances | — | P0 | M |
-| FND-5 | BatchNorm running statistics and an eval mode, plus a canonizer that folds BatchNorm into the previous layer before LRP (`plans/lrp_issues.md` #8) | Today a sample's explanation depends on the rest of its batch | — | P0 | S |
-| FND-6 | Conv2D stride and padding | Needed to load VGG and ResNet, the standard LRP benchmark models | — | P0 | M |
-| FND-7 | A seeding and determinism API (`set_seed`, a flag that forbids nondeterministic paths) | Reproducible explanations. Most of the pieces already exist | — | P0 | S |
-| FND-8 | Device-consistency checks at module and loss boundaries, and fix `Tensor::Stack` tagging (`plans/gpu_review.md` #1, #2) | A CPU tensor fed to a GPU module aborts the process on gfx1151 | — | P0 | S |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| FND-1 | `named_parameters()` with hierarchical names (`blocks.3.attn.q_proj.weight`) | Saving, loading, freezing by name, LoRA targeting and Hugging Face name mapping all need names | — | P0 | M | Done, #33 |
+| FND-2 | Parameter freezing: a per-parameter `requires_grad` flag, and a "skip the weight gradient, still compute the input gradient" branch in every backward | Fine-tuning and LoRA. Skipping `dW` is where the memory and compute savings come from | FND-1 | P0 | M | Done, #34 |
+| FND-3 | Top-k selection, on the host first and then on the device | TopK and BSF featurizers, MoE routers, top-k sampling, nearest neighbors, landmarks | — | P0 | M | Done, #35 |
+| FND-4 | Symmetric eigensolver, power iteration, and a small SVD/QR (Jacobi) | PCA, BSF stable rank, LoReFT's orthonormal projection, PiSSA, intruder-dimension checks, spectral distances | — | P0 | M | Done, #36 (see below) |
+| FND-5 | BatchNorm running statistics and an eval mode, plus a canonizer that folds BatchNorm into the previous layer before LRP (`plans/lrp_issues.md` #8) | Today a sample's explanation depends on the rest of its batch | — | P0 | S | Done, #37 |
+| FND-6 | Conv2D stride and padding | Needed to load VGG and ResNet, the standard LRP benchmark models | — | P0 | M | Done, #38 |
+| FND-7 | A seeding and determinism API (`set_seed`, a flag that forbids nondeterministic paths) | Reproducible explanations. Most of the pieces already exist | — | P0 | S | Done, #39 (see below) |
+| FND-8 | Device-consistency checks at module and loss boundaries, and fix `Tensor::Stack` tagging (`plans/gpu_review.md` #1, #2) | A CPU tensor fed to a GPU module aborts the process on gfx1151 | — | P0 | S | Done, #40 |
+
+### How the FND work departed from the plan
+
+- **FND-4.** The eigensolver is Householder tridiagonalization plus implicit-shift QL, not
+  Jacobi. Cyclic Jacobi took 12.7 s at n = 512, and PCA on SmolLM2's 576-wide activations would
+  hit that on every call; QL takes 0.77 s. The SVD is one-sided Jacobi, as planned.
+- **FND-7.** Deterministic mode is on by default, unlike PyTorch. It forbids hipBLAS and cuBLAS
+  atomics.
+
+### Follow-ups the FND work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| Overlapping and padded `MaxPool2DModule`, and an adaptive average pool: the ResNet stem uses `MaxPool2d(3, stride 2, padding 1)` | FND-6 | KS-9 (model zoo) |
+| A `named_buffers()` so checkpoints can save BatchNorm running statistics, which aren't parameters | FND-5 | IO-2 |
+| `BatchNormModule` initializes gamma to 0; PyTorch uses 1 | FND-5 | IO-5 (configs) or a separate fix |
+| `std::normal_distribution` and friends differ between libstdc++ and MSVC, so seeded runs match on one platform only | FND-7 | KS-1, or its own item |
+| `named_parameters()` and `set_requires_grad()` in the Python bindings | FND-1, FND-2 | NB-3 |
+| A device top-k for large k (radix or bitonic select); the current kernel is O(cols·k) per row | FND-3 | FEAT-2 if k grows |
+| `GaussianMutationTest.ZeroSigma…` aborts in Debug: `std::normal_distribution` rejects σ = 0 under libstdc++ assertions | found while testing | a bug fix |
 
 ## IO: Serialization and model import
 
