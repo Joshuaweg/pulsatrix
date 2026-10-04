@@ -658,17 +658,17 @@ inline void NeuroSymbolicPipelines(DeviceBackend& gpu) {
 // Forward, backward, parameter gradients and relevance for one image-shaped module.
 template <typename Module>
 inline void ImageModuleMatches(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Module& gm, const Shape& in_shape,
-                               unsigned seed) {
+                               unsigned seed, float tol = kTolerance) {
     RandomizeAndMirror(cm, gm, seed);
     std::vector<float> x = Random(static_cast<size_t>(in_shape.numel()), seed + 100);
     Tensor cx(in_shape, &cpu, x), gx(in_shape, &gpu, x);
     Tensor cy = cm.forward(cx);
     Tensor gy = gm.forward(gx);
-    ExpectNear(cy, gy);
+    ExpectNear(cy, gy, tol);
     std::vector<float> dy = Random(static_cast<size_t>(cy.numel()), seed + 200);
     Tensor cdy(cy.shape(), &cpu, dy), gdy(gy.shape(), &gpu, dy);
-    ExpectNear(cm.backward(cdy), gm.backward(gdy));
-    ExpectParametersNear(cm, gm, kTolerance);
+    ExpectNear(cm.backward(cdy), gm.backward(gdy), tol);
+    ExpectParametersNear(cm, gm, tol);
     ExpectRelevanceAgrees(cm.propagate_relevance(cdy, LRPRuleConfig{}), gm.propagate_relevance(gdy, LRPRuleConfig{}));
 }
 
@@ -1285,18 +1285,22 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     CPUBackend cpu;
     for (const Shape& shape : {Shape({8, 3, 64, 64}), Shape({2, 1, 5, 7}), Shape({4, 16, 33, 31})}) {
         const int64_t c = shape.dim(1);
+        // Per-channel sums over m = N*H*W elements: the CPU reference adds them one at a time in
+        // float, the GPU by a tree, so they differ by rounding that grows with m (32,768 here).
+        const int64_t m = shape.numel() / c;
+        const float tol = kTolerance * (1.0f + static_cast<float>(m) / 4096.0f);
         BatchNormModule cbn(c, &cpu), gbn(c, &gpu);
-        ImageModuleMatches(cpu, gpu, cbn, gbn, shape, 900);
-        ExpectNear(cbn.running_mean(), gbn.running_mean());
-        ExpectNear(cbn.running_var(), gbn.running_var());
+        ImageModuleMatches(cpu, gpu, cbn, gbn, shape, 900, tol);
+        ExpectNear(cbn.running_mean(), gbn.running_mean(), tol);
+        ExpectNear(cbn.running_var(), gbn.running_var(), tol);
 
         cbn.set_training(false);
         gbn.set_training(false);
         std::vector<float> x = Random(static_cast<size_t>(shape.numel()), 901);
         Tensor cy = cbn.forward(Tensor(shape, &cpu, x)), gy = gbn.forward(Tensor(shape, &gpu, x));
-        ExpectNear(cy, gy);
+        ExpectNear(cy, gy, tol);
         std::vector<float> dy = Random(static_cast<size_t>(shape.numel()), 902);
-        ExpectNear(cbn.backward(Tensor(shape, &cpu, dy)), gbn.backward(Tensor(shape, &gpu, dy)));
+        ExpectNear(cbn.backward(Tensor(shape, &cpu, dy)), gbn.backward(Tensor(shape, &gpu, dy)), tol);
     }
     // Same input twice on the GPU: bit-identical (fixed partition and order, no atomics).
     BatchNormModule a(3, &gpu);
