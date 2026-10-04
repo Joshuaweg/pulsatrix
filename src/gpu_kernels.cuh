@@ -822,60 +822,191 @@ __global__ void lrp_avg_pool_kernel(const float* x, const float* r, float* r_in,
     }
 }
 
-__global__ void batch_norm_forward_kernel(const float* in, const float* gamma, const float* beta, float* xhat,
-                                          float* out, float* channel_std, size_t n, size_t c, size_t spatial,
-                                          float eps) {
-    size_t ch = global_index();
+// ---- HIP-2: BatchNorm as parallel per-channel reductions ------------------------------------
+// The old kernels ran one thread per channel over all N * spatial elements of it: 3 or 16
+// threads for millions of elements. Now every per-channel sum is a deterministic two-stage
+// reduction: groups blocks per channel each reduce a strided share to a partial, then one thread
+// per channel adds its partials in order. Normalization and the input gradient run one thread per
+// element. No atomics, and the partition depends only on the shape, so results are bit-identical
+// run to run. They differ from CPUBackend's sequential sums only at rounding level.
+
+// Blocks per channel: about four grid-stride iterations per thread, at most kMaxReduceBlocks in all.
+inline size_t bn_groups_for(size_t per_channel, size_t c) {
+    const size_t want = (per_channel + 4 * kBlockSize - 1) / (4 * kBlockSize);
+    const size_t cap = c >= kMaxReduceBlocks ? 1 : kMaxReduceBlocks / c;
+    return want < 1 ? 1 : (want > cap ? cap : want);
+}
+
+// Scratch a backend provides: partials, then two per-channel vectors.
+inline size_t bn_scratch_floats(size_t n, size_t c, size_t spatial) {
+    return c * bn_groups_for(n * spatial, c) + 2 * c;
+}
+
+enum BnTerm : int { kBnX = 0, kBnSquaredDeviation = 1, kBnProduct = 2 };
+
+// partials[ch * groups + g] = block g's share of the sum over channel ch of: a (kBnX),
+// (a - mean[ch])^2 (kBnSquaredDeviation) or a * b (kBnProduct).
+template <int Term>
+__global__ void bn_channel_partials_kernel(const float* a, const float* b, const float* mean, size_t n, size_t c,
+                                           size_t spatial, size_t groups, float* partials) {
+    const size_t ch = blockIdx.x / groups, g = blockIdx.x % groups;
+    const size_t per_channel = n * spatial;
+    float acc = 0.0f;
+    for (size_t j = g * kBlockSize + threadIdx.x; j < per_channel; j += groups * kBlockSize) {
+        const size_t idx = (j / spatial) * c * spatial + ch * spatial + j % spatial;
+        if (Term == kBnX) {
+            acc += a[idx];
+        } else if (Term == kBnSquaredDeviation) {
+            const float d = a[idx] - mean[ch];
+            acc += d * d;
+        } else {
+            acc += a[idx] * b[idx];
+        }
+    }
+    const float total = block_tree_sum(acc);
+    if (threadIdx.x == 0) {
+        partials[blockIdx.x] = total;
+    }
+}
+
+// out[ch] = (partials of ch, added in order) / divisor.
+__global__ void bn_combine_kernel(const float* partials, size_t c, size_t groups, float divisor, float* out) {
+    const size_t ch = global_index();
     if (ch < c) {
-        cnn::batch_norm_forward_channel(in, gamma, beta, xhat, out, channel_std, static_cast<int64_t>(n),
-                                        static_cast<int64_t>(c), static_cast<int64_t>(spatial),
-                                        static_cast<int64_t>(ch), eps);
+        float s = 0.0f;
+        for (size_t g = 0; g < groups; ++g) {
+            s += partials[ch * groups + g];
+        }
+        out[ch] = s / divisor;
     }
 }
 
-__global__ void batch_norm_backward_kernel(const float* grad_out, const float* gamma, const float* xhat,
-                                           const float* channel_std, float* grad_in, float* gamma_grad,
-                                           float* beta_grad, size_t n, size_t c, size_t spatial) {
-    size_t ch = global_index();
+__global__ void bn_std_kernel(const float* var, size_t c, float eps, float* std_out) {
+    const size_t ch = global_index();
     if (ch < c) {
-        cnn::batch_norm_backward_channel(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad,
-                                         static_cast<int64_t>(n), static_cast<int64_t>(c),
-                                         static_cast<int64_t>(spatial), static_cast<int64_t>(ch));
+        std_out[ch] = sqrtf(var[ch] + eps);
     }
 }
 
-// FND-5: one thread per channel, like the training-mode kernels above.
-__global__ void batch_norm_update_running_kernel(const float* in, float* running_mean, float* running_var, size_t n,
-                                                 size_t c, size_t spatial, float momentum) {
-    const size_t channel = global_index();
-    if (channel < c) {
-        cnn::batch_norm_update_running_channel(in, running_mean, running_var, static_cast<int64_t>(n),
-                                               static_cast<int64_t>(c), static_cast<int64_t>(spatial),
-                                               static_cast<int64_t>(channel), momentum);
+__global__ void bn_normalize_kernel(const float* in, const float* mean, const float* std_dev, const float* gamma,
+                                    const float* beta, float* xhat, float* out, size_t total, size_t c,
+                                    size_t spatial) {
+    const size_t i = global_index();
+    if (i < total) {
+        const size_t ch = (i / spatial) % c;
+        const float xh = (in[i] - mean[ch]) / std_dev[ch];
+        xhat[i] = xh;
+        out[i] = gamma[ch] * xh + beta[ch];
     }
 }
 
-__global__ void batch_norm_eval_forward_kernel(const float* in, const float* gamma, const float* beta,
-                                               const float* running_mean, const float* running_var, float* xhat,
-                                               float* out, float* channel_std, size_t n, size_t c, size_t spatial,
-                                               float eps) {
-    const size_t channel = global_index();
-    if (channel < c) {
-        cnn::batch_norm_eval_forward_channel(in, gamma, beta, running_mean, running_var, xhat, out, channel_std,
-                                             static_cast<int64_t>(n), static_cast<int64_t>(c),
-                                             static_cast<int64_t>(spatial), static_cast<int64_t>(channel), eps);
+// Training-mode input gradient from the per-channel sums gamma_grad = sum(g * xhat) and
+// beta_grad = sum(g): CPUBackend's formula with sum(g * gamma) = gamma * sum(g).
+__global__ void bn_input_grad_kernel(const float* grad_out, const float* gamma, const float* xhat,
+                                     const float* std_dev, const float* gamma_grad, const float* beta_grad,
+                                     float* grad_in, size_t total, size_t c, size_t spatial, float m) {
+    const size_t i = global_index();
+    if (i < total) {
+        const size_t ch = (i / spatial) % c;
+        const float gxh = grad_out[i] * gamma[ch];
+        const float sum_gxh = gamma[ch] * beta_grad[ch];
+        const float sum_gxh_xh = gamma[ch] * gamma_grad[ch];
+        grad_in[i] = (m * gxh - sum_gxh - xhat[i] * sum_gxh_xh) / (m * std_dev[ch]);
     }
 }
 
-__global__ void batch_norm_eval_backward_kernel(const float* grad_out, const float* gamma, const float* xhat,
-                                                const float* channel_std, float* grad_in, float* gamma_grad,
-                                                float* beta_grad, size_t n, size_t c, size_t spatial) {
-    const size_t channel = global_index();
-    if (channel < c) {
-        cnn::batch_norm_eval_backward_channel(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad,
-                                              static_cast<int64_t>(n), static_cast<int64_t>(c),
-                                              static_cast<int64_t>(spatial), static_cast<int64_t>(channel));
+// PyTorch's running-statistics rule (FND-5) from the batch mean and the summed squared deviation.
+__global__ void bn_update_running_kernel(const float* mean, const float* squared_deviation, float* running_mean,
+                                         float* running_var, size_t c, size_t count, float momentum) {
+    const size_t ch = global_index();
+    if (ch < c) {
+        running_mean[ch] = (1.0f - momentum) * running_mean[ch] + momentum * mean[ch];
+        if (count >= 2) {
+            running_var[ch] = (1.0f - momentum) * running_var[ch] +
+                              momentum * (squared_deviation[ch] / (static_cast<float>(count) - 1.0f));
+        }
     }
+}
+
+__global__ void bn_eval_input_grad_kernel(const float* grad_out, const float* gamma, const float* std_dev,
+                                          float* grad_in, size_t total, size_t c, size_t spatial) {
+    const size_t i = global_index();
+    if (i < total) {
+        const size_t ch = (i / spatial) % c;
+        grad_in[i] = grad_out[i] * (gamma[ch] / std_dev[ch]);
+    }
+}
+
+// out[ch] = sum over channel ch of the Term values, divided by divisor; partials is scratch.
+template <int Term, typename Stream>
+void bn_reduce(const float* a, const float* b, const float* mean, size_t n, size_t c, size_t spatial,
+               float* partials, float divisor, float* out, Stream stream) {
+    const size_t groups = bn_groups_for(n * spatial, c);
+    bn_channel_partials_kernel<Term><<<static_cast<unsigned>(c * groups), kBlockSize, 0, stream>>>(
+        a, b, mean, n, c, spatial, groups, partials);
+    bn_combine_kernel<<<grid_size_for(c), kBlockSize, 0, stream>>>(partials, c, groups, divisor, out);
+}
+
+// The five DeviceBackend batch_norm_* operations. scratch holds bn_scratch_floats(n, c, spatial).
+template <typename Stream>
+void launch_batch_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
+                               float* channel_std, size_t n, size_t c, size_t spatial, float eps, float* scratch,
+                               Stream stream) {
+    const size_t total = n * c * spatial;
+    const auto m = static_cast<float>(n * spatial);
+    float* partials = scratch;
+    float* mean = scratch + c * bn_groups_for(n * spatial, c);
+    float* var = mean + c;
+    bn_reduce<kBnX>(in, nullptr, nullptr, n, c, spatial, partials, m, mean, stream);
+    bn_reduce<kBnSquaredDeviation>(in, nullptr, mean, n, c, spatial, partials, m, var, stream);
+    bn_std_kernel<<<grid_size_for(c), kBlockSize, 0, stream>>>(var, c, eps, channel_std);
+    bn_normalize_kernel<<<grid_size_for(total), kBlockSize, 0, stream>>>(in, mean, channel_std, gamma, beta, xhat,
+                                                                          out, total, c, spatial);
+}
+
+template <typename Stream>
+void launch_batch_norm_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                const float* channel_std, float* grad_in, float* gamma_grad, float* beta_grad,
+                                size_t n, size_t c, size_t spatial, float* scratch, Stream stream) {
+    const size_t total = n * c * spatial;
+    bn_reduce<kBnProduct>(grad_out, xhat, nullptr, n, c, spatial, scratch, 1.0f, gamma_grad, stream);
+    bn_reduce<kBnX>(grad_out, nullptr, nullptr, n, c, spatial, scratch, 1.0f, beta_grad, stream);
+    bn_input_grad_kernel<<<grid_size_for(total), kBlockSize, 0, stream>>>(
+        grad_out, gamma, xhat, channel_std, gamma_grad, beta_grad, grad_in, total, c, spatial,
+        static_cast<float>(n * spatial));
+}
+
+template <typename Stream>
+void launch_batch_norm_update_running(const float* in, float* running_mean, float* running_var, size_t n, size_t c,
+                                      size_t spatial, float momentum, float* scratch, Stream stream) {
+    float* partials = scratch;
+    float* mean = scratch + c * bn_groups_for(n * spatial, c);
+    float* squared_deviation = mean + c;
+    bn_reduce<kBnX>(in, nullptr, nullptr, n, c, spatial, partials, static_cast<float>(n * spatial), mean, stream);
+    bn_reduce<kBnSquaredDeviation>(in, nullptr, mean, n, c, spatial, partials, 1.0f, squared_deviation, stream);
+    bn_update_running_kernel<<<grid_size_for(c), kBlockSize, 0, stream>>>(mean, squared_deviation, running_mean,
+                                                                          running_var, c, n * spatial, momentum);
+}
+
+template <typename Stream>
+void launch_batch_norm_eval_forward(const float* in, const float* gamma, const float* beta, const float* running_mean,
+                                    const float* running_var, float* xhat, float* out, float* channel_std, size_t n,
+                                    size_t c, size_t spatial, float eps, Stream stream) {
+    const size_t total = n * c * spatial;
+    bn_std_kernel<<<grid_size_for(c), kBlockSize, 0, stream>>>(running_var, c, eps, channel_std);
+    bn_normalize_kernel<<<grid_size_for(total), kBlockSize, 0, stream>>>(in, running_mean, channel_std, gamma, beta,
+                                                                          xhat, out, total, c, spatial);
+}
+
+template <typename Stream>
+void launch_batch_norm_eval_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                     const float* channel_std, float* grad_in, float* gamma_grad, float* beta_grad,
+                                     size_t n, size_t c, size_t spatial, float* scratch, Stream stream) {
+    const size_t total = n * c * spatial;
+    bn_reduce<kBnProduct>(grad_out, xhat, nullptr, n, c, spatial, scratch, 1.0f, gamma_grad, stream);
+    bn_reduce<kBnX>(grad_out, nullptr, nullptr, n, c, spatial, scratch, 1.0f, beta_grad, stream);
+    bn_eval_input_grad_kernel<<<grid_size_for(total), kBlockSize, 0, stream>>>(grad_out, gamma, channel_std, grad_in,
+                                                                                total, c, spatial);
 }
 
 __global__ void group_norm_forward_kernel(const float* in, const float* gamma, const float* beta, float* xhat,
