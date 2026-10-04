@@ -114,6 +114,7 @@ add_executable(pulsatrix_tests
     determinism_test.cpp
     device_consistency_test.cpp
     safetensors_test.cpp
+    checkpoint_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
     gru_module_test.cpp
