@@ -675,6 +675,35 @@ void CPUBackend::batch_norm_backward(const float* grad_out, const float* gamma, 
     }
 }
 
+void CPUBackend::batch_norm_update_running(const float* in, float* running_mean, float* running_var, size_t n,
+                                           size_t c, size_t spatial, float momentum) {
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::batch_norm_update_running_channel(in, running_mean, running_var, static_cast<int64_t>(n),
+                                               static_cast<int64_t>(c), static_cast<int64_t>(spatial),
+                                               static_cast<int64_t>(ch), momentum);
+    }
+}
+
+void CPUBackend::batch_norm_eval_forward(const float* in, const float* gamma, const float* beta,
+                                         const float* running_mean, const float* running_var, float* xhat, float* out,
+                                         float* channel_std, size_t n, size_t c, size_t spatial, float eps) {
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::batch_norm_eval_forward_channel(in, gamma, beta, running_mean, running_var, xhat, out, channel_std,
+                                             static_cast<int64_t>(n), static_cast<int64_t>(c),
+                                             static_cast<int64_t>(spatial), static_cast<int64_t>(ch), eps);
+    }
+}
+
+void CPUBackend::batch_norm_eval_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                          const float* channel_std, float* grad_in, float* gamma_grad,
+                                          float* beta_grad, size_t n, size_t c, size_t spatial) {
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::batch_norm_eval_backward_channel(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad,
+                                              static_cast<int64_t>(n), static_cast<int64_t>(c),
+                                              static_cast<int64_t>(spatial), static_cast<int64_t>(ch));
+    }
+}
+
 void CPUBackend::group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
                                     float* group_std, size_t n, size_t c, size_t spatial, size_t num_groups,
                                     float eps) {

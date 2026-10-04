@@ -624,6 +624,41 @@ void CUDABackend::batch_norm_backward(const float* grad_out, const float* gamma,
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
+void CUDABackend::batch_norm_update_running(const float* in, float* running_mean, float* running_var, size_t n, size_t c,
+                                           size_t spatial, float momentum) {
+    if (c == 0) {
+        return;
+    }
+    gpu::batch_norm_update_running_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        in, running_mean, running_var, n, c, spatial, momentum);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::batch_norm_eval_forward(const float* in, const float* gamma, const float* beta,
+                                         const float* running_mean, const float* running_var, float* xhat, float* out,
+                                         float* channel_std, size_t n, size_t c, size_t spatial, float eps) {
+    if (c == 0) {
+        return;
+    }
+    gpu::batch_norm_eval_forward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        in, gamma, beta, running_mean, running_var, xhat, out, channel_std, n, c, spatial, eps);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::batch_norm_eval_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                          const float* channel_std, float* grad_in, float* gamma_grad,
+                                          float* beta_grad, size_t n, size_t c, size_t spatial) {
+    if (c == 0) {
+        return;
+    }
+    gpu::batch_norm_eval_backward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
+        grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad, n, c, spatial);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
 void CUDABackend::group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
                                      float* group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps)
                                      {

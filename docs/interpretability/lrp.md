@@ -145,6 +145,20 @@ the literature:
 | `RetNetModule` | AttnLRP-style rule over the retention scores |
 | `RWKVModule` | MambaLRP-style rule adapted to the WKV quotient |
 
+Normalization layers pass relevance through unchanged. For a `BatchNormModule` after a
+`Conv2DModule`, fold the BatchNorm into the convolution while explaining, as Zennit's
+canonizer does. The convolution's rule then covers the combined affine map:
+
+```cpp
+#include "pulsatrix/batch_norm_fold.hpp"
+
+bn.set_training(false);  // BatchNorm must use its running statistics
+{
+    BatchNormFold fold(conv, bn);  // conv's weights absorb bn; bn becomes the identity
+    Attribution r = LRP().explain(ctx, input, /*target_index=*/1, &backend);
+}  // both modules are restored exactly here
+```
+
 Rules that conserve relevance by construction have conservation tests. The AttnLRP rules for
 softmax and attention don't conserve exactly; their tests measure and report the gap instead.
 

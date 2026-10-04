@@ -109,6 +109,7 @@ add_executable(pulsatrix_tests
     parameter_freezing_test.cpp
     top_k_test.cpp
     matrix_decompositions_test.cpp
+    batch_norm_eval_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
     gru_module_test.cpp

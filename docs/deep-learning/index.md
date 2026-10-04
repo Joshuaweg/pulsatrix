@@ -111,13 +111,16 @@ nothing throws `std::invalid_argument`, so a typo can't leave the model silently
 
 `LayerNormModule`, `RMSNormModule`, `GroupNormModule` and `BatchNormModule` all implement the
 same `Module` contract (`forward()`, `backward()`, `propagate_relevance()`,
-`named_parameters()`). That makes them interchangeable in a `SequentialModule`. Pick one by what it normalizes over:
+`named_parameters()`). That makes them interchangeable in a `SequentialModule`. Pick one by
+what it normalizes over:
 
 - `LayerNormModule` and `RMSNormModule`: each row's features (the last dimension).
   RMSNorm skips the mean-centering.
 - `GroupNormModule`: groups of channels, per example.
-- `BatchNormModule`: each channel across the whole batch and spatial dimensions. It has no
-  running statistics or eval mode; it always uses the current batch.
+- `BatchNormModule`: each channel across the whole batch and spatial dimensions. In training
+  mode it uses the current batch and updates running statistics (PyTorch's rule, momentum 0.1).
+  After `set_training(false)` it uses the running statistics, so each sample's output no longer
+  depends on the rest of its batch. Switch to eval mode before explaining a model.
 
 ## Recipes
 
