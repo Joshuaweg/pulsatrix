@@ -123,6 +123,7 @@ add_executable(pulsatrix_tests
     tagger_finetune_test.cpp
     explanation_metrics_test.cpp
     null_model_baseline_test.cpp
+    caching_allocator_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
     gru_module_test.cpp

@@ -1,5 +1,7 @@
 #include "pulsatrix/hip_backend.hpp"
 
+#include <cstdlib>
+#include <new>
 #include <stdexcept>
 
 #include "gpu_kernels.cuh"
@@ -26,9 +28,30 @@ HIPBackend::HIPBackend() : stream_(nullptr), hipblas_handle_(nullptr) {
     PULSATRIX_HIPBLAS_CHECK(hipblasCreate(&hipblas_handle_));
     PULSATRIX_HIPBLAS_CHECK(hipblasSetStream(hipblas_handle_, stream_));
     PULSATRIX_HIP_CHECK(hipMalloc(&dot_result_, gpu::kReduceScratchFloats * sizeof(float)));
+
+    // HIP-3: tensors come from a caching allocator. A raw hipMalloc that runs out of memory
+    // throws std::bad_alloc, so the allocator can release its cache and retry.
+    size_t budget = 0;
+    if (const char* mb = std::getenv("PULSATRIX_HIP_MEMORY_BUDGET_MB")) {
+        budget = static_cast<size_t>(std::strtoull(mb, nullptr, 10)) << 20;
+    }
+    allocator_ = std::make_unique<CachingAllocator>(
+        [](size_t bytes) -> void* {
+            void* ptr = nullptr;
+            const hipError_t status = hipMalloc(&ptr, bytes);
+            if (status == hipErrorOutOfMemory) {
+                static_cast<void>(hipGetLastError());  // clear the sticky error before retrying
+                throw std::bad_alloc();
+            }
+            PULSATRIX_HIP_CHECK(status);
+            return ptr;
+        },
+        [](void* ptr) { static_cast<void>(hipFree(ptr)); },
+        [this] { PULSATRIX_HIP_CHECK(hipStreamSynchronize(stream_)); }, budget);
 }
 
 HIPBackend::~HIPBackend() {
+    allocator_.reset();  // synchronizes, then returns every block, before the stream goes away
     static_cast<void>(hipFree(dot_result_));
     static_cast<void>(hipFree(reduce_scratch_));
     static_cast<void>(hipblasDestroy(hipblas_handle_));
@@ -42,16 +65,10 @@ void* HIPBackend::allocate(size_t bytes) {
     if (bytes == 0) {
         return nullptr;
     }
-    void* ptr = nullptr;
-    PULSATRIX_HIP_CHECK(hipMalloc(&ptr, bytes));
-    return ptr;
+    return allocator_->allocate(bytes);
 }
 
-void HIPBackend::free(void* ptr) noexcept {
-    // noexcept by DeviceBackend's contract, so the status is discarded deliberately -- see
-    // the destructor's note on HIP's [[nodiscard]] divergence from CUDA.
-    static_cast<void>(hipFree(ptr));
-}
+void HIPBackend::free(void* ptr) noexcept { allocator_->free(ptr); }
 
 void HIPBackend::copy(void* dst, const void* src, size_t bytes, CopyDirection dir) {
     if (bytes == 0) {
