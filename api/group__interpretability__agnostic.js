@@ -1,5 +1,6 @@
 var group__interpretability__agnostic =
 [
+    [ "explanation_metrics.hpp", "explanation__metrics_8hpp.html", null ],
     [ "kernel_shap.hpp", "kernel__shap_8hpp.html", null ],
     [ "lime.hpp", "lime_8hpp.html", null ],
     [ "linear_algebra.hpp", "linear__algebra_8hpp.html", null ],

@@ -8,8 +8,10 @@ var searchData=
   ['pbtresumabletrial_5',['PBTResumableTrial',['../classpulsatrix_1_1PBTResumableTrial.html',1,'pulsatrix']]],
   ['pbttruncationgroups_6',['PBTTruncationGroups',['../structpulsatrix_1_1PBTTruncationGroups.html',1,'pulsatrix']]],
   ['pdp_7',['PDP',['../classpulsatrix_1_1PDP.html',1,'pulsatrix']]],
-  ['platformsources_8',['PlatformSources',['../classpulsatrix_1_1detail_1_1PlatformSources.html',1,'pulsatrix::detail']]],
-  ['policygradientloss_9',['PolicyGradientLoss',['../classpulsatrix_1_1PolicyGradientLoss.html',1,'pulsatrix']]],
-  ['posterior_10',['Posterior',['../structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html',1,'pulsatrix::GaussianProcessRegressor']]],
-  ['ppoclippedloss_11',['PPOClippedLoss',['../classpulsatrix_1_1PPOClippedLoss.html',1,'pulsatrix']]]
+  ['perturbationcurve_8',['PerturbationCurve',['../structpulsatrix_1_1PerturbationCurve.html',1,'pulsatrix']]],
+  ['perturbationoptions_9',['PerturbationOptions',['../structpulsatrix_1_1PerturbationOptions.html',1,'pulsatrix']]],
+  ['platformsources_10',['PlatformSources',['../classpulsatrix_1_1detail_1_1PlatformSources.html',1,'pulsatrix::detail']]],
+  ['policygradientloss_11',['PolicyGradientLoss',['../classpulsatrix_1_1PolicyGradientLoss.html',1,'pulsatrix']]],
+  ['posterior_12',['Posterior',['../structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html',1,'pulsatrix::GaussianProcessRegressor']]],
+  ['ppoclippedloss_13',['PPOClippedLoss',['../classpulsatrix_1_1PPOClippedLoss.html',1,'pulsatrix']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['paramselector_0',['ParamSelector',['../namespacepulsatrix.html#a8c9f567af9d9ab47a4408a4ed322ca06',1,'pulsatrix']]]
+  ['objectives_0',['Objectives',['../namespacepulsatrix.html#ac73b402dce78109b0c9a151410e96eb9',1,'pulsatrix']]]
 ];

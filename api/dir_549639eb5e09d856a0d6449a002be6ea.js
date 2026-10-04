@@ -67,6 +67,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "evolutionary_loop.hpp", "evolutionary__loop_8hpp.html", "evolutionary__loop_8hpp" ],
     [ "explainer_context.hpp", "explainer__context_8hpp.html", "explainer__context_8hpp" ],
     [ "explainer_stability.hpp", "explainer__stability_8hpp.html", "explainer__stability_8hpp" ],
+    [ "explanation_metrics.hpp", "explanation__metrics_8hpp.html", "explanation__metrics_8hpp" ],
     [ "fixed_topology_xor_network.hpp", "fixed__topology__xor__network_8hpp.html", "fixed__topology__xor__network_8hpp" ],
     [ "flatten_module.hpp", "flatten__module_8hpp.html", "flatten__module_8hpp" ],
     [ "gae.hpp", "gae_8hpp.html", "gae_8hpp" ],

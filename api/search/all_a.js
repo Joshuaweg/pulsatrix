@@ -15,7 +15,7 @@ var searchData=
   ['kh_12',['kh',['../structpulsatrix_1_1ConvGeometry.html#a25629392ac9ed80e051edf1947af4c8f',1,'pulsatrix::ConvGeometry']]],
   ['kheads_13',['kHeads',['../classpulsatrix_1_1TinyTagger.html#abd1f2a1e0c72695b07c8f5be770da04d',1,'pulsatrix::TinyTagger']]],
   ['kignoreindex_14',['kIgnoreIndex',['../classpulsatrix_1_1TokenCrossEntropyLoss.html#a179bb970fc18d8fd27c6058a2581d3c8',1,'pulsatrix::TokenCrossEntropyLoss']]],
-  ['kind_15',['kind',['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind'],['../classpulsatrix_1_1datalog_1_1Term.html#a7863c28de0df284fc10fe6a001c0a82c',1,'pulsatrix::datalog::Term::kind()']]],
+  ['kind_15',['kind',['../classpulsatrix_1_1datalog_1_1Term.html#a7863c28de0df284fc10fe6a001c0a82c',1,'pulsatrix::datalog::Term::kind()'],['../structpulsatrix_1_1Imputation.html#ad987ae934546d28263ad94a6b6907bd9',1,'pulsatrix::Imputation::kind'],['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind'],['../structpulsatrix_1_1Imputation.html#a295743774684f4e01cfa7ead34138deb',1,'pulsatrix::Imputation::Kind']]],
   ['kl_5fdivergence_5floss_2ehpp_16',['kl_divergence_loss.hpp',['../kl__divergence__loss_8hpp.html',1,'']]],
   ['kldivergenceloss_17',['kldivergenceloss',['../classpulsatrix_1_1KLDivergenceLoss.html#a3482d2b0e38e3be249685506ddbcbc84',1,'pulsatrix::KLDivergenceLoss::KLDivergenceLoss()'],['../classpulsatrix_1_1KLDivergenceLoss.html',1,'pulsatrix::KLDivergenceLoss']]],
   ['klogprobstabilizer_18',['kLogProbStabilizer',['../classpulsatrix_1_1TanhGaussianPolicy.html#a70e084dd37bfa0a8c7c9fe4f67a8d66d',1,'pulsatrix::TanhGaussianPolicy']]],
