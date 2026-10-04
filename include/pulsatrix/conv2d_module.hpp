@@ -36,9 +36,19 @@ public:
      * @param kernel_h Kernel height.
      * @param kernel_w Kernel width.
      * @param backend Backend to compute through. Not owned; must outlive this module.
+     * @param stride Step between windows, the same along both axes. Defaults to 1.
+     * @param padding Zeros added on every side of the input, along both axes. Defaults to 0.
+     *        Output size is (H + 2*padding - kernel_h) / stride + 1, like torch.nn.Conv2d
+     *        (roadmap FND-6: VGG and ResNet need both).
+     * @throws std::invalid_argument if stride < 1 or padding < 0.
      */
     Conv2DModule(int64_t in_channels, int64_t out_channels, int64_t kernel_h, int64_t kernel_w,
-                 DeviceBackend* backend);
+                 DeviceBackend* backend, int64_t stride = 1, int64_t padding = 0);
+
+    /** @brief Step between windows along both axes. */
+    [[nodiscard]] int64_t stride() const { return stride_; }
+    /** @brief Zero padding on every side, along both axes. */
+    [[nodiscard]] int64_t padding() const { return padding_; }
 
     /**
      * @brief Computes gradients w.r.t. input, kernel, and bias.
@@ -109,7 +119,7 @@ protected:
      * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      * @throws std::invalid_argument if input isn't rank-4 (N, in_channels, H, W), its
      *         channel count doesn't match in_channels_, or the kernel is larger than the
-     *         input (kernel_h_ &gt; H or kernel_w_ &gt; W) -- see
+     *         padded input (kernel_h_ &gt; H + 2*padding, likewise W) -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, findings 1 and 6.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
@@ -119,6 +129,8 @@ private:
     int64_t out_channels_;
     int64_t kernel_h_;
     int64_t kernel_w_;
+    int64_t stride_;
+    int64_t padding_;
     DeviceBackend* backend_;
     Tensor kernel_;       // shape (out_channels, in_channels, kernel_h, kernel_w)
     Tensor bias_;         // shape (out_channels,)
@@ -130,6 +142,11 @@ private:
     int64_t last_out_h_ = 0;
     int64_t last_out_w_ = 0;
     bool has_forwarded_ = false;
+
+    [[nodiscard]] ConvGeometry geometry() const {
+        const auto s = static_cast<size_t>(stride_), p = static_cast<size_t>(padding_);
+        return {static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_), s, s, p, p};
+    }
 };
 
 }  // namespace pulsatrix

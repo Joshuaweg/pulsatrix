@@ -114,10 +114,12 @@ public:
                 (const float* x, const float* mean_pow, const float* grad_out, float* grad_in, size_t n, size_t cols,
                  float p),
                 (override));
-    MOCK_METHOD(void, im2col, (const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh,
-                size_t kw), (override));
-    MOCK_METHOD(void, col2im_add, (const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh,
-                size_t kw), (override));
+    MOCK_METHOD(void, im2col,
+                (const float* in, float* col, size_t n, size_t c, size_t h, size_t w, const ConvGeometry& geometry),
+                (override));
+    MOCK_METHOD(void, col2im_add,
+                (const float* col, float* out, size_t n, size_t c, size_t h, size_t w, const ConvGeometry& geometry),
+                (override));
     MOCK_METHOD(void, add_channel_vector, (const float* in, const float* vec, float* out, size_t n, size_t c, size_t
                 inner), (override));
     MOCK_METHOD(void, lrp_conv, (const float* col, const float* kernel, const float* pre_bias, const float* r,

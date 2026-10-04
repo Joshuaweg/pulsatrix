@@ -16,7 +16,7 @@
 //     o0 = x+ Wa + ba;  o1 = x- Wb;  o2 = x+ Wb + bb;  o3 = x- Wa;  z = xW + b (original output)
 //     gpos = [z > 0] R / stab(o0 + o1);  gneg = [z < 0] R / stab(o2 + o3)
 //     R_in = x+ (gpos Wa^T) + x- (gpos Wb^T) + x+ (gneg Wb^T) + x- (gneg Wa^T)
-//   ZBox(low, high): L, H = x-shaped fills
+//   ZBox(low, high): L, H = x-shaped fills (or op.fill_bound, for zero-padded patches)
 //     den = xW - L W+ - H W-   (Zennit's three biases cancel exactly: b - b+ - b- == 0)
 //     g = R / stab(den);  R_in = x (g W^T) - L (g W+^T) - H (g W-^T)
 #pragma once
@@ -44,6 +44,10 @@ struct AffineOp {
     std::function<void(const float* g, const float* w, float* out)> backward;
     /// out = in + b broadcast over the output (out may alias in).
     std::function<void(const float* in, const float* b, float* out)> add_bias;
+    /// Optional: writes the input-shaped tensor ZBox uses for a bound `value` into out. Unset
+    /// means every element is `value`. Conv2D sets it so that zero-padding taps get a zero bound,
+    /// as in Zennit, which pads the bound images rather than the patches.
+    std::function<void(float value, float* out)> fill_bound;
 };
 
 /**

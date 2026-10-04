@@ -23,7 +23,8 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
 - **Layers**: `LinearModule`, `Conv2DModule`, `ReluModule`, `FlattenModule`,
   `SequentialModule`, `DropoutModule`, `EmbeddingModule`, `ResidualModule`; normalization
   (`LayerNormModule`/`RMSNormModule`/`GroupNormModule`/`BatchNormModule`); pooling
-  (`MaxPool2DModule`/`AvgPool2DModule`)
+  (`MaxPool2DModule`/`AvgPool2DModule`). `Conv2DModule` takes an optional `stride` and zero
+  `padding`, as in `torch.nn.Conv2d`, and every LRP rule handles both.
 - **Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule`, `SoftmaxModule`,
   `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock`,
   `MambaModule`, `RWKVModule`, `RetNetModule`
