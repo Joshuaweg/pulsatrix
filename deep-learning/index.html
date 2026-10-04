@@ -452,6 +452,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#token-losses-and-gradient-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token losses and gradient accumulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gradient-clipping" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1661,6 +1672,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#token-losses-and-gradient-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token losses and gradient accumulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gradient-clipping" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1896,6 +1918,27 @@ parameter group's, becomes its starting rate times the multiplier.</p>
 </code></pre></div>
 <p>Set up parameter groups before building the scheduler. To resume, call
 <code>scheduler.set_last_step(n)</code>.</p>
+<h3 id="token-losses-and-gradient-accumulation">Token losses and gradient accumulation<a class="headerlink" href="#token-losses-and-gradient-accumulation" title="Permanent link">&para;</a></h3>
+<p><code>TokenCrossEntropyLoss</code> takes logits <code>(..., classes)</code> and integer targets with the same leading
+shape, and skips targets equal to <code>-100</code>, PyTorch's padding convention. By default it averages
+over the batch's real tokens.</p>
+<p>To accumulate gradients over several micro-batches, don't average each micro-batch's own mean.
+When micro-batches hold different numbers of real tokens, that weights tokens unequally, which is
+the bug Hugging Face Trainer fixed in v4.46. Instead, divide every micro-batch by the token count
+of the whole window:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/token_cross_entropy_loss.hpp"</span>
+
+<span class="kt">int64_t</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">window_targets</span><span class="p">)</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">CountTargetTokens</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">window_inputs</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Tensor</span><span class="w"> </span><span class="n">logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">window_inputs</span><span class="p">[</span><span class="n">k</span><span class="p">]);</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">loss</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span><span class="w"> </span><span class="n">window_targets</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">total</span><span class="p">));</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">model</span><span class="p">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span><span class="w">  </span><span class="c1">// gradients accumulate across micro-batches</span>
+<span class="p">}</span>
+<span class="n">ClipGradNorm</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+<span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+</code></pre></div>
+<p>The accumulated gradients then equal those of one batch holding every micro-batch.</p>
 <h3 id="gradient-clipping">Gradient clipping<a class="headerlink" href="#gradient-clipping" title="Permanent link">&para;</a></h3>
 <p><code>ClipGradNorm(model, max_norm)</code> scales all trainable gradients by one factor so their global L2
 norm is at most <code>max_norm</code>, as <code>torch.nn.utils.clip_grad_norm_</code> does. It returns the norm before

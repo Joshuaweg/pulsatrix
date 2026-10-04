@@ -227,6 +227,7 @@ var hierarchy =
     [ "pulsatrix::datalog::Term", "classpulsatrix_1_1datalog_1_1Term.html", null ],
     [ "pulsatrix::datalog::TermHash", "structpulsatrix_1_1datalog_1_1TermHash.html", null ],
     [ "pulsatrix::TextureCache", "classpulsatrix_1_1TextureCache.html", null ],
+    [ "pulsatrix::TokenCrossEntropyLoss", "classpulsatrix_1_1TokenCrossEntropyLoss.html", null ],
     [ "pulsatrix::Tokenizer", "classpulsatrix_1_1Tokenizer.html", null ],
     [ "pulsatrix::TopKResult", "structpulsatrix_1_1TopKResult.html", null ],
     [ "pulsatrix::ToyKnowledgeBase", "classpulsatrix_1_1ToyKnowledgeBase.html", null ],

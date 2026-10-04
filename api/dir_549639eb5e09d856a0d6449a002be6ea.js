@@ -168,6 +168,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "tensor.hpp", "tensor_8hpp.html", "tensor_8hpp" ],
     [ "text_collate.hpp", "text__collate_8hpp.html", "text__collate_8hpp" ],
     [ "text_dataset.hpp", "text__dataset_8hpp.html", "text__dataset_8hpp" ],
+    [ "token_cross_entropy_loss.hpp", "token__cross__entropy__loss_8hpp.html", "token__cross__entropy__loss_8hpp" ],
     [ "tokenizer.hpp", "tokenizer_8hpp.html", "tokenizer_8hpp" ],
     [ "top_k.hpp", "top__k_8hpp.html", "top__k_8hpp" ],
     [ "tpe.hpp", "tpe_8hpp.html", "tpe_8hpp" ],

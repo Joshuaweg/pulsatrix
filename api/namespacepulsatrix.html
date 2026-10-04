@@ -713,6 +713,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextureCache.html">TextureCache</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e.g. a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> index) so a scrolling image grid doesn't re-upload the same image every frame.  <a href="classpulsatrix_1_1TextureCache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html">TokenCrossEntropyLoss</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">sum over tokens of -log softmax(logits)[target], divided by a normalizer; tokens whose target is the ignore index (padding) contribute nothing.  <a href="classpulsatrix_1_1TokenCrossEntropyLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tokenizer.html">Tokenizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into lowercase word/punctuation tokens &ndash; pulsatrix's first text primitive (campaign_exai_dl_library_data_pipeline, Phase 3, Decision Point 6: a minimal whitespace/punctuation tokenizer, not BPE &ndash; training a real subword-merge algorithm is a project-sized undertaking on its own).  <a href="classpulsatrix_1_1Tokenizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1364,6 +1367,9 @@ Functions</h2></td></tr>
 <tr class="memitem:afaf7be0b67a415f9361e7420a36b906e" id="r_afaf7be0b67a415f9361e7420a36b906e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afaf7be0b67a415f9361e7420a36b906e">PadCollate</a> (float pad_index=0.0f)</td></tr>
 <tr class="memdesc:afaf7be0b67a415f9361e7420a36b906e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that right-pads variable-length token sequences (sample.fields[0], shape (1, seq_len) &ndash; <a class="el" href="classpulsatrix_1_1TextDataset.html#adb902ad1d0b4e655003ce6fa720c421b">TextDataset::get()</a>'s output) to the batch's own max length, producing one (N, max_len) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field recording each sample's real (pre-padding) length. This is the CollateFn extension point Phase 1's architecture design reserved for ragged/variable-length modalities (PyTorch's collate_fn equivalent) &ndash; exercised here for the first time, with zero changes needed to Dataset/DataLoader/Batch themselves.  <br /></td></tr>
 <tr class="separator:afaf7be0b67a415f9361e7420a36b906e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebb422f24fb615d810cc32915daf01ec" id="r_aebb422f24fb615d810cc32915daf01ec"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aebb422f24fb615d810cc32915daf01ec">CountTargetTokens</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;targets, int64_t ignore_index=<a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html#a179bb970fc18d8fd27c6058a2581d3c8">TokenCrossEntropyLoss::kIgnoreIndex</a>)</td></tr>
+<tr class="memdesc:aebb422f24fb615d810cc32915daf01ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of entries of <code>targets</code> that aren't <code>ignore_index</code>: the normalizer for one accumulation window when summed over its micro-batches' targets.  <br /></td></tr>
+<tr class="separator:aebb422f24fb615d810cc32915daf01ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307af1ed1935c2c78f7e2aead3f70c45" id="r_a307af1ed1935c2c78f7e2aead3f70c45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TopKResult.html">TopKResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t k, bool largest=true)</td></tr>
 <tr class="memdesc:a307af1ed1935c2c78f7e2aead3f70c45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the k largest (or smallest) entries of every row along the last dimension.  <br /></td></tr>
 <tr class="separator:a307af1ed1935c2c78f7e2aead3f70c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3389,6 +3395,36 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aebb422f24fb615d810cc32915daf01ec" name="aebb422f24fb615d810cc32915daf01ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebb422f24fb615d810cc32915daf01ec">&#9670;&#160;</a></span>CountTargetTokens()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::CountTargetTokens </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>targets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>ignore_index</em> = <code><a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html#a179bb970fc18d8fd27c6058a2581d3c8">TokenCrossEntropyLoss::kIgnoreIndex</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of entries of <code>targets</code> that aren't <code>ignore_index</code>: the normalizer for one accumulation window when summed over its micro-batches' targets. </p>
 
 </div>
 </div>

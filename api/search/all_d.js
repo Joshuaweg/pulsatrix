@@ -38,7 +38,7 @@ var searchData=
   ['next_5fbatch_35',['next_batch',['../classpulsatrix_1_1DataLoader.html#a97fa3fea040e8418fc872eb9f82a4979',1,'pulsatrix::DataLoader']]],
   ['next_5fobservations_36',['next_observations',['../structpulsatrix_1_1ReplayBatch.html#a4af1f8c173952cb8c9b8c33f281ab7af',1,'pulsatrix::ReplayBatch']]],
   ['next_5fseed_37',['next_seed',['../namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b',1,'pulsatrix']]],
-  ['node_38',['node',['../classpulsatrix_1_1Node.html',1,'pulsatrix::Node'],['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node()'],['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()']]],
+  ['node_38',['node',['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node()'],['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()'],['../classpulsatrix_1_1Node.html',1,'pulsatrix::Node']]],
   ['node_2ehpp_39',['node.hpp',['../node_8hpp.html',1,'']]],
   ['node_5fcount_40',['node_count',['../classpulsatrix_1_1ComputationGraph.html#ab5e326cc6109e5677eb114e0a85f6b05',1,'pulsatrix::ComputationGraph']]],
   ['node_5fids_41',['node_ids',['../classpulsatrix_1_1ActivationSnapshot.html#a6555e73f40cd23280bdf0078e938f49d',1,'pulsatrix::ActivationSnapshot']]],
@@ -64,6 +64,7 @@ var searchData=
   ['num_5fconfigs_5fstarted_61',['num_configs_started',['../structpulsatrix_1_1ASHAResult.html#a33ba920b1062f1962eeb121966902d53',1,'pulsatrix::ASHAResult']]],
   ['num_5fheads_62',['num_heads',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a64f3e2c31c91c88da3fcfedaa47fa588',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['num_5ftimesteps_63',['num_timesteps',['../classpulsatrix_1_1NoiseSchedule.html#adbc053d6242ecbc799956f9e86ce49fc',1,'pulsatrix::NoiseSchedule']]],
-  ['num_5fworkers_64',['num_workers',['../structpulsatrix_1_1DataLoaderOptions.html#a29bea0954a5203ba9b20f473c1dc8a05',1,'pulsatrix::DataLoaderOptions']]],
-  ['numel_65',['numel',['../classpulsatrix_1_1Tensor.html#a903dae02b55d8eb93709bf2c0a399d85',1,'pulsatrix::Tensor::numel()'],['../classpulsatrix_1_1Shape.html#a1f7fda995b54fb43167e92ea8cf6f3a2',1,'pulsatrix::Shape::numel()']]]
+  ['num_5ftokens_64',['num_tokens',['../classpulsatrix_1_1TokenCrossEntropyLoss.html#a8d3f0b2ab117cf7a71482a7071191a09',1,'pulsatrix::TokenCrossEntropyLoss']]],
+  ['num_5fworkers_65',['num_workers',['../structpulsatrix_1_1DataLoaderOptions.html#a29bea0954a5203ba9b20f473c1dc8a05',1,'pulsatrix::DataLoaderOptions']]],
+  ['numel_66',['numel',['../classpulsatrix_1_1Tensor.html#a903dae02b55d8eb93709bf2c0a399d85',1,'pulsatrix::Tensor::numel()'],['../classpulsatrix_1_1Shape.html#a1f7fda995b54fb43167e92ea8cf6f3a2',1,'pulsatrix::Shape::numel()']]]
 ];
