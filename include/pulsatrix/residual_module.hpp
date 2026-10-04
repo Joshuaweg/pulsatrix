@@ -79,8 +79,8 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    /** @brief inner_'s own parameters() -- this module owns none of its own. */
-    [[nodiscard]] std::vector<ParamRef> parameters() override;
+    /** @brief inner_'s own named_parameters(), prefixed `inner.` -- this module owns none of its own. */
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
     /** @brief Cascades to inner_, the same way SequentialModule/MultiHeadAttentionModule do. */
     void set_training(bool training) override;

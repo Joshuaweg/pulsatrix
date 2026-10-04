@@ -6,6 +6,7 @@
 
 #include <optional>
 #include <stdexcept>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -23,6 +24,19 @@ namespace pulsatrix {
 struct ParamRef {
     Tensor* value;
     Tensor* grad;
+};
+
+/**
+ * @brief A parameter together with its hierarchical, dot-separated name relative to the
+ *        module that reported it (`weight`, `mha.q_proj.bias`, `0.weight`).
+ * @note Leaf names follow PyTorch where a PyTorch analog exists (`weight`/`bias`, including
+ *       Conv2D's kernel and the norms' gamma/beta); otherwise they are the C++ member name
+ *       without its trailing underscore. A container prefixes each child's names with that
+ *       child's accessor name (or its index, for SequentialModule). Roadmap FND-1.
+ */
+struct NamedParamRef {
+    std::string name;
+    ParamRef ref;
 };
 
 /**
@@ -129,15 +143,34 @@ public:
     [[nodiscard]] virtual OpType op_type() const = 0;
 
     /**
+     * @brief This module's trainable parameters, each with its hierarchical name -- the one
+     *        place a module declares its parameters (roadmap FND-1).
+     * @return {name, {value, grad}} entries pointing directly at this module's own members,
+     *         in a fixed order. Names are unique within the module tree. Default: empty (a
+     *         parameterless module like ReluModule needs no override).
+     * @note Override this, not parameters(): saving, loading, freezing by name and optimizer
+     *       parameter groups all key on these names.
+     */
+    [[nodiscard]] virtual std::vector<NamedParamRef> named_parameters() { return {}; }
+
+    /**
      * @brief This module's trainable parameters and their gradients, for an optimizer to
      *        update uniformly across module types.
-     * @return {value, grad} pairs pointing directly at this module's own members. Default:
-     *         empty (a parameterless module like ReluModule needs no override).
+     * @return named_parameters() without the names -- same tensors, same order.
      * @note Not pure-virtual -- unlike propagate_relevance, there is no charter
      *       non-negotiable requiring every module to define this; "no parameters" is a
      *       legitimate, common answer that shouldn't need restating per module type.
+     * @note Still virtual only so subclasses written before named_parameters() existed keep
+     *       compiling and training. Such a subclass reports no names, so name-keyed features
+     *       can't see its parameters; new code overrides named_parameters() instead.
      */
-    [[nodiscard]] virtual std::vector<ParamRef> parameters() { return {}; }
+    [[nodiscard]] virtual std::vector<ParamRef> parameters() {
+        std::vector<ParamRef> params;
+        for (const NamedParamRef& p : named_parameters()) {
+            params.push_back(p.ref);
+        }
+        return params;
+    }
 
     /**
      * @brief Sets this module's training/eval mode. Defaults to training (matches every
@@ -164,5 +197,25 @@ protected:
 private:
     bool training_ = true;
 };
+
+/**
+ * @brief Appends `child`'s named parameters to `out`, each renamed to `prefix.name` -- the
+ *        one step every container's named_parameters() repeats per child.
+ * @note A child that overrides only the legacy parameters() hook reports no names; its
+ *       parameters are appended under positional names (`prefix.0`, `prefix.1`, ...) so a
+ *       container never hides them from an optimizer that used to see them.
+ */
+inline void append_named_parameters(std::vector<NamedParamRef>& out, const std::string& prefix, Module& child) {
+    std::vector<NamedParamRef> named = child.named_parameters();
+    if (named.empty()) {
+        std::vector<ParamRef> plain = child.parameters();
+        for (size_t i = 0; i < plain.size(); ++i) {
+            named.push_back({std::to_string(i), plain[i]});
+        }
+    }
+    for (NamedParamRef& p : named) {
+        out.push_back({prefix + "." + p.name, p.ref});
+    }
+}
 
 }  // namespace pulsatrix

@@ -89,7 +89,7 @@ public:
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
     /** @brief gate_proj_'s, up_proj_'s, and down_proj_'s parameters, flattened. */
-    [[nodiscard]] std::vector<ParamRef> parameters() override;
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
     [[nodiscard]] int64_t d_model() const { return d_model_; }
     [[nodiscard]] int64_t d_ff() const { return d_ff_; }

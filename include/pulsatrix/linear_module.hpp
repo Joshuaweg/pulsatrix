@@ -119,8 +119,8 @@ public:
     /** @brief Implements every LRPRule. */
     [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override {
-        return {{&weight_, &weight_grad_}, {&bias_, &bias_grad_}};
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {{"weight", {&weight_, &weight_grad_}}, {"bias", {&bias_, &bias_grad_}}};
     }
 
 protected:
