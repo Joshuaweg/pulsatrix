@@ -1167,6 +1167,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4cd4253efc67ed0b57350408c92e535f"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4cd4253efc67ed0b57350408c92e535f">RunGPBOLoop</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, ObjectiveFn objective_fn, size_t num_initial_random, size_t num_iterations, <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8">AcquisitionKind</a> acquisition, size_t num_candidates, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a4cd4253efc67ed0b57350408c92e535f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs GP-BO: num_initial_random uniformly-random trials, then num_iterations trials each chosen by fitting a GP to every trial so far and maximizing acquisition over num_candidates random points in the unit hypercube.  <br /></td></tr>
 <tr class="separator:a4cd4253efc67ed0b57350408c92e535f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46dfb5346e61792a6c94f75b5b4d8105" id="r_a46dfb5346e61792a6c94f75b5b4d8105"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a46dfb5346e61792a6c94f75b5b4d8105">ClipGradNorm</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module, float max_norm, bool error_if_nonfinite=false)</td></tr>
+<tr class="memdesc:a46dfb5346e61792a6c94f75b5b4d8105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales every trainable parameter's gradient so their global L2 norm is at most <code>max_norm</code>, as torch.nn.utils.clip_grad_norm_ does, and returns the norm before clipping.  <br /></td></tr>
+<tr class="separator:a46dfb5346e61792a6c94f75b5b4d8105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87a0367a8a25871e968563e95fe39345" id="r_a87a0367a8a25871e968563e95fe39345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a87a0367a8a25871e968563e95fe39345">DecodeGenotype</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const std::vector&lt; double &gt; &amp;genotype)</td></tr>
 <tr class="memdesc:a87a0367a8a25871e968563e95fe39345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes a unit-hypercube genotype into a Configuration using space's own declared bounds: Continuous linearly, LogUniform geometrically (both identical to <a class="el" href="gp__bo_8hpp.html" title="The GP-BO trial loop: random-initialize, then repeatedly fit a GP to every trial observed so far and ...">gp_bo.hpp</a>'s UnitCubeToConfiguration); Integer by linear interpolation then rounding to the nearest integer (std::round &ndash; ties away from zero, portable); Categorical by linear interpolation into an index, floored, clamped to the last category (handles the gene == 1.0 boundary, which would otherwise floor to one-past-the-end).  <br /></td></tr>
 <tr class="separator:a87a0367a8a25871e968563e95fe39345"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2756,6 +2759,61 @@ template&lt;typename RNG &gt; </div>
 </div><div class="memdoc">
 
 <p>Human-readable label for a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a> node: the node's own label when it has one, otherwise its operation type and id (e.g. "Conv #1", "Activation #2") &ndash; so an unlabeled <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> still renders as a readable layer diagram rather than a row of anonymous "node_&lt;id&gt;" markers. </p>
+
+</div>
+</div>
+<a id="a46dfb5346e61792a6c94f75b5b4d8105" name="a46dfb5346e61792a6c94f75b5b4d8105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46dfb5346e61792a6c94f75b5b4d8105">&#9670;&#160;</a></span>ClipGradNorm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::ClipGradNorm </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>module</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max_norm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>error_if_nonfinite</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scales every trainable parameter's gradient so their global L2 norm is at most <code>max_norm</code>, as torch.nn.utils.clip_grad_norm_ does, and returns the norm before clipping. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">module</td><td>Its parameters with requires_grad() set are counted and scaled; frozen ones are left alone (FND-2). </td></tr>
+    <tr><td class="paramname">max_norm</td><td>Positive, finite limit. </td></tr>
+    <tr><td class="paramname">error_if_nonfinite</td><td>Throw instead of returning when the norm is NaN or infinite. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The global norm before clipping, which is also the usual quantity to log. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Call it after gradient accumulation and before the optimizer step. When the norm exceeds max_norm, every gradient is multiplied by the same factor max_norm / (norm + 1e-6), so the update's direction is kept. </dd>
+<dd>
+One difference from PyTorch: a NaN or infinite norm leaves the gradients unchanged (PyTorch scales them anyway, spreading the NaN). Check the returned norm and skip the step. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if max_norm isn't positive and finite. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if error_if_nonfinite is set and the norm is NaN or infinite. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -20,6 +20,7 @@ var group__dl__modules =
     [ "dropout_module.hpp", "dropout__module_8hpp.html", null ],
     [ "embedding_module.hpp", "embedding__module_8hpp.html", null ],
     [ "flatten_module.hpp", "flatten__module_8hpp.html", null ],
+    [ "grad_clipping.hpp", "grad__clipping_8hpp.html", null ],
     [ "group_norm_module.hpp", "group__norm__module_8hpp.html", null ],
     [ "gru_module.hpp", "gru__module_8hpp.html", null ],
     [ "hip_backend.hpp", "hip__backend_8hpp.html", null ],
