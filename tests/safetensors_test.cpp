@@ -166,6 +166,7 @@ TEST_F(SafetensorsTest, AcceptsTheBaselineUsedByTheRejectionTests) {
     EXPECT_NO_THROW((void)SafetensorsFile::Parse(make_file(one_tensor(kValidFields), zeros(8))));
     EXPECT_NO_THROW((void)SafetensorsFile::Parse(make_file(one_tensor(kValidFields) + "   ", zeros(8))));
     EXPECT_NO_THROW((void)SafetensorsFile::Parse(make_file("{}", {})));
+    EXPECT_NO_THROW((void)SafetensorsFile::Parse(make_file(" \n{}", {})));  // the reference accepts it too
 }
 
 TEST_F(SafetensorsTest, RejectsABrokenLengthPrefix) {
@@ -188,7 +189,7 @@ TEST_F(SafetensorsTest, RejectsABrokenLengthPrefix) {
 TEST_F(SafetensorsTest, RejectsMalformedJson) {
     for (const std::string& header : std::vector<std::string>{
              "[]", "{", "{\"w\":}", "{\"w\":{" + kValidFields + "}} x", "{\"w\":{" + kValidFields + "},}",
-             "{'w':{}}", "{\"w\":{" + kValidFields + "}}{}", " {}", "{\"a\":1}", "null", "{\"w\":{" + kValidFields + ",}}",
+             "{'w':{}}", "{\"w\":{" + kValidFields + "}}{}", "{\"a\":1}", "null", "{\"w\":{" + kValidFields + ",}}",
              "{\"\\x\":{}}", "{\"\\ud800\":{}}", "{\"\x01\":{}}", "{\"w\xff\":{}}", "{\"\\u00\":{}}"}) {
         expect_rejected(make_file(header, zeros(8)), header);
     }
@@ -267,9 +268,12 @@ TEST_F(SafetensorsTest, CorruptedFilesThrowInvalidArgumentOrParse) {
             case 0:  // flip bits
                 for (uint64_t k = 0, n = 1 + rnd(4); k < n; ++k) f[rnd(f.size())] ^= static_cast<uint8_t>(1u << rnd(8));
                 break;
-            case 1:  // overwrite a header byte with a JSON-significant character
-                f[8 + rnd(408)] = static_cast<uint8_t>("{}[]\",:0123456789-.eE\\u \x00\xff"[rnd(28)]);
+            case 1: {  // overwrite a header byte with a JSON-significant character
+                static const char kTokens[] = {'{', '}', '[', ']', '"', ',', ':', '0', '9', '-', '.', 'e',
+                                               'E', '\\', 'u', ' ', '\0', '\xff'};
+                f[8 + rnd(408)] = static_cast<uint8_t>(kTokens[rnd(sizeof(kTokens))]);
                 break;
+            }
             case 2:  // truncate
                 f.resize(rnd(f.size()));
                 break;
