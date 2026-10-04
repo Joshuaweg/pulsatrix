@@ -4,9 +4,11 @@
  */
 #pragma once
 
+#include <memory>
 #include <hip/hip_runtime.h>
 #include <hipblas/hipblas.h>
 
+#include "pulsatrix/caching_allocator.hpp"
 #include "pulsatrix/device_backend.hpp"
 
 namespace pulsatrix {
@@ -42,8 +44,23 @@ public:
 
     [[nodiscard]] DeviceType device() const noexcept override { return DeviceType::Hip; }
 
+    /** @brief From the caching allocator (HIP-3): a freed block of the same size class is reused
+     *         instead of calling hipMalloc. */
     [[nodiscard]] void* allocate(size_t bytes) override;
+    /** @brief Returns the block to the caching allocator; the memory stays with this backend. */
     void free(void* ptr) noexcept override;
+
+    /** @brief The caching allocator's counters: bytes in use and cached, peak, raw hipMalloc/hipFree
+     *         calls and cache hits. */
+    [[nodiscard]] CachingAllocator::Stats memory_stats() const { return allocator_->stats(); }
+    /** @brief Returns all cached (unused) blocks to the driver, after synchronizing. */
+    void empty_cache() { allocator_->empty_cache(); }
+    /**
+     * @brief Caps the memory this backend holds, in use plus cached (0: no cap). Defaults to
+     *        PULSATRIX_HIP_MEMORY_BUDGET_MB if set. On an APU, hipMemGetInfo overstates what can be
+     *        allocated, so a budget is the reliable limit.
+     */
+    void set_memory_budget(size_t bytes) { allocator_->set_budget(bytes); }
     void copy(void* dst, const void* src, size_t bytes, CopyDirection dir) override;
     void fill(void* ptr, float value, size_t n) override;
     void gemm(const float* a, const float* b, float* out, size_t m, size_t k, size_t n) override;
@@ -156,6 +173,7 @@ public:
 
 private:
     hipStream_t stream_;
+    std::unique_ptr<CachingAllocator> allocator_;
     hipblasHandle_t hipblas_handle_;
     // One device float that dot() reduces into before copying it to the host; allocated once
     // so dot() costs no per-call device allocation.

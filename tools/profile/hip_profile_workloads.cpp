@@ -74,10 +74,29 @@ void run_classifier(Module& model, DeviceBackend* backend, const Tensor& x, cons
 
 }  // namespace
 
+// Allocator counters (HIP-3): unaffected by other programs sharing the GPU, unlike timings.
+void print_memory(const HIPBackend& backend) {
+    const CachingAllocator::Stats s = backend.memory_stats();
+    std::printf("allocator: %zu hipMalloc calls, %zu cache hits, peak %.1f MB in use\n", s.raw_allocs, s.cache_hits,
+                static_cast<double>(s.peak_in_use_bytes) / (1 << 20));
+}
+
+int run(const std::string& workload, int steps, HIPBackend& backend);
+
 int main(int argc, char** argv) {
     const std::string workload = argc > 1 ? argv[1] : "";
     const int steps = argc > 2 ? std::atoi(argv[2]) : 20;
     HIPBackend backend;
+    const int status = run(workload, steps, backend);
+    if (status == 0) {
+        print_memory(backend);
+    } else {
+        std::fprintf(stderr, "usage: %s <tagger|cnn|mlp|reduce> [steps]\n", argv[0]);
+    }
+    return status;
+}
+
+int run(const std::string& workload, int steps, HIPBackend& backend) {
 
     if (workload == "tagger") {
         TinyTagger tagger(&backend);
@@ -130,6 +149,5 @@ int main(int argc, char** argv) {
         }
         return 0;
     }
-    std::fprintf(stderr, "usage: %s <tagger|cnn|mlp|reduce> [steps]\n", argv[0]);
     return 2;
 }
