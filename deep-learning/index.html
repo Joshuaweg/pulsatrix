@@ -408,6 +408,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#saving-and-loading-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving and loading weights
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reproducibility" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1573,6 +1584,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#saving-and-loading-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving and loading weights
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reproducibility" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1725,6 +1747,28 @@ members (see <code>include/pulsatrix/xor_training_example.hpp</code>). <code>for
 </ol>
 <p>Runnable version: <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp"><code>examples/xor_demo.cpp</code></a>
 (CMake target <code>xor_demo</code>). See also the <a href="../recipes/deep-learning/xor_training/">recipe</a>.</p>
+<h3 id="saving-and-loading-weights">Saving and loading weights<a class="headerlink" href="#saving-and-loading-weights" title="Permanent link">&para;</a></h3>
+<p>Weights are stored as <a href="https://github.com/huggingface/safetensors">safetensors</a>, the format most
+Hugging Face models ship in. It holds only numbers, so loading a file can't run code, unlike a
+PyTorch pickle. Parameter names come from <code>named_parameters()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/safetensors.hpp"</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">*&gt;&gt;</span><span class="w"> </span><span class="n">tensors</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">NamedParamRef</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">named_parameters</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">tensors</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">ref</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">WriteSafetensors</span><span class="p">(</span><span class="s">"model.safetensors"</span><span class="p">,</span><span class="w"> </span><span class="n">tensors</span><span class="p">,</span><span class="w"> </span><span class="p">{{</span><span class="s">"format"</span><span class="p">,</span><span class="w"> </span><span class="s">"pulsatrix"</span><span class="p">}});</span>
+
+<span class="n">SafetensorsFile</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SafetensorsFile</span><span class="o">::</span><span class="n">Read</span><span class="p">(</span><span class="s">"model.safetensors"</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">NamedParamRef</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">named_parameters</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">ref</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// keeps the parameter's requires_grad flag</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The reader treats every file as untrusted, and throws <code>std::invalid_argument</code> for anything
+outside the format: offsets past the end of the file, overlapping or missing byte ranges, sizes
+that overflow, and malformed headers. It's fuzzed under AddressSanitizer
+(<code>tools/fuzz/safetensors_fuzz.cpp</code>). <code>tensor()</code> converts F32 only for now; other dtypes are
+readable as raw bytes with <code>bytes()</code>.</p>
 <h3 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h3>
 <p>Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
 <code>set_seed</code> sets one global seed (default 0). Anything built without its own seed, such as a

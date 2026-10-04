@@ -48,6 +48,7 @@ var group__dl__modules =
     [ "rnn_module.hpp", "rnn__module_8hpp.html", null ],
     [ "rope_module.hpp", "rope__module_8hpp.html", null ],
     [ "rwkv_module.hpp", "rwkv__module_8hpp.html", null ],
+    [ "safetensors.hpp", "safetensors_8hpp.html", null ],
     [ "sequential_module.hpp", "sequential__module_8hpp.html", null ],
     [ "sgd_optimizer.hpp", "sgd__optimizer_8hpp.html", null ],
     [ "shape.hpp", "shape_8hpp.html", null ],

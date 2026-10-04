@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['heuristic_0',['Heuristic',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763',1,'pulsatrix']]],
-  ['hidden_1',['Hidden',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a7acdf85c69cc3c5305456a293524386e',1,'pulsatrix::NodeGene']]],
-  ['hip_2',['Hip',['../namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92',1,'pulsatrix']]],
-  ['hosttodevice_3',['HostToDevice',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92',1,'pulsatrix']]],
-  ['hosttohost_4',['HostToHost',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6ba297d3681581537b0677cb9f2a3b9e589',1,'pulsatrix']]]
+  ['gamma_0',['Gamma',['../namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5',1,'pulsatrix']]],
+  ['godel_1',['godel',['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fa7c77586449fe21323ae2f00adcddde82',1,'pulsatrix::ConjunctionModule::Godel'],['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ea7c77586449fe21323ae2f00adcddde82',1,'pulsatrix::DisjunctionModule::Godel']]],
+  ['grubackward_2',['GruBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185',1,'pulsatrix']]],
+  ['grulrp_3',['GruLrp',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44',1,'pulsatrix']]]
 ];

@@ -185,6 +185,8 @@ var hierarchy =
     [ "pulsatrix::RolloutBatch", "structpulsatrix_1_1RolloutBatch.html", null ],
     [ "pulsatrix::RolloutBuffer", "classpulsatrix_1_1RolloutBuffer.html", null ],
     [ "pulsatrix::datalog::Rule", "classpulsatrix_1_1datalog_1_1Rule.html", null ],
+    [ "pulsatrix::SafetensorsFile", "classpulsatrix_1_1SafetensorsFile.html", null ],
+    [ "pulsatrix::SafetensorsTensorInfo", "structpulsatrix_1_1SafetensorsTensorInfo.html", null ],
     [ "pulsatrix::Saliency", "classpulsatrix_1_1Saliency.html", null ],
     [ "pulsatrix::SaliencyHeatmapView", "classpulsatrix_1_1SaliencyHeatmapView.html", null ],
     [ "pulsatrix::Sample", "structpulsatrix_1_1Sample.html", null ],

@@ -180,6 +180,8 @@ var annotated_dup =
       [ "RolloutBuffer", "classpulsatrix_1_1RolloutBuffer.html", "classpulsatrix_1_1RolloutBuffer" ],
       [ "RoPEModule", "classpulsatrix_1_1RoPEModule.html", "classpulsatrix_1_1RoPEModule" ],
       [ "RWKVModule", "classpulsatrix_1_1RWKVModule.html", "classpulsatrix_1_1RWKVModule" ],
+      [ "SafetensorsFile", "classpulsatrix_1_1SafetensorsFile.html", "classpulsatrix_1_1SafetensorsFile" ],
+      [ "SafetensorsTensorInfo", "structpulsatrix_1_1SafetensorsTensorInfo.html", "structpulsatrix_1_1SafetensorsTensorInfo" ],
       [ "Saliency", "classpulsatrix_1_1Saliency.html", "classpulsatrix_1_1Saliency" ],
       [ "SaliencyHeatmapView", "classpulsatrix_1_1SaliencyHeatmapView.html", null ],
       [ "Sample", "structpulsatrix_1_1Sample.html", "structpulsatrix_1_1Sample" ],

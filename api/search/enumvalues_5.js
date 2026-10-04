@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['gamma_0',['Gamma',['../namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5',1,'pulsatrix']]],
-  ['godel_1',['godel',['../classpulsatrix_1_1ConjunctionModule.html#ac337b697d16a8cdac0dda3744c73346fa7c77586449fe21323ae2f00adcddde82',1,'pulsatrix::ConjunctionModule::Godel'],['../classpulsatrix_1_1DisjunctionModule.html#aa262bae9403da4b2852f4d66c158da3ea7c77586449fe21323ae2f00adcddde82',1,'pulsatrix::DisjunctionModule::Godel']]],
-  ['grubackward_2',['GruBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400ab250d5c399d7c2349e16a8f2ecd36185',1,'pulsatrix']]],
-  ['grulrp_3',['GruLrp',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44',1,'pulsatrix']]]
+  ['f16_0',['F16',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba56d8353718e6fdc78b8d69078a2cdb94',1,'pulsatrix']]],
+  ['f32_1',['F32',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba44ad4ef5a76e6aa6fb3e3fa079a54fda',1,'pulsatrix']]],
+  ['f64_2',['F64',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba1ad5f6f3069070ec4cbbdc94d5e61e0e',1,'pulsatrix']]],
+  ['f8_5fe4m3_3',['F8_E4M3',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac9380ca0127510f76c06ade6b81271ab',1,'pulsatrix']]],
+  ['f8_5fe5m2_4',['F8_E5M2',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba06a19e218a0cc6bb001b6403c5ed75b2',1,'pulsatrix']]]
 ];
