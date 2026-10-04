@@ -175,6 +175,22 @@ decay to the gradient, where Adam's normalization would rescale it. Its default 
 0.01, as in PyTorch. `SGDOptimizer(lr, momentum, nesterov)` adds momentum and Nesterov momentum,
 with the same buffer rule as `torch.optim.SGD`.
 
+### Gradient clipping
+
+`ClipGradNorm(model, max_norm)` scales all trainable gradients by one factor so their global L2
+norm is at most `max_norm`, as `torch.nn.utils.clip_grad_norm_` does. It returns the norm before
+clipping, which is worth logging. Call it after accumulating gradients and before the optimizer
+step:
+
+```cpp
+#include "pulsatrix/grad_clipping.hpp"
+
+const float norm = ClipGradNorm(model, 1.0f);
+if (std::isfinite(norm)) {
+    optimizer.step(model);  // a NaN or infinite norm leaves the gradients alone: skip this step
+}
+```
+
 ### Freezing parameters
 
 Every parameter has a name (`named_parameters()`), and `set_requires_grad` freezes or unfreezes
