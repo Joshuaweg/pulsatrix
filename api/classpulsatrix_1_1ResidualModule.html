@@ -141,9 +141,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac6ecb7aacdfdd5a827db5a76432b82a2" id="r_ac6ecb7aacdfdd5a827db5a76432b82a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#ac6ecb7aacdfdd5a827db5a76432b82a2">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:ac6ecb7aacdfdd5a827db5a76432b82a2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation: the residual epsilon/z-rule split between x and inner_-&gt;forward(x), then inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#ac6ecb7aacdfdd5a827db5a76432b82a2" title="LRP relevance propagation: the residual epsilon/z-rule split between x and inner_-&gt;forward(x),...">propagate_relevance()</a> for its share.  <br /></td></tr>
 <tr class="separator:ac6ecb7aacdfdd5a827db5a76432b82a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab17841b847e04f9a8ac0d3ab51f4f5b3" id="r_ab17841b847e04f9a8ac0d3ab51f4f5b3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#ab17841b847e04f9a8ac0d3ab51f4f5b3">parameters</a> () override</td></tr>
-<tr class="memdesc:ab17841b847e04f9a8ac0d3ab51f4f5b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#ab17841b847e04f9a8ac0d3ab51f4f5b3" title="inner_&#39;s own parameters() – this module owns none of its own.">parameters()</a> &ndash; this module owns none of its own.  <br /></td></tr>
-<tr class="separator:ab17841b847e04f9a8ac0d3ab51f4f5b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19cce6fac532283f2dfe2bbb9006afff" id="r_a19cce6fac532283f2dfe2bbb9006afff"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff">named_parameters</a> () override</td></tr>
+<tr class="memdesc:a19cce6fac532283f2dfe2bbb9006afff"><td class="mdescLeft">&#160;</td><td class="mdescRight">inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>, prefixed <code>inner.</code> &ndash; this module owns none of its own.  <br /></td></tr>
+<tr class="separator:a19cce6fac532283f2dfe2bbb9006afff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a366cf671459f34f026677d08d6bbc48a" id="r_a366cf671459f34f026677d08d6bbc48a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a366cf671459f34f026677d08d6bbc48a">set_training</a> (bool training) override</td></tr>
 <tr class="memdesc:a366cf671459f34f026677d08d6bbc48a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cascades to inner_, the same way SequentialModule/MultiHeadAttentionModule do.  <br /></td></tr>
 <tr class="separator:a366cf671459f34f026677d08d6bbc48a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,6 +161,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module" id="r_acad2aa6565d456d5a57be421c05537b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule) const</td></tr>
 <tr class="memdesc:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">propagate_relevance()</a> implements <code>rule</code> (no silent fallback: callers such as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass()</a> throw rather than run a module on a rule it does not implement).  <br /></td></tr>
 <tr class="separator:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
+<tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
+<tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module" id="r_a708ed1a999e528bfa47ea8f341cee518"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518">is_training</a> () const</td></tr>
 <tr class="memdesc:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this module is currently in training mode.  <br /></td></tr>
 <tr class="separator:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -333,6 +336,35 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a19cce6fac532283f2dfe2bbb9006afff" name="a19cce6fac532283f2dfe2bbb9006afff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19cce6fac532283f2dfe2bbb9006afff">&#9670;&#160;</a></span>named_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; pulsatrix::ResidualModule::named_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>, prefixed <code>inner.</code> &ndash; this module owns none of its own. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
 <a id="a428dba9ba879d95d5dafd2e00827e689" name="a428dba9ba879d95d5dafd2e00827e689"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a428dba9ba879d95d5dafd2e00827e689">&#9670;&#160;</a></span>op_type()</h2>
 
@@ -359,35 +391,6 @@ Protected Member Functions</h2></td></tr>
 <p>Elementwise per this module's own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a428dba9ba879d95d5dafd2e00827e689" title="Elementwise per this module&#39;s own op_type() note above.">op_type()</a> note above. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">pulsatrix::Module</a>.</p>
-
-</div>
-</div>
-<a id="ab17841b847e04f9a8ac0d3ab51f4f5b3" name="ab17841b847e04f9a8ac0d3ab51f4f5b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab17841b847e04f9a8ac0d3ab51f4f5b3">&#9670;&#160;</a></span>parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt; pulsatrix::ResidualModule::parameters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#ab17841b847e04f9a8ac0d3ab51f4f5b3" title="inner_&#39;s own parameters() – this module owns none of its own.">parameters()</a> &ndash; this module owns none of its own. </p>
-
-<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

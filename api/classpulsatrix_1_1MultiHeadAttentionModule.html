@@ -132,7 +132,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae11c9bd2523df83bb01c90234a201f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a multi-head attention block with zero-initialized projections.  <br /></td></tr>
 <tr class="separator:ae11c9bd2523df83bb01c90234a201f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d70f8c38cec738bdbe53660fba5d3f9" id="r_a6d70f8c38cec738bdbe53660fba5d3f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6d70f8c38cec738bdbe53660fba5d3f9">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
-<tr class="memdesc:a6d70f8c38cec738bdbe53660fba5d3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside those sub-modules (reachable through <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a88d6ee3eaedcda9087f0dc19eafb3960" title="Every sub-module&#39;s parameters, flattened – Q/K/V/O weights and biases, plus the two QK-Norm gammas wh...">parameters()</a>).  <br /></td></tr>
+<tr class="memdesc:a6d70f8c38cec738bdbe53660fba5d3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside those sub-modules (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>).  <br /></td></tr>
 <tr class="separator:a6d70f8c38cec738bdbe53660fba5d3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43f51ba7b867c44102fec4723ae75844" id="r_a43f51ba7b867c44102fec4723ae75844"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a43f51ba7b867c44102fec4723ae75844">op_type</a> () const override</td></tr>
 <tr class="memdesc:a43f51ba7b867c44102fec4723ae75844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attention per the charter's closed OpType set &ndash; see <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba2aa97e44cace7cb882c9dcba32940f8f" title="Multi-head (scaled dot-product) attention – Phase 3&#39;s MultiHeadAttentionModule.">OpType::Attention</a>'s own note.  <br /></td></tr>
@@ -140,9 +140,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a822b6628b3817cc786d02a7b8c4447c1" id="r_a822b6628b3817cc786d02a7b8c4447c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:a822b6628b3817cc786d02a7b8c4447c1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation, composed from the sub-modules' own rules plus AttnLRP's Eq. 15 bilinear ("uniform") rule for the two batched matmuls.  <br /></td></tr>
 <tr class="separator:a822b6628b3817cc786d02a7b8c4447c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88d6ee3eaedcda9087f0dc19eafb3960" id="r_a88d6ee3eaedcda9087f0dc19eafb3960"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a88d6ee3eaedcda9087f0dc19eafb3960">parameters</a> () override</td></tr>
-<tr class="memdesc:a88d6ee3eaedcda9087f0dc19eafb3960"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every sub-module's parameters, flattened &ndash; Q/K/V/O weights and biases, plus the two QK-Norm gammas when enabled. RoPE and softmax contribute none.  <br /></td></tr>
-<tr class="separator:a88d6ee3eaedcda9087f0dc19eafb3960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4efee768d212c6f9990b85ba1f070a47" id="r_a4efee768d212c6f9990b85ba1f070a47"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47">named_parameters</a> () override</td></tr>
+<tr class="memdesc:a4efee768d212c6f9990b85ba1f070a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every sub-module's parameters, flattened &ndash; Q/K/V/O weights and biases, plus the two QK-Norm gammas when enabled. RoPE and softmax contribute none.  <br /></td></tr>
+<tr class="separator:a4efee768d212c6f9990b85ba1f070a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5949a91915019e6d0067f167f908c180" id="r_a5949a91915019e6d0067f167f908c180"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a5949a91915019e6d0067f167f908c180">set_training</a> (bool training) override</td></tr>
 <tr class="memdesc:a5949a91915019e6d0067f167f908c180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cascades to every sub-module, the same way <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> does.  <br /></td></tr>
 <tr class="separator:a5949a91915019e6d0067f167f908c180"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,6 +186,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module" id="r_acad2aa6565d456d5a57be421c05537b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule) const</td></tr>
 <tr class="memdesc:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">propagate_relevance()</a> implements <code>rule</code> (no silent fallback: callers such as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass()</a> throw rather than run a module on a rule it does not implement).  <br /></td></tr>
 <tr class="separator:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
+<tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
+<tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module" id="r_a708ed1a999e528bfa47ea8f341cee518"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518">is_training</a> () const</td></tr>
 <tr class="memdesc:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this module is currently in training mode.  <br /></td></tr>
 <tr class="separator:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -299,7 +302,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside those sub-modules (reachable through <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a88d6ee3eaedcda9087f0dc19eafb3960" title="Every sub-module&#39;s parameters, flattened – Q/K/V/O weights and biases, plus the two QK-Norm gammas wh...">parameters()</a>). </p>
+<p>Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside those sub-modules (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">grad_output</td><td>Gradient w.r.t. this module's output, shape <code>(N, L, d_model)</code> matching the cached forward shape. </td></tr>
@@ -493,6 +496,35 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a4efee768d212c6f9990b85ba1f070a47" name="a4efee768d212c6f9990b85ba1f070a47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4efee768d212c6f9990b85ba1f070a47">&#9670;&#160;</a></span>named_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; pulsatrix::MultiHeadAttentionModule::named_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every sub-module's parameters, flattened &ndash; Q/K/V/O weights and biases, plus the two QK-Norm gammas when enabled. RoPE and softmax contribute none. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
 <a id="a64f3e2c31c91c88da3fcfedaa47fa588" name="a64f3e2c31c91c88da3fcfedaa47fa588"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a64f3e2c31c91c88da3fcfedaa47fa588">&#9670;&#160;</a></span>num_heads()</h2>
 
@@ -569,35 +601,6 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a88d6ee3eaedcda9087f0dc19eafb3960" name="a88d6ee3eaedcda9087f0dc19eafb3960"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88d6ee3eaedcda9087f0dc19eafb3960">&#9670;&#160;</a></span>parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt; pulsatrix::MultiHeadAttentionModule::parameters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Every sub-module's parameters, flattened &ndash; Q/K/V/O weights and biases, plus the two QK-Norm gammas when enabled. RoPE and softmax contribute none. </p>
-
-<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

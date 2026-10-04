@@ -138,6 +138,7 @@ var annotated_dup =
       [ "MSELoss", "classpulsatrix_1_1MSELoss.html", "classpulsatrix_1_1MSELoss" ],
       [ "MultiHeadAttentionModule", "classpulsatrix_1_1MultiHeadAttentionModule.html", "classpulsatrix_1_1MultiHeadAttentionModule" ],
       [ "MutationLoss", "classpulsatrix_1_1MutationLoss.html", "classpulsatrix_1_1MutationLoss" ],
+      [ "NamedParamRef", "structpulsatrix_1_1NamedParamRef.html", "structpulsatrix_1_1NamedParamRef" ],
       [ "NEATEvolutionResult", "structpulsatrix_1_1NEATEvolutionResult.html", "structpulsatrix_1_1NEATEvolutionResult" ],
       [ "NEATGenome", "classpulsatrix_1_1NEATGenome.html", "classpulsatrix_1_1NEATGenome" ],
       [ "NegationModule", "classpulsatrix_1_1NegationModule.html", "classpulsatrix_1_1NegationModule" ],

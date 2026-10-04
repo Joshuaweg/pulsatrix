@@ -141,6 +141,7 @@ var hierarchy =
     ] ],
     [ "pulsatrix::MSELoss", "classpulsatrix_1_1MSELoss.html", null ],
     [ "pulsatrix::MutationLoss", "classpulsatrix_1_1MutationLoss.html", null ],
+    [ "pulsatrix::NamedParamRef", "structpulsatrix_1_1NamedParamRef.html", null ],
     [ "pulsatrix::NEATEvolutionResult", "structpulsatrix_1_1NEATEvolutionResult.html", null ],
     [ "pulsatrix::NEATGenome", "classpulsatrix_1_1NEATGenome.html", null ],
     [ "pulsatrix::datalog::NeuralPredicateDatalogBridge", "classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html", null ],

@@ -1672,8 +1672,8 @@ members (see <code>include/pulsatrix/xor_training_example.hpp</code>). <code>for
 (CMake target <code>xor_demo</code>). See also the <a href="../recipes/deep-learning/xor_training/">recipe</a>.</p>
 <h3 id="choosing-a-normalization-layer">Choosing a normalization layer<a class="headerlink" href="#choosing-a-normalization-layer" title="Permanent link">&para;</a></h3>
 <p><code>LayerNormModule</code>, <code>RMSNormModule</code>, <code>GroupNormModule</code> and <code>BatchNormModule</code> all implement the
-same <code>Module</code> contract (<code>forward()</code>, <code>backward()</code>, <code>propagate_relevance()</code>, <code>parameters()</code>).
-That makes them interchangeable in a <code>SequentialModule</code>. Pick one by what it normalizes over:</p>
+same <code>Module</code> contract (<code>forward()</code>, <code>backward()</code>, <code>propagate_relevance()</code>,
+<code>named_parameters()</code>). That makes them interchangeable in a <code>SequentialModule</code>. Pick one by what it normalizes over:</p>
 <ul>
 <li><code>LayerNormModule</code> and <code>RMSNormModule</code>: each row's features (the last dimension).
   RMSNorm skips the mean-centering.</li>

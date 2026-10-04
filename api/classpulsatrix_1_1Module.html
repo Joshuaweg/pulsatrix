@@ -194,6 +194,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3a4406bdbcd5f3886c71a24b8ddbf90e" id="r_a3a4406bdbcd5f3886c71a24b8ddbf90e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">op_type</a> () const =0</td></tr>
 <tr class="memdesc:a3a4406bdbcd5f3886c71a24b8ddbf90e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's operation-category tag, for <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> node tagging.  <br /></td></tr>
 <tr class="separator:a3a4406bdbcd5f3886c71a24b8ddbf90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a176c8304fb06ac2792bc046204b65a40" id="r_a176c8304fb06ac2792bc046204b65a40"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">named_parameters</a> ()</td></tr>
+<tr class="memdesc:a176c8304fb06ac2792bc046204b65a40"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
+<tr class="separator:a176c8304fb06ac2792bc046204b65a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
 <tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -441,6 +444,37 @@ A module does not build or own graph structure itself &ndash; <a class="el" href
 
 </div>
 </div>
+<a id="a176c8304fb06ac2792bc046204b65a40" name="a176c8304fb06ac2792bc046204b65a40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a176c8304fb06ac2792bc046204b65a40">&#9670;&#160;</a></span>named_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; pulsatrix::Module::named_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1). </p>
+<dl class="section return"><dt>Returns</dt><dd>{name, {value, grad}} entries pointing directly at this module's own members, in a fixed order. Names are unique within the module tree. Default: empty (a parameterless module like <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a> needs no override). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Override this, not <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>: saving, loading, freezing by name and optimizer parameter groups all key on these names. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classpulsatrix_1_1BatchNormModule.html#a6f5b048237238647f7bf378a0817e56f">pulsatrix::BatchNormModule</a>, <a class="el" href="classpulsatrix_1_1Conv2DModule.html#a1d551f302f993c0d64897ab3b39f754a">pulsatrix::Conv2DModule</a>, <a class="el" href="classpulsatrix_1_1EmbeddingModule.html#a76b4f62a3470dff120e9eb2b5fca1e5a">pulsatrix::EmbeddingModule</a>, <a class="el" href="classpulsatrix_1_1GroupNormModule.html#a2d2fd36a2aaa68400856110c92cd78a5">pulsatrix::GroupNormModule</a>, <a class="el" href="classpulsatrix_1_1GRUModule.html#afd8c7946865bb0947e9bc15a4a50781f">pulsatrix::GRUModule</a>, <a class="el" href="classpulsatrix_1_1LayerNormModule.html#ace346d5dabeb76a7c0c9b40b59c55d60">pulsatrix::LayerNormModule</a>, <a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f">pulsatrix::LinearModule</a>, <a class="el" href="classpulsatrix_1_1LSTMModule.html#aa3b61a137ac8cb4be035c6cb44161433">pulsatrix::LSTMModule</a>, <a class="el" href="classpulsatrix_1_1MambaModule.html#a14c0e268af88f53dc45a4daf8a1a1f65">pulsatrix::MambaModule</a>, <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47">pulsatrix::MultiHeadAttentionModule</a>, <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff">pulsatrix::ResidualModule</a>, <a class="el" href="classpulsatrix_1_1RetNetModule.html#ac38f050e39a73d96e9626791cfd73672">pulsatrix::RetNetModule</a>, <a class="el" href="classpulsatrix_1_1RMSNormModule.html#ad22322feedcb4427a58cbfb2d606152d">pulsatrix::RMSNormModule</a>, <a class="el" href="classpulsatrix_1_1RNNModule.html#a74e591df51eff39d4c60ad7cc5170c7d">pulsatrix::RNNModule</a>, <a class="el" href="classpulsatrix_1_1RWKVModule.html#a77bcf685f363b7c51932f9b64619817e">pulsatrix::RWKVModule</a>, <a class="el" href="classpulsatrix_1_1SequentialModule.html#a4e19fb5edefe41f299248330196ffd8b">pulsatrix::SequentialModule</a>, <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ace63830acc8508b912164c6464478efb">pulsatrix::SwiGLUModule</a>, and <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0188111235c169804ad301202c7c91cf">pulsatrix::TransformerBlock</a>.</p>
+
+</div>
+</div>
 <a id="a3a4406bdbcd5f3886c71a24b8ddbf90e" name="a3a4406bdbcd5f3886c71a24b8ddbf90e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3a4406bdbcd5f3886c71a24b8ddbf90e">&#9670;&#160;</a></span>op_type()</h2>
 
@@ -496,10 +530,10 @@ A module does not build or own graph structure itself &ndash; <a class="el" href
 </div><div class="memdoc">
 
 <p>This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types. </p>
-<dl class="section return"><dt>Returns</dt><dd>{value, grad} pairs pointing directly at this module's own members. Default: empty (a parameterless module like <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a> needs no override). </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Not pure-virtual &ndash; unlike propagate_relevance, there is no charter non-negotiable requiring every module to define this; "no parameters" is a legitimate, common answer that shouldn't need restating per module type. </dd></dl>
-
-<p>Reimplemented in <a class="el" href="classpulsatrix_1_1BatchNormModule.html#a0ac3bda5ea17f5f45554d7718d0b3172">pulsatrix::BatchNormModule</a>, <a class="el" href="classpulsatrix_1_1Conv2DModule.html#a1f43cc5a0389759a489f32b1e3a7fde2">pulsatrix::Conv2DModule</a>, <a class="el" href="classpulsatrix_1_1EmbeddingModule.html#aa078a2a769f961028cdf6d6b8e06c17a">pulsatrix::EmbeddingModule</a>, <a class="el" href="classpulsatrix_1_1GroupNormModule.html#abc1f1e60176c4e779c98687196e8d3a1">pulsatrix::GroupNormModule</a>, <a class="el" href="classpulsatrix_1_1GRUModule.html#a668438c7388e1bcc15702cc8a9c0a2df">pulsatrix::GRUModule</a>, <a class="el" href="classpulsatrix_1_1LayerNormModule.html#ad620791f2e7d83d61d1e153e785d4ae0">pulsatrix::LayerNormModule</a>, <a class="el" href="classpulsatrix_1_1LinearModule.html#a79dde038410ec9f7988f068825e4b919">pulsatrix::LinearModule</a>, <a class="el" href="classpulsatrix_1_1LSTMModule.html#aff39e6c547404af59f483aa9a3f3e3de">pulsatrix::LSTMModule</a>, <a class="el" href="classpulsatrix_1_1MambaModule.html#a1c1cd72262497fd1458f9e30d58d8a5f">pulsatrix::MambaModule</a>, <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a88d6ee3eaedcda9087f0dc19eafb3960">pulsatrix::MultiHeadAttentionModule</a>, <a class="el" href="classpulsatrix_1_1ResidualModule.html#ab17841b847e04f9a8ac0d3ab51f4f5b3">pulsatrix::ResidualModule</a>, <a class="el" href="classpulsatrix_1_1RetNetModule.html#acb4da186e8a11021b0e0b3c3ab37925c">pulsatrix::RetNetModule</a>, <a class="el" href="classpulsatrix_1_1RMSNormModule.html#a4188d56cbc80898c515664412beba931">pulsatrix::RMSNormModule</a>, <a class="el" href="classpulsatrix_1_1RNNModule.html#a7c9ecf0f7673413c4e833f63265a9509">pulsatrix::RNNModule</a>, <a class="el" href="classpulsatrix_1_1RWKVModule.html#ad29aed41802f00a12da92cdc17181ad7">pulsatrix::RWKVModule</a>, <a class="el" href="classpulsatrix_1_1SequentialModule.html#ad3faf46a52d7f3913ca95d2c66802bf5">pulsatrix::SequentialModule</a>, <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#aebc0f6ef524077ef35a20d4d71b4f608">pulsatrix::SwiGLUModule</a>, and <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a975b2286329610d1cf577905f26a0a35">pulsatrix::TransformerBlock</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a> without the names &ndash; same tensors, same order. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Not pure-virtual &ndash; unlike propagate_relevance, there is no charter non-negotiable requiring every module to define this; "no parameters" is a legitimate, common answer that shouldn't need restating per module type. </dd>
+<dd>
+Still virtual only so subclasses written before <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a> existed keep compiling and training. Such a subclass reports no names, so name-keyed features can't see its parameters; new code overrides <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a> instead. </dd></dl>
 
 </div>
 </div>

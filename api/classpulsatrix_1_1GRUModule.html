@@ -203,9 +203,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad3218c66d7bd021c36ef151c9b708ad9" id="r_ad3218c66d7bd021c36ef151c9b708ad9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GRUModule.html#ad3218c66d7bd021c36ef151c9b708ad9">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:ad3218c66d7bd021c36ef151c9b708ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arras et al. 2019 gate-signal <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, extended to GRU: gates conduct, signals receive, and the carried h_{t-1} relevance sums a direct and a candidate-path contribution. See the class-level note for the full per-timestep redistribution.  <br /></td></tr>
 <tr class="separator:ad3218c66d7bd021c36ef151c9b708ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a668438c7388e1bcc15702cc8a9c0a2df" id="r_a668438c7388e1bcc15702cc8a9c0a2df"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GRUModule.html#a668438c7388e1bcc15702cc8a9c0a2df">parameters</a> () override</td></tr>
-<tr class="memdesc:a668438c7388e1bcc15702cc8a9c0a2df"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
-<tr class="separator:a668438c7388e1bcc15702cc8a9c0a2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd8c7946865bb0947e9bc15a4a50781f" id="r_afd8c7946865bb0947e9bc15a4a50781f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GRUModule.html#afd8c7946865bb0947e9bc15a4a50781f">named_parameters</a> () override</td></tr>
+<tr class="memdesc:afd8c7946865bb0947e9bc15a4a50781f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
+<tr class="separator:afd8c7946865bb0947e9bc15a4a50781f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
 <tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
 <tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +218,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module" id="r_acad2aa6565d456d5a57be421c05537b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule) const</td></tr>
 <tr class="memdesc:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">propagate_relevance()</a> implements <code>rule</code> (no silent fallback: callers such as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass()</a> throw rather than run a module on a rule it does not implement).  <br /></td></tr>
 <tr class="separator:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
+<tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
+<tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module" id="r_a55b0040f136cc7898a127791253b46a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">set_training</a> (bool training)</td></tr>
 <tr class="memdesc:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default).  <br /></td></tr>
 <tr class="separator:a55b0040f136cc7898a127791253b46a5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -529,6 +532,37 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="afd8c7946865bb0947e9bc15a4a50781f" name="afd8c7946865bb0947e9bc15a4a50781f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd8c7946865bb0947e9bc15a4a50781f">&#9670;&#160;</a></span>named_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; pulsatrix::GRUModule::named_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1). </p>
+<dl class="section return"><dt>Returns</dt><dd>{name, {value, grad}} entries pointing directly at this module's own members, in a fixed order. Names are unique within the module tree. Default: empty (a parameterless module like <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a> needs no override). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Override this, not <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>: saving, loading, freezing by name and optimizer parameter groups all key on these names. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
 <a id="ac2d883bd2214de50c8984aa3ee7e7934" name="ac2d883bd2214de50c8984aa3ee7e7934"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac2d883bd2214de50c8984aa3ee7e7934">&#9670;&#160;</a></span>op_type()</h2>
 
@@ -555,37 +589,6 @@ Protected Member Functions</h2></td></tr>
 <p>Recurrent per charter's closed OpType set &ndash; a compound accumulate-over-time operation, shared with RNNModule/LSTMModule (no enum change for this mission). </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">pulsatrix::Module</a>.</p>
-
-</div>
-</div>
-<a id="a668438c7388e1bcc15702cc8a9c0a2df" name="a668438c7388e1bcc15702cc8a9c0a2df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a668438c7388e1bcc15702cc8a9c0a2df">&#9670;&#160;</a></span>parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt; pulsatrix::GRUModule::parameters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types. </p>
-<dl class="section return"><dt>Returns</dt><dd>{value, grad} pairs pointing directly at this module's own members. Default: empty (a parameterless module like <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a> needs no override). </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Not pure-virtual &ndash; unlike propagate_relevance, there is no charter non-negotiable requiring every module to define this; "no parameters" is a legitimate, common answer that shouldn't need restating per module type. </dd></dl>
-
-<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

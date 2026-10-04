@@ -66,18 +66,18 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1CPUBackend.html#a805dbc60d8b59e886f325d3dc3d6d172",
 "classpulsatrix_1_1Compose.html#ac9ef5828a5a5d68a2d2490a628c29162",
 "classpulsatrix_1_1DeviceBackend.html#a8c27211ec8f3074b8fa17da3b05d2704",
-"classpulsatrix_1_1GRUModule.html#adb25792a0cd537e916e603feaa970057",
+"classpulsatrix_1_1GRUModule.html#ade60c3c98243b649a0f4213dfa8eceb4",
 "classpulsatrix_1_1ImPlotMetricsSink.html#af6a14d7b939a99acbee3607c1e6c2f7e",
 "classpulsatrix_1_1MSELoss.html#a6d5585d30079af244aaf7bf8202378ea",
-"classpulsatrix_1_1NoiseSchedule.html#a62eeb0e2312ef57ee8418fe40980b0ce",
-"classpulsatrix_1_1ResidualModule.html#aff80847126102d8c3e5af7ababb72f8a",
-"classpulsatrix_1_1SwiGLUModule.html#a8a476b5d2e6e47da7c26d6399184c793",
-"classpulsatrix_1_1VizWindow.html#af24d3a1ef37b1d9fadcd1f9ff14573ad",
-"functions_r.html",
-"namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3",
-"structpulsatrix_1_1ConservationResult.html#add420648be792522a5b8a2914ca79437",
-"structpulsatrix_1_1RecurrentCellArgs.html#a5035dd2c114ae7655aef03c346eb076d",
-"structpulsatrix_1_1detail_1_1CpuTimes.html"
+"classpulsatrix_1_1NoiseSchedule.html#a2cccd62bc3bd208dd50c05be7a389dd5",
+"classpulsatrix_1_1ResidualModule.html#ac6ecb7aacdfdd5a827db5a76432b82a2",
+"classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54",
+"classpulsatrix_1_1VizWindow.html#aad447ed9b3ff31bb50bcc15f0fe68042",
+"functions_p.html",
+"namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa",
+"structpulsatrix_1_1ConservationResult.html#a5b06706b66488e4f600032856347b9d1",
+"structpulsatrix_1_1ParameterSpec.html#a64ac6009017302f66e9b3c0fa7319191",
+"structpulsatrix_1_1detail_1_1ASHACandidate.html#ad9cb9bcfc8bfab59b8fe57a0d32bc26e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

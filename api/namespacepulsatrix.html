@@ -462,6 +462,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MutationLoss.html">MutationLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes one of E-GAN's three named mutation objectives against a discriminator's own raw logit output, and its gradient w.r.t. those logits. Every objective trains the generator to make the discriminator's output move toward the "real" (1) class &ndash; they differ only in <em>how</em> that pressure is shaped (saturating vs. non-saturating vs. quadratic).  <a href="classpulsatrix_1_1MutationLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parameter together with its hierarchical, dot-separated name relative to the module that reported it (<code>weight</code>, <code>mha.q_proj.bias</code>, <code>0.weight</code>).  <a href="structpulsatrix_1_1NamedParamRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NEATEvolutionResult.html">NEATEvolutionResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of a full NEAT evolutionary run.  <a href="structpulsatrix_1_1NEATEvolutionResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1086,6 +1089,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a70d91036da1e9b810ec33f0b81f04cc7" id="r_a70d91036da1e9b810ec33f0b81f04cc7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a70d91036da1e9b810ec33f0b81f04cc7">lrp_rule_name</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule)</td></tr>
 <tr class="memdesc:a70d91036da1e9b810ec33f0b81f04cc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lower-case rule name ("epsilon", "gamma", "alpha_beta", "zbox") for messages/metadata.  <br /></td></tr>
 <tr class="separator:a70d91036da1e9b810ec33f0b81f04cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d4d176932520c4b6229ffd1454471de" id="r_a8d4d176932520c4b6229ffd1454471de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8d4d176932520c4b6229ffd1454471de">append_named_parameters</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; &amp;out, const std::string &amp;prefix, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;child)</td></tr>
+<tr class="memdesc:a8d4d176932520c4b6229ffd1454471de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends <code>child</code>'s named parameters to <code>out</code>, each renamed to <code>prefix.name</code> &ndash; the one step every container's named_parameters() repeats per child.  <br /></td></tr>
+<tr class="separator:a8d4d176932520c4b6229ffd1454471de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88c88a8898d6848d8a6a21e268ef4035" id="r_a88c88a8898d6848d8a6a21e268ef4035"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a88c88a8898d6848d8a6a21e268ef4035">BitFlipMutationByMask</a> (const std::vector&lt; bool &gt; &amp;genotype, const std::vector&lt; bool &gt; &amp;flip_mask)</td></tr>
 <tr class="memdesc:a88c88a8898d6848d8a6a21e268ef4035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flips each gene where flip_mask is true, leaves the rest unchanged.  <br /></td></tr>
 <tr class="separator:a88c88a8898d6848d8a6a21e268ef4035"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1966,6 +1972,51 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8d4d176932520c4b6229ffd1454471de" name="a8d4d176932520c4b6229ffd1454471de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d4d176932520c4b6229ffd1454471de">&#9670;&#160;</a></span>append_named_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::append_named_parameters </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>child</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Appends <code>child</code>'s named parameters to <code>out</code>, each renamed to <code>prefix.name</code> &ndash; the one step every container's named_parameters() repeats per child. </p>
+<dl class="section note"><dt>Note</dt><dd>A child that overrides only the legacy parameters() hook reports no names; its parameters are appended under positional names (<code>prefix.0</code>, <code>prefix.1</code>, ...) so a container never hides them from an optimizer that used to see them. </dd></dl>
 
 </div>
 </div>
