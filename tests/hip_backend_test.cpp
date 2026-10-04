@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <cstdlib>
 #include <new>
 #include <vector>
 
@@ -50,6 +51,33 @@ TEST_F(HIPBackendTest, MemoryBudgetIsEnforced) {
     EXPECT_THROW((void)backend.allocate(size_t{2} << 20), std::bad_alloc);
     backend.free(p);
     backend.set_memory_budget(0);
+}
+
+// HIP-4: ops are asynchronous unless PULSATRIX_HIP_SYNC_DEBUG=1 when the backend is created.
+TEST(HIPBackendSyncDebugTest, EnvironmentFlagRestoresPerOpSyncs) {
+    ::unsetenv("PULSATRIX_HIP_SYNC_DEBUG");
+    EXPECT_FALSE(HIPBackend().sync_debug());
+    ::setenv("PULSATRIX_HIP_SYNC_DEBUG", "1", 1);
+    EXPECT_TRUE(HIPBackend().sync_debug());
+    ::setenv("PULSATRIX_HIP_SYNC_DEBUG", "0", 1);
+    EXPECT_FALSE(HIPBackend().sync_debug());
+    ::unsetenv("PULSATRIX_HIP_SYNC_DEBUG");
+}
+
+// A long chain of queued ops, read back once at the end, matches the CPU: nothing reads early.
+TEST_F(HIPBackendTest, AQueuedChainIsReadBackCorrectly) {
+    CPUBackend cpu;
+    std::vector<float> v(4096);
+    for (size_t i = 0; i < v.size(); ++i) v[i] = 0.001f * static_cast<float>(static_cast<int>(i % 97) - 48);
+    Tensor g(Shape({4096}), &backend, v), c(Shape({4096}), &cpu, v);
+    for (int k = 0; k < 200; ++k) {
+        backend.axpby(0.99f, g.data(), 0.01f, g.data(), g.data(), 4096);
+        backend.elementwise(ElementwiseOp::Tanh, g.data(), g.data(), 4096);
+        cpu.axpby(0.99f, c.data(), 0.01f, c.data(), c.data(), 4096);
+        cpu.elementwise(ElementwiseOp::Tanh, c.data(), c.data(), 4096);
+    }
+    const std::vector<float> got = g.to_host_vector();
+    for (size_t i = 0; i < got.size(); ++i) EXPECT_NEAR(got[i], c.data()[i], 1e-5f) << i;
 }
 
 TEST_F(HIPBackendTest, AllocateReturnsNonNullForPositiveSize) {
