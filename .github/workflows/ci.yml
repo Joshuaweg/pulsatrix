@@ -7,6 +7,9 @@ on:
 
 jobs:
   build-and-test:
+    # A fixed name per OS: branch protection requires checks by name, and GitHub's default
+    # name lists every matrix value, so changing any build detail would orphan the requirement.
+    name: build-and-test (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
