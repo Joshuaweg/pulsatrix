@@ -656,6 +656,19 @@ public:
      *       caller with column_sums, which adds rows in increasing order like the original loop.
      */
     virtual void rl_rows(RlRowOp op, const RlRowArgs& args) = 0;
+
+    // ---- FND-3: selection ------------------------------------------------------------------
+
+    /**
+     * @brief Per row of a row-major (rows, cols) matrix: the k largest (or smallest) values in
+     *        rank order into `values` (rows, k), and their column indices into `indices` (rows, k)
+     *        as whole-number floats.
+     * @note Order: NaN ranks above every number; equal values keep the lower column index first.
+     *       One lane per row, pure selection: every backend's output is bit-identical.
+     * @note Preconditions, validated by the caller (top_k()): 1 <= k <= cols, cols <= 2^24.
+     */
+    virtual void top_k_rows(const float* in, float* values, float* indices, size_t rows, size_t cols, size_t k,
+                            bool largest) = 0;
 };
 
 }  // namespace pulsatrix

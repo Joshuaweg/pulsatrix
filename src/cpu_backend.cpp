@@ -7,6 +7,7 @@
 #include "rl_math.hpp"
 #include "row_math.hpp"
 #include "ssm_math.hpp"
+#include "top_k_math.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -756,6 +757,16 @@ void CPUBackend::ssm_pass(SsmPassOp op, const SsmPassArgs& args) {
 void CPUBackend::rl_rows(RlRowOp op, const RlRowArgs& args) {
     for (int64_t b = 0; b < args.rows; ++b) {
         rl::row(op, args, b);
+    }
+}
+
+// ---- FND-3: selection ----------------------------------------------------------------------
+
+void CPUBackend::top_k_rows(const float* in, float* values, float* indices, size_t rows, size_t cols, size_t k,
+                            bool largest) {
+    for (size_t r = 0; r < rows; ++r) {
+        topk::row(in + r * cols, values + r * k, indices + r * k, static_cast<int64_t>(cols),
+                  static_cast<int64_t>(k), largest);
     }
 }
 
