@@ -74,12 +74,12 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1RNNModule.html#aa9f50e78ceff911f625f0b85aa7b62fd",
 "classpulsatrix_1_1RolloutBuffer.html#a77ee138b973c11a778c50f0cb40434ac",
 "classpulsatrix_1_1TanhGaussianPolicy.html#a91c0bdf9f5c3a45065361f3f35706e09",
-"classpulsatrix_1_1datalog_1_1Atom.html#a11ad0291ae9925a780e03f61ee3c2871",
-"functions_vars_w.html",
-"namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883accf9209bedc3fd2059a7daa6455e147a",
-"structpulsatrix_1_1CircuitEdge.html#aa5ed86f49caff54ad6a03ac4ddd4f3b2",
-"structpulsatrix_1_1MnistDataset.html#a84784f8903ae0e3fef56ee7f1b1edc42",
-"structpulsatrix_1_1SystemSample.html#a232aec337561aaeccbec56c26e605adf"
+"classpulsatrix_1_1XorNetwork.html#ad4589e6c0b812cb3d6548a9da43aed06",
+"functions_vars_m.html",
+"namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4",
+"structpulsatrix_1_1CMAESState.html#a8aa21589dba05a6e8b1fdc0bee7aa1bb",
+"structpulsatrix_1_1MetricRecord.html",
+"structpulsatrix_1_1SuccessiveHalvingResult.html#a57e706f43e946f8de6a474c235f7030a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

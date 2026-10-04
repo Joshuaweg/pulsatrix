@@ -10,13 +10,14 @@ var searchData=
   ['kernelshap_7',['KernelSHAP',['../classpulsatrix_1_1KernelSHAP.html',1,'pulsatrix']]],
   ['kfixedtopologyxornumparams_8',['kFixedTopologyXORNumParams',['../namespacepulsatrix.html#abdfe136720681063b92cf1cda99ccfa5',1,'pulsatrix']]],
   ['kh_9',['kh',['../structpulsatrix_1_1ConvGeometry.html#a25629392ac9ed80e051edf1947af4c8f',1,'pulsatrix::ConvGeometry']]],
-  ['kind_10',['kind',['../classpulsatrix_1_1datalog_1_1Term.html#a7863c28de0df284fc10fe6a001c0a82c',1,'pulsatrix::datalog::Term::kind()'],['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind']]],
-  ['kl_5fdivergence_5floss_2ehpp_11',['kl_divergence_loss.hpp',['../kl__divergence__loss_8hpp.html',1,'']]],
-  ['kldivergenceloss_12',['kldivergenceloss',['../classpulsatrix_1_1KLDivergenceLoss.html#a3482d2b0e38e3be249685506ddbcbc84',1,'pulsatrix::KLDivergenceLoss::KLDivergenceLoss()'],['../classpulsatrix_1_1KLDivergenceLoss.html',1,'pulsatrix::KLDivergenceLoss']]],
-  ['klogprobstabilizer_13',['kLogProbStabilizer',['../classpulsatrix_1_1TanhGaussianPolicy.html#a70e084dd37bfa0a8c7c9fe4f67a8d66d',1,'pulsatrix::TanhGaussianPolicy']]],
-  ['kthetathreshold_14',['kthetathreshold',['../classpulsatrix_1_1CartPoleEnv.html#a578bd10772e6d773551b3b1706e30cf2',1,'pulsatrix::CartPoleEnv::kThetaThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a6c349416d875dd3fed7966e880ca4770',1,'pulsatrix::ContinuousCartPoleEnv::kThetaThreshold']]],
-  ['kunkindex_15',['kUnkIndex',['../classpulsatrix_1_1Vocabulary.html#adf6ce45df1fa2aec244bef15f7387dc1',1,'pulsatrix::Vocabulary']]],
-  ['kunktoken_16',['kUnkToken',['../classpulsatrix_1_1Vocabulary.html#afc3a1419ab5f15f4a600a081e94cdadb',1,'pulsatrix::Vocabulary']]],
-  ['kw_17',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
-  ['kxthreshold_18',['kxthreshold',['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold']]]
+  ['kignoreindex_10',['kIgnoreIndex',['../classpulsatrix_1_1TokenCrossEntropyLoss.html#a179bb970fc18d8fd27c6058a2581d3c8',1,'pulsatrix::TokenCrossEntropyLoss']]],
+  ['kind_11',['kind',['../classpulsatrix_1_1datalog_1_1Term.html#a7863c28de0df284fc10fe6a001c0a82c',1,'pulsatrix::datalog::Term::kind()'],['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind']]],
+  ['kl_5fdivergence_5floss_2ehpp_12',['kl_divergence_loss.hpp',['../kl__divergence__loss_8hpp.html',1,'']]],
+  ['kldivergenceloss_13',['kldivergenceloss',['../classpulsatrix_1_1KLDivergenceLoss.html#a3482d2b0e38e3be249685506ddbcbc84',1,'pulsatrix::KLDivergenceLoss::KLDivergenceLoss()'],['../classpulsatrix_1_1KLDivergenceLoss.html',1,'pulsatrix::KLDivergenceLoss']]],
+  ['klogprobstabilizer_14',['kLogProbStabilizer',['../classpulsatrix_1_1TanhGaussianPolicy.html#a70e084dd37bfa0a8c7c9fe4f67a8d66d',1,'pulsatrix::TanhGaussianPolicy']]],
+  ['kthetathreshold_15',['kthetathreshold',['../classpulsatrix_1_1CartPoleEnv.html#a578bd10772e6d773551b3b1706e30cf2',1,'pulsatrix::CartPoleEnv::kThetaThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a6c349416d875dd3fed7966e880ca4770',1,'pulsatrix::ContinuousCartPoleEnv::kThetaThreshold']]],
+  ['kunkindex_16',['kUnkIndex',['../classpulsatrix_1_1Vocabulary.html#adf6ce45df1fa2aec244bef15f7387dc1',1,'pulsatrix::Vocabulary']]],
+  ['kunktoken_17',['kUnkToken',['../classpulsatrix_1_1Vocabulary.html#afc3a1419ab5f15f4a600a081e94cdadb',1,'pulsatrix::Vocabulary']]],
+  ['kw_18',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
+  ['kxthreshold_19',['kxthreshold',['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold']]]
 ];

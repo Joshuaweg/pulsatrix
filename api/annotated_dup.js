@@ -220,6 +220,7 @@ var annotated_dup =
       [ "Tensor", "classpulsatrix_1_1Tensor.html", "classpulsatrix_1_1Tensor" ],
       [ "TextDataset", "classpulsatrix_1_1TextDataset.html", "classpulsatrix_1_1TextDataset" ],
       [ "TextureCache", "classpulsatrix_1_1TextureCache.html", "classpulsatrix_1_1TextureCache" ],
+      [ "TokenCrossEntropyLoss", "classpulsatrix_1_1TokenCrossEntropyLoss.html", "classpulsatrix_1_1TokenCrossEntropyLoss" ],
       [ "Tokenizer", "classpulsatrix_1_1Tokenizer.html", null ],
       [ "TopKResult", "structpulsatrix_1_1TopKResult.html", "structpulsatrix_1_1TopKResult" ],
       [ "ToyKnowledgeBase", "classpulsatrix_1_1ToyKnowledgeBase.html", "classpulsatrix_1_1ToyKnowledgeBase" ],
