@@ -2,6 +2,7 @@ var hierarchy =
 [
     [ "pulsatrix::ActivationSnapshot", "classpulsatrix_1_1ActivationSnapshot.html", null ],
     [ "pulsatrix::AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", null ],
+    [ "pulsatrix::AdamOptimizer::AdamState", "structpulsatrix_1_1AdamOptimizer_1_1AdamState.html", null ],
     [ "pulsatrix::Agent", "classpulsatrix_1_1Agent.html", [
       [ "pulsatrix::CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", null ],
       [ "pulsatrix::DQNAgent", "classpulsatrix_1_1DQNAgent.html", null ]
@@ -9,6 +10,7 @@ var hierarchy =
     [ "pulsatrix::detail::AmdGpuDevice", "structpulsatrix_1_1detail_1_1AmdGpuDevice.html", null ],
     [ "pulsatrix::detail::ASHACandidate", "structpulsatrix_1_1detail_1_1ASHACandidate.html", null ],
     [ "pulsatrix::ASHAResult", "structpulsatrix_1_1ASHAResult.html", null ],
+    [ "pulsatrix::ParamGroupSet::Assignment", "structpulsatrix_1_1ParamGroupSet_1_1Assignment.html", null ],
     [ "pulsatrix::datalog::Atom", "classpulsatrix_1_1datalog_1_1Atom.html", null ],
     [ "pulsatrix::datalog::AtomHash", "structpulsatrix_1_1datalog_1_1AtomHash.html", null ],
     [ "pulsatrix::Attribution", "structpulsatrix_1_1Attribution.html", null ],
@@ -24,6 +26,7 @@ var hierarchy =
     [ "pulsatrix::datalog::BooleanSemiring", "structpulsatrix_1_1datalog_1_1BooleanSemiring.html", null ],
     [ "pulsatrix::BoundedQueue< T >", "classpulsatrix_1_1BoundedQueue.html", null ],
     [ "pulsatrix::CalibrationLoss", "classpulsatrix_1_1CalibrationLoss.html", null ],
+    [ "pulsatrix::CheckpointLoadOptions", "structpulsatrix_1_1CheckpointLoadOptions.html", null ],
     [ "pulsatrix::CircuitEdge", "structpulsatrix_1_1CircuitEdge.html", null ],
     [ "pulsatrix::CircuitGraph", "classpulsatrix_1_1CircuitGraph.html", null ],
     [ "pulsatrix::CircuitGraphView", "classpulsatrix_1_1CircuitGraphView.html", null ],
@@ -145,6 +148,7 @@ var hierarchy =
     ] ],
     [ "pulsatrix::MSELoss", "classpulsatrix_1_1MSELoss.html", null ],
     [ "pulsatrix::MutationLoss", "classpulsatrix_1_1MutationLoss.html", null ],
+    [ "pulsatrix::NamedBufferRef", "structpulsatrix_1_1NamedBufferRef.html", null ],
     [ "pulsatrix::NamedParamRef", "structpulsatrix_1_1NamedParamRef.html", null ],
     [ "pulsatrix::NEATEvolutionResult", "structpulsatrix_1_1NEATEvolutionResult.html", null ],
     [ "pulsatrix::NEATGenome", "classpulsatrix_1_1NEATGenome.html", null ],
@@ -157,6 +161,8 @@ var hierarchy =
     [ "pulsatrix::NoiseSchedule", "classpulsatrix_1_1NoiseSchedule.html", null ],
     [ "pulsatrix::SystemMonitor::Options", "structpulsatrix_1_1SystemMonitor_1_1Options.html", null ],
     [ "pulsatrix::ParameterSpec", "structpulsatrix_1_1ParameterSpec.html", null ],
+    [ "pulsatrix::ParamGroup", "structpulsatrix_1_1ParamGroup.html", null ],
+    [ "pulsatrix::ParamGroupSet", "classpulsatrix_1_1ParamGroupSet.html", null ],
     [ "pulsatrix::ParamRef", "structpulsatrix_1_1ParamRef.html", null ],
     [ "pulsatrix::PBTResult", "structpulsatrix_1_1PBTResult.html", null ],
     [ "pulsatrix::PBTTruncationGroups", "structpulsatrix_1_1PBTTruncationGroups.html", null ],

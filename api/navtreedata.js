@@ -64,22 +64,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CPUBackend.html#a5636611d7e3c7c185a7d435a20794323",
-"classpulsatrix_1_1CartPoleEnv.html#a0e6121c711ed0891f8822b4178343cdf",
-"classpulsatrix_1_1DeviceBackend.html#a171a50250bf4560d92c7e71da4cc1afa",
-"classpulsatrix_1_1FlattenModule.html#a7358a8d18620d98e71a05bf13730687f",
-"classpulsatrix_1_1HIPBackend.html#ab62ba66f083956b40cf612fd866cc2ac",
-"classpulsatrix_1_1LayerNormModule.html#a63dda6117e9e3148f458747c449522ea",
-"classpulsatrix_1_1MultiHeadAttentionModule.html#a5949a91915019e6d0067f167f908c180",
-"classpulsatrix_1_1RWKVModule.html#a77bcf685f363b7c51932f9b64619817e",
-"classpulsatrix_1_1SatisfactionLoss.html#ad04f5ca39298452cb5084c11c6d6cbc1",
-"classpulsatrix_1_1TextDataset.html#adb902ad1d0b4e655003ce6fa720c421b",
-"classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html#a6cabbbc3e358b14ed284a65656514fbb",
-"mse__loss_8hpp.html",
-"namespacepulsatrix.html#afcbb0593c7f9f2201095dbf4675a7cff",
-"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a5cc0627fbdbed23c8324f07e0b597705",
-"structpulsatrix_1_1RgbColor.html#ab7cf0a6380926071d0c80730b45612e3",
-"structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb"
+"classpulsatrix_1_1CPUBackend.html#a388f0b7504913b8ca4f0576dedef6712",
+"classpulsatrix_1_1CUDABackend.html#afae4a1ce5c056dfba98b9f1e956708c2",
+"classpulsatrix_1_1DetailedBalanceLoss.html#af1c1847fc1fcf93a2c269b51ecf0197a",
+"classpulsatrix_1_1ExplainerContext.html#ae65d5fc0ee75deda3c5e895ec5b01991",
+"classpulsatrix_1_1HIPBackend.html#aa0317a1bf0e8756958a81c06c5318e19",
+"classpulsatrix_1_1LSTMModule.html#afa3bb23f5ca6ab67330dfe994343f98a",
+"classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809",
+"classpulsatrix_1_1RWKVModule.html#a1cf2964d2a913912280f49b8ec68c56f",
+"classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba",
+"classpulsatrix_1_1Tensor.html#a66cf64adde5d5ab375ffe88edddfb7de",
+"classpulsatrix_1_1datalog_1_1FactDatabase.html#aceea37e0dc1072535bd08c7431c40ea0",
+"group__neuro__symbolic.html",
+"namespacepulsatrix.html#ab80c96d8d4b45a6185d821cb5c24804a",
+"structpulsatrix_1_1ConservationResult.html#a17301dc10e6817ddefbf9f16d9ab9da5",
+"structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a29c2c02a361c9d7028472e5d92cd4a54",
+"structpulsatrix_1_1ValidationIssue.html#a4e7d420ee76ec19d5ff166affd70c472"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

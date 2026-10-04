@@ -9,6 +9,7 @@ var classpulsatrix_1_1MultiHeadAttentionModule =
     [ "k_norm", "classpulsatrix_1_1MultiHeadAttentionModule.html#aa30ab9a8442e4e2e2af30582543d2f44", null ],
     [ "k_proj", "classpulsatrix_1_1MultiHeadAttentionModule.html#a92a72fc82ddda97df2467b46bc465b0c", null ],
     [ "last_attention_weights", "classpulsatrix_1_1MultiHeadAttentionModule.html#a403e6584eb71aedadccf2ea8071f637e", null ],
+    [ "named_buffers", "classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81", null ],
     [ "named_parameters", "classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47", null ],
     [ "num_heads", "classpulsatrix_1_1MultiHeadAttentionModule.html#a64f3e2c31c91c88da3fcfedaa47fa588", null ],
     [ "op_type", "classpulsatrix_1_1MultiHeadAttentionModule.html#a43f51ba7b867c44102fec4723ae75844", null ],

@@ -176,6 +176,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afd6e4948d9781cf38124f32455789746" id="r_afd6e4948d9781cf38124f32455789746"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#afd6e4948d9781cf38124f32455789746">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:afd6e4948d9781cf38124f32455789746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identity-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation (AttnLRP, Achtibat et al. 2024).  <br /></td></tr>
 <tr class="separator:afd6e4948d9781cf38124f32455789746"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19cd221666322cdb2442457cb6e5788d" id="r_a19cd221666322cdb2442457cb6e5788d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a19cd221666322cdb2442457cb6e5788d">named_buffers</a> () override</td></tr>
+<tr class="memdesc:a19cd221666322cdb2442457cb6e5788d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The running statistics, which checkpoints save but no optimizer updates (IO-2).  <br /></td></tr>
+<tr class="separator:a19cd221666322cdb2442457cb6e5788d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f5b048237238647f7bf378a0817e56f" id="r_a6f5b048237238647f7bf378a0817e56f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BatchNormModule.html#a6f5b048237238647f7bf378a0817e56f">named_parameters</a> () override</td></tr>
 <tr class="memdesc:a6f5b048237238647f7bf378a0817e56f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
 <tr class="separator:a6f5b048237238647f7bf378a0817e56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -521,6 +524,35 @@ For <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a19cd221666322cdb2442457cb6e5788d" name="a19cd221666322cdb2442457cb6e5788d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19cd221666322cdb2442457cb6e5788d">&#9670;&#160;</a></span>named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; pulsatrix::BatchNormModule::named_buffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The running statistics, which checkpoints save but no optimizer updates (IO-2). </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

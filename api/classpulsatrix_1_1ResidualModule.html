@@ -144,6 +144,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a19cce6fac532283f2dfe2bbb9006afff" id="r_a19cce6fac532283f2dfe2bbb9006afff"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff">named_parameters</a> () override</td></tr>
 <tr class="memdesc:a19cce6fac532283f2dfe2bbb9006afff"><td class="mdescLeft">&#160;</td><td class="mdescRight">inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>, prefixed <code>inner.</code> &ndash; this module owns none of its own.  <br /></td></tr>
 <tr class="separator:a19cce6fac532283f2dfe2bbb9006afff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02919377ea0e561e90fd35eaf5c69665" id="r_a02919377ea0e561e90fd35eaf5c69665"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665">named_buffers</a> () override</td></tr>
+<tr class="memdesc:a02919377ea0e561e90fd35eaf5c69665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every layer's <a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>.  <br /></td></tr>
+<tr class="separator:a02919377ea0e561e90fd35eaf5c69665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a366cf671459f34f026677d08d6bbc48a" id="r_a366cf671459f34f026677d08d6bbc48a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a366cf671459f34f026677d08d6bbc48a">set_training</a> (bool training) override</td></tr>
 <tr class="memdesc:a366cf671459f34f026677d08d6bbc48a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cascades to inner_, the same way SequentialModule/MultiHeadAttentionModule do.  <br /></td></tr>
 <tr class="separator:a366cf671459f34f026677d08d6bbc48a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,6 +371,35 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a02919377ea0e561e90fd35eaf5c69665" name="a02919377ea0e561e90fd35eaf5c69665"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02919377ea0e561e90fd35eaf5c69665">&#9670;&#160;</a></span>named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; pulsatrix::ResidualModule::named_buffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every layer's <a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

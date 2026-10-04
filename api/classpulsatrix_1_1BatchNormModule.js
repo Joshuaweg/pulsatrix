@@ -9,6 +9,7 @@ var classpulsatrix_1_1BatchNormModule =
     [ "forward_impl", "classpulsatrix_1_1BatchNormModule.html#ad95412b6d5c90b9390a50bf3a965550b", null ],
     [ "gamma", "classpulsatrix_1_1BatchNormModule.html#aacd1ae0915213e8ae32dc634299e5949", null ],
     [ "gamma_grad", "classpulsatrix_1_1BatchNormModule.html#a8b48ff415461030cc9e8e843e8f90999", null ],
+    [ "named_buffers", "classpulsatrix_1_1BatchNormModule.html#a19cd221666322cdb2442457cb6e5788d", null ],
     [ "named_parameters", "classpulsatrix_1_1BatchNormModule.html#a6f5b048237238647f7bf378a0817e56f", null ],
     [ "op_type", "classpulsatrix_1_1BatchNormModule.html#a91cbc17b32b7f6c7cb98c41ef9f2bfb5", null ],
     [ "propagate_relevance", "classpulsatrix_1_1BatchNormModule.html#afd6e4948d9781cf38124f32455789746", null ],

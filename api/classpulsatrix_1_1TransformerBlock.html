@@ -143,6 +143,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0188111235c169804ad301202c7c91cf" id="r_a0188111235c169804ad301202c7c91cf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0188111235c169804ad301202c7c91cf">named_parameters</a> () override</td></tr>
 <tr class="memdesc:a0188111235c169804ad301202c7c91cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">norm1_'s, mha_'s, norm2_'s, and swiglu_'s parameters, flattened.  <br /></td></tr>
 <tr class="separator:a0188111235c169804ad301202c7c91cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b85a579be07d6e2e7206f75bec69cd8" id="r_a0b85a579be07d6e2e7206f75bec69cd8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0b85a579be07d6e2e7206f75bec69cd8">named_buffers</a> () override</td></tr>
+<tr class="memdesc:a0b85a579be07d6e2e7206f75bec69cd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every layer's <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0b85a579be07d6e2e7206f75bec69cd8" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0188111235c169804ad301202c7c91cf" title="norm1_&#39;s, mha_&#39;s, norm2_&#39;s, and swiglu_&#39;s parameters, flattened.">named_parameters()</a>.  <br /></td></tr>
+<tr class="separator:a0b85a579be07d6e2e7206f75bec69cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af80237833850ddabf8613bfeacb16879" id="r_af80237833850ddabf8613bfeacb16879"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#af80237833850ddabf8613bfeacb16879">set_training</a> (bool training) override</td></tr>
 <tr class="memdesc:af80237833850ddabf8613bfeacb16879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cascades to every sub-module, the same way SequentialModule/MultiHeadAttentionModule do.  <br /></td></tr>
 <tr class="separator:af80237833850ddabf8613bfeacb16879"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -434,6 +437,35 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0b85a579be07d6e2e7206f75bec69cd8" name="a0b85a579be07d6e2e7206f75bec69cd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b85a579be07d6e2e7206f75bec69cd8">&#9670;&#160;</a></span>named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; pulsatrix::TransformerBlock::named_buffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every layer's <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0b85a579be07d6e2e7206f75bec69cd8" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0188111235c169804ad301202c7c91cf" title="norm1_&#39;s, mha_&#39;s, norm2_&#39;s, and swiglu_&#39;s parameters, flattened.">named_parameters()</a>. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

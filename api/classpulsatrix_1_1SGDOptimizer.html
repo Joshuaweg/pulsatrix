@@ -100,14 +100,14 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1SGDOptimizer.html','
 </div><!--header-->
 <div class="contents">
 
-<p>param -= learning_rate * grad, per parameter, for every parameter a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> exposes.  
+<p>param -= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> exposes. Learning rate and weight decay can differ per parameter group (TRN-1). With no weight decay this is plain SGD.  
  <a href="classpulsatrix_1_1SGDOptimizer.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="sgd__optimizer_8hpp_source.html">sgd_optimizer.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9a9ad83442c30800d3ea68c8b00a143e" id="r_a9a9ad83442c30800d3ea68c8b00a143e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">SGDOptimizer</a> (float learning_rate)</td></tr>
+<tr class="memitem:a9a9ad83442c30800d3ea68c8b00a143e" id="r_a9a9ad83442c30800d3ea68c8b00a143e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a9a9ad83442c30800d3ea68c8b00a143e">SGDOptimizer</a> (float <a class="el" href="classpulsatrix_1_1SGDOptimizer.html#ae5186738110ba173facccbba74814438">learning_rate</a>)</td></tr>
 <tr class="memdesc:a9a9ad83442c30800d3ea68c8b00a143e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an SGD optimizer.  <br /></td></tr>
 <tr class="separator:a9a9ad83442c30800d3ea68c8b00a143e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb568b004867804a44ad07a6d45f11ba" id="r_abb568b004867804a44ad07a6d45f11ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#abb568b004867804a44ad07a6d45f11ba">step</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)</td></tr>
@@ -116,9 +116,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acae45b0c72bf4c7a3ec17c8ad5f2bac6" id="r_acae45b0c72bf4c7a3ec17c8ad5f2bac6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#acae45b0c72bf4c7a3ec17c8ad5f2bac6">zero_grad</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)</td></tr>
 <tr class="memdesc:acae45b0c72bf4c7a3ec17c8ad5f2bac6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets every parameter's gradient to zero.  <br /></td></tr>
 <tr class="separator:acae45b0c72bf4c7a3ec17c8ad5f2bac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5186738110ba173facccbba74814438" id="r_ae5186738110ba173facccbba74814438"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#ae5186738110ba173facccbba74814438">learning_rate</a> () const</td></tr>
+<tr class="memdesc:ae5186738110ba173facccbba74814438"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default group's learning rate (parameters no group selects).  <br /></td></tr>
+<tr class="separator:ae5186738110ba173facccbba74814438"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86fa59113de1831c0dd92c5878e6917d" id="r_a86fa59113de1831c0dd92c5878e6917d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a86fa59113de1831c0dd92c5878e6917d">set_learning_rate</a> (float <a class="el" href="classpulsatrix_1_1SGDOptimizer.html#ae5186738110ba173facccbba74814438">learning_rate</a>)</td></tr>
+<tr class="separator:a86fa59113de1831c0dd92c5878e6917d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a939b4d15ab1afedec5b9c4919e6663f5" id="r_a939b4d15ab1afedec5b9c4919e6663f5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a939b4d15ab1afedec5b9c4919e6663f5">weight_decay</a> () const</td></tr>
+<tr class="memdesc:a939b4d15ab1afedec5b9c4919e6663f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default group's weight decay. Defaults to 0.  <br /></td></tr>
+<tr class="separator:a939b4d15ab1afedec5b9c4919e6663f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61f5b954c452e87f0db1c9084f7714d0" id="r_a61f5b954c452e87f0db1c9084f7714d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a61f5b954c452e87f0db1c9084f7714d0">set_weight_decay</a> (float <a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a939b4d15ab1afedec5b9c4919e6663f5">weight_decay</a>)</td></tr>
+<tr class="separator:a61f5b954c452e87f0db1c9084f7714d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41665676abd385aeab7417118e4ec1db" id="r_a41665676abd385aeab7417118e4ec1db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#a41665676abd385aeab7417118e4ec1db">set_param_groups</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt; groups)</td></tr>
+<tr class="memdesc:a41665676abd385aeab7417118e4ec1db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the parameter groups; see <a class="el" href="structpulsatrix_1_1ParamGroup.html" title="Optimizer settings for the parameters selects picks.">ParamGroup</a>.  <br /></td></tr>
+<tr class="separator:a41665676abd385aeab7417118e4ec1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1e5debbda7d36af5696d8f750785332" id="r_af1e5debbda7d36af5696d8f750785332"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html#af1e5debbda7d36af5696d8f750785332">param_groups</a> ()</td></tr>
+<tr class="separator:af1e5debbda7d36af5696d8f750785332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>param -= learning_rate * grad, per parameter, for every parameter a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> exposes. </p>
+<div class="textblock"><p>param -= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> exposes. Learning rate and weight decay can differ per parameter group (TRN-1). With no weight decay this is plain SGD. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9a9ad83442c30800d3ea68c8b00a143e" name="a9a9ad83442c30800d3ea68c8b00a143e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a9ad83442c30800d3ea68c8b00a143e">&#9670;&#160;</a></span>SGDOptimizer()</h2>
@@ -155,6 +170,144 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae5186738110ba173facccbba74814438" name="ae5186738110ba173facccbba74814438"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5186738110ba173facccbba74814438">&#9670;&#160;</a></span>learning_rate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::SGDOptimizer::learning_rate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The default group's learning rate (parameters no group selects). </p>
+
+</div>
+</div>
+<a id="af1e5debbda7d36af5696d8f750785332" name="af1e5debbda7d36af5696d8f750785332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1e5debbda7d36af5696d8f750785332">&#9670;&#160;</a></span>param_groups()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt; &amp; pulsatrix::SGDOptimizer::param_groups </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a86fa59113de1831c0dd92c5878e6917d" name="a86fa59113de1831c0dd92c5878e6917d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86fa59113de1831c0dd92c5878e6917d">&#9670;&#160;</a></span>set_learning_rate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SGDOptimizer::set_learning_rate </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>learning_rate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a41665676abd385aeab7417118e4ec1db" name="a41665676abd385aeab7417118e4ec1db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41665676abd385aeab7417118e4ec1db">&#9670;&#160;</a></span>set_param_groups()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SGDOptimizer::set_param_groups </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt;&#160;</td>
+          <td class="paramname"><em>groups</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replaces the parameter groups; see <a class="el" href="structpulsatrix_1_1ParamGroup.html" title="Optimizer settings for the parameters selects picks.">ParamGroup</a>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>on a group without a selector or with an invalid setting. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a61f5b954c452e87f0db1c9084f7714d0" name="a61f5b954c452e87f0db1c9084f7714d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61f5b954c452e87f0db1c9084f7714d0">&#9670;&#160;</a></span>set_weight_decay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SGDOptimizer::set_weight_decay </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>weight_decay</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="abb568b004867804a44ad07a6d45f11ba" name="abb568b004867804a44ad07a6d45f11ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abb568b004867804a44ad07a6d45f11ba">&#9670;&#160;</a></span>step()</h2>
 
@@ -179,6 +332,39 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1). </dd></dl>
+
+</div>
+</div>
+<a id="a939b4d15ab1afedec5b9c4919e6663f5" name="a939b4d15ab1afedec5b9c4919e6663f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a939b4d15ab1afedec5b9c4919e6663f5">&#9670;&#160;</a></span>weight_decay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::SGDOptimizer::weight_decay </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The default group's weight decay. Defaults to 0. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if negative or not finite. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
