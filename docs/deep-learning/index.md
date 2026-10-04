@@ -198,6 +198,33 @@ for (int64_t step = 0; step < 10000; ++step) {
 Set up parameter groups before building the scheduler. To resume, call
 `scheduler.set_last_step(n)`.
 
+### Token losses and gradient accumulation
+
+`TokenCrossEntropyLoss` takes logits `(..., classes)` and integer targets with the same leading
+shape, and skips targets equal to `-100`, PyTorch's padding convention. By default it averages
+over the batch's real tokens.
+
+To accumulate gradients over several micro-batches, don't average each micro-batch's own mean.
+When micro-batches hold different numbers of real tokens, that weights tokens unequally, which is
+the bug Hugging Face Trainer fixed in v4.46. Instead, divide every micro-batch by the token count
+of the whole window:
+
+```cpp
+#include "pulsatrix/token_cross_entropy_loss.hpp"
+
+int64_t total = 0;
+for (const Tensor& t : window_targets) total += CountTargetTokens(t);
+for (size_t k = 0; k < window_inputs.size(); ++k) {
+    Tensor logits = model.forward(window_inputs[k]);
+    (void)loss.forward(logits, window_targets[k], static_cast<float>(total));
+    (void)model.backward(loss.backward());  // gradients accumulate across micro-batches
+}
+ClipGradNorm(model, 1.0f);
+optimizer.step(model);
+```
+
+The accumulated gradients then equal those of one batch holding every micro-batch.
+
 ### Gradient clipping
 
 `ClipGradNorm(model, max_norm)` scales all trainable gradients by one factor so their global L2
