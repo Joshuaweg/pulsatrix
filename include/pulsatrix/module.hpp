@@ -74,8 +74,21 @@ public:
         if (input.numel() <= 0) {
             throw std::invalid_argument("Module::forward: input must not be empty");
         }
+        if (const std::optional<DeviceType> device = compute_device()) {
+            require_device(input, *device, "Module::forward");
+        }
         return forward_impl(input);
     }
+
+    /**
+     * @brief The device this module computes on, so forward() can reject an input on another
+     *        device before any kernel sees it (roadmap FND-8).
+     * @return std::nullopt (the default) skips the check: a container whose layers check their
+     *         own inputs, or a user module written before this existed. Every in-tree layer
+     *         returns its device; EmbeddingModule doesn't, because it reads its indices through
+     *         their own backend and so accepts them from any device.
+     */
+    [[nodiscard]] virtual std::optional<DeviceType> compute_device() const { return std::nullopt; }
 
     /**
      * @brief Runs forward() while also registering a ComputationGraph node (tagged with
@@ -170,6 +183,39 @@ public:
             params.push_back(p.ref);
         }
         return params;
+    }
+
+    /**
+     * @brief Freezes (`false`) or unfreezes (`true`) parameters by name (roadmap FND-2).
+     * @param requires_grad The flag to set on every selected parameter's value tensor.
+     * @param prefix Empty selects every parameter. Otherwise selects the parameter named
+     *        exactly `prefix`, and every parameter under it (`mha.q_proj` selects
+     *        `mha.q_proj.weight` and `mha.q_proj.bias`, but `mha.q` selects nothing).
+     * @throws std::invalid_argument if a non-empty prefix selects nothing -- a mistyped name
+     *         would otherwise silently leave the model trainable. Nothing is changed then.
+     * @note A frozen parameter's gradient is not accumulated by backward() and is not
+     *       updated by an optimizer; the gradient w.r.t. the module's input is unchanged.
+     */
+    void set_requires_grad(bool requires_grad, const std::string& prefix = "") {
+        if (prefix.empty()) {
+            // parameters(), not named_parameters(): also reaches a legacy module that has no names.
+            for (ParamRef p : parameters()) {
+                p.value->set_requires_grad(requires_grad);
+            }
+            return;
+        }
+        std::vector<Tensor*> selected;
+        for (const NamedParamRef& p : named_parameters()) {
+            if (p.name == prefix || p.name.rfind(prefix + ".", 0) == 0) {
+                selected.push_back(p.ref.value);
+            }
+        }
+        if (selected.empty()) {
+            throw std::invalid_argument("Module::set_requires_grad: no parameter named or under '" + prefix + "'");
+        }
+        for (Tensor* value : selected) {
+            value->set_requires_grad(requires_grad);
+        }
     }
 
     /**

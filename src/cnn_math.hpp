@@ -8,44 +8,62 @@
 
 #include "lrp_math.hpp"        // lrp::stabilize
 #include "pointwise_math.hpp"  // PULSATRIX_HOST_DEVICE
+#include "pulsatrix/device_backend.hpp"  // ConvGeometry
 
 namespace pulsatrix {
 namespace cnn {
 
-// ---- Conv2D (stride 1, no padding; Conv2DModule) ----------------------------------------------
+// ---- Conv2D (Conv2DModule) -------------------------------------------------------------------
 // One example's input (C, H, W); col is (P = C*kh*kw, Q = out_h*out_w), p = (c*kh + i)*kw + j.
+// Output position (oh, ow) reads input (oh*stride_h - pad_h + i, ow*stride_w - pad_w + j); taps
+// in the zero padding read 0. With stride 1 and no padding every expression reduces to the
+// original stride-1 code's, so those results are unchanged bit for bit.
 
-PULSATRIX_HOST_DEVICE inline float im2col_element(const float* in, int64_t H, int64_t W, int64_t kh, int64_t kw,
+PULSATRIX_HOST_DEVICE inline int64_t conv_out_size(int64_t in, int64_t k, int64_t stride, int64_t pad) {
+    return (in + 2 * pad - k) / stride + 1;
+}
+
+PULSATRIX_HOST_DEVICE inline float im2col_element(const float* in, int64_t H, int64_t W, const ConvGeometry& g,
                                                   int64_t out_w, int64_t p, int64_t q) {
+    const auto kh = static_cast<int64_t>(g.kh), kw = static_cast<int64_t>(g.kw);
     const int64_t j = p % kw;
     const int64_t i = (p / kw) % kh;
     const int64_t c = p / (kw * kh);
     const int64_t oh = q / out_w;
     const int64_t ow = q % out_w;
-    return in[(c * H + oh + i) * W + ow + j];
+    const int64_t ih = oh * static_cast<int64_t>(g.stride_h) - static_cast<int64_t>(g.pad_h) + i;
+    const int64_t iw = ow * static_cast<int64_t>(g.stride_w) - static_cast<int64_t>(g.pad_w) + j;
+    if (ih < 0 || ih >= H || iw < 0 || iw >= W) {
+        return 0.0f;
+    }
+    return in[(c * H + ih) * W + iw];
 }
 
 // The value col2im accumulates into input pixel (c, ih, iw): its contributions in the order the
 // original scatter loop added them -- q ascending, i.e. kernel row i and then column j descending
-// -- starting from the pixel's existing value.
-PULSATRIX_HOST_DEVICE inline float col2im_pixel(const float* col, float existing, int64_t H, int64_t W, int64_t kh,
-                                                int64_t kw, int64_t c, int64_t ih, int64_t iw) {
-    const int64_t out_h = H - kh + 1;
-    const int64_t out_w = W - kw + 1;
+// -- starting from the pixel's existing value. Taps that land between strides contribute nothing.
+PULSATRIX_HOST_DEVICE inline float col2im_pixel(const float* col, float existing, int64_t H, int64_t W,
+                                                const ConvGeometry& g, int64_t c, int64_t ih, int64_t iw) {
+    const auto kh = static_cast<int64_t>(g.kh), kw = static_cast<int64_t>(g.kw);
+    const auto sh = static_cast<int64_t>(g.stride_h), sw = static_cast<int64_t>(g.stride_w);
+    const auto ph = static_cast<int64_t>(g.pad_h), pw = static_cast<int64_t>(g.pad_w);
+    const int64_t out_h = conv_out_size(H, kh, sh, ph);
+    const int64_t out_w = conv_out_size(W, kw, sw, pw);
     const int64_t Q = out_h * out_w;
     float acc = existing;
     for (int64_t i = kh - 1; i >= 0; --i) {
-        const int64_t oh = ih - i;
-        if (oh < 0 || oh >= out_h) {
+        const int64_t t = ih + ph - i;
+        if (t < 0 || t % sh != 0 || t / sh >= out_h) {
             continue;
         }
+        const int64_t oh = t / sh;
         for (int64_t j = kw - 1; j >= 0; --j) {
-            const int64_t ow = iw - j;
-            if (ow < 0 || ow >= out_w) {
+            const int64_t u = iw + pw - j;
+            if (u < 0 || u % sw != 0 || u / sw >= out_w) {
                 continue;
             }
             const int64_t p = (c * kh + i) * kw + j;
-            acc += col[p * Q + oh * out_w + ow];
+            acc += col[p * Q + oh * out_w + u / sw];
         }
     }
     return acc;
@@ -187,6 +205,81 @@ PULSATRIX_HOST_DEVICE inline void batch_norm_backward_channel(const float* grad_
             grad_in[idx] = (M * gxh - sum_grad_xhat - xhat[idx] * sum_grad_xhat_xhat) / (M * std_c);
         }
     }
+}
+
+// Folds this batch's channel statistics into the running ones (FND-5), PyTorch's rule:
+// running = (1 - momentum) * running + momentum * batch, with the unbiased batch variance. The
+// mean is summed in batch_norm_forward_channel's order, so it is the mean that forward used.
+// With one value per channel the variance is undefined and the running variance is kept.
+PULSATRIX_HOST_DEVICE inline void batch_norm_update_running_channel(const float* x, float* running_mean,
+                                                                    float* running_var, int64_t N, int64_t C,
+                                                                    int64_t spatial, int64_t c, float momentum) {
+    const int64_t per_example = C * spatial;
+    const int64_t count = N * spatial;
+    const auto M = static_cast<float>(count);
+    float sum = 0.0f;
+    for (int64_t n = 0; n < N; ++n) {
+        for (int64_t s = 0; s < spatial; ++s) {
+            sum += x[n * per_example + c * spatial + s];
+        }
+    }
+    const float mu = sum / M;
+    running_mean[c] = (1.0f - momentum) * running_mean[c] + momentum * mu;
+    if (count < 2) {
+        return;
+    }
+    float sum_sq_diff = 0.0f;
+    for (int64_t n = 0; n < N; ++n) {
+        for (int64_t s = 0; s < spatial; ++s) {
+            const float d = x[n * per_example + c * spatial + s] - mu;
+            sum_sq_diff += d * d;
+        }
+    }
+    running_var[c] = (1.0f - momentum) * running_var[c] + momentum * (sum_sq_diff / (M - 1.0f));
+}
+
+// Eval-mode BatchNorm: a fixed per-channel affine map from the running statistics, so every
+// element depends only on itself -- never on the rest of the batch.
+PULSATRIX_HOST_DEVICE inline void batch_norm_eval_forward_channel(const float* x, const float* gamma,
+                                                                  const float* beta, const float* running_mean,
+                                                                  const float* running_var, float* xhat, float* out,
+                                                                  float* std_out, int64_t N, int64_t C,
+                                                                  int64_t spatial, int64_t c, float eps) {
+    const int64_t per_example = C * spatial;
+    const float mu = running_mean[c];
+    const float std_dev = sqrtf(running_var[c] + eps);
+    std_out[c] = std_dev;
+    for (int64_t n = 0; n < N; ++n) {
+        for (int64_t s = 0; s < spatial; ++s) {
+            const int64_t idx = n * per_example + c * spatial + s;
+            const float xh = (x[idx] - mu) / std_dev;
+            xhat[idx] = xh;
+            out[idx] = gamma[c] * xh + beta[c];
+        }
+    }
+}
+
+// Gradient of the eval-mode affine map: the statistics are constants, so the input gradient is
+// grad_out * gamma / std, with no batch coupling. gamma/beta gradients overwritten, per channel.
+PULSATRIX_HOST_DEVICE inline void batch_norm_eval_backward_channel(const float* grad_out, const float* gamma,
+                                                                   const float* xhat, const float* std_in,
+                                                                   float* grad_in, float* gamma_grad,
+                                                                   float* beta_grad, int64_t N, int64_t C,
+                                                                   int64_t spatial, int64_t c) {
+    const int64_t per_example = C * spatial;
+    const float scale = gamma[c] / std_in[c];
+    float gsum = 0.0f;
+    float bsum = 0.0f;
+    for (int64_t n = 0; n < N; ++n) {
+        for (int64_t s = 0; s < spatial; ++s) {
+            const int64_t idx = n * per_example + c * spatial + s;
+            gsum += grad_out[idx] * xhat[idx];
+            bsum += grad_out[idx];
+            grad_in[idx] = grad_out[idx] * scale;
+        }
+    }
+    gamma_grad[c] = gsum;
+    beta_grad[c] = bsum;
 }
 
 // ---- GroupNorm (per (example, group) over (group_size channels, spatial)) ------------------------

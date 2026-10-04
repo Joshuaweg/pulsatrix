@@ -187,6 +187,7 @@ Tensor GRUModule::forward_impl(const Tensor& input) {
 }
 
 Tensor GRUModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "GRUModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("GRUModule::backward: called before any forward()");
     }
@@ -320,20 +321,41 @@ Tensor GRUModule::backward(const Tensor& grad_output) {
         dh_next = dh_prev;
     }
 
-    weight_xz_grad_.accumulate(local_wxz_grad);
-    weight_hz_grad_.accumulate(local_whz_grad);
-    bias_z_grad_.accumulate(local_bz_grad);
-    weight_xr_grad_.accumulate(local_wxr_grad);
-    weight_hr_grad_.accumulate(local_whr_grad);
-    bias_r_grad_.accumulate(local_br_grad);
-    weight_xn_grad_.accumulate(local_wxn_grad);
-    weight_hn_grad_.accumulate(local_whn_grad);
-    bias_n_grad_.accumulate(local_bn_grad);
+    // A frozen parameter (FND-2) accumulates nothing. Its local gradient is still computed
+    // above: here it is cheap, or entangled with the input gradient's own recurrence.
+    if (weight_xz_.requires_grad()) {
+        weight_xz_grad_.accumulate(local_wxz_grad);
+    }
+    if (weight_hz_.requires_grad()) {
+        weight_hz_grad_.accumulate(local_whz_grad);
+    }
+    if (bias_z_.requires_grad()) {
+        bias_z_grad_.accumulate(local_bz_grad);
+    }
+    if (weight_xr_.requires_grad()) {
+        weight_xr_grad_.accumulate(local_wxr_grad);
+    }
+    if (weight_hr_.requires_grad()) {
+        weight_hr_grad_.accumulate(local_whr_grad);
+    }
+    if (bias_r_.requires_grad()) {
+        bias_r_grad_.accumulate(local_br_grad);
+    }
+    if (weight_xn_.requires_grad()) {
+        weight_xn_grad_.accumulate(local_wxn_grad);
+    }
+    if (weight_hn_.requires_grad()) {
+        weight_hn_grad_.accumulate(local_whn_grad);
+    }
+    if (bias_n_.requires_grad()) {
+        bias_n_grad_.accumulate(local_bn_grad);
+    }
 
     return grad_input;
 }
 
 Tensor GRUModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "GRUModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("GRUModule::propagate_relevance: called before any forward()");
     }

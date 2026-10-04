@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include <optional>
 #include <initializer_list>
 #include <vector>
 
@@ -82,6 +83,10 @@ public:
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
         return {{"weight", {&gamma_, &gamma_grad_}}, {"bias", {&beta_, &beta_grad_}}};
     }
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return gamma_.device(); }
 
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

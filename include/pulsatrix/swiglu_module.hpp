@@ -5,6 +5,7 @@
  */
 #pragma once
 
+#include <optional>
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/module.hpp"
 
@@ -100,6 +101,10 @@ public:
     [[nodiscard]] LinearModule& up_proj() { return up_proj_; }
     [[nodiscard]] LinearModule& down_proj() { return down_proj_; }
     ///@}
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     /**

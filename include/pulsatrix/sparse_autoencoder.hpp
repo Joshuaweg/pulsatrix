@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "pulsatrix/determinism.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/mse_loss.hpp"
 #include "pulsatrix/relu_module.hpp"
@@ -81,7 +82,11 @@ public:
      *         *rewards* hidden activation without bound, so the run diverges silently
      *         rather than erroring.
      */
-    SparseAutoencoder(int64_t dim, int64_t hidden_dim, float l1_lambda, DeviceBackend* backend, unsigned seed = 42)
+    /** @brief Seeded from the global seed stream (next_seed(), FND-7). */
+    SparseAutoencoder(int64_t dim, int64_t hidden_dim, float l1_lambda, DeviceBackend* backend)
+        : SparseAutoencoder(dim, hidden_dim, l1_lambda, backend, static_cast<unsigned>(next_seed())) {}
+
+    SparseAutoencoder(int64_t dim, int64_t hidden_dim, float l1_lambda, DeviceBackend* backend, unsigned seed)
         : dim_(dim),
           hidden_dim_(hidden_dim),
           l1_lambda_(l1_lambda),

@@ -20,6 +20,8 @@ CalibrationLoss::CalibrationLoss(DeviceBackend* backend)
     : backend_(backend), last_probs_(Shape({0}), backend) {}
 
 float CalibrationLoss::forward(const Tensor& probs, const Tensor& target_class) {
+    require_device(probs, backend_->device(), "CalibrationLoss::forward");
+    require_device(target_class, backend_->device(), "CalibrationLoss::forward");
     if (probs.rank() != 2) {
         throw std::invalid_argument("CalibrationLoss::forward: probs must have shape (N, num_classes)");
     }

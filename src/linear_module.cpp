@@ -75,6 +75,7 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
 }
 
 Tensor LinearModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "LinearModule::backward");
     // Finding 12: calling backward() before any forward() previously silently computed a
     // meaningless answer from zero-initialized cached state (last_input_) instead of
     // erroring.
@@ -99,10 +100,16 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
     const auto out = static_cast<size_t>(out_features_);
 
     // grad_W += X^T @ grad_Y -- the batched sum of outer products is gemm's k-dimension sum.
-    backend_->gemm_ex(last_input_.data(), true, grad_output.data(), false, weight_grad_.data(), in, n, out, 1.0f);
+    // Skipped entirely for a frozen weight (FND-2): this GEMM is the saving freezing exists for.
+    if (weight_.requires_grad()) {
+        backend_->gemm_ex(last_input_.data(), true, grad_output.data(), false, weight_grad_.data(), in, n, out,
+                          1.0f);
+    }
 
     // grad_bias += sum over the batch of grad_Y.
-    backend_->column_sums(grad_output.data(), bias_grad_.data(), n, out, 1.0f);
+    if (bias_.requires_grad()) {
+        backend_->column_sums(grad_output.data(), bias_grad_.data(), n, out, 1.0f);
+    }
 
     // grad_X = grad_Y @ W^T
     Tensor grad_input(Shape({N, in_features_}), backend_, weight_.device());
@@ -111,6 +118,7 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
 }
 
 Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "LinearModule::propagate_relevance");
     // Finding 12: see backward()'s identical guard above.
     if (!has_forwarded_) {
         throw std::logic_error("LinearModule::propagate_relevance: called before any forward()");

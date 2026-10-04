@@ -99,9 +99,10 @@ public:
                              size_t cols, float p) override;
     void aggregator_lrp(const float* x, const float* mean_pow, const float* r_out, float* r_in, size_t n, size_t cols,
                         float p, float eps) override;
-    void im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) override;
-    void col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw)
-                    override;
+    void im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w,
+                const ConvGeometry& geometry) override;
+    void col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w,
+                    const ConvGeometry& geometry) override;
     void add_channel_vector(const float* in, const float* vec, float* out, size_t n, size_t c, size_t inner) override;
     void lrp_conv(const float* col, const float* kernel, const float* pre_bias, const float* r, float* r_col, size_t n,
                   size_t out_channels, size_t p, size_t q, float eps) override;
@@ -122,6 +123,14 @@ public:
     void batch_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float* channel_std,
                              float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t c, size_t spatial)
                              override;
+    void batch_norm_update_running(const float* in, float* running_mean, float* running_var, size_t n, size_t c,
+                                   size_t spatial, float momentum) override;
+    void batch_norm_eval_forward(const float* in, const float* gamma, const float* beta, const float* running_mean,
+                                 const float* running_var, float* xhat, float* out, float* channel_std, size_t n,
+                                 size_t c, size_t spatial, float eps) override;
+    void batch_norm_eval_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                  const float* channel_std, float* grad_in, float* gamma_grad, float* beta_grad,
+                                  size_t n, size_t c, size_t spatial) override;
     void group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out, float*
                             group_std, size_t n, size_t c, size_t spatial, size_t num_groups, float eps) override;
     void group_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float* group_std,
@@ -135,6 +144,8 @@ public:
                        const float* direct, float* r_hprev, size_t rows, size_t hidden, float eps) override;
     void ssm_pass(SsmPassOp op, const SsmPassArgs& args) override;
     void rl_rows(RlRowOp op, const RlRowArgs& args) override;
+    void top_k_rows(const float* in, float* values, float* indices, size_t rows, size_t cols, size_t k,
+                    bool largest) override;
 
 private:
     cudaStream_t stream_;

@@ -5,6 +5,7 @@
  */
 #pragma once
 
+#include <optional>
 #include <initializer_list>
 #include <vector>
 
@@ -178,6 +179,10 @@ public:
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
         return {{"w_q", {&w_q_, &w_q_grad_}}, {"w_k", {&w_k_, &w_k_grad_}}, {"w_v", {&w_v_, &w_v_grad_}}};
     }
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     /**

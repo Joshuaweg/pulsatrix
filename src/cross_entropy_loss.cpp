@@ -9,6 +9,7 @@ namespace pulsatrix {
 CrossEntropyLoss::CrossEntropyLoss(DeviceBackend* backend) : backend_(backend), softmax_probs_(Shape({0}), backend) {}
 
 float CrossEntropyLoss::forward(const Tensor& logits, int64_t target_class) {
+    require_device(logits, backend_->device(), "CrossEntropyLoss::forward");
     PULSATRIX_ASSERT(target_class >= 0 && target_class < logits.numel());
 
     // Device-generic (GPU-native-kernels Mission 1): softmax and log-sum-exp on the logits'

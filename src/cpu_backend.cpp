@@ -7,6 +7,7 @@
 #include "rl_math.hpp"
 #include "row_math.hpp"
 #include "ssm_math.hpp"
+#include "top_k_math.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -524,31 +525,40 @@ void CPUBackend::aggregator_lrp(const float* x, const float* mean_pow, const flo
 
 // ---- GPU-native-kernels Mission 4 ----------------------------------------------------------
 
-void CPUBackend::im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh, size_t kw) {
-    const size_t out_w = w - kw + 1;
-    const size_t P = c * kh * kw, Q = (h - kh + 1) * out_w;
+void CPUBackend::im2col(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, const ConvGeometry& g) {
+    const auto out_w = static_cast<size_t>(cnn::conv_out_size(static_cast<int64_t>(w), static_cast<int64_t>(g.kw),
+                                                               static_cast<int64_t>(g.stride_w),
+                                                               static_cast<int64_t>(g.pad_w)));
+    const auto out_h = static_cast<size_t>(cnn::conv_out_size(static_cast<int64_t>(h), static_cast<int64_t>(g.kh),
+                                                               static_cast<int64_t>(g.stride_h),
+                                                               static_cast<int64_t>(g.pad_h)));
+    const size_t P = c * g.kh * g.kw, Q = out_h * out_w;
     for (size_t e = 0; e < n; ++e) {
         for (size_t p = 0; p < P; ++p) {
             for (size_t q = 0; q < Q; ++q) {
-                col[(e * P + p) * Q + q] = cnn::im2col_element(
-                    in + e * c * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w), static_cast<int64_t>(kh),
-                    static_cast<int64_t>(kw), static_cast<int64_t>(out_w), static_cast<int64_t>(p),
-                    static_cast<int64_t>(q));
+                col[(e * P + p) * Q + q] =
+                    cnn::im2col_element(in + e * c * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w), g,
+                                        static_cast<int64_t>(out_w), static_cast<int64_t>(p), static_cast<int64_t>(q));
             }
         }
     }
 }
 
-void CPUBackend::col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh,
-                            size_t kw) {
-    const size_t P = c * kh * kw, Q = (h - kh + 1) * (w - kw + 1);
+void CPUBackend::col2im_add(const float* col, float* out, size_t n, size_t c, size_t h, size_t w,
+                            const ConvGeometry& g) {
+    const auto out_h = static_cast<size_t>(cnn::conv_out_size(static_cast<int64_t>(h), static_cast<int64_t>(g.kh),
+                                                               static_cast<int64_t>(g.stride_h),
+                                                               static_cast<int64_t>(g.pad_h)));
+    const auto out_w = static_cast<size_t>(cnn::conv_out_size(static_cast<int64_t>(w), static_cast<int64_t>(g.kw),
+                                                               static_cast<int64_t>(g.stride_w),
+                                                               static_cast<int64_t>(g.pad_w)));
+    const size_t P = c * g.kh * g.kw, Q = out_h * out_w;
     for (size_t e = 0; e < n; ++e) {
         for (size_t ch = 0; ch < c; ++ch) {
             for (size_t ih = 0; ih < h; ++ih) {
                 for (size_t iw = 0; iw < w; ++iw) {
                     float* px = out + ((e * c + ch) * h + ih) * w + iw;
-                    *px = cnn::col2im_pixel(col + e * P * Q, *px, static_cast<int64_t>(h), static_cast<int64_t>(w),
-                                            static_cast<int64_t>(kh), static_cast<int64_t>(kw),
+                    *px = cnn::col2im_pixel(col + e * P * Q, *px, static_cast<int64_t>(h), static_cast<int64_t>(w), g,
                                             static_cast<int64_t>(ch), static_cast<int64_t>(ih),
                                             static_cast<int64_t>(iw));
                 }
@@ -674,6 +684,35 @@ void CPUBackend::batch_norm_backward(const float* grad_out, const float* gamma, 
     }
 }
 
+void CPUBackend::batch_norm_update_running(const float* in, float* running_mean, float* running_var, size_t n,
+                                           size_t c, size_t spatial, float momentum) {
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::batch_norm_update_running_channel(in, running_mean, running_var, static_cast<int64_t>(n),
+                                               static_cast<int64_t>(c), static_cast<int64_t>(spatial),
+                                               static_cast<int64_t>(ch), momentum);
+    }
+}
+
+void CPUBackend::batch_norm_eval_forward(const float* in, const float* gamma, const float* beta,
+                                         const float* running_mean, const float* running_var, float* xhat, float* out,
+                                         float* channel_std, size_t n, size_t c, size_t spatial, float eps) {
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::batch_norm_eval_forward_channel(in, gamma, beta, running_mean, running_var, xhat, out, channel_std,
+                                             static_cast<int64_t>(n), static_cast<int64_t>(c),
+                                             static_cast<int64_t>(spatial), static_cast<int64_t>(ch), eps);
+    }
+}
+
+void CPUBackend::batch_norm_eval_backward(const float* grad_out, const float* gamma, const float* xhat,
+                                          const float* channel_std, float* grad_in, float* gamma_grad,
+                                          float* beta_grad, size_t n, size_t c, size_t spatial) {
+    for (size_t ch = 0; ch < c; ++ch) {
+        cnn::batch_norm_eval_backward_channel(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad,
+                                              static_cast<int64_t>(n), static_cast<int64_t>(c),
+                                              static_cast<int64_t>(spatial), static_cast<int64_t>(ch));
+    }
+}
+
 void CPUBackend::group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
                                     float* group_std, size_t n, size_t c, size_t spatial, size_t num_groups,
                                     float eps) {
@@ -756,6 +795,16 @@ void CPUBackend::ssm_pass(SsmPassOp op, const SsmPassArgs& args) {
 void CPUBackend::rl_rows(RlRowOp op, const RlRowArgs& args) {
     for (int64_t b = 0; b < args.rows; ++b) {
         rl::row(op, args, b);
+    }
+}
+
+// ---- FND-3: selection ----------------------------------------------------------------------
+
+void CPUBackend::top_k_rows(const float* in, float* values, float* indices, size_t rows, size_t cols, size_t k,
+                            bool largest) {
+    for (size_t r = 0; r < rows; ++r) {
+        topk::row(in + r * cols, values + r * k, indices + r * k, static_cast<int64_t>(cols),
+                  static_cast<int64_t>(k), largest);
     }
 }
 

@@ -1,10 +1,14 @@
 #include "pulsatrix/dropout_module.hpp"
 
+#include "pulsatrix/determinism.hpp"
+
 #include <stdexcept>
 
 #include "pulsatrix/assert.hpp"
 
 namespace pulsatrix {
+
+DropoutModule::DropoutModule(float p, DeviceBackend* backend) : DropoutModule(p, backend, next_seed()) {}
 
 DropoutModule::DropoutModule(float p, DeviceBackend* backend, uint64_t seed)
     : p_(p),
@@ -40,6 +44,7 @@ Tensor DropoutModule::forward_impl(const Tensor& input) {
 }
 
 Tensor DropoutModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "DropoutModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("DropoutModule::backward: called before any forward()");
     }
@@ -58,6 +63,7 @@ Tensor DropoutModule::backward(const Tensor& grad_output) {
 }
 
 Tensor DropoutModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
+    require_device(relevance_out, *compute_device(), "DropoutModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("DropoutModule::propagate_relevance: called before any forward()");
     }

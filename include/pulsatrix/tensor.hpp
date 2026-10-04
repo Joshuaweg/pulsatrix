@@ -4,6 +4,8 @@
  */
 #pragma once
 
+#include <string>
+#include <stdexcept>
 #include <initializer_list>
 #include <vector>
 
@@ -126,6 +128,20 @@ public:
      *       that could name a different device.
      */
     [[nodiscard]] DeviceBackend* backend() const { return backend_; }
+
+    /**
+     * @brief Whether a module's backward() should accumulate a gradient for this tensor when
+     *        it is a parameter, and whether optimizers should update it. Defaults to true.
+     * @note Meaningful only for parameters (roadmap FND-2); ignored everywhere else.
+     * @note The flag belongs to the object, not its values: copy and move construction carry
+     *       it over, but copy and move assignment keep the destination's own flag. Loading new
+     *       weights into a frozen parameter (`weight_ = loaded;`) therefore leaves it frozen,
+     *       matching PyTorch's `param.data = x`.
+     */
+    [[nodiscard]] bool requires_grad() const { return requires_grad_; }
+
+    /** @brief Sets requires_grad(); see there. */
+    void set_requires_grad(bool requires_grad) { requires_grad_ = requires_grad; }
 
     /**
      * @brief Reads one element to the host through the owning backend, on any device.
@@ -255,6 +271,33 @@ private:
     Shape shape_;
     DeviceBackend* backend_;
     DeviceType device_;
+    bool requires_grad_ = true;
 };
+
+/**
+ * @brief Throws unless `t` lives on `expected` -- the check every module and loss runs on the
+ *        tensors handed to it (roadmap FND-8, gpu_review #1).
+ * @param where Names the entry point in the error message, e.g. "LinearModule::backward".
+ * @throws std::invalid_argument on a mismatch. Without it, a CPU tensor reaching a GPU kernel
+ *         is an uncatchable memory fault (HSA abort on gfx1151, a sticky CUDA error), and a GPU
+ *         tensor reaching the CPU backend segfaults.
+ */
+inline void require_device(const Tensor& t, DeviceType expected, const char* where) {
+    if (t.device() != expected) {
+        auto name = [](DeviceType d) {
+            switch (d) {
+                case DeviceType::Cpu:
+                    return "Cpu";
+                case DeviceType::Cuda:
+                    return "Cuda";
+                case DeviceType::Hip:
+                    return "Hip";
+            }
+            return "unknown";
+        };
+        throw std::invalid_argument(std::string(where) + ": tensor is on " + name(t.device()) +
+                                    " but this computes on " + name(expected) + "; move it first with Tensor::to()");
+    }
+}
 
 }  // namespace pulsatrix

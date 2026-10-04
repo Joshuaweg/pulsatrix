@@ -105,6 +105,7 @@ Tensor RoPEModule::forward_impl(const Tensor& input) {
 }
 
 Tensor RoPEModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "RoPEModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("RoPEModule::backward: called before any forward()");
     }
@@ -123,6 +124,7 @@ Tensor RoPEModule::backward(const Tensor& grad_output) {
 }
 
 Tensor RoPEModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "RoPEModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("RoPEModule::propagate_relevance: called before any forward()");
     }

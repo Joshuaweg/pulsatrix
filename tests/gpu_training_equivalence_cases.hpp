@@ -675,6 +675,9 @@ inline void Conv2DMatches(DeviceBackend& gpu) {
     CPUBackend cpu;
     Conv2DModule cm(3, 4, 3, 3, &cpu), gm(3, 4, 3, 3, &gpu);
     ImageModuleMatches(cpu, gpu, cm, gm, Shape({2, 3, 7, 6}), 700);
+    // FND-6: stride 2, padding 1 -- padded taps read zero, strided windows skip columns.
+    Conv2DModule cs(3, 4, 3, 3, &cpu, 2, 1), gs(3, 4, 3, 3, &gpu, 2, 1);
+    ImageModuleMatches(cpu, gpu, cs, gs, Shape({2, 3, 7, 6}), 705);
 }
 
 // 7x6 with 2x2 windows leaves a trailing row/column outside every window (gradient 0 there),
@@ -1187,6 +1190,18 @@ inline void LRPRulesMatch(DeviceBackend& gpu) {
         ExpectRelevanceAgrees(cc.propagate_relevance(Tensor(Shape({2, 3, 4, 4}), &cpu, cr), config),
                               gc.propagate_relevance(Tensor(Shape({2, 3, 4, 4}), &gpu, cr), config));
     }
+    // FND-6: every rule through a strided, padded Conv2D (ZBox fills its bounds per image, so
+    // padded taps get zero bounds on both backends).
+    Conv2DModule cp(2, 3, 3, 3, &cpu, 2, 1), gp(2, 3, 3, 3, &gpu, 2, 1);
+    RandomizeAndMirror(cp, gp, 1306);
+    (void)cp.forward(Tensor(Shape({2, 2, 5, 5}), &cpu, cx));
+    (void)gp.forward(Tensor(Shape({2, 2, 5, 5}), &gpu, cx));
+    const std::vector<float> pr = Random(2 * 3 * 3 * 3, 1307);
+    for (const LRPRuleConfig& config : rules) {
+        SCOPED_TRACE(lrp_rule_name(config.rule));
+        ExpectRelevanceAgrees(cp.propagate_relevance(Tensor(Shape({2, 3, 3, 3}), &cpu, pr), config),
+                              gp.propagate_relevance(Tensor(Shape({2, 3, 3, 3}), &gpu, pr), config));
+    }
 
     // conv -> relu -> conv -> relu -> flatten -> linear, through each preset.
     Conv2DModule cc1(1, 3, 2, 2, &cpu), gc1(1, 3, 2, 2, &gpu), cc2(3, 2, 2, 2, &cpu), gc2(3, 2, 2, 2, &gpu);
@@ -1207,6 +1222,31 @@ inline void LRPRulesMatch(DeviceBackend& gpu) {
         EXPECT_EQ(ga.values.device(), gpu.device());
         ExpectRelevanceAgrees(ca.values, ga.values);
     }
+}
+
+// FND-8 on real hardware: a tensor on the wrong device must throw before any kernel sees it.
+// Before, a CPU input to a GPU module was an uncatchable HSA fault on gfx1151 (and a sticky
+// illegal-address error on CUDA), so reaching the assertions below at all is the test.
+inline void DeviceMismatchThrowsInsteadOfFaulting(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    LinearModule on_gpu(3, 2, &gpu), on_cpu(3, 2, &cpu);
+    const std::vector<float> values = Random(2 * 3, 1500);
+    Tensor x_cpu(Shape({2, 3}), &cpu, values), x_gpu(Shape({2, 3}), &gpu, values);
+    EXPECT_THROW((void)on_gpu.forward(x_cpu), std::invalid_argument);
+    EXPECT_THROW((void)on_cpu.forward(x_gpu), std::invalid_argument);
+    Tensor y = on_gpu.forward(x_gpu);
+    EXPECT_THROW((void)on_gpu.backward(Tensor(y.shape(), &cpu, std::vector<float>(4, 1.0f))), std::invalid_argument);
+    MSELoss loss(&gpu);
+    EXPECT_THROW((void)loss.forward(x_cpu, x_cpu), std::invalid_argument);
+
+    // gpu_review #2: CPU samples collated onto the GPU land on the GPU, with their values.
+    std::vector<Tensor> rows = {Tensor(Shape({3}), &cpu, {1, 2, 3}), Tensor(Shape({3}), &cpu, {4, 5, 6})};
+    Tensor stacked = Tensor::Stack(rows, &gpu);
+    EXPECT_EQ(stacked.device(), gpu.device());
+    EXPECT_EQ(ToHost(stacked), (std::vector<float>{1, 2, 3, 4, 5, 6}));
+    Tensor back = Tensor::Stack({stacked}, &cpu);
+    EXPECT_EQ(back.device(), DeviceType::Cpu);
+    EXPECT_EQ(ToHost(back), (std::vector<float>{1, 2, 3, 4, 5, 6}));
 }
 
 }  // namespace training_equivalence
@@ -1297,6 +1337,9 @@ inline void LRPRulesMatch(DeviceBackend& gpu) {
         ::pulsatrix::training_equivalence::NeuroSymbolicPipelines(MEMBER);                           \
     }                                                                                                \
     TEST_F(FIXTURE, Conv2DMatchesCPU) { ::pulsatrix::training_equivalence::Conv2DMatches(MEMBER); }      \
+    TEST_F(FIXTURE, DeviceMismatchThrowsInsteadOfFaulting) {                                       \
+        ::pulsatrix::training_equivalence::DeviceMismatchThrowsInsteadOfFaulting(MEMBER);         \
+    }                                                                                               \
     TEST_F(FIXTURE, PoolingMatchesCPU) { ::pulsatrix::training_equivalence::PoolingMatches(MEMBER); }    \
     TEST_F(FIXTURE, SpatialNormsMatchCPU) { ::pulsatrix::training_equivalence::SpatialNormsMatch(MEMBER); } \
     TEST_F(FIXTURE, CnnTrainedWithAdamEndsWithCPUParameters) {                                       \

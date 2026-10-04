@@ -12,6 +12,9 @@ AdamOptimizer::AdamOptimizer(float learning_rate, DeviceBackend* backend, float 
 
 void AdamOptimizer::step(Module& module) {
     for (ParamRef p : module.parameters()) {
+        if (!p.value->requires_grad()) {
+            continue;  // frozen (FND-2): never moved, and no moment state allocated or advanced
+        }
         // Moments are allocated through the optimizer's own backend_ -- whose lifetime the
         // caller already guarantees -- so they must live where the parameter lives. A
         // mismatch would hand adam_step pointers from two devices (GPU-native-kernels

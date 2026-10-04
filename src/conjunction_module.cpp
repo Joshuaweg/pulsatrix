@@ -102,6 +102,7 @@ Tensor ConjunctionModule::forward_impl(const Tensor& input) {
 }
 
 Tensor ConjunctionModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "ConjunctionModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("ConjunctionModule::backward: called before any forward()");
     }
@@ -120,6 +121,7 @@ Tensor ConjunctionModule::backward(const Tensor& grad_output) {
 }
 
 Tensor ConjunctionModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "ConjunctionModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("ConjunctionModule::propagate_relevance: called before any forward()");
     }

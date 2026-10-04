@@ -23,6 +23,7 @@
 #include "rl_math.hpp"
 #include "row_math.hpp"
 #include "ssm_math.hpp"
+#include "top_k_math.hpp"
 #include "pulsatrix/device_backend.hpp"
 
 namespace pulsatrix {
@@ -667,33 +668,30 @@ __global__ void aggregator_lrp_kernel(const float* x, const float* mean_pow, con
 
 // ---- GPU-native-kernels Mission 4 ----------------------------------------------------------
 
-__global__ void im2col_kernel(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, size_t kh,
-                              size_t kw) {
-    const size_t out_w = w - kw + 1;
-    const size_t P = c * kh * kw, Q = (h - kh + 1) * out_w;
+__global__ void im2col_kernel(const float* in, float* col, size_t n, size_t c, size_t h, size_t w, ConvGeometry g,
+                              size_t out_h, size_t out_w) {
+    const size_t P = c * g.kh * g.kw, Q = out_h * out_w;
     size_t idx = global_index();
     if (idx < n * P * Q) {
         const size_t e = idx / (P * Q);
         const size_t p = (idx / Q) % P;
         const size_t q = idx % Q;
-        col[idx] = cnn::im2col_element(in + e * c * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w),
-                                       static_cast<int64_t>(kh), static_cast<int64_t>(kw), static_cast<int64_t>(out_w),
-                                       static_cast<int64_t>(p), static_cast<int64_t>(q));
+        col[idx] = cnn::im2col_element(in + e * c * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w), g,
+                                       static_cast<int64_t>(out_w), static_cast<int64_t>(p), static_cast<int64_t>(q));
     }
 }
 
-__global__ void col2im_add_kernel(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, size_t kh,
-                                  size_t kw) {
-    const size_t P = c * kh * kw, Q = (h - kh + 1) * (w - kw + 1);
+__global__ void col2im_add_kernel(const float* col, float* out, size_t n, size_t c, size_t h, size_t w, ConvGeometry g,
+                                  size_t out_h, size_t out_w) {
+    const size_t P = c * g.kh * g.kw, Q = out_h * out_w;
     size_t idx = global_index();  // flat (n, c, h, w) pixel
     if (idx < n * c * h * w) {
         const size_t iw = idx % w;
         const size_t ih = (idx / w) % h;
         const size_t ch = (idx / (w * h)) % c;
         const size_t e = idx / (w * h * c);
-        out[idx] = cnn::col2im_pixel(col + e * P * Q, out[idx], static_cast<int64_t>(h), static_cast<int64_t>(w),
-                                     static_cast<int64_t>(kh), static_cast<int64_t>(kw), static_cast<int64_t>(ch),
-                                     static_cast<int64_t>(ih), static_cast<int64_t>(iw));
+        out[idx] = cnn::col2im_pixel(col + e * P * Q, out[idx], static_cast<int64_t>(h), static_cast<int64_t>(w), g,
+                                     static_cast<int64_t>(ch), static_cast<int64_t>(ih), static_cast<int64_t>(iw));
     }
 }
 
@@ -814,6 +812,40 @@ __global__ void batch_norm_backward_kernel(const float* grad_out, const float* g
     }
 }
 
+// FND-5: one thread per channel, like the training-mode kernels above.
+__global__ void batch_norm_update_running_kernel(const float* in, float* running_mean, float* running_var, size_t n,
+                                                 size_t c, size_t spatial, float momentum) {
+    const size_t channel = global_index();
+    if (channel < c) {
+        cnn::batch_norm_update_running_channel(in, running_mean, running_var, static_cast<int64_t>(n),
+                                               static_cast<int64_t>(c), static_cast<int64_t>(spatial),
+                                               static_cast<int64_t>(channel), momentum);
+    }
+}
+
+__global__ void batch_norm_eval_forward_kernel(const float* in, const float* gamma, const float* beta,
+                                               const float* running_mean, const float* running_var, float* xhat,
+                                               float* out, float* channel_std, size_t n, size_t c, size_t spatial,
+                                               float eps) {
+    const size_t channel = global_index();
+    if (channel < c) {
+        cnn::batch_norm_eval_forward_channel(in, gamma, beta, running_mean, running_var, xhat, out, channel_std,
+                                             static_cast<int64_t>(n), static_cast<int64_t>(c),
+                                             static_cast<int64_t>(spatial), static_cast<int64_t>(channel), eps);
+    }
+}
+
+__global__ void batch_norm_eval_backward_kernel(const float* grad_out, const float* gamma, const float* xhat,
+                                                const float* channel_std, float* grad_in, float* gamma_grad,
+                                                float* beta_grad, size_t n, size_t c, size_t spatial) {
+    const size_t channel = global_index();
+    if (channel < c) {
+        cnn::batch_norm_eval_backward_channel(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad,
+                                              static_cast<int64_t>(n), static_cast<int64_t>(c),
+                                              static_cast<int64_t>(spatial), static_cast<int64_t>(channel));
+    }
+}
+
 __global__ void group_norm_forward_kernel(const float* in, const float* gamma, const float* beta, float* xhat,
                                           float* out, float* group_std, size_t n, size_t c, size_t spatial,
                                           size_t num_groups, float eps) {
@@ -907,6 +939,17 @@ __global__ void rl_rows_kernel(int op, RlRowArgs args) {
     const auto b = static_cast<int64_t>(global_index());
     if (b < args.rows) {
         rl::row(static_cast<RlRowOp>(op), args, b);
+    }
+}
+
+// ---- FND-3 ----------------------------------------------------------------------------------
+
+// One thread per row: the row's selection buffer is its own slice of the output.
+__global__ void top_k_rows_kernel(const float* in, float* values, float* indices, int64_t rows, int64_t cols,
+                                  int64_t k, bool largest) {
+    const auto r = static_cast<int64_t>(global_index());
+    if (r < rows) {
+        topk::row(in + r * cols, values + r * k, indices + r * k, cols, k, largest);
     }
 }
 

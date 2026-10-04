@@ -23,7 +23,8 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
 - **Layers**: `LinearModule`, `Conv2DModule`, `ReluModule`, `FlattenModule`,
   `SequentialModule`, `DropoutModule`, `EmbeddingModule`, `ResidualModule`; normalization
   (`LayerNormModule`/`RMSNormModule`/`GroupNormModule`/`BatchNormModule`); pooling
-  (`MaxPool2DModule`/`AvgPool2DModule`)
+  (`MaxPool2DModule`/`AvgPool2DModule`). `Conv2DModule` takes an optional `stride` and zero
+  `padding`, as in `torch.nn.Conv2d`, and every LRP rule handles both.
 - **Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule`, `SoftmaxModule`,
   `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock`,
   `MambaModule`, `RWKVModule`, `RetNetModule`
@@ -32,11 +33,22 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
 - **Generative building blocks**: `Reparameterize` (VAE), `NoiseSchedule` and
   `SinusoidalTimestepEmbedding()` (diffusion)
 - **Training utilities**: `MetricsSink`/`NoOpMetricsSink` (where `train_step` logs its loss)
+- **Selection**: `top_k()`, the k largest or smallest entries of every row along the last
+  dimension, with their indices, on any device. NaN ranks above every number and ties keep the
+  lower index first, so every backend selects the same entries in the same order.
+- **Matrix decompositions** (CPU, for matrices up to a few hundred wide): `SymmetricEigen`,
+  `PowerIteration`, `QR` and `SVD`, the building blocks for PCA, stable rank and orthonormal
+  projections. Vector signs are fixed (each vector's largest entry is positive) and values come
+  largest first, so the same matrix always gives the same answer.
 - **Ready-made examples**: `XorNetwork` (a tiny MLP that learns XOR), `MnistConvNet` (a
   Conv2D MNIST classifier) and `MnistIdxLoader` (reads the MNIST IDX files)
 
 The CPU backend is always built. To build the GPU backends, configure CMake with
 `-DPULSATRIX_ENABLE_CUDA=ON` or `-DPULSATRIX_ENABLE_HIP=ON`.
+
+Every layer and loss checks that the tensors it's given live on its own device, and throws
+`std::invalid_argument` if not; move a tensor first with `Tensor::to()`. `EmbeddingModule` is the
+exception: it accepts its indices from any device.
 
 Full API reference: [Doxygen: Deep Learning Modules and Layers](../api/group__dl__modules.html)
 
@@ -83,17 +95,58 @@ members (see `include/pulsatrix/xor_training_example.hpp`). `forward()` chains
 Runnable version: [`examples/xor_demo.cpp`](https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp)
 (CMake target `xor_demo`). See also the [recipe](../recipes/deep-learning/xor_training.md).
 
+### Reproducibility
+
+Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
+`set_seed` sets one global seed (default 0). Anything built without its own seed, such as a
+`DropoutModule`, `LinearProbe`, `SparseAutoencoder` or a shuffling `DataLoader`, draws a distinct
+seed from it in construction order:
+
+```cpp
+#include "pulsatrix/determinism.hpp"
+
+set_seed(1234);  // same seed + same construction order = same weights, masks and shuffles
+DropoutModule a(0.5f, &backend), b(0.5f, &backend);  // different masks, both reproducible
+DropoutModule c(0.5f, &backend, /*seed=*/7);           // an explicit seed ignores the global one
+```
+
+Deterministic mode is on by default (`set_deterministic(false)` turns it off). pulsatrix's own
+kernels use no atomics, so they always give the same result. In deterministic mode the GPU
+backends also forbid atomics in hipBLAS and cuBLAS, so matrix products are reproducible too.
+Random draws that use standard-library distributions (`std::normal_distribution` and friends)
+are reproducible on one platform, but not between libstdc++ and MSVC.
+
+### Freezing parameters
+
+Every parameter has a name (`named_parameters()`), and `set_requires_grad` freezes or unfreezes
+parameters by name. A name selects that parameter and everything under it:
+
+```cpp
+TransformerBlock block(64, 4, 256, &backend);
+block.set_requires_grad(false);              // freeze everything
+block.set_requires_grad(true, "mha.q_proj");  // then train only the query projection
+```
+
+A frozen parameter is never changed by `SGDOptimizer` or `AdamOptimizer`, and `backward()`
+doesn't add to its gradient. The gradient passed back to the previous layer is exactly the same
+as without freezing. `LinearModule`, `Conv2DModule` and `EmbeddingModule` skip computing a
+frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
+nothing throws `std::invalid_argument`, so a typo can't leave the model silently trainable.
+
 ### Choosing a normalization layer
 
 `LayerNormModule`, `RMSNormModule`, `GroupNormModule` and `BatchNormModule` all implement the
 same `Module` contract (`forward()`, `backward()`, `propagate_relevance()`,
-`named_parameters()`). That makes them interchangeable in a `SequentialModule`. Pick one by what it normalizes over:
+`named_parameters()`). That makes them interchangeable in a `SequentialModule`. Pick one by
+what it normalizes over:
 
 - `LayerNormModule` and `RMSNormModule`: each row's features (the last dimension).
   RMSNorm skips the mean-centering.
 - `GroupNormModule`: groups of channels, per example.
-- `BatchNormModule`: each channel across the whole batch and spatial dimensions. It has no
-  running statistics or eval mode; it always uses the current batch.
+- `BatchNormModule`: each channel across the whole batch and spatial dimensions. In training
+  mode it uses the current batch and updates running statistics (PyTorch's rule, momentum 0.1).
+  After `set_training(false)` it uses the running statistics, so each sample's output no longer
+  depends on the rest of its batch. Switch to eval mode before explaining a model.
 
 ## Recipes
 

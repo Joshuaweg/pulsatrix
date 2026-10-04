@@ -11,6 +11,8 @@ BCEWithLogitsLoss::BCEWithLogitsLoss(DeviceBackend* backend)
     : backend_(backend), last_logits_(Shape({0}), backend), last_target_(Shape({0}), backend) {}
 
 float BCEWithLogitsLoss::forward(const Tensor& logits, const Tensor& target) {
+    require_device(logits, backend_->device(), "BCEWithLogitsLoss::forward");
+    require_device(target, backend_->device(), "BCEWithLogitsLoss::forward");
     if (!(logits.shape() == target.shape())) {
         throw std::invalid_argument("BCEWithLogitsLoss::forward: logits and target must have the same shape");
     }

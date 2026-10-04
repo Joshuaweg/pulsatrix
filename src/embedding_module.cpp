@@ -67,6 +67,7 @@ Tensor EmbeddingModule::forward_impl(const Tensor& input) {
 }
 
 Tensor EmbeddingModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, weight_.device(), "EmbeddingModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("EmbeddingModule::backward: called before any forward()");
     }
@@ -80,12 +81,15 @@ Tensor EmbeddingModule::backward(const Tensor& grad_output) {
     }
 
     // Scatter-add into a zeroed local, then accumulate -- the original association. The
-    // scatter walks tokens in order on every backend (deterministic; no atomics).
-    Tensor local_weight_grad(weight_.shape(), backend_, weight_.device());
-    local_weight_grad.fill(0.0f);
-    backend_->scatter_add_rows(grad_output.data(), last_indices_.data(), local_weight_grad.data(),
-                               static_cast<size_t>(N * L), static_cast<size_t>(embedding_dim_));
-    weight_grad_.accumulate(local_weight_grad);
+    // scatter walks tokens in order on every backend (deterministic; no atomics). Skipped for a
+    // frozen table (FND-2), which also skips allocating a vocabulary-sized temporary.
+    if (weight_.requires_grad()) {
+        Tensor local_weight_grad(weight_.shape(), backend_, weight_.device());
+        local_weight_grad.fill(0.0f);
+        backend_->scatter_add_rows(grad_output.data(), last_indices_.data(), local_weight_grad.data(),
+                                   static_cast<size_t>(N * L), static_cast<size_t>(embedding_dim_));
+        weight_grad_.accumulate(local_weight_grad);
+    }
 
     // Indices are not differentiable: the input gradient is zero by definition.
     Tensor grad_input(last_input_shape_, backend_, weight_.device());
@@ -94,6 +98,7 @@ Tensor EmbeddingModule::backward(const Tensor& grad_output) {
 }
 
 Tensor EmbeddingModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
+    require_device(relevance_out, weight_.device(), "EmbeddingModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("EmbeddingModule::propagate_relevance: called before any forward()");
     }

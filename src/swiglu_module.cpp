@@ -87,6 +87,7 @@ Tensor SwiGLUModule::forward_impl(const Tensor& input) {
 }
 
 Tensor SwiGLUModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "SwiGLUModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("SwiGLUModule::backward: called before any forward()");
     }
@@ -121,6 +122,7 @@ Tensor SwiGLUModule::backward(const Tensor& grad_output) {
 }
 
 Tensor SwiGLUModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "SwiGLUModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("SwiGLUModule::propagate_relevance: called before any forward()");
     }
