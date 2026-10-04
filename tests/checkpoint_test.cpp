@@ -181,6 +181,17 @@ TEST_F(CheckpointTest, OptimizerStateLivesInASiblingFile) {
     EXPECT_THROW(LoadCheckpoint(path, a.seq, other), std::runtime_error);
 }
 
+TEST_F(CheckpointTest, RefusesAnOptimizerFileFromAnotherSaveOfTheModel) {
+    Net a(&backend, 1);
+    AdamOptimizer adam(0.01f, &backend);
+    (void)train_step(a, adam);
+    SaveCheckpoint(path, a.seq, adam);
+    (void)train_step(a, adam);
+    SaveCheckpoint(path, a.seq);  // overwrites the model file only: the old .optim file is now stale
+    AdamOptimizer fresh(0.01f, &backend);
+    EXPECT_THROW(LoadCheckpoint(path, a.seq, fresh), std::invalid_argument);
+}
+
 // --- Strictness and versions -----------------------------------------------------------
 
 TEST_F(CheckpointTest, StrictLoadRejectsMissingUnexpectedAndMisshapenEntries) {
