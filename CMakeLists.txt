@@ -97,6 +97,7 @@ add_library(pulsatrix_core
     src/checkpoint.cpp
     src/grad_clipping.cpp
     src/token_cross_entropy_loss.cpp
+    src/tagger_finetune_example.cpp
     src/rnn_module.cpp
     src/lstm_module.cpp
     src/gru_module.cpp
@@ -463,6 +464,9 @@ if(PULSATRIX_BUILD_EXAMPLES)
     # with a docs/recipes/<section>/<name>.md page. See docs/recipes/index.md.
     add_executable(xor_training_recipe examples/recipes/xor_training.cpp)
     target_link_libraries(xor_training_recipe PRIVATE pulsatrix_core)
+
+    add_executable(tagger_finetune_recipe examples/recipes/tagger_finetune.cpp)
+    target_link_libraries(tagger_finetune_recipe PRIVATE pulsatrix_core)
 
     add_executable(csv_dataloader_training_recipe examples/recipes/csv_dataloader_training.cpp)
     target_link_libraries(csv_dataloader_training_recipe PRIVATE pulsatrix_core)
