@@ -1507,6 +1507,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="FND: Foundations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-fnd-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the FND work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-fnd-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the FND work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1918,6 +1946,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="FND: Foundations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-fnd-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the FND work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-fnd-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the FND work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2119,8 +2175,10 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
   activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.</li>
 <li><strong>Missing.</strong> There is no way to save or load model weights, no import from PyTorch or Hugging
   Face, and everything is <code>float32</code>. Tensors have no views or broadcasting. There are no
-  learning-rate schedulers, no AdamW, no parameter freezing and no LoRA. Attention has no mask,
-  BatchNorm has no running statistics, and Conv2D has no stride or padding.</li>
+  learning-rate schedulers, no AdamW and no LoRA. Attention has no mask.</li>
+<li><strong>Done since v1.0.</strong> The whole <a href="#fnd-foundations">FND epic</a>: named parameters, freezing, top-k,
+  eigensolver/QR/SVD, BatchNorm eval mode and folding, Conv2D stride and padding, seeding and
+  deterministic mode, and device checks.</li>
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo), but every op synchronizes the stream,
   reductions run one thread per row or channel, and every tensor is a raw <code>hipMalloc</code>.</li>
 </ul>
@@ -2210,8 +2268,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v11-foundations-and-trust">v1.1 "Foundations and trust"<a class="headerlink" href="#v11-foundations-and-trust" title="Permanent link">&para;</a></h3>
 <p>The plumbing everything else needs, plus the checks that keep explanations honest.</p>
 <ul>
-<li>FND-1 to FND-8: named parameters, freezing, top-k, eigensolver, BatchNorm eval mode, Conv2D
-  stride and padding, seeding, device checks</li>
+<li>FND-1 to FND-8 (<strong>done</strong>): named parameters, freezing, top-k, eigensolver, BatchNorm eval
+  mode, Conv2D stride and padding, seeding, device checks</li>
 <li>IO-1, IO-2: safetensors and the native checkpoint format</li>
 <li>TRN-1 to TRN-6: parameter groups, AdamW, clipping, schedulers, gradient accumulation, full
   fine-tuning</li>
@@ -2278,9 +2336,9 @@ AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <li>Python wheels and a vcpkg port (KS-11)</li>
 </ul>
 <h2 id="fnd-foundations">FND: Foundations<a class="headerlink" href="#fnd-foundations" title="Permanent link">&para;</a></h2>
-<p>These unblock most of the other epics. <code>named_parameters()</code> alone blocks saving, freezing, LoRA,
-Hugging Face import and optimizer parameter groups, because <code>Module::parameters()</code>
-(<code>module.hpp:140</code>) returns parameters with no names.</p>
+<p>These unblock most of the other epics. <strong>All eight are done</strong> (2026-10-04, PRs
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/33">#33</a> to
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/41">#41</a>).</p>
 <table>
 <thead>
 <tr>
@@ -2290,6 +2348,7 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -2300,6 +2359,7 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, #33</td>
 </tr>
 <tr>
 <td>FND-2</td>
@@ -2308,6 +2368,7 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <td>FND-1</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, #34</td>
 </tr>
 <tr>
 <td>FND-3</td>
@@ -2316,6 +2377,7 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, #35</td>
 </tr>
 <tr>
 <td>FND-4</td>
@@ -2324,6 +2386,7 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, #36 (see below)</td>
 </tr>
 <tr>
 <td>FND-5</td>
@@ -2332,6 +2395,7 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td>Done, #37</td>
 </tr>
 <tr>
 <td>FND-6</td>
@@ -2340,6 +2404,7 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, #38</td>
 </tr>
 <tr>
 <td>FND-7</td>
@@ -2348,6 +2413,7 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td>Done, #39 (see below)</td>
 </tr>
 <tr>
 <td>FND-8</td>
@@ -2356,6 +2422,62 @@ Hugging Face import and optimizer parameter groups, because <code>Module::parame
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td>Done, #40</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-the-fnd-work-departed-from-the-plan">How the FND work departed from the plan<a class="headerlink" href="#how-the-fnd-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>FND-4.</strong> The eigensolver is Householder tridiagonalization plus implicit-shift QL, not
+  Jacobi. Cyclic Jacobi took 12.7 s at n = 512, and PCA on SmolLM2's 576-wide activations would
+  hit that on every call; QL takes 0.77 s. The SVD is one-sided Jacobi, as planned.</li>
+<li><strong>FND-7.</strong> Deterministic mode is on by default, unlike PyTorch. It forbids hipBLAS and cuBLAS
+  atomics.</li>
+</ul>
+<h3 id="follow-ups-the-fnd-work-surfaced">Follow-ups the FND work surfaced<a class="headerlink" href="#follow-ups-the-fnd-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Found in</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Overlapping and padded <code>MaxPool2DModule</code>, and an adaptive average pool: the ResNet stem uses <code>MaxPool2d(3, stride 2, padding 1)</code></td>
+<td>FND-6</td>
+<td>KS-9 (model zoo)</td>
+</tr>
+<tr>
+<td>A <code>named_buffers()</code> so checkpoints can save BatchNorm running statistics, which aren't parameters</td>
+<td>FND-5</td>
+<td>IO-2</td>
+</tr>
+<tr>
+<td><code>BatchNormModule</code> initializes gamma to 0; PyTorch uses 1</td>
+<td>FND-5</td>
+<td>IO-5 (configs) or a separate fix</td>
+</tr>
+<tr>
+<td><code>std::normal_distribution</code> and friends differ between libstdc++ and MSVC, so seeded runs match on one platform only</td>
+<td>FND-7</td>
+<td>KS-1, or its own item</td>
+</tr>
+<tr>
+<td><code>named_parameters()</code> and <code>set_requires_grad()</code> in the Python bindings</td>
+<td>FND-1, FND-2</td>
+<td>NB-3</td>
+</tr>
+<tr>
+<td>A device top-k for large k (radix or bitonic select); the current kernel is O(cols·k) per row</td>
+<td>FND-3</td>
+<td>FEAT-2 if k grows</td>
+</tr>
+<tr>
+<td><code>GaussianMutationTest.ZeroSigma…</code> aborts in Debug: <code>std::normal_distribution</code> rejects σ = 0 under libstdc++ assertions</td>
+<td>found while testing</td>
+<td>a bug fix</td>
 </tr>
 </tbody>
 </table>
