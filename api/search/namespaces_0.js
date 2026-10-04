@@ -5,5 +5,6 @@ var searchData=
   ['pulsatrix_3a_3adetail_2',['detail',['../namespacepulsatrix_1_1detail.html',1,'pulsatrix']]],
   ['pulsatrix_3a_3aexplainer_5fdetail_3',['explainer_detail',['../namespacepulsatrix_1_1explainer__detail.html',1,'pulsatrix']]],
   ['pulsatrix_3a_3alrp_5fcomposite_4',['lrp_composite',['../namespacepulsatrix_1_1lrp__composite.html',1,'pulsatrix']]],
-  ['pulsatrix_3a_3alrp_5fcomposite_3a_3adetail_5',['detail',['../namespacepulsatrix_1_1lrp__composite_1_1detail.html',1,'pulsatrix::lrp_composite']]]
+  ['pulsatrix_3a_3alrp_5fcomposite_3a_3adetail_5',['detail',['../namespacepulsatrix_1_1lrp__composite_1_1detail.html',1,'pulsatrix::lrp_composite']]],
+  ['pulsatrix_3a_3aparam_5fselect_6',['param_select',['../namespacepulsatrix_1_1param__select.html',1,'pulsatrix']]]
 ];

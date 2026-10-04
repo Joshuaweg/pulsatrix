@@ -106,6 +106,12 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1AdamOptimizer.html',
 
 <p><code>#include &lt;<a class="el" href="adam__optimizer_8hpp_source.html">adam_optimizer.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AdamOptimizer_1_1AdamState.html">AdamState</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One parameter's Adam state: first and second moments, and its step count.  <a href="structpulsatrix_1_1AdamOptimizer_1_1AdamState.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a813da28be37647cd1c8569c64cdb18bf" id="r_a813da28be37647cd1c8569c64cdb18bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a813da28be37647cd1c8569c64cdb18bf">AdamOptimizer</a> (float <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#aeb150c11772a1d4371bca596708a796f">learning_rate</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float beta1=0.9f, float beta2=0.999f, float eps=1e-8f)</td></tr>
@@ -123,6 +129,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7eb3bc56921a351290c838b1ac38abd3" id="r_a7eb3bc56921a351290c838b1ac38abd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a7eb3bc56921a351290c838b1ac38abd3">set_learning_rate</a> (float <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#aeb150c11772a1d4371bca596708a796f">learning_rate</a>)</td></tr>
 <tr class="memdesc:a7eb3bc56921a351290c838b1ac38abd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the step size used by every subsequent <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a3ff67993845fb7d598acbcfc3678bfe4" title="Applies one Adam update to every parameter the module exposes.">step()</a> call &ndash; necessary infrastructure for any mid-training hyperparameter schedule (e.g. Population Based Training's own explore step), found necessary by campaign_exai_dl_library_evolutionary_deep_learning's Phase 4 Mission 0, logged as a small addition beyond this class's original fixed-at-construction scope. Does not reset Adam's own moment state (m/v), matching <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a5ae29a0ec977e5c281c60c08c4c52450" title="Resets every parameter&#39;s gradient to zero. Does not reset Adam&#39;s moment state.">zero_grad()</a>'s own precedent that state and gradient are independent concerns.  <br /></td></tr>
 <tr class="separator:a7eb3bc56921a351290c838b1ac38abd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c07726aae687ab1e792d0316fc1fd73" id="r_a9c07726aae687ab1e792d0316fc1fd73"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a9c07726aae687ab1e792d0316fc1fd73">weight_decay</a> () const</td></tr>
+<tr class="memdesc:a9c07726aae687ab1e792d0316fc1fd73"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default group's weight decay: L2 added to the gradient, as PyTorch's Adam does (decoupled decay is AdamW, TRN-2). Defaults to 0.  <br /></td></tr>
+<tr class="separator:a9c07726aae687ab1e792d0316fc1fd73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0557331d1222857600e97c5068955e3f" id="r_a0557331d1222857600e97c5068955e3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a0557331d1222857600e97c5068955e3f">set_weight_decay</a> (float <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a9c07726aae687ab1e792d0316fc1fd73">weight_decay</a>)</td></tr>
+<tr class="separator:a0557331d1222857600e97c5068955e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4183215d9302fb4d3a77951c223dd073" id="r_a4183215d9302fb4d3a77951c223dd073"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a4183215d9302fb4d3a77951c223dd073">set_param_groups</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt; groups)</td></tr>
+<tr class="memdesc:a4183215d9302fb4d3a77951c223dd073"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the parameter groups; see <a class="el" href="structpulsatrix_1_1ParamGroup.html" title="Optimizer settings for the parameters selects picks.">ParamGroup</a>.  <br /></td></tr>
+<tr class="separator:a4183215d9302fb4d3a77951c223dd073"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e993951f72b11a923fa4d0d7e028139" id="r_a4e993951f72b11a923fa4d0d7e028139"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a4e993951f72b11a923fa4d0d7e028139">param_groups</a> ()</td></tr>
+<tr class="separator:a4e993951f72b11a923fa4d0d7e028139"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a833f9c797b5ebe17679712e469522c02" id="r_a833f9c797b5ebe17679712e469522c02"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structpulsatrix_1_1AdamOptimizer_1_1AdamState.html">AdamState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a833f9c797b5ebe17679712e469522c02">state</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *parameter) const</td></tr>
+<tr class="memdesc:a833f9c797b5ebe17679712e469522c02"><td class="mdescLeft">&#160;</td><td class="mdescRight">The state for <code>parameter</code> (a value tensor from <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">Module::parameters()</a>), or nullptr if <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a3ff67993845fb7d598acbcfc3678bfe4" title="Applies one Adam update to every parameter the module exposes.">step()</a> hasn't updated it yet. For checkpointing (IO-2).  <br /></td></tr>
+<tr class="separator:a833f9c797b5ebe17679712e469522c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2624efcc0c69e4536d3e72e1628ba759" id="r_a2624efcc0c69e4536d3e72e1628ba759"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a2624efcc0c69e4536d3e72e1628ba759">set_state</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *parameter, <a class="el" href="structpulsatrix_1_1AdamOptimizer_1_1AdamState.html">AdamState</a> <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a833f9c797b5ebe17679712e469522c02">state</a>)</td></tr>
+<tr class="memdesc:a2624efcc0c69e4536d3e72e1628ba759"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces the state for <code>parameter</code>, e.g. when resuming from a checkpoint.  <br /></td></tr>
+<tr class="separator:a2624efcc0c69e4536d3e72e1628ba759"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Adam (Kingma &amp; Ba, 2015): per-parameter moving averages of gradient (m) and squared gradient (v), with bias correction. </p>
@@ -222,6 +244,31 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a4e993951f72b11a923fa4d0d7e028139" name="a4e993951f72b11a923fa4d0d7e028139"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e993951f72b11a923fa4d0d7e028139">&#9670;&#160;</a></span>param_groups()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt; &amp; pulsatrix::AdamOptimizer::param_groups </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7eb3bc56921a351290c838b1ac38abd3" name="a7eb3bc56921a351290c838b1ac38abd3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7eb3bc56921a351290c838b1ac38abd3">&#9670;&#160;</a></span>set_learning_rate()</h2>
 
@@ -247,6 +294,138 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Overwrites the step size used by every subsequent <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a3ff67993845fb7d598acbcfc3678bfe4" title="Applies one Adam update to every parameter the module exposes.">step()</a> call &ndash; necessary infrastructure for any mid-training hyperparameter schedule (e.g. Population Based Training's own explore step), found necessary by campaign_exai_dl_library_evolutionary_deep_learning's Phase 4 Mission 0, logged as a small addition beyond this class's original fixed-at-construction scope. Does not reset Adam's own moment state (m/v), matching <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a5ae29a0ec977e5c281c60c08c4c52450" title="Resets every parameter&#39;s gradient to zero. Does not reset Adam&#39;s moment state.">zero_grad()</a>'s own precedent that state and gradient are independent concerns. </p>
+
+</div>
+</div>
+<a id="a4183215d9302fb4d3a77951c223dd073" name="a4183215d9302fb4d3a77951c223dd073"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4183215d9302fb4d3a77951c223dd073">&#9670;&#160;</a></span>set_param_groups()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::AdamOptimizer::set_param_groups </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a> &gt;&#160;</td>
+          <td class="paramname"><em>groups</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replaces the parameter groups; see <a class="el" href="structpulsatrix_1_1ParamGroup.html" title="Optimizer settings for the parameters selects picks.">ParamGroup</a>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>on a group without a selector or with an invalid setting. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2624efcc0c69e4536d3e72e1628ba759" name="a2624efcc0c69e4536d3e72e1628ba759"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2624efcc0c69e4536d3e72e1628ba759">&#9670;&#160;</a></span>set_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::AdamOptimizer::set_state </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>parameter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1AdamOptimizer_1_1AdamState.html">AdamState</a>&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replaces the state for <code>parameter</code>, e.g. when resuming from a checkpoint. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the moments' shapes differ from the parameter's, they are not on the parameter's device, or t is negative. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0557331d1222857600e97c5068955e3f" name="a0557331d1222857600e97c5068955e3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0557331d1222857600e97c5068955e3f">&#9670;&#160;</a></span>set_weight_decay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::AdamOptimizer::set_weight_decay </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>weight_decay</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a833f9c797b5ebe17679712e469522c02" name="a833f9c797b5ebe17679712e469522c02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a833f9c797b5ebe17679712e469522c02">&#9670;&#160;</a></span>state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structpulsatrix_1_1AdamOptimizer_1_1AdamState.html">AdamState</a> * pulsatrix::AdamOptimizer::state </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>parameter</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The state for <code>parameter</code> (a value tensor from <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">Module::parameters()</a>), or nullptr if <a class="el" href="classpulsatrix_1_1AdamOptimizer.html#a3ff67993845fb7d598acbcfc3678bfe4" title="Applies one Adam update to every parameter the module exposes.">step()</a> hasn't updated it yet. For checkpointing (IO-2). </p>
 
 </div>
 </div>
@@ -277,6 +456,39 @@ Public Member Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if a parameter's device differs from the backend's. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9c07726aae687ab1e792d0316fc1fd73" name="a9c07726aae687ab1e792d0316fc1fd73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c07726aae687ab1e792d0316fc1fd73">&#9670;&#160;</a></span>weight_decay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::AdamOptimizer::weight_decay </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The default group's weight decay: L2 added to the gradient, as PyTorch's Adam does (decoupled decay is AdamW, TRN-2). Defaults to 0. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if negative or not finite. </td></tr>
   </table>
   </dd>
 </dl>

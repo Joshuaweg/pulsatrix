@@ -430,6 +430,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#parameter-groups-and-weight-decay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter groups and weight decay
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#freezing-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1606,6 +1617,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#parameter-groups-and-weight-decay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter groups and weight decay
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#freezing-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1748,27 +1770,32 @@ members (see <code>include/pulsatrix/xor_training_example.hpp</code>). <code>for
 <p>Runnable version: <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/xor_demo.cpp"><code>examples/xor_demo.cpp</code></a>
 (CMake target <code>xor_demo</code>). See also the <a href="../recipes/deep-learning/xor_training/">recipe</a>.</p>
 <h3 id="saving-and-loading-weights">Saving and loading weights<a class="headerlink" href="#saving-and-loading-weights" title="Permanent link">&para;</a></h3>
-<p>Weights are stored as <a href="https://github.com/huggingface/safetensors">safetensors</a>, the format most
+<p>Checkpoints are <a href="https://github.com/huggingface/safetensors">safetensors</a> files, the format most
 Hugging Face models ship in. It holds only numbers, so loading a file can't run code, unlike a
-PyTorch pickle. Parameter names come from <code>named_parameters()</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/safetensors.hpp"</span>
+PyTorch pickle.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/checkpoint.hpp"</span>
 
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">*&gt;&gt;</span><span class="w"> </span><span class="n">tensors</span><span class="p">;</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">NamedParamRef</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">named_parameters</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">tensors</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">ref</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="n">WriteSafetensors</span><span class="p">(</span><span class="s">"model.safetensors"</span><span class="p">,</span><span class="w"> </span><span class="n">tensors</span><span class="p">,</span><span class="w"> </span><span class="p">{{</span><span class="s">"format"</span><span class="p">,</span><span class="w"> </span><span class="s">"pulsatrix"</span><span class="p">}});</span>
-
-<span class="n">SafetensorsFile</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SafetensorsFile</span><span class="o">::</span><span class="n">Read</span><span class="p">(</span><span class="s">"model.safetensors"</span><span class="p">);</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">NamedParamRef</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">named_parameters</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="o">*</span><span class="n">p</span><span class="p">.</span><span class="n">ref</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="p">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// keeps the parameter's requires_grad flag</span>
-<span class="p">}</span>
+<span class="n">SaveCheckpoint</span><span class="p">(</span><span class="s">"model.safetensors"</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span><span class="w">  </span><span class="c1">// also writes model.optim.safetensors</span>
+<span class="c1">// ... later, or in another process:</span>
+<span class="n">LoadCheckpoint</span><span class="p">(</span><span class="s">"model.safetensors"</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span><span class="w">  </span><span class="c1">// training resumes exactly</span>
 </code></pre></div>
-<p>The reader treats every file as untrusted, and throws <code>std::invalid_argument</code> for anything
-outside the format: offsets past the end of the file, overlapping or missing byte ranges, sizes
-that overflow, and malformed headers. It's fuzzed under AddressSanitizer
-(<code>tools/fuzz/safetensors_fuzz.cpp</code>). <code>tensor()</code> converts F32 only for now; other dtypes are
-readable as raw bytes with <code>bytes()</code>.</p>
+<ul>
+<li>Every parameter and buffer (such as BatchNorm's running statistics) is stored under its
+  <code>named_parameters()</code> / <code>named_buffers()</code> name. Leave out the optimizer to save or load just
+  the model.</li>
+<li>A resumed run reproduces the original loss curve bit for bit.</li>
+<li>Loading is strict: a missing, unexpected or wrongly shaped entry throws, and nothing is changed.
+  Pass <code>CheckpointLoadOptions{false}</code> to skip missing and unexpected names. Shapes are always
+  checked.</li>
+<li>Each file records a <code>format_version</code>. Older versions load through a migration table, and newer
+  ones are rejected. A plain safetensors file with matching names loads as version 0.</li>
+<li>The optimizer file records which save of the model it belongs to, so stale optimizer state is
+  refused.</li>
+</ul>
+<p>The reader underneath (<code>safetensors.hpp</code>) treats every file as untrusted, and throws
+<code>std::invalid_argument</code> for anything outside the format: offsets past the end of the file,
+overlapping or missing byte ranges, sizes that overflow, and malformed headers. It's fuzzed under
+AddressSanitizer (<code>tools/fuzz/safetensors_fuzz.cpp</code>).</p>
 <h3 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h3>
 <p>Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
 <code>set_seed</code> sets one global seed (default 0). Anything built without its own seed, such as a
@@ -1785,6 +1812,23 @@ kernels use no atomics, so they always give the same result. In deterministic mo
 backends also forbid atomics in hipBLAS and cuBLAS, so matrix products are reproducible too.
 Random draws that use standard-library distributions (<code>std::normal_distribution</code> and friends)
 are reproducible on one platform, but not between libstdc++ and MSVC.</p>
+<h3 id="parameter-groups-and-weight-decay">Parameter groups and weight decay<a class="headerlink" href="#parameter-groups-and-weight-decay" title="Permanent link">&para;</a></h3>
+<p><code>SGDOptimizer</code> and <code>AdamOptimizer</code> take a learning rate and weight decay per group of
+parameters, chosen by name. Each parameter joins the first group that selects it; the rest use
+the optimizer's own settings. The usual transformer recipe decays the weight matrices but not the
+biases or normalization scales:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/param_groups.hpp"</span>
+
+<span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">adam</span><span class="p">(</span><span class="mf">3e-4f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">adam</span><span class="p">.</span><span class="n">set_weight_decay</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">);</span><span class="w">  </span><span class="c1">// the default group: every parameter no group selects</span>
+<span class="n">adam</span><span class="p">.</span><span class="n">set_param_groups</span><span class="p">({</span>
+<span class="w">    </span><span class="p">{</span><span class="s">"no decay"</span><span class="p">,</span><span class="w"> </span><span class="n">param_select</span><span class="o">::</span><span class="n">one_dimensional</span><span class="p">(),</span><span class="w"> </span><span class="mf">3e-4f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">},</span><span class="w">             </span><span class="c1">// biases, norm scales</span>
+<span class="w">    </span><span class="p">{</span><span class="s">"head"</span><span class="p">,</span><span class="w"> </span><span class="n">param_select</span><span class="o">::</span><span class="n">name_prefix</span><span class="p">(</span><span class="s">"blocks.11"</span><span class="p">),</span><span class="w"> </span><span class="mf">1e-3f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">},</span><span class="w">         </span><span class="c1">// a faster last block</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Weight decay works as in PyTorch's SGD and Adam: the step uses <code>grad + weight_decay * value</code>,
+and the stored gradient is left unchanged. A group's <code>learning_rate</code> and <code>weight_decay</code> can be
+changed between steps through <code>param_groups()</code>.</p>
 <h3 id="freezing-parameters">Freezing parameters<a class="headerlink" href="#freezing-parameters" title="Permanent link">&para;</a></h3>
 <p>Every parameter has a name (<code>named_parameters()</code>), and <code>set_requires_grad</code> freezes or unfreezes
 parameters by name. A name selects that parameter and everything under it:</p>

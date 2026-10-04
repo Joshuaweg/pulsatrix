@@ -1,16 +1,17 @@
 var searchData=
 [
-  ['tag_0',['tag',['../structpulsatrix_1_1MetricRecord.html#a4d5f3bf936000c84853c76c22869ce8a',1,'pulsatrix::MetricRecord']]],
-  ['targets_1',['targets',['../structpulsatrix_1_1LRPTarget.html#ab821b684c62b52a32b26f9a84e8250fb',1,'pulsatrix::LRPTarget']]],
-  ['tau_2',['tau',['../structpulsatrix_1_1RlRowArgs.html#a35eb3d2086f33f71e18a61e01f256a2d',1,'pulsatrix::RlRowArgs']]],
-  ['temperature_5fc_3',['temperature_c',['../structpulsatrix_1_1GpuSample.html#ae527c8a5721440505d6b852c651161f0',1,'pulsatrix::GpuSample']]],
-  ['terminal_5freward_4',['terminal_reward',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae7394613c6b3469e69326d93da2a211a',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['timestamp_5',['timestamp',['../structpulsatrix_1_1SystemSample.html#a8f732806e99f576ce45e3e7975d0ac69',1,'pulsatrix::SystemSample']]],
-  ['to_6',['to',['../structpulsatrix_1_1CircuitEdge.html#a77fafe24bfaef222e75479a5a62f6708',1,'pulsatrix::CircuitEdge']]],
-  ['top_7',['top',['../structpulsatrix_1_1WaterfallBar.html#a41a8ed93202789afcea4f274865349b5',1,'pulsatrix::WaterfallBar']]],
-  ['top_5findices_8',['top_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ae15578eb7386bf5525a2e603960909a7',1,'pulsatrix::PBTTruncationGroups']]],
-  ['total_9',['total',['../structpulsatrix_1_1detail_1_1CpuTimes.html#a32395487b178325aa5b2250127422ab0',1,'pulsatrix::detail::CpuTimes']]],
-  ['total_5fepochs_5ftrained_10',['total_epochs_trained',['../structpulsatrix_1_1ASHAResult.html#aa4e1c451a9b29d6967de3d1e4c317fed',1,'pulsatrix::ASHAResult::total_epochs_trained'],['../structpulsatrix_1_1HyperbandResult.html#acd40476a190257ab40522f8246dd0d55',1,'pulsatrix::HyperbandResult::total_epochs_trained'],['../structpulsatrix_1_1SuccessiveHalvingResult.html#aacc6eded912dbc423fbcc5c4f6d7649f',1,'pulsatrix::SuccessiveHalvingResult::total_epochs_trained']]],
-  ['trial_11',['trial',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a',1,'pulsatrix::detail::ASHACandidate']]],
-  ['type_12',['type',['../structpulsatrix_1_1NodeGene.html#a112e84f4b4f12e605da66760b07b2f5a',1,'pulsatrix::NodeGene']]]
+  ['t_0',['t',['../structpulsatrix_1_1AdamOptimizer_1_1AdamState.html#a3b33b62bfdef04a35ccdf661fdb8ea92',1,'pulsatrix::AdamOptimizer::AdamState']]],
+  ['tag_1',['tag',['../structpulsatrix_1_1MetricRecord.html#a4d5f3bf936000c84853c76c22869ce8a',1,'pulsatrix::MetricRecord']]],
+  ['targets_2',['targets',['../structpulsatrix_1_1LRPTarget.html#ab821b684c62b52a32b26f9a84e8250fb',1,'pulsatrix::LRPTarget']]],
+  ['tau_3',['tau',['../structpulsatrix_1_1RlRowArgs.html#a35eb3d2086f33f71e18a61e01f256a2d',1,'pulsatrix::RlRowArgs']]],
+  ['temperature_5fc_4',['temperature_c',['../structpulsatrix_1_1GpuSample.html#ae527c8a5721440505d6b852c651161f0',1,'pulsatrix::GpuSample']]],
+  ['terminal_5freward_5',['terminal_reward',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae7394613c6b3469e69326d93da2a211a',1,'pulsatrix::GFlowNetTrajectory']]],
+  ['timestamp_6',['timestamp',['../structpulsatrix_1_1SystemSample.html#a8f732806e99f576ce45e3e7975d0ac69',1,'pulsatrix::SystemSample']]],
+  ['to_7',['to',['../structpulsatrix_1_1CircuitEdge.html#a77fafe24bfaef222e75479a5a62f6708',1,'pulsatrix::CircuitEdge']]],
+  ['top_8',['top',['../structpulsatrix_1_1WaterfallBar.html#a41a8ed93202789afcea4f274865349b5',1,'pulsatrix::WaterfallBar']]],
+  ['top_5findices_9',['top_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ae15578eb7386bf5525a2e603960909a7',1,'pulsatrix::PBTTruncationGroups']]],
+  ['total_10',['total',['../structpulsatrix_1_1detail_1_1CpuTimes.html#a32395487b178325aa5b2250127422ab0',1,'pulsatrix::detail::CpuTimes']]],
+  ['total_5fepochs_5ftrained_11',['total_epochs_trained',['../structpulsatrix_1_1ASHAResult.html#aa4e1c451a9b29d6967de3d1e4c317fed',1,'pulsatrix::ASHAResult::total_epochs_trained'],['../structpulsatrix_1_1HyperbandResult.html#acd40476a190257ab40522f8246dd0d55',1,'pulsatrix::HyperbandResult::total_epochs_trained'],['../structpulsatrix_1_1SuccessiveHalvingResult.html#aacc6eded912dbc423fbcc5c4f6d7649f',1,'pulsatrix::SuccessiveHalvingResult::total_epochs_trained']]],
+  ['trial_12',['trial',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a98288f1d556094a5d474756bb4b2ef7a',1,'pulsatrix::detail::ASHACandidate']]],
+  ['type_13',['type',['../structpulsatrix_1_1NodeGene.html#a112e84f4b4f12e605da66760b07b2f5a',1,'pulsatrix::NodeGene']]]
 ];

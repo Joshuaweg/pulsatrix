@@ -143,6 +143,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4efee768d212c6f9990b85ba1f070a47" id="r_a4efee768d212c6f9990b85ba1f070a47"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47">named_parameters</a> () override</td></tr>
 <tr class="memdesc:a4efee768d212c6f9990b85ba1f070a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every sub-module's parameters, flattened &ndash; Q/K/V/O weights and biases, plus the two QK-Norm gammas when enabled. RoPE and softmax contribute none.  <br /></td></tr>
 <tr class="separator:a4efee768d212c6f9990b85ba1f070a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f8fe74c035b9cca41fece7f8151df81" id="r_a6f8fe74c035b9cca41fece7f8151df81"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81">named_buffers</a> () override</td></tr>
+<tr class="memdesc:a6f8fe74c035b9cca41fece7f8151df81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every layer's <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47" title="Every sub-module&#39;s parameters, flattened – Q/K/V/O weights and biases, plus the two QK-Norm gammas wh...">named_parameters()</a>.  <br /></td></tr>
+<tr class="separator:a6f8fe74c035b9cca41fece7f8151df81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5949a91915019e6d0067f167f908c180" id="r_a5949a91915019e6d0067f167f908c180"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a5949a91915019e6d0067f167f908c180">set_training</a> (bool training) override</td></tr>
 <tr class="memdesc:a5949a91915019e6d0067f167f908c180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cascades to every sub-module, the same way <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> does.  <br /></td></tr>
 <tr class="separator:a5949a91915019e6d0067f167f908c180"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -528,6 +531,35 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Cached attention weights of the last forward, <code>(N, num_heads, L, L)</code> &ndash; the softmax output. Exposed because "what did each head attend to" is the single most-asked explainability question about this module. </p>
+
+</div>
+</div>
+<a id="a6f8fe74c035b9cca41fece7f8151df81" name="a6f8fe74c035b9cca41fece7f8151df81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f8fe74c035b9cca41fece7f8151df81">&#9670;&#160;</a></span>named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; pulsatrix::MultiHeadAttentionModule::named_buffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every layer's <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47" title="Every sub-module&#39;s parameters, flattened – Q/K/V/O weights and biases, plus the two QK-Norm gammas wh...">named_parameters()</a>. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

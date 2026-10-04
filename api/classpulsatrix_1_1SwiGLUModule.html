@@ -143,6 +143,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ace63830acc8508b912164c6464478efb" id="r_ace63830acc8508b912164c6464478efb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ace63830acc8508b912164c6464478efb">named_parameters</a> () override</td></tr>
 <tr class="memdesc:ace63830acc8508b912164c6464478efb"><td class="mdescLeft">&#160;</td><td class="mdescRight">gate_proj_'s, up_proj_'s, and down_proj_'s parameters, flattened.  <br /></td></tr>
 <tr class="separator:ace63830acc8508b912164c6464478efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac99f5988106330fc90cdf76c11614f1a" id="r_ac99f5988106330fc90cdf76c11614f1a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ac99f5988106330fc90cdf76c11614f1a">named_buffers</a> () override</td></tr>
+<tr class="memdesc:ac99f5988106330fc90cdf76c11614f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every layer's <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ac99f5988106330fc90cdf76c11614f1a" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ace63830acc8508b912164c6464478efb" title="gate_proj_&#39;s, up_proj_&#39;s, and down_proj_&#39;s parameters, flattened.">named_parameters()</a>.  <br /></td></tr>
+<tr class="separator:ac99f5988106330fc90cdf76c11614f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeed20e92962a694223e738f03668227" id="r_abeed20e92962a694223e738f03668227"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#abeed20e92962a694223e738f03668227">d_model</a> () const</td></tr>
 <tr class="separator:abeed20e92962a694223e738f03668227"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41c1b11b78ae3959c4235902cb989f54" id="r_a41c1b11b78ae3959c4235902cb989f54"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54">d_ff</a> () const</td></tr>
@@ -462,6 +465,35 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac99f5988106330fc90cdf76c11614f1a" name="ac99f5988106330fc90cdf76c11614f1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac99f5988106330fc90cdf76c11614f1a">&#9670;&#160;</a></span>named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; pulsatrix::SwiGLUModule::named_buffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every layer's <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ac99f5988106330fc90cdf76c11614f1a" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ace63830acc8508b912164c6464478efb" title="gate_proj_&#39;s, up_proj_&#39;s, and down_proj_&#39;s parameters, flattened.">named_parameters()</a>. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

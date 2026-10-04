@@ -200,6 +200,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a176c8304fb06ac2792bc046204b65a40" id="r_a176c8304fb06ac2792bc046204b65a40"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">named_parameters</a> ()</td></tr>
 <tr class="memdesc:a176c8304fb06ac2792bc046204b65a40"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
 <tr class="separator:a176c8304fb06ac2792bc046204b65a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05e4c9483d5577e3da94df3ee55e7699" id="r_a05e4c9483d5577e3da94df3ee55e7699"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">named_buffers</a> ()</td></tr>
+<tr class="memdesc:a05e4c9483d5577e3da94df3ee55e7699"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's buffers: state a checkpoint must save that no optimizer updates.  <br /></td></tr>
+<tr class="separator:a05e4c9483d5577e3da94df3ee55e7699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
 <tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -477,6 +480,36 @@ A module does not build or own graph structure itself &ndash; <a class="el" href
 </div><div class="memdoc">
 
 <p>Whether this module is currently in training mode. </p>
+
+</div>
+</div>
+<a id="a05e4c9483d5577e3da94df3ee55e7699" name="a05e4c9483d5577e3da94df3ee55e7699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05e4c9483d5577e3da94df3ee55e7699">&#9670;&#160;</a></span>named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; pulsatrix::Module::named_buffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This module's buffers: state a checkpoint must save that no optimizer updates. </p>
+<dl class="section return"><dt>Returns</dt><dd>{name, tensor} entries, named like <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a>, in a fixed order. Default: empty. <a class="el" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e...">BatchNormModule</a> reports its running statistics; containers prefix their layers' buffers the way they prefix parameters. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classpulsatrix_1_1BatchNormModule.html#a19cd221666322cdb2442457cb6e5788d">pulsatrix::BatchNormModule</a>, <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81">pulsatrix::MultiHeadAttentionModule</a>, <a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665">pulsatrix::ResidualModule</a>, <a class="el" href="classpulsatrix_1_1SequentialModule.html#af85fe76ef5837ae25c5a63ce7317cc28">pulsatrix::SequentialModule</a>, <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#ac99f5988106330fc90cdf76c11614f1a">pulsatrix::SwiGLUModule</a>, and <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a0b85a579be07d6e2e7206f75bec69cd8">pulsatrix::TransformerBlock</a>.</p>
 
 </div>
 </div>

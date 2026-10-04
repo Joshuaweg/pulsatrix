@@ -8,6 +8,7 @@ var classpulsatrix_1_1SwiGLUModule =
     [ "down_proj", "classpulsatrix_1_1SwiGLUModule.html#adbcbd3b22b47dd4ccecfc9907d4dc07a", null ],
     [ "forward_impl", "classpulsatrix_1_1SwiGLUModule.html#a8a476b5d2e6e47da7c26d6399184c793", null ],
     [ "gate_proj", "classpulsatrix_1_1SwiGLUModule.html#ad391b4cbc3d882dced14df62613412cb", null ],
+    [ "named_buffers", "classpulsatrix_1_1SwiGLUModule.html#ac99f5988106330fc90cdf76c11614f1a", null ],
     [ "named_parameters", "classpulsatrix_1_1SwiGLUModule.html#ace63830acc8508b912164c6464478efb", null ],
     [ "op_type", "classpulsatrix_1_1SwiGLUModule.html#a193e9e312e1d9a20df41c6627ce20cd9", null ],
     [ "propagate_relevance", "classpulsatrix_1_1SwiGLUModule.html#ab12c4cbb436937d6bd6dc966dccea298", null ],

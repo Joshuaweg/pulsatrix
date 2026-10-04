@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['relevancemap_0',['RelevanceMap',['../namespacepulsatrix_1_1datalog.html#aa4585f5e8119b04b78302fbbedfb378d',1,'pulsatrix::datalog']]]
+  ['paramselector_0',['ParamSelector',['../namespacepulsatrix.html#a8c9f567af9d9ab47a4408a4ed322ca06',1,'pulsatrix']]]
 ];

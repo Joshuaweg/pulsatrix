@@ -116,6 +116,9 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacepulsatrix_1_1lrp__composite" id="r_namespacepulsatrix_1_1lrp__composite"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1lrp__composite.html">lrp_composite</a></td></tr>
 <tr class="memdesc:namespacepulsatrix_1_1lrp__composite"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit 1.0.0's composite presets (zennit.composites), mapped onto pulsatrix modules by type: <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> = torch Linear, <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a> = torch Conv2d; every other module gets the epsilon rule (the pass-through modules &ndash; ReLU, Flatten, Dropout, MaxPool &ndash; ignore it, as Zennit's Pass rule / plain gradient does). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacepulsatrix_1_1param__select" id="r_namespacepulsatrix_1_1param__select"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1param__select.html">param_select</a></td></tr>
+<tr class="memdesc:namespacepulsatrix_1_1param__select"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common selectors. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -189,6 +192,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CenterCropTransform.html">CenterCropTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crops the centered (crop_height, crop_width) region of the image.  <a href="classpulsatrix_1_1CenterCropTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CheckpointLoadOptions.html">CheckpointLoadOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for <a class="el" href="namespacepulsatrix.html#abd2d723852104374608e931b7e4bb326" title="Loads parameters and buffers saved by SaveCheckpoint() (or any safetensors file whose names match) in...">LoadCheckpoint()</a>.  <a href="structpulsatrix_1_1CheckpointLoadOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitEdge.html">CircuitEdge</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One directed edge of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>, carrying a scalar weight.  <a href="structpulsatrix_1_1CircuitEdge.html#details">More...</a><br /></td></tr>
@@ -474,6 +480,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MutationLoss.html">MutationLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes one of E-GAN's three named mutation objectives against a discriminator's own raw logit output, and its gradient w.r.t. those logits. Every objective trains the generator to make the discriminator's output move toward the "real" (1) class &ndash; they differ only in <em>how</em> that pressure is shaped (saturating vs. non-saturating vs. quadratic).  <a href="classpulsatrix_1_1MutationLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> state that is saved with a model but never trained, such as BatchNorm's running statistics, with its hierarchical name (roadmap IO-2). Named like parameters.  <a href="structpulsatrix_1_1NamedBufferRef.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parameter together with its hierarchical, dot-separated name relative to the module that reported it (<code>weight</code>, <code>mha.q_proj.bias</code>, <code>0.weight</code>).  <a href="structpulsatrix_1_1NamedParamRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -503,6 +512,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ParameterSpec.html">ParameterSpec</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One named parameter's description: its kind plus the bounds/categories that kind needs. Only the fields relevant to <code>kind</code> are meaningful (e.g. <code>categories</code> is empty/unused for <code>Continuous</code>) &ndash; this is a description, not a union, since a <code><a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a></code>'s own accessors (below) are the only place callers read it back.  <a href="structpulsatrix_1_1ParameterSpec.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ParamGroup.html">ParamGroup</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optimizer settings for the parameters <code>selects</code> picks.  <a href="structpulsatrix_1_1ParamGroup.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ParamGroupSet.html">ParamGroupSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The group machinery <a class="el" href="classpulsatrix_1_1SGDOptimizer.html" title="param -= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a Module e...">SGDOptimizer</a> and <a class="el" href="classpulsatrix_1_1AdamOptimizer.html" title="Adam (Kingma &amp; Ba, 2015): per-parameter moving averages of gradient (m) and squared gradient (v),...">AdamOptimizer</a> share.  <a href="classpulsatrix_1_1ParamGroupSet.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A trainable parameter and its accumulated gradient, as owned by some <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>.  <a href="structpulsatrix_1_1ParamRef.html#details">More...</a><br /></td></tr>
@@ -626,7 +641,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visits indices [0, dataset_size) in ascending order.  <a href="classpulsatrix_1_1SequentialSampler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SGDOptimizer.html">SGDOptimizer</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">param -= learning_rate * grad, per parameter, for every parameter a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> exposes.  <a href="classpulsatrix_1_1SGDOptimizer.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">param -= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> exposes. Learning rate and weight decay can differ per parameter group (TRN-1). With no weight decay this is plain SGD.  <a href="classpulsatrix_1_1SGDOptimizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Shape.html">Shape</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond "non-negative dimensions" &ndash; see oop_design/context_oop_design_fundamentals.md's struct-vs-class discussion for why this is still a class (<a class="el" href="classpulsatrix_1_1Shape.html#a1f7fda995b54fb43167e92ea8cf6f3a2" title="Total element count – the product of all dimensions.">numel()</a>/is_reshape_compatible() are derived queries, not raw public fields the caller could desync from dims_).  <a href="classpulsatrix_1_1Shape.html#details">More...</a><br /></td></tr>
@@ -760,6 +775,9 @@ Typedefs</h2></td></tr>
 <tr class="separator:a2b8dc3d7d2cef35f192d191f09156e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac73b402dce78109b0c9a151410e96eb9" id="r_ac73b402dce78109b0c9a151410e96eb9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac73b402dce78109b0c9a151410e96eb9">Objectives</a> = std::vector&lt; double &gt;</td></tr>
 <tr class="separator:ac73b402dce78109b0c9a151410e96eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c9f567af9d9ab47a4408a4ed322ca06" id="r_a8c9f567af9d9ab47a4408a4ed322ca06"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8c9f567af9d9ab47a4408a4ed322ca06">ParamSelector</a> = std::function&lt; bool(const std::string &amp;name, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;value)&gt;</td></tr>
+<tr class="memdesc:a8c9f567af9d9ab47a4408a4ed322ca06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Picks parameters by their named_parameters() name and value.  <br /></td></tr>
+<tr class="separator:a8c9f567af9d9ab47a4408a4ed322ca06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad466513340f64023a5c7749a62e4d66" id="r_aad466513340f64023a5c7749a62e4d66"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aad466513340f64023a5c7749a62e4d66">ConfigValue</a> = std::variant&lt; double, int64_t, std::string &gt;</td></tr>
 <tr class="memdesc:aad466513340f64023a5c7749a62e4d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concrete value for one parameter &ndash; a <code>double</code> (Continuous/LogUniform), an <code>int64_t</code> (Integer), or a <code>std::string</code> (Categorical, naming one of that parameter's categories).  <br /></td></tr>
 <tr class="separator:aad466513340f64023a5c7749a62e4d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -977,6 +995,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e0cd79959b261c8b59f554451342d31" id="r_a6e0cd79959b261c8b59f554451342d31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6e0cd79959b261c8b59f554451342d31">AudioPadCollate</a> ()</td></tr>
 <tr class="memdesc:a6e0cd79959b261c8b59f554451342d31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that zero-pads (silence) variable-length waveforms (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/ <a class="el" href="classpulsatrix_1_1AudioFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;audio_file.wav&gt;, structurally identi...">AudioFolderDataset</a>'s convention) to the batch's own max sample count, producing one (N, channels, max_samples) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field. Phase 4's version of PadCollate (Phase 3, text) &ndash; a second proof that the CollateFn extension point handles ragged/variable-length modalities with zero Dataset/DataLoader/Batch interface changes.  <br /></td></tr>
 <tr class="separator:a6e0cd79959b261c8b59f554451342d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3191b79a9d4bc8fc4e547d1a3e3aa525" id="r_a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3191b79a9d4bc8fc4e547d1a3e3aa525">OptimizerStatePath</a> (const std::string &amp;checkpoint_path)</td></tr>
+<tr class="memdesc:a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the optimizer state for <code>checkpoint_path</code> is stored: <code>model.safetensors</code> becomes <code>model.optim.safetensors</code>; any other name gets <code>.optim.safetensors</code> appended.  <br /></td></tr>
+<tr class="separator:a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7975768f48b2eca8113fc7f8ab7c04b7" id="r_a7975768f48b2eca8113fc7f8ab7c04b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7975768f48b2eca8113fc7f8ab7c04b7">SaveCheckpoint</a> (const std::string &amp;path, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::map&lt; std::string, std::string &gt; &amp;metadata={})</td></tr>
+<tr class="memdesc:a7975768f48b2eca8113fc7f8ab7c04b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes every parameter and buffer of <code>model</code>, under their hierarchical names, to a safetensors file with <code>format</code> = "pulsatrix" and <code>format_version</code> metadata.  <br /></td></tr>
+<tr class="separator:a7975768f48b2eca8113fc7f8ab7c04b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47a78b31e28651255ae493a5590e64d6" id="r_a47a78b31e28651255ae493a5590e64d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a47a78b31e28651255ae493a5590e64d6">SaveCheckpoint</a> (const std::string &amp;path, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;optimizer, const std::map&lt; std::string, std::string &gt; &amp;metadata={})</td></tr>
+<tr class="memdesc:a47a78b31e28651255ae493a5590e64d6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a7975768f48b2eca8113fc7f8ab7c04b7" title="Writes every parameter and buffer of model, under their hierarchical names, to a safetensors file wit...">SaveCheckpoint()</a>, plus <code>optimizer</code>'s per-parameter state in OptimizerStatePath(path).  <br /></td></tr>
+<tr class="separator:a47a78b31e28651255ae493a5590e64d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd2d723852104374608e931b7e4bb326" id="r_abd2d723852104374608e931b7e4bb326"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abd2d723852104374608e931b7e4bb326">LoadCheckpoint</a> (const std::string &amp;path, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, <a class="el" href="structpulsatrix_1_1CheckpointLoadOptions.html">CheckpointLoadOptions</a> options={})</td></tr>
+<tr class="memdesc:abd2d723852104374608e931b7e4bb326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads parameters and buffers saved by <a class="el" href="namespacepulsatrix.html#a7975768f48b2eca8113fc7f8ab7c04b7" title="Writes every parameter and buffer of model, under their hierarchical names, to a safetensors file wit...">SaveCheckpoint()</a> (or any safetensors file whose names match) into <code>model</code>, in place.  <br /></td></tr>
+<tr class="separator:abd2d723852104374608e931b7e4bb326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a862a61bf00880ccd8d58cdbb43eaae15" id="r_a862a61bf00880ccd8d58cdbb43eaae15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a862a61bf00880ccd8d58cdbb43eaae15">LoadCheckpoint</a> (const std::string &amp;path, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, <a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;optimizer, <a class="el" href="structpulsatrix_1_1CheckpointLoadOptions.html">CheckpointLoadOptions</a> options={})</td></tr>
+<tr class="memdesc:a862a61bf00880ccd8d58cdbb43eaae15"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#abd2d723852104374608e931b7e4bb326" title="Loads parameters and buffers saved by SaveCheckpoint() (or any safetensors file whose names match) in...">LoadCheckpoint()</a>, plus <code>optimizer</code>'s state from OptimizerStatePath(path), so training resumes exactly where it stopped.  <br /></td></tr>
+<tr class="separator:a862a61bf00880ccd8d58cdbb43eaae15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a314a4a59c2e126269885c0c51ffbd6bc" id="r_a314a4a59c2e126269885c0c51ffbd6bc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a314a4a59c2e126269885c0c51ffbd6bc">AskGivenSamples</a> (const <a class="el" href="structpulsatrix_1_1CMAESState.html">CMAESState</a> &amp;state, const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;z_samples)</td></tr>
 <tr class="memdesc:a314a4a59c2e126269885c0c51ffbd6bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure core: decodes an explicit set of standard-normal sample vectors into offspring points, x_i = mean + sigma * sqrt(variances) (elementwise) * z_i.  <br /></td></tr>
 <tr class="separator:a314a4a59c2e126269885c0c51ffbd6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1172,6 +1205,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8d4d176932520c4b6229ffd1454471de" id="r_a8d4d176932520c4b6229ffd1454471de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8d4d176932520c4b6229ffd1454471de">append_named_parameters</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; &amp;out, const std::string &amp;prefix, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;child)</td></tr>
 <tr class="memdesc:a8d4d176932520c4b6229ffd1454471de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends <code>child</code>'s named parameters to <code>out</code>, each renamed to <code>prefix.name</code> &ndash; the one step every container's named_parameters() repeats per child.  <br /></td></tr>
 <tr class="separator:a8d4d176932520c4b6229ffd1454471de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe66ae61773532438fa7d80b9f26596c" id="r_afe66ae61773532438fa7d80b9f26596c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afe66ae61773532438fa7d80b9f26596c">append_named_buffers</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; &amp;out, const std::string &amp;prefix, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;child)</td></tr>
+<tr class="memdesc:afe66ae61773532438fa7d80b9f26596c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends <code>child</code>'s named buffers to <code>out</code>, each renamed to <code>prefix.name</code>.  <br /></td></tr>
+<tr class="separator:afe66ae61773532438fa7d80b9f26596c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88c88a8898d6848d8a6a21e268ef4035" id="r_a88c88a8898d6848d8a6a21e268ef4035"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a88c88a8898d6848d8a6a21e268ef4035">BitFlipMutationByMask</a> (const std::vector&lt; bool &gt; &amp;genotype, const std::vector&lt; bool &gt; &amp;flip_mask)</td></tr>
 <tr class="memdesc:a88c88a8898d6848d8a6a21e268ef4035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flips each gene where flip_mask is true, leaves the rest unchanged.  <br /></td></tr>
 <tr class="separator:a88c88a8898d6848d8a6a21e268ef4035"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1232,6 +1268,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a0ca5dc3ab6c1058deba60ef545d4e34b"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, <a class="el" href="namespacepulsatrix.html#ac73b402dce78109b0c9a151410e96eb9">Objectives</a> &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0ca5dc3ab6c1058deba60ef545d4e34b">NSGA2Replacement</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, <a class="el" href="namespacepulsatrix.html#ac73b402dce78109b0c9a151410e96eb9">Objectives</a> &gt; &gt; &amp;population, std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, <a class="el" href="namespacepulsatrix.html#ac73b402dce78109b0c9a151410e96eb9">Objectives</a> &gt; &gt; offspring, size_t mu)</td></tr>
 <tr class="memdesc:a0ca5dc3ab6c1058deba60ef545d4e34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">NSGA-II survivor selection: combines population and offspring, fast-non-dominated- sorts the pool, includes whole fronts (best first) until the next front would overflow mu, then fills the remainder from that final front by crowding distance (largest first &ndash; more diverse/isolated solutions preferred).  <br /></td></tr>
 <tr class="separator:a0ca5dc3ab6c1058deba60ef545d4e34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91c49223bc2b354ad8ed7a7c4f2c6ef1" id="r_a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a91c49223bc2b354ad8ed7a7c4f2c6ef1">check_optimizer_setting</a> (float value, const std::string &amp;what)</td></tr>
+<tr class="memdesc:a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws std::invalid_argument unless <code>value</code> is finite and non-negative.  <br /></td></tr>
+<tr class="separator:a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ef297c503c00b8d2a318edb5c498bd0" id="r_a4ef297c503c00b8d2a318edb5c498bd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PBTTruncationGroups.html">PBTTruncationGroups</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4ef297c503c00b8d2a318edb5c498bd0">ComputeTruncationGroups</a> (const std::vector&lt; double &gt; &amp;metrics, double truncation_fraction)</td></tr>
 <tr class="memdesc:a4ef297c503c00b8d2a318edb5c498bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure core: identifies the bottom and top truncation_fraction of the population by metric (higher is better). Ties are broken by a stable sort on descending metric, so the earlier index among equal values sorts toward "top." At least one individual is always selected on each end, even if floor(size*fraction) would be 0.  <br /></td></tr>
 <tr class="separator:a4ef297c503c00b8d2a318edb5c498bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1378,6 +1417,9 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a184725fa40c9e9ad2bbcdcbe2e9236cf" id="r_a184725fa40c9e9ad2bbcdcbe2e9236cf"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a184725fa40c9e9ad2bbcdcbe2e9236cf">kCheckpointFormatVersion</a> = 1</td></tr>
+<tr class="memdesc:a184725fa40c9e9ad2bbcdcbe2e9236cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The checkpoint format this build writes. Files record it as <code>format_version</code>; a file without one (any plain safetensors file) is version 0. Older versions load through a migration table; newer ones are rejected.  <br /></td></tr>
+<tr class="separator:a184725fa40c9e9ad2bbcdcbe2e9236cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdfe136720681063b92cf1cda99ccfa5" id="r_abdfe136720681063b92cf1cda99ccfa5"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abdfe136720681063b92cf1cda99ccfa5">kFixedTopologyXORNumParams</a> = 9</td></tr>
 <tr class="memdesc:abdfe136720681063b92cf1cda99ccfa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total flat-parameter count: 2*2 (input-&gt;hidden weights) + 2 (hidden biases) + 2 (hidden-&gt;output weights) + 1 (output bias) = 9.  <br /></td></tr>
 <tr class="separator:abdfe136720681063b92cf1cda99ccfa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1478,6 +1520,22 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8c9f567af9d9ab47a4408a4ed322ca06" name="a8c9f567af9d9ab47a4408a4ed322ca06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c9f567af9d9ab47a4408a4ed322ca06">&#9670;&#160;</a></span>ParamSelector</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#a8c9f567af9d9ab47a4408a4ed322ca06">pulsatrix::ParamSelector</a> = typedef std::function&lt;bool(const std::string&amp; name, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&amp; value)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Picks parameters by their named_parameters() name and value. </p>
 
 </div>
 </div>
@@ -2108,6 +2166,50 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
+<a id="afe66ae61773532438fa7d80b9f26596c" name="afe66ae61773532438fa7d80b9f26596c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe66ae61773532438fa7d80b9f26596c">&#9670;&#160;</a></span>append_named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::append_named_buffers </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>child</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Appends <code>child</code>'s named buffers to <code>out</code>, each renamed to <code>prefix.name</code>. </p>
+
+</div>
+</div>
 <a id="a8d4d176932520c4b6229ffd1454471de" name="a8d4d176932520c4b6229ffd1454471de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8d4d176932520c4b6229ffd1454471de">&#9670;&#160;</a></span>append_named_parameters()</h2>
 
@@ -2593,6 +2695,44 @@ template&lt;typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a91c49223bc2b354ad8ed7a7c4f2c6ef1" name="a91c49223bc2b354ad8ed7a7c4f2c6ef1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91c49223bc2b354ad8ed7a7c4f2c6ef1">&#9670;&#160;</a></span>check_optimizer_setting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::check_optimizer_setting </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>what</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Throws std::invalid_argument unless <code>value</code> is finite and non-negative. </p>
 
 </div>
 </div>
@@ -4362,6 +4502,99 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a862a61bf00880ccd8d58cdbb43eaae15" name="a862a61bf00880ccd8d58cdbb43eaae15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a862a61bf00880ccd8d58cdbb43eaae15">&#9670;&#160;</a></span>LoadCheckpoint() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LoadCheckpoint </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>optimizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1CheckpointLoadOptions.html">CheckpointLoadOptions</a>&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacepulsatrix.html#abd2d723852104374608e931b7e4bb326" title="Loads parameters and buffers saved by SaveCheckpoint() (or any safetensors file whose names match) in...">LoadCheckpoint()</a>, plus <code>optimizer</code>'s state from OptimizerStatePath(path), so training resumes exactly where it stopped. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if there is no optimizer file. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if it belongs to a different save of the model, or doesn't match the model. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abd2d723852104374608e931b7e4bb326" name="abd2d723852104374608e931b7e4bb326"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd2d723852104374608e931b7e4bb326">&#9670;&#160;</a></span>LoadCheckpoint() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::LoadCheckpoint </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1CheckpointLoadOptions.html">CheckpointLoadOptions</a>&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads parameters and buffers saved by <a class="el" href="namespacepulsatrix.html#a7975768f48b2eca8113fc7f8ab7c04b7" title="Writes every parameter and buffer of model, under their hierarchical names, to a safetensors file wit...">SaveCheckpoint()</a> (or any safetensors file whose names match) into <code>model</code>, in place. </p>
+<dl class="section note"><dt>Note</dt><dd>Everything is validated before anything is written, so a failed load leaves <code>model</code> unchanged. Each tensor keeps its device and requires_grad flag. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the file is from a newer format version or another framework (<code>format</code> other than "pulsatrix"; importing other names is roadmap IO-4), a shape differs, an entry isn't F32, or (when strict) a name is missing or unexpected. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if the file can't be read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a4dc93a9c4c57419b49e054f2d6e8cd8e" name="a4dc93a9c4c57419b49e054f2d6e8cd8e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4dc93a9c4c57419b49e054f2d6e8cd8e">&#9670;&#160;</a></span>LogDensityRatio()</h2>
 
@@ -4765,6 +4998,26 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>point == 0 or point == size() are valid (degenerate, fully-swapped/no-swap) cases &ndash; this pure core does not restrict to "interior" points; OnePointCrossover (the RNG wrapper, below) does, since a degenerate point is never a useful recombination. </dd></dl>
+
+</div>
+</div>
+<a id="a3191b79a9d4bc8fc4e547d1a3e3aa525" name="a3191b79a9d4bc8fc4e547d1a3e3aa525"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3191b79a9d4bc8fc4e547d1a3e3aa525">&#9670;&#160;</a></span>OptimizerStatePath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::OptimizerStatePath </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>checkpoint_path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Where the optimizer state for <code>checkpoint_path</code> is stored: <code>model.safetensors</code> becomes <code>model.optim.safetensors</code>; any other name gets <code>.optim.safetensors</code> appended. </p>
 
 </div>
 </div>
@@ -5749,7 +6002,7 @@ template&lt;typename MakeGenerator , typename DOptimizerT &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">make_generator</td><td>Constructs a fresh generator instance with the same architecture as every population member. </td></tr>
-    <tr><td class="paramname">g_learning_rate</td><td>Learning rate for the <a class="el" href="classpulsatrix_1_1SGDOptimizer.html" title="param -= learning_rate * grad, per parameter, for every parameter a Module exposes.">SGDOptimizer</a> each mutation attempt trains with. </td></tr>
+    <tr><td class="paramname">g_learning_rate</td><td>Learning rate for the <a class="el" href="classpulsatrix_1_1SGDOptimizer.html" title="param -= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a Module e...">SGDOptimizer</a> each mutation attempt trains with. </td></tr>
   </table>
   </dd>
 </dl>
@@ -6678,6 +6931,98 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 </div><div class="memdoc">
 
 <p>Encodes <code>sample</code> as one JSON object (no trailing newline), the JSON Lines log record. </p>
+
+</div>
+</div>
+<a id="a47a78b31e28651255ae493a5590e64d6" name="a47a78b31e28651255ae493a5590e64d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47a78b31e28651255ae493a5590e64d6">&#9670;&#160;</a></span>SaveCheckpoint() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SaveCheckpoint </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>optimizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>metadata</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespacepulsatrix.html#a7975768f48b2eca8113fc7f8ab7c04b7" title="Writes every parameter and buffer of model, under their hierarchical names, to a safetensors file wit...">SaveCheckpoint()</a>, plus <code>optimizer</code>'s per-parameter state in OptimizerStatePath(path). </p>
+<dl class="section note"><dt>Note</dt><dd>The optimizer file records a checksum of the model file, so a later model-only save to the same path can't be silently resumed with stale optimizer state. </dd></dl>
+
+</div>
+</div>
+<a id="a7975768f48b2eca8113fc7f8ab7c04b7" name="a7975768f48b2eca8113fc7f8ab7c04b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7975768f48b2eca8113fc7f8ab7c04b7">&#9670;&#160;</a></span>SaveCheckpoint() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SaveCheckpoint </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>metadata</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes every parameter and buffer of <code>model</code>, under their hierarchical names, to a safetensors file with <code>format</code> = "pulsatrix" and <code>format_version</code> metadata. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">metadata</td><td>Extra string metadata to store; <code>format</code> and <code>format_version</code> are reserved. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a parameter and a buffer share a name, or <code>metadata</code> uses a reserved key. </td></tr>
+    <tr><td class="paramname">std::runtime_error</td><td>if the file can't be written. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -8168,6 +8513,30 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a184725fa40c9e9ad2bbcdcbe2e9236cf" name="a184725fa40c9e9ad2bbcdcbe2e9236cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a184725fa40c9e9ad2bbcdcbe2e9236cf">&#9670;&#160;</a></span>kCheckpointFormatVersion</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int pulsatrix::kCheckpointFormatVersion = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The checkpoint format this build writes. Files record it as <code>format_version</code>; a file without one (any plain safetensors file) is version 0. Older versions load through a migration table; newer ones are rejected. </p>
+
+</div>
+</div>
 <a id="abdfe136720681063b92cf1cda99ccfa5" name="abdfe136720681063b92cf1cda99ccfa5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abdfe136720681063b92cf1cda99ccfa5">&#9670;&#160;</a></span>kFixedTopologyXORNumParams</h2>
 

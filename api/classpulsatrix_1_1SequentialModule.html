@@ -146,6 +146,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4e19fb5edefe41f299248330196ffd8b" id="r_a4e19fb5edefe41f299248330196ffd8b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html#a4e19fb5edefe41f299248330196ffd8b">named_parameters</a> () override</td></tr>
 <tr class="memdesc:a4e19fb5edefe41f299248330196ffd8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every contained layer's <a class="el" href="classpulsatrix_1_1SequentialModule.html#a4e19fb5edefe41f299248330196ffd8b" title="Every contained layer&#39;s named_parameters(), prefixed with its index (0.weight).">named_parameters()</a>, prefixed with its index (<code>0.weight</code>).  <br /></td></tr>
 <tr class="separator:a4e19fb5edefe41f299248330196ffd8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af85fe76ef5837ae25c5a63ce7317cc28" id="r_af85fe76ef5837ae25c5a63ce7317cc28"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html#af85fe76ef5837ae25c5a63ce7317cc28">named_buffers</a> () override</td></tr>
+<tr class="memdesc:af85fe76ef5837ae25c5a63ce7317cc28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every layer's <a class="el" href="classpulsatrix_1_1SequentialModule.html#af85fe76ef5837ae25c5a63ce7317cc28" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1SequentialModule.html#a4e19fb5edefe41f299248330196ffd8b" title="Every contained layer&#39;s named_parameters(), prefixed with its index (0.weight).">named_parameters()</a>.  <br /></td></tr>
+<tr class="separator:af85fe76ef5837ae25c5a63ce7317cc28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a42d07df52692b897ccf0b5ab9891a7" id="r_a8a42d07df52692b897ccf0b5ab9891a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html#a8a42d07df52692b897ccf0b5ab9891a7">set_training</a> (bool training) override</td></tr>
 <tr class="memdesc:a8a42d07df52692b897ccf0b5ab9891a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this container's own training flag and cascades to every contained layer.  <br /></td></tr>
 <tr class="separator:a8a42d07df52692b897ccf0b5ab9891a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,6 +335,35 @@ propagate_relevance needs no new <a class="el" href="classpulsatrix_1_1LRP.html"
 </div><div class="memdoc">
 
 <p>The contained layers, in forward-execution order. </p>
+
+</div>
+</div>
+<a id="af85fe76ef5837ae25c5a63ce7317cc28" name="af85fe76ef5837ae25c5a63ce7317cc28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af85fe76ef5837ae25c5a63ce7317cc28">&#9670;&#160;</a></span>named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; pulsatrix::SequentialModule::named_buffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every layer's <a class="el" href="classpulsatrix_1_1SequentialModule.html#af85fe76ef5837ae25c5a63ce7317cc28" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1SequentialModule.html#a4e19fb5edefe41f299248330196ffd8b" title="Every contained layer&#39;s named_parameters(), prefixed with its index (0.weight).">named_parameters()</a>. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
 
 </div>
 </div>
