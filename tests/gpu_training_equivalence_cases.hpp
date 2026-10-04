@@ -658,17 +658,17 @@ inline void NeuroSymbolicPipelines(DeviceBackend& gpu) {
 // Forward, backward, parameter gradients and relevance for one image-shaped module.
 template <typename Module>
 inline void ImageModuleMatches(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Module& gm, const Shape& in_shape,
-                               unsigned seed) {
+                               unsigned seed, float tol = kTolerance) {
     RandomizeAndMirror(cm, gm, seed);
     std::vector<float> x = Random(static_cast<size_t>(in_shape.numel()), seed + 100);
     Tensor cx(in_shape, &cpu, x), gx(in_shape, &gpu, x);
     Tensor cy = cm.forward(cx);
     Tensor gy = gm.forward(gx);
-    ExpectNear(cy, gy);
+    ExpectNear(cy, gy, tol);
     std::vector<float> dy = Random(static_cast<size_t>(cy.numel()), seed + 200);
     Tensor cdy(cy.shape(), &cpu, dy), gdy(gy.shape(), &gpu, dy);
-    ExpectNear(cm.backward(cdy), gm.backward(gdy));
-    ExpectParametersNear(cm, gm, kTolerance);
+    ExpectNear(cm.backward(cdy), gm.backward(gdy), tol);
+    ExpectParametersNear(cm, gm, tol);
     ExpectRelevanceAgrees(cm.propagate_relevance(cdy, LRPRuleConfig{}), gm.propagate_relevance(gdy, LRPRuleConfig{}));
 }
 
@@ -1279,6 +1279,37 @@ inline void TokenCrossEntropyMatches(DeviceBackend& gpu) {
     ExpectNear(cl.backward(), gl.backward());
 }
 
+// HIP-2: BatchNorm with few channels and large planes, so one channel spans many blocks; then
+// eval mode and the running statistics; then run-to-run determinism on the GPU.
+inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    for (const Shape& shape : {Shape({8, 3, 64, 64}), Shape({2, 1, 5, 7}), Shape({4, 16, 33, 31})}) {
+        const int64_t c = shape.dim(1);
+        // Per-channel sums over m = N*H*W elements: the CPU reference adds them one at a time in
+        // float, the GPU by a tree, so they differ by rounding that grows with m (32,768 here).
+        const int64_t m = shape.numel() / c;
+        const float tol = kTolerance * (1.0f + static_cast<float>(m) / 4096.0f);
+        BatchNormModule cbn(c, &cpu), gbn(c, &gpu);
+        ImageModuleMatches(cpu, gpu, cbn, gbn, shape, 900, tol);
+        ExpectNear(cbn.running_mean(), gbn.running_mean(), tol);
+        ExpectNear(cbn.running_var(), gbn.running_var(), tol);
+
+        cbn.set_training(false);
+        gbn.set_training(false);
+        std::vector<float> x = Random(static_cast<size_t>(shape.numel()), 901);
+        Tensor cy = cbn.forward(Tensor(shape, &cpu, x)), gy = gbn.forward(Tensor(shape, &gpu, x));
+        ExpectNear(cy, gy, tol);
+        std::vector<float> dy = Random(static_cast<size_t>(shape.numel()), 902);
+        ExpectNear(cbn.backward(Tensor(shape, &cpu, dy)), gbn.backward(Tensor(shape, &gpu, dy)), tol);
+    }
+    // Same input twice on the GPU: bit-identical (fixed partition and order, no atomics).
+    BatchNormModule a(3, &gpu);
+    const Shape shape({8, 3, 64, 64});
+    std::vector<float> x = Random(static_cast<size_t>(shape.numel()), 903);
+    const std::vector<float> first = ToHost(a.forward(Tensor(shape, &gpu, x)));
+    EXPECT_EQ(ToHost(a.forward(Tensor(shape, &gpu, x))), first);
+}
+
 }  // namespace training_equivalence
 }  // namespace pulsatrix
 
@@ -1368,6 +1399,9 @@ inline void TokenCrossEntropyMatches(DeviceBackend& gpu) {
     }                                                                                                \
     TEST_F(FIXTURE, Conv2DMatchesCPU) { ::pulsatrix::training_equivalence::Conv2DMatches(MEMBER); }      \
     TEST_F(FIXTURE, ClipGradNormMatchesCPU) { ::pulsatrix::training_equivalence::ClipGradNormMatches(MEMBER); } \
+    TEST_F(FIXTURE, BatchNormLargePlanesMatchCPU) {                                                 \
+        ::pulsatrix::training_equivalence::BatchNormLargePlanesMatch(MEMBER);                      \
+    }                                                                                               \
     TEST_F(FIXTURE, TokenCrossEntropyMatchesCPU) {                                                  \
         ::pulsatrix::training_equivalence::TokenCrossEntropyMatches(MEMBER);                       \
     }                                                                                               \

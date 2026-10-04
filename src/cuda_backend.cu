@@ -30,6 +30,7 @@ CUDABackend::CUDABackend() {
 
 CUDABackend::~CUDABackend() {
     static_cast<void>(cudaFree(dot_result_));
+    static_cast<void>(cudaFree(reduce_scratch_));
     cublasDestroy(cublas_handle_);
     cudaStreamDestroy(stream_);
 }
@@ -619,24 +620,25 @@ void CUDABackend::lrp_avg_pool(const float* x, const float* r, float* r_in, size
 }
 
 void CUDABackend::batch_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,
-                                     float* channel_std, size_t n, size_t c, size_t spatial, float eps) {
+                                    float* channel_std, size_t n, size_t c, size_t spatial, float eps) {
     if (c == 0) {
         return;
     }
-    gpu::batch_norm_forward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
-        in, gamma, beta, xhat, out, channel_std, n, c, spatial, eps);
+    float* scratch = reduce_scratch(gpu::bn_scratch_floats(n, c, spatial));
+    gpu::launch_batch_norm_forward(in, gamma, beta, xhat, out, channel_std, n, c, spatial, eps, scratch, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
 void CUDABackend::batch_norm_backward(const float* grad_out, const float* gamma, const float* xhat, const float*
-                                      channel_std, float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t
-                                      c, size_t spatial) {
+                                     channel_std, float* grad_in, float* gamma_grad, float* beta_grad, size_t n, size_t
+                                     c, size_t spatial) {
     if (c == 0) {
         return;
     }
-    gpu::batch_norm_backward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
-        grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad, n, c, spatial);
+    float* scratch = reduce_scratch(gpu::bn_scratch_floats(n, c, spatial));
+    gpu::launch_batch_norm_backward(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad, n, c, spatial,
+                                    scratch, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
@@ -646,8 +648,8 @@ void CUDABackend::batch_norm_update_running(const float* in, float* running_mean
     if (c == 0) {
         return;
     }
-    gpu::batch_norm_update_running_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
-        in, running_mean, running_var, n, c, spatial, momentum);
+    float* scratch = reduce_scratch(gpu::bn_scratch_floats(n, c, spatial));
+    gpu::launch_batch_norm_update_running(in, running_mean, running_var, n, c, spatial, momentum, scratch, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
@@ -658,8 +660,8 @@ void CUDABackend::batch_norm_eval_forward(const float* in, const float* gamma, c
     if (c == 0) {
         return;
     }
-    gpu::batch_norm_eval_forward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
-        in, gamma, beta, running_mean, running_var, xhat, out, channel_std, n, c, spatial, eps);
+    gpu::launch_batch_norm_eval_forward(in, gamma, beta, running_mean, running_var, xhat, out, channel_std, n, c,
+                                        spatial, eps, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
@@ -670,10 +672,25 @@ void CUDABackend::batch_norm_eval_backward(const float* grad_out, const float* g
     if (c == 0) {
         return;
     }
-    gpu::batch_norm_eval_backward_kernel<<<gpu::grid_size_for(c), gpu::kBlockSize, 0, stream_>>>(
-        grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad, n, c, spatial);
+    float* scratch = reduce_scratch(gpu::bn_scratch_floats(n, c, spatial));
+    gpu::launch_batch_norm_eval_backward(grad_out, gamma, xhat, channel_std, grad_in, gamma_grad, beta_grad, n, c,
+                                         spatial, scratch, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+float* CUDABackend::reduce_scratch(size_t floats) {
+    if (floats > reduce_scratch_floats_) {
+        // Earlier kernels may still read the old buffer.
+        PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+        if (reduce_scratch_ != nullptr) {
+            PULSATRIX_CUDA_CHECK(cudaFree(reduce_scratch_));
+            reduce_scratch_ = nullptr;
+        }
+        PULSATRIX_CUDA_CHECK(cudaMalloc(&reduce_scratch_, floats * sizeof(float)));
+        reduce_scratch_floats_ = floats;
+    }
+    return reduce_scratch_;
 }
 
 void CUDABackend::group_norm_forward(const float* in, const float* gamma, const float* beta, float* xhat, float* out,

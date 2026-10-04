@@ -70,3 +70,24 @@ atomics. On the `reduce` workload (16M floats):
 
 Both now run at the measured memory bandwidth of the gfx1151 (about 212 GB/s), so there is
 nothing left to gain on these two ops.
+
+### HIP-2: BatchNorm as parallel per-channel reductions
+
+BatchNorm ran one thread per channel over every element of that channel. Now each per-channel
+sum is a deterministic two-stage reduction: several blocks per channel produce partials, which one
+thread per channel then adds in order. Normalization and the input gradient run one thread per
+element. On the `cnn` workload:
+
+| | Before | After |
+|---|---|---|
+| Step time | about 27 ms | about 10 ms (2.7×) |
+| BatchNorm kernels (20 steps) | 342 ms, 79% of kernel time | about 3 ms |
+| GPU busy | 78.3% | 45.8% |
+
+GEMM is now 84% of the CNN's kernel time. The drop in GPU busy time means launch and sync
+overhead is now the larger cost, which is HIP-4's target.
+
+Results now differ from the CPU in the last bits. The GPU adds each channel's values by a tree,
+while the CPU adds them one at a time. Both are deterministic. Softmax, layer and RMS norms, and
+column sums keep their kernels: at current shapes each call takes about 5 µs, which is launch
+overhead rather than missing parallelism (the roadmap's falsifier for HIP-2).

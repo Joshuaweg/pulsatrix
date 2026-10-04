@@ -160,6 +160,10 @@ private:
     // One device float that dot() reduces into before copying it to the host; allocated once
     // so dot() costs no per-call device allocation.
     float* dot_result_ = nullptr;  // dot/sum scratch: result at [0], per-block partials after it (HIP-5)
+    // Device scratch for per-channel reductions (HIP-2), grown on demand by reduce_scratch().
+    float* reduce_scratch_ = nullptr;
+    size_t reduce_scratch_floats_ = 0;
+    float* reduce_scratch(size_t floats);
 };
 
 }  // namespace pulsatrix
