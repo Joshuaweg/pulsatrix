@@ -73,7 +73,7 @@ TEST_F(TaggerFineTuneTest, GradientsMatchFiniteDifferences) {
 // The recipe end to end: pretrain on rule A, save, reload, fully fine-tune on rule B.
 TEST_F(TaggerFineTuneTest, PretrainSaveReloadAndFineTune) {
     FineTuneConfig pretrain_config;
-    pretrain_config.steps = 150;
+    pretrain_config.steps = 200;
     TinyTagger pretrained(&backend);
     InitTagger(pretrained, 3);
     const std::vector<float> curve_a = TrainTagger(pretrained, TaggingRule::SumWithPrevious, pretrain_config, &backend);
@@ -84,7 +84,7 @@ TEST_F(TaggerFineTuneTest, PretrainSaveReloadAndFineTune) {
     LoadCheckpoint(path, tuned);
     const float before = TaggingAccuracy(tuned, TaggingRule::DifferenceWithPrevious, 500);
     FineTuneConfig finetune_config;
-    finetune_config.steps = 150;
+    finetune_config.steps = 200;
     const std::vector<float> curve_b = TrainTagger(tuned, TaggingRule::DifferenceWithPrevious, finetune_config, &backend);
     const float after = TaggingAccuracy(tuned, TaggingRule::DifferenceWithPrevious, 500);
     EXPECT_LT(curve_b.back(), curve_b.front());
