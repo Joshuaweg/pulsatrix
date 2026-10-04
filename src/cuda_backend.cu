@@ -25,7 +25,7 @@ CUDABackend::CUDABackend() {
     PULSATRIX_CUDA_CHECK(cudaStreamCreate(&stream_));
     PULSATRIX_CUBLAS_CHECK(cublasCreate(&cublas_handle_));
     PULSATRIX_CUBLAS_CHECK(cublasSetStream(cublas_handle_, stream_));
-    PULSATRIX_CUDA_CHECK(cudaMalloc(&dot_result_, sizeof(float)));
+    PULSATRIX_CUDA_CHECK(cudaMalloc(&dot_result_, gpu::kReduceScratchFloats * sizeof(float)));
 }
 
 CUDABackend::~CUDABackend() {

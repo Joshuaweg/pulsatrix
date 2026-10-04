@@ -152,7 +152,7 @@ private:
     cublasHandle_t cublas_handle_;
     // One device float that dot() reduces into before copying it to the host; allocated once
     // so dot() costs no per-call device allocation.
-    float* dot_result_ = nullptr;
+    float* dot_result_ = nullptr;  // dot/sum scratch: result at [0], per-block partials after it (HIP-5)
 };
 
 }  // namespace pulsatrix
