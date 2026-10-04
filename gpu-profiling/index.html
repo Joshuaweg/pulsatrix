@@ -804,6 +804,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hip-5-dot-and-sum-across-many-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-5: dot and sum across many blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1554,6 +1582,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hip-5-dot-and-sum-across-many-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-5: dot and sum across many blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1601,6 +1657,7 @@ backward, AdamW):</p>
   Flatten → Linear</code>, on 32 images of 3×32×32.</li>
 <li><strong><code>tagger</code>:</strong> the transformer tagger from the
   <a href="../recipes/deep-learning/tagger_finetune/">full fine-tuning recipe</a>.</li>
+<li><strong><code>reduce</code>:</strong> <code>DeviceBackend::dot</code> and <code>sum</code> over 16M floats, a microbenchmark for HIP-5.</li>
 </ul>
 <h2 id="baseline-gfx1151-rocm-724-20-steps">Baseline (gfx1151, ROCm 7.2.4, 20 steps)<a class="headerlink" href="#baseline-gfx1151-rocm-724-20-steps" title="Permanent link">&para;</a></h2>
 <p>Measured 2026-10-04 on the Radeon 8060S (Strix Halo), Release build, before any of the HIP
@@ -1645,6 +1702,37 @@ performance work.</p>
 <li><strong>Fills and copies are a large share.</strong> Many of them are temporaries a caching allocator and
   fused kernels would avoid (HIP-3, HIP-6).</li>
 </ul>
+<h2 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h2>
+<h3 id="hip-5-dot-and-sum-across-many-blocks">HIP-5: <code>dot</code> and <code>sum</code> across many blocks<a class="headerlink" href="#hip-5-dot-and-sum-across-many-blocks" title="Permanent link">&para;</a></h3>
+<p>They used to run on a single 256-thread block. Now a first pass of up to 1024 blocks writes
+per-block partial sums, and one block adds those in a fixed order: still deterministic, no
+atomics. On the <code>reduce</code> workload (16M floats):</p>
+<table>
+<thead>
+<tr>
+<th>Op</th>
+<th>Before</th>
+<th>After</th>
+<th>Effective bandwidth after</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dot</code> (reads 128 MB)</td>
+<td>17.7 ms</td>
+<td>0.61 ms (29×)</td>
+<td>211 GB/s</td>
+</tr>
+<tr>
+<td><code>sum</code> (reads 64 MB)</td>
+<td>17.2 ms</td>
+<td>0.30 ms (58×)</td>
+<td>216 GB/s</td>
+</tr>
+</tbody>
+</table>
+<p>Both now run at the measured memory bandwidth of the gfx1151 (about 212 GB/s), so there is
+nothing left to gain on these two ops.</p>
 
 
 
