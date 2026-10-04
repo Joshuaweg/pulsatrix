@@ -8,8 +8,14 @@
 #include <set>
 #include <stdexcept>
 
-#if !defined(__BYTE_ORDER__) || __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__
-#error "safetensors.cpp assumes a little-endian host: the format's data section is little-endian"
+// The format's data section is little-endian, and this file copies it as-is. GCC and Clang say
+// which byte order they target; MSVC doesn't, but every Windows target is little-endian.
+#if defined(__BYTE_ORDER__)
+#if __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__
+#error "safetensors.cpp assumes a little-endian host"
+#endif
+#elif !defined(_WIN32)
+#error "safetensors.cpp can't determine the host byte order; it assumes little-endian"
 #endif
 
 namespace pulsatrix {
