@@ -87,7 +87,11 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override { return {{&weight_, &weight_grad_}}; }
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {
+            {"weight", {&weight_, &weight_grad_}},
+        };
+    }
 
 protected:
     /**

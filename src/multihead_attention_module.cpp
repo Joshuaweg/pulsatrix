@@ -346,18 +346,15 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
     return reshaped(relevance_in, Shape({N, L, d_model_}));
 }
 
-std::vector<ParamRef> MultiHeadAttentionModule::parameters() {
-    std::vector<ParamRef> params;
-    for (Module* sub : {static_cast<Module*>(&q_proj_), static_cast<Module*>(&k_proj_),
-                        static_cast<Module*>(&v_proj_), static_cast<Module*>(&out_proj_)}) {
-        std::vector<ParamRef> sub_params = sub->parameters();
-        params.insert(params.end(), sub_params.begin(), sub_params.end());
-    }
+std::vector<NamedParamRef> MultiHeadAttentionModule::named_parameters() {
+    std::vector<NamedParamRef> params;
+    append_named_parameters(params, "q_proj", q_proj_);
+    append_named_parameters(params, "k_proj", k_proj_);
+    append_named_parameters(params, "v_proj", v_proj_);
+    append_named_parameters(params, "out_proj", out_proj_);
     if (use_qk_norm_) {
-        std::vector<ParamRef> q_params = q_norm_->parameters();
-        params.insert(params.end(), q_params.begin(), q_params.end());
-        std::vector<ParamRef> k_params = k_norm_->parameters();
-        params.insert(params.end(), k_params.begin(), k_params.end());
+        append_named_parameters(params, "q_norm", *q_norm_);
+        append_named_parameters(params, "k_norm", *k_norm_);
     }
     return params;
 }

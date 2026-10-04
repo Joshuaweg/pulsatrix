@@ -156,15 +156,12 @@ Tensor TransformerBlock::propagate_relevance(const Tensor& relevance_out, const 
     return r_x;
 }
 
-std::vector<ParamRef> TransformerBlock::parameters() {
-    std::vector<ParamRef> params;
-    auto append = [&params](std::vector<ParamRef> more) {
-        params.insert(params.end(), more.begin(), more.end());
-    };
-    append(norm1_.parameters());
-    append(mha_.parameters());
-    append(norm2_.parameters());
-    append(swiglu_.parameters());
+std::vector<NamedParamRef> TransformerBlock::named_parameters() {
+    std::vector<NamedParamRef> params;
+    append_named_parameters(params, "norm1", norm1_);
+    append_named_parameters(params, "mha", mha_);
+    append_named_parameters(params, "norm2", norm2_);
+    append_named_parameters(params, "swiglu", swiglu_);
     return params;
 }
 

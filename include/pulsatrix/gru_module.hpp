@@ -161,10 +161,18 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    [[nodiscard]] std::vector<ParamRef> parameters() override {
-        return {{&weight_xz_, &weight_xz_grad_}, {&weight_hz_, &weight_hz_grad_}, {&bias_z_, &bias_z_grad_},
-                {&weight_xr_, &weight_xr_grad_}, {&weight_hr_, &weight_hr_grad_}, {&bias_r_, &bias_r_grad_},
-                {&weight_xn_, &weight_xn_grad_}, {&weight_hn_, &weight_hn_grad_}, {&bias_n_, &bias_n_grad_}};
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        return {
+            {"weight_xz", {&weight_xz_, &weight_xz_grad_}},
+            {"weight_hz", {&weight_hz_, &weight_hz_grad_}},
+            {"bias_z", {&bias_z_, &bias_z_grad_}},
+            {"weight_xr", {&weight_xr_, &weight_xr_grad_}},
+            {"weight_hr", {&weight_hr_, &weight_hr_grad_}},
+            {"bias_r", {&bias_r_, &bias_r_grad_}},
+            {"weight_xn", {&weight_xn_, &weight_xn_grad_}},
+            {"weight_hn", {&weight_hn_, &weight_hn_grad_}},
+            {"bias_n", {&bias_n_, &bias_n_grad_}},
+        };
     }
 
 protected:

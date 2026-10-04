@@ -70,8 +70,8 @@ public:
         return true;
     }
 
-    /** @brief Concatenates every contained layer's own parameters(). */
-    [[nodiscard]] std::vector<ParamRef> parameters() override;
+    /** @brief Every contained layer's named_parameters(), prefixed with its index (`0.weight`). */
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
     /**
      * @brief Sets this container's own training flag and cascades to every contained layer.

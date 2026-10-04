@@ -93,7 +93,7 @@ public:
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
     /** @brief norm1_'s, mha_'s, norm2_'s, and swiglu_'s parameters, flattened. */
-    [[nodiscard]] std::vector<ParamRef> parameters() override;
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
     /** @brief Cascades to every sub-module, the same way SequentialModule/MultiHeadAttentionModule do. */
     void set_training(bool training) override;

@@ -87,7 +87,11 @@ Tensor ResidualModule::propagate_relevance(const Tensor& relevance_out, const LR
     return r_x;
 }
 
-std::vector<ParamRef> ResidualModule::parameters() { return inner_->parameters(); }
+std::vector<NamedParamRef> ResidualModule::named_parameters() {
+    std::vector<NamedParamRef> params;
+    append_named_parameters(params, "inner", *inner_);
+    return params;
+}
 
 void ResidualModule::set_training(bool training) {
     Module::set_training(training);

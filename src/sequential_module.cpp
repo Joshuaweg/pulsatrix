@@ -51,11 +51,10 @@ Tensor SequentialModule::propagate_relevance(const Tensor& relevance_out, const 
     return relevance;
 }
 
-std::vector<ParamRef> SequentialModule::parameters() {
-    std::vector<ParamRef> result;
-    for (Module* layer : layers_) {
-        std::vector<ParamRef> layer_params = layer->parameters();
-        result.insert(result.end(), layer_params.begin(), layer_params.end());
+std::vector<NamedParamRef> SequentialModule::named_parameters() {
+    std::vector<NamedParamRef> result;
+    for (size_t i = 0; i < layers_.size(); ++i) {
+        append_named_parameters(result, std::to_string(i), *layers_[i]);
     }
     return result;
 }
