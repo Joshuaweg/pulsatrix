@@ -147,6 +147,7 @@ Tensor MambaModule::forward_impl(const Tensor& input) {
 }
 
 Tensor MambaModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "MambaModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("MambaModule::backward: called before any forward()");
     }
@@ -291,6 +292,7 @@ Tensor MambaModule::backward(const Tensor& grad_output) {
 }
 
 Tensor MambaModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "MambaModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("MambaModule::propagate_relevance: called before any forward()");
     }

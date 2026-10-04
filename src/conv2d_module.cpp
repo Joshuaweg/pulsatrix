@@ -94,6 +94,7 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
 }
 
 Tensor Conv2DModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "Conv2DModule::backward");
     // Finding 12: calling backward() before any forward() previously silently computed a
     // meaningless answer from zero-initialized cached state instead of erroring.
     if (!has_forwarded_) {
@@ -149,6 +150,7 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
 }
 
 Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "Conv2DModule::propagate_relevance");
     // Finding 12: see backward()'s identical guard above.
     if (!has_forwarded_) {
         throw std::logic_error("Conv2DModule::propagate_relevance: called before any forward()");

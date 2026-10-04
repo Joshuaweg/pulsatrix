@@ -67,6 +67,7 @@ Tensor EmbeddingModule::forward_impl(const Tensor& input) {
 }
 
 Tensor EmbeddingModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, weight_.device(), "EmbeddingModule::backward");
     if (!has_forwarded_) {
         throw std::logic_error("EmbeddingModule::backward: called before any forward()");
     }
@@ -97,6 +98,7 @@ Tensor EmbeddingModule::backward(const Tensor& grad_output) {
 }
 
 Tensor EmbeddingModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
+    require_device(relevance_out, weight_.device(), "EmbeddingModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("EmbeddingModule::propagate_relevance: called before any forward()");
     }

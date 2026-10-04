@@ -5,6 +5,7 @@
  */
 #pragma once
 
+#include <optional>
 #include <memory>
 #include <vector>
 
@@ -155,6 +156,10 @@ public:
      *         softmax output. Exposed because "what did each head attend to" is the single
      *         most-asked explainability question about this module. */
     [[nodiscard]] const Tensor& last_attention_weights() const { return last_attn_; }
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     /**

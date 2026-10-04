@@ -37,6 +37,10 @@ PPOClippedLoss::PPOClippedLoss(DeviceBackend* backend)
 
 float PPOClippedLoss::forward(const Tensor& new_logits, const Tensor& actions, const Tensor& old_log_probs,
                               const Tensor& advantages, float clip_epsilon) {
+    require_device(new_logits, backend_->device(), "PPOClippedLoss::forward");
+    require_device(actions, backend_->device(), "PPOClippedLoss::forward");
+    require_device(old_log_probs, backend_->device(), "PPOClippedLoss::forward");
+    require_device(advantages, backend_->device(), "PPOClippedLoss::forward");
     if (new_logits.rank() != 2) {
         throw std::invalid_argument("PPOClippedLoss::forward: new_logits must have shape (N, action_dim)");
     }

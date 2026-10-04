@@ -10,6 +10,8 @@ MSELoss::MSELoss(DeviceBackend* backend)
     : backend_(backend), last_prediction_(Shape({0}), backend), last_target_(Shape({0}), backend) {}
 
 float MSELoss::forward(const Tensor& prediction, const Tensor& target) {
+    require_device(prediction, backend_->device(), "MSELoss::forward");
+    require_device(target, backend_->device(), "MSELoss::forward");
     // External boundary: both tensors come from the caller. Mixed devices would hand the
     // backend a pointer it cannot address.
     if (prediction.device() != target.device()) {

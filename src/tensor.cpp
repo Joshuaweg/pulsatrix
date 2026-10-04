@@ -99,17 +99,31 @@ Tensor Tensor::Stack(const std::vector<Tensor>& tensors, DeviceBackend* backend)
         out_dims.push_back(first_shape.dim(static_cast<size_t>(d)));
     }
 
-    Tensor result(Shape(out_dims), backend, device);
+    // The result lives where `backend` allocates (FND-8, gpu_review #2): tag it with that device,
+    // not the sources', and copy accordingly. Reads from a GPU into host memory go through the
+    // source's own backend, the only one that can read that memory; everything else through the
+    // destination's.
+    const DeviceType target = backend->device();
+    if (device != DeviceType::Cpu && target != DeviceType::Cpu && device != target) {
+        throw std::invalid_argument("Tensor::Stack: cannot copy directly between two different GPU types");
+    }
+    Tensor result(Shape(out_dims), backend, target);
     if (result.data() == nullptr) {
         return result;
     }
 
-    CopyDirection dir = (device == DeviceType::Cpu) ? CopyDirection::HostToHost : CopyDirection::DeviceToDevice;
     float* dst = result.data();
     for (const Tensor& t : tensors) {
         int64_t chunk_numel = t.numel();
         if (chunk_numel > 0) {
-            backend->copy(dst, t.data(), static_cast<size_t>(chunk_numel) * sizeof(float), dir);
+            const size_t bytes = static_cast<size_t>(chunk_numel) * sizeof(float);
+            if (target == DeviceType::Cpu) {
+                t.backend()->copy(dst, t.data(), bytes,
+                                  device == DeviceType::Cpu ? CopyDirection::HostToHost : CopyDirection::DeviceToHost);
+            } else {
+                backend->copy(dst, t.data(), bytes,
+                              device == DeviceType::Cpu ? CopyDirection::HostToDevice : CopyDirection::DeviceToDevice);
+            }
             dst += chunk_numel;
         }
     }

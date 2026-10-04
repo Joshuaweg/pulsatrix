@@ -7,7 +7,7 @@ namespace pulsatrix {
 ReluModule::ReluModule(DeviceBackend* backend) : ReluModule(backend, backend->device()) {}
 
 ReluModule::ReluModule(DeviceBackend* backend, DeviceType device)
-    : backend_(backend), last_input_(Shape({0}), backend, device) {}
+    : backend_(backend), device_(device), last_input_(Shape({0}), backend, device) {}
 // last_input_ starts as a zero-element placeholder -- ReLU has no fixed shape (unlike
 // LinearModule's in_features/out_features), so the real shape is only known once
 // forward_impl() is first called and reassigns it wholesale.
@@ -24,6 +24,7 @@ Tensor ReluModule::forward_impl(const Tensor& input) {
 }
 
 Tensor ReluModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "ReluModule::backward");
     // Device-generic (GPU-native-kernels Mission 1): grad masked where the cached forward
     // input was <= 0.
     Tensor grad_input(grad_output.shape(), backend_, grad_output.device());
@@ -33,6 +34,7 @@ Tensor ReluModule::backward(const Tensor& grad_output) {
 }
 
 Tensor ReluModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
+    require_device(relevance_out, *compute_device(), "ReluModule::propagate_relevance");
     return Tensor(relevance_out);
 }
 

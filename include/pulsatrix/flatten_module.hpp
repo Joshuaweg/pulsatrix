@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <optional>
 #include "pulsatrix/module.hpp"
 
 namespace pulsatrix {
@@ -39,6 +40,7 @@ public:
      * @note Must be called after forward() -- uses the shape cached from that call.
      */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override {
+        require_device(grad_output, backend_->device(), "FlattenModule::backward");
         Tensor grad_input(grad_output);
         grad_input.reshape(last_input_shape_);
         return grad_input;
@@ -53,6 +55,7 @@ public:
      *       rule for a parameterless pointwise op.
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) override {
+        require_device(relevance_out, backend_->device(), "FlattenModule::propagate_relevance");
         Tensor relevance_in(relevance_out);
         relevance_in.reshape(last_input_shape_);
         return relevance_in;
@@ -60,6 +63,10 @@ public:
 
     /** @brief A reshape is the same under every rule: supports all of them. */
     [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
+
+
+    /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override {

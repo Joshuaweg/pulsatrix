@@ -74,8 +74,21 @@ public:
         if (input.numel() <= 0) {
             throw std::invalid_argument("Module::forward: input must not be empty");
         }
+        if (const std::optional<DeviceType> device = compute_device()) {
+            require_device(input, *device, "Module::forward");
+        }
         return forward_impl(input);
     }
+
+    /**
+     * @brief The device this module computes on, so forward() can reject an input on another
+     *        device before any kernel sees it (roadmap FND-8).
+     * @return std::nullopt (the default) skips the check: a container whose layers check their
+     *         own inputs, or a user module written before this existed. Every in-tree layer
+     *         returns its device; EmbeddingModule doesn't, because it reads its indices through
+     *         their own backend and so accepts them from any device.
+     */
+    [[nodiscard]] virtual std::optional<DeviceType> compute_device() const { return std::nullopt; }
 
     /**
      * @brief Runs forward() while also registering a ComputationGraph node (tagged with

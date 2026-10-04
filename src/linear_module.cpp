@@ -75,6 +75,7 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
 }
 
 Tensor LinearModule::backward(const Tensor& grad_output) {
+    require_device(grad_output, *compute_device(), "LinearModule::backward");
     // Finding 12: calling backward() before any forward() previously silently computed a
     // meaningless answer from zero-initialized cached state (last_input_) instead of
     // erroring.
@@ -117,6 +118,7 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
 }
 
 Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    require_device(relevance_out, *compute_device(), "LinearModule::propagate_relevance");
     // Finding 12: see backward()'s identical guard above.
     if (!has_forwarded_) {
         throw std::logic_error("LinearModule::propagate_relevance: called before any forward()");
