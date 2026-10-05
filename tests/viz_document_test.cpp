@@ -180,10 +180,8 @@ TEST(VizDocumentGoldenTest, FeatureDashboard) {
 
 TEST(VizDocumentConversionTest, AttributionRoundTripsThroughTensor) {
     CPUBackend backend;
-    Attribution attr;
-    attr.method = "lrp_epsilon";
-    attr.values = Tensor(Shape({1, 2, 2}), &backend, {0.25f, -0.5f, 1e-30f, 3.0f});
-    attr.metadata = {{"rule", "epsilon"}, {"epsilon", "1e-6"}};
+    Attribution attr{"lrp_epsilon", Tensor(Shape({1, 2, 2}), &backend, {0.25f, -0.5f, 1e-30f, 3.0f}),
+                     {{"rule", "epsilon"}, {"epsilon", "1e-6"}}};
     AttributionDocument doc = ToAttributionDocument(attr);
     EXPECT_EQ(doc.shape, (std::vector<int64_t>{1, 2, 2}));
     Attribution back = ToAttribution(ParseAttributionDocument(ToJson(doc)), &backend);

@@ -30,10 +30,7 @@ ImPlotColormap SignedHeatmapColormap() {
     return ImPlot::AddColormap("pulsatrix_diverging", cols.data(), kSamples, false);
 }
 
-}  // namespace
-
-void SaliencyHeatmapView::Draw(const char* title, const Attribution& attr) {
-    HeatmapGrid grid = ToSaliencyHeatmap(attr);
+void DrawGrid(const char* title, const HeatmapGrid& grid) {
     if (grid.values.empty()) {
         return;
     }
@@ -77,5 +74,11 @@ void SaliencyHeatmapView::Draw(const char* title, const Attribution& attr) {
                           static_cast<double>(scale.scale_max), ImVec2(kScaleBarWidth, plot_height), "%.2g");
     ImPlot::PopColormap();
 }
+
+}  // namespace
+
+void SaliencyHeatmapView::Draw(const char* title, const Attribution& attr) { DrawGrid(title, ToSaliencyHeatmap(attr)); }
+
+void SaliencyHeatmapView::Draw(const char* title, const HeatmapDocument& doc) { DrawGrid(title, ToHeatmapGrid(doc)); }
 
 }  // namespace pulsatrix
