@@ -373,7 +373,8 @@ TEST(SvgHeatmapTest, SmallGridsAreOneSquareCellPerValue) {
 
 TEST(SvgHeatmapTest, SignedGridsUseTheSymmetricDivergingScale) {
     HeatmapDocument doc{"", 1, 3, {-1.0f, 0.0f, 4.0f}, {}, {}};
-    auto cells = ByClass(*Parsed(RenderHeatmapSvg(doc)), "cell");
+    auto root = Parsed(RenderHeatmapSvg(doc));
+    auto cells = ByClass(*root, "cell");
     ASSERT_EQ(cells.size(), 3u);
     EXPECT_EQ(cells[0]->get("fill"), Hex(DivergingColormap(-0.25f)));
     EXPECT_EQ(cells[1]->get("fill"), Hex(DivergingColormap(0.0f)));
@@ -480,7 +481,8 @@ TEST(SvgTokenStripTest, WrapsWithinTheWidth) {
 
 TEST(SvgTokenStripTest, CountsCharactersNotBytes) {
     TokenRelevanceDocument doc{"m", {"caf\xC3\xA9", "cafe"}, {1.0f, 1.0f}, ""};
-    auto boxes = ByClass(*Parsed(RenderTokenStripSvg(doc)), "token");
+    auto root = Parsed(RenderTokenStripSvg(doc));
+    auto boxes = ByClass(*root, "token");
     ASSERT_EQ(boxes.size(), 2u);
     EXPECT_NEAR(boxes[0]->num("width"), boxes[1]->num("width"), 1e-9);
 }
