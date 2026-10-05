@@ -4,7 +4,8 @@
 writes a CSV of where the time went. It also reports the GPU's **busy time** over the run's wall
 span. When that is low, the GPU is waiting on launches and synchronization, not computing.
 Measure before optimizing: every HIP performance item on the [roadmap](roadmap/index.md#hip-training-efficiency-on-amd-gpus)
-is judged against these numbers.
+is judged against these numbers. To measure whether a change made training or explanations
+faster or slower, and to compare two builds, use the [benchmark suite](benchmarks.md).
 
 ## Running it
 

@@ -175,6 +175,7 @@ add_library(pulsatrix_core
     src/viz/plot_data.cpp
     src/viz/document.cpp
     src/viz/svg.cpp
+    src/benchmark.cpp
     src/json.cpp
 )
 add_library(pulsatrix::core ALIAS pulsatrix_core)
@@ -553,10 +554,20 @@ endif()
 add_executable(pulsatrix_svg tools/render/pulsatrix_svg.cpp)
 target_link_libraries(pulsatrix_svg PRIVATE pulsatrix_core)
 
+# pulsatrix_bench: the benchmark suite (KS-2), on every backend this build has.
+add_executable(pulsatrix_bench tools/bench/pulsatrix_bench.cpp)
+target_link_libraries(pulsatrix_bench PRIVATE pulsatrix_core)
+target_compile_definitions(pulsatrix_bench PRIVATE
+    PULSATRIX_BENCH_VERSION="${PROJECT_VERSION}"
+    PULSATRIX_BENCH_BUILD_TYPE="$<IF:$<BOOL:$<CONFIG>>,$<CONFIG>,unspecified>"
+    $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_BENCH_WITH_HIP>
+    $<$<BOOL:${PULSATRIX_ENABLE_CUDA}>:PULSATRIX_BENCH_WITH_CUDA>)
+
 # Fixed GPU training workloads for scripts/profile_hip.sh (HIP-1).
 if(PULSATRIX_ENABLE_HIP)
     add_executable(hip_profile_workloads tools/profile/hip_profile_workloads.cpp)
     target_link_libraries(hip_profile_workloads PRIVATE pulsatrix_core)
+    target_include_directories(hip_profile_workloads PRIVATE tools/bench)
 endif()
 
 if(PULSATRIX_BUILD_FUZZERS)
@@ -601,7 +612,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
