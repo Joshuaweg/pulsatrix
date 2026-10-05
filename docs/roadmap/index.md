@@ -85,7 +85,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 | 3. Translating model files | [IO](#io-serialization-and-model-import) |
 | 4. Visualization pack | [VIZ](#viz-visualization-pack), [NB](#nb-notebook-layer) |
 | 5. LLMs and agent orchestration | [LLM](#llm-running-real-language-models), [TOK](#tok-tokenizers), [AGT](#agt-agents-native-c) |
-| 6. Built-in XAI framework (4 reasons, 9 question categories) | [XAI](#xai-question-driven-explainability-framework) |
+| 6. Built-in XAI framework (4 reasons, 9 question categories) | [XAI](#xai-question-driven-explainability-framework), [CFS](#cfs-counterfactuals-and-sensitivity) |
 | 7. New patterns and architectures | [ARCH](#arch-new-architectures) |
 | 8. Kitchen sink | [KS](#ks-kitchen-sink), [FND](#fnd-foundations) |
 | 9. HIP efficiency for training and tuning | [HIP](#hip-training-efficiency-on-amd-gpus) |
@@ -119,6 +119,8 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast
 - LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizers, generation, KV cache, the
   golden-logit harness, AttnLRP parity with LXT
+- CFS-1 to CFS-7 (added 2026-10-05, built first): ICE, ALE, local and global sensitivity, and
+  counterfactuals, each with its view
 - TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores
 - HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)
@@ -414,9 +416,9 @@ doesn't support.
 |---|---|---|
 | Why | LRP composites, Integrated Gradients | Have |
 | Why not | Contrastive LRP (relevance of logit P minus logit Q) | Have |
-| What if | PDP and ICE, re-running with an edited input | Have |
+| What if | PDP, re-running with an edited input; ICE, ALE, local and global sensitivity | Partial; [CFS-1 to CFS-4](#cfs-counterfactuals-and-sensitivity) |
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Partial; XAI-4, INT-6 |
-| How to be that | Counterfactual search | Gap; XAI-4 |
+| How to be that | Counterfactual search | Gap; [CFS-5 to CFS-7](#cfs-counterfactuals-and-sensitivity) |
 | How to still be this | Anchors | Gap; XAI-4 |
 | Performance | Metrics, calibration, per-slice error, uncertainty | Partial; KS-3 |
 | Input (data) | Dataset statistics, nearest training examples, data attribution | Partial; INT-1, KS-5 |
@@ -435,7 +437,7 @@ The reason changes the defaults:
 | XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S | |
 | XAI-2 | `ExplanationPlanner::plan(question, reason, model_traits)`, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs | The framework users actually call | XAI-1 | P1 | M | |
 | XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M | |
-| XAI-4 | The missing explainers: counterfactuals (gradient-based first, then a diverse variant), a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to be that, How to still be this and How (global) | XAI-1, INT-1 | P1 | M each | |
+| XAI-4 | The missing explainers: a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to still be this and How (global); counterfactuals moved to CFS | XAI-1, INT-1 | P1 | M each | |
 | XAI-5 | Explanation-quality metrics in the Quantus families: deletion and insertion curves (with the ROAD correction), the model-parameter randomization test, sparseness and complexity | Today pulsatrix has conservation and stability checks only | — | P0 | M | Done, [#53](https://github.com/Joshuaweg/pulsatrix/pull/53) |
 | XAI-6 | `NullModelBaseline`: re-run any explainer, probe or featurizer on a re-initialized copy of the model and report the difference | The baseline rule above, as one call | FND-1 | P0 | S–M | Done, [#54](https://github.com/Joshuaweg/pulsatrix/pull/54) |
 
@@ -459,6 +461,26 @@ The reason changes the defaults:
 | Quantus's localisation, robustness and axiomatic families | XAI-5 | KS-4 (robustness), or its own item |
 | A built-in plain-linear-probe comparison, the second half of the baseline rule | XAI-6 | INT-3 (probe controls) |
 | Running the null-model baseline and the metrics from the report planner | XAI-6 | XAI-2, XAI-3 |
+
+## CFS: Counterfactuals and sensitivity
+
+Two of the nine questions had almost nothing behind them. "What if" had PDP only; the table above
+used to claim ICE, which pulsatrix never had. "How to be that" had nothing. This epic covers both,
+model-agnostic where it can be (a prediction function, like LIME and PDP), and each method ships a
+`pulsatrix.<kind>.v1` document (VIZ-1) and an SVG view (VIZ-2).
+
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| CFS-1 | ICE: one curve per instance, centered ICE (c-ICE) and derivative ICE, plus two-feature partial dependence. View: PDP over ICE lines, and a 2-D PDP heatmap. Checked against scikit-learn's `partial_dependence` | PDP averages away heterogeneity; ICE shows it. Two-feature PDP shows interactions | — | P0 | S | |
+| CFS-2 | ALE (accumulated local effects), first order, with quantile bins. Checked against `alibi` or `PyALE` | PDP reads the model at impossible inputs when features are correlated; ALE doesn't | CFS-1 | P1 | S | |
+| CFS-3 | Local sensitivity: move each input feature by ±δ (absolute or in units of the background's spread) or across its range and record the output change; occlusion with patches for images and spans for sequences. Views: a tornado chart, and the occlusion map through the heatmap renderer | "Which inputs is this prediction sensitive to, and how much?" with no gradients and no surrogate | — | P0 | S | |
+| CFS-4 | Global sensitivity: Morris elementary effects (μ\*, σ) and Sobol first-order and total indices (Saltelli sampling, Jansen estimators) with bootstrap confidence intervals. Views: μ\*–σ scatter, Sobol bars with error bars. Checked against SALib | Which inputs drive the output over the whole input space, and which interact | — | P1 | M | |
+| CFS-5 | Gradient counterfactual (Wachter): the nearest input that reaches a target class or value, distance weighted by each feature's median absolute deviation, with immutable features, bounds, and integer or categorical features. Reports validity, proximity (L1, L2) and sparsity. View: what changed, feature by feature | "How to be that", the most requested missing explainer | — | P0 | M | |
+| CFS-6 | Model-agnostic counterfactual: growing spheres, refined by the evolutionary module, for models with no gradient | Counterfactuals for any prediction function | CFS-5 | P1 | S | |
+| CFS-7 | Diverse counterfactuals (DiCE: a determinantal diversity term) and a plausibility score (distance to the k nearest background instances). Checked against DiCE's own metrics | One counterfactual hides the other ways to change the outcome; implausible ones mislead | CFS-5 | P1 | M | |
+
+Every item runs on a re-initialized model too (rule 1): sensitivity that looks the same on a random
+network says nothing about what the model learned.
 
 ## INT: Embedding and representation analysis
 

@@ -184,6 +184,16 @@ below record the reasoning they were built on.
   - The model-parameter randomization test comes from Adebayo et al., NeurIPS 2018. Done (#53): a model-independent "explainer" scores a similarity of 1.0 at every layer, and gradient × input decorrelates.
 - **XAI-6.** See the cross-cutting section above. Done (#54).
 
+## CFS: Counterfactuals and sensitivity
+
+- **CFS-1.** Goldstein et al., "Peeking Inside the Black Box", arXiv 1309.6392 (ICE, c-ICE, d-ICE). Friedman's H-statistic builds on two-feature PDP. scikit-learn's `partial_dependence(kind="both")` returns PDP and ICE together.
+- **CFS-2.** Apley and Zhu, arXiv 1612.08468. **Fails when:** bins hold too few points; quantile bins keep counts even.
+- **CFS-3.** Occlusion: Zeiler and Fergus, arXiv 1311.2901. Captum's `Occlusion` and `FeatureAblation` are the references. Gradients measure an infinitesimal neighborhood; ±δ measures a finite one, and the two disagree exactly where the model saturates.
+- **CFS-4.** Morris, Technometrics 1991; Campolongo et al. 2007 (μ\*). Saltelli et al. 2010 for the Sobol estimators. SALib implements both. Sobol indices assume independent inputs. **Falsifier:** indices that move by more than their confidence interval between seeds at the default sample size.
+- **CFS-5.** Wachter, Mittelstadt and Russell, arXiv 1711.00399. MAD weighting is from the same paper. On images, counterfactuals become adversarial examples (Freiesleben, arXiv 2009.05487); the report says so.
+- **CFS-6.** Growing spheres: Laugel et al., arXiv 1712.08443.
+- **CFS-7.** DiCE: Mothilal, Sharma and Tan, arXiv 1905.07697 (validity, proximity, sparsity, diversity). Plausibility as kNN distance follows Pawelczyk et al., "CARLA", arXiv 2108.00783.
+
 ## INT: Embedding and representation analysis
 
 - **INT-1.** Huh et al., "Platonic Representation Hypothesis", arXiv 2405.07987 (2024-05), defines mutual-kNN alignment.
