@@ -309,8 +309,8 @@ below record the reasoning they were built on.
 
 - **Tools go stale.** CircuitsVis's last release was about a year ago, and token-hover regressions are still open (#98) [C]. Captum Insights was deprecated in Captum 0.8 (2025-03) [C].
 - **VIZ-1.**
-  - **Fails when:** NaN and infinity appear in JSON (they're invalid), or the schema churns. Version it from day one and add golden-file tests.
-- **VIZ-2.** ImPlot has no vector export, so publication figures need a separate renderer [I]. Share `colormap.hpp` so SVG and ImGui colors match.
+  - **Fails when:** NaN and infinity appear in JSON (they're invalid), or the schema churns. Version it from day one and add golden-file tests. Done (#62): versioned from v1, non-finite numbers carried as null plus a JSON Pointer entry, and golden files byte-compared on Linux and Windows.
+- **VIZ-2.** ImPlot has no vector export, so publication figures need a separate renderer [I]. Share `colormap.hpp` so SVG and ImGui colors match. Done (#63): tests check the SVG fills against `colormap.hpp` exactly.
 - **VIZ-3.** Vega-Lite embedding docs. Inlining the JavaScript adds roughly 800 KB per file [I].
 - **VIZ-4.** circuit-tracer (Anthropic open-sourced it, 2025). Neuronpedia publishes an attribution-graph JSON schema and a validator at neuronpedia.org/graph/validator.
   - **Falsifier:** the schema needs transcoder-specific fields pulsatrix can't fill. Check against the validator first.
@@ -376,6 +376,7 @@ below record the reasoning they were built on.
   - ROCm 7.2 page faults on host-to-device copies (ROCm #5890, open) [C].
   - A wrong VGPR count crashed gfx1151 through ROCm 7.1.x. The user-mode fix landed in 7.2; the kernel-mode fix needs Ubuntu's OEM kernel 1018 or newer (TheRock #2991) [C].
   - AMD asks for host kernel 6.18.4 or newer on other distributions [V].
+  - Done (#65): on gfx1151 with host kernel 7.0.0, ROCm 10.0.0 passed every HIP test and matched 7.2.4 within 2%; it is now the default. ROCm #5890 didn't show up on either version.
 - **HIP-10.** HIP's unified-memory documentation [V]: without XNACK, `hipMallocManaged` and `hipHostMalloc` give pinned, zero-copy host memory.
 - **HIP-11.** LRP's stabilized divisions and conservation checks degrade in bf16, which has an 8-bit mantissa [I]. That's why the rule is to explain in fp32.
 - **HIP-12.** Reports that this work may not pay off [C]:
@@ -429,8 +430,8 @@ below record the reasoning they were built on.
 
 ## KS: Kitchen sink
 
-- **KS-1.** The README says "There's no `install()` step yet."
-- **KS-2.** The benchmark suite provides the numbers HIP-1 through HIP-8 are judged by, plus conservation error so performance work can't silently break LRP.
+- **KS-1.** The README said "There's no `install()` step yet." Done (#61).
+- **KS-2.** The benchmark suite provides the numbers HIP-1 through HIP-8 are judged by, plus conservation error so performance work can't silently break LRP. Done (#64): a 1000× larger LRP stabilizer fails the conservation gate (0.13 against 10⁻³), and restoring HIP-4's syncs is flagged as a regression.
 - **KS-3.**
   - Monte Carlo dropout: Gal and Ghahramani 2016.
   - Deep ensembles: Lakshminarayanan et al. 2017.
