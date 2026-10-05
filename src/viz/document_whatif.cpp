@@ -19,6 +19,12 @@ using namespace document_io;
 namespace {
 
 std::string PartialDependenceProblem(const PartialDependenceDocument& doc) {
+    if (doc.method != "partial_dependence" && doc.method != "ale") {
+        return "/method: must be \"partial_dependence\" or \"ale\"";
+    }
+    if (doc.method == "ale" && doc.num_instances != 0) {
+        return "/num_instances: an ALE document has no ICE curves";
+    }
     if (doc.grid.empty()) {
         return "/grid: is empty";
     }
@@ -37,7 +43,7 @@ std::string PartialDependenceProblem(const PartialDependenceDocument& doc) {
     if (doc.ice.size() != n * doc.grid.size()) {
         return "/ice: needs num_instances * grid values";
     }
-    if (!doc.feature_values.empty() && doc.feature_values.size() != n) {
+    if (doc.method == "partial_dependence" && !doc.feature_values.empty() && doc.feature_values.size() != n) {
         return "/feature_values: needs one value per instance, or none";
     }
     return "";
@@ -60,6 +66,18 @@ PartialDependenceDocument ToPartialDependenceDocument(const IceResult& result, s
     doc.partial_dependence = result.partial_dependence();
     doc.num_instances = result.num_instances;
     doc.ice = result.curves;
+    doc.feature_values = result.feature_values;
+    return doc;
+}
+
+PartialDependenceDocument ToPartialDependenceDocument(const AleResult& result, std::string feature,
+                                                      std::string target) {
+    PartialDependenceDocument doc;
+    doc.method = "ale";
+    doc.feature = std::move(feature);
+    doc.target = std::move(target);
+    doc.grid = result.edges;
+    doc.partial_dependence = result.effects;
     doc.feature_values = result.feature_values;
     return doc;
 }
@@ -96,6 +114,7 @@ std::string ToJson(const PartialDependenceDocument& doc) {
         Invalid("partial_dependence", problem);
     }
     DocWriter w("partial_dependence");
+    w.root().add("method", doc.method);
     w.root().add("feature", doc.feature);
     w.root().add("target", doc.target);
     w.root().add("grid", w.floats(doc.grid, "/grid"));
@@ -110,6 +129,9 @@ PartialDependenceDocument ParsePartialDependenceDocument(std::string_view json) 
     DocReader r(json, "partial_dependence");
     const JsonValue& root = r.root();
     PartialDependenceDocument doc;
+    if (const JsonValue* method = root.find("method")) {
+        doc.method = r.string(*method, "/method");
+    }
     doc.feature = r.string(r.member(root, "", "feature"), "/feature");
     doc.target = r.string(r.member(root, "", "target"), "/target");
     doc.grid = r.floats(r.member(root, "", "grid"), "/grid");

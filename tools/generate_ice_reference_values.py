@@ -1,12 +1,14 @@
-"""Offline, one-time reference-value generator for tests/ice_test.cpp (CFS-1): pulsatrix's ICE,
-partial dependence and grid construction checked against scikit-learn's partial_dependence.
+"""Offline, one-time reference-value generator for tests/ice_test.cpp (CFS-1, CFS-2): pulsatrix's
+ICE, partial dependence and grid construction checked against scikit-learn's
+partial_dependence, and its ALE against PyALE.
 
 Not run by CTest/CI. Run it with scikit-learn installed and transcribe the printed C++
 initializer lists into tests/ice_test.cpp:
 
     python3 tools/generate_ice_reference_values.py
 
-Versions the committed values were generated with: Python 3.12, numpy 2.5.3, scikit-learn 1.9.1.
+Versions the committed values were generated with: Python 3.12, numpy 2.5.3, scikit-learn 1.9.1,
+PyALE 1.2.0, pandas 3.0.6.
 
 The model is a fixed function, so no training is involved on either side:
     f(x) = sin(x0) * x1 + 0.5 * x2^2 - x0 * x2
@@ -17,6 +19,8 @@ resolution of 10 exercises the percentile grid and 20 the distinct-values grid.
 """
 
 import numpy as np
+import pandas as pd
+from PyALE import ale
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.inspection import partial_dependence
 
@@ -71,3 +75,17 @@ if __name__ == "__main__":
     emit("Grid2DFeature2", r["grid_values"][1])
     # average[0][i][j]: feature 0 = grid0[i], feature 2 = grid2[j].
     emit("Average2D", r["average"][0])
+
+    # ALE: PyALE wants a DataFrame and a model whose predict takes one.
+    class FramePredict:
+        def predict(self, frame):
+            return est.predict(frame.to_numpy(dtype=np.float32))
+
+    frame = pd.DataFrame(X.astype(np.float64), columns=["x0", "x1", "x2"])
+    for feature, bins in (("x0", 5), ("x2", 4)):
+        res = ale(frame, FramePredict(), [feature], grid_size=bins, include_CI=False, plot=False)
+        tag = "Ale" + feature.upper()
+        emit(tag + "Edges", res.index.to_numpy())
+        emit(tag + "Effects", res["eff"].to_numpy())
+        emit(tag + "Counts", res["size"].to_numpy()[1:])
+
