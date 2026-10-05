@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="190" height="155" viewBox="0 0 190 155" role="img" font-family="Helvetica, Arial, sans-serif" font-size="12">
+<title>Heatmap: Attention, head 0</title>
+<rect class="background" width="100%" height="100%" fill="#ffffff"/>
+<text class="col-label" x="63.6" y="41.4" text-anchor="start" fill="#222222" transform="rotate(-45 63.6 41.4)">the</text>
+<text class="col-label" x="111.6" y="41.4" text-anchor="start" fill="#222222" transform="rotate(-45 111.6 41.4)">cat</text>
+<text class="row-label" x="34.8" y="74.4" text-anchor="end" fill="#222222">the</text>
+<text class="row-label" x="34.8" y="122.4" text-anchor="end" fill="#222222">cat</text>
+<rect class="cell" x="39.6" y="46.2" width="48" height="48" shape-rendering="crispEdges" fill="#35b779"><title>the, the: 0.75</title></rect>
+<rect class="cell" x="87.6" y="46.2" width="48" height="48" shape-rendering="crispEdges" fill="#3e4a89"><title>the, cat: 0.25</title></rect>
+<rect class="cell" x="39.6" y="94.2" width="48" height="48" shape-rendering="crispEdges" fill="#440154"><title>cat, the: 0</title></rect>
+<rect class="cell" x="87.6" y="94.2" width="48" height="48" shape-rendering="crispEdges" fill="#fde725"><title>cat, cat: 1</title></rect>
+<rect class="frame" x="39.6" y="46.2" width="96" height="96" fill="none" stroke="#999999" stroke-width="0.5"/>
+<g class="colorbar">
+<defs><linearGradient id="heatmap-scale" x1="0" y1="1" x2="0" y2="0">
+<stop offset="0" stop-color="#440154"/>
+<stop offset="0.1" stop-color="#471f70"/>
+<stop offset="0.2" stop-color="#423c82"/>
+<stop offset="0.3" stop-color="#39568b"/>
+<stop offset="0.4" stop-color="#2f6c8e"/>
+<stop offset="0.5" stop-color="#26828e"/>
+<stop offset="0.6" stop-color="#21988a"/>
+<stop offset="0.7" stop-color="#2cad80"/>
+<stop offset="0.8" stop-color="#4bc06d"/>
+<stop offset="0.9" stop-color="#85d150"/>
+<stop offset="1" stop-color="#fde725"/>
+</linearGradient></defs>
+<rect x="147.6" y="46.2" width="12" height="96" fill="url(#heatmap-scale)" stroke="#999999" stroke-width="0.5"/>
+<line class="tick" x1="159.6" y1="142.2" x2="163.2" y2="142.2" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="165.6" y="146.4" text-anchor="start" fill="#666666" font-size="10.2">0</text>
+<line class="tick" x1="159.6" y1="123" x2="163.2" y2="123" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="165.6" y="127.2" text-anchor="start" fill="#666666" font-size="10.2">0.2</text>
+<line class="tick" x1="159.6" y1="103.8" x2="163.2" y2="103.8" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="165.6" y="108" text-anchor="start" fill="#666666" font-size="10.2">0.4</text>
+<line class="tick" x1="159.6" y1="84.6" x2="163.2" y2="84.6" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="165.6" y="88.8" text-anchor="start" fill="#666666" font-size="10.2">0.6</text>
+<line class="tick" x1="159.6" y1="65.4" x2="163.2" y2="65.4" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="165.6" y="69.6" text-anchor="start" fill="#666666" font-size="10.2">0.8</text>
+<line class="tick" x1="159.6" y1="46.2" x2="163.2" y2="46.2" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="165.6" y="50.4" text-anchor="start" fill="#666666" font-size="10.2">1</text>
+</g>
+</svg>

@@ -174,6 +174,7 @@ add_library(pulsatrix_core
     src/viz/colormap.cpp
     src/viz/plot_data.cpp
     src/viz/document.cpp
+    src/viz/svg.cpp
     src/json.cpp
 )
 add_library(pulsatrix::core ALIAS pulsatrix_core)
@@ -548,6 +549,10 @@ if(PULSATRIX_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
+# pulsatrix_svg: JSON viz documents to SVG figures from the command line (VIZ-2).
+add_executable(pulsatrix_svg tools/render/pulsatrix_svg.cpp)
+target_link_libraries(pulsatrix_svg PRIVATE pulsatrix_core)
+
 # Fixed GPU training workloads for scripts/profile_hip.sh (HIP-1).
 if(PULSATRIX_ENABLE_HIP)
     add_executable(hip_profile_workloads tools/profile/hip_profile_workloads.cpp)
@@ -596,6 +601,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
+    install(TARGETS pulsatrix_svg RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"

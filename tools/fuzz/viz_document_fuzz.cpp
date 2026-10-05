@@ -1,6 +1,7 @@
 // Fuzz target for the JSON parser and the viz document readers (roadmap VIZ-1). The property:
 // any input either reads as a document or throws std::invalid_argument, and a document that
-// reads writes back to JSON that reads to the same bytes again. Anything else -- another
+// reads writes back to JSON that reads to the same bytes again and renders as SVG (VIZ-2) or is
+// refused with std::invalid_argument. Anything else -- another
 // exception type, a crash, a sanitizer report or a failed check -- is a bug.
 //
 // Built and run like tools/fuzz/safetensors_fuzz.cpp (see its header): with libFuzzer, or with
@@ -20,6 +21,7 @@
 
 #include "pulsatrix/json.hpp"
 #include "pulsatrix/viz/document.hpp"
+#include "pulsatrix/viz/svg.hpp"
 
 namespace {
 
@@ -62,6 +64,22 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     ReadAndRewrite(text, pulsatrix::ParseCircuitGraphDocument);
     ReadAndRewrite(text, pulsatrix::ParseTrainingLogDocument);
     ReadAndRewrite(text, pulsatrix::ParseFeatureDashboardDocument);
+    // Whatever reads must also render, or be refused with std::invalid_argument (VIZ-2).
+    try {
+        pulsatrix::AttributionDocument a = pulsatrix::ParseAttributionDocument(text);
+        try { (void)pulsatrix::RenderBarChartSvg(a, 5); } catch (const std::invalid_argument&) {}
+        try { (void)pulsatrix::RenderWaterfallSvg(a, 0.0f); } catch (const std::invalid_argument&) {}
+        try { (void)pulsatrix::RenderBeeswarmSvg({a, a}, {0}); } catch (const std::invalid_argument&) {}
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderHeatmapSvg(pulsatrix::ParseHeatmapDocument(text));
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderTokenStripSvg(pulsatrix::ParseTokenRelevanceDocument(text));
+    } catch (const std::invalid_argument&) {
+    }
     return 0;
 }
 
