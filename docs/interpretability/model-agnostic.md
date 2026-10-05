@@ -28,6 +28,10 @@ models wrapped in a lambda.
   Morris elementary effects (μ*, σ) and `ComputeSobol` estimates first- and total-order Sobol
   indices, both with bootstrap confidence intervals, over ranges you give for each feature.
   `AnalyzeMorris` and `AnalyzeSobol` analyze samples made elsewhere (for example by SALib).
+- **`GrowingSpheresCounterfactual`** (`counterfactual.hpp`): a counterfactual for any prediction
+  function, including models with no gradient such as trees, rules and thresholds. It takes the
+  same targets and constraints as the gradient search in
+  [Gradient-Based Explainers](deep-learning-approaches.md#counterfactuals).
 - **`fit_weighted_linear_regression`** (`weighted_linear_regression.hpp`): the shared ridge
   regression solver that `KernelSHAP` and `LIME` both use. It returns one coefficient per
   feature and fits no intercept.
@@ -47,6 +51,7 @@ Full API reference: [Doxygen: Model-Agnostic](../api/group__interpretability__ag
 | Local sensitivity | One input | How far each feature, alone, can move the output | One feature at a time: misses joint effects |
 | Morris | The input space | Ranking many features cheaply, and spotting nonlinear or interacting ones | Screening, not a variance decomposition |
 | Sobol | The input space | What share of the output's variance each feature explains, alone and with interactions | (features + 2) × N model calls; assumes independent features |
+| `GrowingSpheresCounterfactual` | One input | "What would have to change?" for a model with no gradient | Samples in the input space; pass a scale when features have different units |
 | `Occlusion` | One input | Which regions of an image or spans of a sequence the output depends on | The baseline value is a choice; results change with it and with the window |
 
 ## How to implement
@@ -211,6 +216,25 @@ value, so read one.
 
 Test reference: `tests/sensitivity_test.cpp`, checked against Captum 0.9.0 and numpy
 (`tools/generate_sensitivity_reference_values.py`).
+
+### Counterfactuals without gradients
+
+```cpp
+#include "pulsatrix/counterfactual.hpp"
+
+CounterfactualConstraints c;
+c.scale = MedianAbsoluteDeviation(background);
+CounterfactualResult cf = GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(1), c);
+```
+
+**What's happening:** growing spheres (Laugel et al. 2018) draws points uniformly in a ball around
+the input, measured in units of each feature's scale. While the ball still contains a point that
+reaches the target, it halves the radius; then it draws in ever larger shells until one does. It
+keeps the nearest such point and puts features back to their original values, smallest change
+first, as long as the point still reaches the target, so the answer is sparse. The result, the
+constraints and the view (`RenderCounterfactualSvg`) are the same as for `FindCounterfactual`.
+
+Test reference: `tests/counterfactual_test.cpp`.
 
 ### Global sensitivity: Morris and Sobol
 

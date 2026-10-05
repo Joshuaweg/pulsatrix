@@ -2,7 +2,9 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <limits>
+#include <random>
 #include <stdexcept>
 #include <string>
 
@@ -76,74 +78,180 @@ std::vector<float> MedianAbsoluteDeviation(const std::vector<Tensor>& background
     return mad;
 }
 
+namespace {
+
+// Everything both searches share: checked constraints, the distance, the limits, the target test,
+// and the finishing step (rounding, one-hot snapping, metrics).
+class Search {
+public:
+    using Outputs = std::function<std::vector<float>(const std::vector<float>&)>;
+
+    Search(const char* where, const Tensor& input, const CounterfactualTarget& target,
+           const CounterfactualConstraints& constraints, float change_tolerance, Outputs outputs)
+        : where_(where), input_(input), target_(target), c_(constraints), tolerance_(change_tolerance),
+          outputs_(std::move(outputs)), x0_(input.to_host_vector()), n_(x0_.size()) {
+        if (!(change_tolerance >= 0.0f)) fail("change_tolerance must not be negative");
+        if (target.kind == CounterfactualTarget::Kind::Range && !(target.low <= target.high)) {
+            fail("the target range needs low <= high");
+        }
+        auto check_length = [&](const std::vector<float>& v, const char* what) {
+            if (!v.empty() && v.size() != n_) fail(std::string(what) + " needs one value per feature");
+        };
+        check_length(c_.scale, "scale");
+        check_length(c_.lower, "lower");
+        check_length(c_.upper, "upper");
+        const auto n = static_cast<int64_t>(n_);
+        CheckIndices(c_.immutable, n, "immutable");
+        CheckIndices(c_.integer, n, "integer");
+        for (const auto& g : c_.one_hot_groups) CheckIndices(g, n, "one-hot");
+        scale_ = c_.scale.empty() ? std::vector<float>(n_, 1.0f) : c_.scale;
+        for (float s : scale_) {
+            if (!(s > 0.0f)) fail("every scale must be positive");
+        }
+        frozen_.assign(n_, false);
+        for (int64_t j : c_.immutable) frozen_[static_cast<size_t>(j)] = true;
+        const std::vector<float> z = outputs_(x0_);
+        if (target.index < 0 || target.index >= static_cast<int64_t>(z.size())) {
+            fail("target index is out of range for an output of " + std::to_string(z.size()));
+        }
+        if (target.kind == CounterfactualTarget::Kind::Class && z.size() < 2) {
+            fail("a class target needs at least 2 outputs");
+        }
+        output_before_ = z[static_cast<size_t>(target.index)];
+    }
+
+    [[noreturn]] void fail(const std::string& what) const {
+        throw std::invalid_argument(std::string(where_) + ": " + what);
+    }
+    const std::vector<float>& x0() const { return x0_; }
+    const std::vector<float>& scale() const { return scale_; }
+    bool frozen(size_t j) const { return frozen_[j]; }
+    size_t size() const { return n_; }
+    std::vector<float> outputs(const std::vector<float>& x) const { return outputs_(x); }
+
+    float clip(size_t j, float v) const {
+        if (!c_.lower.empty()) v = std::max(v, c_.lower[j]);
+        if (!c_.upper.empty()) v = std::min(v, c_.upper[j]);
+        return v;
+    }
+    double distance(const std::vector<float>& x) const {
+        double d = 0.0;
+        for (size_t j = 0; j < n_; ++j) d += std::fabs(x[j] - x0_[j]) / scale_[j];
+        return d;
+    }
+    bool reaches(const std::vector<float>& x) const { return TargetLoss(outputs_(x), target_, nullptr) == 0.0f; }
+
+    // Rounds integer features and snaps one-hot groups (trying every category of every group if
+    // snapping loses the target), then judges and measures what is returned.
+    CounterfactualResult finish(std::vector<float> cf) const {
+        for (int64_t j : c_.integer) {
+            const auto k = static_cast<size_t>(j);
+            cf[k] = clip(k, std::round(cf[k]));
+        }
+        for (const auto& group : c_.one_hot_groups) {
+            if (group.empty()) continue;
+            int64_t arg = group.front();
+            for (int64_t j : group) {
+                if (cf[static_cast<size_t>(j)] > cf[static_cast<size_t>(arg)]) arg = j;
+            }
+            for (int64_t j : group) cf[static_cast<size_t>(j)] = j == arg ? 1.0f : 0.0f;
+        }
+        // Snapping a category back to one-hot can undo a change made only partway (a category
+        // moved from 0 to 0.3 snaps back to 0).
+        if (!reaches(cf)) {
+            std::vector<float> nearest;
+            double nearest_distance = std::numeric_limits<double>::infinity();
+            for (const auto& group : c_.one_hot_groups) {
+                if (std::any_of(group.begin(), group.end(), [&](int64_t j) { return frozen_[static_cast<size_t>(j)]; })) {
+                    continue;
+                }
+                for (int64_t on : group) {
+                    std::vector<float> trial = cf;
+                    for (int64_t j : group) trial[static_cast<size_t>(j)] = j == on ? 1.0f : 0.0f;
+                    const double d = distance(trial);
+                    if (d < nearest_distance && reaches(trial)) {
+                        nearest_distance = d;
+                        nearest = trial;
+                    }
+                }
+            }
+            if (!nearest.empty()) cf = nearest;
+        }
+        const std::vector<float> z = outputs_(cf);
+        CounterfactualResult r{Tensor(input_.shape(), input_.backend(), cf, input_.device())};
+        r.valid = TargetLoss(z, target_, nullptr) == 0.0f;
+        r.output_before = output_before_;
+        r.output_after = z[static_cast<size_t>(target_.index)];
+        r.distance = static_cast<float>(distance(cf));
+        double l2 = 0.0;
+        for (size_t j = 0; j < n_; ++j) {
+            const double dj = cf[j] - x0_[j];
+            l2 += dj * dj;
+            if (std::fabs(dj) > tolerance_ * scale_[j]) ++r.num_changed;
+        }
+        r.l2 = static_cast<float>(std::sqrt(l2));
+        return r;
+    }
+
+private:
+    const char* where_;
+    const Tensor& input_;
+    const CounterfactualTarget& target_;
+    const CounterfactualConstraints& c_;
+    float tolerance_;
+    Outputs outputs_;
+    std::vector<float> x0_;
+    size_t n_;
+    std::vector<float> scale_;
+    std::vector<bool> frozen_;
+    float output_before_ = 0.0f;
+};
+
+// A platform-independent generator (std::mt19937_64's output is fixed by the standard).
+class Rng {
+public:
+    explicit Rng(uint64_t seed) : engine_(seed) {}
+    double uniform() { return static_cast<double>(engine_() >> 11) * 0x1.0p-53; }
+    double normal() {  // Box-Muller
+        const double u1 = 1.0 - uniform();
+        const double u2 = uniform();
+        return std::sqrt(-2.0 * std::log(u1)) * std::cos(6.283185307179586 * u2);
+    }
+
+private:
+    std::mt19937_64 engine_;
+};
+
+}  // namespace
+
 CounterfactualResult FindCounterfactual(ExplainerContext& ctx, const Tensor& input, const CounterfactualTarget& target,
                                         const CounterfactualConstraints& constraints,
                                         const CounterfactualOptions& options) {
-    const int64_t n = input.numel();
-    const auto un = static_cast<size_t>(n);
     if (!(options.lambda > 0.0f) || !(options.lambda_growth >= 1.0f) || options.max_rounds < 1 ||
-        options.steps_per_round < 1 || !(options.learning_rate > 0.0f) || !(options.change_tolerance >= 0.0f)) {
+        options.steps_per_round < 1 || !(options.learning_rate > 0.0f)) {
         throw std::invalid_argument("FindCounterfactual: invalid options");
     }
-    if (target.kind == CounterfactualTarget::Kind::Range && !(target.low <= target.high)) {
-        throw std::invalid_argument("FindCounterfactual: the target range needs low <= high");
-    }
-    auto check_length = [&](const std::vector<float>& v, const char* what) {
-        if (!v.empty() && v.size() != un) {
-            throw std::invalid_argument(std::string("FindCounterfactual: ") + what + " needs one value per feature");
-        }
-    };
-    check_length(constraints.scale, "scale");
-    check_length(constraints.lower, "lower");
-    check_length(constraints.upper, "upper");
-    CheckIndices(constraints.immutable, n, "immutable");
-    CheckIndices(constraints.integer, n, "integer");
-    for (const auto& g : constraints.one_hot_groups) CheckIndices(g, n, "one-hot");
-
-    std::vector<float> scale = constraints.scale.empty() ? std::vector<float>(un, 1.0f) : constraints.scale;
-    for (float s : scale) {
-        if (!(s > 0.0f)) throw std::invalid_argument("FindCounterfactual: every scale must be positive");
-    }
-    std::vector<bool> frozen(un, false);
-    for (int64_t j : constraints.immutable) frozen[static_cast<size_t>(j)] = true;
-
-    const std::vector<float> x0 = input.to_host_vector();
-    auto evaluate = [&](const std::vector<float>& x) {
+    auto forward = [&](const std::vector<float>& x) {
         return ctx.forward_pass(Tensor(input.shape(), input.backend(), x, input.device()));
     };
-    Tensor out0 = evaluate(x0);
-    if (target.index < 0 || target.index >= out0.numel()) {
-        throw std::invalid_argument("FindCounterfactual: target index is out of range for an output of " +
-                                    std::to_string(out0.numel()));
-    }
-    if (target.kind == CounterfactualTarget::Kind::Class && out0.numel() < 2) {
-        throw std::invalid_argument("FindCounterfactual: a class target needs at least 2 outputs");
-    }
-    auto distance = [&](const std::vector<float>& x) {
-        double d = 0.0;
-        for (size_t j = 0; j < un; ++j) d += std::fabs(x[j] - x0[j]) / scale[j];
-        return d;
-    };
-    auto clip = [&](size_t j, float v) {
-        if (!constraints.lower.empty()) v = std::max(v, constraints.lower[j]);
-        if (!constraints.upper.empty()) v = std::min(v, constraints.upper[j]);
-        return v;
-    };
+    const Search search("FindCounterfactual", input, target, constraints, options.change_tolerance,
+                        [&](const std::vector<float>& x) { return forward(x).to_host_vector(); });
+    const std::vector<float>& x0 = search.x0();
+    const size_t un = search.size();
 
-    CounterfactualResult result{input, false};
-    result.output_before = out0.read_element(target.index);
     std::vector<float> x = x0;
     std::vector<float> best;
     double best_distance = std::numeric_limits<double>::infinity();
     float lambda = options.lambda;
     std::vector<float> seed;
+    int rounds = 0;
     for (int round = 0; round < options.max_rounds; ++round) {
-        result.rounds = round + 1;
+        rounds = round + 1;
         for (int step = 0; step < options.steps_per_round; ++step) {
-            Tensor out = evaluate(x);
+            Tensor out = forward(x);
             const float loss = TargetLoss(out.to_host_vector(), target, &seed);
             if (loss == 0.0f) {
-                const double d = distance(x);
+                const double d = search.distance(x);
                 if (d < best_distance) {
                     best_distance = d;
                     best = x;
@@ -157,70 +265,114 @@ CounterfactualResult FindCounterfactual(ExplainerContext& ctx, const Tensor& inp
             // the input (the proximal operator of the L1 distance), then the limits.
             const float lr = options.learning_rate;
             for (size_t j = 0; j < un; ++j) {
-                if (frozen[j]) continue;
+                if (search.frozen(j)) continue;
                 const float v = x[j] - lr * lambda * grad[j] - x0[j];
-                const float shrink = lr / scale[j];
+                const float shrink = lr / search.scale()[j];
                 const float moved = v > shrink ? v - shrink : (v < -shrink ? v + shrink : 0.0f);
-                x[j] = clip(j, x0[j] + moved);
+                x[j] = search.clip(j, x0[j] + moved);
             }
         }
         if (!best.empty()) break;
         lambda *= options.lambda_growth;
     }
+    CounterfactualResult result = search.finish(best.empty() ? x : best);
+    result.rounds = rounds;
     result.final_lambda = lambda;
-
-    // Rounding and one-hot projection, then the verdict on what is actually returned.
-    std::vector<float> cf = best.empty() ? x : best;
-    for (int64_t j : constraints.integer) {
-        const auto k = static_cast<size_t>(j);
-        cf[k] = clip(k, std::round(cf[k]));
-    }
-    for (const auto& group : constraints.one_hot_groups) {
-        if (group.empty()) continue;
-        int64_t arg = group.front();
-        for (int64_t j : group) {
-            if (cf[static_cast<size_t>(j)] > cf[static_cast<size_t>(arg)]) arg = j;
-        }
-        for (int64_t j : group) cf[static_cast<size_t>(j)] = j == arg ? 1.0f : 0.0f;
-    }
-    // Snapping a category back to one-hot can undo a change the search only made partway (a
-    // category moved from 0 to 0.3 snaps back to 0). If that happens, try every category of
-    // every group, one at a time, and keep the nearest valid result.
-    auto reaches = [&](const std::vector<float>& v) {
-        return TargetLoss(evaluate(v).to_host_vector(), target, nullptr) == 0.0f;
-    };
-    if (!reaches(cf)) {
-        std::vector<float> nearest;
-        double nearest_distance = std::numeric_limits<double>::infinity();
-        for (const auto& group : constraints.one_hot_groups) {
-            if (std::any_of(group.begin(), group.end(), [&](int64_t j) { return frozen[static_cast<size_t>(j)]; })) {
-                continue;
-            }
-            for (int64_t on : group) {
-                std::vector<float> trial = cf;
-                for (int64_t j : group) trial[static_cast<size_t>(j)] = j == on ? 1.0f : 0.0f;
-                const double d = distance(trial);
-                if (d < nearest_distance && reaches(trial)) {
-                    nearest_distance = d;
-                    nearest = trial;
-                }
-            }
-        }
-        if (!nearest.empty()) cf = nearest;
-    }
-    Tensor out = evaluate(cf);
-    result.valid = TargetLoss(out.to_host_vector(), target, nullptr) == 0.0f;
-    result.output_after = out.read_element(target.index);
-    result.counterfactual = Tensor(input.shape(), input.backend(), cf, input.device());
-    result.distance = static_cast<float>(distance(cf));
-    double l2 = 0.0;
-    for (size_t j = 0; j < un; ++j) {
-        const double dj = cf[j] - x0[j];
-        l2 += dj * dj;
-        if (std::fabs(dj) > options.change_tolerance * scale[j]) ++result.num_changed;
-    }
-    result.l2 = static_cast<float>(std::sqrt(l2));
     return result;
+}
+
+CounterfactualResult GrowingSpheresCounterfactual(const std::function<Tensor(const Tensor&)>& predict,
+                                                  const Tensor& input, const CounterfactualTarget& target,
+                                                  const CounterfactualConstraints& constraints,
+                                                  const GrowingSpheresOptions& options) {
+    if (options.samples_per_layer < 1 || !(options.initial_radius > 0.0f) || options.max_layers < 1) {
+        throw std::invalid_argument("GrowingSpheresCounterfactual: invalid options");
+    }
+    const Search search("GrowingSpheresCounterfactual", input, target, constraints, options.change_tolerance,
+                        [&](const std::vector<float>& x) {
+                            return predict(Tensor(input.shape(), input.backend(), x, input.device())).to_host_vector();
+                        });
+    const std::vector<float>& x0 = search.x0();
+    std::vector<size_t> free;
+    for (size_t j = 0; j < search.size(); ++j) {
+        if (!search.frozen(j)) free.push_back(j);
+    }
+    CounterfactualResult unchanged = search.finish(x0);
+    if (free.empty() || unchanged.valid) {
+        return unchanged;
+    }
+    const double dim = static_cast<double>(free.size());
+    Rng rng(options.seed);
+
+    // One point uniform in the shell a <= |z| <= b around the input, in scale units, then limited.
+    auto sample = [&](double a, double b) {
+        std::vector<double> dir(free.size());
+        double norm = 0.0;
+        for (double& v : dir) {
+            v = rng.normal();
+            norm += v * v;
+        }
+        norm = std::sqrt(norm);
+        const double r = std::pow(std::pow(a, dim) + rng.uniform() * (std::pow(b, dim) - std::pow(a, dim)), 1.0 / dim);
+        std::vector<float> x = x0;
+        for (size_t i = 0; i < free.size(); ++i) {
+            const size_t j = free[i];
+            x[j] = search.clip(j, static_cast<float>(x0[j] + dir[i] / norm * r * search.scale()[j]));
+        }
+        return x;
+    };
+    // The nearest (in scaled L2) of a layer's points that reaches the target, or empty.
+    auto nearest_enemy = [&](double a, double b) {
+        std::vector<float> best;
+        double best_d = std::numeric_limits<double>::infinity();
+        for (int i = 0; i < options.samples_per_layer; ++i) {
+            std::vector<float> x = sample(a, b);
+            double d = 0.0;
+            for (size_t j : free) d += std::pow((x[j] - x0[j]) / search.scale()[j], 2.0);
+            if (d < best_d && search.reaches(x)) {
+                best_d = d;
+                best = std::move(x);
+            }
+        }
+        return best;
+    };
+
+    // Shrink the first ball until it holds no point that reaches the target, then grow outward
+    // in shells of the same width until one does (Laugel et al. 2018).
+    double eta = options.initial_radius;
+    int layers = 0;
+    std::vector<float> enemy = nearest_enemy(0.0, eta);
+    ++layers;
+    while (!enemy.empty() && layers < options.max_layers) {
+        eta /= 2.0;
+        std::vector<float> closer = nearest_enemy(0.0, eta);
+        ++layers;
+        if (closer.empty()) break;
+        enemy = std::move(closer);
+    }
+    for (double a = eta; enemy.empty() && layers < options.max_layers; a += eta) {
+        enemy = nearest_enemy(a, a + eta);
+        ++layers;
+    }
+    if (enemy.empty()) {
+        CounterfactualResult r = search.finish(x0);
+        r.rounds = layers;
+        return r;
+    }
+    // Feature selection: put features back to their original value, smallest change first, as
+    // long as the point still reaches the target.
+    std::vector<size_t> by_change = free;
+    std::sort(by_change.begin(), by_change.end(), [&](size_t a, size_t b) {
+        return std::fabs(enemy[a] - x0[a]) / search.scale()[a] < std::fabs(enemy[b] - x0[b]) / search.scale()[b];
+    });
+    for (size_t j : by_change) {
+        std::vector<float> trial = enemy;
+        trial[j] = x0[j];
+        if (search.reaches(trial)) enemy = std::move(trial);
+    }
+    CounterfactualResult r = search.finish(enemy);
+    r.rounds = layers;
+    return r;
 }
 
 }  // namespace pulsatrix
