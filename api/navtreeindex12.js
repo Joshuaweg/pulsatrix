@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"files.html":[5,0],
+"fixed__topology__xor__network_8hpp.html":[2,6,6],
 "flatten__module_8hpp.html":[2,0,20],
 "functions.html":[4,3,0,0],
 "functions.html":[4,3,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "namespacepulsatrix.html#a3b2ebcf822ff6e68e95388365ae2774c":[3,0,0,371],
 "namespacepulsatrix.html#a3de09b80f2b9d5933d7f452615305b59":[3,0,0,404],
 "namespacepulsatrix.html#a3f5f844d66d473b3d637f2f2752f4d4e":[3,0,0,361],
-"namespacepulsatrix.html#a3f819c9e8327878579023bf846100400":[3,0,0,330],
-"namespacepulsatrix.html#a416909cba1eaf572fc95d96d7495a0dc":[3,0,0,305],
-"namespacepulsatrix.html#a41a7288fee4017812bd7436df2af3aea":[3,0,0,294]
+"namespacepulsatrix.html#a3f819c9e8327878579023bf846100400":[3,0,0,330]
 };

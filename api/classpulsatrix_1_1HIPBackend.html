@@ -153,6 +153,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a81330c6468b8ae1e65ffcbbf9586f6eb" id="r_a81330c6468b8ae1e65ffcbbf9586f6eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a81330c6468b8ae1e65ffcbbf9586f6eb">set_memory_budget</a> (size_t bytes)</td></tr>
 <tr class="memdesc:a81330c6468b8ae1e65ffcbbf9586f6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Caps the memory this backend holds, in use plus cached (0: no cap). Defaults to PULSATRIX_HIP_MEMORY_BUDGET_MB if set. On an APU, hipMemGetInfo overstates what can be allocated, so a budget is the reliable limit.  <br /></td></tr>
 <tr class="separator:a81330c6468b8ae1e65ffcbbf9586f6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3111a06706e1acafc7cf412ff504c07" id="r_ad3111a06706e1acafc7cf412ff504c07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#ad3111a06706e1acafc7cf412ff504c07">sync_debug</a> () const</td></tr>
+<tr class="memdesc:ad3111a06706e1acafc7cf412ff504c07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether every op waits for the GPU to finish (PULSATRIX_HIP_SYNC_DEBUG=1 when the backend was created). Off by default (HIP-4): ops are queued on the stream and the host waits only when it reads a result (copy to the host, dot, sum). A kernel fault then surfaces at that later wait instead of at the op that caused it; turn this on to find the op.  <br /></td></tr>
+<tr class="separator:ad3111a06706e1acafc7cf412ff504c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39894c414cbd933c2dd517e427687c29" id="r_a39894c414cbd933c2dd517e427687c29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html#a39894c414cbd933c2dd517e427687c29">copy</a> (void *dst, const void *src, size_t bytes, <a class="el" href="namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6b">CopyDirection</a> dir) override</td></tr>
 <tr class="memdesc:a39894c414cbd933c2dd517e427687c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies bytes between buffers.  <br /></td></tr>
 <tr class="separator:a39894c414cbd933c2dd517e427687c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4927,6 +4930,33 @@ The same Phase 1.5 scope limit applies here: only <a class="el" href="classpulsa
 <p>sum_i in[i], returned to the host. Same reduction order as <a class="el" href="classpulsatrix_1_1HIPBackend.html#ab7a9751587bc807a0acb8d6128b2834c" title="Dot product sum_i a[i]*b[i], returned to the host.">dot()</a>. Synchronizes. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a6ea46da74ce088bde77a22e71da700cb">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="ad3111a06706e1acafc7cf412ff504c07" name="ad3111a06706e1acafc7cf412ff504c07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3111a06706e1acafc7cf412ff504c07">&#9670;&#160;</a></span>sync_debug()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::HIPBackend::sync_debug </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether every op waits for the GPU to finish (PULSATRIX_HIP_SYNC_DEBUG=1 when the backend was created). Off by default (HIP-4): ops are queued on the stream and the host waits only when it reads a result (copy to the host, dot, sum). A kernel fault then surfaces at that later wait instead of at the op that caused it; turn this on to find the op. </p>
 
 </div>
 </div>

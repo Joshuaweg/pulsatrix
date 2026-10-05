@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"structpulsatrix_1_1ParamGroup.html#ad591aeaf3c97f4a27adf3524c09b3c63":[3,0,0,142,0],
+"structpulsatrix_1_1ParamGroupSet_1_1Assignment.html":[3,0,0,143,0],
 "structpulsatrix_1_1ParamGroupSet_1_1Assignment.html":[4,0,0,140,0],
 "structpulsatrix_1_1ParamGroupSet_1_1Assignment.html#a05589966a009e8c9db0cbb41ced58def":[4,0,0,140,0,2],
 "structpulsatrix_1_1ParamGroupSet_1_1Assignment.html#a05589966a009e8c9db0cbb41ced58def":[3,0,0,143,0,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "structpulsatrix_1_1ValidationIssue.html#a4e7d420ee76ec19d5ff166affd70c472":[3,0,0,221,1],
 "structpulsatrix_1_1ValidationIssue.html#a4e7d420ee76ec19d5ff166affd70c472":[4,0,0,218,1],
 "structpulsatrix_1_1ValidationIssue.html#a677934aba055ef65ae99a49417b76cf6":[3,0,0,221,0],
-"structpulsatrix_1_1ValidationIssue.html#a677934aba055ef65ae99a49417b76cf6":[4,0,0,218,0],
-"structpulsatrix_1_1ValidationIssue.html#a7e9ea9c75ba69a37b1b8121e4854d3fd":[4,0,0,218,2],
-"structpulsatrix_1_1ValidationIssue.html#a7e9ea9c75ba69a37b1b8121e4854d3fd":[3,0,0,221,2]
+"structpulsatrix_1_1ValidationIssue.html#a677934aba055ef65ae99a49417b76cf6":[4,0,0,218,0]
 };

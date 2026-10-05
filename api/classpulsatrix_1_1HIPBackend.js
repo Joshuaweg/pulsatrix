@@ -71,6 +71,7 @@ var classpulsatrix_1_1HIPBackend =
     [ "softmax_rows_backward", "classpulsatrix_1_1HIPBackend.html#a1d98152f685f2efc6e27a7f4e77ea121", null ],
     [ "ssm_pass", "classpulsatrix_1_1HIPBackend.html#aabc96f3cfbd96ef5ceffc04d3201a1c9", null ],
     [ "sum", "classpulsatrix_1_1HIPBackend.html#a0e7278da12745d1df0b0bcdd855b5501", null ],
+    [ "sync_debug", "classpulsatrix_1_1HIPBackend.html#ad3111a06706e1acafc7cf412ff504c07", null ],
     [ "tanh_gaussian_backward", "classpulsatrix_1_1HIPBackend.html#ab34d355116b31d8a411fccf90691c810", null ],
     [ "tanh_gaussian_forward", "classpulsatrix_1_1HIPBackend.html#a397a156e54f08ee5ecc4bda7c8358db4", null ],
     [ "top_k_rows", "classpulsatrix_1_1HIPBackend.html#a24e2113a6dfd331d063733be73396ec7", null ]

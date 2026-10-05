@@ -38,7 +38,7 @@ var searchData=
   ['next_5fbatch_35',['next_batch',['../classpulsatrix_1_1DataLoader.html#a97fa3fea040e8418fc872eb9f82a4979',1,'pulsatrix::DataLoader']]],
   ['next_5fobservations_36',['next_observations',['../structpulsatrix_1_1ReplayBatch.html#a4af1f8c173952cb8c9b8c33f281ab7af',1,'pulsatrix::ReplayBatch']]],
   ['next_5fseed_37',['next_seed',['../namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b',1,'pulsatrix']]],
-  ['node_38',['node',['../classpulsatrix_1_1Node.html',1,'pulsatrix::Node'],['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node()'],['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()']]],
+  ['node_38',['node',['../classpulsatrix_1_1Node.html',1,'pulsatrix::Node'],['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()'],['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node()']]],
   ['node_2ehpp_39',['node.hpp',['../node_8hpp.html',1,'']]],
   ['node_5fcount_40',['node_count',['../classpulsatrix_1_1ComputationGraph.html#ab5e326cc6109e5677eb114e0a85f6b05',1,'pulsatrix::ComputationGraph']]],
   ['node_5fids_41',['node_ids',['../classpulsatrix_1_1ActivationSnapshot.html#a6555e73f40cd23280bdf0078e938f49d',1,'pulsatrix::ActivationSnapshot']]],

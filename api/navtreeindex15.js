@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a87231494ea921edd1b7579addef4c50f":[4,0,0,69,0,5],
+"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa":[4,0,0,69,0,0],
 "structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa":[3,0,0,72,0,0],
 "structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#ab581b1ae3a260e40ff9714a91c2b1a3d":[4,0,0,69,0,1],
 "structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#ab581b1ae3a260e40ff9714a91c2b1a3d":[3,0,0,72,0,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "structpulsatrix_1_1ParamGroup.html#a1abe03a13846a9896c3bf8a55d73e38d":[3,0,0,142,2],
 "structpulsatrix_1_1ParamGroup.html#aae39027a6a369b05e081df932a9b6e52":[4,0,0,139,3],
 "structpulsatrix_1_1ParamGroup.html#aae39027a6a369b05e081df932a9b6e52":[3,0,0,142,3],
-"structpulsatrix_1_1ParamGroup.html#ad591aeaf3c97f4a27adf3524c09b3c63":[4,0,0,139,0],
-"structpulsatrix_1_1ParamGroup.html#ad591aeaf3c97f4a27adf3524c09b3c63":[3,0,0,142,0],
-"structpulsatrix_1_1ParamGroupSet_1_1Assignment.html":[3,0,0,143,0]
+"structpulsatrix_1_1ParamGroup.html#ad591aeaf3c97f4a27adf3524c09b3c63":[4,0,0,139,0]
 };
