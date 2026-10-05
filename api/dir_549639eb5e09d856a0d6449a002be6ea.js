@@ -78,6 +78,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "generator_population.hpp", "generator__population_8hpp.html", "generator__population_8hpp" ],
     [ "gflownet_forward_policy.hpp", "gflownet__forward__policy_8hpp.html", "gflownet__forward__policy_8hpp" ],
     [ "gflownet_trajectory.hpp", "gflownet__trajectory_8hpp.html", "gflownet__trajectory_8hpp" ],
+    [ "global_sensitivity.hpp", "global__sensitivity_8hpp.html", "global__sensitivity_8hpp" ],
     [ "gp_bo.hpp", "gp__bo_8hpp.html", "gp__bo_8hpp" ],
     [ "grad_cam.hpp", "grad__cam_8hpp.html", "grad__cam_8hpp" ],
     [ "grad_clipping.hpp", "grad__clipping_8hpp.html", "grad__clipping_8hpp" ],

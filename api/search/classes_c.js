@@ -10,7 +10,10 @@ var searchData=
   ['mnistdatasetadapter_7',['MnistDatasetAdapter',['../classpulsatrix_1_1MnistDatasetAdapter.html',1,'pulsatrix']]],
   ['mnistidxloader_8',['MnistIdxLoader',['../classpulsatrix_1_1MnistIdxLoader.html',1,'pulsatrix']]],
   ['module_9',['Module',['../classpulsatrix_1_1Module.html',1,'pulsatrix']]],
-  ['mseloss_10',['MSELoss',['../classpulsatrix_1_1MSELoss.html',1,'pulsatrix']]],
-  ['multiheadattentionmodule_11',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
-  ['mutationloss_12',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]]
+  ['morrisdocument_10',['MorrisDocument',['../structpulsatrix_1_1MorrisDocument.html',1,'pulsatrix']]],
+  ['morrisoptions_11',['MorrisOptions',['../structpulsatrix_1_1MorrisOptions.html',1,'pulsatrix']]],
+  ['morrisresult_12',['MorrisResult',['../structpulsatrix_1_1MorrisResult.html',1,'pulsatrix']]],
+  ['mseloss_13',['MSELoss',['../classpulsatrix_1_1MSELoss.html',1,'pulsatrix']]],
+  ['multiheadattentionmodule_14',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
+  ['mutationloss_15',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]]
 ];

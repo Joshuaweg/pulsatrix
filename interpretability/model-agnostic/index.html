@@ -632,6 +632,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#counterfactuals-without-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Counterfactuals without gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#global-sensitivity-morris-and-sobol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global sensitivity: Morris and Sobol
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1755,6 +1777,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#counterfactuals-without-gradients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Counterfactuals without gradients
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#global-sensitivity-morris-and-sobol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global sensitivity: Morris and Sobol
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1815,6 +1859,14 @@ models wrapped in a lambda.</p>
   from <code>DeltaBounds</code> (±δ), <code>ScaledDeltaBounds</code> (± some standard deviations of a background set)
   or <code>RangeBounds</code> (a background set's percentiles). <code>Occlusion</code> slides a window over the input,
   as Captum's <code>Occlusion</code> does.</li>
+<li><strong>Global sensitivity</strong> (<code>global_sensitivity.hpp</code>): <code>ComputeMorris</code> screens features with
+  Morris elementary effects (μ*, σ) and <code>ComputeSobol</code> estimates first- and total-order Sobol
+  indices, both with bootstrap confidence intervals, over ranges you give for each feature.
+  <code>AnalyzeMorris</code> and <code>AnalyzeSobol</code> analyze samples made elsewhere (for example by SALib).</li>
+<li><strong><code>GrowingSpheresCounterfactual</code></strong> (<code>counterfactual.hpp</code>): a counterfactual for any prediction
+  function, including models with no gradient such as trees, rules and thresholds. It takes the
+  same targets and constraints as the gradient search in
+  <a href="../deep-learning-approaches/#counterfactuals">Gradient-Based Explainers</a>.</li>
 <li><strong><code>fit_weighted_linear_regression</code></strong> (<code>weighted_linear_regression.hpp</code>): the shared ridge
   regression solver that <code>KernelSHAP</code> and <code>LIME</code> both use. It returns one coefficient per
   feature and fits no intercept.</li>
@@ -1872,6 +1924,24 @@ models wrapped in a lambda.</p>
 <td>One input</td>
 <td>How far each feature, alone, can move the output</td>
 <td>One feature at a time: misses joint effects</td>
+</tr>
+<tr>
+<td>Morris</td>
+<td>The input space</td>
+<td>Ranking many features cheaply, and spotting nonlinear or interacting ones</td>
+<td>Screening, not a variance decomposition</td>
+</tr>
+<tr>
+<td>Sobol</td>
+<td>The input space</td>
+<td>What share of the output's variance each feature explains, alone and with interactions</td>
+<td>(features + 2) × N model calls; assumes independent features</td>
+</tr>
+<tr>
+<td><code>GrowingSpheresCounterfactual</code></td>
+<td>One input</td>
+<td>"What would have to change?" for a model with no gradient</td>
+<td>Samples in the input space; pass a scale when features have different units</td>
 </tr>
 <tr>
 <td><code>Occlusion</code></td>
@@ -2009,6 +2079,47 @@ draw it with <code>RenderHeatmapSvg</code>; a window that spans all channels giv
 value, so read one.</p>
 <p>Test reference: <code>tests/sensitivity_test.cpp</code>, checked against Captum 0.9.0 and numpy
 (<code>tools/generate_sensitivity_reference_values.py</code>).</p>
+<h3 id="counterfactuals-without-gradients">Counterfactuals without gradients<a class="headerlink" href="#counterfactuals-without-gradients" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/counterfactual.hpp"</span>
+
+<span class="n">CounterfactualConstraints</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="n">c</span><span class="p">.</span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MedianAbsoluteDeviation</span><span class="p">(</span><span class="n">background</span><span class="p">);</span>
+<span class="n">CounterfactualResult</span><span class="w"> </span><span class="n">cf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GrowingSpheresCounterfactual</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">CounterfactualTarget</span><span class="o">::</span><span class="n">ToClass</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>What's happening:</strong> growing spheres (Laugel et al. 2018) draws points uniformly in a ball around
+the input, measured in units of each feature's scale. While the ball still contains a point that
+reaches the target, it halves the radius; then it draws in ever larger shells until one does. It
+keeps the nearest such point and puts features back to their original values, smallest change
+first, as long as the point still reaches the target, so the answer is sparse. The result, the
+constraints and the view (<code>RenderCounterfactualSvg</code>) are the same as for <code>FindCounterfactual</code>.</p>
+<p>Test reference: <code>tests/counterfactual_test.cpp</code>.</p>
+<h3 id="global-sensitivity-morris-and-sobol">Global sensitivity: Morris and Sobol<a class="headerlink" href="#global-sensitivity-morris-and-sobol" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/global_sensitivity.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/svg.hpp"</span>
+
+<span class="c1">// Vary features 0, 1 and 2 over their ranges; every other feature keeps input's value.</span>
+<span class="n">GlobalSensitivityProblem</span><span class="w"> </span><span class="n">problem</span><span class="p">{</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">}};</span>
+
+<span class="n">MorrisResult</span><span class="w"> </span><span class="n">morris</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputeMorris</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">problem</span><span class="p">,</span><span class="w"> </span><span class="cm">/*target_index=*/</span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">// 20 trajectories</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">scatter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RenderMorrisSvg</span><span class="p">(</span><span class="n">ToMorrisDocument</span><span class="p">(</span><span class="n">morris</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"a"</span><span class="p">,</span><span class="w"> </span><span class="s">"b"</span><span class="p">,</span><span class="w"> </span><span class="s">"c"</span><span class="p">},</span><span class="w"> </span><span class="s">"risk"</span><span class="p">));</span>
+
+<span class="n">SobolOptions</span><span class="w"> </span><span class="n">opts</span><span class="p">;</span>
+<span class="n">opts</span><span class="p">.</span><span class="n">num_samples</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2048</span><span class="p">;</span><span class="w">  </span><span class="c1">// the model runs 2048 * (3 + 2) times</span>
+<span class="n">SobolResult</span><span class="w"> </span><span class="n">sobol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputeSobol</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">problem</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">bars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RenderSobolSvg</span><span class="p">(</span><span class="n">ToSobolDocument</span><span class="p">(</span><span class="n">sobol</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"a"</span><span class="p">,</span><span class="w"> </span><span class="s">"b"</span><span class="p">,</span><span class="w"> </span><span class="s">"c"</span><span class="p">},</span><span class="w"> </span><span class="s">"risk"</span><span class="p">));</span>
+</code></pre></div>
+<p><strong>What's happening:</strong> Morris walks random one-feature-at-a-time paths over a grid of each
+range. A feature's elementary effects are the output changes per step. μ* (their mean absolute
+value) ranks importance, and σ (their spread) is large when the effect depends on where you are:
+nonlinearity or interaction. Sobol splits the output's variance: the first-order index is the
+share a feature explains alone, the total-order index includes its interactions, and the gap
+between them is the interaction share. Both use a seeded generator that gives the same samples on
+every platform. The analyzers reproduce SALib 1.6 (<code>morris.analyze</code>, and <code>sobol.analyze</code> without
+second order) on the same samples; the confidence intervals are bootstraps with a different
+generator, so they agree in size, not digit for digit.</p>
+<p>Test reference: <code>tests/global_sensitivity_test.cpp</code>, checked against SALib 1.6.0
+(<code>tools/generate_global_sensitivity_reference_values.py</code>) and the Ishigami function's analytic
+Sobol indices.</p>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../recipes/interpretability/kernel_shap_basics/">KernelSHAP basics</a></li>
