@@ -8,6 +8,8 @@
 //   pulsatrix_svg pd.json --ice centered -o ice.svg            # partial_dependence (CFS-1)
 //   pulsatrix_svg sens.json --top-k 8 -o tornado.svg           # sensitivity: tornado (CFS-3)
 //   pulsatrix_svg cf.json -o cf.svg                            # counterfactual (CFS-5)
+//   pulsatrix_svg morris.json -o morris.svg                    # morris: mu*-sigma scatter (CFS-4)
+//   pulsatrix_svg sobol.json -o sobol.svg                      # sobol: index bars (CFS-4)
 //
 // Options: -o FILE (default stdout), --top-k N, --ice raw|centered|derivative, --max-curves N,
 //          --width W, --font-size N, --title TEXT.
@@ -143,6 +145,10 @@ int main(int argc, char** argv) {
                 svg = RenderHeatmapSvg(ParseHeatmapDocument(json), options);
             } else if (kind == "token_relevance") {
                 svg = RenderTokenStripSvg(ParseTokenRelevanceDocument(json), options);
+            } else if (kind == "morris") {
+                svg = RenderMorrisSvg(ParseMorrisDocument(json), options);
+            } else if (kind == "sobol") {
+                svg = RenderSobolSvg(ParseSobolDocument(json), top_k, options);
             } else if (kind == "counterfactual") {
                 svg = RenderCounterfactualSvg(ParseCounterfactualDocument(json), top_k, options);
             } else if (kind == "sensitivity") {

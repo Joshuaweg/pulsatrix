@@ -29,11 +29,12 @@
 
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/circuit_graph.hpp"
-#include "pulsatrix/device_backend.hpp"
 #include "pulsatrix/counterfactual.hpp"
+#include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/global_sensitivity.hpp"
 #include "pulsatrix/ice.hpp"
-#include "pulsatrix/sensitivity.hpp"
 #include "pulsatrix/metrics_sink.hpp"
+#include "pulsatrix/sensitivity.hpp"
 #include "pulsatrix/viz/implot_metrics_sink.hpp"
 #include "pulsatrix/viz/plot_data.hpp"
 
@@ -323,5 +324,49 @@ struct CounterfactualDocument {
 /** @throws std::invalid_argument if a scale is not positive. */
 [[nodiscard]] std::string ToJson(const CounterfactualDocument& doc);
 [[nodiscard]] CounterfactualDocument ParseCounterfactualDocument(std::string_view json);
+
+// ---- global sensitivity --------------------------------------------------------------------
+
+/** @brief `pulsatrix.morris.v1`: Morris screening statistics per feature (CFS-4). */
+struct MorrisDocument {
+    /** @brief What the output is. Optional. */
+    std::string target;
+    int64_t num_trajectories = 0;
+    struct Feature {
+        std::string name;
+        float mu = 0.0f;
+        float mu_star = 0.0f;
+        float sigma = 0.0f;
+        float mu_star_conf = 0.0f;
+    };
+    std::vector<Feature> features;
+};
+
+/** @brief `pulsatrix.sobol.v1`: first- and total-order Sobol indices per feature (CFS-4). */
+struct SobolDocument {
+    std::string target;
+    int64_t num_samples = 0;
+    struct Feature {
+        std::string name;
+        float first_order = 0.0f;
+        float total_order = 0.0f;
+        float first_order_conf = 0.0f;
+        float total_order_conf = 0.0f;
+    };
+    std::vector<Feature> features;
+};
+
+/** @brief @p names, if not empty, has one name per entry of result.features (the varied
+ *         features, in order); otherwise features are called `feature_<index>`.
+ *  @throws std::invalid_argument if names has the wrong length. */
+[[nodiscard]] MorrisDocument ToMorrisDocument(const MorrisResult& result, const std::vector<std::string>& names = {},
+                                              std::string target = "");
+/** @copydoc ToMorrisDocument */
+[[nodiscard]] SobolDocument ToSobolDocument(const SobolResult& result, const std::vector<std::string>& names = {},
+                                            std::string target = "");
+[[nodiscard]] std::string ToJson(const MorrisDocument& doc);
+[[nodiscard]] MorrisDocument ParseMorrisDocument(std::string_view json);
+[[nodiscard]] std::string ToJson(const SobolDocument& doc);
+[[nodiscard]] SobolDocument ParseSobolDocument(std::string_view json);
 
 }  // namespace pulsatrix
