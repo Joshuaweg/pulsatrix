@@ -38,6 +38,12 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   `TiedLMHeadModule` is the output layer of models with `tie_word_embeddings`: it computes logits
   with an `EmbeddingModule`'s table, which stays a single parameter whose gradient sums both
   uses.
+- **Text generation** (`generation.hpp`): `Generate(model, prompt, config)` decodes greedily or
+  samples, with temperature, top-k, top-p, min-p, a repetition penalty and EOS tokens (Hugging
+  Face's `GenerationConfig` names and order). Sampling is seeded (`config.seed`, or the global
+  seed). `MakeNextTokenLogits` turns a module stack such as embedding → transformer blocks →
+  `TiedLMHeadModule` into the model function. Each result also gives every new token's
+  log-probability under the model.
 - **Optimizers & losses**: `SGDOptimizer` (momentum, Nesterov), `AdamOptimizer`,
   `AdamWOptimizer`, all with parameter groups; `MSELoss`, `CrossEntropyLoss`,
   `TokenCrossEntropyLoss`, `BCEWithLogitsLoss`, `KLDivergenceLoss`, `CalibrationLoss`
