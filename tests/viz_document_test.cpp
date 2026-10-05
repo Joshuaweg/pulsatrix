@@ -390,6 +390,31 @@ TEST(VizDocumentReadTest, PartialDependenceChecksItsShape) {
     ExpectRejected(ParsePartialDependenceDocument, with("[0.25, 0.75]", "[0.25]"), "/feature_values");
 }
 
+TEST(VizDocumentConversionTest, AleIsAPartialDependenceDocumentWithMethodAle) {
+    AleResult r;
+    r.edges = {0.0f, 1.0f, 3.0f};
+    r.effects = {-1.0f, 0.5f, 2.0f};
+    r.counts = {4, 2};
+    r.feature_values = {0.0f, 0.5f, 1.0f, 2.0f, 3.0f, 0.25f};
+    PartialDependenceDocument doc = ToPartialDependenceDocument(r, "x", "y");
+    EXPECT_EQ(doc.method, "ale");
+    PartialDependenceDocument back = ParsePartialDependenceDocument(ToJson(doc));
+    EXPECT_EQ(back.method, "ale");
+    ExpectSameFloats(back.partial_dependence, r.effects);
+    EXPECT_EQ(back.feature_values.size(), 6u);
+
+    // A document written before the field existed reads as partial dependence.
+    std::string old = ReadFixture("partial_dependence.v1.json");
+    old.erase(old.find("  \"method\""), std::string("  \"method\": \"partial_dependence\",\n").size());
+    EXPECT_EQ(ParsePartialDependenceDocument(old).method, "partial_dependence");
+    std::string unknown = ToJson(doc);
+    unknown.replace(unknown.find("\"ale\""), 5, "\"pdp\"");
+    ExpectRejected(ParsePartialDependenceDocument, unknown, "/method");
+    doc.num_instances = 1;
+    doc.ice = {1.0f, 2.0f, 3.0f};
+    EXPECT_THROW((void)ToJson(doc), std::invalid_argument);
+}
+
 TEST(VizDocumentConversionTest, IceRoundTripsThroughAPartialDependenceDocument) {
     IceResult r;
     r.grid = {0.0f, 1.0f, 2.0f};

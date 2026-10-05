@@ -100,7 +100,7 @@ There are six kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse
 | `pulsatrix.feature_dashboard.v1` | `FeatureDashboardDocument` | One feature's `source`, `feature_index`, `activation_density`, `max_activation`, activation histogram and `top_examples` | — |
 | `pulsatrix.counterfactual.v1` | `CounterfactualDocument` | `target`, `valid`, `output_before`, `output_after`, and per feature its `name`, `original` and `counterfactual` value and distance `scale` | `CounterfactualResult` |
 | `pulsatrix.sensitivity.v1` | `SensitivityDocument` | `target`, the unchanged `output`, and per feature its `name`, `value`, `low`, `high`, `output_low` and `output_high` | `LocalSensitivityResult` |
-| `pulsatrix.partial_dependence.v1` | `PartialDependenceDocument` | `feature`, `target`, `grid`, `partial_dependence`, and optionally `num_instances` ICE curves (`ice`) and each instance's `feature_values` | `IceResult` |
+| `pulsatrix.partial_dependence.v1` | `PartialDependenceDocument` | `method` (`"partial_dependence"` or `"ale"`), `feature`, `target`, `grid`, `partial_dependence`, and optionally `num_instances` ICE curves (`ice`) and the instances' `feature_values` | `IceResult`, `AleResult` |
 
 The widgets read documents directly: `AttributionBarChart`, `AttributionWaterfallChart`,
 `SaliencyHeatmapView` and `CircuitGraphView` each have a `Draw` overload for their document. For
