@@ -1,5 +1,6 @@
 /** @file benchmark.hpp
  *  @brief Timing, benchmark reports (`pulsatrix.benchmark.v1`) and regression comparison.
+ *  @ingroup dl_modules
  *
  *  The `pulsatrix_bench` tool (tools/bench/) uses these to measure training step time,
  *  explanation time and LRP conservation error on every backend a build has, and to compare two
@@ -34,8 +35,9 @@ struct TimingStats {
 
 /**
  * @brief Runs @p fn @p warmup times untimed, then @p repeats times timed with a steady clock.
- * @note A GPU op returns before the GPU finishes, so @p fn must end by waiting for its device
- *       work, for example by reading a result to the host. Otherwise this times kernel launches.
+ * @note A HIP op can return before the GPU finishes (CUDA ops currently wait), so @p fn must end
+ *       by waiting for its device work, for example by reading a result to the host. Otherwise
+ *       this may time only kernel launches.
  * @throws std::invalid_argument if @p warmup < 0 or @p repeats < 1.
  */
 [[nodiscard]] TimingStats TimeIt(const std::function<void()>& fn, int warmup, int repeats);

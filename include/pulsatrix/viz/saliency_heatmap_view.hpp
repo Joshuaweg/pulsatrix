@@ -19,8 +19,8 @@ namespace pulsatrix {
  *        Row 0 of the grid is drawn at the top (image convention) with square cells.
  * @note v1 scope: the standalone heatmap only. Overlaying it atop a source image (the
  *       design doc's "overlay heatmap... sufficient figure/ground contrast" guidance)
- *       needs an OpenGL texture upload path -- deferred to Phase C's TextureCache
- *       infrastructure (see plans/okay-we-have-now-buzzing-moth.md), not built here.
+ *       is not built yet; TextureCache (viz/texture_cache.hpp) provides the texture upload it
+ *       would need.
  * @note Deliberately not unit-tested -- see AttributionBarChart's note. All real logic
  *       (reshaping) lives in plot_data.hpp's ToSaliencyHeatmap, which is.
  */

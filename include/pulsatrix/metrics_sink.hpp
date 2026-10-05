@@ -15,9 +15,9 @@ namespace pulsatrix {
  * @brief Interface the training loop logs scalars/histograms through. Concrete writers
  *        (TensorBoard event format, W&B, CSV, ...) implement this; the training loop and
  *        Phase 4 validation harness only ever see MetricsSink.
- * @note A concrete production writer is explicit charter out-of-scope for this project --
- *       NoOpMetricsSink below is the charter's stated minimum ("a no-op or stdout-printing
- *       sink is sufficient" to prove the interface is wired correctly).
+ * @note Concrete sinks: NoOpMetricsSink below, and ImPlotMetricsSink
+ *       (viz/implot_metrics_sink.hpp), whose log can be saved as a `pulsatrix.training_log.v1`
+ *       JSON document and replayed into any sink (viz/document.hpp).
  */
 class MetricsSink {
 public:
