@@ -291,3 +291,9 @@ set_tests_properties(PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm PROPERT
 # KS-2: LRP conservation on the benchmark models must hold on the CPU, whatever the timings.
 add_test(NAME PulsatrixBench.CpuConservationCheck
     COMMAND pulsatrix_bench run --device cpu --quick --filter conservation --check)
+
+# HIP-9: the host-kernel check behind scripts/rocm-build.sh (a bash script, so not on Windows).
+if(UNIX)
+    add_test(NAME CheckHostKernel.ClassifiesKernelReleases
+        COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/check_host_kernel_test.sh")
+endif()

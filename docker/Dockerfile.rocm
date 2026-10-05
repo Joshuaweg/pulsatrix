@@ -18,8 +18,20 @@
 # under PULSATRIX_ENABLE_PYTHON), and libdw1 is loaded by rocprofv3's tool library, without
 # which scripts/profile_hip.sh can't start ("libdw.so.1: cannot open shared object file").
 # Nothing about the ROCm stack itself is modified.
-FROM rocm/dev-ubuntu-24.04:7.2.4-complete
+#
+# ROCm 10.0.0 (HIP 7.15) is the evaluation image (roadmap HIP-9): the first release that lists
+# gfx1151 officially. Build it with --build-arg ROCM_BASE=rocm/dev-ubuntu-24.04:10.0.0-full, or
+# run scripts/rocm-build.sh with PULSATRIX_ROCM_VERSION=10.0.0. Its base already ships libdw1;
+# installing it again is a no-op. docs/gpu-profiling.md compares the two versions.
+ARG ROCM_BASE=rocm/dev-ubuntu-24.04:7.2.4-complete
+FROM ${ROCM_BASE}
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends cmake git ca-certificates libdw1 \
  && rm -rf /var/lib/apt/lists/*
+
+# ROCm 10's image keeps its libraries under /opt/rocm/core-10.0/lib (reached through /opt/rocm/lib)
+# and, unlike 7.2.4's, doesn't register that directory with the dynamic loader, so programs
+# built against hipBLAS fail to start ("libhipblas.so.3: cannot open shared object file").
+# Registering it is a no-op on 7.2.4, whose image already does.
+RUN echo /opt/rocm/lib > /etc/ld.so.conf.d/pulsatrix-rocm.conf && ldconfig
