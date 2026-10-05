@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="417" viewBox="0 0 640 417" role="img" font-family="Helvetica, Arial, sans-serif" font-size="12">
+<title>Waterfall from baseline to prediction (integrated_gradients)</title>
+<rect class="background" width="100%" height="100%" fill="#ffffff"/>
+<line class="axis" x1="54" y1="24" x2="54" y2="312" stroke="#999999" stroke-width="1"/>
+<line class="tick" x1="49.8" y1="312" x2="54" y2="312" stroke="#999999" stroke-width="1"/>
+<line class="grid" x1="54" y1="312" x2="568" y2="312" stroke="#eeeeee" stroke-width="1"/>
+<text class="tick-label" x="48" y="316.2" text-anchor="end" fill="#666666" font-size="10.2">-0.6</text>
+<line class="tick" x1="49.8" y1="272.28" x2="54" y2="272.28" stroke="#999999" stroke-width="1"/>
+<line class="grid" x1="54" y1="272.28" x2="568" y2="272.28" stroke="#eeeeee" stroke-width="1"/>
+<text class="tick-label" x="48" y="276.48" text-anchor="end" fill="#666666" font-size="10.2">-0.4</text>
+<line class="tick" x1="49.8" y1="232.55" x2="54" y2="232.55" stroke="#999999" stroke-width="1"/>
+<line class="grid" x1="54" y1="232.55" x2="568" y2="232.55" stroke="#eeeeee" stroke-width="1"/>
+<text class="tick-label" x="48" y="236.75" text-anchor="end" fill="#666666" font-size="10.2">-0.2</text>
+<line class="tick" x1="49.8" y1="192.83" x2="54" y2="192.83" stroke="#999999" stroke-width="1"/>
+<line class="grid" x1="54" y1="192.83" x2="568" y2="192.83" stroke="#eeeeee" stroke-width="1"/>
+<text class="tick-label" x="48" y="197.03" text-anchor="end" fill="#666666" font-size="10.2">0</text>
+<line class="tick" x1="49.8" y1="153.1" x2="54" y2="153.1" stroke="#999999" stroke-width="1"/>
+<line class="grid" x1="54" y1="153.1" x2="568" y2="153.1" stroke="#eeeeee" stroke-width="1"/>
+<text class="tick-label" x="48" y="157.3" text-anchor="end" fill="#666666" font-size="10.2">0.2</text>
+<line class="tick" x1="49.8" y1="113.38" x2="54" y2="113.38" stroke="#999999" stroke-width="1"/>
+<line class="grid" x1="54" y1="113.38" x2="568" y2="113.38" stroke="#eeeeee" stroke-width="1"/>
+<text class="tick-label" x="48" y="117.58" text-anchor="end" fill="#666666" font-size="10.2">0.4</text>
+<line class="tick" x1="49.8" y1="73.66" x2="54" y2="73.66" stroke="#999999" stroke-width="1"/>
+<line class="grid" x1="54" y1="73.66" x2="568" y2="73.66" stroke="#eeeeee" stroke-width="1"/>
+<text class="tick-label" x="48" y="77.86" text-anchor="end" fill="#666666" font-size="10.2">0.6</text>
+<line class="tick" x1="49.8" y1="33.93" x2="54" y2="33.93" stroke="#999999" stroke-width="1"/>
+<line class="grid" x1="54" y1="33.93" x2="568" y2="33.93" stroke="#eeeeee" stroke-width="1"/>
+<text class="tick-label" x="48" y="38.13" text-anchor="end" fill="#666666" font-size="10.2">0.8</text>
+<line class="baseline" x1="54" y1="143.17" x2="568" y2="143.17" stroke="#666666" stroke-width="1" stroke-dasharray="4 3"/>
+<text class="baseline-label" x="571.6" y="147.37" text-anchor="start" fill="#666666">base 0.25</text>
+<rect class="step" x="66.85" y="43.86" width="59.97" height="99.31" fill="#b40426"><title>income: +0.5 (running total 0.75)</title></rect>
+<line class="connector" x1="126.82" y1="43.86" x2="152.52" y2="43.86" stroke="#666666" stroke-width="0.75"/>
+<text class="feature-label" x="96.83" y="321.6" text-anchor="end" fill="#222222" transform="rotate(-45 96.83 321.6)">income</text>
+<rect class="step" x="152.52" y="43.86" width="59.97" height="248.28" fill="#3b4cc0"><title>age: -1.25 (running total -0.5)</title></rect>
+<line class="connector" x1="212.48" y1="292.14" x2="238.18" y2="292.14" stroke="#666666" stroke-width="0.75"/>
+<text class="feature-label" x="182.5" y="321.6" text-anchor="end" fill="#222222" transform="rotate(-45 182.5 321.6)">age</text>
+<rect class="step" x="238.18" y="267.31" width="59.97" height="24.83" fill="#b40426"><title>region &lt;north&gt;: +0.125 (running total -0.375)</title></rect>
+<line class="connector" x1="298.15" y1="267.31" x2="323.85" y2="267.31" stroke="#666666" stroke-width="0.75"/>
+<text class="feature-label" x="268.17" y="321.6" text-anchor="end" fill="#222222" transform="rotate(-45 268.17 321.6)">region &lt;north&gt;</text>
+<rect class="step" x="323.85" y="118.34" width="59.97" height="148.97" fill="#b40426"><title>tenure &amp; status: +0.75 (running total 0.375)</title></rect>
+<line class="connector" x1="383.82" y1="118.34" x2="409.52" y2="118.34" stroke="#666666" stroke-width="0.75"/>
+<text class="feature-label" x="353.83" y="321.6" text-anchor="end" fill="#222222" transform="rotate(-45 353.83 321.6)">tenure &amp; status</text>
+<rect class="step" x="409.52" y="118.34" width="59.97" height="49.66" fill="#3b4cc0"><title>clicks: -0.25 (running total 0.125)</title></rect>
+<line class="connector" x1="469.48" y1="168" x2="495.18" y2="168" stroke="#666666" stroke-width="0.75"/>
+<text class="feature-label" x="439.5" y="321.6" text-anchor="end" fill="#222222" transform="rotate(-45 439.5 321.6)">clicks</text>
+<rect class="step" x="495.18" y="155.59" width="59.97" height="12.41" fill="#b40426"><title>score: +0.0625 (running total 0.188)</title></rect>
+<text class="feature-label" x="525.17" y="321.6" text-anchor="end" fill="#222222" transform="rotate(-45 525.17 321.6)">score</text>
+<line class="total" x1="555.15" y1="155.59" x2="568" y2="155.59" stroke="#222222" stroke-width="1.5"/>
+<text class="total-label" x="571.6" y="160.57" text-anchor="start" fill="#222222" font-weight="bold">= 0.188</text>
+</svg>

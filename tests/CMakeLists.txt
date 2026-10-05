@@ -271,3 +271,18 @@ add_test(NAME PulsatrixInstall.FindPackageConsumer
         "-DGENERATOR=${CMAKE_GENERATOR}"
         "-DCXX_COMPILER=${CMAKE_CXX_COMPILER}"
         -P "${CMAKE_CURRENT_SOURCE_DIR}/install_consumer_test.cmake")
+
+# VIZ-2: the pulsatrix_svg command-line tool, on the VIZ-1 document fixtures.
+add_test(NAME PulsatrixSvg.RendersAnAttribution
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution_features.v1.json" --top-k 3
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_attribution.svg")
+add_test(NAME PulsatrixSvg.RendersAHeatmap
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/heatmap.v1.json"
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_heatmap.svg")
+add_test(NAME PulsatrixSvg.RejectsAKindWithNoView
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/circuit_graph.v1.json")
+set_tests_properties(PulsatrixSvg.RejectsAKindWithNoView PROPERTIES WILL_FAIL TRUE)
+add_test(NAME PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution.v1.json"
+        "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution.v1.json")
+set_tests_properties(PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm PROPERTIES WILL_FAIL TRUE)

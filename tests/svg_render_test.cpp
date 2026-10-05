@@ -5,12 +5,14 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <limits>
 #include <map>
 #include <memory>
 #include <set>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -252,6 +254,19 @@ TEST(SvgRenderTest, EveryChartIsWellFormedDeterministicAndTitled) {
         EXPECT_EQ(root->get("role"), "img");
     }
     EXPECT_EQ(RenderBarChartSvg(Features({1.0f, -2.0f}), 10, opt), svgs[0]);
+}
+
+TEST(SvgRenderTest, ExtremeValuesStillRender) {
+    // The largest floats, and values huge next to their spread, still give numeric
+    // coordinates and a finished tick layout.
+    const float big = std::numeric_limits<float>::max();
+    for (const std::string& svg : {RenderBarChartSvg(Features({big, -big})), RenderWaterfallSvg(Features({1e10f, -2e10f}), 1e17f),
+                                   RenderBeeswarmSvg({Features({big}), Features({-big})}, {0}),
+                                   RenderHeatmapSvg(HeatmapDocument{"", 1, 2, {1e30f, 1.0000001e30f}, {}, {}})}) {
+        Parsed(svg);
+        EXPECT_EQ(svg.find("nan"), std::string::npos);
+        EXPECT_EQ(svg.find("inf"), std::string::npos);
+    }
 }
 
 TEST(SvgRenderTest, RejectsUnusableOptions) {
@@ -511,6 +526,59 @@ TEST(SvgBeeswarmTest, RejectsBadInput) {
     EXPECT_THROW((void)RenderBeeswarmSvg({Features({1.0f})}, {}), std::invalid_argument);
     EXPECT_THROW((void)RenderBeeswarmSvg({Features({1.0f})}, {3}), std::invalid_argument);
     EXPECT_THROW((void)RenderBeeswarmSvg({Features({kNaN})}, {0}), std::invalid_argument);
+}
+
+}  // namespace
+}  // namespace pulsatrix
+
+namespace pulsatrix {
+namespace {
+
+// ---- golden files: each chart, from the VIZ-1 document fixtures, must match
+// tests/fixtures/viz/svg/ byte for byte on every platform. After an intended change, rerun
+// with PULSATRIX_UPDATE_GOLDEN=1 to rewrite them, then look at the new figures before
+// committing.
+
+std::string ReadFile(const std::string& path) {
+    std::ifstream in(path, std::ios::binary);
+    std::stringstream ss;
+    ss << in.rdbuf();
+    return ss.str();
+}
+
+void ExpectGolden(const std::string& name, const std::string& svg) {
+    const std::string path = std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/viz/svg/" + name;
+    const char* update = std::getenv("PULSATRIX_UPDATE_GOLDEN");
+    if (update != nullptr && std::string(update) == "1") {
+        std::ofstream(path, std::ios::binary) << svg;
+        return;
+    }
+    const std::string golden = ReadFile(path);
+    ASSERT_FALSE(golden.empty()) << "missing golden file " << path;
+    EXPECT_EQ(svg, golden) << name << " changed; see the comment above ExpectGolden";
+}
+
+std::string Fixture(const std::string& name) {
+    return ReadFile(std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/viz/" + name);
+}
+
+TEST(SvgGoldenTest, EveryChart) {
+    AttributionDocument attr = ParseAttributionDocument(Fixture("attribution_features.v1.json"));
+    SvgOptions titled;
+    titled.title = "Integrated gradients";
+    ExpectGolden("bar_chart.svg", RenderBarChartSvg(attr, 10, titled));
+    ExpectGolden("waterfall.svg", RenderWaterfallSvg(attr, 0.25f));
+    ExpectGolden("heatmap.svg", RenderHeatmapSvg(ParseHeatmapDocument(Fixture("heatmap.v1.json"))));
+    ExpectGolden("token_strip.svg", RenderTokenStripSvg(ParseTokenRelevanceDocument(Fixture("token_relevance.v1.json"))));
+    std::vector<AttributionDocument> runs;
+    for (int i = 0; i < 12; ++i) {
+        AttributionDocument d = attr;
+        for (size_t j = 0; j < d.values.size(); ++j) {
+            d.values[j] = static_cast<float>((static_cast<int>(j) * 7 + i * 5) % 11 - 5) / 4.0f;
+        }
+        runs.push_back(d);
+    }
+    ExpectGolden("beeswarm.svg", RenderBeeswarmSvg(runs, {0, 3, 5}));
 }
 
 }  // namespace
