@@ -194,8 +194,8 @@ TEST(JsonWriteTest, EscapesStrings) {
 }
 
 TEST(JsonWriteTest, RejectsWhatJsonCannotHold) {
-    EXPECT_THROW(JsonValue(std::nan("")), std::invalid_argument);
-    EXPECT_THROW(JsonValue(std::numeric_limits<double>::infinity()), std::invalid_argument);
+    EXPECT_THROW((void)JsonValue{std::nan("")}, std::invalid_argument);
+    EXPECT_THROW((void)JsonValue{std::numeric_limits<double>::infinity()}, std::invalid_argument);
     EXPECT_THROW(JsonValue::Float(-std::numeric_limits<float>::infinity()), std::invalid_argument);
     EXPECT_THROW((void)WriteJson(JsonValue(std::string("\xFF"))), std::invalid_argument);
 }
