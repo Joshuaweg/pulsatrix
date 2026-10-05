@@ -13,11 +13,11 @@ var searchData=
   ['heuristic_10',['Heuristic',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763',1,'pulsatrix']]],
   ['hidden_11',['Hidden',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a7acdf85c69cc3c5305456a293524386e',1,'pulsatrix::NodeGene']]],
   ['hidden_5fdim_12',['hidden_dim',['../classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec',1,'pulsatrix::SparseAutoencoder']]],
-  ['high_13',['high',['../structpulsatrix_1_1LRPRuleConfig.html#ab2d7caeadd3b4bc6ec0f7e10425bd9eb',1,'pulsatrix::LRPRuleConfig']]],
+  ['high_13',['high',['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#ab0e235e49a42f674d5aff10ac4991bfb',1,'pulsatrix::SensitivityDocument::Feature::high'],['../structpulsatrix_1_1FeatureSensitivity.html#aff896849615052319852b5ffeee9a5ca',1,'pulsatrix::FeatureSensitivity::high'],['../structpulsatrix_1_1SensitivityBounds.html#afe9c554ca2568a695f198201f17954b8',1,'pulsatrix::SensitivityBounds::high'],['../structpulsatrix_1_1LRPRuleConfig.html#ab2d7caeadd3b4bc6ec0f7e10425bd9eb',1,'pulsatrix::LRPRuleConfig::high'],['../structpulsatrix_1_1CounterfactualTarget.html#a7497807ab807cdaf4de88a3706b60fac',1,'pulsatrix::CounterfactualTarget::high']]],
   ['hip_14',['Hip',['../namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92',1,'pulsatrix']]],
   ['hip_5fbackend_2ehpp_15',['hip_backend.hpp',['../hip__backend_8hpp.html',1,'']]],
   ['hip_5fcheck_2ehpp_16',['hip_check.hpp',['../hip__check_8hpp.html',1,'']]],
-  ['hipbackend_17',['hipbackend',['../classpulsatrix_1_1HIPBackend.html',1,'pulsatrix::HIPBackend'],['../classpulsatrix_1_1HIPBackend.html#ab62ba66f083956b40cf612fd866cc2ac',1,'pulsatrix::HIPBackend::HIPBackend()'],['../classpulsatrix_1_1HIPBackend.html#a2b3cbaa24088f1b54bfd160b9f7e5d53',1,'pulsatrix::HIPBackend::HIPBackend(const HIPBackend &amp;)=delete']]],
+  ['hipbackend_17',['hipbackend',['../classpulsatrix_1_1HIPBackend.html',1,'pulsatrix::HIPBackend'],['../classpulsatrix_1_1HIPBackend.html#a2b3cbaa24088f1b54bfd160b9f7e5d53',1,'pulsatrix::HIPBackend::HIPBackend(const HIPBackend &amp;)=delete'],['../classpulsatrix_1_1HIPBackend.html#ab62ba66f083956b40cf612fd866cc2ac',1,'pulsatrix::HIPBackend::HIPBackend()']]],
   ['hipblas_5fcheck_2ehpp_18',['hipblas_check.hpp',['../hipblas__check_8hpp.html',1,'']]],
   ['histogram_19',['Histogram',['../structpulsatrix_1_1TrainingLogDocument_1_1Histogram.html',1,'pulsatrix::TrainingLogDocument']]],
   ['histogram_5fcounts_20',['histogram_counts',['../structpulsatrix_1_1FeatureDashboardDocument.html#a325ad258f03af8d4323d023ceb047158',1,'pulsatrix::FeatureDashboardDocument']]],
@@ -36,6 +36,6 @@ var searchData=
   ['hyperbandbracket_33',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
   ['hyperbandresult_34',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
   ['hypergrid_5fenv_2ehpp_35',['hypergrid_env.hpp',['../hypergrid__env_8hpp.html',1,'']]],
-  ['hypergridenv_36',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv'],['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()']]],
+  ['hypergridenv_36',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()'],['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv']]],
   ['hyperparameter_20optimization_37',['Hyperparameter Optimization',['../group__hyperparameter__optimization.html',1,'']]]
 ];

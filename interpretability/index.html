@@ -1668,11 +1668,12 @@ sensible features, or show a user why it made a decision.</p>
 <li><strong><a href="lrp/">Layer-wise Relevance Propagation (LRP)</a></strong>: passes the prediction's score back
   through the network, layer by layer, using a rule chosen for each layer. Every pulsatrix
   layer implements an LRP rule, so any network you build can be explained with it.</li>
-<li><strong><a href="model-agnostic/">Model-Agnostic Explainers</a></strong>: <code>KernelSHAP</code>, <code>LIME</code> and <code>PDP</code>. They only
-  call the model, perturbing the input and watching the output. Use them for any model,
+<li><strong><a href="model-agnostic/">Model-Agnostic Explainers</a></strong>: <code>KernelSHAP</code>, <code>LIME</code>, <code>PDP</code>, ICE, local
+  sensitivity and <code>Occlusion</code>. They only call the model, perturbing the input and watching the
+  output. Use them for any model,
   including ones not built with pulsatrix.</li>
 <li><strong><a href="deep-learning-approaches/">Gradient-Based Explainers</a></strong>: <code>Saliency</code>,
-  <code>IntegratedGradients</code> and <code>GradCAM</code>. They read a pulsatrix network's gradients and
+  <code>IntegratedGradients</code>, <code>GradCAM</code> and counterfactuals (<code>FindCounterfactual</code>). They read a pulsatrix network's gradients and
   activations, so they are faster and see inside the model.</li>
 </ul>
 <p>Full API reference: <a href="../api/group__interpretability.html">Doxygen: Interpretability</a></p>

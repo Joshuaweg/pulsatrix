@@ -137,6 +137,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AggregatorModule.html">AggregatorModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = (mean(x^p))^(1/p)</code>, reduced over the <em>leading</em> (batch/grounding) axis &ndash; not the last axis. Rank-agnostic: input shape <code>(N, ...rest)</code> reduces to output shape <code>(...rest)</code> (rank 0 &ndash; a scalar &ndash; when input is rank 1, i.e. a single formula's groundings with no other axes).  <a href="classpulsatrix_1_1AggregatorModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AleResult.html">AleResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">First-order accumulated local effects (Apley and Zhu 2020) of one feature.  <a href="structpulsatrix_1_1AleResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The best configuration/metric found, the total epoch budget spent, and how many distinct configurations were ever started (as opposed to promoted).  <a href="structpulsatrix_1_1ASHAResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,6 +274,21 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Window geometry for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ad42295ced5dffa73a26250d77fe3da97" title="Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches, with out_h = (h + 2*pad_h - kh) / stride...">DeviceBackend::im2col</a> / col2im_add: kernel size, stride and zero padding per axis. Defaults are stride 1 and no padding. Passed to kernels by value.  <a href="structpulsatrix_1_1ConvGeometry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which changes are allowed, and how changes are measured.  <a href="structpulsatrix_1_1CounterfactualConstraints.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.counterfactual.v1</code>: an input, its counterfactual, and what reaching the target cost (CFS-5).  <a href="structpulsatrix_1_1CounterfactualDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CounterfactualOptions.html">CounterfactualOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search settings. Defaults suit standardized tabular inputs.  <a href="structpulsatrix_1_1CounterfactualOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A counterfactual and how good it is (the DiCE metrics, for one counterfactual).  <a href="structpulsatrix_1_1CounterfactualResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What the counterfactual must achieve.  <a href="structpulsatrix_1_1CounterfactualTarget.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html">CPUBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation. Reference implementation every other backend (<a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a>, <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a>) is checked for numerical equivalence against.  <a href="classpulsatrix_1_1CPUBackend.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -355,6 +373,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.feature_dashboard.v1</code>: one learned feature (for example a sparse autoencoder unit) with its activation statistics and top-activating examples.  <a href="structpulsatrix_1_1FeatureDashboardDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureSensitivity.html">FeatureSensitivity</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How one feature's low and high value move the output, everything else held fixed.  <a href="structpulsatrix_1_1FeatureSensitivity.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FieldStatistics.html">FieldStatistics</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptive statistics for one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position, aggregated across a whole <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>.  <a href="structpulsatrix_1_1FieldStatistics.html#details">More...</a><br /></td></tr>
@@ -475,6 +496,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearProbe.html">LinearProbe</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A linear probe: <code>LinearModule(activation_dim, 1)</code> + <code><a class="el" href="classpulsatrix_1_1BCEWithLogitsLoss.html" title="loss = mean( max(x,0) - x*y + log(1 + exp(-|x|)) ), over all N*k elements of a (N,...">BCEWithLogitsLoss</a></code>, trained on <code>(activation, binary concept label)</code> pairs. High post-training accuracy means the concept is linearly decodable from those activations; chance-level accuracy means it is not (at least not linearly).  <a href="classpulsatrix_1_1LinearProbe.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One-at-a-time sensitivity of one output around one input.  <a href="structpulsatrix_1_1LocalSensitivityResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html">LRP</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whole-model <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to the input through every module's own propagate_relevance() rule.  <a href="classpulsatrix_1_1LRP.html#details">More...</a><br /></td></tr>
@@ -710,6 +734,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes a hyperparameter search space as an ordered list of named, typed parameters. Every HPO algorithm (grid/random search, GP-BO, TPE, Hyperband/ASHA) consumes a <code><a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a></code> to know what it may propose; this type itself has no sampling logic (that is each algorithm's own job, e.g. <code>RandomSample</code>/<code>GridSample</code>).  <a href="classpulsatrix_1_1SearchSpace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The low and high value to try for every feature of an input (flat order).  <a href="structpulsatrix_1_1SensitivityBounds.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sensitivity.v1</code>: how one output moves when each input feature, alone, goes to a low and a high value (CFS-3). The data behind a tornado chart.  <a href="structpulsatrix_1_1SensitivityDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html">SequentialModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Composes layers_[0..n-1] in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> order; <a class="el" href="classpulsatrix_1_1SequentialModule.html#ab250da54700dc610741f81ecad38224e" title="Chains backward() across layers_ in reverse order.">backward()</a>/propagate_relevance() chain layers_[n-1..0] in reverse &ndash; correct reverse-mode composition order.  <a href="classpulsatrix_1_1SequentialModule.html#details">More...</a><br /></td></tr>
@@ -1156,6 +1186,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a0034be345e6f18cfc824460160d5cdf5" id="r_a0034be345e6f18cfc824460160d5cdf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0034be345e6f18cfc824460160d5cdf5">DefaultCollate</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt; samples, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a0034be345e6f18cfc824460160d5cdf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stacks a list of samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a>, field-by-field, via <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a> &ndash; pulsatrix's default CollateFn (PyTorch's default_collate analogue).  <br /></td></tr>
 <tr class="separator:a0034be345e6f18cfc824460160d5cdf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b0b92b9316f35e591eef693d59fa911" id="r_a1b0b92b9316f35e591eef693d59fa911"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1b0b92b9316f35e591eef693d59fa911">MedianAbsoluteDeviation</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background)</td></tr>
+<tr class="memdesc:a1b0b92b9316f35e591eef693d59fa911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each feature's median absolute deviation over <code>background</code> (flat order), the distance scale Wachter et al. recommend for tabular data. A feature with zero MAD gets 1, as in DiCE, so it can still move.  <br /></td></tr>
+<tr class="separator:a1b0b92b9316f35e591eef693d59fa911"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a82a07b90dfe58bbd2ba7737817bf38" id="r_a8a82a07b90dfe58bbd2ba7737817bf38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8a82a07b90dfe58bbd2ba7737817bf38">FindCounterfactual</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;target, const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;constraints={}, const <a class="el" href="structpulsatrix_1_1CounterfactualOptions.html">CounterfactualOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a8a82a07b90dfe58bbd2ba7737817bf38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a nearby input that reaches <code>target</code> (Wachter, Mittelstadt and Russell 2017): minimizes &lsquo;lambda * loss(f(x&rsquo;), target) + sum_j |x'_j - x_j| / scale_j` by proximal gradient descent, so features the prediction doesn't need stay exactly unchanged. If a round ends without reaching the target, lambda grows and the search continues from where it was.  <br /></td></tr>
+<tr class="separator:a8a82a07b90dfe58bbd2ba7737817bf38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39f0057413fe272184d9383bf5f4fd8a" id="r_a39f0057413fe272184d9383bf5f4fd8a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a39f0057413fe272184d9383bf5f4fd8a"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; std::vector&lt; T &gt;, std::vector&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a39f0057413fe272184d9383bf5f4fd8a">OnePointCrossoverAtPoint</a> (const std::vector&lt; T &gt; &amp;parent1, const std::vector&lt; T &gt; &amp;parent2, size_t point)</td></tr>
 <tr class="memdesc:a39f0057413fe272184d9383bf5f4fd8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits both parents at point and swaps tails.  <br /></td></tr>
@@ -1352,6 +1388,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4da8fe5782bc4844676e7588b13fb24a" id="r_a4da8fe5782bc4844676e7588b13fb24a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PartialDependence2D.html">PartialDependence2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4da8fe5782bc4844676e7588b13fb24a">ComputePartialDependence2D</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, int64_t feature_x, int64_t feature_y, int64_t target_index, const std::vector&lt; float &gt; &amp;grid_x, const std::vector&lt; float &gt; &amp;grid_y)</td></tr>
 <tr class="memdesc:a4da8fe5782bc4844676e7588b13fb24a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Two-feature partial dependence: for every pair (grid_x[c], grid_y[r]), the mean over the background of the prediction with both features set. Where it isn't the sum of the two one-feature curves, the features interact.  <br /></td></tr>
 <tr class="separator:a4da8fe5782bc4844676e7588b13fb24a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace1b52ea553409ddd48421c5abcdd81b" id="r_ace1b52ea553409ddd48421c5abcdd81b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AleResult.html">AleResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ace1b52ea553409ddd48421c5abcdd81b">ComputeAle</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;instances, int64_t feature_index, int64_t target_index, int64_t num_bins=20)</td></tr>
+<tr class="memdesc:ace1b52ea553409ddd48421c5abcdd81b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes first-order ALE the way PyALE 1.2 (and R's ALEPlot) does: edges at the feature's type-1 quantiles (<code>num_bins</code> + 1 of them, duplicates dropped), bins closed on the right with the first also holding the minimum, and centering by the count-weighted mean of each bin's midpoint effect.  <br /></td></tr>
+<tr class="separator:ace1b52ea553409ddd48421c5abcdd81b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3823fb1770e2ac2f276c5544266698ab" id="r_a3823fb1770e2ac2f276c5544266698ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3823fb1770e2ac2f276c5544266698ab">ParseJson</a> (std::string_view text)</td></tr>
 <tr class="memdesc:a3823fb1770e2ac2f276c5544266698ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses one JSON document.  <br /></td></tr>
 <tr class="separator:a3823fb1770e2ac2f276c5544266698ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1505,6 +1544,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a22532e4874cd35681db7270ced4fc066"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a22532e4874cd35681db7270ced4fc066">RankSelect</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt; &amp;population, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a22532e4874cd35681db7270ced4fc066"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper around RankSelectByDraw: draws uniformly from [0, total_weight) and selects accordingly.  <br /></td></tr>
 <tr class="separator:a22532e4874cd35681db7270ced4fc066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd324a4cbc0618759d3b7ca9e489475" id="r_abdd324a4cbc0618759d3b7ca9e489475"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abdd324a4cbc0618759d3b7ca9e489475">DeltaBounds</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, float delta)</td></tr>
+<tr class="memdesc:abdd324a4cbc0618759d3b7ca9e489475"><td class="mdescLeft">&#160;</td><td class="mdescRight">x - delta and x + delta for every feature.  <br /></td></tr>
+<tr class="separator:abdd324a4cbc0618759d3b7ca9e489475"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50cbaa78a53c56deddcc160026d2a839" id="r_a50cbaa78a53c56deddcc160026d2a839"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a50cbaa78a53c56deddcc160026d2a839">ScaledDeltaBounds</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, float num_std=1.0f)</td></tr>
+<tr class="memdesc:a50cbaa78a53c56deddcc160026d2a839"><td class="mdescLeft">&#160;</td><td class="mdescRight">x -/+ num_std standard deviations of each feature over <code>background</code>, so every feature moves by a comparable amount whatever its units. A feature constant over the background doesn't move.  <br /></td></tr>
+<tr class="separator:a50cbaa78a53c56deddcc160026d2a839"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7b6197038b51b34a805f1171810d28c" id="r_af7b6197038b51b34a805f1171810d28c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af7b6197038b51b34a805f1171810d28c">RangeBounds</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, float lower_percentile=0.05f, float upper_percentile=0.95f)</td></tr>
+<tr class="memdesc:af7b6197038b51b34a805f1171810d28c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each feature's lower and upper percentile over <code>background</code> (linear interpolation, as numpy.percentile): the classic tornado-diagram range, a typical low and high value.  <br /></td></tr>
+<tr class="separator:af7b6197038b51b34a805f1171810d28c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc4291f88aae1ae7c558b0f8901f77a2" id="r_abc4291f88aae1ae7c558b0f8901f77a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc4291f88aae1ae7c558b0f8901f77a2">ComputeLocalSensitivity</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t target_index, const <a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> &amp;bounds, const std::vector&lt; int64_t &gt; &amp;features={})</td></tr>
+<tr class="memdesc:abc4291f88aae1ae7c558b0f8901f77a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets each feature in turn to its low and then its high bound, leaving the others at the input's values, and records the target output each time.  <br /></td></tr>
+<tr class="separator:abc4291f88aae1ae7c558b0f8901f77a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d6993904b493c0219d46ea05ae89c82" id="r_a9d6993904b493c0219d46ea05ae89c82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9d6993904b493c0219d46ea05ae89c82">Occlusion</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t target_index, const std::vector&lt; int64_t &gt; &amp;window, const std::vector&lt; int64_t &gt; &amp;strides, float baseline=0.0f)</td></tr>
+<tr class="memdesc:a9d6993904b493c0219d46ea05ae89c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Occlusion (Zeiler and Fergus 2014) with Captum 0.9's semantics: a window slides over the input with the given strides, everything under it is set to <code>baseline</code>, and each element's attribution is the drop in the target output, f(x) - f(occluded), averaged over the windows that covered it.  <br /></td></tr>
+<tr class="separator:a9d6993904b493c0219d46ea05ae89c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9db00216eaf37da6e93cdbc40371c65e" id="r_a9db00216eaf37da6e93cdbc40371c65e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9db00216eaf37da6e93cdbc40371c65e">SinusoidalTimestepEmbedding</a> (int64_t t, int64_t embedding_dim, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float base=10000.0f)</td></tr>
 <tr class="memdesc:a9db00216eaf37da6e93cdbc40371c65e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard Transformer-style sinusoidal encoding of a diffusion timestep <code>t</code>: <code>emb[2i] = sin(t / base^(2i/embedding_dim))</code>, <code>emb[2i+1] = cos(t / base^(2i/embedding_dim))</code> for <code>i in [0, embedding_dim/2)</code>.  <br /></td></tr>
 <tr class="separator:a9db00216eaf37da6e93cdbc40371c65e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1637,6 +1691,9 @@ Functions</h2></td></tr>
 <tr class="memitem:adde6e9e8c9fb38d99a6ad1d10922b0d1" id="r_adde6e9e8c9fb38d99a6ad1d10922b0d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adde6e9e8c9fb38d99a6ad1d10922b0d1">ToPartialDependenceDocument</a> (const <a class="el" href="structpulsatrix_1_1IceResult.html">IceResult</a> &amp;result, std::string feature=&quot;&quot;, std::string target=&quot;&quot;)</td></tr>
 <tr class="memdesc:adde6e9e8c9fb38d99a6ad1d10922b0d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies <code>result</code>, its partial dependence curve included.  <br /></td></tr>
 <tr class="separator:adde6e9e8c9fb38d99a6ad1d10922b0d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afca1bc38a18c1575df14351de3d77da3" id="r_afca1bc38a18c1575df14351de3d77da3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afca1bc38a18c1575df14351de3d77da3">ToPartialDependenceDocument</a> (const <a class="el" href="structpulsatrix_1_1AleResult.html">AleResult</a> &amp;result, std::string feature=&quot;&quot;, std::string target=&quot;&quot;)</td></tr>
+<tr class="memdesc:afca1bc38a18c1575df14351de3d77da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">An ALE curve as a document with method <code>"ale"</code>: the bin edges as the grid, the effects as the curve, and the instances' feature values for the rug.  <br /></td></tr>
+<tr class="separator:afca1bc38a18c1575df14351de3d77da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a999d84d6cd1d733f0e1fd5d20180c2bd" id="r_a999d84d6cd1d733f0e1fd5d20180c2bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1IceResult.html">IceResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a999d84d6cd1d733f0e1fd5d20180c2bd">ToIceResult</a> (const <a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a> &amp;doc)</td></tr>
 <tr class="memdesc:a999d84d6cd1d733f0e1fd5d20180c2bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebuilds the ICE curves for their centered and derivative views.  <br /></td></tr>
 <tr class="separator:a999d84d6cd1d733f0e1fd5d20180c2bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1647,6 +1704,20 @@ Functions</h2></td></tr>
 <tr class="separator:a08917aaabe7b0581e886617112b4b22f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73aaf9d248d18472edb0c12895562858" id="r_a73aaf9d248d18472edb0c12895562858"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73aaf9d248d18472edb0c12895562858">ParsePartialDependenceDocument</a> (std::string_view json)</td></tr>
 <tr class="separator:a73aaf9d248d18472edb0c12895562858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed2d58eda7a7b26ec6d6162720c8e52a" id="r_aed2d58eda7a7b26ec6d6162720c8e52a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aed2d58eda7a7b26ec6d6162720c8e52a">ToSensitivityDocument</a> (const <a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a> &amp;result, const std::vector&lt; std::string &gt; &amp;names={}, std::string target=&quot;&quot;)</td></tr>
+<tr class="memdesc:aed2d58eda7a7b26ec6d6162720c8e52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies <code>result</code>. <code>names</code>, if not empty, has one name per input feature (flat index); features without a name are called <code>feature_&lt;index&gt;</code>.  <br /></td></tr>
+<tr class="separator:aed2d58eda7a7b26ec6d6162720c8e52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a619059d9817446489ce8017256877dd3" id="r_a619059d9817446489ce8017256877dd3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a619059d9817446489ce8017256877dd3">ToJson</a> (const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a619059d9817446489ce8017256877dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2dcb3007fd52399a8ed5f907d067216" id="r_ab2dcb3007fd52399a8ed5f907d067216"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab2dcb3007fd52399a8ed5f907d067216">ParseSensitivityDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:ab2dcb3007fd52399a8ed5f907d067216"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65675f24dc5c883f835c949babf5bf22" id="r_a65675f24dc5c883f835c949babf5bf22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a65675f24dc5c883f835c949babf5bf22">ToCounterfactualDocument</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a> &amp;result, const std::vector&lt; std::string &gt; &amp;names={}, const std::vector&lt; float &gt; &amp;scale={}, std::string target=&quot;&quot;)</td></tr>
+<tr class="memdesc:a65675f24dc5c883f835c949babf5bf22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pairs <code>input</code> with <code>result's</code> counterfactual. <code>names</code> and <code>scale</code>, if not empty, have one entry per feature; <code>scale</code> should be the one the search used.  <br /></td></tr>
+<tr class="separator:a65675f24dc5c883f835c949babf5bf22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1bd894b2f804084cd61b94d4e4bd520" id="r_ae1bd894b2f804084cd61b94d4e4bd520"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae1bd894b2f804084cd61b94d4e4bd520">ToJson</a> (const <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &amp;doc)</td></tr>
+<tr class="separator:ae1bd894b2f804084cd61b94d4e4bd520"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b2b534011e6bcc5dfdb77fbb4ae3b4" id="r_af2b2b534011e6bcc5dfdb77fbb4ae3b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af2b2b534011e6bcc5dfdb77fbb4ae3b4">ParseCounterfactualDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:af2b2b534011e6bcc5dfdb77fbb4ae3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81a9c0a4ab6fc4d1d737368b0ec12b9" id="r_ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab81a9c0a4ab6fc4d1d737368b0ec12b9">ToFeatureImportanceBars</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>)</td></tr>
 <tr class="memdesc:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1).  <br /></td></tr>
 <tr class="separator:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1693,6 +1764,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ad340f3a7f51a54de4118b651d545b001" id="r_ad340f3a7f51a54de4118b651d545b001"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad340f3a7f51a54de4118b651d545b001">RenderPartialDependenceSvg</a> (const <a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1PartialDependenceSvgOptions.html">PartialDependenceSvgOptions</a> &amp;pd={}, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ad340f3a7f51a54de4118b651d545b001"><td class="mdescLeft">&#160;</td><td class="mdescRight">A partial dependence plot: thin ICE curves under the bold average, over the feature's grid, with a rug of the instances' own feature values along the bottom. For <a class="el" href="namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baadc5ffc2b720501ba00de3be1477b435d">IceStyle::Centered</a> and <a class="el" href="namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baa70ae6e285cc14c8486e3cf5bec39d1fd">IceStyle::Derivative</a> the average is recomputed from the transformed curves, and a dashed line marks zero.  <br /></td></tr>
 <tr class="separator:ad340f3a7f51a54de4118b651d545b001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b5f62b97a38c79f164cdb63faedcccf" id="r_a0b5f62b97a38c79f164cdb63faedcccf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0b5f62b97a38c79f164cdb63faedcccf">RenderTornadoSvg</a> (const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;doc, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a0b5f62b97a38c79f164cdb63faedcccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tornado chart: one row per feature, the <code>top_k</code> with the largest swing first. Each row has two bars from the unchanged output, one to the output at the feature's high value (red) and one to its low value (blue), labeled with those values; a dashed line marks the unchanged output.  <br /></td></tr>
+<tr class="separator:a0b5f62b97a38c79f164cdb63faedcccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb5c177e37490ef63663cedb2565ccf3" id="r_abb5c177e37490ef63663cedb2565ccf3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abb5c177e37490ef63663cedb2565ccf3">RenderCounterfactualSvg</a> (const <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &amp;doc, int max_rows=12, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:abb5c177e37490ef63663cedb2565ccf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">What a counterfactual changed: a verdict line (whether it reaches the target, and the output before and after), then one row per changed feature, costliest first, with its old and new value and a bar of its change in units of its scale, colored by direction. A feature counts as changed when it moved by more than 1e-3 of its scale.  <br /></td></tr>
+<tr class="separator:abb5c177e37490ef63663cedb2565ccf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3436,6 +3513,67 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 
 </div>
 </div>
+<a id="ace1b52ea553409ddd48421c5abcdd81b" name="ace1b52ea553409ddd48421c5abcdd81b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace1b52ea553409ddd48421c5abcdd81b">&#9670;&#160;</a></span>ComputeAle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AleResult.html">AleResult</a> pulsatrix::ComputeAle </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>instances</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>feature_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>target_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_bins</em> = <code>20</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes first-order ALE the way PyALE 1.2 (and R's ALEPlot) does: edges at the feature's type-1 quantiles (<code>num_bins</code> + 1 of them, duplicates dropped), bins closed on the right with the first also holding the minimum, and centering by the count-weighted mean of each bin's midpoint effect. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">num_bins</td><td>Requested number of bins, &gt;= 1; ties in the feature can merge bins. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>2 * instances.size() model calls. An empty bin contributes no effect. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for the same inputs ComputeIce rejects, num_bins &lt; 1, or a feature that takes only one value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="abbbbc49f27d9abc30121803b8a105591" name="abbbbc49f27d9abc30121803b8a105591"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abbbbc49f27d9abc30121803b8a105591">&#9670;&#160;</a></span>ComputeAttributionStability()</h2>
 
@@ -3876,6 +4014,67 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 
 </div>
 </div>
+<a id="abc4291f88aae1ae7c558b0f8901f77a2" name="abc4291f88aae1ae7c558b0f8901f77a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc4291f88aae1ae7c558b0f8901f77a2">&#9670;&#160;</a></span>ComputeLocalSensitivity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a> pulsatrix::ComputeLocalSensitivity </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>target_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> &amp;&#160;</td>
+          <td class="paramname"><em>bounds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>features</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets each feature in turn to its low and then its high bound, leaving the others at the input's values, and records the target output each time. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">features</td><td>Flat feature indices to vary; empty means all of them. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>1 + 2 * features model calls. Unlike a gradient, which describes an infinitesimal neighborhood, this measures a finite one: the two disagree exactly where the model saturates or has a kink. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if bounds don't have one entry per feature, a feature index or target index is out of range. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a4da8fe5782bc4844676e7588b13fb24a" name="a4da8fe5782bc4844676e7588b13fb24a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4da8fe5782bc4844676e7588b13fb24a">&#9670;&#160;</a></span>ComputePartialDependence2D()</h2>
 
@@ -4192,6 +4391,42 @@ If a front is uniform in some objective (max == min across the whole front), tha
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the attribution's shape differs from the input's, steps &lt; 1, or target is outside the prediction. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abdd324a4cbc0618759d3b7ca9e489475" name="abdd324a4cbc0618759d3b7ca9e489475"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdd324a4cbc0618759d3b7ca9e489475">&#9670;&#160;</a></span>DeltaBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> pulsatrix::DeltaBounds </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>delta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>x - delta and x + delta for every feature. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if delta &lt;= 0. </td></tr>
   </table>
   </dd>
 </dl>
@@ -4796,6 +5031,69 @@ template&lt;typename RNG &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if background is empty, the feature index is out of range, the percentiles are invalid, grid_size &lt; 2, or the two percentiles coincide (a feature that is nearly constant; pass a grid explicitly instead). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8a82a07b90dfe58bbd2ba7737817bf38" name="a8a82a07b90dfe58bbd2ba7737817bf38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a82a07b90dfe58bbd2ba7737817bf38">&#9670;&#160;</a></span>FindCounterfactual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a> pulsatrix::FindCounterfactual </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;&#160;</td>
+          <td class="paramname"><em>constraints</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualOptions.html">CounterfactualOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds a nearby input that reaches <code>target</code> (Wachter, Mittelstadt and Russell 2017): minimizes &lsquo;lambda * loss(f(x&rsquo;), target) + sum_j |x'_j - x_j| / scale_j` by proximal gradient descent, so features the prediction doesn't need stay exactly unchanged. If a round ends without reaching the target, lambda grows and the search continues from where it was. </p>
+<p>The prediction loss is a hinge, zero once the target is reached: for a class, <code>max(0, max_{k != t} z_k - z_t + margin)</code> on the model's outputs (logits); for a range, the distance from the output to [low, high].</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ctx</td><td>The model, run through forward_pass and backward_pass. Parameter gradients accumulate in the model, as with <a class="el" href="classpulsatrix_1_1Saliency.html" title="Raw-gradient saliency: d(output[target_index])/d(input), computed by seeding ExplainerContext::backwa...">Saliency</a>. </td></tr>
+    <tr><td class="paramname">input</td><td>One instance with its batch dimension, for example (1, F); every element is a feature. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Gradient-based, so the model must be differentiable in its input. On images and other high-dimensional inputs a counterfactual found this way is usually an adversarial example (Freiesleben 2022): a change the model reacts to, not one that means anything. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the target index is out of range, a constraint vector has the wrong length or an index out of range, or an option is invalid. </td></tr>
   </table>
   </dd>
 </dl>
@@ -5651,6 +5949,32 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a1b0b92b9316f35e591eef693d59fa911" name="a1b0b92b9316f35e591eef693d59fa911"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b0b92b9316f35e591eef693d59fa911">&#9670;&#160;</a></span>MedianAbsoluteDeviation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::MedianAbsoluteDeviation </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>background</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each feature's median absolute deviation over <code>background</code> (flat order), the distance scale Wachter et al. recommend for tabular data. A feature with zero MAD gets 1, as in DiCE, so it can still move. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if background is empty or its shapes differ. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a684eb4ee86d14926a8ed769bfe3fc93f" name="a684eb4ee86d14926a8ed769bfe3fc93f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a684eb4ee86d14926a8ed769bfe3fc93f">&#9670;&#160;</a></span>ModelParameterRandomizationTest()</h2>
 
@@ -6009,6 +6333,74 @@ template&lt;typename Analysis &gt; </div>
 
 </div>
 </div>
+<a id="a9d6993904b493c0219d46ea05ae89c82" name="a9d6993904b493c0219d46ea05ae89c82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d6993904b493c0219d46ea05ae89c82">&#9670;&#160;</a></span>Occlusion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> pulsatrix::Occlusion </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>target_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>strides</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>baseline</em> = <code>0.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Occlusion (Zeiler and Fergus 2014) with Captum 0.9's semantics: a window slides over the input with the given strides, everything under it is set to <code>baseline</code>, and each element's attribution is the drop in the target output, f(x) - f(occluded), averaged over the windows that covered it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>One size per input dimension (for an instance shaped (C, H, W), for example (C, 3, 3) occludes 3x3 patches across all channels; for a (L, d) sequence, (k, d) occludes spans of k tokens). </td></tr>
+    <tr><td class="paramname">strides</td><td>One per dimension, each &gt;= 1 and no larger than the window where the window is smaller than the input. The last window in a dimension is cropped at the edge, as in Captum. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> "occlusion", shaped like the input, beside it (same backend and device). </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if window or strides have the wrong length or invalid sizes, or the target index is out of range. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a483abfbd086c7839885d1d1b944fa976" name="a483abfbd086c7839885d1d1b944fa976"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a483abfbd086c7839885d1d1b944fa976">&#9670;&#160;</a></span>OnePointCrossover()</h2>
 
@@ -6251,6 +6643,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="af2b2b534011e6bcc5dfdb77fbb4ae3b4" name="af2b2b534011e6bcc5dfdb77fbb4ae3b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2b2b534011e6bcc5dfdb77fbb4ae3b4">&#9670;&#160;</a></span>ParseCounterfactualDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> pulsatrix::ParseCounterfactualDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="abec773be97792874c20508666b79fcf8" name="abec773be97792874c20508666b79fcf8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abec773be97792874c20508666b79fcf8">&#9670;&#160;</a></span>ParseFeatureDashboardDocument()</h2>
 
@@ -6322,6 +6732,24 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a> pulsatrix::ParsePartialDependenceDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab2dcb3007fd52399a8ed5f907d067216" name="ab2dcb3007fd52399a8ed5f907d067216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2dcb3007fd52399a8ed5f907d067216">&#9670;&#160;</a></span>ParseSensitivityDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> pulsatrix::ParseSensitivityDocument </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>json</em></td><td>)</td>
@@ -6768,6 +7196,48 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="af7b6197038b51b34a805f1171810d28c" name="af7b6197038b51b34a805f1171810d28c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7b6197038b51b34a805f1171810d28c">&#9670;&#160;</a></span>RangeBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> pulsatrix::RangeBounds </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>background</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>lower_percentile</em> = <code>0.05f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>upper_percentile</em> = <code>0.95f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each feature's lower and upper percentile over <code>background</code> (linear interpolation, as numpy.percentile): the classic tornado-diagram range, a typical low and high value. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if background is empty, its shapes differ, or the percentiles aren't 0 &lt;= lower &lt; upper &lt;= 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a22532e4874cd35681db7270ced4fc066" name="a22532e4874cd35681db7270ced4fc066"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22532e4874cd35681db7270ced4fc066">&#9670;&#160;</a></span>RankSelect()</h2>
 
@@ -6985,6 +7455,54 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="abb5c177e37490ef63663cedb2565ccf3" name="abb5c177e37490ef63663cedb2565ccf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb5c177e37490ef63663cedb2565ccf3">&#9670;&#160;</a></span>RenderCounterfactualSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderCounterfactualSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max_rows</em> = <code>12</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>What a counterfactual changed: a verdict line (whether it reaches the target, and the output before and after), then one row per changed feature, costliest first, with its old and new value and a bar of its change in units of its scale, colored by direction. A feature counts as changed when it moved by more than 1e-3 of its scale. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">max_rows</td><td>At most this many changed features are listed; a line says how many more. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a non-finite value, max_rows &lt; 1, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0121ff88a9488ffc68939cf396fd4df2" name="a0121ff88a9488ffc68939cf396fd4df2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0121ff88a9488ffc68939cf396fd4df2">&#9670;&#160;</a></span>RenderHeatmapSvg()</h2>
 
@@ -7094,6 +7612,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if tokens and relevance differ in length, there are no tokens, or for invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0b5f62b97a38c79f164cdb63faedcccf" name="a0b5f62b97a38c79f164cdb63faedcccf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b5f62b97a38c79f164cdb63faedcccf">&#9670;&#160;</a></span>RenderTornadoSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderTornadoSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>top_k</em> = <code>10</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A tornado chart: one row per feature, the <code>top_k</code> with the largest swing first. Each row has two bars from the unchanged output, one to the output at the feature's high value (red) and one to its low value (blue), labeled with those values; a dashed line marks the unchanged output. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an empty document, a non-finite value, top_k &lt; 1, or unusable options. </td></tr>
   </table>
   </dd>
 </dl>
@@ -8666,6 +9226,48 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a50cbaa78a53c56deddcc160026d2a839" name="a50cbaa78a53c56deddcc160026d2a839"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50cbaa78a53c56deddcc160026d2a839">&#9670;&#160;</a></span>ScaledDeltaBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> pulsatrix::ScaledDeltaBounds </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>background</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>num_std</em> = <code>1.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>x -/+ num_std standard deviations of each feature over <code>background</code>, so every feature moves by a comparable amount whatever its units. A feature constant over the background doesn't move. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if num_std &lt;= 0, background is empty, or a background instance's shape differs from input's. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a3b2ebcf822ff6e68e95388365ae2774c" name="a3b2ebcf822ff6e68e95388365ae2774c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b2ebcf822ff6e68e95388365ae2774c">&#9670;&#160;</a></span>SerializeSafetensors()</h2>
 
@@ -9637,6 +10239,60 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a65675f24dc5c883f835c949babf5bf22" name="a65675f24dc5c883f835c949babf5bf22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65675f24dc5c883f835c949babf5bf22">&#9670;&#160;</a></span>ToCounterfactualDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> pulsatrix::ToCounterfactualDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>names</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>scale</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pairs <code>input</code> with <code>result's</code> counterfactual. <code>names</code> and <code>scale</code>, if not empty, have one entry per feature; <code>scale</code> should be the one the search used. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the counterfactual's size differs from the input's, or a list has the wrong length. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ab81a9c0a4ab6fc4d1d737368b0ec12b9" name="ab81a9c0a4ab6fc4d1d737368b0ec12b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab81a9c0a4ab6fc4d1d737368b0ec12b9">&#9670;&#160;</a></span>ToFeatureImportanceBars()</h2>
 
@@ -9836,7 +10492,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9860,7 +10516,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9884,7 +10540,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9907,8 +10563,32 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a scale is not positive. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9932,7 +10612,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9956,7 +10636,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9972,15 +10652,33 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div><div class="memdoc">
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if the grid is empty or not strictly increasing, or a length doesn't match it. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if the grid is empty or not strictly increasing, a length doesn't match it, the method is unknown, or an ALE document has ICE curves. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
+<a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10004,7 +10702,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/8]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10081,8 +10779,44 @@ Selection only &ndash; no gradient. A module that routes gradients through a top
 
 </div>
 </div>
+<a id="afca1bc38a18c1575df14351de3d77da3" name="afca1bc38a18c1575df14351de3d77da3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afca1bc38a18c1575df14351de3d77da3">&#9670;&#160;</a></span>ToPartialDependenceDocument() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a> pulsatrix::ToPartialDependenceDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AleResult.html">AleResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>feature</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An ALE curve as a document with method <code>"ale"</code>: the bin edges as the grid, the effects as the curve, and the instances' feature values for the rug. </p>
+
+</div>
+</div>
 <a id="adde6e9e8c9fb38d99a6ad1d10922b0d1" name="adde6e9e8c9fb38d99a6ad1d10922b0d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adde6e9e8c9fb38d99a6ad1d10922b0d1">&#9670;&#160;</a></span>ToPartialDependenceDocument()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adde6e9e8c9fb38d99a6ad1d10922b0d1">&#9670;&#160;</a></span>ToPartialDependenceDocument() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10179,6 +10913,42 @@ Selection only &ndash; no gradient. A module that routes gradients through a top
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aed2d58eda7a7b26ec6d6162720c8e52a" name="aed2d58eda7a7b26ec6d6162720c8e52a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed2d58eda7a7b26ec6d6162720c8e52a">&#9670;&#160;</a></span>ToSensitivityDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> pulsatrix::ToSensitivityDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>names</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies <code>result</code>. <code>names</code>, if not empty, has one name per input feature (flat index); features without a name are called <code>feature_&lt;index&gt;</code>. </p>
 
 </div>
 </div>

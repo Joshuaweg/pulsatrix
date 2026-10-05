@@ -8,5 +8,6 @@ var group__interpretability__agnostic =
     [ "matrix_decompositions.hpp", "matrix__decompositions_8hpp.html", null ],
     [ "null_model_baseline.hpp", "null__model__baseline_8hpp.html", null ],
     [ "pdp.hpp", "pdp_8hpp.html", null ],
+    [ "sensitivity.hpp", "sensitivity_8hpp.html", null ],
     [ "weighted_linear_regression.hpp", "weighted__linear__regression_8hpp.html", null ]
 ];

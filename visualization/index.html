@@ -2085,10 +2085,22 @@ read the same data. The documents are part of <code>pulsatrix_core</code> and ne
 <td>—</td>
 </tr>
 <tr>
+<td><code>pulsatrix.counterfactual.v1</code></td>
+<td><code>CounterfactualDocument</code></td>
+<td><code>target</code>, <code>valid</code>, <code>output_before</code>, <code>output_after</code>, and per feature its <code>name</code>, <code>original</code> and <code>counterfactual</code> value and distance <code>scale</code></td>
+<td><code>CounterfactualResult</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.sensitivity.v1</code></td>
+<td><code>SensitivityDocument</code></td>
+<td><code>target</code>, the unchanged <code>output</code>, and per feature its <code>name</code>, <code>value</code>, <code>low</code>, <code>high</code>, <code>output_low</code> and <code>output_high</code></td>
+<td><code>LocalSensitivityResult</code></td>
+</tr>
+<tr>
 <td><code>pulsatrix.partial_dependence.v1</code></td>
 <td><code>PartialDependenceDocument</code></td>
-<td><code>feature</code>, <code>target</code>, <code>grid</code>, <code>partial_dependence</code>, and optionally <code>num_instances</code> ICE curves (<code>ice</code>) and each instance's <code>feature_values</code></td>
-<td><code>IceResult</code></td>
+<td><code>method</code> (<code>"partial_dependence"</code> or <code>"ale"</code>), <code>feature</code>, <code>target</code>, <code>grid</code>, <code>partial_dependence</code>, and optionally <code>num_instances</code> ICE curves (<code>ice</code>) and the instances' <code>feature_values</code></td>
+<td><code>IceResult</code>, <code>AleResult</code></td>
 </tr>
 </tbody>
 </table>
@@ -2185,6 +2197,16 @@ magnitudes.</p>
 <td>several <code>AttributionDocument</code>s</td>
 </tr>
 <tr>
+<td><code>RenderCounterfactualSvg(doc, max_rows)</code></td>
+<td>Whether the target is reached, then each changed feature, costliest first, with its old and new value and its change in units of its scale</td>
+<td><code>CounterfactualDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderTornadoSvg(doc, top_k)</code></td>
+<td>One row per feature, largest swing first: bars from the unchanged output to the output at the feature's low and high values</td>
+<td><code>SensitivityDocument</code></td>
+</tr>
+<tr>
 <td><code>RenderPartialDependenceSvg(doc, view)</code></td>
 <td>ICE curves under their average, raw, centered or as slopes, with a rug of the inputs' values</td>
 <td><code>PartialDependenceDocument</code></td>
@@ -2212,6 +2234,8 @@ pulsatrix_svg<span class="w"> </span>run*.json<span class="w"> </span>--beeswarm
 pulsatrix_svg<span class="w"> </span>saliency.json<span class="w"> </span>-o<span class="w"> </span>map.svg<span class="w">                     </span><span class="c1"># heatmap</span>
 pulsatrix_svg<span class="w"> </span>tokens.json<span class="w"> </span>-o<span class="w"> </span>text.svg<span class="w">                      </span><span class="c1"># token relevance</span>
 pulsatrix_svg<span class="w"> </span>pd.json<span class="w"> </span>--ice<span class="w"> </span>centered<span class="w"> </span>-o<span class="w"> </span>ice.svg<span class="w">            </span><span class="c1"># partial dependence, centered ICE</span>
+pulsatrix_svg<span class="w"> </span>sens.json<span class="w"> </span>--top-k<span class="w"> </span><span class="m">8</span><span class="w"> </span>-o<span class="w"> </span>tornado.svg<span class="w">           </span><span class="c1"># sensitivity: tornado chart</span>
+pulsatrix_svg<span class="w"> </span>cf.json<span class="w"> </span>-o<span class="w"> </span>cf.svg<span class="w">                            </span><span class="c1"># counterfactual: what changed</span>
 </code></pre></div>
 <p>Other options: <code>--top-k N</code>, <code>--width W</code>, <code>--font-size N</code>, <code>--title TEXT</code>.</p>
 <p><strong>Details:</strong></p>

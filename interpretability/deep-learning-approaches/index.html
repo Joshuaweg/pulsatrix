@@ -627,6 +627,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#counterfactuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Counterfactuals
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1700,6 +1711,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#counterfactuals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Counterfactuals
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1764,6 +1786,9 @@ need its own graph-walking code.</p>
   output is flat (saturated).</li>
 <li><strong><code>GradCAM</code></strong> (<code>grad_cam.hpp</code>): gradient-weighted class activation mapping. It produces a
   coarse heatmap over the last <code>Conv2DModule</code>'s feature maps.</li>
+<li><strong><code>FindCounterfactual</code></strong> (<code>counterfactual.hpp</code>): the nearest input that reaches a different
+  class or an output range (Wachter et al. 2017), with immutable features, limits, and integer
+  and one-hot features. It answers "what would have to change?"</li>
 <li><strong><code>ComputeAttributionStability(runs)</code></strong> (<code>explainer_stability.hpp</code>): measures how much
   repeated runs of any explainer vary on the same input.</li>
 </ul>
@@ -1799,6 +1824,12 @@ propagates relevance with per-layer rules instead of gradients. It has its own p
 <td>1 forward + 1 backward</td>
 <td>"Where in the image?" for CNNs</td>
 <td>Coarse: feature-map resolution, not pixels</td>
+</tr>
+<tr>
+<td><code>FindCounterfactual</code></td>
+<td>Up to <code>rounds × steps</code> forward + backward passes</td>
+<td>"What is the smallest change that flips this?"</td>
+<td>On images it finds adversarial noise, not a meaningful change</td>
 </tr>
 <tr>
 <td><a href="../lrp/"><code>LRP</code></a></td>
@@ -1879,6 +1910,28 @@ MNIST classifier, <code>MnistConvNet</code> (Conv2D → ReLU → Flatten → Lin
 averages the gradient over each channel's spatial positions to get a weight <code>αₖ</code> per channel.
 The map is <code>ReLU(Σₖ αₖ · Aᵏ)</code>.</p>
 <p>Recipe: <a href="../../recipes/interpretability/grad_cam_walkthrough/">Grad-CAM walkthrough</a>.</p>
+<h3 id="counterfactuals">Counterfactuals<a class="headerlink" href="#counterfactuals" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/counterfactual.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/svg.hpp"</span>
+
+<span class="n">CounterfactualConstraints</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="n">c</span><span class="p">.</span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MedianAbsoluteDeviation</span><span class="p">(</span><span class="n">background</span><span class="p">);</span><span class="w">  </span><span class="c1">// a change of one MAD costs 1</span>
+<span class="n">c</span><span class="p">.</span><span class="n">immutable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="w">                                </span><span class="c1">// feature 0 (say, age) may not change</span>
+<span class="n">CounterfactualResult</span><span class="w"> </span><span class="n">cf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindCounterfactual</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">CounterfactualTarget</span><span class="o">::</span><span class="n">ToClass</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="c1">// cf.valid, cf.counterfactual, cf.distance, cf.num_changed, cf.output_before, cf.output_after</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">svg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RenderCounterfactualSvg</span><span class="p">(</span>
+<span class="w">    </span><span class="n">ToCounterfactualDocument</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">cf</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"age"</span><span class="p">,</span><span class="w"> </span><span class="s">"income"</span><span class="p">},</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="s">"class approved"</span><span class="p">));</span>
+</code></pre></div>
+<p><strong>What's happening:</strong> the search minimizes <code>lambda × loss + Σⱼ |x'ⱼ − xⱼ| / scaleⱼ</code>. The loss is
+a hinge that is zero once the target class leads every other output by <code>margin</code> (or the output
+is inside the target range). Each step is a gradient step on the loss followed by
+soft-thresholding toward the input, so features the prediction doesn't need stay exactly
+unchanged and the result is sparse. If a round of <code>steps_per_round</code> steps ends without a valid
+point, <code>lambda</code> grows by <code>lambda_growth</code> and the search continues. Integer features are rounded
+and one-hot groups snapped at the end, and <code>valid</code> is judged after that. On a linear model the
+result is the L1-optimal change, which the tests check.</p>
+<p>Test reference: <code>tests/counterfactual_test.cpp</code>.</p>
 <h2 id="before-you-explain">Before you explain<a class="headerlink" href="#before-you-explain" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Call <code>model.set_training(false)</code> first if the model has BatchNorm or Dropout. Otherwise each

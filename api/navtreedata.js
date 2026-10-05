@@ -76,13 +76,14 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1SequentialModule.html#a1bc86e038503cc22bb6949cc768b71f4",
 "classpulsatrix_1_1TiedLMHeadModule.html#a02d1fcace11e192a006e218d64efd0e4",
 "classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html#a8c12f818de852ba84c2a298d8417cf2c",
-"hierarchy.html",
-"namespacepulsatrix.html#a88c88a8898d6848d8a6a21e268ef4035",
-"residual__module_8hpp.html",
-"structpulsatrix_1_1ConservationResult.html",
-"structpulsatrix_1_1IceResult.html#aa1c98dddc84714661e56715e298e20b3",
-"structpulsatrix_1_1ReplayBatch.html#a5b67f2f762ea75616afd4f1fe9cfd12c",
-"structpulsatrix_1_1WavData.html#ab0bc71fa87327420ad00006c164a4ae8"
+"gru__module_8hpp.html",
+"namespacepulsatrix.html#a808b96b4abd360d90e4a12b4c28476ba",
+"neuro__symbolic__toy__kb_8hpp.html",
+"structpulsatrix_1_1CircuitGraphDocument_1_1Node.html#a4a3f599371283f9edad94a8f2f33bf75",
+"structpulsatrix_1_1FieldStatistics.html",
+"structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a324118a6721dd6b8a9b9f4e327df2bf5",
+"structpulsatrix_1_1SensitivityDocument_1_1Feature.html#a14644be8c89ddb0509ebffc906dde5b2",
+"structpulsatrix_1_1detail_1_1RawReading.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

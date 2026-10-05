@@ -1,37 +1,51 @@
 <map id="include/pulsatrix/linear_module.hpp" name="include/pulsatrix/linear_module.hpp">
-<area shape="rect" id="Node000001" title="Dense/fully&#45;connected layer – the reference Module implementation." alt="" coords="751,5,921,45"/>
-<area shape="rect" id="Node000002" href="$linear__probe_8hpp.html" title="Linear probe – trains one linear classifier to decode a binary concept from a layer&#39;s activations,..." alt="" coords="61,93,232,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="737,39,514,62,251,96,233,99,232,94,250,91,514,57,737,33"/>
-<area shape="rect" id="Node000003" href="$lrp_8hpp.html" title="LRP – whole&#45;model Layer&#45;wise Relevance Propagation explainer." alt="" coords="5,277,184,302"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="737,36,510,57,401,74,358,85,325,96,288,115,253,138,189,190,138,241,106,278,102,274,134,237,185,186,250,134,285,110,323,91,356,79,400,69,509,52,737,30"/>
-<area shape="rect" id="Node000004" href="$mnist__classifier__example_8hpp.html" title="Real MNIST classifier: Conv2DModule &#45;&gt; ReluModule &#45;&gt; FlattenModule &#45;&gt; LinearModule &#45;&gt; CrossEntropyLos..." alt="" coords="811,93,989,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="861,55,888,92,884,95,856,58"/>
-<area shape="rect" id="Node000005" href="$multihead__attention__module_8hpp.html" title="Multi&#45;head scaled dot&#45;product attention – this codebase&#39;s first Module composed out of other real Mod..." alt="" coords="336,93,536,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="738,50,524,96,523,91,736,45"/>
-<area shape="rect" id="Node000011" href="$tagger__finetune__example_8hpp.html" title="A full fine&#45;tuning recipe (roadmap TRN&#45;6): pretrain a tiny transformer tagger on one rule,..." alt="" coords="685,269,861,309"/>
-<area shape="poly" id="edge18_Node000001_Node000011" title=" " alt="" coords="818,58,801,94,789,143,781,192,776,269,771,269,776,191,784,142,796,92,813,56"/>
-<area shape="rect" id="Node000012" href="$neuro__symbolic__datalog__bridge_8hpp.html" title="Wires a real neural predicate (LinearModule + sigmoid, reusing Phase 1 Mission 2&#39;s ToyKnowledgeBase p..." alt="" coords="1014,93,1234,133"/>
-<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="913,47,1062,91,1060,96,912,52"/>
-<area shape="rect" id="Node000013" href="$neuro__symbolic__toy__kb_8hpp.html" title="Toy knowledge&#45;base training demo – Phase 1 Mission 2 of campaign_exai_dl_library_neuro_symbolic (diff..." alt="" coords="1259,93,1429,133"/>
-<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="935,39,1247,91,1259,93,1258,98,1246,96,935,45"/>
-<area shape="rect" id="Node000014" href="$sparse__autoencoder_8hpp.html" title="Sparse autoencoder – reconstructs an activation through an overcomplete, L1&#45;penalized hidden layer,..." alt="" coords="1454,93,1631,133"/>
-<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="935,33,1167,56,1442,91,1454,93,1453,98,1441,96,1166,61,935,38"/>
-<area shape="rect" id="Node000015" href="$swiglu__module_8hpp.html" title="SwiGLU gated feedforward block – second module composed from real LinearModule sub&#45;objects,..." alt="" coords="560,93,736,133"/>
-<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="784,53,690,96,688,91,781,49"/>
-<area shape="rect" id="Node000016" href="$xor__training__example_8hpp.html" title="Phase 1&#39;s training&#45;loop proof: Linear(2,4)&#45;&gt;ReLU&#45;&gt;Linear(4,1) learning XOR." alt="" coords="1656,93,1827,133"/>
-<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="935,29,1252,50,1448,67,1644,91,1656,92,1656,98,1644,96,1447,73,1251,55,935,34"/>
-<area shape="rect" id="Node000006" href="$explainer__context_8hpp.html" title="Stable interface every explainer gets, regardless of type (charter Part 2 SS2)." alt="" coords="307,181,501,221"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="427,147,414,182,409,180,422,145"/>
-<area shape="rect" id="Node000010" href="$transformer__block_8hpp.html" title="Pre&#45;LN transformer block – Phase 3&#39;s literal exit&#45;gate deliverable, third and last composition missio..." alt="" coords="525,181,736,221"/>
-<area shape="poly" id="edge11_Node000005_Node000010" title=" " alt="" coords="492,136,589,179,587,184,490,141"/>
-<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="324,228,137,279,135,274,323,222"/>
-<area shape="rect" id="Node000007" href="$grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="499,269,661,309"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="456,225,543,267,540,272,454,230"/>
-<area shape="rect" id="Node000008" href="$integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="287,357,489,397"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="425,233,438,270,440,290,437,310,424,337,408,359,404,356,420,334,432,309,435,290,433,271,420,235"/>
-<area shape="rect" id="Node000009" href="$saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="209,277,423,302"/>
-<area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="376,233,330,278,326,274,373,229"/>
-<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="337,311,374,355,370,359,332,314"/>
-<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="675,226,743,267,741,272,672,231"/>
-<area shape="poly" id="edge17_Node000015_Node000010" title=" " alt="" coords="644,147,637,182,632,181,639,146"/>
+<area shape="rect" id="Node000001" title="Dense/fully&#45;connected layer – the reference Module implementation." alt="" coords="1157,5,1327,45"/>
+<area shape="rect" id="Node000002" href="$linear__probe_8hpp.html" title="Linear probe – trains one linear classifier to decode a binary concept from a layer&#39;s activations,..." alt="" coords="467,93,638,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1143,39,920,62,657,96,639,99,638,94,656,91,920,57,1143,33"/>
+<area shape="rect" id="Node000003" href="$lrp_8hpp.html" title="LRP – whole&#45;model Layer&#45;wise Relevance Propagation explainer." alt="" coords="189,277,367,302"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1143,32,1054,39,950,50,839,69,731,96,690,114,651,136,456,220,308,279,306,274,454,215,649,131,688,109,729,91,838,64,949,45,1053,33,1142,27"/>
+<area shape="rect" id="Node000004" href="$mnist__classifier__example_8hpp.html" title="Real MNIST classifier: Conv2DModule &#45;&gt; ReluModule &#45;&gt; FlattenModule &#45;&gt; LinearModule &#45;&gt; CrossEntropyLos..." alt="" coords="1217,93,1395,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1267,55,1294,92,1290,95,1262,58"/>
+<area shape="rect" id="Node000005" href="$multihead__attention__module_8hpp.html" title="Multi&#45;head scaled dot&#45;product attention – this codebase&#39;s first Module composed out of other real Mod..." alt="" coords="742,93,942,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1144,50,930,96,929,91,1142,45"/>
+<area shape="rect" id="Node000018" href="$tagger__finetune__example_8hpp.html" title="A full fine&#45;tuning recipe (roadmap TRN&#45;6): pretrain a tiny transformer tagger on one rule,..." alt="" coords="1149,269,1325,309"/>
+<area shape="poly" id="edge25_Node000001_Node000018" title=" " alt="" coords="1223,58,1207,94,1202,143,1208,191,1219,235,1231,268,1226,270,1214,236,1202,192,1197,143,1202,93,1218,56"/>
+<area shape="rect" id="Node000019" href="$neuro__symbolic__datalog__bridge_8hpp.html" title="Wires a real neural predicate (LinearModule + sigmoid, reusing Phase 1 Mission 2&#39;s ToyKnowledgeBase p..." alt="" coords="1420,93,1640,133"/>
+<area shape="poly" id="edge20_Node000001_Node000019" title=" " alt="" coords="1319,47,1468,91,1466,96,1318,52"/>
+<area shape="rect" id="Node000020" href="$neuro__symbolic__toy__kb_8hpp.html" title="Toy knowledge&#45;base training demo – Phase 1 Mission 2 of campaign_exai_dl_library_neuro_symbolic (diff..." alt="" coords="1665,93,1835,133"/>
+<area shape="poly" id="edge21_Node000001_Node000020" title=" " alt="" coords="1341,39,1653,91,1665,93,1664,98,1652,96,1341,45"/>
+<area shape="rect" id="Node000021" href="$sparse__autoencoder_8hpp.html" title="Sparse autoencoder – reconstructs an activation through an overcomplete, L1&#45;penalized hidden layer,..." alt="" coords="1860,93,2037,133"/>
+<area shape="poly" id="edge22_Node000001_Node000021" title=" " alt="" coords="1341,33,1573,56,1848,91,1860,93,1859,98,1847,96,1572,61,1341,38"/>
+<area shape="rect" id="Node000022" href="$swiglu__module_8hpp.html" title="SwiGLU gated feedforward block – second module composed from real LinearModule sub&#45;objects,..." alt="" coords="966,93,1142,133"/>
+<area shape="poly" id="edge23_Node000001_Node000022" title=" " alt="" coords="1190,53,1096,96,1094,91,1187,49"/>
+<area shape="rect" id="Node000023" href="$xor__training__example_8hpp.html" title="Phase 1&#39;s training&#45;loop proof: Linear(2,4)&#45;&gt;ReLU&#45;&gt;Linear(4,1) learning XOR." alt="" coords="2062,93,2233,133"/>
+<area shape="poly" id="edge26_Node000001_Node000023" title=" " alt="" coords="1341,29,1658,50,1854,67,2050,91,2062,92,2062,98,2050,96,1853,73,1657,55,1341,34"/>
+<area shape="rect" id="Node000006" href="$explainer__context_8hpp.html" title="Stable interface every explainer gets, regardless of type (charter Part 2 SS2)." alt="" coords="713,181,907,221"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="833,147,820,182,815,180,828,145"/>
+<area shape="rect" id="Node000017" href="$transformer__block_8hpp.html" title="Pre&#45;LN transformer block – Phase 3&#39;s literal exit&#45;gate deliverable, third and last composition missio..." alt="" coords="931,181,1142,221"/>
+<area shape="poly" id="edge18_Node000005_Node000017" title=" " alt="" coords="898,136,995,179,993,184,896,141"/>
+<area shape="poly" id="edge15_Node000006_Node000003" title=" " alt="" coords="700,223,694,224,380,272,338,279,337,274,379,267,694,219,699,218"/>
+<area shape="rect" id="Node000007" href="$counterfactual_8hpp.html" title="Gradient&#45;based counterfactual explanations (Wachter et al. 2017), CFS&#45;5." alt="" coords="391,277,647,302"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="734,228,559,279,557,274,733,223"/>
+<area shape="rect" id="Node000014" href="$grad__cam_8hpp.html" title="Grad&#45;CAM – gradient&#45;weighted class activation mapping over the last conv layer (charter Part 1,..." alt="" coords="671,269,834,309"/>
+<area shape="poly" id="edge13_Node000006_Node000014" title=" " alt="" coords="792,234,768,271,763,268,787,232"/>
+<area shape="rect" id="Node000015" href="$integrated__gradients_8hpp.html" title="Integrated Gradients – baseline&#45;interpolated gradient integral (charter Part 1, Phase 2; theory: xai_..." alt="" coords="843,357,1044,397"/>
+<area shape="poly" id="edge14_Node000006_Node000015" title=" " alt="" coords="835,231,931,356,927,359,831,234"/>
+<area shape="rect" id="Node000016" href="$saliency_8hpp.html" title="Saliency maps – raw gradient of a target output w.r.t. the input (charter Part 1, Phase 2)." alt="" coords="909,277,1124,302"/>
+<area shape="poly" id="edge16_Node000006_Node000016" title=" " alt="" coords="869,224,990,274,988,279,867,229"/>
+<area shape="rect" id="Node000008" href="$document_8hpp.html" title="Versioned JSON documents (pulsatrix.&lt;kind&gt;.v1) that every renderer reads." alt="" coords="443,357,596,397"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="522,316,522,357,517,357,517,316"/>
+<area shape="rect" id="Node000009" href="$attribution__bar__chart_8hpp.html" title="Horizontal feature&#45;importance bar chart for an Attribution." alt="" coords="5,445,196,485"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="430,400,193,448,192,443,429,394"/>
+<area shape="rect" id="Node000010" href="$attribution__waterfall_8hpp.html" title="Cascading waterfall chart from a baseline to a prediction, for local attribution." alt="" coords="221,445,407,485"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="463,405,360,448,358,443,461,400"/>
+<area shape="rect" id="Node000011" href="$circuit__graph__view_8hpp.html" title="Node&#45;link diagram for a CircuitGraph (mechanistic&#45;interpretability visualization)." alt="" coords="432,445,607,485"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="522,411,522,445,517,445,517,411"/>
+<area shape="rect" id="Node000012" href="$saliency__heatmap__view_8hpp.html" title="Saliency/attribution heatmap using a perceptually uniform colormap." alt="" coords="631,445,842,485"/>
+<area shape="poly" id="edge11_Node000008_Node000012" title=" " alt="" coords="581,400,690,443,688,448,579,405"/>
+<area shape="rect" id="Node000013" href="$svg_8hpp.html" title="Dependency&#45;free SVG figures from viz documents: bar, waterfall, heatmap, token strip,..." alt="" coords="865,445,1019,485"/>
+<area shape="poly" id="edge12_Node000008_Node000013" title=" " alt="" coords="610,394,855,443,866,445,865,450,853,448,609,399"/>
+<area shape="poly" id="edge17_Node000016_Node000015" title=" " alt="" coords="1000,314,962,359,958,355,996,311"/>
+<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="1094,224,1194,267,1192,272,1092,229"/>
+<area shape="poly" id="edge24_Node000022_Node000017" title=" " alt="" coords="1050,147,1043,182,1038,181,1045,146"/>
 </map>
