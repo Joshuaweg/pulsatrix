@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['optype_0',['OpType',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb',1,'pulsatrix']]]
+  ['mutationobjective_0',['MutationObjective',['../namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550',1,'pulsatrix']]]
 ];

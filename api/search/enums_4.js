@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kind_0',['kind',['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300',1,'pulsatrix::BenchmarkRecord::Kind'],['../structpulsatrix_1_1Imputation.html#a295743774684f4e01cfa7ead34138deb',1,'pulsatrix::Imputation::Kind']]]
+  ['icestyle_0',['IceStyle',['../namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1ba',1,'pulsatrix']]]
 ];

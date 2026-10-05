@@ -2084,6 +2084,18 @@ read the same data. The documents are part of <code>pulsatrix_core</code> and ne
 <td>One feature's <code>source</code>, <code>feature_index</code>, <code>activation_density</code>, <code>max_activation</code>, activation histogram and <code>top_examples</code></td>
 <td>—</td>
 </tr>
+<tr>
+<td><code>pulsatrix.sensitivity.v1</code></td>
+<td><code>SensitivityDocument</code></td>
+<td><code>target</code>, the unchanged <code>output</code>, and per feature its <code>name</code>, <code>value</code>, <code>low</code>, <code>high</code>, <code>output_low</code> and <code>output_high</code></td>
+<td><code>LocalSensitivityResult</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.partial_dependence.v1</code></td>
+<td><code>PartialDependenceDocument</code></td>
+<td><code>feature</code>, <code>target</code>, <code>grid</code>, <code>partial_dependence</code>, and optionally <code>num_instances</code> ICE curves (<code>ice</code>) and each instance's <code>feature_values</code></td>
+<td><code>IceResult</code></td>
+</tr>
 </tbody>
 </table>
 <p>The widgets read documents directly: <code>AttributionBarChart</code>, <code>AttributionWaterfallChart</code>,
@@ -2178,6 +2190,16 @@ magnitudes.</p>
 <td>One row per feature, one point per input</td>
 <td>several <code>AttributionDocument</code>s</td>
 </tr>
+<tr>
+<td><code>RenderTornadoSvg(doc, top_k)</code></td>
+<td>One row per feature, largest swing first: bars from the unchanged output to the output at the feature's low and high values</td>
+<td><code>SensitivityDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderPartialDependenceSvg(doc, view)</code></td>
+<td>ICE curves under their average, raw, centered or as slopes, with a rug of the inputs' values</td>
+<td><code>PartialDependenceDocument</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
@@ -2200,6 +2222,8 @@ pulsatrix_svg<span class="w"> </span>explanation.json<span class="w"> </span>--w
 pulsatrix_svg<span class="w"> </span>run*.json<span class="w"> </span>--beeswarm<span class="w"> </span><span class="m">0</span>,3,7<span class="w"> </span>-o<span class="w"> </span>swarm.svg<span class="w">      </span><span class="c1"># many attributions: beeswarm</span>
 pulsatrix_svg<span class="w"> </span>saliency.json<span class="w"> </span>-o<span class="w"> </span>map.svg<span class="w">                     </span><span class="c1"># heatmap</span>
 pulsatrix_svg<span class="w"> </span>tokens.json<span class="w"> </span>-o<span class="w"> </span>text.svg<span class="w">                      </span><span class="c1"># token relevance</span>
+pulsatrix_svg<span class="w"> </span>pd.json<span class="w"> </span>--ice<span class="w"> </span>centered<span class="w"> </span>-o<span class="w"> </span>ice.svg<span class="w">            </span><span class="c1"># partial dependence, centered ICE</span>
+pulsatrix_svg<span class="w"> </span>sens.json<span class="w"> </span>--top-k<span class="w"> </span><span class="m">8</span><span class="w"> </span>-o<span class="w"> </span>tornado.svg<span class="w">           </span><span class="c1"># sensitivity: tornado chart</span>
 </code></pre></div>
 <p>Other options: <code>--top-k N</code>, <code>--width W</code>, <code>--font-size N</code>, <code>--title TEXT</code>.</p>
 <p><strong>Details:</strong></p>
