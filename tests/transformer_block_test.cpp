@@ -317,5 +317,38 @@ TEST_F(TransformerBlockTest, ValidatesAgainstIndependentAttnLRPReference) {
 // Adversarial / boundary-condition (device guards)
 // ---------------------------------------------------------------------------
 
+// LLM-1: a block built from an AttentionConfig carries the config's causal mask and GQA
+// through: changing a later token leaves earlier outputs exactly unchanged.
+TEST(TransformerBlockConfigTest, CausalConfigReachesAttention) {
+    CPUBackend backend;
+    AttentionConfig c;
+    c.d_model = 4;
+    c.num_heads = 2;
+    c.num_kv_heads = 1;
+    c.rope_layout = RoPELayout::RotateHalf;
+    c.qkv_bias = false;
+    c.out_bias = false;
+    c.causal = true;
+    TransformerBlock block(c, 6, &backend, 1e-5f);
+    EXPECT_EQ(block.mha().num_kv_heads(), 1);
+    EXPECT_TRUE(block.mha().is_causal());
+    for (ParamRef& p : block.parameters()) {
+        std::vector<float> v(static_cast<size_t>(p.value->numel()));
+        for (size_t i = 0; i < v.size(); ++i) {
+            v[i] = 0.1f * static_cast<float>((i * 5 + 1) % 7) - 0.3f;
+        }
+        *p.value = Tensor(p.value->shape(), &backend, v);
+    }
+    std::vector<float> a{0.5f, -1.0f, 0.3f, 0.9f, -0.2f, 0.4f, 1.1f, -0.7f, 0.6f, 0.2f, -0.5f, 0.8f};
+    std::vector<float> b = a;
+    b[8] += 2.0f;  // token 2
+    Tensor ya = block.forward(Tensor(Shape({1, 3, 4}), &backend, a));
+    Tensor yb = block.forward(Tensor(Shape({1, 3, 4}), &backend, b));
+    for (int64_t i = 0; i < 8; ++i) {
+        EXPECT_FLOAT_EQ(ya.data()[i], yb.data()[i]);
+    }
+    EXPECT_NE(ya.data()[8], yb.data()[8]);
+}
+
 }  // namespace
 }  // namespace pulsatrix

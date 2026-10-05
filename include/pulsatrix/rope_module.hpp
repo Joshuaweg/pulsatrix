@@ -10,11 +10,25 @@
 namespace pulsatrix {
 
 /**
+ * @brief Which features RoPE rotates together (LLM-1).
+ * @note The two layouts are the same rotation of a permuted feature vector, so they give
+ *       different results on the same weights. A checkpoint is trained with one of them.
+ */
+enum class RoPELayout {
+    /** Pair i is features (2i, 2i+1): the original RoPE paper and Meta's own Llama code. */
+    AdjacentPairs,
+    /** Pair i is features (i, i + head_dim/2): Hugging Face `rotate_half`, which every
+     *  Llama-family checkpoint on the Hub (SmolLM2, Qwen, Llama, Gemma) expects. */
+    RotateHalf,
+};
+
+/**
  * @brief Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable,
  *        position-dependent rotation of each adjacent feature pair of a Q/K-shaped tensor.
  *
  * For a feature vector of even dimension `head_dim`, split into pairs `(x[2i], x[2i+1])`
- * for `i = 0 .. head_dim/2 - 1`. At sequence position `pos` the rotation angle is
+ * for `i = 0 .. head_dim/2 - 1` (RoPELayout::AdjacentPairs; RoPELayout::RotateHalf pairs
+ * `(x[i], x[i + head_dim/2])` instead, with the same formulas). At sequence position `pos` the rotation angle is
  * `theta_i = pos * base^(-2i/head_dim)` (`base = 10000` by convention), and
  *   `y[2i]   = x[2i]*cos(theta_i) - x[2i+1]*sin(theta_i)`
  *   `y[2i+1] = x[2i]*sin(theta_i) + x[2i+1]*cos(theta_i)`.
@@ -40,13 +54,26 @@ public:
      *        rotation acts on adjacent pairs, so an odd dimension has no valid pairing.
      * @param backend Backend to allocate through. Not owned; must outlive this module.
      * @param base Frequency base of the geometric angle schedule; 10000.0 is the standard
-     *        RoPE convention.
+     *        RoPE convention. Hugging Face configs call it `rope_theta`.
+     * @param layout Which features form each rotated pair; see RoPELayout.
      * @throws std::invalid_argument if head_dim <= 0 or head_dim is odd -- external
      *         boundary (constructor arguments can originate from Phase 5's Python
      *         bindings with no upstream validation), same convention as every other
      *         module's constructor argument checks.
      */
-    RoPEModule(int64_t head_dim, DeviceBackend* backend, float base = 10000.0f);
+    RoPEModule(int64_t head_dim, DeviceBackend* backend, float base = 10000.0f,
+               RoPELayout layout = RoPELayout::AdjacentPairs);
+
+    /**
+     * @brief Sets the position of the first row of the L axis, so forward() rotates rows
+     *        `offset, offset + 1, ...` instead of `0, 1, ...` (LLM-1). Used when a sequence is
+     *        processed in pieces, as generation with a KV cache does.
+     * @throws std::invalid_argument if offset is negative.
+     */
+    void set_position_offset(int64_t offset);
+    [[nodiscard]] int64_t position_offset() const { return position_offset_; }
+    [[nodiscard]] RoPELayout layout() const { return layout_; }
+    [[nodiscard]] float base() const { return base_; }
 
     /**
      * @brief Computes the gradient w.r.t. this module's input.
@@ -133,6 +160,8 @@ protected:
 private:
     int64_t head_dim_;
     float base_;
+    RoPELayout layout_;
+    int64_t position_offset_ = 0;
     DeviceBackend* backend_;
     Tensor last_input_;   ///< Cached forward input x -- the epsilon rule's numerators.
     Tensor last_output_;  ///< Cached forward output y -- the epsilon rule's denominators.
@@ -140,15 +169,20 @@ private:
 
     /**
      * @brief Ensures cos_table_/sin_table_ hold (seq_len, head_dim/2) rotation tables on the
-     *        backend's device, rebuilding only when seq_len changes.
+     *        backend's device for positions position_offset_ onward, rebuilding only when
+     *        seq_len or the offset changes.
      * @note Angles are computed on the host in double and narrowed once, exactly as the
      *       pre-campaign host loop did, then uploaded -- a float angle on the device would lose
      *       ~5e-4 at positions in the thousands (GPU-native-kernels Mission 2).
      */
-    void ensure_tables(int64_t seq_len);
+    void ensure_tables(int64_t seq_len, int64_t offset);
     Tensor cos_table_;
     Tensor sin_table_;
     int64_t table_seq_len_ = 0;
+    int64_t table_offset_ = 0;
+    // Offset the cached forward used, so backward and LRP rotate by the same angles even if
+    // set_position_offset is called in between.
+    int64_t last_offset_ = 0;
 };
 
 }  // namespace pulsatrix

@@ -455,10 +455,12 @@ public:
      * @brief Rotary position embedding over (num_slices, seq_len, head_dim) data.
      * @param cos_table,sin_table (seq_len, head_dim/2) per-position rotation tables.
      * @param inverse false: forward rotation; true: its transpose (RoPE's backward).
+     * @param rotate_half false: pair i is features (2i, 2i+1). true: pair i is (i, i + head_dim/2),
+     *        the Hugging Face "rotate half" layout (LLM-1).
      * @note out must not alias in.
      */
     virtual void rope_rotate(const float* in, const float* cos_table, const float* sin_table, float* out,
-                             size_t num_slices, size_t seq_len, size_t head_dim, bool inverse) = 0;
+                             size_t num_slices, size_t seq_len, size_t head_dim, bool inverse, bool rotate_half) = 0;
 
     /**
      * @brief Swaps the middle two axes: in (d0, d1, d2, d3) -> out (d0, d2, d1, d3).
@@ -466,6 +468,20 @@ public:
      *       both this permutation. out must not alias in.
      */
     virtual void permute_0213(const float* in, float* out, size_t d0, size_t d1, size_t d2, size_t d3) = 0;
+
+    /**
+     * @brief Overwrites the masked entries of (batch, heads, q_len, k_len) attention scores with
+     *        value, in place (LLM-1).
+     * @param key_keep (batch, k_len): 0 masks that key for every query and head, anything else
+     *        keeps it. nullptr masks no key.
+     * @param causal Also masks key j for query i when j > i + q_offset.
+     * @param q_offset Absolute position of query 0 among the keys (0 unless a cache holds
+     *        earlier keys).
+     * @note Attention calls it three times per pass: value = lowest float on the scores before
+     *       softmax, and value = 0 on the score gradient and on the score relevance.
+     */
+    virtual void attention_mask_fill(float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len,
+                                     size_t k_len, bool causal, size_t q_offset, float value) = 0;
 
     /** @brief out[i][:] = table[indices[i]][:] for count rows of width dim. */
     virtual void gather_rows(const float* table, const float* indices, float* out, size_t count, size_t dim) = 0;
@@ -526,7 +542,7 @@ public:
     /** @brief RoPEModule epsilon rule over (slices, seq_len, head_dim), tables as for rope_rotate. */
     virtual void lrp_rope(const float* x, const float* y, const float* r, const float* cos_table,
                           const float* sin_table, float* r_in, size_t slices, size_t seq_len, size_t head_dim,
-                          float eps) = 0;
+                          float eps, bool rotate_half) = 0;
 
     /**
      * @brief One elementwise pass of Conjunction/Disjunction for operands a, b.

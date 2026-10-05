@@ -46,8 +46,13 @@ public:
      *        allocates on, or Tensor's own device-based dispatch (e.g. CopyDirection
      *        selection) will be wrong. See campaign_exai_dl_library_phase1_5_cuda_backend.md's
      *        Mission 3.
+     * @param use_bias false builds `y = x @ W` with no bias parameter (LLM-1: Llama-family
+     *        projections have none). The bias buffer still exists, all zeros, so every LRP
+     *        rule reads it unchanged, but it is not in named_parameters(), never receives a
+     *        gradient, and set_bias() throws.
      */
-    LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, DeviceType device);
+    LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, DeviceType device,
+                 bool use_bias = true);
 
     /**
      * @brief As above, on backend's own device (backend->device()).
@@ -55,7 +60,7 @@ public:
      *       without an explicit tag -- e.g. SwiGLUModule's three projections -- held
      *       Cpu-tagged weights in device memory (GPU-native-kernels Mission 0).
      */
-    LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend);
+    LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, bool use_bias = true);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input, and accumulates the
@@ -79,7 +84,10 @@ public:
     /** @brief Overwrites the weight buffer -- test/initialization use only. */
     void set_weight(std::initializer_list<float> values);
 
-    /** @brief Overwrites the bias buffer -- test/initialization use only. */
+    /**
+     * @brief Overwrites the bias buffer -- test/initialization use only.
+     * @throws std::logic_error if this layer was built with use_bias = false.
+     */
     void set_bias(std::initializer_list<float> values);
 
     /** @brief Vector overload for runtime-sized sources -- see Tensor's own vector ctor. */
@@ -87,6 +95,11 @@ public:
 
     /** @brief Vector overload for runtime-sized sources -- see Tensor's own vector ctor. */
     void set_bias(const std::vector<float>& values);
+
+    [[nodiscard]] int64_t in_features() const { return in_features_; }
+    [[nodiscard]] int64_t out_features() const { return out_features_; }
+    /** @brief False when built with use_bias = false: bias() is then all zeros. */
+    [[nodiscard]] bool uses_bias() const { return use_bias_; }
 
     [[nodiscard]] const Tensor& weight() const { return weight_; }
     [[nodiscard]] const Tensor& bias() const { return bias_; }
@@ -121,6 +134,9 @@ public:
     [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }
 
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        if (!use_bias_) {
+            return {{"weight", {&weight_, &weight_grad_}}};
+        }
         return {{"weight", {&weight_, &weight_grad_}}, {"bias", {&bias_, &bias_grad_}}};
     }
 
@@ -134,6 +150,7 @@ protected:
 private:
     int64_t in_features_;
     int64_t out_features_;
+    bool use_bias_;
     DeviceBackend* backend_;
     Tensor weight_;
     Tensor bias_;

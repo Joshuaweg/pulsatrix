@@ -66,8 +66,10 @@ public:
     void rms_norm_backward(const float* grad_out, const float* gamma, const float* in, const float* row_rms,
                            float* grad_in, float* gamma_terms, size_t rows, size_t cols) override;
     void rope_rotate(const float* in, const float* cos_table, const float* sin_table, float* out, size_t num_slices,
-                     size_t seq_len, size_t head_dim, bool inverse) override;
+                     size_t seq_len, size_t head_dim, bool inverse, bool rotate_half) override;
     void permute_0213(const float* in, float* out, size_t d0, size_t d1, size_t d2, size_t d3) override;
+    void attention_mask_fill(float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len,
+                             size_t k_len, bool causal, size_t q_offset, float value) override;
     void gather_rows(const float* table, const float* indices, float* out, size_t count, size_t dim) override;
     void scatter_add_rows(const float* src, const float* indices, float* table, size_t count, size_t dim) override;
     void tanh_gaussian_forward(const float* mean, const float* log_std, const float* eps, float* action,
@@ -87,7 +89,7 @@ public:
     void lrp_softmax_rows(const float* x, const float* y, const float* r, float* r_in, size_t rows,
                           size_t cols) override;
     void lrp_rope(const float* x, const float* y, const float* r, const float* cos_table, const float* sin_table,
-                  float* r_in, size_t slices, size_t seq_len, size_t head_dim, float eps) override;
+                  float* r_in, size_t slices, size_t seq_len, size_t head_dim, float eps, bool rotate_half) override;
     void logic_pointwise(LogicOp op, int norm, const float* a, const float* b, const float* g_or_r, const float* y,
                          float* out_a, float* out_b, size_t n, float eps) override;
     void aggregator_forward(const float* x, float* mean_pow, float* out, size_t n, size_t cols, float p) override;

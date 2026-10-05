@@ -320,13 +320,25 @@ void CUDABackend::rms_norm_backward(const float* grad_out, const float* gamma, c
 }
 
 void CUDABackend::rope_rotate(const float* in, const float* cos_table, const float* sin_table, float* out,
-                             size_t num_slices, size_t seq_len, size_t head_dim, bool inverse) {
+                             size_t num_slices, size_t seq_len, size_t head_dim, bool inverse, bool rotate_half) {
     const size_t total_rows = num_slices * seq_len;
     if (total_rows == 0 || head_dim == 0) {
         return;
     }
     gpu::rope_rotate_kernel<<<gpu::grid_size_for(total_rows), gpu::kBlockSize, 0, stream_>>>(
-        in, cos_table, sin_table, out, total_rows, seq_len, head_dim, inverse);
+        in, cos_table, sin_table, out, total_rows, seq_len, head_dim, inverse, rotate_half);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::attention_mask_fill(float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len,
+                                      size_t k_len, bool causal, size_t q_offset, float value) {
+    const size_t n = batch * heads * q_len * k_len;
+    if (n == 0 || (!causal && key_keep == nullptr)) {
+        return;
+    }
+    gpu::attention_mask_fill_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(
+        scores, key_keep, heads, q_len, k_len, n, causal, q_offset, value);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
@@ -447,12 +459,12 @@ void CUDABackend::lrp_softmax_rows(const float* x, const float* y, const float* 
 
 void CUDABackend::lrp_rope(const float* x, const float* y, const float* r, const float* cos_table,
                           const float* sin_table, float* r_in, size_t slices, size_t seq_len, size_t head_dim,
-                          float eps) {
+                          float eps, bool rotate_half) {
     if (slices * seq_len == 0 || head_dim == 0) {
         return;
     }
     gpu::lrp_rope_kernel<<<gpu::grid_size_for(slices * seq_len), gpu::kBlockSize, 0, stream_>>>(
-        x, y, r, cos_table, sin_table, r_in, slices * seq_len, seq_len, head_dim, eps);
+        x, y, r, cos_table, sin_table, r_in, slices * seq_len, seq_len, head_dim, eps, rotate_half);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }

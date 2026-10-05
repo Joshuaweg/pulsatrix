@@ -66,6 +66,17 @@ public:
                       bool use_qk_norm = false);
 
     /**
+     * @brief Constructs a block whose attention is configured in full (LLM-1): grouped-query
+     *        attention, a causal mask, the RoPE layout and so on. See AttentionConfig.
+     * @param attention Attention configuration; its d_model is the block's width.
+     * @param d_ff SwiGLU hidden width.
+     * @param backend Backend to allocate/compute through. Not owned; must outlive this module.
+     * @param norm_eps Stabilizer of both RMSNorms (Hugging Face `rms_norm_eps`).
+     * @throws std::invalid_argument propagated from the sub-modules' constructors.
+     */
+    TransformerBlock(const AttentionConfig& attention, int64_t d_ff, DeviceBackend* backend, float norm_eps = 1e-6f);
+
+    /**
      * @brief Gradient w.r.t. this module's input; sub-module parameter gradients accumulate
      *        inside norm1_/mha_/norm2_/swiglu_ (reachable through parameters()).
      * @param grad_output Gradient w.r.t. this module's output, shape `(N, L, d_model)`

@@ -342,12 +342,28 @@ void CPUBackend::rms_norm_backward(const float* grad_out, const float* gamma, co
 }
 
 void CPUBackend::rope_rotate(const float* in, const float* cos_table, const float* sin_table, float* out,
-                             size_t num_slices, size_t seq_len, size_t head_dim, bool inverse) {
+                             size_t num_slices, size_t seq_len, size_t head_dim, bool inverse, bool rotate_half) {
     const size_t half = head_dim / 2;
     for (size_t row = 0; row < num_slices * seq_len; ++row) {
         const size_t pos = row % seq_len;
         rows::rope_rotate(in + row * head_dim, cos_table + pos * half, sin_table + pos * half, out + row * head_dim,
-                          static_cast<int64_t>(half), inverse);
+                          static_cast<int64_t>(half), inverse, rotate_half);
+    }
+}
+
+void CPUBackend::attention_mask_fill(float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len,
+                                     size_t k_len, bool causal, size_t q_offset, float value) {
+    for (size_t b = 0; b < batch; ++b) {
+        for (size_t h = 0; h < heads; ++h) {
+            for (size_t i = 0; i < q_len; ++i) {
+                float* row = scores + ((b * heads + h) * q_len + i) * k_len;
+                for (size_t j = 0; j < k_len; ++j) {
+                    if (rows::attention_masked(key_keep, b, i, j, k_len, causal, q_offset)) {
+                        row[j] = value;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -464,13 +480,13 @@ void CPUBackend::lrp_softmax_rows(const float* x, const float* y, const float* r
 
 void CPUBackend::lrp_rope(const float* x, const float* y, const float* r, const float* cos_table,
                           const float* sin_table, float* r_in, size_t slices, size_t seq_len, size_t head_dim,
-                          float eps) {
+                          float eps, bool rotate_half) {
     const size_t half = head_dim / 2;
     for (size_t row = 0; row < slices * seq_len; ++row) {
         const size_t pos = row % seq_len;
         const size_t off = row * head_dim;
         lrp::rope_position(x + off, y + off, r + off, cos_table + pos * half, sin_table + pos * half, r_in + off,
-                           static_cast<int64_t>(half), eps);
+                           static_cast<int64_t>(half), eps, rotate_half);
     }
 }
 
