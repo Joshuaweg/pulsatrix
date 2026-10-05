@@ -1,10 +1,12 @@
 /** @file counterfactual.hpp
- *  @brief Gradient-based counterfactual explanations (Wachter et al. 2017), CFS-5.
+ *  @brief Counterfactual explanations: gradient-based (Wachter et al. 2017, CFS-5) and
+ *         model-agnostic (growing spheres, Laugel et al. 2018, CFS-6).
  *  @ingroup interpretability_dl
  */
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <vector>
 
 #include "pulsatrix/explainer_context.hpp"
@@ -117,5 +119,39 @@ struct CounterfactualResult {
                                                       const CounterfactualTarget& target,
                                                       const CounterfactualConstraints& constraints = {},
                                                       const CounterfactualOptions& options = {});
+
+/** @brief Settings for GrowingSpheresCounterfactual. Radii are in units of the constraints' scale. */
+struct GrowingSpheresOptions {
+    /** @brief Points drawn in each ball or shell. */
+    int samples_per_layer = 1000;
+    float initial_radius = 1.0f;
+    /** @brief Balls and shells drawn before giving up. */
+    int max_layers = 100;
+    /** @brief The same seed gives the same result on one platform. Directions are drawn with
+     *         std::log and std::cos, whose last bits can differ between C libraries. */
+    uint64_t seed = 0;
+    float change_tolerance = 1e-3f;
+};
+
+/**
+ * @brief A counterfactual for any prediction function, with no gradients (growing spheres, Laugel
+ *        et al. 2018): draws points uniformly in a ball around the input, halving its radius while
+ *        it still contains a point that reaches the target, then in ever larger shells until one
+ *        does; takes the nearest such point and puts features back to their original values,
+ *        smallest change first, while it still reaches the target.
+ * @param predict One instance in, outputs out. Works for models that aren't differentiable
+ *        (trees, rules, thresholds) or aren't pulsatrix modules at all.
+ * @return The same result and metrics as FindCounterfactual, with the same constraints (immutable
+ *         features are never moved, limits clip every point, integer and one-hot features are
+ *         fixed up at the end). `rounds` counts the balls and shells drawn; `final_lambda` is 0.
+ * @note About samples_per_layer model calls per layer, plus one per feature in the last step.
+ *       The search is in scaled Euclidean distance, so pass a scale (for example
+ *       MedianAbsoluteDeviation) when features have different units.
+ * @throws std::invalid_argument for the inputs FindCounterfactual rejects, or invalid options.
+ */
+[[nodiscard]] CounterfactualResult GrowingSpheresCounterfactual(const std::function<Tensor(const Tensor&)>& predict,
+                                                                const Tensor& input, const CounterfactualTarget& target,
+                                                                const CounterfactualConstraints& constraints = {},
+                                                                const GrowingSpheresOptions& options = {});
 
 }  // namespace pulsatrix
