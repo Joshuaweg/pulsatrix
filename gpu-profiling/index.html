@@ -865,6 +865,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#rocm-1000-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ROCm 10.0.0 evaluation
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1703,6 +1714,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#rocm-1000-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ROCm 10.0.0 evaluation
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1954,6 +1976,110 @@ failing kernel otherwise reports its error at the next wait, not at the op that 
 <p>The small models are still only about 20% busy. What's left is host-side work inside each step:
 reading the loss back, and losses that validate their targets on the host (one copy each step).
 Fused kernels (HIP-6) and keeping targets on the device are the next steps there.</p>
+<h2 id="rocm-1000-evaluation">ROCm 10.0.0 evaluation<a class="headerlink" href="#rocm-1000-evaluation" title="Permanent link">&para;</a></h2>
+<p>ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
+evaluation is roadmap HIP-9. Use it with <code>PULSATRIX_ROCM_VERSION=10.0.0 scripts/rocm-build.sh '...'</code>;
+the image is <code>docker/Dockerfile.rocm</code> built on <code>rocm/dev-ubuntu-24.04:10.0.0-full</code>. It ships
+HIP 7.15 and AMD clang 23, against 7.2.4's HIP 7.2 and clang 22.</p>
+<p>Measured 2026-10-04 on the Radeon 8060S, host kernel 7.0.0, same commit for both versions:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>ROCm 7.2.4</th>
+<th>ROCm 10.0.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HIP Debug tests</td>
+<td>2402/2402</td>
+<td>2402/2402, also with <code>PULSATRIX_HIP_SYNC_DEBUG=1</code></td>
+</tr>
+<tr>
+<td><code>scripts/profile_hip.sh</code> (rocprofv3)</td>
+<td>works</td>
+<td>works (rocprofv3 1.3.5)</td>
+</tr>
+<tr>
+<td>Benchmark suite, 6 ABBA rounds</td>
+<td>baseline</td>
+<td>no regressions; every time within ±2%</td>
+</tr>
+<tr>
+<td>LRP conservation and IG completeness</td>
+<td>baseline</td>
+<td>bit-identical</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Benchmark (<code>pulsatrix_bench</code>, HIP)</th>
+<th>7.2.4</th>
+<th>10.0.0</th>
+<th>Change</th>
+<th>p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>train.mlp</code></td>
+<td>0.366 ms</td>
+<td>0.371 ms</td>
+<td>+1.6%</td>
+<td>0.066</td>
+</tr>
+<tr>
+<td><code>train.cnn</code></td>
+<td>5.248 ms</td>
+<td>5.290 ms</td>
+<td>+0.8%</td>
+<td>0.242</td>
+</tr>
+<tr>
+<td><code>train.tagger</code></td>
+<td>2.229 ms</td>
+<td>2.268 ms</td>
+<td>+1.8%</td>
+<td>0.013</td>
+</tr>
+<tr>
+<td><code>explain.lrp_epsilon.mlp</code></td>
+<td>0.290 ms</td>
+<td>0.288 ms</td>
+<td>-0.5%</td>
+<td>0.409</td>
+</tr>
+<tr>
+<td><code>explain.lrp_epsilon_plus.convnet</code></td>
+<td>0.690 ms</td>
+<td>0.690 ms</td>
+<td>0.0%</td>
+<td>0.758</td>
+</tr>
+<tr>
+<td><code>explain.integrated_gradients.mlp</code></td>
+<td>7.306 ms</td>
+<td>7.222 ms</td>
+<td>-1.2%</td>
+<td>0.934</td>
+</tr>
+</tbody>
+</table>
+<p>Two differences from 7.2.4 matter for building against it:</p>
+<ul>
+<li><strong>Library path.</strong> ROCm 10's image keeps its libraries under <code>/opt/rocm/core-10.0/lib</code>, reached
+  through <code>/opt/rocm/lib</code>, and doesn't register that directory with the dynamic loader.
+  Programs then fail to start with <code>libhipblas.so.3: cannot open shared object file</code>. The
+  Dockerfile registers it. Outside the container, add <code>/opt/rocm/lib</code> to <code>/etc/ld.so.conf.d/</code>
+  or <code>LD_LIBRARY_PATH</code>.</li>
+<li><strong>hipBLASLt.</strong> ROCm 10's hipBLAS links hipBLASLt. Whether GEMMs go through it on gfx1151 is
+  HIP-8's question.</li>
+</ul>
+<p>ROCm 7.2.4 stays the default for now. Moving the default to 10.0.0 is one variable in
+<code>scripts/rocm-build.sh</code>.</p>
 
 
 
