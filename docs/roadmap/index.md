@@ -22,9 +22,12 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   with optimizer state ([IO-1, IO-2](#io-serialization-and-model-import)). The v1.1 training stack
   ([TRN-1 to TRN-6](#trn-training-and-fine-tuning)): parameter groups, AdamW, SGD momentum,
   gradient clipping, learning-rate schedules, token-accurate gradient accumulation and a full
-  fine-tuning recipe.
-- **HIP backend.** It works on gfx1151 (Strix Halo), but every op synchronizes the stream,
-  reductions run one thread per row or channel, and every tensor is a raw `hipMalloc`.
+  fine-tuning recipe. Explanation-quality metrics and the null-model baseline
+  ([XAI-5, XAI-6](#xai-question-driven-explainability-framework)).
+- **HIP backend.** It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
+  `dot` and `sum`, parallel BatchNorm, a caching allocator, and no per-op stream syncs
+  ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Small models are still only about 20%
+  GPU-busy, because of host-side work inside each step.
 
 ## The goal that orders this list
 
@@ -89,8 +92,9 @@ The plumbing everything else needs, plus the checks that keep explanations hones
 - IO-1, IO-2 (**done**): safetensors and the native checkpoint format
 - TRN-1 to TRN-6 (**done**): parameter groups, AdamW, clipping, schedulers, gradient accumulation, full
   fine-tuning
-- XAI-5, XAI-6: explanation-quality metrics and the random-model baseline harness
-- HIP-1, HIP-2, HIP-4, HIP-5: profiling, parallel reductions, fewer syncs, multi-block `dot`/`sum`
+- XAI-5, XAI-6 (**done**): explanation-quality metrics and the random-model baseline harness
+- HIP-1, HIP-2, HIP-4, HIP-5 (**done**): profiling, parallel reductions, fewer syncs, multi-block
+  `dot`/`sum`. HIP-3, the caching allocator, was pulled forward from v1.2 because HIP-4 depends on it
 - VIZ-1, VIZ-2: the JSON export format and the SVG renderer
 - KS-1, KS-2: `install()` and a benchmark suite
 - HIP-9: a ROCm 10.0 evaluation image and a pinned host kernel
@@ -102,7 +106,7 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast
 - LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizer, generation, KV cache, the
   golden-logit harness, AttnLRP parity with LXT
-- HIP-3, HIP-6, HIP-7: caching allocator, fused kernels, bounded-memory Conv2D
+- HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)
 - VIZ-3, VIZ-6a: Vega-Lite HTML and the token relevance view
 - NB-1, NB-2: native rich display and the `.ipynb`/HTML report writer
 - AGT-1 to AGT-4: the native orchestrator core
@@ -330,14 +334,35 @@ The reason changes the defaults:
 - **Improve:** attributions are aggregated over the dataset to surface spurious features.
 - **Discover:** concept and featurizer tools run, each with a random-model baseline.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S |
-| XAI-2 | `ExplanationPlanner::plan(question, reason, model_traits)`, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs | The framework users actually call | XAI-1 | P1 | M |
-| XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M |
-| XAI-4 | The missing explainers: counterfactuals (gradient-based first, then a diverse variant), a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to be that, How to still be this and How (global) | XAI-1, INT-1 | P1 | M each |
-| XAI-5 | Explanation-quality metrics in the Quantus families: deletion and insertion curves (with the ROAD correction), the model-parameter randomization test, sparseness and complexity | Today pulsatrix has conservation and stability checks only | — | P0 | M |
-| XAI-6 | `NullModelBaseline`: re-run any explainer, probe or featurizer on a re-initialized copy of the model and report the difference | The baseline rule above, as one call | FND-1 | P0 | S–M |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| XAI-1 | `XaiQuestion` (9 values) and `XaiReason` (4 values), and a `capabilities()` declaration on every explainer | Machine-readable "what this explainer answers" | — | P0–P1 | S | |
+| XAI-2 | `ExplanationPlanner::plan(question, reason, model_traits)`, returning ranked explainers and the checks that must run. Optional, and never hides the direct explainer APIs | The framework users actually call | XAI-1 | P1 | M | |
+| XAI-3 | An `Explanation` report: the attribution plus question, reason, method, settings, metric results and caveats. Caveats are filled in automatically from known failure modes | Explanations that say what they don't support | XAI-2 | P1 | M | |
+| XAI-4 | The missing explainers: counterfactuals (gradient-based first, then a diverse variant), a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives | Covers How to be that, How to still be this and How (global) | XAI-1, INT-1 | P1 | M each | |
+| XAI-5 | Explanation-quality metrics in the Quantus families: deletion and insertion curves (with the ROAD correction), the model-parameter randomization test, sparseness and complexity | Today pulsatrix has conservation and stability checks only | — | P0 | M | Done, [#53](https://github.com/Joshuaweg/pulsatrix/pull/53) |
+| XAI-6 | `NullModelBaseline`: re-run any explainer, probe or featurizer on a re-initialized copy of the model and report the difference | The baseline rule above, as one call | FND-1 | P0 | S–M | Done, [#54](https://github.com/Joshuaweg/pulsatrix/pull/54) |
+
+### How the XAI work departed from the plan
+
+- **XAI-5.** The metrics take a prediction function and a finished attribution, so they work with
+  any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
+  neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
+  where Quantus returns NaN.
+- **XAI-6.** `NullModelBaseline` is a template over any analysis and any result type, not just
+  explainers. Re-initialization draws each tensor from N(0, σ) with that tensor's own σ, keeps
+  frozen flags and leaves buffers alone. XAI-5's randomization test was rebuilt on its
+  `ParameterSnapshot` and `ReinitializeParameters`. Both use a portable random generator, so
+  results match on Linux and Windows.
+
+### Follow-ups the XAI work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| Per-pixel aggregation across channels; metrics treat each input element as a feature today | XAI-5 | VIZ-2 or XAI-3 |
+| Quantus's localisation, robustness and axiomatic families | XAI-5 | KS-4 (robustness), or its own item |
+| A built-in plain-linear-probe comparison, the second half of the baseline rule | XAI-6 | INT-3 (probe controls) |
+| Running the null-model baseline and the metrics from the report planner | XAI-6 | XAI-2, XAI-3 |
 
 ## INT: Embedding and representation analysis
 
@@ -483,20 +508,58 @@ The bottlenecks are structural, so measure first and fix those before anything e
 gfx1151 APU almost every non-GEMM kernel in pulsatrix is limited by memory bandwidth at best. In
 practice they are limited by launch and sync overhead and by too little parallelism.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| HIP-1 | `scripts/profile_hip.sh`: a rocprofv3 wrapper that writes kernel time per op type to CSV | The baseline, and the falsifier for every item below | — | P0 | S |
-| HIP-2 | Reductions with one workgroup or one wave per row or channel (softmax, norms, column sums): wave shuffles using the runtime `warpSize` and 64-bit masks, then a shared-memory stage. Small channel counts get a deterministic two-stage grid reduction, no atomics | BatchNorm at N=64, C=3, 224×224 currently runs 3 threads over 3.2 million elements | HIP-1 | P0 | M |
-| HIP-3 | A caching allocator: size classes, a pool per stream, and a configurable budget instead of `hipMemGetInfo`, which overstates what the APU can allocate. Don't use `hipMallocAsync` (open corruption bugs on RDNA) | Raw `hipMalloc` and `hipFree` on every tensor | — | P0 | M |
-| HIP-4 | Remove the 56 per-op `hipStreamSynchronize` calls. Sync only when the host reads a result, and add `PULSATRIX_HIP_SYNC_DEBUG=1` to bring them back for debugging | Launch and sync cost more than the kernels on small models | HIP-3, FND-8 | P0 | S |
-| HIP-5 | `dot` and `sum` across many blocks (partials, then a second pass), deterministic | They run on a single block today | — | P0 | S |
-| HIP-6 | Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs | Fewer launches and less memory traffic | TRN-2 | P1 | — |
-| HIP-7 | Conv2D that runs im2col and GEMM in batch chunks | The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU | FND-6 | P1 | S |
-| HIP-8 | A hipBLASLt probe on the pinned container, then bf16 GEMM through `hipblasGemmEx` | Reports conflict on whether hipBLASLt works on gfx1151 in ROCm 7.2.4; measure it | HIP-1 | P1 | — |
-| HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S |
-| HIP-10 | Zero-copy staging buffers on APUs, enabled only when the device reports itself as integrated | Saves a copy on Strix Halo without slowing discrete GPUs | HIP-3 | P2 | — |
-| HIP-11 | Full bf16 training | Halves memory traffic and reaches the matrix cores. Needs a dtype in `Tensor` | IO-6 | P2 | XL |
-| HIP-12 | HIP graphs, WMMA or rocWMMA kernels, FlashAttention for training only, MIOpen | Last: graphs have measured slowdowns on gfx11, and FlashAttention never builds the attention matrix that AttnLRP needs | HIP-4 | P3 | — |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| HIP-1 | `scripts/profile_hip.sh`: a rocprofv3 wrapper that writes kernel time per op type to CSV | The baseline, and the falsifier for every item below | — | P0 | S | Done, [#55](https://github.com/Joshuaweg/pulsatrix/pull/55) |
+| HIP-2 | Reductions with one workgroup or one wave per row or channel (softmax, norms, column sums): wave shuffles using the runtime `warpSize` and 64-bit masks, then a shared-memory stage. Small channel counts get a deterministic two-stage grid reduction, no atomics | BatchNorm at N=64, C=3, 224×224 currently runs 3 threads over 3.2 million elements | HIP-1 | P0 | M | Done, [#57](https://github.com/Joshuaweg/pulsatrix/pull/57) (see below) |
+| HIP-3 | A caching allocator: size classes, a pool per stream, and a configurable budget instead of `hipMemGetInfo`, which overstates what the APU can allocate. Don't use `hipMallocAsync` (open corruption bugs on RDNA) | Raw `hipMalloc` and `hipFree` on every tensor | — | P0 | M | Done, [#58](https://github.com/Joshuaweg/pulsatrix/pull/58) |
+| HIP-4 | Remove the 56 per-op `hipStreamSynchronize` calls. Sync only when the host reads a result, and add `PULSATRIX_HIP_SYNC_DEBUG=1` to bring them back for debugging | Launch and sync cost more than the kernels on small models | HIP-3, FND-8 | P0 | S | Done, [#59](https://github.com/Joshuaweg/pulsatrix/pull/59) (see below) |
+| HIP-5 | `dot` and `sum` across many blocks (partials, then a second pass), deterministic | They run on a single block today | — | P0 | S | Done, [#56](https://github.com/Joshuaweg/pulsatrix/pull/56) |
+| HIP-6 | Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs | Fewer launches and less memory traffic | TRN-2 | P1 | — | |
+| HIP-7 | Conv2D that runs im2col and GEMM in batch chunks | The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU | FND-6 | P1 | S | |
+| HIP-8 | A hipBLASLt probe on the pinned container, then bf16 GEMM through `hipblasGemmEx` | Reports conflict on whether hipBLASLt works on gfx1151 in ROCm 7.2.4; measure it | HIP-1 | P1 | — | |
+| HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S | |
+| HIP-10 | Zero-copy staging buffers on APUs, enabled only when the device reports itself as integrated | Saves a copy on Strix Halo without slowing discrete GPUs | HIP-3 | P2 | — | |
+| HIP-11 | Full bf16 training | Halves memory traffic and reaches the matrix cores. Needs a dtype in `Tensor` | IO-6 | P2 | XL | |
+| HIP-12 | HIP graphs, WMMA or rocWMMA kernels, FlashAttention for training only, MIOpen | Last: graphs have measured slowdowns on gfx11, and FlashAttention never builds the attention matrix that AttnLRP needs | HIP-4 | P3 | — | |
+
+The HIP items above are done (2026-10-04). Measurements are in [GPU Profiling](../gpu-profiling.md).
+
+| Workload (gfx1151, Release) | v1.0 step time | After HIP-1 to HIP-5 |
+|---|---|---|
+| `mlp` | about 1.0 ms | 0.35 ms |
+| `tagger` | 7.8 ms | 2.84 ms |
+| `cnn` | about 27 ms | 5.24 ms |
+
+The two columns come from different runs, so read them as rough; each item's own interleaved A/B
+numbers are in the profiling guide. `dot` and `sum` on 16M floats went from about 17 ms to 0.61 ms and 0.30 ms, which is the measured
+memory bandwidth (about 212 GB/s).
+
+### How the HIP work departed from the plan
+
+- **HIP-2** covers BatchNorm only. The profiler showed BatchNorm at 79% of the CNN's kernel time.
+  Softmax, LayerNorm, RMSNorm and `column_sums` took about 5 µs per call, which is launch overhead,
+  so by the research notes' falsifier they keep their kernels. BatchNorm uses the deterministic
+  two-stage grid reduction, not wave shuffles.
+- **HIP-3** keeps one pool, not a pool per stream, because the backend uses a single in-order
+  stream. It was pulled forward from v1.2 because HIP-4 depends on it.
+- **HIP-4** removed 59 syncs, not 56. The host still waits on device-to-host copies, on
+  host-to-device copies (the source is often a temporary buffer) and before memory goes back to
+  the driver.
+- **Measuring under load.** Other programs held the GPU at 100% during this work, which tripled
+  raw timings. HIP-3 and HIP-4 were measured with interleaved A/B runs and medians; the profiling
+  guide describes the method.
+
+### Follow-ups the HIP work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| Host-side work in each step: reading the loss back, and losses that validate targets on the host. Small models are about 20% GPU-busy | HIP-4 | HIP-6 |
+| Softmax, LayerNorm, RMSNorm and `column_sums` still run one thread per row; re-profile at SmolLM2 widths | HIP-2 | after LLM-1 |
+| The CUDA backend still synchronizes after every op (61 calls) and allocates with raw `cudaMalloc` | HIP-3, HIP-4 | its own item |
+| A pool per stream, if a second stream is ever added | HIP-3 | HIP-12 |
+| Run the GPU tests both asynchronously and with `PULSATRIX_HIP_SYNC_DEBUG=1`, since a kernel fault now surfaces at the next wait | HIP-4 | KS-8 |
+| Build the benchmark suite on `hip_profile_workloads` and the interleaved A/B method | HIP-1, HIP-3 | KS-2 |
 
 ## AGT: Agents, native C++
 
