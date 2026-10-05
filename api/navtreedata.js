@@ -77,11 +77,11 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1ToyKnowledgeBase.html#ac111245ac9f1575a7a9e253fb51e28ec",
 "classpulsatrix_1_1detail_1_1LinuxSources.html#ad81fd3f08a2639c9733f75b0326523d1",
 "namespacemembers_func_n.html",
-"namespacepulsatrix.html#ab05bf402b9c13aea07d50c1b5951112a",
-"structpulsatrix_1_1CMAESState.html#a8aa21589dba05a6e8b1fdc0bee7aa1bb",
-"structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html#a74e146c22d9ab0c47ca8bdfeacf7be91",
-"structpulsatrix_1_1RecurrentCellArgs.html",
-"structpulsatrix_1_1datalog_1_1AtomHash.html"
+"namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9",
+"structpulsatrix_1_1BeeswarmPoint.html#ae29f35c8310bdb88502d320e7420e4ec",
+"structpulsatrix_1_1GFlowNetTrajectory.html#af21519c66c389ecb50a6e48d5f2a0efc",
+"structpulsatrix_1_1RandomizationResult.html",
+"structpulsatrix_1_1WaterfallStep.html#a96cb8404e7625a062e06e885a3e4dc05"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

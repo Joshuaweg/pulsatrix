@@ -26,7 +26,8 @@ var searchData=
   ['subtbloss_23',['SubTBLoss',['../classpulsatrix_1_1SubTBLoss.html',1,'pulsatrix']]],
   ['successivehalvingresult_24',['SuccessiveHalvingResult',['../structpulsatrix_1_1SuccessiveHalvingResult.html',1,'pulsatrix']]],
   ['svdresult_25',['SVDResult',['../structpulsatrix_1_1SVDResult.html',1,'pulsatrix']]],
-  ['swiglumodule_26',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]],
-  ['systemmonitor_27',['SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html',1,'pulsatrix']]],
-  ['systemsample_28',['SystemSample',['../structpulsatrix_1_1SystemSample.html',1,'pulsatrix']]]
+  ['svgoptions_26',['SvgOptions',['../structpulsatrix_1_1SvgOptions.html',1,'pulsatrix']]],
+  ['swiglumodule_27',['SwiGLUModule',['../classpulsatrix_1_1SwiGLUModule.html',1,'pulsatrix']]],
+  ['systemmonitor_28',['SystemMonitor',['../classpulsatrix_1_1SystemMonitor.html',1,'pulsatrix']]],
+  ['systemsample_29',['SystemSample',['../structpulsatrix_1_1SystemSample.html',1,'pulsatrix']]]
 ];

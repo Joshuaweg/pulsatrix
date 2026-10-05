@@ -768,6 +768,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#svg-figures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SVG figures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#building-with-visualization-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1717,6 +1728,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#svg-figures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SVG figures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#building-with-visualization-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1949,6 +1971,8 @@ drawing call over the data transforms:</p>
 <p><strong>JSON documents</strong> (<code>viz/document.hpp</code>, in <code>pulsatrix_core</code>). Every view's data can be saved as
 a versioned JSON file and read back, so a figure can be redrawn later, by another program or by
 a renderer outside pulsatrix. See <a href="#json-documents">JSON documents</a>.</p>
+<p><strong>SVG figures</strong> (<code>viz/svg.hpp</code>, in <code>pulsatrix_core</code>). Bar, waterfall, heatmap, token strip and
+beeswarm charts as standalone SVG files, with no GPU or display. See <a href="#svg-figures">SVG figures</a>.</p>
 <p><strong>Infrastructure.</strong> <code>VizWindow</code> (<code>viz/window.hpp</code>) owns the window, the OpenGL context, and the
 ImGui/ImPlot setup. You write a per-frame draw callback and call <code>window.run(...)</code>.
 <code>TextureCache</code> uploads images to the GPU once and reuses them across frames.</p>
@@ -2076,6 +2100,83 @@ is ever silently lost.
 </ul>
 <p>The parser is fuzzed (<code>tools/fuzz/viz_document_fuzz.cpp</code>). <code>pulsatrix/json.hpp</code> exposes the
 underlying <code>JsonValue</code>, <code>ParseJson</code> and <code>WriteJson</code> for other uses.</p>
+<h2 id="svg-figures">SVG figures<a class="headerlink" href="#svg-figures" title="Permanent link">&para;</a></h2>
+<p>For papers, reports and CI, <code>viz/svg.hpp</code> draws documents as standalone SVG files. It needs no
+GPU, display, font library or ImGui, and it is part of <code>pulsatrix_core</code>. Colors come from
+<code>colormap.hpp</code>, the same as the ImGui widgets: blue-white-red for signed values and Viridis for
+magnitudes.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Draws</th>
+<th>From</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RenderBarChartSvg(doc, top_k)</code></td>
+<td>The top features by |attribution|, on an axis through zero</td>
+<td><code>AttributionDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderWaterfallSvg(doc, baseline)</code></td>
+<td>Each feature moving the output from the baseline to the prediction</td>
+<td><code>AttributionDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderHeatmapSvg(doc)</code></td>
+<td>The grid, with a color bar and any row and column labels</td>
+<td><code>HeatmapDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderTokenStripSvg(doc)</code></td>
+<td>The text's tokens, wrapped, each on a background colored by its relevance</td>
+<td><code>TokenRelevanceDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderBeeswarmSvg(docs, features)</code></td>
+<td>One row per feature, one point per input</td>
+<td>several <code>AttributionDocument</code>s</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/svg.hpp"</span>
+
+<span class="n">SvgOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Why the model said yes"</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"bars.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderBarChartSvg</span><span class="p">(</span><span class="n">ToAttributionDocument</span><span class="p">(</span><span class="n">attribution</span><span class="p">),</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+</code></pre></div>
+<p><img alt="A bar chart of six features' attributions" src="figures/bar_chart.svg" /></p>
+<p><img alt="A waterfall from a baseline of 0.25 to a prediction of 0.188" src="figures/waterfall.svg" /></p>
+<p><code>SvgOptions</code> sets the width (default 640 pixels), a title and the font size. The height follows
+from the content. Every figure has a title element for screen readers, and every bar, cell and
+token has a tooltip with its exact value.</p>
+<p><strong>From the command line.</strong> The <code>pulsatrix_svg</code> tool, built and installed with the library,
+turns documents into figures:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_svg<span class="w"> </span>explanation.json<span class="w"> </span>-o<span class="w"> </span>bars.svg<span class="w">                 </span><span class="c1"># attribution: bar chart</span>
+pulsatrix_svg<span class="w"> </span>explanation.json<span class="w"> </span>--waterfall<span class="w"> </span><span class="m">0</span>.12<span class="w"> </span>-o<span class="w"> </span>wf.svg<span class="w">  </span><span class="c1"># attribution: waterfall</span>
+pulsatrix_svg<span class="w"> </span>run*.json<span class="w"> </span>--beeswarm<span class="w"> </span><span class="m">0</span>,3,7<span class="w"> </span>-o<span class="w"> </span>swarm.svg<span class="w">      </span><span class="c1"># many attributions: beeswarm</span>
+pulsatrix_svg<span class="w"> </span>saliency.json<span class="w"> </span>-o<span class="w"> </span>map.svg<span class="w">                     </span><span class="c1"># heatmap</span>
+pulsatrix_svg<span class="w"> </span>tokens.json<span class="w"> </span>-o<span class="w"> </span>text.svg<span class="w">                      </span><span class="c1"># token relevance</span>
+</code></pre></div>
+<p>Other options: <code>--top-k N</code>, <code>--width W</code>, <code>--font-size N</code>, <code>--title TEXT</code>.</p>
+<p><strong>Details:</strong></p>
+<ul>
+<li><strong>Deterministic.</strong> The same input gives the same bytes on every platform. Tests compare each
+  chart with a stored file.</li>
+<li><strong>Large heatmaps.</strong> Grids up to 4,096 cells are one vector rectangle per cell. Larger grids,
+  such as a 224 x 224 saliency map, are embedded as a lossless PNG with sharp pixel edges, which
+  keeps the file small (about 45 KB for 224 x 224).</li>
+<li><strong>Non-finite values.</strong> A heatmap cell or token whose value is NaN or infinite is drawn gray and
+  left out of the color scale. The bar, waterfall and beeswarm charts refuse non-finite values,
+  because there's no honest bar length for them.</li>
+<li><strong>Text widths are estimated</strong> at 0.6 em per character, since there is no font library. Token
+  strips use a monospace font, so their widths are exact. Long labels are shortened with an
+  ellipsis.</li>
+</ul>
 <h2 id="building-with-visualization-enabled">Building with visualization enabled<a class="headerlink" href="#building-with-visualization-enabled" title="Permanent link">&para;</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <p>The default build has no GUI dependencies. <code>-DPULSATRIX_ENABLE_VIZ=ON</code> adds these:</p>
