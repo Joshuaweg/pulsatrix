@@ -89,21 +89,35 @@ PULSATRIX_HOST_DEVICE inline void rms_norm_backward(const float* grad_out, const
 
 // One position's head_dim features, rotated pairwise by precomputed cos/sin (half entries).
 // inverse == false is forward; inverse == true is the transpose rotation backward() applies.
+// Pair i is (2i, 2i+1), or (i, i + half) when rotate_half (the Hugging Face Llama layout).
 PULSATRIX_HOST_DEVICE inline void rope_rotate(const float* in, const float* cos_row, const float* sin_row, float* out,
-                                              int64_t half, bool inverse) {
+                                              int64_t half, bool inverse, bool rotate_half) {
     for (int64_t i = 0; i < half; ++i) {
         const float c = cos_row[i];
         const float s = sin_row[i];
-        const float x0 = in[2 * i];
-        const float x1 = in[2 * i + 1];
+        const int64_t lo = rotate_half ? i : 2 * i;
+        const int64_t hi = rotate_half ? i + half : 2 * i + 1;
+        const float x0 = in[lo];
+        const float x1 = in[hi];
         if (inverse) {
-            out[2 * i] = x0 * c + x1 * s;
-            out[2 * i + 1] = -x0 * s + x1 * c;
+            out[lo] = x0 * c + x1 * s;
+            out[hi] = -x0 * s + x1 * c;
         } else {
-            out[2 * i] = x0 * c - x1 * s;
-            out[2 * i + 1] = x0 * s + x1 * c;
+            out[lo] = x0 * c - x1 * s;
+            out[hi] = x0 * s + x1 * c;
         }
     }
+}
+
+// ---- Attention masks (MultiHeadAttentionModule, LLM-1) ------------------------------------------
+
+// Whether score (b, ., i, j) is masked: a causal future key, or a key key_keep marks as padding.
+PULSATRIX_HOST_DEVICE inline bool attention_masked(const float* key_keep, size_t b, size_t i, size_t j, size_t k_len,
+                                                   bool causal, size_t q_offset) {
+    if (causal && j > i + q_offset) {
+        return true;
+    }
+    return key_keep != nullptr && key_keep[b * k_len + j] == 0.0f;
 }
 
 // ---- TanhGaussianPolicy -----------------------------------------------------------------------

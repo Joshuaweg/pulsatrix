@@ -100,13 +100,15 @@ PULSATRIX_HOST_DEVICE inline void softmax_row(const float* x, const float* y, co
 // ---- RoPEModule epsilon rule (one position's head_dim features) ---------------------------------
 // Each input of a pair receives relevance from both outputs of the pair, accumulated in the
 // original order (source 1, then source 2).
+// Pairs as in rows::rope_rotate: (2i, 2i+1), or (i, i + half) when rotate_half.
 PULSATRIX_HOST_DEVICE inline void rope_position(const float* x, const float* y, const float* r, const float* cos_row,
-                                                const float* sin_row, float* r_in, int64_t half, float eps) {
+                                                const float* sin_row, float* r_in, int64_t half, float eps,
+                                                bool rotate_half) {
     for (int64_t i = 0; i < half; ++i) {
         const float c = cos_row[i];
         const float s = sin_row[i];
-        const int64_t lo = 2 * i;
-        const int64_t hi = 2 * i + 1;
+        const int64_t lo = rotate_half ? i : 2 * i;
+        const int64_t hi = rotate_half ? i + half : 2 * i + 1;
         const float denom0 = stabilize(y[lo], eps);
         const float denom1 = stabilize(y[hi], eps);
         float r_lo = 0.0f;

@@ -18,13 +18,62 @@
 namespace pulsatrix {
 
 /**
+ * @brief Everything that shapes a MultiHeadAttentionModule (LLM-1).
+ *
+ * The defaults reproduce the original constructor: as many K/V heads as query heads,
+ * `head_dim = d_model / num_heads`, biases on all four projections, adjacent-pair RoPE with
+ * base 10000, no mask. A Llama-family checkpoint (SmolLM2, Llama 3.2) sets `num_kv_heads`,
+ * `rope_layout = RoPELayout::RotateHalf`, `rope_base` (its `rope_theta`), `qkv_bias = false`,
+ * `out_bias = false` and `causal = true`. Qwen2.5 is the same with `qkv_bias = true`; Qwen3 adds
+ * `use_qk_norm` and an explicit `head_dim`.
+ */
+struct AttentionConfig {
+    int64_t d_model = 0;
+    int64_t num_heads = 0;
+    /** K/V heads, shared by groups of `num_heads / num_kv_heads` query heads (grouped-query
+     *  attention; 1 is multi-query attention). 0 means `num_heads`. */
+    int64_t num_kv_heads = 0;
+    /** Per-head width. 0 means `d_model / num_heads`. Qwen3 and Gemma 3 set it explicitly,
+     *  so `num_heads * head_dim` need not equal `d_model`. */
+    int64_t head_dim = 0;
+    bool use_rope = true;
+    RoPELayout rope_layout = RoPELayout::AdjacentPairs;
+    float rope_base = 10000.0f;
+    bool use_qk_norm = false;
+    /** QK-Norm's RMSNorm stabilizer (Hugging Face `rms_norm_eps`). */
+    float qk_norm_eps = 1e-6f;
+    /** Biases on the Q, K and V projections. */
+    bool qkv_bias = true;
+    /** Bias on the output projection. */
+    bool out_bias = true;
+    /** Query i attends only to keys 0..i (next-token language models). */
+    bool causal = false;
+};
+
+/**
  * @brief `softmax(Q @ K^T / sqrt(head_dim)) @ V`, multi-head, with optional RoPE and
  *        optional QK-Norm. Shape `(N, L, d_model) -> (N, L, d_model)`.
+ *
+ * **LLM-1 additions**, all configured through AttentionConfig: grouped-query attention,
+ * `head_dim` independent of `d_model`, optional projection biases, a causal mask, a key
+ * padding mask (set_key_padding_mask), the RoPE pair layout and base, and a position offset
+ * (set_position_offset).
+ * @note **Grouped-query attention repeats K and V**, as Hugging Face's `repeat_kv` does: K/V are
+ *       projected, normalized and rotated at `num_kv_heads`, then copied out to `num_heads`
+ *       before the two matmuls. backward() and propagate_relevance() sum each copy's gradient
+ *       or relevance back into its shared head, so a shared head's relevance is the total over
+ *       the query heads that read it.
+ * @note **Masked scores are set to the lowest float before softmax**, not `-inf`, so a query
+ *       with every key masked (for example a padding query under a causal mask) gets uniform
+ *       weights instead of NaN -- what Hugging Face does too. The gradient and the relevance
+ *       of every masked score are then set to exactly zero: a masked score is a constant, not
+ *       a function of Q and K.
  *
  * **Composition over inheritance.** Every sub-operation that already exists as a shipped,
  * tested Module in this codebase is held here as a real member object and driven through its
  * own `forward()`/`backward()`/`propagate_relevance()`:
- *   - `LinearModule q_proj_/k_proj_/v_proj_/out_proj_` (all `d_model -> d_model`),
+ *   - `LinearModule q_proj_/k_proj_/v_proj_/out_proj_` (`d_model -> num_heads * head_dim`,
+ *     `d_model -> num_kv_heads * head_dim` twice, and `num_heads * head_dim -> d_model`),
  *   - `RoPEModule q_rope_/k_rope_` (only when `use_rope`),
  *   - `RMSNormModule q_norm_/k_norm_` (only when `use_qk_norm`, `head_dim`-sized gamma),
  *   - `SoftmaxModule softmax_`.
@@ -65,6 +114,14 @@ public:
      */
     MultiHeadAttentionModule(int64_t d_model, int64_t num_heads, DeviceBackend* backend, bool use_rope = true,
                              bool use_qk_norm = false);
+
+    /**
+     * @brief Constructs attention from a full AttentionConfig, with zero-initialized projections.
+     * @throws std::invalid_argument if `d_model` or `num_heads` is not positive, `num_kv_heads`
+     *         or `head_dim` is negative, `num_heads` is not a multiple of `num_kv_heads`,
+     *         `head_dim` is 0 and `d_model % num_heads != 0`, or `use_rope` with an odd `head_dim`.
+     */
+    MultiHeadAttentionModule(const AttentionConfig& config, DeviceBackend* backend);
 
     /**
      * @brief Gradient w.r.t. this module's input; sub-module parameter gradients accumulate
@@ -139,9 +196,35 @@ public:
 
     [[nodiscard]] int64_t d_model() const { return d_model_; }
     [[nodiscard]] int64_t num_heads() const { return num_heads_; }
+    [[nodiscard]] int64_t num_kv_heads() const { return num_kv_heads_; }
     [[nodiscard]] int64_t head_dim() const { return head_dim_; }
     [[nodiscard]] bool uses_rope() const { return use_rope_; }
     [[nodiscard]] bool uses_qk_norm() const { return use_qk_norm_; }
+    [[nodiscard]] bool is_causal() const { return config_.causal; }
+    /** @brief The configuration with its 0 defaults resolved (num_kv_heads, head_dim). */
+    [[nodiscard]] const AttentionConfig& config() const { return config_; }
+
+    /**
+     * @brief Masks padding keys in every following forward(), until cleared (LLM-1).
+     * @param key_keep `(N, L)`, any device: 1 for a real token, 0 for padding -- Hugging Face's
+     *        `attention_mask`. Its N and L must match the next forward()'s input.
+     * @note Only keys are masked. A padding query still produces an output row (attending to
+     *       the real keys); the caller ignores it, as the loss does through its token weights.
+     * @throws std::invalid_argument if key_keep is not rank-2.
+     */
+    void set_key_padding_mask(const Tensor& key_keep);
+    /** @brief Removes the key padding mask. */
+    void clear_key_padding_mask();
+    [[nodiscard]] bool has_key_padding_mask() const { return has_key_keep_; }
+
+    /**
+     * @brief Position of the input's first token, for RoPE (LLM-1). Forward rotates positions
+     *        `offset .. offset + L - 1`. It does not change the mask: queries and keys are the
+     *        same L tokens.
+     * @throws std::invalid_argument if offset is negative.
+     */
+    void set_position_offset(int64_t offset);
+    [[nodiscard]] int64_t position_offset() const { return position_offset_; }
 
     /** @name Sub-module access -- weight initialization from tests/loaders, and inspection. */
     ///@{
@@ -157,7 +240,7 @@ public:
 
     /** @brief Cached attention weights of the last forward, `(N, num_heads, L, L)` -- the
      *         softmax output. Exposed because "what did each head attend to" is the single
-     *         most-asked explainability question about this module. */
+     *         most-asked explainability question about this module. Masked entries are 0. */
     [[nodiscard]] const Tensor& last_attention_weights() const { return last_attn_; }
 
 
@@ -170,13 +253,16 @@ protected:
      *        scores -> softmax -> context -> merge heads -> output projection.
      * @param input `(N, L, d_model)`, any device.
      * @return `(N, L, d_model)`.
-     * @throws std::invalid_argument if input is not rank-3 with a final dimension of d_model.
+     * @throws std::invalid_argument if input is not rank-3 with a final dimension of d_model,
+     *         or a key padding mask is set whose shape is not `(N, L)`.
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
 private:
+    AttentionConfig config_;
     int64_t d_model_;
     int64_t num_heads_;
+    int64_t num_kv_heads_;
     int64_t head_dim_;
     bool use_rope_;
     bool use_qk_norm_;
@@ -196,10 +282,26 @@ private:
     std::unique_ptr<RMSNormModule> q_norm_;
     std::unique_ptr<RMSNormModule> k_norm_;
 
+    Tensor key_keep_;  ///< (N, L) on the backend's device, when has_key_keep_
+    bool has_key_keep_ = false;
+    int64_t position_offset_ = 0;
+
+    /** @brief (N, num_kv_heads, L, head_dim) -> (N, num_heads, L, head_dim) in place, each K/V
+     *         head copied to the query heads of its group. A no-op without GQA. */
+    void repeat_kv(Tensor& t) const;
+    /** @brief The inverse fan-in, in place: sums each group of query-head copies back into its
+     *         K/V head. A no-op without GQA. */
+    void sum_kv_groups(Tensor& t) const;
+    /** @brief Applies the cached forward's causal and padding masks to (N, H, L, L) data. */
+    void fill_masked(Tensor& scores, float value) const;
+
     // Forward caches. Q/K/V are the post-QK-Norm, post-RoPE, head-split values -- exactly
-    // the operands the two matmuls' backward and Eq. 15 rules need.
+    // the operands the two matmuls' backward and Eq. 15 rules need. K and V are already
+    // repeated out to num_heads under GQA.
     int64_t last_N_ = 0;
     int64_t last_L_ = 0;
+    Tensor last_key_keep_;  ///< The padding mask the cached forward used, (N, L)
+    bool last_has_key_keep_ = false;
     Tensor last_q_;           ///< (N, num_heads, L, head_dim)
     Tensor last_k_;           ///< (N, num_heads, L, head_dim)
     Tensor last_v_;           ///< (N, num_heads, L, head_dim)
