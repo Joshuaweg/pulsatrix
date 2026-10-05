@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['icestyle_0',['IceStyle',['../namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1ba',1,'pulsatrix']]]
+  ['finishreason_0',['FinishReason',['../namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a',1,'pulsatrix']]]
 ];

@@ -1870,6 +1870,17 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   <code>TiedLMHeadModule</code> is the output layer of models with <code>tie_word_embeddings</code>: it computes logits
   with an <code>EmbeddingModule</code>'s table, which stays a single parameter whose gradient sums both
   uses.</li>
+<li><strong>Text generation</strong> (<code>generation.hpp</code>): <code>Generate(model, prompt, config)</code> decodes greedily or
+  samples, with temperature, top-k, top-p, min-p, a repetition penalty and EOS tokens (Hugging
+  Face's <code>GenerationConfig</code> names and order). Sampling is seeded (<code>config.seed</code>, or the global
+  seed). <code>MakeNextTokenLogits</code> turns a module stack such as embedding → transformer blocks →
+  <code>TiedLMHeadModule</code> into the model function. Each result also gives every new token's
+  log-probability under the model.</li>
+<li><strong>KV cache</strong> (<code>kv_cache.hpp</code>): <code>MultiHeadAttentionModule::forward_cached</code> and
+  <code>TransformerBlock::forward_cached</code> process only new positions against a preallocated
+  <code>KVCache</code>. <code>MakeCachedNextTokenLogits(embedding, blocks, head, backend, max_length)</code> uses them
+  for generation, reusing the cache for any prefix it has already seen; on CPU, 128 tokens from a
+  4-block, 128-wide model take 47 ms instead of 3.3 s.</li>
 <li><strong>Optimizers &amp; losses</strong>: <code>SGDOptimizer</code> (momentum, Nesterov), <code>AdamOptimizer</code>,
   <code>AdamWOptimizer</code>, all with parameter groups; <code>MSELoss</code>, <code>CrossEntropyLoss</code>,
   <code>TokenCrossEntropyLoss</code>, <code>BCEWithLogitsLoss</code>, <code>KLDivergenceLoss</code>, <code>CalibrationLoss</code></li>
