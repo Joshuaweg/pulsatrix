@@ -245,6 +245,7 @@ TEST(SvgRenderTest, EveryChartIsWellFormedDeterministicAndTitled) {
         RenderBeeswarmSvg({Features({1.0f, 2.0f}), Features({-1.0f, 0.5f})}, {0, 1}, opt),
         RenderPartialDependenceSvg(PartialDependenceDocument{"x", "y", {0.0f, 1.0f}, {0.5f, 1.0f}, 1, {0.5f, 1.0f}, {}},
                                    {}, opt),
+        RenderTornadoSvg(SensitivityDocument{"y", 1.0f, {{"a", 0.0f, -1.0f, 1.0f, 0.5f, 2.0f}}}, 10, opt),
     };
     for (const std::string& svg : svgs) {
         auto root = Parsed(svg);
@@ -601,6 +602,43 @@ TEST(SvgPartialDependenceTest, RejectsBadInput) {
     EXPECT_THROW((void)RenderPartialDependenceSvg(average_only, negative), std::invalid_argument);
 }
 
+// ---- tornado ------------------------------------------------------------------------------------
+
+SensitivityDocument Tornado() {
+    // Swings: a 1.5, b 3, c 0.5, d 0 -> rows b, a, c, d.
+    return SensitivityDocument{"y", 1.0f,
+                               {{"a", 0.0f, -1.0f, 1.0f, 0.5f, 2.0f},
+                                {"b", 5.0f, 4.0f, 6.0f, 2.5f, -0.5f},
+                                {"c", 1.0f, 0.0f, 2.0f, 1.25f, 0.75f},
+                                {"d", 7.0f, 6.0f, 8.0f, 1.0f, 1.0f}}};
+}
+
+TEST(SvgTornadoTest, RowsSortByEachFeaturesSwingAndBarsLeaveTheUnchangedOutput) {
+    auto root = Parsed(RenderTornadoSvg(Tornado()));
+    auto labels = ByClass(*root, "feature-label");
+    ASSERT_EQ(labels.size(), 4u);
+    EXPECT_EQ(labels[0]->text, "b = 5");
+    EXPECT_EQ(labels[1]->text, "a = 0");
+    EXPECT_EQ(labels[3]->text, "d = 7");
+    const double base = ByClass(*root, "base-line").front()->num("x1");
+    auto high = ByClass(*root, "bar-high");
+    auto low = ByClass(*root, "bar-low");
+    // b: high value lowers the output (bar left of the base), low value raises it.
+    EXPECT_NEAR(high[0]->num("x") + high[0]->num("width"), base, 1e-6);
+    EXPECT_NEAR(low[0]->num("x"), base, 1e-6);
+    // Bar lengths are proportional to the output change: b's high bar (1.5) is 3x c's (0.5... low: 0.25).
+    EXPECT_NEAR(high[0]->num("width") / low[2]->num("width"), 1.5 / 0.25, 1e-3);
+    EXPECT_EQ(ByClass(*Parsed(RenderTornadoSvg(Tornado(), 2)), "feature-row").size(), 2u);
+}
+
+TEST(SvgTornadoTest, RejectsBadInput) {
+    EXPECT_THROW((void)RenderTornadoSvg(SensitivityDocument{}), std::invalid_argument);
+    EXPECT_THROW((void)RenderTornadoSvg(Tornado(), 0), std::invalid_argument);
+    SensitivityDocument nan = Tornado();
+    nan.features[1].output_high = kNaN;
+    EXPECT_THROW((void)RenderTornadoSvg(nan), std::invalid_argument);
+}
+
 // ---- golden files: each chart, from the VIZ-1 document fixtures, must match
 // tests/fixtures/viz/svg/ byte for byte on every platform. After an intended change, rerun
 // with PULSATRIX_UPDATE_GOLDEN=1 to rewrite them, then look at the new figures before
@@ -666,6 +704,7 @@ TEST(SvgGoldenTest, EveryChart) {
     PartialDependenceSvgOptions centered;
     centered.style = IceStyle::Centered;
     ExpectGolden("partial_dependence_centered.svg", RenderPartialDependenceSvg(pdd, centered));
+    ExpectGolden("tornado.svg", RenderTornadoSvg(ParseSensitivityDocument(Fixture("sensitivity.v1.json"))));
 }
 
 }  // namespace

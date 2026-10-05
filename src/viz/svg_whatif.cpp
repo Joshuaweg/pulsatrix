@@ -181,4 +181,95 @@ std::string RenderPartialDependenceSvg(const PartialDependenceDocument& doc, con
     return f.finish(y_bottom + fs * 4.0);
 }
 
+// ---- tornado ------------------------------------------------------------------------------------
+
+std::string RenderTornadoSvg(const SensitivityDocument& doc, int top_k, const SvgOptions& options) {
+    CheckOptions(options);
+    if (doc.features.empty()) {
+        throw std::invalid_argument("RenderTornadoSvg: no features");
+    }
+    if (top_k < 1) {
+        throw std::invalid_argument("RenderTornadoSvg: top_k must be at least 1");
+    }
+    CheckFinite({doc.output}, "RenderTornadoSvg: output");
+    for (const auto& f : doc.features) {
+        CheckFinite({f.value, f.low, f.high, f.output_low, f.output_high}, "RenderTornadoSvg: feature values");
+    }
+    // Largest swing first; ties keep document order.
+    std::vector<size_t> order(doc.features.size());
+    for (size_t i = 0; i < order.size(); ++i) order[i] = i;
+    auto swing = [&](size_t i) { return std::fabs(doc.features[i].output_high - doc.features[i].output_low); };
+    std::stable_sort(order.begin(), order.end(), [&](size_t a, size_t b) { return swing(a) > swing(b); });
+    order.resize(std::min(order.size(), static_cast<size_t>(top_k)));
+
+    double lo = doc.output, hi = doc.output;
+    for (size_t i : order) {
+        lo = std::min({lo, static_cast<double>(doc.features[i].output_low), static_cast<double>(doc.features[i].output_high)});
+        hi = std::max({hi, static_cast<double>(doc.features[i].output_low), static_cast<double>(doc.features[i].output_high)});
+    }
+    if (hi - lo < 1e-12 * std::max(1.0, std::fabs(lo))) {
+        lo -= 1.0;
+        hi += 1.0;
+    } else {
+        const double pad = (hi - lo) * 0.12;  // room for the value labels at the bar ends
+        lo -= pad;
+        hi += pad;
+    }
+
+    const std::string target = doc.target.empty() ? "output" : doc.target;
+    Figure f(options, "Sensitivity of " + target + " to " + std::to_string(order.size()) + " features");
+    const double fs = f.fs();
+    const size_t max_label_chars = static_cast<size_t>(std::max(4.0, f.width() * 0.3 / (kCharWidthEm * fs)));
+    std::vector<std::string> labels;
+    double label_w = 0;
+    for (size_t i : order) {
+        labels.push_back(Truncate(doc.features[i].name + " = " + ValueText(doc.features[i].value), max_label_chars));
+        label_w = std::max(label_w, TextWidth(labels.back(), fs));
+    }
+    const double x0 = fs + label_w + fs * 0.75;
+    const double x1 = f.width() - fs * 1.5;
+    auto X = [&](double v) { return x0 + (v - lo) / (hi - lo) * (x1 - x0); };
+    const std::string high_color = Hex(DivergingColormap(0.8f));
+    const std::string low_color = Hex(DivergingColormap(-0.8f));
+
+    // Legend.
+    const double ly = f.top() + fs * 0.6;
+    f.body() += "<rect class=\"legend-high\" x=\"" + Num(x0) + "\" y=\"" + Num(ly - fs * 0.4) + "\" width=\"" +
+                Num(fs) + "\" height=\"" + Num(fs * 0.8) + "\" fill=\"" + high_color + "\"/>\n";
+    f.text("legend-label", x0 + fs * 1.4, ly + fs * 0.35, "high value");
+    const double lx = x0 + fs * 1.4 + TextWidth("high value", fs) + fs;
+    f.body() += "<rect class=\"legend-low\" x=\"" + Num(lx) + "\" y=\"" + Num(ly - fs * 0.4) + "\" width=\"" + Num(fs) +
+                "\" height=\"" + Num(fs * 0.8) + "\" fill=\"" + low_color + "\"/>\n";
+    f.text("legend-label", lx + fs * 1.4, ly + fs * 0.35, "low value");
+
+    const double row_h = fs * 2.6;
+    const double bar_h = fs * 0.9;
+    const double y0 = f.top() + fs * 1.8;
+    const double base_x = X(doc.output);
+    const std::string small = " font-size=\"" + Num(fs * 0.8) + "\"";
+    for (size_t r = 0; r < order.size(); ++r) {
+        const auto& ft = doc.features[order[r]];
+        const double cy = y0 + row_h * (static_cast<double>(r) + 0.5);
+        f.body() += "<g class=\"feature-row\">\n";
+        f.text("feature-label", x0 - fs * 0.75, cy + fs * 0.35, labels[r], "end");
+        auto bar = [&](const char* cls, double out, double input, double top, const std::string& color) {
+            const double a = std::min(base_x, X(out)), b = std::max(base_x, X(out));
+            f.body() += std::string("<rect class=\"") + cls + "\" x=\"" + Num(a) + "\" y=\"" + Num(top) + "\" width=\"" +
+                        Num(std::max(b - a, 0.5)) + "\" height=\"" + Num(bar_h) + "\" fill=\"" + color + "\">" +
+                        "<title>" + Escape(ft.name + " = " + ValueText(input) + ": " + target + " " + ValueText(out)) +
+                        "</title></rect>\n";
+            const bool right = X(out) >= base_x;
+            f.text("bar-label", right ? b + fs * 0.3 : a - fs * 0.3, top + bar_h * 0.8, ValueText(input),
+                   right ? "start" : "end", kMutedColor, small);
+        };
+        bar("bar-high", ft.output_high, ft.high, cy - bar_h, high_color);
+        bar("bar-low", ft.output_low, ft.low, cy, low_color);
+        f.body() += "</g>\n";
+    }
+    const double plot_bottom = y0 + row_h * static_cast<double>(order.size());
+    f.line("base-line", base_x, y0, base_x, plot_bottom, kMutedColor, 1.0, "3 3");
+    f.x_axis(plot_bottom + fs * 0.25, x0, x1, lo, hi, target + " (unchanged: " + ValueText(doc.output) + ")");
+    return f.finish(plot_bottom + fs * 4.0);
+}
+
 }  // namespace pulsatrix

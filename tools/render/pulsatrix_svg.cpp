@@ -6,6 +6,7 @@
 //   pulsatrix_svg saliency.json -o map.svg                     # heatmap
 //   pulsatrix_svg tokens.json -o text.svg                      # token_relevance
 //   pulsatrix_svg pd.json --ice centered -o ice.svg            # partial_dependence (CFS-1)
+//   pulsatrix_svg sens.json --top-k 8 -o tornado.svg           # sensitivity: tornado (CFS-3)
 //
 // Options: -o FILE (default stdout), --top-k N, --ice raw|centered|derivative, --max-curves N,
 //          --width W, --font-size N, --title TEXT.
@@ -141,6 +142,8 @@ int main(int argc, char** argv) {
                 svg = RenderHeatmapSvg(ParseHeatmapDocument(json), options);
             } else if (kind == "token_relevance") {
                 svg = RenderTokenStripSvg(ParseTokenRelevanceDocument(json), options);
+            } else if (kind == "sensitivity") {
+                svg = RenderTornadoSvg(ParseSensitivityDocument(json), top_k, options);
             } else if (kind == "partial_dependence") {
                 svg = RenderPartialDependenceSvg(ParsePartialDependenceDocument(json), pd_options, options);
             } else {

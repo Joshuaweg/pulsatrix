@@ -99,6 +99,7 @@ add_library(pulsatrix_core
     src/embedding_module.cpp
     src/tied_lm_head_module.cpp
     src/ice.cpp
+    src/sensitivity.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp

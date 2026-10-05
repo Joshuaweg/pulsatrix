@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="144" viewBox="0 0 640 144" role="img" font-family="Helvetica, Arial, sans-serif" font-size="12">
+<title>Sensitivity of risk to 2 features</title>
+<rect class="background" width="100%" height="100%" fill="#ffffff"/>
+<rect class="legend-high" x="78.6" y="14.4" width="12" height="9.6" fill="#bc2f4b"/>
+<text class="legend-label" x="95.4" y="23.4" text-anchor="start" fill="#222222">high value</text>
+<rect class="legend-low" x="179.4" y="14.4" width="12" height="9.6" fill="#5b69c6"/>
+<text class="legend-label" x="196.2" y="23.4" text-anchor="start" fill="#222222">low value</text>
+<g class="feature-row">
+<text class="feature-label" x="69.6" y="53.4" text-anchor="end" fill="#222222">age = 40</text>
+<rect class="bar-high" x="277.26" y="38.4" width="292.15" height="10.8" fill="#bc2f4b"><title>age = 50: risk 1</title></rect>
+<text class="bar-label" x="573.01" y="47.04" text-anchor="start" fill="#666666" font-size="9.6">50</text>
+<rect class="bar-low" x="131.19" y="49.2" width="146.08" height="10.8" fill="#5b69c6"><title>age = 30: risk 0.25</title></rect>
+<text class="bar-label" x="127.59" y="57.84" text-anchor="end" fill="#666666" font-size="9.6">30</text>
+</g>
+<g class="feature-row">
+<text class="feature-label" x="69.6" y="84.6" text-anchor="end" fill="#222222">dose = 2</text>
+<rect class="bar-high" x="204.22" y="69.6" width="73.04" height="10.8" fill="#bc2f4b"><title>dose = 3: risk 0.375</title></rect>
+<text class="bar-label" x="200.62" y="78.24" text-anchor="end" fill="#666666" font-size="9.6">3</text>
+<rect class="bar-low" x="277.26" y="80.4" width="73.04" height="10.8" fill="#5b69c6"><title>dose = 1: risk 0.625</title></rect>
+<text class="bar-label" x="353.9" y="89.04" text-anchor="start" fill="#666666" font-size="9.6">1</text>
+</g>
+<line class="base-line" x1="277.26" y1="33.6" x2="277.26" y2="96" stroke="#666666" stroke-width="1" stroke-dasharray="3 3"/>
+<line class="axis" x1="78.6" y1="99" x2="622" y2="99" stroke="#999999" stroke-width="1"/>
+<line class="tick" x1="101.97" y1="99" x2="101.97" y2="103.2" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="101.97" y="115.2" text-anchor="middle" fill="#666666" font-size="10.2">0.2</text>
+<line class="tick" x1="218.83" y1="99" x2="218.83" y2="103.2" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="218.83" y="115.2" text-anchor="middle" fill="#666666" font-size="10.2">0.4</text>
+<line class="tick" x1="335.69" y1="99" x2="335.69" y2="103.2" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="335.69" y="115.2" text-anchor="middle" fill="#666666" font-size="10.2">0.6</text>
+<line class="tick" x1="452.55" y1="99" x2="452.55" y2="103.2" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="452.55" y="115.2" text-anchor="middle" fill="#666666" font-size="10.2">0.8</text>
+<line class="tick" x1="569.41" y1="99" x2="569.41" y2="103.2" stroke="#999999" stroke-width="1"/>
+<text class="tick-label" x="569.41" y="115.2" text-anchor="middle" fill="#666666" font-size="10.2">1</text>
+<text class="axis-label" x="350.3" y="130.2" text-anchor="middle" fill="#666666">risk (unchanged: 0.5)</text>
+</svg>
