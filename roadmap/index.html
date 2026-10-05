@@ -3753,8 +3753,8 @@ doesn't support.</p>
 </tr>
 <tr>
 <td>What if</td>
-<td>PDP, re-running with an edited input; ICE, ALE, local and global sensitivity</td>
-<td>Partial; <a href="#cfs-counterfactuals-and-sensitivity">CFS-1 to CFS-4</a></td>
+<td>PDP, ICE, ALE, local sensitivity, occlusion, re-running with an edited input; global sensitivity</td>
+<td>Partial; <a href="#cfs-counterfactuals-and-sensitivity">CFS-4</a></td>
 </tr>
 <tr>
 <td>How (global)</td>
@@ -3764,7 +3764,7 @@ doesn't support.</p>
 <tr>
 <td>How to be that</td>
 <td>Counterfactual search</td>
-<td>Gap; <a href="#cfs-counterfactuals-and-sensitivity">CFS-5 to CFS-7</a></td>
+<td>Gradient-based; <a href="#cfs-counterfactuals-and-sensitivity">CFS-6, CFS-7</a> for any model and diverse sets</td>
 </tr>
 <tr>
 <td>How to still be this</td>
@@ -3938,7 +3938,7 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 </tr>
 <tr>
 <td>CFS-2</td>
-<td>ALE (accumulated local effects), first order, with quantile bins. Checked against <code>alibi</code> or <code>PyALE</code></td>
+<td>ALE (accumulated local effects), first order, with quantile bins. Checked against PyALE</td>
 <td>PDP reads the model at impossible inputs when features are correlated; ALE doesn't</td>
 <td>CFS-1</td>
 <td>P1</td>
@@ -4001,6 +4001,22 @@ network says nothing about what the model learned.</p>
   derivative views are computed when drawn, so every renderer agrees on them. The derivative
   uses <code>numpy.gradient</code>'s formula, which handles uneven grids such as the percentile grids
   <code>FeatureGrid</code> builds. The SVG helpers moved to an internal header shared by the new views.</li>
+<li><strong>CFS-2.</strong> ALE follows PyALE 1.2.0 (and R's ALEPlot) exactly: its type-1 quantile edges, bins
+  closed on the right, and centering by the count-weighted midpoint effect. It draws through the
+  partial dependence document, which gained a <code>method</code> field (<code>"ale"</code>); a document without it
+  still reads as partial dependence.</li>
+<li><strong>CFS-3.</strong> The bounds are separate from the sweep (<code>DeltaBounds</code>, <code>ScaledDeltaBounds</code>,
+  <code>RangeBounds</code>), so ±δ and range sensitivity are one function. <code>Occlusion</code> follows Captum 0.9's
+  rules exactly, including the cropped last window, and returns an ordinary <code>Attribution</code>, so the
+  existing heatmap view draws it. The tornado chart gives each feature two bars, high and low,
+  rather than one two-colored bar, because both values often move the output the same way.</li>
+<li><strong>CFS-5</strong> uses proximal gradient descent (a gradient step on the prediction hinge, then
+  soft-thresholding toward the input) rather than plain gradient descent on the L1 distance,
+  so unneeded features stay exactly unchanged; on a linear model it finds the L1-optimal
+  counterfactual, which the tests check in closed form. The prediction loss is a hinge on the
+  outputs (Carlini and Wagner's form) rather than Wachter's squared error, so it is zero once the
+  target is reached. Snapping a one-hot group can undo a change the search made only partway, so
+  if it does, each category of each group is tried and the nearest valid one kept.</li>
 </ul>
 <h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
 <table>

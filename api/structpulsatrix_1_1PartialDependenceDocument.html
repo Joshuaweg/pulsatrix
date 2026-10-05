@@ -107,6 +107,9 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1PartialDependenceDo
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a5e826f3f7863a76723faab1d08a2075a" id="r_a5e826f3f7863a76723faab1d08a2075a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html#a5e826f3f7863a76723faab1d08a2075a">method</a> = &quot;partial_dependence&quot;</td></tr>
+<tr class="memdesc:a5e826f3f7863a76723faab1d08a2075a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>"partial_dependence"</code>, or <code>"ale"</code> for accumulated local effects (CFS-2), whose grid is the bin edges and which has no ICE curves. A reader treats a missing member as <code>"partial_dependence"</code>.  <br /></td></tr>
+<tr class="separator:a5e826f3f7863a76723faab1d08a2075a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d80f7c491c1d7406c1dd82ee42fd1d2" id="r_a2d80f7c491c1d7406c1dd82ee42fd1d2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html#a2d80f7c491c1d7406c1dd82ee42fd1d2">feature</a></td></tr>
 <tr class="memdesc:a2d80f7c491c1d7406c1dd82ee42fd1d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the varied feature. Optional.  <br /></td></tr>
 <tr class="separator:a2d80f7c491c1d7406c1dd82ee42fd1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,7 +129,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:ac0c4a59cdca6b5e368857a063c448f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Row-major (num_instances, grid.size()), or empty.  <br /></td></tr>
 <tr class="separator:ac0c4a59cdca6b5e368857a063c448f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cec4b09fe2bd535129b6594b41bd235" id="r_a3cec4b09fe2bd535129b6594b41bd235"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html#a3cec4b09fe2bd535129b6594b41bd235">feature_values</a></td></tr>
-<tr class="memdesc:a3cec4b09fe2bd535129b6594b41bd235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each instance's own value of the feature (num_instances of them), or empty.  <br /></td></tr>
+<tr class="memdesc:a3cec4b09fe2bd535129b6594b41bd235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each instance's own value of the feature (num_instances of them, or any number for ALE), or empty.  <br /></td></tr>
 <tr class="separator:a3cec4b09fe2bd535129b6594b41bd235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -161,7 +164,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Each instance's own value of the feature (num_instances of them), or empty. </p>
+<p>Each instance's own value of the feature (num_instances of them, or any number for ALE), or empty. </p>
 
 </div>
 </div>
@@ -194,6 +197,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Row-major (num_instances, grid.size()), or empty. </p>
+
+</div>
+</div>
+<a id="a5e826f3f7863a76723faab1d08a2075a" name="a5e826f3f7863a76723faab1d08a2075a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e826f3f7863a76723faab1d08a2075a">&#9670;&#160;</a></span>method</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::PartialDependenceDocument::method = &quot;partial_dependence&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>"partial_dependence"</code>, or <code>"ale"</code> for accumulated local effects (CFS-2), whose grid is the bin edges and which has no ICE curves. A reader treats a missing member as <code>"partial_dependence"</code>. </p>
 
 </div>
 </div>

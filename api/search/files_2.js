@@ -15,12 +15,13 @@ var searchData=
   ['conjunction_5fmodule_2ehpp_12',['conjunction_module.hpp',['../conjunction__module_8hpp.html',1,'']]],
   ['continuous_5fcartpole_5fenv_2ehpp_13',['continuous_cartpole_env.hpp',['../continuous__cartpole__env_8hpp.html',1,'']]],
   ['conv2d_5fmodule_2ehpp_14',['conv2d_module.hpp',['../conv2d__module_8hpp.html',1,'']]],
-  ['cpu_5fbackend_2ehpp_15',['cpu_backend.hpp',['../cpu__backend_8hpp.html',1,'']]],
-  ['cross_5fentropy_5floss_2ehpp_16',['cross_entropy_loss.hpp',['../cross__entropy__loss_8hpp.html',1,'']]],
-  ['crossover_2ehpp_17',['crossover.hpp',['../crossover_8hpp.html',1,'']]],
-  ['csv_5fdataset_2ehpp_18',['csv_dataset.hpp',['../csv__dataset_8hpp.html',1,'']]],
-  ['csv_5freader_2ehpp_19',['csv_reader.hpp',['../csv__reader_8hpp.html',1,'']]],
-  ['cublas_5fcheck_2ehpp_20',['cublas_check.hpp',['../cublas__check_8hpp.html',1,'']]],
-  ['cuda_5fbackend_2ehpp_21',['cuda_backend.hpp',['../cuda__backend_8hpp.html',1,'']]],
-  ['cuda_5fcheck_2ehpp_22',['cuda_check.hpp',['../cuda__check_8hpp.html',1,'']]]
+  ['counterfactual_2ehpp_15',['counterfactual.hpp',['../counterfactual_8hpp.html',1,'']]],
+  ['cpu_5fbackend_2ehpp_16',['cpu_backend.hpp',['../cpu__backend_8hpp.html',1,'']]],
+  ['cross_5fentropy_5floss_2ehpp_17',['cross_entropy_loss.hpp',['../cross__entropy__loss_8hpp.html',1,'']]],
+  ['crossover_2ehpp_18',['crossover.hpp',['../crossover_8hpp.html',1,'']]],
+  ['csv_5fdataset_2ehpp_19',['csv_dataset.hpp',['../csv__dataset_8hpp.html',1,'']]],
+  ['csv_5freader_2ehpp_20',['csv_reader.hpp',['../csv__reader_8hpp.html',1,'']]],
+  ['cublas_5fcheck_2ehpp_21',['cublas_check.hpp',['../cublas__check_8hpp.html',1,'']]],
+  ['cuda_5fbackend_2ehpp_22',['cuda_backend.hpp',['../cuda__backend_8hpp.html',1,'']]],
+  ['cuda_5fcheck_2ehpp_23',['cuda_check.hpp',['../cuda__check_8hpp.html',1,'']]]
 ];

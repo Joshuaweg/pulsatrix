@@ -23,11 +23,16 @@ var searchData=
   ['continuouscartpoleenv_20',['ContinuousCartPoleEnv',['../classpulsatrix_1_1ContinuousCartPoleEnv.html',1,'pulsatrix']]],
   ['conv2dmodule_21',['Conv2DModule',['../classpulsatrix_1_1Conv2DModule.html',1,'pulsatrix']]],
   ['convgeometry_22',['ConvGeometry',['../structpulsatrix_1_1ConvGeometry.html',1,'pulsatrix']]],
-  ['cpubackend_23',['CPUBackend',['../classpulsatrix_1_1CPUBackend.html',1,'pulsatrix']]],
-  ['cputimes_24',['CpuTimes',['../structpulsatrix_1_1detail_1_1CpuTimes.html',1,'pulsatrix::detail']]],
-  ['crossentropyloss_25',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
-  ['csvdataset_26',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
-  ['csvreader_27',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
-  ['csvtable_28',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
-  ['cudabackend_29',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
+  ['counterfactualconstraints_23',['CounterfactualConstraints',['../structpulsatrix_1_1CounterfactualConstraints.html',1,'pulsatrix']]],
+  ['counterfactualdocument_24',['CounterfactualDocument',['../structpulsatrix_1_1CounterfactualDocument.html',1,'pulsatrix']]],
+  ['counterfactualoptions_25',['CounterfactualOptions',['../structpulsatrix_1_1CounterfactualOptions.html',1,'pulsatrix']]],
+  ['counterfactualresult_26',['CounterfactualResult',['../structpulsatrix_1_1CounterfactualResult.html',1,'pulsatrix']]],
+  ['counterfactualtarget_27',['CounterfactualTarget',['../structpulsatrix_1_1CounterfactualTarget.html',1,'pulsatrix']]],
+  ['cpubackend_28',['CPUBackend',['../classpulsatrix_1_1CPUBackend.html',1,'pulsatrix']]],
+  ['cputimes_29',['CpuTimes',['../structpulsatrix_1_1detail_1_1CpuTimes.html',1,'pulsatrix::detail']]],
+  ['crossentropyloss_30',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
+  ['csvdataset_31',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
+  ['csvreader_32',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
+  ['csvtable_33',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
+  ['cudabackend_34',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
 ];

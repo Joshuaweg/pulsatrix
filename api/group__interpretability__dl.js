@@ -1,6 +1,7 @@
 var group__interpretability__dl =
 [
     [ "attribution.hpp", "attribution_8hpp.html", null ],
+    [ "counterfactual.hpp", "counterfactual_8hpp.html", null ],
     [ "explainer_context.hpp", "explainer__context_8hpp.html", null ],
     [ "explainer_stability.hpp", "explainer__stability_8hpp.html", null ],
     [ "grad_cam.hpp", "grad__cam_8hpp.html", null ],
