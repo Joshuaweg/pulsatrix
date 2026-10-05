@@ -154,6 +154,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af80237833850ddabf8613bfeacb16879"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39ba98c6b35d8b44af755fedb2056a38" id="r_a39ba98c6b35d8b44af755fedb2056a38"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a39ba98c6b35d8b44af755fedb2056a38">d_model</a> () const</td></tr>
 <tr class="separator:a39ba98c6b35d8b44af755fedb2056a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af95614faa4c2f954597dc90486f16084" id="r_af95614faa4c2f954597dc90486f16084"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#af95614faa4c2f954597dc90486f16084">forward_cached</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, <a class="el" href="classpulsatrix_1_1KVCache.html">KVCache</a> &amp;cache)</td></tr>
+<tr class="memdesc:af95614faa4c2f954597dc90486f16084"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block for new positions only, with attention against <code>cache</code> (LLM-5); see <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a72ab46b2f1533ddc17119b5d4a9a09d8" title="Attention for new positions only, against everything in cache (LLM-5): projects the input,...">MultiHeadAttentionModule::forward_cached</a>. Inference only: <a class="el" href="classpulsatrix_1_1TransformerBlock.html#abc0a1563e2a85b6998d197edfcf9e861" title="Gradient w.r.t. this module&#39;s input; sub-module parameter gradients accumulate inside norm1_/mha_/nor...">backward()</a> and <a class="el" href="classpulsatrix_1_1TransformerBlock.html#ae6ce7ebbbcae1b88709d0e9058652529" title="LRP relevance propagation: two residual epsilon/z-rule splits composed with norm1_&#39;s/mha_&#39;s/norm2_&#39;s/...">propagate_relevance()</a> throw until the next <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>.  <br /></td></tr>
+<tr class="separator:af95614faa4c2f954597dc90486f16084"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab76a3f0b3b5d175132e8f49641c491d3" id="r_ab76a3f0b3b5d175132e8f49641c491d3"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#ab76a3f0b3b5d175132e8f49641c491d3">compute_device</a> () const override</td></tr>
 <tr class="memdesc:ab76a3f0b3b5d175132e8f49641c491d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
 <tr class="separator:ab76a3f0b3b5d175132e8f49641c491d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -429,6 +432,42 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="af95614faa4c2f954597dc90486f16084" name="af95614faa4c2f954597dc90486f16084"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af95614faa4c2f954597dc90486f16084">&#9670;&#160;</a></span>forward_cached()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::TransformerBlock::forward_cached </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1KVCache.html">KVCache</a> &amp;&#160;</td>
+          <td class="paramname"><em>cache</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The block for new positions only, with attention against <code>cache</code> (LLM-5); see <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a72ab46b2f1533ddc17119b5d4a9a09d8" title="Attention for new positions only, against everything in cache (LLM-5): projects the input,...">MultiHeadAttentionModule::forward_cached</a>. Inference only: <a class="el" href="classpulsatrix_1_1TransformerBlock.html#abc0a1563e2a85b6998d197edfcf9e861" title="Gradient w.r.t. this module&#39;s input; sub-module parameter gradients accumulate inside norm1_/mha_/nor...">backward()</a> and <a class="el" href="classpulsatrix_1_1TransformerBlock.html#ae6ce7ebbbcae1b88709d0e9058652529" title="LRP relevance propagation: two residual epsilon/z-rule splits composed with norm1_&#39;s/mha_&#39;s/norm2_&#39;s/...">propagate_relevance()</a> throw until the next <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td><code>(N, L_new, d_model)</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

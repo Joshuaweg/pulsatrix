@@ -182,6 +182,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ada9caf0447f28b2aabec8791ccbf91aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e89515f2ce59260428b90212f3bf6bb" id="r_a6e89515f2ce59260428b90212f3bf6bb"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6e89515f2ce59260428b90212f3bf6bb">position_offset</a> () const</td></tr>
 <tr class="separator:a6e89515f2ce59260428b90212f3bf6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72ab46b2f1533ddc17119b5d4a9a09d8" id="r_a72ab46b2f1533ddc17119b5d4a9a09d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a72ab46b2f1533ddc17119b5d4a9a09d8">forward_cached</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, <a class="el" href="classpulsatrix_1_1KVCache.html">KVCache</a> &amp;cache)</td></tr>
+<tr class="memdesc:a72ab46b2f1533ddc17119b5d4a9a09d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attention for new positions only, against everything in <code>cache</code> (LLM-5): projects the input, writes its keys and values into the cache after the positions already there, and attends over all of them. Its RoPE positions start at <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6e89515f2ce59260428b90212f3bf6bb">position_offset()</a> + cache.length(), and the causal mask lets new position i see cached positions up to its own.  <br /></td></tr>
+<tr class="separator:a72ab46b2f1533ddc17119b5d4a9a09d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a225357f7e75f0654e61e60becc036830" id="r_a225357f7e75f0654e61e60becc036830"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1KVCache.html">KVCache</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a225357f7e75f0654e61e60becc036830">MakeKVCache</a> (int64_t batch, int64_t max_length) const</td></tr>
+<tr class="memdesc:a225357f7e75f0654e61e60becc036830"><td class="mdescLeft">&#160;</td><td class="mdescRight">An empty cache sized for this layer: <code>(batch, num_kv_heads, max_length, head_dim)</code>.  <br /></td></tr>
+<tr class="separator:a225357f7e75f0654e61e60becc036830"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a403e6584eb71aedadccf2ea8071f637e" id="r_a403e6584eb71aedadccf2ea8071f637e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a403e6584eb71aedadccf2ea8071f637e">last_attention_weights</a> () const</td></tr>
 <tr class="memdesc:a403e6584eb71aedadccf2ea8071f637e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached attention weights of the last forward, <code>(N, num_heads, L, L)</code> &ndash; the softmax output. Exposed because "what did each head attend to" is the single most-asked explainability question about this module. Masked entries are 0.  <br /></td></tr>
 <tr class="separator:a403e6584eb71aedadccf2ea8071f637e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -495,6 +501,53 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a72ab46b2f1533ddc17119b5d4a9a09d8" name="a72ab46b2f1533ddc17119b5d4a9a09d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72ab46b2f1533ddc17119b5d4a9a09d8">&#9670;&#160;</a></span>forward_cached()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::MultiHeadAttentionModule::forward_cached </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1KVCache.html">KVCache</a> &amp;&#160;</td>
+          <td class="paramname"><em>cache</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Attention for new positions only, against everything in <code>cache</code> (LLM-5): projects the input, writes its keys and values into the cache after the positions already there, and attends over all of them. Its RoPE positions start at <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6e89515f2ce59260428b90212f3bf6bb">position_offset()</a> + cache.length(), and the causal mask lets new position i see cached positions up to its own. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td><code>(N, L_new, d_model)</code>; the N must match the cache's batch. </td></tr>
+    <tr><td class="paramname">cache</td><td>Sized for this layer (MakeKVCache); advanced by L_new. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>(N, L_new, d_model)</code>: the same as the last L_new rows of <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> over the whole sequence. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Inference only: it leaves no state for <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6d70f8c38cec738bdbe53660fba5d3f9" title="Gradient w.r.t. this module&#39;s input; sub-module parameter gradients accumulate inside those sub-modul...">backward()</a> or <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1" title="LRP relevance propagation, composed from the sub-modules&#39; own rules plus AttnLRP&#39;s Eq....">propagate_relevance()</a>, which throw until the next <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>. Grouped-query heads read their shared K/V head in place, without the copies <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> makes. A key padding mask, if set, must cover every cached and new position: <code>(N, cache.length() + L_new)</code>. A padding query with no visible key spreads uniform weights over the keys that exist so far, so its (meaningless) output can differ from a full pass's; every real position matches. </dd>
+<dd>
+Pieces match a full pass when attention is causal. Without the causal mask a full pass lets early positions see later ones, which a cache can't. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the input's shape, the cache's dimensions or the padding mask don't fit, or the cache would overflow. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a56532c2f4e0f9c641d660aa0122a88fd" name="a56532c2f4e0f9c641d660aa0122a88fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a56532c2f4e0f9c641d660aa0122a88fd">&#9670;&#160;</a></span>forward_impl()</h2>
 
@@ -689,6 +742,36 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Cached attention weights of the last forward, <code>(N, num_heads, L, L)</code> &ndash; the softmax output. Exposed because "what did each head attend to" is the single most-asked explainability question about this module. Masked entries are 0. </p>
+
+</div>
+</div>
+<a id="a225357f7e75f0654e61e60becc036830" name="a225357f7e75f0654e61e60becc036830"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a225357f7e75f0654e61e60becc036830">&#9670;&#160;</a></span>MakeKVCache()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1KVCache.html">KVCache</a> pulsatrix::MultiHeadAttentionModule::MakeKVCache </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>max_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An empty cache sized for this layer: <code>(batch, num_kv_heads, max_length, head_dim)</code>. </p>
 
 </div>
 </div>

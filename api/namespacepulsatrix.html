@@ -398,6 +398,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GaussianProcessRegressor.html">GaussianProcessRegressor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A fitted (or queryable-before-fitting-throws) Gaussian Process regressor with a squared-exponential kernel: k(x, x') = sigma_f^2 * exp(-||x - x'||^2 / (2 * length_scale^2)), plus additive observation noise (a small noise_variance is also standard GP practice purely as numerical "jitter" to keep the kernel matrix well-conditioned, independent of whether the underlying objective is actually noisy).  <a href="classpulsatrix_1_1GaussianProcessRegressor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GenerationConfig.html">GenerationConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decoding settings. The defaults decode greedily. Field names follow Hugging Face's <a class="el" href="structpulsatrix_1_1GenerationConfig.html" title="Decoding settings. The defaults decode greedily. Field names follow Hugging Face&#39;s GenerationConfig.">GenerationConfig</a>.  <a href="structpulsatrix_1_1GenerationConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GenerationResult.html">GenerationResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A generated continuation.  <a href="structpulsatrix_1_1GenerationResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GeneratorPopulation.html">GeneratorPopulation</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owns N independently-parameterized generator Modules.  <a href="classpulsatrix_1_1GeneratorPopulation.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -493,6 +499,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1KLDivergenceLoss.html">KLDivergenceLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closed-form KL(N(mu, sigma^2) || N(0, I)) for a diagonal Gaussian posterior (Kingma &amp; Welling 2013, arXiv:1312.6114, Appendix B): loss = mean_b( 0.5 * sum_d( mu[b,d]^2 + exp(2*log_sigma[b,d]) - 2*log_sigma[b,d] - 1 ) ) i.e. summed over the latent dimension per example, averaged over the batch &ndash; the standard VAE ELBO normalization, matching how the reconstruction term is typically summed-per-example/averaged-over-batch too.  <a href="classpulsatrix_1_1KLDivergenceLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1KVCache.html">KVCache</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One attention layer's keys and values for the positions processed so far, in buffers allocated once for <code>max_length</code> positions, so generation never reallocates or copies the past.  <a href="classpulsatrix_1_1KVCache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LayerNormModule.html">LayerNormModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y_{n,i} = gamma_i * (x_{n,i} - mu_n)/std_n + beta_i, mu_n = mean_i(x_{n,i}), std_n = sqrt(var_i(x_{n,i}) + eps), computed independently per batch row n. Batched ((N, num_features)), migrated from the original unbatched (rank-1) scope by campaign_exai_dl_library_batch_dimension_support.  <a href="classpulsatrix_1_1LayerNormModule.html#details">More...</a><br /></td></tr>
@@ -934,6 +943,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:af0e563c5452d92e9003dedfe6a588b6a" id="r_af0e563c5452d92e9003dedfe6a588b6a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)&gt;</td></tr>
 <tr class="memdesc:af0e563c5452d92e9003dedfe6a588b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains <code>input</code> using the model in its current state.  <br /></td></tr>
 <tr class="separator:af0e563c5452d92e9003dedfe6a588b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a1fe66874ff77912dd431c00acc157" id="r_ad9a1fe66874ff77912dd431c00acc157"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a> = std::function&lt; std::vector&lt; float &gt;(const std::vector&lt; int64_t &gt; &amp;tokens)&gt;</td></tr>
+<tr class="memdesc:ad9a1fe66874ff77912dd431c00acc157"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model as generation sees it: the token sequence so far in, the logits for the next token out (one per vocabulary entry). How they're computed is up to the caller: a full forward pass over the sequence (MakeNextTokenLogits), or a cached step (LLM-5).  <br /></td></tr>
+<tr class="separator:ad9a1fe66874ff77912dd431c00acc157"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc17b0f5a8717d9ef75f08182d273a4d" id="r_abc17b0f5a8717d9ef75f08182d273a4d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>(size_t layer_index, const <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)&gt;</td></tr>
 <tr class="memdesc:abc17b0f5a8717d9ef75f08182d273a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-layer <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule choice: maps (top-level module index in forward order, module) to the <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html" title="Configuration for LRP relevance propagation: which rule a module applies and its hyperparameters....">LRPRuleConfig</a> that module applies.  <br /></td></tr>
 <tr class="separator:abc17b0f5a8717d9ef75f08182d273a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1063,6 +1075,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ab997921e8dd2fcb16daefdcc05ce6550"><td class="mdescLeft">&#160;</td><td class="mdescRight">E-GAN's three named mutation objectives.  <a href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">More...</a><br /></td></tr>
 <tr class="separator:ab997921e8dd2fcb16daefdcc05ce6550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad77127af5416692cbd6eaeaba9ec0e0a" id="r_ad77127af5416692cbd6eaeaba9ec0e0a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a">FinishReason</a> { <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aa86d16d93f97145c1c4532ada5501eaeb">Eos</a>
+, <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275">Length</a>
+ }</td></tr>
+<tr class="memdesc:ad77127af5416692cbd6eaeaba9ec0e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Why generation stopped.  <a href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a">More...</a><br /></td></tr>
+<tr class="separator:ad77127af5416692cbd6eaeaba9ec0e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf838275fc40b42d2c67d2772d64d1b8" id="r_aaf838275fc40b42d2c67d2772d64d1b8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8">AcquisitionKind</a> { <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192">ExpectedImprovement</a>
 , <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9">ProbabilityOfImprovement</a>
 , <a class="el" href="namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9">UpperConfidenceBound</a>
@@ -1370,6 +1387,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a5e7eb5721b3a5ef9281c8ac3906d05b1" id="r_a5e7eb5721b3a5ef9281c8ac3906d05b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GAEResult.html">GAEResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5e7eb5721b3a5ef9281c8ac3906d05b1">ComputeGAE</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;rewards, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;dones, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;values, float bootstrap_value, float gamma, float lambda, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a5e7eb5721b3a5ef9281c8ac3906d05b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generalized Advantage Estimation (Schulman et al. 2016, arXiv:1506.02438): the exponentially-weighted average of k-step advantage estimators, computed in one reverse pass.  <br /></td></tr>
 <tr class="separator:a5e7eb5721b3a5ef9281c8ac3906d05b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff3b48caeb6b0b77ea0a3da2af308877" id="r_aff3b48caeb6b0b77ea0a3da2af308877"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aff3b48caeb6b0b77ea0a3da2af308877">ProcessLogits</a> (std::vector&lt; float &gt; &amp;logits, const std::vector&lt; int64_t &gt; &amp;tokens, int64_t num_new_tokens, const <a class="el" href="structpulsatrix_1_1GenerationConfig.html">GenerationConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:aff3b48caeb6b0b77ea0a3da2af308877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the configured logit processing, in Hugging Face's order: repetition penalty, the EOS ban before min_new_tokens, then (when sampling) temperature, top-k, top-p and min-p. Removed tokens get -infinity. With do_sample false only the first two apply.  <br /></td></tr>
+<tr class="separator:aff3b48caeb6b0b77ea0a3da2af308877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa922a61c86975caf8d552abac0dc8999" id="r_aa922a61c86975caf8d552abac0dc8999"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GenerationResult.html">GenerationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa922a61c86975caf8d552abac0dc8999">Generate</a> (const <a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a> &amp;model, const std::vector&lt; int64_t &gt; &amp;prompt, const <a class="el" href="structpulsatrix_1_1GenerationConfig.html">GenerationConfig</a> &amp;config={})</td></tr>
+<tr class="memdesc:aa922a61c86975caf8d552abac0dc8999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates up to max_new_tokens after <code>prompt</code>, one at a time: process the next-token logits, take the most likely token (greedy) or draw one from their softmax (sampling), append it, and stop after an EOS token.  <br /></td></tr>
+<tr class="separator:aa922a61c86975caf8d552abac0dc8999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cfa666246da5421f8bba0105d28340f" id="r_a6cfa666246da5421f8bba0105d28340f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6cfa666246da5421f8bba0105d28340f">MakeNextTokenLogits</a> (std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; layers, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a6cfa666246da5421f8bba0105d28340f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A NextTokenLogitsFn for a stack of pulsatrix modules that maps token ids <code>(1, L)</code> to logits <code>(1, L, vocab)</code> (for example <a class="el" href="classpulsatrix_1_1EmbeddingModule.html" title="Embedding lookup table, rank-2 input (N, L) of float-encoded indices -&gt; rank-3 output (N,...">EmbeddingModule</a>, causal TransformerBlocks, an RMSNorm and a <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html" title="logits = x @ E^T, where E is a token embedding table (vocab, d_model) that the head shares rather tha...">TiedLMHeadModule</a>): it runs the whole sequence through the modules and returns the last position's logits.  <br /></td></tr>
+<tr class="separator:a6cfa666246da5421f8bba0105d28340f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0f5ad755b0b0704f29e15db03268e39" id="r_ad0f5ad755b0b0704f29e15db03268e39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad0f5ad755b0b0704f29e15db03268e39">MakeCachedNextTokenLogits</a> (<a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a> &amp;embedding, std::vector&lt; <a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a> * &gt; blocks, std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; head, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t max_length)</td></tr>
+<tr class="memdesc:ad0f5ad755b0b0704f29e15db03268e39"><td class="mdescLeft">&#160;</td><td class="mdescRight">A NextTokenLogitsFn for embedding -&gt; transformer blocks -&gt; head layers that keeps a KV cache per block (LLM-5): each call runs only the tokens after the longest prefix it has already processed, so generating n tokens costs one pass over the prompt and then one position per token, instead of n passes over the whole sequence. A call with a different history (a new prompt, or a shorter or edited one) truncates the caches to the shared prefix and continues from there.  <br /></td></tr>
+<tr class="separator:ad0f5ad755b0b0704f29e15db03268e39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07c587513b12f0ed1c2eae8fef64e2ad" id="r_a07c587513b12f0ed1c2eae8fef64e2ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a07c587513b12f0ed1c2eae8fef64e2ad">SliceBatch</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t, int64_t start, int64_t count, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a07c587513b12f0ed1c2eae8fef64e2ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts rows [start, start+count) along t's leading dimension into a new <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> &ndash; the inverse of <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a>, needed to split a pooled discriminator gradient back into each population member's own slice.  <br /></td></tr>
 <tr class="separator:a07c587513b12f0ed1c2eae8fef64e2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1951,6 +1980,22 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 
 </div>
 </div>
+<a id="ad9a1fe66874ff77912dd431c00acc157" name="ad9a1fe66874ff77912dd431c00acc157"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9a1fe66874ff77912dd431c00acc157">&#9670;&#160;</a></span>NextTokenLogitsFn</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">pulsatrix::NextTokenLogitsFn</a> = typedef std::function&lt;std::vector&lt;float&gt;(const std::vector&lt;int64_t&gt;&amp; tokens)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The model as generation sees it: the token sequence so far in, the logits for the next token out (one per vocabulary entry). How they're computed is up to the caller: a full forward pass over the sequence (MakeNextTokenLogits), or a cached step (LLM-5). </p>
+
+</div>
+</div>
 <a id="a2b8dc3d7d2cef35f192d191f09156e67" name="a2b8dc3d7d2cef35f192d191f09156e67"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b8dc3d7d2cef35f192d191f09156e67">&#9670;&#160;</a></span>NodeId</h2>
 
@@ -2169,6 +2214,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf" name="afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf"></a>Silu&#160;</td><td class="fielddoc"><p>x * sigmoid(x) &ndash; a.k.a. swish; the gate half of SwiGLU </p>
 </td></tr>
 <tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0" name="afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0"></a>Exp&#160;</td><td class="fielddoc"><p>exp(x) &ndash; GPU-native-kernels Mission 1b (<a class="el" href="classpulsatrix_1_1Reparameterize.html" title="VAE reparameterization trick (Kingma &amp; Welling 2013, arXiv:1312.6114), z[b,d] = mu[b,...">Reparameterize</a>, KL divergence) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ad77127af5416692cbd6eaeaba9ec0e0a" name="ad77127af5416692cbd6eaeaba9ec0e0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad77127af5416692cbd6eaeaba9ec0e0a">&#9670;&#160;</a></span>FinishReason</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a">pulsatrix::FinishReason</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Why generation stopped. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad77127af5416692cbd6eaeaba9ec0e0aa86d16d93f97145c1c4532ada5501eaeb" name="ad77127af5416692cbd6eaeaba9ec0e0aa86d16d93f97145c1c4532ada5501eaeb"></a>Eos&#160;</td><td class="fielddoc"><p>An EOS token was generated. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275" name="ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275"></a>Length&#160;</td><td class="fielddoc"><p>max_new_tokens were generated. </p>
 </td></tr>
 </table>
 
@@ -5747,6 +5822,49 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="aa922a61c86975caf8d552abac0dc8999" name="aa922a61c86975caf8d552abac0dc8999"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa922a61c86975caf8d552abac0dc8999">&#9670;&#160;</a></span>Generate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1GenerationResult.html">GenerationResult</a> pulsatrix::Generate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>prompt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1GenerationConfig.html">GenerationConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generates up to max_new_tokens after <code>prompt</code>, one at a time: process the next-token logits, take the most likely token (greedy) or draw one from their softmax (sampling), append it, and stop after an EOS token. </p>
+<dl class="section note"><dt>Note</dt><dd>Sampling draws from std::mt19937_64's raw output, so a seed gives the same text on every platform as long as the model's logits are the same. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the prompt is empty, the config is invalid, or the model returns an empty or non-finite set of logits, or every token gets removed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a5d9ef14c29aa1d557b15486cadbba5b6" name="a5d9ef14c29aa1d557b15486cadbba5b6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d9ef14c29aa1d557b15486cadbba5b6">&#9670;&#160;</a></span>GeneratePooledFakeSamples()</h2>
 
@@ -6274,6 +6392,113 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Lower-case rule name ("epsilon", "gamma", "alpha_beta", "zbox") for messages/metadata. </p>
+
+</div>
+</div>
+<a id="ad0f5ad755b0b0704f29e15db03268e39" name="ad0f5ad755b0b0704f29e15db03268e39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0f5ad755b0b0704f29e15db03268e39">&#9670;&#160;</a></span>MakeCachedNextTokenLogits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a> pulsatrix::MakeCachedNextTokenLogits </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a> &amp;&#160;</td>
+          <td class="paramname"><em>embedding</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a> * &gt;&#160;</td>
+          <td class="paramname"><em>blocks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt;&#160;</td>
+          <td class="paramname"><em>head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>max_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A NextTokenLogitsFn for embedding -&gt; transformer blocks -&gt; head layers that keeps a KV cache per block (LLM-5): each call runs only the tokens after the longest prefix it has already processed, so generating n tokens costs one pass over the prompt and then one position per token, instead of n passes over the whole sequence. A call with a different history (a new prompt, or a shorter or edited one) truncates the caches to the shared prefix and continues from there. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">embedding</td><td>Maps <code>(1, L)</code> ids to <code>(1, L, d_model)</code>. </td></tr>
+    <tr><td class="paramname">blocks</td><td>Run with forward_cached, in order; each gets its own cache of max_length positions. </td></tr>
+    <tr><td class="paramname">head</td><td>Applied to the last position's hidden state <code>(1, d_model)</code>: for example a final <a class="el" href="classpulsatrix_1_1RMSNormModule.html" title="y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps), computed independen...">RMSNormModule</a> and a <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html" title="logits = x @ E^T, where E is a token embedding table (vocab, d_model) that the head shares rather tha...">TiedLMHeadModule</a>; must end in <code>(1, vocab)</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The returned function owns the caches (allocated once) and is stateful: use one per sequence being generated. The modules are not owned and must outlive it. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>(when built) if blocks is empty or a pointer is null; (when called) if the sequence is empty or longer than max_length. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6cfa666246da5421f8bba0105d28340f" name="a6cfa666246da5421f8bba0105d28340f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cfa666246da5421f8bba0105d28340f">&#9670;&#160;</a></span>MakeNextTokenLogits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a> pulsatrix::MakeNextTokenLogits </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt;&#160;</td>
+          <td class="paramname"><em>layers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A NextTokenLogitsFn for a stack of pulsatrix modules that maps token ids <code>(1, L)</code> to logits <code>(1, L, vocab)</code> (for example <a class="el" href="classpulsatrix_1_1EmbeddingModule.html" title="Embedding lookup table, rank-2 input (N, L) of float-encoded indices -&gt; rank-3 output (N,...">EmbeddingModule</a>, causal TransformerBlocks, an RMSNorm and a <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html" title="logits = x @ E^T, where E is a token embedding table (vocab, d_model) that the head shares rather tha...">TiedLMHeadModule</a>): it runs the whole sequence through the modules and returns the last position's logits. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">layers</td><td>Run in order; not owned, must outlive the function. </td></tr>
+    <tr><td class="paramname">backend</td><td>Where the ids tensor is built. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Recomputes the whole prefix at every step; MakeCachedNextTokenLogits doesn't. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>(when called) if the output isn't rank 3 with one row per token. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -7598,6 +7823,61 @@ template&lt;typename RNG &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>If sigma is ~0, PI is defined as the degenerate limit: 1 if mean already exceeds best_value + xi, else 0. </dd></dl>
+
+</div>
+</div>
+<a id="aff3b48caeb6b0b77ea0a3da2af308877" name="aff3b48caeb6b0b77ea0a3da2af308877"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff3b48caeb6b0b77ea0a3da2af308877">&#9670;&#160;</a></span>ProcessLogits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::ProcessLogits </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>logits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tokens</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_new_tokens</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1GenerationConfig.html">GenerationConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Applies the configured logit processing, in Hugging Face's order: repetition penalty, the EOS ban before min_new_tokens, then (when sampling) temperature, top-k, top-p and min-p. Removed tokens get -infinity. With do_sample false only the first two apply. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tokens</td><td>The sequence so far (for the repetition penalty). </td></tr>
+    <tr><td class="paramname">num_new_tokens</td><td>How many tokens have been generated so far (for min_new_tokens). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an invalid config. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

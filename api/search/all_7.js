@@ -4,7 +4,7 @@ var searchData=
   ['has_5fkey_5fpadding_5fmask_1',['has_key_padding_mask',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a080f3afd4b26dda8306b7b34a97e61be',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['has_5fstability_2',['has_stability',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a6ee536c46431a4b61425927c7ee0cb40',1,'pulsatrix::ExplanationScoreCard::Input']]],
   ['head_3',['head',['../classpulsatrix_1_1datalog_1_1Rule.html#a855bba5eb1b4af7c6b7ae7dd0ab260e6',1,'pulsatrix::datalog::Rule']]],
-  ['head_5fdim_4',['head_dim',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ab4b539122189354b1dcc365cc8681dae',1,'pulsatrix::MultiHeadAttentionModule::head_dim()'],['../structpulsatrix_1_1AttentionConfig.html#a1b2affef801794344314071788d7e5e5',1,'pulsatrix::AttentionConfig::head_dim']]],
+  ['head_5fdim_4',['head_dim',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ab4b539122189354b1dcc365cc8681dae',1,'pulsatrix::MultiHeadAttentionModule::head_dim()'],['../classpulsatrix_1_1KVCache.html#ad4ef38c4bb3083f01641c4768603910b',1,'pulsatrix::KVCache::head_dim()'],['../structpulsatrix_1_1AttentionConfig.html#a1b2affef801794344314071788d7e5e5',1,'pulsatrix::AttentionConfig::head_dim']]],
   ['header_5',['header',['../structpulsatrix_1_1CsvTable.html#a05532a48ae5c290fbf7acde55cf913b5',1,'pulsatrix::CsvTable']]],
   ['heatmapcolorscale_6',['HeatmapColorScale',['../structpulsatrix_1_1HeatmapColorScale.html',1,'pulsatrix']]],
   ['heatmapdocument_7',['HeatmapDocument',['../structpulsatrix_1_1HeatmapDocument.html',1,'pulsatrix']]],

@@ -2744,7 +2744,7 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
   (<a href="#llm-running-real-language-models">LLM-1</a>): grouped-query attention, causal and padding
   masks, "rotate half" RoPE with a configurable base, QK-Norm and bias-free projections, checked
   against Hugging Face's Llama, Qwen2 and Qwen3 attention. A language-model head that shares the
-  embedding table (LLM-2).</li>
+  embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5).</li>
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Its container runs ROCm 10.0.0, the
@@ -3516,6 +3516,20 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
   than tensor views (which don't exist yet). It owns no parameters, so the optimizer, freezing and
   checkpoints see the table once, under the embedding's name, and its gradient is the sum of the
   lookup's and the head's. Every LRP rule works on it, with the table transposed as the weight.</li>
+<li><strong>LLM-4</strong> takes the model as a function from the token sequence to the next token's logits, so
+  the KV cache (LLM-5) only has to provide a faster function. The logit processing follows
+  Hugging Face's processors and their order exactly and is checked against them. Sampling draws
+  from <code>std::mt19937_64</code>'s raw output, so a seed gives the same tokens on every platform for the
+  same logits. Results carry each token's log-probability under the unprocessed model, which the
+  explainers need. Beam search, stop strings and batched generation are not included.</li>
+<li><strong>LLM-5</strong> caches each layer's keys and values after QK-Norm and RoPE, at the K/V head count, so
+  grouped-query heads read their shared head in place instead of the repeated copies the training
+  pass makes. Cached passes are inference only: backward and LRP refuse to run after one. The
+  generation adapter compares each history with what it has cached and truncates to the shared
+  prefix, so a new continuation of the same prompt costs only its new tokens. On CPU (Release), 128
+  tokens from a 4-block, 128-wide model took 47 ms instead of 3.3 s. A padding query with no
+  visible key can produce different (meaningless) output than in a full pass; real positions
+  match.</li>
 </ul>
 <h3 id="follow-ups-the-llm-work-surfaced">Follow-ups the LLM work surfaced<a class="headerlink" href="#follow-ups-the-llm-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
