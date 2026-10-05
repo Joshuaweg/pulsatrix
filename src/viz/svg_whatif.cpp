@@ -365,4 +365,147 @@ std::string RenderCounterfactualSvg(const CounterfactualDocument& doc, int max_r
     return f.finish(bottom + fs * 1.8);
 }
 
+// ---- Morris ---------------------------------------------------------------------------------
+
+std::string RenderMorrisSvg(const MorrisDocument& doc, const SvgOptions& options) {
+    CheckOptions(options);
+    if (doc.features.empty()) {
+        throw std::invalid_argument("RenderMorrisSvg: no features");
+    }
+    double xmax = 0.0, ymax = 0.0;
+    for (const auto& f : doc.features) {
+        CheckFinite({f.mu, f.mu_star, f.sigma, f.mu_star_conf}, "RenderMorrisSvg: feature values");
+        if (f.mu_star < 0.0f || f.sigma < 0.0f || f.mu_star_conf < 0.0f) {
+            throw std::invalid_argument("RenderMorrisSvg: mu*, sigma and confidence must not be negative");
+        }
+        xmax = std::max(xmax, static_cast<double>(f.mu_star + f.mu_star_conf));
+        ymax = std::max(ymax, static_cast<double>(f.sigma));
+    }
+    // One scale for both axes, so the line sigma = mu* is the diagonal.
+    const double hi = std::max(std::max(xmax, ymax) * 1.1, 1e-6);
+    const std::string target = doc.target.empty() ? "the output" : doc.target;
+    Figure f(options, "Morris screening of " + std::to_string(doc.features.size()) + " features for " + target);
+    const double fs = f.fs();
+    double label_w = 0;
+    for (double t : NiceTicks(0.0, hi)) label_w = std::max(label_w, TextWidth(ValueText(t), fs * 0.85));
+    const double x0 = fs * 2.2 + label_w + fs * 0.6;
+    const double x1 = f.width() - fs * 1.5;
+    const double side = std::min(x1 - x0, 520.0);
+    const double y_top = f.top() + fs;
+    const double y_bottom = y_top + side;
+    const double xr = x0 + side;
+    auto X = [&](double v) { return x0 + v / hi * side; };
+    auto Y = [&](double v) { return y_bottom - v / hi * side; };
+
+    f.line("diagonal", X(0), Y(0), X(hi), Y(hi), kMutedColor, 1.0, "4 3");
+    // Below the line's upper end, where no point can sit closer to it than the line itself.
+    f.text("diagonal-label", X(hi) - fs * 0.3, Y(hi * 0.88) + fs * 0.9,
+           "\xCF\x83 = \xCE\xBC*", "end", kMutedColor, " font-size=\"" + Num(fs * 0.85) + "\"");
+    const std::string point_color = Hex(DivergingColormap(0.8f));
+    for (const auto& ft : doc.features) {
+        const double px = X(ft.mu_star), py = Y(ft.sigma);
+        f.body() += "<g class=\"feature\">\n";
+        if (ft.mu_star_conf > 0.0f) {
+            f.line("conf", X(std::max(0.0f, ft.mu_star - ft.mu_star_conf)), py, X(ft.mu_star + ft.mu_star_conf), py,
+                   kTextColor, 1.0);
+        }
+        f.body() += "<circle class=\"point\" cx=\"" + Num(px) + "\" cy=\"" + Num(py) + "\" r=\"" + Num(fs * 0.35) +
+                    "\" fill=\"" + point_color + "\" stroke=\"#333333\" stroke-width=\"0.5\"><title>" +
+                    Escape(ft.name + ": \xCE\xBC* " + ValueText(ft.mu_star) + ", \xCF\x83 " + ValueText(ft.sigma) +
+                           ", \xCE\xBC " + ValueText(ft.mu)) +
+                    "</title></circle>\n";
+        f.text("feature-label", px + fs * 0.5, py - fs * 0.4, Truncate(ft.name, 24));
+        f.body() += "</g>\n";
+    }
+    f.y_axis(x0, y_top, y_bottom, 0.0, hi, "\xCF\x83 (spread of effects)", label_w);
+    f.x_axis(y_bottom, x0, xr, 0.0, hi, "\xCE\xBC* (mean |elementary effect|) on " + target);
+    return f.finish(y_bottom + fs * 4.0, xr + fs * 1.5);
+}
+
+// ---- Sobol ----------------------------------------------------------------------------------
+
+std::string RenderSobolSvg(const SobolDocument& doc, int top_k, const SvgOptions& options) {
+    CheckOptions(options);
+    if (doc.features.empty()) {
+        throw std::invalid_argument("RenderSobolSvg: no features");
+    }
+    if (top_k < 1) {
+        throw std::invalid_argument("RenderSobolSvg: top_k must be at least 1");
+    }
+    for (const auto& ft : doc.features) {
+        CheckFinite({ft.first_order, ft.total_order, ft.first_order_conf, ft.total_order_conf},
+                    "RenderSobolSvg: feature values");
+    }
+    std::vector<size_t> order(doc.features.size());
+    for (size_t i = 0; i < order.size(); ++i) order[i] = i;
+    std::stable_sort(order.begin(), order.end(),
+                     [&](size_t a, size_t b) { return doc.features[a].total_order > doc.features[b].total_order; });
+    order.resize(std::min(order.size(), static_cast<size_t>(top_k)));
+    double lo = 0.0, hi = 0.0;
+    for (size_t i : order) {
+        const auto& ft = doc.features[i];
+        lo = std::min({lo, static_cast<double>(ft.first_order - ft.first_order_conf),
+                       static_cast<double>(ft.total_order - ft.total_order_conf)});
+        hi = std::max({hi, static_cast<double>(ft.first_order + ft.first_order_conf),
+                       static_cast<double>(ft.total_order + ft.total_order_conf)});
+    }
+    hi = std::max(hi * 1.05, 1e-6);
+    if (lo < 0.0) lo *= 1.05;
+
+    const std::string target = doc.target.empty() ? "the output" : doc.target;
+    Figure f(options, "Sobol indices of " + std::to_string(order.size()) + " features for " + target);
+    const double fs = f.fs();
+    const size_t max_label_chars = static_cast<size_t>(std::max(4.0, f.width() * 0.3 / (kCharWidthEm * fs)));
+    double label_w = 0;
+    for (size_t i : order) label_w = std::max(label_w, TextWidth(Truncate(doc.features[i].name, max_label_chars), fs));
+    const double x0 = fs + label_w + fs * 0.75;
+    const double x1 = f.width() - fs * 1.5;
+    auto X = [&](double v) { return x0 + (v - lo) / (hi - lo) * (x1 - x0); };
+    const std::string first_color = Hex(DivergingColormap(0.85f));
+    const std::string total_color = Hex(DivergingColormap(0.35f));
+
+    // Legend.
+    const double ly = f.top() + fs * 0.6;
+    f.body() += "<rect class=\"legend-first\" x=\"" + Num(x0) + "\" y=\"" + Num(ly - fs * 0.4) + "\" width=\"" + Num(fs) +
+                "\" height=\"" + Num(fs * 0.8) + "\" fill=\"" + first_color + "\"/>\n";
+    f.text("legend-label", x0 + fs * 1.4, ly + fs * 0.35, "first order (alone)");
+    const double lx = x0 + fs * 1.4 + TextWidth("first order (alone)", fs) + fs;
+    f.body() += "<rect class=\"legend-total\" x=\"" + Num(lx) + "\" y=\"" + Num(ly - fs * 0.4) + "\" width=\"" + Num(fs) +
+                "\" height=\"" + Num(fs * 0.8) + "\" fill=\"" + total_color + "\"/>\n";
+    f.text("legend-label", lx + fs * 1.4, ly + fs * 0.35, "total order (with interactions)");
+
+    const double row_h = fs * 2.6;
+    const double y0 = f.top() + fs * 1.8;
+    // whisker_at: the whisker's height as a fraction of the bar, so the two intervals don't overlap.
+    auto bar = [&](const char* cls, double value, double conf, double top, double h, double whisker_at,
+                   const std::string& color, const std::string& tip) {
+        const double a = std::min(X(0), X(value)), b = std::max(X(0), X(value));
+        f.body() += std::string("<rect class=\"") + cls + "\" x=\"" + Num(a) + "\" y=\"" + Num(top) + "\" width=\"" +
+                    Num(std::max(b - a, 0.5)) + "\" height=\"" + Num(h) + "\" fill=\"" + color + "\"><title>" +
+                    Escape(tip) + "</title></rect>\n";
+        if (conf > 0) {
+            const double cy = top + h * whisker_at;
+            const double tick = fs * 0.2;
+            f.line("whisker", X(value - conf), cy, X(value + conf), cy, kTextColor, 1.0);
+            f.line("whisker", X(value - conf), cy - tick, X(value - conf), cy + tick, kTextColor, 1.0);
+            f.line("whisker", X(value + conf), cy - tick, X(value + conf), cy + tick, kTextColor, 1.0);
+        }
+    };
+    for (size_t r = 0; r < order.size(); ++r) {
+        const auto& ft = doc.features[order[r]];
+        const double cy = y0 + row_h * (static_cast<double>(r) + 0.5);
+        f.body() += "<g class=\"feature-row\">\n";
+        f.text("feature-label", x0 - fs * 0.75, cy + fs * 0.35, Truncate(ft.name, max_label_chars), "end");
+        bar("bar-total", ft.total_order, ft.total_order_conf, cy - fs * 0.75, fs * 1.5, 0.12, total_color,
+            ft.name + ": total order " + ValueText(ft.total_order) + " \xC2\xB1 " + ValueText(ft.total_order_conf));
+        bar("bar-first", ft.first_order, ft.first_order_conf, cy - fs * 0.35, fs * 0.7, 0.5, first_color,
+            ft.name + ": first order " + ValueText(ft.first_order) + " \xC2\xB1 " + ValueText(ft.first_order_conf));
+        f.body() += "</g>\n";
+    }
+    const double plot_bottom = y0 + row_h * static_cast<double>(order.size());
+    f.line("zero-line", X(0), y0, X(0), plot_bottom, kMutedColor, 1.0);
+    f.x_axis(plot_bottom + fs * 0.25, x0, x1, lo, hi, "share of the variance of " + target);
+    return f.finish(plot_bottom + fs * 4.0);
+}
+
 }  // namespace pulsatrix

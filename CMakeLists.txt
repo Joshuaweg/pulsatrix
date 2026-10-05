@@ -101,6 +101,7 @@ add_library(pulsatrix_core
     src/ice.cpp
     src/sensitivity.cpp
     src/counterfactual.cpp
+    src/global_sensitivity.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp

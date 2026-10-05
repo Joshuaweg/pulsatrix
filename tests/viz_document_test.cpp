@@ -239,6 +239,62 @@ TEST(VizDocumentGoldenTest, Counterfactual) {
     ExpectRejected(ParseCounterfactualDocument, bad, "/valid");
 }
 
+MorrisDocument GoldenMorris() {
+    MorrisDocument doc;
+    doc.target = "yield";
+    doc.num_trajectories = 20;
+    doc.features = {{"rainfall", 3.5f, 4.0f, 1.5f, 0.5f},
+                    {"fertilizer", -0.5f, 2.0f, 3.0f, 0.75f},
+                    {"soil pH", 0.125f, 0.25f, 0.25f, 0.0625f}};
+    return doc;
+}
+
+SobolDocument GoldenSobol() {
+    SobolDocument doc;
+    doc.target = "yield";
+    doc.num_samples = 1024;
+    doc.features = {{"rainfall", 0.5f, 0.625f, 0.0625f, 0.0625f},
+                    {"fertilizer", 0.125f, 0.375f, 0.03125f, 0.0625f},
+                    {"soil pH", -0.015625f, 0.0625f, 0.03125f, 0.015625f}};
+    return doc;
+}
+
+TEST(VizDocumentGoldenTest, MorrisAndSobol) {
+    std::string morris = ReadFixture("morris.v1.json");
+    EXPECT_EQ(ToJson(GoldenMorris()), morris);
+    MorrisDocument m = ParseMorrisDocument(morris);
+    ASSERT_EQ(m.features.size(), 3u);
+    EXPECT_EQ(m.features[1].sigma, 3.0f);
+    EXPECT_EQ(m.num_trajectories, 20);
+    std::string sobol = ReadFixture("sobol.v1.json");
+    EXPECT_EQ(ToJson(GoldenSobol()), sobol);
+    SobolDocument s = ParseSobolDocument(sobol);
+    EXPECT_EQ(s.features[2].first_order, -0.015625f);
+    EXPECT_EQ(s.num_samples, 1024);
+}
+
+TEST(VizDocumentConversionTest, GlobalSensitivityResultsNameTheVariedFeatures) {
+    MorrisResult m;
+    m.features = {4, 1};
+    m.mu = {1, 2};
+    m.mu_star = {1, 2};
+    m.sigma = {0, 1};
+    m.mu_star_conf = {0.1f, 0.2f};
+    EXPECT_EQ(ToMorrisDocument(m).features[0].name, "feature_4");
+    EXPECT_EQ(ToMorrisDocument(m, {"a", "b"}).features[1].name, "b");
+    EXPECT_THROW((void)ToMorrisDocument(m, {"a"}), std::invalid_argument);
+    SobolResult s;
+    s.features = {2};
+    s.first_order = {0.5f};
+    s.total_order = {0.75f};
+    s.first_order_conf = {0.1f};
+    s.total_order_conf = {0.1f};
+    s.num_samples = 64;
+    SobolDocument doc = ToSobolDocument(s, {"x"}, "y");
+    EXPECT_EQ(doc.features[0].total_order, 0.75f);
+    EXPECT_EQ(doc.num_samples, 64);
+}
+
 // ---- conversions from and to the in-memory types the widgets draw today.
 
 TEST(VizDocumentConversionTest, AttributionRoundTripsThroughTensor) {

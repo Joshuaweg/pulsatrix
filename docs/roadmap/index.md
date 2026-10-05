@@ -416,7 +416,7 @@ doesn't support.
 |---|---|---|
 | Why | LRP composites, Integrated Gradients | Have |
 | Why not | Contrastive LRP (relevance of logit P minus logit Q) | Have |
-| What if | PDP, ICE, ALE, local sensitivity, occlusion, re-running with an edited input; global sensitivity | Partial; [CFS-4](#cfs-counterfactuals-and-sensitivity) |
+| What if | PDP, ICE, ALE, local and global (Morris, Sobol) sensitivity, occlusion, re-running with an edited input | Have ([CFS](#cfs-counterfactuals-and-sensitivity)) |
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Partial; XAI-4, INT-6 |
 | How to be that | Counterfactual search | Gradient-based; [CFS-6, CFS-7](#cfs-counterfactuals-and-sensitivity) for any model and diverse sets |
 | How to still be this | Anchors | Gap; XAI-4 |
@@ -474,7 +474,7 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 | CFS-1 | ICE: one curve per instance, centered ICE (c-ICE) and derivative ICE, plus two-feature partial dependence. View: PDP over ICE lines, and a 2-D PDP heatmap. Checked against scikit-learn's `partial_dependence` | PDP averages away heterogeneity; ICE shows it. Two-feature PDP shows interactions | — | P0 | S || Done, [#69](https://github.com/Joshuaweg/pulsatrix/pull/69) (see below) |
 | CFS-2 | ALE (accumulated local effects), first order, with quantile bins. Checked against PyALE | PDP reads the model at impossible inputs when features are correlated; ALE doesn't | CFS-1 | P1 | S || Done, [#72](https://github.com/Joshuaweg/pulsatrix/pull/72) (see below) |
 | CFS-3 | Local sensitivity: move each input feature by ±δ (absolute or in units of the background's spread) or across its range and record the output change; occlusion with patches for images and spans for sequences. Views: a tornado chart, and the occlusion map through the heatmap renderer | "Which inputs is this prediction sensitive to, and how much?" with no gradients and no surrogate | — | P0 | S || Done, [#70](https://github.com/Joshuaweg/pulsatrix/pull/70) (see below) |
-| CFS-4 | Global sensitivity: Morris elementary effects (μ\*, σ) and Sobol first-order and total indices (Saltelli sampling, Jansen estimators) with bootstrap confidence intervals. Views: μ\*–σ scatter, Sobol bars with error bars. Checked against SALib | Which inputs drive the output over the whole input space, and which interact | — | P1 | M | |
+| CFS-4 | Global sensitivity: Morris elementary effects (μ\*, σ) and Sobol first-order and total indices (Saltelli sampling, Jansen estimators) with bootstrap confidence intervals. Views: μ\*–σ scatter, Sobol bars with error bars. Checked against SALib | Which inputs drive the output over the whole input space, and which interact | — | P1 | M || Done, [#73](https://github.com/Joshuaweg/pulsatrix/pull/73) (see below) |
 | CFS-5 | Gradient counterfactual (Wachter): the nearest input that reaches a target class or value, distance weighted by each feature's median absolute deviation, with immutable features, bounds, and integer or categorical features. Reports validity, proximity (L1, L2) and sparsity. View: what changed, feature by feature | "How to be that", the most requested missing explainer | — | P0 | M || Done, [#71](https://github.com/Joshuaweg/pulsatrix/pull/71) (see below) |
 | CFS-6 | Model-agnostic counterfactual: growing spheres, refined by the evolutionary module, for models with no gradient | Counterfactuals for any prediction function | CFS-5 | P1 | S | |
 | CFS-7 | Diverse counterfactuals (DiCE: a determinantal diversity term) and a plausibility score (distance to the k nearest background instances). Checked against DiCE's own metrics | One counterfactual hides the other ways to change the outcome; implausible ones mislead | CFS-5 | P1 | M | |
@@ -498,6 +498,12 @@ network says nothing about what the model learned.
   rules exactly, including the cropped last window, and returns an ordinary `Attribution`, so the
   existing heatmap view draws it. The tornado chart gives each feature two bars, high and low,
   rather than one two-colored bar, because both values often move the output the same way.
+- **CFS-4.** The analyzers are separate from the samplers (`AnalyzeMorris`, `AnalyzeSobol`), so
+  they are checked against SALib 1.6 on SALib's own samples, digit for digit. The samplers use
+  plain pseudo-random numbers from `std::mt19937_64` (whose output the standard fixes) instead of
+  SALib's Sobol sequence, and are checked against the Ishigami function's analytic indices.
+  Bootstrap intervals use the same generator, so they match SALib's in size only. Second-order
+  Sobol indices are not computed.
 - **CFS-5** uses proximal gradient descent (a gradient step on the prediction hinge, then
   soft-thresholding toward the input) rather than plain gradient descent on the L1 distance,
   so unneeded features stay exactly unchanged; on a linear model it finds the L1-optimal
