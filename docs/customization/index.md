@@ -23,6 +23,9 @@ public:
 
     [[nodiscard]] OpType op_type() const override { return OpType::Activation; }
 
+    // Lets Module::forward() check that the input is on this layer's device.
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
+
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out,
                                               const LRPRuleConfig& config) override {
         // LRP: split relevance_out among this module's inputs (see below)
@@ -37,6 +40,10 @@ private:
     DeviceBackend* backend_;
 };
 ```
+
+`compute_device()` is optional, but without it `Module::forward()` can't check that the input
+lives on the same device as the layer, and a CPU tensor reaching a GPU layer fails much later
+and less clearly. A layer with parameters usually returns its weight's device instead.
 
 ### The LRP rule is required
 
@@ -90,6 +97,15 @@ before `named_parameters()` existed may still override `parameters()` instead; t
 training, but report no names of their own. Inside a container they get positional names
 (`2.0`, `2.1`, ...), which are stable only as long as the parameter order is.
 
+### Buffers and eval mode
+
+State that isn't trained but must be saved, such as BatchNorm's running statistics, is a
+buffer. Override `named_buffers()` so checkpoints store it; a layer that holds other modules
+adds theirs with `append_named_buffers(out, "child", child_)`. Without it, a checkpoint
+silently drops that state. If your layer holds other modules, also override `set_training()`
+to pass the mode on to each of them, as `SequentialModule` does, so `set_training(false)`
+reaches every BatchNorm and Dropout inside.
+
 ## Adding a new metrics sink
 
 Training loops report metrics such as the loss through a `MetricsSink`. To send them somewhere
@@ -108,7 +124,9 @@ public:
 Pass your sink to `train_step()` (for example `XorNetwork::train_step()` or `MnistConvNet`'s).
 Two sinks ship with the library: `NoOpMetricsSink`, which discards everything, and
 `ImPlotMetricsSink`, which buffers series for live plots (see
-[Visualization](../visualization/index.md)).
+[Visualization](../visualization/index.md)). An `ImPlotMetricsSink`'s log can be saved as a
+`pulsatrix.training_log.v1` document (`ToTrainingLogDocument`) and replayed into any sink
+later (`ReplayTrainingLog`).
 
 ## Adding a new device backend
 
@@ -116,10 +134,23 @@ Implement `DeviceBackend`, the interface that `CPUBackend` and the CUDA and HIP 
 implement. `Tensor` and `ComputationGraph` depend only on this interface, never on a specific
 backend.
 
-Every backend must behave identically:
+Every backend must behave the same way:
 
-- the same numeric results, and
-- the same error behavior: throw on failure, and never return null from `allocate()`.
+- **Results.** The same results as the CPU up to floating-point rounding (GPU reductions add in
+  a different order), and the same results from run to run: no atomics in reductions.
+- **Errors.** Throw on failure. `allocate()` returns nullptr only for a 0-byte request.
+- **Ordering.** Ops may run asynchronously, but a `copy()` to the host, `dot()` and `sum()` must
+  return finished results, and `free()` must be safe on memory that queued work still uses.
+  The HIP backend shows one way: a single in-order stream, waits only where the host reads, and
+  `PULSATRIX_HIP_SYNC_DEBUG=1` to wait after every op while hunting a fault
+  ([GPU Profiling](../gpu-profiling.md#hip-4-no-per-op-synchronization)).
+- **Memory.** `CachingAllocator` (`caching_allocator.hpp`) is device-independent: hand it your
+  raw allocate, free and synchronize functions to reuse freed blocks
+  ([GPU Profiling](../gpu-profiling.md#hip-3-a-caching-allocator)).
+- **Determinism.** When `deterministic()` is on, use only paths whose results don't vary from
+  run to run; the HIP and CUDA backends turn off BLAS atomics, for example.
+- **Selection.** `top_k_rows()` ranks NaN above every number and keeps the lower index first on
+  ties, so every backend picks the same entries in the same order.
 
 This section is about writing a new backend. To build the existing CUDA or HIP backends, see
 [Getting Started](../getting-started.md#gpu-backends).

@@ -25,8 +25,8 @@ CSV has one row per op: `op, calls, total_us, mean_us, percent`. Op names come f
 name (`batch_norm_forward_kernel` becomes `batch_norm_forward`). All of hipBLAS's GEMM kernels
 are grouped as `gemm (hipBLAS)`, and HIP runtime helpers such as copies appear as `runtime: ...`.
 
-`hip_profile_workloads` has three fixed workloads, each a full training step (forward, loss,
-backward, AdamW):
+`hip_profile_workloads` has three fixed training workloads, each a full training step (forward,
+loss, backward, AdamW), and one reduction microbenchmark:
 
 - **`mlp`:** `Linear(256→512) → ReLU → Linear(512→512) → ReLU → Linear(512→10)`, batch 64.
 - **`cnn`:** `Conv2D(3→16) → BatchNorm → ReLU → Conv2D(16→32, stride 2) → BatchNorm → ReLU →

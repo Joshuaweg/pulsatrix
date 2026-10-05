@@ -60,10 +60,10 @@ for (const TaggingBatch& b : window) tokens += CountTargetTokens(b.targets);
 optimizer.zero_grad(tagger);
 for (const TaggingBatch& b : window) {
     TokenCrossEntropyLoss loss(backend);
-    loss.forward(tagger.forward(b.inputs), b.targets, static_cast<float>(tokens));
-    tagger.backward(loss.backward());
+    (void)loss.forward(tagger.forward(b.inputs), b.targets, static_cast<float>(tokens));
+    (void)tagger.backward(loss.backward());
 }
-ClipGradNorm(tagger, config.max_grad_norm);
+(void)ClipGradNorm(tagger, config.max_grad_norm);
 optimizer.step(tagger);
 scheduler.step();
 ```

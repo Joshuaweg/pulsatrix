@@ -22,17 +22,22 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   `DeviceBackend` (`CPUBackend`/`CUDABackend`/`HIPBackend`)
 - **Layers**: `LinearModule`, `Conv2DModule`, `ReluModule`, `FlattenModule`,
   `SequentialModule`, `DropoutModule`, `EmbeddingModule`, `ResidualModule`; normalization
-  (`LayerNormModule`/`RMSNormModule`/`GroupNormModule`/`BatchNormModule`); pooling
+  (`LayerNormModule`/`RMSNormModule`/`GroupNormModule`/`BatchNormModule`, with `BatchNormFold`
+  to fold an eval-mode BatchNorm into the layer before it); pooling
   (`MaxPool2DModule`/`AvgPool2DModule`). `Conv2DModule` takes an optional `stride` and zero
   `padding`, as in `torch.nn.Conv2d`, and every LRP rule handles both.
 - **Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule`, `SoftmaxModule`,
   `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock`,
   `MambaModule`, `RWKVModule`, `RetNetModule`
-- **Optimizers & losses**: `SGDOptimizer`, `AdamOptimizer`; `MSELoss`, `CrossEntropyLoss`,
-  `BCEWithLogitsLoss`, `KLDivergenceLoss`, `CalibrationLoss`
+- **Optimizers & losses**: `SGDOptimizer` (momentum, Nesterov), `AdamOptimizer`,
+  `AdamWOptimizer`, all with parameter groups; `MSELoss`, `CrossEntropyLoss`,
+  `TokenCrossEntropyLoss`, `BCEWithLogitsLoss`, `KLDivergenceLoss`, `CalibrationLoss`
 - **Generative building blocks**: `Reparameterize` (VAE), `NoiseSchedule` and
   `SinusoidalTimestepEmbedding()` (diffusion)
-- **Training utilities**: `MetricsSink`/`NoOpMetricsSink` (where `train_step` logs its loss)
+- **Training utilities**: `ClipGradNorm`, `LRSchedule`/`LRScheduler`, parameter groups
+  (`param_groups.hpp`), checkpoints (`SaveCheckpoint`/`LoadCheckpoint`, `safetensors.hpp`),
+  `set_seed`/`set_deterministic`, and `MetricsSink`/`NoOpMetricsSink` (where `train_step` logs
+  its loss)
 - **Selection**: `top_k()`, the k largest or smallest entries of every row along the last
   dimension, with their indices, on any device. NaN ranks above every number and ties keep the
   lower index first, so every backend selects the same entries in the same order.
@@ -108,6 +113,9 @@ SaveCheckpoint("model.safetensors", model, optimizer);  // also writes model.opt
 // ... later, or in another process:
 LoadCheckpoint("model.safetensors", model, optimizer);  // training resumes exactly
 ```
+
+The optimizer state that can be saved is `AdamOptimizer`'s or `AdamWOptimizer`'s; SGD's momentum
+buffers aren't saved yet.
 
 - Every parameter and buffer (such as BatchNorm's running statistics) is stored under its
   `named_parameters()` / `named_buffers()` name. Leave out the optimizer to save or load just
@@ -219,7 +227,7 @@ for (size_t k = 0; k < window_inputs.size(); ++k) {
     (void)loss.forward(logits, window_targets[k], static_cast<float>(total));
     (void)model.backward(loss.backward());  // gradients accumulate across micro-batches
 }
-ClipGradNorm(model, 1.0f);
+(void)ClipGradNorm(model, 1.0f);  // returns the norm before clipping
 optimizer.step(model);
 ```
 
@@ -252,8 +260,8 @@ block.set_requires_grad(false);              // freeze everything
 block.set_requires_grad(true, "mha.q_proj");  // then train only the query projection
 ```
 
-A frozen parameter is never changed by `SGDOptimizer` or `AdamOptimizer`, and `backward()`
-doesn't add to its gradient. The gradient passed back to the previous layer is exactly the same
+A frozen parameter is never changed by any optimizer (`SGDOptimizer`, `AdamOptimizer`,
+`AdamWOptimizer`), `ClipGradNorm` leaves it out, and `backward()` doesn't add to its gradient. The gradient passed back to the previous layer is exactly the same
 as without freezing. `LinearModule`, `Conv2DModule` and `EmbeddingModule` skip computing a
 frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
 nothing throws `std::invalid_argument`, so a typo can't leave the model silently trainable.
@@ -278,3 +286,4 @@ what it normalizes over:
 - [XOR training walkthrough](../recipes/deep-learning/xor_training.md)
 - [RNN vs. LSTM vs. GRU on a parity task](../recipes/deep-learning/sequence_models_rnn_lstm_gru.md)
 - [Residual connections and normalization layers](../recipes/deep-learning/residual_and_norm_layers.md)
+- [Full fine-tuning: pretrain, save, reload, fine-tune](../recipes/deep-learning/tagger_finetune.md)
