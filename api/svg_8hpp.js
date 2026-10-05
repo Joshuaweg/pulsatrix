@@ -12,6 +12,5 @@ var svg_8hpp =
     [ "RenderHeatmapSvg", "svg_8hpp.html#a0121ff88a9488ffc68939cf396fd4df2", null ],
     [ "RenderPartialDependenceSvg", "svg_8hpp.html#ad340f3a7f51a54de4118b651d545b001", null ],
     [ "RenderTokenStripSvg", "svg_8hpp.html#a08920d2d448c7826c263b59f72b6abaf", null ],
-    [ "RenderTornadoSvg", "svg_8hpp.html#a0b5f62b97a38c79f164cdb63faedcccf", null ],
     [ "RenderWaterfallSvg", "svg_8hpp.html#a0aecd98f0c5911b0fffde4c162a4d3e6", null ]
 ];

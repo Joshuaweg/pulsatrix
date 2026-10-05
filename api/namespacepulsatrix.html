@@ -356,9 +356,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.feature_dashboard.v1</code>: one learned feature (for example a sparse autoencoder unit) with its activation statistics and top-activating examples.  <a href="structpulsatrix_1_1FeatureDashboardDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureSensitivity.html">FeatureSensitivity</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How one feature's low and high value move the output, everything else held fixed.  <a href="structpulsatrix_1_1FeatureSensitivity.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FieldStatistics.html">FieldStatistics</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptive statistics for one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position, aggregated across a whole <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>.  <a href="structpulsatrix_1_1FieldStatistics.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -478,9 +475,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearProbe.html">LinearProbe</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A linear probe: <code>LinearModule(activation_dim, 1)</code> + <code><a class="el" href="classpulsatrix_1_1BCEWithLogitsLoss.html" title="loss = mean( max(x,0) - x*y + log(1 + exp(-|x|)) ), over all N*k elements of a (N,...">BCEWithLogitsLoss</a></code>, trained on <code>(activation, binary concept label)</code> pairs. High post-training accuracy means the concept is linearly decodable from those activations; chance-level accuracy means it is not (at least not linearly).  <a href="classpulsatrix_1_1LinearProbe.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One-at-a-time sensitivity of one output around one input.  <a href="structpulsatrix_1_1LocalSensitivityResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html">LRP</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whole-model <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to the input through every module's own propagate_relevance() rule.  <a href="classpulsatrix_1_1LRP.html#details">More...</a><br /></td></tr>
@@ -716,12 +710,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes a hyperparameter search space as an ordered list of named, typed parameters. Every HPO algorithm (grid/random search, GP-BO, TPE, Hyperband/ASHA) consumes a <code><a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a></code> to know what it may propose; this type itself has no sampling logic (that is each algorithm's own job, e.g. <code>RandomSample</code>/<code>GridSample</code>).  <a href="classpulsatrix_1_1SearchSpace.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The low and high value to try for every feature of an input (flat order).  <a href="structpulsatrix_1_1SensitivityBounds.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sensitivity.v1</code>: how one output moves when each input feature, alone, goes to a low and a high value (CFS-3). The data behind a tornado chart.  <a href="structpulsatrix_1_1SensitivityDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequentialModule.html">SequentialModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Composes layers_[0..n-1] in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> order; <a class="el" href="classpulsatrix_1_1SequentialModule.html#ab250da54700dc610741f81ecad38224e" title="Chains backward() across layers_ in reverse order.">backward()</a>/propagate_relevance() chain layers_[n-1..0] in reverse &ndash; correct reverse-mode composition order.  <a href="classpulsatrix_1_1SequentialModule.html#details">More...</a><br /></td></tr>
@@ -1517,21 +1505,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a22532e4874cd35681db7270ced4fc066"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a22532e4874cd35681db7270ced4fc066">RankSelect</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1Individual.html">Individual</a>&lt; Genotype, FitnessT &gt; &gt; &amp;population, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a22532e4874cd35681db7270ced4fc066"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper around RankSelectByDraw: draws uniformly from [0, total_weight) and selects accordingly.  <br /></td></tr>
 <tr class="separator:a22532e4874cd35681db7270ced4fc066"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdd324a4cbc0618759d3b7ca9e489475" id="r_abdd324a4cbc0618759d3b7ca9e489475"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abdd324a4cbc0618759d3b7ca9e489475">DeltaBounds</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, float delta)</td></tr>
-<tr class="memdesc:abdd324a4cbc0618759d3b7ca9e489475"><td class="mdescLeft">&#160;</td><td class="mdescRight">x - delta and x + delta for every feature.  <br /></td></tr>
-<tr class="separator:abdd324a4cbc0618759d3b7ca9e489475"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50cbaa78a53c56deddcc160026d2a839" id="r_a50cbaa78a53c56deddcc160026d2a839"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a50cbaa78a53c56deddcc160026d2a839">ScaledDeltaBounds</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, float num_std=1.0f)</td></tr>
-<tr class="memdesc:a50cbaa78a53c56deddcc160026d2a839"><td class="mdescLeft">&#160;</td><td class="mdescRight">x -/+ num_std standard deviations of each feature over <code>background</code>, so every feature moves by a comparable amount whatever its units. A feature constant over the background doesn't move.  <br /></td></tr>
-<tr class="separator:a50cbaa78a53c56deddcc160026d2a839"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7b6197038b51b34a805f1171810d28c" id="r_af7b6197038b51b34a805f1171810d28c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af7b6197038b51b34a805f1171810d28c">RangeBounds</a> (const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, float lower_percentile=0.05f, float upper_percentile=0.95f)</td></tr>
-<tr class="memdesc:af7b6197038b51b34a805f1171810d28c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each feature's lower and upper percentile over <code>background</code> (linear interpolation, as numpy.percentile): the classic tornado-diagram range, a typical low and high value.  <br /></td></tr>
-<tr class="separator:af7b6197038b51b34a805f1171810d28c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc4291f88aae1ae7c558b0f8901f77a2" id="r_abc4291f88aae1ae7c558b0f8901f77a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc4291f88aae1ae7c558b0f8901f77a2">ComputeLocalSensitivity</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t target_index, const <a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> &amp;bounds, const std::vector&lt; int64_t &gt; &amp;features={})</td></tr>
-<tr class="memdesc:abc4291f88aae1ae7c558b0f8901f77a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets each feature in turn to its low and then its high bound, leaving the others at the input's values, and records the target output each time.  <br /></td></tr>
-<tr class="separator:abc4291f88aae1ae7c558b0f8901f77a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d6993904b493c0219d46ea05ae89c82" id="r_a9d6993904b493c0219d46ea05ae89c82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9d6993904b493c0219d46ea05ae89c82">Occlusion</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t target_index, const std::vector&lt; int64_t &gt; &amp;window, const std::vector&lt; int64_t &gt; &amp;strides, float baseline=0.0f)</td></tr>
-<tr class="memdesc:a9d6993904b493c0219d46ea05ae89c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Occlusion (Zeiler and Fergus 2014) with Captum 0.9's semantics: a window slides over the input with the given strides, everything under it is set to <code>baseline</code>, and each element's attribution is the drop in the target output, f(x) - f(occluded), averaged over the windows that covered it.  <br /></td></tr>
-<tr class="separator:a9d6993904b493c0219d46ea05ae89c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9db00216eaf37da6e93cdbc40371c65e" id="r_a9db00216eaf37da6e93cdbc40371c65e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9db00216eaf37da6e93cdbc40371c65e">SinusoidalTimestepEmbedding</a> (int64_t t, int64_t embedding_dim, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float base=10000.0f)</td></tr>
 <tr class="memdesc:a9db00216eaf37da6e93cdbc40371c65e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard Transformer-style sinusoidal encoding of a diffusion timestep <code>t</code>: <code>emb[2i] = sin(t / base^(2i/embedding_dim))</code>, <code>emb[2i+1] = cos(t / base^(2i/embedding_dim))</code> for <code>i in [0, embedding_dim/2)</code>.  <br /></td></tr>
 <tr class="separator:a9db00216eaf37da6e93cdbc40371c65e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1674,13 +1647,6 @@ Functions</h2></td></tr>
 <tr class="separator:a08917aaabe7b0581e886617112b4b22f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73aaf9d248d18472edb0c12895562858" id="r_a73aaf9d248d18472edb0c12895562858"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73aaf9d248d18472edb0c12895562858">ParsePartialDependenceDocument</a> (std::string_view json)</td></tr>
 <tr class="separator:a73aaf9d248d18472edb0c12895562858"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed2d58eda7a7b26ec6d6162720c8e52a" id="r_aed2d58eda7a7b26ec6d6162720c8e52a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aed2d58eda7a7b26ec6d6162720c8e52a">ToSensitivityDocument</a> (const <a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a> &amp;result, const std::vector&lt; std::string &gt; &amp;names={}, std::string target=&quot;&quot;)</td></tr>
-<tr class="memdesc:aed2d58eda7a7b26ec6d6162720c8e52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies <code>result</code>. <code>names</code>, if not empty, has one name per input feature (flat index); features without a name are called <code>feature_&lt;index&gt;</code>.  <br /></td></tr>
-<tr class="separator:aed2d58eda7a7b26ec6d6162720c8e52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a619059d9817446489ce8017256877dd3" id="r_a619059d9817446489ce8017256877dd3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a619059d9817446489ce8017256877dd3">ToJson</a> (const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;doc)</td></tr>
-<tr class="separator:a619059d9817446489ce8017256877dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2dcb3007fd52399a8ed5f907d067216" id="r_ab2dcb3007fd52399a8ed5f907d067216"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab2dcb3007fd52399a8ed5f907d067216">ParseSensitivityDocument</a> (std::string_view json)</td></tr>
-<tr class="separator:ab2dcb3007fd52399a8ed5f907d067216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81a9c0a4ab6fc4d1d737368b0ec12b9" id="r_ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab81a9c0a4ab6fc4d1d737368b0ec12b9">ToFeatureImportanceBars</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>)</td></tr>
 <tr class="memdesc:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1).  <br /></td></tr>
 <tr class="separator:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1727,9 +1693,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ad340f3a7f51a54de4118b651d545b001" id="r_ad340f3a7f51a54de4118b651d545b001"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad340f3a7f51a54de4118b651d545b001">RenderPartialDependenceSvg</a> (const <a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1PartialDependenceSvgOptions.html">PartialDependenceSvgOptions</a> &amp;pd={}, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ad340f3a7f51a54de4118b651d545b001"><td class="mdescLeft">&#160;</td><td class="mdescRight">A partial dependence plot: thin ICE curves under the bold average, over the feature's grid, with a rug of the instances' own feature values along the bottom. For <a class="el" href="namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baadc5ffc2b720501ba00de3be1477b435d">IceStyle::Centered</a> and <a class="el" href="namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baa70ae6e285cc14c8486e3cf5bec39d1fd">IceStyle::Derivative</a> the average is recomputed from the transformed curves, and a dashed line marks zero.  <br /></td></tr>
 <tr class="separator:ad340f3a7f51a54de4118b651d545b001"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b5f62b97a38c79f164cdb63faedcccf" id="r_a0b5f62b97a38c79f164cdb63faedcccf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0b5f62b97a38c79f164cdb63faedcccf">RenderTornadoSvg</a> (const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;doc, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
-<tr class="memdesc:a0b5f62b97a38c79f164cdb63faedcccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tornado chart: one row per feature, the <code>top_k</code> with the largest swing first. Each row has two bars from the unchanged output, one to the output at the feature's high value (red) and one to its low value (blue), labeled with those values; a dashed line marks the unchanged output.  <br /></td></tr>
-<tr class="separator:a0b5f62b97a38c79f164cdb63faedcccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3913,67 +3876,6 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 
 </div>
 </div>
-<a id="abc4291f88aae1ae7c558b0f8901f77a2" name="abc4291f88aae1ae7c558b0f8901f77a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc4291f88aae1ae7c558b0f8901f77a2">&#9670;&#160;</a></span>ComputeLocalSensitivity()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a> pulsatrix::ComputeLocalSensitivity </td>
-          <td>(</td>
-          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>predict</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int64_t&#160;</td>
-          <td class="paramname"><em>target_index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> &amp;&#160;</td>
-          <td class="paramname"><em>bounds</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>features</em> = <code>{}</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets each feature in turn to its low and then its high bound, leaving the others at the input's values, and records the target output each time. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">features</td><td>Flat feature indices to vary; empty means all of them. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>1 + 2 * features model calls. Unlike a gradient, which describes an infinitesimal neighborhood, this measures a finite one: the two disagree exactly where the model saturates or has a kink. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if bounds don't have one entry per feature, a feature index or target index is out of range. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a4da8fe5782bc4844676e7588b13fb24a" name="a4da8fe5782bc4844676e7588b13fb24a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4da8fe5782bc4844676e7588b13fb24a">&#9670;&#160;</a></span>ComputePartialDependence2D()</h2>
 
@@ -4290,42 +4192,6 @@ If a front is uniform in some objective (max == min across the whole front), tha
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the attribution's shape differs from the input's, steps &lt; 1, or target is outside the prediction. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abdd324a4cbc0618759d3b7ca9e489475" name="abdd324a4cbc0618759d3b7ca9e489475"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdd324a4cbc0618759d3b7ca9e489475">&#9670;&#160;</a></span>DeltaBounds()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> pulsatrix::DeltaBounds </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>delta</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>x - delta and x + delta for every feature. </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if delta &lt;= 0. </td></tr>
   </table>
   </dd>
 </dl>
@@ -6143,74 +6009,6 @@ template&lt;typename Analysis &gt; </div>
 
 </div>
 </div>
-<a id="a9d6993904b493c0219d46ea05ae89c82" name="a9d6993904b493c0219d46ea05ae89c82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d6993904b493c0219d46ea05ae89c82">&#9670;&#160;</a></span>Occlusion()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> pulsatrix::Occlusion </td>
-          <td>(</td>
-          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>predict</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int64_t&#160;</td>
-          <td class="paramname"><em>target_index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>window</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>strides</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>baseline</em> = <code>0.0f</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Occlusion (Zeiler and Fergus 2014) with Captum 0.9's semantics: a window slides over the input with the given strides, everything under it is set to <code>baseline</code>, and each element's attribution is the drop in the target output, f(x) - f(occluded), averaged over the windows that covered it. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">window</td><td>One size per input dimension (for an instance shaped (C, H, W), for example (C, 3, 3) occludes 3x3 patches across all channels; for a (L, d) sequence, (k, d) occludes spans of k tokens). </td></tr>
-    <tr><td class="paramname">strides</td><td>One per dimension, each &gt;= 1 and no larger than the window where the window is smaller than the input. The last window in a dimension is cropped at the edge, as in Captum. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> "occlusion", shaped like the input, beside it (same backend and device). </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if window or strides have the wrong length or invalid sizes, or the target index is out of range. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a483abfbd086c7839885d1d1b944fa976" name="a483abfbd086c7839885d1d1b944fa976"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a483abfbd086c7839885d1d1b944fa976">&#9670;&#160;</a></span>OnePointCrossover()</h2>
 
@@ -6524,24 +6322,6 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structpulsatrix_1_1PartialDependenceDocument.html">PartialDependenceDocument</a> pulsatrix::ParsePartialDependenceDocument </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>json</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab2dcb3007fd52399a8ed5f907d067216" name="ab2dcb3007fd52399a8ed5f907d067216"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2dcb3007fd52399a8ed5f907d067216">&#9670;&#160;</a></span>ParseSensitivityDocument()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> pulsatrix::ParseSensitivityDocument </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>json</em></td><td>)</td>
@@ -6988,48 +6768,6 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
-<a id="af7b6197038b51b34a805f1171810d28c" name="af7b6197038b51b34a805f1171810d28c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7b6197038b51b34a805f1171810d28c">&#9670;&#160;</a></span>RangeBounds()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> pulsatrix::RangeBounds </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>background</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>lower_percentile</em> = <code>0.05f</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>upper_percentile</em> = <code>0.95f</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Each feature's lower and upper percentile over <code>background</code> (linear interpolation, as numpy.percentile): the classic tornado-diagram range, a typical low and high value. </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if background is empty, its shapes differ, or the percentiles aren't 0 &lt;= lower &lt; upper &lt;= 1. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a22532e4874cd35681db7270ced4fc066" name="a22532e4874cd35681db7270ced4fc066"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22532e4874cd35681db7270ced4fc066">&#9670;&#160;</a></span>RankSelect()</h2>
 
@@ -7356,48 +7094,6 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if tokens and relevance differ in length, there are no tokens, or for invalid options. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a0b5f62b97a38c79f164cdb63faedcccf" name="a0b5f62b97a38c79f164cdb63faedcccf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b5f62b97a38c79f164cdb63faedcccf">&#9670;&#160;</a></span>RenderTornadoSvg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string pulsatrix::RenderTornadoSvg </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;&#160;</td>
-          <td class="paramname"><em>doc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>top_k</em> = <code>10</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
-          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A tornado chart: one row per feature, the <code>top_k</code> with the largest swing first. Each row has two bars from the unchanged output, one to the output at the feature's high value (red) and one to its low value (blue), labeled with those values; a dashed line marks the unchanged output. </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>for an empty document, a non-finite value, top_k &lt; 1, or unusable options. </td></tr>
   </table>
   </dd>
 </dl>
@@ -8970,48 +8666,6 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
-<a id="a50cbaa78a53c56deddcc160026d2a839" name="a50cbaa78a53c56deddcc160026d2a839"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50cbaa78a53c56deddcc160026d2a839">&#9670;&#160;</a></span>ScaledDeltaBounds()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityBounds.html">SensitivityBounds</a> pulsatrix::ScaledDeltaBounds </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>background</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>num_std</em> = <code>1.0f</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>x -/+ num_std standard deviations of each feature over <code>background</code>, so every feature moves by a comparable amount whatever its units. A feature constant over the background doesn't move. </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if num_std &lt;= 0, background is empty, or a background instance's shape differs from input's. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a3b2ebcf822ff6e68e95388365ae2774c" name="a3b2ebcf822ff6e68e95388365ae2774c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b2ebcf822ff6e68e95388365ae2774c">&#9670;&#160;</a></span>SerializeSafetensors()</h2>
 
@@ -10182,7 +9836,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10206,7 +9860,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10230,7 +9884,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10254,7 +9908,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10278,7 +9932,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10302,7 +9956,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10325,26 +9979,8 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
-<a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string pulsatrix::ToJson </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> &amp;&#160;</td>
-          <td class="paramname"><em>doc</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10368,7 +10004,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/9]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10543,42 +10179,6 @@ Selection only &ndash; no gradient. A module that routes gradients through a top
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="aed2d58eda7a7b26ec6d6162720c8e52a" name="aed2d58eda7a7b26ec6d6162720c8e52a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed2d58eda7a7b26ec6d6162720c8e52a">&#9670;&#160;</a></span>ToSensitivityDocument()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> pulsatrix::ToSensitivityDocument </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a> &amp;&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>names</em> = <code>{}</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>target</em> = <code>&quot;&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Copies <code>result</code>. <code>names</code>, if not empty, has one name per input feature (flat index); features without a name are called <code>feature_&lt;index&gt;</code>. </p>
 
 </div>
 </div>
