@@ -140,3 +140,42 @@ failing kernel otherwise reports its error at the next wait, not at the op that 
 The small models are still only about 20% busy. What's left is host-side work inside each step:
 reading the loss back, and losses that validate their targets on the host (one copy each step).
 Fused kernels (HIP-6) and keeping targets on the device are the next steps there.
+
+## ROCm 10.0.0 evaluation
+
+ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
+evaluation is roadmap HIP-9. Use it with `PULSATRIX_ROCM_VERSION=10.0.0 scripts/rocm-build.sh '...'`;
+the image is `docker/Dockerfile.rocm` built on `rocm/dev-ubuntu-24.04:10.0.0-full`. It ships
+HIP 7.15 and AMD clang 23, against 7.2.4's HIP 7.2 and clang 22.
+
+Measured 2026-10-04 on the Radeon 8060S, host kernel 7.0.0, same commit for both versions:
+
+| Check | ROCm 7.2.4 | ROCm 10.0.0 |
+|---|---|---|
+| HIP Debug tests | 2402/2402 | 2402/2402, also with `PULSATRIX_HIP_SYNC_DEBUG=1` |
+| `scripts/profile_hip.sh` (rocprofv3) | works | works (rocprofv3 1.3.5) |
+| Benchmark suite, 6 ABBA rounds | baseline | no regressions; every time within ±2% |
+| LRP conservation and IG completeness | baseline | bit-identical |
+
+| Benchmark (`pulsatrix_bench`, HIP) | 7.2.4 | 10.0.0 | Change | p |
+|---|---|---|---|---|
+| `train.mlp` | 0.366 ms | 0.371 ms | +1.6% | 0.066 |
+| `train.cnn` | 5.248 ms | 5.290 ms | +0.8% | 0.242 |
+| `train.tagger` | 2.229 ms | 2.268 ms | +1.8% | 0.013 |
+| `explain.lrp_epsilon.mlp` | 0.290 ms | 0.288 ms | -0.5% | 0.409 |
+| `explain.lrp_epsilon_plus.convnet` | 0.690 ms | 0.690 ms | 0.0% | 0.758 |
+| `explain.integrated_gradients.mlp` | 7.306 ms | 7.222 ms | -1.2% | 0.934 |
+
+Two differences from 7.2.4 matter for building against it:
+
+- **Library path.** ROCm 10's image keeps its libraries under `/opt/rocm/core-10.0/lib`, reached
+  through `/opt/rocm/lib`, and doesn't register that directory with the dynamic loader.
+  Programs then fail to start with `libhipblas.so.3: cannot open shared object file`. The
+  Dockerfile registers it. Outside the container, add `/opt/rocm/lib` to `/etc/ld.so.conf.d/`
+  or `LD_LIBRARY_PATH`.
+- **hipBLASLt.** ROCm 10's hipBLAS links hipBLASLt. Whether GEMMs go through it on gfx1151 is
+  HIP-8's question.
+
+ROCm 7.2.4 stays the default for now. Moving the default to 10.0.0 is one variable in
+`scripts/rocm-build.sh`.
+
