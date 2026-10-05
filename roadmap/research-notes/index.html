@@ -2067,8 +2067,8 @@ below record the reasoning they were built on.</p>
 <li><strong>XAI-5.</strong></li>
 <li>Quantus: Hedström et al., JMLR 2023, arXiv 2202.06861. It groups metrics into six families: faithfulness, robustness, localisation, complexity, randomisation and axiomatic.</li>
 <li>ROAD: Rong et al., ICML 2022.</li>
-<li>The model-parameter randomization test comes from Adebayo et al., NeurIPS 2018.</li>
-<li><strong>XAI-6.</strong> See the cross-cutting section above.</li>
+<li>The model-parameter randomization test comes from Adebayo et al., NeurIPS 2018. Done (#53): a model-independent "explainer" scores a similarity of 1.0 at every layer, and gradient × input decorrelates.</li>
+<li><strong>XAI-6.</strong> See the cross-cutting section above. Done (#54).</li>
 </ul>
 <h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2251,7 +2251,7 @@ below record the reasoning they were built on.</p>
 <li>rocprofv3 (ROCprofiler-SDK) is the standard profiler in ROCm 10.0 [V].</li>
 <li>rocprof-compute support on gfx115x landed in TheRock PR #8299 [C]. ROCm 10.0 fixed its roofline precision list [V]. It's unverified on 7.2.4.</li>
 <li><strong>HIP-2.</strong></li>
-<li><strong>Falsifier:</strong> rocprofv3 shows these kernels take under 5% of step time on real workloads.</li>
+<li><strong>Falsifier:</strong> rocprofv3 shows these kernels take under 5% of step time on real workloads. It held for softmax, the norms and <code>column_sums</code>, which were left alone. It failed for BatchNorm (79% of the CNN's kernel time), which was rewritten: step time fell from about 27 ms to about 10 ms (#57).</li>
 <li><strong>Fails when:</strong><ul>
 <li>a 32-bit mask truncates the shuffle on 64-wide waves;</li>
 <li>results differ from the CPU in the last bit (use tolerances);</li>
@@ -2271,9 +2271,9 @@ below record the reasoning they were built on.</p>
 <li>AMD recommends a 0.5 GB carve-out on Strix Halo [V] (AMD Strix Halo system optimization guide).</li>
 </ul>
 </li>
-<li><strong>HIP-4.</strong> <strong>Falsifier:</strong> the GPU is already more than 90% busy with the syncs in place.</li>
+<li><strong>HIP-4.</strong> <strong>Falsifier:</strong> the GPU is already more than 90% busy with the syncs in place. It didn't hold: HIP-1 measured 12–13% busy on the small models, and removing the syncs made them about 2× faster (#59).</li>
 <li><strong>Fails when:</strong> the host reads stale data, or an error surfaces in a later op.</li>
-<li><strong>HIP-5.</strong> <code>dot</code> and <code>sum</code> launch a single 256-thread block today (<code>src/gpu_kernels.cuh</code>). Use per-block partials and a second pass; no atomics, to keep results deterministic.</li>
+<li><strong>HIP-5.</strong> <code>dot</code> and <code>sum</code> launch a single 256-thread block today (<code>src/gpu_kernels.cuh</code>). Use per-block partials and a second pass; no atomics, to keep results deterministic. Done (#56): both now run at the measured memory bandwidth.</li>
 <li><strong>HIP-6.</strong> <strong>Fails when:</strong> the fused training path and the unfused explain path drift apart numerically. Gate them with a conservation test.</li>
 <li><strong>HIP-7.</strong> At N=64, a 3×3 kernel on 224×224 input needs about 350 MB of im2col buffer [I].</li>
 <li>MIOpen on gfx1151 has a history of trouble [C]: missing Composable Kernel libraries (TheRock #5105, closed), and a Winograd lockup (TheRock #5581).</li>
