@@ -1,0 +1,39 @@
+# find_package(pulsatrix) config. Provides the pulsatrix::core target, plus:
+#   pulsatrix_INCLUDE_DIR  the installed include directory
+#   pulsatrix_HAS_CUDA     whether this build includes the CUDA backend
+#   pulsatrix_HAS_HIP      whether this build includes the HIP backend
+@PACKAGE_INIT@
+
+# Resolve paths now: other packages' configs (hip's, for one) also run PACKAGE_INIT and
+# overwrite the PACKAGE_PREFIX_DIR these paths are built from.
+set_and_check(pulsatrix_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+
+include(CMakeFindDependencyMacro)
+
+set(pulsatrix_HAS_CUDA @PULSATRIX_ENABLE_CUDA@)
+set(pulsatrix_HAS_HIP @PULSATRIX_ENABLE_HIP@)
+
+find_dependency(Threads)
+
+if(pulsatrix_HAS_CUDA)
+    find_dependency(CUDAToolkit)
+endif()
+
+if(pulsatrix_HAS_HIP)
+    # The same ROCm search the pulsatrix build uses: -DROCM_PATH, then $ROCM_PATH, then
+    # /opt/rocm. ROCm's package configs aren't on CMake's default search path.
+    if(NOT DEFINED ROCM_PATH)
+        if(DEFINED ENV{ROCM_PATH})
+            set(ROCM_PATH "$ENV{ROCM_PATH}")
+        else()
+            set(ROCM_PATH "/opt/rocm")
+        endif()
+    endif()
+    list(APPEND CMAKE_PREFIX_PATH "${ROCM_PATH}" "${ROCM_PATH}/lib/cmake")
+    find_dependency(hip)
+    find_dependency(hipblas)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/pulsatrixTargets.cmake")
+
+check_required_components(pulsatrix)
