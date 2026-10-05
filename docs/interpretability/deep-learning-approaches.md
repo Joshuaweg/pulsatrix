@@ -20,7 +20,9 @@ need its own graph-walking code.
   coarse heatmap over the last `Conv2DModule`'s feature maps.
 - **`FindCounterfactual`** (`counterfactual.hpp`): the nearest input that reaches a different
   class or an output range (Wachter et al. 2017), with immutable features, limits, and integer
-  and one-hot features. It answers "what would have to change?"
+  and one-hot features. It answers "what would have to change?" `FindDiverseCounterfactuals`
+  finds several that take different routes (DiCE), and `Plausibility` scores how typical a
+  counterfactual is of real data.
 - **`ComputeAttributionStability(runs)`** (`explainer_stability.hpp`): measures how much
   repeated runs of any explainer vary on the same input.
 
@@ -38,6 +40,7 @@ Full API reference: [Doxygen: Gradient-Based Explainers](../api/group__interpret
 | `Saliency` | 1 forward + 1 backward | A quick first look | Noisy; reads zero where the output saturates |
 | `IntegratedGradients` | `steps` forward + backward passes | Attributions that add up to `f(input) - f(baseline)` | You must choose a baseline |
 | `GradCAM` | 1 forward + 1 backward | "Where in the image?" for CNNs | Coarse: feature-map resolution, not pixels |
+| `FindDiverseCounterfactuals` | `count × max_steps` forward + backward passes | Several different ways to change the outcome | The diversity and proximity weights trade off against each other |
 | `FindCounterfactual` | Up to `rounds × steps` forward + backward passes | "What is the smallest change that flips this?" | On images it finds adversarial noise, not a meaningful change |
 | [`LRP`](lrp.md) | 1 forward + 1 relevance pass | Per-feature relevance that (approximately) sums to the output score | The rule choice changes the result |
 
@@ -156,6 +159,28 @@ unchanged and the result is sparse. If a round of `steps_per_round` steps ends w
 point, `lambda` grows by `lambda_growth` and the search continues. Integer features are rounded
 and one-hot groups snapped at the end, and `valid` is judged after that. On a linear model the
 result is the L1-optimal change, which the tests check.
+
+**Several routes.** One counterfactual hides the others: raising income and paying down debt may
+both work.
+
+```cpp
+DiverseCounterfactualOptions opts;
+opts.count = 4;
+DiverseCounterfactualResult set = FindDiverseCounterfactuals(ctx, input, CounterfactualTarget::ToClass(1), c, opts);
+// set.validity, set.diversity, set.count_diversity; set.counterfactuals[i] as above
+float typical = Plausibility(set.counterfactuals[0].counterfactual, background, c.scale, /*k=*/5);
+
+std::vector<CounterfactualDocument> docs;
+for (const auto& cf : set.counterfactuals) docs.push_back(ToCounterfactualDocument(input, cf, names, c.scale));
+std::string svg = RenderCounterfactualSetSvg(docs);
+```
+
+The counterfactuals are optimized together: each one's target hinge and distance, minus a
+diversity term, the log-determinant of the kernel `1 / (1 + distance)` between them, which pushes
+them apart. Afterwards each one's unneeded changes are undone, smallest first, as DiCE does.
+`diversity` is their mean pairwise distance and `count_diversity` the mean fraction of features
+that differ between pairs. `Plausibility` is the mean scaled distance to the `k` nearest
+background instances: a valid counterfactual far from all real data may describe nobody.
 
 Test reference: `tests/counterfactual_test.cpp`.
 
