@@ -272,4 +272,94 @@ std::string RenderTornadoSvg(const SensitivityDocument& doc, int top_k, const Sv
     return f.finish(plot_bottom + fs * 4.0);
 }
 
+// ---- counterfactual -------------------------------------------------------------------------
+
+std::string RenderCounterfactualSvg(const CounterfactualDocument& doc, int max_rows, const SvgOptions& options) {
+    CheckOptions(options);
+    if (max_rows < 1) {
+        throw std::invalid_argument("RenderCounterfactualSvg: max_rows must be at least 1");
+    }
+    CheckFinite({doc.output_before, doc.output_after}, "RenderCounterfactualSvg: outputs");
+    std::vector<size_t> changed;
+    for (size_t i = 0; i < doc.features.size(); ++i) {
+        const auto& f = doc.features[i];
+        CheckFinite({f.original, f.counterfactual, f.scale}, "RenderCounterfactualSvg: feature values");
+        if (!(f.scale > 0.0f)) {
+            throw std::invalid_argument("RenderCounterfactualSvg: every scale must be positive");
+        }
+        if (std::fabs(f.counterfactual - f.original) > 1e-3f * f.scale) {
+            changed.push_back(i);
+        }
+    }
+    auto cost = [&](size_t i) {
+        const auto& f = doc.features[i];
+        return (f.counterfactual - f.original) / f.scale;
+    };
+    std::stable_sort(changed.begin(), changed.end(),
+                     [&](size_t a, size_t b) { return std::fabs(cost(a)) > std::fabs(cost(b)); });
+    double total = 0.0;
+    for (size_t i : changed) total += std::fabs(cost(i));
+    const size_t shown = std::min(changed.size(), static_cast<size_t>(max_rows));
+
+    const std::string target = doc.target.empty() ? "the target" : doc.target;
+    Figure f(options, std::string("Counterfactual ") + (doc.valid ? "reaching " : "not reaching ") + target);
+    const double fs = f.fs();
+    double y = f.top() + fs * 0.8;
+    f.text(doc.valid ? "verdict valid" : "verdict invalid", fs, y,
+           std::string(doc.valid ? "Reaches " : "Does not reach ") + target, "start", doc.valid ? "#2e7d32" : "#c62828",
+           " font-weight=\"bold\"");
+    y += fs * 1.5;
+    f.text("outputs", fs, y, "output " + ValueText(doc.output_before) + " \xE2\x86\x92 " + ValueText(doc.output_after), "start",
+           kMutedColor);
+    y += fs * 1.2;
+
+    // Rows: name | old -> new | bar of the change in scale units, on an axis through zero.
+    const size_t max_label_chars = static_cast<size_t>(std::max(4.0, f.width() * 0.25 / (kCharWidthEm * fs)));
+    std::vector<std::string> names, values;
+    double name_w = 0, value_w = 0, max_abs = 0;
+    for (size_t r = 0; r < shown; ++r) {
+        const auto& ft = doc.features[changed[r]];
+        names.push_back(Truncate(ft.name, max_label_chars));
+        values.push_back(ValueText(ft.original) + " \xE2\x86\x92 " + ValueText(ft.counterfactual));
+        name_w = std::max(name_w, TextWidth(names.back(), fs));
+        value_w = std::max(value_w, TextWidth(values.back(), fs));
+        max_abs = std::max(max_abs, std::fabs(static_cast<double>(cost(changed[r]))));
+    }
+    const double x_name = fs + name_w;
+    const double x_value = x_name + fs * 1.0;
+    const double x0 = x_value + value_w + fs * 1.5;
+    const double x1 = f.width() - fs * 1.5;
+    const double lim = max_abs > 0 ? max_abs * 1.05 : 1.0;
+    auto X = [&](double v) { return x0 + (v + lim) / (2 * lim) * (x1 - x0); };
+    const double row_h = fs * 1.9;
+    const double y0 = y + fs * 0.6;
+    for (size_t r = 0; r < shown; ++r) {
+        const size_t i = changed[r];
+        const double cy = y0 + row_h * (static_cast<double>(r) + 0.5);
+        const double c = cost(i);
+        f.body() += "<g class=\"changed-feature\">\n";
+        f.text("feature-label", x_name, cy + fs * 0.35, names[r], "end");
+        f.text("feature-change", x_value, cy + fs * 0.35, values[r], "start", kTextColor,
+               std::string(" font-family=\"") + kMonoFont + "\"");
+        const double a = std::min(X(0), X(c)), b = std::max(X(0), X(c));
+        f.body() += "<rect class=\"bar\" x=\"" + Num(a) + "\" y=\"" + Num(cy - fs * 0.45) + "\" width=\"" +
+                    Num(std::max(b - a, 0.5)) + "\" height=\"" + Num(fs * 0.9) + "\" fill=\"" +
+                    Hex(DivergingColormap(NormalizeSigned(static_cast<float>(c), static_cast<float>(lim)))) +
+                    "\" stroke=\"#555555\" stroke-width=\"0.3\"/>\n";
+        f.body() += "</g>\n";
+    }
+    double bottom = y0 + row_h * static_cast<double>(shown);
+    if (shown > 0) {
+        f.line("zero-line", X(0), y0, X(0), bottom, kMutedColor, 1.0, "3 3");
+        f.x_axis(bottom + fs * 0.25, x0, x1, -lim, lim, "change / scale");
+        bottom += fs * 3.2;
+    }
+    std::string summary = std::to_string(changed.size()) + " of " + std::to_string(doc.features.size()) +
+                          " features changed, distance " + ValueText(total);
+    if (changed.empty()) summary = "No feature changed";
+    if (changed.size() > shown) summary += " (" + std::to_string(changed.size() - shown) + " more not shown)";
+    f.text("summary", fs, bottom + fs * 0.8, summary, "start", kMutedColor);
+    return f.finish(bottom + fs * 1.8);
+}
+
 }  // namespace pulsatrix

@@ -416,9 +416,9 @@ doesn't support.
 |---|---|---|
 | Why | LRP composites, Integrated Gradients | Have |
 | Why not | Contrastive LRP (relevance of logit P minus logit Q) | Have |
-| What if | PDP, re-running with an edited input; ICE, ALE, local and global sensitivity | Partial; [CFS-1 to CFS-4](#cfs-counterfactuals-and-sensitivity) |
+| What if | PDP, ICE, local sensitivity, occlusion, re-running with an edited input; ALE and global sensitivity | Partial; [CFS-2, CFS-4](#cfs-counterfactuals-and-sensitivity) |
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Partial; XAI-4, INT-6 |
-| How to be that | Counterfactual search | Gap; [CFS-5 to CFS-7](#cfs-counterfactuals-and-sensitivity) |
+| How to be that | Counterfactual search | Gradient-based; [CFS-6, CFS-7](#cfs-counterfactuals-and-sensitivity) for any model and diverse sets |
 | How to still be this | Anchors | Gap; XAI-4 |
 | Performance | Metrics, calibration, per-slice error, uncertainty | Partial; KS-3 |
 | Input (data) | Dataset statistics, nearest training examples, data attribution | Partial; INT-1, KS-5 |
@@ -475,7 +475,7 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 | CFS-2 | ALE (accumulated local effects), first order, with quantile bins. Checked against `alibi` or `PyALE` | PDP reads the model at impossible inputs when features are correlated; ALE doesn't | CFS-1 | P1 | S | |
 | CFS-3 | Local sensitivity: move each input feature by ±δ (absolute or in units of the background's spread) or across its range and record the output change; occlusion with patches for images and spans for sequences. Views: a tornado chart, and the occlusion map through the heatmap renderer | "Which inputs is this prediction sensitive to, and how much?" with no gradients and no surrogate | — | P0 | S || Done, [#70](https://github.com/Joshuaweg/pulsatrix/pull/70) (see below) |
 | CFS-4 | Global sensitivity: Morris elementary effects (μ\*, σ) and Sobol first-order and total indices (Saltelli sampling, Jansen estimators) with bootstrap confidence intervals. Views: μ\*–σ scatter, Sobol bars with error bars. Checked against SALib | Which inputs drive the output over the whole input space, and which interact | — | P1 | M | |
-| CFS-5 | Gradient counterfactual (Wachter): the nearest input that reaches a target class or value, distance weighted by each feature's median absolute deviation, with immutable features, bounds, and integer or categorical features. Reports validity, proximity (L1, L2) and sparsity. View: what changed, feature by feature | "How to be that", the most requested missing explainer | — | P0 | M | |
+| CFS-5 | Gradient counterfactual (Wachter): the nearest input that reaches a target class or value, distance weighted by each feature's median absolute deviation, with immutable features, bounds, and integer or categorical features. Reports validity, proximity (L1, L2) and sparsity. View: what changed, feature by feature | "How to be that", the most requested missing explainer | — | P0 | M || Done, [#71](https://github.com/Joshuaweg/pulsatrix/pull/71) (see below) |
 | CFS-6 | Model-agnostic counterfactual: growing spheres, refined by the evolutionary module, for models with no gradient | Counterfactuals for any prediction function | CFS-5 | P1 | S | |
 | CFS-7 | Diverse counterfactuals (DiCE: a determinantal diversity term) and a plausibility score (distance to the k nearest background instances). Checked against DiCE's own metrics | One counterfactual hides the other ways to change the outcome; implausible ones mislead | CFS-5 | P1 | M | |
 
@@ -494,6 +494,13 @@ network says nothing about what the model learned.
   rules exactly, including the cropped last window, and returns an ordinary `Attribution`, so the
   existing heatmap view draws it. The tornado chart gives each feature two bars, high and low,
   rather than one two-colored bar, because both values often move the output the same way.
+- **CFS-5** uses proximal gradient descent (a gradient step on the prediction hinge, then
+  soft-thresholding toward the input) rather than plain gradient descent on the L1 distance,
+  so unneeded features stay exactly unchanged; on a linear model it finds the L1-optimal
+  counterfactual, which the tests check in closed form. The prediction loss is a hinge on the
+  outputs (Carlini and Wagner's form) rather than Wachter's squared error, so it is zero once the
+  target is reached. Snapping a one-hot group can undo a change the search made only partway, so
+  if it does, each category of each group is tried and the nearest valid one kept.
 
 ## INT: Embedding and representation analysis
 

@@ -1,0 +1,27 @@
+{
+  "schema": "pulsatrix.counterfactual.v1",
+  "target": "class approved",
+  "valid": true,
+  "output_before": -0.5,
+  "output_after": 0.125,
+  "features": [
+    {
+      "name": "income",
+      "original": 40,
+      "counterfactual": 52,
+      "scale": 8
+    },
+    {
+      "name": "age",
+      "original": 35,
+      "counterfactual": 35,
+      "scale": 10
+    },
+    {
+      "name": "debt",
+      "original": 0.5,
+      "counterfactual": 0.25,
+      "scale": 0.25
+    }
+  ]
+}

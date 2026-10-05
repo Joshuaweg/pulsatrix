@@ -1,6 +1,6 @@
 /** @file svg.hpp
  *  @brief Dependency-free SVG figures from viz documents: bar, waterfall, heatmap, token strip,
- *         beeswarm, partial dependence and tornado charts.
+ *         beeswarm, partial dependence, tornado and counterfactual charts.
  *  @ingroup visualization
  *
  *  Each function returns a complete standalone SVG file as a string. No GPU, display, font
@@ -131,5 +131,16 @@ struct PartialDependenceSvgOptions {
  */
 [[nodiscard]] std::string RenderTornadoSvg(const SensitivityDocument& doc, int top_k = 10,
                                            const SvgOptions& options = {});
+
+/**
+ * @brief What a counterfactual changed: a verdict line (whether it reaches the target, and the
+ *        output before and after), then one row per changed feature, costliest first, with its
+ *        old and new value and a bar of its change in units of its scale, colored by direction.
+ *        A feature counts as changed when it moved by more than 1e-3 of its scale.
+ * @param max_rows At most this many changed features are listed; a line says how many more.
+ * @throws std::invalid_argument for a non-finite value, max_rows < 1, or unusable options.
+ */
+[[nodiscard]] std::string RenderCounterfactualSvg(const CounterfactualDocument& doc, int max_rows = 12,
+                                                  const SvgOptions& options = {});
 
 }  // namespace pulsatrix
