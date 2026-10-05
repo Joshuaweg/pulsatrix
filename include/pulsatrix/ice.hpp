@@ -1,6 +1,6 @@
 /** @file ice.hpp
- *  @brief Individual conditional expectation (ICE), its centered and derivative forms, and
- *         two-feature partial dependence (CFS-1).
+ *  @brief Individual conditional expectation (ICE), its centered and derivative forms,
+ *         two-feature partial dependence (CFS-1) and accumulated local effects (CFS-2).
  *  @ingroup interpretability_agnostic
  */
 #pragma once
@@ -106,5 +106,42 @@ struct PartialDependence2D {
                                                              int64_t feature_x, int64_t feature_y,
                                                              int64_t target_index, const std::vector<float>& grid_x,
                                                              const std::vector<float>& grid_y);
+
+/**
+ * @brief First-order accumulated local effects (Apley and Zhu 2020) of one feature.
+ *
+ * The feature's range is cut at quantiles into bins holding about equal numbers of instances.
+ * Within each bin, every instance in it is moved to the bin's lower and upper edge and the change
+ * in the output is averaged; the averages are summed from the left and centered so their
+ * count-weighted mean is zero. Because each instance only moves within its own bin, ALE never
+ * reads the model at combinations of feature values the data doesn't contain, which is where PDP
+ * misleads when features are correlated.
+ */
+struct AleResult {
+    int64_t feature_index = 0;
+    int64_t target_index = 0;
+    /** @brief Bin edges, strictly increasing: the minimum, then the upper edge of each bin. */
+    std::vector<float> edges;
+    /** @brief The centered accumulated effect at each edge. */
+    std::vector<float> effects;
+    /** @brief Instances in each bin (edges.size() - 1 of them). */
+    std::vector<int64_t> counts;
+    /** @brief Each instance's own value of the feature, for a rug. */
+    std::vector<float> feature_values;
+};
+
+/**
+ * @brief Computes first-order ALE the way PyALE 1.2 (and R's ALEPlot) does: edges at the
+ *        feature's type-1 quantiles (`num_bins` + 1 of them, duplicates dropped), bins closed on
+ *        the right with the first also holding the minimum, and centering by the count-weighted
+ *        mean of each bin's midpoint effect.
+ * @param num_bins Requested number of bins, >= 1; ties in the feature can merge bins.
+ * @note 2 * instances.size() model calls. An empty bin contributes no effect.
+ * @throws std::invalid_argument for the same inputs ComputeIce rejects, num_bins < 1, or a
+ *         feature that takes only one value.
+ */
+[[nodiscard]] AleResult ComputeAle(const std::function<Tensor(const Tensor&)>& predict,
+                                   const std::vector<Tensor>& instances, int64_t feature_index, int64_t target_index,
+                                   int64_t num_bins = 20);
 
 }  // namespace pulsatrix

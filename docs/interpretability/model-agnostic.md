@@ -17,7 +17,8 @@ models wrapped in a lambda.
 - **ICE** (`ice.hpp`): individual conditional expectation. `ComputeIce` draws one curve per
   input instead of PDP's single average, with centered (`centered()`) and derivative
   (`derivative()`) forms. `ComputePartialDependence2D` varies two features at once, and
-  `FeatureGrid` builds a grid the way scikit-learn does.
+  `FeatureGrid` builds a grid the way scikit-learn does. `ComputeAle` gives accumulated local
+  effects, PDP's replacement when features are correlated.
 - **Local sensitivity** (`sensitivity.hpp`): `ComputeLocalSensitivity` moves each feature, alone,
   to a low and a high value and records the output, the data of a tornado chart. The bounds come
   from `DeltaBounds` (±δ), `ScaledDeltaBounds` (± some standard deviations of a background set)
@@ -38,6 +39,7 @@ Full API reference: [Doxygen: Model-Agnostic](../api/group__interpretability__ag
 | `PDP` | Whole dataset | The average effect of one feature on the output | Hides interactions between features |
 | ICE | Each input, and their average | Whether the feature's effect differs between inputs (an interaction) | Reads the model at unrealistic inputs when features are correlated |
 | 2-D partial dependence | Whole dataset | How two features interact | grid_x × grid_y × background model calls |
+| ALE | Whole dataset | A feature's average effect when it is correlated with others | Bins with few instances are noisy |
 | Local sensitivity | One input | How far each feature, alone, can move the output | One feature at a time: misses joint effects |
 | `Occlusion` | One input | Which regions of an image or spans of a sequence the output depends on | The baseline value is a choice; results change with it and with the window |
 
@@ -156,6 +158,22 @@ grid_y)` returns a grid of averages; `ToHeatmapDocument` turns it into a heatmap
 
 Test reference: `tests/ice_test.cpp`, checked against scikit-learn 1.9.1
 (`tools/generate_ice_reference_values.py`).
+
+### ALE
+
+```cpp
+AleResult ale = ComputeAle(predict, background, /*feature_index=*/0, /*target_index=*/0, /*num_bins=*/20);
+// ale.edges: bin edges; ale.effects: the centered effect at each edge; ale.counts: per bin
+std::string svg = RenderPartialDependenceSvg(ToPartialDependenceDocument(ale, "age", "risk"));
+```
+
+**What's happening:** PDP sets a feature to every grid value in every background input, so when
+features are correlated it asks the model about inputs that never occur (a 20-year-old with 30
+years of work experience). ALE cuts the feature's range into bins at its quantiles, moves each
+input only to its own bin's two edges, averages those local differences per bin, and sums them
+from the left. The curve is centered so its count-weighted mean is zero; read it as "how much
+this value raises or lowers the prediction compared with the average". It matches PyALE 1.2.0
+and R's ALEPlot, including their quantile and binning conventions.
 
 ### Local sensitivity and occlusion
 

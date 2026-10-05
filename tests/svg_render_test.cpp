@@ -243,7 +243,7 @@ TEST(SvgRenderTest, EveryChartIsWellFormedDeterministicAndTitled) {
         RenderHeatmapSvg(h, opt),
         RenderTokenStripSvg(t, opt),
         RenderBeeswarmSvg({Features({1.0f, 2.0f}), Features({-1.0f, 0.5f})}, {0, 1}, opt),
-        RenderPartialDependenceSvg(PartialDependenceDocument{"x", "y", {0.0f, 1.0f}, {0.5f, 1.0f}, 1, {0.5f, 1.0f}, {}},
+        RenderPartialDependenceSvg(PartialDependenceDocument{"partial_dependence", "x", "y", {0.0f, 1.0f}, {0.5f, 1.0f}, 1, {0.5f, 1.0f}, {}},
                                    {}, opt),
         RenderTornadoSvg(SensitivityDocument{"y", 1.0f, {{"a", 0.0f, -1.0f, 1.0f, 0.5f, 2.0f}}}, 10, opt),
         RenderCounterfactualSvg(CounterfactualDocument{"t", true, 0.0f, 1.0f, {{"a", 0.0f, 1.0f, 1.0f}}}, 12, opt),
@@ -586,8 +586,22 @@ TEST(SvgPartialDependenceTest, CenteredAndDerivativeViewsAddAZeroLine) {
     }
 }
 
+TEST(SvgPartialDependenceTest, AleIsLabeledAsSuchAroundZero) {
+    AleResult r;
+    r.edges = {0.0f, 1.0f, 2.0f, 4.0f};
+    r.effects = {-1.5f, -0.5f, 0.5f, 1.0f};
+    r.counts = {3, 3, 2};
+    r.feature_values = {0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.0f, 3.0f, 4.0f};
+    auto root = Parsed(RenderPartialDependenceSvg(ToPartialDependenceDocument(r, "x", "y")));
+    EXPECT_NE(AllText(*root).find("accumulated local effect (centered)"), std::string::npos);
+    EXPECT_NE(AllText(*root).find("accumulated local effect on y"), std::string::npos);
+    EXPECT_EQ(ByClass(*root, "zero-line").size(), 1u);
+    EXPECT_TRUE(ByClass(*root, "ice").empty());
+    EXPECT_EQ(ByClass(*root, "rug").front()->children.size(), 8u);
+}
+
 TEST(SvgPartialDependenceTest, RejectsBadInput) {
-    PartialDependenceDocument average_only{"x", "y", {0.0f, 1.0f}, {0.5f, 1.0f}, 0, {}, {}};
+    PartialDependenceDocument average_only{"partial_dependence", "x", "y", {0.0f, 1.0f}, {0.5f, 1.0f}, 0, {}, {}};
     EXPECT_NO_THROW((void)RenderPartialDependenceSvg(average_only));
     PartialDependenceSvgOptions centered;
     centered.style = IceStyle::Centered;
@@ -745,6 +759,12 @@ TEST(SvgGoldenTest, EveryChart) {
     PartialDependenceSvgOptions centered;
     centered.style = IceStyle::Centered;
     ExpectGolden("partial_dependence_centered.svg", RenderPartialDependenceSvg(pdd, centered));
+    AleResult ale;
+    ale.edges = {0.0f, 0.5f, 1.25f, 2.0f, 3.5f};
+    ale.effects = {-1.25f, -0.5f, 0.25f, 0.75f, 0.5f};
+    ale.counts = {4, 4, 3, 1};
+    for (int i = 0; i < 12; ++i) ale.feature_values.push_back(static_cast<float>((i * 5) % 14) / 4.0f);
+    ExpectGolden("ale.svg", RenderPartialDependenceSvg(ToPartialDependenceDocument(ale, "dose (mg)", "response")));
     ExpectGolden("tornado.svg", RenderTornadoSvg(ParseSensitivityDocument(Fixture("sensitivity.v1.json"))));
     ExpectGolden("counterfactual.svg",
                  RenderCounterfactualSvg(ParseCounterfactualDocument(Fixture("counterfactual.v1.json"))));

@@ -416,7 +416,7 @@ doesn't support.
 |---|---|---|
 | Why | LRP composites, Integrated Gradients | Have |
 | Why not | Contrastive LRP (relevance of logit P minus logit Q) | Have |
-| What if | PDP, ICE, local sensitivity, occlusion, re-running with an edited input; ALE and global sensitivity | Partial; [CFS-2, CFS-4](#cfs-counterfactuals-and-sensitivity) |
+| What if | PDP, ICE, ALE, local sensitivity, occlusion, re-running with an edited input; global sensitivity | Partial; [CFS-4](#cfs-counterfactuals-and-sensitivity) |
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Partial; XAI-4, INT-6 |
 | How to be that | Counterfactual search | Gradient-based; [CFS-6, CFS-7](#cfs-counterfactuals-and-sensitivity) for any model and diverse sets |
 | How to still be this | Anchors | Gap; XAI-4 |
@@ -472,7 +472,7 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | CFS-1 | ICE: one curve per instance, centered ICE (c-ICE) and derivative ICE, plus two-feature partial dependence. View: PDP over ICE lines, and a 2-D PDP heatmap. Checked against scikit-learn's `partial_dependence` | PDP averages away heterogeneity; ICE shows it. Two-feature PDP shows interactions | — | P0 | S || Done, [#69](https://github.com/Joshuaweg/pulsatrix/pull/69) (see below) |
-| CFS-2 | ALE (accumulated local effects), first order, with quantile bins. Checked against `alibi` or `PyALE` | PDP reads the model at impossible inputs when features are correlated; ALE doesn't | CFS-1 | P1 | S | |
+| CFS-2 | ALE (accumulated local effects), first order, with quantile bins. Checked against PyALE | PDP reads the model at impossible inputs when features are correlated; ALE doesn't | CFS-1 | P1 | S || Done, [#72](https://github.com/Joshuaweg/pulsatrix/pull/72) (see below) |
 | CFS-3 | Local sensitivity: move each input feature by ±δ (absolute or in units of the background's spread) or across its range and record the output change; occlusion with patches for images and spans for sequences. Views: a tornado chart, and the occlusion map through the heatmap renderer | "Which inputs is this prediction sensitive to, and how much?" with no gradients and no surrogate | — | P0 | S || Done, [#70](https://github.com/Joshuaweg/pulsatrix/pull/70) (see below) |
 | CFS-4 | Global sensitivity: Morris elementary effects (μ\*, σ) and Sobol first-order and total indices (Saltelli sampling, Jansen estimators) with bootstrap confidence intervals. Views: μ\*–σ scatter, Sobol bars with error bars. Checked against SALib | Which inputs drive the output over the whole input space, and which interact | — | P1 | M | |
 | CFS-5 | Gradient counterfactual (Wachter): the nearest input that reaches a target class or value, distance weighted by each feature's median absolute deviation, with immutable features, bounds, and integer or categorical features. Reports validity, proximity (L1, L2) and sparsity. View: what changed, feature by feature | "How to be that", the most requested missing explainer | — | P0 | M || Done, [#71](https://github.com/Joshuaweg/pulsatrix/pull/71) (see below) |
@@ -489,6 +489,10 @@ network says nothing about what the model learned.
   derivative views are computed when drawn, so every renderer agrees on them. The derivative
   uses `numpy.gradient`'s formula, which handles uneven grids such as the percentile grids
   `FeatureGrid` builds. The SVG helpers moved to an internal header shared by the new views.
+- **CFS-2.** ALE follows PyALE 1.2.0 (and R's ALEPlot) exactly: its type-1 quantile edges, bins
+  closed on the right, and centering by the count-weighted midpoint effect. It draws through the
+  partial dependence document, which gained a `method` field (`"ale"`); a document without it
+  still reads as partial dependence.
 - **CFS-3.** The bounds are separate from the sweep (`DeltaBounds`, `ScaledDeltaBounds`,
   `RangeBounds`), so ±δ and range sensitivity are one function. `Occlusion` follows Captum 0.9's
   rules exactly, including the cropped last window, and returns an ordinary `Attribution`, so the

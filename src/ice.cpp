@@ -197,4 +197,82 @@ PartialDependence2D ComputePartialDependence2D(const std::function<Tensor(const 
     return result;
 }
 
+namespace {
+
+// PyALE's quantile_ied (its "type 1" quantile) on sorted data, for q in (0, 1).
+double QuantileIed(const std::vector<double>& sorted, double q) {
+    const double n = static_cast<double>(sorted.size() - 1);
+    const double pos = n * q;
+    const auto j = static_cast<size_t>(pos);
+    if (pos - static_cast<double>(j) != 0.0) {
+        return sorted[j];
+    }
+    return j == 0 ? 0.0 : sorted[j - 1];
+}
+
+}  // namespace
+
+AleResult ComputeAle(const std::function<Tensor(const Tensor&)>& predict, const std::vector<Tensor>& instances,
+                     int64_t feature_index, int64_t target_index, int64_t num_bins) {
+    CheckInstances(instances, "ComputeAle");
+    CheckFeature(instances, feature_index, "ComputeAle");
+    if (num_bins < 1) {
+        throw std::invalid_argument("ComputeAle: num_bins must be at least 1");
+    }
+    const auto f = static_cast<size_t>(feature_index);
+    std::vector<std::vector<float>> values;
+    std::vector<double> sorted;
+    for (const Tensor& t : instances) {
+        values.push_back(t.to_host_vector());
+        sorted.push_back(values.back()[f]);
+    }
+    std::sort(sorted.begin(), sorted.end());
+    std::vector<double> edges{sorted.front()};
+    const double step = 1.0 / static_cast<double>(num_bins);
+    for (int64_t k = 0; k <= num_bins; ++k) {
+        const double q = static_cast<double>(k) * step;  // numpy.linspace(0, 1, num_bins + 1)
+        edges.push_back(k == 0 ? sorted.front() : k == num_bins ? sorted.back() : QuantileIed(sorted, q));
+    }
+    std::sort(edges.begin(), edges.end());
+    edges.erase(std::unique(edges.begin(), edges.end()), edges.end());
+    if (edges.size() < 2) {
+        throw std::invalid_argument("ComputeAle: the feature takes only one value");
+    }
+    const size_t bins = edges.size() - 1;
+
+    std::vector<double> sum(bins, 0.0);
+    std::vector<int64_t> count(bins, 0);
+    AleResult r;
+    r.feature_index = feature_index;
+    r.target_index = target_index;
+    for (size_t i = 0; i < instances.size(); ++i) {
+        const double v = values[i][f];
+        r.feature_values.push_back(static_cast<float>(v));
+        // Bin k holds (edges[k], edges[k + 1]]; the first also holds edges[0].
+        size_t k = static_cast<size_t>(std::lower_bound(edges.begin() + 1, edges.end(), v) - (edges.begin() + 1));
+        k = std::min(k, bins - 1);
+        const float lo = PredictWith(predict, instances[i], values[i], {{feature_index, static_cast<float>(edges[k])}},
+                                     target_index, "ComputeAle");
+        const float hi = PredictWith(predict, instances[i], values[i],
+                                     {{feature_index, static_cast<float>(edges[k + 1])}}, target_index, "ComputeAle");
+        sum[k] += static_cast<double>(hi) - static_cast<double>(lo);
+        ++count[k];
+    }
+    std::vector<double> accumulated(bins + 1, 0.0);
+    for (size_t k = 0; k < bins; ++k) {
+        accumulated[k + 1] = accumulated[k] + (count[k] > 0 ? sum[k] / static_cast<double>(count[k]) : 0.0);
+    }
+    double center = 0.0;
+    for (size_t k = 0; k < bins; ++k) {
+        center += (accumulated[k + 1] + accumulated[k]) / 2.0 * static_cast<double>(count[k]);
+    }
+    center /= static_cast<double>(instances.size());
+    for (size_t k = 0; k <= bins; ++k) {
+        r.edges.push_back(static_cast<float>(edges[k]));
+        r.effects.push_back(static_cast<float>(accumulated[k] - center));
+    }
+    r.counts = count;
+    return r;
+}
+
 }  // namespace pulsatrix
