@@ -1959,6 +1959,15 @@ scripts/rocm-build.sh<span class="w"> </span><span class="s1">'./build-hip/tests
 <p>The container pins ROCm 7.2.4 because ROCm 7.1.x crashes on gfx1151, and Ubuntu's packages are
 7.1.x. The header of <code>docker/Dockerfile.rocm</code> has the details. The HIP tests run on real
 hardware, not a mock.</p>
+<p><strong>ROCm 10.0.0</strong> is the first release that lists gfx1151 officially. Run the same commands with
+<code>PULSATRIX_ROCM_VERSION=10.0.0</code> to use it. Every test passes on it, and it is as fast as 7.2.4
+(see <a href="../gpu-profiling/#rocm-1000-evaluation">GPU Profiling</a>). Keep its build directories
+separate from 7.2.4's, because the two compilers differ.</p>
+<p><strong>Host kernel.</strong> Known gfx1151 crashes also depend on the host kernel. Use Linux 6.18.4 or newer,
+or Ubuntu's OEM kernel at ABI 1018 or newer. <code>scripts/check_host_kernel.sh</code> checks the kernel,
+the <code>amdgpu</code> driver and <code>/dev/kfd</code>. <code>scripts/rocm-build.sh</code> runs it on every call and warns
+when something is wrong. To keep a good kernel from being upgraded away, hold its package, for
+example <code>sudo apt-mark hold linux-image-$(uname -r)</code>.</p>
 <h2 id="python-bindings">Python bindings<a class="headerlink" href="#python-bindings" title="Permanent link">&para;</a></h2>
 <p>The <code>pulsatrix_py</code> module exposes <code>Tensor</code>, the core layers, LRP and the other explainers, and
 <code>SystemMonitor</code>. Point <code>PYTHON_EXECUTABLE</code> at a Python install that has development headers:</p>
