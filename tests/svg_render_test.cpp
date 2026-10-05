@@ -247,6 +247,8 @@ TEST(SvgRenderTest, EveryChartIsWellFormedDeterministicAndTitled) {
                                    {}, opt),
         RenderTornadoSvg(SensitivityDocument{"y", 1.0f, {{"a", 0.0f, -1.0f, 1.0f, 0.5f, 2.0f}}}, 10, opt),
         RenderCounterfactualSvg(CounterfactualDocument{"t", true, 0.0f, 1.0f, {{"a", 0.0f, 1.0f, 1.0f}}}, 12, opt),
+        RenderMorrisSvg(MorrisDocument{"y", 4, {{"a", 1.0f, 1.0f, 0.5f, 0.1f}}}, opt),
+        RenderSobolSvg(SobolDocument{"y", 64, {{"a", 0.5f, 0.75f, 0.1f, 0.1f}}}, 10, opt),
     };
     for (const std::string& svg : svgs) {
         auto root = Parsed(svg);
@@ -694,6 +696,44 @@ TEST(SvgCounterfactualTest, HandlesNoChangeAndRejectsBadInput) {
     EXPECT_THROW((void)RenderCounterfactualSvg(zero_scale), std::invalid_argument);
 }
 
+// ---- global sensitivity -----------------------------------------------------------------------
+
+TEST(SvgGlobalSensitivityTest, MorrisPlotsMuStarAgainstSigmaOnOneScale) {
+    MorrisDocument doc{"y", 10, {{"a", 2.0f, 2.0f, 0.0f, 0.5f}, {"b", 0.0f, 1.0f, 2.0f, 0.0f}}};
+    auto root = Parsed(RenderMorrisSvg(doc));
+    auto points = ByClass(*root, "point");
+    ASSERT_EQ(points.size(), 2u);
+    // a: mu* 2, sigma 0 -> on the x axis, right of b; b: sigma 2 -> above a.
+    EXPECT_GT(points[0]->num("cx"), points[1]->num("cx"));
+    EXPECT_GT(points[0]->num("cy"), points[1]->num("cy"));
+    // One scale: b's height above the axis is twice a's distance from the y axis... (sigma 2 vs mu* 2:
+    // equal distances), so the diagonal passes through b's x and a's x at the same scale.
+    const double axis_x = ByClass(*root, "diagonal").front()->num("x1");
+    const double axis_y = ByClass(*root, "diagonal").front()->num("y1");
+    EXPECT_NEAR(points[0]->num("cx") - axis_x, axis_y - points[1]->num("cy"), 1e-6);
+    EXPECT_EQ(ByClass(*root, "conf").size(), 1u);  // b has no interval
+    MorrisDocument negative = doc;
+    negative.features[0].sigma = -1.0f;
+    EXPECT_THROW((void)RenderMorrisSvg(negative), std::invalid_argument);
+    EXPECT_THROW((void)RenderMorrisSvg(MorrisDocument{}), std::invalid_argument);
+}
+
+TEST(SvgGlobalSensitivityTest, SobolRowsSortByTotalOrderWithBothBars) {
+    SobolDocument doc{"y", 64, {{"a", 0.1f, 0.2f, 0.05f, 0.05f}, {"b", 0.6f, 0.7f, 0.0f, 0.1f}, {"c", 0.0f, 0.05f, 0.0f, 0.0f}}};
+    auto root = Parsed(RenderSobolSvg(doc));
+    auto labels = ByClass(*root, "feature-label");
+    ASSERT_EQ(labels.size(), 3u);
+    EXPECT_EQ(labels[0]->text, "b");
+    EXPECT_EQ(labels[2]->text, "c");
+    auto total = ByClass(*root, "bar-total");
+    auto first = ByClass(*root, "bar-first");
+    EXPECT_NEAR(total[0]->num("width") / first[0]->num("width"), 0.7 / 0.6, 0.01);
+    EXPECT_EQ(ByClass(*Parsed(RenderSobolSvg(doc, 1)), "feature-row").size(), 1u);
+    EXPECT_THROW((void)RenderSobolSvg(doc, 0), std::invalid_argument);
+    doc.features[0].total_order = kNaN;
+    EXPECT_THROW((void)RenderSobolSvg(doc), std::invalid_argument);
+}
+
 // ---- golden files: each chart, from the VIZ-1 document fixtures, must match
 // tests/fixtures/viz/svg/ byte for byte on every platform. After an intended change, rerun
 // with PULSATRIX_UPDATE_GOLDEN=1 to rewrite them, then look at the new figures before
@@ -766,6 +806,8 @@ TEST(SvgGoldenTest, EveryChart) {
     for (int i = 0; i < 12; ++i) ale.feature_values.push_back(static_cast<float>((i * 5) % 14) / 4.0f);
     ExpectGolden("ale.svg", RenderPartialDependenceSvg(ToPartialDependenceDocument(ale, "dose (mg)", "response")));
     ExpectGolden("tornado.svg", RenderTornadoSvg(ParseSensitivityDocument(Fixture("sensitivity.v1.json"))));
+    ExpectGolden("morris.svg", RenderMorrisSvg(ParseMorrisDocument(Fixture("morris.v1.json"))));
+    ExpectGolden("sobol.svg", RenderSobolSvg(ParseSobolDocument(Fixture("sobol.v1.json"))));
     ExpectGolden("counterfactual.svg",
                  RenderCounterfactualSvg(ParseCounterfactualDocument(Fixture("counterfactual.v1.json"))));
 }

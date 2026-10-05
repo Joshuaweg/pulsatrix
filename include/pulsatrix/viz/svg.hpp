@@ -1,6 +1,6 @@
 /** @file svg.hpp
  *  @brief Dependency-free SVG figures from viz documents: bar, waterfall, heatmap, token strip,
- *         beeswarm, partial dependence, tornado and counterfactual charts.
+ *         beeswarm, partial dependence, tornado, counterfactual, Morris and Sobol charts.
  *  @ingroup visualization
  *
  *  Each function returns a complete standalone SVG file as a string. No GPU, display, font
@@ -142,5 +142,25 @@ struct PartialDependenceSvgOptions {
  */
 [[nodiscard]] std::string RenderCounterfactualSvg(const CounterfactualDocument& doc, int max_rows = 12,
                                                   const SvgOptions& options = {});
+
+/**
+ * @brief Morris screening as a scatter of mu* (importance) against sigma (how much the effect
+ *        varies), one labeled point per feature with a horizontal bar for mu*'s confidence
+ *        interval. Points above the dashed line sigma = mu* have effects that vary more than
+ *        their average: nonlinear, or interacting with other features.
+ * @throws std::invalid_argument for an empty document, a non-finite or negative mu*, sigma or
+ *         confidence half-width, or unusable options.
+ */
+[[nodiscard]] std::string RenderMorrisSvg(const MorrisDocument& doc, const SvgOptions& options = {});
+
+/**
+ * @brief Sobol indices: one row per feature, the @p top_k with the largest total order first,
+ *        with a bar for the first-order index, a lighter bar for the total-order index behind it,
+ *        and whiskers for both confidence intervals. The gap between the two bars is the share
+ *        of variance the feature explains only through interactions.
+ * @throws std::invalid_argument for an empty document, a non-finite value, top_k < 1, or
+ *         unusable options.
+ */
+[[nodiscard]] std::string RenderSobolSvg(const SobolDocument& doc, int top_k = 10, const SvgOptions& options = {});
 
 }  // namespace pulsatrix

@@ -24,6 +24,10 @@ models wrapped in a lambda.
   from `DeltaBounds` (±δ), `ScaledDeltaBounds` (± some standard deviations of a background set)
   or `RangeBounds` (a background set's percentiles). `Occlusion` slides a window over the input,
   as Captum's `Occlusion` does.
+- **Global sensitivity** (`global_sensitivity.hpp`): `ComputeMorris` screens features with
+  Morris elementary effects (μ*, σ) and `ComputeSobol` estimates first- and total-order Sobol
+  indices, both with bootstrap confidence intervals, over ranges you give for each feature.
+  `AnalyzeMorris` and `AnalyzeSobol` analyze samples made elsewhere (for example by SALib).
 - **`fit_weighted_linear_regression`** (`weighted_linear_regression.hpp`): the shared ridge
   regression solver that `KernelSHAP` and `LIME` both use. It returns one coefficient per
   feature and fits no intercept.
@@ -41,6 +45,8 @@ Full API reference: [Doxygen: Model-Agnostic](../api/group__interpretability__ag
 | 2-D partial dependence | Whole dataset | How two features interact | grid_x × grid_y × background model calls |
 | ALE | Whole dataset | A feature's average effect when it is correlated with others | Bins with few instances are noisy |
 | Local sensitivity | One input | How far each feature, alone, can move the output | One feature at a time: misses joint effects |
+| Morris | The input space | Ranking many features cheaply, and spotting nonlinear or interacting ones | Screening, not a variance decomposition |
+| Sobol | The input space | What share of the output's variance each feature explains, alone and with interactions | (features + 2) × N model calls; assumes independent features |
 | `Occlusion` | One input | Which regions of an image or spans of a sequence the output depends on | The baseline value is a choice; results change with it and with the window |
 
 ## How to implement
@@ -205,6 +211,38 @@ value, so read one.
 
 Test reference: `tests/sensitivity_test.cpp`, checked against Captum 0.9.0 and numpy
 (`tools/generate_sensitivity_reference_values.py`).
+
+### Global sensitivity: Morris and Sobol
+
+```cpp
+#include "pulsatrix/global_sensitivity.hpp"
+#include "pulsatrix/viz/svg.hpp"
+
+// Vary features 0, 1 and 2 over their ranges; every other feature keeps input's value.
+GlobalSensitivityProblem problem{input, {0, 1, 2}, {0.0f, 0.0f, -1.0f}, {1.0f, 10.0f, 1.0f}};
+
+MorrisResult morris = ComputeMorris(predict, problem, /*target_index=*/0);  // 20 trajectories
+std::string scatter = RenderMorrisSvg(ToMorrisDocument(morris, {"a", "b", "c"}, "risk"));
+
+SobolOptions opts;
+opts.num_samples = 2048;  // the model runs 2048 * (3 + 2) times
+SobolResult sobol = ComputeSobol(predict, problem, 0, opts);
+std::string bars = RenderSobolSvg(ToSobolDocument(sobol, {"a", "b", "c"}, "risk"));
+```
+
+**What's happening:** Morris walks random one-feature-at-a-time paths over a grid of each
+range. A feature's elementary effects are the output changes per step. μ* (their mean absolute
+value) ranks importance, and σ (their spread) is large when the effect depends on where you are:
+nonlinearity or interaction. Sobol splits the output's variance: the first-order index is the
+share a feature explains alone, the total-order index includes its interactions, and the gap
+between them is the interaction share. Both use a seeded generator that gives the same samples on
+every platform. The analyzers reproduce SALib 1.6 (`morris.analyze`, and `sobol.analyze` without
+second order) on the same samples; the confidence intervals are bootstraps with a different
+generator, so they agree in size, not digit for digit.
+
+Test reference: `tests/global_sensitivity_test.cpp`, checked against SALib 1.6.0
+(`tools/generate_global_sensitivity_reference_values.py`) and the Ishigami function's analytic
+Sobol indices.
 
 ## Recipes
 
