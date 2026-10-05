@@ -18,6 +18,11 @@ models wrapped in a lambda.
   input instead of PDP's single average, with centered (`centered()`) and derivative
   (`derivative()`) forms. `ComputePartialDependence2D` varies two features at once, and
   `FeatureGrid` builds a grid the way scikit-learn does.
+- **Local sensitivity** (`sensitivity.hpp`): `ComputeLocalSensitivity` moves each feature, alone,
+  to a low and a high value and records the output, the data of a tornado chart. The bounds come
+  from `DeltaBounds` (±δ), `ScaledDeltaBounds` (± some standard deviations of a background set)
+  or `RangeBounds` (a background set's percentiles). `Occlusion` slides a window over the input,
+  as Captum's `Occlusion` does.
 - **`fit_weighted_linear_regression`** (`weighted_linear_regression.hpp`): the shared ridge
   regression solver that `KernelSHAP` and `LIME` both use. It returns one coefficient per
   feature and fits no intercept.
@@ -33,6 +38,8 @@ Full API reference: [Doxygen: Model-Agnostic](../api/group__interpretability__ag
 | `PDP` | Whole dataset | The average effect of one feature on the output | Hides interactions between features |
 | ICE | Each input, and their average | Whether the feature's effect differs between inputs (an interaction) | Reads the model at unrealistic inputs when features are correlated |
 | 2-D partial dependence | Whole dataset | How two features interact | grid_x × grid_y × background model calls |
+| Local sensitivity | One input | How far each feature, alone, can move the output | One feature at a time: misses joint effects |
+| `Occlusion` | One input | Which regions of an image or spans of a sequence the output depends on | The baseline value is a choice; results change with it and with the window |
 
 ## How to implement
 
@@ -149,6 +156,37 @@ grid_y)` returns a grid of averages; `ToHeatmapDocument` turns it into a heatmap
 
 Test reference: `tests/ice_test.cpp`, checked against scikit-learn 1.9.1
 (`tools/generate_ice_reference_values.py`).
+
+### Local sensitivity and occlusion
+
+```cpp
+#include "pulsatrix/sensitivity.hpp"
+#include "pulsatrix/viz/svg.hpp"
+
+// Each feature from its 5th to its 95th percentile over the background, one at a time.
+LocalSensitivityResult s = ComputeLocalSensitivity(predict, input, /*target_index=*/0,
+                                                   RangeBounds(background));
+for (const FeatureSensitivity& f : s.features) {
+    // f.output_low, f.output_high, f.swing(), f.slope()
+}
+std::string tornado = RenderTornadoSvg(ToSensitivityDocument(s, {"age", "dose", "weight"}, "risk"));
+
+// Occlusion of 3x3 patches of a (1, H, W) image, stride 1, replaced with 0.
+Attribution occ = Occlusion(predict, image, /*target_index=*/7, /*window=*/{1, 3, 3},
+                            /*strides=*/{1, 1, 1}, /*baseline=*/0.0f);
+```
+
+**What's happening:** `ComputeLocalSensitivity` makes 1 + 2 × features model calls. A gradient
+describes the model in an infinitesimal neighborhood; this measures a finite one, so the two
+disagree where the model saturates or has a kink, and `slope()` shows by how much. `Occlusion`
+gives each element the drop in the output when a window covering it is replaced by `baseline`,
+averaged over the windows that covered it. The last window in a dimension is cropped at the
+edge, as in Captum. For a (1, H, W) image, `ToSaliencyHeatmap(occ)` and `ToHeatmapDocument`
+draw it with `RenderHeatmapSvg`; a window that spans all channels gives every channel the same
+value, so read one.
+
+Test reference: `tests/sensitivity_test.cpp`, checked against Captum 0.9.0 and numpy
+(`tools/generate_sensitivity_reference_values.py`).
 
 ## Recipes
 
