@@ -64,13 +64,10 @@ struct CircuitEdge {
 /**
  * @brief A copyable, self-contained circuit graph: every node of one forward pass with an
  *        ablation importance score, plus the weighted edges between them.
- * @note Raw data only. This type deliberately ships **no rendering** -- no plotting, no
- *       DOT/JSON export, no dependency on any visualization stack. That is an explicit
- *       decision recorded by this campaign (Phase 5 scoping, 2026-09-24), not an
- *       oversight: drawing a circuit graph belongs to
- *       campaign_exai_dl_library_phase5_bindings Mission 2's still-planned visualization
- *       work, and is deferred to whenever that activates (or to a later mission if it is
- *       delayed further). Nothing here is committed to a particular renderer.
+ * @note Data only: this type has no drawing or file code and no dependency on a
+ *       visualization stack. viz/document.hpp converts it to and from JSON
+ *       (`pulsatrix.circuit_graph.v1`, ToCircuitGraphDocument / ToCircuitGraph), and
+ *       CircuitGraphView (viz/circuit_graph_view.hpp, `PULSATRIX_ENABLE_VIZ`) draws it.
  * @note Holds no reference to the ComputationGraph or ExplainerContext it was built from,
  *       for the same reason ActivationSnapshot does not: ExplainerContext replaces its
  *       graph wholesale on every forward pass, so a circuit that referred back to either

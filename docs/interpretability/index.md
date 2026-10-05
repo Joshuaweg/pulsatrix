@@ -27,6 +27,13 @@ Full API reference: [Doxygen: Interpretability](../api/group__interpretability.h
   modules, given as a `std::vector<Module*>` in forward order. It runs traced forward,
   backward and relevance passes and exposes per-node activations and gradients. LRP and
   the gradient-based explainers take it as their first argument.
+- **Eval mode.** Call `model.set_training(false)` before explaining a model that has BatchNorm
+  or Dropout. No explainer switches modes for you, and in training mode each sample's
+  explanation depends on the rest of its batch.
+- **Saving and plotting.** `ToAttributionDocument()` turns an `Attribution` into a
+  `pulsatrix.attribution.v1` JSON document; `RenderBarChartSvg()` and `RenderWaterfallSvg()`
+  draw it as an SVG figure, and the `pulsatrix_svg` tool does both from the command line. See
+  [Visualization](../visualization/index.md#json-documents).
 
 ## Checking an explanation
 

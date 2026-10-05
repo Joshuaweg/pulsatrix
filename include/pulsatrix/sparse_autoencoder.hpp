@@ -48,11 +48,9 @@ namespace pulsatrix {
  *       Adam and keep one optimizer's state across a whole training run.
  * @note `train_step` is a template on the optimizer type rather than taking an
  *       `Optimizer&`, for exactly the reason LinearProbe documents: this codebase has no
- *       `Optimizer` base class -- `SGDOptimizer` and `AdamOptimizer` are unrelated types
- *       sharing only the `step(Module&)` / `zero_grad(Module&)` shape (a compile-time,
- *       duck-typed contract). Introducing an abstract base to give this one method a
- *       runtime-polymorphic parameter would be a change to two closed missions' classes
- *       for no behavioral gain.
+ *       `Optimizer` base class. `SGDOptimizer`, `AdamOptimizer` and `AdamWOptimizer` share
+ *       the `step(Module&)` / `zero_grad(Module&)` shape (a compile-time, duck-typed
+ *       contract), so the template accepts any of them.
  * @note Small **seeded random** weight init, not zero init -- and here, unlike LinearProbe,
  *       zero init is not merely degenerate but dead: with an all-zero decoder weight the
  *       gradient reaching the hidden layer is identically zero, so the encoder never
@@ -122,7 +120,7 @@ public:
      *        L1 penalty gradient injected at the hidden layer, one optimizer update of the
      *        encoder's and decoder's parameters.
      * @tparam OptimizerT Any type exposing `step(Module&)` and `zero_grad(Module&)` --
-     *         SGDOptimizer or AdamOptimizer (see the class-level note on why this is a
+     *         SGDOptimizer, AdamOptimizer or AdamWOptimizer (see the class-level note on why this is a
      *         template rather than an `Optimizer&`).
      * @param input_batch Shape (N, dim), N > 0. Both the input and the reconstruction
      *        target -- an autoencoder's target *is* its input.

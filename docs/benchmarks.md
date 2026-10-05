@@ -56,6 +56,9 @@ apart from rounding.
 
 ### Baseline (gfx1151, ROCm 7.2.4, Release, 2026-10-04)
 
+Measured before ROCm 10.0.0 became the default container; 10.0.0 is within 2% on every row (see
+[GPU Profiling](gpu-profiling.md#rocm-1000-evaluation)).
+
 | Benchmark | CPU | HIP |
 |---|---|---|
 | `train.mlp` | 74 ms | 0.38 ms |

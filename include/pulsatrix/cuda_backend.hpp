@@ -17,13 +17,9 @@ namespace pulsatrix {
  *       since cuBLAS assumes column-major storage and this project's `Tensor` is row-major
  *       -- see `gpu_backend_programming/context_gpu_cublas_cudnn_integration.md`.
  *       `elementwise`/`add` are hand-written kernels, one thread per element.
- * @note This is the first of two currently-supported concrete DeviceBackend
- *       implementations. Per the campaign's own scope decision
- *       (campaign_exai_dl_library_phase1_5_cuda_backend.md), only Tensor operations that
- *       route entirely through DeviceBackend's own primitives are safe to run against a
- *       CUDA-backed Tensor today -- most of Phase 1's Module backward/LRP/optimizer code
- *       is not yet backend-generic and will be guarded (Mission 2 of this campaign) rather
- *       than silently producing wrong results if called on a non-CPU Tensor.
+ * @note Modules, optimizers, losses and LRP run on CUDA tensors through DeviceBackend's
+ *       primitives. Unlike HIPBackend, every op waits for the GPU before returning, and
+ *       device memory is allocated with plain cudaMalloc (no caching allocator yet).
  */
 class CUDABackend : public DeviceBackend {
 public:

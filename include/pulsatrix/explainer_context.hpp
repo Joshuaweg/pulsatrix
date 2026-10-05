@@ -444,9 +444,8 @@ public:
      *        ablation importance is "how much does this node matter *for this input*", not
      *        a property of the weights alone.
      * @return A self-contained CircuitGraph: one CircuitNode per graph node (in topological
-     *         order), and one CircuitEdge per adjacent pair. Raw data only -- rendering is
-     *         explicitly deferred (see circuit_graph.hpp's own note and campaign
-     *         campaign_exai_dl_library_mechanistic_interpretability, Phase 5 Mission 3).
+     *         order), and one CircuitEdge per adjacent pair. Raw data only; viz/document.hpp exports
+     *         it as JSON and CircuitGraphView draws it.
      * @note Scoring method: for each non-output node, forward_pass_with_patch() substitutes
      *       a zero-Tensor of that node's own natural shape, and ablation_effect is the L2
      *       distance between that patched output and the real, unpatched one -- the standard

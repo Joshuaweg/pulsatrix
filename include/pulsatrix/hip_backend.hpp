@@ -24,15 +24,14 @@ namespace pulsatrix {
  *       (`<<<>>>`, `__global__`, `threadIdx`/`blockIdx` are identical in HIP), so a divergent
  *       design would add risk without adding value and would make Mission 2's three-way
  *       equivalence suite harder to read.
- * @note No `warpSize` handling is needed anywhere in this class: every kernel here is
- *       one-thread-per-element with no cross-lane operation, so the CDNA-wavefront-64 hazard
- *       that `context_accel_rocm_hip.md` flags for CUDA ports does not arise. (This project's
- *       dev device, gfx1151, reports warpSize 32 in any case.)
- * @note The same Phase 1.5 scope limit applies here: only Tensor operations that route
- *       entirely through DeviceBackend's own primitives are safe against a HIP-backed Tensor.
- *       Phase 1's Module backward/LRP/optimizer code is host-loop-only and is guarded by
- *       `PULSATRIX_REQUIRE_HOST`, which covers DeviceType::Hip identically
- *       to DeviceType::Cuda -- those guards need no change for this backend.
+ * @note No `warpSize` handling is needed: the elementwise kernels are one thread per element,
+ *       and the reductions (dot, sum, BatchNorm's per-channel sums) add through shared memory
+ *       with `__syncthreads`, never warp shuffles, so the wavefront width doesn't affect them.
+ *       (This project's dev device, gfx1151, reports warpSize 32 in any case.)
+ * @note Modules, optimizers, losses and LRP run on HIP tensors through DeviceBackend's
+ *       primitives. Unlike CUDABackend, ops don't wait for the GPU: the host waits only when
+ *       it reads a result (see sync_debug()), and device memory comes from a caching
+ *       allocator (memory_stats(), set_memory_budget()).
  */
 class HIPBackend : public DeviceBackend {
 public:

@@ -10,6 +10,8 @@ Nothing here is a promise. Priorities move as items land and as measurements com
 ## Where v1.0 stands
 
 v1.0 is strong on explainability and thin on the foundations that larger models need.
+**v1.1, "Foundations and trust", is complete** (2026-10-04): every item in its
+[milestone](#v11-foundations-and-trust) is done.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -23,10 +25,14 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   ([TRN-1 to TRN-6](#trn-training-and-fine-tuning)): parameter groups, AdamW, SGD momentum,
   gradient clipping, learning-rate schedules, token-accurate gradient accumulation and a full
   fine-tuning recipe. Explanation-quality metrics and the null-model baseline
-  ([XAI-5, XAI-6](#xai-question-driven-explainability-framework)).
+  ([XAI-5, XAI-6](#xai-question-driven-explainability-framework)). Versioned JSON documents
+  for every view and dependency-free SVG figures ([VIZ-1, VIZ-2](#viz-visualization-pack)).
+  `cmake --install` with `find_package(pulsatrix)`, and a benchmark suite that compares builds
+  and gates LRP conservation ([KS-1, KS-2](#ks-kitchen-sink)).
 - **HIP backend.** It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   `dot` and `sum`, parallel BatchNorm, a caching allocator, and no per-op stream syncs
-  ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Small models are still only about 20%
+  ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Its container runs ROCm 10.0.0, the
+  first release that lists gfx1151 officially (HIP-9). Small models are still only about 20%
   GPU-busy, because of host-side work inside each step.
 
 ## The goal that orders this list
@@ -85,7 +91,9 @@ Each milestone lists the items it contains. The order follows the dependencies.
 
 ### v1.1 "Foundations and trust"
 
-The plumbing everything else needs, plus the checks that keep explanations honest.
+The plumbing everything else needs, plus the checks that keep explanations honest. **Complete**
+(2026-10-04, PRs [#33](https://github.com/Joshuaweg/pulsatrix/pull/33) to
+[#65](https://github.com/Joshuaweg/pulsatrix/pull/65)).
 
 - FND-1 to FND-8 (**done**): named parameters, freezing, top-k, eigensolver, BatchNorm eval
   mode, Conv2D stride and padding, seeding, device checks
@@ -95,9 +103,9 @@ The plumbing everything else needs, plus the checks that keep explanations hones
 - XAI-5, XAI-6 (**done**): explanation-quality metrics and the random-model baseline harness
 - HIP-1, HIP-2, HIP-4, HIP-5 (**done**): profiling, parallel reductions, fewer syncs, multi-block
   `dot`/`sum`. HIP-3, the caching allocator, was pulled forward from v1.2 because HIP-4 depends on it
-- VIZ-1, VIZ-2: the JSON export format and the SVG renderer
-- KS-1, KS-2: `install()` and a benchmark suite
-- HIP-9: a ROCm 10.0 evaluation image and a pinned host kernel
+- VIZ-1, VIZ-2 (**done**): the JSON export format and the SVG renderer
+- KS-1, KS-2 (**done**): `install()` and a benchmark suite
+- HIP-9 (**done**): a ROCm 10.0 evaluation image, now the default, and a host-kernel check
 
 ### v1.2 "Real pretrained models"
 
@@ -478,16 +486,40 @@ Interactive visualization libraries for interpretability tend to go stale, while
 formats last. The plan keeps ImGui for live views and puts every view on top of a versioned JSON
 format, with static and web renderers next to it.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| VIZ-1 | A versioned JSON document model (`pulsatrix.<kind>.v1`) for attributions, heatmaps, token relevance, circuit graphs, training logs and feature dashboards. The ImGui widgets read it too. NaN and infinity encode as null plus a flag | One source of truth for every renderer | — | P0 | M |
-| VIZ-2 | A dependency-free SVG renderer: bar, waterfall, heatmap, token strip, beeswarm | Publication figures with no GPU or display, including in CI | VIZ-1 | P0 | M |
-| VIZ-3 | Self-contained Vega-Lite HTML, with the JavaScript inlined or loaded from a CDN | Hover, zoom and export for free, in a browser or notebook | VIZ-1 | P1 | S |
-| VIZ-4 | Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read | Large graphs get a mature viewer for free | VIZ-1 | P1 | M |
-| VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each |
-| VIZ-7 | A node editor for circuit graphs | Only if graphs outgrow the current view; VIZ-4 covers large ones | — | P3 | M |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| VIZ-1 | A versioned JSON document model (`pulsatrix.<kind>.v1`) for attributions, heatmaps, token relevance, circuit graphs, training logs and feature dashboards. The ImGui widgets read it too. NaN and infinity encode as null plus a flag | One source of truth for every renderer | — | P0 | M | Done, [#62](https://github.com/Joshuaweg/pulsatrix/pull/62) (see below) |
+| VIZ-2 | A dependency-free SVG renderer: bar, waterfall, heatmap, token strip, beeswarm | Publication figures with no GPU or display, including in CI | VIZ-1 | P0 | M | Done, [#63](https://github.com/Joshuaweg/pulsatrix/pull/63) (see below) |
+| VIZ-3 | Self-contained Vega-Lite HTML, with the JavaScript inlined or loaded from a CDN | Hover, zoom and export for free, in a browser or notebook | VIZ-1 | P1 | S | |
+| VIZ-4 | Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read | Large graphs get a mature viewer for free | VIZ-1 | P1 | M | |
+| VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each | (a) in SVG only, through VIZ-2 |
+| VIZ-7 | A node editor for circuit graphs | Only if graphs outgrow the current view; VIZ-4 covers large ones | — | P3 | M | |
 
 (VIZ-5, the notebook path, moved to the NB epic.)
+
+### How the VIZ work departed from the plan
+
+- **VIZ-1.** "Null plus a flag" became null plus a top-level `"nonfinite"` object that maps each
+  non-finite number's JSON Pointer to `"nan"`, `"inf"` or `"-inf"`, so a round trip loses
+  nothing. A reader rejects a null with no entry and an entry that points at no null. The
+  documents needed a JSON library, so the work added `pulsatrix/json.hpp`: a strict RFC 8259
+  parser, fuzzed, and a deterministic writer whose numbers round-trip bit for bit. Readers
+  ignore unknown fields, so v1 can grow without a new version. KS-2's benchmark reports follow
+  the same rules.
+- **VIZ-2** added the `pulsatrix_svg` command-line tool. Heatmaps above 4,096 cells embed a
+  lossless PNG (224 × 224 is about 45 KB, not about 3 MB of rectangles). Non-finite heatmap
+  cells and tokens are drawn gray; the bar, waterfall and beeswarm charts refuse non-finite
+  values. Every stored test figure was rendered and checked by eye before it became a golden
+  file.
+
+### Follow-ups the VIZ work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| SVG views for circuit graphs, training logs and feature dashboards | VIZ-2 | VIZ-4, VIZ-6 |
+| Nothing produces `feature_dashboard.v1` yet; its fields follow SAEDashboard | VIZ-1 | FEAT |
+| Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | LLM-3 |
+| SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | VIZ-3 (the browser lays out text) |
 
 ## NB: Notebook layer
 
@@ -518,7 +550,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 | HIP-6 | Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs | Fewer launches and less memory traffic | TRN-2 | P1 | — | |
 | HIP-7 | Conv2D that runs im2col and GEMM in batch chunks | The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU | FND-6 | P1 | S | |
 | HIP-8 | A hipBLASLt probe on the pinned container, then bf16 GEMM through `hipblasGemmEx` | Reports conflict on whether hipBLASLt works on gfx1151 in ROCm 7.2.4; measure it | HIP-1 | P1 | — | |
-| HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S | |
+| HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S || Done, [#65](https://github.com/Joshuaweg/pulsatrix/pull/65) (see below) |
 | HIP-10 | Zero-copy staging buffers on APUs, enabled only when the device reports itself as integrated | Saves a copy on Strix Halo without slowing discrete GPUs | HIP-3 | P2 | — | |
 | HIP-11 | Full bf16 training | Halves memory traffic and reaches the matrix cores. Needs a dtype in `Tensor` | IO-6 | P2 | XL | |
 | HIP-12 | HIP graphs, WMMA or rocWMMA kernels, FlashAttention for training only, MIOpen | Last: graphs have measured slowdowns on gfx11, and FlashAttention never builds the attention matrix that AttnLRP needs | HIP-4 | P3 | — | |
@@ -549,6 +581,12 @@ memory bandwidth (about 212 GB/s).
 - **Measuring under load.** Other programs held the GPU at 100% during this work, which tripled
   raw timings. HIP-3 and HIP-4 were measured with interleaved A/B runs and medians; the profiling
   guide describes the method.
+- **HIP-9.** ROCm 10.0.0 passed all 2,402 HIP tests and matched 7.2.4 within 2% on every
+  benchmark (six ABBA rounds of KS-2's suite), so it became the default container;
+  `PULSATRIX_ROCM_VERSION=7.2.4` selects the old pin. Its image needed one fix: it doesn't
+  register `/opt/rocm/lib` with the dynamic loader. "Pin the host kernel" became a check,
+  `scripts/check_host_kernel.sh`, that `rocm-build.sh` runs on every call, plus documented
+  instructions to hold the package; the repository doesn't change the host.
 
 ### Follow-ups the HIP work surfaced
 
@@ -559,7 +597,9 @@ memory bandwidth (about 212 GB/s).
 | The CUDA backend still synchronizes after every op (61 calls) and allocates with raw `cudaMalloc` | HIP-3, HIP-4 | its own item |
 | A pool per stream, if a second stream is ever added | HIP-3 | HIP-12 |
 | Run the GPU tests both asynchronously and with `PULSATRIX_HIP_SYNC_DEBUG=1`, since a kernel fault now surfaces at the next wait | HIP-4 | KS-8 |
-| Build the benchmark suite on `hip_profile_workloads` and the interleaved A/B method | HIP-1, HIP-3 | KS-2 |
+| Build the benchmark suite on `hip_profile_workloads` and the interleaved A/B method | HIP-1, HIP-3 | KS-2 (done) |
+| CI's compile-only HIP job still uses ROCm 7.2.4: there is no slim 10.0 image, and the full one is 8.2 GB compressed | HIP-9 | KS-8 |
+| ROCm 10's hipBLAS links hipBLASLt; check which path gfx1151 GEMMs take | HIP-9 | HIP-8 |
 
 ## AGT: Agents, native C++
 
@@ -608,20 +648,45 @@ AGT-5 has to follow these security rules:
 
 ## KS: Kitchen sink
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| KS-1 | CMake `install()` and a package config, so other projects can `find_package(pulsatrix)` | There's no install step today | — | P0 | S |
-| KS-2 | A benchmark suite: step time, explanation time, conservation error | Measures every HIP item and catches regressions | — | P1 | S |
-| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S |
-| KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S |
-| KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M |
-| KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each |
-| KS-7 | Wire the existing thread pool into `DataLoader`'s `num_workers` | Built but not connected | — | P2 | M |
-| KS-8 | GPU CI on a self-hosted gfx1151 runner | The HIP backend is only tested by hand today | HIP-9 | P1 | M |
-| KS-9 | A model zoo: ResNet18, VGG16 and SmolLM2 with reference heatmaps | Reproducible examples on real models | IO-4, FND-6 | P1 | M |
-| KS-10 | Strided views and broadcasting | Removes copies everywhere; touches every kernel | — | P2 | L |
-| KS-11 | Python wheels and a vcpkg port | Easier installation | KS-1 | P2 | — |
-| KS-12 | EK-FAC influence functions, quantization, op-level autograd, distributed training | Large or low priority for an explainability library | — | P3 / v2 | — |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| KS-1 | CMake `install()` and a package config, so other projects can `find_package(pulsatrix)` | There's no install step today | — | P0 | S | Done, [#61](https://github.com/Joshuaweg/pulsatrix/pull/61) |
+| KS-2 | A benchmark suite: step time, explanation time, conservation error | Measures every HIP item and catches regressions | — | P1 | S | Done, [#64](https://github.com/Joshuaweg/pulsatrix/pull/64) (see below) |
+| KS-3 | Uncertainty: Monte Carlo dropout, deep ensembles, split conformal prediction | Answers the Performance question | — | P1 | S | |
+| KS-4 | FGSM and PGD attacks, also used as a robustness test for explanations | Robustness and the Control reason | — | P1 | S | |
+| KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M | |
+| KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
+| KS-7 | Wire the existing thread pool into `DataLoader`'s `num_workers` | Built but not connected | — | P2 | M | |
+| KS-8 | GPU CI on a self-hosted gfx1151 runner | The HIP backend is only tested by hand today | HIP-9 | P1 | M | |
+| KS-9 | A model zoo: ResNet18, VGG16 and SmolLM2 with reference heatmaps | Reproducible examples on real models | IO-4, FND-6 | P1 | M | |
+| KS-10 | Strided views and broadcasting | Removes copies everywhere; touches every kernel | — | P2 | L | |
+| KS-11 | Python wheels and a vcpkg port | Easier installation | KS-1 | P2 | — | |
+| KS-12 | EK-FAC influence functions, quantization, op-level autograd, distributed training | Large or low priority for an explainability library | — | P3 / v2 | — | |
+
+### How the KS work departed from the plan
+
+- **KS-1** installs the core library as `pulsatrix::core`, its headers, the package config and
+  the `pulsatrix_svg` and `pulsatrix_bench` tools. A backend's headers ship only with that
+  backend. The viz module and the Python bindings aren't installed. The project now has a version
+  number, 1.0.0. A test installs the build and compiles every installed header from a separate
+  project; on HIP it caught hip's package config overwriting the one variable pulsatrix's config
+  needed.
+- **KS-2.** Comparing a build with itself flagged sub-millisecond CPU benchmarks 14 to 20%
+  slower: separate processes of one binary land at one of two speeds on this machine, even
+  pinned to a core. So a time regresses only when its median slows past 10% *and* a one-sided
+  Mann-Whitney U test over at least three rounds per side says the rounds separate.
+  `scripts/bench_ab.sh` runs the builds in ABBA order. Restoring HIP-4's syncs was flagged on all
+  three training benchmarks at p = 0.014. The conservation gate is 10⁻³, the per-layer tolerance
+  the Conv2D LRP tests accept, and runs in CI on the CPU.
+
+### Follow-ups the KS work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| Install `pulsatrix_viz`, which needs the fetched ImGui, ImPlot and GLFW installed too | KS-1 | NB or KS-11 |
+| Run `pulsatrix_bench` and its A/B comparison on the GPU in CI | KS-2 | KS-8 |
+| The CUDA path of `pulsatrix_bench` has never run; there is no NVIDIA GPU here | KS-2 | KS-8 |
+| Benchmarks on real models (ResNet18, SmolLM2) next to the fixed small ones | KS-2 | KS-9 |
 
 ## Open questions
 
