@@ -187,6 +187,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BeeswarmPoint.html">BeeswarmPoint</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One beeswarm point: the attribution value (x) and a collision-avoidance vertical offset (y).  <a href="structpulsatrix_1_1BeeswarmPoint.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BenchmarkComparison.html">BenchmarkComparison</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One record compared across two builds.  <a href="structpulsatrix_1_1BenchmarkComparison.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BenchmarkRecord.html">BenchmarkRecord</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One measured quantity.  <a href="structpulsatrix_1_1BenchmarkRecord.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A run of benchmarks: <code>pulsatrix.benchmark.v1</code>.  <a href="structpulsatrix_1_1BenchmarkReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BoundedQueue.html">BoundedQueue</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity thread-safe queue with blocking push/pop &ndash; the bounded buffer between pulsatrix data-pipeline stages (campaign_exai_dl_library_data_pipeline). Not tied to any Dataset/DataLoader type; deliberately generic.  <a href="classpulsatrix_1_1BoundedQueue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,6 +236,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CMAESState.html">CMAESState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This algorithm's full adaptive state: the search mean, the global step size, and each dimension's own variance (the diagonal of the covariance matrix).  <a href="structpulsatrix_1_1CMAESState.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CompareOptions.html">CompareOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How CompareBenchmarks decides that a candidate got worse.  <a href="structpulsatrix_1_1CompareOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Compose.html">Compose</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eager, ordered list of Transforms applied in sequence &ndash; pulsatrix's analogue of torchvision.transforms.Compose. Deliberately simple: no fusion/graph, matching <a class="el" href="classpulsatrix_1_1Compose.html" title="Eager, ordered list of Transforms applied in sequence – pulsatrix&#39;s analogue of torchvision....">Compose</a>'s own upstream design; unlike Python, there is no GIL here for that simplicity to cost anything.  <a href="classpulsatrix_1_1Compose.html#details">More...</a><br /></td></tr>
@@ -760,6 +772,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextureCache.html">TextureCache</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e.g. a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> index) so a scrolling image grid doesn't re-upload the same image every frame.  <a href="classpulsatrix_1_1TextureCache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TimingStats.html">TimingStats</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Summary of repeated timings, in milliseconds.  <a href="structpulsatrix_1_1TimingStats.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TinyTagger.html">TinyTagger</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Embedding -&gt; <a class="el" href="classpulsatrix_1_1TransformerBlock.html" title="y1 = x + MHA(RMSNorm(x)), y2 = y1 + SwiGLU(RMSNorm(y1)). Shape (N, L, d_model) -&gt; (N,...">TransformerBlock</a> -&gt; per-token Linear head: (N, L) tokens to (N, L, C) logits.  <a href="classpulsatrix_1_1TinyTagger.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1074,6 +1089,20 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e0cd79959b261c8b59f554451342d31" id="r_a6e0cd79959b261c8b59f554451342d31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6e0cd79959b261c8b59f554451342d31">AudioPadCollate</a> ()</td></tr>
 <tr class="memdesc:a6e0cd79959b261c8b59f554451342d31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that zero-pads (silence) variable-length waveforms (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/ <a class="el" href="classpulsatrix_1_1AudioFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;audio_file.wav&gt;, structurally identi...">AudioFolderDataset</a>'s convention) to the batch's own max sample count, producing one (N, channels, max_samples) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field. Phase 4's version of PadCollate (Phase 3, text) &ndash; a second proof that the CollateFn extension point handles ragged/variable-length modalities with zero Dataset/DataLoader/Batch interface changes.  <br /></td></tr>
 <tr class="separator:a6e0cd79959b261c8b59f554451342d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae968d5a1895ef736b41b1429be2a1ce8" id="r_ae968d5a1895ef736b41b1429be2a1ce8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TimingStats.html">TimingStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae968d5a1895ef736b41b1429be2a1ce8">SummarizeTimings</a> (std::vector&lt; double &gt; samples_ms)</td></tr>
+<tr class="memdesc:ae968d5a1895ef736b41b1429be2a1ce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Summarizes timings. Percentiles interpolate linearly between the sorted samples.  <br /></td></tr>
+<tr class="separator:ae968d5a1895ef736b41b1429be2a1ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a61731245dd8ff9ebe10415b973df2d" id="r_a9a61731245dd8ff9ebe10415b973df2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TimingStats.html">TimingStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9a61731245dd8ff9ebe10415b973df2d">TimeIt</a> (const std::function&lt; void()&gt; &amp;fn, int warmup, int repeats)</td></tr>
+<tr class="memdesc:a9a61731245dd8ff9ebe10415b973df2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>fn</code> <code>warmup</code> times untimed, then <code>repeats</code> times timed with a steady clock.  <br /></td></tr>
+<tr class="separator:a9a61731245dd8ff9ebe10415b973df2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a013e5eb67a4e009e0c77adfe60ca3799" id="r_a013e5eb67a4e009e0c77adfe60ca3799"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a013e5eb67a4e009e0c77adfe60ca3799">ToJson</a> (const <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &amp;report)</td></tr>
+<tr class="separator:a013e5eb67a4e009e0c77adfe60ca3799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4187151c737c99736c9e56a42cde0a3" id="r_af4187151c737c99736c9e56a42cde0a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af4187151c737c99736c9e56a42cde0a3">ParseBenchmarkReport</a> (std::string_view json)</td></tr>
+<tr class="memdesc:af4187151c737c99736c9e56a42cde0a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a report, following the viz document rules (docs/visualization): schema and version checks, unknown fields ignored, "nonfinite" for NaN and infinity, and errors that name the JSON Pointer of the problem.  <br /></td></tr>
+<tr class="separator:af4187151c737c99736c9e56a42cde0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab117963df9f25d6ace51a78658ca4496" id="r_ab117963df9f25d6ace51a78658ca4496"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkComparison.html">BenchmarkComparison</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab117963df9f25d6ace51a78658ca4496">CompareBenchmarks</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &gt; &amp;baseline_runs, const std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &gt; &amp;candidate_runs, const <a class="el" href="structpulsatrix_1_1CompareOptions.html">CompareOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ab117963df9f25d6ace51a78658ca4496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares a candidate build with a baseline, record by record (matched on name and device). Several reports per side are the rounds of an interleaved A/B run; each side's value is the median over its rounds, so one noisy round doesn't decide, and with three or more rounds per side a time regresses only if its rounds also separate (<a class="el" href="structpulsatrix_1_1CompareOptions.html#a047bba0024a10de84af39bb9f210f513" title="With at least three rounds on each side, a time also needs the candidate&#39;s rounds to be slower than t...">CompareOptions::significance</a>).  <br /></td></tr>
+<tr class="separator:ab117963df9f25d6ace51a78658ca4496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3191b79a9d4bc8fc4e547d1a3e3aa525" id="r_a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3191b79a9d4bc8fc4e547d1a3e3aa525">OptimizerStatePath</a> (const std::string &amp;checkpoint_path)</td></tr>
 <tr class="memdesc:a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the optimizer state for <code>checkpoint_path</code> is stored: <code>model.safetensors</code> becomes <code>model.optim.safetensors</code>; any other name gets <code>.optim.safetensors</code> appended.  <br /></td></tr>
 <tr class="separator:a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3117,6 +3146,49 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 </div><div class="memdoc">
 
 <p>Combined E-GAN fitness: Fq + gamma*Fd (Wang et al. 2019's own weighted combination). gamma's default (0.05) is this mission's own reasonable working value, not a literal reproduction of the paper's own tuned constant (never stated precisely enough there to reproduce exactly) &ndash; a deliberate, documented choice, not an assumed one. </p>
+
+</div>
+</div>
+<a id="ab117963df9f25d6ace51a78658ca4496" name="ab117963df9f25d6ace51a78658ca4496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab117963df9f25d6ace51a78658ca4496">&#9670;&#160;</a></span>CompareBenchmarks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkComparison.html">BenchmarkComparison</a> &gt; pulsatrix::CompareBenchmarks </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>baseline_runs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>candidate_runs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CompareOptions.html">CompareOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compares a candidate build with a baseline, record by record (matched on name and device). Several reports per side are the rounds of an interleaved A/B run; each side's value is the median over its rounds, so one noisy round doesn't decide, and with three or more rounds per side a time regresses only if its rounds also separate (<a class="el" href="structpulsatrix_1_1CompareOptions.html#a047bba0024a10de84af39bb9f210f513" title="With at least three rounds on each side, a time also needs the candidate&#39;s rounds to be slower than t...">CompareOptions::significance</a>). </p>
+<dl class="section note"><dt>Note</dt><dd>A metric that is NaN or infinite in the candidate but finite in the baseline is a regression. A record missing from either side is reported, not a regression. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if either side has no reports, a tolerance is negative, or the significance is outside (0, 1]. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -5827,6 +5899,26 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="af4187151c737c99736c9e56a42cde0a3" name="af4187151c737c99736c9e56a42cde0a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4187151c737c99736c9e56a42cde0a3">&#9670;&#160;</a></span>ParseBenchmarkReport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> pulsatrix::ParseBenchmarkReport </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads a report, following the viz document rules (docs/visualization): schema and version checks, unknown fields ignored, "nonfinite" for NaN and infinity, and errors that name the JSON Pointer of the problem. </p>
 
 </div>
 </div>
@@ -8741,6 +8833,32 @@ Scoped to the small, dense, well-conditioned systems this codebase's callers act
 
 </div>
 </div>
+<a id="ae968d5a1895ef736b41b1429be2a1ce8" name="ae968d5a1895ef736b41b1429be2a1ce8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae968d5a1895ef736b41b1429be2a1ce8">&#9670;&#160;</a></span>SummarizeTimings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TimingStats.html">TimingStats</a> pulsatrix::SummarizeTimings </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>samples_ms</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Summarizes timings. Percentiles interpolate linearly between the sorted samples. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>samples_ms</code> is empty or has a negative or non-finite value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="abc53b2e7d83b52abb7bc264dc5ab1c44" name="abc53b2e7d83b52abb7bc264dc5ab1c44"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abc53b2e7d83b52abb7bc264dc5ab1c44">&#9670;&#160;</a></span>SVD()</h2>
 
@@ -8962,6 +9080,49 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if z_samples/offspring/fitness sizes disagree, or fewer than 2 samples are given (mu = size/2 must be &gt;= 1). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9a61731245dd8ff9ebe10415b973df2d" name="a9a61731245dd8ff9ebe10415b973df2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a61731245dd8ff9ebe10415b973df2d">&#9670;&#160;</a></span>TimeIt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TimingStats.html">TimingStats</a> pulsatrix::TimeIt </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; void()&gt; &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>warmup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>repeats</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs <code>fn</code> <code>warmup</code> times untimed, then <code>repeats</code> times timed with a steady clock. </p>
+<dl class="section note"><dt>Note</dt><dd>A GPU op returns before the GPU finishes, so <code>fn</code> must end by waiting for its device work, for example by reading a result to the host. Otherwise this times kernel launches. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>warmup</code> &lt; 0 or <code>repeats</code> &lt; 1. </td></tr>
   </table>
   </dd>
 </dl>
@@ -9248,7 +9409,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9271,8 +9432,32 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if two records share a name and device. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9296,7 +9481,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9320,7 +9505,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9344,7 +9529,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9368,7 +9553,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

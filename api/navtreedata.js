@@ -64,24 +64,24 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "acquisition__functions_8hpp.html",
-"classpulsatrix_1_1CPUBackend.html#a1b24e2297de68d62cc299ec47db753ac",
-"classpulsatrix_1_1CUDABackend.html#af1c5bb1be33c2844a652e6d4e9fc75b4",
-"classpulsatrix_1_1DataThreadPool.html#a047967107c774d52146df7eed807cfed",
-"classpulsatrix_1_1Environment.html#aa5ac9b99c6499d9abb7c87e514a59e0f",
-"classpulsatrix_1_1HIPBackend.html#a40bdb4d0b5425510b833a7e30fc5dd06",
-"classpulsatrix_1_1KLDivergenceLoss.html#a3e37d1595b2b7d71f05aeecc895de688",
-"classpulsatrix_1_1MambaModule.html#a5a9e44987277d98fc3520250107cd38c",
-"classpulsatrix_1_1NoiseSchedule.html#a62eeb0e2312ef57ee8418fe40980b0ce",
-"classpulsatrix_1_1ReplayBuffer.html#aabe750186198c8eae8a9aea6bb1c7d28",
-"classpulsatrix_1_1Shape.html#aae09637dcd892e4539dff5f6d94e8d89",
-"classpulsatrix_1_1ToyKnowledgeBase.html#ac111245ac9f1575a7a9e253fb51e28ec",
-"classpulsatrix_1_1detail_1_1LinuxSources.html#ad81fd3f08a2639c9733f75b0326523d1",
-"namespacemembers_func_n.html",
-"namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9",
-"structpulsatrix_1_1BeeswarmPoint.html#ae29f35c8310bdb88502d320e7420e4ec",
-"structpulsatrix_1_1GFlowNetTrajectory.html#af21519c66c389ecb50a6e48d5f2a0efc",
-"structpulsatrix_1_1RandomizationResult.html",
-"structpulsatrix_1_1WaterfallStep.html#a96cb8404e7625a062e06e885a3e4dc05"
+"classpulsatrix_1_1CPUBackend.html#a12f371f9132c2df00ca975e8efdd829d",
+"classpulsatrix_1_1CUDABackend.html#ad907be329acba103b7cc2dc761204476",
+"classpulsatrix_1_1DataLoader.html#a97fa3fea040e8418fc872eb9f82a4979",
+"classpulsatrix_1_1Environment.html#a36ca00c1b8ae9f3cd7870a41f06ce6b6",
+"classpulsatrix_1_1HIPBackend.html#a39894c414cbd933c2dd517e427687c29",
+"classpulsatrix_1_1JsonValue.html#adfbe17415e038ad54d443bcbd858004e",
+"classpulsatrix_1_1MambaModule.html#a482a76b0c6246791fba3c89a7f1add76",
+"classpulsatrix_1_1NoiseSchedule.html#a072712d69f33fe008c044a84fb2de586",
+"classpulsatrix_1_1ReplayBuffer.html#a0cd2935987bec741abb5ddbe36fced3e",
+"classpulsatrix_1_1Shape.html#a55da7f85edc0c63e497eb803082071ec",
+"classpulsatrix_1_1ToyKnowledgeBase.html#a710acc5d11c74c32f3b0af1c1b16acf2",
+"classpulsatrix_1_1detail_1_1LinuxSources.html#ac327cb1fe1ba7f752f967fb5d5654cd2",
+"namespacemembers_func_e.html",
+"namespacepulsatrix.html#aa6ea52ad0a3275de0825182eac0b8660",
+"structpulsatrix_1_1BarSeries.html#adb7fb6bd5e6c53ae7baa2fed7f836bd7",
+"structpulsatrix_1_1FeatureDashboardDocument.html#af22ff39d7264ad1a886c938cb3e14b7b",
+"structpulsatrix_1_1PBTResult.html#aaf1daed5c34a6e073ee3b93037fe28c8",
+"structpulsatrix_1_1TaggingBatch.html#aba3336a63c459b510af14444eaed291e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

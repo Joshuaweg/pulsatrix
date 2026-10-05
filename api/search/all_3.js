@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['d_0',['d',['../structpulsatrix_1_1SsmPassArgs.html#a0e6388bbd4fc1371e1a536c5dfd253f7',1,'pulsatrix::SsmPassArgs::d'],['../classpulsatrix_1_1MambaModule.html#a32480c85733d598e342acdf296c7bf6c',1,'pulsatrix::MambaModule::D()']]],
+  ['d_0',['d',['../classpulsatrix_1_1MambaModule.html#a32480c85733d598e342acdf296c7bf6c',1,'pulsatrix::MambaModule::D()'],['../structpulsatrix_1_1SsmPassArgs.html#a0e6388bbd4fc1371e1a536c5dfd253f7',1,'pulsatrix::SsmPassArgs::d']]],
   ['d_5fff_1',['d_ff',['../classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54',1,'pulsatrix::SwiGLUModule']]],
   ['d_5fgrad_2',['D_grad',['../classpulsatrix_1_1MambaModule.html#addb70c1ed3ee72e027a9c1f7bb86b138',1,'pulsatrix::MambaModule']]],
   ['d_5fmodel_3',['d_model',['../classpulsatrix_1_1MultiHeadAttentionModule.html#ad4b5ac0ec934a704a7f9f6025d83e2d5',1,'pulsatrix::MultiHeadAttentionModule::d_model()'],['../classpulsatrix_1_1SwiGLUModule.html#abeed20e92962a694223e738f03668227',1,'pulsatrix::SwiGLUModule::d_model()'],['../classpulsatrix_1_1TransformerBlock.html#a39ba98c6b35d8b44af755fedb2056a38',1,'pulsatrix::TransformerBlock::d_model()']]],
@@ -46,7 +46,7 @@ var searchData=
   ['detectissues_43',['DetectIssues',['../classpulsatrix_1_1DatasetValidator.html#a72b3d9a1592e1e4e147fa431a3660056',1,'pulsatrix::DatasetValidator']]],
   ['determinism_2ehpp_44',['determinism.hpp',['../determinism_8hpp.html',1,'']]],
   ['deterministic_45',['deterministic',['../namespacepulsatrix.html#a98943eb8830416b8c9243a5f3a620818',1,'pulsatrix']]],
-  ['device_46',['device',['../classpulsatrix_1_1CUDABackend.html#af8543405b9fd64b66854be7ac2e891b5',1,'pulsatrix::CUDABackend::device()'],['../classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d',1,'pulsatrix::Tensor::device()'],['../classpulsatrix_1_1HIPBackend.html#ab5f1e6f94bbcde729d57089a347530f0',1,'pulsatrix::HIPBackend::device()'],['../classpulsatrix_1_1DeviceBackend.html#a39732e9839303fa0e9c872e24e41b283',1,'pulsatrix::DeviceBackend::device()'],['../classpulsatrix_1_1CPUBackend.html#a011a382bfca0e7736c934fd2db678278',1,'pulsatrix::CPUBackend::device()']]],
+  ['device_46',['device',['../classpulsatrix_1_1CPUBackend.html#a011a382bfca0e7736c934fd2db678278',1,'pulsatrix::CPUBackend::device()'],['../classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d',1,'pulsatrix::Tensor::device()'],['../classpulsatrix_1_1HIPBackend.html#ab5f1e6f94bbcde729d57089a347530f0',1,'pulsatrix::HIPBackend::device()'],['../classpulsatrix_1_1DeviceBackend.html#a39732e9839303fa0e9c872e24e41b283',1,'pulsatrix::DeviceBackend::device()'],['../classpulsatrix_1_1CUDABackend.html#af8543405b9fd64b66854be7ac2e891b5',1,'pulsatrix::CUDABackend::device()'],['../structpulsatrix_1_1BenchmarkComparison.html#a0123c72d8905cb26a87a6eedd9afee2d',1,'pulsatrix::BenchmarkComparison::device'],['../structpulsatrix_1_1BenchmarkRecord.html#ac21be8fb8e322123759144fb900378a4',1,'pulsatrix::BenchmarkRecord::device']]],
   ['device_5fbackend_2ehpp_47',['device_backend.hpp',['../device__backend_8hpp.html',1,'']]],
   ['device_5fdir_48',['device_dir',['../structpulsatrix_1_1detail_1_1AmdGpuDevice.html#aa4b6b893dc8753be123ae6866b6ccde2',1,'pulsatrix::detail::AmdGpuDevice']]],
   ['devicebackend_49',['DeviceBackend',['../classpulsatrix_1_1DeviceBackend.html',1,'pulsatrix']]],
