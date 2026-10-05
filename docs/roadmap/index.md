@@ -79,7 +79,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 | 2. Fine-tuning methods | [TRN](#trn-training-and-fine-tuning) |
 | 3. Translating model files | [IO](#io-serialization-and-model-import) |
 | 4. Visualization pack | [VIZ](#viz-visualization-pack), [NB](#nb-notebook-layer) |
-| 5. LLMs and agent orchestration | [LLM](#llm-running-real-language-models), [AGT](#agt-agents-native-c) |
+| 5. LLMs and agent orchestration | [LLM](#llm-running-real-language-models), [TOK](#tok-tokenizers), [AGT](#agt-agents-native-c) |
 | 6. Built-in XAI framework (4 reasons, 9 question categories) | [XAI](#xai-question-driven-explainability-framework) |
 | 7. New patterns and architectures | [ARCH](#arch-new-architectures) |
 | 8. Kitchen sink | [KS](#ks-kitchen-sink), [FND](#fnd-foundations) |
@@ -112,8 +112,10 @@ The plumbing everything else needs, plus the checks that keep explanations hones
 Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.
 
 - IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast
-- LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizer, generation, KV cache, the
+- LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizers, generation, KV cache, the
   golden-logit harness, AttnLRP parity with LXT
+- TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
+  SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores
 - HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)
 - VIZ-3, VIZ-6a: Vega-Lite HTML and the token relevance view
 - NB-1, NB-2: native rich display and the `.ipynb`/HTML report writer
@@ -300,13 +302,52 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 |---|---|---|---|---|---|
 | LLM-1 | Attention upgrade: grouped-query attention (`num_kv_heads`), `head_dim` separate from `d_model / num_heads`, optional QKV bias, causal and padding masks, a RoPE layout flag (Hugging Face "rotate half" vs. adjacent pairs), and a position offset | Without these, no current small LLM loads | — | P0 | M |
 | LLM-2 | A tied LM head that shares the embedding matrix | SmolLM2, Qwen3 and Gemma 3 all tie their embeddings | — | P0 | S |
-| LLM-3 | A native byte-level BPE tokenizer that reads Hugging Face `tokenizer.json`, with a hand-written pre-tokenizer and a generated Unicode category table (`std::regex` can't match Unicode categories). It passes when its ids match Hugging Face on a 10,000-line multilingual corpus | No Python needed to tokenize | — | P0 | M |
+| LLM-3 | Native tokenizers for the target models: [TOK-1 to TOK-3](#tok-tokenizers) | No Python needed to tokenize | — | P0 | M–L |
 | LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S |
 | LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M |
 | LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3 | Catches layout bugs that still "load" | IO-4 | P0 | S |
-| LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1 to LLM-3, LLM-6 | P1 | M |
+| LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M |
 | LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M |
 | LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M |
+
+
+## TOK: Tokenizers
+
+pulsatrix has one tokenizer today: a lowercasing whitespace and punctuation splitter that builds
+a word-level vocabulary. That is enough for the toy text examples and for nothing else. The v1.2
+target models use four different pipelines, read from their `tokenizer.json` files (2026-10-04):
+
+| Model | Normalizer | Pre-tokenizer | Model | Decoder |
+|---|---|---|---|---|
+| SmolLM2-135M | none | individual digits, then byte-level with the GPT-2 regex | BPE, 49k | byte-level |
+| Qwen2.5, Qwen3 | NFC | Qwen regex (single digits), then byte-level | BPE, 151k | byte-level |
+| Llama 3.2 | none | Llama 3 regex (`\p{N}{1,3}`), then byte-level | BPE, 128k, `ignore_merges` | byte-level |
+| Gemma 3 | spaces to `▁` | none in effect | BPE, 262k, byte fallback | `▁` to space, bytes, fuse |
+| BERT | lowercase, clean, CJK spacing | BERT punctuation split | WordPiece, `##` | WordPiece |
+| T5 | precompiled SentencePiece charsmap | whitespace, `▁` | Unigram | `▁` |
+
+So "a byte-level BPE tokenizer" covers SmolLM2, Qwen and Llama but not Gemma 3, which LLM-9 and
+FEAT need. The plan is the same component pipeline Hugging Face `tokenizers` uses (normalizer,
+pre-tokenizer, model, post-processor, decoder), read from `tokenizer.json`, so each new model
+family is a few components rather than a new tokenizer.
+
+Every tokenizer returns character offsets with its ids. Explanations are made per token but read
+per word: the token relevance view (VIZ-6a), AttnLRP on text (LLM-7) and agent tool-choice
+attribution (AGT-7) all need to map a token back to its span of the input, and to merge subword
+scores into word scores.
+
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| TOK-1 | A `Tokenizer` interface: `encode` returns ids, token strings, character offsets and a special-token mask; `decode` returns text. Added tokens (special tokens such as `<\|im_start\|>`) are split out before anything else runs. The current tokenizer becomes the `WordLevel` model with a whitespace pre-tokenizer, and a byte tokenizer (256 ids plus specials) and a character tokenizer join it | One interface for every model, and offsets for every explanation | — | P0 | S | |
+| TOK-2 | Byte-level BPE from `tokenizer.json`: the GPT-2, Llama 3 and Qwen pre-tokenizer regexes written by hand over a generated Unicode category table (`std::regex` can't match `\p{L}` or `\p{N}`), digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (`"a b"` strings and `["a", "b"]` pairs), `ignore_merges`, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5 and Llama 3.2 | No Python needed to tokenize the main target models | TOK-1 | P0 | M | |
+| TOK-3 | SentencePiece-style BPE: byte fallback (`<0x41>` tokens), `▁` replacement, `fuse_unk`, and the matching decoder chain. It passes the same corpus test for Gemma 3 | Gemma 3 and Gemma Scope 2 (LLM-9, FEAT) | TOK-2 | P1 | S | |
+| TOK-4 | Word-level aggregation: merge per-token scores (relevance, attributions, probe outputs) into per-word scores using the offsets, by sum, mean or maximum | Explanations people can read | TOK-1 | P1 | S | |
+| TOK-5 | WordPiece (BERT normalizer and pre-tokenizer, `##` continuation) | BERT-family encoders, the most common models in XAI papers and tutorials | TOK-1 | P2 | S | |
+| TOK-6 | A byte-level BPE trainer that writes `tokenizer.json`, so a model trained from scratch in pulsatrix gets a real subword vocabulary that Hugging Face can also load | Small models trained on your own corpus | TOK-2 | P2 | M | |
+| TOK-7 | Unigram (SentencePiece) with the precompiled charsmap normalizer | T5, ALBERT, XLNet and mBART | TOK-1 | P3 | M | |
+
+Not planned: SentencePiece `.model` protobuf files and tiktoken files. Every target model also
+ships `tokenizer.json`.
 
 ## XAI: Question-driven explainability framework
 
@@ -518,7 +559,7 @@ format, with static and web renderers next to it.
 |---|---|---|
 | SVG views for circuit graphs, training logs and feature dashboards | VIZ-2 | VIZ-4, VIZ-6 |
 | Nothing produces `feature_dashboard.v1` yet; its fields follow SAEDashboard | VIZ-1 | FEAT |
-| Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | LLM-3 |
+| Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | TOK-2 |
 | SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | VIZ-3 (the browser lays out text) |
 
 ## NB: Notebook layer
