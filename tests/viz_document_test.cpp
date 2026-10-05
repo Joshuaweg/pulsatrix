@@ -194,6 +194,30 @@ TEST(VizDocumentGoldenTest, PartialDependence) {
     ExpectSameFloats(back.feature_values, doc.feature_values);
 }
 
+TEST(VizDocumentGoldenTest, Sensitivity) {
+    SensitivityDocument doc;
+    doc.target = "risk";
+    doc.output = 0.5f;
+    doc.features = {{"age", 40.0f, 30.0f, 50.0f, 0.25f, 1.0f}, {"dose", 2.0f, 1.0f, 3.0f, 0.625f, 0.375f}};
+    std::string golden = ReadFixture("sensitivity.v1.json");
+    EXPECT_EQ(ToJson(doc), golden);
+    SensitivityDocument back = ParseSensitivityDocument(golden);
+    ASSERT_EQ(back.features.size(), 2u);
+    EXPECT_EQ(back.features[1].name, "dose");
+    EXPECT_EQ(back.features[1].output_low, 0.625f);
+    EXPECT_EQ(back.output, 0.5f);
+}
+
+TEST(VizDocumentConversionTest, LocalSensitivityNamesItsFeatures) {
+    LocalSensitivityResult r;
+    r.output = 1.0f;
+    r.features = {{2, 0.5f, 0.0f, 1.0f, 0.75f, 1.25f}, {0, 3.0f, 2.0f, 4.0f, 1.0f, 1.0f}};
+    SensitivityDocument doc = ToSensitivityDocument(r, {"a", "b", "c"}, "y");
+    EXPECT_EQ(doc.features[0].name, "c");
+    EXPECT_EQ(doc.features[1].name, "a");
+    EXPECT_EQ(ToSensitivityDocument(r).features[0].name, "feature_2");
+}
+
 // ---- conversions from and to the in-memory types the widgets draw today.
 
 TEST(VizDocumentConversionTest, AttributionRoundTripsThroughTensor) {

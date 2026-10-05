@@ -31,6 +31,7 @@
 #include "pulsatrix/circuit_graph.hpp"
 #include "pulsatrix/device_backend.hpp"
 #include "pulsatrix/ice.hpp"
+#include "pulsatrix/sensitivity.hpp"
 #include "pulsatrix/metrics_sink.hpp"
 #include "pulsatrix/viz/implot_metrics_sink.hpp"
 #include "pulsatrix/viz/plot_data.hpp"
@@ -244,5 +245,36 @@ struct PartialDependenceDocument {
  *          doesn't match it. */
 [[nodiscard]] std::string ToJson(const PartialDependenceDocument& doc);
 [[nodiscard]] PartialDependenceDocument ParsePartialDependenceDocument(std::string_view json);
+
+// ---- sensitivity ---------------------------------------------------------------------------
+
+/**
+ * @brief `pulsatrix.sensitivity.v1`: how one output moves when each input feature, alone, goes to
+ *        a low and a high value (CFS-3). The data behind a tornado chart.
+ */
+struct SensitivityDocument {
+    /** @brief What the output is, for example a class name. Optional. */
+    std::string target;
+    /** @brief The output at the unchanged input. */
+    float output = 0.0f;
+    struct Feature {
+        std::string name;
+        float value = 0.0f;  ///< The input's own value
+        float low = 0.0f;
+        float high = 0.0f;
+        float output_low = 0.0f;
+        float output_high = 0.0f;
+    };
+    /** @brief In any order; views sort them by swing. */
+    std::vector<Feature> features;
+};
+
+/** @brief Copies @p result. @p names, if not empty, has one name per input feature (flat index);
+ *         features without a name are called `feature_<index>`. */
+[[nodiscard]] SensitivityDocument ToSensitivityDocument(const LocalSensitivityResult& result,
+                                                        const std::vector<std::string>& names = {},
+                                                        std::string target = "");
+[[nodiscard]] std::string ToJson(const SensitivityDocument& doc);
+[[nodiscard]] SensitivityDocument ParseSensitivityDocument(std::string_view json);
 
 }  // namespace pulsatrix

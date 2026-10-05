@@ -98,6 +98,7 @@ There are six kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse
 | `pulsatrix.circuit_graph.v1` | `CircuitGraphDocument` | `nodes` (`id`, `op_type`, `label`, `ablation_effect`) and `edges` (`from`, `to`, `weight`) | `CircuitGraph` |
 | `pulsatrix.training_log.v1` | `TrainingLogDocument` | `scalars` (`tag`, `steps`, `values`) and the latest `histograms` per tag | `ImPlotMetricsSink`; `ReplayTrainingLog` logs a saved run to any `MetricsSink` |
 | `pulsatrix.feature_dashboard.v1` | `FeatureDashboardDocument` | One feature's `source`, `feature_index`, `activation_density`, `max_activation`, activation histogram and `top_examples` | — |
+| `pulsatrix.sensitivity.v1` | `SensitivityDocument` | `target`, the unchanged `output`, and per feature its `name`, `value`, `low`, `high`, `output_low` and `output_high` | `LocalSensitivityResult` |
 | `pulsatrix.partial_dependence.v1` | `PartialDependenceDocument` | `feature`, `target`, `grid`, `partial_dependence`, and optionally `num_instances` ICE curves (`ice`) and each instance's `feature_values` | `IceResult` |
 
 The widgets read documents directly: `AttributionBarChart`, `AttributionWaterfallChart`,
@@ -174,6 +175,7 @@ magnitudes.
 | `RenderHeatmapSvg(doc)` | The grid, with a color bar and any row and column labels | `HeatmapDocument` |
 | `RenderTokenStripSvg(doc)` | The text's tokens, wrapped, each on a background colored by its relevance | `TokenRelevanceDocument` |
 | `RenderBeeswarmSvg(docs, features)` | One row per feature, one point per input | several `AttributionDocument`s |
+| `RenderTornadoSvg(doc, top_k)` | One row per feature, largest swing first: bars from the unchanged output to the output at the feature's low and high values | `SensitivityDocument` |
 | `RenderPartialDependenceSvg(doc, view)` | ICE curves under their average, raw, centered or as slopes, with a rug of the inputs' values | `PartialDependenceDocument` |
 
 ```cpp
@@ -204,6 +206,7 @@ pulsatrix_svg run*.json --beeswarm 0,3,7 -o swarm.svg      # many attributions: 
 pulsatrix_svg saliency.json -o map.svg                     # heatmap
 pulsatrix_svg tokens.json -o text.svg                      # token relevance
 pulsatrix_svg pd.json --ice centered -o ice.svg            # partial dependence, centered ICE
+pulsatrix_svg sens.json --top-k 8 -o tornado.svg           # sensitivity: tornado chart
 ```
 
 Other options: `--top-k N`, `--width W`, `--font-size N`, `--title TEXT`.

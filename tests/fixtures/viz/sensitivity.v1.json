@@ -1,0 +1,23 @@
+{
+  "schema": "pulsatrix.sensitivity.v1",
+  "target": "risk",
+  "output": 0.5,
+  "features": [
+    {
+      "name": "age",
+      "value": 40,
+      "low": 30,
+      "high": 50,
+      "output_low": 0.25,
+      "output_high": 1
+    },
+    {
+      "name": "dose",
+      "value": 2,
+      "low": 1,
+      "high": 3,
+      "output_low": 0.625,
+      "output_high": 0.375
+    }
+  ]
+}

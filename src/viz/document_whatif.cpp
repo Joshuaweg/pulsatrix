@@ -125,4 +125,63 @@ PartialDependenceDocument ParsePartialDependenceDocument(std::string_view json) 
     return doc;
 }
 
+// ---- sensitivity ---------------------------------------------------------------------------
+
+SensitivityDocument ToSensitivityDocument(const LocalSensitivityResult& result, const std::vector<std::string>& names,
+                                          std::string target) {
+    SensitivityDocument doc;
+    doc.target = std::move(target);
+    doc.output = result.output;
+    for (const FeatureSensitivity& f : result.features) {
+        const auto i = static_cast<size_t>(f.feature_index);
+        std::string name = i < names.size() ? names[i] : "feature_" + std::to_string(f.feature_index);
+        doc.features.push_back({std::move(name), f.value, f.low, f.high, f.output_low, f.output_high});
+    }
+    return doc;
+}
+
+std::string ToJson(const SensitivityDocument& doc) {
+    DocWriter w("sensitivity");
+    w.root().add("target", doc.target);
+    w.root().add("output", w.num(doc.output, "/output"));
+    JsonValue features{JsonValue::Array{}};
+    for (size_t i = 0; i < doc.features.size(); ++i) {
+        const auto& f = doc.features[i];
+        const std::string p = Index("/features", i);
+        JsonValue o{JsonValue::Object{}};
+        o.add("name", f.name);
+        o.add("value", w.num(f.value, p + "/value"));
+        o.add("low", w.num(f.low, p + "/low"));
+        o.add("high", w.num(f.high, p + "/high"));
+        o.add("output_low", w.num(f.output_low, p + "/output_low"));
+        o.add("output_high", w.num(f.output_high, p + "/output_high"));
+        features.push_back(std::move(o));
+    }
+    w.root().add("features", std::move(features));
+    return w.finish();
+}
+
+SensitivityDocument ParseSensitivityDocument(std::string_view json) {
+    DocReader r(json, "sensitivity");
+    const JsonValue& root = r.root();
+    SensitivityDocument doc;
+    doc.target = r.string(r.member(root, "", "target"), "/target");
+    doc.output = r.number(r.member(root, "", "output"), "/output");
+    const JsonValue::Array& features = r.array(r.member(root, "", "features"), "/features");
+    for (size_t i = 0; i < features.size(); ++i) {
+        const std::string p = Index("/features", i);
+        r.object(features[i], p);
+        SensitivityDocument::Feature f;
+        f.name = r.string(r.member(features[i], p, "name"), p + "/name");
+        f.value = r.number(r.member(features[i], p, "value"), p + "/value");
+        f.low = r.number(r.member(features[i], p, "low"), p + "/low");
+        f.high = r.number(r.member(features[i], p, "high"), p + "/high");
+        f.output_low = r.number(r.member(features[i], p, "output_low"), p + "/output_low");
+        f.output_high = r.number(r.member(features[i], p, "output_high"), p + "/output_high");
+        doc.features.push_back(std::move(f));
+    }
+    r.finish();
+    return doc;
+}
+
 }  // namespace pulsatrix
