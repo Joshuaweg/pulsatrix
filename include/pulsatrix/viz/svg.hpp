@@ -1,6 +1,6 @@
 /** @file svg.hpp
- *  @brief Dependency-free SVG figures from viz documents: bar, waterfall, heatmap, token strip
- *         and beeswarm charts.
+ *  @brief Dependency-free SVG figures from viz documents: bar, waterfall, heatmap, token strip,
+ *         beeswarm and partial dependence charts.
  *  @ingroup visualization
  *
  *  Each function returns a complete standalone SVG file as a string. No GPU, display, font
@@ -90,5 +90,35 @@ struct SvgOptions {
 [[nodiscard]] std::string RenderBeeswarmSvg(const std::vector<AttributionDocument>& docs,
                                             const std::vector<int64_t>& feature_indices,
                                             const SvgOptions& options = {});
+
+/** @brief Which form of the ICE curves RenderPartialDependenceSvg draws (CFS-1). */
+enum class IceStyle {
+    /** The predictions themselves. */
+    Raw,
+    /** Each curve minus its value at the first grid point (c-ICE). */
+    Centered,
+    /** Each curve's slope (d-ICE). */
+    Derivative,
+};
+
+/** @brief Options for RenderPartialDependenceSvg. */
+struct PartialDependenceSvgOptions {
+    IceStyle style = IceStyle::Raw;
+    /** @brief At most this many ICE curves are drawn, evenly spaced through the instances; the
+     *         average still uses them all. 0 draws the average only. */
+    int max_curves = 100;
+};
+
+/**
+ * @brief A partial dependence plot: thin ICE curves under the bold average, over the feature's
+ *        grid, with a rug of the instances' own feature values along the bottom. For
+ *        IceStyle::Centered and IceStyle::Derivative the average is recomputed from the
+ *        transformed curves, and a dashed line marks zero.
+ * @throws std::invalid_argument for a document ToJson rejects, a non-finite value, a style other
+ *         than Raw for a document without ICE curves, negative max_curves, or unusable options.
+ */
+[[nodiscard]] std::string RenderPartialDependenceSvg(const PartialDependenceDocument& doc,
+                                                     const PartialDependenceSvgOptions& pd = {},
+                                                     const SvgOptions& options = {});
 
 }  // namespace pulsatrix
