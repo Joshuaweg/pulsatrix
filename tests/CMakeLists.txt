@@ -126,6 +126,7 @@ add_executable(pulsatrix_tests
     json_test.cpp
     viz_document_test.cpp
     svg_render_test.cpp
+    benchmark_test.cpp
     caching_allocator_test.cpp
     rnn_module_test.cpp
     lstm_module_test.cpp
