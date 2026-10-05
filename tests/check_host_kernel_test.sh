@@ -5,7 +5,7 @@ set -u
 script="$(dirname "$0")/../scripts/check_host_kernel.sh"
 failures=0
 expect() {
-    "$script" --kernel "$2" --quiet 2>/dev/null
+    bash "$script" --kernel "$2" --quiet 2>/dev/null
     local got=$?
     if [ "$got" != "$1" ]; then
         echo "FAIL: $2 exited $got, expected $1"
