@@ -178,6 +178,7 @@ magnitudes.
 | `RenderHeatmapSvg(doc)` | The grid, with a color bar and any row and column labels | `HeatmapDocument` |
 | `RenderTokenStripSvg(doc)` | The text's tokens, wrapped, each on a background colored by its relevance | `TokenRelevanceDocument` |
 | `RenderBeeswarmSvg(docs, features)` | One row per feature, one point per input | several `AttributionDocument`s |
+| `RenderCounterfactualSetSvg(docs)` | Several counterfactuals of one input side by side: a column each, a row per changed feature, cells colored by the change | several `CounterfactualDocument`s |
 | `RenderMorrisSvg(doc)` | μ* against σ on one scale, a point per feature with μ*'s interval, and the line σ = μ* | `MorrisDocument` |
 | `RenderSobolSvg(doc, top_k)` | First- and total-order indices per feature, largest total first, with confidence whiskers | `SobolDocument` |
 | `RenderCounterfactualSvg(doc, max_rows)` | Whether the target is reached, then each changed feature, costliest first, with its old and new value and its change in units of its scale | `CounterfactualDocument` |
@@ -214,6 +215,7 @@ pulsatrix_svg tokens.json -o text.svg                      # token relevance
 pulsatrix_svg pd.json --ice centered -o ice.svg            # partial dependence, centered ICE
 pulsatrix_svg sens.json --top-k 8 -o tornado.svg           # sensitivity: tornado chart
 pulsatrix_svg cf.json -o cf.svg                            # counterfactual: what changed
+pulsatrix_svg cf1.json cf2.json cf3.json -o set.svg        # several counterfactuals side by side
 pulsatrix_svg morris.json -o morris.svg                    # Morris screening scatter
 pulsatrix_svg sobol.json -o sobol.svg                      # Sobol index bars
 ```
