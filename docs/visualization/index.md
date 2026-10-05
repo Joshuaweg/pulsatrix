@@ -49,11 +49,111 @@ drawing call over the data transforms:
 | `ImageGridView` | A grid of image thumbnails with captions |
 | `TrainingDashboard`, `ImPlotMetricsSink::Draw()` | Live training curves |
 
+**JSON documents** (`viz/document.hpp`, in `pulsatrix_core`). Every view's data can be saved as
+a versioned JSON file and read back, so a figure can be redrawn later, by another program or by
+a renderer outside pulsatrix. See [JSON documents](#json-documents).
+
 **Infrastructure.** `VizWindow` (`viz/window.hpp`) owns the window, the OpenGL context, and the
 ImGui/ImPlot setup. You write a per-frame draw callback and call `window.run(...)`.
 `TextureCache` uploads images to the GPU once and reuses them across frames.
 
 Full API reference: [Doxygen: Visualization](../api/group__visualization.html)
+
+## JSON documents
+
+Interactive viewers go stale faster than file formats do, so every view reads from a versioned
+JSON document. The ImGui widgets, the SVG renderer (VIZ-2) and any tool outside pulsatrix all
+read the same data. The documents are part of `pulsatrix_core` and need no flag.
+
+```cpp
+#include <fstream>
+#include <sstream>
+
+#include "pulsatrix/viz/attribution_bar_chart.hpp"  // the widget needs PULSATRIX_ENABLE_VIZ
+#include "pulsatrix/viz/document.hpp"
+
+// Save an explanation...
+AttributionDocument doc = ToAttributionDocument(attribution);
+std::ofstream("explanation.json") << ToJson(doc);
+
+// ...and draw it later, possibly in another program.
+std::stringstream text;
+text << std::ifstream("explanation.json").rdbuf();
+if (VizDocumentKind(text.str()) == "attribution") {
+    AttributionBarChart::Draw("Top features", ParseAttributionDocument(text.str()));
+}
+```
+
+There are six kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse<Kind>Document`):
+
+| Schema | Struct | Holds | Converts from and to |
+|---|---|---|---|
+| `pulsatrix.attribution.v1` | `AttributionDocument` | `method`, `shape`, row-major `values`, `metadata` | `Attribution` |
+| `pulsatrix.heatmap.v1` | `HeatmapDocument` | `title`, `rows`, `cols`, `values`, optional `row_labels` and `col_labels` | `HeatmapGrid` |
+| `pulsatrix.token_relevance.v1` | `TokenRelevanceDocument` | `method`, `tokens`, one `relevance` per token, `target` | — |
+| `pulsatrix.circuit_graph.v1` | `CircuitGraphDocument` | `nodes` (`id`, `op_type`, `label`, `ablation_effect`) and `edges` (`from`, `to`, `weight`) | `CircuitGraph` |
+| `pulsatrix.training_log.v1` | `TrainingLogDocument` | `scalars` (`tag`, `steps`, `values`) and the latest `histograms` per tag | `ImPlotMetricsSink`; `ReplayTrainingLog` logs a saved run to any `MetricsSink` |
+| `pulsatrix.feature_dashboard.v1` | `FeatureDashboardDocument` | One feature's `source`, `feature_index`, `activation_density`, `max_activation`, activation histogram and `top_examples` | — |
+
+The widgets read documents directly: `AttributionBarChart`, `AttributionWaterfallChart`,
+`SaliencyHeatmapView` and `CircuitGraphView` each have a `Draw` overload for their document. For
+the training dashboard, replay the log into an `ImPlotMetricsSink` once and draw that.
+
+An attribution document looks like this:
+
+```json
+{
+  "schema": "pulsatrix.attribution.v1",
+  "method": "integrated_gradients",
+  "shape": [2, 3],
+  "values": [0.5, -1.25, 0, 3, 0.1, -0.001],
+  "metadata": {
+    "baseline": "zero",
+    "steps": "50"
+  }
+}
+```
+
+Examples of every kind are in
+[`tests/fixtures/viz/`](https://github.com/Joshuaweg/pulsatrix/tree/master/tests/fixtures/viz).
+Tests check that the writer reproduces each one byte for byte.
+
+### Format rules
+
+- **Schema and version.** Every document is an object whose `"schema"` is
+  `pulsatrix.<kind>.v<N>`. `VizDocumentKind()` returns the kind, so a viewer can pick the
+  reader. A reader accepts only its own major version.
+- **Compatibility within a version.** Version 1 only ever gains fields, and readers ignore
+  fields they don't know, so an older reader can read a newer v1 file. Removing, renaming or
+  changing the meaning of a field means v2.
+- **NaN and infinity.** JSON has no literal for them. A non-finite number is written as `null`,
+  and the top-level `"nonfinite"` object maps its
+  [JSON Pointer](https://www.rfc-editor.org/rfc/rfc6901) to `"nan"`, `"inf"` or `"-inf"`:
+
+    ```json
+    "values": [1, null],
+    "nonfinite": {
+      "/values/1": "nan"
+    }
+    ```
+
+    The member appears only when the document has a non-finite number. A reader rejects a
+    `null` number with no entry, and an entry that doesn't point at a `null` number, so no value
+    is ever silently lost.
+- **Numbers round-trip exactly.** Each number is written with the shortest text that reads back
+  as the same `float` (or `double`, for training-log values), formatted the way JavaScript
+  prints numbers. Reading the file gives back the same bits.
+- **Deterministic output.** The same document always gives the same bytes on every platform:
+  fixed member order, metadata sorted by key, two-space indent, and number arrays on one line.
+- **Strict reading.** The parser follows RFC 8259 strictly. It rejects comments, trailing
+  commas, duplicate keys, invalid UTF-8 and nesting deeper than 256 levels. Every reader error
+  names the JSON Pointer of the problem, for example
+  `pulsatrix.heatmap.v1 document: /row_labels: needs one label per row, or none`.
+- **Text is UTF-8.** Token strings must be valid UTF-8, so decode byte-level BPE tokens before
+  writing them.
+
+The parser is fuzzed (`tools/fuzz/viz_document_fuzz.cpp`). `pulsatrix/json.hpp` exposes the
+underlying `JsonValue`, `ParseJson` and `WriteJson` for other uses.
 
 ## Building with visualization enabled
 

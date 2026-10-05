@@ -5,6 +5,7 @@
 #pragma once
 
 #include "pulsatrix/attribution.hpp"
+#include "pulsatrix/viz/document.hpp"
 
 namespace pulsatrix {
 
@@ -35,6 +36,9 @@ public:
      *        cross-card comparison invalid.
      */
     static void Draw(const char* title, const Attribution& attr, int top_k = 10, float shared_max_abs = -1.0f);
+
+    /** @brief Draws a `pulsatrix.attribution.v1` document the same way. */
+    static void Draw(const char* title, const AttributionDocument& doc, int top_k = 10, float shared_max_abs = -1.0f);
 };
 
 }  // namespace pulsatrix

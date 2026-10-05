@@ -5,6 +5,7 @@
 #pragma once
 
 #include "pulsatrix/circuit_graph.hpp"
+#include "pulsatrix/viz/document.hpp"
 
 namespace pulsatrix {
 
@@ -24,6 +25,9 @@ namespace pulsatrix {
 class CircuitGraphView {
 public:
     static void Draw(const char* title, const CircuitGraph& graph);
+
+    /** @brief Draws a `pulsatrix.circuit_graph.v1` document the same way. */
+    static void Draw(const char* title, const CircuitGraphDocument& doc);
 };
 
 }  // namespace pulsatrix

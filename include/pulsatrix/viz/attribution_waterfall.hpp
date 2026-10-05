@@ -5,6 +5,7 @@
 #pragma once
 
 #include "pulsatrix/attribution.hpp"
+#include "pulsatrix/viz/document.hpp"
 
 namespace pulsatrix {
 
@@ -26,6 +27,9 @@ public:
      * @param baseline_value The starting reference value (e.g. IG's baseline prediction).
      */
     static void Draw(const char* title, const Attribution& attr, float baseline_value);
+
+    /** @brief Draws a `pulsatrix.attribution.v1` document the same way. */
+    static void Draw(const char* title, const AttributionDocument& doc, float baseline_value);
 };
 
 }  // namespace pulsatrix
