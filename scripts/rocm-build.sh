@@ -5,16 +5,17 @@
 #   scripts/rocm-build.sh 'cmake -S . -B build-hip -DCMAKE_BUILD_TYPE=Debug -DPULSATRIX_ENABLE_HIP=ON'
 #   scripts/rocm-build.sh 'cmake --build build-hip -j"$(nproc)"'
 #   scripts/rocm-build.sh './build-hip/tests/pulsatrix_tests'
-#   PULSATRIX_ROCM_VERSION=10.0.0 scripts/rocm-build.sh '...'   # the ROCm 10 evaluation image
+#   PULSATRIX_ROCM_VERSION=7.2.4 scripts/rocm-build.sh '...'    # the previous pin
 #
 # Runs as the invoking uid/gid so build artifacts stay owned by you rather than root. This
 # also keeps /dev/kfd reachable where access is granted by a logind seat ACL (which is
 # uid-based) rather than by render/video group membership.
 set -euo pipefail
 
-# PULSATRIX_ROCM_VERSION picks the ROCm release: 7.2.4 (the default, pinned) or 10.0.0 (the HIP-9
-# evaluation image). PULSATRIX_ROCM_IMAGE overrides the image name outright.
-ROCM_VERSION="${PULSATRIX_ROCM_VERSION:-7.2.4}"
+# PULSATRIX_ROCM_VERSION picks the ROCm release: 10.0.0 (the default since HIP-9) or 7.2.4 (the
+# previous pin). PULSATRIX_ROCM_IMAGE overrides the image name outright. Keep each version's
+# build directories separate: the two releases ship different compilers.
+ROCM_VERSION="${PULSATRIX_ROCM_VERSION:-10.0.0}"
 case "$ROCM_VERSION" in
     7.2.4) ROCM_BASE="rocm/dev-ubuntu-24.04:7.2.4-complete" ;;
     10.0.0) ROCM_BASE="rocm/dev-ubuntu-24.04:10.0.0-full" ;;
