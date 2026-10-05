@@ -239,6 +239,7 @@ var hierarchy =
     [ "pulsatrix::SubTBLoss", "classpulsatrix_1_1SubTBLoss.html", null ],
     [ "pulsatrix::SuccessiveHalvingResult", "structpulsatrix_1_1SuccessiveHalvingResult.html", null ],
     [ "pulsatrix::SVDResult", "structpulsatrix_1_1SVDResult.html", null ],
+    [ "pulsatrix::SvgOptions", "structpulsatrix_1_1SvgOptions.html", null ],
     [ "pulsatrix::SystemMonitor", "classpulsatrix_1_1SystemMonitor.html", null ],
     [ "pulsatrix::SystemSample", "structpulsatrix_1_1SystemSample.html", null ],
     [ "pulsatrix::TaggingBatch", "structpulsatrix_1_1TaggingBatch.html", null ],

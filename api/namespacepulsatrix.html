@@ -727,6 +727,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SVDResult.html">SVDResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#abc53b2e7d83b52abb7bc264dc5ab1c44" title="Thin singular value decomposition by one-sided (Hestenes) Jacobi rotations.">SVD()</a>'s result, the thin factorization A = U diag(S) V^T with k = min(m, n).  <a href="structpulsatrix_1_1SVDResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options shared by every SVG chart.  <a href="structpulsatrix_1_1SvgOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html">SwiGLUModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>down_proj(silu(gate_proj(x)) * up_proj(x))</code>, the gated feedforward block used in place of a plain two-linear-layer MLP in most modern transformers. Rank-agnostic over <code>(..., d_model) -&gt; (..., d_model)</code>, matching <code><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a></code>'s I/O contract so Phase 3 Mission 5 (<code><a class="el" href="classpulsatrix_1_1TransformerBlock.html" title="y1 = x + MHA(RMSNorm(x)), y2 = y1 + SwiGLU(RMSNorm(y1)). Shape (N, L, d_model) -&gt; (N,...">TransformerBlock</a></code>) can chain them directly.  <a href="classpulsatrix_1_1SwiGLUModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1592,6 +1595,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a080ecc6a0d774b0d732e2540fb615c9b" id="r_a080ecc6a0d774b0d732e2540fb615c9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RgbImageBuffer.html">RgbImageBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a080ecc6a0d774b0d732e2540fb615c9b">ToRgbImageBuffer</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;image_chw)</td></tr>
 <tr class="memdesc:a080ecc6a0d774b0d732e2540fb615c9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a decoded image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> into an interleaved-RGB byte buffer for GPU texture upload (the data-preview "image grid" touchpoint's pure half &ndash; the actual glTexImage2D call lives in <a class="el" href="classpulsatrix_1_1TextureCache.html" title="Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e....">TextureCache</a>, which is GL-dependent and untestable here).  <br /></td></tr>
 <tr class="separator:a080ecc6a0d774b0d732e2540fb615c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7ea947d4abd55ea6c393c762a3c429c" id="r_ac7ea947d4abd55ea6c393c762a3c429c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac7ea947d4abd55ea6c393c762a3c429c">RenderBarChartSvg</a> (const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ac7ea947d4abd55ea6c393c762a3c429c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal bars of the <code>top_k</code> features with the largest |attribution|, largest first, on an axis through zero, each colored by its signed value and labeled with it. Labels come from metadata["feature_names"] (comma-separated) when present.  <br /></td></tr>
+<tr class="separator:ac7ea947d4abd55ea6c393c762a3c429c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aecd98f0c5911b0fffde4c162a4d3e6" id="r_a0aecd98f0c5911b0fffde4c162a4d3e6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0aecd98f0c5911b0fffde4c162a4d3e6">RenderWaterfallSvg</a> (const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc, float baseline_value, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a0aecd98f0c5911b0fffde4c162a4d3e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A waterfall from <code>baseline_value</code> through each feature's contribution, in the document's feature order, to the final value: red columns raise the running total, blue columns lower it, with the baseline and the final value marked.  <br /></td></tr>
+<tr class="separator:a0aecd98f0c5911b0fffde4c162a4d3e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0121ff88a9488ffc68939cf396fd4df2" id="r_a0121ff88a9488ffc68939cf396fd4df2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0121ff88a9488ffc68939cf396fd4df2">RenderHeatmapSvg</a> (const <a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a0121ff88a9488ffc68939cf396fd4df2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The heatmap's grid with square cells and a color bar. Signed grids use the diverging map on a range symmetric about zero, unsigned grids Viridis on [0, max] (ComputeHeatmapColorScale's rule). Non-finite cells are gray and left out of the scale. Row and column labels are drawn when the document has them.  <br /></td></tr>
+<tr class="separator:a0121ff88a9488ffc68939cf396fd4df2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08920d2d448c7826c263b59f72b6abaf" id="r_a08920d2d448c7826c263b59f72b6abaf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a08920d2d448c7826c263b59f72b6abaf">RenderTokenStripSvg</a> (const <a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a08920d2d448c7826c263b59f72b6abaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text's tokens in reading order, wrapped across lines, each on a background colored by its relevance (diverging, scaled to the largest |relevance|). Tokens are drawn in a monospace font, so their widths are exact, with whitespace kept. Non-finite relevance is drawn gray. The target, when set, is shown after the text.  <br /></td></tr>
+<tr class="separator:a08920d2d448c7826c263b59f72b6abaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab95b38cf6f801c78725c83ff86b4fb50" id="r_ab95b38cf6f801c78725c83ff86b4fb50"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab95b38cf6f801c78725c83ff86b4fb50">RenderBeeswarmSvg</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &gt; &amp;docs, const std::vector&lt; int64_t &gt; &amp;feature_indices, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ab95b38cf6f801c78725c83ff86b4fb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">One beeswarm row per feature in <code>feature_indices:</code> each point is one document's value for that feature, placed by value on a shared axis through zero, spread vertically so points don't overlap (ToBeeswarmPoints's deterministic layout), and colored by value. Labels come from the first document's metadata["feature_names"] when present.  <br /></td></tr>
+<tr class="separator:ab95b38cf6f801c78725c83ff86b4fb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6453,6 +6471,211 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Keeps each tensor's scale, so activations stay in a realistic range. A tensor whose values are all equal (a zero bias, say) has standard deviation 0 and becomes all zeros. Buffers, such as BatchNorm's running statistics, are left alone. </dd></dl>
+
+</div>
+</div>
+<a id="ac7ea947d4abd55ea6c393c762a3c429c" name="ac7ea947d4abd55ea6c393c762a3c429c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7ea947d4abd55ea6c393c762a3c429c">&#9670;&#160;</a></span>RenderBarChartSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderBarChartSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>top_k</em> = <code>10</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Horizontal bars of the <code>top_k</code> features with the largest |attribution|, largest first, on an axis through zero, each colored by its signed value and labeled with it. Labels come from metadata["feature_names"] (comma-separated) when present. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for the same inputs ToFeatureImportanceBars rejects, a non-finite value, or options with width &lt; 200 or font_size &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab95b38cf6f801c78725c83ff86b4fb50" name="ab95b38cf6f801c78725c83ff86b4fb50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab95b38cf6f801c78725c83ff86b4fb50">&#9670;&#160;</a></span>RenderBeeswarmSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderBeeswarmSvg </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>docs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>feature_indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>One beeswarm row per feature in <code>feature_indices:</code> each point is one document's value for that feature, placed by value on a shared axis through zero, spread vertically so points don't overlap (ToBeeswarmPoints's deterministic layout), and colored by value. Labels come from the first document's metadata["feature_names"] when present. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">docs</td><td>Attributions of the same shape for different inputs. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>docs</code> or <code>feature_indices</code> is empty, a feature index is out of range for any document, a value is non-finite, or for invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0121ff88a9488ffc68939cf396fd4df2" name="a0121ff88a9488ffc68939cf396fd4df2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0121ff88a9488ffc68939cf396fd4df2">&#9670;&#160;</a></span>RenderHeatmapSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderHeatmapSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The heatmap's grid with square cells and a color bar. Signed grids use the diverging map on a range symmetric about zero, unsigned grids Viridis on [0, max] (ComputeHeatmapColorScale's rule). Non-finite cells are gray and left out of the scale. Row and column labels are drawn when the document has them. </p>
+<dl class="section note"><dt>Note</dt><dd>Grids up to 4096 cells are drawn as one rectangle per cell. Larger grids, such as a 224 x 224 saliency map, are embedded as a lossless PNG image drawn with sharp pixel edges, which keeps the file small. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the document is inconsistent (see ToJson) or empty, or for invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a08920d2d448c7826c263b59f72b6abaf" name="a08920d2d448c7826c263b59f72b6abaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08920d2d448c7826c263b59f72b6abaf">&#9670;&#160;</a></span>RenderTokenStripSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderTokenStripSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The text's tokens in reading order, wrapped across lines, each on a background colored by its relevance (diverging, scaled to the largest |relevance|). Tokens are drawn in a monospace font, so their widths are exact, with whitespace kept. Non-finite relevance is drawn gray. The target, when set, is shown after the text. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if tokens and relevance differ in length, there are no tokens, or for invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0aecd98f0c5911b0fffde4c162a4d3e6" name="a0aecd98f0c5911b0fffde4c162a4d3e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aecd98f0c5911b0fffde4c162a4d3e6">&#9670;&#160;</a></span>RenderWaterfallSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderWaterfallSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>baseline_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A waterfall from <code>baseline_value</code> through each feature's contribution, in the document's feature order, to the final value: red columns raise the running total, blue columns lower it, with the baseline and the final value marked. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for the same inputs ToWaterfallSteps rejects, a non-finite value or baseline, or invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -225,6 +225,7 @@ var annotated_dup =
       [ "SubTBLoss", "classpulsatrix_1_1SubTBLoss.html", "classpulsatrix_1_1SubTBLoss" ],
       [ "SuccessiveHalvingResult", "structpulsatrix_1_1SuccessiveHalvingResult.html", "structpulsatrix_1_1SuccessiveHalvingResult" ],
       [ "SVDResult", "structpulsatrix_1_1SVDResult.html", "structpulsatrix_1_1SVDResult" ],
+      [ "SvgOptions", "structpulsatrix_1_1SvgOptions.html", "structpulsatrix_1_1SvgOptions" ],
       [ "SwiGLUModule", "classpulsatrix_1_1SwiGLUModule.html", "classpulsatrix_1_1SwiGLUModule" ],
       [ "SystemMonitor", "classpulsatrix_1_1SystemMonitor.html", "classpulsatrix_1_1SystemMonitor" ],
       [ "SystemSample", "structpulsatrix_1_1SystemSample.html", "structpulsatrix_1_1SystemSample" ],

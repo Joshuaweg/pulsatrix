@@ -13,6 +13,7 @@ var dir_1df8ff9027259fc5f483c2d1b9c2e5ad =
     [ "implot_metrics_sink.hpp", "implot__metrics__sink_8hpp.html", "implot__metrics__sink_8hpp" ],
     [ "plot_data.hpp", "plot__data_8hpp.html", "plot__data_8hpp" ],
     [ "saliency_heatmap_view.hpp", "saliency__heatmap__view_8hpp.html", "saliency__heatmap__view_8hpp" ],
+    [ "svg.hpp", "svg_8hpp.html", "svg_8hpp" ],
     [ "texture_cache.hpp", "texture__cache_8hpp.html", "texture__cache_8hpp" ],
     [ "training_dashboard.hpp", "training__dashboard_8hpp.html", "training__dashboard_8hpp" ],
     [ "window.hpp", "window_8hpp.html", "window_8hpp" ]
