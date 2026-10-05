@@ -156,7 +156,7 @@ below record the reasoning they were built on.
   - Llama 3.2 sets `ignore_merges`: a pre-token that is already in the vocabulary is used whole, without merging.
   - Qwen's only normalizer is NFC, which needs Unicode composition tables. They are generated, like the category table.
   - Split regexes seen (2026-10-05): GPT-2, Llama 3 (same as `cl100k_base`, also Phi-4), Qwen, `o200k_base` (gpt-oss, Mistral Nemo: case-aware with `\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{M}`) and DeepSeek-V3 (three Splits, including CJK ranges). Five families in a year argues for an engine over hand-written pre-tokenizers.
-  - The engine only needs what these patterns use, and must match leftmost-first alternation the way the Rust `regex`/`fancy-regex` crates do, since that's what Hugging Face runs.
+  - The engine only needs what these patterns use, and must match the backtracking, leftmost-first semantics of Oniguruma, which Hugging Face `tokenizers` uses by default (`fancy-regex` behind a feature flag).
   - **Falsifier:** id mismatches on the 10,000-line corpus.
 - **TOK-3.** Gemma 3's normalizer replaces spaces with `▁`, so its pre-tokenizer split does nothing, and whole lines go to BPE as one piece. BPE has to be linear-ish in the piece length, not quadratic.
 - **TOK-6.** Training was out of scope for the first tokenizer ("a project-sized undertaking"). A byte-level BPE trainer with a priority queue over pair counts is a few hundred lines; the hard part is matching Hugging Face's tie-breaking if we want identical vocabularies, and we don't need that.
