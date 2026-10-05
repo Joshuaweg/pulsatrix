@@ -1788,7 +1788,9 @@ need its own graph-walking code.</p>
   coarse heatmap over the last <code>Conv2DModule</code>'s feature maps.</li>
 <li><strong><code>FindCounterfactual</code></strong> (<code>counterfactual.hpp</code>): the nearest input that reaches a different
   class or an output range (Wachter et al. 2017), with immutable features, limits, and integer
-  and one-hot features. It answers "what would have to change?"</li>
+  and one-hot features. It answers "what would have to change?" <code>FindDiverseCounterfactuals</code>
+  finds several that take different routes (DiCE), and <code>Plausibility</code> scores how typical a
+  counterfactual is of real data.</li>
 <li><strong><code>ComputeAttributionStability(runs)</code></strong> (<code>explainer_stability.hpp</code>): measures how much
   repeated runs of any explainer vary on the same input.</li>
 </ul>
@@ -1824,6 +1826,12 @@ propagates relevance with per-layer rules instead of gradients. It has its own p
 <td>1 forward + 1 backward</td>
 <td>"Where in the image?" for CNNs</td>
 <td>Coarse: feature-map resolution, not pixels</td>
+</tr>
+<tr>
+<td><code>FindDiverseCounterfactuals</code></td>
+<td><code>count × max_steps</code> forward + backward passes</td>
+<td>Several different ways to change the outcome</td>
+<td>The diversity and proximity weights trade off against each other</td>
 </tr>
 <tr>
 <td><code>FindCounterfactual</code></td>
@@ -1931,6 +1939,24 @@ unchanged and the result is sparse. If a round of <code>steps_per_round</code> s
 point, <code>lambda</code> grows by <code>lambda_growth</code> and the search continues. Integer features are rounded
 and one-hot groups snapped at the end, and <code>valid</code> is judged after that. On a linear model the
 result is the L1-optimal change, which the tests check.</p>
+<p><strong>Several routes.</strong> One counterfactual hides the others: raising income and paying down debt may
+both work.</p>
+<div class="highlight"><pre><span></span><code><span class="n">DiverseCounterfactualOptions</span><span class="w"> </span><span class="n">opts</span><span class="p">;</span>
+<span class="n">opts</span><span class="p">.</span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="n">DiverseCounterfactualResult</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindDiverseCounterfactuals</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">CounterfactualTarget</span><span class="o">::</span><span class="n">ToClass</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p">);</span>
+<span class="c1">// set.validity, set.diversity, set.count_diversity; set.counterfactuals[i] as above</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">typical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Plausibility</span><span class="p">(</span><span class="n">set</span><span class="p">.</span><span class="n">counterfactuals</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">counterfactual</span><span class="p">,</span><span class="w"> </span><span class="n">background</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="cm">/*k=*/</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">CounterfactualDocument</span><span class="o">&gt;</span><span class="w"> </span><span class="n">docs</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">cf</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">set</span><span class="p">.</span><span class="n">counterfactuals</span><span class="p">)</span><span class="w"> </span><span class="n">docs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ToCounterfactualDocument</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">cf</span><span class="p">,</span><span class="w"> </span><span class="n">names</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">scale</span><span class="p">));</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">svg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RenderCounterfactualSetSvg</span><span class="p">(</span><span class="n">docs</span><span class="p">);</span>
+</code></pre></div>
+<p>The counterfactuals are optimized together: each one's target hinge and distance, minus a
+diversity term, the log-determinant of the kernel <code>1 / (1 + distance)</code> between them, which pushes
+them apart. Afterwards each one's unneeded changes are undone, smallest first, as DiCE does.
+<code>diversity</code> is their mean pairwise distance and <code>count_diversity</code> the mean fraction of features
+that differ between pairs. <code>Plausibility</code> is the mean scaled distance to the <code>k</code> nearest
+background instances: a valid counterfactual far from all real data may describe nobody.</p>
 <p>Test reference: <code>tests/counterfactual_test.cpp</code>.</p>
 <h2 id="before-you-explain">Before you explain<a class="headerlink" href="#before-you-explain" title="Permanent link">&para;</a></h2>
 <ul>

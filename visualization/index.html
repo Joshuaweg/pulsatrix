@@ -2209,6 +2209,11 @@ magnitudes.</p>
 <td>several <code>AttributionDocument</code>s</td>
 </tr>
 <tr>
+<td><code>RenderCounterfactualSetSvg(docs)</code></td>
+<td>Several counterfactuals of one input side by side: a column each, a row per changed feature, cells colored by the change</td>
+<td>several <code>CounterfactualDocument</code>s</td>
+</tr>
+<tr>
 <td><code>RenderMorrisSvg(doc)</code></td>
 <td>μ<em> against σ on one scale, a point per feature with μ</em>'s interval, and the line σ = μ*</td>
 <td><code>MorrisDocument</code></td>
@@ -2258,6 +2263,7 @@ pulsatrix_svg<span class="w"> </span>tokens.json<span class="w"> </span>-o<span 
 pulsatrix_svg<span class="w"> </span>pd.json<span class="w"> </span>--ice<span class="w"> </span>centered<span class="w"> </span>-o<span class="w"> </span>ice.svg<span class="w">            </span><span class="c1"># partial dependence, centered ICE</span>
 pulsatrix_svg<span class="w"> </span>sens.json<span class="w"> </span>--top-k<span class="w"> </span><span class="m">8</span><span class="w"> </span>-o<span class="w"> </span>tornado.svg<span class="w">           </span><span class="c1"># sensitivity: tornado chart</span>
 pulsatrix_svg<span class="w"> </span>cf.json<span class="w"> </span>-o<span class="w"> </span>cf.svg<span class="w">                            </span><span class="c1"># counterfactual: what changed</span>
+pulsatrix_svg<span class="w"> </span>cf1.json<span class="w"> </span>cf2.json<span class="w"> </span>cf3.json<span class="w"> </span>-o<span class="w"> </span>set.svg<span class="w">        </span><span class="c1"># several counterfactuals side by side</span>
 pulsatrix_svg<span class="w"> </span>morris.json<span class="w"> </span>-o<span class="w"> </span>morris.svg<span class="w">                    </span><span class="c1"># Morris screening scatter</span>
 pulsatrix_svg<span class="w"> </span>sobol.json<span class="w"> </span>-o<span class="w"> </span>sobol.svg<span class="w">                      </span><span class="c1"># Sobol index bars</span>
 </code></pre></div>

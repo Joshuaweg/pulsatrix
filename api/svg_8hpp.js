@@ -9,6 +9,7 @@ var svg_8hpp =
     ] ],
     [ "RenderBarChartSvg", "svg_8hpp.html#ac7ea947d4abd55ea6c393c762a3c429c", null ],
     [ "RenderBeeswarmSvg", "svg_8hpp.html#ab95b38cf6f801c78725c83ff86b4fb50", null ],
+    [ "RenderCounterfactualSetSvg", "svg_8hpp.html#af4029528cfbe002d039c209fee1d1b4a", null ],
     [ "RenderCounterfactualSvg", "svg_8hpp.html#abb5c177e37490ef63663cedb2565ccf3", null ],
     [ "RenderHeatmapSvg", "svg_8hpp.html#a0121ff88a9488ffc68939cf396fd4df2", null ],
     [ "RenderMorrisSvg", "svg_8hpp.html#ad2e6806ecc7c7ac90f0e7cbf48524e37", null ],

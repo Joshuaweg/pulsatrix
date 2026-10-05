@@ -97,6 +97,8 @@ var annotated_dup =
       [ "DetailedBalanceLoss", "classpulsatrix_1_1DetailedBalanceLoss.html", "classpulsatrix_1_1DetailedBalanceLoss" ],
       [ "DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", "classpulsatrix_1_1DeviceBackend" ],
       [ "DisjunctionModule", "classpulsatrix_1_1DisjunctionModule.html", "classpulsatrix_1_1DisjunctionModule" ],
+      [ "DiverseCounterfactualOptions", "structpulsatrix_1_1DiverseCounterfactualOptions.html", "structpulsatrix_1_1DiverseCounterfactualOptions" ],
+      [ "DiverseCounterfactualResult", "structpulsatrix_1_1DiverseCounterfactualResult.html", "structpulsatrix_1_1DiverseCounterfactualResult" ],
       [ "DominantEigenResult", "structpulsatrix_1_1DominantEigenResult.html", "structpulsatrix_1_1DominantEigenResult" ],
       [ "DQNAgent", "classpulsatrix_1_1DQNAgent.html", "classpulsatrix_1_1DQNAgent" ],
       [ "DQNLoss", "classpulsatrix_1_1DQNLoss.html", "classpulsatrix_1_1DQNLoss" ],
