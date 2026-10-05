@@ -119,14 +119,13 @@ scripts/rocm-build.sh 'cmake --build build-hip -j"$(nproc)"'
 scripts/rocm-build.sh './build-hip/tests/pulsatrix_tests'
 ```
 
-The container pins ROCm 7.2.4 because ROCm 7.1.x crashes on gfx1151, and Ubuntu's packages are
-7.1.x. The header of `docker/Dockerfile.rocm` has the details. The HIP tests run on real
-hardware, not a mock.
-
-**ROCm 10.0.0** is the first release that lists gfx1151 officially. Run the same commands with
-`PULSATRIX_ROCM_VERSION=10.0.0` to use it. Every test passes on it, and it is as fast as 7.2.4
-(see [GPU Profiling](gpu-profiling.md#rocm-1000-evaluation)). Keep its build directories
-separate from 7.2.4's, because the two compilers differ.
+The container pins **ROCm 10.0.0**, the first release that lists gfx1151 officially. The HIP
+tests run on real hardware, not a mock. ROCm 7.2.4, the previous pin, is still available:
+prefix a command with `PULSATRIX_ROCM_VERSION=7.2.4`. Both pass every test at the same speed
+(see [GPU Profiling](gpu-profiling.md#rocm-1000-evaluation)). Don't share a build directory
+between the two, because their compilers differ. Don't install ROCm from Ubuntu's archive
+either: it ships 7.1.x, which crashes on gfx1151. The header of `docker/Dockerfile.rocm` has
+the details.
 
 **Host kernel.** Known gfx1151 crashes also depend on the host kernel. Use Linux 6.18.4 or newer,
 or Ubuntu's OEM kernel at ABI 1018 or newer. `scripts/check_host_kernel.sh` checks the kernel,
