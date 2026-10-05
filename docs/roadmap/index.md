@@ -356,9 +356,18 @@ target models use four different pipelines, read from their `tokenizer.json` fil
 | Llama 3.2 | none | Llama 3 regex (`\p{N}{1,3}`), then byte-level | BPE, 128k, `ignore_merges` | byte-level |
 | Gemma 3 | spaces to `▁` | none in effect | BPE, 262k, byte fallback | `▁` to space, bytes, fuse |
 | BERT | lowercase, clean, CJK spacing | BERT punctuation split | WordPiece, `##` | WordPiece |
+| gpt-oss, Mistral Nemo | none | o200k regex (splits on letter case and combining marks), then byte-level | BPE, 200k / 131k | byte-level |
+| DeepSeek-V3 | — | digit groups, CJK runs, then its own regex, then byte-level | BPE, 128k | byte-level |
 | T5 | precompiled SentencePiece charsmap | whitespace, `▁` | Unigram | `▁` |
 
-So "a byte-level BPE tokenizer" covers SmolLM2, Qwen and Llama but not Gemma 3, which LLM-9 and
+OpenAI's tokenizers (`cl100k_base` for GPT-3.5 and GPT-4, `o200k_base` for GPT-4o and later) are
+byte-level BPE too, distributed as `tiktoken` files. Anthropic doesn't publish Claude's tokenizer;
+the only exact count is its token-counting API, which the Anthropic provider (AGT-3) can use for
+budgets.
+
+Byte-level BPE is nearly universal, and what differs between families is the regex that splits
+text before BPE runs. So TOK-2 runs those regexes with a small engine rather than one hand-written
+pre-tokenizer per family. "A byte-level BPE tokenizer" covers SmolLM2, Qwen and Llama but not Gemma 3, which LLM-9 and
 FEAT need. The plan is the same component pipeline Hugging Face `tokenizers` uses (normalizer,
 pre-tokenizer, model, post-processor, decoder), read from `tokenizer.json`, so each new model
 family is a few components rather than a new tokenizer.
@@ -371,15 +380,16 @@ scores into word scores.
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | TOK-1 | A `Tokenizer` interface: `encode` returns ids, token strings, character offsets and a special-token mask; `decode` returns text. Added tokens (special tokens such as `<\|im_start\|>`) are split out before anything else runs. The current tokenizer becomes the `WordLevel` model with a whitespace pre-tokenizer, and a byte tokenizer (256 ids plus specials) and a character tokenizer join it | One interface for every model, and offsets for every explanation | — | P0 | S | |
-| TOK-2 | Byte-level BPE from `tokenizer.json`: the GPT-2, Llama 3 and Qwen pre-tokenizer regexes written by hand over a generated Unicode category table (`std::regex` can't match `\p{L}` or `\p{N}`), digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (`"a b"` strings and `["a", "b"]` pairs), `ignore_merges`, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5 and Llama 3.2 | No Python needed to tokenize the main target models | TOK-1 | P0 | M | |
+| TOK-2 | Byte-level BPE from `tokenizer.json`, with a small regex engine for the Split pre-tokenizer: alternation, character classes with Unicode categories (`\p{L}`, `\p{Lu}`, `\p{M}`, `\p{N}`…) over a generated category table, ranges, quantifiers, `(?i:…)` and the `(?!\S)` lookahead; `std::regex` can't match Unicode categories. Also digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (`"a b"` strings and `["a", "b"]` pairs), `ignore_merges`, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5, Llama 3.2 and gpt-oss | Any byte-level BPE model loads without new code: SmolLM2, Qwen, Llama, gpt-oss, Mistral, DeepSeek, Phi-4 | TOK-1 | P0 | M | |
 | TOK-3 | SentencePiece-style BPE: byte fallback (`<0x41>` tokens), `▁` replacement, `fuse_unk`, and the matching decoder chain. It passes the same corpus test for Gemma 3 | Gemma 3 and Gemma Scope 2 (LLM-9, FEAT) | TOK-2 | P1 | S | |
 | TOK-4 | Word-level aggregation: merge per-token scores (relevance, attributions, probe outputs) into per-word scores using the offsets, by sum, mean or maximum | Explanations people can read | TOK-1 | P1 | S | |
 | TOK-5 | WordPiece (BERT normalizer and pre-tokenizer, `##` continuation) | BERT-family encoders, the most common models in XAI papers and tutorials | TOK-1 | P2 | S | |
 | TOK-6 | A byte-level BPE trainer that writes `tokenizer.json`, so a model trained from scratch in pulsatrix gets a real subword vocabulary that Hugging Face can also load | Small models trained on your own corpus | TOK-2 | P2 | M | |
 | TOK-7 | Unigram (SentencePiece) with the precompiled charsmap normalizer | T5, ALBERT, XLNet and mBART | TOK-1 | P3 | M | |
+| TOK-8 | A `.tiktoken` loader (base64 token and rank per line; merge priority is the rank of the merged token) with OpenAI's `cl100k_base` and `o200k_base` patterns, checked against `tiktoken` | Count and inspect tokens exactly as GPT models see them, with no Python | TOK-2 | P2 | S | |
 
-Not planned: SentencePiece `.model` protobuf files and tiktoken files. Every target model also
-ships `tokenizer.json`.
+Not planned: SentencePiece `.model` protobuf files (every target model also ships
+`tokenizer.json`) and a local Claude tokenizer (not public).
 
 ## XAI: Question-driven explainability framework
 
