@@ -115,6 +115,14 @@ public:
 
     [[nodiscard]] int64_t d_model() const { return mha_.d_model(); }
 
+    /**
+     * @brief The block for new positions only, with attention against @p cache (LLM-5); see
+     *        MultiHeadAttentionModule::forward_cached. Inference only: backward() and
+     *        propagate_relevance() throw until the next forward().
+     * @param input `(N, L_new, d_model)`.
+     */
+    [[nodiscard]] Tensor forward_cached(const Tensor& input, KVCache& cache);
+
     /** @name Sub-module access -- weight initialization from tests/loaders, and inspection. */
     ///@{
     [[nodiscard]] RMSNormModule& norm1() { return norm1_; }
