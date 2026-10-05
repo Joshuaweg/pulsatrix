@@ -75,6 +75,8 @@ add_executable(pulsatrix_tests
     softmax_module_test.cpp
     rope_module_test.cpp
     multihead_attention_module_test.cpp
+    attention_reference_test.cpp
+    attention_llm_features_test.cpp
     swiglu_module_test.cpp
     transformer_block_test.cpp
     residual_module_test.cpp

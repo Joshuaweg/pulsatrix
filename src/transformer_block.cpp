@@ -49,6 +49,19 @@ TransformerBlock::TransformerBlock(int64_t d_model, int64_t num_heads, int64_t d
       last_y1_(Shape({0}), backend),
       last_ffn_out_(Shape({0}), backend) {}
 
+TransformerBlock::TransformerBlock(const AttentionConfig& attention, int64_t d_ff, DeviceBackend* backend,
+                                   float norm_eps)
+    : d_model_(attention.d_model),
+      backend_(backend),
+      norm1_(attention.d_model > 0 ? attention.d_model : 1, backend, backend->device(), norm_eps),
+      mha_(attention, backend),
+      norm2_(attention.d_model > 0 ? attention.d_model : 1, backend, backend->device(), norm_eps),
+      swiglu_(attention.d_model, d_ff, backend),
+      last_x_(Shape({0}), backend),
+      last_attn_out_(Shape({0}), backend),
+      last_y1_(Shape({0}), backend),
+      last_ffn_out_(Shape({0}), backend) {}
+
 Tensor TransformerBlock::forward_impl(const Tensor& input) {
     // Device-generic (GPU-native-kernels Mission 2): norms, attention, SwiGLU and the two
     // residual adds all run through DeviceBackend.

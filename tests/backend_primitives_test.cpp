@@ -265,10 +265,10 @@ TEST_F(BackendPrimitivesTest, RopeRotateInverseUndoesForward) {
     std::vector<float> x = {1.0f, 2.0f, -3.0f, 0.5f};  // 1 slice, 2 positions, head_dim 2
     std::vector<float> c = {1.0f, 0.6f}, s = {0.0f, 0.8f};  // per-position cos/sin
     std::vector<float> y(4), back(4);
-    cpu.rope_rotate(x.data(), c.data(), s.data(), y.data(), 1, 2, 2, false);
+    cpu.rope_rotate(x.data(), c.data(), s.data(), y.data(), 1, 2, 2, false, false);
     EXPECT_FLOAT_EQ(y[0], 1.0f);  // position 0: identity
     EXPECT_FLOAT_EQ(y[1], 2.0f);
-    cpu.rope_rotate(y.data(), c.data(), s.data(), back.data(), 1, 2, 2, true);
+    cpu.rope_rotate(y.data(), c.data(), s.data(), back.data(), 1, 2, 2, true, false);
     for (size_t i = 0; i < 4; ++i) {
         EXPECT_NEAR(back[i], x[i], 1e-6f);
     }

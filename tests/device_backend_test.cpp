@@ -63,9 +63,13 @@ public:
                 (override));
     MOCK_METHOD(void, rope_rotate,
                 (const float* in, const float* cos_table, const float* sin_table, float* out, size_t num_slices,
-                 size_t seq_len, size_t head_dim, bool inverse),
+                 size_t seq_len, size_t head_dim, bool inverse, bool rotate_half),
                 (override));
     MOCK_METHOD(void, permute_0213, (const float* in, float* out, size_t d0, size_t d1, size_t d2, size_t d3),
+                (override));
+    MOCK_METHOD(void, attention_mask_fill,
+                (float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len, size_t k_len,
+                 bool causal, size_t q_offset, float value),
                 (override));
     MOCK_METHOD(void, gather_rows, (const float* table, const float* indices, float* out, size_t count, size_t dim),
                 (override));
@@ -96,7 +100,7 @@ public:
                 (const float* x, const float* y, const float* r, float* r_in, size_t rows, size_t cols), (override));
     MOCK_METHOD(void, lrp_rope,
                 (const float* x, const float* y, const float* r, const float* cos_table, const float* sin_table,
-                 float* r_in, size_t slices, size_t seq_len, size_t head_dim, float eps),
+                 float* r_in, size_t slices, size_t seq_len, size_t head_dim, float eps, bool rotate_half),
                 (override));
     MOCK_METHOD(void, logic_pointwise,
                 (LogicOp op, int norm, const float* a, const float* b, const float* g_or_r, const float* y,

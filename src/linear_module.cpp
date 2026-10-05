@@ -7,12 +7,14 @@
 
 namespace pulsatrix {
 
-LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend)
-    : LinearModule(in_features, out_features, backend, backend->device()) {}
+LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, bool use_bias)
+    : LinearModule(in_features, out_features, backend, backend->device(), use_bias) {}
 
-LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, DeviceType device)
+LinearModule::LinearModule(int64_t in_features, int64_t out_features, DeviceBackend* backend, DeviceType device,
+                           bool use_bias)
     : in_features_(in_features),
       out_features_(out_features),
+      use_bias_(use_bias),
       backend_(backend),
       weight_(Shape({in_features, out_features}), backend, device),
       bias_(Shape({out_features}), backend, device),
@@ -29,6 +31,9 @@ void LinearModule::set_weight(std::initializer_list<float> values) {
 }
 
 void LinearModule::set_bias(std::initializer_list<float> values) {
+    if (!use_bias_) {
+        throw std::logic_error("LinearModule::set_bias: this layer was built without a bias");
+    }
     bias_ = Tensor(bias_.shape(), backend_, values, bias_.device());
 }
 
@@ -37,6 +42,9 @@ void LinearModule::set_weight(const std::vector<float>& values) {
 }
 
 void LinearModule::set_bias(const std::vector<float>& values) {
+    if (!use_bias_) {
+        throw std::logic_error("LinearModule::set_bias: this layer was built without a bias");
+    }
     bias_ = Tensor(bias_.shape(), backend_, values, bias_.device());
 }
 
@@ -67,6 +75,10 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
     // originally used a raw host loop here, which silently dereferenced device pointers on a
     // Cuda/Hip module; Mission 0 of GPU-native-kernels routed it through a ones-gemm, now the
     // dedicated add_row_vector primitive.)
+    if (!use_bias_) {
+        has_forwarded_ = true;
+        return pre_bias;
+    }
     Tensor output(pre_bias.shape(), backend_, weight_.device());
     backend_->add_row_vector(pre_bias.data(), bias_.data(), output.data(), static_cast<size_t>(N),
                              static_cast<size_t>(out_features_));
@@ -107,7 +119,7 @@ Tensor LinearModule::backward(const Tensor& grad_output) {
     }
 
     // grad_bias += sum over the batch of grad_Y.
-    if (bias_.requires_grad()) {
+    if (use_bias_ && bias_.requires_grad()) {
         backend_->column_sums(grad_output.data(), bias_grad_.data(), n, out, 1.0f);
     }
 

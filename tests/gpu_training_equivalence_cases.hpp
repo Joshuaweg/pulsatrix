@@ -345,6 +345,48 @@ inline void AttentionMatches(DeviceBackend& gpu, bool use_rope, bool use_qk_norm
     ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 5, 8}), 330);
 }
 
+// LLM-1: a Qwen3-shaped layer -- 4 query heads on 2 K/V heads, head_dim 6 (query width 24 vs.
+// d_model 8), Q/K/V biases only, rotate-half RoPE from position 9, QK-Norm, causal, and a
+// padding mask with a fully masked row (sequence 1 is left-padded).
+inline AttentionConfig LlmAttentionConfig() {
+    AttentionConfig c;
+    c.d_model = 8;
+    c.num_heads = 4;
+    c.num_kv_heads = 2;
+    c.head_dim = 6;
+    c.rope_layout = RoPELayout::RotateHalf;
+    c.rope_base = 1000.0f;
+    c.use_qk_norm = true;
+    c.qkv_bias = true;
+    c.out_bias = false;
+    c.causal = true;
+    return c;
+}
+
+inline void PrepareLlmAttention(CPUBackend& cpu, DeviceBackend& gpu, MultiHeadAttentionModule& cm,
+                                MultiHeadAttentionModule& gm) {
+    const std::vector<float> keep = {1, 1, 1, 1, 0, 0, 1, 1, 1, 1};
+    cm.set_key_padding_mask(Tensor(Shape({2, 5}), &cpu, keep));
+    gm.set_key_padding_mask(Tensor(Shape({2, 5}), &gpu, keep));
+    cm.set_position_offset(9);
+    gm.set_position_offset(9);
+}
+
+inline void LlmAttentionMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    MultiHeadAttentionModule cm(LlmAttentionConfig(), &cpu), gm(LlmAttentionConfig(), &gpu);
+    PrepareLlmAttention(cpu, gpu, cm, gm);
+    ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 5, 8}), 335);
+}
+
+inline void RotateHalfRoPEMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    RoPEModule cm(8, &cpu, 500000.0f, RoPELayout::RotateHalf), gm(8, &gpu, 500000.0f, RoPELayout::RotateHalf);
+    cm.set_position_offset(1000);
+    gm.set_position_offset(1000);
+    ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 3, 50, 8}), 325);
+}
+
 inline void TransformerBlockMatches(DeviceBackend& gpu) {
     CPUBackend cpu;
     TransformerBlock cm(8, 2, 16, &cpu), gm(8, 2, 16, &gpu);
@@ -582,6 +624,21 @@ inline void AttentionRelevance(DeviceBackend& gpu, bool use_rope, bool use_qk_no
     CPUBackend cpu;
     MultiHeadAttentionModule cm(8, 2, &cpu, use_rope, use_qk_norm), gm(8, 2, &gpu, use_rope, use_qk_norm);
     ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 5, 8}), 550);
+}
+
+inline void LlmAttentionRelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    MultiHeadAttentionModule cm(LlmAttentionConfig(), &cpu), gm(LlmAttentionConfig(), &gpu);
+    PrepareLlmAttention(cpu, gpu, cm, gm);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 5, 8}), 555);
+}
+
+inline void RotateHalfRoPERelevance(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    RoPEModule cm(8, &cpu, 10000.0f, RoPELayout::RotateHalf), gm(8, &gpu, 10000.0f, RoPELayout::RotateHalf);
+    cm.set_position_offset(7);
+    gm.set_position_offset(7);
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 3, 40, 8}), 545);
 }
 
 inline void TransformerBlockRelevance(DeviceBackend& gpu) {
@@ -1359,6 +1416,12 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
         ::pulsatrix::training_equivalence::AttentionMatches(MEMBER, true, false);                    \
         ::pulsatrix::training_equivalence::AttentionMatches(MEMBER, true, true);                     \
     }                                                                                                \
+    TEST_F(FIXTURE, LlmAttentionForwardBackwardMatchCPU) {                                           \
+        ::pulsatrix::training_equivalence::LlmAttentionMatches(MEMBER);                              \
+    }                                                                                                \
+    TEST_F(FIXTURE, RotateHalfRoPEForwardBackwardMatchCPU) {                                         \
+        ::pulsatrix::training_equivalence::RotateHalfRoPEMatches(MEMBER);                            \
+    }                                                                                                \
     TEST_F(FIXTURE, TransformerBlockForwardBackwardMatchCPU) {                                       \
         ::pulsatrix::training_equivalence::TransformerBlockMatches(MEMBER);                          \
     }                                                                                                \
@@ -1376,6 +1439,12 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
         ::pulsatrix::training_equivalence::AttentionRelevance(MEMBER, false, false);                 \
         ::pulsatrix::training_equivalence::AttentionRelevance(MEMBER, true, false);                  \
         ::pulsatrix::training_equivalence::AttentionRelevance(MEMBER, true, true);                   \
+    }                                                                                                \
+    TEST_F(FIXTURE, LlmAttentionRelevanceAgreesWithCPU) {                                            \
+        ::pulsatrix::training_equivalence::LlmAttentionRelevance(MEMBER);                            \
+    }                                                                                                \
+    TEST_F(FIXTURE, RotateHalfRoPERelevanceAgreesWithCPU) {                                          \
+        ::pulsatrix::training_equivalence::RotateHalfRoPERelevance(MEMBER);                          \
     }                                                                                                \
     TEST_F(FIXTURE, TransformerBlockRelevanceAgreesWithCPU) {                                        \
         ::pulsatrix::training_equivalence::TransformerBlockRelevance(MEMBER);                        \

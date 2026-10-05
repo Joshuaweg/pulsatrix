@@ -29,6 +29,12 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
 - **Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule`, `SoftmaxModule`,
   `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock`,
   `MambaModule`, `RWKVModule`, `RetNetModule`
+- **Attention for pretrained LLMs**: `MultiHeadAttentionModule` and `TransformerBlock` take an
+  `AttentionConfig` with the settings Hugging Face checkpoints use: grouped-query attention
+  (`num_kv_heads`), a `head_dim` independent of `d_model`, optional projection biases, a causal
+  mask, the RoPE pair layout (`RoPELayout::RotateHalf` for Llama-family models) and base
+  (`rope_theta`), and QK-Norm. `set_key_padding_mask()` masks padding tokens and
+  `set_position_offset()` shifts RoPE positions. `LinearModule` can be built without a bias.
 - **Optimizers & losses**: `SGDOptimizer` (momentum, Nesterov), `AdamOptimizer`,
   `AdamWOptimizer`, all with parameter groups; `MSELoss`, `CrossEntropyLoss`,
   `TokenCrossEntropyLoss`, `BCEWithLogitsLoss`, `KLDivergenceLoss`, `CalibrationLoss`
