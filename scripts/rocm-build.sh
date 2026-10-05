@@ -5,18 +5,30 @@
 #   scripts/rocm-build.sh 'cmake -S . -B build-hip -DCMAKE_BUILD_TYPE=Debug -DPULSATRIX_ENABLE_HIP=ON'
 #   scripts/rocm-build.sh 'cmake --build build-hip -j"$(nproc)"'
 #   scripts/rocm-build.sh './build-hip/tests/pulsatrix_tests'
+#   PULSATRIX_ROCM_VERSION=10.0.0 scripts/rocm-build.sh '...'   # the ROCm 10 evaluation image
 #
 # Runs as the invoking uid/gid so build artifacts stay owned by you rather than root. This
 # also keeps /dev/kfd reachable where access is granted by a logind seat ACL (which is
 # uid-based) rather than by render/video group membership.
 set -euo pipefail
 
-IMAGE="${PULSATRIX_ROCM_IMAGE:-pulsatrix-rocm:7.2.4}"
+# PULSATRIX_ROCM_VERSION picks the ROCm release: 7.2.4 (the default, pinned) or 10.0.0 (the HIP-9
+# evaluation image). PULSATRIX_ROCM_IMAGE overrides the image name outright.
+ROCM_VERSION="${PULSATRIX_ROCM_VERSION:-7.2.4}"
+case "$ROCM_VERSION" in
+    7.2.4) ROCM_BASE="rocm/dev-ubuntu-24.04:7.2.4-complete" ;;
+    10.0.0) ROCM_BASE="rocm/dev-ubuntu-24.04:10.0.0-full" ;;
+    *) echo "rocm-build.sh: PULSATRIX_ROCM_VERSION must be 7.2.4 or 10.0.0, not $ROCM_VERSION" >&2; exit 2 ;;
+esac
+IMAGE="${PULSATRIX_ROCM_IMAGE:-pulsatrix-rocm:$ROCM_VERSION}"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Known gfx1151 crashes depend on the host kernel as well as on ROCm (docs/gpu-profiling.md).
+"$REPO_ROOT/scripts/check_host_kernel.sh" --quiet || true
 
 if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
     echo "Building $IMAGE from docker/Dockerfile.rocm (first run only)..." >&2
-    docker build -t "$IMAGE" -f "$REPO_ROOT/docker/Dockerfile.rocm" "$REPO_ROOT/docker"
+    docker build -t "$IMAGE" --build-arg "ROCM_BASE=$ROCM_BASE" -f "$REPO_ROOT/docker/Dockerfile.rocm" "$REPO_ROOT/docker"
 fi
 
 render_gid="$(getent group render | cut -d: -f3)"
