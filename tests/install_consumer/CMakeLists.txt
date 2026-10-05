@@ -7,17 +7,10 @@ project(pulsatrix_install_consumer CXX)
 find_package(pulsatrix 1.0 CONFIG REQUIRED)
 
 # Every installed header must compile on its own include paths, so a header that includes a
-# file the install left out fails here. The vendor backend headers need their SDKs, so they
-# are only included when this pulsatrix was built with that backend.
+# file the install left out, or an SDK the package config didn't find, fails here.
 file(GLOB_RECURSE installed_headers RELATIVE "${pulsatrix_INCLUDE_DIR}" "${pulsatrix_INCLUDE_DIR}/pulsatrix/*.hpp")
 if(NOT installed_headers)
     message(FATAL_ERROR "No headers found under ${pulsatrix_INCLUDE_DIR}")
-endif()
-if(NOT pulsatrix_HAS_CUDA)
-    list(REMOVE_ITEM installed_headers pulsatrix/cuda_backend.hpp)
-endif()
-if(NOT pulsatrix_HAS_HIP)
-    list(REMOVE_ITEM installed_headers pulsatrix/hip_backend.hpp)
 endif()
 set(all_headers_source "")
 foreach(header IN LISTS installed_headers)
