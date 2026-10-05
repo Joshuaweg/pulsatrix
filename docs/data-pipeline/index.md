@@ -28,7 +28,8 @@ tabular, image, text, audio and video (frames only). Generic dataset validation 
 - **MNIST**: `MnistDatasetAdapter` wraps the MNIST IDX loader (`MnistIdxLoader`,
   `mnist_loader.hpp`) as a `Dataset`.
 
-`DataLoaderOptions` fields: `batch_size` (default 1), `shuffle` and `shuffle_seed`,
+`DataLoaderOptions` fields: `batch_size` (default 1), `shuffle` and `shuffle_seed` (unset: drawn
+from the global seed stream; see [Reproducibility](../deep-learning/index.md#reproducibility)),
 `drop_last`, `collate_fn` (default `DefaultCollate`), `num_workers` and `prefetch_batches`.
 `DataLoader` also accepts an `IterableDataset`; with one, `num_workers` must be 0 or 1.
 

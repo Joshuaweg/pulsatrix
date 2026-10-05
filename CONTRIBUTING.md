@@ -34,9 +34,12 @@ Conventions to know before you start:
   Implement a rule from the literature and cite it in the header. If the right rule isn't known
   yet, throw with a clear message instead of guessing. See the
   [LRP guide](https://joshuaweg.github.io/pulsatrix/interpretability/lrp/) for the existing rules.
-- **Deterministic randomness.** Stochastic code (RL agents, sequence models, and so on) uses a
-  seeded linear congruential generator (LCG), as the existing RL code does, instead of
-  `<random>`. That keeps runs reproducible. Follow the same pattern in new code.
+- **Deterministic randomness.** Stochastic code takes an explicit seed, or draws one from the
+  global stream with `next_seed()` (`pulsatrix/determinism.hpp`) as `DropoutModule`,
+  `DataLoader` and `SparseAutoencoder` do, so `set_seed()` makes a whole run reproducible. Use a
+  seeded engine, never `std::random_device`. A path whose results can vary from run to run (GPU
+  atomics, for example) must check `deterministic()` and take a deterministic path, or refuse,
+  when it is on.
 - **Extend by subclassing.** New layers, metrics sinks and device backends subclass `Module`,
   `MetricsSink` or `DeviceBackend`. There is no runtime plugin registry.
   [Customization](https://joshuaweg.github.io/pulsatrix/customization/) explains the pattern
@@ -49,7 +52,11 @@ Conventions to know before you start:
 3. Run the full test suite and make sure it passes.
 4. Open a pull request that explains what changed and why.
 
-CI builds and tests every pull request on Windows and Linux.
+CI builds and tests every pull request on Windows and Linux, runs the Python binding tests and
+compiles the CUDA and HIP backends. GPU tests run on real hardware outside CI: if you change the
+HIP backend, run the tests with `scripts/rocm-build.sh` too. For a performance change, compare
+your build with the base branch using `scripts/bench_ab.sh` (see
+[Benchmarks](https://joshuaweg.github.io/pulsatrix/benchmarks/)).
 
 ## Reporting bugs
 

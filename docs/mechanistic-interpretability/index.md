@@ -34,6 +34,11 @@ model's or environment's structure.
 - **Decomposition**: `SparseAutoencoder` reconstructs activations through a wider hidden layer
   with an L1 penalty, so each example uses only a few hidden units. `CircuitGraph` scores
   every node by how much zeroing it changes the output.
+- **Baselines**: compare a probe's accuracy or a sparse autoencoder's statistics against a
+  randomly re-initialized copy of the model with `NullModelBaseline`
+  ([Interpretability](../interpretability/index.md#the-null-model-baseline)). A result that also
+  shows up on the random model says nothing about what the trained one learned. A feature's
+  statistics and top examples can be saved as a `pulsatrix.feature_dashboard.v1` document.
 - **GFlowNet**: `HyperGridEnv`, `GFlowNetForwardPolicy`, `sample_gflownet_trajectory`
   (returns a `GFlowNetTrajectory`), `TrajectoryBalanceLoss`, `DetailedBalanceLoss`, and
   `SubTBLoss`. For SubTB(λ), you pass each sub-trajectory pair's λ-weight to `forward()`.
@@ -113,8 +118,11 @@ for (const CircuitNode& node : circuit.nodes()) {
 that node's activation replaced by zeros. It records the L2 distance between the patched
 output and the normal output as `ablation_effect`. A larger value means the output depends
 more on that node for this input. The output node scores 0 by convention. Edges connect each
-node to the next and carry the source node's score. `CircuitGraph` holds data only; to draw it,
-use `CircuitGraphView` from [Visualization](../visualization/index.md).
+node to the next and carry the source node's score. `CircuitGraph` holds data only. To draw it,
+use `CircuitGraphView` from [Visualization](../visualization/index.md), which also accepts the
+saved form. To save it, `ToJson(ToCircuitGraphDocument(circuit))` writes a
+`pulsatrix.circuit_graph.v1` document, and `ParseCircuitGraphDocument()` with `ToCircuitGraph()`
+reads it back.
 
 ### Sampling a GFlowNet trajectory
 

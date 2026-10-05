@@ -197,4 +197,6 @@ Known differences and gaps:
 - [Recipe: LRP on a trained MNIST classifier](../recipes/interpretability/mnist_lrp.md)
 - [Recipe: tracing relevance through a Datalog derivation](../recipes/neuro-symbolic/datalog_lrp_bridge.md)
 - [Customization](../customization/index.md#adding-a-new-layer): writing `propagate_relevance()` for your own layer
+- [Checking an explanation](index.md#checking-an-explanation): deletion and insertion curves, the randomization test and the null-model baseline, for any LRP result
+- [Visualization](../visualization/index.md#json-documents): saving relevance as JSON and drawing it as SVG
 - [API reference: Layer-wise Relevance Propagation](../api/group__interpretability__lrp.html)

@@ -81,6 +81,8 @@ Where to go next:
 - [Examples](https://github.com/Joshuaweg/pulsatrix/tree/master/examples): the full list of demos.
 - [Recipes](recipes/index.md): short programs that each show one feature, with a walkthrough.
 - [LRP](interpretability/lrp.md): explain your model's predictions.
+- [Benchmarks](benchmarks.md): `./build/pulsatrix_bench run` measures training and explanation
+  speed on every backend in your build.
 
 ## Build options
 
@@ -93,7 +95,9 @@ Pass `-D<OPTION>=ON` or `OFF` when you configure.
 | `PULSATRIX_ENABLE_CUDA` | `OFF` | Builds the CUDA backend. See [GPU backends](#gpu-backends). |
 | `PULSATRIX_ENABLE_HIP` | `OFF` | Builds the HIP/ROCm backend for AMD GPUs. See [GPU backends](#gpu-backends). |
 | `PULSATRIX_ENABLE_PYTHON` | `OFF` | Builds the `pulsatrix_py` Python module. See [Python bindings](#python-bindings). |
-| `PULSATRIX_ENABLE_VIZ` | `OFF` | Builds the Dear ImGui + ImPlot visualization module and its GUI demos. See [Visualization](visualization/index.md). |
+| `PULSATRIX_ENABLE_VIZ` | `OFF` | Builds the Dear ImGui + ImPlot visualization module and its GUI demos. JSON documents and SVG figures are always built. See [Visualization](visualization/index.md). |
+| `PULSATRIX_INSTALL` | `ON` at the top level, `OFF` as a subproject | Generates the `cmake --install` rules. See [Using pulsatrix in your own project](#using-pulsatrix-in-your-own-project). |
+| `PULSATRIX_BUILD_FUZZERS` | `OFF` | Builds the fuzz targets in `tools/fuzz/` (safetensors and JSON documents). |
 
 ## GPU backends
 
@@ -133,10 +137,15 @@ the `amdgpu` driver and `/dev/kfd`. `scripts/rocm-build.sh` runs it on every cal
 when something is wrong. To keep a good kernel from being upgraded away, hold its package, for
 example `sudo apt-mark hold linux-image-$(uname -r)`.
 
+**Runtime settings.** The HIP backend caches device memory; cap what it holds with
+`PULSATRIX_HIP_MEMORY_BUDGET_MB`. Its ops don't wait for the GPU, so a kernel fault surfaces at
+the next read; set `PULSATRIX_HIP_SYNC_DEBUG=1` to wait after every op while you track
+one down. See [GPU Profiling](gpu-profiling.md).
+
 ## Python bindings
 
-The `pulsatrix_py` module exposes `Tensor`, the core layers, LRP and the other explainers, and
-`SystemMonitor`. Point `PYTHON_EXECUTABLE` at a Python install that has development headers:
+The `pulsatrix_py` module exposes `Tensor`, the core layers, LRP and the other explainers,
+`SystemMonitor`, and `set_seed` and deterministic mode. Point `PYTHON_EXECUTABLE` at a Python install that has development headers:
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DPULSATRIX_ENABLE_PYTHON=ON \
@@ -191,12 +200,12 @@ cmake --install build --prefix /path/to/prefix
 ```
 
 ```cmake
-find_package(pulsatrix 1.0 REQUIRED)
+find_package(pulsatrix 1.1 REQUIRED)
 target_link_libraries(my_app PRIVATE pulsatrix::core)
 ```
 
 Configure your project with `-DCMAKE_PREFIX_PATH=/path/to/prefix`. The package installs the core
-library and its headers. A build with the CUDA or HIP backend also installs that backend's
+library, its headers and the `pulsatrix_svg` and `pulsatrix_bench` tools. A build with the CUDA or HIP backend also installs that backend's
 headers, and `find_package` then looks for the same CUDA or ROCm libraries (ROCm through
 `ROCM_PATH`, as in the build). `pulsatrix_HAS_CUDA` and `pulsatrix_HAS_HIP` say which backends the
 installed build has. The visualization module and the Python bindings aren't installed.
