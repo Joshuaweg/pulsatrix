@@ -8,6 +8,7 @@
 //   pulsatrix_svg pd.json --ice centered -o ice.svg            # partial_dependence (CFS-1)
 //   pulsatrix_svg sens.json --top-k 8 -o tornado.svg           # sensitivity: tornado (CFS-3)
 //   pulsatrix_svg cf.json -o cf.svg                            # counterfactual (CFS-5)
+//   pulsatrix_svg cf1.json cf2.json cf3.json -o set.svg        # counterfactual set (CFS-7)
 //   pulsatrix_svg morris.json -o morris.svg                    # morris: mu*-sigma scatter (CFS-4)
 //   pulsatrix_svg sobol.json -o sobol.svg                      # sobol: index bars (CFS-4)
 //
@@ -124,12 +125,29 @@ int main(int argc, char** argv) {
         Usage("no input document");
     }
     if (inputs.size() > 1 && beeswarm_features.empty()) {
-        Usage("several documents make a beeswarm: add --beeswarm I,J,...");
+        // Several counterfactual documents make a set; anything else needs --beeswarm.
+        bool all_counterfactuals = true;
+        try {
+            for (const std::string& path : inputs) {
+                all_counterfactuals = all_counterfactuals && VizDocumentKind(ReadFile(path)) == "counterfactual";
+            }
+        } catch (const std::exception&) {
+            all_counterfactuals = false;
+        }
+        if (!all_counterfactuals) {
+            Usage("several documents make a beeswarm (add --beeswarm I,J,...) or a counterfactual set");
+        }
     }
 
     try {
         std::string svg;
-        if (!beeswarm_features.empty()) {
+        if (inputs.size() > 1 && beeswarm_features.empty()) {
+            std::vector<CounterfactualDocument> docs;
+            for (const std::string& path : inputs) {
+                docs.push_back(ParseCounterfactualDocument(ReadFile(path)));
+            }
+            svg = RenderCounterfactualSetSvg(docs, options);
+        } else if (!beeswarm_features.empty()) {
             std::vector<AttributionDocument> docs;
             for (const std::string& path : inputs) {
                 docs.push_back(ParseAttributionDocument(ReadFile(path)));

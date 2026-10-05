@@ -508,4 +508,107 @@ std::string RenderSobolSvg(const SobolDocument& doc, int top_k, const SvgOptions
     return f.finish(plot_bottom + fs * 4.0);
 }
 
+// ---- counterfactual set ---------------------------------------------------------------------
+
+std::string RenderCounterfactualSetSvg(const std::vector<CounterfactualDocument>& docs, const SvgOptions& options) {
+    CheckOptions(options);
+    if (docs.empty()) {
+        throw std::invalid_argument("RenderCounterfactualSetSvg: no counterfactuals");
+    }
+    const auto& first = docs.front();
+    for (const auto& d : docs) {
+        if (d.features.size() != first.features.size()) {
+            throw std::invalid_argument("RenderCounterfactualSetSvg: the counterfactuals describe different inputs");
+        }
+        for (size_t j = 0; j < d.features.size(); ++j) {
+            const auto& f = d.features[j];
+            CheckFinite({f.original, f.counterfactual, f.scale}, "RenderCounterfactualSetSvg: feature values");
+            if (f.name != first.features[j].name || f.original != first.features[j].original || !(f.scale > 0.0f)) {
+                throw std::invalid_argument("RenderCounterfactualSetSvg: the counterfactuals describe different inputs");
+            }
+        }
+    }
+    auto change = [&](size_t c, size_t j) {
+        const auto& f = docs[c].features[j];
+        return (f.counterfactual - f.original) / f.scale;
+    };
+    std::vector<size_t> rows;
+    float max_abs = 0.0f;
+    for (size_t j = 0; j < first.features.size(); ++j) {
+        bool any = false;
+        for (size_t c = 0; c < docs.size(); ++c) {
+            if (std::fabs(change(c, j)) > 1e-3f) {
+                any = true;
+                max_abs = std::max(max_abs, std::fabs(change(c, j)));
+            }
+        }
+        if (any) rows.push_back(j);
+    }
+
+    const std::string target = first.target.empty() ? "the target" : first.target;
+    size_t valid = 0;
+    for (const auto& d : docs) valid += d.valid ? 1 : 0;
+    Figure f(options, std::to_string(docs.size()) + " counterfactuals for " + target);
+    const double fs = f.fs();
+    double name_w = TextWidth("feature", fs);
+    for (size_t j : rows) name_w = std::max(name_w, TextWidth(Truncate(first.features[j].name, 24), fs));
+    double cell_w = TextWidth("input", fs);
+    for (size_t j : rows) {
+        cell_w = std::max(cell_w, TextWidth(ValueText(first.features[j].original), fs));
+        for (const auto& d : docs) cell_w = std::max(cell_w, TextWidth(ValueText(d.features[j].counterfactual), fs));
+    }
+    cell_w += fs * 1.2;
+    const double x_name = fs;
+    const double x_cells = x_name + name_w + fs;
+    const double row_h = fs * 1.8;
+    double y = f.top() + fs * 0.8;
+    f.text("summary", fs, y, std::to_string(valid) + " of " + std::to_string(docs.size()) + " reach " + target, "start",
+           kMutedColor);
+    y += fs * 1.2;
+
+    // Header: the input, then each counterfactual with its verdict.
+    const double header_y = y + fs;
+    f.text("column-header", x_cells + cell_w / 2, header_y, "input", "middle", kMutedColor);
+    for (size_t c = 0; c < docs.size(); ++c) {
+        const double cx = x_cells + cell_w * (static_cast<double>(c) + 1.5);
+        // In words as well as color: a check-mark glyph isn't in every font.
+        f.text(docs[c].valid ? "column-header valid" : "column-header invalid", cx, header_y,
+               "#" + std::to_string(c + 1), "middle", docs[c].valid ? "#2e7d32" : "#c62828", " font-weight=\"bold\"");
+        f.text("column-verdict", cx, header_y + fs * 1.1, docs[c].valid ? "reaches" : "misses", "middle",
+               docs[c].valid ? "#2e7d32" : "#c62828", " font-size=\"" + Num(fs * 0.8) + "\"");
+    }
+    const double y0 = header_y + fs * 1.6;
+    for (size_t r = 0; r < rows.size(); ++r) {
+        const size_t j = rows[r];
+        const double top = y0 + row_h * static_cast<double>(r);
+        const double ty = top + row_h * 0.5 + fs * 0.35;
+        f.body() += "<g class=\"feature-row\">\n";
+        if (r % 2 == 1) {
+            f.body() += "<rect class=\"row-band\" x=\"" + Num(x_name - fs * 0.4) + "\" y=\"" + Num(top) + "\" width=\"" +
+                        Num(x_cells + cell_w * static_cast<double>(docs.size() + 1) - x_name + fs * 0.4) +
+                        "\" height=\"" + Num(row_h) + "\" fill=\"#f6f6f6\"/>\n";
+        }
+        f.text("feature-label", x_name, ty, Truncate(first.features[j].name, 24));
+        f.text("original", x_cells + cell_w / 2, ty, ValueText(first.features[j].original), "middle", kTextColor,
+               std::string(" font-family=\"") + kMonoFont + "\"");
+        for (size_t c = 0; c < docs.size(); ++c) {
+            const float ch = change(c, j);
+            if (std::fabs(ch) <= 1e-3f) continue;
+            const double cx = x_cells + cell_w * (static_cast<double>(c) + 1.0);
+            const RgbColor color = DivergingColormap(NormalizeSigned(ch, max_abs) * 0.75f);
+            f.body() += "<rect class=\"changed\" x=\"" + Num(cx + 2) + "\" y=\"" + Num(top + 2) + "\" width=\"" +
+                        Num(cell_w - 4) + "\" height=\"" + Num(row_h - 4) + "\" rx=\"3\" fill=\"" + Hex(color) + "\"/>\n";
+            f.text("value", cx + cell_w / 2, ty, ValueText(docs[c].features[j].counterfactual), "middle", TextOn(color),
+                   std::string(" font-family=\"") + kMonoFont + "\"");
+        }
+        f.body() += "</g>\n";
+    }
+    double bottom = y0 + row_h * static_cast<double>(rows.size());
+    if (rows.empty()) {
+        f.text("summary", fs, bottom + fs, "No counterfactual changes any feature", "start", kMutedColor);
+        bottom += fs * 1.5;
+    }
+    return f.finish(bottom + fs, x_cells + cell_w * static_cast<double>(docs.size() + 1) + fs);
+}
+
 }  // namespace pulsatrix

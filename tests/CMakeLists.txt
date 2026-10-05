@@ -299,6 +299,10 @@ add_test(NAME PulsatrixSvg.RendersACounterfactual
 add_test(NAME PulsatrixSvg.RendersMorrisAndSobol
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/sobol.v1.json"
         -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_sobol.svg")
+add_test(NAME PulsatrixSvg.RendersACounterfactualSet
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/counterfactual.v1.json"
+        "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/counterfactual.v1.json"
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_counterfactual_set.svg")
 add_test(NAME PulsatrixSvg.RejectsAnUnknownIceStyle
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/partial_dependence.v1.json" --ice sideways)
 set_tests_properties(PulsatrixSvg.RejectsAnUnknownIceStyle PROPERTIES WILL_FAIL TRUE)
