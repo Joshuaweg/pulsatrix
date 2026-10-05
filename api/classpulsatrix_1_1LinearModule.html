@@ -128,12 +128,12 @@ Collaboration diagram for pulsatrix::LinearModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7c7292a8c01755dbeea35fb03404efd7" id="r_a7c7292a8c01755dbeea35fb03404efd7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a7c7292a8c01755dbeea35fb03404efd7">LinearModule</a> (int64_t in_features, int64_t out_features, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device)</td></tr>
-<tr class="memdesc:a7c7292a8c01755dbeea35fb03404efd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a linear layer with zero-initialized weight/bias.  <br /></td></tr>
-<tr class="separator:a7c7292a8c01755dbeea35fb03404efd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe6201d58645cf5043ed4e5e4c6f3710" id="r_abe6201d58645cf5043ed4e5e4c6f3710"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#abe6201d58645cf5043ed4e5e4c6f3710">LinearModule</a> (int64_t in_features, int64_t out_features, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
-<tr class="memdesc:abe6201d58645cf5043ed4e5e4c6f3710"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above, on backend's own device (backend-&gt;device()).  <br /></td></tr>
-<tr class="separator:abe6201d58645cf5043ed4e5e4c6f3710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a574244ca4a46e93e0dcb6040c1358144" id="r_a574244ca4a46e93e0dcb6040c1358144"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a574244ca4a46e93e0dcb6040c1358144">LinearModule</a> (int64_t <a class="el" href="classpulsatrix_1_1LinearModule.html#acbe57a37da3944e5a8bf8a716e23f72d">in_features</a>, int64_t <a class="el" href="classpulsatrix_1_1LinearModule.html#a2b89c3914c77d29b443a2ef0de2d17d8">out_features</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> device, bool use_bias=true)</td></tr>
+<tr class="memdesc:a574244ca4a46e93e0dcb6040c1358144"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a linear layer with zero-initialized weight/bias.  <br /></td></tr>
+<tr class="separator:a574244ca4a46e93e0dcb6040c1358144"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae144f76de7ff802d45ab5f4ab42df76f" id="r_ae144f76de7ff802d45ab5f4ab42df76f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#ae144f76de7ff802d45ab5f4ab42df76f">LinearModule</a> (int64_t <a class="el" href="classpulsatrix_1_1LinearModule.html#acbe57a37da3944e5a8bf8a716e23f72d">in_features</a>, int64_t <a class="el" href="classpulsatrix_1_1LinearModule.html#a2b89c3914c77d29b443a2ef0de2d17d8">out_features</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, bool use_bias=true)</td></tr>
+<tr class="memdesc:ae144f76de7ff802d45ab5f4ab42df76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above, on backend's own device (backend-&gt;device()).  <br /></td></tr>
+<tr class="separator:ae144f76de7ff802d45ab5f4ab42df76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fb2aae6550d40a6c77313e0f29fce97" id="r_a1fb2aae6550d40a6c77313e0f29fce97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a1fb2aae6550d40a6c77313e0f29fce97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input, and accumulates the weight/bias gradients internally (summed across the batch).  <br /></td></tr>
 <tr class="separator:a1fb2aae6550d40a6c77313e0f29fce97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,6 +152,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a91b0468b38c09433e5fb0589874623e2" id="r_a91b0468b38c09433e5fb0589874623e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a91b0468b38c09433e5fb0589874623e2">set_bias</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:a91b0468b38c09433e5fb0589874623e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector overload for runtime-sized sources &ndash; see <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s own vector ctor.  <br /></td></tr>
 <tr class="separator:a91b0468b38c09433e5fb0589874623e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbe57a37da3944e5a8bf8a716e23f72d" id="r_acbe57a37da3944e5a8bf8a716e23f72d"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#acbe57a37da3944e5a8bf8a716e23f72d">in_features</a> () const</td></tr>
+<tr class="separator:acbe57a37da3944e5a8bf8a716e23f72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b89c3914c77d29b443a2ef0de2d17d8" id="r_a2b89c3914c77d29b443a2ef0de2d17d8"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a2b89c3914c77d29b443a2ef0de2d17d8">out_features</a> () const</td></tr>
+<tr class="separator:a2b89c3914c77d29b443a2ef0de2d17d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba7e0538dca132407f25f4c6b4aed86f" id="r_aba7e0538dca132407f25f4c6b4aed86f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#aba7e0538dca132407f25f4c6b4aed86f">uses_bias</a> () const</td></tr>
+<tr class="memdesc:aba7e0538dca132407f25f4c6b4aed86f"><td class="mdescLeft">&#160;</td><td class="mdescRight">False when built with use_bias = false: <a class="el" href="classpulsatrix_1_1LinearModule.html#aecfc2aaaa01b7a7d080e9fc1c01962ad">bias()</a> is then all zeros.  <br /></td></tr>
+<tr class="separator:aba7e0538dca132407f25f4c6b4aed86f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29fa2150e40fca9d7af1b9efa4ca097c" id="r_a29fa2150e40fca9d7af1b9efa4ca097c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a29fa2150e40fca9d7af1b9efa4ca097c">weight</a> () const</td></tr>
 <tr class="separator:a29fa2150e40fca9d7af1b9efa4ca097c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecfc2aaaa01b7a7d080e9fc1c01962ad" id="r_aecfc2aaaa01b7a7d080e9fc1c01962ad"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#aecfc2aaaa01b7a7d080e9fc1c01962ad">bias</a> () const</td></tr>
@@ -209,8 +216,8 @@ Protected Member Functions</h2></td></tr>
 <dd>
 Weights/biases are owned here as member Tensors, not <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> nodes. Parameter gradients accumulate via <a class="el" href="classpulsatrix_1_1Tensor.html#a6f94effb892e616403b9f129acd3cb8e" title="In-place elementwise accumulation: this[i] += other[i] for every element.">Tensor::accumulate()</a> across <a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates the weight/bias gradients internall...">backward()</a> calls until something (the optimizer) resets them. Batch-dimension gradient reduction (summing weight/bias gradient contributions across the N examples in a batch) needs no new <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> primitive &ndash; see campaign_exai_dl_library_batch_dimension_support's mission_tensor_shape_foundation.md: weight_grad's reduction falls out of gemm's own k-dimension summation (accumulated in place, beta = 1); bias_grad's is <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a23304707c57a62c3603bb2a04bef29c0" title="Per-column sum of a (rows x cols) row-major matrix: out[j] = beta*out[j] + sum_i in[i][j].">DeviceBackend::column_sums</a>, likewise accumulated in place. Both are device-resident (GPU-native-kernels Mission 1). </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7c7292a8c01755dbeea35fb03404efd7" name="a7c7292a8c01755dbeea35fb03404efd7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c7292a8c01755dbeea35fb03404efd7">&#9670;&#160;</a></span>LinearModule() <span class="overload">[1/2]</span></h2>
+<a id="a574244ca4a46e93e0dcb6040c1358144" name="a574244ca4a46e93e0dcb6040c1358144"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a574244ca4a46e93e0dcb6040c1358144">&#9670;&#160;</a></span>LinearModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -237,7 +244,13 @@ Weights/biases are owned here as member Tensors, not <a class="el" href="classpu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a>&#160;</td>
-          <td class="paramname"><em>device</em>&#160;</td>
+          <td class="paramname"><em>device</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_bias</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -254,14 +267,15 @@ Weights/biases are owned here as member Tensors, not <a class="el" href="classpu
     <tr><td class="paramname">out_features</td><td>Output dimension. </td></tr>
     <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this module. </td></tr>
     <tr><td class="paramname">device</td><td>Which device every internal <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> member (weight, bias, gradients, forward-pass caches) is tagged as. Must match whatever device backend actually allocates on, or <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s own device-based dispatch (e.g. CopyDirection selection) will be wrong. See campaign_exai_dl_library_phase1_5_cuda_backend.md's Mission 3. </td></tr>
+    <tr><td class="paramname">use_bias</td><td>false builds <code>y = x @ W</code> with no bias parameter (LLM-1: Llama-family projections have none). The bias buffer still exists, all zeros, so every <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule reads it unchanged, but it is not in <a class="el" href="classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a>, never receives a gradient, and <a class="el" href="classpulsatrix_1_1LinearModule.html#aadfa38a958379182534527247154e29e" title="Overwrites the bias buffer – test/initialization use only.">set_bias()</a> throws. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="abe6201d58645cf5043ed4e5e4c6f3710" name="abe6201d58645cf5043ed4e5e4c6f3710"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe6201d58645cf5043ed4e5e4c6f3710">&#9670;&#160;</a></span>LinearModule() <span class="overload">[2/2]</span></h2>
+<a id="ae144f76de7ff802d45ab5f4ab42df76f" name="ae144f76de7ff802d45ab5f4ab42df76f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae144f76de7ff802d45ab5f4ab42df76f">&#9670;&#160;</a></span>LinearModule() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,7 +296,13 @@ Weights/biases are owned here as member Tensors, not <a class="el" href="classpu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
-          <td class="paramname"><em>backend</em>&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_bias</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -454,6 +474,31 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 
 </div>
 </div>
+<a id="acbe57a37da3944e5a8bf8a716e23f72d" name="acbe57a37da3944e5a8bf8a716e23f72d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbe57a37da3944e5a8bf8a716e23f72d">&#9670;&#160;</a></span>in_features()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::LinearModule::in_features </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a8372922cd8c2538678e2ce4341f9a53f" name="a8372922cd8c2538678e2ce4341f9a53f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8372922cd8c2538678e2ce4341f9a53f">&#9670;&#160;</a></span>named_parameters()</h2>
 
@@ -511,6 +556,31 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 <p>Linear per charter's closed OpType set. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a2b89c3914c77d29b443a2ef0de2d17d8" name="a2b89c3914c77d29b443a2ef0de2d17d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b89c3914c77d29b443a2ef0de2d17d8">&#9670;&#160;</a></span>out_features()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::LinearModule::out_features </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -611,6 +681,12 @@ config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox, with 
 </div><div class="memdoc">
 
 <p>Overwrites the bias buffer &ndash; test/initialization use only. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if this layer was built with use_bias = false. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -681,6 +757,33 @@ config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox, with 
 <p>Implements every LRPRule. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="aba7e0538dca132407f25f4c6b4aed86f" name="aba7e0538dca132407f25f4c6b4aed86f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba7e0538dca132407f25f4c6b4aed86f">&#9670;&#160;</a></span>uses_bias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::LinearModule::uses_bias </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>False when built with use_bias = false: <a class="el" href="classpulsatrix_1_1LinearModule.html#aecfc2aaaa01b7a7d080e9fc1c01962ad">bias()</a> is then all zeros. </p>
 
 </div>
 </div>

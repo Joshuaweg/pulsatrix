@@ -208,12 +208,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a69a4b3f71cf828e214f485cd80b16e82" id="r_a69a4b3f71cf828e214f485cd80b16e82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a69a4b3f71cf828e214f485cd80b16e82">rms_norm_backward</a> (const float *grad_out, const float *gamma, const float *in, const float *row_rms, float *grad_in, float *gamma_terms, size_t rows, size_t cols) override</td></tr>
 <tr class="memdesc:a69a4b3f71cf828e214f485cd80b16e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">RMSNorm input gradient per row, plus gamma_terms[r][i] = grad_out * x / rms &ndash; the per-row contributions column_sums then reduces into gamma's gradient.  <br /></td></tr>
 <tr class="separator:a69a4b3f71cf828e214f485cd80b16e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a762c65c26fc683d13817339a16b734ab" id="r_a762c65c26fc683d13817339a16b734ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a762c65c26fc683d13817339a16b734ab">rope_rotate</a> (const float *in, const float *cos_table, const float *sin_table, float *out, size_t num_slices, size_t seq_len, size_t head_dim, bool inverse) override</td></tr>
-<tr class="memdesc:a762c65c26fc683d13817339a16b734ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotary position embedding over (num_slices, seq_len, head_dim) data.  <br /></td></tr>
-<tr class="separator:a762c65c26fc683d13817339a16b734ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a846d9b3a37f90f384e3b1806f386fcbb" id="r_a846d9b3a37f90f384e3b1806f386fcbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a846d9b3a37f90f384e3b1806f386fcbb">rope_rotate</a> (const float *in, const float *cos_table, const float *sin_table, float *out, size_t num_slices, size_t seq_len, size_t head_dim, bool inverse, bool rotate_half) override</td></tr>
+<tr class="memdesc:a846d9b3a37f90f384e3b1806f386fcbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotary position embedding over (num_slices, seq_len, head_dim) data.  <br /></td></tr>
+<tr class="separator:a846d9b3a37f90f384e3b1806f386fcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c34c38027eb73943a6139e0e53a081c" id="r_a1c34c38027eb73943a6139e0e53a081c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a1c34c38027eb73943a6139e0e53a081c">permute_0213</a> (const float *in, float *out, size_t d0, size_t d1, size_t d2, size_t d3) override</td></tr>
 <tr class="memdesc:a1c34c38027eb73943a6139e0e53a081c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swaps the middle two axes: in (d0, d1, d2, d3) -&gt; out (d0, d2, d1, d3).  <br /></td></tr>
 <tr class="separator:a1c34c38027eb73943a6139e0e53a081c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad821eed6eed2f0f469fa888b66b219bf" id="r_ad821eed6eed2f0f469fa888b66b219bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#ad821eed6eed2f0f469fa888b66b219bf">attention_mask_fill</a> (float *scores, const float *key_keep, size_t batch, size_t heads, size_t q_len, size_t k_len, bool causal, size_t q_offset, float value) override</td></tr>
+<tr class="memdesc:ad821eed6eed2f0f469fa888b66b219bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the masked entries of (batch, heads, q_len, k_len) attention scores with value, in place (LLM-1).  <br /></td></tr>
+<tr class="separator:ad821eed6eed2f0f469fa888b66b219bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61311bb045cee3d1b3a724d00dc52f6a" id="r_a61311bb045cee3d1b3a724d00dc52f6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a61311bb045cee3d1b3a724d00dc52f6a">gather_rows</a> (const float *table, const float *indices, float *out, size_t count, size_t dim) override</td></tr>
 <tr class="memdesc:a61311bb045cee3d1b3a724d00dc52f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">out[i][:] = table[indices[i]][:] for count rows of width dim.  <br /></td></tr>
 <tr class="separator:a61311bb045cee3d1b3a724d00dc52f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,9 +244,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae08fdaea15f5b0b066aebcfaf351a9c1" id="r_ae08fdaea15f5b0b066aebcfaf351a9c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#ae08fdaea15f5b0b066aebcfaf351a9c1">lrp_softmax_rows</a> (const float *x, const float *y, const float *r, float *r_in, size_t rows, size_t cols) override</td></tr>
 <tr class="memdesc:ae08fdaea15f5b0b066aebcfaf351a9c1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati...">SoftmaxModule</a> rule per row: r_in = x * (r - y * sum(r)).  <br /></td></tr>
 <tr class="separator:ae08fdaea15f5b0b066aebcfaf351a9c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e81fae85df1e313c27fb52c2d9ecf10" id="r_a7e81fae85df1e313c27fb52c2d9ecf10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a7e81fae85df1e313c27fb52c2d9ecf10">lrp_rope</a> (const float *x, const float *y, const float *r, const float *cos_table, const float *sin_table, float *r_in, size_t slices, size_t seq_len, size_t head_dim, float eps) override</td></tr>
-<tr class="memdesc:a7e81fae85df1e313c27fb52c2d9ecf10"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a> epsilon rule over (slices, seq_len, head_dim), tables as for rope_rotate.  <br /></td></tr>
-<tr class="separator:a7e81fae85df1e313c27fb52c2d9ecf10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8a15fa5accf38975e36d5c1efaf4b64" id="r_af8a15fa5accf38975e36d5c1efaf4b64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#af8a15fa5accf38975e36d5c1efaf4b64">lrp_rope</a> (const float *x, const float *y, const float *r, const float *cos_table, const float *sin_table, float *r_in, size_t slices, size_t seq_len, size_t head_dim, float eps, bool rotate_half) override</td></tr>
+<tr class="memdesc:af8a15fa5accf38975e36d5c1efaf4b64"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a> epsilon rule over (slices, seq_len, head_dim), tables as for rope_rotate.  <br /></td></tr>
+<tr class="separator:af8a15fa5accf38975e36d5c1efaf4b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab59c38c0960d97e9ef6ed08b6f828dd7" id="r_ab59c38c0960d97e9ef6ed08b6f828dd7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#ab59c38c0960d97e9ef6ed08b6f828dd7">logic_pointwise</a> (<a class="el" href="namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9e">LogicOp</a> op, int norm, const float *a, const float *b, const float *g_or_r, const float *y, float *out_a, float *out_b, size_t n, float eps) override</td></tr>
 <tr class="memdesc:ab59c38c0960d97e9ef6ed08b6f828dd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">One elementwise pass of Conjunction/Disjunction for operands a, b.  <br /></td></tr>
 <tr class="separator:ab59c38c0960d97e9ef6ed08b6f828dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -927,6 +930,97 @@ Public Member Functions</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a1af6d806be26395c4114f96727149c88">pulsatrix::DeviceBackend</a>.</p>
+
+</div>
+</div>
+<a id="ad821eed6eed2f0f469fa888b66b219bf" name="ad821eed6eed2f0f469fa888b66b219bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad821eed6eed2f0f469fa888b66b219bf">&#9670;&#160;</a></span>attention_mask_fill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CPUBackend::attention_mask_fill </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>scores</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>key_keep</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>heads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>q_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>k_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>causal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>q_offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Overwrites the masked entries of (batch, heads, q_len, k_len) attention scores with value, in place (LLM-1). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key_keep</td><td>(batch, k_len): 0 masks that key for every query and head, anything else keeps it. nullptr masks no key. </td></tr>
+    <tr><td class="paramname">causal</td><td>Also masks key j for query i when j &gt; i + q_offset. </td></tr>
+    <tr><td class="paramname">q_offset</td><td>Absolute position of query 0 among the keys (0 unless a cache holds earlier keys). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Attention calls it three times per pass: value = lowest float on the scores before softmax, and value = 0 on the score gradient and on the score relevance. </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a46d870b58b2cdbf7d06428479f3759ca">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
@@ -3666,8 +3760,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7e81fae85df1e313c27fb52c2d9ecf10" name="a7e81fae85df1e313c27fb52c2d9ecf10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e81fae85df1e313c27fb52c2d9ecf10">&#9670;&#160;</a></span>lrp_rope()</h2>
+<a id="af8a15fa5accf38975e36d5c1efaf4b64" name="af8a15fa5accf38975e36d5c1efaf4b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8a15fa5accf38975e36d5c1efaf4b64">&#9670;&#160;</a></span>lrp_rope()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3733,7 +3827,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>eps</em>&#160;</td>
+          <td class="paramname"><em>eps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>rotate_half</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -3750,7 +3850,7 @@ Public Member Functions</h2></td></tr>
 
 <p><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a> epsilon rule over (slices, seq_len, head_dim), tables as for rope_rotate. </p>
 
-<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a18248928634c2f460eb95600564804c8">pulsatrix::DeviceBackend</a>.</p>
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a43a9a9e994ced032ddc027e469781b0c">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
@@ -4407,8 +4507,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a762c65c26fc683d13817339a16b734ab" name="a762c65c26fc683d13817339a16b734ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a762c65c26fc683d13817339a16b734ab">&#9670;&#160;</a></span>rope_rotate()</h2>
+<a id="a846d9b3a37f90f384e3b1806f386fcbb" name="a846d9b3a37f90f384e3b1806f386fcbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a846d9b3a37f90f384e3b1806f386fcbb">&#9670;&#160;</a></span>rope_rotate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4462,7 +4562,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>inverse</em>&#160;</td>
+          <td class="paramname"><em>inverse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>rotate_half</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -4482,12 +4588,13 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">cos_table,sin_table</td><td>(seq_len, head_dim/2) per-position rotation tables. </td></tr>
     <tr><td class="paramname">inverse</td><td>false: forward rotation; true: its transpose (RoPE's backward). </td></tr>
+    <tr><td class="paramname">rotate_half</td><td>false: pair i is features (2i, 2i+1). true: pair i is (i, i + head_dim/2), the Hugging Face "rotate half" layout (LLM-1). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>out must not alias in. </dd></dl>
 
-<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a639a0825620484b5f514f4b9ed8ce6c2">pulsatrix::DeviceBackend</a>.</p>
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a2b490fe7c183e4102fdabe1611261621">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>

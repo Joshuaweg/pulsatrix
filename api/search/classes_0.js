@@ -12,13 +12,14 @@ var searchData=
   ['assignment_9',['Assignment',['../structpulsatrix_1_1ParamGroupSet_1_1Assignment.html',1,'pulsatrix::ParamGroupSet']]],
   ['atom_10',['Atom',['../classpulsatrix_1_1datalog_1_1Atom.html',1,'pulsatrix::datalog']]],
   ['atomhash_11',['AtomHash',['../structpulsatrix_1_1datalog_1_1AtomHash.html',1,'pulsatrix::datalog']]],
-  ['attribution_12',['Attribution',['../structpulsatrix_1_1Attribution.html',1,'pulsatrix']]],
-  ['attributionbarchart_13',['AttributionBarChart',['../classpulsatrix_1_1AttributionBarChart.html',1,'pulsatrix']]],
-  ['attributionbeeswarmview_14',['AttributionBeeswarmView',['../classpulsatrix_1_1AttributionBeeswarmView.html',1,'pulsatrix']]],
-  ['attributiondocument_15',['AttributionDocument',['../structpulsatrix_1_1AttributionDocument.html',1,'pulsatrix']]],
-  ['attributionnullreport_16',['AttributionNullReport',['../structpulsatrix_1_1AttributionNullReport.html',1,'pulsatrix']]],
-  ['attributionwaterfallchart_17',['AttributionWaterfallChart',['../classpulsatrix_1_1AttributionWaterfallChart.html',1,'pulsatrix']]],
-  ['audiofolderdataset_18',['AudioFolderDataset',['../classpulsatrix_1_1AudioFolderDataset.html',1,'pulsatrix']]],
-  ['autograd_19',['Autograd',['../classpulsatrix_1_1Autograd.html',1,'pulsatrix']]],
-  ['avgpool2dmodule_20',['AvgPool2DModule',['../classpulsatrix_1_1AvgPool2DModule.html',1,'pulsatrix']]]
+  ['attentionconfig_12',['AttentionConfig',['../structpulsatrix_1_1AttentionConfig.html',1,'pulsatrix']]],
+  ['attribution_13',['Attribution',['../structpulsatrix_1_1Attribution.html',1,'pulsatrix']]],
+  ['attributionbarchart_14',['AttributionBarChart',['../classpulsatrix_1_1AttributionBarChart.html',1,'pulsatrix']]],
+  ['attributionbeeswarmview_15',['AttributionBeeswarmView',['../classpulsatrix_1_1AttributionBeeswarmView.html',1,'pulsatrix']]],
+  ['attributiondocument_16',['AttributionDocument',['../structpulsatrix_1_1AttributionDocument.html',1,'pulsatrix']]],
+  ['attributionnullreport_17',['AttributionNullReport',['../structpulsatrix_1_1AttributionNullReport.html',1,'pulsatrix']]],
+  ['attributionwaterfallchart_18',['AttributionWaterfallChart',['../classpulsatrix_1_1AttributionWaterfallChart.html',1,'pulsatrix']]],
+  ['audiofolderdataset_19',['AudioFolderDataset',['../classpulsatrix_1_1AudioFolderDataset.html',1,'pulsatrix']]],
+  ['autograd_20',['Autograd',['../classpulsatrix_1_1Autograd.html',1,'pulsatrix']]],
+  ['avgpool2dmodule_21',['AvgPool2DModule',['../classpulsatrix_1_1AvgPool2DModule.html',1,'pulsatrix']]]
 ];

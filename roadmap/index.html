@@ -1706,6 +1706,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="LLM: Running real language models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-llm-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the LLM work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-llm-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the LLM work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tok-tokenizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TOK: Tokenizers
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2313,6 +2352,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="LLM: Running real language models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-llm-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the LLM work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-llm-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the LLM work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tok-tokenizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TOK: Tokenizers
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2594,7 +2672,7 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
   activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.</li>
 <li><strong>Missing.</strong> There is no import from PyTorch or Hugging Face, and everything is <code>float32</code>.
-  Tensors have no views or broadcasting. There is no LoRA. Attention has no mask.</li>
+  Tensors have no views or broadcasting. There is no LoRA.</li>
 <li><strong>Done since v1.0.</strong> The whole <a href="#fnd-foundations">FND epic</a>: named parameters, freezing, top-k,
   eigensolver/QR/SVD, BatchNorm eval mode and folding, Conv2D stride and padding, seeding and
   deterministic mode, and device checks. Saving and loading: safetensors and native checkpoints
@@ -2606,6 +2684,10 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
   for every view and dependency-free SVG figures (<a href="#viz-visualization-pack">VIZ-1, VIZ-2</a>).
   <code>cmake --install</code> with <code>find_package(pulsatrix)</code>, and a benchmark suite that compares builds
   and gates LRP conservation (<a href="#ks-kitchen-sink">KS-1, KS-2</a>).</li>
+<li><strong>v1.2 so far.</strong> Attention that loads current small LLMs
+  (<a href="#llm-running-real-language-models">LLM-1</a>): grouped-query attention, causal and padding
+  masks, "rotate half" RoPE with a configurable base, QK-Norm and bias-free projections, checked
+  against Hugging Face's Llama, Qwen2 and Qwen3 attention.</li>
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Its container runs ROCm 10.0.0, the
@@ -2673,7 +2755,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 </tr>
 <tr>
 <td>5. LLMs and agent orchestration</td>
-<td><a href="#llm-running-real-language-models">LLM</a>, <a href="#agt-agents-native-c">AGT</a></td>
+<td><a href="#llm-running-real-language-models">LLM</a>, <a href="#tok-tokenizers">TOK</a>, <a href="#agt-agents-native-c">AGT</a></td>
 </tr>
 <tr>
 <td>6. Built-in XAI framework (4 reasons, 9 question categories)</td>
@@ -2716,8 +2798,10 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <p>Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.</p>
 <ul>
 <li>IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast</li>
-<li>LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizer, generation, KV cache, the
+<li>LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizers, generation, KV cache, the
   golden-logit harness, AttnLRP parity with LXT</li>
+<li>TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
+  SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores</li>
 <li>HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)</li>
 <li>VIZ-3, VIZ-6a: Vega-Lite HTML and the token relevance view</li>
 <li>NB-1, NB-2: native rich display and the <code>.ipynb</code>/HTML report writer</li>
@@ -3239,7 +3323,7 @@ rate is tuned, plain LoRA matches or beats most of them.</p>
 <tbody>
 <tr>
 <td>A causal attention mask, which next-token language-model training needs</td>
-<td>LLM-1</td>
+<td>Done in LLM-1</td>
 </tr>
 <tr>
 <td>Rerun the TRN-6 recipe on SmolLM2-135M</td>
@@ -3264,6 +3348,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -3274,6 +3359,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/67">#67</a> (see below)</td>
 </tr>
 <tr>
 <td>LLM-2</td>
@@ -3282,14 +3368,16 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>LLM-3</td>
-<td>A native byte-level BPE tokenizer that reads Hugging Face <code>tokenizer.json</code>, with a hand-written pre-tokenizer and a generated Unicode category table (<code>std::regex</code> can't match Unicode categories). It passes when its ids match Hugging Face on a 10,000-line multilingual corpus</td>
+<td>Native tokenizers for the target models: <a href="#tok-tokenizers">TOK-1 to TOK-3</a></td>
 <td>No Python needed to tokenize</td>
 <td>—</td>
 <td>P0</td>
-<td>M</td>
+<td>M–L</td>
+<td></td>
 </tr>
 <tr>
 <td>LLM-4</td>
@@ -3298,6 +3386,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <td>LLM-1, FND-3</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>LLM-5</td>
@@ -3306,6 +3395,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <td>LLM-1</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>LLM-6</td>
@@ -3314,14 +3404,16 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <td>IO-4</td>
 <td>P0</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>LLM-7</td>
 <td>AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads</td>
 <td>The headline result: pulsatrix explains a real LLM and matches the reference</td>
-<td>LLM-1 to LLM-3, LLM-6</td>
+<td>LLM-1, LLM-2, TOK-2, LLM-6</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>LLM-8</td>
@@ -3330,6 +3422,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <td>LLM-1</td>
 <td>P2</td>
 <td>S–M</td>
+<td></td>
 </tr>
 <tr>
 <td>LLM-9</td>
@@ -3338,9 +3431,203 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <td>LLM-1</td>
 <td>P3</td>
 <td>M</td>
+<td></td>
 </tr>
 </tbody>
 </table>
+<h3 id="how-the-llm-work-departed-from-the-plan">How the LLM work departed from the plan<a class="headerlink" href="#how-the-llm-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>LLM-1</strong> is configured through one <code>AttentionConfig</code> rather than more constructor arguments;
+  the old constructor still works and means what it did. It was checked against Hugging Face's
+  own <code>LlamaAttention</code>, <code>Qwen2Attention</code> and <code>Qwen3Attention</code> (forward output and input gradient,
+  <code>tools/generate_attention_reference_values.py</code>), with grouped and multi-query heads, biases,
+  QK-Norm, and left and right padding.</li>
+<li>Grouped-query attention copies each K/V head out to its query heads, as Hugging Face's
+    <code>repeat_kv</code> does, and sums gradients and relevance back. A shared head's relevance is then the
+    total over the query heads that read it, which LLM-7 checks against LXT.</li>
+<li>Masked scores are set to the lowest float, not <code>-inf</code>, so a query with no visible key (left
+    padding under a causal mask) gets uniform weights rather than NaN, as in Hugging Face. Their
+    gradient and relevance are set to zero, which Hugging Face's additive mask does not do.</li>
+<li>The position offset only moves RoPE. Under RoPE, scores depend on relative position only,
+    so an offset is invisible until queries and keys come from different pieces of the
+    sequence. The mask primitive already takes a query offset for the KV cache (LLM-5).</li>
+<li><code>LinearModule</code> gained a no-bias form, and <code>TransformerBlock</code> takes an <code>AttentionConfig</code> and
+    an RMSNorm epsilon.</li>
+</ul>
+<h3 id="follow-ups-the-llm-work-surfaced">Follow-ups the LLM work surfaced<a class="headerlink" href="#follow-ups-the-llm-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Llama 3's <code>rope_scaling</code> changes the low RoPE frequencies at every position, so Llama-3.2 logits need it even on short text</td>
+<td>LLM-6</td>
+</tr>
+<tr>
+<td><code>SwiGLUModule</code> without biases: Llama-family MLPs have none, and IO-4's strict mode fails on unmapped keys</td>
+<td>IO-4</td>
+</tr>
+<tr>
+<td>Gemma 3's <code>query_pre_attn_scalar</code> replaces the <code>1/sqrt(head_dim)</code> scale</td>
+<td>LLM-9</td>
+</tr>
+<tr>
+<td>Grouped-query attention materializes the repeated K and V; index the shared head inside the matmul instead</td>
+<td>HIP-6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tok-tokenizers">TOK: Tokenizers<a class="headerlink" href="#tok-tokenizers" title="Permanent link">&para;</a></h2>
+<p>pulsatrix has one tokenizer today: a lowercasing whitespace and punctuation splitter that builds
+a word-level vocabulary. That is enough for the toy text examples and for nothing else. The v1.2
+target models use four different pipelines, read from their <code>tokenizer.json</code> files (2026-10-04):</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Normalizer</th>
+<th>Pre-tokenizer</th>
+<th>Model</th>
+<th>Decoder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SmolLM2-135M</td>
+<td>none</td>
+<td>individual digits, then byte-level with the GPT-2 regex</td>
+<td>BPE, 49k</td>
+<td>byte-level</td>
+</tr>
+<tr>
+<td>Qwen2.5, Qwen3</td>
+<td>NFC</td>
+<td>Qwen regex (single digits), then byte-level</td>
+<td>BPE, 151k</td>
+<td>byte-level</td>
+</tr>
+<tr>
+<td>Llama 3.2</td>
+<td>none</td>
+<td>Llama 3 regex (<code>\p{N}{1,3}</code>), then byte-level</td>
+<td>BPE, 128k, <code>ignore_merges</code></td>
+<td>byte-level</td>
+</tr>
+<tr>
+<td>Gemma 3</td>
+<td>spaces to <code>▁</code></td>
+<td>none in effect</td>
+<td>BPE, 262k, byte fallback</td>
+<td><code>▁</code> to space, bytes, fuse</td>
+</tr>
+<tr>
+<td>BERT</td>
+<td>lowercase, clean, CJK spacing</td>
+<td>BERT punctuation split</td>
+<td>WordPiece, <code>##</code></td>
+<td>WordPiece</td>
+</tr>
+<tr>
+<td>T5</td>
+<td>precompiled SentencePiece charsmap</td>
+<td>whitespace, <code>▁</code></td>
+<td>Unigram</td>
+<td><code>▁</code></td>
+</tr>
+</tbody>
+</table>
+<p>So "a byte-level BPE tokenizer" covers SmolLM2, Qwen and Llama but not Gemma 3, which LLM-9 and
+FEAT need. The plan is the same component pipeline Hugging Face <code>tokenizers</code> uses (normalizer,
+pre-tokenizer, model, post-processor, decoder), read from <code>tokenizer.json</code>, so each new model
+family is a few components rather than a new tokenizer.</p>
+<p>Every tokenizer returns character offsets with its ids. Explanations are made per token but read
+per word: the token relevance view (VIZ-6a), AttnLRP on text (LLM-7) and agent tool-choice
+attribution (AGT-7) all need to map a token back to its span of the input, and to merge subword
+scores into word scores.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TOK-1</td>
+<td>A <code>Tokenizer</code> interface: <code>encode</code> returns ids, token strings, character offsets and a special-token mask; <code>decode</code> returns text. Added tokens (special tokens such as <code>&lt;\|im_start\|&gt;</code>) are split out before anything else runs. The current tokenizer becomes the <code>WordLevel</code> model with a whitespace pre-tokenizer, and a byte tokenizer (256 ids plus specials) and a character tokenizer join it</td>
+<td>One interface for every model, and offsets for every explanation</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+<td></td>
+</tr>
+<tr>
+<td>TOK-2</td>
+<td>Byte-level BPE from <code>tokenizer.json</code>: the GPT-2, Llama 3 and Qwen pre-tokenizer regexes written by hand over a generated Unicode category table (<code>std::regex</code> can't match <code>\p{L}</code> or <code>\p{N}</code>), digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (<code>"a b"</code> strings and <code>["a", "b"]</code> pairs), <code>ignore_merges</code>, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5 and Llama 3.2</td>
+<td>No Python needed to tokenize the main target models</td>
+<td>TOK-1</td>
+<td>P0</td>
+<td>M</td>
+<td></td>
+</tr>
+<tr>
+<td>TOK-3</td>
+<td>SentencePiece-style BPE: byte fallback (<code>&lt;0x41&gt;</code> tokens), <code>▁</code> replacement, <code>fuse_unk</code>, and the matching decoder chain. It passes the same corpus test for Gemma 3</td>
+<td>Gemma 3 and Gemma Scope 2 (LLM-9, FEAT)</td>
+<td>TOK-2</td>
+<td>P1</td>
+<td>S</td>
+<td></td>
+</tr>
+<tr>
+<td>TOK-4</td>
+<td>Word-level aggregation: merge per-token scores (relevance, attributions, probe outputs) into per-word scores using the offsets, by sum, mean or maximum</td>
+<td>Explanations people can read</td>
+<td>TOK-1</td>
+<td>P1</td>
+<td>S</td>
+<td></td>
+</tr>
+<tr>
+<td>TOK-5</td>
+<td>WordPiece (BERT normalizer and pre-tokenizer, <code>##</code> continuation)</td>
+<td>BERT-family encoders, the most common models in XAI papers and tutorials</td>
+<td>TOK-1</td>
+<td>P2</td>
+<td>S</td>
+<td></td>
+</tr>
+<tr>
+<td>TOK-6</td>
+<td>A byte-level BPE trainer that writes <code>tokenizer.json</code>, so a model trained from scratch in pulsatrix gets a real subword vocabulary that Hugging Face can also load</td>
+<td>Small models trained on your own corpus</td>
+<td>TOK-2</td>
+<td>P2</td>
+<td>M</td>
+<td></td>
+</tr>
+<tr>
+<td>TOK-7</td>
+<td>Unigram (SentencePiece) with the precompiled charsmap normalizer</td>
+<td>T5, ALBERT, XLNet and mBART</td>
+<td>TOK-1</td>
+<td>P3</td>
+<td>M</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Not planned: SentencePiece <code>.model</code> protobuf files and tiktoken files. Every target model also
+ships <code>tokenizer.json</code>.</p>
 <h2 id="xai-question-driven-explainability-framework">XAI: Question-driven explainability framework<a class="headerlink" href="#xai-question-driven-explainability-framework" title="Permanent link">&para;</a></h2>
 <p>This epic builds two frameworks into the library:</p>
 <ul>
@@ -4122,7 +4409,7 @@ format, with static and web renderers next to it.</p>
 <tr>
 <td>Byte-level BPE tokens must be decoded to UTF-8 before they go into a document</td>
 <td>VIZ-1</td>
-<td>LLM-3</td>
+<td>TOK-2</td>
 </tr>
 <tr>
 <td>SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels</td>

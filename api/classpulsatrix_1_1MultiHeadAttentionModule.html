@@ -131,13 +131,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae11c9bd2523df83bb01c90234a201f8d" id="r_ae11c9bd2523df83bb01c90234a201f8d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ae11c9bd2523df83bb01c90234a201f8d">MultiHeadAttentionModule</a> (int64_t <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ad4b5ac0ec934a704a7f9f6025d83e2d5">d_model</a>, int64_t <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a64f3e2c31c91c88da3fcfedaa47fa588">num_heads</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, bool use_rope=true, bool use_qk_norm=false)</td></tr>
 <tr class="memdesc:ae11c9bd2523df83bb01c90234a201f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a multi-head attention block with zero-initialized projections.  <br /></td></tr>
 <tr class="separator:ae11c9bd2523df83bb01c90234a201f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae974571423fc6fbee708c3c31cd1e1cc" id="r_ae974571423fc6fbee708c3c31cd1e1cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ae974571423fc6fbee708c3c31cd1e1cc">MultiHeadAttentionModule</a> (const <a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> &amp;<a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a3f64b2a12f71d247d42e6d25f6cacb54">config</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:ae974571423fc6fbee708c3c31cd1e1cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs attention from a full <a class="el" href="structpulsatrix_1_1AttentionConfig.html" title="Everything that shapes a MultiHeadAttentionModule (LLM-1).">AttentionConfig</a>, with zero-initialized projections.  <br /></td></tr>
+<tr class="separator:ae974571423fc6fbee708c3c31cd1e1cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d70f8c38cec738bdbe53660fba5d3f9" id="r_a6d70f8c38cec738bdbe53660fba5d3f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6d70f8c38cec738bdbe53660fba5d3f9">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a6d70f8c38cec738bdbe53660fba5d3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside those sub-modules (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>).  <br /></td></tr>
 <tr class="separator:a6d70f8c38cec738bdbe53660fba5d3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43f51ba7b867c44102fec4723ae75844" id="r_a43f51ba7b867c44102fec4723ae75844"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a43f51ba7b867c44102fec4723ae75844">op_type</a> () const override</td></tr>
 <tr class="memdesc:a43f51ba7b867c44102fec4723ae75844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attention per the charter's closed OpType set &ndash; see <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba2aa97e44cace7cb882c9dcba32940f8f" title="Multi-head (scaled dot-product) attention – Phase 3&#39;s MultiHeadAttentionModule.">OpType::Attention</a>'s own note.  <br /></td></tr>
 <tr class="separator:a43f51ba7b867c44102fec4723ae75844"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a822b6628b3817cc786d02a7b8c4447c1" id="r_a822b6628b3817cc786d02a7b8c4447c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
+<tr class="memitem:a822b6628b3817cc786d02a7b8c4447c1" id="r_a822b6628b3817cc786d02a7b8c4447c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a3f64b2a12f71d247d42e6d25f6cacb54">config</a>) override</td></tr>
 <tr class="memdesc:a822b6628b3817cc786d02a7b8c4447c1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation, composed from the sub-modules' own rules plus AttnLRP's Eq. 15 bilinear ("uniform") rule for the two batched matmuls.  <br /></td></tr>
 <tr class="separator:a822b6628b3817cc786d02a7b8c4447c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4efee768d212c6f9990b85ba1f070a47" id="r_a4efee768d212c6f9990b85ba1f070a47"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47">named_parameters</a> () override</td></tr>
@@ -153,14 +156,34 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad4b5ac0ec934a704a7f9f6025d83e2d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64f3e2c31c91c88da3fcfedaa47fa588" id="r_a64f3e2c31c91c88da3fcfedaa47fa588"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a64f3e2c31c91c88da3fcfedaa47fa588">num_heads</a> () const</td></tr>
 <tr class="separator:a64f3e2c31c91c88da3fcfedaa47fa588"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b6d53a4aed28054ce1058afb62374ee" id="r_a5b6d53a4aed28054ce1058afb62374ee"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a5b6d53a4aed28054ce1058afb62374ee">num_kv_heads</a> () const</td></tr>
+<tr class="separator:a5b6d53a4aed28054ce1058afb62374ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4b539122189354b1dcc365cc8681dae" id="r_ab4b539122189354b1dcc365cc8681dae"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ab4b539122189354b1dcc365cc8681dae">head_dim</a> () const</td></tr>
 <tr class="separator:ab4b539122189354b1dcc365cc8681dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84eaff4be5e5453e6d5fdeff04f98371" id="r_a84eaff4be5e5453e6d5fdeff04f98371"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a84eaff4be5e5453e6d5fdeff04f98371">uses_rope</a> () const</td></tr>
 <tr class="separator:a84eaff4be5e5453e6d5fdeff04f98371"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa401137110ef1ce787af71a61654b484" id="r_aa401137110ef1ce787af71a61654b484"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#aa401137110ef1ce787af71a61654b484">uses_qk_norm</a> () const</td></tr>
 <tr class="separator:aa401137110ef1ce787af71a61654b484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae939f23be99c198ad1afea52a561dfad" id="r_ae939f23be99c198ad1afea52a561dfad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ae939f23be99c198ad1afea52a561dfad">is_causal</a> () const</td></tr>
+<tr class="separator:ae939f23be99c198ad1afea52a561dfad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f64b2a12f71d247d42e6d25f6cacb54" id="r_a3f64b2a12f71d247d42e6d25f6cacb54"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a3f64b2a12f71d247d42e6d25f6cacb54">config</a> () const</td></tr>
+<tr class="memdesc:a3f64b2a12f71d247d42e6d25f6cacb54"><td class="mdescLeft">&#160;</td><td class="mdescRight">The configuration with its 0 defaults resolved (num_kv_heads, head_dim).  <br /></td></tr>
+<tr class="separator:a3f64b2a12f71d247d42e6d25f6cacb54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0dfa1bc8022c886ac529f9133d46bfb" id="r_ac0dfa1bc8022c886ac529f9133d46bfb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ac0dfa1bc8022c886ac529f9133d46bfb">set_key_padding_mask</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;key_keep)</td></tr>
+<tr class="memdesc:ac0dfa1bc8022c886ac529f9133d46bfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masks padding keys in every following <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, until cleared (LLM-1).  <br /></td></tr>
+<tr class="separator:ac0dfa1bc8022c886ac529f9133d46bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5958a2006d36f76933182b3bdeb9693" id="r_ab5958a2006d36f76933182b3bdeb9693"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ab5958a2006d36f76933182b3bdeb9693">clear_key_padding_mask</a> ()</td></tr>
+<tr class="memdesc:ab5958a2006d36f76933182b3bdeb9693"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the key padding mask.  <br /></td></tr>
+<tr class="separator:ab5958a2006d36f76933182b3bdeb9693"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a080f3afd4b26dda8306b7b34a97e61be" id="r_a080f3afd4b26dda8306b7b34a97e61be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a080f3afd4b26dda8306b7b34a97e61be">has_key_padding_mask</a> () const</td></tr>
+<tr class="separator:a080f3afd4b26dda8306b7b34a97e61be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada9caf0447f28b2aabec8791ccbf91aa" id="r_ada9caf0447f28b2aabec8791ccbf91aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ada9caf0447f28b2aabec8791ccbf91aa">set_position_offset</a> (int64_t offset)</td></tr>
+<tr class="memdesc:ada9caf0447f28b2aabec8791ccbf91aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position of the input's first token, for RoPE (LLM-1). Forward rotates positions <code>offset .. offset + L - 1</code>. It does not change the mask: queries and keys are the same L tokens.  <br /></td></tr>
+<tr class="separator:ada9caf0447f28b2aabec8791ccbf91aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e89515f2ce59260428b90212f3bf6bb" id="r_a6e89515f2ce59260428b90212f3bf6bb"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6e89515f2ce59260428b90212f3bf6bb">position_offset</a> () const</td></tr>
+<tr class="separator:a6e89515f2ce59260428b90212f3bf6bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a403e6584eb71aedadccf2ea8071f637e" id="r_a403e6584eb71aedadccf2ea8071f637e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a403e6584eb71aedadccf2ea8071f637e">last_attention_weights</a> () const</td></tr>
-<tr class="memdesc:a403e6584eb71aedadccf2ea8071f637e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached attention weights of the last forward, <code>(N, num_heads, L, L)</code> &ndash; the softmax output. Exposed because "what did each head attend to" is the single most-asked explainability question about this module.  <br /></td></tr>
+<tr class="memdesc:a403e6584eb71aedadccf2ea8071f637e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached attention weights of the last forward, <code>(N, num_heads, L, L)</code> &ndash; the softmax output. Exposed because "what did each head attend to" is the single most-asked explainability question about this module. Masked entries are 0.  <br /></td></tr>
 <tr class="separator:a403e6584eb71aedadccf2ea8071f637e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4cb6de3310ed22f1fb88821bfd7ca3b" id="r_aa4cb6de3310ed22f1fb88821bfd7ca3b"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#aa4cb6de3310ed22f1fb88821bfd7ca3b">compute_device</a> () const override</td></tr>
 <tr class="memdesc:aa4cb6de3310ed22f1fb88821bfd7ca3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
@@ -210,8 +233,11 @@ Protected Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><code>softmax(Q @ K^T / sqrt(head_dim)) @ V</code>, multi-head, with optional RoPE and optional QK-Norm. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(N, L, d_model) -&gt; (N, L, d_model)</code>. </p>
+<p><b>LLM-1 additions</b>, all configured through <a class="el" href="structpulsatrix_1_1AttentionConfig.html" title="Everything that shapes a MultiHeadAttentionModule (LLM-1).">AttentionConfig</a>: grouped-query attention, <code>head_dim</code> independent of <code>d_model</code>, optional projection biases, a causal mask, a key padding mask (set_key_padding_mask), the RoPE pair layout and base, and a position offset (set_position_offset). </p><dl class="section note"><dt>Note</dt><dd><b>Grouped-query attention repeats K and V</b>, as Hugging Face's <code>repeat_kv</code> does: K/V are projected, normalized and rotated at <code>num_kv_heads</code>, then copied out to <code>num_heads</code> before the two matmuls. <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6d70f8c38cec738bdbe53660fba5d3f9" title="Gradient w.r.t. this module&#39;s input; sub-module parameter gradients accumulate inside those sub-modul...">backward()</a> and <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1" title="LRP relevance propagation, composed from the sub-modules&#39; own rules plus AttnLRP&#39;s Eq....">propagate_relevance()</a> sum each copy's gradient or relevance back into its shared head, so a shared head's relevance is the total over the query heads that read it. </dd>
+<dd>
+<b>Masked scores are set to the lowest float before softmax</b>, not <code>-inf</code>, so a query with every key masked (for example a padding query under a causal mask) gets uniform weights instead of NaN &ndash; what Hugging Face does too. The gradient and the relevance of every masked score are then set to exactly zero: a masked score is a constant, not a function of Q and K.</dd></dl>
 <p><b>Composition over inheritance.</b> Every sub-operation that already exists as a shipped, tested <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> in this codebase is held here as a real member object and driven through its own <code><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a></code>/<code><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a6d70f8c38cec738bdbe53660fba5d3f9" title="Gradient w.r.t. this module&#39;s input; sub-module parameter gradients accumulate inside those sub-modul...">backward()</a></code>/<code><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1" title="LRP relevance propagation, composed from the sub-modules&#39; own rules plus AttnLRP&#39;s Eq....">propagate_relevance()</a></code>:</p><ul>
-<li><code><a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> q_proj_/k_proj_/v_proj_/out_proj_</code> (all <code>d_model -&gt; d_model</code>),</li>
+<li><code><a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> q_proj_/k_proj_/v_proj_/out_proj_</code> (<code>d_model -&gt; num_heads * head_dim</code>, <code>d_model -&gt; num_kv_heads * head_dim</code> twice, and <code>num_heads * head_dim -&gt; d_model</code>),</li>
 <li><code><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a> q_rope_/k_rope_</code> (only when <code>use_rope</code>),</li>
 <li><code><a class="el" href="classpulsatrix_1_1RMSNormModule.html" title="y_{n,i} = gamma_i * x_{n,i} / rms(x_n), rms(x_n) = sqrt(mean_i(x_{n,i}^2) + eps), computed independen...">RMSNormModule</a> q_norm_/k_norm_</code> (only when <code>use_qk_norm</code>, <code>head_dim</code>-sized gamma),</li>
 <li><code><a class="el" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati...">SoftmaxModule</a> softmax_</code>. None of their math is reimplemented here. What <em>is</em> implemented here is only what has no existing module: the two batched matmuls (<code>Q@K^T</code>, <code>Attn@V</code>), the <code>1/sqrt(head_dim)</code> scale, and the head split/merge permutation &ndash; with their own forward, backward and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule.</li>
@@ -223,7 +249,7 @@ Protected Member Functions</h2></td></tr>
 **<code>use_rope=true</code> requires an even <code>head_dim</code>** &ndash; <code><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a></code> rotates adjacent feature pairs and rejects an odd dimension. Checked here, before the sub-module is constructed, so the error message names the real cause. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae11c9bd2523df83bb01c90234a201f8d" name="ae11c9bd2523df83bb01c90234a201f8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae11c9bd2523df83bb01c90234a201f8d">&#9670;&#160;</a></span>MultiHeadAttentionModule()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae11c9bd2523df83bb01c90234a201f8d">&#9670;&#160;</a></span>MultiHeadAttentionModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -286,6 +312,42 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ae974571423fc6fbee708c3c31cd1e1cc" name="ae974571423fc6fbee708c3c31cd1e1cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae974571423fc6fbee708c3c31cd1e1cc">&#9670;&#160;</a></span>MultiHeadAttentionModule() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::MultiHeadAttentionModule::MultiHeadAttentionModule </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs attention from a full <a class="el" href="structpulsatrix_1_1AttentionConfig.html" title="Everything that shapes a MultiHeadAttentionModule (LLM-1).">AttentionConfig</a>, with zero-initialized projections. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>d_model</code> or <code>num_heads</code> is not positive, <code>num_kv_heads</code> or <code>head_dim</code> is negative, <code>num_heads</code> is not a multiple of <code>num_kv_heads</code>, <code>head_dim</code> is 0 and <code>d_model % num_heads != 0</code>, or <code>use_rope</code> with an odd <code>head_dim</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6d70f8c38cec738bdbe53660fba5d3f9" name="a6d70f8c38cec738bdbe53660fba5d3f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d70f8c38cec738bdbe53660fba5d3f9">&#9670;&#160;</a></span>backward()</h2>
@@ -333,6 +395,25 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ab5958a2006d36f76933182b3bdeb9693" name="ab5958a2006d36f76933182b3bdeb9693"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5958a2006d36f76933182b3bdeb9693">&#9670;&#160;</a></span>clear_key_padding_mask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::MultiHeadAttentionModule::clear_key_padding_mask </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes the key padding mask. </p>
+
+</div>
+</div>
 <a id="aa4cb6de3310ed22f1fb88821bfd7ca3b" name="aa4cb6de3310ed22f1fb88821bfd7ca3b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa4cb6de3310ed22f1fb88821bfd7ca3b">&#9670;&#160;</a></span>compute_device()</h2>
 
@@ -359,6 +440,33 @@ Protected Member Functions</h2></td></tr>
 <p>Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8). </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afd37c963b83700f669591c3d619aea33">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a3f64b2a12f71d247d42e6d25f6cacb54" name="a3f64b2a12f71d247d42e6d25f6cacb54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f64b2a12f71d247d42e6d25f6cacb54">&#9670;&#160;</a></span>config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> &amp; pulsatrix::MultiHeadAttentionModule::config </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The configuration with its 0 defaults resolved (num_kv_heads, head_dim). </p>
 
 </div>
 </div>
@@ -421,12 +529,37 @@ Protected Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><code>(N, L, d_model)</code>. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if input is not rank-3 with a final dimension of d_model. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if input is not rank-3 with a final dimension of d_model, or a key padding mask is set whose shape is not <code>(N, L)</code>. </td></tr>
   </table>
   </dd>
 </dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a64d2dd3268af1b112aaeb1c8286351a9">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a080f3afd4b26dda8306b7b34a97e61be" name="a080f3afd4b26dda8306b7b34a97e61be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a080f3afd4b26dda8306b7b34a97e61be">&#9670;&#160;</a></span>has_key_padding_mask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::MultiHeadAttentionModule::has_key_padding_mask </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -441,6 +574,31 @@ Protected Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">int64_t pulsatrix::MultiHeadAttentionModule::head_dim </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae939f23be99c198ad1afea52a561dfad" name="ae939f23be99c198ad1afea52a561dfad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae939f23be99c198ad1afea52a561dfad">&#9670;&#160;</a></span>is_causal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::MultiHeadAttentionModule::is_causal </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -530,7 +688,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Cached attention weights of the last forward, <code>(N, num_heads, L, L)</code> &ndash; the softmax output. Exposed because "what did each head attend to" is the single most-asked explainability question about this module. </p>
+<p>Cached attention weights of the last forward, <code>(N, num_heads, L, L)</code> &ndash; the softmax output. Exposed because "what did each head attend to" is the single most-asked explainability question about this module. Masked entries are 0. </p>
 
 </div>
 </div>
@@ -617,6 +775,31 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a5b6d53a4aed28054ce1058afb62374ee" name="a5b6d53a4aed28054ce1058afb62374ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b6d53a4aed28054ce1058afb62374ee">&#9670;&#160;</a></span>num_kv_heads()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::MultiHeadAttentionModule::num_kv_heads </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a43f51ba7b867c44102fec4723ae75844" name="a43f51ba7b867c44102fec4723ae75844"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a43f51ba7b867c44102fec4723ae75844">&#9670;&#160;</a></span>op_type()</h2>
 
@@ -660,6 +843,31 @@ Protected Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e89515f2ce59260428b90212f3bf6bb" name="a6e89515f2ce59260428b90212f3bf6bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e89515f2ce59260428b90212f3bf6bb">&#9670;&#160;</a></span>position_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::MultiHeadAttentionModule::position_offset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -780,6 +988,65 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac0dfa1bc8022c886ac529f9133d46bfb" name="ac0dfa1bc8022c886ac529f9133d46bfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0dfa1bc8022c886ac529f9133d46bfb">&#9670;&#160;</a></span>set_key_padding_mask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::MultiHeadAttentionModule::set_key_padding_mask </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>key_keep</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Masks padding keys in every following <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, until cleared (LLM-1). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key_keep</td><td><code>(N, L)</code>, any device: 1 for a real token, 0 for padding &ndash; Hugging Face's <code>attention_mask</code>. Its N and L must match the next <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>'s input. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Only keys are masked. A padding query still produces an output row (attending to the real keys); the caller ignores it, as the loss does through its token weights. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if key_keep is not rank-2. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ada9caf0447f28b2aabec8791ccbf91aa" name="ada9caf0447f28b2aabec8791ccbf91aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada9caf0447f28b2aabec8791ccbf91aa">&#9670;&#160;</a></span>set_position_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::MultiHeadAttentionModule::set_position_offset </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>offset</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Position of the input's first token, for RoPE (LLM-1). Forward rotates positions <code>offset .. offset + L - 1</code>. It does not change the mask: queries and keys are the same L tokens. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if offset is negative. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

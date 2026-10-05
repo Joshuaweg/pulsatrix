@@ -12,10 +12,11 @@ var searchData=
   ['retnetstategrad_9',['RetnetStateGrad',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a9ae91a09f05f50ad5e936dbcc8dd137a',1,'pulsatrix']]],
   ['reversetimesum_10',['ReverseTimeSum',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abe5b38bee7a84ed6af7101830bf9cae3',1,'pulsatrix']]],
   ['rnnbackward_11',['RnnBackward',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400a789b7cc15a19f6069e16e2522deebf64',1,'pulsatrix']]],
-  ['rwkvbackward_12',['RwkvBackward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ad67af2133293778b01e15a50778282d7',1,'pulsatrix']]],
-  ['rwkvforward_13',['RwkvForward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a02074e773654d60be53588a7c551717e',1,'pulsatrix']]],
-  ['rwkvlrp_14',['RwkvLrp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac5aa76383a18f79f619e4523207ad4d5',1,'pulsatrix']]],
-  ['rwkvshiftbackward_15',['RwkvShiftBackward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac4e80c16787796dda381d1515c6af876',1,'pulsatrix']]],
-  ['rwkvshiftlrp_16',['RwkvShiftLrp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a5df15a49eb81d6e7b5c201c81d93b364',1,'pulsatrix']]],
-  ['rwkvtokenshift_17',['RwkvTokenShift',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abcdd6c9e1928960ed3f5a5f38cc9b8d1',1,'pulsatrix']]]
+  ['rotatehalf_12',['RotateHalf',['../namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb',1,'pulsatrix']]],
+  ['rwkvbackward_13',['RwkvBackward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ad67af2133293778b01e15a50778282d7',1,'pulsatrix']]],
+  ['rwkvforward_14',['RwkvForward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a02074e773654d60be53588a7c551717e',1,'pulsatrix']]],
+  ['rwkvlrp_15',['RwkvLrp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac5aa76383a18f79f619e4523207ad4d5',1,'pulsatrix']]],
+  ['rwkvshiftbackward_16',['RwkvShiftBackward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883ac4e80c16787796dda381d1515c6af876',1,'pulsatrix']]],
+  ['rwkvshiftlrp_17',['RwkvShiftLrp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a5df15a49eb81d6e7b5c201c81d93b364',1,'pulsatrix']]],
+  ['rwkvtokenshift_18',['RwkvTokenShift',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883abcdd6c9e1928960ed3f5a5f38cc9b8d1',1,'pulsatrix']]]
 ];
