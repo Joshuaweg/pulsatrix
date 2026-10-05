@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('group__dl__modules.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
-<p>Core tensor/graph infrastructure, layers, optimizers, losses, and device backends &ndash; the building blocks every other group is composed from.  
+<p>Core tensor/graph infrastructure, layers, optimizers (SGD with momentum, Adam, AdamW, parameter groups, learning-rate schedules, gradient clipping), losses, checkpoints and safetensors I/O, seeding and deterministic mode, benchmarking, and device backends with their caching allocator &ndash; the building blocks every other group is composed from.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
@@ -121,6 +121,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:bce__with__logits__loss_8hpp" id="r_bce__with__logits__loss_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bce__with__logits__loss_8hpp.html">bce_with_logits_loss.hpp</a></td></tr>
 <tr class="memdesc:bce__with__logits__loss_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary cross-entropy on raw logits &ndash; combined sigmoid + BCE, numerically stable. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:benchmark_8hpp" id="r_benchmark_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="benchmark_8hpp.html">benchmark.hpp</a></td></tr>
+<tr class="memdesc:benchmark_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timing, benchmark reports (<code>pulsatrix.benchmark.v1</code>) and regression comparison. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:caching__allocator_8hpp" id="r_caching__allocator_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="caching__allocator_8hpp.html">caching_allocator.hpp</a></td></tr>
 <tr class="memdesc:caching__allocator_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A caching device-memory allocator (roadmap HIP-3): freed blocks are kept and reused for later requests of the same size class instead of going back to the driver. <br /></td></tr>
@@ -304,7 +307,7 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Core tensor/graph infrastructure, layers, optimizers, losses, and device backends &ndash; the building blocks every other group is composed from. </p>
+<p>Core tensor/graph infrastructure, layers, optimizers (SGD with momentum, Adam, AdamW, parameter groups, learning-rate schedules, gradient clipping), losses, checkpoints and safetensors I/O, seeding and deterministic mode, benchmarking, and device backends with their caching allocator &ndash; the building blocks every other group is composed from. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -115,7 +115,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Draws a 2D saliency heatmap plus a colormap scale bar. Unsigned magnitudes (e.g. Grad-CAM) use Viridis (perceptually uniform, colorblind-safe &ndash; hc_information_visualization.md SS4) over [0, max]; signed attributions (any negative value &ndash; gradients, IG, <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, <a class="el" href="classpulsatrix_1_1LIME.html" title="Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise,...">LIME</a>, SHAP) use the blue-white-red DivergingColormap over the symmetric range [-max|v|, +max|v|], so zero is always the neutral midpoint. The choice is ComputeHeatmapColorScale's (<a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>, unit-tested). Row 0 of the grid is drawn at the top (image convention) with square cells. </p>
-<dl class="section note"><dt>Note</dt><dd>v1 scope: the standalone heatmap only. Overlaying it atop a source image (the design doc's "overlay heatmap... sufficient figure/ground contrast" guidance) needs an OpenGL texture upload path &ndash; deferred to Phase C's <a class="el" href="classpulsatrix_1_1TextureCache.html" title="Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e....">TextureCache</a> infrastructure (see plans/okay-we-have-now-buzzing-moth.md), not built here. </dd>
+<dl class="section note"><dt>Note</dt><dd>v1 scope: the standalone heatmap only. Overlaying it atop a source image (the design doc's "overlay heatmap... sufficient figure/ground contrast" guidance) is not built yet; <a class="el" href="classpulsatrix_1_1TextureCache.html" title="Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e....">TextureCache</a> (<a class="el" href="texture__cache_8hpp.html" title="Keyed GPU texture cache for uploading decoded image Tensors to OpenGL.">viz/texture_cache.hpp</a>) provides the texture upload it would need. </dd>
 <dd>
 Deliberately not unit-tested &ndash; see <a class="el" href="classpulsatrix_1_1AttributionBarChart.html" title="Draws a horizontal bar chart of an Attribution&#39;s top-k features (hc_information_visualization....">AttributionBarChart</a>'s note. All real logic (reshaping) lives in <a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>'s ToSaliencyHeatmap, which is. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>

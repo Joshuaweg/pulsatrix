@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -130,8 +130,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event format, W&amp;B, CSV, ...) implement this; the training loop and Phase 4 validation harness only ever see <a class="el" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form...">MetricsSink</a>. </p>
-<dl class="section note"><dt>Note</dt><dd>A concrete production writer is explicit charter out-of-scope for this project &ndash; <a class="el" href="classpulsatrix_1_1NoOpMetricsSink.html" title="Does nothing. The charter&#39;s stated minimum viable MetricsSink implementation.">NoOpMetricsSink</a> below is the charter's stated minimum ("a no-op or stdout-printing
-      sink is sufficient" to prove the interface is wired correctly). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Concrete sinks: <a class="el" href="classpulsatrix_1_1NoOpMetricsSink.html" title="Does nothing. The charter&#39;s stated minimum viable MetricsSink implementation.">NoOpMetricsSink</a> below, and <a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html" title="A concrete MetricsSink (metrics_sink.hpp&#39;s own doc comment names this the expected extension point: &quot;...">ImPlotMetricsSink</a> (<a class="el" href="implot__metrics__sink_8hpp.html" title="Concrete MetricsSink that buffers training scalars/histograms for live plotting.">viz/implot_metrics_sink.hpp</a>), whose log can be saved as a <code>pulsatrix.training_log.v1</code> JSON document and replayed into any sink (<a class="el" href="document_8hpp.html" title="Versioned JSON documents (pulsatrix.&lt;kind&gt;.v1) that every renderer reads.">viz/document.hpp</a>). </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="add45ab2d67ff49bb11f799833b17b6de" name="add45ab2d67ff49bb11f799833b17b6de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#add45ab2d67ff49bb11f799833b17b6de">&#9670;&#160;</a></span>~MetricsSink()</h2>

@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -462,7 +462,7 @@ Protected Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Virtual since Phase 6 Mission 6 (<a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a>) &ndash; Mission 5 originally shipped this as plain non-virtual state ("no composite container exists yet to
       cascade through"); <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> overrides this to cascade to every contained layer, and needs virtual dispatch to do so correctly even when accessed through a Module* base pointer, not just its own concrete type. </dd>
 <dd>
-Deliberately NOT extended to <a class="el" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e...">BatchNormModule</a>'s running-mean/variance question (flagged, still open) &ndash; that is additive numerical-tracking state, a genuinely different scope than this boolean toggle, and touching a closed mission's module is its own decision, not bundled in here. </dd></dl>
+<a class="el" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e...">BatchNormModule</a> keeps running statistics in training mode and normalizes with them in eval mode; <a class="el" href="classpulsatrix_1_1DropoutModule.html" title="y = (mask_i ? x_i / (1 - p) : 0) at training time (inverted dropout – scaling happens at training tim...">DropoutModule</a> is the identity in eval mode. Call set_training(false) before explaining a model that has either, so a sample's explanation doesn't depend on the rest of its batch. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">pulsatrix::Module</a>.</p>
 

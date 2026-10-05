@@ -1811,6 +1811,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="VIZ: Visualization pack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-viz-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the VIZ work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-viz-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the VIZ work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1882,6 +1910,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="KS: Kitchen sink">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-ks-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the KS work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-ks-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the KS work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2362,6 +2418,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="VIZ: Visualization pack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-viz-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the VIZ work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-viz-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the VIZ work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2434,6 +2518,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="KS: Kitchen sink">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-ks-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the KS work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-ks-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the KS work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2474,7 +2586,9 @@ point at it. The evidence behind each item, including its sources, how we would 
 mistake, and how it is known to fail, lives in <a href="research-notes/">Research Notes</a>.</p>
 <p>Nothing here is a promise. Priorities move as items land and as measurements come in.</p>
 <h2 id="where-v10-stands">Where v1.0 stands<a class="headerlink" href="#where-v10-stands" title="Permanent link">&para;</a></h2>
-<p>v1.0 is strong on explainability and thin on the foundations that larger models need.</p>
+<p>v1.0 is strong on explainability and thin on the foundations that larger models need.
+<strong>v1.1, "Foundations and trust", is complete</strong> (2026-10-04): every item in its
+<a href="#v11-foundations-and-trust">milestone</a> is done.</p>
 <ul>
 <li><strong>Strong.</strong> LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -2488,10 +2602,14 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
   (<a href="#trn-training-and-fine-tuning">TRN-1 to TRN-6</a>): parameter groups, AdamW, SGD momentum,
   gradient clipping, learning-rate schedules, token-accurate gradient accumulation and a full
   fine-tuning recipe. Explanation-quality metrics and the null-model baseline
-  (<a href="#xai-question-driven-explainability-framework">XAI-5, XAI-6</a>).</li>
+  (<a href="#xai-question-driven-explainability-framework">XAI-5, XAI-6</a>). Versioned JSON documents
+  for every view and dependency-free SVG figures (<a href="#viz-visualization-pack">VIZ-1, VIZ-2</a>).
+  <code>cmake --install</code> with <code>find_package(pulsatrix)</code>, and a benchmark suite that compares builds
+  and gates LRP conservation (<a href="#ks-kitchen-sink">KS-1, KS-2</a>).</li>
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
-  (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Small models are still only about 20%
+  (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Its container runs ROCm 10.0.0, the
+  first release that lists gfx1151 officially (HIP-9). Small models are still only about 20%
   GPU-busy, because of host-side work inside each step.</li>
 </ul>
 <h2 id="the-goal-that-orders-this-list">The goal that orders this list<a class="headerlink" href="#the-goal-that-orders-this-list" title="Permanent link">&para;</a></h2>
@@ -2578,7 +2696,9 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h2 id="milestones">Milestones<a class="headerlink" href="#milestones" title="Permanent link">&para;</a></h2>
 <p>Each milestone lists the items it contains. The order follows the dependencies.</p>
 <h3 id="v11-foundations-and-trust">v1.1 "Foundations and trust"<a class="headerlink" href="#v11-foundations-and-trust" title="Permanent link">&para;</a></h3>
-<p>The plumbing everything else needs, plus the checks that keep explanations honest.</p>
+<p>The plumbing everything else needs, plus the checks that keep explanations honest. <strong>Complete</strong>
+(2026-10-04, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/33">#33</a> to
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/65">#65</a>).</p>
 <ul>
 <li>FND-1 to FND-8 (<strong>done</strong>): named parameters, freezing, top-k, eigensolver, BatchNorm eval
   mode, Conv2D stride and padding, seeding, device checks</li>
@@ -2588,9 +2708,9 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>XAI-5, XAI-6 (<strong>done</strong>): explanation-quality metrics and the random-model baseline harness</li>
 <li>HIP-1, HIP-2, HIP-4, HIP-5 (<strong>done</strong>): profiling, parallel reductions, fewer syncs, multi-block
   <code>dot</code>/<code>sum</code>. HIP-3, the caching allocator, was pulled forward from v1.2 because HIP-4 depends on it</li>
-<li>VIZ-1, VIZ-2: the JSON export format and the SVG renderer</li>
-<li>KS-1, KS-2: <code>install()</code> and a benchmark suite</li>
-<li>HIP-9: a ROCm 10.0 evaluation image and a pinned host kernel</li>
+<li>VIZ-1, VIZ-2 (<strong>done</strong>): the JSON export format and the SVG renderer</li>
+<li>KS-1, KS-2 (<strong>done</strong>): <code>install()</code> and a benchmark suite</li>
+<li>HIP-9 (<strong>done</strong>): a ROCm 10.0 evaluation image, now the default, and a host-kernel check</li>
 </ul>
 <h3 id="v12-real-pretrained-models">v1.2 "Real pretrained models"<a class="headerlink" href="#v12-real-pretrained-models" title="Permanent link">&para;</a></h3>
 <p>Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.</p>
@@ -3903,6 +4023,7 @@ format, with static and web renderers next to it.</p>
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -3913,6 +4034,7 @@ format, with static and web renderers next to it.</p>
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/62">#62</a> (see below)</td>
 </tr>
 <tr>
 <td>VIZ-2</td>
@@ -3921,6 +4043,7 @@ format, with static and web renderers next to it.</p>
 <td>VIZ-1</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/63">#63</a> (see below)</td>
 </tr>
 <tr>
 <td>VIZ-3</td>
@@ -3929,6 +4052,7 @@ format, with static and web renderers next to it.</p>
 <td>VIZ-1</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>VIZ-4</td>
@@ -3937,6 +4061,7 @@ format, with static and web renderers next to it.</p>
 <td>VIZ-1</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>VIZ-6</td>
@@ -3945,6 +4070,7 @@ format, with static and web renderers next to it.</p>
 <td>VIZ-1</td>
 <td>P2</td>
 <td>M each</td>
+<td>(a) in SVG only, through VIZ-2</td>
 </tr>
 <tr>
 <td>VIZ-7</td>
@@ -3953,10 +4079,58 @@ format, with static and web renderers next to it.</p>
 <td>—</td>
 <td>P3</td>
 <td>M</td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <p>(VIZ-5, the notebook path, moved to the NB epic.)</p>
+<h3 id="how-the-viz-work-departed-from-the-plan">How the VIZ work departed from the plan<a class="headerlink" href="#how-the-viz-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>VIZ-1.</strong> "Null plus a flag" became null plus a top-level <code>"nonfinite"</code> object that maps each
+  non-finite number's JSON Pointer to <code>"nan"</code>, <code>"inf"</code> or <code>"-inf"</code>, so a round trip loses
+  nothing. A reader rejects a null with no entry and an entry that points at no null. The
+  documents needed a JSON library, so the work added <code>pulsatrix/json.hpp</code>: a strict RFC 8259
+  parser, fuzzed, and a deterministic writer whose numbers round-trip bit for bit. Readers
+  ignore unknown fields, so v1 can grow without a new version. KS-2's benchmark reports follow
+  the same rules.</li>
+<li><strong>VIZ-2</strong> added the <code>pulsatrix_svg</code> command-line tool. Heatmaps above 4,096 cells embed a
+  lossless PNG (224 × 224 is about 45 KB, not about 3 MB of rectangles). Non-finite heatmap
+  cells and tokens are drawn gray; the bar, waterfall and beeswarm charts refuse non-finite
+  values. Every stored test figure was rendered and checked by eye before it became a golden
+  file.</li>
+</ul>
+<h3 id="follow-ups-the-viz-work-surfaced">Follow-ups the VIZ work surfaced<a class="headerlink" href="#follow-ups-the-viz-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Found in</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SVG views for circuit graphs, training logs and feature dashboards</td>
+<td>VIZ-2</td>
+<td>VIZ-4, VIZ-6</td>
+</tr>
+<tr>
+<td>Nothing produces <code>feature_dashboard.v1</code> yet; its fields follow SAEDashboard</td>
+<td>VIZ-1</td>
+<td>FEAT</td>
+</tr>
+<tr>
+<td>Byte-level BPE tokens must be decoded to UTF-8 before they go into a document</td>
+<td>VIZ-1</td>
+<td>LLM-3</td>
+</tr>
+<tr>
+<td>SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels</td>
+<td>VIZ-2</td>
+<td>VIZ-3 (the browser lays out text)</td>
+</tr>
+</tbody>
+</table>
 <h2 id="nb-notebook-layer">NB: Notebook layer<a class="headerlink" href="#nb-notebook-layer" title="Permanent link">&para;</a></h2>
 <p>Notebook output needs neither Python nor a running kernel. The layers build on each other. ImGui
 can't draw inline in a notebook, so it stays the desktop tool and shares the VIZ-1 data.</p>
@@ -4185,6 +4359,12 @@ memory bandwidth (about 212 GB/s).</p>
 <li><strong>Measuring under load.</strong> Other programs held the GPU at 100% during this work, which tripled
   raw timings. HIP-3 and HIP-4 were measured with interleaved A/B runs and medians; the profiling
   guide describes the method.</li>
+<li><strong>HIP-9.</strong> ROCm 10.0.0 passed all 2,402 HIP tests and matched 7.2.4 within 2% on every
+  benchmark (six ABBA rounds of KS-2's suite), so it became the default container;
+  <code>PULSATRIX_ROCM_VERSION=7.2.4</code> selects the old pin. Its image needed one fix: it doesn't
+  register <code>/opt/rocm/lib</code> with the dynamic loader. "Pin the host kernel" became a check,
+  <code>scripts/check_host_kernel.sh</code>, that <code>rocm-build.sh</code> runs on every call, plus documented
+  instructions to hold the package; the repository doesn't change the host.</li>
 </ul>
 <h3 id="follow-ups-the-hip-work-surfaced">Follow-ups the HIP work surfaced<a class="headerlink" href="#follow-ups-the-hip-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
@@ -4224,7 +4404,17 @@ memory bandwidth (about 212 GB/s).</p>
 <tr>
 <td>Build the benchmark suite on <code>hip_profile_workloads</code> and the interleaved A/B method</td>
 <td>HIP-1, HIP-3</td>
-<td>KS-2</td>
+<td>KS-2 (done)</td>
+</tr>
+<tr>
+<td>CI's compile-only HIP job still uses ROCm 7.2.4: there is no slim 10.0 image, and the full one is 8.2 GB compressed</td>
+<td>HIP-9</td>
+<td>KS-8</td>
+</tr>
+<tr>
+<td>ROCm 10's hipBLAS links hipBLASLt; check which path gfx1151 GEMMs take</td>
+<td>HIP-9</td>
+<td>HIP-8</td>
 </tr>
 </tbody>
 </table>
@@ -4355,6 +4545,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -4365,6 +4556,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/61">#61</a></td>
 </tr>
 <tr>
 <td>KS-2</td>
@@ -4373,6 +4565,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P1</td>
 <td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/64">#64</a> (see below)</td>
 </tr>
 <tr>
 <td>KS-3</td>
@@ -4381,6 +4574,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-4</td>
@@ -4389,6 +4583,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-5</td>
@@ -4397,6 +4592,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>FND-1</td>
 <td>P2</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-6</td>
@@ -4405,6 +4601,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P2</td>
 <td>S each</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-7</td>
@@ -4413,6 +4610,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P2</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-8</td>
@@ -4421,6 +4619,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>HIP-9</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-9</td>
@@ -4429,6 +4628,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>IO-4, FND-6</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-10</td>
@@ -4437,6 +4637,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P2</td>
 <td>L</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-11</td>
@@ -4445,6 +4646,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>KS-1</td>
 <td>P2</td>
 <td>—</td>
+<td></td>
 </tr>
 <tr>
 <td>KS-12</td>
@@ -4453,6 +4655,55 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>—</td>
 <td>P3 / v2</td>
 <td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-the-ks-work-departed-from-the-plan">How the KS work departed from the plan<a class="headerlink" href="#how-the-ks-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>KS-1</strong> installs the core library as <code>pulsatrix::core</code>, its headers, the package config and
+  the <code>pulsatrix_svg</code> and <code>pulsatrix_bench</code> tools. A backend's headers ship only with that
+  backend. The viz module and the Python bindings aren't installed. The project now has a version
+  number, 1.0.0. A test installs the build and compiles every installed header from a separate
+  project; on HIP it caught hip's package config overwriting the one variable pulsatrix's config
+  needed.</li>
+<li><strong>KS-2.</strong> Comparing a build with itself flagged sub-millisecond CPU benchmarks 14 to 20%
+  slower: separate processes of one binary land at one of two speeds on this machine, even
+  pinned to a core. So a time regresses only when its median slows past 10% <em>and</em> a one-sided
+  Mann-Whitney U test over at least three rounds per side says the rounds separate.
+  <code>scripts/bench_ab.sh</code> runs the builds in ABBA order. Restoring HIP-4's syncs was flagged on all
+  three training benchmarks at p = 0.014. The conservation gate is 10⁻³, the per-layer tolerance
+  the Conv2D LRP tests accept, and runs in CI on the CPU.</li>
+</ul>
+<h3 id="follow-ups-the-ks-work-surfaced">Follow-ups the KS work surfaced<a class="headerlink" href="#follow-ups-the-ks-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Found in</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Install <code>pulsatrix_viz</code>, which needs the fetched ImGui, ImPlot and GLFW installed too</td>
+<td>KS-1</td>
+<td>NB or KS-11</td>
+</tr>
+<tr>
+<td>Run <code>pulsatrix_bench</code> and its A/B comparison on the GPU in CI</td>
+<td>KS-2</td>
+<td>KS-8</td>
+</tr>
+<tr>
+<td>The CUDA path of <code>pulsatrix_bench</code> has never run; there is no NVIDIA GPU here</td>
+<td>KS-2</td>
+<td>KS-8</td>
+</tr>
+<tr>
+<td>Benchmarks on real models (ResNet18, SmolLM2) next to the fixed small ones</td>
+<td>KS-2</td>
+<td>KS-9</td>
 </tr>
 </tbody>
 </table>

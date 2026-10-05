@@ -1786,6 +1786,11 @@ model's or environment's structure.</p>
 <li><strong>Decomposition</strong>: <code>SparseAutoencoder</code> reconstructs activations through a wider hidden layer
   with an L1 penalty, so each example uses only a few hidden units. <code>CircuitGraph</code> scores
   every node by how much zeroing it changes the output.</li>
+<li><strong>Baselines</strong>: compare a probe's accuracy or a sparse autoencoder's statistics against a
+  randomly re-initialized copy of the model with <code>NullModelBaseline</code>
+  (<a href="../interpretability/#the-null-model-baseline">Interpretability</a>). A result that also
+  shows up on the random model says nothing about what the trained one learned. A feature's
+  statistics and top examples can be saved as a <code>pulsatrix.feature_dashboard.v1</code> document.</li>
 <li><strong>GFlowNet</strong>: <code>HyperGridEnv</code>, <code>GFlowNetForwardPolicy</code>, <code>sample_gflownet_trajectory</code>
   (returns a <code>GFlowNetTrajectory</code>), <code>TrajectoryBalanceLoss</code>, <code>DetailedBalanceLoss</code>, and
   <code>SubTBLoss</code>. For SubTB(λ), you pass each sub-trajectory pair's λ-weight to <code>forward()</code>.
@@ -1855,8 +1860,11 @@ synthetic data first as a sanity check.</p>
 that node's activation replaced by zeros. It records the L2 distance between the patched
 output and the normal output as <code>ablation_effect</code>. A larger value means the output depends
 more on that node for this input. The output node scores 0 by convention. Edges connect each
-node to the next and carry the source node's score. <code>CircuitGraph</code> holds data only; to draw it,
-use <code>CircuitGraphView</code> from <a href="../visualization/">Visualization</a>.</p>
+node to the next and carry the source node's score. <code>CircuitGraph</code> holds data only. To draw it,
+use <code>CircuitGraphView</code> from <a href="../visualization/">Visualization</a>, which also accepts the
+saved form. To save it, <code>ToJson(ToCircuitGraphDocument(circuit))</code> writes a
+<code>pulsatrix.circuit_graph.v1</code> document, and <code>ParseCircuitGraphDocument()</code> with <code>ToCircuitGraph()</code>
+reads it back.</p>
 <h3 id="sampling-a-gflownet-trajectory">Sampling a GFlowNet trajectory<a class="headerlink" href="#sampling-a-gflownet-trajectory" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/gflownet_forward_policy.hpp"</span>

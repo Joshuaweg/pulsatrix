@@ -1765,8 +1765,8 @@ scripts/rocm-build.sh<span class="w"> </span><span class="s1">'scripts/profile_h
 CSV has one row per op: <code>op, calls, total_us, mean_us, percent</code>. Op names come from the kernel
 name (<code>batch_norm_forward_kernel</code> becomes <code>batch_norm_forward</code>). All of hipBLAS's GEMM kernels
 are grouped as <code>gemm (hipBLAS)</code>, and HIP runtime helpers such as copies appear as <code>runtime: ...</code>.</p>
-<p><code>hip_profile_workloads</code> has three fixed workloads, each a full training step (forward, loss,
-backward, AdamW):</p>
+<p><code>hip_profile_workloads</code> has three fixed training workloads, each a full training step (forward,
+loss, backward, AdamW), and one reduction microbenchmark:</p>
 <ul>
 <li><strong><code>mlp</code>:</strong> <code>Linear(256→512) → ReLU → Linear(512→512) → ReLU → Linear(512→10)</code>, batch 64.</li>
 <li><strong><code>cnn</code>:</strong> <code>Conv2D(3→16) → BatchNorm → ReLU → Conv2D(16→32, stride 2) → BatchNorm → ReLU →
@@ -1978,8 +1978,8 @@ reading the loss back, and losses that validate their targets on the host (one c
 Fused kernels (HIP-6) and keeping targets on the device are the next steps there.</p>
 <h2 id="rocm-1000-evaluation">ROCm 10.0.0 evaluation<a class="headerlink" href="#rocm-1000-evaluation" title="Permanent link">&para;</a></h2>
 <p>ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
-evaluation is roadmap HIP-9. Use it with <code>PULSATRIX_ROCM_VERSION=10.0.0 scripts/rocm-build.sh '...'</code>;
-the image is <code>docker/Dockerfile.rocm</code> built on <code>rocm/dev-ubuntu-24.04:10.0.0-full</code>. It ships
+evaluation is roadmap HIP-9. The image is <code>docker/Dockerfile.rocm</code> built on
+<code>rocm/dev-ubuntu-24.04:10.0.0-full</code>. It ships
 HIP 7.15 and AMD clang 23, against 7.2.4's HIP 7.2 and clang 22.</p>
 <p>Measured 2026-10-04 on the Radeon 8060S, host kernel 7.0.0, same commit for both versions:</p>
 <table>
@@ -2078,8 +2078,9 @@ HIP 7.15 and AMD clang 23, against 7.2.4's HIP 7.2 and clang 22.</p>
 <li><strong>hipBLASLt.</strong> ROCm 10's hipBLAS links hipBLASLt. Whether GEMMs go through it on gfx1151 is
   HIP-8's question.</li>
 </ul>
-<p>ROCm 7.2.4 stays the default for now. Moving the default to 10.0.0 is one variable in
-<code>scripts/rocm-build.sh</code>.</p>
+<p>After this evaluation, ROCm 10.0.0 became the default container; <code>PULSATRIX_ROCM_VERSION=7.2.4</code>
+still selects the previous one. The HIP results above were measured on 7.2.4, before the
+switch.</p>
 
 
 

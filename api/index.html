@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -102,14 +102,15 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 Modules</h1>
 <ul>
 <li><a class="el" href="group__dl__modules.html">Deep Learning Modules and Layers</a> — Tensor/autograd core, layers, optimizers, losses, device backends</li>
-<li><a class="el" href="group__interpretability.html">Interpretability</a> — post-hoc explainers (<a class="el" href="group__interpretability__agnostic.html">Model-Agnostic Explainers</a>, <a class="el" href="group__interpretability__dl.html">Gradient-Based Explainers</a>)</li>
+<li><a class="el" href="group__interpretability.html">Interpretability</a> — post-hoc explainers (<a class="el" href="group__interpretability__lrp.html">Layer-wise Relevance Propagation</a>, <a class="el" href="group__interpretability__agnostic.html">Model-Agnostic Explainers</a>, <a class="el" href="group__interpretability__dl.html">Gradient-Based Explainers</a>) and explanation-quality checks</li>
 <li><a class="el" href="group__rl.html">Reinforcement Learning</a> — environments, agents, and RL training algorithms</li>
 <li><a class="el" href="group__mech__interp.html">Mechanistic Interpretability</a> — activation probing, sparse autoencoders, circuit graphs, GFlowNets</li>
 <li><a class="el" href="group__neuro__symbolic.html">Neuro-Symbolic Reasoning</a> — differentiable fuzzy logic, a Datalog engine, and a neural-predicate bridge tracing relevance from a symbolic derivation back into the network</li>
 <li><a class="el" href="group__data__pipeline.html">Data Loading, Transformation &amp; Validation</a> — dataset/loader/transform core and per-modality datasets</li>
 <li><a class="el" href="group__evolutionary.html">Evolutionary Computation</a> — genetic algorithms, neuroevolution, evolutionary HPO, PBT, E-GAN</li>
 <li><a class="el" href="group__hyperparameter__optimization.html">Hyperparameter Optimization</a> — search space, Bayesian optimization, bandit-based early stopping</li>
-<li><a class="el" href="group__visualization.html">Visualization</a> — native C++ (Dear ImGui + ImPlot) charts and dashboards, opt-in via <code>PULSATRIX_ENABLE_VIZ</code></li>
+<li><a class="el" href="group__visualization.html">Visualization</a> — JSON documents and SVG figures (always built), plus opt-in Dear ImGui + ImPlot dashboards (<code>PULSATRIX_ENABLE_VIZ</code>)</li>
+<li><a class="el" href="group__system__monitoring.html">System Monitoring</a> — CPU/GPU utilization, memory and temperature logging</li>
 </ul>
 <h1><a class="anchor" id="mainpage_start"></a>
 Where to go next</h1>

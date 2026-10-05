@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -219,7 +219,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Conv2DModule.html">pulsatrix::Conv2DModule</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D convolution, batched (input/output are rank-4: N x channels x H x W) &ndash; migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support. Stride 1, no padding, no dilation &ndash; deferred until a real use case needs them, same pattern as <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s original unbatched scope cut.  <a href="classpulsatrix_1_1Conv2DModule.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D convolution, batched (input/output are rank-4: N x channels x H x W) &ndash; migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support. Stride and zero padding are configurable (the same on both axes); there is no dilation.  <a href="classpulsatrix_1_1Conv2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>

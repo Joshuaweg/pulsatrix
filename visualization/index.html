@@ -1916,7 +1916,8 @@
 <h1 id="visualization">Visualization<a class="headerlink" href="#visualization" title="Permanent link">&para;</a></h1>
 <p>Use this section to see your model's explanations and training progress as charts instead of
 numbers. It provides native C++ charts, dashboards, and live views built on Dear ImGui and
-ImPlot (immediate-mode GUI and plotting libraries).</p>
+ImPlot (immediate-mode GUI and plotting libraries), plus versioned JSON documents and standalone
+SVG figures that need no GUI at all.</p>
 <p>The explainers, LRP rules, and interpretability tools elsewhere in pulsatrix return plain data
 (<code>Attribution</code>, <code>CircuitGraph</code>, <code>ActivationSnapshot</code>) and never draw anything. This layer is
 optional and sits on top of that data. <code>pulsatrix_core</code> never depends on it, the same way core
@@ -1950,48 +1951,59 @@ drawing call over the data transforms:</p>
 <tr>
 <th>Widget</th>
 <th>Shows</th>
+<th>Also draws</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>AttributionBarChart</code></td>
 <td>Top features of one attribution, as bars</td>
+<td><code>AttributionDocument</code></td>
 </tr>
 <tr>
 <td><code>AttributionWaterfallChart</code></td>
 <td>How features move the output from the baseline to the prediction</td>
+<td><code>AttributionDocument</code></td>
 </tr>
 <tr>
 <td><code>AttributionBeeswarmView</code></td>
 <td>One feature's attribution across many inputs</td>
+<td>—</td>
 </tr>
 <tr>
 <td><code>SaliencyHeatmapView</code></td>
-<td>An attribution laid over an image</td>
+<td>An attribution as a 2D heatmap with a color scale</td>
+<td><code>HeatmapDocument</code></td>
 </tr>
 <tr>
 <td><code>CircuitGraphView</code></td>
 <td>A <code>CircuitGraph</code>'s per-node ablation effect</td>
+<td><code>CircuitGraphDocument</code></td>
 </tr>
 <tr>
 <td><code>ConfidenceMeter</code></td>
 <td>A confidence value as a labeled bar</td>
+<td>—</td>
 </tr>
 <tr>
 <td><code>ExplanationScoreCard</code></td>
 <td>One panel: prediction, top features, confidence, and trust checks (<code>ComputeConservation</code>, <code>ComputeAttributionStability</code>)</td>
+<td>—</td>
 </tr>
 <tr>
 <td><code>DatasetStatisticsView</code></td>
 <td>Per-field histograms of a dataset</td>
+<td>—</td>
 </tr>
 <tr>
 <td><code>ImageGridView</code></td>
 <td>A grid of image thumbnails with captions</td>
+<td>—</td>
 </tr>
 <tr>
 <td><code>TrainingDashboard</code>, <code>ImPlotMetricsSink::Draw()</code></td>
 <td>Live training curves</td>
+<td>a saved <code>training_log.v1</code>, after <code>ReplayTrainingLog</code></td>
 </tr>
 </tbody>
 </table>
@@ -2228,7 +2240,11 @@ cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"
 <div class="highlight"><pre><span></span><code><span class="nb">add_executable</span><span class="p">(</span><span class="s">my_viz_app</span><span class="w"> </span><span class="s">my_viz_app.cpp</span><span class="p">)</span>
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_viz_app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">pulsatrix_viz</span><span class="p">)</span>
 </code></pre></div>
-<p>The data transforms and <code>ImPlotMetricsSink</code>'s logging methods need no flag. They are always
+<p><code>pulsatrix_viz</code> isn't installed, so use it from a source tree (<code>add_subdirectory</code>). An installed
+<code>find_package(pulsatrix)</code> gives you <code>pulsatrix::core</code>, which includes the JSON documents and the
+SVG renderer.</p>
+<p>The data transforms, <code>ImPlotMetricsSink</code>'s logging methods, the JSON documents and the SVG
+renderer need no flag. They are always
 part of <code>pulsatrix_core</code>.</p>
 <h3 id="demo-apps">Demo apps<a class="headerlink" href="#demo-apps" title="Permanent link">&para;</a></h3>
 <table>
