@@ -1,4 +1,5 @@
-// CFS-5: gradient counterfactuals (Wachter et al. 2017). On a linear classifier the L1-optimal
+// CFS-5 and CFS-6: gradient counterfactuals (Wachter et al. 2017) and growing spheres (Laugel et
+// al. 2018). On a linear classifier the L1-optimal
 // counterfactual is known in closed form: move the single feature with the largest
 // |w_target - w_other| * scale just past the decision boundary. The search must find it.
 
@@ -171,6 +172,81 @@ TEST_F(CounterfactualTest, RejectsBadInput) {
     CounterfactualOptions o;
     o.learning_rate = 0.0f;
     EXPECT_THROW((void)FindCounterfactual(ctx, input, CounterfactualTarget::ToClass(1), {}, o), std::invalid_argument);
+}
+
+// ---- CFS-6: growing spheres ----------------------------------------------------------------
+
+// A model with no gradient anywhere: class 1 iff x0 > 2 and x1 < 0 (a two-rule tree).
+std::vector<float> RuleLogits(const std::vector<float>& v) {
+    const bool yes = v[0] > 2.0f && v[1] < 0.0f;
+    return {yes ? 0.0f : 1.0f, yes ? 1.0f : 0.0f};
+}
+
+TEST_F(CounterfactualTest, GrowingSpheresHandlesAModelWithNoGradient) {
+    auto rule = [this](const Tensor& x) { return Tensor(Shape({1, 2}), &backend, RuleLogits(x.to_host_vector())); };
+    Tensor x(Shape({1, 3}), &backend, {1.0f, 1.0f, 5.0f});
+    GrowingSpheresOptions o;
+    o.seed = 11;
+    CounterfactualResult r = GrowingSpheresCounterfactual(rule, x, CounterfactualTarget::ToClass(1), {}, o);
+    ASSERT_TRUE(r.valid);
+    const std::vector<float> cf = r.counterfactual.to_host_vector();
+    EXPECT_GT(cf[0], 2.0f);
+    EXPECT_LT(cf[1], 0.0f);
+    EXPECT_EQ(cf[2], 5.0f);  // not needed, so put back exactly
+    EXPECT_EQ(r.num_changed, 2);
+    EXPECT_GT(r.rounds, 1);
+    // The same seed gives the same counterfactual.
+    CounterfactualResult again = GrowingSpheresCounterfactual(rule, x, CounterfactualTarget::ToClass(1), {}, o);
+    EXPECT_EQ(again.counterfactual.to_host_vector(), cf);
+}
+
+TEST_F(CounterfactualTest, GrowingSpheresComesCloseToTheGradientSearchOnALinearModel) {
+    auto predict = [this](const Tensor& x) { return model.forward(x); };
+    CounterfactualResult r = GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(1));
+    ASSERT_TRUE(r.valid);
+    EXPECT_GE(r.distance, 1.0f - 1e-3f);  // the L1 optimum (see the first test)
+    EXPECT_LT(r.distance, 2.0f);
+    const std::vector<float> z = model.forward(r.counterfactual).to_host_vector();
+    EXPECT_GE(z[1], z[0]);
+}
+
+TEST_F(CounterfactualTest, GrowingSpheresRespectsConstraints) {
+    auto predict = [this](const Tensor& x) { return model.forward(x); };
+    CounterfactualConstraints c;
+    c.immutable = {2};
+    c.lower = {-10.0f, -10.0f, -10.0f};
+    c.upper = {10.0f, 1.5f, 10.0f};
+    CounterfactualResult r = GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(1), c);
+    ASSERT_TRUE(r.valid);
+    const std::vector<float> cf = r.counterfactual.to_host_vector();
+    EXPECT_EQ(cf[2], -1.0f);
+    EXPECT_LE(cf[1], 1.5f);
+
+    // Already there: nothing changes. Impossible: reported invalid after max_layers.
+    CounterfactualResult same = GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(0));
+    EXPECT_TRUE(same.valid);
+    EXPECT_EQ(same.num_changed, 0);
+    c.immutable = {0, 1, 2};
+    EXPECT_FALSE(GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(1), c).valid);
+    c.immutable = {2};
+    c.upper = {1.5f, 10.0f, 10.0f};
+    c.lower = {-10.0f, 1.0f, -10.0f};
+    GrowingSpheresOptions few;
+    few.samples_per_layer = 50;
+    few.max_layers = 6;
+    CounterfactualResult blocked = GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(1), c, few);
+    EXPECT_FALSE(blocked.valid);
+    EXPECT_EQ(blocked.rounds, 6);
+}
+
+TEST_F(CounterfactualTest, GrowingSpheresRejectsBadOptions) {
+    auto predict = [this](const Tensor& x) { return model.forward(x); };
+    GrowingSpheresOptions o;
+    o.initial_radius = 0.0f;
+    EXPECT_THROW((void)GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(1), {}, o),
+                 std::invalid_argument);
+    EXPECT_THROW((void)GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(5)),
+                 std::invalid_argument);
 }
 
 }  // namespace
