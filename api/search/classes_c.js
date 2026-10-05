@@ -1,18 +1,16 @@
 var searchData=
 [
-  ['namedbufferref_0',['NamedBufferRef',['../structpulsatrix_1_1NamedBufferRef.html',1,'pulsatrix']]],
-  ['namedparamref_1',['NamedParamRef',['../structpulsatrix_1_1NamedParamRef.html',1,'pulsatrix']]],
-  ['neatevolutionresult_2',['NEATEvolutionResult',['../structpulsatrix_1_1NEATEvolutionResult.html',1,'pulsatrix']]],
-  ['neatgenome_3',['NEATGenome',['../classpulsatrix_1_1NEATGenome.html',1,'pulsatrix']]],
-  ['negationmodule_4',['NegationModule',['../classpulsatrix_1_1NegationModule.html',1,'pulsatrix']]],
-  ['neuralpredicatedatalogbridge_5',['NeuralPredicateDatalogBridge',['../classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html',1,'pulsatrix::datalog']]],
-  ['neuralpredicatequeryresult_6',['NeuralPredicateQueryResult',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html',1,'pulsatrix::datalog']]],
-  ['neuralpredicaterelevanceresult_7',['NeuralPredicateRelevanceResult',['../structpulsatrix_1_1datalog_1_1NeuralPredicateRelevanceResult.html',1,'pulsatrix::datalog']]],
-  ['node_8',['Node',['../classpulsatrix_1_1Node.html',1,'pulsatrix']]],
-  ['nodegene_9',['NodeGene',['../structpulsatrix_1_1NodeGene.html',1,'pulsatrix']]],
-  ['nodemetadata_10',['NodeMetadata',['../structpulsatrix_1_1ActivationSnapshot_1_1NodeMetadata.html',1,'pulsatrix::ActivationSnapshot']]],
-  ['noiseschedule_11',['NoiseSchedule',['../classpulsatrix_1_1NoiseSchedule.html',1,'pulsatrix']]],
-  ['noopmetricssink_12',['NoOpMetricsSink',['../classpulsatrix_1_1NoOpMetricsSink.html',1,'pulsatrix']]],
-  ['normalizetransform_13',['NormalizeTransform',['../classpulsatrix_1_1NormalizeTransform.html',1,'pulsatrix']]],
-  ['nullmodelcomparison_14',['NullModelComparison',['../structpulsatrix_1_1NullModelComparison.html',1,'pulsatrix']]]
+  ['mambamodule_0',['MambaModule',['../classpulsatrix_1_1MambaModule.html',1,'pulsatrix']]],
+  ['maxpool2dmodule_1',['MaxPool2DModule',['../classpulsatrix_1_1MaxPool2DModule.html',1,'pulsatrix']]],
+  ['metriccapability_2',['MetricCapability',['../structpulsatrix_1_1MetricCapability.html',1,'pulsatrix']]],
+  ['metricrecord_3',['MetricRecord',['../structpulsatrix_1_1MetricRecord.html',1,'pulsatrix']]],
+  ['metricssink_4',['MetricsSink',['../classpulsatrix_1_1MetricsSink.html',1,'pulsatrix']]],
+  ['mnistconvnet_5',['MnistConvNet',['../classpulsatrix_1_1MnistConvNet.html',1,'pulsatrix']]],
+  ['mnistdataset_6',['MnistDataset',['../structpulsatrix_1_1MnistDataset.html',1,'pulsatrix']]],
+  ['mnistdatasetadapter_7',['MnistDatasetAdapter',['../classpulsatrix_1_1MnistDatasetAdapter.html',1,'pulsatrix']]],
+  ['mnistidxloader_8',['MnistIdxLoader',['../classpulsatrix_1_1MnistIdxLoader.html',1,'pulsatrix']]],
+  ['module_9',['Module',['../classpulsatrix_1_1Module.html',1,'pulsatrix']]],
+  ['mseloss_10',['MSELoss',['../classpulsatrix_1_1MSELoss.html',1,'pulsatrix']]],
+  ['multiheadattentionmodule_11',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
+  ['mutationloss_12',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]]
 ];

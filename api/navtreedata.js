@@ -32,7 +32,7 @@ var NAVTREE =
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", "namespacemembers_dup" ],
-        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Functions", "namespacemembers_func.html", "namespacemembers_func" ],
         [ "Variables", "namespacemembers_vars.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ]
@@ -69,18 +69,19 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1DataThreadPool.html#a047967107c774d52146df7eed807cfed",
 "classpulsatrix_1_1Environment.html#aa5ac9b99c6499d9abb7c87e514a59e0f",
 "classpulsatrix_1_1HIPBackend.html#a40bdb4d0b5425510b833a7e30fc5dd06",
-"classpulsatrix_1_1LSTMModule.html#a5f0a8ff5e3f6bfa8ea70dc81175f371c",
-"classpulsatrix_1_1MetricsSink.html#a71ea141b7ded9edc78348d8c96d9d9b8",
-"classpulsatrix_1_1RMSNormModule.html#a0db6a2028c28aff1624d8c14f170ddf5",
-"classpulsatrix_1_1RetNetModule.html#aab604d0791d4f19d496d6030d1346cca",
-"classpulsatrix_1_1SwiGLUModule.html#a219452cb9a7a6ae1f453ba04aa50f5e8",
-"classpulsatrix_1_1Trial.html",
-"files.html",
-"namespacepulsatrix.html#a416909cba1eaf572fc95d96d7495a0dc",
-"namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39",
-"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a87231494ea921edd1b7579addef4c50f",
-"structpulsatrix_1_1ParamGroup.html#ad591aeaf3c97f4a27adf3524c09b3c63",
-"structpulsatrix_1_1ValidationIssue.html#a7e9ea9c75ba69a37b1b8121e4854d3fd"
+"classpulsatrix_1_1KLDivergenceLoss.html#a3e37d1595b2b7d71f05aeecc895de688",
+"classpulsatrix_1_1MambaModule.html#a5a9e44987277d98fc3520250107cd38c",
+"classpulsatrix_1_1NoiseSchedule.html#a62eeb0e2312ef57ee8418fe40980b0ce",
+"classpulsatrix_1_1ReplayBuffer.html#aabe750186198c8eae8a9aea6bb1c7d28",
+"classpulsatrix_1_1Shape.html#aae09637dcd892e4539dff5f6d94e8d89",
+"classpulsatrix_1_1ToyKnowledgeBase.html#ac111245ac9f1575a7a9e253fb51e28ec",
+"classpulsatrix_1_1detail_1_1LinuxSources.html#ad81fd3f08a2639c9733f75b0326523d1",
+"namespacemembers_func_n.html",
+"namespacepulsatrix.html#ab05bf402b9c13aea07d50c1b5951112a",
+"structpulsatrix_1_1CMAESState.html#a8aa21589dba05a6e8b1fdc0bee7aa1bb",
+"structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html#a74e146c22d9ab0c47ca8bdfeacf7be91",
+"structpulsatrix_1_1RecurrentCellArgs.html",
+"structpulsatrix_1_1datalog_1_1AtomHash.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

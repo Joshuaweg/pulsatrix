@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lrpcomposite_0',['LRPComposite',['../namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d',1,'pulsatrix']]]
+  ['factset_0',['FactSet',['../namespacepulsatrix_1_1datalog.html#a78a6ac1e65d442d7762fd6a966c5c82b',1,'pulsatrix::datalog']]]
 ];

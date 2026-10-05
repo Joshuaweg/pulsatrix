@@ -7,6 +7,7 @@ var dir_1df8ff9027259fc5f483c2d1b9c2e5ad =
     [ "colormap.hpp", "colormap_8hpp.html", "colormap_8hpp" ],
     [ "confidence_meter.hpp", "confidence__meter_8hpp.html", "confidence__meter_8hpp" ],
     [ "dataset_statistics_view.hpp", "dataset__statistics__view_8hpp.html", "dataset__statistics__view_8hpp" ],
+    [ "document.hpp", "document_8hpp.html", "document_8hpp" ],
     [ "explanation_score_card.hpp", "explanation__score__card_8hpp.html", "explanation__score__card_8hpp" ],
     [ "image_grid_view.hpp", "image__grid__view_8hpp.html", "image__grid__view_8hpp" ],
     [ "implot_metrics_sink.hpp", "implot__metrics__sink_8hpp.html", "implot__metrics__sink_8hpp" ],

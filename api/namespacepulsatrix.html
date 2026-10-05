@@ -149,6 +149,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionBeeswarmView.html">AttributionBeeswarmView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a beeswarm plot for one feature's attribution values across many samples/predictions &ndash; the global "how does the model behave overall" view (hc_information_visualization.md SS5), complementing <a class="el" href="classpulsatrix_1_1AttributionBarChart.html" title="Draws a horizontal bar chart of an Attribution&#39;s top-k features (hc_information_visualization....">AttributionBarChart</a>'s single-prediction "why this one" view.  <a href="classpulsatrix_1_1AttributionBeeswarmView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.attribution.v1</code>: an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s values, shape, method and metadata.  <a href="structpulsatrix_1_1AttributionDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttributionNullReport.html">AttributionNullReport</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a3f819c9e8327878579023bf846100400" title="Runs analysis() on model, then again after ReinitializeParameters(model, seed), then restores the mod...">NullModelBaseline()</a> for an explanation of one input.  <a href="structpulsatrix_1_1AttributionNullReport.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,6 +212,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CircuitGraph.html">CircuitGraph</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance score, plus the weighted edges between them.  <a href="classpulsatrix_1_1CircuitGraph.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.circuit_graph.v1</code>: a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>'s scored nodes and weighted edges.  <a href="structpulsatrix_1_1CircuitGraphDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CircuitGraphView.html">CircuitGraphView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a> as a node-link diagram: node position is topological depth (x-axis), node size and color encode ablation_effect via length/area AND Viridis (unsigned magnitude &ndash; never hue-for-magnitude, hc_information_visualization.md SS1), edge thickness encodes weight. Each node is captioned with CircuitNodeDisplayLabel (its own label, else op type + id) above and its ablation effect below.  <a href="classpulsatrix_1_1CircuitGraphView.html#details">More...</a><br /></td></tr>
@@ -332,6 +338,9 @@ Classes</h2></td></tr>
        was the model" (input label + <a class="el" href="classpulsatrix_1_1ConfidenceMeter.html" title="Draws a filled bar whose fill length encodes confidence (position/length, never color alone – hc_info...">ConfidenceMeter</a>), bottom row is "how trustworthy is
        this explanation" (<a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> conservation delta + explainer stability), visually separated by a rule (Gestalt proximity grouping &ndash; these are two different semantic questions, not one undifferentiated block of numbers).  <a href="classpulsatrix_1_1ExplanationScoreCard.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.feature_dashboard.v1</code>: one learned feature (for example a sparse autoencoder unit) with its activation statistics and top-activating examples.  <a href="structpulsatrix_1_1FeatureDashboardDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FieldStatistics.html">FieldStatistics</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptive statistics for one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position, aggregated across a whole <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>.  <a href="structpulsatrix_1_1FieldStatistics.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -373,6 +382,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapColorScale.html">HeatmapColorScale</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color-scale range and colormap family a heatmap's values call for.  <a href="structpulsatrix_1_1HeatmapColorScale.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.heatmap.v1</code>: a row-major grid of values with optional axis labels.  <a href="structpulsatrix_1_1HeatmapDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A row-major 2D grid of unsigned magnitude values, ready for a heatmap plot.  <a href="structpulsatrix_1_1HeatmapGrid.html#details">More...</a><br /></td></tr>
@@ -421,6 +433,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1IterableDataset.html">IterableDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Streaming dataset abstraction for sources with no random access or no known length (sharded files, generators) &ndash; pulsatrix's analogue of PyTorch's <a class="el" href="classpulsatrix_1_1IterableDataset.html" title="Streaming dataset abstraction for sources with no random access or no known length (sharded files,...">IterableDataset</a> / tf.data's source-op model. <a class="el" href="classpulsatrix_1_1DataLoader.html" title="Orchestrates sampling and collation into batches – pulsatrix&#39;s DataLoader (PyTorch DataLoader / torch...">DataLoader</a> treats this and <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> via a common internal adapter (<a class="el" href="data__loader_8hpp.html" title="Orchestrates sampling, fetch, and collation into batches.">data_loader.hpp</a>) so both share one fetch/collate path.  <a href="classpulsatrix_1_1IterableDataset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One JSON value: null, a boolean, a number, a string, an array or an object.  <a href="classpulsatrix_1_1JsonValue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1KernelSHAP.html">KernelSHAP</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Approximates Shapley values via full coalition enumeration + SHAP-kernel-weighted linear regression, reusing fit_weighted_linear_regression for the reduced (n-1)-dimensional problem the efficiency-axiom substitution produces.  <a href="classpulsatrix_1_1KernelSHAP.html#details">More...</a><br /></td></tr>
@@ -751,6 +766,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tokenizer.html">Tokenizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into lowercase word/punctuation tokens &ndash; pulsatrix's first text primitive (campaign_exai_dl_library_data_pipeline, Phase 3, Decision Point 6: a minimal whitespace/punctuation tokenizer, not BPE &ndash; training a real subword-merge algorithm is a project-sized undertaking on its own).  <a href="classpulsatrix_1_1Tokenizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.token_relevance.v1</code>: one relevance score per token of a text.  <a href="structpulsatrix_1_1TokenRelevanceDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TopKResult.html">TopKResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45" title="Selects the k largest (or smallest) entries of every row along the last dimension.">top_k()</a>'s result: the selected values and their positions along the last dimension.  <a href="structpulsatrix_1_1TopKResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -759,6 +777,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrainingDashboard.html">TrainingDashboard</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a live training dashboard: a data-ink-minimal per-tag summary line (last/min/max value, current step &ndash; Tufte SS6: no chartjunk, just the numbers that matter) followed by <a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html" title="A concrete MetricsSink (metrics_sink.hpp&#39;s own doc comment names this the expected extension point: &quot;...">ImPlotMetricsSink</a>'s line charts and histogram snapshots.  <a href="classpulsatrix_1_1TrainingDashboard.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.training_log.v1</code>: scalar series and the latest histogram per tag.  <a href="structpulsatrix_1_1TrainingLogDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TrajectoryBalanceLoss.html">TrajectoryBalanceLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>Δ(τ) = log Zθ + Σ log P_F(s_{t+1}|s_t) − log R(x) − Σ log P_B(s_t|s_{t+1})</code>, <code>loss = Δ(τ)²</code>.  <a href="classpulsatrix_1_1TrajectoryBalanceLoss.html#details">More...</a><br /></td></tr>
@@ -1261,6 +1282,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a80f5f01c0855dedcca3d97c58a66c810"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HyperbandResult.html">HyperbandResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a80f5f01c0855dedcca3d97c58a66c810">RunHyperband</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, int max_resource, double eta, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a80f5f01c0855dedcca3d97c58a66c810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one Successive Halving bracket (<a class="el" href="successive__halving_8hpp.html" title="Successive Halving (the rung-based promotion mechanism underlying Hyperband and ASHA,...">successive_halving.hpp</a>) per ComputeHyperbandBrackets(max_resource, eta), keeping the best result across all of them.  <br /></td></tr>
 <tr class="separator:a80f5f01c0855dedcca3d97c58a66c810"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3823fb1770e2ac2f276c5544266698ab" id="r_a3823fb1770e2ac2f276c5544266698ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3823fb1770e2ac2f276c5544266698ab">ParseJson</a> (std::string_view text)</td></tr>
+<tr class="memdesc:a3823fb1770e2ac2f276c5544266698ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses one JSON document.  <br /></td></tr>
+<tr class="separator:a3823fb1770e2ac2f276c5544266698ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51dcbd978f9f3b0414c53736b071512d" id="r_a51dcbd978f9f3b0414c53736b071512d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a51dcbd978f9f3b0414c53736b071512d">WriteJson</a> (const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;value)</td></tr>
+<tr class="memdesc:a51dcbd978f9f3b0414c53736b071512d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes <code>value</code> as JSON, indented by two spaces and ending with a newline.  <br /></td></tr>
+<tr class="separator:a51dcbd978f9f3b0414c53736b071512d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc312204e032ea8f6f81f09aeae4d9e2" id="r_abc312204e032ea8f6f81f09aeae4d9e2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abc312204e032ea8f6f81f09aeae4d9e2">SolveLinearSystem</a> (std::vector&lt; std::vector&lt; float &gt; &gt; a, std::vector&lt; float &gt; b)</td></tr>
 <tr class="memdesc:abc312204e032ea8f6f81f09aeae4d9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves A*x = b via Gaussian elimination with partial pivoting.  <br /></td></tr>
 <tr class="separator:abc312204e032ea8f6f81f09aeae4d9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1485,6 +1512,58 @@ Functions</h2></td></tr>
 <tr class="memitem:afb4965a44bd544dcdcd56d7c3b602c8e" id="r_afb4965a44bd544dcdcd56d7c3b602c8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RgbColor.html">RgbColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afb4965a44bd544dcdcd56d7c3b602c8e">DivergingColormap</a> (float signed_normalized_value)</td></tr>
 <tr class="memdesc:afb4965a44bd544dcdcd56d7c3b602c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blue-White-Red diverging colormap for signed attribution (positive/negative contribution) &ndash; hue encodes direction only, never magnitude (hc_information_visualization.md SS1's Cleveland-McGill rule: color hue is categorical/directional, magnitude must be position or length).  <br /></td></tr>
 <tr class="separator:afb4965a44bd544dcdcd56d7c3b602c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc4fba77346a43d985f11c0c6b006873" id="r_acc4fba77346a43d985f11c0c6b006873"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#acc4fba77346a43d985f11c0c6b006873">VizDocumentKind</a> (std::string_view json)</td></tr>
+<tr class="memdesc:acc4fba77346a43d985f11c0c6b006873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads only a document's <code>"schema"</code> member and returns its kind (for example <code>"attribution"</code>), so a viewer can pick the matching reader.  <br /></td></tr>
+<tr class="separator:acc4fba77346a43d985f11c0c6b006873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45d561a459b544c10eb8e5e627666f85" id="r_a45d561a459b544c10eb8e5e627666f85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a45d561a459b544c10eb8e5e627666f85">ToAttributionDocument</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr)</td></tr>
+<tr class="memdesc:a45d561a459b544c10eb8e5e627666f85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies <code>attr</code> into a document, reading its values to the host.  <br /></td></tr>
+<tr class="separator:a45d561a459b544c10eb8e5e627666f85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6465cd5ee1442b5670cefdd371344d38" id="r_a6465cd5ee1442b5670cefdd371344d38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6465cd5ee1442b5670cefdd371344d38">ToAttribution</a> (const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a6465cd5ee1442b5670cefdd371344d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebuilds an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> whose values live on <code>backend</code>.  <br /></td></tr>
+<tr class="separator:a6465cd5ee1442b5670cefdd371344d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0b432bea4ddfc0135ebfd55d5b78818" id="r_aa0b432bea4ddfc0135ebfd55d5b78818"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa0b432bea4ddfc0135ebfd55d5b78818">ToJson</a> (const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc)</td></tr>
+<tr class="separator:aa0b432bea4ddfc0135ebfd55d5b78818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a177d1a1467c8c927d18acc281a52a095" id="r_a177d1a1467c8c927d18acc281a52a095"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a177d1a1467c8c927d18acc281a52a095">ParseAttributionDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:a177d1a1467c8c927d18acc281a52a095"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ee3b245976a0b72acc1724f6e3e8673" id="r_a9ee3b245976a0b72acc1724f6e3e8673"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9ee3b245976a0b72acc1724f6e3e8673">ToHeatmapDocument</a> (const <a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a> &amp;grid, std::string title=&quot;&quot;)</td></tr>
+<tr class="separator:a9ee3b245976a0b72acc1724f6e3e8673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9c06e65f6cf930c707b2ae43cf50617" id="r_ad9c06e65f6cf930c707b2ae43cf50617"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad9c06e65f6cf930c707b2ae43cf50617">ToHeatmapGrid</a> (const <a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> &amp;doc)</td></tr>
+<tr class="separator:ad9c06e65f6cf930c707b2ae43cf50617"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab956a7775fa51f615c268b6635ca4a58" id="r_ab956a7775fa51f615c268b6635ca4a58"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab956a7775fa51f615c268b6635ca4a58">ToJson</a> (const <a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> &amp;doc)</td></tr>
+<tr class="separator:ab956a7775fa51f615c268b6635ca4a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07425e0973b8b2ff9febc9a973d77b6b" id="r_a07425e0973b8b2ff9febc9a973d77b6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a07425e0973b8b2ff9febc9a973d77b6b">ParseHeatmapDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:a07425e0973b8b2ff9febc9a973d77b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3cdd9d157bcc91df671e6c976c56a21" id="r_ad3cdd9d157bcc91df671e6c976c56a21"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad3cdd9d157bcc91df671e6c976c56a21">ToJson</a> (const <a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> &amp;doc)</td></tr>
+<tr class="separator:ad3cdd9d157bcc91df671e6c976c56a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23fce678b138b32c28e725fc932c1e56" id="r_a23fce678b138b32c28e725fc932c1e56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a23fce678b138b32c28e725fc932c1e56">ParseTokenRelevanceDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:a23fce678b138b32c28e725fc932c1e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8402875b7920cb81e2f47b583000e736" id="r_a8402875b7920cb81e2f47b583000e736"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8402875b7920cb81e2f47b583000e736">ToCircuitGraphDocument</a> (const <a class="el" href="classpulsatrix_1_1CircuitGraph.html">CircuitGraph</a> &amp;graph)</td></tr>
+<tr class="separator:a8402875b7920cb81e2f47b583000e736"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88e463b1cb9f872d85235078faf9d30f" id="r_a88e463b1cb9f872d85235078faf9d30f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1CircuitGraph.html">CircuitGraph</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a88e463b1cb9f872d85235078faf9d30f">ToCircuitGraph</a> (const <a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a88e463b1cb9f872d85235078faf9d30f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78fac3d6c2d0c19d16dae11ee8cf561a" id="r_a78fac3d6c2d0c19d16dae11ee8cf561a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a78fac3d6c2d0c19d16dae11ee8cf561a">ToJson</a> (const <a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a78fac3d6c2d0c19d16dae11ee8cf561a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa045e4f76aee33734ae05ead0f554980" id="r_aa045e4f76aee33734ae05ead0f554980"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa045e4f76aee33734ae05ead0f554980">ParseCircuitGraphDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:aa045e4f76aee33734ae05ead0f554980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c635a852f51924540b97ef096c1e8cf" id="r_a7c635a852f51924540b97ef096c1e8cf"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7c635a852f51924540b97ef096c1e8cf">OpTypeName</a> (<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a> op_type)</td></tr>
+<tr class="memdesc:a7c635a852f51924540b97ef096c1e8cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name ToCircuitGraphDocument writes for <code>op_type</code>, for example <code>"Linear"</code>.  <br /></td></tr>
+<tr class="separator:a7c635a852f51924540b97ef096c1e8cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1c33aa9a2b67a0120c5e7fc4d0b14f3" id="r_ac1c33aa9a2b67a0120c5e7fc4d0b14f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac1c33aa9a2b67a0120c5e7fc4d0b14f3">OpTypeFromName</a> (std::string_view name)</td></tr>
+<tr class="separator:ac1c33aa9a2b67a0120c5e7fc4d0b14f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af788fd46724e34b8df219b1144ae5d83" id="r_af788fd46724e34b8df219b1144ae5d83"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af788fd46724e34b8df219b1144ae5d83">ToTrainingLogDocument</a> (const <a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html">ImPlotMetricsSink</a> &amp;sink)</td></tr>
+<tr class="memdesc:af788fd46724e34b8df219b1144ae5d83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies everything <code>sink</code> has logged, sorted by tag.  <br /></td></tr>
+<tr class="separator:af788fd46724e34b8df219b1144ae5d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95d632ae41086c02248e7148778b01c0" id="r_a95d632ae41086c02248e7148778b01c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a95d632ae41086c02248e7148778b01c0">ReplayTrainingLog</a> (const <a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a> &amp;doc, <a class="el" href="classpulsatrix_1_1MetricsSink.html">MetricsSink</a> &amp;sink)</td></tr>
+<tr class="memdesc:a95d632ae41086c02248e7148778b01c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs every scalar in <code>doc</code> to <code>sink</code> in the order recorded, then every histogram (at step 0, since the log keeps only the latest one), so any sink can show a saved run: an <a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html" title="A concrete MetricsSink (metrics_sink.hpp&#39;s own doc comment names this the expected extension point: &quot;...">ImPlotMetricsSink</a> for the training dashboard, for example.  <br /></td></tr>
+<tr class="separator:a95d632ae41086c02248e7148778b01c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c45799fc127623333c36aade7d18eb3" id="r_a5c45799fc127623333c36aade7d18eb3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5c45799fc127623333c36aade7d18eb3">ToJson</a> (const <a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a5c45799fc127623333c36aade7d18eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a808b96b4abd360d90e4a12b4c28476ba" id="r_a808b96b4abd360d90e4a12b4c28476ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a808b96b4abd360d90e4a12b4c28476ba">ParseTrainingLogDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:a808b96b4abd360d90e4a12b4c28476ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0c52d3b599e7bf169118db77357e61c" id="r_ac0c52d3b599e7bf169118db77357e61c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac0c52d3b599e7bf169118db77357e61c">ToJson</a> (const <a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a> &amp;doc)</td></tr>
+<tr class="separator:ac0c52d3b599e7bf169118db77357e61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abec773be97792874c20508666b79fcf8" id="r_abec773be97792874c20508666b79fcf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abec773be97792874c20508666b79fcf8">ParseFeatureDashboardDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:abec773be97792874c20508666b79fcf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81a9c0a4ab6fc4d1d737368b0ec12b9" id="r_ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab81a9c0a4ab6fc4d1d737368b0ec12b9">ToFeatureImportanceBars</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>)</td></tr>
 <tr class="memdesc:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1).  <br /></td></tr>
 <tr class="separator:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1528,6 +1607,9 @@ Variables</h2></td></tr>
 <tr class="memitem:abdfe136720681063b92cf1cda99ccfa5" id="r_abdfe136720681063b92cf1cda99ccfa5"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abdfe136720681063b92cf1cda99ccfa5">kFixedTopologyXORNumParams</a> = 9</td></tr>
 <tr class="memdesc:abdfe136720681063b92cf1cda99ccfa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total flat-parameter count: 2*2 (input-&gt;hidden weights) + 2 (hidden biases) + 2 (hidden-&gt;output weights) + 1 (output bias) = 9.  <br /></td></tr>
 <tr class="separator:abdfe136720681063b92cf1cda99ccfa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7c306e18124f3aeb68cde6615b337b5" id="r_ad7c306e18124f3aeb68cde6615b337b5"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad7c306e18124f3aeb68cde6615b337b5">kVizDocumentVersion</a> = 1</td></tr>
+<tr class="memdesc:ad7c306e18124f3aeb68cde6615b337b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document format version this build writes and reads.  <br /></td></tr>
+<tr class="separator:ad7c306e18124f3aeb68cde6615b337b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a062f52068d0980a5b3771b192f0f0250" name="a062f52068d0980a5b3771b192f0f0250"></a>
@@ -5635,6 +5717,50 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ac1c33aa9a2b67a0120c5e7fc4d0b14f3" name="ac1c33aa9a2b67a0120c5e7fc4d0b14f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1c33aa9a2b67a0120c5e7fc4d0b14f3">&#9670;&#160;</a></span>OpTypeFromName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a> pulsatrix::OpTypeFromName </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>name</code> isn't an OpType name. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7c635a852f51924540b97ef096c1e8cf" name="a7c635a852f51924540b97ef096c1e8cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c635a852f51924540b97ef096c1e8cf">&#9670;&#160;</a></span>OpTypeName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * pulsatrix::OpTypeName </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td>
+          <td class="paramname"><em>op_type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The name ToCircuitGraphDocument writes for <code>op_type</code>, for example <code>"Linear"</code>. </p>
+
+</div>
+</div>
 <a id="afaf7be0b67a415f9361e7420a36b906e" name="afaf7be0b67a415f9361e7420a36b906e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afaf7be0b67a415f9361e7420a36b906e">&#9670;&#160;</a></span>PadCollate()</h2>
 
@@ -5665,6 +5791,141 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a177d1a1467c8c927d18acc281a52a095" name="a177d1a1467c8c927d18acc281a52a095"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a177d1a1467c8c927d18acc281a52a095">&#9670;&#160;</a></span>ParseAttributionDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> pulsatrix::ParseAttributionDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa045e4f76aee33734ae05ead0f554980" name="aa045e4f76aee33734ae05ead0f554980"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa045e4f76aee33734ae05ead0f554980">&#9670;&#160;</a></span>ParseCircuitGraphDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> pulsatrix::ParseCircuitGraphDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abec773be97792874c20508666b79fcf8" name="abec773be97792874c20508666b79fcf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abec773be97792874c20508666b79fcf8">&#9670;&#160;</a></span>ParseFeatureDashboardDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a> pulsatrix::ParseFeatureDashboardDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a07425e0973b8b2ff9febc9a973d77b6b" name="a07425e0973b8b2ff9febc9a973d77b6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07425e0973b8b2ff9febc9a973d77b6b">&#9670;&#160;</a></span>ParseHeatmapDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> pulsatrix::ParseHeatmapDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3823fb1770e2ac2f276c5544266698ab" name="a3823fb1770e2ac2f276c5544266698ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3823fb1770e2ac2f276c5544266698ab">&#9670;&#160;</a></span>ParseJson()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> pulsatrix::ParseJson </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses one JSON document. </p>
+<dl class="section note"><dt>Note</dt><dd>Strict: no comments, trailing commas, NaN or Infinity literals, duplicate object keys, invalid UTF-8, unpaired surrogate escapes or trailing content. Nesting deeper than 256 levels is rejected, so a hostile file can't exhaust the stack. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>naming the byte offset of the first error. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a23fce678b138b32c28e725fc932c1e56" name="a23fce678b138b32c28e725fc932c1e56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23fce678b138b32c28e725fc932c1e56">&#9670;&#160;</a></span>ParseTokenRelevanceDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> pulsatrix::ParseTokenRelevanceDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a808b96b4abd360d90e4a12b4c28476ba" name="a808b96b4abd360d90e4a12b4c28476ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a808b96b4abd360d90e4a12b4c28476ba">&#9670;&#160;</a></span>ParseTrainingLogDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a> pulsatrix::ParseTrainingLogDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -6192,6 +6453,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Keeps each tensor's scale, so activations stay in a realistic range. A tensor whose values are all equal (a zero bias, say) has standard deviation 0 and becomes all zeros. Buffers, such as BatchNorm's running statistics, are left alone. </dd></dl>
+
+</div>
+</div>
+<a id="a95d632ae41086c02248e7148778b01c0" name="a95d632ae41086c02248e7148778b01c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95d632ae41086c02248e7148778b01c0">&#9670;&#160;</a></span>ReplayTrainingLog()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::ReplayTrainingLog </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1MetricsSink.html">MetricsSink</a> &amp;&#160;</td>
+          <td class="paramname"><em>sink</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Logs every scalar in <code>doc</code> to <code>sink</code> in the order recorded, then every histogram (at step 0, since the log keeps only the latest one), so any sink can show a saved run: an <a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html" title="A concrete MetricsSink (metrics_sink.hpp&#39;s own doc comment names this the expected extension point: &quot;...">ImPlotMetricsSink</a> for the training dashboard, for example. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for the same problems ToJson rejects. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -8448,6 +8745,56 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a6465cd5ee1442b5670cefdd371344d38" name="a6465cd5ee1442b5670cefdd371344d38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6465cd5ee1442b5670cefdd371344d38">&#9670;&#160;</a></span>ToAttribution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> pulsatrix::ToAttribution </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Rebuilds an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a> whose values live on <code>backend</code>. </p>
+
+</div>
+</div>
+<a id="a45d561a459b544c10eb8e5e627666f85" name="a45d561a459b544c10eb8e5e627666f85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45d561a459b544c10eb8e5e627666f85">&#9670;&#160;</a></span>ToAttributionDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> pulsatrix::ToAttributionDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;&#160;</td>
+          <td class="paramname"><em>attr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies <code>attr</code> into a document, reading its values to the host. </p>
+
+</div>
+</div>
 <a id="a01b52699d2edf209e0fa4a98e4d8fc99" name="a01b52699d2edf209e0fa4a98e4d8fc99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a01b52699d2edf209e0fa4a98e4d8fc99">&#9670;&#160;</a></span>ToBeeswarmPoints()</h2>
 
@@ -8490,6 +8837,48 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a88e463b1cb9f872d85235078faf9d30f" name="a88e463b1cb9f872d85235078faf9d30f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88e463b1cb9f872d85235078faf9d30f">&#9670;&#160;</a></span>ToCircuitGraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1CircuitGraph.html">CircuitGraph</a> pulsatrix::ToCircuitGraph </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a node's op_type isn't an OpType name. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8402875b7920cb81e2f47b583000e736" name="a8402875b7920cb81e2f47b583000e736"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8402875b7920cb81e2f47b583000e736">&#9670;&#160;</a></span>ToCircuitGraphDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> pulsatrix::ToCircuitGraphDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1CircuitGraph.html">CircuitGraph</a> &amp;&#160;</td>
+          <td class="paramname"><em>graph</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -8586,6 +8975,196 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>A constant field (max == min) places every value in the first bin rather than dividing by a zero-width bin range. </dd></dl>
+
+</div>
+</div>
+<a id="a9ee3b245976a0b72acc1724f6e3e8673" name="a9ee3b245976a0b72acc1724f6e3e8673"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ee3b245976a0b72acc1724f6e3e8673">&#9670;&#160;</a></span>ToHeatmapDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> pulsatrix::ToHeatmapDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a> &amp;&#160;</td>
+          <td class="paramname"><em>grid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>title</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad9c06e65f6cf930c707b2ae43cf50617" name="ad9c06e65f6cf930c707b2ae43cf50617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9c06e65f6cf930c707b2ae43cf50617">&#9670;&#160;</a></span>ToHeatmapGrid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a> pulsatrix::ToHeatmapGrid </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if values.size() isn't the product of shape. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">CircuitGraphDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if node ids repeat or are negative, or an edge names a node that isn't in the list. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the histogram's lengths don't match, a count is negative, or an example has tokens and a different number of activations. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HeatmapDocument.html">HeatmapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if values.size() != rows * cols or a label list has the wrong length. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if tokens and relevance differ in length. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a series' steps and values differ in length, or a tag repeats. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -8705,6 +9284,26 @@ Selection only &ndash; no gradient. A module that routes gradients through a top
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af788fd46724e34b8df219b1144ae5d83" name="af788fd46724e34b8df219b1144ae5d83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af788fd46724e34b8df219b1144ae5d83">&#9670;&#160;</a></span>ToTrainingLogDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TrainingLogDocument.html">TrainingLogDocument</a> pulsatrix::ToTrainingLogDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html">ImPlotMetricsSink</a> &amp;&#160;</td>
+          <td class="paramname"><em>sink</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies everything <code>sink</code> has logged, sorted by tag. </p>
 
 </div>
 </div>
@@ -9203,6 +9802,59 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="acc4fba77346a43d985f11c0c6b006873" name="acc4fba77346a43d985f11c0c6b006873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc4fba77346a43d985f11c0c6b006873">&#9670;&#160;</a></span>VizDocumentKind()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::VizDocumentKind </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads only a document's <code>"schema"</code> member and returns its kind (for example <code>"attribution"</code>), so a viewer can pick the matching reader. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>json</code> isn't a JSON object with a <code>"schema"</code> of the form <code>pulsatrix.&lt;kind&gt;.v&lt;N&gt;</code>, or if N isn't kVizDocumentVersion. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a51dcbd978f9f3b0414c53736b071512d" name="a51dcbd978f9f3b0414c53736b071512d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51dcbd978f9f3b0414c53736b071512d">&#9670;&#160;</a></span>WriteJson()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::WriteJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1JsonValue.html">JsonValue</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes <code>value</code> as JSON, indented by two spaces and ending with a newline. </p>
+<dl class="section note"><dt>Note</dt><dd>Deterministic: the same value always gives the same bytes on every platform. Arrays that hold only numbers, booleans and nulls go on one line, so long value arrays stay compact. Strings are written as UTF-8, with <code>"</code>, <code>\</code> and control characters escaped. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a string isn't valid UTF-8. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae2f426e066a256c2ca12b2b8a5ec3d0b" name="ae2f426e066a256c2ca12b2b8a5ec3d0b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2f426e066a256c2ca12b2b8a5ec3d0b">&#9670;&#160;</a></span>WriteSafetensors()</h2>
 
@@ -9353,6 +10005,30 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Total flat-parameter count: 2*2 (input-&gt;hidden weights) + 2 (hidden biases) + 2 (hidden-&gt;output weights) + 1 (output bias) = 9. </p>
+
+</div>
+</div>
+<a id="ad7c306e18124f3aeb68cde6615b337b5" name="ad7c306e18124f3aeb68cde6615b337b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7c306e18124f3aeb68cde6615b337b5">&#9670;&#160;</a></span>kVizDocumentVersion</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int pulsatrix::kVizDocumentVersion = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The document format version this build writes and reads. </p>
 
 </div>
 </div>

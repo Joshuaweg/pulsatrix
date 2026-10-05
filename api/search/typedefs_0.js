@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['backwardfn_0',['BackwardFn',['../classpulsatrix_1_1Autograd.html#a397c714203a32ba31fa7f5646707a9ff',1,'pulsatrix::Autograd']]]
+  ['array_0',['Array',['../classpulsatrix_1_1JsonValue.html#a5a709423c36088a3722e7783d88c2eb4',1,'pulsatrix::JsonValue']]]
 ];

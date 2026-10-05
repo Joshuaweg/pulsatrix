@@ -111,6 +111,9 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1AttributionWaterfall
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af4bfebba053e84996c05562e46d34200" id="r_af4bfebba053e84996c05562e46d34200"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionWaterfallChart.html#af4bfebba053e84996c05562e46d34200">Draw</a> (const char *title, const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, float baseline_value)</td></tr>
 <tr class="separator:af4bfebba053e84996c05562e46d34200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af17501a3433afca747a51aaa38959d8d" id="r_af17501a3433afca747a51aaa38959d8d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionWaterfallChart.html#af17501a3433afca747a51aaa38959d8d">Draw</a> (const char *title, const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc, float baseline_value)</td></tr>
+<tr class="memdesc:af17501a3433afca747a51aaa38959d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a <code>pulsatrix.attribution.v1</code> document the same way.  <br /></td></tr>
+<tr class="separator:af17501a3433afca747a51aaa38959d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Draws a waterfall chart cascading from baseline_value to the final prediction (hc_information_visualization.md SS5: "correct for local explanation with
@@ -119,7 +122,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Deliberately not unit-tested &ndash; see <a class="el" href="classpulsatrix_1_1AttributionBarChart.html" title="Draws a horizontal bar chart of an Attribution&#39;s top-k features (hc_information_visualization....">AttributionBarChart</a>'s note. All real logic (cumulative computation) lives in <a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>'s ToWaterfallSteps, which is. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af4bfebba053e84996c05562e46d34200" name="af4bfebba053e84996c05562e46d34200"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4bfebba053e84996c05562e46d34200">&#9670;&#160;</a></span>Draw()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af4bfebba053e84996c05562e46d34200">&#9670;&#160;</a></span>Draw() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,6 +168,50 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af17501a3433afca747a51aaa38959d8d" name="af17501a3433afca747a51aaa38959d8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af17501a3433afca747a51aaa38959d8d">&#9670;&#160;</a></span>Draw() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void pulsatrix::AttributionWaterfallChart::Draw </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>title</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>baseline_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draws a <code>pulsatrix.attribution.v1</code> document the same way. </p>
 
 </div>
 </div>

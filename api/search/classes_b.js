@@ -1,16 +1,15 @@
 var searchData=
 [
-  ['mambamodule_0',['MambaModule',['../classpulsatrix_1_1MambaModule.html',1,'pulsatrix']]],
-  ['maxpool2dmodule_1',['MaxPool2DModule',['../classpulsatrix_1_1MaxPool2DModule.html',1,'pulsatrix']]],
-  ['metriccapability_2',['MetricCapability',['../structpulsatrix_1_1MetricCapability.html',1,'pulsatrix']]],
-  ['metricrecord_3',['MetricRecord',['../structpulsatrix_1_1MetricRecord.html',1,'pulsatrix']]],
-  ['metricssink_4',['MetricsSink',['../classpulsatrix_1_1MetricsSink.html',1,'pulsatrix']]],
-  ['mnistconvnet_5',['MnistConvNet',['../classpulsatrix_1_1MnistConvNet.html',1,'pulsatrix']]],
-  ['mnistdataset_6',['MnistDataset',['../structpulsatrix_1_1MnistDataset.html',1,'pulsatrix']]],
-  ['mnistdatasetadapter_7',['MnistDatasetAdapter',['../classpulsatrix_1_1MnistDatasetAdapter.html',1,'pulsatrix']]],
-  ['mnistidxloader_8',['MnistIdxLoader',['../classpulsatrix_1_1MnistIdxLoader.html',1,'pulsatrix']]],
-  ['module_9',['Module',['../classpulsatrix_1_1Module.html',1,'pulsatrix']]],
-  ['mseloss_10',['MSELoss',['../classpulsatrix_1_1MSELoss.html',1,'pulsatrix']]],
-  ['multiheadattentionmodule_11',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
-  ['mutationloss_12',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]]
+  ['layernormmodule_0',['LayerNormModule',['../classpulsatrix_1_1LayerNormModule.html',1,'pulsatrix']]],
+  ['learnablescalar_1',['LearnableScalar',['../classpulsatrix_1_1LearnableScalar.html',1,'pulsatrix']]],
+  ['lime_2',['LIME',['../classpulsatrix_1_1LIME.html',1,'pulsatrix']]],
+  ['linearmodule_3',['LinearModule',['../classpulsatrix_1_1LinearModule.html',1,'pulsatrix']]],
+  ['linearprobe_4',['LinearProbe',['../classpulsatrix_1_1LinearProbe.html',1,'pulsatrix']]],
+  ['linuxsources_5',['LinuxSources',['../classpulsatrix_1_1detail_1_1LinuxSources.html',1,'pulsatrix::detail']]],
+  ['lrp_6',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
+  ['lrpruleconfig_7',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
+  ['lrptarget_8',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
+  ['lrschedule_9',['LRSchedule',['../classpulsatrix_1_1LRSchedule.html',1,'pulsatrix']]],
+  ['lrscheduler_10',['LRScheduler',['../classpulsatrix_1_1LRScheduler.html',1,'pulsatrix']]],
+  ['lstmmodule_11',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
 ];

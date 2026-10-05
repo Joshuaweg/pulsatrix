@@ -740,6 +740,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#json-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON documents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JSON documents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#building-with-visualization-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1661,6 +1689,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#json-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON documents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JSON documents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#building-with-visualization-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1890,10 +1946,136 @@ drawing call over the data transforms:</p>
 </tr>
 </tbody>
 </table>
+<p><strong>JSON documents</strong> (<code>viz/document.hpp</code>, in <code>pulsatrix_core</code>). Every view's data can be saved as
+a versioned JSON file and read back, so a figure can be redrawn later, by another program or by
+a renderer outside pulsatrix. See <a href="#json-documents">JSON documents</a>.</p>
 <p><strong>Infrastructure.</strong> <code>VizWindow</code> (<code>viz/window.hpp</code>) owns the window, the OpenGL context, and the
 ImGui/ImPlot setup. You write a per-frame draw callback and call <code>window.run(...)</code>.
 <code>TextureCache</code> uploads images to the GPU once and reuses them across frames.</p>
 <p>Full API reference: <a href="../api/group__visualization.html">Doxygen: Visualization</a></p>
+<h2 id="json-documents">JSON documents<a class="headerlink" href="#json-documents" title="Permanent link">&para;</a></h2>
+<p>Interactive viewers go stale faster than file formats do, so every view reads from a versioned
+JSON document. The ImGui widgets, the SVG renderer (VIZ-2) and any tool outside pulsatrix all
+read the same data. The documents are part of <code>pulsatrix_core</code> and need no flag.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sstream&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/attribution_bar_chart.hpp"</span><span class="w">  </span><span class="c1">// the widget needs PULSATRIX_ENABLE_VIZ</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/document.hpp"</span>
+
+<span class="c1">// Save an explanation...</span>
+<span class="n">AttributionDocument</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToAttributionDocument</span><span class="p">(</span><span class="n">attribution</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"explanation.json"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ToJson</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+
+<span class="c1">// ...and draw it later, possibly in another program.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">stringstream</span><span class="w"> </span><span class="n">text</span><span class="p">;</span>
+<span class="n">text</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ifstream</span><span class="p">(</span><span class="s">"explanation.json"</span><span class="p">).</span><span class="n">rdbuf</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">VizDocumentKind</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">str</span><span class="p">())</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"attribution"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">AttributionBarChart</span><span class="o">::</span><span class="n">Draw</span><span class="p">(</span><span class="s">"Top features"</span><span class="p">,</span><span class="w"> </span><span class="n">ParseAttributionDocument</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">str</span><span class="p">()));</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>There are six kinds. Each has a struct, a writer (<code>ToJson</code>) and a reader (<code>Parse&lt;Kind&gt;Document</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Schema</th>
+<th>Struct</th>
+<th>Holds</th>
+<th>Converts from and to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pulsatrix.attribution.v1</code></td>
+<td><code>AttributionDocument</code></td>
+<td><code>method</code>, <code>shape</code>, row-major <code>values</code>, <code>metadata</code></td>
+<td><code>Attribution</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.heatmap.v1</code></td>
+<td><code>HeatmapDocument</code></td>
+<td><code>title</code>, <code>rows</code>, <code>cols</code>, <code>values</code>, optional <code>row_labels</code> and <code>col_labels</code></td>
+<td><code>HeatmapGrid</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.token_relevance.v1</code></td>
+<td><code>TokenRelevanceDocument</code></td>
+<td><code>method</code>, <code>tokens</code>, one <code>relevance</code> per token, <code>target</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>pulsatrix.circuit_graph.v1</code></td>
+<td><code>CircuitGraphDocument</code></td>
+<td><code>nodes</code> (<code>id</code>, <code>op_type</code>, <code>label</code>, <code>ablation_effect</code>) and <code>edges</code> (<code>from</code>, <code>to</code>, <code>weight</code>)</td>
+<td><code>CircuitGraph</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.training_log.v1</code></td>
+<td><code>TrainingLogDocument</code></td>
+<td><code>scalars</code> (<code>tag</code>, <code>steps</code>, <code>values</code>) and the latest <code>histograms</code> per tag</td>
+<td><code>ImPlotMetricsSink</code>; <code>ReplayTrainingLog</code> logs a saved run to any <code>MetricsSink</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.feature_dashboard.v1</code></td>
+<td><code>FeatureDashboardDocument</code></td>
+<td>One feature's <code>source</code>, <code>feature_index</code>, <code>activation_density</code>, <code>max_activation</code>, activation histogram and <code>top_examples</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>The widgets read documents directly: <code>AttributionBarChart</code>, <code>AttributionWaterfallChart</code>,
+<code>SaliencyHeatmapView</code> and <code>CircuitGraphView</code> each have a <code>Draw</code> overload for their document. For
+the training dashboard, replay the log into an <code>ImPlotMetricsSink</code> once and draw that.</p>
+<p>An attribution document looks like this:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"schema"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pulsatrix.attribution.v1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integrated_gradients"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"shape"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.25</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.001</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"baseline"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zero"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"steps"</span><span class="p">:</span><span class="w"> </span><span class="s2">"50"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Examples of every kind are in
+<a href="https://github.com/Joshuaweg/pulsatrix/tree/master/tests/fixtures/viz"><code>tests/fixtures/viz/</code></a>.
+Tests check that the writer reproduces each one byte for byte.</p>
+<h3 id="format-rules">Format rules<a class="headerlink" href="#format-rules" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Schema and version.</strong> Every document is an object whose <code>"schema"</code> is
+  <code>pulsatrix.&lt;kind&gt;.v&lt;N&gt;</code>. <code>VizDocumentKind()</code> returns the kind, so a viewer can pick the
+  reader. A reader accepts only its own major version.</li>
+<li><strong>Compatibility within a version.</strong> Version 1 only ever gains fields, and readers ignore
+  fields they don't know, so an older reader can read a newer v1 file. Removing, renaming or
+  changing the meaning of a field means v2.</li>
+<li>
+<p><strong>NaN and infinity.</strong> JSON has no literal for them. A non-finite number is written as <code>null</code>,
+  and the top-level <code>"nonfinite"</code> object maps its
+  <a href="https://www.rfc-editor.org/rfc/rfc6901">JSON Pointer</a> to <code>"nan"</code>, <code>"inf"</code> or <code>"-inf"</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">],</span>
+<span class="nt">"nonfinite"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"/values/1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nan"</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The member appears only when the document has a non-finite number. A reader rejects a
+<code>null</code> number with no entry, and an entry that doesn't point at a <code>null</code> number, so no value
+is ever silently lost.
+- <strong>Numbers round-trip exactly.</strong> Each number is written with the shortest text that reads back
+  as the same <code>float</code> (or <code>double</code>, for training-log values), formatted the way JavaScript
+  prints numbers. Reading the file gives back the same bits.
+- <strong>Deterministic output.</strong> The same document always gives the same bytes on every platform:
+  fixed member order, metadata sorted by key, two-space indent, and number arrays on one line.
+- <strong>Strict reading.</strong> The parser follows RFC 8259 strictly. It rejects comments, trailing
+  commas, duplicate keys, invalid UTF-8 and nesting deeper than 256 levels. Every reader error
+  names the JSON Pointer of the problem, for example
+  <code>pulsatrix.heatmap.v1 document: /row_labels: needs one label per row, or none</code>.
+- <strong>Text is UTF-8.</strong> Token strings must be valid UTF-8, so decode byte-level BPE tokens before
+  writing them.</p>
+</li>
+</ul>
+<p>The parser is fuzzed (<code>tools/fuzz/viz_document_fuzz.cpp</code>). <code>pulsatrix/json.hpp</code> exposes the
+underlying <code>JsonValue</code>, <code>ParseJson</code> and <code>WriteJson</code> for other uses.</p>
 <h2 id="building-with-visualization-enabled">Building with visualization enabled<a class="headerlink" href="#building-with-visualization-enabled" title="Permanent link">&para;</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <p>The default build has no GUI dependencies. <code>-DPULSATRIX_ENABLE_VIZ=ON</code> adds these:</p>

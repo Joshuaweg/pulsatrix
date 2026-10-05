@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['id_0',['id',['../structpulsatrix_1_1NodeGene.html#ad61786639b2271758659ed8c7fec2a59',1,'pulsatrix::NodeGene::id'],['../structpulsatrix_1_1CircuitNode.html#abd1bc9b44cf62ecd2f72e18b3d90211d',1,'pulsatrix::CircuitNode::id']]],
+  ['id_0',['id',['../structpulsatrix_1_1NodeGene.html#ad61786639b2271758659ed8c7fec2a59',1,'pulsatrix::NodeGene::id'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html#a086ae30e12966c71de476c260fb02cf3',1,'pulsatrix::CircuitGraphDocument::Node::id'],['../structpulsatrix_1_1CircuitNode.html#abd1bc9b44cf62ecd2f72e18b3d90211d',1,'pulsatrix::CircuitNode::id']]],
   ['images_1',['images',['../structpulsatrix_1_1MnistDataset.html#a4521c6bdaefaaf2ef59389848ada7295',1,'pulsatrix::MnistDataset']]],
   ['imputation_2',['imputation',['../structpulsatrix_1_1PerturbationOptions.html#a0207135a5d1fae17667b689c37c83c21',1,'pulsatrix::PerturbationOptions']]],
   ['in_3',['in',['../structpulsatrix_1_1RecurrentCellArgs.html#ac61d3af2c9778e16e7ad6537ad58e1d3',1,'pulsatrix::RecurrentCellArgs::in'],['../structpulsatrix_1_1SsmPassArgs.html#add1d724ff478ba1e7e655fe5ca038c20',1,'pulsatrix::SsmPassArgs::in'],['../structpulsatrix_1_1RlRowArgs.html#aba6a7df573a84446ed309c73e2e6f351',1,'pulsatrix::RlRowArgs::in']]],
