@@ -366,5 +366,25 @@ TEST_F(LinearModuleTest, MutatingThroughParametersChangesModuleState) {
     EXPECT_FLOAT_EQ(linear.weight().data()[0], 99.0f);  // module's own state reflects it
 }
 
+// LLM-1: a layer built without a bias is y = x @ W, exposes only its weight, and refuses a bias.
+TEST_F(LinearModuleTest, NoBiasLayerHasOnlyAWeight) {
+    LinearModule m(2, 2, &backend, /*use_bias=*/false);
+    EXPECT_FALSE(m.uses_bias());
+    m.set_weight({1.0f, 2.0f, 3.0f, 4.0f});
+    EXPECT_THROW(m.set_bias({1.0f, 1.0f}), std::logic_error);
+    ASSERT_EQ(m.named_parameters().size(), 1u);
+    EXPECT_EQ(m.named_parameters()[0].name, "weight");
+
+    Tensor y = m.forward(Tensor(Shape({1, 2}), &backend, {1.0f, 1.0f}));
+    EXPECT_FLOAT_EQ(y.data()[0], 4.0f);
+    EXPECT_FLOAT_EQ(y.data()[1], 6.0f);
+    Tensor dx = m.backward(Tensor(Shape({1, 2}), &backend, {1.0f, 0.0f}));
+    EXPECT_FLOAT_EQ(dx.data()[0], 1.0f);
+    EXPECT_FLOAT_EQ(dx.data()[1], 3.0f);
+    EXPECT_FLOAT_EQ(m.bias_grad().data()[0], 0.0f);
+    Tensor r = m.propagate_relevance(y, LRPRuleConfig{1e-9f});
+    EXPECT_NEAR(r.data()[0] + r.data()[1], 10.0f, 1e-4f);
+}
+
 }  // namespace
 }  // namespace pulsatrix

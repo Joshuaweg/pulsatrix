@@ -14,8 +14,9 @@ Run it: `./build/tagger_finetune_recipe [steps] [learning_rate]` (Windows:
 !!! note "Why a self-pretrained model"
     Importing real pretrained models (SmolLM2, ResNet18) is planned for v1.2. Until then the
     "pretrained" model is one the recipe trains itself. Only step 1 changes once real checkpoints
-    load. The task is per-token tagging rather than next-token prediction because attention has
-    no causal mask yet; without one, a language model could see the token it's asked to predict.
+    load. The task is per-token tagging rather than next-token prediction because the recipe
+    predates the causal mask (LLM-1); without one, a language model could see the token it's asked
+    to predict. Set `AttentionConfig::causal` to build a next-token model.
 
 ## The model and the task
 

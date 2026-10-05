@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 #include <vector>
 
@@ -11,20 +12,50 @@ namespace pulsatrix {
 namespace {
 
 /**
- * @brief head_dim used by the member initializer list, which runs *before* the constructor
- *        body's validation can throw. Falls back to 1 for any invalid configuration so every
- *        sub-object still constructs against a legal Shape; the body then throws the real,
- *        specific error. Same defensive-fallback pattern as RNNModule's
- *        `input_size > 0 ? input_size : 1` initializers.
+ * @brief The config with its 0 defaults filled in, or a throw naming the problem. Runs in the
+ *        member initializer list, before any sub-module is built against its sizes.
  */
-[[nodiscard]] int64_t safe_head_dim(int64_t d_model, int64_t num_heads) {
-    if (d_model <= 0 || num_heads <= 0 || d_model % num_heads != 0) {
-        return 1;
+[[nodiscard]] AttentionConfig resolve(AttentionConfig c) {
+    // External boundary (constructor arguments can originate from Phase 5's Python bindings
+    // with no upstream validation), same convention as every other module's constructor.
+    if (c.d_model <= 0) {
+        throw std::invalid_argument("MultiHeadAttentionModule: d_model must be positive");
     }
-    return d_model / num_heads;
+    if (c.num_heads <= 0) {
+        throw std::invalid_argument("MultiHeadAttentionModule: num_heads must be positive");
+    }
+    if (c.num_kv_heads < 0 || c.head_dim < 0) {
+        throw std::invalid_argument("MultiHeadAttentionModule: num_kv_heads and head_dim must not be negative");
+    }
+    if (c.num_kv_heads == 0) {
+        c.num_kv_heads = c.num_heads;
+    }
+    if (c.num_heads % c.num_kv_heads != 0) {
+        throw std::invalid_argument("MultiHeadAttentionModule: num_heads must be a multiple of num_kv_heads");
+    }
+    if (c.head_dim == 0) {
+        if (c.d_model % c.num_heads != 0) {
+            throw std::invalid_argument("MultiHeadAttentionModule: d_model must be divisible by num_heads");
+        }
+        c.head_dim = c.d_model / c.num_heads;
+    }
+    // Checked here rather than left to RoPEModule's own constructor so the message names the
+    // real cause (the caller chose d_model/num_heads, not head_dim directly).
+    if (c.use_rope && c.head_dim % 2 != 0) {
+        throw std::invalid_argument(
+            "MultiHeadAttentionModule: use_rope requires an even head_dim (d_model / num_heads)");
+    }
+    return c;
 }
 
-[[nodiscard]] int64_t safe_positive(int64_t value) { return value > 0 ? value : 1; }
+[[nodiscard]] AttentionConfig legacy_config(int64_t d_model, int64_t num_heads, bool use_rope, bool use_qk_norm) {
+    AttentionConfig c;
+    c.d_model = d_model;
+    c.num_heads = num_heads;
+    c.use_rope = use_rope;
+    c.use_qk_norm = use_qk_norm;
+    return c;
+}
 
 /**
  * @brief A reshaped copy of t. Tensor::reshape is an in-place, non-const metadata-only
@@ -43,56 +74,115 @@ namespace {
 
 MultiHeadAttentionModule::MultiHeadAttentionModule(int64_t d_model, int64_t num_heads, DeviceBackend* backend,
                                                    bool use_rope, bool use_qk_norm)
-    : d_model_(d_model),
-      num_heads_(num_heads),
-      head_dim_(safe_head_dim(d_model, num_heads)),
-      use_rope_(use_rope),
-      use_qk_norm_(use_qk_norm),
+    : MultiHeadAttentionModule(legacy_config(d_model, num_heads, use_rope, use_qk_norm), backend) {}
+
+MultiHeadAttentionModule::MultiHeadAttentionModule(const AttentionConfig& config, DeviceBackend* backend)
+    : config_(resolve(config)),
+      d_model_(config_.d_model),
+      num_heads_(config_.num_heads),
+      num_kv_heads_(config_.num_kv_heads),
+      head_dim_(config_.head_dim),
+      use_rope_(config_.use_rope),
+      use_qk_norm_(config_.use_qk_norm),
       backend_(backend),
-      q_proj_(safe_positive(d_model), safe_positive(d_model), backend),
-      k_proj_(safe_positive(d_model), safe_positive(d_model), backend),
-      v_proj_(safe_positive(d_model), safe_positive(d_model), backend),
-      out_proj_(safe_positive(d_model), safe_positive(d_model), backend),
+      q_proj_(d_model_, num_heads_ * head_dim_, backend, config_.qkv_bias),
+      k_proj_(d_model_, num_kv_heads_ * head_dim_, backend, config_.qkv_bias),
+      v_proj_(d_model_, num_kv_heads_ * head_dim_, backend, config_.qkv_bias),
+      out_proj_(num_heads_ * head_dim_, d_model_, backend, config_.out_bias),
       softmax_(backend),
+      key_keep_(Shape({0}), backend),
+      last_key_keep_(Shape({0}), backend),
       last_q_(Shape({0}), backend),
       last_k_(Shape({0}), backend),
       last_v_(Shape({0}), backend),
       last_scores_raw_(Shape({0}), backend),
       last_attn_(Shape({0}), backend),
       last_context_(Shape({0}), backend) {
-    // External boundary (constructor arguments can originate from Phase 5's Python bindings
-    // with no upstream validation), same convention as every other module's constructor.
-    if (d_model <= 0) {
-        throw std::invalid_argument("MultiHeadAttentionModule: d_model must be positive");
-    }
-    if (num_heads <= 0) {
-        throw std::invalid_argument("MultiHeadAttentionModule: num_heads must be positive");
-    }
-    if (d_model % num_heads != 0) {
-        throw std::invalid_argument("MultiHeadAttentionModule: d_model must be divisible by num_heads");
-    }
-    // Checked here rather than left to RoPEModule's own constructor so the message names the
-    // real cause (the caller chose d_model/num_heads, not head_dim directly).
-    if (use_rope && head_dim_ % 2 != 0) {
-        throw std::invalid_argument(
-            "MultiHeadAttentionModule: use_rope requires an even head_dim (d_model / num_heads)");
-    }
-
     if (use_rope_) {
         // Separate instances for Q and K -- see the header's caching note; a shared instance
         // would leave only K's activations cached for propagate_relevance.
-        q_rope_ = std::make_unique<RoPEModule>(head_dim_, backend);
-        k_rope_ = std::make_unique<RoPEModule>(head_dim_, backend);
+        q_rope_ = std::make_unique<RoPEModule>(head_dim_, backend, config_.rope_base, config_.rope_layout);
+        k_rope_ = std::make_unique<RoPEModule>(head_dim_, backend, config_.rope_base, config_.rope_layout);
     }
     if (use_qk_norm_) {
-        q_norm_ = std::make_unique<RMSNormModule>(head_dim_, backend);
-        k_norm_ = std::make_unique<RMSNormModule>(head_dim_, backend);
+        q_norm_ = std::make_unique<RMSNormModule>(head_dim_, backend, backend->device(), config_.qk_norm_eps);
+        k_norm_ = std::make_unique<RMSNormModule>(head_dim_, backend, backend->device(), config_.qk_norm_eps);
         // RMSNormModule zero-initializes gamma; a zero gamma here would annihilate Q and K
         // and make attention uniform regardless of the input. See the header's note.
         const std::vector<float> ones(static_cast<size_t>(head_dim_), 1.0f);
         q_norm_->set_gamma(ones);
         k_norm_->set_gamma(ones);
     }
+}
+
+void MultiHeadAttentionModule::set_key_padding_mask(const Tensor& key_keep) {
+    if (key_keep.rank() != 2) {
+        throw std::invalid_argument("MultiHeadAttentionModule::set_key_padding_mask: key_keep must be rank-2 (N, L)");
+    }
+    // Copied through the host so a mask built on the CPU works with a GPU module.
+    key_keep_ = Tensor(key_keep.shape(), backend_, key_keep.to_host_vector());
+    has_key_keep_ = true;
+}
+
+void MultiHeadAttentionModule::clear_key_padding_mask() {
+    key_keep_ = Tensor(Shape({0}), backend_);
+    has_key_keep_ = false;
+}
+
+void MultiHeadAttentionModule::set_position_offset(int64_t offset) {
+    if (offset < 0) {
+        throw std::invalid_argument("MultiHeadAttentionModule::set_position_offset: offset must be non-negative");
+    }
+    position_offset_ = offset;
+    if (use_rope_) {
+        q_rope_->set_position_offset(offset);
+        k_rope_->set_position_offset(offset);
+    }
+}
+
+void MultiHeadAttentionModule::repeat_kv(Tensor& t) const {
+    const int64_t group = num_heads_ / num_kv_heads_;
+    if (group == 1) {
+        return;
+    }
+    const Tensor& src = t;
+    const int64_t N = src.shape().dim(0);
+    const int64_t L = src.shape().dim(2);
+    const auto slice = static_cast<size_t>(L * head_dim_);
+    Tensor out(Shape({N, num_heads_, L, head_dim_}), backend_, src.device());
+    // Head h reads K/V head h / group. Row r = (n, kv head) of src is copied to rows
+    // r * group + g of out, so one strided copy per g covers every (n, kv head).
+    for (int64_t g = 0; g < group; ++g) {
+        backend_->copy_2d(out.data() + g * static_cast<int64_t>(slice), slice * static_cast<size_t>(group),
+                          src.data(), slice, static_cast<size_t>(N * num_kv_heads_), slice);
+    }
+    t = std::move(out);
+}
+
+void MultiHeadAttentionModule::sum_kv_groups(Tensor& t) const {
+    const int64_t group = num_heads_ / num_kv_heads_;
+    if (group == 1) {
+        return;
+    }
+    const Tensor& src = t;
+    const int64_t N = src.shape().dim(0);
+    const int64_t L = src.shape().dim(2);
+    const auto slice = static_cast<size_t>(L * head_dim_);
+    Tensor out(Shape({N, num_kv_heads_, L, head_dim_}), backend_, src.device());
+    for (int64_t r = 0; r < N * num_kv_heads_; ++r) {
+        backend_->accumulate_rows(src.data() + r * group * static_cast<int64_t>(slice),
+                                  out.data() + r * static_cast<int64_t>(slice), static_cast<size_t>(group), slice);
+    }
+    t = std::move(out);
+}
+
+void MultiHeadAttentionModule::fill_masked(Tensor& scores, float value) const {
+    if (!config_.causal && !last_has_key_keep_) {
+        return;
+    }
+    const auto n = static_cast<size_t>(last_N_), l = static_cast<size_t>(last_L_);
+    backend_->attention_mask_fill(scores.data(), last_has_key_keep_ ? last_key_keep_.data() : nullptr, n,
+                                  static_cast<size_t>(num_heads_), l, l, config_.causal, /*q_offset=*/0, value);
 }
 
 Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
@@ -105,7 +195,12 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
     const int64_t N = input.shape().dim(0);
     const int64_t L = input.shape().dim(1);
     const int64_t H = num_heads_;
+    const int64_t Hkv = num_kv_heads_;
     const int64_t D = head_dim_;
+    if (has_key_keep_ && (key_keep_.shape().dim(0) != N || key_keep_.shape().dim(1) != L)) {
+        throw std::invalid_argument(
+            "MultiHeadAttentionModule::forward: the key padding mask must be (N, L) for an (N, L, d_model) input");
+    }
 
     // --- Step 1: Q/K/V projections ------------------------------------------------------
     // LinearModule takes rank-2 (batch, features); (N, L, d_model) is the same row-major
@@ -116,25 +211,24 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
     Tensor v_flat = v_proj_.forward(flat_input);
 
     // --- Step 2: split heads ------------------------------------------------------------
-    // (N, L, H, D) -> (N, H, L, D): the head axis moves in front of L.
+    // (N, L, H, D) -> (N, H, L, D): the head axis moves in front of L. K and V have Hkv heads.
     const DeviceType device = input.device();
     const auto n = static_cast<size_t>(N), l = static_cast<size_t>(L), h = static_cast<size_t>(H),
-               d = static_cast<size_t>(D);
+               hkv = static_cast<size_t>(Hkv), d = static_cast<size_t>(D);
     Tensor q(Shape({N, H, L, D}), backend_, device);
-    Tensor k(Shape({N, H, L, D}), backend_, device);
-    Tensor v(Shape({N, H, L, D}), backend_, device);
+    Tensor k(Shape({N, Hkv, L, D}), backend_, device);
+    Tensor v(Shape({N, Hkv, L, D}), backend_, device);
     backend_->permute_0213(q_flat.data(), q.data(), n, l, h, d);
-    backend_->permute_0213(k_flat.data(), k.data(), n, l, h, d);
-    backend_->permute_0213(v_flat.data(), v.data(), n, l, h, d);
+    backend_->permute_0213(k_flat.data(), k.data(), n, l, hkv, d);
+    backend_->permute_0213(v_flat.data(), v.data(), n, l, hkv, d);
 
     // --- Step 3: QK-Norm (optional) -----------------------------------------------------
     // (N, H, L, D) -> (N*H*L, D) is a pure reshape: the normalized axis is already last.
     if (use_qk_norm_) {
-        const Shape rows({N * H * L, D});
-        Tensor q_norm_out = q_norm_->forward(reshaped(q, rows));
-        Tensor k_norm_out = k_norm_->forward(reshaped(k, rows));
+        Tensor q_norm_out = q_norm_->forward(reshaped(q, Shape({N * H * L, D})));
+        Tensor k_norm_out = k_norm_->forward(reshaped(k, Shape({N * Hkv * L, D})));
         q = reshaped(q_norm_out, Shape({N, H, L, D}));
-        k = reshaped(k_norm_out, Shape({N, H, L, D}));
+        k = reshaped(k_norm_out, Shape({N, Hkv, L, D}));
     }
 
     // --- Step 4: RoPE (optional) --------------------------------------------------------
@@ -143,6 +237,17 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
         q = q_rope_->forward(q);
         k = k_rope_->forward(k);
     }
+
+    // --- Step 4b: GQA -- repeat each K/V head across its group of query heads -----------
+    repeat_kv(k);
+    repeat_kv(v);
+
+    // The masks this pass uses, cached first so fill_masked() reads them here and in the
+    // backward and relevance passes alike.
+    last_N_ = N;
+    last_L_ = L;
+    last_has_key_keep_ = has_key_keep_;
+    last_key_keep_ = has_key_keep_ ? key_keep_ : Tensor(Shape({0}), backend_);
 
     // --- Step 5: scores = Q @ K^T / sqrt(head_dim) --------------------------------------
     // No batched-gemm primitive exists; loop the N*H independent 2D slices explicitly. Each
@@ -157,6 +262,7 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
                           l, d, l, 0.0f);
     }
     backend_->axpby(inv_sqrt_d, scores_raw.data(), 0.0f, nullptr, scores.data(), static_cast<size_t>(scores.numel()));
+    fill_masked(scores, std::numeric_limits<float>::lowest());
 
     // --- Step 6: softmax over the last axis ---------------------------------------------
     // SoftmaxModule is rank-agnostic over the last axis -- (N, H, L, L) needs no reshape.
@@ -169,15 +275,13 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
     }
 
     // --- Step 8: merge heads ------------------------------------------------------------
-    // (N, H, L, D) -> (N, L, H, D) == (N*L, d_model).
-    Tensor merged(Shape({N * L, d_model_}), backend_, device);
+    // (N, H, L, D) -> (N, L, H, D) == (N*L, H*D).
+    Tensor merged(Shape({N * L, H * D}), backend_, device);
     backend_->permute_0213(context.data(), merged.data(), n, h, l, d);
 
     // --- Step 9: output projection ------------------------------------------------------
     Tensor out_flat = out_proj_.forward(merged);
 
-    last_N_ = N;
-    last_L_ = L;
     last_q_ = std::move(q);
     last_k_ = std::move(k);
     last_v_ = std::move(v);
@@ -197,6 +301,7 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
     const int64_t N = last_N_;
     const int64_t L = last_L_;
     const int64_t H = num_heads_;
+    const int64_t Hkv = num_kv_heads_;
     const int64_t D = head_dim_;
     if (grad_output.rank() != 3 || grad_output.shape().dim(0) != N || grad_output.shape().dim(1) != L ||
         grad_output.shape().dim(2) != d_model_) {
@@ -211,7 +316,7 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
     // --- Step 8' : merge heads inverse (pure data movement) -----------------------------
     const DeviceType device = grad_output.device();
     const auto n = static_cast<size_t>(N), l = static_cast<size_t>(L), h = static_cast<size_t>(H),
-               d = static_cast<size_t>(D);
+               hkv = static_cast<size_t>(Hkv), d = static_cast<size_t>(D);
     Tensor grad_context(Shape({N, H, L, D}), backend_, device);
     backend_->permute_0213(grad_merged.data(), grad_context.data(), n, l, h, d);
 
@@ -228,6 +333,8 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
 
     // --- Step 6' : softmax --------------------------------------------------------------
     Tensor grad_scores = softmax_.backward(grad_attn);
+    // A masked score is a constant, so it passes no gradient on to Q and K.
+    fill_masked(grad_scores, 0.0f);
 
     // --- Step 5' : scores = Q @ K^T / sqrt(head_dim) ------------------------------------
     const float inv_sqrt_d = 1.0f / std::sqrt(static_cast<float>(D));
@@ -243,6 +350,10 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
         backend_->gemm_ex(ds, true, last_q_.data() + nh * L * D, false, grad_k.data() + nh * L * D, l, l, d, 0.0f);
     }
 
+    // --- Step 4b' : GQA -- each shared K/V head sums its group's gradients -------------
+    sum_kv_groups(grad_k);
+    sum_kv_groups(grad_v);
+
     // --- Step 4' : RoPE -----------------------------------------------------------------
     if (use_rope_) {
         grad_q = q_rope_->backward(grad_q);
@@ -251,20 +362,19 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
 
     // --- Step 3' : QK-Norm --------------------------------------------------------------
     if (use_qk_norm_) {
-        const Shape rows({N * H * L, D});
-        Tensor gq = q_norm_->backward(reshaped(grad_q, rows));
-        Tensor gk = k_norm_->backward(reshaped(grad_k, rows));
+        Tensor gq = q_norm_->backward(reshaped(grad_q, Shape({N * H * L, D})));
+        Tensor gk = k_norm_->backward(reshaped(grad_k, Shape({N * Hkv * L, D})));
         grad_q = reshaped(gq, Shape({N, H, L, D}));
-        grad_k = reshaped(gk, Shape({N, H, L, D}));
+        grad_k = reshaped(gk, Shape({N, Hkv, L, D}));
     }
 
     // --- Step 2' : split-heads inverse --------------------------------------------------
-    Tensor grad_q_flat(Shape({N * L, d_model_}), backend_, device);
-    Tensor grad_k_flat(Shape({N * L, d_model_}), backend_, device);
-    Tensor grad_v_flat(Shape({N * L, d_model_}), backend_, device);
+    Tensor grad_q_flat(Shape({N * L, H * D}), backend_, device);
+    Tensor grad_k_flat(Shape({N * L, Hkv * D}), backend_, device);
+    Tensor grad_v_flat(Shape({N * L, Hkv * D}), backend_, device);
     backend_->permute_0213(grad_q.data(), grad_q_flat.data(), n, h, l, d);
-    backend_->permute_0213(grad_k.data(), grad_k_flat.data(), n, h, l, d);
-    backend_->permute_0213(grad_v.data(), grad_v_flat.data(), n, h, l, d);
+    backend_->permute_0213(grad_k.data(), grad_k_flat.data(), n, hkv, l, d);
+    backend_->permute_0213(grad_v.data(), grad_v_flat.data(), n, hkv, l, d);
 
     // --- Step 1' : Q/K/V projections ----------------------------------------------------
     // All three read the same input tensor, so the three input gradients sum.
@@ -283,6 +393,7 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
     const int64_t N = last_N_;
     const int64_t L = last_L_;
     const int64_t H = num_heads_;
+    const int64_t Hkv = num_kv_heads_;
     const int64_t D = head_dim_;
     if (relevance_out.rank() != 3 || relevance_out.shape().dim(0) != N || relevance_out.shape().dim(1) != L ||
         relevance_out.shape().dim(2) != d_model_) {
@@ -296,7 +407,7 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
     // summed in the original loop's order); K read transposed in place.
     const DeviceType device = relevance_out.device();
     const auto n = static_cast<size_t>(N), l = static_cast<size_t>(L), h = static_cast<size_t>(H),
-               d = static_cast<size_t>(D);
+               hkv = static_cast<size_t>(Hkv), d = static_cast<size_t>(D);
 
     Tensor r_merged = out_proj_.propagate_relevance(reshaped(relevance_out, Shape({N * L, d_model_})), config);
     Tensor r_context(Shape({N, H, L, D}), backend_, device);
@@ -309,12 +420,19 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
                                   r_attn.data(), r_v.data(), n * h, l, l, d, config.epsilon, /*b_transposed=*/false);
 
     Tensor r_scores = softmax_.propagate_relevance(r_attn, config);
+    // A masked score is a constant (the fill value), not a product of Q and K: no relevance
+    // flows through it. Its attention weight is 0, so this only matters for fully masked rows.
+    fill_masked(r_scores, 0.0f);
 
     // scores_raw = Q @ K^T, K stored (L, D) == K^T read transposed; r_k comes back in K's layout.
     Tensor r_q(Shape({N, H, L, D}), backend_, device);
     Tensor r_k(Shape({N, H, L, D}), backend_, device);
     backend_->lrp_bilinear_matmul(last_q_.data(), last_k_.data(), last_scores_raw_.data(), r_scores.data(),
                                   r_q.data(), r_k.data(), n * h, l, d, l, config.epsilon, /*b_transposed=*/true);
+
+    // GQA: a shared K/V head's relevance is the sum over the query heads that read it.
+    sum_kv_groups(r_k);
+    sum_kv_groups(r_v);
 
     if (use_rope_) {
         r_q = q_rope_->propagate_relevance(r_q, config);
@@ -323,20 +441,19 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
 
     // --- Step 3' : QK-Norm (AttnLRP identity rule) --------------------------------------
     if (use_qk_norm_) {
-        const Shape rows({N * H * L, D});
-        Tensor rq = q_norm_->propagate_relevance(reshaped(r_q, rows), config);
-        Tensor rk = k_norm_->propagate_relevance(reshaped(r_k, rows), config);
+        Tensor rq = q_norm_->propagate_relevance(reshaped(r_q, Shape({N * H * L, D})), config);
+        Tensor rk = k_norm_->propagate_relevance(reshaped(r_k, Shape({N * Hkv * L, D})), config);
         r_q = reshaped(rq, Shape({N, H, L, D}));
-        r_k = reshaped(rk, Shape({N, H, L, D}));
+        r_k = reshaped(rk, Shape({N, Hkv, L, D}));
     }
 
     // --- Step 2' : split-heads inverse --------------------------------------------------
-    Tensor r_q_flat(Shape({N * L, d_model_}), backend_, device);
-    Tensor r_k_flat(Shape({N * L, d_model_}), backend_, device);
-    Tensor r_v_flat(Shape({N * L, d_model_}), backend_, device);
+    Tensor r_q_flat(Shape({N * L, H * D}), backend_, device);
+    Tensor r_k_flat(Shape({N * L, Hkv * D}), backend_, device);
+    Tensor r_v_flat(Shape({N * L, Hkv * D}), backend_, device);
     backend_->permute_0213(r_q.data(), r_q_flat.data(), n, h, l, d);
-    backend_->permute_0213(r_k.data(), r_k_flat.data(), n, h, l, d);
-    backend_->permute_0213(r_v.data(), r_v_flat.data(), n, h, l, d);
+    backend_->permute_0213(r_k.data(), r_k_flat.data(), n, hkv, l, d);
+    backend_->permute_0213(r_v.data(), r_v_flat.data(), n, hkv, l, d);
 
     // --- Step 1' : Q/K/V projections ----------------------------------------------------
     // All three projections read the same input, so their input relevances sum -- the same

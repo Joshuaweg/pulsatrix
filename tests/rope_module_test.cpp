@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <vector>
@@ -414,6 +415,88 @@ TEST_F(RoPEModuleTest, HasNoLearnableParameters) {
 TEST_F(RoPEModuleTest, OpTypeIsElementwise) {
     RoPEModule rope(4, &backend);
     EXPECT_EQ(rope.op_type(), OpType::Elementwise);
+}
+
+// ---------------------------------------------------------------------------
+// LLM-1: rotate-half layout and position offset
+// ---------------------------------------------------------------------------
+
+// RotateHalf pairs (i, i + half) where AdjacentPairs pairs (2i, 2i+1). Interleaving the input
+// so each rotate-half pair lands on an adjacent pair, rotating, and undoing the interleave
+// must give exactly the rotate-half result.
+TEST_F(RoPEModuleTest, RotateHalfIsAdjacentPairsOnInterleavedFeatures) {
+    const int64_t D = 6, L = 4, half = 3;
+    std::vector<float> x(static_cast<size_t>(L * D));
+    for (size_t i = 0; i < x.size(); ++i) {
+        x[i] = 0.37f * static_cast<float>(i) - 2.1f;
+    }
+    std::vector<float> interleaved(x.size());
+    for (int64_t pos = 0; pos < L; ++pos) {
+        for (int64_t i = 0; i < half; ++i) {
+            interleaved[static_cast<size_t>(pos * D + 2 * i)] = x[static_cast<size_t>(pos * D + i)];
+            interleaved[static_cast<size_t>(pos * D + 2 * i + 1)] = x[static_cast<size_t>(pos * D + i + half)];
+        }
+    }
+    RoPEModule half_rope(D, &backend, 10000.0f, RoPELayout::RotateHalf);
+    RoPEModule adjacent(D, &backend, 10000.0f, RoPELayout::AdjacentPairs);
+    Tensor y_half = half_rope.forward(Tensor(Shape({1, L, D}), &backend, x));
+    Tensor y_adj = adjacent.forward(Tensor(Shape({1, L, D}), &backend, interleaved));
+    for (int64_t pos = 0; pos < L; ++pos) {
+        for (int64_t i = 0; i < half; ++i) {
+            EXPECT_FLOAT_EQ(y_half.data()[pos * D + i], y_adj.data()[pos * D + 2 * i]);
+            EXPECT_FLOAT_EQ(y_half.data()[pos * D + i + half], y_adj.data()[pos * D + 2 * i + 1]);
+        }
+    }
+    // And the layouts really differ on the same input.
+    Tensor y_adj_same = adjacent.forward(Tensor(Shape({1, L, D}), &backend, x));
+    EXPECT_NE(y_half.data()[1 * D + 1], y_adj_same.data()[1 * D + 1]);
+}
+
+TEST_F(RoPEModuleTest, RotateHalfBackwardIsInverseAndRelevanceConserves) {
+    RoPEModule rope(4, &backend, 500.0f, RoPELayout::RotateHalf);
+    std::vector<float> values(2 * 3 * 4);
+    for (size_t i = 0; i < values.size(); ++i) {
+        values[i] = 0.29f * static_cast<float>(i) - 1.3f;
+    }
+    Tensor y = rope.forward(Tensor(Shape({2, 3, 4}), &backend, values));
+    Tensor recovered = rope.backward(y);
+    for (int64_t i = 0; i < recovered.numel(); ++i) {
+        EXPECT_NEAR(recovered.data()[i], values[static_cast<size_t>(i)], 1e-5f) << "element " << i;
+    }
+    Tensor r = rope.propagate_relevance(y, LRPRuleConfig{1e-9f});
+    double in_sum = 0.0, out_sum = 0.0;
+    for (int64_t i = 0; i < r.numel(); ++i) {
+        in_sum += r.data()[i];
+        out_sum += y.data()[i];
+    }
+    EXPECT_NEAR(in_sum, out_sum, 1e-4);
+}
+
+// Offset k on L rows rotates them exactly as rows k .. k+L-1 of a longer sequence from 0.
+TEST_F(RoPEModuleTest, PositionOffsetMatchesTheSameRowsOfALongerSequence) {
+    const int64_t D = 4, k = 3, L = 2;
+    std::vector<float> row_values{0.5f, -1.2f, 2.0f, 0.1f, 0.7f, -0.3f, -0.9f, 1.4f};
+    std::vector<float> long_values(static_cast<size_t>((k + L) * D), 0.0f);
+    std::copy(row_values.begin(), row_values.end(), long_values.begin() + k * D);
+
+    for (RoPELayout layout : {RoPELayout::AdjacentPairs, RoPELayout::RotateHalf}) {
+        RoPEModule full(D, &backend, 10000.0f, layout);
+        Tensor y_full = full.forward(Tensor(Shape({1, k + L, D}), &backend, long_values));
+        RoPEModule shifted(D, &backend, 10000.0f, layout);
+        shifted.set_position_offset(k);
+        Tensor y_shift = shifted.forward(Tensor(Shape({1, L, D}), &backend, row_values));
+        for (int64_t i = 0; i < L * D; ++i) {
+            EXPECT_FLOAT_EQ(y_shift.data()[i], y_full.data()[k * D + i]) << "element " << i;
+        }
+        // Backward uses the offset the forward ran with, even if it changes in between.
+        shifted.set_position_offset(0);
+        Tensor back = shifted.backward(y_shift);
+        for (int64_t i = 0; i < L * D; ++i) {
+            EXPECT_NEAR(back.data()[i], row_values[static_cast<size_t>(i)], 1e-5f);
+        }
+    }
+    RoPEModule rope(D, &backend);
+    EXPECT_THROW(rope.set_position_offset(-1), std::invalid_argument);
 }
 
 // ---------------------------------------------------------------------------

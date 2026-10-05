@@ -17,7 +17,7 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
   activation patching, circuit graphs, probes and a basic sparse autoencoder are all in.
 - **Missing.** There is no import from PyTorch or Hugging Face, and everything is `float32`.
-  Tensors have no views or broadcasting. There is no LoRA. Attention has no mask.
+  Tensors have no views or broadcasting. There is no LoRA.
 - **Done since v1.0.** The whole [FND epic](#fnd-foundations): named parameters, freezing, top-k,
   eigensolver/QR/SVD, BatchNorm eval mode and folding, Conv2D stride and padding, seeding and
   deterministic mode, and device checks. Saving and loading: safetensors and native checkpoints
@@ -29,6 +29,10 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   for every view and dependency-free SVG figures ([VIZ-1, VIZ-2](#viz-visualization-pack)).
   `cmake --install` with `find_package(pulsatrix)`, and a benchmark suite that compares builds
   and gates LRP conservation ([KS-1, KS-2](#ks-kitchen-sink)).
+- **v1.2 so far.** Attention that loads current small LLMs
+  ([LLM-1](#llm-running-real-language-models)): grouped-query attention, causal and padding
+  masks, "rotate half" RoPE with a configurable base, QK-Norm and bias-free projections, checked
+  against Hugging Face's Llama, Qwen2 and Qwen3 attention.
 - **HIP backend.** It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   `dot` and `sum`, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Its container runs ROCm 10.0.0, the
@@ -288,7 +292,7 @@ rate is tuned, plain LoRA matches or beats most of them.
 
 | Follow-up | Belongs with |
 |---|---|
-| A causal attention mask, which next-token language-model training needs | LLM-1 |
+| A causal attention mask, which next-token language-model training needs | Done in LLM-1 |
 | Rerun the TRN-6 recipe on SmolLM2-135M | after IO-5 and LLM-6 |
 | Checkpointing an `LRScheduler` with the model (TRN-6 stores the step as metadata itself) | IO-2 follow-up |
 
@@ -298,18 +302,46 @@ Target order: SmolLM2-135M, then Qwen2.5-0.5B, Llama-3.2-1B, Qwen3-0.6B and Gemm
 needs the fewest changes. Gemma 3 has the most quirks, but Google's Gemma Scope 2 publishes sparse
 autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| LLM-1 | Attention upgrade: grouped-query attention (`num_kv_heads`), `head_dim` separate from `d_model / num_heads`, optional QKV bias, causal and padding masks, a RoPE layout flag (Hugging Face "rotate half" vs. adjacent pairs), and a position offset | Without these, no current small LLM loads | — | P0 | M |
-| LLM-2 | A tied LM head that shares the embedding matrix | SmolLM2, Qwen3 and Gemma 3 all tie their embeddings | — | P0 | S |
-| LLM-3 | Native tokenizers for the target models: [TOK-1 to TOK-3](#tok-tokenizers) | No Python needed to tokenize | — | P0 | M–L |
-| LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S |
-| LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M |
-| LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3 | Catches layout bugs that still "load" | IO-4 | P0 | S |
-| LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M |
-| LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M |
-| LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| LLM-1 | Attention upgrade: grouped-query attention (`num_kv_heads`), `head_dim` separate from `d_model / num_heads`, optional QKV bias, causal and padding masks, a RoPE layout flag (Hugging Face "rotate half" vs. adjacent pairs), and a position offset | Without these, no current small LLM loads | — | P0 | M | Done, [#67](https://github.com/Joshuaweg/pulsatrix/pull/67) (see below) |
+| LLM-2 | A tied LM head that shares the embedding matrix | SmolLM2, Qwen3 and Gemma 3 all tie their embeddings | — | P0 | S | |
+| LLM-3 | Native tokenizers for the target models: [TOK-1 to TOK-3](#tok-tokenizers) | No Python needed to tokenize | — | P0 | M–L | |
+| LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S | |
+| LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M | |
+| LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3 | Catches layout bugs that still "load" | IO-4 | P0 | S | |
+| LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M | |
+| LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M | |
+| LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M | |
 
+
+### How the LLM work departed from the plan
+
+- **LLM-1** is configured through one `AttentionConfig` rather than more constructor arguments;
+  the old constructor still works and means what it did. It was checked against Hugging Face's
+  own `LlamaAttention`, `Qwen2Attention` and `Qwen3Attention` (forward output and input gradient,
+  `tools/generate_attention_reference_values.py`), with grouped and multi-query heads, biases,
+  QK-Norm, and left and right padding.
+  - Grouped-query attention copies each K/V head out to its query heads, as Hugging Face's
+    `repeat_kv` does, and sums gradients and relevance back. A shared head's relevance is then the
+    total over the query heads that read it, which LLM-7 checks against LXT.
+  - Masked scores are set to the lowest float, not `-inf`, so a query with no visible key (left
+    padding under a causal mask) gets uniform weights rather than NaN, as in Hugging Face. Their
+    gradient and relevance are set to zero, which Hugging Face's additive mask does not do.
+  - The position offset only moves RoPE. Under RoPE, scores depend on relative position only,
+    so an offset is invisible until queries and keys come from different pieces of the
+    sequence. The mask primitive already takes a query offset for the KV cache (LLM-5).
+  - `LinearModule` gained a no-bias form, and `TransformerBlock` takes an `AttentionConfig` and
+    an RMSNorm epsilon.
+
+### Follow-ups the LLM work surfaced
+
+| Follow-up | Belongs with |
+|---|---|
+| Llama 3's `rope_scaling` changes the low RoPE frequencies at every position, so Llama-3.2 logits need it even on short text | LLM-6 |
+| `SwiGLUModule` without biases: Llama-family MLPs have none, and IO-4's strict mode fails on unmapped keys | IO-4 |
+| Gemma 3's `query_pre_attn_scalar` replaces the `1/sqrt(head_dim)` scale | LLM-9 |
+| Grouped-query attention materializes the repeated K and V; index the shared head inside the matmul instead | HIP-6 |
 
 ## TOK: Tokenizers
 
