@@ -1866,7 +1866,10 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   (<code>num_kv_heads</code>), a <code>head_dim</code> independent of <code>d_model</code>, optional projection biases, a causal
   mask, the RoPE pair layout (<code>RoPELayout::RotateHalf</code> for Llama-family models) and base
   (<code>rope_theta</code>), and QK-Norm. <code>set_key_padding_mask()</code> masks padding tokens and
-  <code>set_position_offset()</code> shifts RoPE positions. <code>LinearModule</code> can be built without a bias.</li>
+  <code>set_position_offset()</code> shifts RoPE positions. <code>LinearModule</code> can be built without a bias.
+  <code>TiedLMHeadModule</code> is the output layer of models with <code>tie_word_embeddings</code>: it computes logits
+  with an <code>EmbeddingModule</code>'s table, which stays a single parameter whose gradient sums both
+  uses.</li>
 <li><strong>Optimizers &amp; losses</strong>: <code>SGDOptimizer</code> (momentum, Nesterov), <code>AdamOptimizer</code>,
   <code>AdamWOptimizer</code>, all with parameter groups; <code>MSELoss</code>, <code>CrossEntropyLoss</code>,
   <code>TokenCrossEntropyLoss</code>, <code>BCEWithLogitsLoss</code>, <code>KLDivergenceLoss</code>, <code>CalibrationLoss</code></li>

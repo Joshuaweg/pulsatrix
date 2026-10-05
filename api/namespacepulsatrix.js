@@ -225,6 +225,7 @@ var namespacepulsatrix =
     [ "Tensor", "classpulsatrix_1_1Tensor.html", "classpulsatrix_1_1Tensor" ],
     [ "TextDataset", "classpulsatrix_1_1TextDataset.html", "classpulsatrix_1_1TextDataset" ],
     [ "TextureCache", "classpulsatrix_1_1TextureCache.html", "classpulsatrix_1_1TextureCache" ],
+    [ "TiedLMHeadModule", "classpulsatrix_1_1TiedLMHeadModule.html", "classpulsatrix_1_1TiedLMHeadModule" ],
     [ "TimingStats", "structpulsatrix_1_1TimingStats.html", "structpulsatrix_1_1TimingStats" ],
     [ "TinyTagger", "classpulsatrix_1_1TinyTagger.html", "classpulsatrix_1_1TinyTagger" ],
     [ "TokenCrossEntropyLoss", "classpulsatrix_1_1TokenCrossEntropyLoss.html", "classpulsatrix_1_1TokenCrossEntropyLoss" ],

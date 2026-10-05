@@ -63,6 +63,7 @@ var group__dl__modules =
     [ "swiglu_module.hpp", "swiglu__module_8hpp.html", null ],
     [ "tagger_finetune_example.hpp", "tagger__finetune__example_8hpp.html", null ],
     [ "tensor.hpp", "tensor_8hpp.html", null ],
+    [ "tied_lm_head_module.hpp", "tied__lm__head__module_8hpp.html", null ],
     [ "token_cross_entropy_loss.hpp", "token__cross__entropy__loss_8hpp.html", null ],
     [ "top_k.hpp", "top__k_8hpp.html", null ],
     [ "transformer_block.hpp", "transformer__block_8hpp.html", null ],

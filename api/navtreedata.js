@@ -74,15 +74,15 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1NoOpMetricsSink.html#a1cfe44365058001dcbcfb92e80455f07",
 "classpulsatrix_1_1ReluModule.html#a0986a35e75389764a3942574077ed729",
 "classpulsatrix_1_1SequentialModule.html#a1bc86e038503cc22bb6949cc768b71f4",
-"classpulsatrix_1_1TinyTagger.html#a3964b13f1b500973e6c2b21104eef3cf",
-"classpulsatrix_1_1datalog_1_1Term.html#a74dbe7366b2618ef4fe16ebe6e9da78e",
-"kl__divergence__loss_8hpp.html",
-"namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbacc31a669f6d086f816852dda3290a3ef",
-"structpulsatrix_1_1AdamOptimizer_1_1AdamState.html",
-"structpulsatrix_1_1DataLoaderOptions.html#a7ceefe8b1ecafbaef471af7126c0b809",
-"structpulsatrix_1_1MetricCapability.html",
-"structpulsatrix_1_1SsmPassArgs.html#a20dbcf10998a16fef9dd80d0ced20dd4",
-"svg_8hpp.html"
+"classpulsatrix_1_1TiedLMHeadModule.html#a02d1fcace11e192a006e218d64efd0e4",
+"classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html#a8c12f818de852ba84c2a298d8417cf2c",
+"hierarchy.html",
+"namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb",
+"sequential__module_8hpp.html",
+"structpulsatrix_1_1ConvGeometry.html#a3b57003c7aca0f87718b2964bd792761",
+"structpulsatrix_1_1LRPRuleConfig.html#a41a03360ab748cd978bea186731a1750",
+"structpulsatrix_1_1Sample.html",
+"structpulsatrix_1_1detail_1_1CpuTimes.html#a32395487b178325aa5b2250127422ab0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
