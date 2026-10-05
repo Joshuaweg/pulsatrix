@@ -30,6 +30,7 @@
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/circuit_graph.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/ice.hpp"
 #include "pulsatrix/metrics_sink.hpp"
 #include "pulsatrix/viz/implot_metrics_sink.hpp"
 #include "pulsatrix/viz/plot_data.hpp"
@@ -204,5 +205,44 @@ struct FeatureDashboardDocument {
  *          or an example has tokens and a different number of activations. */
 [[nodiscard]] std::string ToJson(const FeatureDashboardDocument& doc);
 [[nodiscard]] FeatureDashboardDocument ParseFeatureDashboardDocument(std::string_view json);
+
+// ---- partial dependence --------------------------------------------------------------------
+
+/**
+ * @brief `pulsatrix.partial_dependence.v1`: a partial dependence curve over one feature, with
+ *        the individual (ICE) curves it averages when they were computed (CFS-1).
+ * @note Holds the raw curves only. Centered and derivative ICE are views of them, computed by
+ *       whoever draws them (IceResult::centered, IceResult::derivative), so every renderer agrees.
+ */
+struct PartialDependenceDocument {
+    /** @brief Name of the varied feature. Optional. */
+    std::string feature;
+    /** @brief What the curve predicts, for example a class name. Optional. */
+    std::string target;
+    /** @brief Strictly increasing feature values. */
+    std::vector<float> grid;
+    /** @brief One value per grid point. */
+    std::vector<float> partial_dependence;
+    /** @brief Number of ICE curves; 0 when the document holds the average only. */
+    int64_t num_instances = 0;
+    /** @brief Row-major (num_instances, grid.size()), or empty. */
+    std::vector<float> ice;
+    /** @brief Each instance's own value of the feature (num_instances of them), or empty. */
+    std::vector<float> feature_values;
+};
+
+/** @brief Copies @p result, its partial dependence curve included. */
+[[nodiscard]] PartialDependenceDocument ToPartialDependenceDocument(const IceResult& result, std::string feature = "",
+                                                                    std::string target = "");
+/** @brief Rebuilds the ICE curves for their centered and derivative views.
+ *  @throws std::invalid_argument if the document holds no ICE curves. */
+[[nodiscard]] IceResult ToIceResult(const PartialDependenceDocument& doc);
+/** @brief A two-feature partial dependence as a heatmap: rows follow grid_y, columns grid_x, and
+ *         the labels are the grid values. */
+[[nodiscard]] HeatmapDocument ToHeatmapDocument(const PartialDependence2D& pd, std::string title = "");
+/** @throws std::invalid_argument if the grid is empty or not strictly increasing, or a length
+ *          doesn't match it. */
+[[nodiscard]] std::string ToJson(const PartialDependenceDocument& doc);
+[[nodiscard]] PartialDependenceDocument ParsePartialDependenceDocument(std::string_view json);
 
 }  // namespace pulsatrix

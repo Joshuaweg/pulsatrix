@@ -98,6 +98,7 @@ add_library(pulsatrix_core
     src/avg_pool2d_module.cpp
     src/embedding_module.cpp
     src/tied_lm_head_module.cpp
+    src/ice.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp
@@ -176,6 +177,8 @@ add_library(pulsatrix_core
     src/viz/plot_data.cpp
     src/viz/document.cpp
     src/viz/svg.cpp
+    src/viz/svg_whatif.cpp
+    src/viz/document_whatif.cpp
     src/benchmark.cpp
     src/json.cpp
 )

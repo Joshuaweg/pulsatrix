@@ -176,6 +176,24 @@ TEST(VizDocumentGoldenTest, FeatureDashboard) {
     ExpectSameFloats(back.top_examples[1].activations, {6.0f});
 }
 
+TEST(VizDocumentGoldenTest, PartialDependence) {
+    PartialDependenceDocument doc;
+    doc.feature = "age";
+    doc.target = "risk";
+    doc.grid = {0.0f, 0.5f, 1.0f};
+    doc.partial_dependence = {0.25f, 0.5f, 1.0f};
+    doc.num_instances = 2;
+    doc.ice = {0.0f, 0.5f, 1.0f, 0.5f, 0.5f, 1.0f};
+    doc.feature_values = {0.25f, 0.75f};
+    std::string golden = ReadFixture("partial_dependence.v1.json");
+    EXPECT_EQ(ToJson(doc), golden);
+    PartialDependenceDocument back = ParsePartialDependenceDocument(golden);
+    EXPECT_EQ(back.feature, "age");
+    EXPECT_EQ(back.num_instances, 2);
+    ExpectSameFloats(back.ice, doc.ice);
+    ExpectSameFloats(back.feature_values, doc.feature_values);
+}
+
 // ---- conversions from and to the in-memory types the widgets draw today.
 
 TEST(VizDocumentConversionTest, AttributionRoundTripsThroughTensor) {
@@ -312,6 +330,43 @@ TEST(VizDocumentReadTest, ErrorsNameTheField) {
                    R"({"schema": "pulsatrix.feature_dashboard.v1", "source": "", "feature_index": 0, "activation_density": 0,
                        "max_activation": 0, "histogram_edges": [0, 1], "histogram_counts": [1, 2], "top_examples": []})",
                    "/histogram_edges");
+}
+
+TEST(VizDocumentReadTest, PartialDependenceChecksItsShape) {
+    const std::string golden = ReadFixture("partial_dependence.v1.json");
+    auto with = [&](const std::string& from, const std::string& to) {
+        std::string s = golden;
+        s.replace(s.find(from), from.size(), to);
+        return s;
+    };
+    ExpectRejected(ParsePartialDependenceDocument, with("[0, 0.5, 1]", "[0, 1, 0.5]"), "/grid");
+    ExpectRejected(ParsePartialDependenceDocument, with("[0.25, 0.5, 1]", "[0.25, 0.5]"), "/partial_dependence");
+    ExpectRejected(ParsePartialDependenceDocument, with("\"num_instances\": 2", "\"num_instances\": 3"), "/ice");
+    ExpectRejected(ParsePartialDependenceDocument, with("[0.25, 0.75]", "[0.25]"), "/feature_values");
+}
+
+TEST(VizDocumentConversionTest, IceRoundTripsThroughAPartialDependenceDocument) {
+    IceResult r;
+    r.grid = {0.0f, 1.0f, 2.0f};
+    r.num_instances = 2;
+    r.curves = {1.0f, 2.0f, 4.0f, 0.0f, 0.0f, 1.0f};
+    r.feature_values = {0.5f, 1.5f};
+    PartialDependenceDocument doc = ToPartialDependenceDocument(r, "x", "y");
+    ExpectSameFloats(doc.partial_dependence, {0.5f, 1.0f, 2.5f});
+    IceResult back = ToIceResult(ParsePartialDependenceDocument(ToJson(doc)));
+    ExpectSameFloats(back.curves, r.curves);
+    ExpectSameFloats(back.centered(), r.centered());
+    doc.num_instances = 0;
+    doc.ice.clear();
+    doc.feature_values.clear();
+    EXPECT_THROW((void)ToIceResult(doc), std::invalid_argument);
+
+    PartialDependence2D pd{0, 1, 0, {0.0f, 0.5f}, {1.0f, 2.0f, 3.0f}, {1, 2, 3, 4, 5, 6}};
+    HeatmapDocument h = ToHeatmapDocument(pd, "pd");
+    EXPECT_EQ(h.rows, 3);
+    EXPECT_EQ(h.cols, 2);
+    EXPECT_EQ(h.row_labels, (std::vector<std::string>{"1", "2", "3"}));
+    EXPECT_EQ(h.col_labels, (std::vector<std::string>{"0", "0.5"}));
 }
 
 TEST(VizDocumentReadTest, CircuitGraphChecksItsNodes) {

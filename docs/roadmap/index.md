@@ -471,7 +471,7 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
-| CFS-1 | ICE: one curve per instance, centered ICE (c-ICE) and derivative ICE, plus two-feature partial dependence. View: PDP over ICE lines, and a 2-D PDP heatmap. Checked against scikit-learn's `partial_dependence` | PDP averages away heterogeneity; ICE shows it. Two-feature PDP shows interactions | — | P0 | S | |
+| CFS-1 | ICE: one curve per instance, centered ICE (c-ICE) and derivative ICE, plus two-feature partial dependence. View: PDP over ICE lines, and a 2-D PDP heatmap. Checked against scikit-learn's `partial_dependence` | PDP averages away heterogeneity; ICE shows it. Two-feature PDP shows interactions | — | P0 | S || Done, [#69](https://github.com/Joshuaweg/pulsatrix/pull/69) (see below) |
 | CFS-2 | ALE (accumulated local effects), first order, with quantile bins. Checked against `alibi` or `PyALE` | PDP reads the model at impossible inputs when features are correlated; ALE doesn't | CFS-1 | P1 | S | |
 | CFS-3 | Local sensitivity: move each input feature by ±δ (absolute or in units of the background's spread) or across its range and record the output change; occlusion with patches for images and spans for sequences. Views: a tornado chart, and the occlusion map through the heatmap renderer | "Which inputs is this prediction sensitive to, and how much?" with no gradients and no surrogate | — | P0 | S | |
 | CFS-4 | Global sensitivity: Morris elementary effects (μ\*, σ) and Sobol first-order and total indices (Saltelli sampling, Jansen estimators) with bootstrap confidence intervals. Views: μ\*–σ scatter, Sobol bars with error bars. Checked against SALib | Which inputs drive the output over the whole input space, and which interact | — | P1 | M | |
@@ -481,6 +481,14 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 
 Every item runs on a re-initialized model too (rule 1): sensitivity that looks the same on a random
 network says nothing about what the model learned.
+
+### How the CFS work departed from the plan
+
+- **CFS-1.** ICE takes a prediction function and a background set, like `PDP`; the ICE average
+  equals `PDP`'s curve exactly. The document holds the raw curves only, and the centered and
+  derivative views are computed when drawn, so every renderer agrees on them. The derivative
+  uses `numpy.gradient`'s formula, which handles uneven grids such as the percentile grids
+  `FeatureGrid` builds. The SVG helpers moved to an internal header shared by the new views.
 
 ## INT: Embedding and representation analysis
 
