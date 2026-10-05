@@ -14,6 +14,10 @@ models wrapped in a lambda.
   perturbations weighted by how close they stay to that input.
 - **`PDP`** (`pdp.hpp`): a Partial Dependence Plot. It shows how the prediction changes as one
   feature varies, averaged over a set of background inputs.
+- **ICE** (`ice.hpp`): individual conditional expectation. `ComputeIce` draws one curve per
+  input instead of PDP's single average, with centered (`centered()`) and derivative
+  (`derivative()`) forms. `ComputePartialDependence2D` varies two features at once, and
+  `FeatureGrid` builds a grid the way scikit-learn does.
 - **`fit_weighted_linear_regression`** (`weighted_linear_regression.hpp`): the shared ridge
   regression solver that `KernelSHAP` and `LIME` both use. It returns one coefficient per
   feature and fits no intercept.
@@ -27,6 +31,8 @@ Full API reference: [Doxygen: Model-Agnostic](../api/group__interpretability__ag
 | `KernelSHAP` | One input | Exact additive attributions that sum to `f(input) - f(baseline)` | 2ⁿ model calls; at most 20 features |
 | `LIME` | One input | A fast local linear approximation | Random: fix `seed`; results depend on `sigma` |
 | `PDP` | Whole dataset | The average effect of one feature on the output | Hides interactions between features |
+| ICE | Each input, and their average | Whether the feature's effect differs between inputs (an interaction) | Reads the model at unrealistic inputs when features are correlated |
+| 2-D partial dependence | Whole dataset | How two features interact | grid_x × grid_y × background model calls |
 
 ## How to implement
 
@@ -111,6 +117,38 @@ Attribution curve = pdp.explain(predict, background, /*feature_index=*/0, /*targ
 explanation of one input. `background` must not be empty.
 
 Test reference: `tests/pdp_test.cpp`.
+
+### ICE
+
+```cpp
+#include "pulsatrix/ice.hpp"
+#include "pulsatrix/viz/svg.hpp"
+
+std::vector<float> grid = FeatureGrid(background, /*feature_index=*/0, /*grid_size=*/20);
+IceResult ice = ComputeIce(predict, background, /*feature_index=*/0, /*target_index=*/0, grid);
+std::vector<float> average = ice.partial_dependence();  // the PDP curve
+std::vector<float> centered = ice.centered();           // each curve minus its first value
+std::vector<float> slopes = ice.derivative();           // each curve's slope
+
+PartialDependenceDocument doc = ToPartialDependenceDocument(ice, "age", "risk");
+PartialDependenceSvgOptions view;
+view.style = IceStyle::Centered;
+std::string svg = RenderPartialDependenceSvg(doc, view);
+```
+
+**What's happening:** `ComputeIce` sets feature 0 to each grid value in each background input,
+one model call per pair, and keeps every curve. Their mean is exactly what `PDP` returns.
+Curves that are parallel mean the feature acts the same way everywhere. When the centered curves
+fan out, or the slopes differ at the same grid point, the feature interacts with another one.
+`FeatureGrid` uses the feature's distinct values when there are fewer than `grid_size`, otherwise
+an even grid between its 5th and 95th percentiles, as scikit-learn's `partial_dependence` does.
+
+For two features, `ComputePartialDependence2D(predict, background, fx, fy, target, grid_x,
+grid_y)` returns a grid of averages; `ToHeatmapDocument` turns it into a heatmap document for
+`RenderHeatmapSvg`.
+
+Test reference: `tests/ice_test.cpp`, checked against scikit-learn 1.9.1
+(`tools/generate_ice_reference_values.py`).
 
 ## Recipes
 

@@ -243,6 +243,8 @@ TEST(SvgRenderTest, EveryChartIsWellFormedDeterministicAndTitled) {
         RenderHeatmapSvg(h, opt),
         RenderTokenStripSvg(t, opt),
         RenderBeeswarmSvg({Features({1.0f, 2.0f}), Features({-1.0f, 0.5f})}, {0, 1}, opt),
+        RenderPartialDependenceSvg(PartialDependenceDocument{"x", "y", {0.0f, 1.0f}, {0.5f, 1.0f}, 1, {0.5f, 1.0f}, {}},
+                                   {}, opt),
     };
     for (const std::string& svg : svgs) {
         auto root = Parsed(svg);
@@ -536,6 +538,69 @@ TEST(SvgBeeswarmTest, RejectsBadInput) {
 namespace pulsatrix {
 namespace {
 
+// ---- partial dependence ---------------------------------------------------------------------
+
+PartialDependenceDocument IceDocument(int64_t instances) {
+    IceResult r;
+    r.grid = {0.0f, 1.0f, 2.0f, 3.0f};
+    r.num_instances = instances;
+    for (int64_t i = 0; i < instances; ++i) {
+        for (float x : r.grid) {
+            r.curves.push_back(static_cast<float>(i) * x - x * x / 4.0f);  // slope grows with i
+        }
+        r.feature_values.push_back(static_cast<float>(i % 4));
+    }
+    return ToPartialDependenceDocument(r, "dose", "response");
+}
+
+TEST(SvgPartialDependenceTest, DrawsTheAverageOverAnEvenSampleOfCurves) {
+    auto root = Parsed(RenderPartialDependenceSvg(IceDocument(10)));
+    EXPECT_EQ(ByClass(*root, "ice").size(), 10u);
+    EXPECT_EQ(ByClass(*root, "average").size(), 1u);
+    EXPECT_EQ(ByClass(*root, "rug").front()->children.size(), 10u);
+
+    PartialDependenceSvgOptions few;
+    few.max_curves = 3;
+    auto sampled = Parsed(RenderPartialDependenceSvg(IceDocument(10), few));
+    EXPECT_EQ(ByClass(*sampled, "ice").size(), 3u);
+    EXPECT_NE(AllText(*sampled).find("3 of 10 shown"), std::string::npos);
+    few.max_curves = 0;
+    EXPECT_TRUE(ByClass(*Parsed(RenderPartialDependenceSvg(IceDocument(10), few)), "ice").empty());
+
+    // Higher on the page is a larger value: the average's last point (largest) is above its first.
+    auto avg = ByClass(*root, "average").front()->get("points");
+    const double first_y = std::stod(avg.substr(avg.find(',') + 1));
+    const double last_y = std::stod(avg.substr(avg.rfind(',') + 1));
+    EXPECT_LT(last_y, first_y);
+}
+
+TEST(SvgPartialDependenceTest, CenteredAndDerivativeViewsAddAZeroLine) {
+    for (IceStyle style : {IceStyle::Centered, IceStyle::Derivative}) {
+        PartialDependenceSvgOptions o;
+        o.style = style;
+        auto root = Parsed(RenderPartialDependenceSvg(IceDocument(5), o));
+        EXPECT_EQ(ByClass(*root, "zero-line").size(), 1u);
+        EXPECT_EQ(ByClass(*root, "ice").size(), 5u);
+    }
+}
+
+TEST(SvgPartialDependenceTest, RejectsBadInput) {
+    PartialDependenceDocument average_only{"x", "y", {0.0f, 1.0f}, {0.5f, 1.0f}, 0, {}, {}};
+    EXPECT_NO_THROW((void)RenderPartialDependenceSvg(average_only));
+    PartialDependenceSvgOptions centered;
+    centered.style = IceStyle::Centered;
+    EXPECT_THROW((void)RenderPartialDependenceSvg(average_only, centered), std::invalid_argument);
+    PartialDependenceDocument nan = average_only;
+    nan.partial_dependence[1] = kNaN;
+    EXPECT_THROW((void)RenderPartialDependenceSvg(nan), std::invalid_argument);
+    PartialDependenceDocument unsorted = average_only;
+    unsorted.grid = {1.0f, 0.0f};
+    EXPECT_THROW((void)RenderPartialDependenceSvg(unsorted), std::invalid_argument);
+    PartialDependenceSvgOptions negative;
+    negative.max_curves = -1;
+    EXPECT_THROW((void)RenderPartialDependenceSvg(average_only, negative), std::invalid_argument);
+}
+
 // ---- golden files: each chart, from the VIZ-1 document fixtures, must match
 // tests/fixtures/viz/svg/ byte for byte on every platform. After an intended change, rerun
 // with PULSATRIX_UPDATE_GOLDEN=1 to rewrite them, then look at the new figures before
@@ -581,6 +646,26 @@ TEST(SvgGoldenTest, EveryChart) {
         runs.push_back(d);
     }
     ExpectGolden("beeswarm.svg", RenderBeeswarmSvg(runs, {0, 3, 5}));
+
+    IceResult ice;
+    for (int k = 0; k < 9; ++k) {
+        ice.grid.push_back(static_cast<float>(k) / 4.0f);
+    }
+    ice.num_instances = 12;
+    for (int i = 0; i < 12; ++i) {
+        // Different offsets (which the centered view removes) and different slopes (which it keeps).
+        const float slope = static_cast<float>((i * 5) % 12 - 6) / 4.0f;
+        const float offset = static_cast<float>(i % 4) * 0.5f;
+        for (float x : ice.grid) {
+            ice.curves.push_back(offset + 2.0f * x - 1.2f * x * x + slope * x);  // no libm: same bits everywhere
+        }
+        ice.feature_values.push_back(static_cast<float>((i * 7) % 9) / 4.0f);
+    }
+    PartialDependenceDocument pdd = ToPartialDependenceDocument(ice, "dose (mg)", "response");
+    ExpectGolden("partial_dependence.svg", RenderPartialDependenceSvg(pdd));
+    PartialDependenceSvgOptions centered;
+    centered.style = IceStyle::Centered;
+    ExpectGolden("partial_dependence_centered.svg", RenderPartialDependenceSvg(pdd, centered));
 }
 
 }  // namespace

@@ -5,8 +5,10 @@
 //   pulsatrix_svg run*.json --beeswarm 0,3,7 -o swarm.svg      # many attributions -> beeswarm
 //   pulsatrix_svg saliency.json -o map.svg                     # heatmap
 //   pulsatrix_svg tokens.json -o text.svg                      # token_relevance
+//   pulsatrix_svg pd.json --ice centered -o ice.svg            # partial_dependence (CFS-1)
 //
-// Options: -o FILE (default stdout), --top-k N, --width W, --font-size N, --title TEXT.
+// Options: -o FILE (default stdout), --top-k N, --ice raw|centered|derivative, --max-curves N,
+//          --width W, --font-size N, --title TEXT.
 // Exit status: 0 on success, 1 if a document can't be read or drawn, 2 on a usage error.
 #include <cstdio>
 #include <cstdlib>
@@ -23,7 +25,8 @@ namespace {
 
 constexpr const char* kUsage =
     "usage: pulsatrix_svg DOCUMENT.json... [-o FILE] [--top-k N] [--waterfall BASELINE]\n"
-    "                     [--beeswarm I,J,...] [--width W] [--font-size N] [--title TEXT]\n";
+    "                     [--beeswarm I,J,...] [--ice raw|centered|derivative] [--max-curves N]\n"
+    "                     [--width W] [--font-size N] [--title TEXT]\n";
 
 [[noreturn]] void Usage(const std::string& problem) {
     std::cerr << "pulsatrix_svg: " << problem << "\n" << kUsage;
@@ -60,6 +63,7 @@ int main(int argc, char** argv) {
     bool waterfall = false;
     float baseline = 0.0f;
     std::vector<int64_t> beeswarm_features;
+    PartialDependenceSvgOptions pd_options;
 
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
@@ -90,6 +94,19 @@ int main(int argc, char** argv) {
                 beeswarm_features.push_back(ParseInt(item, "--beeswarm"));
             }
             if (beeswarm_features.empty()) Usage("--beeswarm needs feature indices");
+        } else if (a == "--ice") {
+            std::string v = value();
+            if (v == "raw") {
+                pd_options.style = IceStyle::Raw;
+            } else if (v == "centered") {
+                pd_options.style = IceStyle::Centered;
+            } else if (v == "derivative") {
+                pd_options.style = IceStyle::Derivative;
+            } else {
+                Usage("--ice needs raw, centered or derivative, got \"" + v + "\"");
+            }
+        } else if (a == "--max-curves") {
+            pd_options.max_curves = static_cast<int>(ParseInt(value(), "--max-curves"));
         } else if (a == "-h" || a == "--help") {
             std::cout << kUsage;
             return 0;
@@ -124,6 +141,8 @@ int main(int argc, char** argv) {
                 svg = RenderHeatmapSvg(ParseHeatmapDocument(json), options);
             } else if (kind == "token_relevance") {
                 svg = RenderTokenStripSvg(ParseTokenRelevanceDocument(json), options);
+            } else if (kind == "partial_dependence") {
+                svg = RenderPartialDependenceSvg(ParsePartialDependenceDocument(json), pd_options, options);
             } else {
                 throw std::invalid_argument("there is no SVG view for " + kind + " documents yet");
             }

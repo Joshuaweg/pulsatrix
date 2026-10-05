@@ -212,6 +212,7 @@ add_executable(pulsatrix_tests
     lime_test.cpp
     kernel_shap_test.cpp
     pdp_test.cpp
+    ice_test.cpp
     lrp_conservation_test.cpp
     stability_test.cpp
     captum_benchmark_test.cpp
@@ -283,6 +284,12 @@ add_test(NAME PulsatrixSvg.RendersAnAttribution
 add_test(NAME PulsatrixSvg.RendersAHeatmap
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/heatmap.v1.json"
         -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_heatmap.svg")
+add_test(NAME PulsatrixSvg.RendersCenteredIce
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/partial_dependence.v1.json" --ice centered
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_partial_dependence.svg")
+add_test(NAME PulsatrixSvg.RejectsAnUnknownIceStyle
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/partial_dependence.v1.json" --ice sideways)
+set_tests_properties(PulsatrixSvg.RejectsAnUnknownIceStyle PROPERTIES WILL_FAIL TRUE)
 add_test(NAME PulsatrixSvg.RejectsAKindWithNoView
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/circuit_graph.v1.json")
 set_tests_properties(PulsatrixSvg.RejectsAKindWithNoView PROPERTIES WILL_FAIL TRUE)
