@@ -255,3 +255,16 @@ include(GoogleTest)
 # Release was built more recently, with no error, just wrong results. PRE_TEST re-discovers
 # against the actual $<CONFIG> binary on every ctest invocation.
 gtest_discover_tests(pulsatrix_tests DISCOVERY_MODE PRE_TEST)
+
+# KS-1: install this build, then build and run a separate project that finds it with
+# find_package(pulsatrix) alone. Runs the install rules for real, so it catches a header the
+# install leaves out, a dependency the package config doesn't find, and a broken export.
+add_test(NAME PulsatrixInstall.FindPackageConsumer
+    COMMAND "${CMAKE_COMMAND}"
+        "-DBUILD_DIR=${CMAKE_BINARY_DIR}"
+        "-DCONSUMER_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/install_consumer"
+        "-DWORK_DIR=${CMAKE_CURRENT_BINARY_DIR}/install_consumer_work"
+        "-DCONFIG=$<CONFIG>"
+        "-DGENERATOR=${CMAKE_GENERATOR}"
+        "-DCXX_COMPILER=${CMAKE_CXX_COMPILER}"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/install_consumer_test.cmake")
