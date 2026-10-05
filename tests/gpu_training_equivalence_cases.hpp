@@ -380,6 +380,25 @@ inline void LlmAttentionMatches(DeviceBackend& gpu) {
     ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 5, 8}), 335);
 }
 
+// LLM-5: a cached pass in pieces on the GPU matches the CPU's, piece by piece.
+inline void CachedAttentionMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    MultiHeadAttentionModule cm(LlmAttentionConfig(), &cpu), gm(LlmAttentionConfig(), &gpu);
+    RandomizeAndMirror(cm, gm, 336);
+    KVCache cc = cm.MakeKVCache(2, 8), gc = gm.MakeKVCache(2, 8);
+    std::vector<float> x = Random(2 * 6 * 8, 337);
+    int64_t at = 0;
+    for (int64_t piece : {4, 1, 1}) {
+        std::vector<float> part;
+        for (int64_t n = 0; n < 2; ++n) {
+            part.insert(part.end(), x.begin() + (n * 6 + at) * 8, x.begin() + (n * 6 + at + piece) * 8);
+        }
+        Tensor cx(Shape({2, piece, 8}), &cpu, part), gx(Shape({2, piece, 8}), &gpu, part);
+        ExpectNear(cm.forward_cached(cx, cc), gm.forward_cached(gx, gc));
+        at += piece;
+    }
+}
+
 inline void RotateHalfRoPEMatches(DeviceBackend& gpu) {
     CPUBackend cpu;
     RoPEModule cm(8, &cpu, 500000.0f, RoPELayout::RotateHalf), gm(8, &gpu, 500000.0f, RoPELayout::RotateHalf);
@@ -1436,6 +1455,9 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     }                                                                                                \
     TEST_F(FIXTURE, LlmAttentionForwardBackwardMatchCPU) {                                           \
         ::pulsatrix::training_equivalence::LlmAttentionMatches(MEMBER);                              \
+    }                                                                                                \
+    TEST_F(FIXTURE, CachedAttentionMatchesCPU) {                                                     \
+        ::pulsatrix::training_equivalence::CachedAttentionMatches(MEMBER);                           \
     }                                                                                                \
     TEST_F(FIXTURE, RotateHalfRoPEForwardBackwardMatchCPU) {                                         \
         ::pulsatrix::training_equivalence::RotateHalfRoPEMatches(MEMBER);                            \

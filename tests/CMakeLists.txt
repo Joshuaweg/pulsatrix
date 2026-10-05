@@ -79,6 +79,7 @@ add_executable(pulsatrix_tests
     attention_llm_features_test.cpp
     tied_lm_head_module_test.cpp
     generation_test.cpp
+    kv_cache_test.cpp
     swiglu_module_test.cpp
     transformer_block_test.cpp
     residual_module_test.cpp

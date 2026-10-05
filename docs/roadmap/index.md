@@ -33,7 +33,7 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   ([LLM-1](#llm-running-real-language-models)): grouped-query attention, causal and padding
   masks, "rotate half" RoPE with a configurable base, QK-Norm and bias-free projections, checked
   against Hugging Face's Llama, Qwen2 and Qwen3 attention. A language-model head that shares the
-  embedding table (LLM-2). Greedy and sampled generation (LLM-4).
+  embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5).
 - **HIP backend.** It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   `dot` and `sum`, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Its container runs ROCm 10.0.0, the
@@ -311,7 +311,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 | LLM-2 | A tied LM head that shares the embedding matrix | SmolLM2, Qwen3 and Gemma 3 all tie their embeddings | — | P0 | S || Done, [#68](https://github.com/Joshuaweg/pulsatrix/pull/68) (see below) |
 | LLM-3 | Native tokenizers for the target models: [TOK-1 to TOK-3](#tok-tokenizers) | No Python needed to tokenize | — | P0 | M–L | |
 | LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S || Done, [#76](https://github.com/Joshuaweg/pulsatrix/pull/76) (see below) |
-| LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M | |
+| LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M || Done, [#77](https://github.com/Joshuaweg/pulsatrix/pull/77) (see below) |
 | LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3 | Catches layout bugs that still "load" | IO-4 | P0 | S | |
 | LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M | |
 | LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M | |
@@ -346,6 +346,14 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
   from `std::mt19937_64`'s raw output, so a seed gives the same tokens on every platform for the
   same logits. Results carry each token's log-probability under the unprocessed model, which the
   explainers need. Beam search, stop strings and batched generation are not included.
+- **LLM-5** caches each layer's keys and values after QK-Norm and RoPE, at the K/V head count, so
+  grouped-query heads read their shared head in place instead of the repeated copies the training
+  pass makes. Cached passes are inference only: backward and LRP refuse to run after one. The
+  generation adapter compares each history with what it has cached and truncates to the shared
+  prefix, so a new continuation of the same prompt costs only its new tokens. On CPU (Release), 128
+  tokens from a 4-block, 128-wide model took 47 ms instead of 3.3 s. A padding query with no
+  visible key can produce different (meaningless) output than in a full pass; real positions
+  match.
 
 ### Follow-ups the LLM work surfaced
 
