@@ -6,6 +6,7 @@
 #include <imgui.h>
 #include <implot.h>
 
+#include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/viz/colormap.hpp"
 #include "pulsatrix/viz/plot_data.hpp"
 
@@ -66,6 +67,11 @@ void AttributionWaterfallChart::Draw(const char* title, const Attribution& attr,
         }
         ImPlot::EndPlot();
     }
+}
+
+void AttributionWaterfallChart::Draw(const char* title, const AttributionDocument& doc, float baseline_value) {
+    static CPUBackend backend;
+    Draw(title, ToAttribution(doc, &backend), baseline_value);
 }
 
 }  // namespace pulsatrix

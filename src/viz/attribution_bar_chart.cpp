@@ -8,6 +8,7 @@
 #include <imgui.h>
 #include <implot.h>
 
+#include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/viz/colormap.hpp"
 #include "pulsatrix/viz/plot_data.hpp"
 
@@ -49,6 +50,11 @@ void AttributionBarChart::Draw(const char* title, const Attribution& attr, int t
         }
         ImPlot::EndPlot();
     }
+}
+
+void AttributionBarChart::Draw(const char* title, const AttributionDocument& doc, int top_k, float shared_max_abs) {
+    static CPUBackend backend;
+    Draw(title, ToAttribution(doc, &backend), top_k, shared_max_abs);
 }
 
 }  // namespace pulsatrix

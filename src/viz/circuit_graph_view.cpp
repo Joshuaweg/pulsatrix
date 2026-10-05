@@ -81,4 +81,6 @@ void CircuitGraphView::Draw(const char* title, const CircuitGraph& graph) {
     }
 }
 
+void CircuitGraphView::Draw(const char* title, const CircuitGraphDocument& doc) { Draw(title, ToCircuitGraph(doc)); }
+
 }  // namespace pulsatrix
