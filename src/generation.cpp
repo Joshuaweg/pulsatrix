@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 #include <numeric>
 #include <random>
 #include <stdexcept>
@@ -182,6 +183,65 @@ NextTokenLogitsFn MakeNextTokenLogits(std::vector<Module*> layers, DeviceBackend
         const int64_t vocab = x.shape().dim(2);
         const std::vector<float> all = x.to_host_vector();
         return std::vector<float>(all.end() - vocab, all.end());
+    };
+}
+
+NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding, std::vector<TransformerBlock*> blocks,
+                                            std::vector<Module*> head, DeviceBackend* backend, int64_t max_length) {
+    if (blocks.empty()) {
+        throw std::invalid_argument("MakeCachedNextTokenLogits: no blocks");
+    }
+    for (TransformerBlock* b : blocks) {
+        if (b == nullptr) throw std::invalid_argument("MakeCachedNextTokenLogits: a block is null");
+    }
+    for (Module* m : head) {
+        if (m == nullptr) throw std::invalid_argument("MakeCachedNextTokenLogits: a head layer is null");
+    }
+    struct State {
+        std::vector<KVCache> caches;
+        std::vector<int64_t> processed;
+        std::vector<float> last_logits;
+    };
+    auto state = std::make_shared<State>();
+    for (TransformerBlock* b : blocks) {
+        state->caches.push_back(b->mha().MakeKVCache(1, max_length));
+    }
+    EmbeddingModule* emb = &embedding;
+    return [state, emb, blocks = std::move(blocks), head = std::move(head), backend,
+            max_length](const std::vector<int64_t>& tokens) {
+        if (tokens.empty()) {
+            throw std::invalid_argument("MakeCachedNextTokenLogits: the sequence is empty");
+        }
+        if (static_cast<int64_t>(tokens.size()) > max_length) {
+            throw std::invalid_argument("MakeCachedNextTokenLogits: " + std::to_string(tokens.size()) +
+                                        " tokens don't fit in caches of " + std::to_string(max_length));
+        }
+        size_t shared = 0;
+        while (shared < tokens.size() && shared < state->processed.size() && tokens[shared] == state->processed[shared]) {
+            ++shared;
+        }
+        if (shared == tokens.size() && shared == state->processed.size()) {
+            return state->last_logits;  // the same sequence again
+        }
+        if (shared == tokens.size()) {
+            --shared;  // a prefix of what was processed: rerun its last token for its logits
+        }
+        for (KVCache& c : state->caches) c.truncate(static_cast<int64_t>(shared));
+        const auto fresh = static_cast<int64_t>(tokens.size() - shared);
+        std::vector<float> ids(tokens.begin() + static_cast<std::ptrdiff_t>(shared), tokens.end());
+        Tensor x = emb->forward(Tensor(Shape({1, fresh}), backend, ids));
+        for (size_t i = 0; i < blocks.size(); ++i) {
+            x = blocks[i]->forward_cached(x, state->caches[i]);
+        }
+        const int64_t d = x.shape().dim(2);
+        const std::vector<float> all = x.to_host_vector();
+        Tensor last(Shape({1, d}), backend, std::vector<float>(all.end() - d, all.end()));
+        for (Module* m : head) {
+            last = m->forward(last);
+        }
+        state->processed = tokens;
+        state->last_logits = last.to_host_vector();
+        return state->last_logits;
     };
 }
 

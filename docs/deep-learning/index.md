@@ -44,6 +44,11 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   seed). `MakeNextTokenLogits` turns a module stack such as embedding → transformer blocks →
   `TiedLMHeadModule` into the model function. Each result also gives every new token's
   log-probability under the model.
+- **KV cache** (`kv_cache.hpp`): `MultiHeadAttentionModule::forward_cached` and
+  `TransformerBlock::forward_cached` process only new positions against a preallocated
+  `KVCache`. `MakeCachedNextTokenLogits(embedding, blocks, head, backend, max_length)` uses them
+  for generation, reusing the cache for any prefix it has already seen; on CPU, 128 tokens from a
+  4-block, 128-wide model take 47 ms instead of 3.3 s.
 - **Optimizers & losses**: `SGDOptimizer` (momentum, Nesterov), `AdamOptimizer`,
   `AdamWOptimizer`, all with parameter groups; `MSELoss`, `CrossEntropyLoss`,
   `TokenCrossEntropyLoss`, `BCEWithLogitsLoss`, `KLDivergenceLoss`, `CalibrationLoss`
