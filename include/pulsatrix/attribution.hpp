@@ -15,8 +15,8 @@ namespace pulsatrix {
 /**
  * @brief An explanation result: the raw attribution values, the method that produced
  *        them, and any relevant metadata (charter Part 2 SS4).
- * @note Deliberately not just a Tensor -- downstream code (audit tooling, a future viz
- *       layer) shouldn't have to guess what produced a number. metadata is a simple
+ * @note Deliberately not just a Tensor -- downstream code (audit tooling, the viz layer and
+ *       its JSON documents) shouldn't have to guess what produced a number. metadata is a simple
  *       string-keyed map (e.g. baseline description for Integrated Gradients, kernel
  *       width for LIME) -- no richer variant type until a real method actually needs one.
  */

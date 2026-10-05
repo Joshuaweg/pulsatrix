@@ -15,9 +15,8 @@ namespace pulsatrix {
 /**
  * @brief 2D convolution, batched (input/output are rank-4: N x channels x H x W) --
  *        migrated from the original unbatched (rank-3) scope by
- *        campaign_exai_dl_library_batch_dimension_support. Stride 1, no padding, no
- *        dilation -- deferred until a real use case needs them, same pattern as
- *        LinearModule's original unbatched scope cut.
+ *        campaign_exai_dl_library_batch_dimension_support. Stride and zero padding are
+ *        configurable (the same on both axes); there is no dilation.
  * @note Implemented via im2col + gemm per campaign Decision 3 (see
  *       campaign_exai_dl_library_phase1_core_layers_training.md) rather than a dedicated
  *       DeviceBackend::conv2d primitive -- Phase 1.5's cuDNN integration will need its own

@@ -37,12 +37,10 @@ namespace pulsatrix {
  *       XorNetwork::train_step already uses, which is what lets a caller choose SGD vs.
  *       Adam and keep one optimizer's state across a whole training run.
  * @note `train_step` is a template on the optimizer type rather than taking an
- *       `Optimizer&`: this codebase has no `Optimizer` base class -- `SGDOptimizer` and
- *       `AdamOptimizer` are unrelated types sharing only the `step(Module&)` /
- *       `zero_grad(Module&)` shape (a compile-time, duck-typed contract). Introducing an
- *       abstract base to give this one method a runtime-polymorphic parameter would be a
- *       change to two closed missions' classes for no behavioral gain; the template keeps
- *       the probe usable with either optimizer and leaves both untouched.
+ *       `Optimizer&`: this codebase has no `Optimizer` base class. `SGDOptimizer`,
+ *       `AdamOptimizer` and `AdamWOptimizer` share the `step(Module&)` /
+ *       `zero_grad(Module&)` shape (a compile-time, duck-typed contract), so the template
+ *       accepts any of them.
  * @note Small **seeded random** weight init, not zero init. Unlike XorNetwork there is no
  *       symmetry to break here -- a single linear layer does receive non-zero gradients
  *       from all-zero weights (`grad_W = X^T (sigmoid(0) - y)`), so zero init would train
@@ -90,7 +88,7 @@ public:
      * @brief Runs one training step: forward, BCE-with-logits loss, backward, one optimizer
      *        update of the probe's weight/bias.
      * @tparam OptimizerT Any type exposing `step(Module&)` and `zero_grad(Module&)` --
-     *         SGDOptimizer or AdamOptimizer (see the class-level note on why this is a
+     *         SGDOptimizer, AdamOptimizer or AdamWOptimizer (see the class-level note on why this is a
      *         template rather than an `Optimizer&`).
      * @param activation_batch Shape (N, activation_dim), N > 0.
      * @param label_batch Shape (N, 1), values in {0, 1}, same N.
