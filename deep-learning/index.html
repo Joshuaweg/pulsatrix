@@ -1861,6 +1861,12 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
 <li><strong>Sequence &amp; attention</strong>: <code>RNNModule</code>/<code>LSTMModule</code>/<code>GRUModule</code>, <code>SoftmaxModule</code>,
   <code>RoPEModule</code>, <code>MultiHeadAttentionModule</code>, <code>SwiGLUModule</code>, <code>TransformerBlock</code>,
   <code>MambaModule</code>, <code>RWKVModule</code>, <code>RetNetModule</code></li>
+<li><strong>Attention for pretrained LLMs</strong>: <code>MultiHeadAttentionModule</code> and <code>TransformerBlock</code> take an
+  <code>AttentionConfig</code> with the settings Hugging Face checkpoints use: grouped-query attention
+  (<code>num_kv_heads</code>), a <code>head_dim</code> independent of <code>d_model</code>, optional projection biases, a causal
+  mask, the RoPE pair layout (<code>RoPELayout::RotateHalf</code> for Llama-family models) and base
+  (<code>rope_theta</code>), and QK-Norm. <code>set_key_padding_mask()</code> masks padding tokens and
+  <code>set_position_offset()</code> shifts RoPE positions. <code>LinearModule</code> can be built without a bias.</li>
 <li><strong>Optimizers &amp; losses</strong>: <code>SGDOptimizer</code> (momentum, Nesterov), <code>AdamOptimizer</code>,
   <code>AdamWOptimizer</code>, all with parameter groups; <code>MSELoss</code>, <code>CrossEntropyLoss</code>,
   <code>TokenCrossEntropyLoss</code>, <code>BCEWithLogitsLoss</code>, <code>KLDivergenceLoss</code>, <code>CalibrationLoss</code></li>

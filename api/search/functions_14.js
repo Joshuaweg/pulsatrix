@@ -8,6 +8,7 @@ var searchData=
   ['unitcubetoconfiguration_5',['UnitCubeToConfiguration',['../namespacepulsatrix.html#a8eb8e19a5d9ca776142a658c4e5adbb5',1,'pulsatrix']]],
   ['up_5fproj_6',['up_proj',['../classpulsatrix_1_1SwiGLUModule.html#a219452cb9a7a6ae1f453ba04aa50f5e8',1,'pulsatrix::SwiGLUModule']]],
   ['upperconfidencebound_7',['UpperConfidenceBound',['../namespacepulsatrix.html#a3de09b80f2b9d5933d7f452615305b59',1,'pulsatrix']]],
-  ['uses_5fqk_5fnorm_8',['uses_qk_norm',['../classpulsatrix_1_1MultiHeadAttentionModule.html#aa401137110ef1ce787af71a61654b484',1,'pulsatrix::MultiHeadAttentionModule']]],
-  ['uses_5frope_9',['uses_rope',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a84eaff4be5e5453e6d5fdeff04f98371',1,'pulsatrix::MultiHeadAttentionModule']]]
+  ['uses_5fbias_8',['uses_bias',['../classpulsatrix_1_1LinearModule.html#aba7e0538dca132407f25f4c6b4aed86f',1,'pulsatrix::LinearModule']]],
+  ['uses_5fqk_5fnorm_9',['uses_qk_norm',['../classpulsatrix_1_1MultiHeadAttentionModule.html#aa401137110ef1ce787af71a61654b484',1,'pulsatrix::MultiHeadAttentionModule']]],
+  ['uses_5frope_10',['uses_rope',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a84eaff4be5e5453e6d5fdeff04f98371',1,'pulsatrix::MultiHeadAttentionModule']]]
 ];

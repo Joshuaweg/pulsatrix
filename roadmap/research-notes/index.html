@@ -1524,6 +1524,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#tok-tokenizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TOK: Tokenizers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#xai-question-driven-framework" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1762,6 +1773,17 @@
     <span class="md-ellipsis">
       
         LLM: Running real language models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tok-tokenizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TOK: Tokenizers
       
     </span>
   </a>
@@ -2060,10 +2082,7 @@ below record the reasoning they were built on.</p>
 <li>pulsatrix's <code>RoPEModule</code> rotates adjacent pairs, while Hugging Face Llama-family checkpoints use "rotate half".</li>
 <li><strong>Fails when:</strong> the AttnLRP rules stop conserving relevance under a mask. Re-validate against LXT.</li>
 <li><strong>LLM-2.</strong> SmolLM2, Qwen3 and Gemma 3 set <code>tie_word_embeddings</code>. Without views, an untied copy of Gemma 3 270M's embedding would cost about 680 MB in fp32.</li>
-<li><strong>LLM-3.</strong></li>
-<li>mlc-ai/tokenizers-cpp (Apache-2.0) exists but wraps the Rust tokenizers library, which pulls in a Rust toolchain.</li>
-<li>A C++ port of the Hugging Face tokenizer found double-space mismatches in 4 of 15 million lines (wangkuiyi/huggingface-tokenizer-in-cxx).</li>
-<li><strong>Falsifier:</strong> id mismatches on the 10,000-line corpus.</li>
+<li><strong>LLM-3.</strong> Moved to the TOK epic below.</li>
 <li><strong>LLM-4.</strong> Sampling must use the seeded RNG from FND-7 so generations are reproducible.</li>
 <li><strong>LLM-5.</strong> <strong>Falsifier:</strong> cached and uncached logits differ.</li>
 <li><strong>LLM-6.</strong> The threshold (fp32, max abs diff under 1e-3) follows from IO-4's layout pitfalls: random-weight tests miss them, real weights on real text don't.</li>
@@ -2075,6 +2094,23 @@ below record the reasoning they were built on.</p>
 <li>Tuned lens: Belrose et al., arXiv 2303.08112 (2023-03).</li>
 <li>AtP*: Kramár et al., arXiv 2403.00745 (2024-03). Plain attribution patching misses effects through attention saturation.</li>
 <li><strong>LLM-9.</strong> Gemma 3 technical report, arXiv 2503.19786 (2025-03). Gemma Scope 2 (Google DeepMind, 2025-12) publishes SAEs and transcoders for every layer of Gemma 3 270M and 1B.</li>
+</ul>
+<h2 id="tok-tokenizers">TOK: Tokenizers<a class="headerlink" href="#tok-tokenizers" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>TOK-1.</strong> The component split (normalizer, pre-tokenizer, model, post-processor, decoder) is the
+  one Hugging Face <code>tokenizers</code> uses, so a <code>tokenizer.json</code> maps onto it one section at a time.</li>
+<li>Offsets are measured in bytes of the UTF-8 input. Characters would need a second index, and every consumer here (VIZ-6a, LLM-7) slices UTF-8 strings.</li>
+<li><strong>Fails when:</strong> a normalizer changes length (NFC, <code>▁</code> replacement) and offsets point at the normalized text instead of the original. Hugging Face keeps an alignment map for this; we need one too.</li>
+<li><strong>TOK-2.</strong></li>
+<li>mlc-ai/tokenizers-cpp (Apache-2.0) exists but wraps the Rust tokenizers library, which pulls in a Rust toolchain.</li>
+<li>A C++ port of the Hugging Face tokenizer found double-space mismatches in 4 of 15 million lines (wangkuiyi/huggingface-tokenizer-in-cxx).</li>
+<li>SmolLM2 and Qwen2.5 store merges as <code>"a b"</code> strings. Qwen3, Llama 3.2 and Gemma 3 store them as <code>["a", "b"]</code> pairs (newer <code>tokenizers</code> releases).</li>
+<li>Llama 3.2 sets <code>ignore_merges</code>: a pre-token that is already in the vocabulary is used whole, without merging.</li>
+<li>Qwen's only normalizer is NFC, which needs Unicode composition tables. They are generated, like the category table.</li>
+<li><strong>Falsifier:</strong> id mismatches on the 10,000-line corpus.</li>
+<li><strong>TOK-3.</strong> Gemma 3's normalizer replaces spaces with <code>▁</code>, so its pre-tokenizer split does nothing, and whole lines go to BPE as one piece. BPE has to be linear-ish in the piece length, not quadratic.</li>
+<li><strong>TOK-6.</strong> Training was out of scope for the first tokenizer ("a project-sized undertaking"). A byte-level BPE trainer with a priority queue over pair counts is a few hundred lines; the hard part is matching Hugging Face's tie-breaking if we want identical vocabularies, and we don't need that.</li>
+<li><strong>TOK-7.</strong> T5's precompiled charsmap is a serialized double-array trie of normalization rules (316 KB base64 for t5-small).</li>
 </ul>
 <h2 id="xai-question-driven-framework">XAI: Question-driven framework<a class="headerlink" href="#xai-question-driven-framework" title="Permanent link">&para;</a></h2>
 <ul>

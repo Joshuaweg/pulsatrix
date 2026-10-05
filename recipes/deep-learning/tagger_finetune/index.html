@@ -1660,8 +1660,9 @@ compared against.</p>
 <p class="admonition-title">Why a self-pretrained model</p>
 <p>Importing real pretrained models (SmolLM2, ResNet18) is planned for v1.2. Until then the
 "pretrained" model is one the recipe trains itself. Only step 1 changes once real checkpoints
-load. The task is per-token tagging rather than next-token prediction because attention has
-no causal mask yet; without one, a language model could see the token it's asked to predict.</p>
+load. The task is per-token tagging rather than next-token prediction because the recipe
+predates the causal mask (LLM-1); without one, a language model could see the token it's asked
+to predict. Set <code>AttentionConfig::causal</code> to build a next-token model.</p>
 </div>
 <h2 id="the-model-and-the-task">The model and the task<a class="headerlink" href="#the-model-and-the-task" title="Permanent link">&para;</a></h2>
 <p><code>TinyTagger</code> (<code>tagger_finetune_example.hpp</code>) is <code>EmbeddingModule</code> → <code>TransformerBlock</code> →

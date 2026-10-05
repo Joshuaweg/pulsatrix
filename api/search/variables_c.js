@@ -8,5 +8,7 @@ var searchData=
   ['null_5fmodel_5',['null_model',['../structpulsatrix_1_1NullModelComparison.html#a4db1e35802f4783a6cffe55a8d69921e',1,'pulsatrix::NullModelComparison::null_model'],['../structpulsatrix_1_1AttributionNullReport.html#a7442d5cb27f5d82f2b117c4f6a84764a',1,'pulsatrix::AttributionNullReport::null_model']]],
   ['num_5fconfigs_6',['num_configs',['../structpulsatrix_1_1HyperbandBracket.html#a32040e28d9760dfdde290293ec832590',1,'pulsatrix::HyperbandBracket']]],
   ['num_5fconfigs_5fstarted_7',['num_configs_started',['../structpulsatrix_1_1ASHAResult.html#a33ba920b1062f1962eeb121966902d53',1,'pulsatrix::ASHAResult']]],
-  ['num_5fworkers_8',['num_workers',['../structpulsatrix_1_1DataLoaderOptions.html#a29bea0954a5203ba9b20f473c1dc8a05',1,'pulsatrix::DataLoaderOptions']]]
+  ['num_5fheads_8',['num_heads',['../structpulsatrix_1_1AttentionConfig.html#a4a06721973f7b875cae5e5d8e41228f1',1,'pulsatrix::AttentionConfig']]],
+  ['num_5fkv_5fheads_9',['num_kv_heads',['../structpulsatrix_1_1AttentionConfig.html#a569f969b2ce9ac64f40955196e2b3d42',1,'pulsatrix::AttentionConfig']]],
+  ['num_5fworkers_10',['num_workers',['../structpulsatrix_1_1DataLoaderOptions.html#a29bea0954a5203ba9b20f473c1dc8a05',1,'pulsatrix::DataLoaderOptions']]]
 ];

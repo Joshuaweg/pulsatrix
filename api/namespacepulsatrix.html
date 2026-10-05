@@ -140,6 +140,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The best configuration/metric found, the total epoch budget spent, and how many distinct configurations were ever started (as opposed to promoted).  <a href="structpulsatrix_1_1ASHAResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything that shapes a <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a> (LLM-1).  <a href="structpulsatrix_1_1AttentionConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An explanation result: the raw attribution values, the method that produced them, and any relevant metadata (charter Part 2 SS4).  <a href="structpulsatrix_1_1Attribution.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1021,6 +1024,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a94d9ac6240473b5362d1e8e5c11157bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The op-type tag a Node carries. Charter Part 2 §3: nodes are tagged by a small closed set of op types rather than by concrete layer class, so a query like "find the last conv layer's activations" (Grad-CAM) works by querying op type, not by string-matching a layer name.  <a href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">More...</a><br /></td></tr>
 <tr class="separator:a94d9ac6240473b5362d1e8e5c11157bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89b7a7289be539d1acdd882186624044" id="r_a89b7a7289be539d1acdd882186624044"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044">RoPELayout</a> { <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c">AdjacentPairs</a>
+, <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb">RotateHalf</a>
+ }</td></tr>
+<tr class="memdesc:a89b7a7289be539d1acdd882186624044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which features RoPE rotates together (LLM-1).  <a href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044">More...</a><br /></td></tr>
+<tr class="separator:a89b7a7289be539d1acdd882186624044"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4635e5585e80a55ee96adcfd4f80b57b" id="r_a4635e5585e80a55ee96adcfd4f80b57b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57b">SafetensorsDtype</a> { <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac26f15e86e3de4c398a8273272aba034">Bool</a>
 , <a class="el" href="namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba6669348b484e3008dca2bfa8e85e40b5">U8</a>
@@ -2276,6 +2284,37 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536" name="af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536"></a>PpoGrad&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87" name="af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87"></a>DqnTarget&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9" name="af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9"></a>PolyakBlend&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a89b7a7289be539d1acdd882186624044" name="a89b7a7289be539d1acdd882186624044"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89b7a7289be539d1acdd882186624044">&#9670;&#160;</a></span>RoPELayout</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044">pulsatrix::RoPELayout</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which features RoPE rotates together (LLM-1). </p>
+<dl class="section note"><dt>Note</dt><dd>The two layouts are the same rotation of a permuted feature vector, so they give different results on the same weights. A checkpoint is trained with one of them. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c" name="a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c"></a>AdjacentPairs&#160;</td><td class="fielddoc"><p>Pair i is features (2i, 2i+1): the original RoPE paper and Meta's own Llama code. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb" name="a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb"></a>RotateHalf&#160;</td><td class="fielddoc"><p>Pair i is features (i, i + head_dim/2): Hugging Face <code>rotate_half</code>, which every Llama-family checkpoint on the Hub (SmolLM2, Qwen, Llama, Gemma) expects. </p>
+</td></tr>
 </table>
 
 </div>

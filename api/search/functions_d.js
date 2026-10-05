@@ -16,7 +16,7 @@ var searchData=
   ['negationmodule_13',['NegationModule',['../classpulsatrix_1_1NegationModule.html#a558c5d7b8cff17c00dbed38451aa7467',1,'pulsatrix::NegationModule']]],
   ['nesterov_14',['nesterov',['../classpulsatrix_1_1SGDOptimizer.html#a6611f3a0715806ccfd6e44055c46bf5b',1,'pulsatrix::SGDOptimizer']]],
   ['neuralpredicatedatalogbridge_15',['NeuralPredicateDatalogBridge',['../classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html#a233c4b408e400c0ad176aad69d1bc0e3',1,'pulsatrix::datalog::NeuralPredicateDatalogBridge']]],
-  ['next_16',['next',['../classpulsatrix_1_1IterableDataset.html#afc80e5a0a9f6b53677749f6f1bc3e85d',1,'pulsatrix::IterableDataset::next()'],['../classpulsatrix_1_1SequentialSampler.html#ae54edad9c9cc1cc8b69c1026a5851d20',1,'pulsatrix::SequentialSampler::next()'],['../classpulsatrix_1_1ShuffleSampler.html#aea025e67417b98dfc22f52b6faaca6ee',1,'pulsatrix::ShuffleSampler::next()'],['../classpulsatrix_1_1Sampler.html#a44af43f33c60de2e9bffc5c23a5f6030',1,'pulsatrix::Sampler::next()']]],
+  ['next_16',['next',['../classpulsatrix_1_1IterableDataset.html#afc80e5a0a9f6b53677749f6f1bc3e85d',1,'pulsatrix::IterableDataset::next()'],['../classpulsatrix_1_1ShuffleSampler.html#aea025e67417b98dfc22f52b6faaca6ee',1,'pulsatrix::ShuffleSampler::next()'],['../classpulsatrix_1_1SequentialSampler.html#ae54edad9c9cc1cc8b69c1026a5851d20',1,'pulsatrix::SequentialSampler::next()'],['../classpulsatrix_1_1Sampler.html#a44af43f33c60de2e9bffc5c23a5f6030',1,'pulsatrix::Sampler::next()']]],
   ['next_5fbatch_17',['next_batch',['../classpulsatrix_1_1DataLoader.html#a97fa3fea040e8418fc872eb9f82a4979',1,'pulsatrix::DataLoader']]],
   ['next_5fseed_18',['next_seed',['../namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b',1,'pulsatrix']]],
   ['node_19',['node',['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()'],['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node(NodeId id) const']]],
@@ -35,8 +35,9 @@ var searchData=
   ['nullmodelbaseline_32',['nullmodelbaseline',['../namespacepulsatrix.html#a3f819c9e8327878579023bf846100400',1,'pulsatrix::NullModelBaseline(Module &amp;model, Analysis &amp;&amp;analysis, uint64_t seed) -&gt; NullModelComparison&lt; std::decay_t&lt; std::invoke_result_t&lt; Analysis &amp; &gt; &gt; &gt;'],['../namespacepulsatrix.html#a1a0a9b185c3ac04de53996b17a5a485f',1,'pulsatrix::NullModelBaseline(Module &amp;model, const ExplainFn &amp;explain, const Tensor &amp;input, uint64_t seed)']]],
   ['num_5fbatches_33',['num_batches',['../classpulsatrix_1_1DataLoader.html#a5d71ee7ac13bdb0095004fc18f4a4709',1,'pulsatrix::DataLoader']]],
   ['num_5fheads_34',['num_heads',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a64f3e2c31c91c88da3fcfedaa47fa588',1,'pulsatrix::MultiHeadAttentionModule']]],
-  ['num_5ftimesteps_35',['num_timesteps',['../classpulsatrix_1_1NoiseSchedule.html#adbc053d6242ecbc799956f9e86ce49fc',1,'pulsatrix::NoiseSchedule']]],
-  ['num_5ftokens_36',['num_tokens',['../classpulsatrix_1_1TokenCrossEntropyLoss.html#a8d3f0b2ab117cf7a71482a7071191a09',1,'pulsatrix::TokenCrossEntropyLoss']]],
-  ['number_5ftext_37',['number_text',['../classpulsatrix_1_1JsonValue.html#a42dbc871024b5e7213ef88c64060f224',1,'pulsatrix::JsonValue']]],
-  ['numel_38',['numel',['../classpulsatrix_1_1Tensor.html#a903dae02b55d8eb93709bf2c0a399d85',1,'pulsatrix::Tensor::numel()'],['../classpulsatrix_1_1Shape.html#a1f7fda995b54fb43167e92ea8cf6f3a2',1,'pulsatrix::Shape::numel()']]]
+  ['num_5fkv_5fheads_35',['num_kv_heads',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a5b6d53a4aed28054ce1058afb62374ee',1,'pulsatrix::MultiHeadAttentionModule']]],
+  ['num_5ftimesteps_36',['num_timesteps',['../classpulsatrix_1_1NoiseSchedule.html#adbc053d6242ecbc799956f9e86ce49fc',1,'pulsatrix::NoiseSchedule']]],
+  ['num_5ftokens_37',['num_tokens',['../classpulsatrix_1_1TokenCrossEntropyLoss.html#a8d3f0b2ab117cf7a71482a7071191a09',1,'pulsatrix::TokenCrossEntropyLoss']]],
+  ['number_5ftext_38',['number_text',['../classpulsatrix_1_1JsonValue.html#a42dbc871024b5e7213ef88c64060f224',1,'pulsatrix::JsonValue']]],
+  ['numel_39',['numel',['../classpulsatrix_1_1Tensor.html#a903dae02b55d8eb93709bf2c0a399d85',1,'pulsatrix::Tensor::numel()'],['../classpulsatrix_1_1Shape.html#a1f7fda995b54fb43167e92ea8cf6f3a2',1,'pulsatrix::Shape::numel()']]]
 ];

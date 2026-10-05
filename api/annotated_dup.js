@@ -32,6 +32,7 @@ var annotated_dup =
       [ "Agent", "classpulsatrix_1_1Agent.html", "classpulsatrix_1_1Agent" ],
       [ "AggregatorModule", "classpulsatrix_1_1AggregatorModule.html", "classpulsatrix_1_1AggregatorModule" ],
       [ "ASHAResult", "structpulsatrix_1_1ASHAResult.html", "structpulsatrix_1_1ASHAResult" ],
+      [ "AttentionConfig", "structpulsatrix_1_1AttentionConfig.html", "structpulsatrix_1_1AttentionConfig" ],
       [ "Attribution", "structpulsatrix_1_1Attribution.html", "structpulsatrix_1_1Attribution" ],
       [ "AttributionBarChart", "classpulsatrix_1_1AttributionBarChart.html", null ],
       [ "AttributionBeeswarmView", "classpulsatrix_1_1AttributionBeeswarmView.html", null ],

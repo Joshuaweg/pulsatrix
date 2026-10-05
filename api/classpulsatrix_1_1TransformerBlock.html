@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acde60b9083910b814406bc6a10d7deee" id="r_acde60b9083910b814406bc6a10d7deee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#acde60b9083910b814406bc6a10d7deee">TransformerBlock</a> (int64_t <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a39ba98c6b35d8b44af755fedb2056a38">d_model</a>, int64_t num_heads, int64_t d_ff, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, bool use_rope=true, bool use_qk_norm=false)</td></tr>
 <tr class="memdesc:acde60b9083910b814406bc6a10d7deee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a transformer block with zero-initialized sub-module parameters.  <br /></td></tr>
 <tr class="separator:acde60b9083910b814406bc6a10d7deee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79999dabafcbb3e05338deab46f64511" id="r_a79999dabafcbb3e05338deab46f64511"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a79999dabafcbb3e05338deab46f64511">TransformerBlock</a> (const <a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> &amp;attention, int64_t d_ff, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float norm_eps=1e-6f)</td></tr>
+<tr class="memdesc:a79999dabafcbb3e05338deab46f64511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a block whose attention is configured in full (LLM-1): grouped-query attention, a causal mask, the RoPE layout and so on. See <a class="el" href="structpulsatrix_1_1AttentionConfig.html" title="Everything that shapes a MultiHeadAttentionModule (LLM-1).">AttentionConfig</a>.  <br /></td></tr>
+<tr class="separator:a79999dabafcbb3e05338deab46f64511"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc0a1563e2a85b6998d197edfcf9e861" id="r_abc0a1563e2a85b6998d197edfcf9e861"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#abc0a1563e2a85b6998d197edfcf9e861">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:abc0a1563e2a85b6998d197edfcf9e861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside norm1_/mha_/norm2_/swiglu_ (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>).  <br /></td></tr>
 <tr class="separator:abc0a1563e2a85b6998d197edfcf9e861"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,7 +205,7 @@ Protected Member Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd>cpp_engineering.aDNA's what/context/cpp_tdd/context_tdd_lrp_rule_pattern_taxonomy.md, "Known-Non-Conserving-by-Design Note" &ndash; this block's gap is inherited from <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a>, not a new instance of the exception. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acde60b9083910b814406bc6a10d7deee" name="acde60b9083910b814406bc6a10d7deee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acde60b9083910b814406bc6a10d7deee">&#9670;&#160;</a></span>TransformerBlock()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acde60b9083910b814406bc6a10d7deee">&#9670;&#160;</a></span>TransformerBlock() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -266,6 +269,63 @@ Protected Member Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>propagated from <code><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a></code>'s or <code><a class="el" href="classpulsatrix_1_1SwiGLUModule.html" title="down_proj(silu(gate_proj(x)) * up_proj(x)), the gated feedforward block used in place of a plain two-...">SwiGLUModule</a></code>'s own constructors (<code>d_model &lt;= 0</code>, <code>num_heads &lt;= 0</code>, <code>d_model % num_heads != 0</code>, <code>d_ff &lt;= 0</code>, odd <code>head_dim</code> with <code>use_rope</code>) &ndash; no redundant re-validation here. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a79999dabafcbb3e05338deab46f64511" name="a79999dabafcbb3e05338deab46f64511"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79999dabafcbb3e05338deab46f64511">&#9670;&#160;</a></span>TransformerBlock() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::TransformerBlock::TransformerBlock </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>attention</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>d_ff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>norm_eps</em> = <code>1e-6f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs a block whose attention is configured in full (LLM-1): grouped-query attention, a causal mask, the RoPE layout and so on. See <a class="el" href="structpulsatrix_1_1AttentionConfig.html" title="Everything that shapes a MultiHeadAttentionModule (LLM-1).">AttentionConfig</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attention</td><td>Attention configuration; its d_model is the block's width. </td></tr>
+    <tr><td class="paramname">d_ff</td><td>SwiGLU hidden width. </td></tr>
+    <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this module. </td></tr>
+    <tr><td class="paramname">norm_eps</td><td>Stabilizer of both RMSNorms (Hugging Face <code>rms_norm_eps</code>). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>propagated from the sub-modules' constructors. </td></tr>
   </table>
   </dd>
 </dl>

@@ -16,6 +16,7 @@ var namespacepulsatrix =
     [ "Agent", "classpulsatrix_1_1Agent.html", "classpulsatrix_1_1Agent" ],
     [ "AggregatorModule", "classpulsatrix_1_1AggregatorModule.html", "classpulsatrix_1_1AggregatorModule" ],
     [ "ASHAResult", "structpulsatrix_1_1ASHAResult.html", "structpulsatrix_1_1ASHAResult" ],
+    [ "AttentionConfig", "structpulsatrix_1_1AttentionConfig.html", "structpulsatrix_1_1AttentionConfig" ],
     [ "Attribution", "structpulsatrix_1_1Attribution.html", "structpulsatrix_1_1Attribution" ],
     [ "AttributionBarChart", "classpulsatrix_1_1AttributionBarChart.html", null ],
     [ "AttributionBeeswarmView", "classpulsatrix_1_1AttributionBeeswarmView.html", null ],
@@ -351,6 +352,10 @@ var namespacepulsatrix =
       [ "PpoGrad", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536", null ],
       [ "DqnTarget", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87", null ],
       [ "PolyakBlend", "namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9", null ]
+    ] ],
+    [ "RoPELayout", "namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044", [
+      [ "AdjacentPairs", "namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c", null ],
+      [ "RotateHalf", "namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb", null ]
     ] ],
     [ "SafetensorsDtype", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57b", [
       [ "Bool", "namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac26f15e86e3de4c398a8273272aba034", null ],
