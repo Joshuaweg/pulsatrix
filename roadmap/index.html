@@ -1690,6 +1690,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="XAI: Question-driven explainability framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-xai-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the XAI work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-xai-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the XAI work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1777,6 +1805,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="HIP: Training efficiency on AMD GPUs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-hip-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the HIP work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-hip-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the HIP work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2185,6 +2241,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="XAI: Question-driven explainability framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-xai-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the XAI work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-xai-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the XAI work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2273,6 +2357,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="HIP: Training efficiency on AMD GPUs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-hip-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the HIP work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-hip-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the HIP work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2348,9 +2460,12 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
   with optimizer state (<a href="#io-serialization-and-model-import">IO-1, IO-2</a>). The v1.1 training stack
   (<a href="#trn-training-and-fine-tuning">TRN-1 to TRN-6</a>): parameter groups, AdamW, SGD momentum,
   gradient clipping, learning-rate schedules, token-accurate gradient accumulation and a full
-  fine-tuning recipe.</li>
-<li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo), but every op synchronizes the stream,
-  reductions run one thread per row or channel, and every tensor is a raw <code>hipMalloc</code>.</li>
+  fine-tuning recipe. Explanation-quality metrics and the null-model baseline
+  (<a href="#xai-question-driven-explainability-framework">XAI-5, XAI-6</a>).</li>
+<li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
+  <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
+  (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Small models are still only about 20%
+  GPU-busy, because of host-side work inside each step.</li>
 </ul>
 <h2 id="the-goal-that-orders-this-list">The goal that orders this list<a class="headerlink" href="#the-goal-that-orders-this-list" title="Permanent link">&para;</a></h2>
 <p><strong>Explain real pretrained models.</strong> That means you can load a Hugging Face model (a small LLM
@@ -2443,8 +2558,9 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>IO-1, IO-2 (<strong>done</strong>): safetensors and the native checkpoint format</li>
 <li>TRN-1 to TRN-6 (<strong>done</strong>): parameter groups, AdamW, clipping, schedulers, gradient accumulation, full
   fine-tuning</li>
-<li>XAI-5, XAI-6: explanation-quality metrics and the random-model baseline harness</li>
-<li>HIP-1, HIP-2, HIP-4, HIP-5: profiling, parallel reductions, fewer syncs, multi-block <code>dot</code>/<code>sum</code></li>
+<li>XAI-5, XAI-6 (<strong>done</strong>): explanation-quality metrics and the random-model baseline harness</li>
+<li>HIP-1, HIP-2, HIP-4, HIP-5 (<strong>done</strong>): profiling, parallel reductions, fewer syncs, multi-block
+  <code>dot</code>/<code>sum</code>. HIP-3, the caching allocator, was pulled forward from v1.2 because HIP-4 depends on it</li>
 <li>VIZ-1, VIZ-2: the JSON export format and the SVG renderer</li>
 <li>KS-1, KS-2: <code>install()</code> and a benchmark suite</li>
 <li>HIP-9: a ROCm 10.0 evaluation image and a pinned host kernel</li>
@@ -2455,7 +2571,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast</li>
 <li>LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizer, generation, KV cache, the
   golden-logit harness, AttnLRP parity with LXT</li>
-<li>HIP-3, HIP-6, HIP-7: caching allocator, fused kernels, bounded-memory Conv2D</li>
+<li>HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)</li>
 <li>VIZ-3, VIZ-6a: Vega-Lite HTML and the token relevance view</li>
 <li>NB-1, NB-2: native rich display and the <code>.ipynb</code>/HTML report writer</li>
 <li>AGT-1 to AGT-4: the native orchestrator core</li>
@@ -3163,6 +3279,7 @@ doesn't support.</p>
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -3173,6 +3290,7 @@ doesn't support.</p>
 <td>—</td>
 <td>P0–P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>XAI-2</td>
@@ -3181,6 +3299,7 @@ doesn't support.</p>
 <td>XAI-1</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>XAI-3</td>
@@ -3189,6 +3308,7 @@ doesn't support.</p>
 <td>XAI-2</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>XAI-4</td>
@@ -3197,6 +3317,7 @@ doesn't support.</p>
 <td>XAI-1, INT-1</td>
 <td>P1</td>
 <td>M each</td>
+<td></td>
 </tr>
 <tr>
 <td>XAI-5</td>
@@ -3205,6 +3326,7 @@ doesn't support.</p>
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/53">#53</a></td>
 </tr>
 <tr>
 <td>XAI-6</td>
@@ -3213,6 +3335,51 @@ doesn't support.</p>
 <td>FND-1</td>
 <td>P0</td>
 <td>S–M</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/54">#54</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-the-xai-work-departed-from-the-plan">How the XAI work departed from the plan<a class="headerlink" href="#how-the-xai-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>XAI-5.</strong> The metrics take a prediction function and a finished attribution, so they work with
+  any explainer. ROAD's imputation solves every removed pixel jointly as the weighted mean of its
+  neighbors, plus seeded noise. Sparseness and complexity score an all-zero attribution as 0,
+  where Quantus returns NaN.</li>
+<li><strong>XAI-6.</strong> <code>NullModelBaseline</code> is a template over any analysis and any result type, not just
+  explainers. Re-initialization draws each tensor from N(0, σ) with that tensor's own σ, keeps
+  frozen flags and leaves buffers alone. XAI-5's randomization test was rebuilt on its
+  <code>ParameterSnapshot</code> and <code>ReinitializeParameters</code>. Both use a portable random generator, so
+  results match on Linux and Windows.</li>
+</ul>
+<h3 id="follow-ups-the-xai-work-surfaced">Follow-ups the XAI work surfaced<a class="headerlink" href="#follow-ups-the-xai-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Found in</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Per-pixel aggregation across channels; metrics treat each input element as a feature today</td>
+<td>XAI-5</td>
+<td>VIZ-2 or XAI-3</td>
+</tr>
+<tr>
+<td>Quantus's localisation, robustness and axiomatic families</td>
+<td>XAI-5</td>
+<td>KS-4 (robustness), or its own item</td>
+</tr>
+<tr>
+<td>A built-in plain-linear-probe comparison, the second half of the baseline rule</td>
+<td>XAI-6</td>
+<td>INT-3 (probe controls)</td>
+</tr>
+<tr>
+<td>Running the null-model baseline and the metrics from the report planner</td>
+<td>XAI-6</td>
+<td>XAI-2, XAI-3</td>
 </tr>
 </tbody>
 </table>
@@ -3833,6 +4000,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -3843,6 +4011,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/55">#55</a></td>
 </tr>
 <tr>
 <td>HIP-2</td>
@@ -3851,6 +4020,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>HIP-1</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/57">#57</a> (see below)</td>
 </tr>
 <tr>
 <td>HIP-3</td>
@@ -3859,6 +4029,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/58">#58</a></td>
 </tr>
 <tr>
 <td>HIP-4</td>
@@ -3867,6 +4038,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>HIP-3, FND-8</td>
 <td>P0</td>
 <td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/59">#59</a> (see below)</td>
 </tr>
 <tr>
 <td>HIP-5</td>
@@ -3875,6 +4047,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>—</td>
 <td>P0</td>
 <td>S</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/56">#56</a></td>
 </tr>
 <tr>
 <td>HIP-6</td>
@@ -3883,6 +4056,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>TRN-2</td>
 <td>P1</td>
 <td>—</td>
+<td></td>
 </tr>
 <tr>
 <td>HIP-7</td>
@@ -3891,6 +4065,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>FND-6</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>HIP-8</td>
@@ -3899,6 +4074,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>HIP-1</td>
 <td>P1</td>
 <td>—</td>
+<td></td>
 </tr>
 <tr>
 <td>HIP-9</td>
@@ -3907,6 +4083,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>—</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>HIP-10</td>
@@ -3915,6 +4092,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>HIP-3</td>
 <td>P2</td>
 <td>—</td>
+<td></td>
 </tr>
 <tr>
 <td>HIP-11</td>
@@ -3923,6 +4101,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>IO-6</td>
 <td>P2</td>
 <td>XL</td>
+<td></td>
 </tr>
 <tr>
 <td>HIP-12</td>
@@ -3931,6 +4110,94 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>HIP-4</td>
 <td>P3</td>
 <td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The HIP items above are done (2026-10-04). Measurements are in <a href="../gpu-profiling/">GPU Profiling</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Workload (gfx1151, Release)</th>
+<th>v1.0 step time</th>
+<th>After HIP-1 to HIP-5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mlp</code></td>
+<td>about 1.0 ms</td>
+<td>0.35 ms</td>
+</tr>
+<tr>
+<td><code>tagger</code></td>
+<td>7.8 ms</td>
+<td>2.84 ms</td>
+</tr>
+<tr>
+<td><code>cnn</code></td>
+<td>about 27 ms</td>
+<td>5.24 ms</td>
+</tr>
+</tbody>
+</table>
+<p>The two columns come from different runs, so read them as rough; each item's own interleaved A/B
+numbers are in the profiling guide. <code>dot</code> and <code>sum</code> on 16M floats went from about 17 ms to 0.61 ms and 0.30 ms, which is the measured
+memory bandwidth (about 212 GB/s).</p>
+<h3 id="how-the-hip-work-departed-from-the-plan">How the HIP work departed from the plan<a class="headerlink" href="#how-the-hip-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>HIP-2</strong> covers BatchNorm only. The profiler showed BatchNorm at 79% of the CNN's kernel time.
+  Softmax, LayerNorm, RMSNorm and <code>column_sums</code> took about 5 µs per call, which is launch overhead,
+  so by the research notes' falsifier they keep their kernels. BatchNorm uses the deterministic
+  two-stage grid reduction, not wave shuffles.</li>
+<li><strong>HIP-3</strong> keeps one pool, not a pool per stream, because the backend uses a single in-order
+  stream. It was pulled forward from v1.2 because HIP-4 depends on it.</li>
+<li><strong>HIP-4</strong> removed 59 syncs, not 56. The host still waits on device-to-host copies, on
+  host-to-device copies (the source is often a temporary buffer) and before memory goes back to
+  the driver.</li>
+<li><strong>Measuring under load.</strong> Other programs held the GPU at 100% during this work, which tripled
+  raw timings. HIP-3 and HIP-4 were measured with interleaved A/B runs and medians; the profiling
+  guide describes the method.</li>
+</ul>
+<h3 id="follow-ups-the-hip-work-surfaced">Follow-ups the HIP work surfaced<a class="headerlink" href="#follow-ups-the-hip-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Found in</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host-side work in each step: reading the loss back, and losses that validate targets on the host. Small models are about 20% GPU-busy</td>
+<td>HIP-4</td>
+<td>HIP-6</td>
+</tr>
+<tr>
+<td>Softmax, LayerNorm, RMSNorm and <code>column_sums</code> still run one thread per row; re-profile at SmolLM2 widths</td>
+<td>HIP-2</td>
+<td>after LLM-1</td>
+</tr>
+<tr>
+<td>The CUDA backend still synchronizes after every op (61 calls) and allocates with raw <code>cudaMalloc</code></td>
+<td>HIP-3, HIP-4</td>
+<td>its own item</td>
+</tr>
+<tr>
+<td>A pool per stream, if a second stream is ever added</td>
+<td>HIP-3</td>
+<td>HIP-12</td>
+</tr>
+<tr>
+<td>Run the GPU tests both asynchronously and with <code>PULSATRIX_HIP_SYNC_DEBUG=1</code>, since a kernel fault now surfaces at the next wait</td>
+<td>HIP-4</td>
+<td>KS-8</td>
+</tr>
+<tr>
+<td>Build the benchmark suite on <code>hip_profile_workloads</code> and the interleaved A/B method</td>
+<td>HIP-1, HIP-3</td>
+<td>KS-2</td>
 </tr>
 </tbody>
 </table>
