@@ -97,6 +97,7 @@ add_library(pulsatrix_core
     src/max_pool2d_module.cpp
     src/avg_pool2d_module.cpp
     src/embedding_module.cpp
+    src/tied_lm_head_module.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp

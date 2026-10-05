@@ -35,6 +35,9 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   mask, the RoPE pair layout (`RoPELayout::RotateHalf` for Llama-family models) and base
   (`rope_theta`), and QK-Norm. `set_key_padding_mask()` masks padding tokens and
   `set_position_offset()` shifts RoPE positions. `LinearModule` can be built without a bias.
+  `TiedLMHeadModule` is the output layer of models with `tie_word_embeddings`: it computes logits
+  with an `EmbeddingModule`'s table, which stays a single parameter whose gradient sums both
+  uses.
 - **Optimizers & losses**: `SGDOptimizer` (momentum, Nesterov), `AdamOptimizer`,
   `AdamWOptimizer`, all with parameter groups; `MSELoss`, `CrossEntropyLoss`,
   `TokenCrossEntropyLoss`, `BCEWithLogitsLoss`, `KLDivergenceLoss`, `CalibrationLoss`
