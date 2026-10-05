@@ -18,8 +18,11 @@ your first example, then try a **[recipe](recipes/index.md)**.
 
 **[Deep Learning Modules and Layers](deep-learning/index.md)**: tensors, autograd and
 optimizers; linear, convolution, normalization and pooling layers; RNN/LSTM/GRU, attention,
-`TransformerBlock`, Mamba, RetNet and RWKV; and VAE, GAN and diffusion building blocks. Runs on
-CPU, CUDA or HIP/ROCm.
+`TransformerBlock`, Mamba, RetNet and RWKV; and VAE, GAN and diffusion building blocks. The
+training stack has AdamW with parameter groups, learning-rate schedules, gradient clipping,
+token-accurate gradient accumulation and parameter freezing. Models save and load as
+safetensors or as checkpoints with optimizer state, and `set_seed` makes runs reproducible.
+Runs on CPU, CUDA or HIP/ROCm.
 
 **[Data Loading, Transformation & Validation](data-pipeline/index.md)**: `Dataset` and
 `DataLoader` with readers for CSV, images, text, audio and video frames, plus dataset
@@ -34,6 +37,9 @@ statistics and outlier checks.
   dependence plots.
 - [Gradient-based explainers](interpretability/deep-learning-approaches.md): Saliency,
   Integrated Gradients and Grad-CAM.
+- [Checking an explanation](interpretability/index.md): deletion and insertion curves (with
+  ROAD), the model-parameter randomization test, sparseness and complexity, and a random-model
+  baseline that shows whether an explanation depends on what the model learned.
 
 **[Reinforcement Learning](reinforcement-learning/index.md)**: CartPole environments, replay and
 rollout buffers, and DQN, REINFORCE, A2C, PPO and SAC. Each algorithm's tests train it to a
@@ -54,20 +60,28 @@ NSGA-II, NEAT, Evolution Strategies, CMA-ES, Population Based Training and E-GAN
 search, Bayesian optimization (Gaussian process and TPE), and early stopping with Successive
 Halving, Hyperband and ASHA.
 
-**[Visualization](visualization/index.md)** (optional): native Dear ImGui + ImPlot windows for
-attribution charts, saliency heatmaps, circuit graphs and a live training dashboard.
+**[Visualization](visualization/index.md)**: versioned JSON documents for explanations,
+heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts and the
+`pulsatrix_svg` tool; and, optionally, native Dear ImGui + ImPlot windows with a live training
+dashboard.
 
 **[System Monitoring](system-monitoring.md)**: log CPU/GPU utilization, memory and
 temperatures while you train.
 
-**Python bindings**: `Tensor`, the core layers, LRP and the other explainers from Python. See
-[Getting Started](getting-started.md#python-bindings).
+**[GPU Profiling](gpu-profiling.md)** and **[Benchmarks](benchmarks.md)**: per-op GPU kernel
+times with `scripts/profile_hip.sh`, and `pulsatrix_bench` for step time, explanation time and
+LRP conservation, with an A/B comparison between two builds.
 
-Everything is implemented in C++ with no Python dependency at runtime, and covered by 2,000+
-tests that run in CI on Windows and Linux.
+**Python bindings**: `Tensor`, the core layers, LRP and the other explainers, and seeding from
+Python. See [Getting Started](getting-started.md#python-bindings).
+
+Everything is implemented in C++ with no Python dependency at runtime, and covered by about
+2,270 CPU tests (2,400 with the HIP backend) that run in CI on Windows and Linux.
 
 ## More resources
 
+- **[Using pulsatrix in your project](getting-started.md#using-pulsatrix-in-your-own-project)**:
+  `cmake --install` and `find_package(pulsatrix)`.
 - **[Customization](customization/index.md)**: add your own layers, metrics sinks or device
   backends.
 - **[API Reference](api/index.html)**: the Doxygen reference for every class and function.

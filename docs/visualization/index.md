@@ -2,7 +2,8 @@
 
 Use this section to see your model's explanations and training progress as charts instead of
 numbers. It provides native C++ charts, dashboards, and live views built on Dear ImGui and
-ImPlot (immediate-mode GUI and plotting libraries).
+ImPlot (immediate-mode GUI and plotting libraries), plus versioned JSON documents and standalone
+SVG figures that need no GUI at all.
 
 The explainers, LRP rules, and interpretability tools elsewhere in pulsatrix return plain data
 (`Attribution`, `CircuitGraph`, `ActivationSnapshot`) and never draw anything. This layer is
@@ -36,18 +37,18 @@ stores every logged scalar and histogram as a per-tag series. Its logging method
 **Chart widgets** (only with `PULSATRIX_ENABLE_VIZ=ON`). Each one is a thin ImGui/ImPlot
 drawing call over the data transforms:
 
-| Widget | Shows |
-|---|---|
-| `AttributionBarChart` | Top features of one attribution, as bars |
-| `AttributionWaterfallChart` | How features move the output from the baseline to the prediction |
-| `AttributionBeeswarmView` | One feature's attribution across many inputs |
-| `SaliencyHeatmapView` | An attribution laid over an image |
-| `CircuitGraphView` | A `CircuitGraph`'s per-node ablation effect |
-| `ConfidenceMeter` | A confidence value as a labeled bar |
-| `ExplanationScoreCard` | One panel: prediction, top features, confidence, and trust checks (`ComputeConservation`, `ComputeAttributionStability`) |
-| `DatasetStatisticsView` | Per-field histograms of a dataset |
-| `ImageGridView` | A grid of image thumbnails with captions |
-| `TrainingDashboard`, `ImPlotMetricsSink::Draw()` | Live training curves |
+| Widget | Shows | Also draws |
+|---|---|---|
+| `AttributionBarChart` | Top features of one attribution, as bars | `AttributionDocument` |
+| `AttributionWaterfallChart` | How features move the output from the baseline to the prediction | `AttributionDocument` |
+| `AttributionBeeswarmView` | One feature's attribution across many inputs | — |
+| `SaliencyHeatmapView` | An attribution as a 2D heatmap with a color scale | `HeatmapDocument` |
+| `CircuitGraphView` | A `CircuitGraph`'s per-node ablation effect | `CircuitGraphDocument` |
+| `ConfidenceMeter` | A confidence value as a labeled bar | — |
+| `ExplanationScoreCard` | One panel: prediction, top features, confidence, and trust checks (`ComputeConservation`, `ComputeAttributionStability`) | — |
+| `DatasetStatisticsView` | Per-field histograms of a dataset | — |
+| `ImageGridView` | A grid of image thumbnails with captions | — |
+| `TrainingDashboard`, `ImPlotMetricsSink::Draw()` | Live training curves | a saved `training_log.v1`, after `ReplayTrainingLog` |
 
 **JSON documents** (`viz/document.hpp`, in `pulsatrix_core`). Every view's data can be saved as
 a versioned JSON file and read back, so a figure can be redrawn later, by another program or by
@@ -250,7 +251,12 @@ add_executable(my_viz_app my_viz_app.cpp)
 target_link_libraries(my_viz_app PRIVATE pulsatrix_viz)
 ```
 
-The data transforms and `ImPlotMetricsSink`'s logging methods need no flag. They are always
+`pulsatrix_viz` isn't installed, so use it from a source tree (`add_subdirectory`). An installed
+`find_package(pulsatrix)` gives you `pulsatrix::core`, which includes the JSON documents and the
+SVG renderer.
+
+The data transforms, `ImPlotMetricsSink`'s logging methods, the JSON documents and the SVG
+renderer need no flag. They are always
 part of `pulsatrix_core`.
 
 ### Demo apps

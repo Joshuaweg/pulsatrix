@@ -55,7 +55,8 @@ channel 1: input mean -4.00 -> normalized mean 0.0000 (expect ~0.0)
 identity weight plus a bias, so `y = 2x + bias = [2.5, 3.5]`.
 
 `BatchNormModule` computes a mean and standard deviation per channel, over every batch row and
-spatial position of that channel. With `gamma=1` and `beta=0`, each channel's output is exactly
+spatial position of that channel. That's training mode, the default, which also updates running
+statistics; after `set_training(false)` it normalizes with those running statistics instead. With `gamma=1` and `beta=0`, each channel's output is exactly
 mean-zero, whatever its original scale. Channel 0 is centered near 10 and channel 1 near -5, and
 both land at 0.
 

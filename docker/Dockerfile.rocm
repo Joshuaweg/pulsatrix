@@ -1,29 +1,29 @@
 # Build environment for the HIP/ROCm DeviceBackend (PULSATRIX_ENABLE_HIP=ON).
 #
-# Base is AMD's own validated ROCm image. Two reasons it is pinned to 7.2.4 rather than
-# tracking latest or matching a distro package:
+# Base is AMD's own validated ROCm image, pinned to a release rather than tracking latest or
+# matching a distro package. The default is ROCm 10.0.0 (HIP 7.15), the first release that lists
+# gfx1151 (Strix Halo) officially; roadmap HIP-9 evaluated it against 7.2.4, the previous pin,
+# and found every test passing and the same speed (docs/gpu-profiling.md). 7.2.4 stays
+# selectable with --build-arg ROCM_BASE=rocm/dev-ubuntu-24.04:7.2.4-complete, or
+# PULSATRIX_ROCM_VERSION=7.2.4 for scripts/rocm-build.sh. Why a pinned image at all:
 #
-#  1. ROCm 7.1.x is broken on gfx1151 (Strix Halo). hipStreamCreate segfaults inside
+#  1. ROCm 7.1.x is broken on gfx1151. hipStreamCreate segfaults inside
 #     libhsa-runtime64.so.1 at HSA hardware-queue creation. Device enumeration, hipSetDevice
 #     and context init all succeed first, so it fails late and looks like application code.
 #     Memory, RLIMIT_MEMLOCK, device-node permissions and container confinement were each
-#     ruled out by test. 7.2.4 runs the same code correctly. Ubuntu's archive ships 7.1.x,
-#     so installing ROCm from the distro is NOT a working substitute for this image.
+#     ruled out by test. 7.2.4 and 10.0.0 run the same code correctly. Ubuntu's archive ships
+#     7.1.x, so installing ROCm from the distro is NOT a working substitute for this image.
 #  2. The base image is Ubuntu 24.04, which is on AMD's supported OS matrix. Host distro
 #     then does not matter -- per ROCm 6.4+, driver and userspace are decoupled and the host
 #     carries only the amdgpu/amdkfd driver.
 #
-# Three packages are added. The base image has none of them, and the project needs all three:
+# Three packages are added. The 7.2.4 base has none of them (10.0.0's already has libdw1), and
+# the project needs all three:
 # cmake is the build system, git is required by FetchContent for GoogleTest (and pybind11
 # under PULSATRIX_ENABLE_PYTHON), and libdw1 is loaded by rocprofv3's tool library, without
 # which scripts/profile_hip.sh can't start ("libdw.so.1: cannot open shared object file").
 # Nothing about the ROCm stack itself is modified.
-#
-# ROCm 10.0.0 (HIP 7.15) is the evaluation image (roadmap HIP-9): the first release that lists
-# gfx1151 officially. Build it with --build-arg ROCM_BASE=rocm/dev-ubuntu-24.04:10.0.0-full, or
-# run scripts/rocm-build.sh with PULSATRIX_ROCM_VERSION=10.0.0. Its base already ships libdw1;
-# installing it again is a no-op. docs/gpu-profiling.md compares the two versions.
-ARG ROCM_BASE=rocm/dev-ubuntu-24.04:7.2.4-complete
+ARG ROCM_BASE=rocm/dev-ubuntu-24.04:10.0.0-full
 FROM ${ROCM_BASE}
 
 RUN apt-get update \

@@ -25,8 +25,8 @@ CSV has one row per op: `op, calls, total_us, mean_us, percent`. Op names come f
 name (`batch_norm_forward_kernel` becomes `batch_norm_forward`). All of hipBLAS's GEMM kernels
 are grouped as `gemm (hipBLAS)`, and HIP runtime helpers such as copies appear as `runtime: ...`.
 
-`hip_profile_workloads` has three fixed workloads, each a full training step (forward, loss,
-backward, AdamW):
+`hip_profile_workloads` has three fixed training workloads, each a full training step (forward,
+loss, backward, AdamW), and one reduction microbenchmark:
 
 - **`mlp`:** `Linear(256→512) → ReLU → Linear(512→512) → ReLU → Linear(512→10)`, batch 64.
 - **`cnn`:** `Conv2D(3→16) → BatchNorm → ReLU → Conv2D(16→32, stride 2) → BatchNorm → ReLU →
@@ -144,8 +144,8 @@ Fused kernels (HIP-6) and keeping targets on the device are the next steps there
 ## ROCm 10.0.0 evaluation
 
 ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
-evaluation is roadmap HIP-9. Use it with `PULSATRIX_ROCM_VERSION=10.0.0 scripts/rocm-build.sh '...'`;
-the image is `docker/Dockerfile.rocm` built on `rocm/dev-ubuntu-24.04:10.0.0-full`. It ships
+evaluation is roadmap HIP-9. The image is `docker/Dockerfile.rocm` built on
+`rocm/dev-ubuntu-24.04:10.0.0-full`. It ships
 HIP 7.15 and AMD clang 23, against 7.2.4's HIP 7.2 and clang 22.
 
 Measured 2026-10-04 on the Radeon 8060S, host kernel 7.0.0, same commit for both versions:
@@ -176,6 +176,7 @@ Two differences from 7.2.4 matter for building against it:
 - **hipBLASLt.** ROCm 10's hipBLAS links hipBLASLt. Whether GEMMs go through it on gfx1151 is
   HIP-8's question.
 
-ROCm 7.2.4 stays the default for now. Moving the default to 10.0.0 is one variable in
-`scripts/rocm-build.sh`.
+After this evaluation, ROCm 10.0.0 became the default container; `PULSATRIX_ROCM_VERSION=7.2.4`
+still selects the previous one. The HIP results above were measured on 7.2.4, before the
+switch.
 

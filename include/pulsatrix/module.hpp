@@ -243,10 +243,10 @@ public:
      *       cascade through"); SequentialModule overrides this to cascade to every
      *       contained layer, and needs virtual dispatch to do so correctly even when
      *       accessed through a Module* base pointer, not just its own concrete type.
-     * @note Deliberately NOT extended to BatchNormModule's running-mean/variance question
-     *       (flagged, still open) -- that is additive numerical-tracking state, a
-     *       genuinely different scope than this boolean toggle, and touching a closed
-     *       mission's module is its own decision, not bundled in here.
+     * @note BatchNormModule keeps running statistics in training mode and normalizes with
+     *       them in eval mode; DropoutModule is the identity in eval mode. Call
+     *       set_training(false) before explaining a model that has either, so a sample's
+     *       explanation doesn't depend on the rest of its batch.
      */
     virtual void set_training(bool training) { training_ = training; }
 

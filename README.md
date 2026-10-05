@@ -20,6 +20,9 @@ network you build can explain its own predictions without a separate tool.
 - **More than LRP.** Saliency, Integrated Gradients, Grad-CAM, LIME, KernelSHAP and PDP are
   included, along with reinforcement learning, mechanistic interpretability, neuro-symbolic
   reasoning, evolutionary computation and hyperparameter optimization.
+- **Explanations you can check.** Explanation-quality metrics (deletion and insertion with ROAD,
+  the model-parameter randomization test, sparseness, complexity) and a random-model baseline
+  test whether an explanation reflects what the model learned.
 - **CPU, CUDA and ROCm.** One `DeviceBackend` interface, with optional Python bindings.
 
 📖 **Documentation:** <https://joshuaweg.github.io/pulsatrix/>
@@ -99,21 +102,25 @@ explanations and how the results were validated. For a full worked example, see 
 
 | Area | Highlights | Docs |
 |---|---|---|
-| Core | `Tensor`, autograd (`ComputationGraph`), `Module`, SGD/Adam, CPU/CUDA/HIP backends | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
-| Layers | Linear, Conv2D, normalization, pooling, dropout, embeddings, residual blocks | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Core | `Tensor`, autograd (`ComputationGraph`), `Module` with `named_parameters()` and freezing, top-k, eigen/QR/SVD, `set_seed` and deterministic mode, CPU/CUDA/HIP backends | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Training | SGD (momentum, Nesterov), Adam, AdamW with parameter groups; learning-rate schedules; gradient clipping; token-accurate gradient accumulation | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Saving and loading | Native safetensors reader and writer; checkpoints with buffers, optimizer state and format versions | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Layers | Linear, Conv2D (stride, padding), BatchNorm with running statistics, eval mode and folding, other normalization, pooling, dropout, embeddings, residual blocks | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Sequence models | RNN/LSTM/GRU, multi-head attention, `TransformerBlock`, Mamba, RetNet, RWKV | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Generative blocks | VAE, GAN and diffusion losses and sampling steps | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | LRP | Epsilon, Gamma, AlphaBeta, ZBox; Zennit composites; AttnLRP, MambaLRP | [LRP](https://joshuaweg.github.io/pulsatrix/interpretability/lrp/) |
 | Other explainers | Saliency, Integrated Gradients, Grad-CAM, LIME, KernelSHAP, PDP | [Interpretability](https://joshuaweg.github.io/pulsatrix/interpretability/) |
+| Checking explanations | Deletion/insertion curves with ROAD, the model-parameter randomization test, sparseness, complexity, `NullModelBaseline` | [Interpretability](https://joshuaweg.github.io/pulsatrix/interpretability/) |
 | Data pipeline | `Dataset`/`DataLoader`; CSV, image, text, audio and video-frame datasets; dataset validation | [Data pipeline](https://joshuaweg.github.io/pulsatrix/data-pipeline/) |
 | Reinforcement learning | CartPole environments, DQN, REINFORCE, A2C, PPO, SAC | [RL](https://joshuaweg.github.io/pulsatrix/reinforcement-learning/) |
 | Mechanistic interpretability | Activation caching, linear probes, sparse autoencoders, circuit graphs, GFlowNets | [Mech interp](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/) |
 | Neuro-symbolic | Differentiable fuzzy logic, a Datalog engine, LRP through Datalog derivations | [Neuro-symbolic](https://joshuaweg.github.io/pulsatrix/neuro-symbolic/) |
 | Evolutionary computation | Genetic algorithms, NSGA-II, NEAT, Evolution Strategies, CMA-ES, PBT, E-GAN | [Evolutionary](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/) |
 | Hyperparameter optimization | Grid/random search, Gaussian-process BO, TPE, Successive Halving, Hyperband, ASHA | [HPO](https://joshuaweg.github.io/pulsatrix/hyperparameter-optimization/) |
-| Visualization (opt-in) | Dear ImGui + ImPlot charts, heatmaps, circuit graphs, a live training dashboard | [Visualization](https://joshuaweg.github.io/pulsatrix/visualization/) |
+| Visualization | Versioned JSON documents and dependency-free SVG charts (bar, waterfall, heatmap, token strip, beeswarm) in the core library; opt-in Dear ImGui + ImPlot windows and a live training dashboard | [Visualization](https://joshuaweg.github.io/pulsatrix/visualization/) |
 | System monitoring | Live CPU/GPU utilization, memory and temperature logging | [System monitoring](https://joshuaweg.github.io/pulsatrix/system-monitoring/) |
-| Python bindings | `Tensor`, core layers, LRP and every explainer, `SystemMonitor` | [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#python-bindings) |
+| Python bindings | `Tensor`, core layers, LRP and every explainer, `SystemMonitor`, `set_seed` and deterministic mode | [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#python-bindings) |
+| Performance tools | `pulsatrix_bench` (step time, explanation time, LRP conservation; A/B comparison of builds), `scripts/profile_hip.sh` (per-op GPU kernel time) | [Benchmarks](https://joshuaweg.github.io/pulsatrix/benchmarks/), [GPU profiling](https://joshuaweg.github.io/pulsatrix/gpu-profiling/) |
 
 Everything is implemented in C++ with no Python dependency at runtime. Every RL algorithm is
 trained end to end in its tests and has to reach a fixed score on CartPole.
@@ -124,6 +131,8 @@ trained end to end in its tests and has to reach a fixed score on CartPole.
   five CartPole agents and the visualization demos.
 - [Recipes](https://joshuaweg.github.io/pulsatrix/recipes/): short programs that each show one
   feature, with a walkthrough page for each.
+- Tools built with the library: `pulsatrix_svg` turns a saved explanation into an SVG figure, and
+  `pulsatrix_bench` runs the [benchmark suite](https://joshuaweg.github.io/pulsatrix/benchmarks/).
 
 ## Using pulsatrix in your project
 
@@ -136,12 +145,12 @@ cmake --install build --prefix /path/to/prefix
 ```
 
 ```cmake
-find_package(pulsatrix 1.0 REQUIRED)
+find_package(pulsatrix 1.1 REQUIRED)
 target_link_libraries(my_app PRIVATE pulsatrix::core)
 ```
 
 Configure your project with `-DCMAKE_PREFIX_PATH=/path/to/prefix`. The package installs the core
-library and its headers. A build with the CUDA or HIP backend also installs that backend's
+library, its headers and the `pulsatrix_svg` and `pulsatrix_bench` tools. A build with the CUDA or HIP backend also installs that backend's
 headers, and `find_package` then looks for the same CUDA or ROCm libraries (ROCm through
 `ROCM_PATH`, as in the build). `pulsatrix_HAS_CUDA` and `pulsatrix_HAS_HIP` say which backends the
 installed build has. The visualization module and the Python bindings aren't installed.
@@ -157,15 +166,18 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
 
 ## Status
 
-- Version 1. The API may still change between minor versions.
+- Version 1.1: the v1.1 "Foundations and trust" milestone is complete. The API may still change
+  between minor versions.
 - What's planned next, and why, is in the
   [Roadmap](https://joshuaweg.github.io/pulsatrix/roadmap/).
-- 2,000+ tests. CI builds and tests every push and pull request on Windows (MSVC) and Linux
-  (GCC), and compiles the CUDA and HIP backends.
+- About 2,270 tests on the CPU, and 2,400 with the HIP backend. CI builds and tests every push
+  and pull request on Windows (MSVC) and Linux (GCC), runs the Python binding tests, and
+  compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.
 - The HIP/ROCm backend is tested on real AMD hardware (gfx1151), not in CI. See
   [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#gpu-backends) for
-  the pinned ROCm container.
+  the pinned ROCm container (ROCm 10.0.0; 7.2.4 is still selectable) and the host kernel it
+  needs.
 
 ## API reference
 
