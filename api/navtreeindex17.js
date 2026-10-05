@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"structpulsatrix_1_1ValidationIssue.html#a7e9ea9c75ba69a37b1b8121e4854d3fd":[4,0,0,218,2],
+"structpulsatrix_1_1ValidationIssue.html#a7e9ea9c75ba69a37b1b8121e4854d3fd":[3,0,0,221,2],
 "structpulsatrix_1_1WaterfallBar.html":[3,0,0,225],
 "structpulsatrix_1_1WaterfallBar.html":[4,0,0,222],
 "structpulsatrix_1_1WaterfallBar.html#a41a8ed93202789afcea4f274865349b5":[4,0,0,222,2],

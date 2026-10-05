@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"namespacepulsatrix.html#a416909cba1eaf572fc95d96d7495a0dc":[3,0,0,305],
+"namespacepulsatrix.html#a41a7288fee4017812bd7436df2af3aea":[3,0,0,294],
 "namespacepulsatrix.html#a440d49a4d556810d54bd803b384b14e6":[3,0,0,345],
 "namespacepulsatrix.html#a448cab9e47c5525c719965887897a03d":[3,0,0,353],
 "namespacepulsatrix.html#a4588b52e5db8b067e5b3a86a3d66ddd0":[3,0,0,340],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "namespacepulsatrix_1_1explainer__detail.html":[3,0,0,2],
 "namespacepulsatrix_1_1explainer__detail.html#a35309abfd652dbb89c6d1bab85169af9":[3,0,0,2,0],
 "namespacepulsatrix_1_1lrp__composite.html":[3,0,0,3],
-"namespacepulsatrix_1_1lrp__composite.html#a35db92169a6e3bf6eea6fe5a7abe8d76":[3,0,0,3,2],
-"namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39":[3,0,0,3,1],
-"namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5":[3,0,0,3,3]
+"namespacepulsatrix_1_1lrp__composite.html#a35db92169a6e3bf6eea6fe5a7abe8d76":[3,0,0,3,2]
 };

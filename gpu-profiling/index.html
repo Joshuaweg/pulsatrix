@@ -849,6 +849,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-4-no-per-op-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-4: no per-op synchronization
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1649,6 +1660,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-4-no-per-op-synchronization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-4: no per-op synchronization
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1858,6 +1880,52 @@ steps below 1 MiB, then steps of an eighth of a power of two). Over 20 steps:</p
 <p>The gains are modest because every op still synchronizes the stream. Removing those syncs is
 HIP-4. Cap the memory a backend holds with <code>set_memory_budget()</code> or
 <code>PULSATRIX_HIP_MEMORY_BUDGET_MB</code>, and return cached blocks with <code>empty_cache()</code>.</p>
+<h3 id="hip-4-no-per-op-synchronization">HIP-4: no per-op synchronization<a class="headerlink" href="#hip-4-no-per-op-synchronization" title="Permanent link">&para;</a></h3>
+<p>Every HIP op used to wait for the GPU to finish before returning: 59 synchronizations, one per
+kernel or hipBLAS call. Now ops are queued on the backend's stream, and the host waits only
+where it must:</p>
+<ul>
+<li><strong>Copies to the host</strong>, because the caller reads the result next. This includes <code>dot</code>, <code>sum</code>
+  and reading a loss value.</li>
+<li><strong>Copies from the host</strong>, because the source is often a temporary buffer.</li>
+<li><strong>Releasing memory</strong> to the driver.</li>
+</ul>
+<p>Interleaved A/B against HIP-3:</p>
+<table>
+<thead>
+<tr>
+<th>Workload</th>
+<th>Before</th>
+<th>After</th>
+<th>Speedup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mlp</code></td>
+<td>0.70 ms/step</td>
+<td>0.35 ms/step</td>
+<td>2.0×</td>
+</tr>
+<tr>
+<td><code>tagger</code></td>
+<td>5.35 ms/step</td>
+<td>2.84 ms/step</td>
+<td>1.9×</td>
+</tr>
+<tr>
+<td><code>cnn</code></td>
+<td>7.28 ms/step</td>
+<td>5.24 ms/step</td>
+<td>1.4×</td>
+</tr>
+</tbody>
+</table>
+<p>Set <code>PULSATRIX_HIP_SYNC_DEBUG=1</code> before creating the backend to restore the per-op waits. A
+failing kernel otherwise reports its error at the next wait, not at the op that caused it.</p>
+<p>The small models are still only about 20% busy. What's left is host-side work inside each step:
+reading the loss back, and losses that validate their targets on the host (one copy each step).
+Fused kernels (HIP-6) and keeping targets on the device are the next steps there.</p>
 
 
 

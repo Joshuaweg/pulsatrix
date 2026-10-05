@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39":[3,0,0,3,1],
+"namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5":[3,0,0,3,3],
 "namespacepulsatrix_1_1lrp__composite_1_1detail.html":[3,0,0,3,0],
 "namespacepulsatrix_1_1lrp__composite_1_1detail.html#a07df856fa77d043f1e33fae47b64028d":[3,0,0,3,0,0],
 "namespacepulsatrix_1_1lrp__composite_1_1detail.html#a48f3124006591765e4cd5f8b118a5ab4":[3,0,0,3,0,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX14 =
 "structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a5cc0627fbdbed23c8324f07e0b597705":[4,0,0,69,0,4],
 "structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a6ee536c46431a4b61425927c7ee0cb40":[3,0,0,72,0,3],
 "structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a6ee536c46431a4b61425927c7ee0cb40":[4,0,0,69,0,3],
-"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a87231494ea921edd1b7579addef4c50f":[3,0,0,72,0,5],
-"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a87231494ea921edd1b7579addef4c50f":[4,0,0,69,0,5],
-"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa":[4,0,0,69,0,0]
+"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a87231494ea921edd1b7579addef4c50f":[3,0,0,72,0,5]
 };
