@@ -28,7 +28,8 @@ var searchData=
   ['strict_25',['strict',['../structpulsatrix_1_1CheckpointLoadOptions.html#a3717bf21bf521e3ae60b447a93a186bd',1,'pulsatrix::CheckpointLoadOptions']]],
   ['stride_5fh_26',['stride_h',['../structpulsatrix_1_1ConvGeometry.html#a8645a4ca83c4bd6c5d07150ca2874b86',1,'pulsatrix::ConvGeometry']]],
   ['stride_5fw_27',['stride_w',['../structpulsatrix_1_1ConvGeometry.html#a3b57003c7aca0f87718b2964bd792761',1,'pulsatrix::ConvGeometry']]],
-  ['sum_5flog_5fpb_28',['sum_log_pb',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae8231cbd2a73c60f9c3041f28f1c7767',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['sum_5flog_5fpf_29',['sum_log_pf',['../structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['system_5fcpu_30',['system_cpu',['../structpulsatrix_1_1detail_1_1RawReading.html#a4c3598368c1f33ffb51e0d4781c23dda',1,'pulsatrix::detail::RawReading']]]
+  ['style_28',['style',['../structpulsatrix_1_1PartialDependenceSvgOptions.html#a48a0aad4da5f907396e1fda1ba48719c',1,'pulsatrix::PartialDependenceSvgOptions']]],
+  ['sum_5flog_5fpb_29',['sum_log_pb',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae8231cbd2a73c60f9c3041f28f1c7767',1,'pulsatrix::GFlowNetTrajectory']]],
+  ['sum_5flog_5fpf_30',['sum_log_pf',['../structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc',1,'pulsatrix::GFlowNetTrajectory']]],
+  ['system_5fcpu_31',['system_cpu',['../structpulsatrix_1_1detail_1_1RawReading.html#a4c3598368c1f33ffb51e0d4781c23dda',1,'pulsatrix::detail::RawReading']]]
 ];

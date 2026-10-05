@@ -1546,6 +1546,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cfs-counterfactuals-and-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CFS: Counterfactuals and sensitivity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#int-embedding-and-representation-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1795,6 +1806,17 @@
     <span class="md-ellipsis">
       
         XAI: Question-driven framework
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cfs-counterfactuals-and-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CFS: Counterfactuals and sensitivity
       
     </span>
   </a>
@@ -2135,6 +2157,16 @@ below record the reasoning they were built on.</p>
 <li>ROAD: Rong et al., ICML 2022.</li>
 <li>The model-parameter randomization test comes from Adebayo et al., NeurIPS 2018. Done (#53): a model-independent "explainer" scores a similarity of 1.0 at every layer, and gradient × input decorrelates.</li>
 <li><strong>XAI-6.</strong> See the cross-cutting section above. Done (#54).</li>
+</ul>
+<h2 id="cfs-counterfactuals-and-sensitivity">CFS: Counterfactuals and sensitivity<a class="headerlink" href="#cfs-counterfactuals-and-sensitivity" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>CFS-1.</strong> Goldstein et al., "Peeking Inside the Black Box", arXiv 1309.6392 (ICE, c-ICE, d-ICE). Friedman's H-statistic builds on two-feature PDP. scikit-learn's <code>partial_dependence(kind="both")</code> returns PDP and ICE together.</li>
+<li><strong>CFS-2.</strong> Apley and Zhu, arXiv 1612.08468. <strong>Fails when:</strong> bins hold too few points; quantile bins keep counts even.</li>
+<li><strong>CFS-3.</strong> Occlusion: Zeiler and Fergus, arXiv 1311.2901. Captum's <code>Occlusion</code> and <code>FeatureAblation</code> are the references. Gradients measure an infinitesimal neighborhood; ±δ measures a finite one, and the two disagree exactly where the model saturates.</li>
+<li><strong>CFS-4.</strong> Morris, Technometrics 1991; Campolongo et al. 2007 (μ*). Saltelli et al. 2010 for the Sobol estimators. SALib implements both. Sobol indices assume independent inputs. <strong>Falsifier:</strong> indices that move by more than their confidence interval between seeds at the default sample size.</li>
+<li><strong>CFS-5.</strong> Wachter, Mittelstadt and Russell, arXiv 1711.00399. MAD weighting is from the same paper. On images, counterfactuals become adversarial examples (Freiesleben, arXiv 2009.05487); the report says so.</li>
+<li><strong>CFS-6.</strong> Growing spheres: Laugel et al., arXiv 1712.08443.</li>
+<li><strong>CFS-7.</strong> DiCE: Mothilal, Sharma and Tan, arXiv 1905.07697 (validity, proximity, sparsity, diversity). Plausibility as kNN distance follows Pawelczyk et al., "CARLA", arXiv 2108.00783.</li>
 </ul>
 <h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
 <ul>

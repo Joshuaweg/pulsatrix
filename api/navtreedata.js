@@ -77,12 +77,12 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1TiedLMHeadModule.html#a02d1fcace11e192a006e218d64efd0e4",
 "classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html#a8c12f818de852ba84c2a298d8417cf2c",
 "hierarchy.html",
-"namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb",
-"sequential__module_8hpp.html",
-"structpulsatrix_1_1ConvGeometry.html#a3b57003c7aca0f87718b2964bd792761",
-"structpulsatrix_1_1LRPRuleConfig.html#a41a03360ab748cd978bea186731a1750",
-"structpulsatrix_1_1Sample.html",
-"structpulsatrix_1_1detail_1_1CpuTimes.html#a32395487b178325aa5b2250127422ab0"
+"namespacepulsatrix.html#a858eb3cecb137b44c4f8792940ed740d",
+"pbt__trial_8hpp.html",
+"structpulsatrix_1_1ConnectionGene.html#a39c102f2cec9fb3c9c4cea8b4cd58758",
+"structpulsatrix_1_1HyperbandBracket.html",
+"structpulsatrix_1_1PerturbationOptions.html#a56885c944a834c67af13fab525a09d50",
+"structpulsatrix_1_1TokenRelevanceDocument.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

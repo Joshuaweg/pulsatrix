@@ -1787,6 +1787,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cfs-counterfactuals-and-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CFS: Counterfactuals and sensitivity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CFS: Counterfactuals and sensitivity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-cfs-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the CFS work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#int-embedding-and-representation-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2433,6 +2461,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cfs-counterfactuals-and-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CFS: Counterfactuals and sensitivity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CFS: Counterfactuals and sensitivity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-cfs-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the CFS work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#int-embedding-and-representation-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2760,7 +2816,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 </tr>
 <tr>
 <td>6. Built-in XAI framework (4 reasons, 9 question categories)</td>
-<td><a href="#xai-question-driven-explainability-framework">XAI</a></td>
+<td><a href="#xai-question-driven-explainability-framework">XAI</a>, <a href="#cfs-counterfactuals-and-sensitivity">CFS</a></td>
 </tr>
 <tr>
 <td>7. New patterns and architectures</td>
@@ -2801,6 +2857,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast</li>
 <li>LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizers, generation, KV cache, the
   golden-logit harness, AttnLRP parity with LXT</li>
+<li>CFS-1 to CFS-7 (added 2026-10-05, built first): ICE, ALE, local and global sensitivity, and
+  counterfactuals, each with its view</li>
 <li>TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores</li>
 <li>HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)</li>
@@ -3695,8 +3753,8 @@ doesn't support.</p>
 </tr>
 <tr>
 <td>What if</td>
-<td>PDP and ICE, re-running with an edited input</td>
-<td>Have</td>
+<td>PDP, re-running with an edited input; ICE, ALE, local and global sensitivity</td>
+<td>Partial; <a href="#cfs-counterfactuals-and-sensitivity">CFS-1 to CFS-4</a></td>
 </tr>
 <tr>
 <td>How (global)</td>
@@ -3706,7 +3764,7 @@ doesn't support.</p>
 <tr>
 <td>How to be that</td>
 <td>Counterfactual search</td>
-<td>Gap; XAI-4</td>
+<td>Gap; <a href="#cfs-counterfactuals-and-sensitivity">CFS-5 to CFS-7</a></td>
 </tr>
 <tr>
 <td>How to still be this</td>
@@ -3780,8 +3838,8 @@ doesn't support.</p>
 </tr>
 <tr>
 <td>XAI-4</td>
-<td>The missing explainers: counterfactuals (gradient-based first, then a diverse variant), a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives</td>
-<td>Covers How to be that, How to still be this and How (global)</td>
+<td>The missing explainers: a global decision-tree surrogate with a fidelity score, local fidelity output for LIME, Anchors, prototypes from nearest neighbors, and pertinent negatives</td>
+<td>Covers How to still be this and How (global); counterfactuals moved to CFS</td>
 <td>XAI-1, INT-1</td>
 <td>P1</td>
 <td>M each</td>
@@ -3851,6 +3909,104 @@ doesn't support.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="cfs-counterfactuals-and-sensitivity">CFS: Counterfactuals and sensitivity<a class="headerlink" href="#cfs-counterfactuals-and-sensitivity" title="Permanent link">&para;</a></h2>
+<p>Two of the nine questions had almost nothing behind them. "What if" had PDP only; the table above
+used to claim ICE, which pulsatrix never had. "How to be that" had nothing. This epic covers both,
+model-agnostic where it can be (a prediction function, like LIME and PDP), and each method ships a
+<code>pulsatrix.&lt;kind&gt;.v1</code> document (VIZ-1) and an SVG view (VIZ-2).</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Item</th>
+<th>Why</th>
+<th>Depends on</th>
+<th>P</th>
+<th>Effort</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CFS-1</td>
+<td>ICE: one curve per instance, centered ICE (c-ICE) and derivative ICE, plus two-feature partial dependence. View: PDP over ICE lines, and a 2-D PDP heatmap. Checked against scikit-learn's <code>partial_dependence</code></td>
+<td>PDP averages away heterogeneity; ICE shows it. Two-feature PDP shows interactions</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+<td></td>
+</tr>
+<tr>
+<td>CFS-2</td>
+<td>ALE (accumulated local effects), first order, with quantile bins. Checked against <code>alibi</code> or <code>PyALE</code></td>
+<td>PDP reads the model at impossible inputs when features are correlated; ALE doesn't</td>
+<td>CFS-1</td>
+<td>P1</td>
+<td>S</td>
+<td></td>
+</tr>
+<tr>
+<td>CFS-3</td>
+<td>Local sensitivity: move each input feature by ±δ (absolute or in units of the background's spread) or across its range and record the output change; occlusion with patches for images and spans for sequences. Views: a tornado chart, and the occlusion map through the heatmap renderer</td>
+<td>"Which inputs is this prediction sensitive to, and how much?" with no gradients and no surrogate</td>
+<td>—</td>
+<td>P0</td>
+<td>S</td>
+<td></td>
+</tr>
+<tr>
+<td>CFS-4</td>
+<td>Global sensitivity: Morris elementary effects (μ*, σ) and Sobol first-order and total indices (Saltelli sampling, Jansen estimators) with bootstrap confidence intervals. Views: μ*–σ scatter, Sobol bars with error bars. Checked against SALib</td>
+<td>Which inputs drive the output over the whole input space, and which interact</td>
+<td>—</td>
+<td>P1</td>
+<td>M</td>
+<td></td>
+</tr>
+<tr>
+<td>CFS-5</td>
+<td>Gradient counterfactual (Wachter): the nearest input that reaches a target class or value, distance weighted by each feature's median absolute deviation, with immutable features, bounds, and integer or categorical features. Reports validity, proximity (L1, L2) and sparsity. View: what changed, feature by feature</td>
+<td>"How to be that", the most requested missing explainer</td>
+<td>—</td>
+<td>P0</td>
+<td>M</td>
+<td></td>
+</tr>
+<tr>
+<td>CFS-6</td>
+<td>Model-agnostic counterfactual: growing spheres, refined by the evolutionary module, for models with no gradient</td>
+<td>Counterfactuals for any prediction function</td>
+<td>CFS-5</td>
+<td>P1</td>
+<td>S</td>
+<td></td>
+</tr>
+<tr>
+<td>CFS-7</td>
+<td>Diverse counterfactuals (DiCE: a determinantal diversity term) and a plausibility score (distance to the k nearest background instances). Checked against DiCE's own metrics</td>
+<td>One counterfactual hides the other ways to change the outcome; implausible ones mislead</td>
+<td>CFS-5</td>
+<td>P1</td>
+<td>M</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Every item runs on a re-initialized model too (rule 1): sensitivity that looks the same on a random
+network says nothing about what the model learned.</p>
+<h3 id="how-the-cfs-work-departed-from-the-plan">How the CFS work departed from the plan<a class="headerlink" href="#how-the-cfs-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>CFS-1.</strong> ICE takes a prediction function and a background set, like <code>PDP</code>; the ICE average
+  equals <code>PDP</code>'s curve exactly. The document holds the raw curves only, and the centered and
+  derivative views are computed when drawn, so every renderer agrees on them. The derivative
+  uses <code>numpy.gradient</code>'s formula, which handles uneven grids such as the percentile grids
+  <code>FeatureGrid</code> builds. The SVG helpers moved to an internal header shared by the new views.</li>
+<li><strong>CFS-3.</strong> The bounds are separate from the sweep (<code>DeltaBounds</code>, <code>ScaledDeltaBounds</code>,
+  <code>RangeBounds</code>), so ±δ and range sensitivity are one function. <code>Occlusion</code> follows Captum 0.9's
+  rules exactly, including the cropped last window, and returns an ordinary <code>Attribution</code>, so the
+  existing heatmap view draws it. The tornado chart gives each feature two bars, high and low,
+  rather than one two-colored bar, because both values often move the output the same way.</li>
+</ul>
 <h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

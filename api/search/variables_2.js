@@ -20,5 +20,6 @@ var searchData=
   ['counts_17',['counts',['../structpulsatrix_1_1HistogramBins.html#a06c760e4f942b9b33e905729b574c93f',1,'pulsatrix::HistogramBins']]],
   ['cpu_5ftemperature_5fc_18',['cpu_temperature_c',['../structpulsatrix_1_1SystemSample.html#a262e5c976fecba5d28dcd64476d843f0',1,'pulsatrix::SystemSample::cpu_temperature_c'],['../structpulsatrix_1_1detail_1_1RawReading.html#a216d87197dd892cec636c5ccbcf5ba53',1,'pulsatrix::detail::RawReading::cpu_temperature_c']]],
   ['cpu_5futilization_5fpercent_19',['cpu_utilization_percent',['../structpulsatrix_1_1SystemSample.html#a232aec337561aaeccbec56c26e605adf',1,'pulsatrix::SystemSample']]],
-  ['cumulative_20',['cumulative',['../structpulsatrix_1_1WaterfallStep.html#a96cb8404e7625a062e06e885a3e4dc05',1,'pulsatrix::WaterfallStep']]]
+  ['cumulative_20',['cumulative',['../structpulsatrix_1_1WaterfallStep.html#a96cb8404e7625a062e06e885a3e4dc05',1,'pulsatrix::WaterfallStep']]],
+  ['curves_21',['curves',['../structpulsatrix_1_1IceResult.html#a85904ab2b74b347b98a138b3c2ff122a',1,'pulsatrix::IceResult']]]
 ];
