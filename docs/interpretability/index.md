@@ -9,11 +9,12 @@ This section has three parts:
 - **[Layer-wise Relevance Propagation (LRP)](lrp.md)**: passes the prediction's score back
   through the network, layer by layer, using a rule chosen for each layer. Every pulsatrix
   layer implements an LRP rule, so any network you build can be explained with it.
-- **[Model-Agnostic Explainers](model-agnostic.md)**: `KernelSHAP`, `LIME` and `PDP`. They only
-  call the model, perturbing the input and watching the output. Use them for any model,
+- **[Model-Agnostic Explainers](model-agnostic.md)**: `KernelSHAP`, `LIME`, `PDP`, ICE, local
+  sensitivity and `Occlusion`. They only call the model, perturbing the input and watching the
+  output. Use them for any model,
   including ones not built with pulsatrix.
 - **[Gradient-Based Explainers](deep-learning-approaches.md)**: `Saliency`,
-  `IntegratedGradients` and `GradCAM`. They read a pulsatrix network's gradients and
+  `IntegratedGradients`, `GradCAM` and counterfactuals (`FindCounterfactual`). They read a pulsatrix network's gradients and
   activations, so they are faster and see inside the model.
 
 Full API reference: [Doxygen: Interpretability](../api/group__interpretability.html)

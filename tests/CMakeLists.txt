@@ -214,6 +214,7 @@ add_executable(pulsatrix_tests
     pdp_test.cpp
     ice_test.cpp
     sensitivity_test.cpp
+    counterfactual_test.cpp
     lrp_conservation_test.cpp
     stability_test.cpp
     captum_benchmark_test.cpp
@@ -291,6 +292,9 @@ add_test(NAME PulsatrixSvg.RendersCenteredIce
 add_test(NAME PulsatrixSvg.RendersATornado
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/sensitivity.v1.json" --top-k 1
         -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_tornado.svg")
+add_test(NAME PulsatrixSvg.RendersACounterfactual
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/counterfactual.v1.json"
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_counterfactual.svg")
 add_test(NAME PulsatrixSvg.RejectsAnUnknownIceStyle
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/partial_dependence.v1.json" --ice sideways)
 set_tests_properties(PulsatrixSvg.RejectsAnUnknownIceStyle PROPERTIES WILL_FAIL TRUE)

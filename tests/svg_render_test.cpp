@@ -246,6 +246,7 @@ TEST(SvgRenderTest, EveryChartIsWellFormedDeterministicAndTitled) {
         RenderPartialDependenceSvg(PartialDependenceDocument{"x", "y", {0.0f, 1.0f}, {0.5f, 1.0f}, 1, {0.5f, 1.0f}, {}},
                                    {}, opt),
         RenderTornadoSvg(SensitivityDocument{"y", 1.0f, {{"a", 0.0f, -1.0f, 1.0f, 0.5f, 2.0f}}}, 10, opt),
+        RenderCounterfactualSvg(CounterfactualDocument{"t", true, 0.0f, 1.0f, {{"a", 0.0f, 1.0f, 1.0f}}}, 12, opt),
     };
     for (const std::string& svg : svgs) {
         auto root = Parsed(svg);
@@ -639,6 +640,46 @@ TEST(SvgTornadoTest, RejectsBadInput) {
     EXPECT_THROW((void)RenderTornadoSvg(nan), std::invalid_argument);
 }
 
+// ---- counterfactual -------------------------------------------------------------------------
+
+TEST(SvgCounterfactualTest, ListsOnlyChangedFeaturesCostliestFirst) {
+    // Costs in scale units: a +1.5, b 0, c -4, d +0.5.
+    CounterfactualDocument doc{"class 1", true, -1.0f, 0.25f,
+                               {{"a", 1.0f, 4.0f, 2.0f}, {"b", 5.0f, 5.0f, 1.0f}, {"c", 0.0f, -2.0f, 0.5f},
+                                {"d", 3.0f, 3.5f, 1.0f}}};
+    auto root = Parsed(RenderCounterfactualSvg(doc));
+    auto labels = ByClass(*root, "feature-label");
+    ASSERT_EQ(labels.size(), 3u);
+    EXPECT_EQ(labels[0]->text, "c");
+    EXPECT_EQ(labels[1]->text, "a");
+    EXPECT_EQ(labels[2]->text, "d");
+    EXPECT_NE(AllText(*root).find("Reaches class 1"), std::string::npos);
+    EXPECT_NE(AllText(*root).find("3 of 4 features changed, distance 6"), std::string::npos);
+    // c's bar (cost -4) is left of zero and 8x as long as d's (+0.5).
+    auto bars = ByClass(*root, "bar");
+    const double zero = ByClass(*root, "zero-line").front()->num("x1");
+    EXPECT_NEAR(bars[0]->num("x") + bars[0]->num("width"), zero, 1e-6);
+    EXPECT_NEAR(bars[0]->num("width") / bars[2]->num("width"), 8.0, 8.0 * 5e-3);  // coordinates are rounded
+
+    auto two = Parsed(RenderCounterfactualSvg(doc, 2));
+    EXPECT_EQ(ByClass(*two, "changed-feature").size(), 2u);
+    EXPECT_NE(AllText(*two).find("1 more not shown"), std::string::npos);
+    doc.valid = false;
+    EXPECT_NE(AllText(*Parsed(RenderCounterfactualSvg(doc))).find("Does not reach"), std::string::npos);
+}
+
+TEST(SvgCounterfactualTest, HandlesNoChangeAndRejectsBadInput) {
+    CounterfactualDocument same{"", false, 1.0f, 1.0f, {{"a", 1.0f, 1.0f, 1.0f}}};
+    EXPECT_NE(AllText(*Parsed(RenderCounterfactualSvg(same))).find("No feature changed"), std::string::npos);
+    EXPECT_THROW((void)RenderCounterfactualSvg(same, 0), std::invalid_argument);
+    CounterfactualDocument nan = same;
+    nan.features[0].counterfactual = kNaN;
+    EXPECT_THROW((void)RenderCounterfactualSvg(nan), std::invalid_argument);
+    CounterfactualDocument zero_scale = same;
+    zero_scale.features[0].scale = 0.0f;
+    EXPECT_THROW((void)RenderCounterfactualSvg(zero_scale), std::invalid_argument);
+}
+
 // ---- golden files: each chart, from the VIZ-1 document fixtures, must match
 // tests/fixtures/viz/svg/ byte for byte on every platform. After an intended change, rerun
 // with PULSATRIX_UPDATE_GOLDEN=1 to rewrite them, then look at the new figures before
@@ -705,6 +746,8 @@ TEST(SvgGoldenTest, EveryChart) {
     centered.style = IceStyle::Centered;
     ExpectGolden("partial_dependence_centered.svg", RenderPartialDependenceSvg(pdd, centered));
     ExpectGolden("tornado.svg", RenderTornadoSvg(ParseSensitivityDocument(Fixture("sensitivity.v1.json"))));
+    ExpectGolden("counterfactual.svg",
+                 RenderCounterfactualSvg(ParseCounterfactualDocument(Fixture("counterfactual.v1.json"))));
 }
 
 }  // namespace

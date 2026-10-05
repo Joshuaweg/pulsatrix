@@ -218,6 +218,27 @@ TEST(VizDocumentConversionTest, LocalSensitivityNamesItsFeatures) {
     EXPECT_EQ(ToSensitivityDocument(r).features[0].name, "feature_2");
 }
 
+TEST(VizDocumentGoldenTest, Counterfactual) {
+    CounterfactualDocument doc;
+    doc.target = "class approved";
+    doc.valid = true;
+    doc.output_before = -0.5f;
+    doc.output_after = 0.125f;
+    doc.features = {{"income", 40.0f, 52.0f, 8.0f}, {"age", 35.0f, 35.0f, 10.0f}, {"debt", 0.5f, 0.25f, 0.25f}};
+    std::string golden = ReadFixture("counterfactual.v1.json");
+    EXPECT_EQ(ToJson(doc), golden);
+    CounterfactualDocument back = ParseCounterfactualDocument(golden);
+    EXPECT_TRUE(back.valid);
+    ASSERT_EQ(back.features.size(), 3u);
+    EXPECT_EQ(back.features[2].counterfactual, 0.25f);
+    std::string bad = golden;
+    bad.replace(bad.find("\"scale\": 8"), 10, "\"scale\": 0");
+    ExpectRejected(ParseCounterfactualDocument, bad, "/features/0/scale");
+    bad = golden;
+    bad.replace(bad.find("true"), 4, "1");
+    ExpectRejected(ParseCounterfactualDocument, bad, "/valid");
+}
+
 // ---- conversions from and to the in-memory types the widgets draw today.
 
 TEST(VizDocumentConversionTest, AttributionRoundTripsThroughTensor) {

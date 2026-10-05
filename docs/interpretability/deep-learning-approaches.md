@@ -18,6 +18,9 @@ need its own graph-walking code.
   output is flat (saturated).
 - **`GradCAM`** (`grad_cam.hpp`): gradient-weighted class activation mapping. It produces a
   coarse heatmap over the last `Conv2DModule`'s feature maps.
+- **`FindCounterfactual`** (`counterfactual.hpp`): the nearest input that reaches a different
+  class or an output range (Wachter et al. 2017), with immutable features, limits, and integer
+  and one-hot features. It answers "what would have to change?"
 - **`ComputeAttributionStability(runs)`** (`explainer_stability.hpp`): measures how much
   repeated runs of any explainer vary on the same input.
 
@@ -35,6 +38,7 @@ Full API reference: [Doxygen: Gradient-Based Explainers](../api/group__interpret
 | `Saliency` | 1 forward + 1 backward | A quick first look | Noisy; reads zero where the output saturates |
 | `IntegratedGradients` | `steps` forward + backward passes | Attributions that add up to `f(input) - f(baseline)` | You must choose a baseline |
 | `GradCAM` | 1 forward + 1 backward | "Where in the image?" for CNNs | Coarse: feature-map resolution, not pixels |
+| `FindCounterfactual` | Up to `rounds × steps` forward + backward passes | "What is the smallest change that flips this?" | On images it finds adversarial noise, not a meaningful change |
 | [`LRP`](lrp.md) | 1 forward + 1 relevance pass | Per-feature relevance that (approximately) sums to the output score | The rule choice changes the result |
 
 ## How to implement
@@ -127,6 +131,33 @@ averages the gradient over each channel's spatial positions to get a weight `α�
 The map is `ReLU(Σₖ αₖ · Aᵏ)`.
 
 Recipe: [Grad-CAM walkthrough](../recipes/interpretability/grad_cam_walkthrough.md).
+
+### Counterfactuals
+
+```cpp
+#include "pulsatrix/counterfactual.hpp"
+#include "pulsatrix/viz/svg.hpp"
+
+CounterfactualConstraints c;
+c.scale = MedianAbsoluteDeviation(background);  // a change of one MAD costs 1
+c.immutable = {0};                                // feature 0 (say, age) may not change
+CounterfactualResult cf = FindCounterfactual(ctx, input, CounterfactualTarget::ToClass(1), c);
+// cf.valid, cf.counterfactual, cf.distance, cf.num_changed, cf.output_before, cf.output_after
+
+std::string svg = RenderCounterfactualSvg(
+    ToCounterfactualDocument(input, cf, {"age", "income"}, c.scale, "class approved"));
+```
+
+**What's happening:** the search minimizes `lambda × loss + Σⱼ |x'ⱼ − xⱼ| / scaleⱼ`. The loss is
+a hinge that is zero once the target class leads every other output by `margin` (or the output
+is inside the target range). Each step is a gradient step on the loss followed by
+soft-thresholding toward the input, so features the prediction doesn't need stay exactly
+unchanged and the result is sparse. If a round of `steps_per_round` steps ends without a valid
+point, `lambda` grows by `lambda_growth` and the search continues. Integer features are rounded
+and one-hot groups snapped at the end, and `valid` is judged after that. On a linear model the
+result is the L1-optimal change, which the tests check.
+
+Test reference: `tests/counterfactual_test.cpp`.
 
 ## Before you explain
 

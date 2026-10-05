@@ -188,6 +188,13 @@ public:
         return v.as_array();
     }
 
+    bool boolean(const JsonValue& v, const std::string& pointer) const {
+        if (v.type() != JsonValue::Type::Bool) {
+            fail(pointer, "expected true or false");
+        }
+        return v.as_bool();
+    }
+
     const std::string& string(const JsonValue& v, const std::string& pointer) const {
         if (v.type() != JsonValue::Type::String) {
             fail(pointer, "expected a string");
