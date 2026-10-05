@@ -164,8 +164,8 @@ below record the reasoning they were built on.
 - **XAI-5.**
   - Quantus: Hedström et al., JMLR 2023, arXiv 2202.06861. It groups metrics into six families: faithfulness, robustness, localisation, complexity, randomisation and axiomatic.
   - ROAD: Rong et al., ICML 2022.
-  - The model-parameter randomization test comes from Adebayo et al., NeurIPS 2018.
-- **XAI-6.** See the cross-cutting section above.
+  - The model-parameter randomization test comes from Adebayo et al., NeurIPS 2018. Done (#53): a model-independent "explainer" scores a similarity of 1.0 at every layer, and gradient × input decorrelates.
+- **XAI-6.** See the cross-cutting section above. Done (#54).
 
 ## INT: Embedding and representation analysis
 
@@ -346,7 +346,7 @@ below record the reasoning they were built on.
   - rocprofv3 (ROCprofiler-SDK) is the standard profiler in ROCm 10.0 [V].
   - rocprof-compute support on gfx115x landed in TheRock PR #8299 [C]. ROCm 10.0 fixed its roofline precision list [V]. It's unverified on 7.2.4.
 - **HIP-2.**
-  - **Falsifier:** rocprofv3 shows these kernels take under 5% of step time on real workloads.
+  - **Falsifier:** rocprofv3 shows these kernels take under 5% of step time on real workloads. It held for softmax, the norms and `column_sums`, which were left alone. It failed for BatchNorm (79% of the CNN's kernel time), which was rewritten: step time fell from about 27 ms to about 10 ms (#57).
   - **Fails when:**
     - a 32-bit mask truncates the shuffle on 64-wide waves;
     - results differ from the CPU in the last bit (use tolerances);
@@ -360,9 +360,9 @@ below record the reasoning they were built on.
   - **VRAM on the APU** [C]:
     - ROCm adds VRAM and GTT together when reporting capacity, which overstates what can be allocated (ROCm #6004).
     - AMD recommends a 0.5 GB carve-out on Strix Halo [V] (AMD Strix Halo system optimization guide).
-- **HIP-4.** **Falsifier:** the GPU is already more than 90% busy with the syncs in place.
+- **HIP-4.** **Falsifier:** the GPU is already more than 90% busy with the syncs in place. It didn't hold: HIP-1 measured 12–13% busy on the small models, and removing the syncs made them about 2× faster (#59).
   - **Fails when:** the host reads stale data, or an error surfaces in a later op.
-- **HIP-5.** `dot` and `sum` launch a single 256-thread block today (`src/gpu_kernels.cuh`). Use per-block partials and a second pass; no atomics, to keep results deterministic.
+- **HIP-5.** `dot` and `sum` launch a single 256-thread block today (`src/gpu_kernels.cuh`). Use per-block partials and a second pass; no atomics, to keep results deterministic. Done (#56): both now run at the measured memory bandwidth.
 - **HIP-6.** **Fails when:** the fused training path and the unfused explain path drift apart numerically. Gate them with a conservation test.
 - **HIP-7.** At N=64, a 3×3 kernel on 224×224 input needs about 350 MB of im2col buffer [I].
   - MIOpen on gfx1151 has a history of trouble [C]: missing Composable Kernel libraries (TheRock #5105, closed), and a Winograd lockup (TheRock #5581).
