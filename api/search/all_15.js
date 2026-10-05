@@ -20,6 +20,7 @@ var searchData=
   ['visualization_17',['Visualization',['../group__visualization.html',1,'']]],
   ['vizdocumentkind_18',['VizDocumentKind',['../namespacepulsatrix.html#acc4fba77346a43d985f11c0c6b006873',1,'pulsatrix']]],
   ['vizwindow_19',['vizwindow',['../classpulsatrix_1_1VizWindow.html#af24d3a1ef37b1d9fadcd1f9ff14573ad',1,'pulsatrix::VizWindow::VizWindow(const std::string &amp;title, int width, int height)'],['../classpulsatrix_1_1VizWindow.html#a304a0d65ebad69223b9a527920518379',1,'pulsatrix::VizWindow::VizWindow(const VizWindow &amp;)=delete'],['../classpulsatrix_1_1VizWindow.html',1,'pulsatrix::VizWindow']]],
-  ['vocabulary_20',['vocabulary',['../classpulsatrix_1_1Vocabulary.html#a32f792e3495aa94faaa7b33b75262199',1,'pulsatrix::Vocabulary::Vocabulary()'],['../classpulsatrix_1_1Vocabulary.html',1,'pulsatrix::Vocabulary']]],
-  ['vocabulary_2ehpp_21',['vocabulary.hpp',['../vocabulary_8hpp.html',1,'']]]
+  ['vocab_5fsize_20',['vocab_size',['../classpulsatrix_1_1TiedLMHeadModule.html#a2e7bb695ab38f99a8c16fca097602cb2',1,'pulsatrix::TiedLMHeadModule']]],
+  ['vocabulary_21',['vocabulary',['../classpulsatrix_1_1Vocabulary.html#a32f792e3495aa94faaa7b33b75262199',1,'pulsatrix::Vocabulary::Vocabulary()'],['../classpulsatrix_1_1Vocabulary.html',1,'pulsatrix::Vocabulary']]],
+  ['vocabulary_2ehpp_22',['vocabulary.hpp',['../vocabulary_8hpp.html',1,'']]]
 ];

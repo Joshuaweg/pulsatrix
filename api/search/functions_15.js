@@ -8,5 +8,6 @@ var searchData=
   ['viridiscolormap_5',['ViridisColormap',['../namespacepulsatrix.html#a24584d97c280e278c14a60b8841de0f9',1,'pulsatrix']]],
   ['vizdocumentkind_6',['VizDocumentKind',['../namespacepulsatrix.html#acc4fba77346a43d985f11c0c6b006873',1,'pulsatrix']]],
   ['vizwindow_7',['vizwindow',['../classpulsatrix_1_1VizWindow.html#af24d3a1ef37b1d9fadcd1f9ff14573ad',1,'pulsatrix::VizWindow::VizWindow(const std::string &amp;title, int width, int height)'],['../classpulsatrix_1_1VizWindow.html#a304a0d65ebad69223b9a527920518379',1,'pulsatrix::VizWindow::VizWindow(const VizWindow &amp;)=delete']]],
-  ['vocabulary_8',['Vocabulary',['../classpulsatrix_1_1Vocabulary.html#a32f792e3495aa94faaa7b33b75262199',1,'pulsatrix::Vocabulary']]]
+  ['vocab_5fsize_8',['vocab_size',['../classpulsatrix_1_1TiedLMHeadModule.html#a2e7bb695ab38f99a8c16fca097602cb2',1,'pulsatrix::TiedLMHeadModule']]],
+  ['vocabulary_9',['Vocabulary',['../classpulsatrix_1_1Vocabulary.html#a32f792e3495aa94faaa7b33b75262199',1,'pulsatrix::Vocabulary']]]
 ];

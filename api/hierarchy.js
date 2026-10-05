@@ -165,6 +165,7 @@ var hierarchy =
       [ "pulsatrix::SequentialModule", "classpulsatrix_1_1SequentialModule.html", null ],
       [ "pulsatrix::SoftmaxModule", "classpulsatrix_1_1SoftmaxModule.html", null ],
       [ "pulsatrix::SwiGLUModule", "classpulsatrix_1_1SwiGLUModule.html", null ],
+      [ "pulsatrix::TiedLMHeadModule", "classpulsatrix_1_1TiedLMHeadModule.html", null ],
       [ "pulsatrix::TinyTagger", "classpulsatrix_1_1TinyTagger.html", null ],
       [ "pulsatrix::TransformerBlock", "classpulsatrix_1_1TransformerBlock.html", null ]
     ] ],
