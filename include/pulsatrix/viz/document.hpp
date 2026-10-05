@@ -217,6 +217,10 @@ struct FeatureDashboardDocument {
  *       whoever draws them (IceResult::centered, IceResult::derivative), so every renderer agrees.
  */
 struct PartialDependenceDocument {
+    /** @brief `"partial_dependence"`, or `"ale"` for accumulated local effects (CFS-2), whose
+     *         grid is the bin edges and which has no ICE curves. A reader treats a missing
+     *         member as `"partial_dependence"`. */
+    std::string method = "partial_dependence";
     /** @brief Name of the varied feature. Optional. */
     std::string feature;
     /** @brief What the curve predicts, for example a class name. Optional. */
@@ -229,12 +233,17 @@ struct PartialDependenceDocument {
     int64_t num_instances = 0;
     /** @brief Row-major (num_instances, grid.size()), or empty. */
     std::vector<float> ice;
-    /** @brief Each instance's own value of the feature (num_instances of them), or empty. */
+    /** @brief Each instance's own value of the feature (num_instances of them, or any number for
+     *         ALE), or empty. */
     std::vector<float> feature_values;
 };
 
 /** @brief Copies @p result, its partial dependence curve included. */
 [[nodiscard]] PartialDependenceDocument ToPartialDependenceDocument(const IceResult& result, std::string feature = "",
+                                                                    std::string target = "");
+/** @brief An ALE curve as a document with method `"ale"`: the bin edges as the grid, the
+ *         effects as the curve, and the instances' feature values for the rug. */
+[[nodiscard]] PartialDependenceDocument ToPartialDependenceDocument(const AleResult& result, std::string feature = "",
                                                                     std::string target = "");
 /** @brief Rebuilds the ICE curves for their centered and derivative views.
  *  @throws std::invalid_argument if the document holds no ICE curves. */
@@ -242,8 +251,8 @@ struct PartialDependenceDocument {
 /** @brief A two-feature partial dependence as a heatmap: rows follow grid_y, columns grid_x, and
  *         the labels are the grid values. */
 [[nodiscard]] HeatmapDocument ToHeatmapDocument(const PartialDependence2D& pd, std::string title = "");
-/** @throws std::invalid_argument if the grid is empty or not strictly increasing, or a length
- *          doesn't match it. */
+/** @throws std::invalid_argument if the grid is empty or not strictly increasing, a length
+ *          doesn't match it, the method is unknown, or an ALE document has ICE curves. */
 [[nodiscard]] std::string ToJson(const PartialDependenceDocument& doc);
 [[nodiscard]] PartialDependenceDocument ParsePartialDependenceDocument(std::string_view json);
 

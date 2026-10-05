@@ -1,6 +1,7 @@
-// CFS-1: ICE, centered and derivative ICE, two-feature partial dependence and grid construction.
-// Reference values from tools/generate_ice_reference_values.py (scikit-learn 1.9.1
-// partial_dependence on a fixed function, so both sides evaluate the same model).
+// CFS-1 and CFS-2: ICE, centered and derivative ICE, two-feature partial dependence, grid
+// construction and ALE. Reference values from tools/generate_ice_reference_values.py
+// (scikit-learn 1.9.1 partial_dependence and PyALE 1.2.0 on a fixed function, so both sides
+// evaluate the same model).
 
 #include "pulsatrix/ice.hpp"
 
@@ -98,6 +99,24 @@ const std::vector<float> kAverage2D = {
     0.381843567f, 1.33873808f, 2.86490297f, 2.21497512f, 0.86045897f, 0.0752130747f, -0.140762553f, 0.212532014f,
     1.13509691f, 3.54253817f, 1.58442223f, 0.19557628f, -0.623999417f, -0.874304831f, -0.555339932f, 4.96432829f,
     2.40261245f, 0.410166562f, -1.01300895f, -1.86691439f, -2.15154982f,
+};
+const std::vector<float> kAleX0Edges = {
+    -2.0f, -1.5f, -0.5f, 0.5f, 1.25f, 2.0f,
+};
+const std::vector<float> kAleX0Effects = {
+    -0.110569216f, -0.441470474f, -1.86358857f, 1.07811713f, 1.08660221f, 1.13621128f,
+};
+const std::vector<float> kAleX0Counts = {
+    6.0f, 7.0f, 6.0f, 5.0f, 6.0f,
+};
+const std::vector<float> kAleX2Edges = {
+    -2.0f, -0.75f, 0.0f, 1.0f, 2.0f,
+};
+const std::vector<float> kAleX2Effects = {
+    1.98697913f, -0.252604127f, -1.65885413f, -0.346354127f, 2.04650307f,
+};
+const std::vector<float> kAleX2Counts = {
+    9.0f, 6.0f, 8.0f, 7.0f,
 };
 
 class IceTest : public ::testing::Test {
@@ -218,6 +237,44 @@ TEST_F(IceTest, RunsAgainstANullModel) {
     EXPECT_NE(report.null_model.curves, report.trained.curves);
 }
 
+TEST_F(IceTest, AleMatchesPyAle) {
+    struct Case {
+        int64_t feature;
+        int64_t bins;
+        const std::vector<float>& edges;
+        const std::vector<float>& effects;
+        const std::vector<float>& counts;
+    };
+    for (const Case& c : {Case{0, 5, kAleX0Edges, kAleX0Effects, kAleX0Counts},
+                          Case{2, 4, kAleX2Edges, kAleX2Effects, kAleX2Counts}}) {
+        AleResult r = ComputeAle(predict, background, c.feature, 0, c.bins);
+        ExpectNearAll(r.edges, c.edges);
+        ExpectNearAll(r.effects, c.effects);
+        ASSERT_EQ(r.counts.size(), c.counts.size());
+        for (size_t k = 0; k < c.counts.size(); ++k) {
+            EXPECT_EQ(static_cast<float>(r.counts[k]), c.counts[k]);
+        }
+    }
+}
+
+// For an additive model ALE recovers the feature's own term, centered: f = 3 x0 + x1^2 gives a
+// line of slope 3 in x0 whatever x1 does.
+TEST_F(IceTest, AleOfAnAdditiveTermIsThatTermCentered) {
+    auto additive = [this](const Tensor& x) {
+        const std::vector<float> v = x.to_host_vector();
+        return Tensor(Shape({1}), &backend, {3.0f * v[0] + v[1] * v[1]});
+    };
+    AleResult r = ComputeAle(additive, background, 0, 0, 5);
+    for (size_t k = 1; k < r.edges.size(); ++k) {
+        EXPECT_NEAR((r.effects[k] - r.effects[k - 1]) / (r.edges[k] - r.edges[k - 1]), 3.0f, 1e-4f);
+    }
+    double weighted = 0.0;
+    for (size_t k = 0; k < r.counts.size(); ++k) {
+        weighted += (r.effects[k] + r.effects[k + 1]) / 2.0 * static_cast<double>(r.counts[k]);
+    }
+    EXPECT_NEAR(weighted, 0.0, 1e-4);
+}
+
 TEST_F(IceTest, RejectsBadInput) {
     EXPECT_THROW((void)ComputeIce(predict, {}, 0, 0, {1.0f}), std::invalid_argument);
     EXPECT_THROW((void)ComputeIce(predict, background, 3, 0, {1.0f}), std::invalid_argument);
@@ -236,6 +293,8 @@ TEST_F(IceTest, RejectsBadInput) {
         constant.push_back(Tensor(Shape({3}), &backend, {v, 2.0f, 3.0f}));
     }
     EXPECT_THROW((void)FeatureGrid(constant, 0, 2), std::invalid_argument);
+    EXPECT_THROW((void)ComputeAle(predict, background, 0, 0, 0), std::invalid_argument);
+    EXPECT_THROW((void)ComputeAle(predict, std::vector<Tensor>(3, background[0]), 0, 0, 4), std::invalid_argument);
     IceResult r = ComputeIce(predict, background, 0, 0, {1.0f});
     EXPECT_THROW((void)r.derivative(), std::logic_error);
     EXPECT_THROW((void)r.centered(1), std::out_of_range);

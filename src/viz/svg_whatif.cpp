@@ -64,6 +64,7 @@ std::string RenderPartialDependenceSvg(const PartialDependenceDocument& doc, con
     CheckFinite(doc.ice, "RenderPartialDependenceSvg: ICE");
     CheckFinite(doc.feature_values, "RenderPartialDependenceSvg: feature values");
     const bool has_ice = doc.num_instances > 0;
+    const bool ale = doc.method == "ale";
     if (pd.style != IceStyle::Raw && !has_ice) {
         throw std::invalid_argument("RenderPartialDependenceSvg: centered and derivative views need ICE curves");
     }
@@ -115,15 +116,16 @@ std::string RenderPartialDependenceSvg(const PartialDependenceDocument& doc, con
 
     const std::string feature = doc.feature.empty() ? "feature" : doc.feature;
     const std::string target = doc.target.empty() ? "prediction" : doc.target;
-    std::string y_caption = target;
+    std::string y_caption = ale ? "accumulated local effect on " + target : target;
     if (pd.style == IceStyle::Centered) {
         y_caption = target + " - " + target + " at " + ValueText(doc.grid.front());
     } else if (pd.style == IceStyle::Derivative) {
         y_caption = "d " + target + " / d " + feature;
     }
     const char* style_name = pd.style == IceStyle::Raw ? "" : pd.style == IceStyle::Centered ? "centered " : "derivative ";
-    Figure f(options, std::string("Partial dependence of ") + target + " on " + feature + " (" + style_name +
-                          (has_ice ? "ICE)" : "average)"));
+    Figure f(options, ale ? "Accumulated local effects of " + feature + " on " + target
+                          : std::string("Partial dependence of ") + target + " on " + feature + " (" + style_name +
+                                (has_ice ? "ICE)" : "average)"));
     const double fs = f.fs();
     double label_w = 0;
     for (double t : NiceTicks(ylo, yhi)) {
@@ -146,10 +148,11 @@ std::string RenderPartialDependenceSvg(const PartialDependenceDocument& doc, con
         }
         f.line("legend-average", lx, ly, lx + fs * 1.5, ly, kAverageColor, 2.5);
         f.text("legend-label", lx + fs * 2.0, ly + fs * 0.35,
-               has_ice ? "average of " + std::to_string(n) + " curves" : "partial dependence");
+               ale ? "accumulated local effect (centered)"
+                   : has_ice ? "average of " + std::to_string(n) + " curves" : "partial dependence");
     }
 
-    if (pd.style != IceStyle::Raw && ylo < 0.0 && yhi > 0.0) {
+    if ((ale || pd.style != IceStyle::Raw) && ylo < 0.0 && yhi > 0.0) {
         const double zy = y_bottom - (0.0 - ylo) / (yhi - ylo) * (y_bottom - y_top);
         f.line("zero-line", x0, zy, x1, zy, kMutedColor, 1.0, "3 3");
     }
