@@ -287,3 +287,7 @@ add_test(NAME PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution.v1.json"
         "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution.v1.json")
 set_tests_properties(PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm PROPERTIES WILL_FAIL TRUE)
+
+# KS-2: LRP conservation on the benchmark models must hold on the CPU, whatever the timings.
+add_test(NAME PulsatrixBench.CpuConservationCheck
+    COMMAND pulsatrix_bench run --device cpu --quick --filter conservation --check)

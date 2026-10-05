@@ -152,6 +152,42 @@ TEST(BenchmarkCompareTest, RoundsAreCombinedByMedianSoOneNoisyRoundDoesNotDecide
     EXPECT_FALSE(c.regression);
 }
 
+std::vector<BenchmarkReport> Rounds(const std::vector<double>& medians) {
+    std::vector<BenchmarkReport> runs;
+    for (double m : medians) runs.push_back(Report({Time("t", "cpu", m)}));
+    return runs;
+}
+
+TEST(BenchmarkCompareTest, OverlappingNoisyRoundsAreNotARegression) {
+    // Measured A/A noise on this kind of benchmark: whole rounds jump between two speeds. The
+    // medians differ by more than the tolerance, but the rounds interleave.
+    const BenchmarkComparison& c = Find(CompareBenchmarks(Rounds({0.63, 0.90, 0.65, 0.66, 0.92, 0.64}),
+                                                          Rounds({0.95, 0.66, 0.93, 0.64, 0.97, 0.90})),
+                                        "t", "cpu");
+    EXPECT_GT(c.change, 0.10);
+    EXPECT_GT(c.p_value, 0.05);
+    EXPECT_FALSE(c.regression);
+}
+
+TEST(BenchmarkCompareTest, AConsistentSlowdownAcrossRoundsIsARegression) {
+    const BenchmarkComparison& c = Find(CompareBenchmarks(Rounds({10.0, 10.3, 9.9, 10.1, 10.2, 9.8}),
+                                                          Rounds({12.1, 12.4, 11.9, 12.0, 12.6, 12.2})),
+                                        "t", "cpu");
+    EXPECT_NEAR(c.p_value, 1.0 / 924.0, 1e-12);  // complete separation, 6 vs 6: 1 / C(12, 6)
+    EXPECT_TRUE(c.regression);
+    // Consistently slower but within the tolerance: not a regression.
+    const BenchmarkComparison& small = Find(CompareBenchmarks(Rounds({10.0, 10.1, 10.0, 10.1}), Rounds({10.4, 10.5, 10.4, 10.5})),
+                                            "t", "cpu");
+    EXPECT_LT(small.p_value, 0.05);
+    EXPECT_FALSE(small.regression);
+}
+
+TEST(BenchmarkCompareTest, FewRoundsFallBackToTheToleranceAlone) {
+    const BenchmarkComparison& c = Find(CompareBenchmarks(Rounds({10.0, 10.0}), Rounds({12.0, 12.0})), "t", "cpu");
+    EXPECT_TRUE(std::isnan(c.p_value));
+    EXPECT_TRUE(c.regression);
+}
+
 TEST(BenchmarkCompareTest, MetricsRegressBeyondAnAbsoluteTolerance) {
     auto cs = CompareBenchmarks({Report({Metric("small", "cpu", 1e-7), Metric("big", "cpu", 1e-7), Metric("broken", "cpu", 1e-7)})},
                                 {Report({Metric("small", "cpu", 2e-6), Metric("big", "cpu", 1e-4), Metric("broken", "cpu", kNaN)})});
