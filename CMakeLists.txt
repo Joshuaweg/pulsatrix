@@ -103,6 +103,7 @@ add_library(pulsatrix_core
     src/counterfactual.cpp
     src/global_sensitivity.cpp
     src/generation.cpp
+    src/kv_cache.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp

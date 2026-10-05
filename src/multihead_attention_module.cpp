@@ -4,6 +4,7 @@
 #include <cmath>
 #include <limits>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "pulsatrix/assert.hpp"
@@ -463,6 +464,97 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
     relevance_in.accumulate(v_proj_.propagate_relevance(r_v_flat, config));
 
     return reshaped(relevance_in, Shape({N, L, d_model_}));
+}
+
+KVCache MultiHeadAttentionModule::MakeKVCache(int64_t batch, int64_t max_length) const {
+    return KVCache(batch, num_kv_heads_, head_dim_, max_length, backend_);
+}
+
+Tensor MultiHeadAttentionModule::forward_cached(const Tensor& input, KVCache& cache) {
+    require_device(input, *compute_device(), "MultiHeadAttentionModule::forward_cached");
+    if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
+        throw std::invalid_argument("MultiHeadAttentionModule::forward_cached: input must be rank-3 (N, L, d_model)");
+    }
+    const int64_t N = input.shape().dim(0);
+    const int64_t L = input.shape().dim(1);
+    const int64_t H = num_heads_;
+    const int64_t Hkv = num_kv_heads_;
+    const int64_t D = head_dim_;
+    if (cache.batch() != N || cache.num_kv_heads() != Hkv || cache.head_dim() != D) {
+        throw std::invalid_argument("MultiHeadAttentionModule::forward_cached: the cache doesn't fit this layer and input");
+    }
+    const int64_t past = cache.length();
+    const int64_t total = past + L;
+    const int64_t max_len = cache.max_length();
+    if (total > max_len) {
+        throw std::invalid_argument("MultiHeadAttentionModule::forward_cached: " + std::to_string(total) +
+                                    " positions don't fit in a cache of " + std::to_string(max_len));
+    }
+    if (has_key_keep_ && (key_keep_.shape().dim(0) != N || key_keep_.shape().dim(1) != total)) {
+        throw std::invalid_argument(
+            "MultiHeadAttentionModule::forward_cached: the key padding mask must be (N, cached + new positions)");
+    }
+    has_forwarded_ = false;  // nothing below is kept for backward or relevance
+
+    const Tensor flat_input = reshaped(input, Shape({N * L, d_model_}));
+    Tensor q_flat = q_proj_.forward(flat_input);
+    Tensor k_flat = k_proj_.forward(flat_input);
+    Tensor v_flat = v_proj_.forward(flat_input);
+    const DeviceType device = input.device();
+    const auto n = static_cast<size_t>(N), l = static_cast<size_t>(L), h = static_cast<size_t>(H),
+               hkv = static_cast<size_t>(Hkv), d = static_cast<size_t>(D), t = static_cast<size_t>(total);
+    Tensor q(Shape({N, H, L, D}), backend_, device);
+    Tensor k(Shape({N, Hkv, L, D}), backend_, device);
+    Tensor v(Shape({N, Hkv, L, D}), backend_, device);
+    backend_->permute_0213(q_flat.data(), q.data(), n, l, h, d);
+    backend_->permute_0213(k_flat.data(), k.data(), n, l, hkv, d);
+    backend_->permute_0213(v_flat.data(), v.data(), n, l, hkv, d);
+    if (use_qk_norm_) {
+        Tensor q_norm_out = q_norm_->forward(reshaped(q, Shape({N * H * L, D})));
+        Tensor k_norm_out = k_norm_->forward(reshaped(k, Shape({N * Hkv * L, D})));
+        q = reshaped(q_norm_out, Shape({N, H, L, D}));
+        k = reshaped(k_norm_out, Shape({N, Hkv, L, D}));
+    }
+    if (use_rope_) {
+        q_rope_->set_position_offset(position_offset_ + past);
+        k_rope_->set_position_offset(position_offset_ + past);
+        q = q_rope_->forward(q);
+        k = k_rope_->forward(k);
+        q_rope_->set_position_offset(position_offset_);
+        k_rope_->set_position_offset(position_offset_);
+    }
+
+    // Append the new keys and values: each (n, kv head) slice of the cache is contiguous, so one
+    // strided copy writes all of them at positions past .. total - 1.
+    const auto slice = static_cast<size_t>(max_len) * d;
+    backend_->copy_2d(cache.keys().data() + past * D, slice, k.data(), l * d, n * hkv, l * d);
+    backend_->copy_2d(cache.values().data() + past * D, slice, v.data(), l * d, n * hkv, l * d);
+    cache.advance(L);
+
+    // Scores against every cached position; query head hh reads K/V head hh / group in place.
+    const int64_t group = H / Hkv;
+    Tensor scores(Shape({N, H, L, total}), backend_, device);
+    for (int64_t nh = 0; nh < N * H; ++nh) {
+        const int64_t kv = (nh / H) * Hkv + (nh % H) / group;
+        backend_->gemm_ex(q.data() + nh * L * D, false, cache.keys().data() + kv * max_len * D, true,
+                          scores.data() + nh * L * total, l, d, t, 0.0f);
+    }
+    const float inv_sqrt_d = 1.0f / std::sqrt(static_cast<float>(D));
+    backend_->axpby(inv_sqrt_d, scores.data(), 0.0f, nullptr, scores.data(), static_cast<size_t>(scores.numel()));
+    if (config_.causal || has_key_keep_) {
+        backend_->attention_mask_fill(scores.data(), has_key_keep_ ? key_keep_.data() : nullptr, n, h, l, t,
+                                      config_.causal, static_cast<size_t>(past), std::numeric_limits<float>::lowest());
+    }
+    backend_->softmax_rows(scores.data(), scores.data(), n * h * l, t);
+    Tensor context(Shape({N, H, L, D}), backend_, device);
+    for (int64_t nh = 0; nh < N * H; ++nh) {
+        const int64_t kv = (nh / H) * Hkv + (nh % H) / group;
+        backend_->gemm(scores.data() + nh * L * total, cache.values().data() + kv * max_len * D,
+                       context.data() + nh * L * D, l, t, d);
+    }
+    Tensor merged(Shape({N * L, H * D}), backend_, device);
+    backend_->permute_0213(context.data(), merged.data(), n, h, l, d);
+    return reshaped(out_proj_.forward(merged), Shape({N, L, d_model_}));
 }
 
 std::vector<NamedBufferRef> MultiHeadAttentionModule::named_buffers() {

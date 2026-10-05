@@ -97,6 +97,23 @@ Tensor TransformerBlock::forward_impl(const Tensor& input) {
     return y2;
 }
 
+Tensor TransformerBlock::forward_cached(const Tensor& input, KVCache& cache) {
+    require_device(input, *compute_device(), "TransformerBlock::forward_cached");
+    if (input.rank() != 3 || input.shape().dim(2) != d_model_) {
+        throw std::invalid_argument("TransformerBlock::forward_cached: input must be rank-3 (N, L, d_model)");
+    }
+    has_forwarded_ = false;
+    const Shape shape = input.shape();
+    const int64_t n_flat = flatten_leading_dims(shape, d_model_);
+    Tensor attn_out = mha_.forward_cached(reshaped(norm1_.forward(reshaped(input, Shape({n_flat, d_model_}))), shape), cache);
+    Tensor y1(shape, backend_);
+    backend_->add(input.data(), attn_out.data(), y1.data(), static_cast<size_t>(y1.numel()));
+    Tensor ffn_out = swiglu_.forward(reshaped(norm2_.forward(reshaped(y1, Shape({n_flat, d_model_}))), shape));
+    Tensor y2(shape, backend_);
+    backend_->add(y1.data(), ffn_out.data(), y2.data(), static_cast<size_t>(y2.numel()));
+    return y2;
+}
+
 Tensor TransformerBlock::backward(const Tensor& grad_output) {
     require_device(grad_output, *compute_device(), "TransformerBlock::backward");
     if (!has_forwarded_) {

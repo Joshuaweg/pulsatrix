@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "pulsatrix/kv_cache.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/module.hpp"
 #include "pulsatrix/rms_norm_module.hpp"
@@ -225,6 +226,32 @@ public:
      */
     void set_position_offset(int64_t offset);
     [[nodiscard]] int64_t position_offset() const { return position_offset_; }
+
+    /**
+     * @brief Attention for new positions only, against everything in @p cache (LLM-5): projects
+     *        the input, writes its keys and values into the cache after the positions already
+     *        there, and attends over all of them. Its RoPE positions start at
+     *        position_offset() + cache.length(), and the causal mask lets new position i see cached
+     *        positions up to its own.
+     * @param input `(N, L_new, d_model)`; the N must match the cache's batch.
+     * @param cache Sized for this layer (MakeKVCache); advanced by L_new.
+     * @return `(N, L_new, d_model)`: the same as the last L_new rows of forward() over the whole
+     *         sequence.
+     * @note Inference only: it leaves no state for backward() or propagate_relevance(), which
+     *       throw until the next forward(). Grouped-query heads read their shared K/V head in place,
+     *       without the copies forward() makes. A key padding mask, if set, must cover every cached
+     *       and new position: `(N, cache.length() + L_new)`. A padding query with no visible key
+     *       spreads uniform weights over the keys that exist so far, so its (meaningless) output can
+     *       differ from a full pass's; every real position matches.
+     * @note Pieces match a full pass when attention is causal. Without the causal mask a full pass
+     *       lets early positions see later ones, which a cache can't.
+     * @throws std::invalid_argument if the input's shape, the cache's dimensions or the padding mask
+     *         don't fit, or the cache would overflow.
+     */
+    [[nodiscard]] Tensor forward_cached(const Tensor& input, KVCache& cache);
+
+    /** @brief An empty cache sized for this layer: `(batch, num_kv_heads, max_length, head_dim)`. */
+    [[nodiscard]] KVCache MakeKVCache(int64_t batch, int64_t max_length) const;
 
     /** @name Sub-module access -- weight initialization from tests/loaders, and inspection. */
     ///@{
