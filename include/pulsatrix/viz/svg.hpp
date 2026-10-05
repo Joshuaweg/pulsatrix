@@ -1,6 +1,6 @@
 /** @file svg.hpp
  *  @brief Dependency-free SVG figures from viz documents: bar, waterfall, heatmap, token strip,
- *         beeswarm and partial dependence charts.
+ *         beeswarm, partial dependence and tornado charts.
  *  @ingroup visualization
  *
  *  Each function returns a complete standalone SVG file as a string. No GPU, display, font
@@ -120,5 +120,16 @@ struct PartialDependenceSvgOptions {
 [[nodiscard]] std::string RenderPartialDependenceSvg(const PartialDependenceDocument& doc,
                                                      const PartialDependenceSvgOptions& pd = {},
                                                      const SvgOptions& options = {});
+
+/**
+ * @brief A tornado chart: one row per feature, the @p top_k with the largest swing first. Each row
+ *        has two bars from the unchanged output, one to the output at the feature's high value
+ *        (red) and one to its low value (blue), labeled with those values; a dashed line marks
+ *        the unchanged output.
+ * @throws std::invalid_argument for an empty document, a non-finite value, top_k < 1, or unusable
+ *         options.
+ */
+[[nodiscard]] std::string RenderTornadoSvg(const SensitivityDocument& doc, int top_k = 10,
+                                           const SvgOptions& options = {});
 
 }  // namespace pulsatrix
