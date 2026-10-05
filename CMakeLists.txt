@@ -173,6 +173,8 @@ add_library(pulsatrix_core
     src/implot_metrics_sink.cpp
     src/viz/colormap.cpp
     src/viz/plot_data.cpp
+    src/viz/document.cpp
+    src/json.cpp
 )
 add_library(pulsatrix::core ALIAS pulsatrix_core)
 set_target_properties(pulsatrix_core PROPERTIES EXPORT_NAME core)
@@ -553,13 +555,15 @@ if(PULSATRIX_ENABLE_HIP)
 endif()
 
 if(PULSATRIX_BUILD_FUZZERS)
-    add_executable(safetensors_fuzz tools/fuzz/safetensors_fuzz.cpp)
-    target_link_libraries(safetensors_fuzz PRIVATE pulsatrix_core)
-    if(PULSATRIX_FUZZ_STANDALONE)
-        target_compile_definitions(safetensors_fuzz PRIVATE PULSATRIX_FUZZ_STANDALONE)
-    else()
-        target_link_options(safetensors_fuzz PRIVATE -fsanitize=fuzzer)
-    endif()
+    foreach(fuzzer safetensors_fuzz viz_document_fuzz)
+        add_executable(${fuzzer} tools/fuzz/${fuzzer}.cpp)
+        target_link_libraries(${fuzzer} PRIVATE pulsatrix_core)
+        if(PULSATRIX_FUZZ_STANDALONE)
+            target_compile_definitions(${fuzzer} PRIVATE PULSATRIX_FUZZ_STANDALONE)
+        else()
+            target_link_options(${fuzzer} PRIVATE -fsanitize=fuzzer)
+        endif()
+    endforeach()
 endif()
 
 # KS-1: `cmake --install` and find_package(pulsatrix). Installs pulsatrix_core as

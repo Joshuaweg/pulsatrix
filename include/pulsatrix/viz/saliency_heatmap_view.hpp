@@ -5,6 +5,7 @@
 #pragma once
 
 #include "pulsatrix/attribution.hpp"
+#include "pulsatrix/viz/document.hpp"
 
 namespace pulsatrix {
 
@@ -31,6 +32,10 @@ public:
      *        see ToSaliencyHeatmap. Fills the available content region (minus the scale bar).
      */
     static void Draw(const char* title, const Attribution& attr);
+
+    /** @brief Draws a `pulsatrix.heatmap.v1` document's grid (its title is not drawn; pass it
+     *         as @p title if wanted). */
+    static void Draw(const char* title, const HeatmapDocument& doc);
 };
 
 }  // namespace pulsatrix

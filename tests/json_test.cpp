@@ -189,7 +189,7 @@ TEST(JsonWriteTest, FloatsAndDoublesRoundTripBitExactly) {
 }
 
 TEST(JsonWriteTest, EscapesStrings) {
-    EXPECT_EQ(WriteJson(JsonValue(std::string("a\"b\\c\n\x01/\xC3\xA9", 9))), "\"a\\\"b\\\\c\\n\\u0001/\xC3\xA9\"\n");
+    EXPECT_EQ(WriteJson(JsonValue(std::string("a\"b\\c\n\x01/\xC3\xA9", 10))), "\"a\\\"b\\\\c\\n\\u0001/\xC3\xA9\"\n");
     EXPECT_EQ(WriteJson(JsonValue(std::string(1, '\0'))), "\"\\u0000\"\n");
 }
 
