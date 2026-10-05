@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['factset_0',['FactSet',['../namespacepulsatrix_1_1datalog.html#a78a6ac1e65d442d7762fd6a966c5c82b',1,'pulsatrix::datalog']]]
+  ['explainfn_0',['ExplainFn',['../namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a',1,'pulsatrix']]]
 ];

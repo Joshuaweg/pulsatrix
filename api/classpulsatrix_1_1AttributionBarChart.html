@@ -109,13 +109,16 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1AttributionBarChart.
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8355887b7e9168cfa5ca82e604cb8cfa" id="r_a8355887b7e9168cfa5ca82e604cb8cfa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionBarChart.html#a8355887b7e9168cfa5ca82e604cb8cfa">Draw</a> (const char *title, const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, float shared_max_abs=-1.0f)</td></tr>
 <tr class="separator:a8355887b7e9168cfa5ca82e604cb8cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1c9420f21407ebe6544cc7457c4ff5f" id="r_ac1c9420f21407ebe6544cc7457c4ff5f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AttributionBarChart.html#ac1c9420f21407ebe6544cc7457c4ff5f">Draw</a> (const char *title, const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, float shared_max_abs=-1.0f)</td></tr>
+<tr class="memdesc:ac1c9420f21407ebe6544cc7457c4ff5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a <code>pulsatrix.attribution.v1</code> document the same way.  <br /></td></tr>
+<tr class="separator:ac1c9420f21407ebe6544cc7457c4ff5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Draws a horizontal bar chart of an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s top-k features (hc_information_visualization.md SS1/SS5: position-on-shared-axis is the most accurately perceived encoding for magnitude &ndash; Cleveland-McGill rank 1 &ndash; and horizontal bars read naturally with long feature names). Bar length encodes magnitude; hue (DivergingColormap) encodes sign, never magnitude. Bars start at zero (Tufte lie-factor = 1). </p>
 <dl class="section note"><dt>Note</dt><dd>Must be called between ImPlot::BeginPlot()/EndPlot() &ndash; no, this owns its own BeginPlot/EndPlot pair; call directly from an ImGui::Begin/End window body. Deliberately not unit-tested (GoogleTest cannot meaningfully exercise ImPlot draw calls) &ndash; see plans/okay-we-have-now-buzzing-moth.md Testing Strategy. All real logic (sorting, normalization) lives in <a class="el" href="plot__data_8hpp.html" title="Pure Attribution/Dataset -&gt; plot-ready-array transforms (no ImGui/ImPlot include).">plot_data.hpp</a>/colormap.hpp, which are. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8355887b7e9168cfa5ca82e604cb8cfa" name="a8355887b7e9168cfa5ca82e604cb8cfa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8355887b7e9168cfa5ca82e604cb8cfa">&#9670;&#160;</a></span>Draw()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8355887b7e9168cfa5ca82e604cb8cfa">&#9670;&#160;</a></span>Draw() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,6 +172,56 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ac1c9420f21407ebe6544cc7457c4ff5f" name="ac1c9420f21407ebe6544cc7457c4ff5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1c9420f21407ebe6544cc7457c4ff5f">&#9670;&#160;</a></span>Draw() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void pulsatrix::AttributionBarChart::Draw </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>title</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>top_k</em> = <code>10</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>shared_max_abs</em> = <code>-1.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draws a <code>pulsatrix.attribution.v1</code> document the same way. </p>
 
 </div>
 </div>

@@ -15,7 +15,8 @@ var searchData=
   ['kthetathreshold_12',['kthetathreshold',['../classpulsatrix_1_1CartPoleEnv.html#a578bd10772e6d773551b3b1706e30cf2',1,'pulsatrix::CartPoleEnv::kThetaThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a6c349416d875dd3fed7966e880ca4770',1,'pulsatrix::ContinuousCartPoleEnv::kThetaThreshold']]],
   ['kunkindex_13',['kUnkIndex',['../classpulsatrix_1_1Vocabulary.html#adf6ce45df1fa2aec244bef15f7387dc1',1,'pulsatrix::Vocabulary']]],
   ['kunktoken_14',['kUnkToken',['../classpulsatrix_1_1Vocabulary.html#afc3a1419ab5f15f4a600a081e94cdadb',1,'pulsatrix::Vocabulary']]],
-  ['kvocab_15',['kVocab',['../classpulsatrix_1_1TinyTagger.html#a052db03bbdaa2c14bc78dadb71d986d0',1,'pulsatrix::TinyTagger']]],
-  ['kw_16',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
-  ['kxthreshold_17',['kxthreshold',['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold']]]
+  ['kvizdocumentversion_15',['kVizDocumentVersion',['../namespacepulsatrix.html#ad7c306e18124f3aeb68cde6615b337b5',1,'pulsatrix']]],
+  ['kvocab_16',['kVocab',['../classpulsatrix_1_1TinyTagger.html#a052db03bbdaa2c14bc78dadb71d986d0',1,'pulsatrix::TinyTagger']]],
+  ['kw_17',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
+  ['kxthreshold_18',['kxthreshold',['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold']]]
 ];

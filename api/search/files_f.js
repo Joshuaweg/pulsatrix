@@ -1,13 +1,11 @@
 var searchData=
 [
-  ['relu_5fmodule_2ehpp_0',['relu_module.hpp',['../relu__module_8hpp.html',1,'']]],
-  ['reparameterize_2ehpp_1',['reparameterize.hpp',['../reparameterize_8hpp.html',1,'']]],
-  ['replay_5fbuffer_2ehpp_2',['replay_buffer.hpp',['../replay__buffer_8hpp.html',1,'']]],
-  ['residual_5fmodule_2ehpp_3',['residual_module.hpp',['../residual__module_8hpp.html',1,'']]],
-  ['retnet_5fmodule_2ehpp_4',['retnet_module.hpp',['../retnet__module_8hpp.html',1,'']]],
-  ['rms_5fnorm_5fmodule_2ehpp_5',['rms_norm_module.hpp',['../rms__norm__module_8hpp.html',1,'']]],
-  ['rnn_5fmodule_2ehpp_6',['rnn_module.hpp',['../rnn__module_8hpp.html',1,'']]],
-  ['rollout_5fbuffer_2ehpp_7',['rollout_buffer.hpp',['../rollout__buffer_8hpp.html',1,'']]],
-  ['rope_5fmodule_2ehpp_8',['rope_module.hpp',['../rope__module_8hpp.html',1,'']]],
-  ['rwkv_5fmodule_2ehpp_9',['rwkv_module.hpp',['../rwkv__module_8hpp.html',1,'']]]
+  ['param_5fgroups_2ehpp_0',['param_groups.hpp',['../param__groups_8hpp.html',1,'']]],
+  ['pbt_2ehpp_1',['pbt.hpp',['../pbt_8hpp.html',1,'']]],
+  ['pbt_5ftrial_2ehpp_2',['pbt_trial.hpp',['../pbt__trial_8hpp.html',1,'']]],
+  ['pdp_2ehpp_3',['pdp.hpp',['../pdp_8hpp.html',1,'']]],
+  ['plot_5fdata_2ehpp_4',['plot_data.hpp',['../plot__data_8hpp.html',1,'']]],
+  ['policy_5fgradient_5floss_2ehpp_5',['policy_gradient_loss.hpp',['../policy__gradient__loss_8hpp.html',1,'']]],
+  ['polyak_5fupdate_2ehpp_6',['polyak_update.hpp',['../polyak__update_8hpp.html',1,'']]],
+  ['ppo_5fclipped_5floss_2ehpp_7',['ppo_clipped_loss.hpp',['../ppo__clipped__loss_8hpp.html',1,'']]]
 ];

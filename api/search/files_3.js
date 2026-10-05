@@ -19,8 +19,9 @@ var searchData=
   ['determinism_2ehpp_16',['determinism.hpp',['../determinism_8hpp.html',1,'']]],
   ['device_5fbackend_2ehpp_17',['device_backend.hpp',['../device__backend_8hpp.html',1,'']]],
   ['disjunction_5fmodule_2ehpp_18',['disjunction_module.hpp',['../disjunction__module_8hpp.html',1,'']]],
-  ['dqn_5fagent_2ehpp_19',['dqn_agent.hpp',['../dqn__agent_8hpp.html',1,'']]],
-  ['dqn_5floss_2ehpp_20',['dqn_loss.hpp',['../dqn__loss_8hpp.html',1,'']]],
-  ['dqn_5ftarget_2ehpp_21',['dqn_target.hpp',['../dqn__target_8hpp.html',1,'']]],
-  ['dropout_5fmodule_2ehpp_22',['dropout_module.hpp',['../dropout__module_8hpp.html',1,'']]]
+  ['document_2ehpp_19',['document.hpp',['../document_8hpp.html',1,'']]],
+  ['dqn_5fagent_2ehpp_20',['dqn_agent.hpp',['../dqn__agent_8hpp.html',1,'']]],
+  ['dqn_5floss_2ehpp_21',['dqn_loss.hpp',['../dqn__loss_8hpp.html',1,'']]],
+  ['dqn_5ftarget_2ehpp_22',['dqn_target.hpp',['../dqn__target_8hpp.html',1,'']]],
+  ['dropout_5fmodule_2ehpp_23',['dropout_module.hpp',['../dropout__module_8hpp.html',1,'']]]
 ];

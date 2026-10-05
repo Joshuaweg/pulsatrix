@@ -15,7 +15,8 @@ var searchData=
   ['is_5fconv_12',['is_conv',['../namespacepulsatrix_1_1lrp__composite_1_1detail.html#a48f3124006591765e4cd5f8b118a5ab4',1,'pulsatrix::lrp_composite::detail']]],
   ['is_5fdiscrete_13',['is_discrete',['../classpulsatrix_1_1HyperGridEnv.html#a0e92e59096b17fcbf3b349ad1b32ecaf',1,'pulsatrix::HyperGridEnv::is_discrete()'],['../classpulsatrix_1_1Environment.html#a36ca00c1b8ae9f3cd7870a41f06ce6b6',1,'pulsatrix::Environment::is_discrete()'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a5c86895031203c20eac310c981a90012',1,'pulsatrix::ContinuousCartPoleEnv::is_discrete()'],['../classpulsatrix_1_1CartPoleEnv.html#a193b5e93c1a93b650f73e5f84cb40934',1,'pulsatrix::CartPoleEnv::is_discrete()']]],
   ['is_5fground_14',['is_ground',['../classpulsatrix_1_1datalog_1_1Atom.html#af03cd9a955535b571af5d5784276ae56',1,'pulsatrix::datalog::Atom']]],
-  ['is_5freshape_5fcompatible_15',['is_reshape_compatible',['../classpulsatrix_1_1Shape.html#a8d623d00d5f760cf2f218b8be91869ab',1,'pulsatrix::Shape']]],
-  ['is_5ftraining_16',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]],
-  ['is_5fvariable_17',['is_variable',['../classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c',1,'pulsatrix::datalog::Term']]]
+  ['is_5fnull_15',['is_null',['../classpulsatrix_1_1JsonValue.html#ac69d3d1c7e35523c89314c9b3dbc5f6b',1,'pulsatrix::JsonValue']]],
+  ['is_5freshape_5fcompatible_16',['is_reshape_compatible',['../classpulsatrix_1_1Shape.html#a8d623d00d5f760cf2f218b8be91869ab',1,'pulsatrix::Shape']]],
+  ['is_5ftraining_17',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]],
+  ['is_5fvariable_18',['is_variable',['../classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c',1,'pulsatrix::datalog::Term']]]
 ];

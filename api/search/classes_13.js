@@ -1,4 +1,25 @@
 var searchData=
 [
-  ['uniformframesampletransform_0',['UniformFrameSampleTransform',['../classpulsatrix_1_1UniformFrameSampleTransform.html',1,'pulsatrix']]]
+  ['taggingbatch_0',['TaggingBatch',['../structpulsatrix_1_1TaggingBatch.html',1,'pulsatrix']]],
+  ['tanhgaussiangrad_1',['TanhGaussianGrad',['../structpulsatrix_1_1TanhGaussianGrad.html',1,'pulsatrix']]],
+  ['tanhgaussianpolicy_2',['TanhGaussianPolicy',['../classpulsatrix_1_1TanhGaussianPolicy.html',1,'pulsatrix']]],
+  ['tanhgaussiansample_3',['TanhGaussianSample',['../structpulsatrix_1_1TanhGaussianSample.html',1,'pulsatrix']]],
+  ['tensor_4',['Tensor',['../classpulsatrix_1_1Tensor.html',1,'pulsatrix']]],
+  ['term_5',['Term',['../classpulsatrix_1_1datalog_1_1Term.html',1,'pulsatrix::datalog']]],
+  ['termhash_6',['TermHash',['../structpulsatrix_1_1datalog_1_1TermHash.html',1,'pulsatrix::datalog']]],
+  ['textdataset_7',['TextDataset',['../classpulsatrix_1_1TextDataset.html',1,'pulsatrix']]],
+  ['texturecache_8',['TextureCache',['../classpulsatrix_1_1TextureCache.html',1,'pulsatrix']]],
+  ['tinytagger_9',['TinyTagger',['../classpulsatrix_1_1TinyTagger.html',1,'pulsatrix']]],
+  ['tokencrossentropyloss_10',['TokenCrossEntropyLoss',['../classpulsatrix_1_1TokenCrossEntropyLoss.html',1,'pulsatrix']]],
+  ['tokenizer_11',['Tokenizer',['../classpulsatrix_1_1Tokenizer.html',1,'pulsatrix']]],
+  ['tokenrelevancedocument_12',['TokenRelevanceDocument',['../structpulsatrix_1_1TokenRelevanceDocument.html',1,'pulsatrix']]],
+  ['topkresult_13',['TopKResult',['../structpulsatrix_1_1TopKResult.html',1,'pulsatrix']]],
+  ['toyknowledgebase_14',['ToyKnowledgeBase',['../classpulsatrix_1_1ToyKnowledgeBase.html',1,'pulsatrix']]],
+  ['trainingdashboard_15',['TrainingDashboard',['../classpulsatrix_1_1TrainingDashboard.html',1,'pulsatrix']]],
+  ['traininglogdocument_16',['TrainingLogDocument',['../structpulsatrix_1_1TrainingLogDocument.html',1,'pulsatrix']]],
+  ['trajectorybalanceloss_17',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
+  ['transform_18',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
+  ['transformdataset_19',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
+  ['transformerblock_20',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
+  ['trial_21',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
 ];

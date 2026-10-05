@@ -1,5 +1,6 @@
 var group__visualization =
 [
+    [ "json.hpp", "json_8hpp.html", null ],
     [ "attribution_bar_chart.hpp", "attribution__bar__chart_8hpp.html", null ],
     [ "attribution_beeswarm.hpp", "attribution__beeswarm_8hpp.html", null ],
     [ "attribution_waterfall.hpp", "attribution__waterfall_8hpp.html", null ],
@@ -7,6 +8,7 @@ var group__visualization =
     [ "colormap.hpp", "colormap_8hpp.html", null ],
     [ "confidence_meter.hpp", "confidence__meter_8hpp.html", null ],
     [ "dataset_statistics_view.hpp", "dataset__statistics__view_8hpp.html", null ],
+    [ "document.hpp", "document_8hpp.html", null ],
     [ "explanation_score_card.hpp", "explanation__score__card_8hpp.html", null ],
     [ "image_grid_view.hpp", "image__grid__view_8hpp.html", null ],
     [ "implot_metrics_sink.hpp", "implot__metrics__sink_8hpp.html", null ],

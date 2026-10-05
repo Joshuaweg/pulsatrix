@@ -1,28 +1,4 @@
 var searchData=
 [
-  ['randomizationresult_0',['RandomizationResult',['../structpulsatrix_1_1RandomizationResult.html',1,'pulsatrix']]],
-  ['rawreading_1',['RawReading',['../structpulsatrix_1_1detail_1_1RawReading.html',1,'pulsatrix::detail']]],
-  ['realsemiring_2',['RealSemiring',['../structpulsatrix_1_1datalog_1_1RealSemiring.html',1,'pulsatrix::datalog']]],
-  ['recurrentcellargs_3',['RecurrentCellArgs',['../structpulsatrix_1_1RecurrentCellArgs.html',1,'pulsatrix']]],
-  ['relevanceresult_4',['RelevanceResult',['../structpulsatrix_1_1datalog_1_1RelevanceResult.html',1,'pulsatrix::datalog']]],
-  ['relumodule_5',['ReluModule',['../classpulsatrix_1_1ReluModule.html',1,'pulsatrix']]],
-  ['reparameterize_6',['Reparameterize',['../classpulsatrix_1_1Reparameterize.html',1,'pulsatrix']]],
-  ['reparamgrad_7',['ReparamGrad',['../structpulsatrix_1_1ReparamGrad.html',1,'pulsatrix']]],
-  ['replaybatch_8',['ReplayBatch',['../structpulsatrix_1_1ReplayBatch.html',1,'pulsatrix']]],
-  ['replaybuffer_9',['ReplayBuffer',['../classpulsatrix_1_1ReplayBuffer.html',1,'pulsatrix']]],
-  ['resampletransform_10',['ResampleTransform',['../classpulsatrix_1_1ResampleTransform.html',1,'pulsatrix']]],
-  ['residualmodule_11',['ResidualModule',['../classpulsatrix_1_1ResidualModule.html',1,'pulsatrix']]],
-  ['resizetransform_12',['ResizeTransform',['../classpulsatrix_1_1ResizeTransform.html',1,'pulsatrix']]],
-  ['resumabletrial_13',['ResumableTrial',['../classpulsatrix_1_1ResumableTrial.html',1,'pulsatrix']]],
-  ['retnetmodule_14',['RetNetModule',['../classpulsatrix_1_1RetNetModule.html',1,'pulsatrix']]],
-  ['rgbcolor_15',['RgbColor',['../structpulsatrix_1_1RgbColor.html',1,'pulsatrix']]],
-  ['rgbimagebuffer_16',['RgbImageBuffer',['../structpulsatrix_1_1RgbImageBuffer.html',1,'pulsatrix']]],
-  ['rlrowargs_17',['RlRowArgs',['../structpulsatrix_1_1RlRowArgs.html',1,'pulsatrix']]],
-  ['rmsnormmodule_18',['RMSNormModule',['../classpulsatrix_1_1RMSNormModule.html',1,'pulsatrix']]],
-  ['rnnmodule_19',['RNNModule',['../classpulsatrix_1_1RNNModule.html',1,'pulsatrix']]],
-  ['rolloutbatch_20',['RolloutBatch',['../structpulsatrix_1_1RolloutBatch.html',1,'pulsatrix']]],
-  ['rolloutbuffer_21',['RolloutBuffer',['../classpulsatrix_1_1RolloutBuffer.html',1,'pulsatrix']]],
-  ['ropemodule_22',['RoPEModule',['../classpulsatrix_1_1RoPEModule.html',1,'pulsatrix']]],
-  ['rule_23',['Rule',['../classpulsatrix_1_1datalog_1_1Rule.html',1,'pulsatrix::datalog']]],
-  ['rwkvmodule_24',['RWKVModule',['../classpulsatrix_1_1RWKVModule.html',1,'pulsatrix']]]
+  ['qrresult_0',['QRResult',['../structpulsatrix_1_1QRResult.html',1,'pulsatrix']]]
 ];
