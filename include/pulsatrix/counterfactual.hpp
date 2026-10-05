@@ -1,6 +1,7 @@
 /** @file counterfactual.hpp
  *  @brief Counterfactual explanations: gradient-based (Wachter et al. 2017, CFS-5) and
- *         model-agnostic (growing spheres, Laugel et al. 2018, CFS-6).
+ *         model-agnostic (growing spheres, Laugel et al. 2018, CFS-6), and diverse sets with a
+ *         plausibility score (DiCE, Mothilal et al. 2020, CFS-7).
  *  @ingroup interpretability_dl
  */
 #pragma once
@@ -153,5 +154,65 @@ struct GrowingSpheresOptions {
                                                                 const Tensor& input, const CounterfactualTarget& target,
                                                                 const CounterfactualConstraints& constraints = {},
                                                                 const GrowingSpheresOptions& options = {});
+
+/** @brief Settings for FindDiverseCounterfactuals. */
+struct DiverseCounterfactualOptions {
+    /** @brief How many counterfactuals to find together, >= 1. */
+    int count = 4;
+    /** @brief Weight of the mean scaled L1 distance to the input (DiCE's proximity_weight). */
+    float proximity_weight = 0.5f;
+    /** @brief Weight of the diversity term (DiCE's diversity_weight). */
+    float diversity_weight = 1.0f;
+    float learning_rate = 0.05f;
+    int max_steps = 2000;
+    /** @brief The counterfactuals start at the input plus uniform noise of this size, in scale units,
+     *         so they can separate. */
+    float initial_spread = 0.5f;
+    uint64_t seed = 0;
+    float change_tolerance = 1e-3f;
+};
+
+/** @brief A set of counterfactuals and DiCE's set-level metrics (Mothilal et al. 2020). */
+struct DiverseCounterfactualResult {
+    std::vector<CounterfactualResult> counterfactuals;
+    /** @brief Fraction of the counterfactuals that reach the target. */
+    float validity = 0.0f;
+    /** @brief Mean scaled L1 distance between pairs of valid counterfactuals (DiCE's diversity). */
+    float diversity = 0.0f;
+    /** @brief Mean fraction of features that differ between pairs of valid counterfactuals
+     *         (DiCE's count diversity). */
+    float count_diversity = 0.0f;
+};
+
+/**
+ * @brief Several counterfactuals found together so that they differ from each other (DiCE,
+ *        Mothilal, Sharma and Tan 2020): one person may be able to raise their income, another
+ *        to pay down debt, and a single counterfactual shows only one of those routes.
+ *
+ * Gradient descent on, for each counterfactual, the hinge loss of FindCounterfactual plus
+ * proximity_weight times its scaled L1 distance to the input, minus diversity_weight times the
+ * log-determinant of the set's kernel K_ij = 1 / (1 + scaled L1 distance between i and j). Then
+ * each counterfactual's unneeded changes are undone, smallest first, while it still reaches the
+ * target (DiCE's post-hoc sparsity step), and integer and one-hot features are fixed up.
+ *
+ * @note DiCE uses det(K); log det(K) has the same maximizer and gradients that don't vanish as the
+ *       set grows.
+ * @throws std::invalid_argument for the inputs FindCounterfactual rejects, or invalid options.
+ */
+[[nodiscard]] DiverseCounterfactualResult FindDiverseCounterfactuals(ExplainerContext& ctx, const Tensor& input,
+                                                                     const CounterfactualTarget& target,
+                                                                     const CounterfactualConstraints& constraints = {},
+                                                                     const DiverseCounterfactualOptions& options = {});
+
+/**
+ * @brief How typical a counterfactual is of real data: its mean scaled L1 distance to its @p k
+ *        nearest instances in @p background (lower is more plausible), the kNN measure of the CARLA
+ *        benchmark. A counterfactual far from every real instance may be valid but describe nobody.
+ * @param scale Per-feature scale, as in CounterfactualConstraints; empty means 1.
+ * @throws std::invalid_argument if background is empty or its shapes differ from the counterfactual's,
+ *         k < 1, or scale has the wrong length or a non-positive entry.
+ */
+[[nodiscard]] float Plausibility(const Tensor& counterfactual, const std::vector<Tensor>& background,
+                                 const std::vector<float>& scale = {}, int k = 5);
 
 }  // namespace pulsatrix

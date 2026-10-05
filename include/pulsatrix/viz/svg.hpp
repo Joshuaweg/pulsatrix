@@ -163,4 +163,16 @@ struct PartialDependenceSvgOptions {
  */
 [[nodiscard]] std::string RenderSobolSvg(const SobolDocument& doc, int top_k = 10, const SvgOptions& options = {});
 
+/**
+ * @brief Several counterfactuals of one input side by side (CFS-7): a column for the input and one
+ *        per counterfactual (headed by whether it reaches the target), and a row for every feature
+ *        that at least one of them changes. Changed values are on a background colored by the
+ *        change's direction and size in scale units; unchanged ones are blank.
+ * @throws std::invalid_argument if @p docs is empty, the documents describe different inputs
+ *         (feature names or original values differ), a value is non-finite, or the options are
+ *         unusable.
+ */
+[[nodiscard]] std::string RenderCounterfactualSetSvg(const std::vector<CounterfactualDocument>& docs,
+                                                     const SvgOptions& options = {});
+
 }  // namespace pulsatrix

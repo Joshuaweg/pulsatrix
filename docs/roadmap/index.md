@@ -119,8 +119,8 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast
 - LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizers, generation, KV cache, the
   golden-logit harness, AttnLRP parity with LXT
-- CFS-1 to CFS-7 (added 2026-10-05, built first): ICE, ALE, local and global sensitivity, and
-  counterfactuals, each with its view
+- CFS-1 to CFS-7 (**done**, added and built 2026-10-05): ICE, ALE, local and global
+  sensitivity, and counterfactuals, each with its view
 - TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores
 - HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)
@@ -418,7 +418,7 @@ doesn't support.
 | Why not | Contrastive LRP (relevance of logit P minus logit Q) | Have |
 | What if | PDP, ICE, ALE, local and global (Morris, Sobol) sensitivity, occlusion, re-running with an edited input | Have ([CFS](#cfs-counterfactuals-and-sensitivity)) |
 | How (global) | Global surrogate tree, PDP, TCAV, CRP | Partial; XAI-4, INT-6 |
-| How to be that | Counterfactual search | Gradient-based and model-agnostic; [CFS-7](#cfs-counterfactuals-and-sensitivity) for diverse sets |
+| How to be that | Counterfactual search | Have: gradient-based, model-agnostic and diverse sets ([CFS](#cfs-counterfactuals-and-sensitivity)) |
 | How to still be this | Anchors | Gap; XAI-4 |
 | Performance | Metrics, calibration, per-slice error, uncertainty | Partial; KS-3 |
 | Input (data) | Dataset statistics, nearest training examples, data attribution | Partial; INT-1, KS-5 |
@@ -477,7 +477,7 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 | CFS-4 | Global sensitivity: Morris elementary effects (μ\*, σ) and Sobol first-order and total indices (Saltelli sampling, Jansen estimators) with bootstrap confidence intervals. Views: μ\*–σ scatter, Sobol bars with error bars. Checked against SALib | Which inputs drive the output over the whole input space, and which interact | — | P1 | M || Done, [#73](https://github.com/Joshuaweg/pulsatrix/pull/73) (see below) |
 | CFS-5 | Gradient counterfactual (Wachter): the nearest input that reaches a target class or value, distance weighted by each feature's median absolute deviation, with immutable features, bounds, and integer or categorical features. Reports validity, proximity (L1, L2) and sparsity. View: what changed, feature by feature | "How to be that", the most requested missing explainer | — | P0 | M || Done, [#71](https://github.com/Joshuaweg/pulsatrix/pull/71) (see below) |
 | CFS-6 | Model-agnostic counterfactual: growing spheres, for models with no gradient | Counterfactuals for any prediction function | CFS-5 | P1 | S || Done, [#74](https://github.com/Joshuaweg/pulsatrix/pull/74) (see below) |
-| CFS-7 | Diverse counterfactuals (DiCE: a determinantal diversity term) and a plausibility score (distance to the k nearest background instances). Checked against DiCE's own metrics | One counterfactual hides the other ways to change the outcome; implausible ones mislead | CFS-5 | P1 | M | |
+| CFS-7 | Diverse counterfactuals (DiCE: a determinantal diversity term) and a plausibility score (distance to the k nearest background instances). | One counterfactual hides the other ways to change the outcome; implausible ones mislead | CFS-5 | P1 | M || Done, [#75](https://github.com/Joshuaweg/pulsatrix/pull/75) (see below) |
 
 Every item runs on a re-initialized model too (rule 1): sensitivity that looks the same on a random
 network says nothing about what the model learned.
@@ -516,6 +516,13 @@ network says nothing about what the model learned.
   that already gives sparse answers, and the module would add a second search with its own
   settings. Both searches now share one implementation of the constraints, the final rounding and
   snapping, and the metrics.
+- **CFS-7** maximizes the log-determinant of DiCE's kernel instead of the determinant (same
+  maximizer, gradients that don't vanish as the set grows) and adds DiCE's post-hoc sparsity step.
+  It reports DiCE's set metrics (validity, diversity, count diversity) but was not run against the
+  DiCE package itself: DiCE's random restarts and optimizer make digit-level comparison
+  meaningless. Its tests check the property instead, and fail when the diversity term is removed.
+  The set view is a grid of the counterfactuals, not a new document kind: it takes several
+  counterfactual documents, as the beeswarm takes several attributions.
 
 ## INT: Embedding and representation analysis
 

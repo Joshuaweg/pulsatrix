@@ -375,4 +375,190 @@ CounterfactualResult GrowingSpheresCounterfactual(const std::function<Tensor(con
     return r;
 }
 
+DiverseCounterfactualResult FindDiverseCounterfactuals(ExplainerContext& ctx, const Tensor& input,
+                                                       const CounterfactualTarget& target,
+                                                       const CounterfactualConstraints& constraints,
+                                                       const DiverseCounterfactualOptions& options) {
+    if (options.count < 1 || !(options.proximity_weight >= 0.0f) || !(options.diversity_weight >= 0.0f) ||
+        !(options.learning_rate > 0.0f) || options.max_steps < 1 || !(options.initial_spread >= 0.0f)) {
+        throw std::invalid_argument("FindDiverseCounterfactuals: invalid options");
+    }
+    auto forward = [&](const std::vector<float>& x) {
+        return ctx.forward_pass(Tensor(input.shape(), input.backend(), x, input.device()));
+    };
+    const Search search("FindDiverseCounterfactuals", input, target, constraints, options.change_tolerance,
+                        [&](const std::vector<float>& x) { return forward(x).to_host_vector(); });
+    const std::vector<float>& x0 = search.x0();
+    const std::vector<float>& scale = search.scale();
+    const size_t n = search.size();
+    const auto k = static_cast<size_t>(options.count);
+
+    Rng rng(options.seed);
+    std::vector<std::vector<float>> cf(k, x0);
+    for (auto& c : cf) {
+        for (size_t j = 0; j < n; ++j) {
+            if (!search.frozen(j)) {
+                c[j] = search.clip(j, static_cast<float>(x0[j] + (2.0 * rng.uniform() - 1.0) * options.initial_spread * scale[j]));
+            }
+        }
+    }
+    auto pair_distance = [&](const std::vector<float>& a, const std::vector<float>& b) {
+        double d = 0.0;
+        for (size_t j = 0; j < n; ++j) d += std::fabs(a[j] - b[j]) / scale[j];
+        return d;
+    };
+    auto sign = [](double v) { return v > 0 ? 1.0 : (v < 0 ? -1.0 : 0.0); };
+
+    std::vector<float> seed;
+    for (int step = 0; step < options.max_steps; ++step) {
+        std::vector<std::vector<double>> grad(k, std::vector<double>(n, 0.0));
+        // Prediction hinge and proximity, per counterfactual.
+        for (size_t i = 0; i < k; ++i) {
+            Tensor out = forward(cf[i]);
+            if (TargetLoss(out.to_host_vector(), target, &seed) > 0.0f) {
+                const std::vector<float> g =
+                    ctx.backward_pass(Tensor(out.shape(), out.backend(), seed, out.device())).to_host_vector();
+                for (size_t j = 0; j < n; ++j) grad[i][j] += g[j];
+            }
+            for (size_t j = 0; j < n; ++j) {
+                grad[i][j] += options.proximity_weight * sign(cf[i][j] - x0[j]) / scale[j] / static_cast<double>(k);
+            }
+        }
+        // Diversity: d log det K / d K = K^-1 (K is symmetric), and K_ij = 1 / (1 + d_ij).
+        if (k > 1 && options.diversity_weight > 0.0f) {
+            std::vector<double> K(k * k), inv(k * k, 0.0);
+            for (size_t a = 0; a < k; ++a) {
+                for (size_t b = 0; b < k; ++b) K[a * k + b] = 1.0 / (1.0 + pair_distance(cf[a], cf[b]));
+                inv[a * k + a] = 1.0;
+            }
+            // Gauss-Jordan with partial pivoting; a nearly singular K (two equal counterfactuals)
+            // gets a small ridge so the step stays finite.
+            std::vector<double> m = K;
+            for (size_t a = 0; a < k; ++a) m[a * k + a] += 1e-6;
+            bool ok = true;
+            for (size_t col = 0; col < k && ok; ++col) {
+                size_t piv = col;
+                for (size_t r = col + 1; r < k; ++r) {
+                    if (std::fabs(m[r * k + col]) > std::fabs(m[piv * k + col])) piv = r;
+                }
+                if (std::fabs(m[piv * k + col]) < 1e-12) {
+                    ok = false;
+                    break;
+                }
+                for (size_t c2 = 0; c2 < k; ++c2) {
+                    std::swap(m[col * k + c2], m[piv * k + c2]);
+                    std::swap(inv[col * k + c2], inv[piv * k + c2]);
+                }
+                const double p = m[col * k + col];
+                for (size_t c2 = 0; c2 < k; ++c2) {
+                    m[col * k + c2] /= p;
+                    inv[col * k + c2] /= p;
+                }
+                for (size_t r = 0; r < k; ++r) {
+                    if (r == col) continue;
+                    const double f = m[r * k + col];
+                    for (size_t c2 = 0; c2 < k; ++c2) {
+                        m[r * k + c2] -= f * m[col * k + c2];
+                        inv[r * k + c2] -= f * inv[col * k + c2];
+                    }
+                }
+            }
+            if (ok) {
+                for (size_t a = 0; a < k; ++a) {
+                    for (size_t b = 0; b < k; ++b) {
+                        if (a == b) continue;
+                        const double kab = K[a * k + b];
+                        // d K_ab / d cf_a[j] = -K_ab^2 * sign(cf_a[j] - cf_b[j]) / scale_j; K_ab and
+                        // K_ba both depend on it, hence the factor 2.
+                        const double w = 2.0 * inv[a * k + b] * -(kab * kab);
+                        for (size_t j = 0; j < n; ++j) {
+                            // Minimizing -diversity_weight * log det K.
+                            grad[a][j] -= options.diversity_weight * w * sign(cf[a][j] - cf[b][j]) / scale[j];
+                        }
+                    }
+                }
+            }
+        }
+        for (size_t i = 0; i < k; ++i) {
+            for (size_t j = 0; j < n; ++j) {
+                if (search.frozen(j)) continue;
+                cf[i][j] = search.clip(j, static_cast<float>(cf[i][j] - options.learning_rate * grad[i][j]));
+            }
+        }
+    }
+
+    // Post-hoc sparsity: undo each counterfactual's smallest changes while it still reaches the target.
+    DiverseCounterfactualResult result;
+    for (auto& c : cf) {
+        if (search.reaches(c)) {
+            std::vector<size_t> order;
+            for (size_t j = 0; j < n; ++j) {
+                if (!search.frozen(j)) order.push_back(j);
+            }
+            std::sort(order.begin(), order.end(), [&](size_t a, size_t b) {
+                return std::fabs(c[a] - x0[a]) / scale[a] < std::fabs(c[b] - x0[b]) / scale[b];
+            });
+            for (size_t j : order) {
+                std::vector<float> trial = c;
+                trial[j] = x0[j];
+                if (search.reaches(trial)) c = std::move(trial);
+            }
+        }
+        result.counterfactuals.push_back(search.finish(c));
+        result.counterfactuals.back().rounds = 1;
+    }
+    std::vector<std::vector<float>> valid;
+    for (const auto& r : result.counterfactuals) {
+        if (r.valid) valid.push_back(r.counterfactual.to_host_vector());
+    }
+    result.validity = static_cast<float>(valid.size()) / static_cast<float>(k);
+    if (valid.size() > 1) {
+        double dsum = 0.0, csum = 0.0;
+        size_t pairs = 0;
+        for (size_t a = 0; a < valid.size(); ++a) {
+            for (size_t b = a + 1; b < valid.size(); ++b) {
+                dsum += pair_distance(valid[a], valid[b]);
+                size_t differ = 0;
+                for (size_t j = 0; j < n; ++j) {
+                    if (std::fabs(valid[a][j] - valid[b][j]) > options.change_tolerance * scale[j]) ++differ;
+                }
+                csum += static_cast<double>(differ) / static_cast<double>(n);
+                ++pairs;
+            }
+        }
+        result.diversity = static_cast<float>(dsum / static_cast<double>(pairs));
+        result.count_diversity = static_cast<float>(csum / static_cast<double>(pairs));
+    }
+    return result;
+}
+
+float Plausibility(const Tensor& counterfactual, const std::vector<Tensor>& background, const std::vector<float>& scale,
+                   int k) {
+    if (background.empty() || k < 1) {
+        throw std::invalid_argument("Plausibility: needs a non-empty background and k >= 1");
+    }
+    const std::vector<float> x = counterfactual.to_host_vector();
+    if (!scale.empty() && scale.size() != x.size()) {
+        throw std::invalid_argument("Plausibility: scale needs one value per feature");
+    }
+    for (float s : scale) {
+        if (!(s > 0.0f)) throw std::invalid_argument("Plausibility: every scale must be positive");
+    }
+    std::vector<double> d;
+    for (const Tensor& t : background) {
+        if (t.shape() != counterfactual.shape()) {
+            throw std::invalid_argument("Plausibility: background instances must be shaped like the counterfactual");
+        }
+        const std::vector<float> b = t.to_host_vector();
+        double s = 0.0;
+        for (size_t j = 0; j < x.size(); ++j) s += std::fabs(x[j] - b[j]) / (scale.empty() ? 1.0f : scale[j]);
+        d.push_back(s);
+    }
+    const size_t m = std::min(d.size(), static_cast<size_t>(k));
+    std::partial_sort(d.begin(), d.begin() + static_cast<std::ptrdiff_t>(m), d.end());
+    double sum = 0.0;
+    for (size_t i = 0; i < m; ++i) sum += d[i];
+    return static_cast<float>(sum / static_cast<double>(m));
+}
+
 }  // namespace pulsatrix

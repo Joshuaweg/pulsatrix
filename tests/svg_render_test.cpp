@@ -734,6 +734,34 @@ TEST(SvgGlobalSensitivityTest, SobolRowsSortByTotalOrderWithBothBars) {
     EXPECT_THROW((void)RenderSobolSvg(doc), std::invalid_argument);
 }
 
+// ---- counterfactual set ---------------------------------------------------------------------
+
+std::vector<CounterfactualDocument> CounterfactualSet() {
+    // Two routes to approval: more income, or less debt (and the second also moves age, invalid).
+    CounterfactualDocument a{"approved", true, -0.5f, 0.25f,
+                             {{"income", 40.0f, 52.0f, 8.0f}, {"age", 35.0f, 35.0f, 10.0f}, {"debt", 0.5f, 0.5f, 0.25f}}};
+    CounterfactualDocument b{"approved", true, -0.5f, 0.1f,
+                             {{"income", 40.0f, 40.0f, 8.0f}, {"age", 35.0f, 35.0f, 10.0f}, {"debt", 0.5f, 0.125f, 0.25f}}};
+    CounterfactualDocument c{"approved", false, -0.5f, -0.1f,
+                             {{"income", 40.0f, 40.0f, 8.0f}, {"age", 35.0f, 30.0f, 10.0f}, {"debt", 0.5f, 0.5f, 0.25f}}};
+    return {a, b, c};
+}
+
+TEST(SvgCounterfactualSetTest, OneColumnPerCounterfactualAndOneRowPerChangedFeature) {
+    auto root = Parsed(RenderCounterfactualSetSvg(CounterfactualSet()));
+    auto rows = ByClass(*root, "feature-row");
+    ASSERT_EQ(rows.size(), 3u);  // income, age and debt each change somewhere
+    EXPECT_EQ(ByClass(*root, "changed").size(), 3u);  // one changed cell per counterfactual
+    EXPECT_EQ(ByClass(*root, "valid").size(), 2u);
+    EXPECT_EQ(ByClass(*root, "invalid").size(), 1u);
+    EXPECT_NE(AllText(*root).find("2 of 3 reach approved"), std::string::npos);
+
+    auto mismatched = CounterfactualSet();
+    mismatched[1].features[0].original = 41.0f;
+    EXPECT_THROW((void)RenderCounterfactualSetSvg(mismatched), std::invalid_argument);
+    EXPECT_THROW((void)RenderCounterfactualSetSvg({}), std::invalid_argument);
+}
+
 // ---- golden files: each chart, from the VIZ-1 document fixtures, must match
 // tests/fixtures/viz/svg/ byte for byte on every platform. After an intended change, rerun
 // with PULSATRIX_UPDATE_GOLDEN=1 to rewrite them, then look at the new figures before
@@ -806,6 +834,7 @@ TEST(SvgGoldenTest, EveryChart) {
     for (int i = 0; i < 12; ++i) ale.feature_values.push_back(static_cast<float>((i * 5) % 14) / 4.0f);
     ExpectGolden("ale.svg", RenderPartialDependenceSvg(ToPartialDependenceDocument(ale, "dose (mg)", "response")));
     ExpectGolden("tornado.svg", RenderTornadoSvg(ParseSensitivityDocument(Fixture("sensitivity.v1.json"))));
+    ExpectGolden("counterfactual_set.svg", RenderCounterfactualSetSvg(CounterfactualSet()));
     ExpectGolden("morris.svg", RenderMorrisSvg(ParseMorrisDocument(Fixture("morris.v1.json"))));
     ExpectGolden("sobol.svg", RenderSobolSvg(ParseSobolDocument(Fixture("sobol.v1.json"))));
     ExpectGolden("counterfactual.svg",

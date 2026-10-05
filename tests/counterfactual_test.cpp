@@ -1,5 +1,5 @@
-// CFS-5 and CFS-6: gradient counterfactuals (Wachter et al. 2017) and growing spheres (Laugel et
-// al. 2018). On a linear classifier the L1-optimal
+// CFS-5 to CFS-7: gradient counterfactuals (Wachter et al. 2017), growing spheres (Laugel et al.
+// 2018), and diverse sets with plausibility (DiCE, Mothilal et al. 2020). On a linear classifier the L1-optimal
 // counterfactual is known in closed form: move the single feature with the largest
 // |w_target - w_other| * scale just past the decision boundary. The search must find it.
 
@@ -8,6 +8,7 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <set>
 #include <stdexcept>
 #include <vector>
 
@@ -247,6 +248,83 @@ TEST_F(CounterfactualTest, GrowingSpheresRejectsBadOptions) {
                  std::invalid_argument);
     EXPECT_THROW((void)GrowingSpheresCounterfactual(predict, input, CounterfactualTarget::ToClass(5)),
                  std::invalid_argument);
+}
+
+// ---- CFS-7: diverse counterfactuals -----------------------------------------------------------
+
+// The linear classifier can reach class 1 through any of its three features (f0 up, f1 down, f2
+// up), so a diverse set of three should use more than one route.
+TEST_F(CounterfactualTest, DiverseSetTakesDifferentRoutes) {
+    ExplainerContext ctx({&model});
+    DiverseCounterfactualOptions o;
+    o.count = 3;
+    o.seed = 4;
+    DiverseCounterfactualResult r = FindDiverseCounterfactuals(ctx, input, CounterfactualTarget::ToClass(1), {}, o);
+    ASSERT_EQ(r.counterfactuals.size(), 3u);
+    EXPECT_FLOAT_EQ(r.validity, 1.0f);
+    std::set<std::vector<bool>> routes;
+    const std::vector<float> x0 = input.to_host_vector();
+    for (const auto& c : r.counterfactuals) {
+        EXPECT_TRUE(c.valid);
+        const std::vector<float> v = c.counterfactual.to_host_vector();
+        std::vector<bool> changed;
+        for (size_t j = 0; j < 3; ++j) changed.push_back(v[j] != x0[j]);
+        routes.insert(changed);
+        const std::vector<float> z = model.forward(c.counterfactual).to_host_vector();
+        EXPECT_GE(z[1], z[0]);
+    }
+    EXPECT_GE(routes.size(), 2u);
+    EXPECT_GT(r.diversity, 0.0f);
+    EXPECT_GT(r.count_diversity, 0.0f);
+}
+
+// Without the diversity term and without a spread to start from, the set collapses to copies of
+// one counterfactual; the diversity term is what pulls them apart.
+TEST_F(CounterfactualTest, DiversityTermSeparatesTheSet) {
+    ExplainerContext ctx({&model});
+    DiverseCounterfactualOptions o;
+    o.count = 3;
+    o.initial_spread = 0.0f;
+    o.diversity_weight = 0.0f;
+    o.max_steps = 500;
+    DiverseCounterfactualResult same = FindDiverseCounterfactuals(ctx, input, CounterfactualTarget::ToClass(1), {}, o);
+    EXPECT_FLOAT_EQ(same.validity, 1.0f);
+    EXPECT_FLOAT_EQ(same.diversity, 0.0f);
+    o.initial_spread = 0.5f;
+    o.diversity_weight = 1.0f;
+    DiverseCounterfactualResult spread = FindDiverseCounterfactuals(ctx, input, CounterfactualTarget::ToClass(1), {}, o);
+    EXPECT_GT(spread.diversity, 0.5f);
+}
+
+TEST_F(CounterfactualTest, DiverseSetRespectsConstraintsAndOptions) {
+    ExplainerContext ctx({&model});
+    CounterfactualConstraints c;
+    c.immutable = {2};
+    DiverseCounterfactualOptions o;
+    o.count = 2;
+    DiverseCounterfactualResult r = FindDiverseCounterfactuals(ctx, input, CounterfactualTarget::ToClass(1), c, o);
+    for (const auto& cf : r.counterfactuals) {
+        EXPECT_EQ(cf.counterfactual.to_host_vector()[2], -1.0f);
+    }
+    o.count = 0;
+    EXPECT_THROW((void)FindDiverseCounterfactuals(ctx, input, CounterfactualTarget::ToClass(1), {}, o),
+                 std::invalid_argument);
+}
+
+TEST_F(CounterfactualTest, PlausibilityIsTheMeanDistanceToTheNearestBackground) {
+    std::vector<Tensor> bg;
+    for (float v : {0.0f, 1.0f, 3.0f, 10.0f}) {
+        bg.emplace_back(Shape({1, 2}), &backend, std::vector<float>{v, 0.0f});
+    }
+    Tensor cf(Shape({1, 2}), &backend, {1.5f, 1.0f});
+    // Distances (L1): 2.5, 1.5, 2.5, 9.5. Nearest two: 1.5 and 2.5.
+    EXPECT_FLOAT_EQ(Plausibility(cf, bg, {}, 2), 2.0f);
+    // Scale 0.5 on feature 1 doubles its contribution: 3.5, 2.5, 3.5, 10.5 -> nearest one 2.5.
+    EXPECT_FLOAT_EQ(Plausibility(cf, bg, {1.0f, 0.5f}, 1), 2.5f);
+    EXPECT_FLOAT_EQ(Plausibility(cf, bg, {}, 10), (2.5f + 1.5f + 2.5f + 9.5f) / 4.0f);  // k > background
+    EXPECT_THROW((void)Plausibility(cf, {}, {}, 1), std::invalid_argument);
+    EXPECT_THROW((void)Plausibility(cf, bg, {1.0f}, 1), std::invalid_argument);
+    EXPECT_THROW((void)Plausibility(cf, {Tensor(Shape({2}), &backend)}, {}, 1), std::invalid_argument);
 }
 
 }  // namespace
