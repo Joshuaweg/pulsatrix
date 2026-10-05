@@ -61,6 +61,15 @@ public:
      *        allocated, so a budget is the reliable limit.
      */
     void set_memory_budget(size_t bytes) { allocator_->set_budget(bytes); }
+
+    /**
+     * @brief Whether every op waits for the GPU to finish (PULSATRIX_HIP_SYNC_DEBUG=1 when the
+     *        backend was created). Off by default (HIP-4): ops are queued on the stream and the
+     *        host waits only when it reads a result (copy to the host, dot, sum). A kernel fault
+     *        then surfaces at that later wait instead of at the op that caused it; turn this on to
+     *        find the op.
+     */
+    [[nodiscard]] bool sync_debug() const { return sync_debug_; }
     void copy(void* dst, const void* src, size_t bytes, CopyDirection dir) override;
     void fill(void* ptr, float value, size_t n) override;
     void gemm(const float* a, const float* b, float* out, size_t m, size_t k, size_t n) override;
@@ -174,6 +183,8 @@ public:
 private:
     hipStream_t stream_;
     std::unique_ptr<CachingAllocator> allocator_;
+    bool sync_debug_ = false;
+    void debug_sync();
     hipblasHandle_t hipblas_handle_;
     // One device float that dot() reduces into before copying it to the host; allocated once
     // so dot() costs no per-call device allocation.
