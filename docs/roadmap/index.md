@@ -228,7 +228,7 @@ autoencoder dictionaries and a model zoo.
 | IO-2 | Native checkpoint format: safetensors with `format_version` metadata, optimizer state in a sibling file, and a migration table between versions | Save and resume training; the passing test is a bit-identical forward pass and loss curve after reload | IO-1, FND-1 | P0 | M | Done, [#44](https://github.com/Joshuaweg/pulsatrix/pull/44) |
 | IO-3 | An optional converter for legacy pickle files (`.pt`, `.pth`, `.pkl`). It uses `torch.load(weights_only=True)` with torch 2.6 or newer and writes safetensors | Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors | IO-1 | P1 | M | |
 | IO-4 | A name-mapping manifest with transforms: transpose (pulsatrix `Linear` stores `(in, out)`, PyTorch stores `(out, in)`), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys | Turns Hugging Face names and layouts into pulsatrix modules | FND-1, IO-1 | P1 | M | |
-| IO-5 | Read Hugging Face `config.json` and sharded `model.safetensors.index.json` | Every small LLM on the Hub uses these | IO-1 | P1 | S | |
+| IO-5 | Read Hugging Face `config.json` and sharded `model.safetensors.index.json` | Every small LLM on the Hub uses these | IO-1 | P1 | S || Done, [#78](https://github.com/Joshuaweg/pulsatrix/pull/78) (see below) |
 | IO-6 | Upcast bf16 and fp16 weights to fp32 on load (exact) | Most published weights are bf16 | IO-1 | P1 | S | |
 | IO-7 | `.npy` and `.npz` reading, with object and big-endian dtypes rejected | Many SAE dictionaries and Python users' arrays | — | P1 | S–M | |
 | IO-8 | ONNX import, weights only | Graph import would mean pattern-matching ONNX ops back into modules, which is research | IO-1 | P3 | M | |
@@ -247,12 +247,19 @@ autoencoder dictionaries and a model zoo.
 - **IO-2** records a checksum of the model file in the optimizer file, so stale optimizer state
   from an earlier save is refused. A plain safetensors file with matching names loads as format
   version 0.
+- **IO-5** fills in the values each architecture implies but its `config.json` leaves out
+  (Qwen2's Q/K/V biases, Qwen3's and Gemma's QK-Norm, `head_dim`), and lists what pulsatrix can't
+  run yet instead of ignoring it, so a loader can refuse a model rather than run it subtly wrong.
+  It also did the memory-mapped reading the IO-1 follow-ups asked for: `SafetensorsFile::Map`, used
+  for every shard. A 2.2 GB checkpoint (bge-m3) opened in 1.1 ms with a 4.8 MB peak resident size.
+  A sharded index must match its shards exactly, and names only files inside the checkpoint
+  directory.
 
 ### Follow-ups the IO work surfaced
 
 | Follow-up | Belongs with |
 |---|---|
-| Memory-mapped reading; files are read whole for now | IO-5, for 1B-parameter models |
+| Memory-mapped reading; files are read whole for now | Done in IO-5 (`SafetensorsFile::Map`) |
 | Checkpointing SGD's momentum buffers (Adam and AdamW are covered) | a small fix |
 | Checkpointing Dropout's mask counter; a resumed run with active dropout draws different masks | a small fix |
 | Running the safetensors writer's GPU path on hardware | HIP-9 or KS-8 |
