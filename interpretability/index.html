@@ -1685,6 +1685,13 @@ sensible features, or show a user why it made a decision.</p>
   modules, given as a <code>std::vector&lt;Module*&gt;</code> in forward order. It runs traced forward,
   backward and relevance passes and exposes per-node activations and gradients. LRP and
   the gradient-based explainers take it as their first argument.</li>
+<li><strong>Eval mode.</strong> Call <code>model.set_training(false)</code> before explaining a model that has BatchNorm
+  or Dropout. No explainer switches modes for you, and in training mode each sample's
+  explanation depends on the rest of its batch.</li>
+<li><strong>Saving and plotting.</strong> <code>ToAttributionDocument()</code> turns an <code>Attribution</code> into a
+  <code>pulsatrix.attribution.v1</code> JSON document; <code>RenderBarChartSvg()</code> and <code>RenderWaterfallSvg()</code>
+  draw it as an SVG figure, and the <code>pulsatrix_svg</code> tool does both from the command line. See
+  <a href="../visualization/#json-documents">Visualization</a>.</li>
 </ul>
 <h2 id="checking-an-explanation">Checking an explanation<a class="headerlink" href="#checking-an-explanation" title="Permanent link">&para;</a></h2>
 <p>An explanation can look plausible and still not reflect the model. <code>explanation_metrics.hpp</code>

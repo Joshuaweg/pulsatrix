@@ -1772,7 +1772,8 @@ tabular, image, text, audio and video (frames only). Generic dataset validation 
 <li><strong>MNIST</strong>: <code>MnistDatasetAdapter</code> wraps the MNIST IDX loader (<code>MnistIdxLoader</code>,
   <code>mnist_loader.hpp</code>) as a <code>Dataset</code>.</li>
 </ul>
-<p><code>DataLoaderOptions</code> fields: <code>batch_size</code> (default 1), <code>shuffle</code> and <code>shuffle_seed</code>,
+<p><code>DataLoaderOptions</code> fields: <code>batch_size</code> (default 1), <code>shuffle</code> and <code>shuffle_seed</code> (unset: drawn
+from the global seed stream; see <a href="../deep-learning/#reproducibility">Reproducibility</a>),
 <code>drop_last</code>, <code>collate_fn</code> (default <code>DefaultCollate</code>), <code>num_workers</code> and <code>prefetch_batches</code>.
 <code>DataLoader</code> also accepts an <code>IterableDataset</code>; with one, <code>num_workers</code> must be 0 or 1.</p>
 <p>Full API reference: <a href="../api/group__data__pipeline.html">Doxygen: Data Loading, Transformation &amp; Validation</a></p>

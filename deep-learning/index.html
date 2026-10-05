@@ -1854,17 +1854,22 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   <code>DeviceBackend</code> (<code>CPUBackend</code>/<code>CUDABackend</code>/<code>HIPBackend</code>)</li>
 <li><strong>Layers</strong>: <code>LinearModule</code>, <code>Conv2DModule</code>, <code>ReluModule</code>, <code>FlattenModule</code>,
   <code>SequentialModule</code>, <code>DropoutModule</code>, <code>EmbeddingModule</code>, <code>ResidualModule</code>; normalization
-  (<code>LayerNormModule</code>/<code>RMSNormModule</code>/<code>GroupNormModule</code>/<code>BatchNormModule</code>); pooling
+  (<code>LayerNormModule</code>/<code>RMSNormModule</code>/<code>GroupNormModule</code>/<code>BatchNormModule</code>, with <code>BatchNormFold</code>
+  to fold an eval-mode BatchNorm into the layer before it); pooling
   (<code>MaxPool2DModule</code>/<code>AvgPool2DModule</code>). <code>Conv2DModule</code> takes an optional <code>stride</code> and zero
   <code>padding</code>, as in <code>torch.nn.Conv2d</code>, and every LRP rule handles both.</li>
 <li><strong>Sequence &amp; attention</strong>: <code>RNNModule</code>/<code>LSTMModule</code>/<code>GRUModule</code>, <code>SoftmaxModule</code>,
   <code>RoPEModule</code>, <code>MultiHeadAttentionModule</code>, <code>SwiGLUModule</code>, <code>TransformerBlock</code>,
   <code>MambaModule</code>, <code>RWKVModule</code>, <code>RetNetModule</code></li>
-<li><strong>Optimizers &amp; losses</strong>: <code>SGDOptimizer</code>, <code>AdamOptimizer</code>; <code>MSELoss</code>, <code>CrossEntropyLoss</code>,
-  <code>BCEWithLogitsLoss</code>, <code>KLDivergenceLoss</code>, <code>CalibrationLoss</code></li>
+<li><strong>Optimizers &amp; losses</strong>: <code>SGDOptimizer</code> (momentum, Nesterov), <code>AdamOptimizer</code>,
+  <code>AdamWOptimizer</code>, all with parameter groups; <code>MSELoss</code>, <code>CrossEntropyLoss</code>,
+  <code>TokenCrossEntropyLoss</code>, <code>BCEWithLogitsLoss</code>, <code>KLDivergenceLoss</code>, <code>CalibrationLoss</code></li>
 <li><strong>Generative building blocks</strong>: <code>Reparameterize</code> (VAE), <code>NoiseSchedule</code> and
   <code>SinusoidalTimestepEmbedding()</code> (diffusion)</li>
-<li><strong>Training utilities</strong>: <code>MetricsSink</code>/<code>NoOpMetricsSink</code> (where <code>train_step</code> logs its loss)</li>
+<li><strong>Training utilities</strong>: <code>ClipGradNorm</code>, <code>LRSchedule</code>/<code>LRScheduler</code>, parameter groups
+  (<code>param_groups.hpp</code>), checkpoints (<code>SaveCheckpoint</code>/<code>LoadCheckpoint</code>, <code>safetensors.hpp</code>),
+  <code>set_seed</code>/<code>set_deterministic</code>, and <code>MetricsSink</code>/<code>NoOpMetricsSink</code> (where <code>train_step</code> logs
+  its loss)</li>
 <li><strong>Selection</strong>: <code>top_k()</code>, the k largest or smallest entries of every row along the last
   dimension, with their indices, on any device. NaN ranks above every number and ties keep the
   lower index first, so every backend selects the same entries in the same order.</li>
@@ -1927,6 +1932,8 @@ PyTorch pickle.</p>
 <span class="c1">// ... later, or in another process:</span>
 <span class="n">LoadCheckpoint</span><span class="p">(</span><span class="s">"model.safetensors"</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span><span class="w">  </span><span class="c1">// training resumes exactly</span>
 </code></pre></div>
+<p>The optimizer state that can be saved is <code>AdamOptimizer</code>'s or <code>AdamWOptimizer</code>'s; SGD's momentum
+buffers aren't saved yet.</p>
 <ul>
 <li>Every parameter and buffer (such as BatchNorm's running statistics) is stored under its
   <code>named_parameters()</code> / <code>named_buffers()</code> name. Leave out the optimizer to save or load just
@@ -2017,7 +2024,7 @@ of the whole window:</p>
 <span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">loss</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span><span class="w"> </span><span class="n">window_targets</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">total</span><span class="p">));</span>
 <span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">model</span><span class="p">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">());</span><span class="w">  </span><span class="c1">// gradients accumulate across micro-batches</span>
 <span class="p">}</span>
-<span class="n">ClipGradNorm</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">ClipGradNorm</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span><span class="w">  </span><span class="c1">// returns the norm before clipping</span>
 <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
 </code></pre></div>
 <p>The accumulated gradients then equal those of one batch holding every micro-batch.</p>
@@ -2040,8 +2047,8 @@ parameters by name. A name selects that parameter and everything under it:</p>
 <span class="n">block</span><span class="p">.</span><span class="n">set_requires_grad</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">              </span><span class="c1">// freeze everything</span>
 <span class="n">block</span><span class="p">.</span><span class="n">set_requires_grad</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="s">"mha.q_proj"</span><span class="p">);</span><span class="w">  </span><span class="c1">// then train only the query projection</span>
 </code></pre></div>
-<p>A frozen parameter is never changed by <code>SGDOptimizer</code> or <code>AdamOptimizer</code>, and <code>backward()</code>
-doesn't add to its gradient. The gradient passed back to the previous layer is exactly the same
+<p>A frozen parameter is never changed by any optimizer (<code>SGDOptimizer</code>, <code>AdamOptimizer</code>,
+<code>AdamWOptimizer</code>), <code>ClipGradNorm</code> leaves it out, and <code>backward()</code> doesn't add to its gradient. The gradient passed back to the previous layer is exactly the same
 as without freezing. <code>LinearModule</code>, <code>Conv2DModule</code> and <code>EmbeddingModule</code> skip computing a
 frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
 nothing throws <code>std::invalid_argument</code>, so a typo can't leave the model silently trainable.</p>
@@ -2064,6 +2071,7 @@ what it normalizes over:</p>
 <li><a href="../recipes/deep-learning/xor_training/">XOR training walkthrough</a></li>
 <li><a href="../recipes/deep-learning/sequence_models_rnn_lstm_gru/">RNN vs. LSTM vs. GRU on a parity task</a></li>
 <li><a href="../recipes/deep-learning/residual_and_norm_layers/">Residual connections and normalization layers</a></li>
+<li><a href="../recipes/deep-learning/tagger_finetune/">Full fine-tuning: pretrain, save, reload, fine-tune</a></li>
 </ul>
 
 

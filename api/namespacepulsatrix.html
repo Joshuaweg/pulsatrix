@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -263,7 +263,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cart-pole balancing task with a <em>continuous</em> action: the action is a single force fraction in [-1, 1] rather than a discrete left/right choice.  <a href="classpulsatrix_1_1ContinuousCartPoleEnv.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Conv2DModule.html">Conv2DModule</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D convolution, batched (input/output are rank-4: N x channels x H x W) &ndash; migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support. Stride 1, no padding, no dilation &ndash; deferred until a real use case needs them, same pattern as <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s original unbatched scope cut.  <a href="classpulsatrix_1_1Conv2DModule.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D convolution, batched (input/output are rank-4: N x channels x H x W) &ndash; migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support. Stride and zero padding are configurable (the same on both axes); there is no dilation.  <a href="classpulsatrix_1_1Conv2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConvGeometry.html">ConvGeometry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Window geometry for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ad42295ced5dffa73a26250d77fe3da97" title="Unfolds (n, c, h, w) into (n, c*kh*kw, out_h*out_w) patches, with out_h = (h + 2*pad_h - kh) / stride...">DeviceBackend::im2col</a> / col2im_add: kernel size, stride and zero padding per axis. Defaults are stride 1 and no padding. Passed to kernels by value.  <a href="structpulsatrix_1_1ConvGeometry.html#details">More...</a><br /></td></tr>
@@ -9119,7 +9119,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div><div class="memdoc">
 
 <p>Runs <code>fn</code> <code>warmup</code> times untimed, then <code>repeats</code> times timed with a steady clock. </p>
-<dl class="section note"><dt>Note</dt><dd>A GPU op returns before the GPU finishes, so <code>fn</code> must end by waiting for its device work, for example by reading a result to the host. Otherwise this times kernel launches. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>A HIP op can return before the GPU finishes (CUDA ops currently wait), so <code>fn</code> must end by waiting for its device work, for example by reading a result to the host. Otherwise this may time only kernel launches. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if <code>warmup</code> &lt; 0 or <code>repeats</code> &lt; 1. </td></tr>

@@ -881,6 +881,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#buffers-and-eval-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Buffers and eval mode
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1665,6 +1676,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#buffers-and-eval-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Buffers and eval mode
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1743,6 +1765,9 @@ and implement four pure-virtual methods:</p>
 
 <span class="w">    </span><span class="p">[[</span><span class="na">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">OpType</span><span class="w"> </span><span class="n">op_type</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">OpType</span><span class="o">::</span><span class="n">Activation</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
+<span class="w">    </span><span class="c1">// Lets Module::forward() check that the input is on this layer's device.</span>
+<span class="w">    </span><span class="p">[[</span><span class="na">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">DeviceType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">compute_device</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">backend_</span><span class="o">-&gt;</span><span class="n">device</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
 <span class="w">    </span><span class="p">[[</span><span class="na">nodiscard</span><span class="p">]]</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">propagate_relevance</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">relevance_out</span><span class="p">,</span>
 <span class="w">                                              </span><span class="k">const</span><span class="w"> </span><span class="n">LRPRuleConfig</span><span class="o">&amp;</span><span class="w"> </span><span class="n">config</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// LRP: split relevance_out among this module's inputs (see below)</span>
@@ -1757,6 +1782,9 @@ and implement four pure-virtual methods:</p>
 <span class="w">    </span><span class="n">DeviceBackend</span><span class="o">*</span><span class="w"> </span><span class="n">backend_</span><span class="p">;</span>
 <span class="p">};</span>
 </code></pre></div>
+<p><code>compute_device()</code> is optional, but without it <code>Module::forward()</code> can't check that the input
+lives on the same device as the layer, and a CPU tensor reaching a GPU layer fails much later
+and less clearly. A layer with parameters usually returns its weight's device instead.</p>
 <h3 id="the-lrp-rule-is-required">The LRP rule is required<a class="headerlink" href="#the-lrp-rule-is-required" title="Permanent link">&para;</a></h3>
 <p><code>propagate_relevance()</code> is pure virtual, so a layer without an LRP rule doesn't compile. This
 is deliberate: pulsatrix never falls back to a generic rule that may not fit the layer.</p>
@@ -1797,6 +1825,13 @@ layer that holds other modules, add each child's parameters under its name with
 before <code>named_parameters()</code> existed may still override <code>parameters()</code> instead; they keep
 training, but report no names of their own. Inside a container they get positional names
 (<code>2.0</code>, <code>2.1</code>, ...), which are stable only as long as the parameter order is.</p>
+<h3 id="buffers-and-eval-mode">Buffers and eval mode<a class="headerlink" href="#buffers-and-eval-mode" title="Permanent link">&para;</a></h3>
+<p>State that isn't trained but must be saved, such as BatchNorm's running statistics, is a
+buffer. Override <code>named_buffers()</code> so checkpoints store it; a layer that holds other modules
+adds theirs with <code>append_named_buffers(out, "child", child_)</code>. Without it, a checkpoint
+silently drops that state. If your layer holds other modules, also override <code>set_training()</code>
+to pass the mode on to each of them, as <code>SequentialModule</code> does, so <code>set_training(false)</code>
+reaches every BatchNorm and Dropout inside.</p>
 <h2 id="adding-a-new-metrics-sink">Adding a new metrics sink<a class="headerlink" href="#adding-a-new-metrics-sink" title="Permanent link">&para;</a></h2>
 <p>Training loops report metrics such as the loss through a <code>MetricsSink</code>. To send them somewhere
 new, implement its two methods:</p>
@@ -1811,15 +1846,30 @@ new, implement its two methods:</p>
 <p>Pass your sink to <code>train_step()</code> (for example <code>XorNetwork::train_step()</code> or <code>MnistConvNet</code>'s).
 Two sinks ship with the library: <code>NoOpMetricsSink</code>, which discards everything, and
 <code>ImPlotMetricsSink</code>, which buffers series for live plots (see
-<a href="../visualization/">Visualization</a>).</p>
+<a href="../visualization/">Visualization</a>). An <code>ImPlotMetricsSink</code>'s log can be saved as a
+<code>pulsatrix.training_log.v1</code> document (<code>ToTrainingLogDocument</code>) and replayed into any sink
+later (<code>ReplayTrainingLog</code>).</p>
 <h2 id="adding-a-new-device-backend">Adding a new device backend<a class="headerlink" href="#adding-a-new-device-backend" title="Permanent link">&para;</a></h2>
 <p>Implement <code>DeviceBackend</code>, the interface that <code>CPUBackend</code> and the CUDA and HIP backends
 implement. <code>Tensor</code> and <code>ComputationGraph</code> depend only on this interface, never on a specific
 backend.</p>
-<p>Every backend must behave identically:</p>
+<p>Every backend must behave the same way:</p>
 <ul>
-<li>the same numeric results, and</li>
-<li>the same error behavior: throw on failure, and never return null from <code>allocate()</code>.</li>
+<li><strong>Results.</strong> The same results as the CPU up to floating-point rounding (GPU reductions add in
+  a different order), and the same results from run to run: no atomics in reductions.</li>
+<li><strong>Errors.</strong> Throw on failure. <code>allocate()</code> returns nullptr only for a 0-byte request.</li>
+<li><strong>Ordering.</strong> Ops may run asynchronously, but a <code>copy()</code> to the host, <code>dot()</code> and <code>sum()</code> must
+  return finished results, and <code>free()</code> must be safe on memory that queued work still uses.
+  The HIP backend shows one way: a single in-order stream, waits only where the host reads, and
+  <code>PULSATRIX_HIP_SYNC_DEBUG=1</code> to wait after every op while hunting a fault
+  (<a href="../gpu-profiling/#hip-4-no-per-op-synchronization">GPU Profiling</a>).</li>
+<li><strong>Memory.</strong> <code>CachingAllocator</code> (<code>caching_allocator.hpp</code>) is device-independent: hand it your
+  raw allocate, free and synchronize functions to reuse freed blocks
+  (<a href="../gpu-profiling/#hip-3-a-caching-allocator">GPU Profiling</a>).</li>
+<li><strong>Determinism.</strong> When <code>deterministic()</code> is on, use only paths whose results don't vary from
+  run to run; the HIP and CUDA backends turn off BLAS atomics, for example.</li>
+<li><strong>Selection.</strong> <code>top_k_rows()</code> ranks NaN above every number and keeps the lower index first on
+  ties, so every backend picks the same entries in the same order.</li>
 </ul>
 <p>This section is about writing a new backend. To build the existing CUDA or HIP backends, see
 <a href="../getting-started/#gpu-backends">Getting Started</a>.</p>

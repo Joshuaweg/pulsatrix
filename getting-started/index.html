@@ -1896,6 +1896,8 @@ network's predictions. The core of it looks like this (full source:
 <li><a href="https://github.com/Joshuaweg/pulsatrix/tree/master/examples">Examples</a>: the full list of demos.</li>
 <li><a href="../recipes/">Recipes</a>: short programs that each show one feature, with a walkthrough.</li>
 <li><a href="../interpretability/lrp/">LRP</a>: explain your model's predictions.</li>
+<li><a href="../benchmarks/">Benchmarks</a>: <code>./build/pulsatrix_bench run</code> measures training and explanation
+  speed on every backend in your build.</li>
 </ul>
 <h2 id="build-options">Build options<a class="headerlink" href="#build-options" title="Permanent link">&para;</a></h2>
 <p>Pass <code>-D&lt;OPTION&gt;=ON</code> or <code>OFF</code> when you configure.</p>
@@ -1936,7 +1938,17 @@ network's predictions. The core of it looks like this (full source:
 <tr>
 <td><code>PULSATRIX_ENABLE_VIZ</code></td>
 <td><code>OFF</code></td>
-<td>Builds the Dear ImGui + ImPlot visualization module and its GUI demos. See <a href="../visualization/">Visualization</a>.</td>
+<td>Builds the Dear ImGui + ImPlot visualization module and its GUI demos. JSON documents and SVG figures are always built. See <a href="../visualization/">Visualization</a>.</td>
+</tr>
+<tr>
+<td><code>PULSATRIX_INSTALL</code></td>
+<td><code>ON</code> at the top level, <code>OFF</code> as a subproject</td>
+<td>Generates the <code>cmake --install</code> rules. See <a href="#using-pulsatrix-in-your-own-project">Using pulsatrix in your own project</a>.</td>
+</tr>
+<tr>
+<td><code>PULSATRIX_BUILD_FUZZERS</code></td>
+<td><code>OFF</code></td>
+<td>Builds the fuzz targets in <code>tools/fuzz/</code> (safetensors and JSON documents).</td>
 </tr>
 </tbody>
 </table>
@@ -1956,21 +1968,25 @@ command in it with your GPU passed through, and builds the image on first use:</
 scripts/rocm-build.sh<span class="w"> </span><span class="s1">'cmake --build build-hip -j"$(nproc)"'</span>
 scripts/rocm-build.sh<span class="w"> </span><span class="s1">'./build-hip/tests/pulsatrix_tests'</span>
 </code></pre></div>
-<p>The container pins ROCm 7.2.4 because ROCm 7.1.x crashes on gfx1151, and Ubuntu's packages are
-7.1.x. The header of <code>docker/Dockerfile.rocm</code> has the details. The HIP tests run on real
-hardware, not a mock.</p>
-<p><strong>ROCm 10.0.0</strong> is the first release that lists gfx1151 officially. Run the same commands with
-<code>PULSATRIX_ROCM_VERSION=10.0.0</code> to use it. Every test passes on it, and it is as fast as 7.2.4
-(see <a href="../gpu-profiling/#rocm-1000-evaluation">GPU Profiling</a>). Keep its build directories
-separate from 7.2.4's, because the two compilers differ.</p>
+<p>The container pins <strong>ROCm 10.0.0</strong>, the first release that lists gfx1151 officially. The HIP
+tests run on real hardware, not a mock. ROCm 7.2.4, the previous pin, is still available:
+prefix a command with <code>PULSATRIX_ROCM_VERSION=7.2.4</code>. Both pass every test at the same speed
+(see <a href="../gpu-profiling/#rocm-1000-evaluation">GPU Profiling</a>). Don't share a build directory
+between the two, because their compilers differ. Don't install ROCm from Ubuntu's archive
+either: it ships 7.1.x, which crashes on gfx1151. The header of <code>docker/Dockerfile.rocm</code> has
+the details.</p>
 <p><strong>Host kernel.</strong> Known gfx1151 crashes also depend on the host kernel. Use Linux 6.18.4 or newer,
 or Ubuntu's OEM kernel at ABI 1018 or newer. <code>scripts/check_host_kernel.sh</code> checks the kernel,
 the <code>amdgpu</code> driver and <code>/dev/kfd</code>. <code>scripts/rocm-build.sh</code> runs it on every call and warns
 when something is wrong. To keep a good kernel from being upgraded away, hold its package, for
 example <code>sudo apt-mark hold linux-image-$(uname -r)</code>.</p>
+<p><strong>Runtime settings.</strong> The HIP backend caches device memory; cap what it holds with
+<code>PULSATRIX_HIP_MEMORY_BUDGET_MB</code>. Its ops don't wait for the GPU, so a kernel fault surfaces at
+the next read; set <code>PULSATRIX_HIP_SYNC_DEBUG=1</code> to wait after every op while you track
+one down. See <a href="../gpu-profiling/">GPU Profiling</a>.</p>
 <h2 id="python-bindings">Python bindings<a class="headerlink" href="#python-bindings" title="Permanent link">&para;</a></h2>
-<p>The <code>pulsatrix_py</code> module exposes <code>Tensor</code>, the core layers, LRP and the other explainers, and
-<code>SystemMonitor</code>. Point <code>PYTHON_EXECUTABLE</code> at a Python install that has development headers:</p>
+<p>The <code>pulsatrix_py</code> module exposes <code>Tensor</code>, the core layers, LRP and the other explainers,
+<code>SystemMonitor</code>, and <code>set_seed</code> and deterministic mode. Point <code>PYTHON_EXECUTABLE</code> at a Python install that has development headers:</p>
 <div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DPULSATRIX_ENABLE_PYTHON<span class="o">=</span>ON<span class="w"> </span><span class="se">\</span>
 <span class="w">      </span>-DPYTHON_EXECUTABLE<span class="o">=</span><span class="s2">"</span><span class="k">$(</span>which<span class="w"> </span>python3<span class="k">)</span><span class="s2">"</span>
 cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>pulsatrix_py<span class="w"> </span>-j
@@ -2007,11 +2023,11 @@ or tests needs Python. Run the MNIST programs from the repository root so they f
 cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--parallel
 cmake<span class="w"> </span>--install<span class="w"> </span>build<span class="w"> </span>--prefix<span class="w"> </span>/path/to/prefix
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">pulsatrix</span><span class="w"> </span><span class="s">1.0</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">pulsatrix</span><span class="w"> </span><span class="s">1.1</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">pulsatrix::core</span><span class="p">)</span>
 </code></pre></div>
 <p>Configure your project with <code>-DCMAKE_PREFIX_PATH=/path/to/prefix</code>. The package installs the core
-library and its headers. A build with the CUDA or HIP backend also installs that backend's
+library, its headers and the <code>pulsatrix_svg</code> and <code>pulsatrix_bench</code> tools. A build with the CUDA or HIP backend also installs that backend's
 headers, and <code>find_package</code> then looks for the same CUDA or ROCm libraries (ROCm through
 <code>ROCM_PATH</code>, as in the build). <code>pulsatrix_HAS_CUDA</code> and <code>pulsatrix_HAS_HIP</code> say which backends the
 installed build has. The visualization module and the Python bindings aren't installed.</p>

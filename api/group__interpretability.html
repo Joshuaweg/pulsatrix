@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('group__interpretability.html',''); ini
 </div><!--header-->
 <div class="contents">
 
-<p>Post-hoc explanation methods applied to an already-trained model: whole-model LRP over the rules built into each layer in <a class="el" href="group__dl__modules.html">Deep Learning Modules and Layers</a>, plus model-agnostic and gradient-based explainers.  
+<p>Post-hoc explanation methods applied to an already-trained model: whole-model LRP over the rules built into each layer in <a class="el" href="group__dl__modules.html">Deep Learning Modules and Layers</a>, plus model-agnostic and gradient-based explainers, and metrics and baselines for judging an explanation's quality.  
 <a href="#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Interpretability:</div>
@@ -107,7 +107,7 @@ Collaboration diagram for Interpretability:</div>
 <div class="center"><img src="group__interpretability.png" border="0" usemap="#agroup____interpretability" alt=""/></div>
 <map name="agroup____interpretability" id="agroup____interpretability">
 <area shape="rect" title="Post&#45;hoc explanation methods applied to an already&#45;trained model: whole&#45;model LRP over the rules buil..." alt="" coords="5,55,124,80"/>
-<area shape="rect" href="group__interpretability__agnostic.html" title="Explainers that only need a model&#39;s input/output behavior (perturb&#45;and&#45;observe), with no access to gr..." alt="" coords="172,5,367,31"/>
+<area shape="rect" href="group__interpretability__agnostic.html" title="Tools that don&#39;t depend on a particular explainer: perturbation explainers that only need a model&#39;s i..." alt="" coords="172,5,367,31"/>
 <area shape="rect" href="group__interpretability__dl.html" title="Explainers that use a model&#39;s gradients, activations, or internal structure directly." alt="" coords="172,55,367,80"/>
 <area shape="rect" href="group__interpretability__lrp.html" title="Whole&#45;model LRP (LRP, LRPTarget, LRPSeed), rule selection (LRPRule, LRPRuleConfig),..." alt="" coords="187,105,352,145"/>
 </map>
@@ -116,17 +116,17 @@ Collaboration diagram for Interpretability:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
 Modules</h2></td></tr>
 <tr class="memitem:group__interpretability__agnostic" id="r_group__interpretability__agnostic"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__interpretability__agnostic.html">Model-Agnostic Explainers</a></td></tr>
-<tr class="memdesc:group__interpretability__agnostic"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explainers that only need a model's input/output behavior (perturb-and-observe), with no access to gradients or internal activations. <br /></td></tr>
+<tr class="memdesc:group__interpretability__agnostic"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tools that don't depend on a particular explainer: perturbation explainers that only need a model's input/output behavior, explanation-quality metrics (faithfulness, randomization, complexity), the null-model baseline, and dense matrix decompositions for analysing activations and weights. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__interpretability__dl" id="r_group__interpretability__dl"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__interpretability__dl.html">Gradient-Based Explainers</a></td></tr>
 <tr class="memdesc:group__interpretability__dl"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explainers that use a model's gradients, activations, or internal structure directly. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__interpretability__lrp" id="r_group__interpretability__lrp"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__interpretability__lrp.html">Layer-wise Relevance Propagation</a></td></tr>
-<tr class="memdesc:group__interpretability__lrp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whole-model LRP (LRP, LRPTarget, LRPSeed), rule selection (LRPRule, LRPRuleConfig), Zennit-style composites (lrp_composite) and conservation checks. <br /></td></tr>
+<tr class="memdesc:group__interpretability__lrp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whole-model LRP (LRP, LRPTarget, LRPSeed), rule selection (LRPRule, LRPRuleConfig), Zennit-style composites (lrp_composite), conservation checks, and BatchNormFold (folds an eval-mode BatchNorm into the preceding layer before LRP). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Post-hoc explanation methods applied to an already-trained model: whole-model LRP over the rules built into each layer in <a class="el" href="group__dl__modules.html">Deep Learning Modules and Layers</a>, plus model-agnostic and gradient-based explainers. </p>
+<p>Post-hoc explanation methods applied to an already-trained model: whole-model LRP over the rules built into each layer in <a class="el" href="group__dl__modules.html">Deep Learning Modules and Layers</a>, plus model-agnostic and gradient-based explainers, and metrics and baselines for judging an explanation's quality. </p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

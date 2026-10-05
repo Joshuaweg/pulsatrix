@@ -1614,8 +1614,11 @@ your first example, then try a <strong><a href="recipes/">recipe</a></strong>.</
 <h2 id="whats-in-the-library">What's in the library<a class="headerlink" href="#whats-in-the-library" title="Permanent link">&para;</a></h2>
 <p><strong><a href="deep-learning/">Deep Learning Modules and Layers</a></strong>: tensors, autograd and
 optimizers; linear, convolution, normalization and pooling layers; RNN/LSTM/GRU, attention,
-<code>TransformerBlock</code>, Mamba, RetNet and RWKV; and VAE, GAN and diffusion building blocks. Runs on
-CPU, CUDA or HIP/ROCm.</p>
+<code>TransformerBlock</code>, Mamba, RetNet and RWKV; and VAE, GAN and diffusion building blocks. The
+training stack has AdamW with parameter groups, learning-rate schedules, gradient clipping,
+token-accurate gradient accumulation and parameter freezing. Models save and load as
+safetensors or as checkpoints with optimizer state, and <code>set_seed</code> makes runs reproducible.
+Runs on CPU, CUDA or HIP/ROCm.</p>
 <p><strong><a href="data-pipeline/">Data Loading, Transformation &amp; Validation</a></strong>: <code>Dataset</code> and
 <code>DataLoader</code> with readers for CSV, images, text, audio and video frames, plus dataset
 statistics and outlier checks.</p>
@@ -1628,6 +1631,9 @@ statistics and outlier checks.</p>
   dependence plots.</li>
 <li><a href="interpretability/deep-learning-approaches/">Gradient-based explainers</a>: Saliency,
   Integrated Gradients and Grad-CAM.</li>
+<li><a href="interpretability/">Checking an explanation</a>: deletion and insertion curves (with
+  ROAD), the model-parameter randomization test, sparseness and complexity, and a random-model
+  baseline that shows whether an explanation depends on what the model learned.</li>
 </ul>
 <p><strong><a href="reinforcement-learning/">Reinforcement Learning</a></strong>: CartPole environments, replay and
 rollout buffers, and DQN, REINFORCE, A2C, PPO and SAC. Each algorithm's tests train it to a
@@ -1643,16 +1649,23 @@ NSGA-II, NEAT, Evolution Strategies, CMA-ES, Population Based Training and E-GAN
 <p><strong><a href="hyperparameter-optimization/">Hyperparameter Optimization</a></strong>: grid and random
 search, Bayesian optimization (Gaussian process and TPE), and early stopping with Successive
 Halving, Hyperband and ASHA.</p>
-<p><strong><a href="visualization/">Visualization</a></strong> (optional): native Dear ImGui + ImPlot windows for
-attribution charts, saliency heatmaps, circuit graphs and a live training dashboard.</p>
+<p><strong><a href="visualization/">Visualization</a></strong>: versioned JSON documents for explanations,
+heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts and the
+<code>pulsatrix_svg</code> tool; and, optionally, native Dear ImGui + ImPlot windows with a live training
+dashboard.</p>
 <p><strong><a href="system-monitoring/">System Monitoring</a></strong>: log CPU/GPU utilization, memory and
 temperatures while you train.</p>
-<p><strong>Python bindings</strong>: <code>Tensor</code>, the core layers, LRP and the other explainers from Python. See
-<a href="getting-started/#python-bindings">Getting Started</a>.</p>
-<p>Everything is implemented in C++ with no Python dependency at runtime, and covered by 2,000+
-tests that run in CI on Windows and Linux.</p>
+<p><strong><a href="gpu-profiling/">GPU Profiling</a></strong> and <strong><a href="benchmarks/">Benchmarks</a></strong>: per-op GPU kernel
+times with <code>scripts/profile_hip.sh</code>, and <code>pulsatrix_bench</code> for step time, explanation time and
+LRP conservation, with an A/B comparison between two builds.</p>
+<p><strong>Python bindings</strong>: <code>Tensor</code>, the core layers, LRP and the other explainers, and seeding from
+Python. See <a href="getting-started/#python-bindings">Getting Started</a>.</p>
+<p>Everything is implemented in C++ with no Python dependency at runtime, and covered by about
+2,270 CPU tests (2,400 with the HIP backend) that run in CI on Windows and Linux.</p>
 <h2 id="more-resources">More resources<a class="headerlink" href="#more-resources" title="Permanent link">&para;</a></h2>
 <ul>
+<li><strong><a href="getting-started/#using-pulsatrix-in-your-own-project">Using pulsatrix in your project</a></strong>:
+  <code>cmake --install</code> and <code>find_package(pulsatrix)</code>.</li>
 <li><strong><a href="customization/">Customization</a></strong>: add your own layers, metrics sinks or device
   backends.</li>
 <li><strong><a href="api/index.html">API Reference</a></strong>: the Doxygen reference for every class and function.</li>

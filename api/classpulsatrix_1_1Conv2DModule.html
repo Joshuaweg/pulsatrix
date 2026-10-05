@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="pulsatrix_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">pulsatrix<span id="projectnumber">&#160;1.1.0</span>
    </div>
   </td>
  </tr>
@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1Conv2DModule.html','
 </div><!--header-->
 <div class="contents">
 
-<p>2D convolution, batched (input/output are rank-4: N x channels x H x W) &ndash; migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support. Stride 1, no padding, no dilation &ndash; deferred until a real use case needs them, same pattern as <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s original unbatched scope cut.  
+<p>2D convolution, batched (input/output are rank-4: N x channels x H x W) &ndash; migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support. Stride and zero padding are configurable (the same on both axes); there is no dilation.  
  <a href="classpulsatrix_1_1Conv2DModule.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="conv2d__module_8hpp_source.html">conv2d_module.hpp</a>&gt;</code></p>
@@ -207,7 +207,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a840a9b6fcefbe43384f95a67218c4938"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>2D convolution, batched (input/output are rank-4: N x channels x H x W) &ndash; migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support. Stride 1, no padding, no dilation &ndash; deferred until a real use case needs them, same pattern as <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>'s original unbatched scope cut. </p>
+<div class="textblock"><p>2D convolution, batched (input/output are rank-4: N x channels x H x W) &ndash; migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support. Stride and zero padding are configurable (the same on both axes); there is no dilation. </p>
 <dl class="section note"><dt>Note</dt><dd>Implemented via im2col + gemm per campaign Decision 3 (see campaign_exai_dl_library_phase1_core_layers_training.md) rather than a dedicated DeviceBackend::conv2d primitive &ndash; Phase 1.5's cuDNN integration will need its own conv path anyway, so a CPU-side primitive now would likely be thrown away, not reused. </dd>
 <dd>
 Batching implemented as a per-example loop over the existing unbatched im2col/gemm/ col2im pipeline (each output column of the im2col matrix is independent of every other, so this is exactly equivalent to a single larger gemm with the Q axis extended to N*Q &ndash; the per-example loop is the simpler, correctness-first choice; see campaign recon's noted alternative), not a new backend primitive. </dd></dl>
