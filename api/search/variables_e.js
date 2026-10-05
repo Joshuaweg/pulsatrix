@@ -13,5 +13,6 @@ var searchData=
   ['prefetch_5fbatches_10',['prefetch_batches',['../structpulsatrix_1_1DataLoaderOptions.html#a7ceefe8b1ecafbaef471af7126c0b809',1,'pulsatrix::DataLoaderOptions']]],
   ['process_5fcpu_5fpercent_11',['process_cpu_percent',['../structpulsatrix_1_1SystemSample.html#a7f41e49f5d0d6d2955897bc18f22fd21',1,'pulsatrix::SystemSample']]],
   ['process_5fcpu_5fseconds_12',['process_cpu_seconds',['../structpulsatrix_1_1detail_1_1RawReading.html#aa8b3b344e50f919bfc2688eb561b1847',1,'pulsatrix::detail::RawReading']]],
-  ['process_5frss_5fbytes_13',['process_rss_bytes',['../structpulsatrix_1_1SystemSample.html#a869527fad58b4b0075e9c50781ad991e',1,'pulsatrix::SystemSample::process_rss_bytes'],['../structpulsatrix_1_1detail_1_1RawReading.html#aa84d7d398e726e04b248073640f5cc77',1,'pulsatrix::detail::RawReading::process_rss_bytes']]]
+  ['process_5frss_5fbytes_13',['process_rss_bytes',['../structpulsatrix_1_1SystemSample.html#a869527fad58b4b0075e9c50781ad991e',1,'pulsatrix::SystemSample::process_rss_bytes'],['../structpulsatrix_1_1detail_1_1RawReading.html#aa84d7d398e726e04b248073640f5cc77',1,'pulsatrix::detail::RawReading::process_rss_bytes']]],
+  ['proximity_5fweight_14',['proximity_weight',['../structpulsatrix_1_1DiverseCounterfactualOptions.html#abb4aa35c859c2f5c9804f08404fe3aa3',1,'pulsatrix::DiverseCounterfactualOptions']]]
 ];

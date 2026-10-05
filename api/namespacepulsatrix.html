@@ -339,6 +339,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DisjunctionModule.html">DisjunctionModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = a S b</code> for a selected t-conorm S, over two independent fuzzy-truth-valued operand tensors (values intended in [0,1]; out-of-range values are not rejected &ndash; see <a class="el" href="conjunction__module_8hpp.html" title="Differentiable fuzzy conjunction (t-norm) – Phase 1 Mission 0 of campaign_exai_dl_library_neuro_symbo...">conjunction_module.hpp</a>'s identical note).  <a href="classpulsatrix_1_1DisjunctionModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualOptions.html">DiverseCounterfactualOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings for FindDiverseCounterfactuals.  <a href="structpulsatrix_1_1DiverseCounterfactualOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualResult.html">DiverseCounterfactualResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of counterfactuals and DiCE's set-level metrics (Mothilal et al. 2020).  <a href="structpulsatrix_1_1DiverseCounterfactualResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DominantEigenResult.html">DominantEigenResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#abd341561ba3ab500db9ee6888d176cfe" title="The dominant eigenpair of a symmetric matrix by power iteration – cheaper than SymmetricEigen() when ...">PowerIteration()</a>'s result.  <a href="structpulsatrix_1_1DominantEigenResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1219,6 +1225,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a8127a18f393e1717ab86029507fb4c20" id="r_a8127a18f393e1717ab86029507fb4c20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8127a18f393e1717ab86029507fb4c20">GrowingSpheresCounterfactual</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;target, const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;constraints={}, const <a class="el" href="structpulsatrix_1_1GrowingSpheresOptions.html">GrowingSpheresOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:a8127a18f393e1717ab86029507fb4c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">A counterfactual for any prediction function, with no gradients (growing spheres, Laugel et al. 2018): draws points uniformly in a ball around the input, halving its radius while it still contains a point that reaches the target, then in ever larger shells until one does; takes the nearest such point and puts features back to their original values, smallest change first, while it still reaches the target.  <br /></td></tr>
 <tr class="separator:a8127a18f393e1717ab86029507fb4c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae70ed95b4dc32b9e3c948e45ab5d9608" id="r_ae70ed95b4dc32b9e3c948e45ab5d9608"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualResult.html">DiverseCounterfactualResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae70ed95b4dc32b9e3c948e45ab5d9608">FindDiverseCounterfactuals</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;target, const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;constraints={}, const <a class="el" href="structpulsatrix_1_1DiverseCounterfactualOptions.html">DiverseCounterfactualOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ae70ed95b4dc32b9e3c948e45ab5d9608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Several counterfactuals found together so that they differ from each other (DiCE, Mothilal, Sharma and Tan 2020): one person may be able to raise their income, another to pay down debt, and a single counterfactual shows only one of those routes.  <br /></td></tr>
+<tr class="separator:ae70ed95b4dc32b9e3c948e45ab5d9608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1278028152aeba3ba54ea1d9cd30ae00" id="r_a1278028152aeba3ba54ea1d9cd30ae00"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1278028152aeba3ba54ea1d9cd30ae00">Plausibility</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;counterfactual, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, const std::vector&lt; float &gt; &amp;scale={}, int k=5)</td></tr>
+<tr class="memdesc:a1278028152aeba3ba54ea1d9cd30ae00"><td class="mdescLeft">&#160;</td><td class="mdescRight">How typical a counterfactual is of real data: its mean scaled L1 distance to its <code>k</code> nearest instances in <code>background</code> (lower is more plausible), the kNN measure of the CARLA benchmark. A counterfactual far from every real instance may be valid but describe nobody.  <br /></td></tr>
+<tr class="separator:a1278028152aeba3ba54ea1d9cd30ae00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39f0057413fe272184d9383bf5f4fd8a" id="r_a39f0057413fe272184d9383bf5f4fd8a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a39f0057413fe272184d9383bf5f4fd8a"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; std::vector&lt; T &gt;, std::vector&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a39f0057413fe272184d9383bf5f4fd8a">OnePointCrossoverAtPoint</a> (const std::vector&lt; T &gt; &amp;parent1, const std::vector&lt; T &gt; &amp;parent2, size_t point)</td></tr>
 <tr class="memdesc:a39f0057413fe272184d9383bf5f4fd8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits both parents at point and swaps tails.  <br /></td></tr>
@@ -1832,6 +1844,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a147a17cfeaf670683e7d2180c544fb91" id="r_a147a17cfeaf670683e7d2180c544fb91"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a147a17cfeaf670683e7d2180c544fb91">RenderSobolSvg</a> (const <a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> &amp;doc, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:a147a17cfeaf670683e7d2180c544fb91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sobol indices: one row per feature, the <code>top_k</code> with the largest total order first, with a bar for the first-order index, a lighter bar for the total-order index behind it, and whiskers for both confidence intervals. The gap between the two bars is the share of variance the feature explains only through interactions.  <br /></td></tr>
 <tr class="separator:a147a17cfeaf670683e7d2180c544fb91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4029528cfbe002d039c209fee1d1b4a" id="r_af4029528cfbe002d039c209fee1d1b4a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af4029528cfbe002d039c209fee1d1b4a">RenderCounterfactualSetSvg</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &gt; &amp;docs, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:af4029528cfbe002d039c209fee1d1b4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Several counterfactuals of one input side by side (CFS-7): a column for the input and one per counterfactual (headed by whether it reaches the target), and a row for every feature that at least one of them changes. Changed values are on a background colored by the change's direction and size in scale units; unchanged ones are blank.  <br /></td></tr>
+<tr class="separator:af4029528cfbe002d039c209fee1d1b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5337,6 +5352,62 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="ae70ed95b4dc32b9e3c948e45ab5d9608" name="ae70ed95b4dc32b9e3c948e45ab5d9608"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae70ed95b4dc32b9e3c948e45ab5d9608">&#9670;&#160;</a></span>FindDiverseCounterfactuals()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualResult.html">DiverseCounterfactualResult</a> pulsatrix::FindDiverseCounterfactuals </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;&#160;</td>
+          <td class="paramname"><em>constraints</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DiverseCounterfactualOptions.html">DiverseCounterfactualOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Several counterfactuals found together so that they differ from each other (DiCE, Mothilal, Sharma and Tan 2020): one person may be able to raise their income, another to pay down debt, and a single counterfactual shows only one of those routes. </p>
+<p>Gradient descent on, for each counterfactual, the hinge loss of FindCounterfactual plus proximity_weight times its scaled L1 distance to the input, minus diversity_weight times the log-determinant of the set's kernel K_ij = 1 / (1 + scaled L1 distance between i and j). Then each counterfactual's unneeded changes are undone, smallest first, while it still reaches the target (DiCE's post-hoc sparsity step), and integer and one-hot features are fixed up.</p>
+<dl class="section note"><dt>Note</dt><dd>DiCE uses det(K); log det(K) has the same maximizer and gradients that don't vanish as the set grows. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for the inputs FindCounterfactual rejects, or invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ab05bf402b9c13aea07d50c1b5951112a" name="ab05bf402b9c13aea07d50c1b5951112a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab05bf402b9c13aea07d50c1b5951112a">&#9670;&#160;</a></span>fit_weighted_linear_regression()</h2>
 
@@ -7168,6 +7239,60 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a1278028152aeba3ba54ea1d9cd30ae00" name="a1278028152aeba3ba54ea1d9cd30ae00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1278028152aeba3ba54ea1d9cd30ae00">&#9670;&#160;</a></span>Plausibility()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::Plausibility </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>counterfactual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>background</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>scale</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>k</em> = <code>5</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How typical a counterfactual is of real data: its mean scaled L1 distance to its <code>k</code> nearest instances in <code>background</code> (lower is more plausible), the kNN measure of the CARLA benchmark. A counterfactual far from every real instance may be valid but describe nobody. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scale</td><td>Per-feature scale, as in <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html" title="Which changes are allowed, and how changes are measured.">CounterfactualConstraints</a>; empty means 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if background is empty or its shapes differ from the counterfactual's, k &lt; 1, or scale has the wrong length or a non-positive entry. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a04988305f3fb93fa30aa30cfcbb09a6e" name="a04988305f3fb93fa30aa30cfcbb09a6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a04988305f3fb93fa30aa30cfcbb09a6e">&#9670;&#160;</a></span>PolyakUpdate()</h2>
 
@@ -7821,6 +7946,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if <code>docs</code> or <code>feature_indices</code> is empty, a feature index is out of range for any document, a value is non-finite, or for invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af4029528cfbe002d039c209fee1d1b4a" name="af4029528cfbe002d039c209fee1d1b4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4029528cfbe002d039c209fee1d1b4a">&#9670;&#160;</a></span>RenderCounterfactualSetSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderCounterfactualSetSvg </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>docs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Several counterfactuals of one input side by side (CFS-7): a column for the input and one per counterfactual (headed by whether it reaches the target), and a row for every feature that at least one of them changes. Changed values are on a background colored by the change's direction and size in scale units; unchanged ones are blank. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>docs</code> is empty, the documents describe different inputs (feature names or original values differ), a value is non-finite, or the options are unusable. </td></tr>
   </table>
   </dd>
 </dl>

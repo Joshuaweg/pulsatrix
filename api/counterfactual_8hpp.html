@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('counterfactual_8hpp.html',''); initRes
 </div><!--header-->
 <div class="contents">
 
-<p>Counterfactual explanations: gradient-based (Wachter et al. 2017, CFS-5) and model-agnostic (growing spheres, Laugel et al. 2018, CFS-6).  
+<p>Counterfactual explanations: gradient-based (Wachter et al. 2017, CFS-5) and model-agnostic (growing spheres, Laugel et al. 2018, CFS-6), and diverse sets with a plausibility score (DiCE, Mothilal et al. 2020, CFS-7).  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
@@ -306,6 +306,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GrowingSpheresOptions.html">pulsatrix::GrowingSpheresOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings for GrowingSpheresCounterfactual. Radii are in units of the constraints' scale.  <a href="structpulsatrix_1_1GrowingSpheresOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualOptions.html">pulsatrix::DiverseCounterfactualOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings for FindDiverseCounterfactuals.  <a href="structpulsatrix_1_1DiverseCounterfactualOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualResult.html">pulsatrix::DiverseCounterfactualResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of counterfactuals and DiCE's set-level metrics (Mothilal et al. 2020).  <a href="structpulsatrix_1_1DiverseCounterfactualResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -323,9 +329,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a8127a18f393e1717ab86029507fb4c20" id="r_a8127a18f393e1717ab86029507fb4c20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8127a18f393e1717ab86029507fb4c20">pulsatrix::GrowingSpheresCounterfactual</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;target, const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;constraints={}, const <a class="el" href="structpulsatrix_1_1GrowingSpheresOptions.html">GrowingSpheresOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:a8127a18f393e1717ab86029507fb4c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">A counterfactual for any prediction function, with no gradients (growing spheres, Laugel et al. 2018): draws points uniformly in a ball around the input, halving its radius while it still contains a point that reaches the target, then in ever larger shells until one does; takes the nearest such point and puts features back to their original values, smallest change first, while it still reaches the target.  <br /></td></tr>
 <tr class="separator:a8127a18f393e1717ab86029507fb4c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae70ed95b4dc32b9e3c948e45ab5d9608" id="r_ae70ed95b4dc32b9e3c948e45ab5d9608"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualResult.html">DiverseCounterfactualResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae70ed95b4dc32b9e3c948e45ab5d9608">pulsatrix::FindDiverseCounterfactuals</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;target, const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;constraints={}, const <a class="el" href="structpulsatrix_1_1DiverseCounterfactualOptions.html">DiverseCounterfactualOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ae70ed95b4dc32b9e3c948e45ab5d9608"><td class="mdescLeft">&#160;</td><td class="mdescRight">Several counterfactuals found together so that they differ from each other (DiCE, Mothilal, Sharma and Tan 2020): one person may be able to raise their income, another to pay down debt, and a single counterfactual shows only one of those routes.  <br /></td></tr>
+<tr class="separator:ae70ed95b4dc32b9e3c948e45ab5d9608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1278028152aeba3ba54ea1d9cd30ae00" id="r_a1278028152aeba3ba54ea1d9cd30ae00"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1278028152aeba3ba54ea1d9cd30ae00">pulsatrix::Plausibility</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;counterfactual, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, const std::vector&lt; float &gt; &amp;scale={}, int k=5)</td></tr>
+<tr class="memdesc:a1278028152aeba3ba54ea1d9cd30ae00"><td class="mdescLeft">&#160;</td><td class="mdescRight">How typical a counterfactual is of real data: its mean scaled L1 distance to its <code>k</code> nearest instances in <code>background</code> (lower is more plausible), the kNN measure of the CARLA benchmark. A counterfactual far from every real instance may be valid but describe nobody.  <br /></td></tr>
+<tr class="separator:a1278028152aeba3ba54ea1d9cd30ae00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Counterfactual explanations: gradient-based (Wachter et al. 2017, CFS-5) and model-agnostic (growing spheres, Laugel et al. 2018, CFS-6). </p>
+<div class="textblock"><p>Counterfactual explanations: gradient-based (Wachter et al. 2017, CFS-5) and model-agnostic (growing spheres, Laugel et al. 2018, CFS-6), and diverse sets with a plausibility score (DiCE, Mothilal et al. 2020, CFS-7). </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

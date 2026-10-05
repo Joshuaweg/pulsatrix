@@ -2857,8 +2857,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast</li>
 <li>LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizers, generation, KV cache, the
   golden-logit harness, AttnLRP parity with LXT</li>
-<li>CFS-1 to CFS-7 (added 2026-10-05, built first): ICE, ALE, local and global sensitivity, and
-  counterfactuals, each with its view</li>
+<li>CFS-1 to CFS-7 (<strong>done</strong>, added and built 2026-10-05): ICE, ALE, local and global
+  sensitivity, and counterfactuals, each with its view</li>
 <li>TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores</li>
 <li>HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)</li>
@@ -3764,7 +3764,7 @@ doesn't support.</p>
 <tr>
 <td>How to be that</td>
 <td>Counterfactual search</td>
-<td>Gradient-based and model-agnostic; <a href="#cfs-counterfactuals-and-sensitivity">CFS-7</a> for diverse sets</td>
+<td>Have: gradient-based, model-agnostic and diverse sets (<a href="#cfs-counterfactuals-and-sensitivity">CFS</a>)</td>
 </tr>
 <tr>
 <td>How to still be this</td>
@@ -3983,7 +3983,7 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 </tr>
 <tr>
 <td>CFS-7</td>
-<td>Diverse counterfactuals (DiCE: a determinantal diversity term) and a plausibility score (distance to the k nearest background instances). Checked against DiCE's own metrics</td>
+<td>Diverse counterfactuals (DiCE: a determinantal diversity term) and a plausibility score (distance to the k nearest background instances).</td>
 <td>One counterfactual hides the other ways to change the outcome; implausible ones mislead</td>
 <td>CFS-5</td>
 <td>P1</td>
@@ -4028,6 +4028,13 @@ network says nothing about what the model learned.</p>
   that already gives sparse answers, and the module would add a second search with its own
   settings. Both searches now share one implementation of the constraints, the final rounding and
   snapping, and the metrics.</li>
+<li><strong>CFS-7</strong> maximizes the log-determinant of DiCE's kernel instead of the determinant (same
+  maximizer, gradients that don't vanish as the set grows) and adds DiCE's post-hoc sparsity step.
+  It reports DiCE's set metrics (validity, diversity, count diversity) but was not run against the
+  DiCE package itself: DiCE's random restarts and optimizer make digit-level comparison
+  meaningless. Its tests check the property instead, and fail when the diversity term is removed.
+  The set view is a grid of the counterfactuals, not a new document kind: it takes several
+  counterfactual documents, as the beeswarm takes several attributions.</li>
 </ul>
 <h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
 <table>

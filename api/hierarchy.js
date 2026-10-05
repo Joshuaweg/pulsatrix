@@ -80,6 +80,8 @@ var hierarchy =
       [ "pulsatrix::CUDABackend", "classpulsatrix_1_1CUDABackend.html", null ],
       [ "pulsatrix::HIPBackend", "classpulsatrix_1_1HIPBackend.html", null ]
     ] ],
+    [ "pulsatrix::DiverseCounterfactualOptions", "structpulsatrix_1_1DiverseCounterfactualOptions.html", null ],
+    [ "pulsatrix::DiverseCounterfactualResult", "structpulsatrix_1_1DiverseCounterfactualResult.html", null ],
     [ "pulsatrix::DominantEigenResult", "structpulsatrix_1_1DominantEigenResult.html", null ],
     [ "pulsatrix::DQNLoss", "classpulsatrix_1_1DQNLoss.html", null ],
     [ "pulsatrix::datalog::DualNumber< T >", "structpulsatrix_1_1datalog_1_1DualNumber.html", null ],

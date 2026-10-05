@@ -10,10 +10,12 @@ var searchData=
   ['detailedbalanceloss_7',['DetailedBalanceLoss',['../classpulsatrix_1_1DetailedBalanceLoss.html',1,'pulsatrix']]],
   ['devicebackend_8',['DeviceBackend',['../classpulsatrix_1_1DeviceBackend.html',1,'pulsatrix']]],
   ['disjunctionmodule_9',['DisjunctionModule',['../classpulsatrix_1_1DisjunctionModule.html',1,'pulsatrix']]],
-  ['dominanteigenresult_10',['DominantEigenResult',['../structpulsatrix_1_1DominantEigenResult.html',1,'pulsatrix']]],
-  ['dqnagent_11',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
-  ['dqnloss_12',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
-  ['dropoutmodule_13',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
-  ['dualnumber_14',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
-  ['dualsemiring_15',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
+  ['diversecounterfactualoptions_10',['DiverseCounterfactualOptions',['../structpulsatrix_1_1DiverseCounterfactualOptions.html',1,'pulsatrix']]],
+  ['diversecounterfactualresult_11',['DiverseCounterfactualResult',['../structpulsatrix_1_1DiverseCounterfactualResult.html',1,'pulsatrix']]],
+  ['dominanteigenresult_12',['DominantEigenResult',['../structpulsatrix_1_1DominantEigenResult.html',1,'pulsatrix']]],
+  ['dqnagent_13',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
+  ['dqnloss_14',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
+  ['dropoutmodule_15',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
+  ['dualnumber_16',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
+  ['dualsemiring_17',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
 ];
