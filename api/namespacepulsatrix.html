@@ -404,6 +404,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GFlowNetTrajectory.html">GFlowNetTrajectory</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One full sampled trajectory: every state the forward policy acted from, the action taken at each, and the trajectory-level quantities Trajectory Balance (and Detailed Balance/SubTB, in later missions) need.  <a href="structpulsatrix_1_1GFlowNetTrajectory.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The input space to explore: which features vary, over which ranges. Every other feature keeps its value from <code>base</code>.  <a href="structpulsatrix_1_1GlobalSensitivityProblem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GpuSample.html">GpuSample</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One GPU's readings within a <a class="el" href="structpulsatrix_1_1SystemSample.html" title="One point-in-time measurement of the host.">SystemSample</a>.  <a href="structpulsatrix_1_1GpuSample.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -412,6 +415,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GroupNormModule.html">GroupNormModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits num_channels into num_groups equal-size groups; each group's mean/std is computed over every (channel-in-group, H, W) element jointly, per batch row n, then y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_{n,g})/std_{n,g} + beta_c, gamma/beta per-channel (shape (num_channels,), not per-group, not per-batch-row). Batched &ndash; input/output are rank-4 (N, channels, H, W), migrated from the original unbatched (rank-3) scope by campaign_exai_dl_library_batch_dimension_support, matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s own (not-yet-migrated) rank-3 convention plus a leading batch dim. H/W are not fixed at construction (only num_groups/num_channels are), so this module accepts any spatial size at <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> time, exactly like <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a> does.  <a href="classpulsatrix_1_1GroupNormModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GrowingSpheresOptions.html">GrowingSpheresOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings for GrowingSpheresCounterfactual. Radii are in units of the constraints' scale.  <a href="structpulsatrix_1_1GrowingSpheresOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GRUModule.html">GRUModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard GRU recurrence (Cho et al. 2014), h_0 = 0 (zero-initialized, not learnable &ndash; the same deliberate scope cut RNNModule/LSTMModule made, and the same thing that makes this module's conservation exact; see the <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> note below): z_t = sigmoid(x_t @ W_xz + h_{t-1} @ W_hz + b_z) (update gate), r_t = sigmoid(x_t @ W_xr + h_{t-1} @ W_hr + b_r) (reset gate), hn_prev_t = h_{t-1} @ W_hn (internal projection, no bias), n_t = tanh(x_t @ W_xn + r_t * hn_prev_t + b_n) (candidate), h_t = (1 - z_t) * h_{t-1} + z_t * n_t. Note the reset gate multiplies the <em>projected</em> previous hidden state <code>hn_prev_t</code>, not <code>h_{t-1}</code> itself &ndash; that projection is a distinct cached intermediate, and it is what gives GRU's <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule a different shape from LSTM's. Input (N, L, input_size) -&gt; output (N, L, hidden_size), the full hidden-state sequence (matches <a class="el" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t-1} @ W_hh + b_h), h_0 = 0 (zero-initialized, not learnable – a deliberat...">RNNModule</a>'s/LSTMModule's convention). Single layer, no bidirectional/multi-layer/variable-length support.  <a href="classpulsatrix_1_1GRUModule.html#details">More...</a><br /></td></tr>
@@ -547,6 +553,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html">Module</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for every layer type (<a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>, <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>, activations, ...).  <a href="classpulsatrix_1_1Module.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.morris.v1</code>: Morris screening statistics per feature (CFS-4).  <a href="structpulsatrix_1_1MorrisDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MorrisOptions.html">MorrisOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Morris settings.  <a href="structpulsatrix_1_1MorrisOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MorrisResult.html">MorrisResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Morris screening results, one entry per varied feature (SALib's <code>morris.analyze</code>).  <a href="structpulsatrix_1_1MorrisResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MSELoss.html">MSELoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">MSE = mean((prediction - target)^2).  <a href="classpulsatrix_1_1MSELoss.html#details">More...</a><br /></td></tr>
@@ -755,6 +770,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ShuffleSampler.html">ShuffleSampler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visits indices [0, dataset_size) in a seeded pseudo-random permutation &ndash; reproducible across runs given the same seed (std::mt19937), re-shuffled fresh each <a class="el" href="classpulsatrix_1_1ShuffleSampler.html#a91bf87be5a5d3d7dc5c254f210e539f9" title="Begins a new epoch over a dataset of the given size.">reset()</a> call (a new epoch is a new permutation, not the same one repeated).  <a href="classpulsatrix_1_1ShuffleSampler.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sobol.v1</code>: first- and total-order Sobol indices per feature (CFS-4).  <a href="structpulsatrix_1_1SobolDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SobolOptions.html">SobolOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sobol settings.  <a href="structpulsatrix_1_1SobolOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sobol indices, one entry per varied feature (SALib's <code>sobol.analyze</code>, first and total order).  <a href="structpulsatrix_1_1SobolResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SoftmaxModule.html">SoftmaxModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Softmax over the tensor's last dimension, applied independently to every "row" (every fixed combination of all leading dimensions).  <a href="classpulsatrix_1_1SoftmaxModule.html#details">More...</a><br /></td></tr>
@@ -1192,6 +1216,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8a82a07b90dfe58bbd2ba7737817bf38" id="r_a8a82a07b90dfe58bbd2ba7737817bf38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8a82a07b90dfe58bbd2ba7737817bf38">FindCounterfactual</a> (<a class="el" href="classpulsatrix_1_1ExplainerContext.html">ExplainerContext</a> &amp;ctx, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;target, const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;constraints={}, const <a class="el" href="structpulsatrix_1_1CounterfactualOptions.html">CounterfactualOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:a8a82a07b90dfe58bbd2ba7737817bf38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a nearby input that reaches <code>target</code> (Wachter, Mittelstadt and Russell 2017): minimizes &lsquo;lambda * loss(f(x&rsquo;), target) + sum_j |x'_j - x_j| / scale_j` by proximal gradient descent, so features the prediction doesn't need stay exactly unchanged. If a round ends without reaching the target, lambda grows and the search continues from where it was.  <br /></td></tr>
 <tr class="separator:a8a82a07b90dfe58bbd2ba7737817bf38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8127a18f393e1717ab86029507fb4c20" id="r_a8127a18f393e1717ab86029507fb4c20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8127a18f393e1717ab86029507fb4c20">GrowingSpheresCounterfactual</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;target, const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;constraints={}, const <a class="el" href="structpulsatrix_1_1GrowingSpheresOptions.html">GrowingSpheresOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a8127a18f393e1717ab86029507fb4c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">A counterfactual for any prediction function, with no gradients (growing spheres, Laugel et al. 2018): draws points uniformly in a ball around the input, halving its radius while it still contains a point that reaches the target, then in ever larger shells until one does; takes the nearest such point and puts features back to their original values, smallest change first, while it still reaches the target.  <br /></td></tr>
+<tr class="separator:a8127a18f393e1717ab86029507fb4c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39f0057413fe272184d9383bf5f4fd8a" id="r_a39f0057413fe272184d9383bf5f4fd8a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a39f0057413fe272184d9383bf5f4fd8a"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; std::vector&lt; T &gt;, std::vector&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a39f0057413fe272184d9383bf5f4fd8a">OnePointCrossoverAtPoint</a> (const std::vector&lt; T &gt; &amp;parent1, const std::vector&lt; T &gt; &amp;parent2, size_t point)</td></tr>
 <tr class="memdesc:a39f0057413fe272184d9383bf5f4fd8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits both parents at point and swaps tails.  <br /></td></tr>
@@ -1352,6 +1379,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a2300465dae625e63a4c68b003cdcfc49" id="r_a2300465dae625e63a4c68b003cdcfc49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GFlowNetTrajectory.html">GFlowNetTrajectory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2300465dae625e63a4c68b003cdcfc49">sample_gflownet_trajectory</a> (<a class="el" href="classpulsatrix_1_1HyperGridEnv.html">HyperGridEnv</a> &amp;env, <a class="el" href="classpulsatrix_1_1GFlowNetForwardPolicy.html">GFlowNetForwardPolicy</a> &amp;forward_policy)</td></tr>
 <tr class="memdesc:a2300465dae625e63a4c68b003cdcfc49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples one full trajectory: resets env, then repeatedly samples a masked action from forward_policy and steps env until termination (an explicit <code>stop</code> or env's own max_steps cap).  <br /></td></tr>
 <tr class="separator:a2300465dae625e63a4c68b003cdcfc49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5888d78b55639ed08f0a47e82286570" id="r_ab5888d78b55639ed08f0a47e82286570"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; float &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab5888d78b55639ed08f0a47e82286570">MorrisSample</a> (const <a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a> &amp;problem, const <a class="el" href="structpulsatrix_1_1MorrisOptions.html">MorrisOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ab5888d78b55639ed08f0a47e82286570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Morris trajectories (Morris 1991): each starts at a random grid point and moves one feature at a time, in a random order, by the Morris step. Rows are feature values in the problem's ranges, (num_features + 1) per trajectory.  <br /></td></tr>
+<tr class="separator:ab5888d78b55639ed08f0a47e82286570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f76ee6bef103d750bdef0f6fce07a76" id="r_a2f76ee6bef103d750bdef0f6fce07a76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MorrisResult.html">MorrisResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2f76ee6bef103d750bdef0f6fce07a76">AnalyzeMorris</a> (const std::vector&lt; std::vector&lt; float &gt; &gt; &amp;samples, const std::vector&lt; float &gt; &amp;outputs, const <a class="el" href="structpulsatrix_1_1MorrisOptions.html">MorrisOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a2f76ee6bef103d750bdef0f6fce07a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Morris statistics from samples laid out as MorrisSample's (or SALib's) trajectories and one output per row: the same elementary effects and mu, mu*, sigma as SALib 1.6 <code>morris.analyze</code> (unscaled). The confidence interval is a bootstrap with this library's own generator, so it agrees with SALib's in distribution, not digit for digit.  <br /></td></tr>
+<tr class="separator:a2f76ee6bef103d750bdef0f6fce07a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11fce34145f32225b378bcce7746584a" id="r_a11fce34145f32225b378bcce7746584a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MorrisResult.html">MorrisResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a11fce34145f32225b378bcce7746584a">ComputeMorris</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a> &amp;problem, int64_t target_index, const <a class="el" href="structpulsatrix_1_1MorrisOptions.html">MorrisOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a11fce34145f32225b378bcce7746584a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples, runs the model and analyzes: MorrisSample, then AnalyzeMorris.  <br /></td></tr>
+<tr class="separator:a11fce34145f32225b378bcce7746584a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3418efb43c16bb465beb0354f9930382" id="r_a3418efb43c16bb465beb0354f9930382"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3418efb43c16bb465beb0354f9930382">AnalyzeSobol</a> (const std::vector&lt; float &gt; &amp;outputs, int64_t num_features, const <a class="el" href="structpulsatrix_1_1SobolOptions.html">SobolOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a3418efb43c16bb465beb0354f9930382"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sobol indices from outputs in SALib's layout without second order: N blocks of (num_features + 2) outputs, f(A), f(AB_1) ... f(AB_D), f(B). Outputs are standardized first, then the first order uses Saltelli et al. (2010)'s estimator and the total order Jansen's, exactly as SALib 1.6 does. The bootstrap uses this library's generator.  <br /></td></tr>
+<tr class="separator:a3418efb43c16bb465beb0354f9930382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace423364f684e1daac5a3f82978be269" id="r_ace423364f684e1daac5a3f82978be269"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ace423364f684e1daac5a3f82978be269">ComputeSobol</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a> &amp;problem, int64_t target_index, const <a class="el" href="structpulsatrix_1_1SobolOptions.html">SobolOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ace423364f684e1daac5a3f82978be269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples two independent uniform matrices A and B over the problem's ranges, builds the Saltelli design (AB_j is A with column j from B), runs the model on every row and calls AnalyzeSobol.  <br /></td></tr>
+<tr class="separator:ace423364f684e1daac5a3f82978be269"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb8e19a5d9ca776142a658c4e5adbb5" id="r_a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8eb8e19a5d9ca776142a658c4e5adbb5">UnitCubeToConfiguration</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const std::vector&lt; float &gt; &amp;t)</td></tr>
 <tr class="memdesc:a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a unit-hypercube point (one value per parameter, each in [0, 1]) to a Configuration, using space's own declared bounds.  <br /></td></tr>
 <tr class="separator:a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1718,6 +1760,20 @@ Functions</h2></td></tr>
 <tr class="separator:ae1bd894b2f804084cd61b94d4e4bd520"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2b2b534011e6bcc5dfdb77fbb4ae3b4" id="r_af2b2b534011e6bcc5dfdb77fbb4ae3b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af2b2b534011e6bcc5dfdb77fbb4ae3b4">ParseCounterfactualDocument</a> (std::string_view json)</td></tr>
 <tr class="separator:af2b2b534011e6bcc5dfdb77fbb4ae3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05f2bb1a57a0c68c849943f10054b938" id="r_a05f2bb1a57a0c68c849943f10054b938"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a05f2bb1a57a0c68c849943f10054b938">ToMorrisDocument</a> (const <a class="el" href="structpulsatrix_1_1MorrisResult.html">MorrisResult</a> &amp;result, const std::vector&lt; std::string &gt; &amp;names={}, std::string target=&quot;&quot;)</td></tr>
+<tr class="memdesc:a05f2bb1a57a0c68c849943f10054b938"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>names</code>, if not empty, has one name per entry of result.features (the varied features, in order); otherwise features are called <code>feature_&lt;index&gt;</code>.  <br /></td></tr>
+<tr class="separator:a05f2bb1a57a0c68c849943f10054b938"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad8cfbabd47bf57477d6232a81cc3037" id="r_aad8cfbabd47bf57477d6232a81cc3037"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aad8cfbabd47bf57477d6232a81cc3037">ToSobolDocument</a> (const <a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a> &amp;result, const std::vector&lt; std::string &gt; &amp;names={}, std::string target=&quot;&quot;)</td></tr>
+<tr class="memdesc:aad8cfbabd47bf57477d6232a81cc3037"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>names</code>, if not empty, has one name per entry of result.features (the varied features, in order); otherwise features are called <code>feature_&lt;index&gt;</code>.    <br /></td></tr>
+<tr class="separator:aad8cfbabd47bf57477d6232a81cc3037"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3723b86c310dfa94b0a9346dcaba88ef" id="r_a3723b86c310dfa94b0a9346dcaba88ef"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3723b86c310dfa94b0a9346dcaba88ef">ToJson</a> (const <a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a3723b86c310dfa94b0a9346dcaba88ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a512cfc844bd8a05b5af92c0565d331d3" id="r_a512cfc844bd8a05b5af92c0565d331d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a512cfc844bd8a05b5af92c0565d331d3">ParseMorrisDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:a512cfc844bd8a05b5af92c0565d331d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8ed5eb7aa5da0fbf8687ee45f639029" id="r_af8ed5eb7aa5da0fbf8687ee45f639029"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af8ed5eb7aa5da0fbf8687ee45f639029">ToJson</a> (const <a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> &amp;doc)</td></tr>
+<tr class="separator:af8ed5eb7aa5da0fbf8687ee45f639029"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dceb11b4762c36fe8d4cf421de6de4f" id="r_a2dceb11b4762c36fe8d4cf421de6de4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2dceb11b4762c36fe8d4cf421de6de4f">ParseSobolDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:a2dceb11b4762c36fe8d4cf421de6de4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81a9c0a4ab6fc4d1d737368b0ec12b9" id="r_ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab81a9c0a4ab6fc4d1d737368b0ec12b9">ToFeatureImportanceBars</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>)</td></tr>
 <tr class="memdesc:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1).  <br /></td></tr>
 <tr class="separator:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1770,6 +1826,12 @@ Functions</h2></td></tr>
 <tr class="memitem:abb5c177e37490ef63663cedb2565ccf3" id="r_abb5c177e37490ef63663cedb2565ccf3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abb5c177e37490ef63663cedb2565ccf3">RenderCounterfactualSvg</a> (const <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &amp;doc, int max_rows=12, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:abb5c177e37490ef63663cedb2565ccf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">What a counterfactual changed: a verdict line (whether it reaches the target, and the output before and after), then one row per changed feature, costliest first, with its old and new value and a bar of its change in units of its scale, colored by direction. A feature counts as changed when it moved by more than 1e-3 of its scale.  <br /></td></tr>
 <tr class="separator:abb5c177e37490ef63663cedb2565ccf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2e6806ecc7c7ac90f0e7cbf48524e37" id="r_ad2e6806ecc7c7ac90f0e7cbf48524e37"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad2e6806ecc7c7ac90f0e7cbf48524e37">RenderMorrisSvg</a> (const <a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ad2e6806ecc7c7ac90f0e7cbf48524e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Morris screening as a scatter of mu* (importance) against sigma (how much the effect varies), one labeled point per feature with a horizontal bar for mu*'s confidence interval. Points above the dashed line sigma = mu* have effects that vary more than their average: nonlinear, or interacting with other features.  <br /></td></tr>
+<tr class="separator:ad2e6806ecc7c7ac90f0e7cbf48524e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a147a17cfeaf670683e7d2180c544fb91" id="r_a147a17cfeaf670683e7d2180c544fb91"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a147a17cfeaf670683e7d2180c544fb91">RenderSobolSvg</a> (const <a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> &amp;doc, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a147a17cfeaf670683e7d2180c544fb91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sobol indices: one row per feature, the <code>top_k</code> with the largest total order first, with a bar for the first-order index, a lighter bar for the total-order index behind it, and whiskers for both confidence intervals. The gap between the two bars is the share of variance the feature explains only through interactions.  <br /></td></tr>
+<tr class="separator:a147a17cfeaf670683e7d2180c544fb91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2648,6 +2710,90 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if species_adjusted_fitness_sums is empty or population_size is not positive. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2f76ee6bef103d750bdef0f6fce07a76" name="a2f76ee6bef103d750bdef0f6fce07a76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f76ee6bef103d750bdef0f6fce07a76">&#9670;&#160;</a></span>AnalyzeMorris()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MorrisResult.html">MorrisResult</a> pulsatrix::AnalyzeMorris </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; float &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>samples</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>outputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MorrisOptions.html">MorrisOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Morris statistics from samples laid out as MorrisSample's (or SALib's) trajectories and one output per row: the same elementary effects and mu, mu*, sigma as SALib 1.6 <code>morris.analyze</code> (unscaled). The confidence interval is a bootstrap with this library's own generator, so it agrees with SALib's in distribution, not digit for digit. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the rows don't form whole trajectories of num_features + 1 rows, a step changes other than exactly one feature, or an option is invalid. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3418efb43c16bb465beb0354f9930382" name="a3418efb43c16bb465beb0354f9930382"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3418efb43c16bb465beb0354f9930382">&#9670;&#160;</a></span>AnalyzeSobol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a> pulsatrix::AnalyzeSobol </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>outputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SobolOptions.html">SobolOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sobol indices from outputs in SALib's layout without second order: N blocks of (num_features + 2) outputs, f(A), f(AB_1) ... f(AB_D), f(B). Outputs are standardized first, then the first order uses Saltelli et al. (2010)'s estimator and the total order Jansen's, exactly as SALib 1.6 does. The bootstrap uses this library's generator. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the outputs don't form whole blocks or an option is invalid. </td></tr>
   </table>
   </dd>
 </dl>
@@ -4075,6 +4221,48 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 
 </div>
 </div>
+<a id="a11fce34145f32225b378bcce7746584a" name="a11fce34145f32225b378bcce7746584a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11fce34145f32225b378bcce7746584a">&#9670;&#160;</a></span>ComputeMorris()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MorrisResult.html">MorrisResult</a> pulsatrix::ComputeMorris </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a> &amp;&#160;</td>
+          <td class="paramname"><em>problem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>target_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MorrisOptions.html">MorrisOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Samples, runs the model and analyzes: MorrisSample, then AnalyzeMorris. </p>
+
+</div>
+</div>
 <a id="a4da8fe5782bc4844676e7588b13fb24a" name="a4da8fe5782bc4844676e7588b13fb24a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4da8fe5782bc4844676e7588b13fb24a">&#9670;&#160;</a></span>ComputePartialDependence2D()</h2>
 
@@ -4135,6 +4323,55 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for the same inputs ComputeIce rejects, or feature_x == feature_y. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ace423364f684e1daac5a3f82978be269" name="ace423364f684e1daac5a3f82978be269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace423364f684e1daac5a3f82978be269">&#9670;&#160;</a></span>ComputeSobol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a> pulsatrix::ComputeSobol </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a> &amp;&#160;</td>
+          <td class="paramname"><em>problem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>target_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SobolOptions.html">SobolOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Samples two independent uniform matrices A and B over the problem's ranges, builds the Saltelli design (AB_j is A with column j from B), runs the model on every row and calls AnalyzeSobol. </p>
+<dl class="section note"><dt>Note</dt><dd>Sobol indices assume the varied features are independent. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an invalid problem or options, or a target out of range. </td></tr>
   </table>
   </dd>
 </dl>
@@ -5603,6 +5840,68 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a8127a18f393e1717ab86029507fb4c20" name="a8127a18f393e1717ab86029507fb4c20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8127a18f393e1717ab86029507fb4c20">&#9670;&#160;</a></span>GrowingSpheresCounterfactual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CounterfactualResult.html">CounterfactualResult</a> pulsatrix::GrowingSpheresCounterfactual </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>predict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualTarget.html">CounterfactualTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CounterfactualConstraints.html">CounterfactualConstraints</a> &amp;&#160;</td>
+          <td class="paramname"><em>constraints</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1GrowingSpheresOptions.html">GrowingSpheresOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A counterfactual for any prediction function, with no gradients (growing spheres, Laugel et al. 2018): draws points uniformly in a ball around the input, halving its radius while it still contains a point that reaches the target, then in ever larger shells until one does; takes the nearest such point and puts features back to their original values, smallest change first, while it still reaches the target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">predict</td><td>One instance in, outputs out. Works for models that aren't differentiable (trees, rules, thresholds) or aren't pulsatrix modules at all. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The same result and metrics as FindCounterfactual, with the same constraints (immutable features are never moved, limits clip every point, integer and one-hot features are fixed up at the end). <code>rounds</code> counts the balls and shells drawn; <code>final_lambda</code> is 0. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>About samples_per_layer model calls per layer, plus one per feature in the last step. The search is in scaled Euclidean distance, so pass a scale (for example MedianAbsoluteDeviation) when features have different units. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for the inputs FindCounterfactual rejects, or invalid options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="acf06d2190bfb60cc8810fcf24d1e99b2" name="acf06d2190bfb60cc8810fcf24d1e99b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acf06d2190bfb60cc8810fcf24d1e99b2">&#9670;&#160;</a></span>Impute()</h2>
 
@@ -6018,6 +6317,43 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>An explanation that stays similar after its model was randomized can't be explaining the model. Each parameter tensor is replaced by Gaussian noise with that tensor's own standard deviation, drawn from a portable generator seeded by <code>seed</code>. Layers are the first segment of named_parameters() names (a <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a>'s indices, for example). </dd>
 <dd>
 The model's parameters are restored exactly before returning, even if <code>explain</code> throws. </dd></dl>
+
+</div>
+</div>
+<a id="ab5888d78b55639ed08f0a47e82286570" name="ab5888d78b55639ed08f0a47e82286570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5888d78b55639ed08f0a47e82286570">&#9670;&#160;</a></span>MorrisSample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::vector&lt; float &gt; &gt; pulsatrix::MorrisSample </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a> &amp;&#160;</td>
+          <td class="paramname"><em>problem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MorrisOptions.html">MorrisOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Morris trajectories (Morris 1991): each starts at a random grid point and moves one feature at a time, in a random order, by the Morris step. Rows are feature values in the problem's ranges, (num_features + 1) per trajectory. </p>
+<dl class="section note"><dt>Note</dt><dd>Deterministic for a seed on every platform (no std:: distributions). </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an invalid problem or options. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -6724,6 +7060,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a512cfc844bd8a05b5af92c0565d331d3" name="a512cfc844bd8a05b5af92c0565d331d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a512cfc844bd8a05b5af92c0565d331d3">&#9670;&#160;</a></span>ParseMorrisDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a> pulsatrix::ParseMorrisDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a73aaf9d248d18472edb0c12895562858" name="a73aaf9d248d18472edb0c12895562858"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73aaf9d248d18472edb0c12895562858">&#9670;&#160;</a></span>ParsePartialDependenceDocument()</h2>
 
@@ -6750,6 +7104,24 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> pulsatrix::ParseSensitivityDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2dceb11b4762c36fe8d4cf421de6de4f" name="a2dceb11b4762c36fe8d4cf421de6de4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dceb11b4762c36fe8d4cf421de6de4f">&#9670;&#160;</a></span>ParseSobolDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> pulsatrix::ParseSobolDocument </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>json</em></td><td>)</td>
@@ -7540,6 +7912,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ad2e6806ecc7c7ac90f0e7cbf48524e37" name="ad2e6806ecc7c7ac90f0e7cbf48524e37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2e6806ecc7c7ac90f0e7cbf48524e37">&#9670;&#160;</a></span>RenderMorrisSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderMorrisSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Morris screening as a scatter of mu* (importance) against sigma (how much the effect varies), one labeled point per feature with a horizontal bar for mu*'s confidence interval. Points above the dashed line sigma = mu* have effects that vary more than their average: nonlinear, or interacting with other features. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an empty document, a non-finite or negative mu*, sigma or confidence half-width, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad340f3a7f51a54de4118b651d545b001" name="ad340f3a7f51a54de4118b651d545b001"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad340f3a7f51a54de4118b651d545b001">&#9670;&#160;</a></span>RenderPartialDependenceSvg()</h2>
 
@@ -7576,6 +7984,48 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for a document ToJson rejects, a non-finite value, a style other than Raw for a document without ICE curves, negative max_curves, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a147a17cfeaf670683e7d2180c544fb91" name="a147a17cfeaf670683e7d2180c544fb91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a147a17cfeaf670683e7d2180c544fb91">&#9670;&#160;</a></span>RenderSobolSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderSobolSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>top_k</em> = <code>10</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sobol indices: one row per feature, the <code>top_k</code> with the largest total order first, with a bar for the first-order index, a lighter bar for the total-order index behind it, and whiskers for both confidence intervals. The gap between the two bars is the share of variance the feature explains only through interactions. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an empty document, a non-finite value, top_k &lt; 1, or unusable options. </td></tr>
   </table>
   </dd>
 </dl>
@@ -10492,7 +10942,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10516,7 +10966,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10540,7 +10990,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10564,7 +11014,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10588,7 +11038,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10612,7 +11062,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10635,8 +11085,26 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a3723b86c310dfa94b0a9346dcaba88ef" name="a3723b86c310dfa94b0a9346dcaba88ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10660,7 +11128,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10677,8 +11145,26 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="af8ed5eb7aa5da0fbf8687ee45f639029" name="af8ed5eb7aa5da0fbf8687ee45f639029"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/12]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10702,7 +11188,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/10]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -10719,6 +11205,48 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if a series' steps and values differ in length, or a tag repeats. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a05f2bb1a57a0c68c849943f10054b938" name="a05f2bb1a57a0c68c849943f10054b938"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05f2bb1a57a0c68c849943f10054b938">&#9670;&#160;</a></span>ToMorrisDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MorrisDocument.html">MorrisDocument</a> pulsatrix::ToMorrisDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MorrisResult.html">MorrisResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>names</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>names</code>, if not empty, has one name per entry of result.features (the varied features, in order); otherwise features are called <code>feature_&lt;index&gt;</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if names has the wrong length. </td></tr>
   </table>
   </dd>
 </dl>
@@ -10949,6 +11477,48 @@ Selection only &ndash; no gradient. A module that routes gradients through a top
 </div><div class="memdoc">
 
 <p>Copies <code>result</code>. <code>names</code>, if not empty, has one name per input feature (flat index); features without a name are called <code>feature_&lt;index&gt;</code>. </p>
+
+</div>
+</div>
+<a id="aad8cfbabd47bf57477d6232a81cc3037" name="aad8cfbabd47bf57477d6232a81cc3037"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad8cfbabd47bf57477d6232a81cc3037">&#9670;&#160;</a></span>ToSobolDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a> pulsatrix::ToSobolDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a> &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>names</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>names</code>, if not empty, has one name per entry of result.features (the varied features, in order); otherwise features are called <code>feature_&lt;index&gt;</code>.   </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if names has the wrong length.   </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -11,7 +11,9 @@ var svg_8hpp =
     [ "RenderBeeswarmSvg", "svg_8hpp.html#ab95b38cf6f801c78725c83ff86b4fb50", null ],
     [ "RenderCounterfactualSvg", "svg_8hpp.html#abb5c177e37490ef63663cedb2565ccf3", null ],
     [ "RenderHeatmapSvg", "svg_8hpp.html#a0121ff88a9488ffc68939cf396fd4df2", null ],
+    [ "RenderMorrisSvg", "svg_8hpp.html#ad2e6806ecc7c7ac90f0e7cbf48524e37", null ],
     [ "RenderPartialDependenceSvg", "svg_8hpp.html#ad340f3a7f51a54de4118b651d545b001", null ],
+    [ "RenderSobolSvg", "svg_8hpp.html#a147a17cfeaf670683e7d2180c544fb91", null ],
     [ "RenderTokenStripSvg", "svg_8hpp.html#a08920d2d448c7826c263b59f72b6abaf", null ],
     [ "RenderTornadoSvg", "svg_8hpp.html#a0b5f62b97a38c79f164cdb63faedcccf", null ],
     [ "RenderWaterfallSvg", "svg_8hpp.html#a0aecd98f0c5911b0fffde4c162a4d3e6", null ]

@@ -1,6 +1,7 @@
 var group__interpretability__agnostic =
 [
     [ "explanation_metrics.hpp", "explanation__metrics_8hpp.html", null ],
+    [ "global_sensitivity.hpp", "global__sensitivity_8hpp.html", null ],
     [ "ice.hpp", "ice_8hpp.html", null ],
     [ "kernel_shap.hpp", "kernel__shap_8hpp.html", null ],
     [ "lime.hpp", "lime_8hpp.html", null ],

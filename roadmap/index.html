@@ -3753,8 +3753,8 @@ doesn't support.</p>
 </tr>
 <tr>
 <td>What if</td>
-<td>PDP, ICE, ALE, local sensitivity, occlusion, re-running with an edited input; global sensitivity</td>
-<td>Partial; <a href="#cfs-counterfactuals-and-sensitivity">CFS-4</a></td>
+<td>PDP, ICE, ALE, local and global (Morris, Sobol) sensitivity, occlusion, re-running with an edited input</td>
+<td>Have (<a href="#cfs-counterfactuals-and-sensitivity">CFS</a>)</td>
 </tr>
 <tr>
 <td>How (global)</td>
@@ -3764,7 +3764,7 @@ doesn't support.</p>
 <tr>
 <td>How to be that</td>
 <td>Counterfactual search</td>
-<td>Gradient-based; <a href="#cfs-counterfactuals-and-sensitivity">CFS-6, CFS-7</a> for any model and diverse sets</td>
+<td>Gradient-based and model-agnostic; <a href="#cfs-counterfactuals-and-sensitivity">CFS-7</a> for diverse sets</td>
 </tr>
 <tr>
 <td>How to still be this</td>
@@ -3974,7 +3974,7 @@ model-agnostic where it can be (a prediction function, like LIME and PDP), and e
 </tr>
 <tr>
 <td>CFS-6</td>
-<td>Model-agnostic counterfactual: growing spheres, refined by the evolutionary module, for models with no gradient</td>
+<td>Model-agnostic counterfactual: growing spheres, for models with no gradient</td>
 <td>Counterfactuals for any prediction function</td>
 <td>CFS-5</td>
 <td>P1</td>
@@ -4010,6 +4010,12 @@ network says nothing about what the model learned.</p>
   rules exactly, including the cropped last window, and returns an ordinary <code>Attribution</code>, so the
   existing heatmap view draws it. The tornado chart gives each feature two bars, high and low,
   rather than one two-colored bar, because both values often move the output the same way.</li>
+<li><strong>CFS-4.</strong> The analyzers are separate from the samplers (<code>AnalyzeMorris</code>, <code>AnalyzeSobol</code>), so
+  they are checked against SALib 1.6 on SALib's own samples, digit for digit. The samplers use
+  plain pseudo-random numbers from <code>std::mt19937_64</code> (whose output the standard fixes) instead of
+  SALib's Sobol sequence, and are checked against the Ishigami function's analytic indices.
+  Bootstrap intervals use the same generator, so they match SALib's in size only. Second-order
+  Sobol indices are not computed.</li>
 <li><strong>CFS-5</strong> uses proximal gradient descent (a gradient step on the prediction hinge, then
   soft-thresholding toward the input) rather than plain gradient descent on the L1 distance,
   so unneeded features stay exactly unchanged; on a linear model it finds the L1-optimal
@@ -4017,6 +4023,11 @@ network says nothing about what the model learned.</p>
   outputs (Carlini and Wagner's form) rather than Wachter's squared error, so it is zero once the
   target is reached. Snapping a one-hot group can undo a change the search made only partway, so
   if it does, each category of each group is tried and the nearest valid one kept.</li>
+<li><strong>CFS-6</strong> refines the growing-spheres point with the paper's own feature selection (features put
+  back, smallest change first, while the target still holds) rather than the evolutionary module:
+  that already gives sparse answers, and the module would add a second search with its own
+  settings. Both searches now share one implementation of the constraints, the final rounding and
+  snapping, and the metrics.</li>
 </ul>
 <h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
 <table>
