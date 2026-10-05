@@ -1,0 +1,28 @@
+{
+  "schema": "pulsatrix.sobol.v1",
+  "target": "yield",
+  "num_samples": 1024,
+  "features": [
+    {
+      "name": "rainfall",
+      "first_order": 0.5,
+      "total_order": 0.625,
+      "first_order_conf": 0.0625,
+      "total_order_conf": 0.0625
+    },
+    {
+      "name": "fertilizer",
+      "first_order": 0.125,
+      "total_order": 0.375,
+      "first_order_conf": 0.03125,
+      "total_order_conf": 0.0625
+    },
+    {
+      "name": "soil pH",
+      "first_order": -0.015625,
+      "total_order": 0.0625,
+      "first_order_conf": 0.03125,
+      "total_order_conf": 0.015625
+    }
+  ]
+}

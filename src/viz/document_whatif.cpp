@@ -281,4 +281,129 @@ CounterfactualDocument ParseCounterfactualDocument(std::string_view json) {
     return doc;
 }
 
+// ---- global sensitivity --------------------------------------------------------------------
+
+namespace {
+
+std::string FeatureName(const std::vector<std::string>& names, size_t i, int64_t index, const char* where) {
+    if (!names.empty() && i >= names.size()) {
+        throw std::invalid_argument(std::string(where) + ": needs one name per varied feature");
+    }
+    return names.empty() ? "feature_" + std::to_string(index) : names[i];
+}
+
+}  // namespace
+
+MorrisDocument ToMorrisDocument(const MorrisResult& result, const std::vector<std::string>& names, std::string target) {
+    if (!names.empty() && names.size() != result.features.size()) {
+        throw std::invalid_argument("ToMorrisDocument: needs one name per varied feature");
+    }
+    MorrisDocument doc;
+    doc.target = std::move(target);
+    doc.num_trajectories = result.num_trajectories;
+    for (size_t i = 0; i < result.features.size(); ++i) {
+        doc.features.push_back({FeatureName(names, i, result.features[i], "ToMorrisDocument"), result.mu[i],
+                                result.mu_star[i], result.sigma[i], result.mu_star_conf[i]});
+    }
+    return doc;
+}
+
+SobolDocument ToSobolDocument(const SobolResult& result, const std::vector<std::string>& names, std::string target) {
+    if (!names.empty() && names.size() != result.features.size()) {
+        throw std::invalid_argument("ToSobolDocument: needs one name per varied feature");
+    }
+    SobolDocument doc;
+    doc.target = std::move(target);
+    doc.num_samples = result.num_samples;
+    for (size_t i = 0; i < result.features.size(); ++i) {
+        doc.features.push_back({FeatureName(names, i, result.features[i], "ToSobolDocument"), result.first_order[i],
+                                result.total_order[i], result.first_order_conf[i], result.total_order_conf[i]});
+    }
+    return doc;
+}
+
+std::string ToJson(const MorrisDocument& doc) {
+    DocWriter w("morris");
+    w.root().add("target", doc.target);
+    w.root().add("num_trajectories", JsonValue(doc.num_trajectories));
+    JsonValue features{JsonValue::Array{}};
+    for (size_t i = 0; i < doc.features.size(); ++i) {
+        const auto& f = doc.features[i];
+        const std::string p = Index("/features", i);
+        JsonValue o{JsonValue::Object{}};
+        o.add("name", f.name);
+        o.add("mu", w.num(f.mu, p + "/mu"));
+        o.add("mu_star", w.num(f.mu_star, p + "/mu_star"));
+        o.add("sigma", w.num(f.sigma, p + "/sigma"));
+        o.add("mu_star_conf", w.num(f.mu_star_conf, p + "/mu_star_conf"));
+        features.push_back(std::move(o));
+    }
+    w.root().add("features", std::move(features));
+    return w.finish();
+}
+
+MorrisDocument ParseMorrisDocument(std::string_view json) {
+    DocReader r(json, "morris");
+    const JsonValue& root = r.root();
+    MorrisDocument doc;
+    doc.target = r.string(r.member(root, "", "target"), "/target");
+    doc.num_trajectories = r.integer(r.member(root, "", "num_trajectories"), "/num_trajectories", 0, kMaxIndex);
+    const JsonValue::Array& features = r.array(r.member(root, "", "features"), "/features");
+    for (size_t i = 0; i < features.size(); ++i) {
+        const std::string p = Index("/features", i);
+        r.object(features[i], p);
+        MorrisDocument::Feature f;
+        f.name = r.string(r.member(features[i], p, "name"), p + "/name");
+        f.mu = r.number(r.member(features[i], p, "mu"), p + "/mu");
+        f.mu_star = r.number(r.member(features[i], p, "mu_star"), p + "/mu_star");
+        f.sigma = r.number(r.member(features[i], p, "sigma"), p + "/sigma");
+        f.mu_star_conf = r.number(r.member(features[i], p, "mu_star_conf"), p + "/mu_star_conf");
+        doc.features.push_back(std::move(f));
+    }
+    r.finish();
+    return doc;
+}
+
+std::string ToJson(const SobolDocument& doc) {
+    DocWriter w("sobol");
+    w.root().add("target", doc.target);
+    w.root().add("num_samples", JsonValue(doc.num_samples));
+    JsonValue features{JsonValue::Array{}};
+    for (size_t i = 0; i < doc.features.size(); ++i) {
+        const auto& f = doc.features[i];
+        const std::string p = Index("/features", i);
+        JsonValue o{JsonValue::Object{}};
+        o.add("name", f.name);
+        o.add("first_order", w.num(f.first_order, p + "/first_order"));
+        o.add("total_order", w.num(f.total_order, p + "/total_order"));
+        o.add("first_order_conf", w.num(f.first_order_conf, p + "/first_order_conf"));
+        o.add("total_order_conf", w.num(f.total_order_conf, p + "/total_order_conf"));
+        features.push_back(std::move(o));
+    }
+    w.root().add("features", std::move(features));
+    return w.finish();
+}
+
+SobolDocument ParseSobolDocument(std::string_view json) {
+    DocReader r(json, "sobol");
+    const JsonValue& root = r.root();
+    SobolDocument doc;
+    doc.target = r.string(r.member(root, "", "target"), "/target");
+    doc.num_samples = r.integer(r.member(root, "", "num_samples"), "/num_samples", 0, kMaxIndex);
+    const JsonValue::Array& features = r.array(r.member(root, "", "features"), "/features");
+    for (size_t i = 0; i < features.size(); ++i) {
+        const std::string p = Index("/features", i);
+        r.object(features[i], p);
+        SobolDocument::Feature f;
+        f.name = r.string(r.member(features[i], p, "name"), p + "/name");
+        f.first_order = r.number(r.member(features[i], p, "first_order"), p + "/first_order");
+        f.total_order = r.number(r.member(features[i], p, "total_order"), p + "/total_order");
+        f.first_order_conf = r.number(r.member(features[i], p, "first_order_conf"), p + "/first_order_conf");
+        f.total_order_conf = r.number(r.member(features[i], p, "total_order_conf"), p + "/total_order_conf");
+        doc.features.push_back(std::move(f));
+    }
+    r.finish();
+    return doc;
+}
+
 }  // namespace pulsatrix
