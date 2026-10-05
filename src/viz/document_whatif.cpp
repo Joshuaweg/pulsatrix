@@ -184,4 +184,79 @@ SensitivityDocument ParseSensitivityDocument(std::string_view json) {
     return doc;
 }
 
+// ---- counterfactual ------------------------------------------------------------------------
+
+CounterfactualDocument ToCounterfactualDocument(const Tensor& input, const CounterfactualResult& result,
+                                                const std::vector<std::string>& names,
+                                                const std::vector<float>& scale, std::string target) {
+    const std::vector<float> x = input.to_host_vector();
+    const std::vector<float> cf = result.counterfactual.to_host_vector();
+    if (cf.size() != x.size()) {
+        throw std::invalid_argument("ToCounterfactualDocument: the counterfactual and the input differ in size");
+    }
+    if ((!names.empty() && names.size() != x.size()) || (!scale.empty() && scale.size() != x.size())) {
+        throw std::invalid_argument("ToCounterfactualDocument: names and scale need one entry per feature");
+    }
+    CounterfactualDocument doc;
+    doc.target = std::move(target);
+    doc.valid = result.valid;
+    doc.output_before = result.output_before;
+    doc.output_after = result.output_after;
+    for (size_t j = 0; j < x.size(); ++j) {
+        doc.features.push_back({names.empty() ? "feature_" + std::to_string(j) : names[j], x[j], cf[j],
+                                scale.empty() ? 1.0f : scale[j]});
+    }
+    return doc;
+}
+
+std::string ToJson(const CounterfactualDocument& doc) {
+    DocWriter w("counterfactual");
+    w.root().add("target", doc.target);
+    w.root().add("valid", JsonValue(doc.valid));
+    w.root().add("output_before", w.num(doc.output_before, "/output_before"));
+    w.root().add("output_after", w.num(doc.output_after, "/output_after"));
+    JsonValue features{JsonValue::Array{}};
+    for (size_t i = 0; i < doc.features.size(); ++i) {
+        const auto& f = doc.features[i];
+        const std::string p = Index("/features", i);
+        if (!(f.scale > 0.0f)) {
+            Invalid("counterfactual", p + "/scale: must be positive");
+        }
+        JsonValue o{JsonValue::Object{}};
+        o.add("name", f.name);
+        o.add("original", w.num(f.original, p + "/original"));
+        o.add("counterfactual", w.num(f.counterfactual, p + "/counterfactual"));
+        o.add("scale", w.num(f.scale, p + "/scale"));
+        features.push_back(std::move(o));
+    }
+    w.root().add("features", std::move(features));
+    return w.finish();
+}
+
+CounterfactualDocument ParseCounterfactualDocument(std::string_view json) {
+    DocReader r(json, "counterfactual");
+    const JsonValue& root = r.root();
+    CounterfactualDocument doc;
+    doc.target = r.string(r.member(root, "", "target"), "/target");
+    doc.valid = r.boolean(r.member(root, "", "valid"), "/valid");
+    doc.output_before = r.number(r.member(root, "", "output_before"), "/output_before");
+    doc.output_after = r.number(r.member(root, "", "output_after"), "/output_after");
+    const JsonValue::Array& features = r.array(r.member(root, "", "features"), "/features");
+    for (size_t i = 0; i < features.size(); ++i) {
+        const std::string p = Index("/features", i);
+        r.object(features[i], p);
+        CounterfactualDocument::Feature f;
+        f.name = r.string(r.member(features[i], p, "name"), p + "/name");
+        f.original = r.number(r.member(features[i], p, "original"), p + "/original");
+        f.counterfactual = r.number(r.member(features[i], p, "counterfactual"), p + "/counterfactual");
+        f.scale = r.number(r.member(features[i], p, "scale"), p + "/scale");
+        if (!(f.scale > 0.0f)) {
+            r.fail(p + "/scale", "must be positive");
+        }
+        doc.features.push_back(std::move(f));
+    }
+    r.finish();
+    return doc;
+}
+
 }  // namespace pulsatrix

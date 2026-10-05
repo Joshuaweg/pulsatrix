@@ -100,6 +100,7 @@ add_library(pulsatrix_core
     src/tied_lm_head_module.cpp
     src/ice.cpp
     src/sensitivity.cpp
+    src/counterfactual.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp

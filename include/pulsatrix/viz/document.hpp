@@ -30,6 +30,7 @@
 #include "pulsatrix/attribution.hpp"
 #include "pulsatrix/circuit_graph.hpp"
 #include "pulsatrix/device_backend.hpp"
+#include "pulsatrix/counterfactual.hpp"
 #include "pulsatrix/ice.hpp"
 #include "pulsatrix/sensitivity.hpp"
 #include "pulsatrix/metrics_sink.hpp"
@@ -276,5 +277,42 @@ struct SensitivityDocument {
                                                         std::string target = "");
 [[nodiscard]] std::string ToJson(const SensitivityDocument& doc);
 [[nodiscard]] SensitivityDocument ParseSensitivityDocument(std::string_view json);
+
+// ---- counterfactual ------------------------------------------------------------------------
+
+/**
+ * @brief `pulsatrix.counterfactual.v1`: an input, its counterfactual, and what reaching the
+ *        target cost (CFS-5).
+ */
+struct CounterfactualDocument {
+    /** @brief The goal, for example `"class approved"` or `"price in [200, 250]"`. Optional. */
+    std::string target;
+    bool valid = false;
+    float output_before = 0.0f;
+    float output_after = 0.0f;
+    struct Feature {
+        std::string name;
+        float original = 0.0f;
+        float counterfactual = 0.0f;
+        /** @brief The distance scale (a change of `scale` costs 1), positive. */
+        float scale = 1.0f;
+    };
+    /** @brief Every feature, changed or not, in input order. */
+    std::vector<Feature> features;
+};
+
+/**
+ * @brief Pairs @p input with @p result's counterfactual. @p names and @p scale, if not empty,
+ *        have one entry per feature; @p scale should be the one the search used.
+ * @throws std::invalid_argument if the counterfactual's size differs from the input's, or a list
+ *         has the wrong length.
+ */
+[[nodiscard]] CounterfactualDocument ToCounterfactualDocument(const Tensor& input, const CounterfactualResult& result,
+                                                              const std::vector<std::string>& names = {},
+                                                              const std::vector<float>& scale = {},
+                                                              std::string target = "");
+/** @throws std::invalid_argument if a scale is not positive. */
+[[nodiscard]] std::string ToJson(const CounterfactualDocument& doc);
+[[nodiscard]] CounterfactualDocument ParseCounterfactualDocument(std::string_view json);
 
 }  // namespace pulsatrix
