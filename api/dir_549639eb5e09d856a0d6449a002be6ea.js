@@ -158,7 +158,6 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "satisfaction_loss.hpp", "satisfaction__loss_8hpp.html", "satisfaction__loss_8hpp" ],
     [ "search_space.hpp", "search__space_8hpp.html", "search__space_8hpp" ],
     [ "selection.hpp", "selection_8hpp.html", "selection_8hpp" ],
-    [ "sensitivity.hpp", "sensitivity_8hpp.html", "sensitivity_8hpp" ],
     [ "sequential_module.hpp", "sequential__module_8hpp.html", "sequential__module_8hpp" ],
     [ "sgd_optimizer.hpp", "sgd__optimizer_8hpp.html", "sgd__optimizer_8hpp" ],
     [ "shape.hpp", "shape_8hpp.html", "shape_8hpp" ],

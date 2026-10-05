@@ -4001,11 +4001,6 @@ network says nothing about what the model learned.</p>
   derivative views are computed when drawn, so every renderer agrees on them. The derivative
   uses <code>numpy.gradient</code>'s formula, which handles uneven grids such as the percentile grids
   <code>FeatureGrid</code> builds. The SVG helpers moved to an internal header shared by the new views.</li>
-<li><strong>CFS-3.</strong> The bounds are separate from the sweep (<code>DeltaBounds</code>, <code>ScaledDeltaBounds</code>,
-  <code>RangeBounds</code>), so ±δ and range sensitivity are one function. <code>Occlusion</code> follows Captum 0.9's
-  rules exactly, including the cropped last window, and returns an ordinary <code>Attribution</code>, so the
-  existing heatmap view draws it. The tornado chart gives each feature two bars, high and low,
-  rather than one two-colored bar, because both values often move the output the same way.</li>
 </ul>
 <h2 id="int-embedding-and-representation-analysis">INT: Embedding and representation analysis<a class="headerlink" href="#int-embedding-and-representation-analysis" title="Permanent link">&para;</a></h2>
 <table>

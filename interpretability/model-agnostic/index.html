@@ -610,17 +610,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#local-sensitivity-and-occlusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Local sensitivity and occlusion
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1722,17 +1711,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#local-sensitivity-and-occlusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Local sensitivity and occlusion
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1787,11 +1765,6 @@ models wrapped in a lambda.</p>
   input instead of PDP's single average, with centered (<code>centered()</code>) and derivative
   (<code>derivative()</code>) forms. <code>ComputePartialDependence2D</code> varies two features at once, and
   <code>FeatureGrid</code> builds a grid the way scikit-learn does.</li>
-<li><strong>Local sensitivity</strong> (<code>sensitivity.hpp</code>): <code>ComputeLocalSensitivity</code> moves each feature, alone,
-  to a low and a high value and records the output, the data of a tornado chart. The bounds come
-  from <code>DeltaBounds</code> (±δ), <code>ScaledDeltaBounds</code> (± some standard deviations of a background set)
-  or <code>RangeBounds</code> (a background set's percentiles). <code>Occlusion</code> slides a window over the input,
-  as Captum's <code>Occlusion</code> does.</li>
 <li><strong><code>fit_weighted_linear_regression</code></strong> (<code>weighted_linear_regression.hpp</code>): the shared ridge
   regression solver that <code>KernelSHAP</code> and <code>LIME</code> both use. It returns one coefficient per
   feature and fits no intercept.</li>
@@ -1837,18 +1810,6 @@ models wrapped in a lambda.</p>
 <td>Whole dataset</td>
 <td>How two features interact</td>
 <td>grid_x × grid_y × background model calls</td>
-</tr>
-<tr>
-<td>Local sensitivity</td>
-<td>One input</td>
-<td>How far each feature, alone, can move the output</td>
-<td>One feature at a time: misses joint effects</td>
-</tr>
-<tr>
-<td><code>Occlusion</code></td>
-<td>One input</td>
-<td>Which regions of an image or spans of a sequence the output depends on</td>
-<td>The baseline value is a choice; results change with it and with the window</td>
 </tr>
 </tbody>
 </table>
@@ -1942,32 +1903,6 @@ grid_y)</code> returns a grid of averages; <code>ToHeatmapDocument</code> turns 
 <code>RenderHeatmapSvg</code>.</p>
 <p>Test reference: <code>tests/ice_test.cpp</code>, checked against scikit-learn 1.9.1
 (<code>tools/generate_ice_reference_values.py</code>).</p>
-<h3 id="local-sensitivity-and-occlusion">Local sensitivity and occlusion<a class="headerlink" href="#local-sensitivity-and-occlusion" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/sensitivity.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/svg.hpp"</span>
-
-<span class="c1">// Each feature from its 5th to its 95th percentile over the background, one at a time.</span>
-<span class="n">LocalSensitivityResult</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ComputeLocalSensitivity</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="cm">/*target_index=*/</span><span class="mi">0</span><span class="p">,</span>
-<span class="w">                                                   </span><span class="n">RangeBounds</span><span class="p">(</span><span class="n">background</span><span class="p">));</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">FeatureSensitivity</span><span class="o">&amp;</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">features</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// f.output_low, f.output_high, f.swing(), f.slope()</span>
-<span class="p">}</span>
-<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">tornado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RenderTornadoSvg</span><span class="p">(</span><span class="n">ToSensitivityDocument</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">"age"</span><span class="p">,</span><span class="w"> </span><span class="s">"dose"</span><span class="p">,</span><span class="w"> </span><span class="s">"weight"</span><span class="p">},</span><span class="w"> </span><span class="s">"risk"</span><span class="p">));</span>
-
-<span class="c1">// Occlusion of 3x3 patches of a (1, H, W) image, stride 1, replaced with 0.</span>
-<span class="n">Attribution</span><span class="w"> </span><span class="n">occ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Occlusion</span><span class="p">(</span><span class="n">predict</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="cm">/*target_index=*/</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="cm">/*window=*/</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span>
-<span class="w">                            </span><span class="cm">/*strides=*/</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="cm">/*baseline=*/</span><span class="mf">0.0f</span><span class="p">);</span>
-</code></pre></div>
-<p><strong>What's happening:</strong> <code>ComputeLocalSensitivity</code> makes 1 + 2 × features model calls. A gradient
-describes the model in an infinitesimal neighborhood; this measures a finite one, so the two
-disagree where the model saturates or has a kink, and <code>slope()</code> shows by how much. <code>Occlusion</code>
-gives each element the drop in the output when a window covering it is replaced by <code>baseline</code>,
-averaged over the windows that covered it. The last window in a dimension is cropped at the
-edge, as in Captum. For a (1, H, W) image, <code>ToSaliencyHeatmap(occ)</code> and <code>ToHeatmapDocument</code>
-draw it with <code>RenderHeatmapSvg</code>; a window that spans all channels gives every channel the same
-value, so read one.</p>
-<p>Test reference: <code>tests/sensitivity_test.cpp</code>, checked against Captum 0.9.0 and numpy
-(<code>tools/generate_sensitivity_reference_values.py</code>).</p>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../recipes/interpretability/kernel_shap_basics/">KernelSHAP basics</a></li>
