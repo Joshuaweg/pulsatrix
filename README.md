@@ -127,14 +127,32 @@ trained end to end in its tests and has to reach a fixed score on CartPole.
 
 ## Using pulsatrix in your project
 
-There's no `install()` step yet, so `find_package(pulsatrix)` doesn't work. Add the repository
-to your CMake tree instead and link the core library:
+Build and install pulsatrix, then find it from your own CMake project:
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DPULSATRIX_BUILD_TESTS=OFF -DPULSATRIX_BUILD_EXAMPLES=OFF
+cmake --build build --parallel
+cmake --install build --prefix /path/to/prefix
+```
+
+```cmake
+find_package(pulsatrix 1.0 REQUIRED)
+target_link_libraries(my_app PRIVATE pulsatrix::core)
+```
+
+Configure your project with `-DCMAKE_PREFIX_PATH=/path/to/prefix`. The package installs the core
+library and its headers. A build with the CUDA or HIP backend also installs that backend's
+headers, and `find_package` then looks for the same CUDA or ROCm libraries (ROCm through
+`ROCM_PATH`, as in the build). `pulsatrix_HAS_CUDA` and `pulsatrix_HAS_HIP` say which backends the
+installed build has. The visualization module and the Python bindings aren't installed.
+
+You can also add the repository to your CMake tree. Install rules are off in that case:
 
 ```cmake
 set(PULSATRIX_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(PULSATRIX_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(third_party/pulsatrix)
-target_link_libraries(my_app PRIVATE pulsatrix_core)
+target_link_libraries(my_app PRIVATE pulsatrix::core)
 ```
 
 ## Status

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(pulsatrix CXX)
+project(pulsatrix VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,6 +12,16 @@ option(PULSATRIX_BUILD_TESTS "Build the GoogleTest suite" ON)
 option(PULSATRIX_BUILD_EXAMPLES "Build standalone example executables (examples/)" ON)
 option(PULSATRIX_BUILD_FUZZERS "Build fuzz targets (tools/fuzz/); add sanitizer flags yourself" OFF)
 option(PULSATRIX_FUZZ_STANDALONE "Fuzz targets get their own main() instead of libFuzzer's" OFF)
+# On by default only when pulsatrix is the top-level project, so add_subdirectory and
+# FetchContent users don't install pulsatrix alongside their own targets.
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+    set(pulsatrix_install_default ON)
+else()
+    set(pulsatrix_install_default OFF)
+endif()
+option(PULSATRIX_INSTALL "Generate install rules and the find_package(pulsatrix) config" ${pulsatrix_install_default})
+
+include(GNUInstallDirs)
 
 if(PULSATRIX_ENABLE_CUDA)
     enable_language(CUDA)
@@ -164,7 +174,11 @@ add_library(pulsatrix_core
     src/viz/colormap.cpp
     src/viz/plot_data.cpp
 )
-target_include_directories(pulsatrix_core PUBLIC include)
+add_library(pulsatrix::core ALIAS pulsatrix_core)
+set_target_properties(pulsatrix_core PROPERTIES EXPORT_NAME core)
+target_include_directories(pulsatrix_core PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 target_compile_features(pulsatrix_core PUBLIC cxx_std_17)
 
 # First consumer: DataThreadPool/BoundedQueue (campaign_exai_dl_library_data_pipeline,
@@ -280,6 +294,24 @@ if(PULSATRIX_ENABLE_PYTHON)
     endif()
 endif()
 
+# pulsatrix_viz's sources, listed outside the option so the install rules below can leave
+# its headers out of the core package whether or not this build has the viz module.
+set(PULSATRIX_VIZ_SOURCES
+    src/viz/window.cpp
+    src/viz/attribution_bar_chart.cpp
+    src/viz/attribution_waterfall.cpp
+    src/viz/attribution_beeswarm.cpp
+    src/viz/saliency_heatmap_view.cpp
+    src/viz/circuit_graph_view.cpp
+    src/viz/confidence_meter.cpp
+    src/viz/explanation_score_card.cpp
+    src/viz/implot_metrics_sink_draw.cpp
+    src/viz/training_dashboard.cpp
+    src/viz/texture_cache.cpp
+    src/viz/image_grid_view.cpp
+    src/viz/dataset_statistics_view.cpp
+)
+
 if(PULSATRIX_ENABLE_VIZ)
     # Native C++ visualization layer (Dear ImGui + ImPlot) -- supersedes the charter's
     # original Python+matplotlib Phase 5 Mission 2 plan (see
@@ -292,6 +324,7 @@ if(PULSATRIX_ENABLE_VIZ)
     set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
     set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
     set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+    set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(
         glfw
         GIT_REPOSITORY https://github.com/glfw/glfw.git
@@ -339,21 +372,7 @@ if(PULSATRIX_ENABLE_VIZ)
 
     # Phase A: explanation charts + score card, on top of Phase 0's VizWindow scaffolding.
     # Later phases (B: training dashboards, C: data/inference previews) add more sources here.
-    add_library(pulsatrix_viz
-        src/viz/window.cpp
-        src/viz/attribution_bar_chart.cpp
-        src/viz/attribution_waterfall.cpp
-        src/viz/attribution_beeswarm.cpp
-        src/viz/saliency_heatmap_view.cpp
-        src/viz/circuit_graph_view.cpp
-        src/viz/confidence_meter.cpp
-        src/viz/explanation_score_card.cpp
-        src/viz/implot_metrics_sink_draw.cpp
-        src/viz/training_dashboard.cpp
-        src/viz/texture_cache.cpp
-        src/viz/image_grid_view.cpp
-        src/viz/dataset_statistics_view.cpp
-    )
+    add_library(pulsatrix_viz ${PULSATRIX_VIZ_SOURCES})
     target_include_directories(pulsatrix_viz PUBLIC include)
     # PUBLIC, not PRIVATE: demo executables (examples/viz/*.cpp) call ImGui/ImPlot directly
     # in their own translation units, so they need imgui/implot's include dirs propagated
@@ -515,6 +534,7 @@ endif()
 if(PULSATRIX_BUILD_TESTS)
     include(FetchContent)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
@@ -540,4 +560,57 @@ if(PULSATRIX_BUILD_FUZZERS)
     else()
         target_link_options(safetensors_fuzz PRIVATE -fsanitize=fuzzer)
     endif()
+endif()
+
+# KS-1: `cmake --install` and find_package(pulsatrix). Installs pulsatrix_core as
+# pulsatrix::core with its headers and a package config that finds the same dependencies
+# (threads, and the CUDA or ROCm libraries when this build has those backends). pulsatrix_viz
+# and the Python module aren't installed: viz would also have to install its fetched
+# ImGui, ImPlot and GLFW, and the Python module is loaded from the build tree.
+if(PULSATRIX_INSTALL)
+    include(CMakePackageConfigHelpers)
+    set(pulsatrix_cmake_dir "${CMAKE_INSTALL_LIBDIR}/cmake/pulsatrix")
+
+    set(excluded_headers "")
+    foreach(source IN LISTS PULSATRIX_VIZ_SOURCES)
+        get_filename_component(name "${source}" NAME_WE)
+        list(APPEND excluded_headers PATTERN "viz/${name}.hpp" EXCLUDE)
+    endforeach()
+    # A backend's headers include its SDK's, so they ship only with that backend.
+    if(NOT PULSATRIX_ENABLE_CUDA)
+        foreach(header cuda_backend cuda_check cublas_check)
+            list(APPEND excluded_headers PATTERN "${header}.hpp" EXCLUDE)
+        endforeach()
+    endif()
+    if(NOT PULSATRIX_ENABLE_HIP)
+        foreach(header hip_backend hip_check hipblas_check)
+            list(APPEND excluded_headers PATTERN "${header}.hpp" EXCLUDE)
+        endforeach()
+    endif()
+    install(DIRECTORY include/pulsatrix
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        FILES_MATCHING PATTERN "*.hpp"
+        ${excluded_headers})
+
+    install(TARGETS pulsatrix_core
+        EXPORT pulsatrixTargets
+        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(EXPORT pulsatrixTargets
+        NAMESPACE pulsatrix::
+        DESTINATION "${pulsatrix_cmake_dir}")
+
+    configure_package_config_file(cmake/pulsatrixConfig.cmake.in
+        "${CMAKE_CURRENT_BINARY_DIR}/pulsatrixConfig.cmake"
+        INSTALL_DESTINATION "${pulsatrix_cmake_dir}"
+        PATH_VARS CMAKE_INSTALL_INCLUDEDIR)
+    # Within a major version the API may still change (README, Status), but a 1.x build
+    # satisfies find_package(pulsatrix 1.0).
+    write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/pulsatrixConfigVersion.cmake"
+        COMPATIBILITY SameMajorVersion)
+    install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/pulsatrixConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/pulsatrixConfigVersion.cmake"
+        DESTINATION "${pulsatrix_cmake_dir}")
 endif()
