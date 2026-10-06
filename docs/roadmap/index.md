@@ -229,7 +229,7 @@ autoencoder dictionaries and a model zoo.
 | IO-3 | An optional converter for legacy pickle files (`.pt`, `.pth`, `.pkl`). It uses `torch.load(weights_only=True)` with torch 2.6 or newer and writes safetensors | Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors | IO-1 | P1 | M | |
 | IO-4 | A name-mapping manifest with transforms: transpose (pulsatrix `Linear` stores `(in, out)`, PyTorch stores `(out, in)`), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys | Turns Hugging Face names and layouts into pulsatrix modules | FND-1, IO-1 | P1 | M | |
 | IO-5 | Read Hugging Face `config.json` and sharded `model.safetensors.index.json` | Every small LLM on the Hub uses these | IO-1 | P1 | S || Done, [#78](https://github.com/Joshuaweg/pulsatrix/pull/78) (see below) |
-| IO-6 | Upcast bf16 and fp16 weights to fp32 on load (exact) | Most published weights are bf16 | IO-1 | P1 | S | |
+| IO-6 | Upcast bf16 and fp16 weights to fp32 on load (exact) | Most published weights are bf16 | IO-1 | P1 | S || Done, [#79](https://github.com/Joshuaweg/pulsatrix/pull/79) |
 | IO-7 | `.npy` and `.npz` reading, with object and big-endian dtypes rejected | Many SAE dictionaries and Python users' arrays | — | P1 | S–M | |
 | IO-8 | ONNX import, weights only | Graph import would mean pattern-matching ONNX ops back into modules, which is research | IO-1 | P3 | M | |
 | IO-9 | GGUF import for F32, F16 and Q8_0, with every count and size checked for overflow | Some small models only exist as GGUF. GGUF parsers have a long CVE history | IO-1 | P3 | M | |

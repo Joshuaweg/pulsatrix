@@ -31,7 +31,7 @@
 
 namespace pulsatrix {
 
-/** @brief Element types a safetensors file can declare. Only F32 converts to a Tensor so far. */
+/** @brief Element types a safetensors file can declare. The floating-point ones convert to a Tensor. */
 enum class SafetensorsDtype { Bool, U8, I8, I16, U16, I32, U32, I64, U64, F8_E4M3, F8_E5M2, F16, BF16, F32, F64 };
 
 /** @brief One tensor's header entry. Offsets are relative to the start of the data section. */
@@ -87,9 +87,11 @@ public:
     [[nodiscard]] std::pair<const uint8_t*, size_t> bytes(const std::string& name) const;
 
     /**
-     * @brief Copies tensor `name` into a new Tensor on `backend`'s device.
-     * @throws std::invalid_argument if there is no tensor called `name`, or its dtype isn't F32
-     *         (converting F16/BF16 is roadmap IO-6).
+     * @brief Copies tensor `name` into a new float32 Tensor on `backend`'s device, converting its
+     *        dtype (IO-6): BF16, F16, F8_E4M3 and F8_E5M2 widen exactly (subnormals, infinities and
+     *        NaN included); F64 rounds to nearest, with out-of-range values becoming infinities.
+     * @throws std::invalid_argument if there is no tensor called `name`, or it holds integers or
+     *         booleans.
      */
     [[nodiscard]] Tensor tensor(const std::string& name, DeviceBackend* backend) const;
 
