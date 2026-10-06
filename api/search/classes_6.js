@@ -9,9 +9,11 @@ var searchData=
   ['gflownetsampledaction_6',['GFlowNetSampledAction',['../structpulsatrix_1_1GFlowNetSampledAction.html',1,'pulsatrix']]],
   ['gflownettrajectory_7',['GFlowNetTrajectory',['../structpulsatrix_1_1GFlowNetTrajectory.html',1,'pulsatrix']]],
   ['globalsensitivityproblem_8',['GlobalSensitivityProblem',['../structpulsatrix_1_1GlobalSensitivityProblem.html',1,'pulsatrix']]],
-  ['gpusample_9',['GpuSample',['../structpulsatrix_1_1GpuSample.html',1,'pulsatrix']]],
-  ['gradcam_10',['GradCAM',['../classpulsatrix_1_1GradCAM.html',1,'pulsatrix']]],
-  ['groupnormmodule_11',['GroupNormModule',['../classpulsatrix_1_1GroupNormModule.html',1,'pulsatrix']]],
-  ['growingspheresoptions_12',['GrowingSpheresOptions',['../structpulsatrix_1_1GrowingSpheresOptions.html',1,'pulsatrix']]],
-  ['grumodule_13',['GRUModule',['../classpulsatrix_1_1GRUModule.html',1,'pulsatrix']]]
+  ['goldenreport_9',['GoldenReport',['../structpulsatrix_1_1GoldenReport.html',1,'pulsatrix']]],
+  ['goldensequenceresult_10',['GoldenSequenceResult',['../structpulsatrix_1_1GoldenSequenceResult.html',1,'pulsatrix']]],
+  ['gpusample_11',['GpuSample',['../structpulsatrix_1_1GpuSample.html',1,'pulsatrix']]],
+  ['gradcam_12',['GradCAM',['../classpulsatrix_1_1GradCAM.html',1,'pulsatrix']]],
+  ['groupnormmodule_13',['GroupNormModule',['../classpulsatrix_1_1GroupNormModule.html',1,'pulsatrix']]],
+  ['growingspheresoptions_14',['GrowingSpheresOptions',['../structpulsatrix_1_1GrowingSpheresOptions.html',1,'pulsatrix']]],
+  ['grumodule_15',['GRUModule',['../classpulsatrix_1_1GRUModule.html',1,'pulsatrix']]]
 ];

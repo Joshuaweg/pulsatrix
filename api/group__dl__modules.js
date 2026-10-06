@@ -24,6 +24,7 @@ var group__dl__modules =
     [ "embedding_module.hpp", "embedding__module_8hpp.html", null ],
     [ "flatten_module.hpp", "flatten__module_8hpp.html", null ],
     [ "generation.hpp", "generation_8hpp.html", null ],
+    [ "golden_logits.hpp", "golden__logits_8hpp.html", null ],
     [ "grad_clipping.hpp", "grad__clipping_8hpp.html", null ],
     [ "group_norm_module.hpp", "group__norm__module_8hpp.html", null ],
     [ "gru_module.hpp", "gru__module_8hpp.html", null ],

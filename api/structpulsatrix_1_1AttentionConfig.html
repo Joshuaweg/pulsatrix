@@ -121,6 +121,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a0fe86a56ad802d98e3111e9aa690f153"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac186a454599c0f64cf83dc63026da08a" id="r_ac186a454599c0f64cf83dc63026da08a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html#ac186a454599c0f64cf83dc63026da08a">rope_base</a> = 10000.0f</td></tr>
 <tr class="separator:ac186a454599c0f64cf83dc63026da08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a014fa007d6902dcabdf51c5ebabc6e9e" id="r_a014fa007d6902dcabdf51c5ebabc6e9e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html#a014fa007d6902dcabdf51c5ebabc6e9e">rope_inverse_frequencies</a></td></tr>
+<tr class="memdesc:a014fa007d6902dcabdf51c5ebabc6e9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit RoPE frequencies, one per pair (head_dim / 2), overriding rope_base: how scaled RoPE (Llama 3's <code>rope_scaling</code>) is passed in. Empty uses rope_base.  <br /></td></tr>
+<tr class="separator:a014fa007d6902dcabdf51c5ebabc6e9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abafab0d9710e0e0fe974823a50d67bc8" id="r_abafab0d9710e0e0fe974823a50d67bc8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html#abafab0d9710e0e0fe974823a50d67bc8">use_qk_norm</a> = false</td></tr>
 <tr class="separator:abafab0d9710e0e0fe974823a50d67bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f07c047f3c075a2f31d61634c589778" id="r_a8f07c047f3c075a2f31d61634c589778"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html#a8f07c047f3c075a2f31d61634c589778">qk_norm_eps</a> = 1e-6f</td></tr>
@@ -265,6 +268,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a014fa007d6902dcabdf51c5ebabc6e9e" name="a014fa007d6902dcabdf51c5ebabc6e9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a014fa007d6902dcabdf51c5ebabc6e9e">&#9670;&#160;</a></span>rope_inverse_frequencies</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;double&gt; pulsatrix::AttentionConfig::rope_inverse_frequencies</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explicit RoPE frequencies, one per pair (head_dim / 2), overriding rope_base: how scaled RoPE (Llama 3's <code>rope_scaling</code>) is passed in. Empty uses rope_base. </p>
 
 </div>
 </div>

@@ -73,18 +73,18 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1LearnableScalar.html#a32603478738aba8f626585eefc07c623",
 "classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81",
 "classpulsatrix_1_1RWKVModule.html#a1cf2964d2a913912280f49b8ec68c56f",
-"classpulsatrix_1_1SGDOptimizer.html#a41665676abd385aeab7417118e4ec1db",
-"classpulsatrix_1_1Tensor.html#a3603ac8c19731ce7cdb226d9e7ec300d",
-"classpulsatrix_1_1VizWindow.html#a1c7208c9be6720936abc4648d5202cd5",
-"functions_func_u.html",
-"namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92",
-"namespacepulsatrix.html#acf06d2190bfb60cc8810fcf24d1e99b2",
-"structpulsatrix_1_1BarSeries.html",
-"structpulsatrix_1_1CounterfactualTarget.html#a22a6743066250a20c60ac8ecd9b22a61",
-"structpulsatrix_1_1GlobalSensitivityProblem.html#a2106a110707010eea7471afdfadb3cc6",
-"structpulsatrix_1_1MorrisDocument_1_1Feature.html#a5d5684fecf546a15a55beabfa96930b3",
-"structpulsatrix_1_1RlRowArgs.html#ab2cded7a8f000ed4d95ece741791053a",
-"structpulsatrix_1_1TrainingLogDocument_1_1Series.html"
+"classpulsatrix_1_1SGDOptimizer.html#a16681f8fca7daa4a4008d3ed2caa2e0d",
+"classpulsatrix_1_1Tensor.html#a2cddbdb326c36252d39061fc445beb0b",
+"classpulsatrix_1_1VizWindow.html#a024443857738777e6fcd26046f0138ed",
+"functions_func_s.html",
+"namespacepulsatrix.html#a29473722de7e79d863c300baecba52c2",
+"namespacepulsatrix.html#aca7e1f167f27418f95b6a8dec4c51955",
+"structpulsatrix_1_1AttributionNullReport.html",
+"structpulsatrix_1_1CounterfactualResult.html#aa15577d4a8ee458fc1cb84329d4d362a",
+"structpulsatrix_1_1GenerationResult.html#aaa8b6826236e223f086319d4a666f37e",
+"structpulsatrix_1_1LocalSensitivityResult.html#acda6fe45fd3733c5993cbd85a82376bb",
+"structpulsatrix_1_1RgbColor.html",
+"structpulsatrix_1_1TokenRelevanceDocument.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

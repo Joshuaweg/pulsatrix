@@ -124,6 +124,8 @@ var annotated_dup =
       [ "GFlowNetSampledAction", "structpulsatrix_1_1GFlowNetSampledAction.html", "structpulsatrix_1_1GFlowNetSampledAction" ],
       [ "GFlowNetTrajectory", "structpulsatrix_1_1GFlowNetTrajectory.html", "structpulsatrix_1_1GFlowNetTrajectory" ],
       [ "GlobalSensitivityProblem", "structpulsatrix_1_1GlobalSensitivityProblem.html", "structpulsatrix_1_1GlobalSensitivityProblem" ],
+      [ "GoldenReport", "structpulsatrix_1_1GoldenReport.html", "structpulsatrix_1_1GoldenReport" ],
+      [ "GoldenSequenceResult", "structpulsatrix_1_1GoldenSequenceResult.html", "structpulsatrix_1_1GoldenSequenceResult" ],
       [ "GpuSample", "structpulsatrix_1_1GpuSample.html", "structpulsatrix_1_1GpuSample" ],
       [ "GradCAM", "classpulsatrix_1_1GradCAM.html", "classpulsatrix_1_1GradCAM" ],
       [ "GroupNormModule", "classpulsatrix_1_1GroupNormModule.html", "classpulsatrix_1_1GroupNormModule" ],

@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa000c5f4b1283a72d6cdf45339de9ee1" id="r_aa000c5f4b1283a72d6cdf45339de9ee1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RoPEModule.html#aa000c5f4b1283a72d6cdf45339de9ee1">RoPEModule</a> (int64_t head_dim, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float <a class="el" href="classpulsatrix_1_1RoPEModule.html#a7fef6d1bbd211d9ff5ed60b22382fcd1">base</a>=10000.0f, <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044">RoPELayout</a> <a class="el" href="classpulsatrix_1_1RoPEModule.html#af1acf097e0d6ef5c87a44bf7c0f377a2">layout</a>=<a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c">RoPELayout::AdjacentPairs</a>)</td></tr>
 <tr class="memdesc:aa000c5f4b1283a72d6cdf45339de9ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a RoPE module.  <br /></td></tr>
 <tr class="separator:aa000c5f4b1283a72d6cdf45339de9ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74034bca9c207d62011cda8b3a7ce099" id="r_a74034bca9c207d62011cda8b3a7ce099"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RoPEModule.html#a74034bca9c207d62011cda8b3a7ce099">RoPEModule</a> (int64_t head_dim, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, std::vector&lt; double &gt; inverse_frequencies, <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044">RoPELayout</a> <a class="el" href="classpulsatrix_1_1RoPEModule.html#af1acf097e0d6ef5c87a44bf7c0f377a2">layout</a>=<a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c">RoPELayout::AdjacentPairs</a>)</td></tr>
+<tr class="memdesc:a74034bca9c207d62011cda8b3a7ce099"><td class="mdescLeft">&#160;</td><td class="mdescRight">RoPE with explicit per-pair frequencies (LLM-6): pair i turns by <code>pos * inverse_frequencies[i]</code> instead of <code>pos * base^(-2i/head_dim)</code>, which is how scaled variants such as Llama 3's are expressed.  <br /></td></tr>
+<tr class="separator:a74034bca9c207d62011cda8b3a7ce099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab676e91ccd04e2dd6b5575cd05dd716b" id="r_ab676e91ccd04e2dd6b5575cd05dd716b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RoPEModule.html#ab676e91ccd04e2dd6b5575cd05dd716b">set_position_offset</a> (int64_t offset)</td></tr>
 <tr class="memdesc:ab676e91ccd04e2dd6b5575cd05dd716b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the first row of the L axis, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rotates rows <code>offset, offset + 1, ...</code> instead of <code>0, 1, ...</code> (LLM-1). Used when a sequence is processed in pieces, as generation with a KV cache does.  <br /></td></tr>
 <tr class="separator:ab676e91ccd04e2dd6b5575cd05dd716b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -197,7 +200,7 @@ Protected Member Functions</h2></td></tr>
 No learnable parameters (<code><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a></code> returns empty, matching <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a> / <a class="el" href="classpulsatrix_1_1SoftmaxModule.html" title="Softmax over the tensor&#39;s last dimension, applied independently to every &quot;row&quot; (every fixed combinati...">SoftmaxModule</a>). Nothing is precomputed across calls either &ndash; <code>cos</code>/<code>sin</code> are evaluated directly from <code>pos</code>/<code>i</code> inside the forward loop; this module has no state worth caching an angle table for. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa000c5f4b1283a72d6cdf45339de9ee1" name="aa000c5f4b1283a72d6cdf45339de9ee1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa000c5f4b1283a72d6cdf45339de9ee1">&#9670;&#160;</a></span>RoPEModule()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa000c5f4b1283a72d6cdf45339de9ee1">&#9670;&#160;</a></span>RoPEModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,6 +250,54 @@ No learnable parameters (<code><a class="el" href="classpulsatrix_1_1Module.html
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if head_dim &lt;= 0 or head_dim is odd &ndash; external boundary (constructor arguments can originate from Phase 5's Python bindings with no upstream validation), same convention as every other module's constructor argument checks. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a74034bca9c207d62011cda8b3a7ce099" name="a74034bca9c207d62011cda8b3a7ce099"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74034bca9c207d62011cda8b3a7ce099">&#9670;&#160;</a></span>RoPEModule() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::RoPEModule::RoPEModule </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>head_dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>inverse_frequencies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044">RoPELayout</a>&#160;</td>
+          <td class="paramname"><em>layout</em> = <code><a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c">RoPELayout::AdjacentPairs</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RoPE with explicit per-pair frequencies (LLM-6): pair i turns by <code>pos * inverse_frequencies[i]</code> instead of <code>pos * base^(-2i/head_dim)</code>, which is how scaled variants such as Llama 3's are expressed. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if head_dim is invalid, or there aren't head_dim / 2 finite, positive frequencies. </td></tr>
   </table>
   </dd>
 </dl>

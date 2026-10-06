@@ -422,6 +422,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The input space to explore: which features vary, over which ranges. Every other feature keeps its value from <code>base</code>.  <a href="structpulsatrix_1_1GlobalSensitivityProblem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GoldenReport.html">GoldenReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A model's comparison against a golden file.  <a href="structpulsatrix_1_1GoldenReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GoldenSequenceResult.html">GoldenSequenceResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One reference sequence's comparison.  <a href="structpulsatrix_1_1GoldenSequenceResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GpuSample.html">GpuSample</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One GPU's readings within a <a class="el" href="structpulsatrix_1_1SystemSample.html" title="One point-in-time measurement of the host.">SystemSample</a>.  <a href="structpulsatrix_1_1GpuSample.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1470,6 +1476,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ace423364f684e1daac5a3f82978be269" id="r_ace423364f684e1daac5a3f82978be269"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ace423364f684e1daac5a3f82978be269">ComputeSobol</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a> &amp;problem, int64_t target_index, const <a class="el" href="structpulsatrix_1_1SobolOptions.html">SobolOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ace423364f684e1daac5a3f82978be269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples two independent uniform matrices A and B over the problem's ranges, builds the Saltelli design (AB_j is A with column j from B), runs the model on every row and calls AnalyzeSobol.  <br /></td></tr>
 <tr class="separator:ace423364f684e1daac5a3f82978be269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18efbc5917c05fb62bb95cb673b59566" id="r_a18efbc5917c05fb62bb95cb673b59566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GoldenReport.html">GoldenReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a18efbc5917c05fb62bb95cb673b59566">CompareToGolden</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a> &amp;golden, float threshold=1e-3f)</td></tr>
+<tr class="memdesc:a18efbc5917c05fb62bb95cb673b59566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>model</code> on every <code>ids.&lt;k&gt;</code> sequence of a golden file (as written by tools/golden/make_golden.py) and compares all its logits with <code>logits.&lt;k&gt;</code>.  <br /></td></tr>
+<tr class="separator:a18efbc5917c05fb62bb95cb673b59566"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb8e19a5d9ca776142a658c4e5adbb5" id="r_a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8eb8e19a5d9ca776142a658c4e5adbb5">UnitCubeToConfiguration</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const std::vector&lt; float &gt; &amp;t)</td></tr>
 <tr class="memdesc:a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a unit-hypercube point (one value per parameter, each in [0, 1]) to a Configuration, using space's own declared bounds.  <br /></td></tr>
 <tr class="separator:a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1486,8 +1495,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ab7d789f4f26278c9f981e5f6692d96bc" id="r_ab7d789f4f26278c9f981e5f6692d96bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab7d789f4f26278c9f981e5f6692d96bc">ReadHfConfig</a> (const std::string &amp;path)</td></tr>
 <tr class="memdesc:ab7d789f4f26278c9f981e5f6692d96bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">ParseHfConfig on a file.  <br /></td></tr>
 <tr class="separator:ab7d789f4f26278c9f981e5f6692d96bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa9bdc6f7114dfcc96ef30a0df72f43c" id="r_aaa9bdc6f7114dfcc96ef30a0df72f43c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aaa9bdc6f7114dfcc96ef30a0df72f43c">RopeInverseFrequencies</a> (const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:aaa9bdc6f7114dfcc96ef30a0df72f43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The RoPE frequency of each pair, <code>head_dim / 2</code> of them, as Hugging Face computes them: <code>rope_theta^(-2i / head_dim)</code>, then rescaled by <code>rope_scaling</code> when it is <code>"linear"</code> (all divided by the factor) or <code>"llama3"</code> (low frequencies divided by the factor, high ones kept, the band between interpolated; LLM-6).  <br /></td></tr>
+<tr class="separator:aaa9bdc6f7114dfcc96ef30a0df72f43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f72456585566c7d3dd290e3ac5f0af5" id="r_a0f72456585566c7d3dd290e3ac5f0af5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0f72456585566c7d3dd290e3ac5f0af5">ToAttentionConfig</a> (const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;config)</td></tr>
-<tr class="memdesc:a0f72456585566c7d3dd290e3ac5f0af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attention layer the config describes: rotate-half RoPE, causal, its head counts, biases, QK-Norm and epsilon.  <br /></td></tr>
+<tr class="memdesc:a0f72456585566c7d3dd290e3ac5f0af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attention layer the config describes: rotate-half RoPE (with its scaling), causal, its head counts, biases, QK-Norm and epsilon.  <br /></td></tr>
 <tr class="separator:a0f72456585566c7d3dd290e3ac5f0af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87a0367a8a25871e968563e95fe39345" id="r_a87a0367a8a25871e968563e95fe39345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a87a0367a8a25871e968563e95fe39345">DecodeGenotype</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const std::vector&lt; double &gt; &amp;genotype)</td></tr>
 <tr class="memdesc:a87a0367a8a25871e968563e95fe39345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes a unit-hypercube genotype into a Configuration using space's own declared bounds: Continuous linearly, LogUniform geometrically (both identical to <a class="el" href="gp__bo_8hpp.html" title="The GP-BO trial loop: random-initialize, then repeatedly fit a GP to every trial observed so far and ...">gp_bo.hpp</a>'s UnitCubeToConfiguration); Integer by linear interpolation then rounding to the nearest integer (std::round &ndash; ties away from zero, portable); Categorical by linear interpolation into an index, floored, clamped to the last category (handles the gene == 1.0 boundary, which would otherwise floor to one-past-the-end).  <br /></td></tr>
@@ -3689,6 +3701,54 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if either side has no reports, a tolerance is negative, or the significance is outside (0, 1]. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a18efbc5917c05fb62bb95cb673b59566" name="a18efbc5917c05fb62bb95cb673b59566"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18efbc5917c05fb62bb95cb673b59566">&#9670;&#160;</a></span>CompareToGolden()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1GoldenReport.html">GoldenReport</a> pulsatrix::CompareToGolden </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a> &amp;&#160;</td>
+          <td class="paramname"><em>golden</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>threshold</em> = <code>1e-3f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs <code>model</code> on every <code>ids.&lt;k&gt;</code> sequence of a golden file (as written by tools/golden/make_golden.py) and compares all its logits with <code>logits.&lt;k&gt;</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">threshold</td><td>The roadmap's criterion: fp32, every logit within 1e-3 of the reference. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the file holds no sequences, a sequence's ids aren't I64 or don't fit the vocabulary, or its logits' shape doesn't match. </td></tr>
   </table>
   </dd>
 </dl>
@@ -9020,6 +9080,32 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="aaa9bdc6f7114dfcc96ef30a0df72f43c" name="aaa9bdc6f7114dfcc96ef30a0df72f43c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa9bdc6f7114dfcc96ef30a0df72f43c">&#9670;&#160;</a></span>RopeInverseFrequencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; pulsatrix::RopeInverseFrequencies </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The RoPE frequency of each pair, <code>head_dim / 2</code> of them, as Hugging Face computes them: <code>rope_theta^(-2i / head_dim)</code>, then rescaled by <code>rope_scaling</code> when it is <code>"linear"</code> (all divided by the factor) or <code>"llama3"</code> (low frequencies divided by the factor, high ones kept, the band between interpolated; LLM-6). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for any other rope_scaling type. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a044803ae38e9d03363ed45b9d44db28a" name="a044803ae38e9d03363ed45b9d44db28a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a044803ae38e9d03363ed45b9d44db28a">&#9670;&#160;</a></span>RouletteSelect()</h2>
 
@@ -11238,7 +11324,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
       </table>
 </div><div class="memdoc">
 
-<p>The attention layer the config describes: rotate-half RoPE, causal, its head counts, biases, QK-Norm and epsilon. </p>
+<p>The attention layer the config describes: rotate-half RoPE (with its scaling), causal, its head counts, biases, QK-Norm and epsilon. </p>
 
 </div>
 </div>
