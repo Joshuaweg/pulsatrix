@@ -456,7 +456,7 @@ scores into word scores.
 
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
-| TOK-1 | A `Tokenizer` interface: `encode` returns ids, token strings, character offsets and a special-token mask; `decode` returns text. Added tokens (special tokens such as `<\|im_start\|>`) are split out before anything else runs. The current tokenizer becomes the `WordLevel` model with a whitespace pre-tokenizer, and a byte tokenizer (256 ids plus specials) and a character tokenizer join it | One interface for every model, and offsets for every explanation | — | P0 | S | |
+| TOK-1 | A `Tokenizer` interface: `encode` returns ids, token strings, character offsets and a special-token mask; `decode` returns text. Added tokens (special tokens such as `<\|im_start\|>`) are split out before anything else runs. The current tokenizer becomes the `WordLevel` model with a whitespace pre-tokenizer, and a byte tokenizer (256 ids plus specials) and a character tokenizer join it | One interface for every model, and offsets for every explanation | — | P0 | S || Done, [#84](https://github.com/Joshuaweg/pulsatrix/pull/84) (see below) |
 | TOK-2 | Byte-level BPE from `tokenizer.json`, with a small regex engine for the Split pre-tokenizer: alternation, character classes with Unicode categories (`\p{L}`, `\p{Lu}`, `\p{M}`, `\p{N}`…) over a generated category table, ranges, quantifiers, `(?i:…)` and the `(?!\S)` lookahead; `std::regex` can't match Unicode categories. Also digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (`"a b"` strings and `["a", "b"]` pairs), `ignore_merges`, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5, Llama 3.2 and gpt-oss | Any byte-level BPE model loads without new code: SmolLM2, Qwen, Llama, gpt-oss, Mistral, DeepSeek, Phi-4 | TOK-1 | P0 | M | |
 | TOK-3 | SentencePiece-style BPE: byte fallback (`<0x41>` tokens), `▁` replacement, `fuse_unk`, and the matching decoder chain. It passes the same corpus test for Gemma 3 | Gemma 3 and Gemma Scope 2 (LLM-9, FEAT) | TOK-2 | P1 | S | |
 | TOK-4 | Word-level aggregation: merge per-token scores (relevance, attributions, probe outputs) into per-word scores using the offsets, by sum, mean or maximum | Explanations people can read | TOK-1 | P1 | S | |
@@ -467,6 +467,21 @@ scores into word scores.
 
 Not planned: SentencePiece `.model` protobuf files (every target model also ships
 `tokenizer.json`) and a local Claude tokenizer (not public).
+
+### How the TOK work departed from the plan
+
+- **TOK-1** is one concrete `TextTokenizer` built from components (`text_tokenizer.hpp`), as Hugging
+  Face's `Tokenizer` is, rather than an interface each tokenizer implements. The word-level, byte
+  and character tokenizers are factory functions (`tokenizer_components.hpp`).
+  - Offsets are UTF-8 byte offsets into the input, not characters. A token's source is then a plain
+    substring. A byte-level token inside a multi-byte character gets the whole character's span.
+  - `NormalizedString` records each byte's origin, so normalizers and pre-tokenizers that change
+    text (NFC, byte-level mapping in TOK-2) keep offsets.
+  - `Tokenizer::Tokenize` stays as it is for `TextDataset` and existing vocabularies. The new
+    word-level tokenizer matches it on ASCII. It keeps a non-ASCII character as one token, where
+    `Tokenize` splits it into bytes.
+  - Added tokens are matched in the raw text, longest first. Hugging Face can also match them after
+    normalization (`normalized: true`); TOK-2 handles that where a target model needs it.
 
 ## XAI: Question-driven explainability framework
 
