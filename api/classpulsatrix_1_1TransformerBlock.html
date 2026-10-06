@@ -131,9 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acde60b9083910b814406bc6a10d7deee" id="r_acde60b9083910b814406bc6a10d7deee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#acde60b9083910b814406bc6a10d7deee">TransformerBlock</a> (int64_t <a class="el" href="classpulsatrix_1_1TransformerBlock.html#a39ba98c6b35d8b44af755fedb2056a38">d_model</a>, int64_t num_heads, int64_t d_ff, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, bool use_rope=true, bool use_qk_norm=false)</td></tr>
 <tr class="memdesc:acde60b9083910b814406bc6a10d7deee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a transformer block with zero-initialized sub-module parameters.  <br /></td></tr>
 <tr class="separator:acde60b9083910b814406bc6a10d7deee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79999dabafcbb3e05338deab46f64511" id="r_a79999dabafcbb3e05338deab46f64511"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a79999dabafcbb3e05338deab46f64511">TransformerBlock</a> (const <a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> &amp;attention, int64_t d_ff, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float norm_eps=1e-6f)</td></tr>
-<tr class="memdesc:a79999dabafcbb3e05338deab46f64511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a block whose attention is configured in full (LLM-1): grouped-query attention, a causal mask, the RoPE layout and so on. See <a class="el" href="structpulsatrix_1_1AttentionConfig.html" title="Everything that shapes a MultiHeadAttentionModule (LLM-1).">AttentionConfig</a>.  <br /></td></tr>
-<tr class="separator:a79999dabafcbb3e05338deab46f64511"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab85ffd3c332929ea907cb85313d7788b" id="r_ab85ffd3c332929ea907cb85313d7788b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#ab85ffd3c332929ea907cb85313d7788b">TransformerBlock</a> (const <a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> &amp;attention, int64_t d_ff, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float norm_eps=1e-6f, bool mlp_bias=true)</td></tr>
+<tr class="memdesc:ab85ffd3c332929ea907cb85313d7788b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a block whose attention is configured in full (LLM-1): grouped-query attention, a causal mask, the RoPE layout and so on. See <a class="el" href="structpulsatrix_1_1AttentionConfig.html" title="Everything that shapes a MultiHeadAttentionModule (LLM-1).">AttentionConfig</a>.  <br /></td></tr>
+<tr class="separator:ab85ffd3c332929ea907cb85313d7788b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc0a1563e2a85b6998d197edfcf9e861" id="r_abc0a1563e2a85b6998d197edfcf9e861"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#abc0a1563e2a85b6998d197edfcf9e861">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:abc0a1563e2a85b6998d197edfcf9e861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside norm1_/mha_/norm2_/swiglu_ (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>).  <br /></td></tr>
 <tr class="separator:abc0a1563e2a85b6998d197edfcf9e861"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,8 +278,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a79999dabafcbb3e05338deab46f64511" name="a79999dabafcbb3e05338deab46f64511"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79999dabafcbb3e05338deab46f64511">&#9670;&#160;</a></span>TransformerBlock() <span class="overload">[2/2]</span></h2>
+<a id="ab85ffd3c332929ea907cb85313d7788b" name="ab85ffd3c332929ea907cb85313d7788b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab85ffd3c332929ea907cb85313d7788b">&#9670;&#160;</a></span>TransformerBlock() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -306,7 +306,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>norm_eps</em> = <code>1e-6f</code>&#160;</td>
+          <td class="paramname"><em>norm_eps</em> = <code>1e-6f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mlp_bias</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -323,6 +329,7 @@ Protected Member Functions</h2></td></tr>
     <tr><td class="paramname">d_ff</td><td>SwiGLU hidden width. </td></tr>
     <tr><td class="paramname">backend</td><td>Backend to allocate/compute through. Not owned; must outlive this module. </td></tr>
     <tr><td class="paramname">norm_eps</td><td>Stabilizer of both RMSNorms (Hugging Face <code>rms_norm_eps</code>). </td></tr>
+    <tr><td class="paramname">mlp_bias</td><td>Biases on the SwiGLU projections (Hugging Face <code>mlp_bias</code>; Llama-family models have none). </td></tr>
   </table>
   </dd>
 </dl>

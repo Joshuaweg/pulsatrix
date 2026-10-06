@@ -7,5 +7,6 @@ var searchData=
   ['hidden_5fdim_4',['hidden_dim',['../classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec',1,'pulsatrix::SparseAutoencoder']]],
   ['hipbackend_5',['hipbackend',['../classpulsatrix_1_1HIPBackend.html#ab62ba66f083956b40cf612fd866cc2ac',1,'pulsatrix::HIPBackend::HIPBackend()'],['../classpulsatrix_1_1HIPBackend.html#a2b3cbaa24088f1b54bfd160b9f7e5d53',1,'pulsatrix::HIPBackend::HIPBackend(const HIPBackend &amp;)=delete']]],
   ['history_6',['history',['../classpulsatrix_1_1SystemMonitor.html#a7091379ce598130849103dfe45c4c251',1,'pulsatrix::SystemMonitor']]],
-  ['hypergridenv_7',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv']]]
+  ['huggingfacemapping_7',['HuggingFaceMapping',['../namespacepulsatrix.html#a01f1d9da2c67634f355455908a59b7e0',1,'pulsatrix']]],
+  ['hypergridenv_8',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv']]]
 ];

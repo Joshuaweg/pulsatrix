@@ -1,7 +1,7 @@
 var classpulsatrix_1_1TransformerBlock =
 [
     [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html#acde60b9083910b814406bc6a10d7deee", null ],
-    [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html#a79999dabafcbb3e05338deab46f64511", null ],
+    [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html#ab85ffd3c332929ea907cb85313d7788b", null ],
     [ "backward", "classpulsatrix_1_1TransformerBlock.html#abc0a1563e2a85b6998d197edfcf9e861", null ],
     [ "compute_device", "classpulsatrix_1_1TransformerBlock.html#ab76a3f0b3b5d175132e8f49641c491d3", null ],
     [ "d_model", "classpulsatrix_1_1TransformerBlock.html#a39ba98c6b35d8b44af755fedb2056a38", null ],

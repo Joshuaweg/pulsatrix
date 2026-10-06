@@ -57,6 +57,7 @@ var annotated_dup =
       [ "CalibrationLoss", "classpulsatrix_1_1CalibrationLoss.html", "classpulsatrix_1_1CalibrationLoss" ],
       [ "CartPoleEnv", "classpulsatrix_1_1CartPoleEnv.html", "classpulsatrix_1_1CartPoleEnv" ],
       [ "CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", "classpulsatrix_1_1CategoricalPolicyAgent" ],
+      [ "CausalLM", "classpulsatrix_1_1CausalLM.html", "classpulsatrix_1_1CausalLM" ],
       [ "CenterCropTransform", "classpulsatrix_1_1CenterCropTransform.html", "classpulsatrix_1_1CenterCropTransform" ],
       [ "CheckpointLoadOptions", "structpulsatrix_1_1CheckpointLoadOptions.html", "structpulsatrix_1_1CheckpointLoadOptions" ],
       [ "CircuitEdge", "structpulsatrix_1_1CircuitEdge.html", "structpulsatrix_1_1CircuitEdge" ],
@@ -295,6 +296,9 @@ var annotated_dup =
       [ "WaterfallStep", "structpulsatrix_1_1WaterfallStep.html", "structpulsatrix_1_1WaterfallStep" ],
       [ "WavData", "structpulsatrix_1_1WavData.html", "structpulsatrix_1_1WavData" ],
       [ "WavReader", "classpulsatrix_1_1WavReader.html", null ],
+      [ "WeightLoadOptions", "structpulsatrix_1_1WeightLoadOptions.html", "structpulsatrix_1_1WeightLoadOptions" ],
+      [ "WeightLoadReport", "structpulsatrix_1_1WeightLoadReport.html", "structpulsatrix_1_1WeightLoadReport" ],
+      [ "WeightMapping", "structpulsatrix_1_1WeightMapping.html", "structpulsatrix_1_1WeightMapping" ],
       [ "XorNetwork", "classpulsatrix_1_1XorNetwork.html", "classpulsatrix_1_1XorNetwork" ]
     ] ]
 ];

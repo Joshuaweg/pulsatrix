@@ -216,6 +216,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CategoricalPolicyAgent.html">CategoricalPolicyAgent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples an action from <code>softmax(policy_network(observation))</code> &ndash; the discrete-action stochastic policy every policy-gradient method in this phase (REINFORCE, A2C, PPO) is built on.  <a href="classpulsatrix_1_1CategoricalPolicyAgent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Token embedding, <code>num_hidden_layers</code> pre-norm transformer blocks, a final RMSNorm and a language-model head (tied to the embedding or its own bias-free Linear): the architecture of Llama, SmolLM2, Qwen2/2.5 and Qwen3. Maps <code>(N, L)</code> token ids to <code>(N, L, vocab)</code> logits.  <a href="classpulsatrix_1_1CausalLM.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CenterCropTransform.html">CenterCropTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crops the centered (crop_height, crop_width) region of the image.  <a href="classpulsatrix_1_1CenterCropTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -937,6 +940,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1WavReader.html">WavReader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads uncompressed 16-bit PCM WAV files directly &ndash; pulsatrix's first audio primitive (campaign_exai_dl_library_data_pipeline, Phase 4, Decision Point 4: hand-rolled over libsndfile, same "narrowest thing that satisfies the exit gate" reasoning as Decision Points 1/2/6).  <a href="classpulsatrix_1_1WavReader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WeightLoadOptions.html">WeightLoadOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loading settings.  <a href="structpulsatrix_1_1WeightLoadOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WeightLoadReport.html">WeightLoadReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What a load did.  <a href="structpulsatrix_1_1WeightLoadReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One entry of a name-mapping manifest.  <a href="structpulsatrix_1_1WeightMapping.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html">XorNetwork</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tiny MLP (<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(2,4)</a> -&gt; ReLU -&gt; <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(4,1)</a>) trained on XOR &ndash; the canonical not-linearly-separable case, exactly representable by a small MLP, giving an unambiguous convergence target for Phase 1's "prove the training loop works" goal.  <a href="classpulsatrix_1_1XorNetwork.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -981,6 +993,11 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:ae7ceb8ee1ca517e2ce811f4f6761d779" id="r_ae7ceb8ee1ca517e2ce811f4f6761d779"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779">WeightTransform</a> { <a class="el" href="namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779ac9c5c65fb4af9cf90eb99b3b84424189">Identity</a>
+, <a class="el" href="namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779aaf70b1ac863830a4e1ce6268c8399f54">Transpose</a>
+ }</td></tr>
+<tr class="memdesc:ae7ceb8ee1ca517e2ce811f4f6761d779"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a source tensor becomes a target parameter.  <a href="namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779">More...</a><br /></td></tr>
+<tr class="separator:ae7ceb8ee1ca517e2ce811f4f6761d779"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5480c8cbe462fe3f5a8eb04a8c579e6e" id="r_a5480c8cbe462fe3f5a8eb04a8c579e6e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> { <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">Cpu</a>
 , <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea8b95dcff7397d0693c03e394af5552aa">Cuda</a>
 , <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92">Hip</a>
@@ -1218,6 +1235,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ab117963df9f25d6ace51a78658ca4496" id="r_ab117963df9f25d6ace51a78658ca4496"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkComparison.html">BenchmarkComparison</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab117963df9f25d6ace51a78658ca4496">CompareBenchmarks</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &gt; &amp;baseline_runs, const std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &gt; &amp;candidate_runs, const <a class="el" href="structpulsatrix_1_1CompareOptions.html">CompareOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ab117963df9f25d6ace51a78658ca4496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares a candidate build with a baseline, record by record (matched on name and device). Several reports per side are the rounds of an interleaved A/B run; each side's value is the median over its rounds, so one noisy round doesn't decide, and with three or more rounds per side a time regresses only if its rounds also separate (<a class="el" href="structpulsatrix_1_1CompareOptions.html#a047bba0024a10de84af39bb9f210f513" title="With at least three rounds on each side, a time also needs the candidate&#39;s rounds to be slower than t...">CompareOptions::significance</a>).  <br /></td></tr>
 <tr class="separator:ab117963df9f25d6ace51a78658ca4496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fa95d7089827aa1932898c2fb1f5469" id="r_a6fa95d7089827aa1932898c2fb1f5469"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1WeightLoadReport.html">WeightLoadReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6fa95d7089827aa1932898c2fb1f5469">LoadWeights</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="classpulsatrix_1_1HfCheckpoint.html">HfCheckpoint</a> &amp;checkpoint, const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;mapping, const <a class="el" href="structpulsatrix_1_1WeightLoadOptions.html">WeightLoadOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a6fa95d7089827aa1932898c2fb1f5469"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads checkpoint tensors into <code>model's</code> named parameters and buffers by <code>mapping</code>. Every tensor is read, converted to fp32 (IO-6), sliced and transformed, and checked against its target's shape before anything is written, so a failed load leaves the model unchanged.  <br /></td></tr>
+<tr class="separator:a6fa95d7089827aa1932898c2fb1f5469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01f1d9da2c67634f355455908a59b7e0" id="r_a01f1d9da2c67634f355455908a59b7e0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a01f1d9da2c67634f355455908a59b7e0">HuggingFaceMapping</a> (const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:a01f1d9da2c67634f355455908a59b7e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The manifest for a Llama-family Hugging Face checkpoint (<code>model.embed_tokens.weight</code>, <code>model.layers.&lt;i&gt;.self_attn.q_proj.weight</code>, ..., <code>model.norm.weight</code>, <code>lm_head.weight</code>) onto <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>'s parameters: Linear weights transposed, biases and norms as they are.  <br /></td></tr>
+<tr class="separator:a01f1d9da2c67634f355455908a59b7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab41209346909acb22907cfbbd3eea8a4" id="r_ab41209346909acb22907cfbbd3eea8a4"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab41209346909acb22907cfbbd3eea8a4">LoadCausalLM</a> (const std::string &amp;directory, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:ab41209346909acb22907cfbbd3eea8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads <code>config.json</code> and the weights in a downloaded Hugging Face model directory into a new <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>, strictly: a tied checkpoint's <code>lm_head.weight</code> is the only tensor allowed to go unused.  <br /></td></tr>
+<tr class="separator:ab41209346909acb22907cfbbd3eea8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3191b79a9d4bc8fc4e547d1a3e3aa525" id="r_a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3191b79a9d4bc8fc4e547d1a3e3aa525">OptimizerStatePath</a> (const std::string &amp;checkpoint_path)</td></tr>
 <tr class="memdesc:a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the optimizer state for <code>checkpoint_path</code> is stored: <code>model.safetensors</code> becomes <code>model.optim.safetensors</code>; any other name gets <code>.optim.safetensors</code> appended.  <br /></td></tr>
 <tr class="separator:a3191b79a9d4bc8fc4e547d1a3e3aa525"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2775,6 +2801,35 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1" name="ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1"></a>SumWithPrevious&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae999cb7b2d1c9ba912797e3319968107a09a12a079bf46e996fea54fa0d53783a" name="ae999cb7b2d1c9ba912797e3319968107a09a12a079bf46e996fea54fa0d53783a"></a>DifferenceWithPrevious&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ae7ceb8ee1ca517e2ce811f4f6761d779" name="ae7ceb8ee1ca517e2ce811f4f6761d779"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7ceb8ee1ca517e2ce811f4f6761d779">&#9670;&#160;</a></span>WeightTransform</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779">pulsatrix::WeightTransform</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How a source tensor becomes a target parameter. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae7ceb8ee1ca517e2ce811f4f6761d779ac9c5c65fb4af9cf90eb99b3b84424189" name="ae7ceb8ee1ca517e2ce811f4f6761d779ac9c5c65fb4af9cf90eb99b3b84424189"></a>Identity&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae7ceb8ee1ca517e2ce811f4f6761d779aaf70b1ac863830a4e1ce6268c8399f54" name="ae7ceb8ee1ca517e2ce811f4f6761d779aaf70b1ac863830a4e1ce6268c8399f54"></a>Transpose&#160;</td><td class="fielddoc"><p>Swap the two axes of a matrix: PyTorch's <code>nn.Linear</code> stores <code>(out, in)</code>, pulsatrix's <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> <code>(in, out)</code>. </p>
+</td></tr>
 </table>
 
 </div>
@@ -6109,6 +6164,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a01f1d9da2c67634f355455908a59b7e0" name="a01f1d9da2c67634f355455908a59b7e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01f1d9da2c67634f355455908a59b7e0">&#9670;&#160;</a></span>HuggingFaceMapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; pulsatrix::HuggingFaceMapping </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The manifest for a Llama-family Hugging Face checkpoint (<code>model.embed_tokens.weight</code>, <code>model.layers.&lt;i&gt;.self_attn.q_proj.weight</code>, ..., <code>model.norm.weight</code>, <code>lm_head.weight</code>) onto <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>'s parameters: Linear weights transposed, biases and norms as they are. </p>
+
+</div>
+</div>
 <a id="acf06d2190bfb60cc8810fcf24d1e99b2" name="acf06d2190bfb60cc8810fcf24d1e99b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acf06d2190bfb60cc8810fcf24d1e99b2">&#9670;&#160;</a></span>Impute()</h2>
 
@@ -6229,6 +6304,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ab41209346909acb22907cfbbd3eea8a4" name="ab41209346909acb22907cfbbd3eea8a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab41209346909acb22907cfbbd3eea8a4">&#9670;&#160;</a></span>LoadCausalLM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &gt; pulsatrix::LoadCausalLM </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads <code>config.json</code> and the weights in a downloaded Hugging Face model directory into a new <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a>, strictly: a tied checkpoint's <code>lm_head.weight</code> is the only tensor allowed to go unused. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a config <a class="el" href="classpulsatrix_1_1CausalLM.html" title="Token embedding, num_hidden_layers pre-norm transformer blocks, a final RMSNorm and a language-model ...">CausalLM</a> refuses or weights that don't match it; std::runtime_error if files can't be read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a862a61bf00880ccd8d58cdbb43eaae15" name="a862a61bf00880ccd8d58cdbb43eaae15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a862a61bf00880ccd8d58cdbb43eaae15">&#9670;&#160;</a></span>LoadCheckpoint() <span class="overload">[1/2]</span></h2>
 
@@ -6316,6 +6427,54 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the file is from a newer format version or another framework (<code>format</code> other than "pulsatrix"; importing other names is roadmap IO-4), a shape differs, an entry isn't F32, or (when strict) a name is missing or unexpected. </td></tr>
     <tr><td class="paramname">std::runtime_error</td><td>if the file can't be read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6fa95d7089827aa1932898c2fb1f5469" name="a6fa95d7089827aa1932898c2fb1f5469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fa95d7089827aa1932898c2fb1f5469">&#9670;&#160;</a></span>LoadWeights()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1WeightLoadReport.html">WeightLoadReport</a> pulsatrix::LoadWeights </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1HfCheckpoint.html">HfCheckpoint</a> &amp;&#160;</td>
+          <td class="paramname"><em>checkpoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1WeightLoadOptions.html">WeightLoadOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads checkpoint tensors into <code>model's</code> named parameters and buffers by <code>mapping</code>. Every tensor is read, converted to fp32 (IO-6), sliced and transformed, and checked against its target's shape before anything is written, so a failed load leaves the model unchanged. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a source or target doesn't exist, a target is mapped twice, a shape doesn't match, a slice is out of range, a Transpose source isn't a matrix, or (strict) a target is left unloaded or a source unused and not ignored. </td></tr>
   </table>
   </dd>
 </dl>

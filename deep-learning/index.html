@@ -2018,9 +2018,23 @@ millisecond.</p>
   tensor present, nothing unlisted), and a shard must be a plain file name in the checkpoint
   directory, so an index can't point outside it.</li>
 <li>Hub weights are usually bf16. <code>tensor()</code> widens bf16, fp16 and both fp8 formats to fp32
-  exactly, and rounds fp64; integer tensors stay raw bytes (<code>bytes()</code>). Mapping Hugging Face
-  names onto pulsatrix modules is IO-4.</li>
+  exactly, and rounds fp64; integer tensors stay raw bytes (<code>bytes()</code>).</li>
 </ul>
+<p><strong>Loading a model.</strong> <code>LoadCausalLM</code> builds a <code>CausalLM</code> (embedding, transformer blocks, final
+RMSNorm, tied or untied head: Llama, SmolLM2, Qwen2/2.5, Qwen3) from a downloaded model directory
+and loads its weights by name:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/causal_lm.hpp"</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CausalLM</span><span class="o">&gt;</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadCausalLM</span><span class="p">(</span><span class="s">"SmolLM2-135M"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="n">logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">ids</span><span class="p">);</span><span class="w">                      </span><span class="c1">// (1, L) token ids -&gt; (1, L, vocab)</span>
+<span class="n">GenerationResult</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Generate</span><span class="p">(</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">next_token_logits</span><span class="p">(</span><span class="mi">512</span><span class="p">),</span><span class="w"> </span><span class="n">prompt_ids</span><span class="p">,</span><span class="w"> </span><span class="n">GenerationConfig</span><span class="p">{});</span>
+</code></pre></div>
+<p>The real SmolLM2-135M loads in about half a second, its logits are within 5e-4 of transformers',
+and its greedy continuations are identical. <code>CausalLM</code> is an ordinary module, so <code>backward()</code>,
+<code>propagate_relevance()</code> and checkpoints work on it. Loading is strict: a config with features
+pulsatrix can't run yet is refused, and every parameter must be loaded and every checkpoint
+tensor used. <code>LoadWeights</code> with a <code>WeightMapping</code> manifest (source name, target name, a transpose,
+an optional row slice for fused tensors) loads other layouts the same way.</p>
 <h3 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h3>
 <p>Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
 <code>set_seed</code> sets one global seed (default 0). Anything built without its own seed, such as a

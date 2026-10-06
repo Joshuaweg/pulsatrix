@@ -128,9 +128,9 @@ Collaboration diagram for pulsatrix::SwiGLUModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2d03328b608d219a5345599791fa4c0b" id="r_a2d03328b608d219a5345599791fa4c0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a2d03328b608d219a5345599791fa4c0b">SwiGLUModule</a> (int64_t <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#abeed20e92962a694223e738f03668227">d_model</a>, int64_t <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54">d_ff</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
-<tr class="memdesc:a2d03328b608d219a5345599791fa4c0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a SwiGLU block with zero-initialized projections.  <br /></td></tr>
-<tr class="separator:a2d03328b608d219a5345599791fa4c0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7785d7087c556c8faf374b177c6e865" id="r_af7785d7087c556c8faf374b177c6e865"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#af7785d7087c556c8faf374b177c6e865">SwiGLUModule</a> (int64_t <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#abeed20e92962a694223e738f03668227">d_model</a>, int64_t <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54">d_ff</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, bool use_bias=true)</td></tr>
+<tr class="memdesc:af7785d7087c556c8faf374b177c6e865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a SwiGLU block with zero-initialized projections.  <br /></td></tr>
+<tr class="separator:af7785d7087c556c8faf374b177c6e865"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabebe9bd5eb5e02e33ad0fecbd635492" id="r_aabebe9bd5eb5e02e33ad0fecbd635492"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#aabebe9bd5eb5e02e33ad0fecbd635492">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:aabebe9bd5eb5e02e33ad0fecbd635492"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside gate_proj_/up_proj_/down_proj_ (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>).  <br /></td></tr>
 <tr class="separator:aabebe9bd5eb5e02e33ad0fecbd635492"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,8 +200,8 @@ Protected Member Functions</h2></td></tr>
 <dd>
 <code><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a193e9e312e1d9a20df41c6627ce20cd9" title="Elementwise per this module&#39;s own op_type() note above.">op_type()</a></code> reuses <code><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbaab6e9fd932f9015e01b8813e750049ec">OpType::Elementwise</a></code> &ndash; same resolution <code><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a></code> made (the hand-written novel part is an elementwise gate multiply, not a new operation category). Contrast <code><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a></code>, which earned a new category for genuinely novel cross-position mixing this module does not do &ndash; every position here is processed independently. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2d03328b608d219a5345599791fa4c0b" name="a2d03328b608d219a5345599791fa4c0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d03328b608d219a5345599791fa4c0b">&#9670;&#160;</a></span>SwiGLUModule()</h2>
+<a id="af7785d7087c556c8faf374b177c6e865" name="af7785d7087c556c8faf374b177c6e865"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7785d7087c556c8faf374b177c6e865">&#9670;&#160;</a></span>SwiGLUModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -222,7 +222,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
-          <td class="paramname"><em>backend</em>&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_bias</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -244,6 +250,12 @@ Protected Member Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if d_model &lt;= 0 or d_ff &lt;= 0 &ndash; external boundary (construction arguments can originate from Phase 5's Python bindings with no upstream validation), same convention as every other constructor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">use_bias</td><td>false builds the three projections without biases, as Llama-family MLPs are (IO-4). </td></tr>
   </table>
   </dd>
 </dl>

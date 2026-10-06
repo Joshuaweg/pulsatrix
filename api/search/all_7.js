@@ -19,7 +19,7 @@ var searchData=
   ['hidden_5fact_16',['hidden_act',['../structpulsatrix_1_1HfModelConfig.html#ac802a1a7823830a4a2e088527942feb3',1,'pulsatrix::HfModelConfig']]],
   ['hidden_5fdim_17',['hidden_dim',['../classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec',1,'pulsatrix::SparseAutoencoder']]],
   ['hidden_5fsize_18',['hidden_size',['../structpulsatrix_1_1HfModelConfig.html#a56686b879c679aa4d88aa531e4ce860e',1,'pulsatrix::HfModelConfig']]],
-  ['high_19',['high',['../structpulsatrix_1_1CounterfactualTarget.html#a7497807ab807cdaf4de88a3706b60fac',1,'pulsatrix::CounterfactualTarget::high'],['../structpulsatrix_1_1LRPRuleConfig.html#ab2d7caeadd3b4bc6ec0f7e10425bd9eb',1,'pulsatrix::LRPRuleConfig::high'],['../structpulsatrix_1_1SensitivityBounds.html#afe9c554ca2568a695f198201f17954b8',1,'pulsatrix::SensitivityBounds::high'],['../structpulsatrix_1_1FeatureSensitivity.html#aff896849615052319852b5ffeee9a5ca',1,'pulsatrix::FeatureSensitivity::high'],['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#ab0e235e49a42f674d5aff10ac4991bfb',1,'pulsatrix::SensitivityDocument::Feature::high']]],
+  ['high_19',['high',['../structpulsatrix_1_1SensitivityBounds.html#afe9c554ca2568a695f198201f17954b8',1,'pulsatrix::SensitivityBounds::high'],['../structpulsatrix_1_1LRPRuleConfig.html#ab2d7caeadd3b4bc6ec0f7e10425bd9eb',1,'pulsatrix::LRPRuleConfig::high'],['../structpulsatrix_1_1CounterfactualTarget.html#a7497807ab807cdaf4de88a3706b60fac',1,'pulsatrix::CounterfactualTarget::high'],['../structpulsatrix_1_1FeatureSensitivity.html#aff896849615052319852b5ffeee9a5ca',1,'pulsatrix::FeatureSensitivity::high'],['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#ab0e235e49a42f674d5aff10ac4991bfb',1,'pulsatrix::SensitivityDocument::Feature::high']]],
   ['high_5ffreq_5ffactor_20',['high_freq_factor',['../structpulsatrix_1_1HfRopeScaling.html#acec31e2747a6b7924b8a9d690d4695f8',1,'pulsatrix::HfRopeScaling']]],
   ['hip_21',['Hip',['../namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92',1,'pulsatrix']]],
   ['hip_5fbackend_2ehpp_22',['hip_backend.hpp',['../hip__backend_8hpp.html',1,'']]],
@@ -39,10 +39,11 @@ var searchData=
   ['hosttohost_36',['HostToHost',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6ba297d3681581537b0677cb9f2a3b9e589',1,'pulsatrix']]],
   ['hpo_5fgenotype_2ehpp_37',['hpo_genotype.hpp',['../hpo__genotype_8hpp.html',1,'']]],
   ['hpo_5fsampling_2ehpp_38',['hpo_sampling.hpp',['../hpo__sampling_8hpp.html',1,'']]],
-  ['hyperband_2ehpp_39',['hyperband.hpp',['../hyperband_8hpp.html',1,'']]],
-  ['hyperbandbracket_40',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
-  ['hyperbandresult_41',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
-  ['hypergrid_5fenv_2ehpp_42',['hypergrid_env.hpp',['../hypergrid__env_8hpp.html',1,'']]],
-  ['hypergridenv_43',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv'],['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()']]],
-  ['hyperparameter_20optimization_44',['Hyperparameter Optimization',['../group__hyperparameter__optimization.html',1,'']]]
+  ['huggingfacemapping_39',['HuggingFaceMapping',['../namespacepulsatrix.html#a01f1d9da2c67634f355455908a59b7e0',1,'pulsatrix']]],
+  ['hyperband_2ehpp_40',['hyperband.hpp',['../hyperband_8hpp.html',1,'']]],
+  ['hyperbandbracket_41',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
+  ['hyperbandresult_42',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
+  ['hypergrid_5fenv_2ehpp_43',['hypergrid_env.hpp',['../hypergrid__env_8hpp.html',1,'']]],
+  ['hypergridenv_44',['hypergridenv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix::HyperGridEnv'],['../classpulsatrix_1_1HyperGridEnv.html#a05b3e614825178fe75ec70336f284265',1,'pulsatrix::HyperGridEnv::HyperGridEnv()']]],
+  ['hyperparameter_20optimization_45',['Hyperparameter Optimization',['../group__hyperparameter__optimization.html',1,'']]]
 ];

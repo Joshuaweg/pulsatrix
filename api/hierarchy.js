@@ -163,6 +163,7 @@ var hierarchy =
       [ "pulsatrix::AggregatorModule", "classpulsatrix_1_1AggregatorModule.html", null ],
       [ "pulsatrix::AvgPool2DModule", "classpulsatrix_1_1AvgPool2DModule.html", null ],
       [ "pulsatrix::BatchNormModule", "classpulsatrix_1_1BatchNormModule.html", null ],
+      [ "pulsatrix::CausalLM", "classpulsatrix_1_1CausalLM.html", null ],
       [ "pulsatrix::ConjunctionModule", "classpulsatrix_1_1ConjunctionModule.html", null ],
       [ "pulsatrix::Conv2DModule", "classpulsatrix_1_1Conv2DModule.html", null ],
       [ "pulsatrix::DisjunctionModule", "classpulsatrix_1_1DisjunctionModule.html", null ],
@@ -317,5 +318,8 @@ var hierarchy =
     [ "pulsatrix::WavData", "structpulsatrix_1_1WavData.html", null ],
     [ "pulsatrix::WavReader", "classpulsatrix_1_1WavReader.html", null ],
     [ "pulsatrix::datalog::WeightedFactDatabase< T >", "classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html", null ],
+    [ "pulsatrix::WeightLoadOptions", "structpulsatrix_1_1WeightLoadOptions.html", null ],
+    [ "pulsatrix::WeightLoadReport", "structpulsatrix_1_1WeightLoadReport.html", null ],
+    [ "pulsatrix::WeightMapping", "structpulsatrix_1_1WeightMapping.html", null ],
     [ "pulsatrix::XorNetwork", "classpulsatrix_1_1XorNetwork.html", null ]
 ];

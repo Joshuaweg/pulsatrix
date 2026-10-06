@@ -2744,7 +2744,9 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
   (<a href="#llm-running-real-language-models">LLM-1</a>): grouped-query attention, causal and padding
   masks, "rotate half" RoPE with a configurable base, QK-Norm and bias-free projections, checked
   against Hugging Face's Llama, Qwen2 and Qwen3 attention. A language-model head that shares the
-  embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5).</li>
+  embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5). Hugging
+  Face configs, sharded checkpoints and bf16 weights load into a <code>CausalLM</code> (IO-4 to IO-6): the
+  real SmolLM2-135M runs and matches transformers.</li>
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Its container runs ROCm 10.0.0, the
@@ -3187,6 +3189,12 @@ autoencoder dictionaries and a model zoo.</p>
 <li><strong>IO-2</strong> records a checksum of the model file in the optimizer file, so stale optimizer state
   from an earlier save is refused. A plain safetensors file with matching names loads as format
   version 0.</li>
+<li><strong>IO-4</strong> comes with a model to load into: <code>CausalLM</code>, built from an <code>HfModelConfig</code>, with
+  parameter names close to Hugging Face's, so the manifest is mostly renames and transposes. No
+  RoPE permutation is needed, because LLM-1 runs Hugging Face's rotate-half layout natively.
+  Fused tensors are split with row slices. It is checked against tiny Llama, Qwen2 and Qwen3
+  models saved by transformers itself (logits within 1e-4, identical greedy generations), and the
+  real SmolLM2-135M loads with logits within 4.3e-4 of transformers' and the same greedy text.</li>
 <li><strong>IO-5</strong> fills in the values each architecture implies but its <code>config.json</code> leaves out
   (Qwen2's Q/K/V biases, Qwen3's and Gemma's QK-Norm, <code>head_dim</code>), and lists what pulsatrix can't
   run yet instead of ignoring it, so a loader can refuse a model rather than run it subtly wrong.
@@ -3219,6 +3227,10 @@ autoencoder dictionaries and a model zoo.</p>
 <tr>
 <td>Running the safetensors writer's GPU path on hardware</td>
 <td>HIP-9 or KS-8</td>
+</tr>
+<tr>
+<td>Gradient buffers are allocated with every parameter, so inference uses twice the memory (SmolLM2-135M peaks at 1.9 GB)</td>
+<td>allocate on first backward</td>
 </tr>
 </tbody>
 </table>
@@ -3553,7 +3565,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 </tr>
 <tr>
 <td><code>SwiGLUModule</code> without biases: Llama-family MLPs have none, and IO-4's strict mode fails on unmapped keys</td>
-<td>IO-4</td>
+<td>Done in IO-4</td>
 </tr>
 <tr>
 <td>Gemma 3's <code>query_pre_attn_scalar</code> replaces the <code>1/sqrt(head_dim)</code> scale</td>

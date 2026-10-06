@@ -9,6 +9,7 @@ var group__dl__modules =
     [ "benchmark.hpp", "benchmark_8hpp.html", null ],
     [ "caching_allocator.hpp", "caching__allocator_8hpp.html", null ],
     [ "calibration_loss.hpp", "calibration__loss_8hpp.html", null ],
+    [ "causal_lm.hpp", "causal__lm_8hpp.html", null ],
     [ "checkpoint.hpp", "checkpoint_8hpp.html", null ],
     [ "computation_graph.hpp", "computation__graph_8hpp.html", null ],
     [ "conv2d_module.hpp", "conv2d__module_8hpp.html", null ],
