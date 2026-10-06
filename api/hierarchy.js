@@ -5,6 +5,7 @@ var hierarchy =
       [ "pulsatrix::AdamWOptimizer", "classpulsatrix_1_1AdamWOptimizer.html", null ]
     ] ],
     [ "pulsatrix::AdamOptimizer::AdamState", "structpulsatrix_1_1AdamOptimizer_1_1AdamState.html", null ],
+    [ "pulsatrix::AddedToken", "structpulsatrix_1_1AddedToken.html", null ],
     [ "pulsatrix::Agent", "classpulsatrix_1_1Agent.html", [
       [ "pulsatrix::CategoricalPolicyAgent", "classpulsatrix_1_1CategoricalPolicyAgent.html", null ],
       [ "pulsatrix::DQNAgent", "classpulsatrix_1_1DQNAgent.html", null ]
@@ -76,6 +77,9 @@ var hierarchy =
     [ "pulsatrix::DatasetStatisticsView", "classpulsatrix_1_1DatasetStatisticsView.html", null ],
     [ "pulsatrix::DatasetValidator", "classpulsatrix_1_1DatasetValidator.html", null ],
     [ "pulsatrix::DataThreadPool", "classpulsatrix_1_1DataThreadPool.html", null ],
+    [ "pulsatrix::Decoder", "classpulsatrix_1_1Decoder.html", [
+      [ "pulsatrix::FuseDecoder", "classpulsatrix_1_1FuseDecoder.html", null ]
+    ] ],
     [ "pulsatrix::DetailedBalanceLoss", "classpulsatrix_1_1DetailedBalanceLoss.html", null ],
     [ "pulsatrix::DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", [
       [ "pulsatrix::CPUBackend", "classpulsatrix_1_1CPUBackend.html", null ],
@@ -90,6 +94,7 @@ var hierarchy =
     [ "pulsatrix::datalog::DualSemiring< T >", "structpulsatrix_1_1datalog_1_1DualSemiring.html", null ],
     [ "pulsatrix::CircuitGraphDocument::Edge", "structpulsatrix_1_1CircuitGraphDocument_1_1Edge.html", null ],
     [ "pulsatrix::EigenResult", "structpulsatrix_1_1EigenResult.html", null ],
+    [ "pulsatrix::Encoding", "structpulsatrix_1_1Encoding.html", null ],
     [ "pulsatrix::Environment", "classpulsatrix_1_1Environment.html", [
       [ "pulsatrix::CartPoleEnv", "classpulsatrix_1_1CartPoleEnv.html", null ],
       [ "pulsatrix::ContinuousCartPoleEnv", "classpulsatrix_1_1ContinuousCartPoleEnv.html", null ],
@@ -163,6 +168,7 @@ var hierarchy =
     [ "pulsatrix::MnistConvNet", "classpulsatrix_1_1MnistConvNet.html", null ],
     [ "pulsatrix::MnistDataset", "structpulsatrix_1_1MnistDataset.html", null ],
     [ "pulsatrix::MnistIdxLoader", "classpulsatrix_1_1MnistIdxLoader.html", null ],
+    [ "pulsatrix::ModelToken", "structpulsatrix_1_1ModelToken.html", null ],
     [ "pulsatrix::Module", "classpulsatrix_1_1Module.html", [
       [ "pulsatrix::AggregatorModule", "classpulsatrix_1_1AggregatorModule.html", null ],
       [ "pulsatrix::AvgPool2DModule", "classpulsatrix_1_1AvgPool2DModule.html", null ],
@@ -214,7 +220,12 @@ var hierarchy =
     [ "pulsatrix::NodeGene", "structpulsatrix_1_1NodeGene.html", null ],
     [ "pulsatrix::ActivationSnapshot::NodeMetadata", "structpulsatrix_1_1ActivationSnapshot_1_1NodeMetadata.html", null ],
     [ "pulsatrix::NoiseSchedule", "classpulsatrix_1_1NoiseSchedule.html", null ],
+    [ "pulsatrix::NormalizedString", "classpulsatrix_1_1NormalizedString.html", null ],
+    [ "pulsatrix::Normalizer", "classpulsatrix_1_1Normalizer.html", [
+      [ "pulsatrix::AsciiLowercase", "classpulsatrix_1_1AsciiLowercase.html", null ]
+    ] ],
     [ "pulsatrix::NullModelComparison< Result >", "structpulsatrix_1_1NullModelComparison.html", null ],
+    [ "pulsatrix::Offset", "structpulsatrix_1_1Offset.html", null ],
     [ "pulsatrix::SystemMonitor::Options", "structpulsatrix_1_1SystemMonitor_1_1Options.html", null ],
     [ "pulsatrix::ParameterSnapshot", "classpulsatrix_1_1ParameterSnapshot.html", null ],
     [ "pulsatrix::ParameterSpec", "structpulsatrix_1_1ParameterSpec.html", null ],
@@ -229,12 +240,17 @@ var hierarchy =
     [ "pulsatrix::PDP", "classpulsatrix_1_1PDP.html", null ],
     [ "pulsatrix::PerturbationCurve", "structpulsatrix_1_1PerturbationCurve.html", null ],
     [ "pulsatrix::PerturbationOptions", "structpulsatrix_1_1PerturbationOptions.html", null ],
+    [ "pulsatrix::NormalizedString::Piece", "structpulsatrix_1_1NormalizedString_1_1Piece.html", null ],
     [ "pulsatrix::detail::PlatformSources", "classpulsatrix_1_1detail_1_1PlatformSources.html", [
       [ "pulsatrix::detail::LinuxSources", "classpulsatrix_1_1detail_1_1LinuxSources.html", null ]
     ] ],
     [ "pulsatrix::PolicyGradientLoss", "classpulsatrix_1_1PolicyGradientLoss.html", null ],
     [ "pulsatrix::GaussianProcessRegressor::Posterior", "structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html", null ],
+    [ "pulsatrix::PostProcessor", "classpulsatrix_1_1PostProcessor.html", null ],
     [ "pulsatrix::PPOClippedLoss", "classpulsatrix_1_1PPOClippedLoss.html", null ],
+    [ "pulsatrix::PreTokenizer", "classpulsatrix_1_1PreTokenizer.html", [
+      [ "pulsatrix::WordPunctuationSplit", "classpulsatrix_1_1WordPunctuationSplit.html", null ]
+    ] ],
     [ "pulsatrix::QRResult", "structpulsatrix_1_1QRResult.html", null ],
     [ "pulsatrix::RandomizationResult", "structpulsatrix_1_1RandomizationResult.html", null ],
     [ "pulsatrix::detail::RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", null ],
@@ -294,10 +310,16 @@ var hierarchy =
     [ "pulsatrix::Tensor", "classpulsatrix_1_1Tensor.html", null ],
     [ "pulsatrix::datalog::Term", "classpulsatrix_1_1datalog_1_1Term.html", null ],
     [ "pulsatrix::datalog::TermHash", "structpulsatrix_1_1datalog_1_1TermHash.html", null ],
+    [ "pulsatrix::TextTokenizer", "classpulsatrix_1_1TextTokenizer.html", null ],
     [ "pulsatrix::TextureCache", "classpulsatrix_1_1TextureCache.html", null ],
     [ "pulsatrix::TimingStats", "structpulsatrix_1_1TimingStats.html", null ],
     [ "pulsatrix::TokenCrossEntropyLoss", "classpulsatrix_1_1TokenCrossEntropyLoss.html", null ],
     [ "pulsatrix::Tokenizer", "classpulsatrix_1_1Tokenizer.html", null ],
+    [ "pulsatrix::TokenModel", "classpulsatrix_1_1TokenModel.html", [
+      [ "pulsatrix::ByteModel", "classpulsatrix_1_1ByteModel.html", null ],
+      [ "pulsatrix::CharModel", "classpulsatrix_1_1CharModel.html", null ],
+      [ "pulsatrix::WordLevelModel", "classpulsatrix_1_1WordLevelModel.html", null ]
+    ] ],
     [ "pulsatrix::TokenRelevanceDocument", "structpulsatrix_1_1TokenRelevanceDocument.html", null ],
     [ "pulsatrix::TopKResult", "structpulsatrix_1_1TopKResult.html", null ],
     [ "pulsatrix::ToyKnowledgeBase", "classpulsatrix_1_1ToyKnowledgeBase.html", null ],

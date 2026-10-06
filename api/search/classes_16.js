@@ -7,5 +7,7 @@ var searchData=
   ['weightedfactdatabase_4',['WeightedFactDatabase',['../classpulsatrix_1_1datalog_1_1WeightedFactDatabase.html',1,'pulsatrix::datalog']]],
   ['weightloadoptions_5',['WeightLoadOptions',['../structpulsatrix_1_1WeightLoadOptions.html',1,'pulsatrix']]],
   ['weightloadreport_6',['WeightLoadReport',['../structpulsatrix_1_1WeightLoadReport.html',1,'pulsatrix']]],
-  ['weightmapping_7',['WeightMapping',['../structpulsatrix_1_1WeightMapping.html',1,'pulsatrix']]]
+  ['weightmapping_7',['WeightMapping',['../structpulsatrix_1_1WeightMapping.html',1,'pulsatrix']]],
+  ['wordlevelmodel_8',['WordLevelModel',['../classpulsatrix_1_1WordLevelModel.html',1,'pulsatrix']]],
+  ['wordpunctuationsplit_9',['WordPunctuationSplit',['../classpulsatrix_1_1WordPunctuationSplit.html',1,'pulsatrix']]]
 ];

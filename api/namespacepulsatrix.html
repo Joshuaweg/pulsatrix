@@ -131,6 +131,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamWOptimizer.html">AdamWOptimizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdamW (Loshchilov &amp; Hutter, "Decoupled Weight Decay Regularization", arXiv 1711.05101): Adam whose weight decay shrinks the weights directly, w &lt;- (1 - lr * wd) * w, before the Adam step, instead of adding wd * w to the gradient (roadmap TRN-2).  <a href="classpulsatrix_1_1AdamWOptimizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AddedToken.html">AddedToken</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A token matched in the raw input before anything else runs, such as <code>&lt;|im_start|&gt;</code>.  <a href="structpulsatrix_1_1AddedToken.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Agent.html">Agent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for anything that maps an observation to an action.  <a href="classpulsatrix_1_1Agent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +142,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AleResult.html">AleResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">First-order accumulated local effects (Apley and Zhu 2020) of one feature.  <a href="structpulsatrix_1_1AleResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AsciiLowercase.html">AsciiLowercase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lowercases ASCII letters and leaves every other character alone.  <a href="classpulsatrix_1_1AsciiLowercase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The best configuration/metric found, the total epoch budget spent, and how many distinct configurations were ever started (as opposed to promoted).  <a href="structpulsatrix_1_1ASHAResult.html#details">More...</a><br /></td></tr>
@@ -211,6 +217,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BoundedQueue.html">BoundedQueue</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity thread-safe queue with blocking push/pop &ndash; the bounded buffer between pulsatrix data-pipeline stages (campaign_exai_dl_library_data_pipeline). Not tied to any Dataset/DataLoader type; deliberately generic.  <a href="classpulsatrix_1_1BoundedQueue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ByteModel.html">ByteModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every byte is a token whose id is the byte's value (0..255); the token string is the byte itself.  <a href="classpulsatrix_1_1ByteModel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CachingAllocator.html">CachingAllocator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CalibrationLoss.html">CalibrationLoss</a></td></tr>
@@ -227,6 +236,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CenterCropTransform.html">CenterCropTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crops the centered (crop_height, crop_width) region of the image.  <a href="classpulsatrix_1_1CenterCropTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CharModel.html">CharModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every character (code point) is a token, looked up in a character list; unknown characters become the unknown token.  <a href="classpulsatrix_1_1CharModel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CheckpointLoadOptions.html">CheckpointLoadOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for <a class="el" href="namespacepulsatrix.html#abd2d723852104374608e931b7e4bb326" title="Loads parameters and buffers saved by SaveCheckpoint() (or any safetensors file whose names match) in...">LoadCheckpoint()</a>.  <a href="structpulsatrix_1_1CheckpointLoadOptions.html#details">More...</a><br /></td></tr>
@@ -339,6 +351,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DataThreadPool.html">DataThreadPool</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimal, generic thread pool for CPU-side data pipeline work (fetch, decode, transform, collate stages) &ndash; campaign_exai_dl_library_data_pipeline's staged- pipeline backbone alongside <a class="el" href="classpulsatrix_1_1BoundedQueue.html" title="Fixed-capacity thread-safe queue with blocking push/pop – the bounded buffer between pulsatrix data-p...">BoundedQueue</a>. Deliberately not tied to Dataset/DataLoader types.  <a href="classpulsatrix_1_1DataThreadPool.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Decoder.html">Decoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns token strings back into text.  <a href="classpulsatrix_1_1Decoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html">DetailedBalanceLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lsquo;Δ(s,s&rsquo;) = log F(s) + log P_F(s'|s) − log F(s') − log P_B(s|s')<code>,</code>loss = Δ(s,s')²<code>-- the per-*transition* credit-assignment alternative to</code>TrajectoryBalanceLoss`'s per-trajectory constraint.  <a href="classpulsatrix_1_1DetailedBalanceLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -372,6 +387,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Embedding lookup table, rank-2 input (N, L) of float-encoded indices -&gt; rank-3 output (N, L, embedding_dim). Structurally unlike every other module in this codebase: forward is a pure selection (row copy), with no arithmetic mixing across input features.  <a href="classpulsatrix_1_1EmbeddingModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of encoding one text.  <a href="structpulsatrix_1_1Encoding.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Environment.html">Environment</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for every RL environment (<a class="el" href="classpulsatrix_1_1CartPoleEnv.html" title="The classic cart-pole balancing task (Barto, Sutton &amp; Anderson 1983), the same equations OpenAI Gym&#39;s...">CartPoleEnv</a>, and whatever later phases add).  <a href="classpulsatrix_1_1Environment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -400,6 +418,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FlattenModule.html">FlattenModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = reshape(x, {N, x.numel()/N}), N = x.shape().dim(0). No parameters, no gradient math beyond reshaping.  <a href="classpulsatrix_1_1FlattenModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FuseDecoder.html">FuseDecoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenates the tokens (Hugging Face's Fuse decoder).  <a href="classpulsatrix_1_1FuseDecoder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GAEResult.html">GAEResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a5e7eb5721b3a5ef9281c8ac3906d05b1" title="Generalized Advantage Estimation (Schulman et al. 2016, arXiv:1506.02438): the exponentially-weighted...">ComputeGAE()</a>'s two outputs: the advantage estimate per step and the critic's regression target per step.  <a href="structpulsatrix_1_1GAEResult.html#details">More...</a><br /></td></tr>
@@ -590,6 +611,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MnistIdxLoader.html">MnistIdxLoader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads MNIST's original IDX-format files directly &ndash; no format conversion, no generic <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> abstraction. MNIST-specific by deliberate scope decision (see plan_mnist_classification_training_example.md's Recon); if a future mission needs a second real dataset, generalize then.  <a href="classpulsatrix_1_1MnistIdxLoader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ModelToken.html">ModelToken</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One token from a <a class="el" href="classpulsatrix_1_1TokenModel.html" title="Turns one pre-tokenized piece into tokens (word-level lookup, BPE, ...).">TokenModel</a>: its id and string, and the bytes of the piece it covers.  <a href="structpulsatrix_1_1ModelToken.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html">Module</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for every layer type (<a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a>, <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>, activations, ...).  <a href="classpulsatrix_1_1Module.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -638,11 +662,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NoOpMetricsSink.html">NoOpMetricsSink</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does nothing. The charter's stated minimum viable <a class="el" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form...">MetricsSink</a> implementation.  <a href="classpulsatrix_1_1NoOpMetricsSink.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NormalizedString.html">NormalizedString</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text being normalized and pre-tokenized, remembering where each byte came from in the original input, so offsets survive changes such as NFC composition or byte-to-character mapping.  <a href="classpulsatrix_1_1NormalizedString.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Normalizer.html">Normalizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes text before it is split (lowercasing, NFC, ...).  <a href="classpulsatrix_1_1Normalizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1NormalizeTransform.html">NormalizeTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-channel normalization: pixel = (pixel - mean[c]) / std[c]. In-place, no backend needed (same shape in and out).  <a href="classpulsatrix_1_1NormalizeTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NullModelComparison.html">NullModelComparison</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a3f819c9e8327878579023bf846100400" title="Runs analysis() on model, then again after ReinitializeParameters(model, seed), then restores the mod...">NullModelBaseline()</a>'s result: the analysis on the trained model and on the null model.  <a href="structpulsatrix_1_1NullModelComparison.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Offset.html">Offset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A byte range <code>[begin, end)</code> of the text passed to <a class="el" href="classpulsatrix_1_1TextTokenizer.html#a16193653d70e31142d4fa33b335b4569">TextTokenizer::encode()</a>.  <a href="structpulsatrix_1_1Offset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ParameterSnapshot.html">ParameterSnapshot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves every parameter of a module and restores them exactly when it goes out of scope.  <a href="classpulsatrix_1_1ParameterSnapshot.html#details">More...</a><br /></td></tr>
@@ -689,8 +722,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PolicyGradientLoss.html">PolicyGradientLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean_b( -log pi(a_b | s_b) * G_b ), where <code>a_b</code> is the action actually taken on step <code>b</code> of a rollout and <code>G_b</code> its return &ndash; the REINFORCE policy-gradient surrogate of Williams 1992.  <a href="classpulsatrix_1_1PolicyGradientLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PostProcessor.html">PostProcessor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds tokens around an encoding (BOS and EOS, sentence pairs, ...).  <a href="classpulsatrix_1_1PostProcessor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PPOClippedLoss.html">PPOClippedLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean_b( -min( r_b * A_b, clamp(r_b, 1-eps, 1+eps) * A_b ) ), where <code>r_b = pi_new(a_b|s_b) / pi_old(a_b|s_b)</code> &ndash; the clipped surrogate objective of Schulman et al. 2017 (arXiv:1707.06347), negated so that minimizing it maximizes the objective the paper states.  <a href="classpulsatrix_1_1PPOClippedLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PreTokenizer.html">PreTokenizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into the pieces the model tokenizes separately, and may change them (byte- level mapping).  <a href="classpulsatrix_1_1PreTokenizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1QRResult.html">QRResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a281ea330d1061f3fdd9fd8578e3b2c2f" title="Thin QR factorization by Householder reflections.">QR()</a>'s result, the thin factorization A = Q R.  <a href="structpulsatrix_1_1QRResult.html#details">More...</a><br /></td></tr>
@@ -877,6 +916,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextDataset.html">TextDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a line-delimited text corpus: each line becomes one sample, tokenized via <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a> and indexed via a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> into a (1, seq_len) float32 <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> of token indices &ndash; Decision Point 6's resolved representation (token IDs as float32 values, the same integer-as-float32 pattern <a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>'s label column and <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>'s class label already use). seq_len varies per sample; no padding here (see PadCollate, Mission 10) &ndash; an empty line produces a zero-element (1, 0) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, a valid, non-error <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> state.  <a href="classpulsatrix_1_1TextDataset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tokenizer: added tokens are split out of the raw text first (longest match, earliest first); each remaining segment is normalized, pre-tokenized and tokenized by the model; then the post-processor runs. Every component but the model is optional.  <a href="classpulsatrix_1_1TextTokenizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TextureCache.html">TextureCache</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e.g. a <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> index) so a scrolling image grid doesn't re-upload the same image every frame.  <a href="classpulsatrix_1_1TextureCache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -894,6 +936,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Tokenizer.html">Tokenizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into lowercase word/punctuation tokens &ndash; pulsatrix's first text primitive (campaign_exai_dl_library_data_pipeline, Phase 3, Decision Point 6: a minimal whitespace/punctuation tokenizer, not BPE &ndash; training a real subword-merge algorithm is a project-sized undertaking on its own).  <a href="classpulsatrix_1_1Tokenizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TokenModel.html">TokenModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns one pre-tokenized piece into tokens (word-level lookup, BPE, ...).  <a href="classpulsatrix_1_1TokenModel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.token_relevance.v1</code>: one relevance score per token of a text.  <a href="structpulsatrix_1_1TokenRelevanceDocument.html#details">More...</a><br /></td></tr>
@@ -960,6 +1005,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One entry of a name-mapping manifest.  <a href="structpulsatrix_1_1WeightMapping.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1WordLevelModel.html">WordLevelModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each piece is one token, looked up in a vocabulary; unknown pieces become the unknown token.  <a href="classpulsatrix_1_1WordLevelModel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1WordPunctuationSplit.html">WordPunctuationSplit</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The split <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a> makes: runs of ASCII letters, digits and apostrophes are words, ASCII whitespace separates, and every other character is a token of its own.  <a href="classpulsatrix_1_1WordPunctuationSplit.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html">XorNetwork</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tiny MLP (<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(2,4)</a> -&gt; ReLU -&gt; <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(4,1)</a>) trained on XOR &ndash; the canonical not-linearly-separable case, exactly representable by a small MLP, giving an unambiguous convergence target for Phase 1's "prove the training loop works" goal.  <a href="classpulsatrix_1_1XorNetwork.html#details">More...</a><br /></td></tr>
@@ -1765,6 +1816,15 @@ Functions</h2></td></tr>
 <tr class="memitem:aebb422f24fb615d810cc32915daf01ec" id="r_aebb422f24fb615d810cc32915daf01ec"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aebb422f24fb615d810cc32915daf01ec">CountTargetTokens</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;targets, int64_t ignore_index=<a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html#a179bb970fc18d8fd27c6058a2581d3c8">TokenCrossEntropyLoss::kIgnoreIndex</a>)</td></tr>
 <tr class="memdesc:aebb422f24fb615d810cc32915daf01ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of entries of <code>targets</code> that aren't <code>ignore_index</code>: the normalizer for one accumulation window when summed over its micro-batches' targets.  <br /></td></tr>
 <tr class="separator:aebb422f24fb615d810cc32915daf01ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd0065c8787c53cbacf8f266bd811c8d" id="r_abd0065c8787c53cbacf8f266bd811c8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abd0065c8787c53cbacf8f266bd811c8d">MakeWordLevelTokenizer</a> (const <a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a> &amp;vocab)</td></tr>
+<tr class="memdesc:abd0065c8787c53cbacf8f266bd811c8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The word-level tokenizer over a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a>: <a class="el" href="classpulsatrix_1_1AsciiLowercase.html" title="Lowercases ASCII letters and leaves every other character alone.">AsciiLowercase</a>, <a class="el" href="classpulsatrix_1_1WordPunctuationSplit.html" title="The split Tokenizer::Tokenize makes: runs of ASCII letters, digits and apostrophes are words,...">WordPunctuationSplit</a> and a <a class="el" href="classpulsatrix_1_1WordLevelModel.html" title="Each piece is one token, looked up in a vocabulary; unknown pieces become the unknown token.">WordLevelModel</a> whose unknown token is <code>&lt;unk&gt;</code> (id 0). On ASCII text its tokens are <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a>'s and its ids are <a class="el" href="classpulsatrix_1_1Vocabulary.html#aad956d5e6776e13be224d60b9de130cb" title="The token&#39;s index, or kUnkIndex if the token isn&#39;t in this vocabulary.">Vocabulary::IndexOf</a>'s.  <br /></td></tr>
+<tr class="separator:abd0065c8787c53cbacf8f266bd811c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe1f90f0013f3fd10785ef875351d7b4" id="r_abe1f90f0013f3fd10785ef875351d7b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abe1f90f0013f3fd10785ef875351d7b4">MakeByteTokenizer</a> (const std::vector&lt; std::string &gt; &amp;special_tokens={})</td></tr>
+<tr class="memdesc:abe1f90f0013f3fd10785ef875351d7b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bytes as ids 0..255, then <code>special_tokens</code> as ids 256, 257, ...; decodes by concatenation.  <br /></td></tr>
+<tr class="separator:abe1f90f0013f3fd10785ef875351d7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42a51b3f39ce4900e0f3bcb50d83e404" id="r_a42a51b3f39ce4900e0f3bcb50d83e404"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a42a51b3f39ce4900e0f3bcb50d83e404">MakeCharTokenizer</a> (std::vector&lt; std::string &gt; chars, const std::vector&lt; std::string &gt; &amp;special_tokens={})</td></tr>
+<tr class="memdesc:a42a51b3f39ce4900e0f3bcb50d83e404"><td class="mdescLeft">&#160;</td><td class="mdescRight">Characters by id from <code>chars</code>, then <code>&lt;unk&gt;</code> (unless <code>chars</code> has it), then <code>special_tokens</code>; decodes by concatenation.  <br /></td></tr>
+<tr class="separator:a42a51b3f39ce4900e0f3bcb50d83e404"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307af1ed1935c2c78f7e2aead3f70c45" id="r_a307af1ed1935c2c78f7e2aead3f70c45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TopKResult.html">TopKResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, int64_t k, bool largest=true)</td></tr>
 <tr class="memdesc:a307af1ed1935c2c78f7e2aead3f70c45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the k largest (or smallest) entries of every row along the last dimension.  <br /></td></tr>
 <tr class="separator:a307af1ed1935c2c78f7e2aead3f70c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6772,6 +6832,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="abe1f90f0013f3fd10785ef875351d7b4" name="abe1f90f0013f3fd10785ef875351d7b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe1f90f0013f3fd10785ef875351d7b4">&#9670;&#160;</a></span>MakeByteTokenizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> pulsatrix::MakeByteTokenizer </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>special_tokens</em> = <code>{}</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Bytes as ids 0..255, then <code>special_tokens</code> as ids 256, 257, ...; decodes by concatenation. </p>
+
+</div>
+</div>
 <a id="ad0f5ad755b0b0704f29e15db03268e39" name="ad0f5ad755b0b0704f29e15db03268e39"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0f5ad755b0b0704f29e15db03268e39">&#9670;&#160;</a></span>MakeCachedNextTokenLogits()</h2>
 
@@ -6829,6 +6909,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>(when built) if blocks is empty or a pointer is null; (when called) if the sequence is empty or longer than max_length. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a42a51b3f39ce4900e0f3bcb50d83e404" name="a42a51b3f39ce4900e0f3bcb50d83e404"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42a51b3f39ce4900e0f3bcb50d83e404">&#9670;&#160;</a></span>MakeCharTokenizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> pulsatrix::MakeCharTokenizer </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>chars</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>special_tokens</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Characters by id from <code>chars</code>, then <code>&lt;unk&gt;</code> (unless <code>chars</code> has it), then <code>special_tokens</code>; decodes by concatenation. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="classpulsatrix_1_1CharModel.html" title="Every character (code point) is a token, looked up in a character list; unknown characters become the...">CharModel</a> does. </td></tr>
   </table>
   </dd>
 </dl>
@@ -6918,6 +7034,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>A deterministic, platform-independent batch; lengths are 5 to kSeqLen. </p>
+
+</div>
+</div>
+<a id="abd0065c8787c53cbacf8f266bd811c8d" name="abd0065c8787c53cbacf8f266bd811c8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd0065c8787c53cbacf8f266bd811c8d">&#9670;&#160;</a></span>MakeWordLevelTokenizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> pulsatrix::MakeWordLevelTokenizer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a> &amp;&#160;</td>
+          <td class="paramname"><em>vocab</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The word-level tokenizer over a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a>: <a class="el" href="classpulsatrix_1_1AsciiLowercase.html" title="Lowercases ASCII letters and leaves every other character alone.">AsciiLowercase</a>, <a class="el" href="classpulsatrix_1_1WordPunctuationSplit.html" title="The split Tokenizer::Tokenize makes: runs of ASCII letters, digits and apostrophes are words,...">WordPunctuationSplit</a> and a <a class="el" href="classpulsatrix_1_1WordLevelModel.html" title="Each piece is one token, looked up in a vocabulary; unknown pieces become the unknown token.">WordLevelModel</a> whose unknown token is <code>&lt;unk&gt;</code> (id 0). On ASCII text its tokens are <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a>'s and its ids are <a class="el" href="classpulsatrix_1_1Vocabulary.html#aad956d5e6776e13be224d60b9de130cb" title="The token&#39;s index, or kUnkIndex if the token isn&#39;t in this vocabulary.">Vocabulary::IndexOf</a>'s. </p>
 
 </div>
 </div>

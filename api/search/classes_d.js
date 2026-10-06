@@ -8,11 +8,13 @@ var searchData=
   ['neuralpredicatedatalogbridge_5',['NeuralPredicateDatalogBridge',['../classpulsatrix_1_1datalog_1_1NeuralPredicateDatalogBridge.html',1,'pulsatrix::datalog']]],
   ['neuralpredicatequeryresult_6',['NeuralPredicateQueryResult',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html',1,'pulsatrix::datalog']]],
   ['neuralpredicaterelevanceresult_7',['NeuralPredicateRelevanceResult',['../structpulsatrix_1_1datalog_1_1NeuralPredicateRelevanceResult.html',1,'pulsatrix::datalog']]],
-  ['node_8',['node',['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html',1,'pulsatrix::CircuitGraphDocument::Node'],['../classpulsatrix_1_1Node.html',1,'pulsatrix::Node']]],
+  ['node_8',['node',['../classpulsatrix_1_1Node.html',1,'pulsatrix::Node'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html',1,'pulsatrix::CircuitGraphDocument::Node']]],
   ['nodegene_9',['NodeGene',['../structpulsatrix_1_1NodeGene.html',1,'pulsatrix']]],
   ['nodemetadata_10',['NodeMetadata',['../structpulsatrix_1_1ActivationSnapshot_1_1NodeMetadata.html',1,'pulsatrix::ActivationSnapshot']]],
   ['noiseschedule_11',['NoiseSchedule',['../classpulsatrix_1_1NoiseSchedule.html',1,'pulsatrix']]],
   ['noopmetricssink_12',['NoOpMetricsSink',['../classpulsatrix_1_1NoOpMetricsSink.html',1,'pulsatrix']]],
-  ['normalizetransform_13',['NormalizeTransform',['../classpulsatrix_1_1NormalizeTransform.html',1,'pulsatrix']]],
-  ['nullmodelcomparison_14',['NullModelComparison',['../structpulsatrix_1_1NullModelComparison.html',1,'pulsatrix']]]
+  ['normalizedstring_13',['NormalizedString',['../classpulsatrix_1_1NormalizedString.html',1,'pulsatrix']]],
+  ['normalizer_14',['Normalizer',['../classpulsatrix_1_1Normalizer.html',1,'pulsatrix']]],
+  ['normalizetransform_15',['NormalizeTransform',['../classpulsatrix_1_1NormalizeTransform.html',1,'pulsatrix']]],
+  ['nullmodelcomparison_16',['NullModelComparison',['../structpulsatrix_1_1NullModelComparison.html',1,'pulsatrix']]]
 ];

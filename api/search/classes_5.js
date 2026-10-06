@@ -6,5 +6,6 @@ var searchData=
   ['featuresensitivity_3',['FeatureSensitivity',['../structpulsatrix_1_1FeatureSensitivity.html',1,'pulsatrix']]],
   ['fieldstatistics_4',['FieldStatistics',['../structpulsatrix_1_1FieldStatistics.html',1,'pulsatrix']]],
   ['finetuneconfig_5',['FineTuneConfig',['../structpulsatrix_1_1FineTuneConfig.html',1,'pulsatrix']]],
-  ['flattenmodule_6',['FlattenModule',['../classpulsatrix_1_1FlattenModule.html',1,'pulsatrix']]]
+  ['flattenmodule_6',['FlattenModule',['../classpulsatrix_1_1FlattenModule.html',1,'pulsatrix']]],
+  ['fusedecoder_7',['FuseDecoder',['../classpulsatrix_1_1FuseDecoder.html',1,'pulsatrix']]]
 ];
