@@ -446,6 +446,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tokenizing-for-a-hugging-face-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tokenizing for a Hugging Face model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#handling-variable-length-data-with-a-custom-collatefn" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1677,6 +1688,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tokenizing-for-a-hugging-face-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tokenizing for a Hugging Face model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#handling-variable-length-data-with-a-custom-collatefn" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1762,6 +1784,9 @@ tabular, image, text, audio and video (frames only). Generic dataset validation 
 <li><strong>Image</strong>: <code>ImageDecoder</code> (backed by stb_image), <code>ResizeTransform</code>/<code>CenterCropTransform</code>/
   <code>NormalizeTransform</code>/<code>HorizontalFlipTransform</code>, <code>ImageFolderDataset</code></li>
 <li><strong>Text</strong>: <code>Tokenizer</code>, <code>Vocabulary</code>/<code>BuildVocabulary</code>, <code>TextDataset</code>, <code>PadCollate</code></li>
+<li><strong>Tokenizers</strong>: <code>TextTokenizer</code> (ids, token strings, byte offsets and a special-token mask),
+  <code>LoadTokenizerJson</code> for Hugging Face byte-level BPE tokenizers (SmolLM2, Qwen, Llama 3,
+  gpt-oss, ...), and word-level, byte and character tokenizers (see below)</li>
 <li><strong>Audio</strong>: <code>WavReader</code>/<code>WavData</code>, <code>AudioFolderDataset</code>, <code>ResampleTransform</code>,
   <code>AudioPadCollate</code></li>
 <li><strong>Video</strong> (pre-extracted frames only; see Notes): <code>VideoFrameDirectoryDataset</code>,
@@ -1834,6 +1859,33 @@ them is not wired in yet.</p>
 <p><strong>What's happening:</strong> <code>TransformDataset</code> applies the <code>Compose</code>d transforms, in order, to each
 sample as it is fetched. Images are decoded lazily, one per <code>get()</code> call. <code>NormalizeTransform</code>
 needs one mean and one std per channel; it throws if the counts don't match the image.</p>
+<h3 id="tokenizing-for-a-hugging-face-model">Tokenizing for a Hugging Face model<a class="headerlink" href="#tokenizing-for-a-hugging-face-model" title="Permanent link">&para;</a></h3>
+<p><code>LoadTokenizerJson</code> reads a model's <code>tokenizer.json</code> and runs the same pipeline Hugging Face
+<code>tokenizers</code> does: added tokens first, then the normalizer (NFC), the pre-tokenizer (regex,
+digit and byte-level splitting), BPE, and the post-processor (BOS and EOS). There's no Python
+involved.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tokenizer_json.hpp"</span>
+
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
+
+<span class="n">TextTokenizer</span><span class="w"> </span><span class="n">tok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTokenizerJson</span><span class="p">(</span><span class="s">"models/Llama-3.2-1B/tokenizer.json"</span><span class="p">);</span>
+<span class="n">Encoding</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tok</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"Grüße, world!"</span><span class="p">);</span>
+<span class="c1">// e.ids:     [128000, 6600, 2448, 24352, 11, 1917, 0]  (&lt;|begin_of_text|&gt; first)</span>
+<span class="c1">// e.tokens:  the token strings</span>
+<span class="c1">// e.offsets: UTF-8 byte ranges of the input: text.substr(o.begin, o.end - o.begin)</span>
+<span class="c1">// e.special_tokens_mask: 1 for &lt;|begin_of_text|&gt; and other special tokens</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tok</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">ids</span><span class="p">,</span><span class="w"> </span><span class="cm">/*skip_special_tokens=*/</span><span class="nb">true</span><span class="p">);</span><span class="w">  </span><span class="c1">// "Grüße, world!"</span>
+</code></pre></div>
+<p>Offsets map every token back to the input, which explanations need to merge subword scores
+into words. They are byte offsets, where Hugging Face uses characters. When NFC composes
+characters, a composed character's offset covers all of its source characters; Hugging Face
+gives it only the first.</p>
+<p><strong>Checked against Hugging Face:</strong> on a 10,000-line multilingual corpus (the Universal
+Declaration of Human Rights in about 530 languages, plus code, numbers, whitespace and emoji
+stress lines), the ids and the decoded text match <code>tokenizers</code> 0.23 exactly for SmolLM2-135M,
+Qwen2.5, Qwen3, Llama 3.2 and gpt-oss (<code>tools/tokenizers/</code>, <code>pulsatrix_tokenizer_parity</code>).
+Offsets match on every line that round-trips exactly. A component the loader doesn't support,
+such as SentencePiece byte fallback (Gemma, TOK-3), is refused by name rather than approximated.</p>
 <h3 id="handling-variable-length-data-with-a-custom-collatefn">Handling variable-length data with a custom <code>CollateFn</code><a class="headerlink" href="#handling-variable-length-data-with-a-custom-collatefn" title="Permanent link">&para;</a></h3>
 <p><code>DefaultCollate</code> can only stack samples of the same shape. For ragged data such as text,
 swap in a padding collate function:</p>

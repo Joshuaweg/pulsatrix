@@ -109,13 +109,15 @@ Inheritance diagram for pulsatrix::TokenModel:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpulsatrix_1_1TokenModel__inherit__graph.png" border="0" usemap="#apulsatrix_1_1TokenModel_inherit__map" alt="Inheritance graph"/></div>
 <map name="apulsatrix_1_1TokenModel_inherit__map" id="apulsatrix_1_1TokenModel_inherit__map">
-<area shape="rect" title="Turns one pre&#45;tokenized piece into tokens (word&#45;level lookup, BPE, ...)." alt="" coords="183,5,347,31"/>
-<area shape="rect" href="classpulsatrix_1_1ByteModel.html" title="Every byte is a token whose id is the byte&#39;s value (0..255); the token string is the byte itself." alt="" coords="5,79,163,104"/>
-<area shape="poly" title=" " alt="" coords="225,38,115,81,113,76,223,33"/>
-<area shape="rect" href="classpulsatrix_1_1CharModel.html" title="Every character (code point) is a token, looked up in a character list; unknown characters become the..." alt="" coords="187,79,344,104"/>
-<area shape="poly" title=" " alt="" coords="268,44,268,79,263,79,263,44"/>
-<area shape="rect" href="classpulsatrix_1_1WordLevelModel.html" title="Each piece is one token, looked up in a vocabulary; unknown pieces become the unknown token." alt="" coords="368,79,563,104"/>
-<area shape="poly" title=" " alt="" coords="311,33,434,76,432,81,310,38"/>
+<area shape="rect" title="Turns one pre&#45;tokenized piece into tokens (word&#45;level lookup, BPE, ...)." alt="" coords="5,80,169,105"/>
+<area shape="rect" href="classpulsatrix_1_1BpeModel.html" title="Byte&#45;pair encoding: start from characters and apply merges, lowest rank first." alt="" coords="239,5,391,31"/>
+<area shape="poly" title=" " alt="" coords="129,72,217,39,256,28,258,33,218,45,131,77"/>
+<area shape="rect" href="classpulsatrix_1_1ByteModel.html" title="Every byte is a token whose id is the byte&#39;s value (0..255); the token string is the byte itself." alt="" coords="236,55,393,80"/>
+<area shape="poly" title=" " alt="" coords="183,79,235,73,236,79,183,85"/>
+<area shape="rect" href="classpulsatrix_1_1CharModel.html" title="Every character (code point) is a token, looked up in a character list; unknown characters become the..." alt="" coords="236,104,393,129"/>
+<area shape="poly" title=" " alt="" coords="183,100,236,106,235,111,183,105"/>
+<area shape="rect" href="classpulsatrix_1_1WordLevelModel.html" title="Each piece is one token, looked up in a vocabulary; unknown pieces become the unknown token." alt="" coords="217,153,412,179"/>
+<area shape="poly" title=" " alt="" coords="134,108,218,138,262,151,261,156,217,143,132,113"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -186,7 +188,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1WordLevelModel.html#ac43b4c2fb44ad197800bdf5deff3fe05">pulsatrix::WordLevelModel</a>, <a class="el" href="classpulsatrix_1_1ByteModel.html#a0292b501eea32f2554b6bc3482ea489c">pulsatrix::ByteModel</a>, and <a class="el" href="classpulsatrix_1_1CharModel.html#a035922b854f771d5cc822b045a193f44">pulsatrix::CharModel</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1BpeModel.html#a4dbd2b37f8a4f3af048b54e5e39a0bf6">pulsatrix::BpeModel</a>, <a class="el" href="classpulsatrix_1_1WordLevelModel.html#ac43b4c2fb44ad197800bdf5deff3fe05">pulsatrix::WordLevelModel</a>, <a class="el" href="classpulsatrix_1_1ByteModel.html#a0292b501eea32f2554b6bc3482ea489c">pulsatrix::ByteModel</a>, and <a class="el" href="classpulsatrix_1_1CharModel.html#a035922b854f771d5cc822b045a193f44">pulsatrix::CharModel</a>.</p>
 
 </div>
 </div>
@@ -214,7 +216,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1WordLevelModel.html#a4589651fb8a492901af6b856deb38719">pulsatrix::WordLevelModel</a>, <a class="el" href="classpulsatrix_1_1ByteModel.html#ae5331abd37bf3edae471aebf82ffa727">pulsatrix::ByteModel</a>, and <a class="el" href="classpulsatrix_1_1CharModel.html#a1d861608cd023d96508c43488e4fcdbe">pulsatrix::CharModel</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1BpeModel.html#aac1a2503019a8bebd0d550833e52d656">pulsatrix::BpeModel</a>, <a class="el" href="classpulsatrix_1_1WordLevelModel.html#a4589651fb8a492901af6b856deb38719">pulsatrix::WordLevelModel</a>, <a class="el" href="classpulsatrix_1_1ByteModel.html#ae5331abd37bf3edae471aebf82ffa727">pulsatrix::ByteModel</a>, and <a class="el" href="classpulsatrix_1_1CharModel.html#a1d861608cd023d96508c43488e4fcdbe">pulsatrix::CharModel</a>.</p>
 
 </div>
 </div>
@@ -242,7 +244,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1WordLevelModel.html#a5f96b8d819ea40afb62977d3ddbcfc9a">pulsatrix::WordLevelModel</a>, <a class="el" href="classpulsatrix_1_1ByteModel.html#ae4582a44c56407ac31ed9cb03d4e10d1">pulsatrix::ByteModel</a>, and <a class="el" href="classpulsatrix_1_1CharModel.html#a3100d916c5cd3aed1fbf979e32d3384b">pulsatrix::CharModel</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1BpeModel.html#acb14288b9f3ad3ad4d0108fabbfaea4c">pulsatrix::BpeModel</a>, <a class="el" href="classpulsatrix_1_1WordLevelModel.html#a5f96b8d819ea40afb62977d3ddbcfc9a">pulsatrix::WordLevelModel</a>, <a class="el" href="classpulsatrix_1_1ByteModel.html#ae4582a44c56407ac31ed9cb03d4e10d1">pulsatrix::ByteModel</a>, and <a class="el" href="classpulsatrix_1_1CharModel.html#a3100d916c5cd3aed1fbf979e32d3384b">pulsatrix::CharModel</a>.</p>
 
 </div>
 </div>
@@ -271,7 +273,7 @@ Public Member Functions</h2></td></tr>
 
 <p>One more than the largest id the model can produce. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1WordLevelModel.html#afe83d72daa07036e6fa5aab85bce3341">pulsatrix::WordLevelModel</a>, <a class="el" href="classpulsatrix_1_1ByteModel.html#ac95b1d0af73bf17d5dc2cec3b32ac7dd">pulsatrix::ByteModel</a>, and <a class="el" href="classpulsatrix_1_1CharModel.html#a91c34209cd27583c7a87d78984eef802">pulsatrix::CharModel</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1BpeModel.html#a71916c93283d730fdca5b0e4e3608028">pulsatrix::BpeModel</a>, <a class="el" href="classpulsatrix_1_1WordLevelModel.html#afe83d72daa07036e6fa5aab85bce3341">pulsatrix::WordLevelModel</a>, <a class="el" href="classpulsatrix_1_1ByteModel.html#ac95b1d0af73bf17d5dc2cec3b32ac7dd">pulsatrix::ByteModel</a>, and <a class="el" href="classpulsatrix_1_1CharModel.html#a91c34209cd27583c7a87d78984eef802">pulsatrix::CharModel</a>.</p>
 
 </div>
 </div>

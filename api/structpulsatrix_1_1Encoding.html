@@ -128,7 +128,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The result of encoding one text. </p>
-<dl class="section note"><dt>Note</dt><dd>Offsets are UTF-8 byte offsets into the input, so <code>text.substr(o.begin, o.end - o.begin)</code> is the token's source. Hugging Face reports offsets in characters instead. A byte-level token can cover part of a multi-byte character, and then its offset covers just those bytes. Tokens inserted by a post-processor (BOS, EOS) have an empty offset. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Offsets are UTF-8 byte offsets into the input, so <code>text.substr(o.begin, o.end - o.begin)</code> is the token's source. Hugging Face reports offsets in characters instead. A byte-level token can cover part of a multi-byte character, and then its offset covers just those bytes. A character a normalizer composed (NFC) maps to all of its source characters, where Hugging Face maps it to the first only. Tokens inserted by a post-processor (BOS, EOS) have an empty offset. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a74fc604547ba97c0f3401dc1e029a3b4" name="a74fc604547ba97c0f3401dc1e029a3b4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a74fc604547ba97c0f3401dc1e029a3b4">&#9670;&#160;</a></span>push_back()</h2>

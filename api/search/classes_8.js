@@ -10,5 +10,6 @@ var searchData=
   ['innovationtracker_7',['InnovationTracker',['../classpulsatrix_1_1InnovationTracker.html',1,'pulsatrix']]],
   ['input_8',['Input',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html',1,'pulsatrix::ExplanationScoreCard']]],
   ['integratedgradients_9',['IntegratedGradients',['../classpulsatrix_1_1IntegratedGradients.html',1,'pulsatrix']]],
-  ['iterabledataset_10',['IterableDataset',['../classpulsatrix_1_1IterableDataset.html',1,'pulsatrix']]]
+  ['item_10',['Item',['../structpulsatrix_1_1TemplatePostProcessor_1_1Item.html',1,'pulsatrix::TemplatePostProcessor']]],
+  ['iterabledataset_11',['IterableDataset',['../classpulsatrix_1_1IterableDataset.html',1,'pulsatrix']]]
 ];

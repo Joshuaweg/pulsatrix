@@ -11,5 +11,10 @@ var searchData=
   ['benchmarkreport_8',['BenchmarkReport',['../structpulsatrix_1_1BenchmarkReport.html',1,'pulsatrix']]],
   ['booleansemiring_9',['BooleanSemiring',['../structpulsatrix_1_1datalog_1_1BooleanSemiring.html',1,'pulsatrix::datalog']]],
   ['boundedqueue_10',['BoundedQueue',['../classpulsatrix_1_1BoundedQueue.html',1,'pulsatrix']]],
-  ['bytemodel_11',['ByteModel',['../classpulsatrix_1_1ByteModel.html',1,'pulsatrix']]]
+  ['bpemodel_11',['BpeModel',['../classpulsatrix_1_1BpeModel.html',1,'pulsatrix']]],
+  ['bpeoptions_12',['BpeOptions',['../structpulsatrix_1_1BpeOptions.html',1,'pulsatrix']]],
+  ['byteleveldecoder_13',['ByteLevelDecoder',['../classpulsatrix_1_1ByteLevelDecoder.html',1,'pulsatrix']]],
+  ['bytelevelpostprocessor_14',['ByteLevelPostProcessor',['../classpulsatrix_1_1ByteLevelPostProcessor.html',1,'pulsatrix']]],
+  ['bytelevelpretokenizer_15',['ByteLevelPreTokenizer',['../classpulsatrix_1_1ByteLevelPreTokenizer.html',1,'pulsatrix']]],
+  ['bytemodel_16',['ByteModel',['../classpulsatrix_1_1ByteModel.html',1,'pulsatrix']]]
 ];

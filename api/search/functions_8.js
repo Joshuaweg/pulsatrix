@@ -1,7 +1,7 @@
 var searchData=
 [
   ['id_0',['id',['../classpulsatrix_1_1Node.html#abc08171b4256578a39edf3ef909e1932',1,'pulsatrix::Node']]],
-  ['id_5fto_5ftoken_1',['id_to_token',['../classpulsatrix_1_1TokenModel.html#a22d132ca273a89e643acfb07b80d7e14',1,'pulsatrix::TokenModel::id_to_token()'],['../classpulsatrix_1_1TextTokenizer.html#ae315d4dfd9f14395932d66d14210debf',1,'pulsatrix::TextTokenizer::id_to_token()'],['../classpulsatrix_1_1WordLevelModel.html#ac43b4c2fb44ad197800bdf5deff3fe05',1,'pulsatrix::WordLevelModel::id_to_token()'],['../classpulsatrix_1_1ByteModel.html#a0292b501eea32f2554b6bc3482ea489c',1,'pulsatrix::ByteModel::id_to_token()'],['../classpulsatrix_1_1CharModel.html#a035922b854f771d5cc822b045a193f44',1,'pulsatrix::CharModel::id_to_token()']]],
+  ['id_5fto_5ftoken_1',['id_to_token',['../classpulsatrix_1_1BpeModel.html#a4dbd2b37f8a4f3af048b54e5e39a0bf6',1,'pulsatrix::BpeModel::id_to_token()'],['../classpulsatrix_1_1TokenModel.html#a22d132ca273a89e643acfb07b80d7e14',1,'pulsatrix::TokenModel::id_to_token()'],['../classpulsatrix_1_1TextTokenizer.html#ae315d4dfd9f14395932d66d14210debf',1,'pulsatrix::TextTokenizer::id_to_token()'],['../classpulsatrix_1_1WordLevelModel.html#ac43b4c2fb44ad197800bdf5deff3fe05',1,'pulsatrix::WordLevelModel::id_to_token()'],['../classpulsatrix_1_1ByteModel.html#a0292b501eea32f2554b6bc3482ea489c',1,'pulsatrix::ByteModel::id_to_token()'],['../classpulsatrix_1_1CharModel.html#a035922b854f771d5cc822b045a193f44',1,'pulsatrix::CharModel::id_to_token()']]],
   ['im2col_2',['im2col',['../classpulsatrix_1_1HIPBackend.html#a56ad30d9e638846991f009a8abda266e',1,'pulsatrix::HIPBackend::im2col()'],['../classpulsatrix_1_1DeviceBackend.html#ad42295ced5dffa73a26250d77fe3da97',1,'pulsatrix::DeviceBackend::im2col()'],['../classpulsatrix_1_1CUDABackend.html#ad9e2c43e91be28322f7f1fd66796d48a',1,'pulsatrix::CUDABackend::im2col()'],['../classpulsatrix_1_1CPUBackend.html#a4abbc28f41bae1390956124821a0c6a1',1,'pulsatrix::CPUBackend::im2col()']]],
   ['imagefolderdataset_3',['ImageFolderDataset',['../classpulsatrix_1_1ImageFolderDataset.html#ac1ca170369eafd598ede2aae874018d2',1,'pulsatrix::ImageFolderDataset']]],
   ['impute_4',['Impute',['../namespacepulsatrix.html#acf06d2190bfb60cc8810fcf24d1e99b2',1,'pulsatrix']]],
@@ -20,6 +20,7 @@ var searchData=
   ['is_5fground_17',['is_ground',['../classpulsatrix_1_1datalog_1_1Atom.html#af03cd9a955535b571af5d5784276ae56',1,'pulsatrix::datalog::Atom']]],
   ['is_5fnull_18',['is_null',['../classpulsatrix_1_1JsonValue.html#ac69d3d1c7e35523c89314c9b3dbc5f6b',1,'pulsatrix::JsonValue']]],
   ['is_5freshape_5fcompatible_19',['is_reshape_compatible',['../classpulsatrix_1_1Shape.html#a8d623d00d5f760cf2f218b8be91869ab',1,'pulsatrix::Shape']]],
-  ['is_5ftraining_20',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]],
-  ['is_5fvariable_21',['is_variable',['../classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c',1,'pulsatrix::datalog::Term']]]
+  ['is_5fsequence_20',['is_sequence',['../structpulsatrix_1_1TemplatePostProcessor_1_1Item.html#a841c7e2ae3924961c0f475fa21aea87e',1,'pulsatrix::TemplatePostProcessor::Item']]],
+  ['is_5ftraining_21',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]],
+  ['is_5fvariable_22',['is_variable',['../classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c',1,'pulsatrix::datalog::Term']]]
 ];

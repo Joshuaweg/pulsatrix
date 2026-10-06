@@ -116,6 +116,9 @@ Files</h2></td></tr>
 <tr class="memitem:bounded__queue_8hpp" id="r_bounded__queue_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bounded__queue_8hpp.html">bounded_queue.hpp</a></td></tr>
 <tr class="memdesc:bounded__queue_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity thread-safe blocking queue &ndash; the staged-pipeline backbone. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:byte__level__bpe_8hpp" id="r_byte__level__bpe_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="byte__level__bpe_8hpp.html">byte_level_bpe.hpp</a></td></tr>
+<tr class="memdesc:byte__level__bpe_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The components byte-level BPE tokenizers are built from (TOK-2): NFC, regex and digit splitting, byte-level mapping, BPE, template post-processing and byte-level decoding, each following Hugging Face <code>tokenizers</code>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:collate_8hpp" id="r_collate_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="collate_8hpp.html">collate.hpp</a></td></tr>
 <tr class="memdesc:collate_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Batch assembly &ndash; Batch, CollateFn, DefaultCollate. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,8 +173,17 @@ Files</h2></td></tr>
 <tr class="memitem:tokenizer__components_8hpp" id="r_tokenizer__components_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tokenizer__components_8hpp.html">tokenizer_components.hpp</a></td></tr>
 <tr class="memdesc:tokenizer__components_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pipeline components for TextTokenizer (TOK-1), and the word-level, byte and character tokenizers built from them. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:tokenizer__json_8hpp" id="r_tokenizer__json_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tokenizer__json_8hpp.html">tokenizer_json.hpp</a></td></tr>
+<tr class="memdesc:tokenizer__json_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a Hugging Face <code>tokenizer.json</code> into a TextTokenizer (TOK-2). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:tokenizer__parity_8hpp" id="r_tokenizer__parity_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tokenizer__parity_8hpp.html">tokenizer_parity.hpp</a></td></tr>
+<tr class="memdesc:tokenizer__parity_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares a TextTokenizer with Hugging Face <code>tokenizers</code> on a reference corpus (TOK-2), as written by tools/tokenizers/make_tokenizer_reference.py. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:transform_8hpp" id="r_transform_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8hpp.html">transform.hpp</a></td></tr>
 <tr class="memdesc:transform_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample-level preprocessing abstraction &ndash; Transform, Compose, TransformDataset. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:unicode__regex_8hpp" id="r_unicode__regex_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unicode__regex_8hpp.html">unicode_regex.hpp</a></td></tr>
+<tr class="memdesc:unicode__regex_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A small backtracking regex engine over Unicode code points, for the pre-tokenizer patterns in <code>tokenizer.json</code> files (TOK-2). <code>std::regex</code> can't match Unicode categories. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:video__frame__directory__dataset_8hpp" id="r_video__frame__directory__dataset_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__frame__directory__dataset_8hpp.html">video_frame_directory_dataset.hpp</a></td></tr>
 <tr class="memdesc:video__frame__directory__dataset_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Directory-of-pre-extracted-frames video Dataset (reduced-scope stub, no codec decode). <br /></td></tr>

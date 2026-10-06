@@ -10,13 +10,14 @@ var searchData=
   ['decoder_7',['Decoder',['../classpulsatrix_1_1Decoder.html',1,'pulsatrix']]],
   ['detailedbalanceloss_8',['DetailedBalanceLoss',['../classpulsatrix_1_1DetailedBalanceLoss.html',1,'pulsatrix']]],
   ['devicebackend_9',['DeviceBackend',['../classpulsatrix_1_1DeviceBackend.html',1,'pulsatrix']]],
-  ['disjunctionmodule_10',['DisjunctionModule',['../classpulsatrix_1_1DisjunctionModule.html',1,'pulsatrix']]],
-  ['diversecounterfactualoptions_11',['DiverseCounterfactualOptions',['../structpulsatrix_1_1DiverseCounterfactualOptions.html',1,'pulsatrix']]],
-  ['diversecounterfactualresult_12',['DiverseCounterfactualResult',['../structpulsatrix_1_1DiverseCounterfactualResult.html',1,'pulsatrix']]],
-  ['dominanteigenresult_13',['DominantEigenResult',['../structpulsatrix_1_1DominantEigenResult.html',1,'pulsatrix']]],
-  ['dqnagent_14',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
-  ['dqnloss_15',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
-  ['dropoutmodule_16',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
-  ['dualnumber_17',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
-  ['dualsemiring_18',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
+  ['digitspretokenizer_10',['DigitsPreTokenizer',['../classpulsatrix_1_1DigitsPreTokenizer.html',1,'pulsatrix']]],
+  ['disjunctionmodule_11',['DisjunctionModule',['../classpulsatrix_1_1DisjunctionModule.html',1,'pulsatrix']]],
+  ['diversecounterfactualoptions_12',['DiverseCounterfactualOptions',['../structpulsatrix_1_1DiverseCounterfactualOptions.html',1,'pulsatrix']]],
+  ['diversecounterfactualresult_13',['DiverseCounterfactualResult',['../structpulsatrix_1_1DiverseCounterfactualResult.html',1,'pulsatrix']]],
+  ['dominanteigenresult_14',['DominantEigenResult',['../structpulsatrix_1_1DominantEigenResult.html',1,'pulsatrix']]],
+  ['dqnagent_15',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
+  ['dqnloss_16',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
+  ['dropoutmodule_17',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
+  ['dualnumber_18',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
+  ['dualsemiring_19',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
 ];
