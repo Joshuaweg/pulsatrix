@@ -56,8 +56,10 @@ public:
      * @throws std::invalid_argument if d_model <= 0 or d_ff <= 0 -- external boundary
      *         (construction arguments can originate from Phase 5's Python bindings with no
      *         upstream validation), same convention as every other constructor.
+     * @param use_bias false builds the three projections without biases, as Llama-family MLPs
+     *        are (IO-4).
      */
-    SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend);
+    SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend, bool use_bias = true);
 
     /**
      * @brief Gradient w.r.t. this module's input; sub-module parameter gradients accumulate

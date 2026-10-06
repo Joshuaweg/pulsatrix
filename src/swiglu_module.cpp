@@ -32,13 +32,13 @@ namespace {
 
 }  // namespace
 
-SwiGLUModule::SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend)
+SwiGLUModule::SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend, bool use_bias)
     : d_model_(d_model),
       d_ff_(d_ff),
       backend_(backend),
-      gate_proj_(d_model, d_ff, backend),
-      up_proj_(d_model, d_ff, backend),
-      down_proj_(d_ff, d_model, backend),
+      gate_proj_(d_model, d_ff, backend, use_bias),
+      up_proj_(d_model, d_ff, backend, use_bias),
+      down_proj_(d_ff, d_model, backend, use_bias),
       last_gate_pre_(Shape({0}), backend),
       last_gate_post_(Shape({0}), backend),
       last_up_(Shape({0}), backend) {
