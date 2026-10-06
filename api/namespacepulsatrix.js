@@ -470,6 +470,7 @@ var namespacepulsatrix =
     [ "ClipGradNorm", "namespacepulsatrix.html#a46dfb5346e61792a6c94f75b5b4d8105", null ],
     [ "CombinedFitness", "namespacepulsatrix.html#ad9528e51695652a2d616c9044deae579", null ],
     [ "CompareBenchmarks", "namespacepulsatrix.html#ab117963df9f25d6ace51a78658ca4496", null ],
+    [ "CompareLogits", "namespacepulsatrix.html#a40c66da9f43f8f500e9ee093ad6c348a", null ],
     [ "CompareToGolden", "namespacepulsatrix.html#a18efbc5917c05fb62bb95cb673b59566", null ],
     [ "CompatibilityDistance", "namespacepulsatrix.html#af5620627708fa92ae915cfe8d3b1d95c", null ],
     [ "Complexity", "namespacepulsatrix.html#aa98337b15838b5b2a46c6ca782d4392d", null ],

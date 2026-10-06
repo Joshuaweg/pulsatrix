@@ -1,5 +1,10 @@
 var NAVTREEINDEX21 =
 {
+"structpulsatrix_1_1TimingStats.html#aa9b20c6f4655bf5c97420570202527c4":[3,0,0,254,1],
+"structpulsatrix_1_1TimingStats.html#ac01ce3e87691d095aa927134fe0204ae":[3,0,0,254,0],
+"structpulsatrix_1_1TimingStats.html#ac01ce3e87691d095aa927134fe0204ae":[4,0,0,251,0],
+"structpulsatrix_1_1TimingStats.html#ad31767ea55f55888370f8207521064df":[3,0,0,254,4],
+"structpulsatrix_1_1TimingStats.html#ad31767ea55f55888370f8207521064df":[4,0,0,251,4],
 "structpulsatrix_1_1TokenRelevanceDocument.html":[4,0,0,255],
 "structpulsatrix_1_1TokenRelevanceDocument.html":[3,0,0,258],
 "structpulsatrix_1_1TokenRelevanceDocument.html#a39957961f7c503032652f410f3b3b693":[3,0,0,258,3],

@@ -114,6 +114,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a7b6b6658873e47f06d543a1e7a2c4c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6db33745b38acc6de849f154ce26863d" id="r_a6db33745b38acc6de849f154ce26863d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GoldenSequenceResult.html#a6db33745b38acc6de849f154ce26863d">mean_abs_diff</a> = 0.0f</td></tr>
 <tr class="separator:a6db33745b38acc6de849f154ce26863d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eee45127aa52d6b5017db348b3f5fb4" id="r_a1eee45127aa52d6b5017db348b3f5fb4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GoldenSequenceResult.html#a1eee45127aa52d6b5017db348b3f5fb4">max_scaled_diff</a> = 0.0f</td></tr>
+<tr class="memdesc:a1eee45127aa52d6b5017db348b3f5fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The largest |pulsatrix - reference| / max(1, max |reference logit| at that position): what the threshold is applied to.  <br /></td></tr>
+<tr class="separator:a1eee45127aa52d6b5017db348b3f5fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8add1a57fdb3ba1790edc5544cc2eb5" id="r_af8add1a57fdb3ba1790edc5544cc2eb5"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1GoldenSequenceResult.html#af8add1a57fdb3ba1790edc5544cc2eb5">argmax_disagreements</a> = 0</td></tr>
 <tr class="memdesc:af8add1a57fdb3ba1790edc5544cc2eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positions whose most likely next token differs from the reference's.  <br /></td></tr>
 <tr class="separator:af8add1a57fdb3ba1790edc5544cc2eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,6 +153,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The largest |pulsatrix - reference| over every logit of every position. </p>
+
+</div>
+</div>
+<a id="a1eee45127aa52d6b5017db348b3f5fb4" name="a1eee45127aa52d6b5017db348b3f5fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1eee45127aa52d6b5017db348b3f5fb4">&#9670;&#160;</a></span>max_scaled_diff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::GoldenSequenceResult::max_scaled_diff = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The largest |pulsatrix - reference| / max(1, max |reference logit| at that position): what the threshold is applied to. </p>
 
 </div>
 </div>

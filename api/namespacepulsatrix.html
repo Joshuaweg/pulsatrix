@@ -1476,8 +1476,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ace423364f684e1daac5a3f82978be269" id="r_ace423364f684e1daac5a3f82978be269"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SobolResult.html">SobolResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ace423364f684e1daac5a3f82978be269">ComputeSobol</a> (const std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;)&gt; &amp;predict, const <a class="el" href="structpulsatrix_1_1GlobalSensitivityProblem.html">GlobalSensitivityProblem</a> &amp;problem, int64_t target_index, const <a class="el" href="structpulsatrix_1_1SobolOptions.html">SobolOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ace423364f684e1daac5a3f82978be269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples two independent uniform matrices A and B over the problem's ranges, builds the Saltelli design (AB_j is A with column j from B), runs the model on every row and calls AnalyzeSobol.  <br /></td></tr>
 <tr class="separator:ace423364f684e1daac5a3f82978be269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c66da9f43f8f500e9ee093ad6c348a" id="r_a40c66da9f43f8f500e9ee093ad6c348a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GoldenSequenceResult.html">GoldenSequenceResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a40c66da9f43f8f500e9ee093ad6c348a">CompareLogits</a> (const std::vector&lt; float &gt; &amp;got, const std::vector&lt; float &gt; &amp;expected, int64_t num_tokens, int64_t vocab)</td></tr>
+<tr class="memdesc:a40c66da9f43f8f500e9ee093ad6c348a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares one sequence's logits, both (L, vocab) row-major.  <br /></td></tr>
+<tr class="separator:a40c66da9f43f8f500e9ee093ad6c348a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18efbc5917c05fb62bb95cb673b59566" id="r_a18efbc5917c05fb62bb95cb673b59566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GoldenReport.html">GoldenReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a18efbc5917c05fb62bb95cb673b59566">CompareToGolden</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a> &amp;golden, float threshold=1e-3f)</td></tr>
-<tr class="memdesc:a18efbc5917c05fb62bb95cb673b59566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>model</code> on every <code>ids.&lt;k&gt;</code> sequence of a golden file (as written by tools/golden/make_golden.py) and compares all its logits with <code>logits.&lt;k&gt;</code>.  <br /></td></tr>
+<tr class="memdesc:a18efbc5917c05fb62bb95cb673b59566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>model</code> on every <code>ids.&lt;k&gt;</code> sequence of a golden file (as written by tools/golden/make_golden.py) and compares all its logits with <code>logits.&lt;k&gt;</code> (CompareLogits).  <br /></td></tr>
 <tr class="separator:a18efbc5917c05fb62bb95cb673b59566"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eb8e19a5d9ca776142a658c4e5adbb5" id="r_a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8eb8e19a5d9ca776142a658c4e5adbb5">UnitCubeToConfiguration</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const std::vector&lt; float &gt; &amp;t)</td></tr>
 <tr class="memdesc:a8eb8e19a5d9ca776142a658c4e5adbb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a unit-hypercube point (one value per parameter, each in [0, 1]) to a Configuration, using space's own declared bounds.  <br /></td></tr>
@@ -3707,6 +3710,55 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 
 </div>
 </div>
+<a id="a40c66da9f43f8f500e9ee093ad6c348a" name="a40c66da9f43f8f500e9ee093ad6c348a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40c66da9f43f8f500e9ee093ad6c348a">&#9670;&#160;</a></span>CompareLogits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1GoldenSequenceResult.html">GoldenSequenceResult</a> pulsatrix::CompareLogits </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>got</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>expected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_tokens</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>vocab</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compares one sequence's logits, both (L, vocab) row-major. </p>
+<dl class="section note"><dt>Note</dt><dd>Each position's differences are divided by max(1, max |reference logit| there), so the threshold is absolute for logits up to 1 and relative above. fp32 sums drift with the size of what they add up, and Qwen2.5's logits reach about 24 (1.1e-3 absolute on CPU, 5e-5 relative), while a layout bug moves logits by about their own size. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the sizes don't match L * vocab. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a18efbc5917c05fb62bb95cb673b59566" name="a18efbc5917c05fb62bb95cb673b59566"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18efbc5917c05fb62bb95cb673b59566">&#9670;&#160;</a></span>CompareToGolden()</h2>
 
@@ -3739,10 +3791,10 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
       </table>
 </div><div class="memdoc">
 
-<p>Runs <code>model</code> on every <code>ids.&lt;k&gt;</code> sequence of a golden file (as written by tools/golden/make_golden.py) and compares all its logits with <code>logits.&lt;k&gt;</code>. </p>
+<p>Runs <code>model</code> on every <code>ids.&lt;k&gt;</code> sequence of a golden file (as written by tools/golden/make_golden.py) and compares all its logits with <code>logits.&lt;k&gt;</code> (CompareLogits). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">threshold</td><td>The roadmap's criterion: fp32, every logit within 1e-3 of the reference. </td></tr>
+    <tr><td class="paramname">threshold</td><td>The roadmap's criterion: fp32, every logit within 1e-3 of the reference, relative to the position's largest logit when that exceeds 1. </td></tr>
   </table>
   </dd>
 </dl>
