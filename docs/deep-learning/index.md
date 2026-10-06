@@ -182,8 +182,26 @@ for (const std::string& name : weights.names()) { /* weights.info(name), weights
   tensor present, nothing unlisted), and a shard must be a plain file name in the checkpoint
   directory, so an index can't point outside it.
 - Hub weights are usually bf16. `tensor()` widens bf16, fp16 and both fp8 formats to fp32
-  exactly, and rounds fp64; integer tensors stay raw bytes (`bytes()`). Mapping Hugging Face
-  names onto pulsatrix modules is IO-4.
+  exactly, and rounds fp64; integer tensors stay raw bytes (`bytes()`).
+
+**Loading a model.** `LoadCausalLM` builds a `CausalLM` (embedding, transformer blocks, final
+RMSNorm, tied or untied head: Llama, SmolLM2, Qwen2/2.5, Qwen3) from a downloaded model directory
+and loads its weights by name:
+
+```cpp
+#include "pulsatrix/causal_lm.hpp"
+
+std::unique_ptr<CausalLM> model = LoadCausalLM("SmolLM2-135M", &backend);
+Tensor logits = model->forward(ids);                      // (1, L) token ids -> (1, L, vocab)
+GenerationResult out = Generate(model->next_token_logits(512), prompt_ids, GenerationConfig{});
+```
+
+The real SmolLM2-135M loads in about half a second, its logits are within 5e-4 of transformers',
+and its greedy continuations are identical. `CausalLM` is an ordinary module, so `backward()`,
+`propagate_relevance()` and checkpoints work on it. Loading is strict: a config with features
+pulsatrix can't run yet is refused, and every parameter must be loaded and every checkpoint
+tensor used. `LoadWeights` with a `WeightMapping` manifest (source name, target name, a transpose,
+an optional row slice for fused tensors) loads other layouts the same way.
 
 ### Reproducibility
 

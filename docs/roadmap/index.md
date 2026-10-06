@@ -33,7 +33,9 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   ([LLM-1](#llm-running-real-language-models)): grouped-query attention, causal and padding
   masks, "rotate half" RoPE with a configurable base, QK-Norm and bias-free projections, checked
   against Hugging Face's Llama, Qwen2 and Qwen3 attention. A language-model head that shares the
-  embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5).
+  embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5). Hugging
+  Face configs, sharded checkpoints and bf16 weights load into a `CausalLM` (IO-4 to IO-6): the
+  real SmolLM2-135M runs and matches transformers.
 - **HIP backend.** It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   `dot` and `sum`, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Its container runs ROCm 10.0.0, the
@@ -227,7 +229,7 @@ autoencoder dictionaries and a model zoo.
 | IO-1 | Native safetensors reader and writer. Check every offset against the file size, reject overlaps and holes, and use overflow-safe size arithmetic | The single file format | — | P0 | S–M | Done, [#43](https://github.com/Joshuaweg/pulsatrix/pull/43) (see below) |
 | IO-2 | Native checkpoint format: safetensors with `format_version` metadata, optimizer state in a sibling file, and a migration table between versions | Save and resume training; the passing test is a bit-identical forward pass and loss curve after reload | IO-1, FND-1 | P0 | M | Done, [#44](https://github.com/Joshuaweg/pulsatrix/pull/44) |
 | IO-3 | An optional converter for legacy pickle files (`.pt`, `.pth`, `.pkl`). It uses `torch.load(weights_only=True)` with torch 2.6 or newer and writes safetensors | Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors | IO-1 | P1 | M | |
-| IO-4 | A name-mapping manifest with transforms: transpose (pulsatrix `Linear` stores `(in, out)`, PyTorch stores `(out, in)`), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys | Turns Hugging Face names and layouts into pulsatrix modules | FND-1, IO-1 | P1 | M | |
+| IO-4 | A name-mapping manifest with transforms: transpose (pulsatrix `Linear` stores `(in, out)`, PyTorch stores `(out, in)`), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys | Turns Hugging Face names and layouts into pulsatrix modules | FND-1, IO-1 | P1 | M || Done, [#80](https://github.com/Joshuaweg/pulsatrix/pull/80) (see below) |
 | IO-5 | Read Hugging Face `config.json` and sharded `model.safetensors.index.json` | Every small LLM on the Hub uses these | IO-1 | P1 | S || Done, [#78](https://github.com/Joshuaweg/pulsatrix/pull/78) (see below) |
 | IO-6 | Upcast bf16 and fp16 weights to fp32 on load (exact) | Most published weights are bf16 | IO-1 | P1 | S || Done, [#79](https://github.com/Joshuaweg/pulsatrix/pull/79) |
 | IO-7 | `.npy` and `.npz` reading, with object and big-endian dtypes rejected | Many SAE dictionaries and Python users' arrays | — | P1 | S–M | |
@@ -247,6 +249,12 @@ autoencoder dictionaries and a model zoo.
 - **IO-2** records a checksum of the model file in the optimizer file, so stale optimizer state
   from an earlier save is refused. A plain safetensors file with matching names loads as format
   version 0.
+- **IO-4** comes with a model to load into: `CausalLM`, built from an `HfModelConfig`, with
+  parameter names close to Hugging Face's, so the manifest is mostly renames and transposes. No
+  RoPE permutation is needed, because LLM-1 runs Hugging Face's rotate-half layout natively.
+  Fused tensors are split with row slices. It is checked against tiny Llama, Qwen2 and Qwen3
+  models saved by transformers itself (logits within 1e-4, identical greedy generations), and the
+  real SmolLM2-135M loads with logits within 4.3e-4 of transformers' and the same greedy text.
 - **IO-5** fills in the values each architecture implies but its `config.json` leaves out
   (Qwen2's Q/K/V biases, Qwen3's and Gemma's QK-Norm, `head_dim`), and lists what pulsatrix can't
   run yet instead of ignoring it, so a loader can refuse a model rather than run it subtly wrong.
@@ -263,6 +271,7 @@ autoencoder dictionaries and a model zoo.
 | Checkpointing SGD's momentum buffers (Adam and AdamW are covered) | a small fix |
 | Checkpointing Dropout's mask counter; a resumed run with active dropout draws different masks | a small fix |
 | Running the safetensors writer's GPU path on hardware | HIP-9 or KS-8 |
+| Gradient buffers are allocated with every parameter, so inference uses twice the memory (SmolLM2-135M peaks at 1.9 GB) | allocate on first backward |
 
 ## TRN: Training and fine-tuning
 
@@ -367,7 +376,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 | Follow-up | Belongs with |
 |---|---|
 | Llama 3's `rope_scaling` changes the low RoPE frequencies at every position, so Llama-3.2 logits need it even on short text | LLM-6 |
-| `SwiGLUModule` without biases: Llama-family MLPs have none, and IO-4's strict mode fails on unmapped keys | IO-4 |
+| `SwiGLUModule` without biases: Llama-family MLPs have none, and IO-4's strict mode fails on unmapped keys | Done in IO-4 |
 | Gemma 3's `query_pre_attn_scalar` replaces the `1/sqrt(head_dim)` scale | LLM-9 |
 | Grouped-query attention materializes the repeated K and V; index the shared head inside the matmul instead | HIP-6 |
 
