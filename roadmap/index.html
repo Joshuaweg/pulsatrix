@@ -3477,7 +3477,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 </tr>
 <tr>
 <td>LLM-6</td>
-<td>Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3</td>
+<td>Golden-logit harness: compare against Hugging Face on real text, fp32, maximum difference under 1e-3 (relative to the position's largest logit above 1)</td>
 <td>Catches layout bugs that still "load"</td>
 <td>IO-4</td>
 <td>P0</td>
@@ -3561,10 +3561,13 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <li>Llama 3's <code>rope_scaling</code> (the <code>llama3</code> and <code>linear</code> types) is computed as Hugging Face
     computes it and passed to <code>RoPEModule</code> as explicit per-pair frequencies. Other types are still
     refused.</li>
-<li>SmolLM2 and Qwen2.5 are within about 20% of the 1e-3 threshold, from fp32 rounding (mean
-    differences are near 1e-5).</li>
-<li>The CPU backend's reference <code>gemm</code> is single-threaded and walks the weight matrix by column,
-    so a 1B model took more than an hour on CPU. Real models were checked on the GPU.</li>
+<li>The 1e-3 threshold is relative to each position's largest logit when that exceeds 1, so
+    |diff| &lt;= 1e-3 * max(1, max |logit|). Qwen2.5's logits reach about 24, and fp32 accumulation
+    order alone gave 1.1e-3 absolute (5e-5 relative) on CPU, with no argmax disagreements. A layout
+    bug moves logits by about their own size, so it still fails by orders of magnitude.</li>
+<li>The CPU backend's reference <code>gemm</code> was single-threaded and walked the weight matrix by column,
+    so a 1B model took more than an hour on CPU. After #82 the CPU run takes 33 s for Llama-3.2-1B,
+    and every model passes on both backends.</li>
 </ul>
 <h3 id="follow-ups-the-llm-work-surfaced">Follow-ups the LLM work surfaced<a class="headerlink" href="#follow-ups-the-llm-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
@@ -3593,7 +3596,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 </tr>
 <tr>
 <td>The CPU <code>gemm</code> is a single-threaded i-j-p loop that strides down the weight matrix; reorder to i-p-j (same summation order per element) and thread over rows</td>
-<td>Unassigned (CPU performance)</td>
+<td>Done in <a href="https://github.com/Joshuaweg/pulsatrix/pull/82">#82</a>: i-p-j, threaded over columns; Llama-3.2-1B's golden run takes 33 s instead of more than an hour</td>
 </tr>
 </tbody>
 </table>

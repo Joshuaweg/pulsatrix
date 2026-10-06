@@ -314,8 +314,11 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a40c66da9f43f8f500e9ee093ad6c348a" id="r_a40c66da9f43f8f500e9ee093ad6c348a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GoldenSequenceResult.html">GoldenSequenceResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a40c66da9f43f8f500e9ee093ad6c348a">pulsatrix::CompareLogits</a> (const std::vector&lt; float &gt; &amp;got, const std::vector&lt; float &gt; &amp;expected, int64_t num_tokens, int64_t vocab)</td></tr>
+<tr class="memdesc:a40c66da9f43f8f500e9ee093ad6c348a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares one sequence's logits, both (L, vocab) row-major.  <br /></td></tr>
+<tr class="separator:a40c66da9f43f8f500e9ee093ad6c348a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18efbc5917c05fb62bb95cb673b59566" id="r_a18efbc5917c05fb62bb95cb673b59566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1GoldenReport.html">GoldenReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a18efbc5917c05fb62bb95cb673b59566">pulsatrix::CompareToGolden</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a> &amp;golden, float threshold=1e-3f)</td></tr>
-<tr class="memdesc:a18efbc5917c05fb62bb95cb673b59566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>model</code> on every <code>ids.&lt;k&gt;</code> sequence of a golden file (as written by tools/golden/make_golden.py) and compares all its logits with <code>logits.&lt;k&gt;</code>.  <br /></td></tr>
+<tr class="memdesc:a18efbc5917c05fb62bb95cb673b59566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>model</code> on every <code>ids.&lt;k&gt;</code> sequence of a golden file (as written by tools/golden/make_golden.py) and compares all its logits with <code>logits.&lt;k&gt;</code> (CompareLogits).  <br /></td></tr>
 <tr class="separator:a18efbc5917c05fb62bb95cb673b59566"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
