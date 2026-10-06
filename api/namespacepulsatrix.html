@@ -983,7 +983,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns one pre-tokenized piece into tokens (word-level lookup, BPE, ...).  <a href="classpulsatrix_1_1TokenModel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.token_relevance.v1</code>: one relevance score per token of a text.  <a href="structpulsatrix_1_1TokenRelevanceDocument.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.token_relevance.v1</code>: relevance scores over the pieces of a text, in reading order. <a class="el" href="namespacepulsatrix.html#ace54ebd40de79191dcfd03d924f32d0e" title="A token-level document for text from its Encoding and one score per token.">MakeTokenRelevanceDocument()</a> and <a class="el" href="namespacepulsatrix.html#ae0fad8b255ac061cc8652aac55293e51" title="A word-level document for text from AggregateToWords(): each word scored, the text between words as u...">MakeWordRelevanceDocument()</a> (<code><a class="el" href="text__relevance_8hpp.html" title="Token relevance documents from real explanations (VIZ-6a): a tokenizer&#39;s Encoding or TOK-4&#39;s word sco...">viz/text_relevance.hpp</a></code>) build one from a tokenizer's <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> or from word scores.  <a href="structpulsatrix_1_1TokenRelevanceDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TokenRelevanceView.html">TokenRelevanceView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a document's pieces as running text that wraps to the window, each scored piece on a background colored by its relevance (DivergingColormap, scaled to the largest |relevance|), as the SVG token strip does. Unscored pieces (the spaces between words) are plain text, and a newline starts a new line. Hovering a piece shows its text and score.  <a href="classpulsatrix_1_1TokenRelevanceView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TopKResult.html">TopKResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45" title="Selects the k largest (or smallest) entries of every row along the last dimension.">top_k()</a>'s result: the selected values and their positions along the last dimension.  <a href="structpulsatrix_1_1TopKResult.html#details">More...</a><br /></td></tr>
@@ -2076,7 +2079,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a0121ff88a9488ffc68939cf396fd4df2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The heatmap's grid with square cells and a color bar. Signed grids use the diverging map on a range symmetric about zero, unsigned grids Viridis on [0, max] (ComputeHeatmapColorScale's rule). Non-finite cells are gray and left out of the scale. Row and column labels are drawn when the document has them.  <br /></td></tr>
 <tr class="separator:a0121ff88a9488ffc68939cf396fd4df2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08920d2d448c7826c263b59f72b6abaf" id="r_a08920d2d448c7826c263b59f72b6abaf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a08920d2d448c7826c263b59f72b6abaf">RenderTokenStripSvg</a> (const <a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
-<tr class="memdesc:a08920d2d448c7826c263b59f72b6abaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text's tokens in reading order, wrapped across lines, each on a background colored by its relevance (diverging, scaled to the largest |relevance|). Tokens are drawn in a monospace font, so their widths are exact, with whitespace kept. Non-finite relevance is drawn gray. The target, when set, is shown after the text.  <br /></td></tr>
+<tr class="memdesc:a08920d2d448c7826c263b59f72b6abaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The text's pieces (tokens or words) in reading order, wrapped across lines, each on a background colored by its relevance (diverging, scaled to the largest |relevance|). Pieces are drawn in a monospace font, so their widths are exact, with whitespace kept. Unscored pieces (context such as the spaces between words) are plain text and don't count toward the scale; non-finite relevance is drawn gray. The target and the unassigned relevance, when set, are shown after the text.  <br /></td></tr>
 <tr class="separator:a08920d2d448c7826c263b59f72b6abaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab95b38cf6f801c78725c83ff86b4fb50" id="r_ab95b38cf6f801c78725c83ff86b4fb50"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab95b38cf6f801c78725c83ff86b4fb50">RenderBeeswarmSvg</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &gt; &amp;docs, const std::vector&lt; int64_t &gt; &amp;feature_indices, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ab95b38cf6f801c78725c83ff86b4fb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">One beeswarm row per feature in <code>feature_indices:</code> each point is one document's value for that feature, placed by value on a shared axis through zero, spread vertically so points don't overlap (ToBeeswarmPoints's deterministic layout), and colored by value. Labels come from the first document's metadata["feature_names"] when present.  <br /></td></tr>
@@ -2099,6 +2102,12 @@ Functions</h2></td></tr>
 <tr class="memitem:af4029528cfbe002d039c209fee1d1b4a" id="r_af4029528cfbe002d039c209fee1d1b4a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af4029528cfbe002d039c209fee1d1b4a">RenderCounterfactualSetSvg</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1CounterfactualDocument.html">CounterfactualDocument</a> &gt; &amp;docs, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:af4029528cfbe002d039c209fee1d1b4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Several counterfactuals of one input side by side (CFS-7): a column for the input and one per counterfactual (headed by whether it reaches the target), and a row for every feature that at least one of them changes. Changed values are on a background colored by the change's direction and size in scale units; unchanged ones are blank.  <br /></td></tr>
 <tr class="separator:af4029528cfbe002d039c209fee1d1b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace54ebd40de79191dcfd03d924f32d0e" id="r_ace54ebd40de79191dcfd03d924f32d0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ace54ebd40de79191dcfd03d924f32d0e">MakeTokenRelevanceDocument</a> (std::string_view text, const <a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a> &amp;encoding, const std::vector&lt; float &gt; &amp;token_scores, std::string method, std::string target=&quot;&quot;, bool include_special_tokens=true)</td></tr>
+<tr class="memdesc:ace54ebd40de79191dcfd03d924f32d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A token-level document for <code>text</code> from its <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> and one score per token.  <br /></td></tr>
+<tr class="separator:ace54ebd40de79191dcfd03d924f32d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0fad8b255ac061cc8652aac55293e51" id="r_ae0fad8b255ac061cc8652aac55293e51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae0fad8b255ac061cc8652aac55293e51">MakeWordRelevanceDocument</a> (std::string_view text, const <a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a> &amp;words, std::string method, std::string target=&quot;&quot;)</td></tr>
+<tr class="memdesc:ae0fad8b255ac061cc8652aac55293e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">A word-level document for <code>text</code> from <a class="el" href="namespacepulsatrix.html#ad632e662dfcc2dd85fab54b1ee8e9b1f" title="Merges per-token scores into the given words.">AggregateToWords()</a>: each word scored, the text between words as unscored pieces, and the words' unassigned relevance carried over.  <br /></td></tr>
+<tr class="separator:ae0fad8b255ac061cc8652aac55293e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dcdc5579c39f1cdd2cad537f85f6847" id="r_a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Vocabulary.html">Vocabulary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6dcdc5579c39f1cdd2cad537f85f6847">BuildVocabulary</a> (const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;tokenized_corpus, int64_t max_vocab_size=-1)</td></tr>
 <tr class="memdesc:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a> from a tokenized corpus, ranked by descending token frequency (ties broken by first-seen order, for determinism).  <br /></td></tr>
 <tr class="separator:a6dcdc5579c39f1cdd2cad537f85f6847"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7468,6 +7477,67 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ace54ebd40de79191dcfd03d924f32d0e" name="ace54ebd40de79191dcfd03d924f32d0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace54ebd40de79191dcfd03d924f32d0e">&#9670;&#160;</a></span>MakeTokenRelevanceDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> pulsatrix::MakeTokenRelevanceDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a> &amp;&#160;</td>
+          <td class="paramname"><em>encoding</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>token_scores</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>include_special_tokens</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A token-level document for <code>text</code> from its <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> and one score per token. </p>
+<p>Each token is shown as the text its offset covers, so byte-level tokens appear decoded, as UTF-8. Tokens that share a character (byte-level tokens that split one, such as an emoji) are shown as one piece whose score is their sum. Text no token covers becomes an unscored piece, so the pieces read as <code>text</code>. Tokens with an empty offset (BOS, EOS) are shown as their token strings when <code>include_special_tokens</code> is set; otherwise their relevance goes to <code>unassigned</code>.</p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the scores don't match the tokens or an offset lies outside <code>text</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="abd0065c8787c53cbacf8f266bd811c8d" name="abd0065c8787c53cbacf8f266bd811c8d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd0065c8787c53cbacf8f266bd811c8d">&#9670;&#160;</a></span>MakeWordLevelTokenizer()</h2>
 
@@ -7485,6 +7555,54 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>The word-level tokenizer over a <a class="el" href="classpulsatrix_1_1Vocabulary.html" title="Token&lt;-&gt;index lookup table. Index 0 is always the reserved &quot;&lt;unk&gt;&quot; token – guaranteed by construction...">Vocabulary</a>: <a class="el" href="classpulsatrix_1_1AsciiLowercase.html" title="Lowercases ASCII letters and leaves every other character alone.">AsciiLowercase</a>, <a class="el" href="classpulsatrix_1_1WordPunctuationSplit.html" title="The split Tokenizer::Tokenize makes: runs of ASCII letters, digits and apostrophes are words,...">WordPunctuationSplit</a> and a <a class="el" href="classpulsatrix_1_1WordLevelModel.html" title="Each piece is one token, looked up in a vocabulary; unknown pieces become the unknown token.">WordLevelModel</a> whose unknown token is <code>&lt;unk&gt;</code> (id 0). On ASCII text its tokens are <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a>'s and its ids are <a class="el" href="classpulsatrix_1_1Vocabulary.html#aad956d5e6776e13be224d60b9de130cb" title="The token&#39;s index, or kUnkIndex if the token isn&#39;t in this vocabulary.">Vocabulary::IndexOf</a>'s. </p>
+
+</div>
+</div>
+<a id="ae0fad8b255ac061cc8652aac55293e51" name="ae0fad8b255ac061cc8652aac55293e51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0fad8b255ac061cc8652aac55293e51">&#9670;&#160;</a></span>MakeWordRelevanceDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">TokenRelevanceDocument</a> pulsatrix::MakeWordRelevanceDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a> &amp;&#160;</td>
+          <td class="paramname"><em>words</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>target</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A word-level document for <code>text</code> from <a class="el" href="namespacepulsatrix.html#ad632e662dfcc2dd85fab54b1ee8e9b1f" title="Merges per-token scores into the given words.">AggregateToWords()</a>: each word scored, the text between words as unscored pieces, and the words' unassigned relevance carried over. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a word's span lies outside <code>text</code> or the words are out of order. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -9559,10 +9677,10 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>The text's tokens in reading order, wrapped across lines, each on a background colored by its relevance (diverging, scaled to the largest |relevance|). Tokens are drawn in a monospace font, so their widths are exact, with whitespace kept. Non-finite relevance is drawn gray. The target, when set, is shown after the text. </p>
+<p>The text's pieces (tokens or words) in reading order, wrapped across lines, each on a background colored by its relevance (diverging, scaled to the largest |relevance|). Pieces are drawn in a monospace font, so their widths are exact, with whitespace kept. Unscored pieces (context such as the spaces between words) are plain text and don't count toward the scale; non-finite relevance is drawn gray. The target and the unassigned relevance, when set, are shown after the text. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if tokens and relevance differ in length, there are no tokens, or for invalid options. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if tokens and relevance (or scored) differ in length, there are no tokens, or for invalid options. </td></tr>
   </table>
   </dd>
 </dl>
@@ -12793,7 +12911,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div><div class="memdoc">
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if tokens and relevance differ in length. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if tokens and relevance (or scored, when set) differ in length, or granularity is neither "token" nor "word". </td></tr>
   </table>
   </dd>
 </dl>

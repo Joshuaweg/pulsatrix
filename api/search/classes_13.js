@@ -20,13 +20,14 @@ var searchData=
   ['tokenizerparityreport_17',['TokenizerParityReport',['../structpulsatrix_1_1TokenizerParityReport.html',1,'pulsatrix']]],
   ['tokenmodel_18',['TokenModel',['../classpulsatrix_1_1TokenModel.html',1,'pulsatrix']]],
   ['tokenrelevancedocument_19',['TokenRelevanceDocument',['../structpulsatrix_1_1TokenRelevanceDocument.html',1,'pulsatrix']]],
-  ['topkresult_20',['TopKResult',['../structpulsatrix_1_1TopKResult.html',1,'pulsatrix']]],
-  ['toyknowledgebase_21',['ToyKnowledgeBase',['../classpulsatrix_1_1ToyKnowledgeBase.html',1,'pulsatrix']]],
-  ['trainingdashboard_22',['TrainingDashboard',['../classpulsatrix_1_1TrainingDashboard.html',1,'pulsatrix']]],
-  ['traininglogdocument_23',['TrainingLogDocument',['../structpulsatrix_1_1TrainingLogDocument.html',1,'pulsatrix']]],
-  ['trajectorybalanceloss_24',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
-  ['transform_25',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
-  ['transformdataset_26',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
-  ['transformerblock_27',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
-  ['trial_28',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
+  ['tokenrelevanceview_20',['TokenRelevanceView',['../classpulsatrix_1_1TokenRelevanceView.html',1,'pulsatrix']]],
+  ['topkresult_21',['TopKResult',['../structpulsatrix_1_1TopKResult.html',1,'pulsatrix']]],
+  ['toyknowledgebase_22',['ToyKnowledgeBase',['../classpulsatrix_1_1ToyKnowledgeBase.html',1,'pulsatrix']]],
+  ['trainingdashboard_23',['TrainingDashboard',['../classpulsatrix_1_1TrainingDashboard.html',1,'pulsatrix']]],
+  ['traininglogdocument_24',['TrainingLogDocument',['../structpulsatrix_1_1TrainingLogDocument.html',1,'pulsatrix']]],
+  ['trajectorybalanceloss_25',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
+  ['transform_26',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
+  ['transformdataset_27',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
+  ['transformerblock_28',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
+  ['trial_29',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
 ];

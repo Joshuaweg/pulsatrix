@@ -338,6 +338,7 @@ var hierarchy =
       [ "pulsatrix::WordLevelModel", "classpulsatrix_1_1WordLevelModel.html", null ]
     ] ],
     [ "pulsatrix::TokenRelevanceDocument", "structpulsatrix_1_1TokenRelevanceDocument.html", null ],
+    [ "pulsatrix::TokenRelevanceView", "classpulsatrix_1_1TokenRelevanceView.html", null ],
     [ "pulsatrix::TopKResult", "structpulsatrix_1_1TopKResult.html", null ],
     [ "pulsatrix::ToyKnowledgeBase", "classpulsatrix_1_1ToyKnowledgeBase.html", null ],
     [ "pulsatrix::TrainingDashboard", "classpulsatrix_1_1TrainingDashboard.html", null ],

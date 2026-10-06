@@ -752,6 +752,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#token-relevance-for-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token relevance for text
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#format-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1739,6 +1750,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#token-relevance-for-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token relevance for text
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#format-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2116,6 +2138,34 @@ read the same data. The documents are part of <code>pulsatrix_core</code> and ne
 </tr>
 </tbody>
 </table>
+<h3 id="token-relevance-for-text">Token relevance for text<a class="headerlink" href="#token-relevance-for-text" title="Permanent link">&para;</a></h3>
+<p><code>viz/text_relevance.hpp</code> builds a <code>token_relevance.v1</code> document from a real explanation, so its
+pieces read as the original text:</p>
+<ul>
+<li><strong><code>MakeTokenRelevanceDocument(text, encoding, scores, method, target)</code></strong> shows each token as the
+  text its offset covers, so byte-level BPE tokens appear decoded. Tokens that split one character
+  (an emoji's bytes) become one piece with their scores summed. Text no token covers becomes
+  unscored context. BOS and other inserted tokens appear as their token strings, or go to
+  <code>unassigned</code> when left out.</li>
+<li><strong><code>MakeWordRelevanceDocument(text, word_scores, method, target)</code></strong> takes the output of
+  <code>AggregateToWords</code> (TOK-4): each word is scored, and the spaces between words are unscored
+  context.</li>
+</ul>
+<p>The document grows three optional fields, all backward compatible, each written only when it
+says something:
+- <code>granularity</code> (<code>"token"</code> or <code>"word"</code>)
+- <code>scored</code> (one flag per piece; unscored pieces are context)
+- <code>unassigned</code> (relevance that belongs to no piece shown)</p>
+<p>The SVG token strip draws context as plain text, and so does the <code>TokenRelevanceView</code> ImGui
+widget (<code>viz/token_relevance_view.hpp</code>).</p>
+<p><code>pulsatrix_explain_text</code> does all of this for a Hugging Face model in one step. It tokenizes,
+runs AttnLRP from the most likely next token, and writes the figure or document:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_explain_text<span class="w"> </span>models/SmolLM2-135M<span class="w"> </span><span class="s2">"The Eiffel Tower is located in the city of"</span><span class="w"> </span>-o<span class="w"> </span>paris.svg
+pulsatrix_explain_text<span class="w"> </span>models/SmolLM2-135M<span class="w"> </span><span class="s2">"The Eiffel Tower is located in the city of"</span><span class="w"> </span>--words<span class="w"> </span>-o<span class="w"> </span>paris.json
+token_relevance_demo<span class="w"> </span>paris.json<span class="w">   </span><span class="c1"># the ImGui widget (PULSATRIX_ENABLE_VIZ)</span>
+</code></pre></div>
+<p>For " Paris", the word view gives "Eiffel" +4.09, and every other word stays under 1.6 in
+magnitude ("The" is −1.60). The token view shows the relevance sits on "iffel"; "E" gets little.</p>
 <p>The widgets read documents directly: <code>AttributionBarChart</code>, <code>AttributionWaterfallChart</code>,
 <code>SaliencyHeatmapView</code> and <code>CircuitGraphView</code> each have a <code>Draw</code> overload for their document. For
 the training dashboard, replay the log into an <code>ImPlotMetricsSink</code> once and draw that.</p>

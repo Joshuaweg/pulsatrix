@@ -94,34 +94,95 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1TokenRelevanceDocum
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structpulsatrix_1_1TokenRelevanceDocument-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::TokenRelevanceDocument Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>pulsatrix.token_relevance.v1</code>: one relevance score per token of a text.  
+<p><code>pulsatrix.token_relevance.v1</code>: relevance scores over the pieces of a text, in reading order. <a class="el" href="namespacepulsatrix.html#ace54ebd40de79191dcfd03d924f32d0e" title="A token-level document for text from its Encoding and one score per token.">MakeTokenRelevanceDocument()</a> and <a class="el" href="namespacepulsatrix.html#ae0fad8b255ac061cc8652aac55293e51" title="A word-level document for text from AggregateToWords(): each word scored, the text between words as u...">MakeWordRelevanceDocument()</a> (<code><a class="el" href="text__relevance_8hpp.html" title="Token relevance documents from real explanations (VIZ-6a): a tokenizer&#39;s Encoding or TOK-4&#39;s word sco...">viz/text_relevance.hpp</a></code>) build one from a tokenizer's <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> or from word scores.  
  <a href="structpulsatrix_1_1TokenRelevanceDocument.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="document_8hpp_source.html">document.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a1c9331be9fd402745545640e6173030c" id="r_a1c9331be9fd402745545640e6173030c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html#a1c9331be9fd402745545640e6173030c">is_scored</a> (size_t i) const</td></tr>
+<tr class="memdesc:a1c9331be9fd402745545640e6173030c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether piece <code>i</code> carries a score.  <br /></td></tr>
+<tr class="separator:a1c9331be9fd402745545640e6173030c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a7bb430e917ddb11000d75971b44c2fc2" id="r_a7bb430e917ddb11000d75971b44c2fc2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html#a7bb430e917ddb11000d75971b44c2fc2">method</a></td></tr>
 <tr class="separator:a7bb430e917ddb11000d75971b44c2fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39957961f7c503032652f410f3b3b693" id="r_a39957961f7c503032652f410f3b3b693"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html#a39957961f7c503032652f410f3b3b693">tokens</a></td></tr>
-<tr class="memdesc:a39957961f7c503032652f410f3b3b693"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tokens as text, in order. Must be valid UTF-8: decode byte-level tokens first.  <br /></td></tr>
+<tr class="memdesc:a39957961f7c503032652f410f3b3b693"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pieces as text, in order; concatenated, they read as the text. Must be valid UTF-8: decode byte-level tokens first.  <br /></td></tr>
 <tr class="separator:a39957961f7c503032652f410f3b3b693"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55ae2552c242d6cb347130c33639f235" id="r_a55ae2552c242d6cb347130c33639f235"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html#a55ae2552c242d6cb347130c33639f235">relevance</a></td></tr>
-<tr class="memdesc:a55ae2552c242d6cb347130c33639f235"><td class="mdescLeft">&#160;</td><td class="mdescRight">One score per token.  <br /></td></tr>
+<tr class="memdesc:a55ae2552c242d6cb347130c33639f235"><td class="mdescLeft">&#160;</td><td class="mdescRight">One score per piece.  <br /></td></tr>
 <tr class="separator:a55ae2552c242d6cb347130c33639f235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c0cc9f8b2972cb37dc6dce89ff48743" id="r_a5c0cc9f8b2972cb37dc6dce89ff48743"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html#a5c0cc9f8b2972cb37dc6dce89ff48743">target</a></td></tr>
 <tr class="memdesc:a5c0cc9f8b2972cb37dc6dce89ff48743"><td class="mdescLeft">&#160;</td><td class="mdescRight">What was explained, for example the predicted next token. Optional.  <br /></td></tr>
 <tr class="separator:a5c0cc9f8b2972cb37dc6dce89ff48743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e7e2a6d2f180dc0642ed0f513c18920" id="r_a2e7e2a6d2f180dc0642ed0f513c18920"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html#a2e7e2a6d2f180dc0642ed0f513c18920">granularity</a> = &quot;token&quot;</td></tr>
+<tr class="memdesc:a2e7e2a6d2f180dc0642ed0f513c18920"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>"token"</code> or <code>"word"</code>: what the scored pieces are. Written only when <code>"word"</code>.  <br /></td></tr>
+<tr class="separator:a2e7e2a6d2f180dc0642ed0f513c18920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e7c9be7c787f2402f9f13abcb674dff" id="r_a6e7c9be7c787f2402f9f13abcb674dff"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html#a6e7c9be7c787f2402f9f13abcb674dff">scored</a></td></tr>
+<tr class="memdesc:a6e7c9be7c787f2402f9f13abcb674dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether each piece carries a score; empty means all do. Unscored pieces are context, such as the spaces between words, drawn without a color. Written only when some piece is unscored.  <br /></td></tr>
+<tr class="separator:a6e7c9be7c787f2402f9f13abcb674dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76a808710208dc6689a444ac2a5434e2" id="r_a76a808710208dc6689a444ac2a5434e2"><td class="memItemLeft" align="right" valign="top">std::optional&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html#a76a808710208dc6689a444ac2a5434e2">unassigned</a></td></tr>
+<tr class="memdesc:a76a808710208dc6689a444ac2a5434e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relevance that belongs to no piece shown, such as a BOS token left out or tokens between words. Written only when set.  <br /></td></tr>
+<tr class="separator:a76a808710208dc6689a444ac2a5434e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><code>pulsatrix.token_relevance.v1</code>: one relevance score per token of a text. </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+<div class="textblock"><p><code>pulsatrix.token_relevance.v1</code>: relevance scores over the pieces of a text, in reading order. <a class="el" href="namespacepulsatrix.html#ace54ebd40de79191dcfd03d924f32d0e" title="A token-level document for text from its Encoding and one score per token.">MakeTokenRelevanceDocument()</a> and <a class="el" href="namespacepulsatrix.html#ae0fad8b255ac061cc8652aac55293e51" title="A word-level document for text from AggregateToWords(): each word scored, the text between words as u...">MakeWordRelevanceDocument()</a> (<code><a class="el" href="text__relevance_8hpp.html" title="Token relevance documents from real explanations (VIZ-6a): a tokenizer&#39;s Encoding or TOK-4&#39;s word sco...">viz/text_relevance.hpp</a></code>) build one from a tokenizer's <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> or from word scores. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1c9331be9fd402745545640e6173030c" name="a1c9331be9fd402745545640e6173030c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c9331be9fd402745545640e6173030c">&#9670;&#160;</a></span>is_scored()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::TokenRelevanceDocument::is_scored </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether piece <code>i</code> carries a score. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2e7e2a6d2f180dc0642ed0f513c18920" name="a2e7e2a6d2f180dc0642ed0f513c18920"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e7e2a6d2f180dc0642ed0f513c18920">&#9670;&#160;</a></span>granularity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::TokenRelevanceDocument::granularity = &quot;token&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>"token"</code> or <code>"word"</code>: what the scored pieces are. Written only when <code>"word"</code>. </p>
+
+</div>
+</div>
 <a id="a7bb430e917ddb11000d75971b44c2fc2" name="a7bb430e917ddb11000d75971b44c2fc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7bb430e917ddb11000d75971b44c2fc2">&#9670;&#160;</a></span>method</h2>
 
@@ -148,7 +209,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>One score per token. </p>
+<p>One score per piece. </p>
+
+</div>
+</div>
+<a id="a6e7c9be7c787f2402f9f13abcb674dff" name="a6e7c9be7c787f2402f9f13abcb674dff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e7c9be7c787f2402f9f13abcb674dff">&#9670;&#160;</a></span>scored</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;bool&gt; pulsatrix::TokenRelevanceDocument::scored</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether each piece carries a score; empty means all do. Unscored pieces are context, such as the spaces between words, drawn without a color. Written only when some piece is unscored. </p>
 
 </div>
 </div>
@@ -180,7 +257,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The tokens as text, in order. Must be valid UTF-8: decode byte-level tokens first. </p>
+<p>The pieces as text, in order; concatenated, they read as the text. Must be valid UTF-8: decode byte-level tokens first. </p>
+
+</div>
+</div>
+<a id="a76a808710208dc6689a444ac2a5434e2" name="a76a808710208dc6689a444ac2a5434e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76a808710208dc6689a444ac2a5434e2">&#9670;&#160;</a></span>unassigned</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;float&gt; pulsatrix::TokenRelevanceDocument::unassigned</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Relevance that belongs to no piece shown, such as a BOS token left out or tokens between words. Written only when set. </p>
 
 </div>
 </div>

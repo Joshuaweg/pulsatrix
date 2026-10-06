@@ -15,7 +15,9 @@ var group__visualization =
     [ "plot_data.hpp", "plot__data_8hpp.html", null ],
     [ "saliency_heatmap_view.hpp", "saliency__heatmap__view_8hpp.html", null ],
     [ "svg.hpp", "svg_8hpp.html", null ],
+    [ "text_relevance.hpp", "text__relevance_8hpp.html", null ],
     [ "texture_cache.hpp", "texture__cache_8hpp.html", null ],
+    [ "token_relevance_view.hpp", "token__relevance__view_8hpp.html", null ],
     [ "training_dashboard.hpp", "training__dashboard_8hpp.html", null ],
     [ "window.hpp", "window_8hpp.html", null ]
 ];
