@@ -95,18 +95,36 @@ struct HeatmapDocument {
 
 // ---- token relevance -----------------------------------------------------------------------
 
-/** @brief `pulsatrix.token_relevance.v1`: one relevance score per token of a text. */
+/**
+ * @brief `pulsatrix.token_relevance.v1`: relevance scores over the pieces of a text, in reading
+ *        order. MakeTokenRelevanceDocument() and MakeWordRelevanceDocument()
+ *        (`viz/text_relevance.hpp`) build one from a tokenizer's Encoding or from word scores.
+ */
 struct TokenRelevanceDocument {
     std::string method;
-    /** @brief The tokens as text, in order. Must be valid UTF-8: decode byte-level tokens first. */
+    /** @brief The pieces as text, in order; concatenated, they read as the text. Must be valid
+     *         UTF-8: decode byte-level tokens first. */
     std::vector<std::string> tokens;
-    /** @brief One score per token. */
+    /** @brief One score per piece. */
     std::vector<float> relevance;
     /** @brief What was explained, for example the predicted next token. Optional. */
     std::string target;
+    /** @brief `"token"` or `"word"`: what the scored pieces are. Written only when `"word"`. */
+    std::string granularity = "token";
+    /** @brief Whether each piece carries a score; empty means all do. Unscored pieces are context,
+     *         such as the spaces between words, drawn without a color. Written only when some
+     *         piece is unscored. */
+    std::vector<bool> scored;
+    /** @brief Relevance that belongs to no piece shown, such as a BOS token left out or tokens
+     *         between words. Written only when set. */
+    std::optional<float> unassigned;
+
+    /** @brief Whether piece @p i carries a score. */
+    [[nodiscard]] bool is_scored(size_t i) const { return scored.empty() || scored[i]; }
 };
 
-/** @throws std::invalid_argument if tokens and relevance differ in length. */
+/** @throws std::invalid_argument if tokens and relevance (or scored, when set) differ in length,
+ *          or granularity is neither "token" nor "word". */
 [[nodiscard]] std::string ToJson(const TokenRelevanceDocument& doc);
 [[nodiscard]] TokenRelevanceDocument ParseTokenRelevanceDocument(std::string_view json);
 

@@ -763,7 +763,7 @@ format, with static and web renderers next to it.
 | VIZ-2 | A dependency-free SVG renderer: bar, waterfall, heatmap, token strip, beeswarm | Publication figures with no GPU or display, including in CI | VIZ-1 | P0 | M | Done, [#63](https://github.com/Joshuaweg/pulsatrix/pull/63) (see below) |
 | VIZ-3 | Self-contained Vega-Lite HTML, with the JavaScript inlined or loaded from a CDN | Hover, zoom and export for free, in a browser or notebook | VIZ-1 | P1 | S | |
 | VIZ-4 | Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read | Large graphs get a mature viewer for free | VIZ-1 | P1 | M | |
-| VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each | (a) in SVG only, through VIZ-2 |
+| VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each | (a) Done, [#87](https://github.com/Joshuaweg/pulsatrix/pull/87) (see below) |
 | VIZ-7 | A node editor for circuit graphs | Only if graphs outgrow the current view; VIZ-4 covers large ones | — | P3 | M | |
 
 (VIZ-5, the notebook path, moved to the NB epic.)
@@ -782,6 +782,18 @@ format, with static and web renderers next to it.
   cells and tokens are drawn gray; the bar, waterfall and beeswarm charts refuse non-finite
   values. Every stored test figure was rendered and checked by eye before it became a golden
   file.
+- **VIZ-6a** builds token relevance documents from real explanations
+  (`MakeTokenRelevanceDocument`, `MakeWordRelevanceDocument`), rather than adding a new
+  document kind. `token_relevance.v1` gained optional `granularity`, `scored` (unscored context
+  such as the spaces between words) and `unassigned` fields, written only when set, so existing
+  documents and golden figures are unchanged.
+  - Byte-level tokens that split a character are shown as one piece with their scores summed.
+  - It added the `TokenRelevanceView` ImGui widget, `pulsatrix_explain_text` (AttnLRP on a
+    Hugging Face model, straight to a figure) and `token_relevance_demo`.
+  - The figures and the widget were checked by eye on SmolLM2 explanations: English, and a German,
+    French and emoji line.
+  - ImGui's default font is Latin-1 only, so the widget needs a loaded font for other scripts;
+    the SVG has no such limit.
 
 ### Follow-ups the VIZ work surfaced
 
@@ -789,7 +801,7 @@ format, with static and web renderers next to it.
 |---|---|---|
 | SVG views for circuit graphs, training logs and feature dashboards | VIZ-2 | VIZ-4, VIZ-6 |
 | Nothing produces `feature_dashboard.v1` yet; its fields follow SAEDashboard | VIZ-1 | FEAT |
-| Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | TOK-2 |
+| Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | Done in VIZ-6a: pieces are the text their offsets cover |
 | SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | VIZ-3 (the browser lays out text) |
 
 ## NB: Notebook layer

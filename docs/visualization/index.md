@@ -104,6 +104,41 @@ There are six kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse
 | `pulsatrix.sensitivity.v1` | `SensitivityDocument` | `target`, the unchanged `output`, and per feature its `name`, `value`, `low`, `high`, `output_low` and `output_high` | `LocalSensitivityResult` |
 | `pulsatrix.partial_dependence.v1` | `PartialDependenceDocument` | `method` (`"partial_dependence"` or `"ale"`), `feature`, `target`, `grid`, `partial_dependence`, and optionally `num_instances` ICE curves (`ice`) and the instances' `feature_values` | `IceResult`, `AleResult` |
 
+### Token relevance for text
+
+`viz/text_relevance.hpp` builds a `token_relevance.v1` document from a real explanation, so its
+pieces read as the original text:
+
+- **`MakeTokenRelevanceDocument(text, encoding, scores, method, target)`** shows each token as the
+  text its offset covers, so byte-level BPE tokens appear decoded. Tokens that split one character
+  (an emoji's bytes) become one piece with their scores summed. Text no token covers becomes
+  unscored context. BOS and other inserted tokens appear as their token strings, or go to
+  `unassigned` when left out.
+- **`MakeWordRelevanceDocument(text, word_scores, method, target)`** takes the output of
+  `AggregateToWords` (TOK-4): each word is scored, and the spaces between words are unscored
+  context.
+
+The document grows three optional fields, all backward compatible, each written only when it
+says something:
+- `granularity` (`"token"` or `"word"`)
+- `scored` (one flag per piece; unscored pieces are context)
+- `unassigned` (relevance that belongs to no piece shown)
+
+The SVG token strip draws context as plain text, and so does the `TokenRelevanceView` ImGui
+widget (`viz/token_relevance_view.hpp`).
+
+`pulsatrix_explain_text` does all of this for a Hugging Face model in one step. It tokenizes,
+runs AttnLRP from the most likely next token, and writes the figure or document:
+
+```sh
+pulsatrix_explain_text models/SmolLM2-135M "The Eiffel Tower is located in the city of" -o paris.svg
+pulsatrix_explain_text models/SmolLM2-135M "The Eiffel Tower is located in the city of" --words -o paris.json
+token_relevance_demo paris.json   # the ImGui widget (PULSATRIX_ENABLE_VIZ)
+```
+
+For " Paris", the word view gives "Eiffel" +4.09, and every other word stays under 1.6 in
+magnitude ("The" is −1.60). The token view shows the relevance sits on "iffel"; "E" gets little.
+
 The widgets read documents directly: `AttributionBarChart`, `AttributionWaterfallChart`,
 `SaliencyHeatmapView` and `CircuitGraphView` each have a `Draw` overload for their document. For
 the training dashboard, replay the log into an `ImPlotMetricsSink` once and draw that.

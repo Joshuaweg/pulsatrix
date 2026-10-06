@@ -288,12 +288,15 @@ std::string RenderTokenStripSvg(const TokenRelevanceDocument& doc, const SvgOpti
     if (doc.tokens.empty()) {
         throw std::invalid_argument("RenderTokenStripSvg: there are no tokens");
     }
+    if (!doc.scored.empty() && doc.scored.size() != doc.tokens.size()) {
+        throw std::invalid_argument("RenderTokenStripSvg: needs one scored flag per token");
+    }
     float max_abs = 0.0f;
-    for (float r : doc.relevance) {
-        if (std::isfinite(r)) max_abs = std::max(max_abs, std::abs(r));
+    for (size_t i = 0; i < doc.relevance.size(); ++i) {
+        if (doc.is_scored(i) && std::isfinite(doc.relevance[i])) max_abs = std::max(max_abs, std::abs(doc.relevance[i]));
     }
 
-    Figure f(options, "Token relevance (" + doc.method + ")");
+    Figure f(options, std::string(doc.granularity == "word" ? "Word" : "Token") + " relevance (" + doc.method + ")");
     const double fs = f.fs();
     const double char_w = kCharWidthEm * fs;
     const double line_h = fs * 1.9;
@@ -325,6 +328,18 @@ std::string RenderTokenStripSvg(const TokenRelevanceDocument& doc, const SvgOpti
             x = left;
             y += line_h;
         }
+        if (!doc.is_scored(i)) {
+            // Context, such as the spaces between words: plain text, no box and no score.
+            f.body() += std::string("<text class=\"context-text\" xml:space=\"preserve\" x=\"") + Num(x) + "\" y=\"" +
+                        Num(y + box_h * 0.72) + "\" font-family=\"" + kMonoFont + "\" fill=\"" + kTextColor + "\">" +
+                        Escape(shown) + "</text>\n";
+            x += w;
+            if (breaks_line) {
+                x = left;
+                y += line_h;
+            }
+            continue;
+        }
         const float r = doc.relevance[i];
         const bool missing = !std::isfinite(r);
         const RgbColor c = missing ? RgbColor{0.741f, 0.741f, 0.741f} : DivergingColormap(NormalizeSigned(r, max_abs));
@@ -346,6 +361,11 @@ std::string RenderTokenStripSvg(const TokenRelevanceDocument& doc, const SvgOpti
         f.body() += std::string("<text class=\"target\" x=\"") + Num(left) + "\" y=\"" + Num(y) + "\" fill=\"" + kMutedColor +
                     "\">explaining <tspan class=\"target-token\" xml:space=\"preserve\" font-family=\"" + kMonoFont +
                     "\" fill=\"" + kTextColor + "\">" + Escape(doc.target) + "</tspan></text>\n";
+        y += line_h;
+    }
+    if (doc.unassigned && std::isfinite(*doc.unassigned)) {
+        f.body() += std::string("<text class=\"unassigned\" x=\"") + Num(left) + "\" y=\"" + Num(y) + "\" fill=\"" + kMutedColor +
+                    "\">relevance outside the pieces shown: " + ValueText(*doc.unassigned) + "</text>\n";
         y += line_h;
     }
     // Legend: the scale's ends.

@@ -26,6 +26,7 @@ add_executable(pulsatrix_tests
     text_tokenizer_test.cpp
     tokenizer_json_test.cpp
     word_scores_test.cpp
+    text_relevance_test.cpp
     vocabulary_test.cpp
     text_dataset_test.cpp
     text_collate_test.cpp
