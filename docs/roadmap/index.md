@@ -328,7 +328,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 | LLM-3 | Native tokenizers for the target models: [TOK-1 to TOK-3](#tok-tokenizers) | No Python needed to tokenize | — | P0 | M–L | |
 | LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S || Done, [#76](https://github.com/Joshuaweg/pulsatrix/pull/76) (see below) |
 | LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M || Done, [#77](https://github.com/Joshuaweg/pulsatrix/pull/77) (see below) |
-| LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3 | Catches layout bugs that still "load" | IO-4 | P0 | S || Done, [#81](https://github.com/Joshuaweg/pulsatrix/pull/81) (see below) |
+| LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum difference under 1e-3 (relative to the position's largest logit above 1) | Catches layout bugs that still "load" | IO-4 | P0 | S || Done, [#81](https://github.com/Joshuaweg/pulsatrix/pull/81) (see below) |
 | LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M | |
 | LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M | |
 | LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M | |
@@ -382,8 +382,10 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
   - Llama 3's `rope_scaling` (the `llama3` and `linear` types) is computed as Hugging Face
     computes it and passed to `RoPEModule` as explicit per-pair frequencies. Other types are still
     refused.
-  - SmolLM2 and Qwen2.5 are within about 20% of the 1e-3 threshold, from fp32 rounding (mean
-    differences are near 1e-5).
+  - The 1e-3 threshold is relative to each position's largest logit when that exceeds 1, so
+    |diff| <= 1e-3 * max(1, max |logit|). Qwen2.5's logits reach about 24, and fp32 accumulation
+    order alone gave 1.1e-3 absolute (5e-5 relative) on CPU, with no argmax disagreements. A layout
+    bug moves logits by about their own size, so it still fails by orders of magnitude.
   - The CPU backend's reference `gemm` is single-threaded and walks the weight matrix by column,
     so a 1B model took more than an hour on CPU. Real models were checked on the GPU.
 
