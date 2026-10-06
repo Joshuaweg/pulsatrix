@@ -188,6 +188,18 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
+    /**
+     * @brief The last propagate_relevance()'s relevance at the K and V projection outputs,
+     *        `(N * L, num_kv_heads * head_dim)`, after each shared head has summed its query
+     *        heads' relevance (LLM-7 checks the per-head totals against LXT). RoPE and QK-Norm
+     *        have already been propagated through, so K's is at k_proj's output, where a
+     *        Hugging Face hook on k_proj sees it.
+     * @throws std::logic_error before any propagate_relevance().
+     */
+    [[nodiscard]] const Tensor& key_relevance() const;
+    /** @brief The same at the V projection output. @throws std::logic_error before any propagate_relevance(). */
+    [[nodiscard]] const Tensor& value_relevance() const;
+
     /** @brief Every sub-module's parameters, flattened -- Q/K/V/O weights and biases, plus
      *         the two QK-Norm gammas when enabled. RoPE and softmax contribute none. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
@@ -339,6 +351,9 @@ private:
     Tensor last_attn_;        ///< (N, num_heads, L, L) -- softmax output
     Tensor last_context_;     ///< (N, num_heads, L, head_dim) -- Attn@V
     bool has_forwarded_ = false;
+    Tensor last_key_relevance_;    ///< (N * L, Hkv * D) at k_proj's output, from the last relevance pass
+    Tensor last_value_relevance_;  ///< (N * L, Hkv * D) at v_proj's output
+    bool has_relevance_ = false;
 };
 
 }  // namespace pulsatrix
