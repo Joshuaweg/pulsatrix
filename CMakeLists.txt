@@ -167,6 +167,11 @@ add_library(pulsatrix_core
     src/tokenizer.cpp
     src/text_tokenizer.cpp
     src/tokenizer_components.cpp
+    src/unicode.cpp
+    src/unicode_regex.cpp
+    src/byte_level_bpe.cpp
+    src/tokenizer_json.cpp
+    src/tokenizer_parity.cpp
     src/vocabulary.cpp
     src/text_dataset.cpp
     src/text_collate.cpp
@@ -574,6 +579,10 @@ add_executable(pulsatrix_golden tools/golden/pulsatrix_golden.cpp)
 target_link_libraries(pulsatrix_golden PRIVATE pulsatrix_core)
 target_compile_definitions(pulsatrix_golden PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
 
+# pulsatrix_tokenizer_parity: a tokenizer.json against Hugging Face tokenizers on a corpus (TOK-2).
+add_executable(pulsatrix_tokenizer_parity tools/tokenizers/pulsatrix_tokenizer_parity.cpp)
+target_link_libraries(pulsatrix_tokenizer_parity PRIVATE pulsatrix_core)
+
 # pulsatrix_attnlrp: AttnLRP relevance on a Hugging Face model against LXT's (LLM-7).
 add_executable(pulsatrix_attnlrp tools/golden/pulsatrix_attnlrp.cpp)
 target_link_libraries(pulsatrix_attnlrp PRIVATE pulsatrix_core)
@@ -637,7 +646,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"

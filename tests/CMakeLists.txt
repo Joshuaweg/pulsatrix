@@ -24,6 +24,7 @@ add_executable(pulsatrix_tests
     dataloader_image_benchmark_test.cpp
     tokenizer_test.cpp
     text_tokenizer_test.cpp
+    tokenizer_json_test.cpp
     vocabulary_test.cpp
     text_dataset_test.cpp
     text_collate_test.cpp
@@ -253,6 +254,9 @@ if(PULSATRIX_ENABLE_CUDA AND PULSATRIX_ENABLE_HIP)
 endif()
 
 target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_core GTest::gtest_main GTest::gmock)
+# The tokenizer tests hold UTF-8 string literals (Cyrillic, CJK, emoji); MSVC otherwise reads
+# sources in the system code page.
+target_compile_options(pulsatrix_tests PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
 
 # ctest runs pulsatrix_tests with cwd = the build directory, not the source tree -- a relative
 # "data/MNIST/raw/..." path never resolves there. mnist_loader_test.cpp needs an absolute
@@ -323,6 +327,10 @@ set_tests_properties(PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm PROPERT
 # LLM-6: the golden-logit tool, on a tiny model.
 add_test(NAME PulsatrixGolden.TinyLlamaMatchesTransformers
     COMMAND pulsatrix_golden "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama")
+# TOK-2: the tokenizer parity tool, on a tiny tokenizer with the real gpt-oss pipeline.
+add_test(NAME PulsatrixTokenizerParity.TinyGptOssMatchesHuggingFace
+    COMMAND pulsatrix_tokenizer_parity "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/gpt-oss/tokenizer.json"
+        "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/tokenizers/gpt-oss/reference.jsonl")
 # LLM-7: the AttnLRP parity tool, on a tiny model, and its negative control.
 add_test(NAME PulsatrixAttnLrp.TinyLlamaMatchesLxt
     COMMAND pulsatrix_attnlrp "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama")

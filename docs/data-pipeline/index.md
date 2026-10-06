@@ -18,6 +18,9 @@ tabular, image, text, audio and video (frames only). Generic dataset validation 
 - **Image**: `ImageDecoder` (backed by stb_image), `ResizeTransform`/`CenterCropTransform`/
   `NormalizeTransform`/`HorizontalFlipTransform`, `ImageFolderDataset`
 - **Text**: `Tokenizer`, `Vocabulary`/`BuildVocabulary`, `TextDataset`, `PadCollate`
+- **Tokenizers**: `TextTokenizer` (ids, token strings, byte offsets and a special-token mask),
+  `LoadTokenizerJson` for Hugging Face byte-level BPE tokenizers (SmolLM2, Qwen, Llama 3,
+  gpt-oss, ...), and word-level, byte and character tokenizers (see below)
 - **Audio**: `WavReader`/`WavData`, `AudioFolderDataset`, `ResampleTransform`,
   `AudioPadCollate`
 - **Video** (pre-extracted frames only; see Notes): `VideoFrameDirectoryDataset`,
@@ -102,6 +105,39 @@ DataLoader loader(dataset, &backend, options);
 **What's happening:** `TransformDataset` applies the `Compose`d transforms, in order, to each
 sample as it is fetched. Images are decoded lazily, one per `get()` call. `NormalizeTransform`
 needs one mean and one std per channel; it throws if the counts don't match the image.
+
+### Tokenizing for a Hugging Face model
+
+`LoadTokenizerJson` reads a model's `tokenizer.json` and runs the same pipeline Hugging Face
+`tokenizers` does: added tokens first, then the normalizer (NFC), the pre-tokenizer (regex,
+digit and byte-level splitting), BPE, and the post-processor (BOS and EOS). There's no Python
+involved.
+
+```cpp
+#include "pulsatrix/tokenizer_json.hpp"
+
+using namespace pulsatrix;
+
+TextTokenizer tok = LoadTokenizerJson("models/Llama-3.2-1B/tokenizer.json");
+Encoding e = tok.encode("Grüße, world!");
+// e.ids:     [128000, 6600, 2448, 24352, 11, 1917, 0]  (<|begin_of_text|> first)
+// e.tokens:  the token strings
+// e.offsets: UTF-8 byte ranges of the input: text.substr(o.begin, o.end - o.begin)
+// e.special_tokens_mask: 1 for <|begin_of_text|> and other special tokens
+std::string back = tok.decode(e.ids, /*skip_special_tokens=*/true);  // "Grüße, world!"
+```
+
+Offsets map every token back to the input, which explanations need to merge subword scores
+into words. They are byte offsets, where Hugging Face uses characters. When NFC composes
+characters, a composed character's offset covers all of its source characters; Hugging Face
+gives it only the first.
+
+**Checked against Hugging Face:** on a 10,000-line multilingual corpus (the Universal
+Declaration of Human Rights in about 530 languages, plus code, numbers, whitespace and emoji
+stress lines), the ids and the decoded text match `tokenizers` 0.23 exactly for SmolLM2-135M,
+Qwen2.5, Qwen3, Llama 3.2 and gpt-oss (`tools/tokenizers/`, `pulsatrix_tokenizer_parity`).
+Offsets match on every line that round-trips exactly. A component the loader doesn't support,
+such as SentencePiece byte fallback (Gemma, TOK-3), is refused by name rather than approximated.
 
 ### Handling variable-length data with a custom `CollateFn`
 

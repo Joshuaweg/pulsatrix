@@ -30,7 +30,9 @@ struct Offset {
  * @note Offsets are UTF-8 byte offsets into the input, so `text.substr(o.begin, o.end - o.begin)`
  *       is the token's source. Hugging Face reports offsets in characters instead. A byte-level
  *       token can cover part of a multi-byte character, and then its offset covers just those
- *       bytes. Tokens inserted by a post-processor (BOS, EOS) have an empty offset.
+ *       bytes. A character a normalizer composed (NFC) maps to all of its source characters,
+ *       where Hugging Face maps it to the first only. Tokens inserted by a post-processor (BOS,
+ *       EOS) have an empty offset.
  */
 struct Encoding {
     std::vector<int64_t> ids;
