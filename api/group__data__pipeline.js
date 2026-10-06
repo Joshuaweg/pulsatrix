@@ -30,5 +30,6 @@ var group__data__pipeline =
     [ "video_frame_directory_dataset.hpp", "video__frame__directory__dataset_8hpp.html", null ],
     [ "video_transforms.hpp", "video__transforms_8hpp.html", null ],
     [ "vocabulary.hpp", "vocabulary_8hpp.html", null ],
-    [ "wav_reader.hpp", "wav__reader_8hpp.html", null ]
+    [ "wav_reader.hpp", "wav__reader_8hpp.html", null ],
+    [ "word_scores.hpp", "word__scores_8hpp.html", null ]
 ];

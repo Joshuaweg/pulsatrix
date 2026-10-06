@@ -1057,6 +1057,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1WordPunctuationSplit.html">WordPunctuationSplit</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The split <a class="el" href="classpulsatrix_1_1Tokenizer.html#a5670285365ee5b33f0c985474d2ab0d8" title="Tokenizes text: lowercase-normalizes, splits on whitespace (a pure separator, never emitted),...">Tokenizer::Tokenize</a> makes: runs of ASCII letters, digits and apostrophes are words, ASCII whitespace separates, and every other character is a token of its own.  <a href="classpulsatrix_1_1WordPunctuationSplit.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WordScore.html">WordScore</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One word and its score.  <a href="structpulsatrix_1_1WordScore.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-word scores for one text.  <a href="structpulsatrix_1_1WordScores.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1XorNetwork.html">XorNetwork</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tiny MLP (<a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(2,4)</a> -&gt; ReLU -&gt; <a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba32a843da6ea40ab3b17a3421ccdf671b">Linear(4,1)</a>) trained on XOR &ndash; the canonical not-linearly-separable case, exactly representable by a small MLP, giving an unambiguous convergence target for Phase 1's "prove the training loop works" goal.  <a href="classpulsatrix_1_1XorNetwork.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1312,6 +1318,18 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ad2acaf7e4c4f58cf3a59c360e5f4e1ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which form of the ICE curves RenderPartialDependenceSvg draws (CFS-1).  <a href="namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1ba">More...</a><br /></td></tr>
 <tr class="separator:ad2acaf7e4c4f58cf3a59c360e5f4e1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c796f1d1ffa3966d6cc310c29a720b4" id="r_a1c796f1d1ffa3966d6cc310c29a720b4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">WordSplit</a> { <a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4">WordsAndPunctuation</a>
+, <a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4ace9a733c2ae3f8b704aec91f551b2bcc">Whitespace</a>
+ }</td></tr>
+<tr class="memdesc:a1c796f1d1ffa3966d6cc310c29a720b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the text is cut into words.  <a href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">More...</a><br /></td></tr>
+<tr class="separator:a1c796f1d1ffa3966d6cc310c29a720b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf1d7cc456b87e2b0713eff66fc17954" id="r_aaf1d7cc456b87e2b0713eff66fc17954"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">WordAggregation</a> { <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5">Sum</a>
+, <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a3d6c9ac08ada31c184094bbc67afe00d">Mean</a>
+, <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a6a061313d22e51e0f25b7cd4dc065233">Max</a>
+, <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a70daa745cdfcc8f37de05539bc55d60d">MaxAbs</a>
+ }</td></tr>
+<tr class="memdesc:aaf1d7cc456b87e2b0713eff66fc17954"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a word's score is made from the scores of the tokens that overlap it.  <a href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">More...</a><br /></td></tr>
+<tr class="separator:aaf1d7cc456b87e2b0713eff66fc17954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -2087,6 +2105,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ab05bf402b9c13aea07d50c1b5951112a" id="r_ab05bf402b9c13aea07d50c1b5951112a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab05bf402b9c13aea07d50c1b5951112a">fit_weighted_linear_regression</a> (const std::vector&lt; std::vector&lt; float &gt; &gt; &amp;samples, const std::vector&lt; float &gt; &amp;targets, const std::vector&lt; float &gt; &amp;weights, float l2_lambda)</td></tr>
 <tr class="memdesc:ab05bf402b9c13aea07d50c1b5951112a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fits w* = argmin_w sum_i weight_i*(target_i - w^T sample_i)^2 + l2_lambda*||w||^2 via the normal equations (X^T W X + l2_lambda*I) w = X^T W y.  <br /></td></tr>
 <tr class="separator:ab05bf402b9c13aea07d50c1b5951112a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17ef0211449d82bd116f6cee52a9bf12" id="r_a17ef0211449d82bd116f6cee52a9bf12"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Offset.html">Offset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a17ef0211449d82bd116f6cee52a9bf12">SplitWords</a> (std::string_view text, <a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">WordSplit</a> split=<a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4">WordSplit::WordsAndPunctuation</a>)</td></tr>
+<tr class="memdesc:a17ef0211449d82bd116f6cee52a9bf12"><td class="mdescLeft">&#160;</td><td class="mdescRight">The words of valid UTF-8 <code>text</code>, as byte ranges in order. Scripts written without spaces (Chinese, Japanese, Thai) come out as long runs; pass a pattern for those.  <br /></td></tr>
+<tr class="separator:a17ef0211449d82bd116f6cee52a9bf12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ff49b2952d5bae909b5ce6d4bed96ef" id="r_a7ff49b2952d5bae909b5ce6d4bed96ef"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Offset.html">Offset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7ff49b2952d5bae909b5ce6d4bed96ef">SplitWords</a> (std::string_view text, const <a class="el" href="classpulsatrix_1_1UnicodeRegex.html">UnicodeRegex</a> &amp;pattern)</td></tr>
+<tr class="memdesc:a7ff49b2952d5bae909b5ce6d4bed96ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">The words of <code>text:</code> every match of <code>pattern</code>.  <br /></td></tr>
+<tr class="separator:a7ff49b2952d5bae909b5ce6d4bed96ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad632e662dfcc2dd85fab54b1ee8e9b1f" id="r_ad632e662dfcc2dd85fab54b1ee8e9b1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad632e662dfcc2dd85fab54b1ee8e9b1f">AggregateToWords</a> (std::string_view text, const std::vector&lt; <a class="el" href="structpulsatrix_1_1Offset.html">Offset</a> &gt; &amp;token_offsets, const std::vector&lt; float &gt; &amp;token_scores, const std::vector&lt; <a class="el" href="structpulsatrix_1_1Offset.html">Offset</a> &gt; &amp;words, <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">WordAggregation</a> aggregation=<a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5">WordAggregation::Sum</a>)</td></tr>
+<tr class="memdesc:ad632e662dfcc2dd85fab54b1ee8e9b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges per-token scores into the given words.  <br /></td></tr>
+<tr class="separator:ad632e662dfcc2dd85fab54b1ee8e9b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9969ba30da557b617c083a42527ae783" id="r_a9969ba30da557b617c083a42527ae783"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9969ba30da557b617c083a42527ae783">AggregateToWords</a> (std::string_view text, const <a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a> &amp;encoding, const std::vector&lt; float &gt; &amp;token_scores, <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">WordAggregation</a> aggregation=<a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5">WordAggregation::Sum</a>, <a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">WordSplit</a> split=<a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4">WordSplit::WordsAndPunctuation</a>)</td></tr>
+<tr class="memdesc:a9969ba30da557b617c083a42527ae783"><td class="mdescLeft">&#160;</td><td class="mdescRight">AggregateToWords over an <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> of <code>text</code>, with words from SplitWords(<code>text</code>, <code>split</code>).  <br /></td></tr>
+<tr class="separator:a9969ba30da557b617c083a42527ae783"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -3026,7 +3056,183 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
+<a id="aaf1d7cc456b87e2b0713eff66fc17954" name="aaf1d7cc456b87e2b0713eff66fc17954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf1d7cc456b87e2b0713eff66fc17954">&#9670;&#160;</a></span>WordAggregation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">pulsatrix::WordAggregation</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How a word's score is made from the scores of the tokens that overlap it. </p>
+<p>A token overlapping several words gives each a share: the fraction of its bytes inside words that fall inside that word. Bytes outside every word (the space in a byte-level "Ġworld") don't count, so a token's shares add up to 1. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5" name="aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5"></a>Sum&#160;</td><td class="fielddoc"><p>Σ share × score. Conserves the total: the words' scores plus the unassigned score add up to the tokens' (what relevance needs). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf1d7cc456b87e2b0713eff66fc17954a3d6c9ac08ada31c184094bbc67afe00d" name="aaf1d7cc456b87e2b0713eff66fc17954a3d6c9ac08ada31c184094bbc67afe00d"></a>Mean&#160;</td><td class="fielddoc"><p>Σ share × score / Σ share: the share-weighted mean of the overlapping tokens. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf1d7cc456b87e2b0713eff66fc17954a6a061313d22e51e0f25b7cd4dc065233" name="aaf1d7cc456b87e2b0713eff66fc17954a6a061313d22e51e0f25b7cd4dc065233"></a>Max&#160;</td><td class="fielddoc"><p>The largest score among the overlapping tokens. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf1d7cc456b87e2b0713eff66fc17954a70daa745cdfcc8f37de05539bc55d60d" name="aaf1d7cc456b87e2b0713eff66fc17954a70daa745cdfcc8f37de05539bc55d60d"></a>MaxAbs&#160;</td><td class="fielddoc"><p>The score with the largest magnitude among the overlapping tokens, sign kept (for signed attributions, where Max would hide strong negative evidence). </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a1c796f1d1ffa3966d6cc310c29a720b4" name="a1c796f1d1ffa3966d6cc310c29a720b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c796f1d1ffa3966d6cc310c29a720b4">&#9670;&#160;</a></span>WordSplit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">pulsatrix::WordSplit</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How the text is cut into words. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4" name="a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4"></a>WordsAndPunctuation&#160;</td><td class="fielddoc"><p>Runs of letters, marks, digits and underscores, and runs of other non-space characters (<code>\w+|[^\w\s]+</code>, Hugging Face's Whitespace pre-tokenizer): "don't!" is "don", "'", "t", "!". </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1c796f1d1ffa3966d6cc310c29a720b4ace9a733c2ae3f8b704aec91f551b2bcc" name="a1c796f1d1ffa3966d6cc310c29a720b4ace9a733c2ae3f8b704aec91f551b2bcc"></a>Whitespace&#160;</td><td class="fielddoc"><p>Runs of non-space characters (<code>\S+</code>): "don't!" is one word. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a9969ba30da557b617c083a42527ae783" name="a9969ba30da557b617c083a42527ae783"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9969ba30da557b617c083a42527ae783">&#9670;&#160;</a></span>AggregateToWords() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a> pulsatrix::AggregateToWords </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a> &amp;&#160;</td>
+          <td class="paramname"><em>encoding</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>token_scores</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">WordAggregation</a>&#160;</td>
+          <td class="paramname"><em>aggregation</em> = <code><a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5">WordAggregation::Sum</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">WordSplit</a>&#160;</td>
+          <td class="paramname"><em>split</em> = <code><a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4">WordSplit::WordsAndPunctuation</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AggregateToWords over an <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> of <code>text</code>, with words from SplitWords(<code>text</code>, <code>split</code>). </p>
+
+</div>
+</div>
+<a id="ad632e662dfcc2dd85fab54b1ee8e9b1f" name="ad632e662dfcc2dd85fab54b1ee8e9b1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad632e662dfcc2dd85fab54b1ee8e9b1f">&#9670;&#160;</a></span>AggregateToWords() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1WordScores.html">WordScores</a> pulsatrix::AggregateToWords </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1Offset.html">Offset</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>token_offsets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>token_scores</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1Offset.html">Offset</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>words</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954">WordAggregation</a>&#160;</td>
+          <td class="paramname"><em>aggregation</em> = <code><a class="el" href="namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5">WordAggregation::Sum</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Merges per-token scores into the given words. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>The text the offsets point into. </td></tr>
+    <tr><td class="paramname">token_offsets</td><td>One byte range of <code>text</code> per token (<a class="el" href="structpulsatrix_1_1Encoding.html#a91d959fce05f99d16452b05ca799f1e2">Encoding::offsets</a>). </td></tr>
+    <tr><td class="paramname">token_scores</td><td>One score per token. </td></tr>
+    <tr><td class="paramname">words</td><td>Byte ranges of <code>text</code>, in order and not overlapping (<a class="el" href="namespacepulsatrix.html#a17ef0211449d82bd116f6cee52a9bf12" title="The words of valid UTF-8 text, as byte ranges in order. Scripts written without spaces (Chinese,...">SplitWords()</a>). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the sizes differ, or an offset or word lies outside the text, or the words overlap or are out of order. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aba26bb47a841c985070a3d37cff2a423" name="aba26bb47a841c985070a3d37cff2a423"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba26bb47a841c985070a3d37cff2a423">&#9670;&#160;</a></span>AllocateOffspringCounts()</h2>
 
@@ -11515,6 +11721,72 @@ Scoped to the small, dense, well-conditioned systems this codebase's callers act
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if population is empty or compatibility_threshold &lt;= 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7ff49b2952d5bae909b5ce6d4bed96ef" name="a7ff49b2952d5bae909b5ce6d4bed96ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ff49b2952d5bae909b5ce6d4bed96ef">&#9670;&#160;</a></span>SplitWords() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1Offset.html">Offset</a> &gt; pulsatrix::SplitWords </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1UnicodeRegex.html">UnicodeRegex</a> &amp;&#160;</td>
+          <td class="paramname"><em>pattern</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The words of <code>text:</code> every match of <code>pattern</code>. </p>
+
+</div>
+</div>
+<a id="a17ef0211449d82bd116f6cee52a9bf12" name="a17ef0211449d82bd116f6cee52a9bf12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17ef0211449d82bd116f6cee52a9bf12">&#9670;&#160;</a></span>SplitWords() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1Offset.html">Offset</a> &gt; pulsatrix::SplitWords </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4">WordSplit</a>&#160;</td>
+          <td class="paramname"><em>split</em> = <code><a class="el" href="namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4">WordSplit::WordsAndPunctuation</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The words of valid UTF-8 <code>text</code>, as byte ranges in order. Scripts written without spaces (Chinese, Japanese, Thai) come out as long runs; pass a pattern for those. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>text</code> isn't valid UTF-8. </td></tr>
   </table>
   </dd>
 </dl>

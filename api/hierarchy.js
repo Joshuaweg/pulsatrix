@@ -365,5 +365,7 @@ var hierarchy =
     [ "pulsatrix::WeightLoadOptions", "structpulsatrix_1_1WeightLoadOptions.html", null ],
     [ "pulsatrix::WeightLoadReport", "structpulsatrix_1_1WeightLoadReport.html", null ],
     [ "pulsatrix::WeightMapping", "structpulsatrix_1_1WeightMapping.html", null ],
+    [ "pulsatrix::WordScore", "structpulsatrix_1_1WordScore.html", null ],
+    [ "pulsatrix::WordScores", "structpulsatrix_1_1WordScores.html", null ],
     [ "pulsatrix::XorNetwork", "classpulsatrix_1_1XorNetwork.html", null ]
 ];

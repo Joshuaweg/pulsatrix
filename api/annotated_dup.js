@@ -335,6 +335,8 @@ var annotated_dup =
       [ "WeightMapping", "structpulsatrix_1_1WeightMapping.html", "structpulsatrix_1_1WeightMapping" ],
       [ "WordLevelModel", "classpulsatrix_1_1WordLevelModel.html", "classpulsatrix_1_1WordLevelModel" ],
       [ "WordPunctuationSplit", "classpulsatrix_1_1WordPunctuationSplit.html", "classpulsatrix_1_1WordPunctuationSplit" ],
+      [ "WordScore", "structpulsatrix_1_1WordScore.html", "structpulsatrix_1_1WordScore" ],
+      [ "WordScores", "structpulsatrix_1_1WordScores.html", "structpulsatrix_1_1WordScores" ],
       [ "XorNetwork", "classpulsatrix_1_1XorNetwork.html", "classpulsatrix_1_1XorNetwork" ]
     ] ]
 ];

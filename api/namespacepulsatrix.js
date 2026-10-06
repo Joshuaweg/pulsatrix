@@ -319,6 +319,8 @@ var namespacepulsatrix =
     [ "WeightMapping", "structpulsatrix_1_1WeightMapping.html", "structpulsatrix_1_1WeightMapping" ],
     [ "WordLevelModel", "classpulsatrix_1_1WordLevelModel.html", "classpulsatrix_1_1WordLevelModel" ],
     [ "WordPunctuationSplit", "classpulsatrix_1_1WordPunctuationSplit.html", "classpulsatrix_1_1WordPunctuationSplit" ],
+    [ "WordScore", "structpulsatrix_1_1WordScore.html", "structpulsatrix_1_1WordScore" ],
+    [ "WordScores", "structpulsatrix_1_1WordScores.html", "structpulsatrix_1_1WordScores" ],
     [ "XorNetwork", "classpulsatrix_1_1XorNetwork.html", "classpulsatrix_1_1XorNetwork" ],
     [ "CollateFn", "namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250", null ],
     [ "Configuration", "namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3", null ],
@@ -491,6 +493,18 @@ var namespacepulsatrix =
       [ "Identity", "namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779ac9c5c65fb4af9cf90eb99b3b84424189", null ],
       [ "Transpose", "namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779aaf70b1ac863830a4e1ce6268c8399f54", null ]
     ] ],
+    [ "WordAggregation", "namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954", [
+      [ "Sum", "namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5", null ],
+      [ "Mean", "namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a3d6c9ac08ada31c184094bbc67afe00d", null ],
+      [ "Max", "namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a6a061313d22e51e0f25b7cd4dc065233", null ],
+      [ "MaxAbs", "namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a70daa745cdfcc8f37de05539bc55d60d", null ]
+    ] ],
+    [ "WordSplit", "namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4", [
+      [ "WordsAndPunctuation", "namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4a79e192157e129c1c826c7488bb3769b4", null ],
+      [ "Whitespace", "namespacepulsatrix.html#a1c796f1d1ffa3966d6cc310c29a720b4ace9a733c2ae3f8b704aec91f551b2bcc", null ]
+    ] ],
+    [ "AggregateToWords", "namespacepulsatrix.html#a9969ba30da557b617c083a42527ae783", null ],
+    [ "AggregateToWords", "namespacepulsatrix.html#ad632e662dfcc2dd85fab54b1ee8e9b1f", null ],
     [ "AllocateOffspringCounts", "namespacepulsatrix.html#aba26bb47a841c985070a3d37cff2a423", null ],
     [ "AnalyzeMorris", "namespacepulsatrix.html#a2f76ee6bef103d750bdef0f6fce07a76", null ],
     [ "AnalyzeSobol", "namespacepulsatrix.html#a3418efb43c16bb465beb0354f9930382", null ],
@@ -685,6 +699,8 @@ var namespacepulsatrix =
     [ "Sparseness", "namespacepulsatrix.html#a075765c1ff718201b05df992e65b2b71", null ],
     [ "SpearmanRankCorrelation", "namespacepulsatrix.html#ac661529a753d02d953fea71ff2b8165f", null ],
     [ "SpeciatePopulation", "namespacepulsatrix.html#a893179ee675165ae419b561273da4e4b", null ],
+    [ "SplitWords", "namespacepulsatrix.html#a7ff49b2952d5bae909b5ce6d4bed96ef", null ],
+    [ "SplitWords", "namespacepulsatrix.html#a17ef0211449d82bd116f6cee52a9bf12", null ],
     [ "StandardNormalCdf", "namespacepulsatrix.html#a03f5550dab9961a6e7f1b6d5e7f5befd", null ],
     [ "StandardNormalPdf", "namespacepulsatrix.html#a0f294eab23b3829d9f8b91426bf22222", null ],
     [ "SummarizeTimings", "namespacepulsatrix.html#ae968d5a1895ef736b41b1429be2a1ce8", null ],

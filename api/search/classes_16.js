@@ -9,5 +9,7 @@ var searchData=
   ['weightloadreport_6',['WeightLoadReport',['../structpulsatrix_1_1WeightLoadReport.html',1,'pulsatrix']]],
   ['weightmapping_7',['WeightMapping',['../structpulsatrix_1_1WeightMapping.html',1,'pulsatrix']]],
   ['wordlevelmodel_8',['WordLevelModel',['../classpulsatrix_1_1WordLevelModel.html',1,'pulsatrix']]],
-  ['wordpunctuationsplit_9',['WordPunctuationSplit',['../classpulsatrix_1_1WordPunctuationSplit.html',1,'pulsatrix']]]
+  ['wordpunctuationsplit_9',['WordPunctuationSplit',['../classpulsatrix_1_1WordPunctuationSplit.html',1,'pulsatrix']]],
+  ['wordscore_10',['WordScore',['../structpulsatrix_1_1WordScore.html',1,'pulsatrix']]],
+  ['wordscores_11',['WordScores',['../structpulsatrix_1_1WordScores.html',1,'pulsatrix']]]
 ];
