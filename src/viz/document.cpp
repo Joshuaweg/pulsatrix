@@ -143,11 +143,27 @@ std::string ToJson(const TokenRelevanceDocument& doc) {
     if (doc.tokens.size() != doc.relevance.size()) {
         Invalid("token_relevance", "/relevance: needs one score per token");
     }
+    if (!doc.scored.empty() && doc.scored.size() != doc.tokens.size()) {
+        Invalid("token_relevance", "/scored: needs one flag per token");
+    }
+    if (doc.granularity != "token" && doc.granularity != "word") {
+        Invalid("token_relevance", "/granularity: must be \"token\" or \"word\"");
+    }
     DocWriter w("token_relevance");
     w.root().add("method", doc.method);
     w.root().add("tokens", Strings(doc.tokens));
     w.root().add("relevance", w.floats(doc.relevance, "/relevance"));
     w.root().add("target", doc.target);
+    // Optional fields, written only when they say something, so older documents stay unchanged.
+    if (doc.granularity != "token") w.root().add("granularity", doc.granularity);
+    bool all_scored = true;
+    for (bool b : doc.scored) all_scored = all_scored && b;
+    if (!all_scored) {
+        JsonValue flags{JsonValue::Array{}};
+        for (bool b : doc.scored) flags.push_back(JsonValue(b));
+        w.root().add("scored", std::move(flags));
+    }
+    if (doc.unassigned) w.root().add("unassigned", w.num(*doc.unassigned, "/unassigned"));
     return w.finish();
 }
 
@@ -162,6 +178,16 @@ TokenRelevanceDocument ParseTokenRelevanceDocument(std::string_view json) {
     if (doc.tokens.size() != doc.relevance.size()) {
         r.fail("/relevance", "needs one score per token");
     }
+    if (const JsonValue* g = root.find("granularity")) {
+        doc.granularity = r.string(*g, "/granularity");
+        if (doc.granularity != "token" && doc.granularity != "word") r.fail("/granularity", "must be \"token\" or \"word\"");
+    }
+    if (const JsonValue* flags = root.find("scored")) {
+        const JsonValue::Array& a = r.array(*flags, "/scored");
+        if (a.size() != doc.tokens.size()) r.fail("/scored", "needs one flag per token");
+        for (size_t i = 0; i < a.size(); ++i) doc.scored.push_back(r.boolean(a[i], "/scored/" + std::to_string(i)));
+    }
+    if (const JsonValue* u = root.find("unassigned")) doc.unassigned = r.number(*u, "/unassigned");
     r.finish();
     return doc;
 }

@@ -194,6 +194,7 @@ add_library(pulsatrix_core
     src/viz/plot_data.cpp
     src/viz/document.cpp
     src/viz/svg.cpp
+    src/viz/text_relevance.cpp
     src/viz/svg_whatif.cpp
     src/viz/document_whatif.cpp
     src/benchmark.cpp
@@ -335,6 +336,7 @@ set(PULSATRIX_VIZ_SOURCES
     src/viz/texture_cache.cpp
     src/viz/image_grid_view.cpp
     src/viz/dataset_statistics_view.cpp
+    src/viz/token_relevance_view.cpp
 )
 
 if(PULSATRIX_ENABLE_VIZ)
@@ -419,6 +421,11 @@ if(PULSATRIX_ENABLE_VIZ)
     # Every viz widget against real MNIST test digits (needs data/MNIST/raw, see
     # tools/fetch_mnist.py). --screenshot writes PNGs through the stb_image_write header the
     # already-fetched stb dependency ships (no new dependency).
+    # Token relevance documents (VIZ-6a) in TokenRelevanceView; --screenshot writes a PNG.
+    add_executable(token_relevance_demo examples/viz/token_relevance_demo.cpp)
+    target_link_libraries(token_relevance_demo PRIVATE pulsatrix_viz)
+    target_include_directories(token_relevance_demo SYSTEM PRIVATE ${stb_SOURCE_DIR})
+
     add_executable(mnist_viz_gallery examples/viz/mnist_viz_gallery.cpp)
     target_link_libraries(mnist_viz_gallery PRIVATE pulsatrix_viz)
     target_include_directories(mnist_viz_gallery SYSTEM PRIVATE ${stb_SOURCE_DIR})
@@ -580,6 +587,11 @@ add_executable(pulsatrix_golden tools/golden/pulsatrix_golden.cpp)
 target_link_libraries(pulsatrix_golden PRIVATE pulsatrix_core)
 target_compile_definitions(pulsatrix_golden PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
 
+# pulsatrix_explain_text: AttnLRP on a language model's prediction, as a token relevance figure (VIZ-6a).
+add_executable(pulsatrix_explain_text tools/explain/pulsatrix_explain_text.cpp)
+target_link_libraries(pulsatrix_explain_text PRIVATE pulsatrix_core)
+target_compile_definitions(pulsatrix_explain_text PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
+
 # pulsatrix_tokenizer_parity: a tokenizer.json against Hugging Face tokenizers on a corpus (TOK-2).
 add_executable(pulsatrix_tokenizer_parity tools/tokenizers/pulsatrix_tokenizer_parity.cpp)
 target_link_libraries(pulsatrix_tokenizer_parity PRIVATE pulsatrix_core)
@@ -647,7 +659,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"

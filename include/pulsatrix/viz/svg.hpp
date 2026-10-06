@@ -69,12 +69,14 @@ struct SvgOptions {
 [[nodiscard]] std::string RenderHeatmapSvg(const HeatmapDocument& doc, const SvgOptions& options = {});
 
 /**
- * @brief The text's tokens in reading order, wrapped across lines, each on a background colored
- *        by its relevance (diverging, scaled to the largest |relevance|). Tokens are drawn in a
- *        monospace font, so their widths are exact, with whitespace kept. Non-finite relevance
- *        is drawn gray. The target, when set, is shown after the text.
- * @throws std::invalid_argument if tokens and relevance differ in length, there are no tokens,
- *         or for invalid options.
+ * @brief The text's pieces (tokens or words) in reading order, wrapped across lines, each on a
+ *        background colored by its relevance (diverging, scaled to the largest |relevance|).
+ *        Pieces are drawn in a monospace font, so their widths are exact, with whitespace kept.
+ *        Unscored pieces (context such as the spaces between words) are plain text and don't count
+ *        toward the scale; non-finite relevance is drawn gray. The target and the unassigned
+ *        relevance, when set, are shown after the text.
+ * @throws std::invalid_argument if tokens and relevance (or scored) differ in length, there are
+ *         no tokens, or for invalid options.
  */
 [[nodiscard]] std::string RenderTokenStripSvg(const TokenRelevanceDocument& doc, const SvgOptions& options = {});
 
