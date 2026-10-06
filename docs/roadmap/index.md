@@ -459,7 +459,7 @@ scores into word scores.
 | TOK-1 | A `Tokenizer` interface: `encode` returns ids, token strings, character offsets and a special-token mask; `decode` returns text. Added tokens (special tokens such as `<\|im_start\|>`) are split out before anything else runs. The current tokenizer becomes the `WordLevel` model with a whitespace pre-tokenizer, and a byte tokenizer (256 ids plus specials) and a character tokenizer join it | One interface for every model, and offsets for every explanation | — | P0 | S || Done, [#84](https://github.com/Joshuaweg/pulsatrix/pull/84) (see below) |
 | TOK-2 | Byte-level BPE from `tokenizer.json`, with a small regex engine for the Split pre-tokenizer: alternation, character classes with Unicode categories (`\p{L}`, `\p{Lu}`, `\p{M}`, `\p{N}`…) over a generated category table, ranges, quantifiers, `(?i:…)` and the `(?!\S)` lookahead; `std::regex` can't match Unicode categories. Also digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (`"a b"` strings and `["a", "b"]` pairs), `ignore_merges`, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5, Llama 3.2 and gpt-oss | Any byte-level BPE model loads without new code: SmolLM2, Qwen, Llama, gpt-oss, Mistral, DeepSeek, Phi-4 | TOK-1 | P0 | M || Done, [#85](https://github.com/Joshuaweg/pulsatrix/pull/85) (see below) |
 | TOK-3 | SentencePiece-style BPE: byte fallback (`<0x41>` tokens), `▁` replacement, `fuse_unk`, and the matching decoder chain. It passes the same corpus test for Gemma 3 | Gemma 3 and Gemma Scope 2 (LLM-9, FEAT) | TOK-2 | P1 | S | |
-| TOK-4 | Word-level aggregation: merge per-token scores (relevance, attributions, probe outputs) into per-word scores using the offsets, by sum, mean or maximum | Explanations people can read | TOK-1 | P1 | S | |
+| TOK-4 | Word-level aggregation: merge per-token scores (relevance, attributions, probe outputs) into per-word scores using the offsets, by sum, mean or maximum | Explanations people can read | TOK-1 | P1 | S || Done, [#86](https://github.com/Joshuaweg/pulsatrix/pull/86) (see below) |
 | TOK-5 | WordPiece (BERT normalizer and pre-tokenizer, `##` continuation) | BERT-family encoders, the most common models in XAI papers and tutorials | TOK-1 | P2 | S | |
 | TOK-6 | A byte-level BPE trainer that writes `tokenizer.json`, so a model trained from scratch in pulsatrix gets a real subword vocabulary that Hugging Face can also load | Small models trained on your own corpus | TOK-2 | P2 | M | |
 | TOK-7 | Unigram (SentencePiece) with the precompiled charsmap normalizer | T5, ALBERT, XLNet and mBART | TOK-1 | P3 | M | |
@@ -506,6 +506,16 @@ Not planned: SentencePiece `.model` protobuf files (every target model also ship
     byte's actual source, and the harness reports those lines separately.
   - **JSON parser:** duplicate keys are now found with a hash set past 32 keys. The old scan was
     quadratic, about 2×10¹⁰ comparisons for gpt-oss's 200k-entry vocabulary.
+- **TOK-4** (`AggregateToWords`, `word_scores.hpp`) takes words from the text, not from the
+  tokenizer, so every tokenizer gives the same words.
+  - A token across several words splits its score by the bytes it has inside each. The rule
+    itself is our own choice. `Sum` therefore conserves the total, with the words plus
+    `unassigned` adding up to the tokens' total. That is checked on every line of the
+    tokenizer corpus, through Llama 3.2's pipeline with its BOS token.
+  - `MaxAbs` joins the planned sum, mean and maximum. Signed attributions need it, because `Max`
+    hides strong negative evidence.
+  - On SmolLM2, AttnLRP for " Paris" after "The Eiffel Tower is located in the city of" puts
+    +4.09 on "Eiffel"; the next largest word is +0.30.
 
 ## XAI: Question-driven explainability framework
 
