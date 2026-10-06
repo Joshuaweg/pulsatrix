@@ -4735,7 +4735,7 @@ format, with static and web renderers next to it.</p>
 <td>VIZ-1</td>
 <td>P2</td>
 <td>M each</td>
-<td>(a) in SVG only, through VIZ-2</td>
+<td>(a) Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/87">#87</a> (see below)</td>
 </tr>
 <tr>
 <td>VIZ-7</td>
@@ -4763,6 +4763,18 @@ format, with static and web renderers next to it.</p>
   cells and tokens are drawn gray; the bar, waterfall and beeswarm charts refuse non-finite
   values. Every stored test figure was rendered and checked by eye before it became a golden
   file.</li>
+<li><strong>VIZ-6a</strong> builds token relevance documents from real explanations
+  (<code>MakeTokenRelevanceDocument</code>, <code>MakeWordRelevanceDocument</code>), rather than adding a new
+  document kind. <code>token_relevance.v1</code> gained optional <code>granularity</code>, <code>scored</code> (unscored context
+  such as the spaces between words) and <code>unassigned</code> fields, written only when set, so existing
+  documents and golden figures are unchanged.</li>
+<li>Byte-level tokens that split a character are shown as one piece with their scores summed.</li>
+<li>It added the <code>TokenRelevanceView</code> ImGui widget, <code>pulsatrix_explain_text</code> (AttnLRP on a
+    Hugging Face model, straight to a figure) and <code>token_relevance_demo</code>.</li>
+<li>The figures and the widget were checked by eye on SmolLM2 explanations: English, and a German,
+    French and emoji line.</li>
+<li>ImGui's default font is Latin-1 only, so the widget needs a loaded font for other scripts;
+    the SVG has no such limit.</li>
 </ul>
 <h3 id="follow-ups-the-viz-work-surfaced">Follow-ups the VIZ work surfaced<a class="headerlink" href="#follow-ups-the-viz-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
@@ -4787,7 +4799,7 @@ format, with static and web renderers next to it.</p>
 <tr>
 <td>Byte-level BPE tokens must be decoded to UTF-8 before they go into a document</td>
 <td>VIZ-1</td>
-<td>TOK-2</td>
+<td>Done in VIZ-6a: pieces are the text their offsets cover</td>
 </tr>
 <tr>
 <td>SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels</td>

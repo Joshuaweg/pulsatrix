@@ -1,7 +1,7 @@
 var searchData=
 [
   ['u_0',['u',['../structpulsatrix_1_1SVDResult.html#a83f441fd65542940c39bfa22ef015305',1,'pulsatrix::SVDResult']]],
-  ['unassigned_1',['unassigned',['../structpulsatrix_1_1WordScores.html#a3e67222171441d6eff468ec640c62539',1,'pulsatrix::WordScores']]],
+  ['unassigned_1',['unassigned',['../structpulsatrix_1_1TokenRelevanceDocument.html#a76a808710208dc6689a444ac2a5434e2',1,'pulsatrix::TokenRelevanceDocument::unassigned'],['../structpulsatrix_1_1WordScores.html#a3e67222171441d6eff468ec640c62539',1,'pulsatrix::WordScores::unassigned']]],
   ['unit_2',['unit',['../structpulsatrix_1_1BenchmarkRecord.html#a69c8ec9cb9b2e09755f36684394ce085',1,'pulsatrix::BenchmarkRecord']]],
   ['unk_5ftoken_3',['unk_token',['../structpulsatrix_1_1BpeOptions.html#a2ed335ab42fd368c6e89a39a673db335',1,'pulsatrix::BpeOptions']]],
   ['unsupported_4',['unsupported',['../structpulsatrix_1_1HfModelConfig.html#a85e9e6a494043aea3e4c62b2e22bff16',1,'pulsatrix::HfModelConfig']]],

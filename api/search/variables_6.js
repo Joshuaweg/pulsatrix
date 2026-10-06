@@ -11,7 +11,8 @@ var searchData=
   ['grad_5fmean_8',['grad_mean',['../structpulsatrix_1_1TanhGaussianGrad.html#a96f0991f7c09de7f7918aa0bfe185dd2',1,'pulsatrix::TanhGaussianGrad']]],
   ['grad_5fmu_9',['grad_mu',['../structpulsatrix_1_1ReparamGrad.html#ae5a4d22298fdb71fa94b20796596cfc6',1,'pulsatrix::ReparamGrad']]],
   ['grad_5fwrt_5fpredicate_5foutput_10',['grad_wrt_predicate_output',['../structpulsatrix_1_1datalog_1_1NeuralPredicateQueryResult.html#adc4546f4598f6e602cb107d071fc9d91',1,'pulsatrix::datalog::NeuralPredicateQueryResult']]],
-  ['grid_11',['grid',['../structpulsatrix_1_1IceResult.html#a420ebe5c715fadda56e6bee8219a5e03',1,'pulsatrix::IceResult::grid'],['../structpulsatrix_1_1PartialDependenceDocument.html#af9bf2c480fab85541d22edc0095ff817',1,'pulsatrix::PartialDependenceDocument::grid']]],
-  ['grid_5fx_12',['grid_x',['../structpulsatrix_1_1PartialDependence2D.html#afaf0a1b0deeaef96612a77854dbcdc55',1,'pulsatrix::PartialDependence2D']]],
-  ['grid_5fy_13',['grid_y',['../structpulsatrix_1_1PartialDependence2D.html#a4f98efa4382165641ea337c06ee1c6fb',1,'pulsatrix::PartialDependence2D']]]
+  ['granularity_11',['granularity',['../structpulsatrix_1_1TokenRelevanceDocument.html#a2e7e2a6d2f180dc0642ed0f513c18920',1,'pulsatrix::TokenRelevanceDocument']]],
+  ['grid_12',['grid',['../structpulsatrix_1_1IceResult.html#a420ebe5c715fadda56e6bee8219a5e03',1,'pulsatrix::IceResult::grid'],['../structpulsatrix_1_1PartialDependenceDocument.html#af9bf2c480fab85541d22edc0095ff817',1,'pulsatrix::PartialDependenceDocument::grid']]],
+  ['grid_5fx_13',['grid_x',['../structpulsatrix_1_1PartialDependence2D.html#afaf0a1b0deeaef96612a77854dbcdc55',1,'pulsatrix::PartialDependence2D']]],
+  ['grid_5fy_14',['grid_y',['../structpulsatrix_1_1PartialDependence2D.html#a4f98efa4382165641ea337c06ee1c6fb',1,'pulsatrix::PartialDependence2D']]]
 ];

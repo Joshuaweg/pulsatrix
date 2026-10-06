@@ -311,6 +311,7 @@ var annotated_dup =
       [ "TokenizerParityReport", "structpulsatrix_1_1TokenizerParityReport.html", "structpulsatrix_1_1TokenizerParityReport" ],
       [ "TokenModel", "classpulsatrix_1_1TokenModel.html", "classpulsatrix_1_1TokenModel" ],
       [ "TokenRelevanceDocument", "structpulsatrix_1_1TokenRelevanceDocument.html", "structpulsatrix_1_1TokenRelevanceDocument" ],
+      [ "TokenRelevanceView", "classpulsatrix_1_1TokenRelevanceView.html", null ],
       [ "TopKResult", "structpulsatrix_1_1TopKResult.html", "structpulsatrix_1_1TopKResult" ],
       [ "ToyKnowledgeBase", "classpulsatrix_1_1ToyKnowledgeBase.html", "classpulsatrix_1_1ToyKnowledgeBase" ],
       [ "TrainingDashboard", "classpulsatrix_1_1TrainingDashboard.html", null ],

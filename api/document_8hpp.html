@@ -349,17 +349,21 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="document_8hpp__dep__incl.png" border="0" usemap="#ainclude_2pulsatrix_2viz_2document_8hppdep" alt=""/></div>
 <map name="ainclude_2pulsatrix_2viz_2document_8hppdep" id="ainclude_2pulsatrix_2viz_2document_8hppdep">
-<area shape="rect" title="Versioned JSON documents (pulsatrix.&lt;kind&gt;.v1) that every renderer reads." alt="" coords="443,5,596,45"/>
+<area shape="rect" title="Versioned JSON documents (pulsatrix.&lt;kind&gt;.v1) that every renderer reads." alt="" coords="660,5,813,45"/>
 <area shape="rect" href="attribution__bar__chart_8hpp.html" title="Horizontal feature&#45;importance bar chart for an Attribution." alt="" coords="5,93,196,133"/>
-<area shape="poly" title=" " alt="" coords="430,48,193,96,192,91,429,42"/>
+<area shape="poly" title=" " alt="" coords="646,40,445,64,209,96,196,98,196,93,208,91,445,58,646,34"/>
 <area shape="rect" href="attribution__waterfall_8hpp.html" title="Cascading waterfall chart from a baseline to a prediction, for local attribution." alt="" coords="221,93,407,133"/>
-<area shape="poly" title=" " alt="" coords="463,53,360,96,358,91,461,48"/>
+<area shape="poly" title=" " alt="" coords="647,48,407,96,406,91,646,42"/>
 <area shape="rect" href="circuit__graph__view_8hpp.html" title="Node&#45;link diagram for a CircuitGraph (mechanistic&#45;interpretability visualization)." alt="" coords="432,93,607,133"/>
-<area shape="poly" title=" " alt="" coords="522,59,522,93,517,93,517,59"/>
+<area shape="poly" title=" " alt="" coords="677,53,568,96,566,91,675,48"/>
 <area shape="rect" href="saliency__heatmap__view_8hpp.html" title="Saliency/attribution heatmap using a perceptually uniform colormap." alt="" coords="631,93,842,133"/>
-<area shape="poly" title=" " alt="" coords="581,48,690,91,688,96,579,53"/>
+<area shape="poly" title=" " alt="" coords="739,59,739,93,734,93,734,59"/>
 <area shape="rect" href="svg_8hpp.html" title="Dependency&#45;free SVG figures from viz documents: bar, waterfall, heatmap, token strip,..." alt="" coords="865,93,1019,133"/>
-<area shape="poly" title=" " alt="" coords="610,42,855,91,866,93,865,98,853,96,609,47"/>
+<area shape="poly" title=" " alt="" coords="795,48,898,91,896,96,793,53"/>
+<area shape="rect" href="text__relevance_8hpp.html" title="Token relevance documents from real explanations (VIZ&#45;6a): a tokenizer&#39;s Encoding or TOK&#45;4&#39;s word sco..." alt="" coords="1043,93,1196,133"/>
+<area shape="poly" title=" " alt="" coords="827,44,1043,92,1042,97,826,49"/>
+<area shape="rect" href="token__relevance__view_8hpp.html" title="The text of a pulsatrix.token_relevance.v1 document with each piece colored by its relevance,..." alt="" coords="1220,93,1419,133"/>
+<area shape="poly" title=" " alt="" coords="828,36,1209,91,1220,92,1219,98,1208,96,827,41"/>
 </map>
 </div>
 </div>
@@ -374,7 +378,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.heatmap.v1</code>: a row-major grid of values with optional axis labels.  <a href="structpulsatrix_1_1HeatmapDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TokenRelevanceDocument.html">pulsatrix::TokenRelevanceDocument</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.token_relevance.v1</code>: one relevance score per token of a text.  <a href="structpulsatrix_1_1TokenRelevanceDocument.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.token_relevance.v1</code>: relevance scores over the pieces of a text, in reading order. <a class="el" href="namespacepulsatrix.html#ace54ebd40de79191dcfd03d924f32d0e" title="A token-level document for text from its Encoding and one score per token.">MakeTokenRelevanceDocument()</a> and <a class="el" href="namespacepulsatrix.html#ae0fad8b255ac061cc8652aac55293e51" title="A word-level document for text from AggregateToWords(): each word scored, the text between words as u...">MakeWordRelevanceDocument()</a> (<code><a class="el" href="text__relevance_8hpp.html" title="Token relevance documents from real explanations (VIZ-6a): a tokenizer&#39;s Encoding or TOK-4&#39;s word sco...">viz/text_relevance.hpp</a></code>) build one from a tokenizer's <a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> or from word scores.  <a href="structpulsatrix_1_1TokenRelevanceDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitGraphDocument.html">pulsatrix::CircuitGraphDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.circuit_graph.v1</code>: a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>'s scored nodes and weighted edges.  <a href="structpulsatrix_1_1CircuitGraphDocument.html#details">More...</a><br /></td></tr>
