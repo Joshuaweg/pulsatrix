@@ -102,8 +102,13 @@ MultiHeadAttentionModule::MultiHeadAttentionModule(const AttentionConfig& config
     if (use_rope_) {
         // Separate instances for Q and K -- see the header's caching note; a shared instance
         // would leave only K's activations cached for propagate_relevance.
-        q_rope_ = std::make_unique<RoPEModule>(head_dim_, backend, config_.rope_base, config_.rope_layout);
-        k_rope_ = std::make_unique<RoPEModule>(head_dim_, backend, config_.rope_base, config_.rope_layout);
+        if (config_.rope_inverse_frequencies.empty()) {
+            q_rope_ = std::make_unique<RoPEModule>(head_dim_, backend, config_.rope_base, config_.rope_layout);
+            k_rope_ = std::make_unique<RoPEModule>(head_dim_, backend, config_.rope_base, config_.rope_layout);
+        } else {
+            q_rope_ = std::make_unique<RoPEModule>(head_dim_, backend, config_.rope_inverse_frequencies, config_.rope_layout);
+            k_rope_ = std::make_unique<RoPEModule>(head_dim_, backend, config_.rope_inverse_frequencies, config_.rope_layout);
+        }
     }
     if (use_qk_norm_) {
         q_norm_ = std::make_unique<RMSNormModule>(head_dim_, backend, backend->device(), config_.qk_norm_eps);

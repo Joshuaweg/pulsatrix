@@ -332,10 +332,10 @@ TEST_F(LoadWeightsTest, RowSlicesSplitAFusedTensor) {
 
 TEST(CausalLMLoadTest, RefusesConfigsItCantRunFaithfully) {
     CPUBackend backend;
-    HfModelConfig llama32 = ReadHfConfig(std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf/llama-3.2-1b.config.json");
-    llama32.num_hidden_layers = 1;  // keep the test small; rope_scaling is what is refused
-    llama32.vocab_size = 16;
-    EXPECT_THROW(CausalLM(llama32, &backend), std::invalid_argument);
+    HfModelConfig gemma = ReadHfConfig(std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf/gemma-3-270m.config.json");
+    gemma.num_hidden_layers = 1;  // keep the test small; Gemma's features are what is refused
+    gemma.vocab_size = 16;
+    EXPECT_THROW(CausalLM(gemma, &backend), std::invalid_argument);
     EXPECT_THROW((void)LoadCausalLM("/nonexistent", &backend), std::runtime_error);
 }
 

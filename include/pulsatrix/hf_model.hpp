@@ -92,8 +92,17 @@ struct HfModelConfig {
 /** @brief ParseHfConfig on a file. @throws std::runtime_error if it can't be read. */
 [[nodiscard]] HfModelConfig ReadHfConfig(const std::string& path);
 
-/** @brief The attention layer the config describes: rotate-half RoPE, causal, its head counts,
- *         biases, QK-Norm and epsilon. */
+/**
+ * @brief The RoPE frequency of each pair, `head_dim / 2` of them, as Hugging Face computes them:
+ *        `rope_theta^(-2i / head_dim)`, then rescaled by `rope_scaling` when it is `"linear"`
+ *        (all divided by the factor) or `"llama3"` (low frequencies divided by the factor, high
+ *        ones kept, the band between interpolated; LLM-6).
+ * @throws std::invalid_argument for any other rope_scaling type.
+ */
+[[nodiscard]] std::vector<double> RopeInverseFrequencies(const HfModelConfig& config);
+
+/** @brief The attention layer the config describes: rotate-half RoPE (with its scaling),
+ *         causal, its head counts, biases, QK-Norm and epsilon. */
 [[nodiscard]] AttentionConfig ToAttentionConfig(const HfModelConfig& config);
 
 /**

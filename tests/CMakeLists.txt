@@ -82,6 +82,7 @@ add_executable(pulsatrix_tests
     kv_cache_test.cpp
     hf_model_test.cpp
     causal_lm_test.cpp
+    golden_logits_test.cpp
     swiglu_module_test.cpp
     transformer_block_test.cpp
     residual_module_test.cpp
@@ -317,6 +318,9 @@ add_test(NAME PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution.v1.json"
         "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution.v1.json")
 set_tests_properties(PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm PROPERTIES WILL_FAIL TRUE)
+# LLM-6: the golden-logit tool, on a tiny model.
+add_test(NAME PulsatrixGolden.TinyLlamaMatchesTransformers
+    COMMAND pulsatrix_golden "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama")
 
 # KS-2: LRP conservation on the benchmark models must hold on the CPU, whatever the timings.
 add_test(NAME PulsatrixBench.CpuConservationCheck

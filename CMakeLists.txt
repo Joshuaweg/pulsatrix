@@ -106,6 +106,7 @@ add_library(pulsatrix_core
     src/kv_cache.cpp
     src/hf_model.cpp
     src/causal_lm.cpp
+    src/golden_logits.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp
@@ -565,6 +566,11 @@ endif()
 add_executable(pulsatrix_svg tools/render/pulsatrix_svg.cpp)
 target_link_libraries(pulsatrix_svg PRIVATE pulsatrix_core)
 
+# pulsatrix_golden: a Hugging Face model's logits against transformers' on real text (LLM-6).
+add_executable(pulsatrix_golden tools/golden/pulsatrix_golden.cpp)
+target_link_libraries(pulsatrix_golden PRIVATE pulsatrix_core)
+target_compile_definitions(pulsatrix_golden PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
+
 # pulsatrix_bench: the benchmark suite (KS-2), on every backend this build has.
 add_executable(pulsatrix_bench tools/bench/pulsatrix_bench.cpp)
 target_link_libraries(pulsatrix_bench PRIVATE pulsatrix_core)
@@ -623,7 +629,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg pulsatrix_bench RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
