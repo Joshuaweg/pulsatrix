@@ -457,7 +457,7 @@ scores into word scores.
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | TOK-1 | A `Tokenizer` interface: `encode` returns ids, token strings, character offsets and a special-token mask; `decode` returns text. Added tokens (special tokens such as `<\|im_start\|>`) are split out before anything else runs. The current tokenizer becomes the `WordLevel` model with a whitespace pre-tokenizer, and a byte tokenizer (256 ids plus specials) and a character tokenizer join it | One interface for every model, and offsets for every explanation | — | P0 | S || Done, [#84](https://github.com/Joshuaweg/pulsatrix/pull/84) (see below) |
-| TOK-2 | Byte-level BPE from `tokenizer.json`, with a small regex engine for the Split pre-tokenizer: alternation, character classes with Unicode categories (`\p{L}`, `\p{Lu}`, `\p{M}`, `\p{N}`…) over a generated category table, ranges, quantifiers, `(?i:…)` and the `(?!\S)` lookahead; `std::regex` can't match Unicode categories. Also digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (`"a b"` strings and `["a", "b"]` pairs), `ignore_merges`, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5, Llama 3.2 and gpt-oss | Any byte-level BPE model loads without new code: SmolLM2, Qwen, Llama, gpt-oss, Mistral, DeepSeek, Phi-4 | TOK-1 | P0 | M | |
+| TOK-2 | Byte-level BPE from `tokenizer.json`, with a small regex engine for the Split pre-tokenizer: alternation, character classes with Unicode categories (`\p{L}`, `\p{Lu}`, `\p{M}`, `\p{N}`…) over a generated category table, ranges, quantifiers, `(?i:…)` and the `(?!\S)` lookahead; `std::regex` can't match Unicode categories. Also digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (`"a b"` strings and `["a", "b"]` pairs), `ignore_merges`, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5, Llama 3.2 and gpt-oss | Any byte-level BPE model loads without new code: SmolLM2, Qwen, Llama, gpt-oss, Mistral, DeepSeek, Phi-4 | TOK-1 | P0 | M || Done, [#85](https://github.com/Joshuaweg/pulsatrix/pull/85) (see below) |
 | TOK-3 | SentencePiece-style BPE: byte fallback (`<0x41>` tokens), `▁` replacement, `fuse_unk`, and the matching decoder chain. It passes the same corpus test for Gemma 3 | Gemma 3 and Gemma Scope 2 (LLM-9, FEAT) | TOK-2 | P1 | S | |
 | TOK-4 | Word-level aggregation: merge per-token scores (relevance, attributions, probe outputs) into per-word scores using the offsets, by sum, mean or maximum | Explanations people can read | TOK-1 | P1 | S | |
 | TOK-5 | WordPiece (BERT normalizer and pre-tokenizer, `##` continuation) | BERT-family encoders, the most common models in XAI papers and tutorials | TOK-1 | P2 | S | |
@@ -481,7 +481,31 @@ Not planned: SentencePiece `.model` protobuf files (every target model also ship
     word-level tokenizer matches it on ASCII. It keeps a non-ASCII character as one token, where
     `Tokenize` splits it into bytes.
   - Added tokens are matched in the raw text, longest first. Hugging Face can also match them after
-    normalization (`normalized: true`); TOK-2 handles that where a target model needs it.
+    normalization (`normalized: true`). No target model needs that, so the loader refuses it when
+    there is a normalizer.
+- **TOK-2** loads `tokenizer.json` (`LoadTokenizerJson`) with NFC, the Split, Digits, ByteLevel and
+  Sequence pre-tokenizers, BPE, the ByteLevel and TemplateProcessing post-processors and the
+  ByteLevel decoder. Anything else is refused by name.
+  - **Parity:** on a 10,000-line corpus, ids and decoded text match `tokenizers` 0.23 exactly for
+    SmolLM2-135M, Qwen2.5, Qwen3, Llama 3.2 and gpt-oss. That is 50,000 encodings, about 1.3 s per
+    tokenizer for the whole corpus. The corpus is the 90 CI stress lines, the UDHR in about 530
+    languages (downloaded, not committed) and seeded mixtures of the two.
+  - **CI fixtures:** CI uses each model's real pipeline with a small trained vocabulary
+    (`tools/tokenizers/make_tokenizer_reference.py tiny`), about 140 KB each. The Llama and
+    gpt-oss fixtures add whole words no merge reaches, so `ignore_merges` is exercised.
+    Mutation-checked: removing NFC, `ignore_merges` or the exact `\s` set fails a test.
+  - **Regex engine:** `UnicodeRegex` is a backtracking matcher over code points with Oniguruma's
+    leftmost-first semantics. `\s` is White_Space, as in Oniguruma, checked against `tokenizers`
+    on the edge cases (U+001C to U+001F, U+0085, U+00A0, U+200B, U+FEFF).
+  - **Unicode tables:** categories and NFC data are generated from Unicode 15.0, the version of the
+    Oniguruma `tokenizers` bundles (`tools/unicode/generate_unicode_data.py`).
+  - **Offsets:** they are compared exactly on lines that round-trip. On other lines, Hugging
+    Face's are positional: a composed character gets only its first source character,
+    characters after a canonical reordering get their neighbours' spans, and tokens after a
+    character the vocabulary lacks (SmolLM2 has no byte 0x1D) shift left. pulsatrix keeps each
+    byte's actual source, and the harness reports those lines separately.
+  - **JSON parser:** duplicate keys are now found with a hash set past 32 keys. The old scan was
+    quadratic, about 2×10¹⁰ comparisons for gpt-oss's 200k-entry vocabulary.
 
 ## XAI: Question-driven explainability framework
 
