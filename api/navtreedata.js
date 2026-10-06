@@ -78,15 +78,15 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1TiedLMHeadModule.html",
 "classpulsatrix_1_1XorNetwork.html#aea8944b7f9aa6259490ff2d4410b8dc1",
 "functions_vars_k.html",
-"namespacepulsatrix.html#a448cab9e47c5525c719965887897a03d",
-"namespacepulsatrix.html#ae1bd894b2f804084cd61b94d4e4bd520",
-"structpulsatrix_1_1AttnLrpSequenceResult.html#ae23be90026b1d322e1efb3692d378932",
-"structpulsatrix_1_1CounterfactualDocument_1_1Feature.html#a8020a8110aada15ff51eaad4c5643e34",
-"structpulsatrix_1_1GFlowNetSampledAction.html#a7e0cc52da8670414c733ef3feabeb52d",
-"structpulsatrix_1_1Imputation.html#a295743774684f4e01cfa7ead34138deb",
-"structpulsatrix_1_1PartialDependenceDocument.html",
-"structpulsatrix_1_1StabilityResult.html",
-"structpulsatrix_1_1datalog_1_1RelevanceResult.html#a5f3a0dc1a760aca4f35f902f00797b9f"
+"namespacepulsatrix.html#a416909cba1eaf572fc95d96d7495a0dc",
+"namespacepulsatrix.html#ad3cdd9d157bcc91df671e6c976c56a21",
+"structpulsatrix_1_1AttnLrpSequenceResult.html",
+"structpulsatrix_1_1CounterfactualDocument.html#acffa5b3cd4d35880a9b34c9550514a07",
+"structpulsatrix_1_1FineTuneConfig.html#afd0b0eaf9594a7dc3c58a3d08ee9c839",
+"structpulsatrix_1_1IceResult.html#a96089b1fdf2fb57b12bfa93787a0a9fd",
+"structpulsatrix_1_1PartialDependence2D.html#a3c2c64a2d5c8935d5641c8031f4daabe",
+"structpulsatrix_1_1SsmPassArgs.html#a4a2d4d6fe8a614f6fd5333aa7e5c3a15",
+"structpulsatrix_1_1datalog_1_1DualNumber.html#a5174321a33de2620115e9e55cb62133b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

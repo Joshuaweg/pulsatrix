@@ -457,6 +457,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#per-word-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-word scores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#handling-variable-length-data-with-a-custom-collatefn" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1699,6 +1710,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#per-word-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-word scores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#handling-variable-length-data-with-a-custom-collatefn" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1786,7 +1808,8 @@ tabular, image, text, audio and video (frames only). Generic dataset validation 
 <li><strong>Text</strong>: <code>Tokenizer</code>, <code>Vocabulary</code>/<code>BuildVocabulary</code>, <code>TextDataset</code>, <code>PadCollate</code></li>
 <li><strong>Tokenizers</strong>: <code>TextTokenizer</code> (ids, token strings, byte offsets and a special-token mask),
   <code>LoadTokenizerJson</code> for Hugging Face byte-level BPE tokenizers (SmolLM2, Qwen, Llama 3,
-  gpt-oss, ...), and word-level, byte and character tokenizers (see below)</li>
+  gpt-oss, ...), and word-level, byte and character tokenizers (see below);
+  <code>AggregateToWords</code>/<code>SplitWords</code> for per-word scores</li>
 <li><strong>Audio</strong>: <code>WavReader</code>/<code>WavData</code>, <code>AudioFolderDataset</code>, <code>ResampleTransform</code>,
   <code>AudioPadCollate</code></li>
 <li><strong>Video</strong> (pre-extracted frames only; see Notes): <code>VideoFrameDirectoryDataset</code>,
@@ -1886,6 +1909,38 @@ stress lines), the ids and the decoded text match <code>tokenizers</code> 0.23 e
 Qwen2.5, Qwen3, Llama 3.2 and gpt-oss (<code>tools/tokenizers/</code>, <code>pulsatrix_tokenizer_parity</code>).
 Offsets match on every line that round-trips exactly. A component the loader doesn't support,
 such as SentencePiece byte fallback (Gemma, TOK-3), is refused by name rather than approximated.</p>
+<h3 id="per-word-scores">Per-word scores<a class="headerlink" href="#per-word-scores" title="Permanent link">&para;</a></h3>
+<p>Explanations are computed per token but read per word. <code>AggregateToWords</code> merges per-token
+scores (relevance, attributions, probe outputs) into the words of the input using the offsets.
+Here AttnLRP on SmolLM2 explains why it predicts " Paris":</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/attnlrp_parity.hpp"</span><span class="w">  </span><span class="c1">// LxtAttnLrpConfig</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/causal_lm.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tokenizer_json.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/word_scores.hpp"</span>
+
+<span class="n">TextTokenizer</span><span class="w"> </span><span class="n">tok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTokenizerJson</span><span class="p">(</span><span class="n">dir</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"/tokenizer.json"</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CausalLM</span><span class="o">&gt;</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadCausalLM</span><span class="p">(</span><span class="n">dir</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"The Eiffel Tower is located in the city of"</span><span class="p">;</span>
+<span class="n">Encoding</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tok</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
+<span class="c1">// ... forward, seed the predicted token's logit at the last position, then:</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">relevance</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">propagate_relevance</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span><span class="w"> </span><span class="n">LxtAttnLrpConfig</span><span class="p">()).</span><span class="n">to_host_vector</span><span class="p">();</span><span class="w">  </span><span class="c1">// one score per token</span>
+<span class="n">WordScores</span><span class="w"> </span><span class="n">words</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AggregateToWords</span><span class="p">(</span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="n">relevance</span><span class="p">,</span><span class="w"> </span><span class="n">WordAggregation</span><span class="o">::</span><span class="n">Sum</span><span class="p">);</span>
+<span class="c1">// The   -1.598   Eiffel +4.092   Tower -0.092   is +0.057   located +0.033</span>
+<span class="c1">// in    +0.304   the    -0.089   city  -0.029   of +0.298</span>
+</code></pre></div>
+<ul>
+<li><strong>Words</strong> come from the text, not the tokenizer. By default they are runs of word characters
+  and runs of punctuation (<code>WordSplit::WordsAndPunctuation</code>); <code>WordSplit::Whitespace</code> uses
+  space-separated words, and <code>SplitWords(text, UnicodeRegex(...))</code> takes any pattern. Scripts
+  written without spaces, such as Chinese, need a pattern.</li>
+<li><strong>A token across several words</strong> gives each a share in proportion to its bytes inside it. Bytes
+  in no word, like the space in a byte-level <code>Ġworld</code>, don't count.</li>
+<li><strong>Aggregations:</strong> <code>Sum</code> conserves the total, so the words plus <code>unassigned</code> add up to the tokens'
+  relevance. <code>Mean</code> is the share-weighted mean. <code>Max</code> is the largest token score, and <code>MaxAbs</code>
+  is the strongest by magnitude with its sign kept.</li>
+<li><strong><code>unassigned</code></strong> collects tokens that cover no word: BOS, EOS and whitespace-only tokens.</li>
+</ul>
 <h3 id="handling-variable-length-data-with-a-custom-collatefn">Handling variable-length data with a custom <code>CollateFn</code><a class="headerlink" href="#handling-variable-length-data-with-a-custom-collatefn" title="Permanent link">&para;</a></h3>
 <p><code>DefaultCollate</code> can only stack samples of the same shape. For ragged data such as text,
 swap in a padding collate function:</p>

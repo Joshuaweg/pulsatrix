@@ -204,5 +204,6 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "vocabulary.hpp", "vocabulary_8hpp.html", "vocabulary_8hpp" ],
     [ "wav_reader.hpp", "wav__reader_8hpp.html", "wav__reader_8hpp" ],
     [ "weighted_linear_regression.hpp", "weighted__linear__regression_8hpp.html", "weighted__linear__regression_8hpp" ],
+    [ "word_scores.hpp", "word__scores_8hpp.html", "word__scores_8hpp" ],
     [ "xor_training_example.hpp", "xor__training__example_8hpp.html", "xor__training__example_8hpp" ]
 ];

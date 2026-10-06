@@ -3868,6 +3868,16 @@ scores into word scores.</p>
     byte's actual source, and the harness reports those lines separately.</li>
 <li><strong>JSON parser:</strong> duplicate keys are now found with a hash set past 32 keys. The old scan was
     quadratic, about 2×10¹⁰ comparisons for gpt-oss's 200k-entry vocabulary.</li>
+<li><strong>TOK-4</strong> (<code>AggregateToWords</code>, <code>word_scores.hpp</code>) takes words from the text, not from the
+  tokenizer, so every tokenizer gives the same words.</li>
+<li>A token across several words splits its score by the bytes it has inside each. The rule
+    itself is our own choice. <code>Sum</code> therefore conserves the total, with the words plus
+    <code>unassigned</code> adding up to the tokens' total. That is checked on every line of the
+    tokenizer corpus, through Llama 3.2's pipeline with its BOS token.</li>
+<li><code>MaxAbs</code> joins the planned sum, mean and maximum. Signed attributions need it, because <code>Max</code>
+    hides strong negative evidence.</li>
+<li>On SmolLM2, AttnLRP for " Paris" after "The Eiffel Tower is located in the city of" puts
+    +4.09 on "Eiffel"; the next largest word is +0.30.</li>
 </ul>
 <h2 id="xai-question-driven-explainability-framework">XAI: Question-driven explainability framework<a class="headerlink" href="#xai-question-driven-explainability-framework" title="Permanent link">&para;</a></h2>
 <p>This epic builds two frameworks into the library:</p>

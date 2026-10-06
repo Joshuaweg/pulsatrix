@@ -4,5 +4,6 @@ var searchData=
   ['silu_1',['Silu',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf',1,'pulsatrix']]],
   ['stabilizeddiv_2',['StabilizedDiv',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883af7357d9f8c4df9c447eaaec3710f1a2f',1,'pulsatrix']]],
   ['string_3',['String',['../classpulsatrix_1_1JsonValue.html#abc4394f62a71b7f447ca50e841ecc98da27118326006d3829667a400ad23d5d98',1,'pulsatrix::JsonValue']]],
-  ['sumwithprevious_4',['SumWithPrevious',['../namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1',1,'pulsatrix']]]
+  ['sum_4',['Sum',['../namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5',1,'pulsatrix']]],
+  ['sumwithprevious_5',['SumWithPrevious',['../namespacepulsatrix.html#ae999cb7b2d1c9ba912797e3319968107a06d1956cc4184000b78741d2667533d1',1,'pulsatrix']]]
 ];
