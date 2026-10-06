@@ -474,7 +474,7 @@ Not planned: SentencePiece `.model` protobuf files (every target model also ship
   Face's `Tokenizer` is, rather than an interface each tokenizer implements. The word-level, byte
   and character tokenizers are factory functions (`tokenizer_components.hpp`).
   - Offsets are UTF-8 byte offsets into the input, not characters. A token's source is then a plain
-    substring. A byte-level token inside a multi-byte character gets the whole character's span.
+    substring. A byte-level token inside a multi-byte character covers just its own bytes.
   - `NormalizedString` records each byte's origin, so normalizers and pre-tokenizers that change
     text (NFC, byte-level mapping in TOK-2) keep offsets.
   - `Tokenizer::Tokenize` stays as it is for `TextDataset` and existing vocabularies. The new
