@@ -1,7 +1,11 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <cstring>
+#include <limits>
+#include <random>
 #include <stdexcept>
+#include <tuple>
 #include <vector>
 
 #include "pulsatrix/cpu_backend.hpp"
@@ -90,6 +94,67 @@ TEST_F(CPUBackendTest, GemmHandlesNonSquareDimensions) {
     EXPECT_FLOAT_EQ(out[1], 64.0f);
     EXPECT_FLOAT_EQ(out[2], 139.0f);
     EXPECT_FLOAT_EQ(out[3], 154.0f);
+}
+
+// The reference the threaded i-p-j kernel must reproduce bit for bit: one dot product per
+// output, products added in increasing p (the summation order the GPU kernels mirror).
+std::vector<float> ReferenceGemm(const std::vector<float>& a, bool ta, const std::vector<float>& b, bool tb,
+                                 size_t m, size_t k, size_t n) {
+    std::vector<float> out(m * n);
+    for (size_t i = 0; i < m; ++i) {
+        for (size_t j = 0; j < n; ++j) {
+            float acc = 0.0f;
+            for (size_t p = 0; p < k; ++p) acc += (ta ? a[p * m + i] : a[i * k + p]) * (tb ? b[j * k + p] : b[p * n + j]);
+            out[i * n + j] = acc;
+        }
+    }
+    return out;
+}
+
+std::vector<float> RandomVector(size_t size, uint32_t seed) {
+    std::mt19937 gen(seed);
+    std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
+    std::vector<float> v(size);
+    for (float& x : v) x = dist(gen);
+    return v;
+}
+
+bool BitIdentical(const std::vector<float>& x, const std::vector<float>& y) {
+    return x.size() == y.size() && std::memcmp(x.data(), y.data(), x.size() * sizeof(float)) == 0;
+}
+
+// Big enough to run on several threads, with a column count no thread split divides evenly,
+// plus a single row (one generated token) and a multiply small enough to stay on one thread.
+TEST_F(CPUBackendTest, GemmIsBitIdenticalToTheDotProductOrderAtEverySize) {
+    for (auto [m, k, n] : {std::tuple<size_t, size_t, size_t>{37, 300, 1003}, {1, 2048, 4099}, {3, 5, 7}}) {
+        const std::vector<float> a = RandomVector(m * k, 1);
+        const std::vector<float> b = RandomVector(k * n, 2);
+        std::vector<float> out(m * n, std::numeric_limits<float>::quiet_NaN());
+        backend.gemm(a.data(), b.data(), out.data(), m, k, n);
+        EXPECT_TRUE(BitIdentical(out, ReferenceGemm(a, false, b, false, m, k, n))) << m << "x" << k << "x" << n;
+    }
+}
+
+TEST_F(CPUBackendTest, GemmExIsBitIdenticalToTheDotProductOrderForEveryTransposeAndBeta) {
+    const size_t m = 29, k = 257, n = 1201;
+    const std::vector<float> a = RandomVector(m * k, 3);
+    const std::vector<float> b = RandomVector(k * n, 4);
+    const std::vector<float> prior = RandomVector(m * n, 5);
+    for (bool ta : {false, true}) {
+        for (bool tb : {false, true}) {
+            const std::vector<float> product = ReferenceGemm(a, ta, b, tb, m, k, n);
+            for (float beta : {0.0f, 1.0f, 0.5f}) {
+                std::vector<float> expected(m * n);
+                for (size_t e = 0; e < expected.size(); ++e) {
+                    expected[e] = beta == 0.0f ? product[e] : beta * prior[e] + product[e];
+                }
+                // beta == 0 must not read out, so start it as NaN there.
+                std::vector<float> out = beta == 0.0f ? std::vector<float>(m * n, std::numeric_limits<float>::quiet_NaN()) : prior;
+                backend.gemm_ex(a.data(), ta, b.data(), tb, out.data(), m, k, n, beta);
+                EXPECT_TRUE(BitIdentical(out, expected)) << "ta " << ta << " tb " << tb << " beta " << beta;
+            }
+        }
+    }
 }
 
 TEST_F(CPUBackendTest, ElementwiseReluClampsNegativeValuesToZero) {
