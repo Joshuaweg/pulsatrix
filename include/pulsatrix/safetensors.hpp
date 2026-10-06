@@ -22,6 +22,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -41,7 +42,8 @@ struct SafetensorsTensorInfo {
     uint64_t data_end;
 };
 
-/** @brief A parsed, fully validated safetensors file held in memory. */
+/** @brief A parsed, fully validated safetensors file, held in memory or memory-mapped. Copies
+ *         share the same bytes. */
 class SafetensorsFile {
 public:
     /**
@@ -50,6 +52,15 @@ public:
      * @throws std::invalid_argument if its contents are not a valid safetensors file.
      */
     [[nodiscard]] static SafetensorsFile Read(const std::string& path);
+
+    /**
+     * @brief Memory-maps a file and validates it (IO-5): the operating system loads pages as
+     *        tensors are read, so a multi-gigabyte checkpoint isn't copied into memory whole. The
+     *        file must not change while any copy of this object lives.
+     * @throws std::runtime_error if the file can't be opened or mapped.
+     * @throws std::invalid_argument if its contents are not a valid safetensors file.
+     */
+    [[nodiscard]] static SafetensorsFile Map(const std::string& path);
 
     /**
      * @brief Validates a file's bytes.
@@ -85,7 +96,16 @@ public:
 private:
     SafetensorsFile() = default;
 
-    std::vector<uint8_t> bytes_;
+    /** @brief Where the bytes live: an owned vector, or a mapping undone when the last copy goes. */
+    struct Storage {
+        virtual ~Storage() = default;
+        const uint8_t* data = nullptr;
+        size_t size = 0;
+    };
+    /** @brief Validates the bytes @p storage holds and indexes them. */
+    [[nodiscard]] static SafetensorsFile FromStorage(std::shared_ptr<const Storage> storage);
+
+    std::shared_ptr<const Storage> storage_;
     size_t data_start_ = 0;
     std::vector<std::string> names_;
     std::map<std::string, SafetensorsTensorInfo> infos_;

@@ -152,7 +152,37 @@ buffers aren't saved yet.
 The reader underneath (`safetensors.hpp`) treats every file as untrusted, and throws
 `std::invalid_argument` for anything outside the format: offsets past the end of the file,
 overlapping or missing byte ranges, sizes that overflow, and malformed headers. It's fuzzed under
-AddressSanitizer (`tools/fuzz/safetensors_fuzz.cpp`).
+AddressSanitizer (`tools/fuzz/safetensors_fuzz.cpp`). `SafetensorsFile::Map` memory-maps a file
+instead of reading it, so only the parts you use are loaded: a 2.2 GB checkpoint opens in about a
+millisecond.
+
+### Hugging Face checkpoints
+
+`hf_model.hpp` reads a model directory as downloaded from the Hub.
+
+```cpp
+#include "pulsatrix/hf_model.hpp"
+
+HfModelConfig config = ReadHfConfig("SmolLM2-135M/config.json");
+if (!config.unsupported.empty()) { /* features pulsatrix can't run yet, e.g. "rope_scaling \"llama3\" (LLM-6)" */ }
+AttentionConfig attention = ToAttentionConfig(config);  // GQA, rotate-half RoPE, biases, QK-Norm
+
+HfCheckpoint weights = HfCheckpoint::Open("SmolLM2-135M");  // model.safetensors or its sharded index
+for (const std::string& name : weights.names()) { /* weights.info(name), weights.tensor(name, &backend) */ }
+```
+
+- `HfModelConfig` fills in what the file leaves to the model class: `head_dim` from the sizes,
+  Qwen2's Q/K/V biases, Qwen3's and Gemma 3's QK-Norm, and `eos_token_id` as a list. It reads
+  older (`rope_scaling`, `torch_dtype`) and newer (`rope_parameters`, `dtype`) field names, and a
+  multimodal config's `text_config`.
+- `unsupported` lists everything the config asks for that pulsatrix can't run yet, each with the
+  roadmap item that adds it, including architectures that aren't causal language models. A
+  loader should refuse a model whose list isn't empty rather than run it subtly wrong.
+- `HfCheckpoint` memory-maps every shard. The index must match its shards exactly (every listed
+  tensor present, nothing unlisted), and a shard must be a plain file name in the checkpoint
+  directory, so an index can't point outside it.
+- Hub weights are usually bf16; reading them as fp32 is IO-6, and mapping Hugging Face names
+  onto pulsatrix modules is IO-4.
 
 ### Reproducibility
 

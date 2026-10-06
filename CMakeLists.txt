@@ -104,6 +104,7 @@ add_library(pulsatrix_core
     src/global_sensitivity.cpp
     src/generation.cpp
     src/kv_cache.cpp
+    src/hf_model.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp

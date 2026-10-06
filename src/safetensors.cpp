@@ -18,6 +18,21 @@
 #error "safetensors.cpp can't determine the host byte order; it assumes little-endian"
 #endif
 
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#else
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
+
 namespace pulsatrix {
 namespace {
 
@@ -461,7 +476,16 @@ std::string shape_json(const Shape& shape) {
 
 }  // namespace
 
-SafetensorsFile SafetensorsFile::Parse(std::vector<uint8_t> bytes) {
+SafetensorsFile SafetensorsFile::FromStorage(std::shared_ptr<const Storage> storage) {
+    const uint8_t* const raw = storage->data;
+    const size_t total = storage->size;
+    struct View {
+        const uint8_t* p;
+        size_t n;
+        size_t size() const { return n; }
+        const uint8_t* data() const { return p; }
+        uint8_t operator[](size_t i) const { return p[i]; }
+    } bytes{raw, total};
     if (bytes.size() < 8) {
         reject("file shorter than its 8-byte header length");
     }
@@ -534,8 +558,19 @@ SafetensorsFile SafetensorsFile::Parse(std::vector<uint8_t> bytes) {
         reject("data section has bytes no tensor indexes");
     }
 
-    f.bytes_ = std::move(bytes);
+    f.storage_ = std::move(storage);
     return f;
+}
+
+SafetensorsFile SafetensorsFile::Parse(std::vector<uint8_t> bytes) {
+    struct Owned : Storage {
+        std::vector<uint8_t> bytes;
+    };
+    auto owned = std::make_shared<Owned>();
+    owned->bytes = std::move(bytes);
+    owned->data = owned->bytes.data();
+    owned->size = owned->bytes.size();
+    return FromStorage(std::move(owned));
 }
 
 SafetensorsFile SafetensorsFile::Read(const std::string& path) {
@@ -550,6 +585,71 @@ SafetensorsFile SafetensorsFile::Read(const std::string& path) {
     return Parse(std::move(bytes));
 }
 
+SafetensorsFile SafetensorsFile::Map(const std::string& path) {
+#ifdef _WIN32
+    struct Mapped : Storage {
+        HANDLE file = INVALID_HANDLE_VALUE;
+        HANDLE mapping = nullptr;
+        ~Mapped() override {
+            if (data != nullptr) UnmapViewOfFile(data);
+            if (mapping != nullptr) CloseHandle(mapping);
+            if (file != INVALID_HANDLE_VALUE) CloseHandle(file);
+        }
+    };
+    auto m = std::make_shared<Mapped>();
+    m->file = CreateFileA(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+                          nullptr);
+    if (m->file == INVALID_HANDLE_VALUE) {
+        throw std::runtime_error("safetensors: cannot open " + path);
+    }
+    LARGE_INTEGER size{};
+    if (!GetFileSizeEx(m->file, &size)) {
+        throw std::runtime_error("safetensors: cannot read the size of " + path);
+    }
+    if (size.QuadPart == 0) {
+        return Parse({});  // an empty file can't be mapped; Parse rejects it
+    }
+    m->mapping = CreateFileMappingA(m->file, nullptr, PAGE_READONLY, 0, 0, nullptr);
+    if (m->mapping == nullptr) {
+        throw std::runtime_error("safetensors: cannot map " + path);
+    }
+    m->data = static_cast<const uint8_t*>(MapViewOfFile(m->mapping, FILE_MAP_READ, 0, 0, 0));
+    if (m->data == nullptr) {
+        throw std::runtime_error("safetensors: cannot map " + path);
+    }
+    m->size = static_cast<size_t>(size.QuadPart);
+    return FromStorage(std::move(m));
+#else
+    struct Mapped : Storage {
+        ~Mapped() override {
+            if (data != nullptr) munmap(const_cast<uint8_t*>(data), size);
+        }
+    };
+    const int fd = open(path.c_str(), O_RDONLY);
+    if (fd < 0) {
+        throw std::runtime_error("safetensors: cannot open " + path);
+    }
+    struct stat st {};
+    if (fstat(fd, &st) != 0) {
+        close(fd);
+        throw std::runtime_error("safetensors: cannot read the size of " + path);
+    }
+    if (st.st_size == 0) {
+        close(fd);
+        return Parse({});  // an empty file can't be mapped; Parse rejects it
+    }
+    void* p = mmap(nullptr, static_cast<size_t>(st.st_size), PROT_READ, MAP_PRIVATE, fd, 0);
+    close(fd);  // the mapping keeps the file open
+    if (p == MAP_FAILED) {
+        throw std::runtime_error("safetensors: cannot map " + path);
+    }
+    auto m = std::make_shared<Mapped>();
+    m->data = static_cast<const uint8_t*>(p);
+    m->size = static_cast<size_t>(st.st_size);
+    return FromStorage(std::move(m));
+#endif
+}
+
 const SafetensorsTensorInfo& SafetensorsFile::info(const std::string& name) const {
     auto it = infos_.find(name);
     if (it == infos_.end()) {
@@ -560,7 +660,7 @@ const SafetensorsTensorInfo& SafetensorsFile::info(const std::string& name) cons
 
 std::pair<const uint8_t*, size_t> SafetensorsFile::bytes(const std::string& name) const {
     const SafetensorsTensorInfo& i = info(name);
-    return {bytes_.data() + data_start_ + i.data_begin, static_cast<size_t>(i.data_end - i.data_begin)};
+    return {storage_->data + data_start_ + i.data_begin, static_cast<size_t>(i.data_end - i.data_begin)};
 }
 
 Tensor SafetensorsFile::tensor(const std::string& name, DeviceBackend* backend) const {
