@@ -20,7 +20,8 @@ tabular, image, text, audio and video (frames only). Generic dataset validation 
 - **Text**: `Tokenizer`, `Vocabulary`/`BuildVocabulary`, `TextDataset`, `PadCollate`
 - **Tokenizers**: `TextTokenizer` (ids, token strings, byte offsets and a special-token mask),
   `LoadTokenizerJson` for Hugging Face byte-level BPE tokenizers (SmolLM2, Qwen, Llama 3,
-  gpt-oss, ...), and word-level, byte and character tokenizers (see below)
+  gpt-oss, ...), and word-level, byte and character tokenizers (see below);
+  `AggregateToWords`/`SplitWords` for per-word scores
 - **Audio**: `WavReader`/`WavData`, `AudioFolderDataset`, `ResampleTransform`,
   `AudioPadCollate`
 - **Video** (pre-extracted frames only; see Notes): `VideoFrameDirectoryDataset`,
@@ -138,6 +139,41 @@ stress lines), the ids and the decoded text match `tokenizers` 0.23 exactly for 
 Qwen2.5, Qwen3, Llama 3.2 and gpt-oss (`tools/tokenizers/`, `pulsatrix_tokenizer_parity`).
 Offsets match on every line that round-trips exactly. A component the loader doesn't support,
 such as SentencePiece byte fallback (Gemma, TOK-3), is refused by name rather than approximated.
+
+### Per-word scores
+
+Explanations are computed per token but read per word. `AggregateToWords` merges per-token
+scores (relevance, attributions, probe outputs) into the words of the input using the offsets.
+Here AttnLRP on SmolLM2 explains why it predicts " Paris":
+
+```cpp
+#include "pulsatrix/attnlrp_parity.hpp"  // LxtAttnLrpConfig
+#include "pulsatrix/causal_lm.hpp"
+#include "pulsatrix/tokenizer_json.hpp"
+#include "pulsatrix/word_scores.hpp"
+
+TextTokenizer tok = LoadTokenizerJson(dir + "/tokenizer.json");
+std::unique_ptr<CausalLM> model = LoadCausalLM(dir, &backend);
+const std::string text = "The Eiffel Tower is located in the city of";
+Encoding e = tok.encode(text);
+// ... forward, seed the predicted token's logit at the last position, then:
+std::vector<float> relevance =
+    model->propagate_relevance(seed, LxtAttnLrpConfig()).to_host_vector();  // one score per token
+WordScores words = AggregateToWords(text, e, relevance, WordAggregation::Sum);
+// The   -1.598   Eiffel +4.092   Tower -0.092   is +0.057   located +0.033
+// in    +0.304   the    -0.089   city  -0.029   of +0.298
+```
+
+- **Words** come from the text, not the tokenizer. By default they are runs of word characters
+  and runs of punctuation (`WordSplit::WordsAndPunctuation`); `WordSplit::Whitespace` uses
+  space-separated words, and `SplitWords(text, UnicodeRegex(...))` takes any pattern. Scripts
+  written without spaces, such as Chinese, need a pattern.
+- **A token across several words** gives each a share in proportion to its bytes inside it. Bytes
+  in no word, like the space in a byte-level `Ġworld`, don't count.
+- **Aggregations:** `Sum` conserves the total, so the words plus `unassigned` add up to the tokens'
+  relevance. `Mean` is the share-weighted mean. `Max` is the largest token score, and `MaxAbs`
+  is the strongest by magnitude with its sign kept.
+- **`unassigned`** collects tokens that cover no word: BOS, EOS and whitespace-only tokens.
 
 ### Handling variable-length data with a custom `CollateFn`
 

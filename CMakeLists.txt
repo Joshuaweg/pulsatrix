@@ -172,6 +172,7 @@ add_library(pulsatrix_core
     src/byte_level_bpe.cpp
     src/tokenizer_json.cpp
     src/tokenizer_parity.cpp
+    src/word_scores.cpp
     src/vocabulary.cpp
     src/text_dataset.cpp
     src/text_collate.cpp
