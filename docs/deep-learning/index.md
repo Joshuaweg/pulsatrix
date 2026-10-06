@@ -181,8 +181,9 @@ for (const std::string& name : weights.names()) { /* weights.info(name), weights
 - `HfCheckpoint` memory-maps every shard. The index must match its shards exactly (every listed
   tensor present, nothing unlisted), and a shard must be a plain file name in the checkpoint
   directory, so an index can't point outside it.
-- Hub weights are usually bf16; reading them as fp32 is IO-6, and mapping Hugging Face names
-  onto pulsatrix modules is IO-4.
+- Hub weights are usually bf16. `tensor()` widens bf16, fp16 and both fp8 formats to fp32
+  exactly, and rounds fp64; integer tensors stay raw bytes (`bytes()`). Mapping Hugging Face
+  names onto pulsatrix modules is IO-4.
 
 ### Reproducibility
 

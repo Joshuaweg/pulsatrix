@@ -1,6 +1,7 @@
 #include "pulsatrix/safetensors.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <fstream>
 #include <iterator>
@@ -663,16 +664,80 @@ std::pair<const uint8_t*, size_t> SafetensorsFile::bytes(const std::string& name
     return {storage_->data + data_start_ + i.data_begin, static_cast<size_t>(i.data_end - i.data_begin)};
 }
 
+namespace {
+
+float FromBits(uint32_t bits) {
+    float f;
+    std::memcpy(&f, &bits, sizeof f);
+    return f;
+}
+
+// An IEEE-style binary float with the given exponent and mantissa widths, widened exactly to
+// float. ieee_specials: an all-ones exponent means infinity or NaN (F16, F8_E5M2); otherwise only
+// the all-ones pattern is NaN and the rest are ordinary numbers (F8_E4M3, the "fn" variant).
+float WidenFloat(uint32_t v, int exp_bits, int man_bits, bool ieee_specials) {
+    const uint32_t sign = (v >> (exp_bits + man_bits)) & 1u;
+    const uint32_t exp = (v >> man_bits) & ((1u << exp_bits) - 1u);
+    const uint32_t man = v & ((1u << man_bits) - 1u);
+    const int bias = (1 << (exp_bits - 1)) - 1;
+    const float s = sign ? -1.0f : 1.0f;
+    const uint32_t exp_max = (1u << exp_bits) - 1u;
+    if (ieee_specials && exp == exp_max) {
+        return man == 0 ? s * std::numeric_limits<float>::infinity() : std::numeric_limits<float>::quiet_NaN();
+    }
+    if (!ieee_specials && exp == exp_max && man == (1u << man_bits) - 1u) {
+        return std::numeric_limits<float>::quiet_NaN();
+    }
+    if (exp == 0) {  // zero or subnormal: man * 2^(1 - bias - man_bits), exact in float
+        return s * std::ldexp(static_cast<float>(man), 1 - bias - man_bits);
+    }
+    return s * std::ldexp(static_cast<float>((1u << man_bits) | man), static_cast<int>(exp) - bias - man_bits);
+}
+
+}  // namespace
+
 Tensor SafetensorsFile::tensor(const std::string& name, DeviceBackend* backend) const {
     const SafetensorsTensorInfo& i = info(name);
-    if (i.dtype != SafetensorsDtype::F32) {
-        throw std::invalid_argument("safetensors: tensor \"" + name +
-                                    "\" is not F32; converting other dtypes is not supported yet (roadmap IO-6)");
-    }
     auto [ptr, size] = bytes(name);
-    std::vector<float> values(size / sizeof(float));
-    if (size > 0) {
-        std::memcpy(values.data(), ptr, size);
+    std::vector<float> values;
+    auto read = [&](size_t k, size_t width) {
+        uint64_t v = 0;
+        for (size_t b = 0; b < width; ++b) v |= static_cast<uint64_t>(ptr[k * width + b]) << (8 * b);  // little-endian
+        return v;
+    };
+    switch (i.dtype) {
+        case SafetensorsDtype::F32:
+            values.resize(size / 4);
+            for (size_t k = 0; k < values.size(); ++k) values[k] = FromBits(static_cast<uint32_t>(read(k, 4)));
+            break;
+        case SafetensorsDtype::BF16:  // the top half of a float32: exact
+            values.resize(size / 2);
+            for (size_t k = 0; k < values.size(); ++k) values[k] = FromBits(static_cast<uint32_t>(read(k, 2)) << 16);
+            break;
+        case SafetensorsDtype::F16:
+            values.resize(size / 2);
+            for (size_t k = 0; k < values.size(); ++k) values[k] = WidenFloat(static_cast<uint32_t>(read(k, 2)), 5, 10, true);
+            break;
+        case SafetensorsDtype::F8_E4M3:
+            values.resize(size);
+            for (size_t k = 0; k < values.size(); ++k) values[k] = WidenFloat(ptr[k], 4, 3, false);
+            break;
+        case SafetensorsDtype::F8_E5M2:
+            values.resize(size);
+            for (size_t k = 0; k < values.size(); ++k) values[k] = WidenFloat(ptr[k], 5, 2, true);
+            break;
+        case SafetensorsDtype::F64:  // rounded to nearest; out-of-range values become infinities
+            values.resize(size / 8);
+            for (size_t k = 0; k < values.size(); ++k) {
+                const uint64_t bits = read(k, 8);
+                double d;
+                std::memcpy(&d, &bits, sizeof d);
+                values[k] = static_cast<float>(d);
+            }
+            break;
+        default:
+            throw std::invalid_argument("safetensors: tensor \"" + name +
+                                        "\" is an integer or bool tensor; only floating-point dtypes convert to a Tensor");
     }
     return Tensor(Shape(i.shape), backend, values);
 }
