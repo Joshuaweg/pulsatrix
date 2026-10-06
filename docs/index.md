@@ -26,13 +26,19 @@ Runs on CPU, CUDA or HIP/ROCm.
 
 **[Data Loading, Transformation & Validation](data-pipeline/index.md)**: `Dataset` and
 `DataLoader` with readers for CSV, images, text, audio and video frames, plus dataset
-statistics and outlier checks.
+statistics and outlier checks. Tokenizers load from a Hugging Face `tokenizer.json` and return
+offsets back into the text, and token scores can be merged into word scores.
+
+**[Language Models](language-models/index.md)**: load Llama, SmolLM2, Qwen2/2.5 and Qwen3 models
+from the Hugging Face Hub, generate text, and explain each prediction per token or per word with
+AttnLRP. Logits, token ids and explanations are checked against `transformers`, `tokenizers`
+and LXT, and `pulsatrix_explain_text` turns a prompt into an explanation figure in one command.
 
 **[Interpretability](interpretability/index.md)**: explain a trained model's predictions.
 
 - [Layer-wise Relevance Propagation](interpretability/lrp.md): Epsilon, Gamma, AlphaBeta and
   ZBox rules, Zennit's composite presets, and AttnLRP/MambaLRP for attention and state-space
-  layers.
+  layers. AttnLRP matches LXT on real language models.
 - [Model-agnostic explainers](interpretability/model-agnostic.md): KernelSHAP, LIME and partial
   dependence plots.
 - [Gradient-based explainers](interpretability/deep-learning-approaches.md): Saliency,
@@ -61,9 +67,9 @@ search, Bayesian optimization (Gaussian process and TPE), and early stopping wit
 Halving, Hyperband and ASHA.
 
 **[Visualization](visualization/index.md)**: versioned JSON documents for explanations,
-heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts and the
-`pulsatrix_svg` tool; and, optionally, native Dear ImGui + ImPlot windows with a live training
-dashboard.
+heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts
+(including token and word relevance for text) and the `pulsatrix_svg` tool; and, optionally,
+native Dear ImGui + ImPlot windows with a live training dashboard and a token relevance view.
 
 **[System Monitoring](system-monitoring.md)**: log CPU/GPU utilization, memory and
 temperatures while you train.
@@ -76,7 +82,7 @@ LRP conservation, with an A/B comparison between two builds.
 Python. See [Getting Started](getting-started.md#python-bindings).
 
 Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,270 CPU tests (2,400 with the HIP backend) that run in CI on Windows and Linux.
+2,460 CPU tests (2,600 with the HIP backend) that run in CI on Windows and Linux.
 
 ## More resources
 

@@ -81,6 +81,8 @@ Where to go next:
 - [Examples](https://github.com/Joshuaweg/pulsatrix/tree/master/examples): the full list of demos.
 - [Recipes](recipes/index.md): short programs that each show one feature, with a walkthrough.
 - [LRP](interpretability/lrp.md): explain your model's predictions.
+- [Language models](language-models/index.md): load a Hugging Face model, generate text and
+  explain its predictions.
 - [Benchmarks](benchmarks.md): `./build/pulsatrix_bench run` measures training and explanation
   speed on every backend in your build.
 
@@ -205,7 +207,9 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
 ```
 
 Configure your project with `-DCMAKE_PREFIX_PATH=/path/to/prefix`. The package installs the core
-library, its headers and the `pulsatrix_svg` and `pulsatrix_bench` tools. A build with the CUDA or HIP backend also installs that backend's
+library, its headers and the command-line tools (`pulsatrix_svg`, `pulsatrix_bench`,
+`pulsatrix_explain_text`, `pulsatrix_golden`, `pulsatrix_attnlrp` and
+`pulsatrix_tokenizer_parity`). A build with the CUDA or HIP backend also installs that backend's
 headers, and `find_package` then looks for the same CUDA or ROCm libraries (ROCm through
 `ROCM_PATH`, as in the build). `pulsatrix_HAS_CUDA` and `pulsatrix_HAS_HIP` say which backends the
 installed build has. The visualization module and the Python bindings aren't installed.

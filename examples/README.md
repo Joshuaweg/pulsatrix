@@ -91,4 +91,22 @@ configure with `-DPULSATRIX_ENABLE_VIZ=ON`. See the
 | `training_dashboard_demo` | Trains `XorNetwork` live and animates the loss curve in `TrainingDashboard`. |
 | `dataset_preview_demo` | Dataset statistics (histograms, validation issues) and an image thumbnail grid on small synthetic datasets. |
 | `live_inference_demo` | Cycles through the XOR inputs and recomputes Saliency and LRP for each one live. |
+| `token_relevance_demo` | Token relevance documents (from `pulsatrix_explain_text ... -o doc.json`) in the `TokenRelevanceView` widget, several at once on a shared color scale. `--screenshot FILE` saves a PNG and exits. |
 | `mnist_viz_gallery` | Every visualization widget on real MNIST digits: live training, a dataset preview, then Saliency, Integrated Gradients, Grad-CAM, four LRP rule sets, LIME and KernelSHAP on digits you pick. `--screenshot DIR` saves one PNG per page and exits. Needs MNIST data. See the [MNIST gallery](https://joshuaweg.github.io/pulsatrix/visualization/#mnist-gallery). |
+
+## Command-line tools
+
+These are built with the library and installed by `cmake --install`. Run any of them without
+arguments to see its options.
+
+| Tool | What it does |
+|---|---|
+| `pulsatrix_explain_text` | Explains a Hugging Face language model's next-token prediction with AttnLRP and writes an SVG figure or a JSON document, per token or per word. See the [Language Models guide](https://joshuaweg.github.io/pulsatrix/language-models/). |
+| `pulsatrix_svg` | Draws a saved JSON document (attribution, heatmap, token relevance, partial dependence, sensitivity, counterfactual, Morris, Sobol) as an SVG figure. |
+| `pulsatrix_bench` | The benchmark suite: training step time, explanation time and LRP conservation, with A/B comparisons between builds. |
+| `pulsatrix_golden` | Compares a model's logits with Hugging Face `transformers` on reference text. |
+| `pulsatrix_attnlrp` | Compares a model's AttnLRP relevance with LXT's. |
+| `pulsatrix_tokenizer_parity` | Compares a `tokenizer.json` with Hugging Face `tokenizers` on a reference corpus. |
+
+The last three read reference files that Python scripts in `tools/` write once. See
+[Checking against Hugging Face](https://joshuaweg.github.io/pulsatrix/language-models/#checking-against-hugging-face).
