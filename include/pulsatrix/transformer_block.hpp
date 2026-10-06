@@ -72,9 +72,12 @@ public:
      * @param d_ff SwiGLU hidden width.
      * @param backend Backend to allocate/compute through. Not owned; must outlive this module.
      * @param norm_eps Stabilizer of both RMSNorms (Hugging Face `rms_norm_eps`).
+     * @param mlp_bias Biases on the SwiGLU projections (Hugging Face `mlp_bias`; Llama-family
+     *        models have none).
      * @throws std::invalid_argument propagated from the sub-modules' constructors.
      */
-    TransformerBlock(const AttentionConfig& attention, int64_t d_ff, DeviceBackend* backend, float norm_eps = 1e-6f);
+    TransformerBlock(const AttentionConfig& attention, int64_t d_ff, DeviceBackend* backend, float norm_eps = 1e-6f,
+                     bool mlp_bias = true);
 
     /**
      * @brief Gradient w.r.t. this module's input; sub-module parameter gradients accumulate

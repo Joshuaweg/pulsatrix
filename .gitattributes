@@ -1,3 +1,6 @@
 # Golden files are compared byte for byte, so they keep LF line endings on every platform.
 tests/fixtures/viz/*.json text eol=lf
 tests/fixtures/viz/svg/*.svg text eol=lf
+
+# Checkpoints used as fixtures are binary: never convert their line endings.
+*.safetensors binary

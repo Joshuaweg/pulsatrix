@@ -105,6 +105,7 @@ add_library(pulsatrix_core
     src/generation.cpp
     src/kv_cache.cpp
     src/hf_model.cpp
+    src/causal_lm.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp
