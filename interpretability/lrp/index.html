@@ -1964,12 +1964,60 @@ mixed-sign inputs:</p>
 (RoPE and QK-Norm off), each followed by Flatten → Linear.</p>
 <p>The tolerance is <code>1e-4 · max(1, |ref|)</code> (float32 vs float32); the largest observed error is
 under 1e-5. Matching needs <code>epsilon_bias_in_denominator = true</code> (see <a href="#bias-handling">Bias handling</a>).</p>
+<p><strong>LXT on whole language models</strong> (LLM-7): <code>CompareToAttnLrp</code> (<code>attnlrp_parity.hpp</code>) and
+<code>pulsatrix_attnlrp</code> compare a <code>CausalLM</code> loaded from Hugging Face with LXT's own AttnLRP
+(<code>lxt.efficient</code>, the transformers patch) on the same model and tokens. The references are written
+by <code>tools/golden/make_attnlrp_reference.py</code> in the same Docker image. Each text is explained from
+its argmax logit at the last position, with relevance = logit at the output (<code>LxtAttnLrpConfig()</code>:
+ε = 1e-9, biases in the denominator). It compares:</p>
+<ul>
+<li>the relevance of every input token</li>
+<li>each layer's relevance at the K and V projection outputs, per KV head, after the grouped-query
+  sum (<code>MultiHeadAttentionModule::key_relevance()</code> / <code>value_relevance()</code>)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Largest relative difference (CPU)</th>
+<th>Correlation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SmolLM2-135M</td>
+<td>4.1e-6</td>
+<td>1.000000</td>
+</tr>
+<tr>
+<td>Qwen2.5-0.5B</td>
+<td>8.0e-6</td>
+<td>1.000000</td>
+</tr>
+<tr>
+<td>Qwen3-0.6B</td>
+<td>1.2e-5</td>
+<td>1.000000</td>
+</tr>
+<tr>
+<td>Llama-3.2-1B</td>
+<td>2.3e-5</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+<p>CI runs the tiny Llama, Qwen2 and Qwen3 models, plus a negative control: plain gradient × input
+(LXT's patches off) must fail, and it does, with correlations below 0. Real models run locally
+through <code>PULSATRIX_GOLDEN_DIR</code>.</p>
+<p>LXT 2.1 needs two shims under transformers 5, both in the generator:
+- Its BERT patch imports a removed helper, so that name is stubbed.
+- Its attention patch replaces <code>ALL_ATTENTION_FUNCTIONS</code> with a plain dict, so only
+  <code>eager_attention_forward</code> is wrapped, with LXT's own wrapper.</p>
 <p>Known differences and gaps:</p>
 <ul>
 <li>LXT stabilizes with <code>z + ε</code> for every sign of <code>z</code>; pulsatrix and Zennit use <code>z + ε·sign(z)</code>.
   They differ only where <code>|z|</code> is on the order of ε.</li>
-<li>Not covered by the reference test: RoPE, QK-Norm, LayerNorm, the recurrent and state-space
-  rules, and LXT's HF-patching (<code>lxt.efficient</code>) path.</li>
+<li>Not covered by the reference tests: LayerNorm and the recurrent and state-space rules.</li>
 </ul>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>

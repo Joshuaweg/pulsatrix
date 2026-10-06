@@ -72,19 +72,20 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1JsonValue.html#a3c96c3c15eaa74d67a9ea70916876dbb",
 "classpulsatrix_1_1LearnableScalar.html#a32603478738aba8f626585eefc07c623",
 "classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81",
-"classpulsatrix_1_1RWKVModule.html#a1cf2964d2a913912280f49b8ec68c56f",
-"classpulsatrix_1_1SGDOptimizer.html#a16681f8fca7daa4a4008d3ed2caa2e0d",
-"classpulsatrix_1_1Tensor.html#a2cddbdb326c36252d39061fc445beb0b",
-"classpulsatrix_1_1VizWindow.html#a024443857738777e6fcd26046f0138ed",
-"functions_func_s.html",
-"namespacepulsatrix.html#a29473722de7e79d863c300baecba52c2",
-"namespacepulsatrix.html#ac8f3350b7e825b6d2397348086341e3d",
-"structpulsatrix_1_1AttributionNullReport.html",
-"structpulsatrix_1_1CounterfactualResult.html#aa15577d4a8ee458fc1cb84329d4d362a",
-"structpulsatrix_1_1GenerationResult.html#aaa8b6826236e223f086319d4a666f37e",
-"structpulsatrix_1_1LocalSensitivityResult.html#a61a3621569f8ac2d36ce6faba9688ceb",
-"structpulsatrix_1_1ReplayBatch.html#a66fa4069758c82ab997441cea528b014",
-"structpulsatrix_1_1TimingStats.html#aa9b20c6f4655bf5c97420570202527c4"
+"classpulsatrix_1_1RWKVModule.html#a15ba4c3181bbb39a786a179322ea35ef",
+"classpulsatrix_1_1RolloutBuffer.html#af006d0e73bd85cdf6e9a89f9f32bc8bb",
+"classpulsatrix_1_1Tensor.html#a03a5144520aabccf54eb0161e8f2444a",
+"classpulsatrix_1_1VideoFrameDirectoryDataset.html#ac33046df07012fcb358136b093b49772",
+"functions_func_n.html",
+"namespacepulsatrix.html#a23ce7985a73e7df95c9467eac40d5d9eac5e16d9f8dea3ad7bcadf3e06400c63c",
+"namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aafa50372cfb2e47402477809626c0887",
+"structpulsatrix_1_1AttnLrpReport.html#aa80094d642991ad4842f37e24386365c",
+"structpulsatrix_1_1CounterfactualDocument.html#ae4010c1239389a716cb054d51943d3d7",
+"structpulsatrix_1_1GFlowNetTrajectory.html#aa817c44087d429b1150038c2880f99cc",
+"structpulsatrix_1_1Imputation.html#a89ef07fe6a5507c39314f9ba1ff84275",
+"structpulsatrix_1_1PerturbationOptions.html",
+"structpulsatrix_1_1SystemMonitor_1_1Options.html#a38b1c37b3b1e263823120cca03d24272",
+"trial_8hpp.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

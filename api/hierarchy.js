@@ -17,6 +17,8 @@ var hierarchy =
     [ "pulsatrix::datalog::Atom", "classpulsatrix_1_1datalog_1_1Atom.html", null ],
     [ "pulsatrix::datalog::AtomHash", "structpulsatrix_1_1datalog_1_1AtomHash.html", null ],
     [ "pulsatrix::AttentionConfig", "structpulsatrix_1_1AttentionConfig.html", null ],
+    [ "pulsatrix::AttnLrpReport", "structpulsatrix_1_1AttnLrpReport.html", null ],
+    [ "pulsatrix::AttnLrpSequenceResult", "structpulsatrix_1_1AttnLrpSequenceResult.html", null ],
     [ "pulsatrix::Attribution", "structpulsatrix_1_1Attribution.html", null ],
     [ "pulsatrix::AttributionBarChart", "classpulsatrix_1_1AttributionBarChart.html", null ],
     [ "pulsatrix::AttributionBeeswarmView", "classpulsatrix_1_1AttributionBeeswarmView.html", null ],
