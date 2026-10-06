@@ -6,6 +6,7 @@
 #include <cstring>
 #include <stdexcept>
 #include <system_error>
+#include <unordered_set>
 
 namespace pulsatrix {
 
@@ -378,6 +379,10 @@ private:
             ++pos_;
             return obj;
         }
+        // Duplicate keys: a linear scan for small objects, a hash set past kHashedKeys, so a
+        // tokenizer.json vocabulary (200k keys) parses in linear time.
+        constexpr size_t kHashedKeys = 32;
+        std::unordered_set<std::string> seen;
         while (true) {
             SkipWhitespace();
             if (pos_ >= s_.size() || s_[pos_] != '"') {
@@ -385,7 +390,11 @@ private:
             }
             size_t key_pos = pos_;
             std::string key = ParseString();
-            if (obj.find(key) != nullptr) {
+            if (obj.object_.size() == kHashedKeys) {
+                for (const auto& member : obj.object_) seen.insert(member.first);
+            }
+            const bool duplicate = obj.object_.size() < kHashedKeys ? obj.find(key) != nullptr : !seen.insert(key).second;
+            if (duplicate) {
                 pos_ = key_pos;
                 Fail("duplicate key \"" + key + "\"");
             }
