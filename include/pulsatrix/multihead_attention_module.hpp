@@ -40,6 +40,9 @@ struct AttentionConfig {
     bool use_rope = true;
     RoPELayout rope_layout = RoPELayout::AdjacentPairs;
     float rope_base = 10000.0f;
+    /** @brief Explicit RoPE frequencies, one per pair (head_dim / 2), overriding rope_base: how
+     *         scaled RoPE (Llama 3's `rope_scaling`) is passed in. Empty uses rope_base. */
+    std::vector<double> rope_inverse_frequencies;
     bool use_qk_norm = false;
     /** QK-Norm's RMSNorm stabilizer (Hugging Face `rms_norm_eps`). */
     float qk_norm_eps = 1e-6f;

@@ -29,20 +29,23 @@ struct SliceLayout {
     return SliceLayout{shape.numel() / (seq_len * head_dim), seq_len};
 }
 
-/**
- * @brief The rotation angle for feature pair `i` at sequence position `pos`:
- *        `theta_i = pos * base^(-2i/head_dim)`.
- * @note Computed in double and narrowed once at the end -- `std::pow` in float loses
- *       enough precision at large `head_dim` to show up against hand-computed references.
- *       At `pos == 0` this is exactly 0.0 for every pair (the identity case), which is why
- *       position 0 comes back bit-identical rather than merely close.
- */
-[[nodiscard]] double rope_angle(int64_t pos, int64_t i, int64_t head_dim, float base) {
-    const double exponent = -2.0 * static_cast<double>(i) / static_cast<double>(head_dim);
-    return static_cast<double>(pos) * std::pow(static_cast<double>(base), exponent);
-}
 
 }  // namespace
+
+RoPEModule::RoPEModule(int64_t head_dim, DeviceBackend* backend, std::vector<double> inverse_frequencies,
+                       RoPELayout layout)
+    : RoPEModule(head_dim, backend, 10000.0f, layout) {
+    if (static_cast<int64_t>(inverse_frequencies.size()) != head_dim / 2) {
+        throw std::invalid_argument("RoPEModule: needs head_dim / 2 inverse frequencies");
+    }
+    for (double f : inverse_frequencies) {
+        if (!(f > 0.0) || !std::isfinite(f)) {
+            throw std::invalid_argument("RoPEModule: inverse frequencies must be positive and finite");
+        }
+    }
+    inv_freq_ = std::move(inverse_frequencies);
+    base_ = 0.0f;  // not a geometric schedule
+}
 
 RoPEModule::RoPEModule(int64_t head_dim, DeviceBackend* backend, float base, RoPELayout layout)
     : head_dim_(head_dim),
@@ -60,6 +63,9 @@ RoPEModule::RoPEModule(int64_t head_dim, DeviceBackend* backend, float base, RoP
     }
     if (head_dim % 2 != 0) {
         throw std::invalid_argument("RoPEModule: head_dim must be even (the rotation acts on adjacent pairs)");
+    }
+    for (int64_t i = 0; i < head_dim / 2; ++i) {
+        inv_freq_.push_back(std::pow(static_cast<double>(base), -2.0 * static_cast<double>(i) / static_cast<double>(head_dim)));
     }
 }
 // Both caches start as zero-element placeholders -- only head_dim is fixed at construction;
@@ -83,7 +89,7 @@ void RoPEModule::ensure_tables(int64_t seq_len, int64_t offset) {
     std::vector<float> sin_values(static_cast<size_t>(seq_len * half));
     for (int64_t pos = 0; pos < seq_len; ++pos) {
         for (int64_t i = 0; i < half; ++i) {
-            const double theta = rope_angle(offset + pos, i, head_dim_, base_);
+            const double theta = static_cast<double>(offset + pos) * inv_freq_[static_cast<size_t>(i)];
             cos_values[static_cast<size_t>(pos * half + i)] = static_cast<float>(std::cos(theta));
             sin_values[static_cast<size_t>(pos * half + i)] = static_cast<float>(std::sin(theta));
         }
