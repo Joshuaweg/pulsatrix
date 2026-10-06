@@ -9,5 +9,6 @@ var searchData=
   ['variances_6',['variances',['../structpulsatrix_1_1CMAESState.html#a010c4a1c1906a3f6289924ddff27538f',1,'pulsatrix::CMAESState']]],
   ['vector_7',['vector',['../structpulsatrix_1_1DominantEigenResult.html#a703fca18afbaeda5c795f46a4f82c120',1,'pulsatrix::DominantEigenResult']]],
   ['vectors_8',['vectors',['../structpulsatrix_1_1EigenResult.html#af117bad73b445a0ea13ffdc69d312fa0',1,'pulsatrix::EigenResult']]],
-  ['vendor_9',['vendor',['../structpulsatrix_1_1GpuSample.html#a786d088d25cafa78192753f5107c0f0b',1,'pulsatrix::GpuSample']]]
+  ['vendor_9',['vendor',['../structpulsatrix_1_1GpuSample.html#a786d088d25cafa78192753f5107c0f0b',1,'pulsatrix::GpuSample']]],
+  ['vocab_5fsize_10',['vocab_size',['../structpulsatrix_1_1HfModelConfig.html#afb420502f3a48ff8e1f01de55d3bf304',1,'pulsatrix::HfModelConfig']]]
 ];

@@ -17,11 +17,14 @@ var searchData=
   ['returns_14',['returns',['../structpulsatrix_1_1GAEResult.html#a3b9b24a071c11be688130f65810e4818',1,'pulsatrix::GAEResult::returns'],['../structpulsatrix_1_1RolloutBatch.html#ad2b3cfdbccb757646d25f08147afc51f',1,'pulsatrix::RolloutBatch::returns']]],
   ['reward_15',['reward',['../structpulsatrix_1_1StepResult.html#a6d4011aa309bc30601915d87dab33383',1,'pulsatrix::StepResult']]],
   ['rewards_16',['rewards',['../structpulsatrix_1_1ReplayBatch.html#a5b67f2f762ea75616afd4f1fe9cfd12c',1,'pulsatrix::ReplayBatch']]],
-  ['rope_5fbase_17',['rope_base',['../structpulsatrix_1_1AttentionConfig.html#ac186a454599c0f64cf83dc63026da08a',1,'pulsatrix::AttentionConfig']]],
-  ['rope_5flayout_18',['rope_layout',['../structpulsatrix_1_1AttentionConfig.html#a0fe86a56ad802d98e3111e9aa690f153',1,'pulsatrix::AttentionConfig']]],
-  ['rounds_19',['rounds',['../structpulsatrix_1_1CounterfactualResult.html#aa15577d4a8ee458fc1cb84329d4d362a',1,'pulsatrix::CounterfactualResult']]],
-  ['row_5flabels_20',['row_labels',['../structpulsatrix_1_1HeatmapDocument.html#a9663e7df4640216ae5d68ba0d52e6179',1,'pulsatrix::HeatmapDocument']]],
-  ['rows_21',['rows',['../structpulsatrix_1_1CsvTable.html#a382cf4a2da8b53e079dae6ef705f8c8d',1,'pulsatrix::CsvTable::rows'],['../structpulsatrix_1_1RlRowArgs.html#a3cc8d89e08f6f3425270bc2f0d58af3e',1,'pulsatrix::RlRowArgs::rows'],['../structpulsatrix_1_1HeatmapDocument.html#af269686e10c62f1bb843fc384a52d137',1,'pulsatrix::HeatmapDocument::rows'],['../structpulsatrix_1_1HeatmapGrid.html#aaed2dbeebcfc74ae63b85207681232ae',1,'pulsatrix::HeatmapGrid::rows']]],
-  ['rule_22',['rule',['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig']]],
-  ['rung_23',['rung',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a3ca06fb5b61ce6ea3a425b909a43c99f',1,'pulsatrix::detail::ASHACandidate']]]
+  ['rms_5fnorm_5feps_17',['rms_norm_eps',['../structpulsatrix_1_1HfModelConfig.html#a9c5d046f102bb44566c0c67d205d5af7',1,'pulsatrix::HfModelConfig']]],
+  ['rope_5fbase_18',['rope_base',['../structpulsatrix_1_1AttentionConfig.html#ac186a454599c0f64cf83dc63026da08a',1,'pulsatrix::AttentionConfig']]],
+  ['rope_5flayout_19',['rope_layout',['../structpulsatrix_1_1AttentionConfig.html#a0fe86a56ad802d98e3111e9aa690f153',1,'pulsatrix::AttentionConfig']]],
+  ['rope_5fscaling_20',['rope_scaling',['../structpulsatrix_1_1HfModelConfig.html#a7846ab56f6edd788243eaff38c0c7e41',1,'pulsatrix::HfModelConfig']]],
+  ['rope_5ftheta_21',['rope_theta',['../structpulsatrix_1_1HfModelConfig.html#aeddd2b2b33e2d8ea20adda6aa55604ac',1,'pulsatrix::HfModelConfig']]],
+  ['rounds_22',['rounds',['../structpulsatrix_1_1CounterfactualResult.html#aa15577d4a8ee458fc1cb84329d4d362a',1,'pulsatrix::CounterfactualResult']]],
+  ['row_5flabels_23',['row_labels',['../structpulsatrix_1_1HeatmapDocument.html#a9663e7df4640216ae5d68ba0d52e6179',1,'pulsatrix::HeatmapDocument']]],
+  ['rows_24',['rows',['../structpulsatrix_1_1CsvTable.html#a382cf4a2da8b53e079dae6ef705f8c8d',1,'pulsatrix::CsvTable::rows'],['../structpulsatrix_1_1RlRowArgs.html#a3cc8d89e08f6f3425270bc2f0d58af3e',1,'pulsatrix::RlRowArgs::rows'],['../structpulsatrix_1_1HeatmapDocument.html#af269686e10c62f1bb843fc384a52d137',1,'pulsatrix::HeatmapDocument::rows'],['../structpulsatrix_1_1HeatmapGrid.html#aaed2dbeebcfc74ae63b85207681232ae',1,'pulsatrix::HeatmapGrid::rows']]],
+  ['rule_25',['rule',['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig']]],
+  ['rung_26',['rung',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a3ca06fb5b61ce6ea3a425b909a43c99f',1,'pulsatrix::detail::ASHACandidate']]]
 ];

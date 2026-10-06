@@ -18,9 +18,10 @@ var searchData=
   ['input_5flabel_15',['input_label',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a5cc0627fbdbed23c8324f07e0b597705',1,'pulsatrix::ExplanationScoreCard::Input']]],
   ['inputs_16',['inputs',['../structpulsatrix_1_1TaggingBatch.html#a314f1d2e41f1b00a623852e24939eeb1',1,'pulsatrix::TaggingBatch']]],
   ['integer_17',['integer',['../structpulsatrix_1_1CounterfactualConstraints.html#a80a2a2656d0ea51b37006b39948286b4',1,'pulsatrix::CounterfactualConstraints']]],
-  ['interval_18',['interval',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a58164a0a2597183f05e897ad303af19c',1,'pulsatrix::SystemMonitor::Options']]],
-  ['is_5fdeterministic_19',['is_deterministic',['../structpulsatrix_1_1StabilityResult.html#a0773c6e9a6fd800eb0971458fe978d6a',1,'pulsatrix::StabilityResult']]],
-  ['is_5fsigned_20',['is_signed',['../structpulsatrix_1_1HeatmapColorScale.html#abae34320f9cf364a55428b0367110661',1,'pulsatrix::HeatmapColorScale']]],
-  ['iterations_21',['iterations',['../structpulsatrix_1_1DominantEigenResult.html#a3d359b2cec1646ff33dcaf85ceff1cf3',1,'pulsatrix::DominantEigenResult']]],
-  ['iterations_5frun_22',['iterations_run',['../structpulsatrix_1_1ESResult.html#a31146b96c141e95037758a8434f20741',1,'pulsatrix::ESResult']]]
+  ['intermediate_5fsize_18',['intermediate_size',['../structpulsatrix_1_1HfModelConfig.html#a507feb0e16883a89f2dbe1ec0b10d77d',1,'pulsatrix::HfModelConfig']]],
+  ['interval_19',['interval',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a58164a0a2597183f05e897ad303af19c',1,'pulsatrix::SystemMonitor::Options']]],
+  ['is_5fdeterministic_20',['is_deterministic',['../structpulsatrix_1_1StabilityResult.html#a0773c6e9a6fd800eb0971458fe978d6a',1,'pulsatrix::StabilityResult']]],
+  ['is_5fsigned_21',['is_signed',['../structpulsatrix_1_1HeatmapColorScale.html#abae34320f9cf364a55428b0367110661',1,'pulsatrix::HeatmapColorScale']]],
+  ['iterations_22',['iterations',['../structpulsatrix_1_1DominantEigenResult.html#a3d359b2cec1646ff33dcaf85ceff1cf3',1,'pulsatrix::DominantEigenResult']]],
+  ['iterations_5frun_23',['iterations_run',['../structpulsatrix_1_1ESResult.html#a31146b96c141e95037758a8434f20741',1,'pulsatrix::ESResult']]]
 ];
