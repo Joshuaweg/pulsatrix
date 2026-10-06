@@ -165,6 +165,8 @@ add_library(pulsatrix_core
     src/image_transforms.cpp
     src/image_folder_dataset.cpp
     src/tokenizer.cpp
+    src/text_tokenizer.cpp
+    src/tokenizer_components.cpp
     src/vocabulary.cpp
     src/text_dataset.cpp
     src/text_collate.cpp
