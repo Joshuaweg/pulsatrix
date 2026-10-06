@@ -107,6 +107,7 @@ add_library(pulsatrix_core
     src/hf_model.cpp
     src/causal_lm.cpp
     src/golden_logits.cpp
+    src/attnlrp_parity.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp
@@ -571,6 +572,11 @@ add_executable(pulsatrix_golden tools/golden/pulsatrix_golden.cpp)
 target_link_libraries(pulsatrix_golden PRIVATE pulsatrix_core)
 target_compile_definitions(pulsatrix_golden PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
 
+# pulsatrix_attnlrp: AttnLRP relevance on a Hugging Face model against LXT's (LLM-7).
+add_executable(pulsatrix_attnlrp tools/golden/pulsatrix_attnlrp.cpp)
+target_link_libraries(pulsatrix_attnlrp PRIVATE pulsatrix_core)
+target_compile_definitions(pulsatrix_attnlrp PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
+
 # pulsatrix_bench: the benchmark suite (KS-2), on every backend this build has.
 add_executable(pulsatrix_bench tools/bench/pulsatrix_bench.cpp)
 target_link_libraries(pulsatrix_bench PRIVATE pulsatrix_core)
@@ -629,7 +635,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"

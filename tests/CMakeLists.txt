@@ -83,6 +83,7 @@ add_executable(pulsatrix_tests
     hf_model_test.cpp
     causal_lm_test.cpp
     golden_logits_test.cpp
+    attnlrp_parity_test.cpp
     swiglu_module_test.cpp
     transformer_block_test.cpp
     residual_module_test.cpp
@@ -321,6 +322,13 @@ set_tests_properties(PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm PROPERT
 # LLM-6: the golden-logit tool, on a tiny model.
 add_test(NAME PulsatrixGolden.TinyLlamaMatchesTransformers
     COMMAND pulsatrix_golden "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama")
+# LLM-7: the AttnLRP parity tool, on a tiny model, and its negative control.
+add_test(NAME PulsatrixAttnLrp.TinyLlamaMatchesLxt
+    COMMAND pulsatrix_attnlrp "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama")
+add_test(NAME PulsatrixAttnLrp.TinyLlamaDoesNotMatchPlainGradient
+    COMMAND pulsatrix_attnlrp "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama"
+        --reference "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama/gradient_x_input.safetensors")
+set_tests_properties(PulsatrixAttnLrp.TinyLlamaDoesNotMatchPlainGradient PROPERTIES WILL_FAIL TRUE)
 
 # KS-2: LRP conservation on the benchmark models must hold on the CPU, whatever the timings.
 add_test(NAME PulsatrixBench.CpuConservationCheck

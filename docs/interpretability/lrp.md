@@ -185,12 +185,38 @@ mixed-sign inputs:
 The tolerance is `1e-4 · max(1, |ref|)` (float32 vs float32); the largest observed error is
 under 1e-5. Matching needs `epsilon_bias_in_denominator = true` (see [Bias handling](#bias-handling)).
 
+**LXT on whole language models** (LLM-7): `CompareToAttnLrp` (`attnlrp_parity.hpp`) and
+`pulsatrix_attnlrp` compare a `CausalLM` loaded from Hugging Face with LXT's own AttnLRP
+(`lxt.efficient`, the transformers patch) on the same model and tokens. The references are written
+by `tools/golden/make_attnlrp_reference.py` in the same Docker image. Each text is explained from
+its argmax logit at the last position, with relevance = logit at the output (`LxtAttnLrpConfig()`:
+ε = 1e-9, biases in the denominator). It compares:
+
+- the relevance of every input token
+- each layer's relevance at the K and V projection outputs, per KV head, after the grouped-query
+  sum (`MultiHeadAttentionModule::key_relevance()` / `value_relevance()`)
+
+| Model | Largest relative difference (CPU) | Correlation |
+|---|---|---|
+| SmolLM2-135M | 4.1e-6 | 1.000000 |
+| Qwen2.5-0.5B | 8.0e-6 | 1.000000 |
+| Qwen3-0.6B | 1.2e-5 | 1.000000 |
+| Llama-3.2-1B | 2.3e-5 | 1.000000 |
+
+CI runs the tiny Llama, Qwen2 and Qwen3 models, plus a negative control: plain gradient × input
+(LXT's patches off) must fail, and it does, with correlations below 0. Real models run locally
+through `PULSATRIX_GOLDEN_DIR`.
+
+LXT 2.1 needs two shims under transformers 5, both in the generator:
+- Its BERT patch imports a removed helper, so that name is stubbed.
+- Its attention patch replaces `ALL_ATTENTION_FUNCTIONS` with a plain dict, so only
+  `eager_attention_forward` is wrapped, with LXT's own wrapper.
+
 Known differences and gaps:
 
 - LXT stabilizes with `z + ε` for every sign of `z`; pulsatrix and Zennit use `z + ε·sign(z)`.
   They differ only where `|z|` is on the order of ε.
-- Not covered by the reference test: RoPE, QK-Norm, LayerNorm, the recurrent and state-space
-  rules, and LXT's HF-patching (`lxt.efficient`) path.
+- Not covered by the reference tests: LayerNorm and the recurrent and state-space rules.
 
 ## See also
 
