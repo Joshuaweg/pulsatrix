@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad1fb76fa1d076277c73870651171e6ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw little-endian bytes of <code>name</code>, as {pointer, size}, valid while this object lives. For dtypes that don't convert to a <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> yet.  <br /></td></tr>
 <tr class="separator:ad1fb76fa1d076277c73870651171e6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c5b47598c22dcc6cc0648eb50c31264" id="r_a8c5b47598c22dcc6cc0648eb50c31264"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SafetensorsFile.html#a8c5b47598c22dcc6cc0648eb50c31264">tensor</a> (const std::string &amp;name, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend) const</td></tr>
-<tr class="memdesc:a8c5b47598c22dcc6cc0648eb50c31264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies tensor <code>name</code> into a new <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> on <code>backend</code>'s device.  <br /></td></tr>
+<tr class="memdesc:a8c5b47598c22dcc6cc0648eb50c31264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies tensor <code>name</code> into a new float32 <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> on <code>backend</code>'s device, converting its dtype (IO-6): BF16, F16, F8_E4M3 and F8_E5M2 widen exactly (subnormals, infinities and NaN included); F64 rounds to nearest, with out-of-range values becoming infinities.  <br /></td></tr>
 <tr class="separator:a8c5b47598c22dcc6cc0648eb50c31264"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -404,10 +404,10 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Copies tensor <code>name</code> into a new <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> on <code>backend</code>'s device. </p>
+<p>Copies tensor <code>name</code> into a new float32 <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> on <code>backend</code>'s device, converting its dtype (IO-6): BF16, F16, F8_E4M3 and F8_E5M2 widen exactly (subnormals, infinities and NaN included); F64 rounds to nearest, with out-of-range values becoming infinities. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if there is no tensor called <code>name</code>, or its dtype isn't F32 (converting F16/BF16 is roadmap IO-6). </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if there is no tensor called <code>name</code>, or it holds integers or booleans. </td></tr>
   </table>
   </dd>
 </dl>

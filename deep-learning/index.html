@@ -2017,8 +2017,9 @@ millisecond.</p>
 <li><code>HfCheckpoint</code> memory-maps every shard. The index must match its shards exactly (every listed
   tensor present, nothing unlisted), and a shard must be a plain file name in the checkpoint
   directory, so an index can't point outside it.</li>
-<li>Hub weights are usually bf16; reading them as fp32 is IO-6, and mapping Hugging Face names
-  onto pulsatrix modules is IO-4.</li>
+<li>Hub weights are usually bf16. <code>tensor()</code> widens bf16, fp16 and both fp8 formats to fp32
+  exactly, and rounds fp64; integer tensors stay raw bytes (<code>bytes()</code>). Mapping Hugging Face
+  names onto pulsatrix modules is IO-4.</li>
 </ul>
 <h3 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h3>
 <p>Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
