@@ -328,7 +328,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 | LLM-3 | Native tokenizers for the target models: [TOK-1 to TOK-3](#tok-tokenizers) | No Python needed to tokenize | — | P0 | M–L | |
 | LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S || Done, [#76](https://github.com/Joshuaweg/pulsatrix/pull/76) (see below) |
 | LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M || Done, [#77](https://github.com/Joshuaweg/pulsatrix/pull/77) (see below) |
-| LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3 | Catches layout bugs that still "load" | IO-4 | P0 | S | |
+| LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum absolute difference under 1e-3 | Catches layout bugs that still "load" | IO-4 | P0 | S || Done, [#81](https://github.com/Joshuaweg/pulsatrix/pull/81) (see below) |
 | LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M | |
 | LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M | |
 | LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M | |
@@ -370,15 +370,32 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
   tokens from a 4-block, 128-wide model took 47 ms instead of 3.3 s. A padding query with no
   visible key can produce different (meaningless) output than in a full pass; real positions
   match.
+- **LLM-6** stores each reference as a safetensors file holding token ids and transformers'
+  float32 logits (eager attention), with the model's Hub revision and library versions as
+  metadata (`tools/golden/make_golden.py`). Tokenization happens in Python, so the harness tests
+  the model and not a tokenizer (TOK). `pulsatrix_golden` and `CompareToGolden` compare every logit
+  at every position. CI checks the tiny models in `tests/fixtures/hf_tiny`; real models are
+  checked locally through `PULSATRIX_GOLDEN_DIR`. On six texts (English, code, numbers, French and
+  German, Chinese and Japanese, and emoji and symbols; up to 48 tokens), the largest differences on
+  the GPU were 1.3e-4 (Llama-3.2-1B), 2.2e-4 (Qwen3-0.6B), 8.0e-4 (SmolLM2-135M) and 8.3e-4
+  (Qwen2.5-0.5B), with no argmax disagreements.
+  - Llama 3's `rope_scaling` (the `llama3` and `linear` types) is computed as Hugging Face
+    computes it and passed to `RoPEModule` as explicit per-pair frequencies. Other types are still
+    refused.
+  - SmolLM2 and Qwen2.5 are within about 20% of the 1e-3 threshold, from fp32 rounding (mean
+    differences are near 1e-5).
+  - The CPU backend's reference `gemm` is single-threaded and walks the weight matrix by column,
+    so a 1B model took more than an hour on CPU. Real models were checked on the GPU.
 
 ### Follow-ups the LLM work surfaced
 
 | Follow-up | Belongs with |
 |---|---|
-| Llama 3's `rope_scaling` changes the low RoPE frequencies at every position, so Llama-3.2 logits need it even on short text | LLM-6 |
+| Llama 3's `rope_scaling` changes the low RoPE frequencies at every position, so Llama-3.2 logits need it even on short text || Done in LLM-6 |
 | `SwiGLUModule` without biases: Llama-family MLPs have none, and IO-4's strict mode fails on unmapped keys | Done in IO-4 |
 | Gemma 3's `query_pre_attn_scalar` replaces the `1/sqrt(head_dim)` scale | LLM-9 |
 | Grouped-query attention materializes the repeated K and V; index the shared head inside the matmul instead | HIP-6 |
+| The CPU `gemm` is a single-threaded i-j-p loop that strides down the weight matrix; reorder to i-p-j (same summation order per element) and thread over rows | Unassigned (CPU performance) |
 
 ## TOK: Tokenizers
 

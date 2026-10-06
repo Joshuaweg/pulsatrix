@@ -5,6 +5,7 @@
 #pragma once
 
 #include <optional>
+#include <vector>
 #include "pulsatrix/module.hpp"
 
 namespace pulsatrix {
@@ -62,6 +63,16 @@ public:
      *         module's constructor argument checks.
      */
     RoPEModule(int64_t head_dim, DeviceBackend* backend, float base = 10000.0f,
+               RoPELayout layout = RoPELayout::AdjacentPairs);
+
+    /**
+     * @brief RoPE with explicit per-pair frequencies (LLM-6): pair i turns by
+     *        `pos * inverse_frequencies[i]` instead of `pos * base^(-2i/head_dim)`, which is how
+     *        scaled variants such as Llama 3's are expressed.
+     * @throws std::invalid_argument if head_dim is invalid, or there aren't head_dim / 2 finite,
+     *         positive frequencies.
+     */
+    RoPEModule(int64_t head_dim, DeviceBackend* backend, std::vector<double> inverse_frequencies,
                RoPELayout layout = RoPELayout::AdjacentPairs);
 
     /**
@@ -161,6 +172,7 @@ private:
     int64_t head_dim_;
     float base_;
     RoPELayout layout_;
+    std::vector<double> inv_freq_;  ///< head_dim / 2 per-pair frequencies
     int64_t position_offset_ = 0;
     DeviceBackend* backend_;
     Tensor last_input_;   ///< Cached forward input x -- the epsilon rule's numerators.
