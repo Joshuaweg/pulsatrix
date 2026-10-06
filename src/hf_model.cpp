@@ -180,7 +180,9 @@ HfModelConfig ParseHfConfig(std::string_view json) {
     if (!causal_lm) {
         c.unsupported.push_back("architecture \"" + c.architecture + "\" is not a decoder-only causal language model");
     }
-    if (c.rope_scaling) c.unsupported.push_back("rope_scaling \"" + c.rope_scaling->type + "\" (LLM-6)");
+    if (c.rope_scaling && c.rope_scaling->type != "llama3" && c.rope_scaling->type != "linear") {
+        c.unsupported.push_back("rope_scaling \"" + c.rope_scaling->type + "\"");
+    }
     if (c.sliding_window && *c.sliding_window < c.max_position_embeddings) {
         c.unsupported.push_back("sliding-window attention (LLM-9)");
     }
@@ -202,6 +204,40 @@ HfModelConfig ParseHfConfig(std::string_view json) {
 
 HfModelConfig ReadHfConfig(const std::string& path) { return ParseHfConfig(ReadText(path)); }
 
+std::vector<double> RopeInverseFrequencies(const HfModelConfig& config) {
+    const int64_t half = config.head_dim / 2;
+    std::vector<double> inv(static_cast<size_t>(half));
+    for (int64_t i = 0; i < half; ++i) {
+        inv[static_cast<size_t>(i)] =
+            1.0 / std::pow(static_cast<double>(config.rope_theta), 2.0 * static_cast<double>(i) / static_cast<double>(config.head_dim));
+    }
+    if (!config.rope_scaling) return inv;
+    const HfRopeScaling& s = *config.rope_scaling;
+    if (s.type == "linear") {
+        for (double& f : inv) f /= s.factor;
+        return inv;
+    }
+    if (s.type != "llama3") {
+        throw std::invalid_argument("RopeInverseFrequencies: rope_scaling \"" + s.type + "\" is not supported");
+    }
+    const double old_len = static_cast<double>(s.original_max_position_embeddings);
+    const double low_wavelen = old_len / s.low_freq_factor;
+    const double high_wavelen = old_len / s.high_freq_factor;
+    constexpr double kPi = 3.14159265358979323846;
+    for (double& f : inv) {
+        const double wavelen = 2.0 * kPi / f;
+        if (wavelen > low_wavelen) {
+            f /= s.factor;  // low frequency: stretched
+        } else if (wavelen >= high_wavelen) {
+            // In between: interpolate from stretched to unchanged (Hugging Face's
+            // _compute_llama3_parameters, where wavelen == high_wavelen counts as in between).
+            const double smooth = (old_len / wavelen - s.low_freq_factor) / (s.high_freq_factor - s.low_freq_factor);
+            f = (1.0 - smooth) * f / s.factor + smooth * f;
+        }
+    }
+    return inv;
+}
+
 AttentionConfig ToAttentionConfig(const HfModelConfig& config) {
     AttentionConfig a;
     a.d_model = config.hidden_size;
@@ -211,6 +247,7 @@ AttentionConfig ToAttentionConfig(const HfModelConfig& config) {
     a.use_rope = true;
     a.rope_layout = RoPELayout::RotateHalf;
     a.rope_base = config.rope_theta;
+    if (config.rope_scaling) a.rope_inverse_frequencies = RopeInverseFrequencies(config);
     a.use_qk_norm = config.qk_norm;
     a.qk_norm_eps = config.rms_norm_eps;
     a.qkv_bias = config.qkv_bias;

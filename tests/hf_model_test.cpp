@@ -6,6 +6,7 @@
 
 #include <gtest/gtest.h>
 
+#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <stdexcept>
@@ -85,15 +86,34 @@ TEST(HfConfigTest, Qwen3HasItsOwnHeadDimAndQkNorm) {
     EXPECT_TRUE(c.unsupported.empty());
 }
 
-TEST(HfConfigTest, Llama32NeedsRopeScaling) {
+// Hugging Face's ROPE_INIT_FUNCTIONS["llama3"] on this config (transformers 5.18.0, float32).
+const std::vector<double> kLlama32InvFreq = {1, 0.663601279, 0.440366626, 0.292227834, 0.193922758, 0.128687382, 0.0853971019, 0.0566696189, 0.0376060307, 0.0249554086, 0.0165604409, 0.0109895291, 0.00729266508, 0.00483942125, 0.00321144611, 0.00129054801, 0.000429556705, 9.70828623e-05, 1.94616387e-05, 1.29147675e-05, 8.57025589e-06, 5.68723226e-06, 3.77405445e-06, 2.50446715e-06, 1.66196742e-06, 1.10288363e-06, 7.31874934e-07, 4.85673127e-07, 3.22293289e-07, 2.1387423e-07, 1.41927202e-07, 9.41830649e-08};
+
+TEST(HfConfigTest, Llama32RopeScalingMatchesHuggingFace) {
     HfModelConfig c = ReadHfConfig(Fixture("llama-3.2-1b"));
     ASSERT_TRUE(c.rope_scaling.has_value());
     EXPECT_EQ(c.rope_scaling->type, "llama3");
     EXPECT_FLOAT_EQ(c.rope_scaling->factor, 32.0f);
     EXPECT_FLOAT_EQ(c.rope_scaling->high_freq_factor, 4.0f);
     EXPECT_EQ(c.rope_scaling->original_max_position_embeddings, 8192);
-    EXPECT_TRUE(Mentions(c.unsupported, "llama3"));
-    EXPECT_EQ(c.unsupported.size(), 1u);
+    EXPECT_TRUE(c.unsupported.empty());  // LLM-6 runs it
+    const std::vector<double> inv = RopeInverseFrequencies(c);
+    ASSERT_EQ(inv.size(), kLlama32InvFreq.size());
+    for (size_t i = 0; i < inv.size(); ++i) {
+        EXPECT_NEAR(inv[i], kLlama32InvFreq[i], 1e-6 * kLlama32InvFreq[i]) << "pair " << i;  // float32 vs double
+    }
+    EXPECT_EQ(ToAttentionConfig(c).rope_inverse_frequencies.size(), 32u);
+
+    HfModelConfig linear = c;
+    linear.rope_scaling->type = "linear";
+    linear.rope_scaling->factor = 4.0f;
+    const std::vector<double> lin = RopeInverseFrequencies(linear);
+    EXPECT_NEAR(lin[1], std::pow(500000.0, -2.0 / 64.0) / 4.0, 1e-12);
+    HfModelConfig yarn = ParseHfConfig(R"({"architectures": ["LlamaForCausalLM"], "model_type": "llama",
+        "hidden_size": 64, "intermediate_size": 128, "num_hidden_layers": 2, "num_attention_heads": 4,
+        "vocab_size": 100, "rope_scaling": {"rope_type": "yarn", "factor": 4.0}})");
+    EXPECT_TRUE(Mentions(yarn.unsupported, "yarn"));
+    EXPECT_THROW((void)RopeInverseFrequencies(yarn), std::invalid_argument);
 }
 
 TEST(HfConfigTest, GemmaListsEverythingPulsatrixCantRunYet) {
