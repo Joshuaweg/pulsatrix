@@ -80,6 +80,7 @@ add_executable(pulsatrix_tests
     tied_lm_head_module_test.cpp
     generation_test.cpp
     kv_cache_test.cpp
+    hf_model_test.cpp
     swiglu_module_test.cpp
     transformer_block_test.cpp
     residual_module_test.cpp
