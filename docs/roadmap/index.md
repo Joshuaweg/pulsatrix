@@ -384,8 +384,11 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
     refused.
   - SmolLM2 and Qwen2.5 are within about 20% of the 1e-3 threshold, from fp32 rounding (mean
     differences are near 1e-5).
-  - The CPU backend's reference `gemm` is single-threaded and walks the weight matrix by column,
-    so a 1B model took more than an hour on CPU. Real models were checked on the GPU.
+  - The CPU backend's reference `gemm` was single-threaded and walked the weight matrix by column,
+    so a 1B model took more than an hour on CPU. After #82, the CPU path gives 1.5e-4 (Llama-3.2-1B),
+    1.6e-4 (Qwen3-0.6B), 4.6e-4 (SmolLM2-135M) and **1.1e-3 (Qwen2.5-0.5B, the Chinese and Japanese
+    text)**, again with no argmax disagreements. Qwen2.5's logits there reach about 24, so that is
+    about 5e-5 relative: fp32 accumulation order, not a layout bug.
 
 ### Follow-ups the LLM work surfaced
 
@@ -395,7 +398,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 | `SwiGLUModule` without biases: Llama-family MLPs have none, and IO-4's strict mode fails on unmapped keys | Done in IO-4 |
 | Gemma 3's `query_pre_attn_scalar` replaces the `1/sqrt(head_dim)` scale | LLM-9 |
 | Grouped-query attention materializes the repeated K and V; index the shared head inside the matmul instead | HIP-6 |
-| The CPU `gemm` is a single-threaded i-j-p loop that strides down the weight matrix; reorder to i-p-j (same summation order per element) and thread over rows | Unassigned (CPU performance) |
+| The CPU `gemm` is a single-threaded i-j-p loop that strides down the weight matrix; reorder to i-p-j (same summation order per element) and thread over rows | Done in [#82](https://github.com/Joshuaweg/pulsatrix/pull/82): i-p-j, threaded over columns; Llama-3.2-1B's golden run takes 33 s instead of more than an hour |
 
 ## TOK: Tokenizers
 
