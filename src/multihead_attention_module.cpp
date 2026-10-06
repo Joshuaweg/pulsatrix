@@ -98,7 +98,9 @@ MultiHeadAttentionModule::MultiHeadAttentionModule(const AttentionConfig& config
       last_v_(Shape({0}), backend),
       last_scores_raw_(Shape({0}), backend),
       last_attn_(Shape({0}), backend),
-      last_context_(Shape({0}), backend) {
+      last_context_(Shape({0}), backend),
+      last_key_relevance_(Shape({0}), backend),
+      last_value_relevance_(Shape({0}), backend) {
     if (use_rope_) {
         // Separate instances for Q and K -- see the header's caching note; a shared instance
         // would leave only K's activations cached for propagate_relevance.
@@ -467,8 +469,21 @@ Tensor MultiHeadAttentionModule::propagate_relevance(const Tensor& relevance_out
     Tensor relevance_in = q_proj_.propagate_relevance(r_q_flat, config);
     relevance_in.accumulate(k_proj_.propagate_relevance(r_k_flat, config));
     relevance_in.accumulate(v_proj_.propagate_relevance(r_v_flat, config));
+    last_key_relevance_ = std::move(r_k_flat);
+    last_value_relevance_ = std::move(r_v_flat);
+    has_relevance_ = true;
 
     return reshaped(relevance_in, Shape({N, L, d_model_}));
+}
+
+const Tensor& MultiHeadAttentionModule::key_relevance() const {
+    if (!has_relevance_) throw std::logic_error("MultiHeadAttentionModule::key_relevance: no propagate_relevance() yet");
+    return last_key_relevance_;
+}
+
+const Tensor& MultiHeadAttentionModule::value_relevance() const {
+    if (!has_relevance_) throw std::logic_error("MultiHeadAttentionModule::value_relevance: no propagate_relevance() yet");
+    return last_value_relevance_;
 }
 
 KVCache MultiHeadAttentionModule::MakeKVCache(int64_t batch, int64_t max_length) const {

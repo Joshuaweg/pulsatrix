@@ -329,7 +329,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 | LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S || Done, [#76](https://github.com/Joshuaweg/pulsatrix/pull/76) (see below) |
 | LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M || Done, [#77](https://github.com/Joshuaweg/pulsatrix/pull/77) (see below) |
 | LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum difference under 1e-3 (relative to the position's largest logit above 1) | Catches layout bugs that still "load" | IO-4 | P0 | S || Done, [#81](https://github.com/Joshuaweg/pulsatrix/pull/81) (see below) |
-| LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M | |
+| LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M || Done, [#83](https://github.com/Joshuaweg/pulsatrix/pull/83) (see below) |
 | LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M | |
 | LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M | |
 
@@ -389,6 +389,26 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
   - The CPU backend's reference `gemm` was single-threaded and walked the weight matrix by column,
     so a 1B model took more than an hour on CPU. After #82 the CPU run takes 33 s for Llama-3.2-1B,
     and every model passes on both backends.
+- **LLM-7** compares pulsatrix with LXT's own AttnLRP (`lxt.efficient`) on the Hugging Face
+  models, rather than with LXT's explicit rules written out by hand, so the reference is the code
+  people actually run (`tools/golden/make_attnlrp_reference.py`, `pulsatrix_attnlrp`).
+  - The existing rules already matched. LLM-7 added the harness and
+    `MultiHeadAttentionModule::key_relevance()` / `value_relevance()`.
+  - Over the LLM-6 texts, the largest relative difference in token relevance was 4.1e-6
+    (SmolLM2-135M), 8.0e-6 (Qwen2.5-0.5B), 1.2e-5 (Qwen3-0.6B) and 2.3e-5 (Llama-3.2-1B). Every
+    token and K/V-head correlation was 1.000000, so the bar is well above 0.99.
+  - A negative control, plain gradient × input with LXT's patches off, fails with correlations
+    below 0.
+  - Mutation-checked: dropping the grouped-query sum for V fails every model, and leaving biases
+    out of the denominator fails Qwen2.
+  - Token ids come from the Python tokenizer, as in LLM-6, so parity didn't wait for TOK-2. The
+    per-word display that needs TOK-2 belongs with VIZ-6a.
+  - Relevance at the output is the logit (unit gradient in LXT's gradient × input). LXT's README
+    calls `logit.backward(logit)`, which multiplies every relevance by the logit again. A
+    per-text scale like that leaves correlation unchanged, so the harness also reports the largest
+    relative difference.
+  - LXT 2.1 needs two shims under transformers 5; they are described in the generator and in
+    `docs/interpretability/lrp.md`.
 
 ### Follow-ups the LLM work surfaced
 
@@ -900,7 +920,8 @@ These came up in the research and aren't settled yet.
   through a LoReFT intervention, or through LoRA under the gamma rule. The epsilon-rule split for
   LoRA is our own derivation and needs a numerical check.
 - **Qwen3 in LXT.** LXT marks Qwen3 as experimental, with relevance skewed toward the first
-  token. The cause isn't documented.
+  token. The cause isn't documented. pulsatrix matches LXT on Qwen3-0.6B to 1.2e-5 (LLM-7), so any
+  skew comes from the rules themselves, not from either implementation.
 - **hipBLASLt on gfx1151.** Sources disagree on whether it works on ROCm 7.2.4. HIP-8 settles it.
 - **rsLoRA scaling.** It conflicts with the claim that 1/r scaling makes the learning rate
   independent of rank. Only an experiment settles it.
