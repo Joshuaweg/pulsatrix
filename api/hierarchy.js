@@ -115,6 +115,8 @@ var hierarchy =
     [ "pulsatrix::GFlowNetSampledAction", "structpulsatrix_1_1GFlowNetSampledAction.html", null ],
     [ "pulsatrix::GFlowNetTrajectory", "structpulsatrix_1_1GFlowNetTrajectory.html", null ],
     [ "pulsatrix::GlobalSensitivityProblem", "structpulsatrix_1_1GlobalSensitivityProblem.html", null ],
+    [ "pulsatrix::GoldenReport", "structpulsatrix_1_1GoldenReport.html", null ],
+    [ "pulsatrix::GoldenSequenceResult", "structpulsatrix_1_1GoldenSequenceResult.html", null ],
     [ "pulsatrix::GpuSample", "structpulsatrix_1_1GpuSample.html", null ],
     [ "pulsatrix::GradCAM", "classpulsatrix_1_1GradCAM.html", null ],
     [ "pulsatrix::GrowingSpheresOptions", "structpulsatrix_1_1GrowingSpheresOptions.html", null ],

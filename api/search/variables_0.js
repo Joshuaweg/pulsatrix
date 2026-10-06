@@ -10,7 +10,8 @@ var searchData=
   ['alpha_7',['alpha',['../structpulsatrix_1_1LRPRuleConfig.html#acdf40c00ebb6e7ff9d6372ae9a66d0f3',1,'pulsatrix::LRPRuleConfig']]],
   ['append_8',['append',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a38b1c37b3b1e263823120cca03d24272',1,'pulsatrix::SystemMonitor::Options']]],
   ['architecture_9',['architecture',['../structpulsatrix_1_1HfModelConfig.html#ad80446f7689bb3619d06cc0a2b7ef0bc',1,'pulsatrix::HfModelConfig']]],
-  ['attribution_10',['attribution',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa',1,'pulsatrix::ExplanationScoreCard::Input']]],
-  ['auc_11',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve']]],
-  ['available_12',['available',['../structpulsatrix_1_1MetricCapability.html#aedf248268fb7014def3128b5f5f55956',1,'pulsatrix::MetricCapability']]]
+  ['argmax_5fdisagreements_10',['argmax_disagreements',['../structpulsatrix_1_1GoldenSequenceResult.html#af8add1a57fdb3ba1790edc5544cc2eb5',1,'pulsatrix::GoldenSequenceResult']]],
+  ['attribution_11',['attribution',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa',1,'pulsatrix::ExplanationScoreCard::Input']]],
+  ['auc_12',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve']]],
+  ['available_13',['available',['../structpulsatrix_1_1MetricCapability.html#aedf248268fb7014def3128b5f5f55956',1,'pulsatrix::MetricCapability']]]
 ];

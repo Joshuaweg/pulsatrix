@@ -1,6 +1,7 @@
 var classpulsatrix_1_1RoPEModule =
 [
     [ "RoPEModule", "classpulsatrix_1_1RoPEModule.html#aa000c5f4b1283a72d6cdf45339de9ee1", null ],
+    [ "RoPEModule", "classpulsatrix_1_1RoPEModule.html#a74034bca9c207d62011cda8b3a7ce099", null ],
     [ "backward", "classpulsatrix_1_1RoPEModule.html#aa31c1da65f6454d0c4974b61e76ef8a6", null ],
     [ "base", "classpulsatrix_1_1RoPEModule.html#a7fef6d1bbd211d9ff5ed60b22382fcd1", null ],
     [ "compute_device", "classpulsatrix_1_1RoPEModule.html#a40f912143ad0e077b23bf64bbe05c1be", null ],

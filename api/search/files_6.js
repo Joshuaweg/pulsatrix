@@ -7,10 +7,11 @@ var searchData=
   ['gflownet_5fforward_5fpolicy_2ehpp_4',['gflownet_forward_policy.hpp',['../gflownet__forward__policy_8hpp.html',1,'']]],
   ['gflownet_5ftrajectory_2ehpp_5',['gflownet_trajectory.hpp',['../gflownet__trajectory_8hpp.html',1,'']]],
   ['global_5fsensitivity_2ehpp_6',['global_sensitivity.hpp',['../global__sensitivity_8hpp.html',1,'']]],
-  ['gp_5fbo_2ehpp_7',['gp_bo.hpp',['../gp__bo_8hpp.html',1,'']]],
-  ['grad_5fcam_2ehpp_8',['grad_cam.hpp',['../grad__cam_8hpp.html',1,'']]],
-  ['grad_5fclipping_2ehpp_9',['grad_clipping.hpp',['../grad__clipping_8hpp.html',1,'']]],
-  ['group_5fnorm_5fmodule_2ehpp_10',['group_norm_module.hpp',['../group__norm__module_8hpp.html',1,'']]],
-  ['groups_2edox_11',['groups.dox',['../groups_8dox.html',1,'']]],
-  ['gru_5fmodule_2ehpp_12',['gru_module.hpp',['../gru__module_8hpp.html',1,'']]]
+  ['golden_5flogits_2ehpp_7',['golden_logits.hpp',['../golden__logits_8hpp.html',1,'']]],
+  ['gp_5fbo_2ehpp_8',['gp_bo.hpp',['../gp__bo_8hpp.html',1,'']]],
+  ['grad_5fcam_2ehpp_9',['grad_cam.hpp',['../grad__cam_8hpp.html',1,'']]],
+  ['grad_5fclipping_2ehpp_10',['grad_clipping.hpp',['../grad__clipping_8hpp.html',1,'']]],
+  ['group_5fnorm_5fmodule_2ehpp_11',['group_norm_module.hpp',['../group__norm__module_8hpp.html',1,'']]],
+  ['groups_2edox_12',['groups.dox',['../groups_8dox.html',1,'']]],
+  ['gru_5fmodule_2ehpp_13',['gru_module.hpp',['../gru__module_8hpp.html',1,'']]]
 ];
