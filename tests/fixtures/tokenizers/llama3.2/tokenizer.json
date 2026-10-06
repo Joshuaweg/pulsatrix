@@ -1,0 +1,6395 @@
+{
+ "version": "1.0",
+ "truncation": null,
+ "padding": null,
+ "added_tokens": [
+  {
+   "id": 1003,
+   "content": "<|begin_of_text|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1004,
+   "content": "<|end_of_text|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1005,
+   "content": "<|reserved_special_token_0|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1006,
+   "content": "<|reserved_special_token_1|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1007,
+   "content": "<|finetune_right_pad_id|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1008,
+   "content": "<|reserved_special_token_2|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1009,
+   "content": "<|start_header_id|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1010,
+   "content": "<|end_header_id|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1011,
+   "content": "<|eom_id|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1012,
+   "content": "<|eot_id|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1013,
+   "content": "<|python_tag|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1014,
+   "content": "<|reserved_special_token_3|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1015,
+   "content": "<|reserved_special_token_4|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1016,
+   "content": "<|reserved_special_token_5|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1017,
+   "content": "<|reserved_special_token_6|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1018,
+   "content": "<|reserved_special_token_7|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1019,
+   "content": "<|reserved_special_token_8|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1020,
+   "content": "<|reserved_special_token_9|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1021,
+   "content": "<|reserved_special_token_10|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1022,
+   "content": "<|reserved_special_token_11|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1023,
+   "content": "<|reserved_special_token_12|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1024,
+   "content": "<|reserved_special_token_13|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1025,
+   "content": "<|reserved_special_token_14|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1026,
+   "content": "<|reserved_special_token_15|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1027,
+   "content": "<|reserved_special_token_16|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1028,
+   "content": "<|reserved_special_token_17|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1029,
+   "content": "<|reserved_special_token_18|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1030,
+   "content": "<|reserved_special_token_19|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1031,
+   "content": "<|reserved_special_token_20|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1032,
+   "content": "<|reserved_special_token_21|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1033,
+   "content": "<|reserved_special_token_22|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1034,
+   "content": "<|reserved_special_token_23|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1035,
+   "content": "<|reserved_special_token_24|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1036,
+   "content": "<|reserved_special_token_25|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1037,
+   "content": "<|reserved_special_token_26|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1038,
+   "content": "<|reserved_special_token_27|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1039,
+   "content": "<|reserved_special_token_28|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1040,
+   "content": "<|reserved_special_token_29|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1041,
+   "content": "<|reserved_special_token_30|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1042,
+   "content": "<|reserved_special_token_31|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1043,
+   "content": "<|reserved_special_token_32|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1044,
+   "content": "<|reserved_special_token_33|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1045,
+   "content": "<|reserved_special_token_34|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1046,
+   "content": "<|reserved_special_token_35|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1047,
+   "content": "<|reserved_special_token_36|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1048,
+   "content": "<|reserved_special_token_37|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1049,
+   "content": "<|reserved_special_token_38|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1050,
+   "content": "<|reserved_special_token_39|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1051,
+   "content": "<|reserved_special_token_40|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1052,
+   "content": "<|reserved_special_token_41|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1053,
+   "content": "<|reserved_special_token_42|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1054,
+   "content": "<|reserved_special_token_43|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1055,
+   "content": "<|reserved_special_token_44|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1056,
+   "content": "<|reserved_special_token_45|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1057,
+   "content": "<|reserved_special_token_46|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1058,
+   "content": "<|reserved_special_token_47|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1059,
+   "content": "<|reserved_special_token_48|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1060,
+   "content": "<|reserved_special_token_49|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1061,
+   "content": "<|reserved_special_token_50|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1062,
+   "content": "<|reserved_special_token_51|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1063,
+   "content": "<|reserved_special_token_52|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1064,
+   "content": "<|reserved_special_token_53|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1065,
+   "content": "<|reserved_special_token_54|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1066,
+   "content": "<|reserved_special_token_55|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1067,
+   "content": "<|reserved_special_token_56|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1068,
+   "content": "<|reserved_special_token_57|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1069,
+   "content": "<|reserved_special_token_58|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1070,
+   "content": "<|reserved_special_token_59|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1071,
+   "content": "<|reserved_special_token_60|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1072,
+   "content": "<|reserved_special_token_61|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1073,
+   "content": "<|reserved_special_token_62|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1074,
+   "content": "<|reserved_special_token_63|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1075,
+   "content": "<|reserved_special_token_64|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1076,
+   "content": "<|reserved_special_token_65|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1077,
+   "content": "<|reserved_special_token_66|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1078,
+   "content": "<|reserved_special_token_67|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1079,
+   "content": "<|reserved_special_token_68|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1080,
+   "content": "<|reserved_special_token_69|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1081,
+   "content": "<|reserved_special_token_70|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1082,
+   "content": "<|reserved_special_token_71|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1083,
+   "content": "<|reserved_special_token_72|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1084,
+   "content": "<|reserved_special_token_73|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1085,
+   "content": "<|reserved_special_token_74|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1086,
+   "content": "<|reserved_special_token_75|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1087,
+   "content": "<|reserved_special_token_76|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1088,
+   "content": "<|reserved_special_token_77|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1089,
+   "content": "<|reserved_special_token_78|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1090,
+   "content": "<|reserved_special_token_79|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1091,
+   "content": "<|reserved_special_token_80|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1092,
+   "content": "<|reserved_special_token_81|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1093,
+   "content": "<|reserved_special_token_82|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1094,
+   "content": "<|reserved_special_token_83|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1095,
+   "content": "<|reserved_special_token_84|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1096,
+   "content": "<|reserved_special_token_85|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1097,
+   "content": "<|reserved_special_token_86|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1098,
+   "content": "<|reserved_special_token_87|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1099,
+   "content": "<|reserved_special_token_88|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1100,
+   "content": "<|reserved_special_token_89|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1101,
+   "content": "<|reserved_special_token_90|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1102,
+   "content": "<|reserved_special_token_91|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1103,
+   "content": "<|reserved_special_token_92|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1104,
+   "content": "<|reserved_special_token_93|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1105,
+   "content": "<|reserved_special_token_94|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1106,
+   "content": "<|reserved_special_token_95|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1107,
+   "content": "<|reserved_special_token_96|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1108,
+   "content": "<|reserved_special_token_97|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1109,
+   "content": "<|reserved_special_token_98|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1110,
+   "content": "<|reserved_special_token_99|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1111,
+   "content": "<|reserved_special_token_100|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1112,
+   "content": "<|reserved_special_token_101|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1113,
+   "content": "<|reserved_special_token_102|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1114,
+   "content": "<|reserved_special_token_103|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1115,
+   "content": "<|reserved_special_token_104|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1116,
+   "content": "<|reserved_special_token_105|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1117,
+   "content": "<|reserved_special_token_106|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1118,
+   "content": "<|reserved_special_token_107|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1119,
+   "content": "<|reserved_special_token_108|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1120,
+   "content": "<|reserved_special_token_109|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1121,
+   "content": "<|reserved_special_token_110|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1122,
+   "content": "<|reserved_special_token_111|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1123,
+   "content": "<|reserved_special_token_112|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1124,
+   "content": "<|reserved_special_token_113|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1125,
+   "content": "<|reserved_special_token_114|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1126,
+   "content": "<|reserved_special_token_115|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1127,
+   "content": "<|reserved_special_token_116|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1128,
+   "content": "<|reserved_special_token_117|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1129,
+   "content": "<|reserved_special_token_118|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1130,
+   "content": "<|reserved_special_token_119|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1131,
+   "content": "<|reserved_special_token_120|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1132,
+   "content": "<|reserved_special_token_121|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1133,
+   "content": "<|reserved_special_token_122|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1134,
+   "content": "<|reserved_special_token_123|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1135,
+   "content": "<|reserved_special_token_124|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1136,
+   "content": "<|reserved_special_token_125|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1137,
+   "content": "<|reserved_special_token_126|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1138,
+   "content": "<|reserved_special_token_127|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1139,
+   "content": "<|reserved_special_token_128|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1140,
+   "content": "<|reserved_special_token_129|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1141,
+   "content": "<|reserved_special_token_130|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1142,
+   "content": "<|reserved_special_token_131|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1143,
+   "content": "<|reserved_special_token_132|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1144,
+   "content": "<|reserved_special_token_133|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1145,
+   "content": "<|reserved_special_token_134|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1146,
+   "content": "<|reserved_special_token_135|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1147,
+   "content": "<|reserved_special_token_136|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1148,
+   "content": "<|reserved_special_token_137|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1149,
+   "content": "<|reserved_special_token_138|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1150,
+   "content": "<|reserved_special_token_139|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1151,
+   "content": "<|reserved_special_token_140|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1152,
+   "content": "<|reserved_special_token_141|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1153,
+   "content": "<|reserved_special_token_142|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1154,
+   "content": "<|reserved_special_token_143|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1155,
+   "content": "<|reserved_special_token_144|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1156,
+   "content": "<|reserved_special_token_145|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1157,
+   "content": "<|reserved_special_token_146|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1158,
+   "content": "<|reserved_special_token_147|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1159,
+   "content": "<|reserved_special_token_148|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1160,
+   "content": "<|reserved_special_token_149|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1161,
+   "content": "<|reserved_special_token_150|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1162,
+   "content": "<|reserved_special_token_151|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1163,
+   "content": "<|reserved_special_token_152|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1164,
+   "content": "<|reserved_special_token_153|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1165,
+   "content": "<|reserved_special_token_154|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1166,
+   "content": "<|reserved_special_token_155|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1167,
+   "content": "<|reserved_special_token_156|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1168,
+   "content": "<|reserved_special_token_157|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1169,
+   "content": "<|reserved_special_token_158|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1170,
+   "content": "<|reserved_special_token_159|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1171,
+   "content": "<|reserved_special_token_160|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1172,
+   "content": "<|reserved_special_token_161|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1173,
+   "content": "<|reserved_special_token_162|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1174,
+   "content": "<|reserved_special_token_163|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1175,
+   "content": "<|reserved_special_token_164|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1176,
+   "content": "<|reserved_special_token_165|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1177,
+   "content": "<|reserved_special_token_166|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1178,
+   "content": "<|reserved_special_token_167|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1179,
+   "content": "<|reserved_special_token_168|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1180,
+   "content": "<|reserved_special_token_169|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1181,
+   "content": "<|reserved_special_token_170|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1182,
+   "content": "<|reserved_special_token_171|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1183,
+   "content": "<|reserved_special_token_172|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1184,
+   "content": "<|reserved_special_token_173|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1185,
+   "content": "<|reserved_special_token_174|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1186,
+   "content": "<|reserved_special_token_175|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1187,
+   "content": "<|reserved_special_token_176|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1188,
+   "content": "<|reserved_special_token_177|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1189,
+   "content": "<|reserved_special_token_178|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1190,
+   "content": "<|reserved_special_token_179|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1191,
+   "content": "<|reserved_special_token_180|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1192,
+   "content": "<|reserved_special_token_181|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1193,
+   "content": "<|reserved_special_token_182|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1194,
+   "content": "<|reserved_special_token_183|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1195,
+   "content": "<|reserved_special_token_184|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1196,
+   "content": "<|reserved_special_token_185|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1197,
+   "content": "<|reserved_special_token_186|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1198,
+   "content": "<|reserved_special_token_187|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1199,
+   "content": "<|reserved_special_token_188|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1200,
+   "content": "<|reserved_special_token_189|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1201,
+   "content": "<|reserved_special_token_190|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1202,
+   "content": "<|reserved_special_token_191|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1203,
+   "content": "<|reserved_special_token_192|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1204,
+   "content": "<|reserved_special_token_193|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1205,
+   "content": "<|reserved_special_token_194|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1206,
+   "content": "<|reserved_special_token_195|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1207,
+   "content": "<|reserved_special_token_196|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1208,
+   "content": "<|reserved_special_token_197|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1209,
+   "content": "<|reserved_special_token_198|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1210,
+   "content": "<|reserved_special_token_199|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1211,
+   "content": "<|reserved_special_token_200|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1212,
+   "content": "<|reserved_special_token_201|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1213,
+   "content": "<|reserved_special_token_202|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1214,
+   "content": "<|reserved_special_token_203|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1215,
+   "content": "<|reserved_special_token_204|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1216,
+   "content": "<|reserved_special_token_205|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1217,
+   "content": "<|reserved_special_token_206|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1218,
+   "content": "<|reserved_special_token_207|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1219,
+   "content": "<|reserved_special_token_208|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1220,
+   "content": "<|reserved_special_token_209|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1221,
+   "content": "<|reserved_special_token_210|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1222,
+   "content": "<|reserved_special_token_211|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1223,
+   "content": "<|reserved_special_token_212|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1224,
+   "content": "<|reserved_special_token_213|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1225,
+   "content": "<|reserved_special_token_214|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1226,
+   "content": "<|reserved_special_token_215|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1227,
+   "content": "<|reserved_special_token_216|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1228,
+   "content": "<|reserved_special_token_217|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1229,
+   "content": "<|reserved_special_token_218|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1230,
+   "content": "<|reserved_special_token_219|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1231,
+   "content": "<|reserved_special_token_220|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1232,
+   "content": "<|reserved_special_token_221|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1233,
+   "content": "<|reserved_special_token_222|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1234,
+   "content": "<|reserved_special_token_223|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1235,
+   "content": "<|reserved_special_token_224|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1236,
+   "content": "<|reserved_special_token_225|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1237,
+   "content": "<|reserved_special_token_226|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1238,
+   "content": "<|reserved_special_token_227|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1239,
+   "content": "<|reserved_special_token_228|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1240,
+   "content": "<|reserved_special_token_229|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1241,
+   "content": "<|reserved_special_token_230|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1242,
+   "content": "<|reserved_special_token_231|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1243,
+   "content": "<|reserved_special_token_232|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1244,
+   "content": "<|reserved_special_token_233|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1245,
+   "content": "<|reserved_special_token_234|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1246,
+   "content": "<|reserved_special_token_235|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1247,
+   "content": "<|reserved_special_token_236|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1248,
+   "content": "<|reserved_special_token_237|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1249,
+   "content": "<|reserved_special_token_238|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1250,
+   "content": "<|reserved_special_token_239|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1251,
+   "content": "<|reserved_special_token_240|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1252,
+   "content": "<|reserved_special_token_241|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1253,
+   "content": "<|reserved_special_token_242|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1254,
+   "content": "<|reserved_special_token_243|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1255,
+   "content": "<|reserved_special_token_244|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1256,
+   "content": "<|reserved_special_token_245|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1257,
+   "content": "<|reserved_special_token_246|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1258,
+   "content": "<|reserved_special_token_247|>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  }
+ ],
+ "normalizer": null,
+ "pre_tokenizer": {
+  "type": "Sequence",
+  "pretokenizers": [
+   {
+    "type": "Split",
+    "pattern": {
+     "Regex": "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
+    },
+    "behavior": "Isolated",
+    "invert": false
+   },
+   {
+    "type": "ByteLevel",
+    "add_prefix_space": false,
+    "trim_offsets": true,
+    "use_regex": false
+   }
+  ]
+ },
+ "post_processor": {
+  "type": "Sequence",
+  "processors": [
+   {
+    "type": "ByteLevel",
+    "add_prefix_space": true,
+    "trim_offsets": false,
+    "use_regex": true
+   },
+   {
+    "type": "TemplateProcessing",
+    "single": [
+     {
+      "SpecialToken": {
+       "id": "<|begin_of_text|>",
+       "type_id": 0
+      }
+     },
+     {
+      "Sequence": {
+       "id": "A",
+       "type_id": 0
+      }
+     }
+    ],
+    "pair": [
+     {
+      "SpecialToken": {
+       "id": "<|begin_of_text|>",
+       "type_id": 0
+      }
+     },
+     {
+      "Sequence": {
+       "id": "A",
+       "type_id": 0
+      }
+     },
+     {
+      "SpecialToken": {
+       "id": "<|begin_of_text|>",
+       "type_id": 1
+      }
+     },
+     {
+      "Sequence": {
+       "id": "B",
+       "type_id": 1
+      }
+     }
+    ],
+    "special_tokens": {
+     "<|begin_of_text|>": {
+      "id": "<|begin_of_text|>",
+      "ids": [
+       1003
+      ],
+      "tokens": [
+       "<|begin_of_text|>"
+      ]
+     }
+    }
+   }
+  ]
+ },
+ "decoder": {
+  "type": "ByteLevel",
+  "add_prefix_space": true,
+  "trim_offsets": true,
+  "use_regex": true
+ },
+ "model": {
+  "type": "BPE",
+  "dropout": null,
+  "unk_token": null,
+  "continuing_subword_prefix": null,
+  "end_of_word_suffix": null,
+  "fuse_unk": false,
+  "byte_fallback": false,
+  "ignore_merges": true,
+  "vocab": {
+   "!": 0,
+   "\"": 1,
+   "#": 2,
+   "$": 3,
+   "%": 4,
+   "&": 5,
+   "'": 6,
+   "(": 7,
+   ")": 8,
+   "*": 9,
+   "+": 10,
+   ",": 11,
+   "-": 12,
+   ".": 13,
+   "/": 14,
+   "0": 15,
+   "1": 16,
+   "2": 17,
+   "3": 18,
+   "4": 19,
+   "5": 20,
+   "6": 21,
+   "7": 22,
+   "8": 23,
+   "9": 24,
+   ":": 25,
+   ";": 26,
+   "<": 27,
+   "=": 28,
+   ">": 29,
+   "?": 30,
+   "@": 31,
+   "A": 32,
+   "B": 33,
+   "C": 34,
+   "D": 35,
+   "E": 36,
+   "F": 37,
+   "G": 38,
+   "H": 39,
+   "I": 40,
+   "J": 41,
+   "K": 42,
+   "L": 43,
+   "M": 44,
+   "N": 45,
+   "O": 46,
+   "P": 47,
+   "Q": 48,
+   "R": 49,
+   "S": 50,
+   "T": 51,
+   "U": 52,
+   "V": 53,
+   "W": 54,
+   "X": 55,
+   "Y": 56,
+   "Z": 57,
+   "[": 58,
+   "\\": 59,
+   "]": 60,
+   "^": 61,
+   "_": 62,
+   "`": 63,
+   "a": 64,
+   "b": 65,
+   "c": 66,
+   "d": 67,
+   "e": 68,
+   "f": 69,
+   "g": 70,
+   "h": 71,
+   "i": 72,
+   "j": 73,
+   "k": 74,
+   "l": 75,
+   "m": 76,
+   "n": 77,
+   "o": 78,
+   "p": 79,
+   "q": 80,
+   "r": 81,
+   "s": 82,
+   "t": 83,
+   "u": 84,
+   "v": 85,
+   "w": 86,
+   "x": 87,
+   "y": 88,
+   "z": 89,
+   "{": 90,
+   "|": 91,
+   "}": 92,
+   "~": 93,
+   "¡": 94,
+   "¢": 95,
+   "£": 96,
+   "¤": 97,
+   "¥": 98,
+   "¦": 99,
+   "§": 100,
+   "¨": 101,
+   "©": 102,
+   "ª": 103,
+   "«": 104,
+   "¬": 105,
+   "®": 106,
+   "¯": 107,
+   "°": 108,
+   "±": 109,
+   "²": 110,
+   "³": 111,
+   "´": 112,
+   "µ": 113,
+   "¶": 114,
+   "·": 115,
+   "¸": 116,
+   "¹": 117,
+   "º": 118,
+   "»": 119,
+   "¼": 120,
+   "½": 121,
+   "¾": 122,
+   "¿": 123,
+   "À": 124,
+   "Á": 125,
+   "Â": 126,
+   "Ã": 127,
+   "Ä": 128,
+   "Å": 129,
+   "Æ": 130,
+   "Ç": 131,
+   "È": 132,
+   "É": 133,
+   "Ê": 134,
+   "Ë": 135,
+   "Ì": 136,
+   "Í": 137,
+   "Î": 138,
+   "Ï": 139,
+   "Ð": 140,
+   "Ñ": 141,
+   "Ò": 142,
+   "Ó": 143,
+   "Ô": 144,
+   "Õ": 145,
+   "Ö": 146,
+   "×": 147,
+   "Ø": 148,
+   "Ù": 149,
+   "Ú": 150,
+   "Û": 151,
+   "Ü": 152,
+   "Ý": 153,
+   "Þ": 154,
+   "ß": 155,
+   "à": 156,
+   "á": 157,
+   "â": 158,
+   "ã": 159,
+   "ä": 160,
+   "å": 161,
+   "æ": 162,
+   "ç": 163,
+   "è": 164,
+   "é": 165,
+   "ê": 166,
+   "ë": 167,
+   "ì": 168,
+   "í": 169,
+   "î": 170,
+   "ï": 171,
+   "ð": 172,
+   "ñ": 173,
+   "ò": 174,
+   "ó": 175,
+   "ô": 176,
+   "õ": 177,
+   "ö": 178,
+   "÷": 179,
+   "ø": 180,
+   "ù": 181,
+   "ú": 182,
+   "û": 183,
+   "ü": 184,
+   "ý": 185,
+   "þ": 186,
+   "ÿ": 187,
+   "Ā": 188,
+   "ā": 189,
+   "Ă": 190,
+   "ă": 191,
+   "Ą": 192,
+   "ą": 193,
+   "Ć": 194,
+   "ć": 195,
+   "Ĉ": 196,
+   "ĉ": 197,
+   "Ċ": 198,
+   "ċ": 199,
+   "Č": 200,
+   "č": 201,
+   "Ď": 202,
+   "ď": 203,
+   "Đ": 204,
+   "đ": 205,
+   "Ē": 206,
+   "ē": 207,
+   "Ĕ": 208,
+   "ĕ": 209,
+   "Ė": 210,
+   "ė": 211,
+   "Ę": 212,
+   "ę": 213,
+   "Ě": 214,
+   "ě": 215,
+   "Ĝ": 216,
+   "ĝ": 217,
+   "Ğ": 218,
+   "ğ": 219,
+   "Ġ": 220,
+   "ġ": 221,
+   "Ģ": 222,
+   "ģ": 223,
+   "Ĥ": 224,
+   "ĥ": 225,
+   "Ħ": 226,
+   "ħ": 227,
+   "Ĩ": 228,
+   "ĩ": 229,
+   "Ī": 230,
+   "ī": 231,
+   "Ĭ": 232,
+   "ĭ": 233,
+   "Į": 234,
+   "į": 235,
+   "İ": 236,
+   "ı": 237,
+   "Ĳ": 238,
+   "ĳ": 239,
+   "Ĵ": 240,
+   "ĵ": 241,
+   "Ķ": 242,
+   "ķ": 243,
+   "ĸ": 244,
+   "Ĺ": 245,
+   "ĺ": 246,
+   "Ļ": 247,
+   "ļ": 248,
+   "Ľ": 249,
+   "ľ": 250,
+   "Ŀ": 251,
+   "ŀ": 252,
+   "Ł": 253,
+   "ł": 254,
+   "Ń": 255,
+   "ĠĠ": 256,
+   "!!": 257,
+   "aa": 258,
+   "11": 259,
+   "aaaa": 260,
+   "ĠĠĠĠ": 261,
+   "!!!!": 262,
+   "ab": 263,
+   "th": 264,
+   "an": 265,
+   "in": 266,
+   "abab": 267,
+   "Ġâ": 268,
+   "er": 269,
+   "ãģ": 270,
+   "Ġth": 271,
+   "111": 272,
+   "st": 273,
+   "à¸": 274,
+   "Ġthe": 275,
+   "ar": 276,
+   "à¤": 277,
+   "and": 278,
+   "aaaaaaaa": 279,
+   "<|": 280,
+   "co": 281,
+   "en": 282,
+   "ĠĠĠĠĠĠĠĠ": 283,
+   "!!!!!!!!": 284,
+   "ãģĤ": 285,
+   "or": 286,
+   "|>": 287,
+   "âĢ": 288,
+   "ãģĤãģĤ": 289,
+   "pa": 290,
+   "al": 291,
+   "es": 292,
+   "on": 293,
+   "áĥ": 294,
+   "ãĢ": 295,
+   "ĠÃ": 296,
+   "Ġand": 297,
+   "abababab": 298,
+   "se": 299,
+   "spa": 300,
+   "à¥": 301,
+   "à¦": 302,
+   "le": 303,
+   "ra": 304,
+   "ï¼": 305,
+   "spac": 306,
+   "de": 307,
+   "ex": 308,
+   "ðŁ": 309,
+   "Ġ'": 310,
+   "Ġa": 311,
+   "ĠÂ": 312,
+   "12": 313,
+   "ic": 314,
+   "im": 315,
+   "re": 316,
+   "Ðº": 317,
+   "Ø§": 318,
+   "Ġn": 319,
+   "end": 320,
+   "10": 321,
+   "Ð°": 322,
+   "à°": 323,
+   "ĠâĢ": 324,
+   "aaaaaaaaaaaaaaaa": 325,
+   "com": 326,
+   "am": 327,
+   "at": 328,
+   "id": 329,
+   "ll": 330,
+   "Ìģ": 331,
+   "Ð¸": 332,
+   "à®": 333,
+   "à¹": 334,
+   "Ġc": 335,
+   "Ġl": 336,
+   "Ġt": 337,
+   "ĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠ": 338,
+   "!!!!!!!!!!!!!!!!": 339,
+   "ãģĤãģĤãģĤãģĤ": 340,
+   "ol": 341,
+   "Ñģ": 342,
+   "ĠS": 343,
+   "Ġb": 344,
+   "ing": 345,
+   "one": 346,
+   "ext": 347,
+   "123": 348,
+   "as": 349,
+   "ed": 350,
+   "ft": 351,
+   "is": 352,
+   "ng": 353,
+   "om": 354,
+   "ph": 355,
+   "qu": 356,
+   "Ġf": 357,
+   "Ġs": 358,
+   "Ġv": 359,
+   "Ġx": 360,
+   "Ġá": 361,
+   "ĠĠĠ": 362,
+   "ine": 363,
+   "star": 364,
+   "abababababababab": 365,
+   "space": 366,
+   "start": 367,
+   "..": 368,
+   "el": 369,
+   "il": 370,
+   "ou": 371,
+   "po": 372,
+   "ro": 373,
+   "Ã§": 374,
+   "Ø±": 375,
+   "ÙĦ": 376,
+   "à½": 377,
+   "ĊĊ": 378,
+   "Ġ<": 379,
+   "ĠC": 380,
+   "Ġd": 381,
+   "Ġp": 382,
+   "Ġw": 383,
+   "ĠðŁ": 384,
+   "ord": 385,
+   "spaces": 386,
+   "00": 387,
+   "OU": 388,
+   "ch": 389,
+   "ct": 390,
+   "fi": 391,
+   "us": 392,
+   "ÑĢ": 393,
+   "á»": 394,
+   "áĢ": 395,
+   "âĶ": 396,
+   "ãĤ": 397,
+   "ä¸": 398,
+   "íķ": 399,
+   "ï½": 400,
+   "ðĿ": 401,
+   "Ġe": 402,
+   "Ġo": 403,
+   "Ġy": 404,
+   "ĠÄ": 405,
+   "ĠÇ": 406,
+   "ĠÐ": 407,
+   "ĠÑ": 408,
+   "Ġ×": 409,
+   "ĠØ": 410,
+   "Ġà¤": 411,
+   "Ġspaces": 412,
+   "įà¤": 413,
+   "à¥įà¤": 414,
+   "Ø§ÙĦ": 415,
+   "compo": 416,
+   "Ø±Ø": 417,
+   "</": 418,
+   "HE": 419,
+   "Line": 420,
+   "Ma": 421,
+   "RE": 422,
+   "_start": 423,
+   "ase": 424,
+   "he": 425,
+   "ht": 426,
+   "ip": 427,
+   "it": 428,
+   "ist": 429,
+   "ot": 430,
+   "oft": 431,
+   "sk": 432,
+   "um": 433,
+   "un": 434,
+   "ve": 435,
+   "Ã¤": 436,
+   "Ã¼": 437,
+   "Ãł": 438,
+   "ÌĪ": 439,
+   "Õ¥": 440,
+   "×ķ": 441,
+   "Ùħ": 442,
+   "à±": 443,
+   "âħ": 444,
+   "ä»": 445,
+   "Ġ(": 446,
+   "ĠA": 447,
+   "ĠI": 448,
+   "Ġg": 449,
+   "ĠÅ": 450,
+   "Ġde": 451,
+   "Ġqu": 452,
+   "Ħà¸": 453,
+   "įðŁ": 454,
+   "ľê": 455,
+   "ĠâĦ": 456,
+   "ĠâĪ": 457,
+   "ers": 458,
+   "ark": 459,
+   "con": 460,
+   "áĥĲ": 461,
+   "ãĢģ": 462,
+   "ãĢĤ": 463,
+   "sed": 464,
+   "ÐºÐ¸": 465,
+   "100": 466,
+   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": 467,
+   "ĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠ": 468,
+   "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!": 469,
+   "ãģĤãģĤãģĤãģĤãģĤãģĤãģĤãģĤ": 470,
+   "ÑģÐºÐ¸": 471,
+   "ash": 472,
+   "íķľê": 473,
+   "composed": 474,
+   "'s": 475,
+   "//": 476,
+   "45": 477,
+   "::": 478,
+   "??": 479,
+   "FC": 480,
+   "NFC": 481,
+   "SE": 482,
+   "_c": 483,
+   "_end": 484,
+   "_id": 485,
+   "ad": 486,
+   "ag": 487,
+   "ak": 488,
+   "ef": 489,
+   "fim": 490,
+   "iÃ": 491,
+   "ion": 492,
+   "ide": 493,
+   "mo": 494,
+   "mark": 495,
+   "og": 496,
+   "par": 497,
+   "rn": 498,
+   "sl": 499,
+   "to": 500,
+   "ts": 501,
+   "tu": 502,
+   "tra": 503,
+   "text": 504,
+   "ul": 505,
+   "ull": 506,
+   "wid": 507,
+   "word": 508,
+   "{\"": 509,
+   "ªŀ": 510,
+   "¬è": 511,
+   "¯į": 512,
+   "»Î": 513,
+   "¿à¤": 514,
+   "Ã£": 515,
+   "Ã©": 516,
+   "Ã³": 517,
+   "Ì£": 518,
+   "ÌĤ": 519,
+   "Î±": 520,
+   "Î¹": 521,
+   "ÑĤ": 522,
+   "Ñĥ": 523,
+   "×ľ": 524,
+   "Ø¹": 525,
+   "Ùĥ": 526,
+   "ÙĬ": 527,
+   "ÛĮ": 528,
+   "à§": 529,
+   "à·": 530,
+   "àº": 531,
+   "à¯į": 532,
+   "áħ": 533,
+   "áŀ": 534,
+   "âĨ": 535,
+   "æĸ": 536,
+   "æĹ": 537,
+   "æľ": 538,
+   "ëĭ": 539,
+   "Ġ\"": 540,
+   "Ġ+": 541,
+   "Ġ-": 542,
+   "Ġ=": 543,
+   "Ġ>": 544,
+   "ĠB": 545,
+   "ĠD": 546,
+   "ĠG": 547,
+   "ĠH": 548,
+   "Ġj": 549,
+   "Ġ|": 550,
+   "ĠÎ": 551,
+   "Ġì": 552,
+   "Ġst": 553,
+   "Ġ<|": 554,
+   "Ġal": 555,
+   "Ġà¦": 556,
+   "Ġ..": 557,
+   "Īà¸": 558,
+   "Ńæĸ": 559,
+   "ant": 560,
+   "int": 561,
+   "Ġâī": 562,
+   "à¤¿à¤": 563,
+   "âĢįðŁ": 564,
+   "path": 565,
+   "ali": 566,
+   "ĠÃ©": 567,
+   "separ": 568,
+   "à¦¾": 569,
+   "raph": 570,
+   "ï¼ļ": 571,
+   "endoft": 572,
+   "ame": 573,
+   "amp": 574,
+   "ator": 575,
+   "à¹Ħà¸": 576,
+   "à¹Īà¸": 577,
+   "ass": 578,
+   "fter": 579,
+   "Ġvs": 580,
+   "abababababababababababababababab": 581,
+   "row": 582,
+   "ä¸Ńæĸ": 583,
+   "ðĿĲ": 584,
+   "Ø§ÙĦØ¹": 585,
+   "Ġdecomposed": 586,
+   "áĥĲáĥ": 587,
+   "width": 588,
+   "æĹ¥": 589,
+   "separator": 590,
+   "endoftext": 591,
+   "ä¸Ńæĸĩ": 592,
+   "\",": 593,
+   "\":": 594,
+   "\"}": 595,
+   "(*": 596,
+   ".<|": 597,
+   "14": 598,
+   "55": 599,
+   ";;": 600,
+   "><": 601,
+   "></": 602,
+   "Bo": 603,
+   "He": 604,
+   "IN": 605,
+   "It": 606,
+   "LE": 607,
+   "NT": 608,
+   "Ph": 609,
+   "Re": 610,
+   "Rom": 611,
+   "Sy": 612,
+   "ZW": 613,
+   "[i": 614,
+   "_he": 615,
+   "aS": 616,
+   "av": 617,
+   "be": 618,
+   "bo": 619,
+   "bre": 620,
+   "ci": 621,
+   "ck": 622,
+   "cl": 623,
+   "cr": 624,
+   "case": 625,
+   "dy": 626,
+   "dash": 627,
+   "em": 628,
+   "est": 629,
+   "fra": 630,
+   "hm": 631,
+   "hy": 632,
+   "hat": 633,
+   "ir": 634,
+   "ix": 635,
+   "iá»": 636,
+   "ke": 637,
+   "lis": 638,
+   "line": 639,
+   "ml": 640,
+   "no": 641,
+   "ok": 642,
+   "os": 643,
+   "ps": 644,
+   "ri": 645,
+   "rÃ¼": 646,
+   "tt": 647,
+   "tab": 648,
+   "up": 649,
+   "ung": 650,
+   "ver": 651,
+   "wo": 652,
+   "¡å": 653,
+   "¨ÙĬ": 654,
+   "¨¡å": 655,
+   "ªà¸": 656,
+   "¯Ù": 657,
+   "°×": 658,
+   "±à¸": 659,
+   "²à¸": 660,
+   "µŃ": 661,
+   "µà¸": 662,
+   "¶ï": 663,
+   "·Î": 664,
+   "¸Ģ": 665,
+   "¸ı": 666,
+   "º¿": 667,
+   "¼Î": 668,
+   "Â²": 669,
+   "Âł": 670,
+   "Ã±": 671,
+   "Ã¶": 672,
+   "ÃŁ": 673,
+   "Å¡": 674,
+   "Æ°": 675,
+   "Ì§": 676,
+   "ÌĢ": 677,
+   "Ìĥ": 678,
+   "ÌĬ": 679,
+   "Î»Î": 680,
+   "Ðµ": 681,
+   "Ð¶": 682,
+   "Ð¹": 683,
+   "Ð»": 684,
+   "Ð½": 685,
+   "Ðł": 686,
+   "ÒĽ": 687,
+   "Õ¡": 688,
+   "Ö¸": 689,
+   "ÖĢ": 690,
+   "Ö°×": 691,
+   "×Ŀ": 692,
+   "Ø©": 693,
+   "ØĮ": 694,
+   "Ùģ": 695,
+   "Ûģ": 696,
+   "à¶": 697,
+   "áĨ": 698,
+   "áŁ": 699,
+   "áº¿": 700,
+   "âĩ": 701,
+   "âĳ": 702,
+   "âĻ": 703,
+   "åĲ": 704,
+   "æ¨¡å": 705,
+   "çļ": 706,
+   "è§": 707,
+   "è¨": 708,
+   "éĩ": 709,
+   "ìĸ": 710,
+   "ï¤": 711,
+   "ï¸ı": 712,
+   "čĊ": 713,
+   "Ġ!": 714,
+   "Ġ&": 715,
+   "ĠK": 716,
+   "ĠM": 717,
+   "ĠN": 718,
+   "ĠO": 719,
+   "ĠP": 720,
+   "ĠV": 721,
+   "ĠW": 722,
+   "ĠX": 723,
+   "Ġ[": 724,
+   "Ġ^": 725,
+   "Ġi": 726,
+   "Ġm": 727,
+   "Ġ{": 728,
+   "Ġ~": 729,
+   "ĠÈ": 730,
+   "ĠÒ": 731,
+   "Ġin": 732,
+   "Ġà¸": 733,
+   "Ġco": 734,
+   "Ġáĥ": 735,
+   "Ġà°": 736,
+   "Ġcom": 737,
+   "Ġà®": 738,
+   "Ġus": 739,
+   "ĠMa": 740,
+   "Ġíķľê": 741,
+   "Ġ??": 742,
+   "ĠRom": 743,
+   "ĠÛģ": 744,
+   "ĢĻ": 745,
+   "Ģspace": 746,
+   "ĢâĶ": 747,
+   "Ħ¸": 748,
+   "Ĩà¦": 749,
+   "ĩº": 750,
+   "Ĺà¸": 751,
+   "Ļi": 752,
+   "ļĢ": 753,
+   "Ľl": 754,
+   "ŀĭ": 755,
+   "łáĥ": 756,
+   "!!!": 757,
+   "ano": 758,
+   "inal": 759,
+   "ĠâĤ": 760,
+   "ĠâĶ": 761,
+   "ĠâĻ": 762,
+   "std": 763,
+   "str": 764,
+   "stem": 765,
+   "à¸±à¸": 766,
+   "à¸µà¸": 767,
+   "ari": 768,
+   "arrow": 769,
+   "à¤¾": 770,
+   "cole": 771,
+   "ent": 772,
+   "ensk": 773,
+   "ore": 774,
+   "|><|": 775,
+   "âĢĭ": 776,
+   "all": 777,
+   "ess": 778,
+   "ãĢĢspace": 779,
+   "à¥¤": 780,
+   "à¥Ģ": 781,
+   "à¦²": 782,
+   "à¦¿": 783,
+   "ï¼Į": 784,
+   "def": 785,
+   "examp": 786,
+   "Ġafter": 787,
+   "ĠÂ«": 788,
+   "ics": 789,
+   "retu": 790,
+   "ÐºÐ°": 791,
+   "Ø§Ø±Ø": 792,
+   "Ġname": 793,
+   "Ð°Ðº": 794,
+   "ĠâĢĶ": 795,
+   "come": 796,
+   "llo": 797,
+   "Ìģ,": 798,
+   "à®®": 799,
+   "à®ķ": 800,
+   "Ġch": 801,
+   "Ġla": 802,
+   "Ġtab": 803,
+   "ÑģÑģÐºÐ¸": 804,
+   "ĠST": 805,
+   "Ġbef": 806,
+   "Ġfor": 807,
+   "Ġfull": 808,
+   "ĠáĦ": 809,
+   "ĠĠĠĊ": 810,
+   "iling": 811,
+   "Ã§e": 812,
+   "Ã§Ã£": 813,
+   "ĠCOU": 814,
+   "Ġdone": 815,
+   "ĠðŁĳ": 816,
+   "000": 817,
+   "ctor": 818,
+   "fix": 819,
+   "âĶĢâĶ": 820,
+   "ãĤ«": 821,
+   "ï½¶ï": 822,
+   "ðĿŁ": 823,
+   "Ġ×©": 824,
+   "Ġà¤ķ": 825,
+   "à¥įà¤°": 826,
+   "Ø±Ø¨ÙĬ": 827,
+   "HERE": 828,
+   "html": 829,
+   "istant": 830,
+   "unct": 831,
+   "vector": 832,
+   "Õ¥Õ": 833,
+   "à±ģ": 834,
+   "Ġquot": 835,
+   "íķľêµŃ": 836,
+   "456": 837,
+   "_call": 838,
+   "ader": 839,
+   "iÃª": 840,
+   "ideog": 841,
+   "tool": 842,
+   "words": 843,
+   "¬èªŀ": 844,
+   "ÑĤÐ¸": 845,
+   "ÑĥÑģÑģÐºÐ¸": 846,
+   "×ľ×ķ": 847,
+   "áħ¡": 848,
+   "æľ¬èªŀ": 849,
+   "Ġ->": 850,
+   "Ġìķ": 851,
+   "Ġalone": 852,
+   "Ġà¦Ĩà¦": 853,
+   "Ġ...": 854,
+   "à¤¿à¤¯": 855,
+   "âĢįðŁĳ": 856,
+   "raphic": 857,
+   "à¹Ħà¸Ĺà¸": 858,
+   "assistant": 859,
+   "Ø§ÙĦØ¹Ø±Ø¨ÙĬ": 860,
+   "áĥĲáĥłáĥ": 861,
+   "æĹ¥æľ¬èªŀ": 862,
+   "(*)": 863,
+   "Hello": 864,
+   "ING": 865,
+   "Phone": 866,
+   "_header": 867,
+   "body": 868,
+   "break": 869,
+   "crip": 870,
+   "frag": 871,
+   "ixed": 872,
+   "ÃŁe": 873,
+   "ÐłÑĥÑģÑģÐºÐ¸": 874,
+   "æ¨¡åŀĭ": 875,
+   "çļĦ": 876,
+   "ìĸ´": 877,
+   "Ġíķľê¸Ģ": 878,
+   "enska": 879,
+   "example": 880,
+   "return": 881,
+   "Ġbefore": 882,
+   "Ġfullwidth": 883,
+   "Ã§Ã£o": 884,
+   "ĠCOUNT": 885,
+   "ï½¶ï¾": 886,
+   "íķľêµŃìĸ´": 887,
+   "ideographic": 888,
+   "à¹Ħà¸Ĺà¸¢": 889,
+   "Ø§ÙĦØ¹Ø±Ø¨ÙĬØ©": 890,
+   "ÐłÑĥÑģÑģÐºÐ¸Ð¹": 891,
+   "!/": 892,
+   "\"%": 893,
+   "\">": 894,
+   "#in": 895,
+   "#frag": 896,
+   "%,": 897,
+   "%ãĢģ": 898,
+   "&b": 899,
+   "''": 900,
+   "':": 901,
+   "'D": 902,
+   "'L": 903,
+   "'M": 904,
+   "'N": 905,
+   "'S": 906,
+   "'T": 907,
+   "'V": 908,
+   "'d": 909,
+   "'m": 910,
+   "'Å": 911,
+   "'on": 912,
+   "'re": 913,
+   "'ll": 914,
+   "'RE": 915,
+   "'un": 916,
+   "'ve": 917,
+   "'Ã©": 918,
+   "(?": 919,
+   "(c": 920,
+   "(text": 921,
+   "(\"%": 922,
+   ")*": 923,
+   "),": 924,
+   ").": 925,
+   ")/": 926,
+   ");": 927,
+   "++": 928,
+   "+\\": 929,
+   "-I": 930,
+   "-r": 931,
+   "-z": 932,
+   "-case": 933,
+   "-words": 934,
+   "-break": 935,
+   ".t": 936,
+   ".or": 937,
+   ".com": 938,
+   "/\"": 939,
+   "/.": 940,
+   "/a": 941,
+   "/p": 942,
+   "/Ċ": 943,
+   "/..": 944,
+   "/fi": 945,
+   "/to": 946,
+   "/path": 947,
+   "02": 948,
+   "06": 949,
+   "010": 950,
+   "15": 951,
+   "16": 952,
+   "18": 953,
+   "202": 954,
+   "32": 955,
+   "42": 956,
+   "50": 957,
+   "59": 958,
+   "500": 959,
+   "78": 960,
+   "99": 961,
+   ":\\": 962,
+   ":Ċ": 963,
+   "://": 964,
+   ";ĊĊ": 965,
+   ";/Ċ": 966,
+   "<std": 967,
+   "<html": 968,
+   "<tool": 969,
+   "=\"": 970,
+   "=t": 971,
+   ">Ċ": 972,
+   ">{\"": 973,
+   "?/": 974,
+   "?<|": 975,
+   "?qu": 976,
+   "@example": 977,
+   "AM": 978,
+   "AS": 979,
+   "AV": 980,
+   "Ar": 981,
+   "ASE": 982,
+   "BC": 983,
+   "Ba": 984,
+   "Be": 985,
+   "CJ": 986,
+   "CO": 987,
+   "CT": 988,
+   "Cam": 989,
+   "Com": 990,
+   "CRE": 991,
+   "Case": 992,
+   "CASE": 993,
+   "De": 994,
+   "Don": 995,
+   "Done": 996,
+   "DÃ³": 997,
+   "EE": 998,
+   "Ed": 999,
+   "Ġpneumonoultramicroscopicsilicovolcanoconiosis": 1000,
+   "Ġantidisestablishmentarianism": 1001,
+   "Ġquick": 1002
+  },
+  "merges": [
+   [
+    "Ġ",
+    "Ġ"
+   ],
+   [
+    "!",
+    "!"
+   ],
+   [
+    "a",
+    "a"
+   ],
+   [
+    "1",
+    "1"
+   ],
+   [
+    "aa",
+    "aa"
+   ],
+   [
+    "ĠĠ",
+    "ĠĠ"
+   ],
+   [
+    "!!",
+    "!!"
+   ],
+   [
+    "a",
+    "b"
+   ],
+   [
+    "t",
+    "h"
+   ],
+   [
+    "a",
+    "n"
+   ],
+   [
+    "i",
+    "n"
+   ],
+   [
+    "ab",
+    "ab"
+   ],
+   [
+    "Ġ",
+    "â"
+   ],
+   [
+    "e",
+    "r"
+   ],
+   [
+    "ã",
+    "ģ"
+   ],
+   [
+    "Ġ",
+    "th"
+   ],
+   [
+    "11",
+    "1"
+   ],
+   [
+    "s",
+    "t"
+   ],
+   [
+    "à",
+    "¸"
+   ],
+   [
+    "Ġth",
+    "e"
+   ],
+   [
+    "a",
+    "r"
+   ],
+   [
+    "à",
+    "¤"
+   ],
+   [
+    "an",
+    "d"
+   ],
+   [
+    "aaaa",
+    "aaaa"
+   ],
+   [
+    "<",
+    "|"
+   ],
+   [
+    "c",
+    "o"
+   ],
+   [
+    "e",
+    "n"
+   ],
+   [
+    "ĠĠĠĠ",
+    "ĠĠĠĠ"
+   ],
+   [
+    "!!!!",
+    "!!!!"
+   ],
+   [
+    "ãģ",
+    "Ĥ"
+   ],
+   [
+    "o",
+    "r"
+   ],
+   [
+    "|",
+    ">"
+   ],
+   [
+    "â",
+    "Ģ"
+   ],
+   [
+    "ãģĤ",
+    "ãģĤ"
+   ],
+   [
+    "p",
+    "a"
+   ],
+   [
+    "a",
+    "l"
+   ],
+   [
+    "e",
+    "s"
+   ],
+   [
+    "o",
+    "n"
+   ],
+   [
+    "á",
+    "ĥ"
+   ],
+   [
+    "ã",
+    "Ģ"
+   ],
+   [
+    "Ġ",
+    "Ã"
+   ],
+   [
+    "Ġ",
+    "and"
+   ],
+   [
+    "abab",
+    "abab"
+   ],
+   [
+    "s",
+    "e"
+   ],
+   [
+    "s",
+    "pa"
+   ],
+   [
+    "à",
+    "¥"
+   ],
+   [
+    "à",
+    "¦"
+   ],
+   [
+    "l",
+    "e"
+   ],
+   [
+    "r",
+    "a"
+   ],
+   [
+    "ï",
+    "¼"
+   ],
+   [
+    "spa",
+    "c"
+   ],
+   [
+    "d",
+    "e"
+   ],
+   [
+    "e",
+    "x"
+   ],
+   [
+    "ð",
+    "Ł"
+   ],
+   [
+    "Ġ",
+    "'"
+   ],
+   [
+    "Ġ",
+    "a"
+   ],
+   [
+    "Ġ",
+    "Â"
+   ],
+   [
+    "1",
+    "2"
+   ],
+   [
+    "i",
+    "c"
+   ],
+   [
+    "i",
+    "m"
+   ],
+   [
+    "r",
+    "e"
+   ],
+   [
+    "Ð",
+    "º"
+   ],
+   [
+    "Ø",
+    "§"
+   ],
+   [
+    "Ġ",
+    "n"
+   ],
+   [
+    "en",
+    "d"
+   ],
+   [
+    "1",
+    "0"
+   ],
+   [
+    "Ð",
+    "°"
+   ],
+   [
+    "à",
+    "°"
+   ],
+   [
+    "Ġâ",
+    "Ģ"
+   ],
+   [
+    "aaaaaaaa",
+    "aaaaaaaa"
+   ],
+   [
+    "co",
+    "m"
+   ],
+   [
+    "a",
+    "m"
+   ],
+   [
+    "a",
+    "t"
+   ],
+   [
+    "i",
+    "d"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "Ì",
+    "ģ"
+   ],
+   [
+    "Ð",
+    "¸"
+   ],
+   [
+    "à",
+    "®"
+   ],
+   [
+    "à",
+    "¹"
+   ],
+   [
+    "Ġ",
+    "c"
+   ],
+   [
+    "Ġ",
+    "l"
+   ],
+   [
+    "Ġ",
+    "t"
+   ],
+   [
+    "ĠĠĠĠĠĠĠĠ",
+    "ĠĠĠĠĠĠĠĠ"
+   ],
+   [
+    "!!!!!!!!",
+    "!!!!!!!!"
+   ],
+   [
+    "ãģĤãģĤ",
+    "ãģĤãģĤ"
+   ],
+   [
+    "o",
+    "l"
+   ],
+   [
+    "Ñ",
+    "ģ"
+   ],
+   [
+    "Ġ",
+    "S"
+   ],
+   [
+    "Ġ",
+    "b"
+   ],
+   [
+    "in",
+    "g"
+   ],
+   [
+    "on",
+    "e"
+   ],
+   [
+    "ex",
+    "t"
+   ],
+   [
+    "12",
+    "3"
+   ],
+   [
+    "a",
+    "s"
+   ],
+   [
+    "e",
+    "d"
+   ],
+   [
+    "f",
+    "t"
+   ],
+   [
+    "i",
+    "s"
+   ],
+   [
+    "n",
+    "g"
+   ],
+   [
+    "o",
+    "m"
+   ],
+   [
+    "p",
+    "h"
+   ],
+   [
+    "q",
+    "u"
+   ],
+   [
+    "Ġ",
+    "f"
+   ],
+   [
+    "Ġ",
+    "s"
+   ],
+   [
+    "Ġ",
+    "v"
+   ],
+   [
+    "Ġ",
+    "x"
+   ],
+   [
+    "Ġ",
+    "á"
+   ],
+   [
+    "ĠĠ",
+    "Ġ"
+   ],
+   [
+    "in",
+    "e"
+   ],
+   [
+    "st",
+    "ar"
+   ],
+   [
+    "abababab",
+    "abababab"
+   ],
+   [
+    "spac",
+    "e"
+   ],
+   [
+    "star",
+    "t"
+   ],
+   [
+    ".",
+    "."
+   ],
+   [
+    "e",
+    "l"
+   ],
+   [
+    "i",
+    "l"
+   ],
+   [
+    "o",
+    "u"
+   ],
+   [
+    "p",
+    "o"
+   ],
+   [
+    "r",
+    "o"
+   ],
+   [
+    "Ã",
+    "§"
+   ],
+   [
+    "Ø",
+    "±"
+   ],
+   [
+    "Ù",
+    "Ħ"
+   ],
+   [
+    "à",
+    "½"
+   ],
+   [
+    "Ċ",
+    "Ċ"
+   ],
+   [
+    "Ġ",
+    "<"
+   ],
+   [
+    "Ġ",
+    "C"
+   ],
+   [
+    "Ġ",
+    "d"
+   ],
+   [
+    "Ġ",
+    "p"
+   ],
+   [
+    "Ġ",
+    "w"
+   ],
+   [
+    "Ġ",
+    "ðŁ"
+   ],
+   [
+    "or",
+    "d"
+   ],
+   [
+    "spac",
+    "es"
+   ],
+   [
+    "0",
+    "0"
+   ],
+   [
+    "O",
+    "U"
+   ],
+   [
+    "c",
+    "h"
+   ],
+   [
+    "c",
+    "t"
+   ],
+   [
+    "f",
+    "i"
+   ],
+   [
+    "u",
+    "s"
+   ],
+   [
+    "Ñ",
+    "Ģ"
+   ],
+   [
+    "á",
+    "»"
+   ],
+   [
+    "á",
+    "Ģ"
+   ],
+   [
+    "â",
+    "Ķ"
+   ],
+   [
+    "ã",
+    "Ĥ"
+   ],
+   [
+    "ä",
+    "¸"
+   ],
+   [
+    "í",
+    "ķ"
+   ],
+   [
+    "ï",
+    "½"
+   ],
+   [
+    "ð",
+    "Ŀ"
+   ],
+   [
+    "Ġ",
+    "e"
+   ],
+   [
+    "Ġ",
+    "o"
+   ],
+   [
+    "Ġ",
+    "y"
+   ],
+   [
+    "Ġ",
+    "Ä"
+   ],
+   [
+    "Ġ",
+    "Ç"
+   ],
+   [
+    "Ġ",
+    "Ð"
+   ],
+   [
+    "Ġ",
+    "Ñ"
+   ],
+   [
+    "Ġ",
+    "×"
+   ],
+   [
+    "Ġ",
+    "Ø"
+   ],
+   [
+    "Ġ",
+    "à¤"
+   ],
+   [
+    "Ġ",
+    "spaces"
+   ],
+   [
+    "į",
+    "à¤"
+   ],
+   [
+    "à¥",
+    "įà¤"
+   ],
+   [
+    "Ø§",
+    "ÙĦ"
+   ],
+   [
+    "com",
+    "po"
+   ],
+   [
+    "Ø±",
+    "Ø"
+   ],
+   [
+    "<",
+    "/"
+   ],
+   [
+    "H",
+    "E"
+   ],
+   [
+    "L",
+    "ine"
+   ],
+   [
+    "M",
+    "a"
+   ],
+   [
+    "R",
+    "E"
+   ],
+   [
+    "_",
+    "start"
+   ],
+   [
+    "a",
+    "se"
+   ],
+   [
+    "h",
+    "e"
+   ],
+   [
+    "h",
+    "t"
+   ],
+   [
+    "i",
+    "p"
+   ],
+   [
+    "i",
+    "t"
+   ],
+   [
+    "i",
+    "st"
+   ],
+   [
+    "o",
+    "t"
+   ],
+   [
+    "o",
+    "ft"
+   ],
+   [
+    "s",
+    "k"
+   ],
+   [
+    "u",
+    "m"
+   ],
+   [
+    "u",
+    "n"
+   ],
+   [
+    "v",
+    "e"
+   ],
+   [
+    "Ã",
+    "¤"
+   ],
+   [
+    "Ã",
+    "¼"
+   ],
+   [
+    "Ã",
+    "ł"
+   ],
+   [
+    "Ì",
+    "Ī"
+   ],
+   [
+    "Õ",
+    "¥"
+   ],
+   [
+    "×",
+    "ķ"
+   ],
+   [
+    "Ù",
+    "ħ"
+   ],
+   [
+    "à",
+    "±"
+   ],
+   [
+    "â",
+    "ħ"
+   ],
+   [
+    "ä",
+    "»"
+   ],
+   [
+    "Ġ",
+    "("
+   ],
+   [
+    "Ġ",
+    "A"
+   ],
+   [
+    "Ġ",
+    "I"
+   ],
+   [
+    "Ġ",
+    "g"
+   ],
+   [
+    "Ġ",
+    "Å"
+   ],
+   [
+    "Ġ",
+    "de"
+   ],
+   [
+    "Ġ",
+    "qu"
+   ],
+   [
+    "Ħ",
+    "à¸"
+   ],
+   [
+    "į",
+    "ðŁ"
+   ],
+   [
+    "ľ",
+    "ê"
+   ],
+   [
+    "Ġâ",
+    "Ħ"
+   ],
+   [
+    "Ġâ",
+    "Ī"
+   ],
+   [
+    "er",
+    "s"
+   ],
+   [
+    "ar",
+    "k"
+   ],
+   [
+    "co",
+    "n"
+   ],
+   [
+    "áĥ",
+    "Ĳ"
+   ],
+   [
+    "ãĢ",
+    "ģ"
+   ],
+   [
+    "ãĢ",
+    "Ĥ"
+   ],
+   [
+    "se",
+    "d"
+   ],
+   [
+    "Ðº",
+    "Ð¸"
+   ],
+   [
+    "10",
+    "0"
+   ],
+   [
+    "aaaaaaaaaaaaaaaa",
+    "aaaaaaaaaaaaaaaa"
+   ],
+   [
+    "ĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠ",
+    "ĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠĠ"
+   ],
+   [
+    "!!!!!!!!!!!!!!!!",
+    "!!!!!!!!!!!!!!!!"
+   ],
+   [
+    "ãģĤãģĤãģĤãģĤ",
+    "ãģĤãģĤãģĤãģĤ"
+   ],
+   [
+    "Ñģ",
+    "ÐºÐ¸"
+   ],
+   [
+    "as",
+    "h"
+   ],
+   [
+    "íķ",
+    "ľê"
+   ],
+   [
+    "compo",
+    "sed"
+   ],
+   [
+    "'",
+    "s"
+   ],
+   [
+    "/",
+    "/"
+   ],
+   [
+    "4",
+    "5"
+   ],
+   [
+    ":",
+    ":"
+   ],
+   [
+    "?",
+    "?"
+   ],
+   [
+    "F",
+    "C"
+   ],
+   [
+    "N",
+    "FC"
+   ],
+   [
+    "S",
+    "E"
+   ],
+   [
+    "_",
+    "c"
+   ],
+   [
+    "_",
+    "end"
+   ],
+   [
+    "_",
+    "id"
+   ],
+   [
+    "a",
+    "d"
+   ],
+   [
+    "a",
+    "g"
+   ],
+   [
+    "a",
+    "k"
+   ],
+   [
+    "e",
+    "f"
+   ],
+   [
+    "f",
+    "im"
+   ],
+   [
+    "i",
+    "Ã"
+   ],
+   [
+    "i",
+    "on"
+   ],
+   [
+    "i",
+    "de"
+   ],
+   [
+    "m",
+    "o"
+   ],
+   [
+    "m",
+    "ark"
+   ],
+   [
+    "o",
+    "g"
+   ],
+   [
+    "p",
+    "ar"
+   ],
+   [
+    "r",
+    "n"
+   ],
+   [
+    "s",
+    "l"
+   ],
+   [
+    "t",
+    "o"
+   ],
+   [
+    "t",
+    "s"
+   ],
+   [
+    "t",
+    "u"
+   ],
+   [
+    "t",
+    "ra"
+   ],
+   [
+    "t",
+    "ext"
+   ],
+   [
+    "u",
+    "l"
+   ],
+   [
+    "u",
+    "ll"
+   ],
+   [
+    "w",
+    "id"
+   ],
+   [
+    "w",
+    "ord"
+   ],
+   [
+    "{",
+    "\""
+   ],
+   [
+    "ª",
+    "ŀ"
+   ],
+   [
+    "¬",
+    "è"
+   ],
+   [
+    "¯",
+    "į"
+   ],
+   [
+    "»",
+    "Î"
+   ],
+   [
+    "¿",
+    "à¤"
+   ],
+   [
+    "Ã",
+    "£"
+   ],
+   [
+    "Ã",
+    "©"
+   ],
+   [
+    "Ã",
+    "³"
+   ],
+   [
+    "Ì",
+    "£"
+   ],
+   [
+    "Ì",
+    "Ĥ"
+   ],
+   [
+    "Î",
+    "±"
+   ],
+   [
+    "Î",
+    "¹"
+   ],
+   [
+    "Ñ",
+    "Ĥ"
+   ],
+   [
+    "Ñ",
+    "ĥ"
+   ],
+   [
+    "×",
+    "ľ"
+   ],
+   [
+    "Ø",
+    "¹"
+   ],
+   [
+    "Ù",
+    "ĥ"
+   ],
+   [
+    "Ù",
+    "Ĭ"
+   ],
+   [
+    "Û",
+    "Į"
+   ],
+   [
+    "à",
+    "§"
+   ],
+   [
+    "à",
+    "·"
+   ],
+   [
+    "à",
+    "º"
+   ],
+   [
+    "à",
+    "¯į"
+   ],
+   [
+    "á",
+    "ħ"
+   ],
+   [
+    "á",
+    "ŀ"
+   ],
+   [
+    "â",
+    "Ĩ"
+   ],
+   [
+    "æ",
+    "ĸ"
+   ],
+   [
+    "æ",
+    "Ĺ"
+   ],
+   [
+    "æ",
+    "ľ"
+   ],
+   [
+    "ë",
+    "ĭ"
+   ],
+   [
+    "Ġ",
+    "\""
+   ],
+   [
+    "Ġ",
+    "+"
+   ],
+   [
+    "Ġ",
+    "-"
+   ],
+   [
+    "Ġ",
+    "="
+   ],
+   [
+    "Ġ",
+    ">"
+   ],
+   [
+    "Ġ",
+    "B"
+   ],
+   [
+    "Ġ",
+    "D"
+   ],
+   [
+    "Ġ",
+    "G"
+   ],
+   [
+    "Ġ",
+    "H"
+   ],
+   [
+    "Ġ",
+    "j"
+   ],
+   [
+    "Ġ",
+    "|"
+   ],
+   [
+    "Ġ",
+    "Î"
+   ],
+   [
+    "Ġ",
+    "ì"
+   ],
+   [
+    "Ġ",
+    "st"
+   ],
+   [
+    "Ġ",
+    "<|"
+   ],
+   [
+    "Ġ",
+    "al"
+   ],
+   [
+    "Ġ",
+    "à¦"
+   ],
+   [
+    "Ġ",
+    ".."
+   ],
+   [
+    "Ī",
+    "à¸"
+   ],
+   [
+    "Ń",
+    "æĸ"
+   ],
+   [
+    "an",
+    "t"
+   ],
+   [
+    "in",
+    "t"
+   ],
+   [
+    "Ġâ",
+    "ī"
+   ],
+   [
+    "à¤",
+    "¿à¤"
+   ],
+   [
+    "âĢ",
+    "įðŁ"
+   ],
+   [
+    "pa",
+    "th"
+   ],
+   [
+    "al",
+    "i"
+   ],
+   [
+    "ĠÃ",
+    "©"
+   ],
+   [
+    "se",
+    "par"
+   ],
+   [
+    "à¦",
+    "¾"
+   ],
+   [
+    "ra",
+    "ph"
+   ],
+   [
+    "ï¼",
+    "ļ"
+   ],
+   [
+    "end",
+    "oft"
+   ],
+   [
+    "am",
+    "e"
+   ],
+   [
+    "am",
+    "p"
+   ],
+   [
+    "at",
+    "or"
+   ],
+   [
+    "à¹",
+    "Ħà¸"
+   ],
+   [
+    "à¹",
+    "Īà¸"
+   ],
+   [
+    "as",
+    "s"
+   ],
+   [
+    "ft",
+    "er"
+   ],
+   [
+    "Ġv",
+    "s"
+   ],
+   [
+    "abababababababab",
+    "abababababababab"
+   ],
+   [
+    "ro",
+    "w"
+   ],
+   [
+    "ä¸",
+    "Ńæĸ"
+   ],
+   [
+    "ðĿ",
+    "Ĳ"
+   ],
+   [
+    "Ø§ÙĦ",
+    "Ø¹"
+   ],
+   [
+    "Ġde",
+    "composed"
+   ],
+   [
+    "áĥĲ",
+    "áĥ"
+   ],
+   [
+    "wid",
+    "th"
+   ],
+   [
+    "æĹ",
+    "¥"
+   ],
+   [
+    "separ",
+    "ator"
+   ],
+   [
+    "endoft",
+    "ext"
+   ],
+   [
+    "ä¸Ńæĸ",
+    "ĩ"
+   ],
+   [
+    "\"",
+    ","
+   ],
+   [
+    "\"",
+    ":"
+   ],
+   [
+    "\"",
+    "}"
+   ],
+   [
+    "(",
+    "*"
+   ],
+   [
+    ".",
+    "<|"
+   ],
+   [
+    "1",
+    "4"
+   ],
+   [
+    "5",
+    "5"
+   ],
+   [
+    ";",
+    ";"
+   ],
+   [
+    ">",
+    "<"
+   ],
+   [
+    ">",
+    "</"
+   ],
+   [
+    "B",
+    "o"
+   ],
+   [
+    "H",
+    "e"
+   ],
+   [
+    "I",
+    "N"
+   ],
+   [
+    "I",
+    "t"
+   ],
+   [
+    "L",
+    "E"
+   ],
+   [
+    "N",
+    "T"
+   ],
+   [
+    "P",
+    "h"
+   ],
+   [
+    "R",
+    "e"
+   ],
+   [
+    "R",
+    "om"
+   ],
+   [
+    "S",
+    "y"
+   ],
+   [
+    "Z",
+    "W"
+   ],
+   [
+    "[",
+    "i"
+   ],
+   [
+    "_",
+    "he"
+   ],
+   [
+    "a",
+    "S"
+   ],
+   [
+    "a",
+    "v"
+   ],
+   [
+    "b",
+    "e"
+   ],
+   [
+    "b",
+    "o"
+   ],
+   [
+    "b",
+    "re"
+   ],
+   [
+    "c",
+    "i"
+   ],
+   [
+    "c",
+    "k"
+   ],
+   [
+    "c",
+    "l"
+   ],
+   [
+    "c",
+    "r"
+   ],
+   [
+    "c",
+    "ase"
+   ],
+   [
+    "d",
+    "y"
+   ],
+   [
+    "d",
+    "ash"
+   ],
+   [
+    "e",
+    "m"
+   ],
+   [
+    "e",
+    "st"
+   ],
+   [
+    "f",
+    "ra"
+   ],
+   [
+    "h",
+    "m"
+   ],
+   [
+    "h",
+    "y"
+   ],
+   [
+    "h",
+    "at"
+   ],
+   [
+    "i",
+    "r"
+   ],
+   [
+    "i",
+    "x"
+   ],
+   [
+    "i",
+    "á»"
+   ],
+   [
+    "k",
+    "e"
+   ],
+   [
+    "l",
+    "is"
+   ],
+   [
+    "l",
+    "ine"
+   ],
+   [
+    "m",
+    "l"
+   ],
+   [
+    "n",
+    "o"
+   ],
+   [
+    "o",
+    "k"
+   ],
+   [
+    "o",
+    "s"
+   ],
+   [
+    "p",
+    "s"
+   ],
+   [
+    "r",
+    "i"
+   ],
+   [
+    "r",
+    "Ã¼"
+   ],
+   [
+    "t",
+    "t"
+   ],
+   [
+    "t",
+    "ab"
+   ],
+   [
+    "u",
+    "p"
+   ],
+   [
+    "u",
+    "ng"
+   ],
+   [
+    "v",
+    "er"
+   ],
+   [
+    "w",
+    "o"
+   ],
+   [
+    "¡",
+    "å"
+   ],
+   [
+    "¨",
+    "ÙĬ"
+   ],
+   [
+    "¨",
+    "¡å"
+   ],
+   [
+    "ª",
+    "à¸"
+   ],
+   [
+    "¯",
+    "Ù"
+   ],
+   [
+    "°",
+    "×"
+   ],
+   [
+    "±",
+    "à¸"
+   ],
+   [
+    "²",
+    "à¸"
+   ],
+   [
+    "µ",
+    "Ń"
+   ],
+   [
+    "µ",
+    "à¸"
+   ],
+   [
+    "¶",
+    "ï"
+   ],
+   [
+    "·",
+    "Î"
+   ],
+   [
+    "¸",
+    "Ģ"
+   ],
+   [
+    "¸",
+    "ı"
+   ],
+   [
+    "º",
+    "¿"
+   ],
+   [
+    "¼",
+    "Î"
+   ],
+   [
+    "Â",
+    "²"
+   ],
+   [
+    "Â",
+    "ł"
+   ],
+   [
+    "Ã",
+    "±"
+   ],
+   [
+    "Ã",
+    "¶"
+   ],
+   [
+    "Ã",
+    "Ł"
+   ],
+   [
+    "Å",
+    "¡"
+   ],
+   [
+    "Æ",
+    "°"
+   ],
+   [
+    "Ì",
+    "§"
+   ],
+   [
+    "Ì",
+    "Ģ"
+   ],
+   [
+    "Ì",
+    "ĥ"
+   ],
+   [
+    "Ì",
+    "Ĭ"
+   ],
+   [
+    "Î",
+    "»Î"
+   ],
+   [
+    "Ð",
+    "µ"
+   ],
+   [
+    "Ð",
+    "¶"
+   ],
+   [
+    "Ð",
+    "¹"
+   ],
+   [
+    "Ð",
+    "»"
+   ],
+   [
+    "Ð",
+    "½"
+   ],
+   [
+    "Ð",
+    "ł"
+   ],
+   [
+    "Ò",
+    "Ľ"
+   ],
+   [
+    "Õ",
+    "¡"
+   ],
+   [
+    "Ö",
+    "¸"
+   ],
+   [
+    "Ö",
+    "Ģ"
+   ],
+   [
+    "Ö",
+    "°×"
+   ],
+   [
+    "×",
+    "Ŀ"
+   ],
+   [
+    "Ø",
+    "©"
+   ],
+   [
+    "Ø",
+    "Į"
+   ],
+   [
+    "Ù",
+    "ģ"
+   ],
+   [
+    "Û",
+    "ģ"
+   ],
+   [
+    "à",
+    "¶"
+   ],
+   [
+    "á",
+    "Ĩ"
+   ],
+   [
+    "á",
+    "Ł"
+   ],
+   [
+    "á",
+    "º¿"
+   ],
+   [
+    "â",
+    "ĩ"
+   ],
+   [
+    "â",
+    "ĳ"
+   ],
+   [
+    "â",
+    "Ļ"
+   ],
+   [
+    "å",
+    "Ĳ"
+   ],
+   [
+    "æ",
+    "¨¡å"
+   ],
+   [
+    "ç",
+    "ļ"
+   ],
+   [
+    "è",
+    "§"
+   ],
+   [
+    "è",
+    "¨"
+   ],
+   [
+    "é",
+    "ĩ"
+   ],
+   [
+    "ì",
+    "ĸ"
+   ],
+   [
+    "ï",
+    "¤"
+   ],
+   [
+    "ï",
+    "¸ı"
+   ],
+   [
+    "č",
+    "Ċ"
+   ],
+   [
+    "Ġ",
+    "!"
+   ],
+   [
+    "Ġ",
+    "&"
+   ],
+   [
+    "Ġ",
+    "K"
+   ],
+   [
+    "Ġ",
+    "M"
+   ],
+   [
+    "Ġ",
+    "N"
+   ],
+   [
+    "Ġ",
+    "O"
+   ],
+   [
+    "Ġ",
+    "P"
+   ],
+   [
+    "Ġ",
+    "V"
+   ],
+   [
+    "Ġ",
+    "W"
+   ],
+   [
+    "Ġ",
+    "X"
+   ],
+   [
+    "Ġ",
+    "["
+   ],
+   [
+    "Ġ",
+    "^"
+   ],
+   [
+    "Ġ",
+    "i"
+   ],
+   [
+    "Ġ",
+    "m"
+   ],
+   [
+    "Ġ",
+    "{"
+   ],
+   [
+    "Ġ",
+    "~"
+   ],
+   [
+    "Ġ",
+    "È"
+   ],
+   [
+    "Ġ",
+    "Ò"
+   ],
+   [
+    "Ġ",
+    "in"
+   ],
+   [
+    "Ġ",
+    "à¸"
+   ],
+   [
+    "Ġ",
+    "co"
+   ],
+   [
+    "Ġ",
+    "áĥ"
+   ],
+   [
+    "Ġ",
+    "à°"
+   ],
+   [
+    "Ġ",
+    "com"
+   ],
+   [
+    "Ġ",
+    "à®"
+   ],
+   [
+    "Ġ",
+    "us"
+   ],
+   [
+    "Ġ",
+    "Ma"
+   ],
+   [
+    "Ġ",
+    "íķľê"
+   ],
+   [
+    "Ġ",
+    "??"
+   ],
+   [
+    "Ġ",
+    "Rom"
+   ],
+   [
+    "Ġ",
+    "Ûģ"
+   ],
+   [
+    "Ģ",
+    "Ļ"
+   ],
+   [
+    "Ģ",
+    "space"
+   ],
+   [
+    "Ģ",
+    "âĶ"
+   ],
+   [
+    "Ħ",
+    "¸"
+   ],
+   [
+    "Ĩ",
+    "à¦"
+   ],
+   [
+    "ĩ",
+    "º"
+   ],
+   [
+    "Ĺ",
+    "à¸"
+   ],
+   [
+    "Ļ",
+    "i"
+   ],
+   [
+    "ļ",
+    "Ģ"
+   ],
+   [
+    "Ľ",
+    "l"
+   ],
+   [
+    "ŀ",
+    "ĭ"
+   ],
+   [
+    "ł",
+    "áĥ"
+   ],
+   [
+    "!!",
+    "!"
+   ],
+   [
+    "an",
+    "o"
+   ],
+   [
+    "in",
+    "al"
+   ],
+   [
+    "Ġâ",
+    "Ĥ"
+   ],
+   [
+    "Ġâ",
+    "Ķ"
+   ],
+   [
+    "Ġâ",
+    "Ļ"
+   ],
+   [
+    "st",
+    "d"
+   ],
+   [
+    "st",
+    "r"
+   ],
+   [
+    "st",
+    "em"
+   ],
+   [
+    "à¸",
+    "±à¸"
+   ],
+   [
+    "à¸",
+    "µà¸"
+   ],
+   [
+    "ar",
+    "i"
+   ],
+   [
+    "ar",
+    "row"
+   ],
+   [
+    "à¤",
+    "¾"
+   ],
+   [
+    "co",
+    "le"
+   ],
+   [
+    "en",
+    "t"
+   ],
+   [
+    "en",
+    "sk"
+   ],
+   [
+    "or",
+    "e"
+   ],
+   [
+    "|>",
+    "<|"
+   ],
+   [
+    "âĢ",
+    "ĭ"
+   ],
+   [
+    "al",
+    "l"
+   ],
+   [
+    "es",
+    "s"
+   ],
+   [
+    "ãĢ",
+    "Ģspace"
+   ],
+   [
+    "à¥",
+    "¤"
+   ],
+   [
+    "à¥",
+    "Ģ"
+   ],
+   [
+    "à¦",
+    "²"
+   ],
+   [
+    "à¦",
+    "¿"
+   ],
+   [
+    "ï¼",
+    "Į"
+   ],
+   [
+    "de",
+    "f"
+   ],
+   [
+    "ex",
+    "amp"
+   ],
+   [
+    "Ġa",
+    "fter"
+   ],
+   [
+    "ĠÂ",
+    "«"
+   ],
+   [
+    "ic",
+    "s"
+   ],
+   [
+    "re",
+    "tu"
+   ],
+   [
+    "Ðº",
+    "Ð°"
+   ],
+   [
+    "Ø§",
+    "Ø±Ø"
+   ],
+   [
+    "Ġn",
+    "ame"
+   ],
+   [
+    "Ð°",
+    "Ðº"
+   ],
+   [
+    "ĠâĢ",
+    "Ķ"
+   ],
+   [
+    "com",
+    "e"
+   ],
+   [
+    "ll",
+    "o"
+   ],
+   [
+    "Ìģ",
+    ","
+   ],
+   [
+    "à®",
+    "®"
+   ],
+   [
+    "à®",
+    "ķ"
+   ],
+   [
+    "Ġc",
+    "h"
+   ],
+   [
+    "Ġl",
+    "a"
+   ],
+   [
+    "Ġt",
+    "ab"
+   ],
+   [
+    "Ñģ",
+    "ÑģÐºÐ¸"
+   ],
+   [
+    "ĠS",
+    "T"
+   ],
+   [
+    "Ġb",
+    "ef"
+   ],
+   [
+    "Ġf",
+    "or"
+   ],
+   [
+    "Ġf",
+    "ull"
+   ],
+   [
+    "Ġá",
+    "Ħ"
+   ],
+   [
+    "ĠĠĠ",
+    "Ċ"
+   ],
+   [
+    "il",
+    "ing"
+   ],
+   [
+    "Ã§",
+    "e"
+   ],
+   [
+    "Ã§",
+    "Ã£"
+   ],
+   [
+    "ĠC",
+    "OU"
+   ],
+   [
+    "Ġd",
+    "one"
+   ],
+   [
+    "ĠðŁ",
+    "ĳ"
+   ],
+   [
+    "00",
+    "0"
+   ],
+   [
+    "ct",
+    "or"
+   ],
+   [
+    "fi",
+    "x"
+   ],
+   [
+    "âĶ",
+    "ĢâĶ"
+   ],
+   [
+    "ãĤ",
+    "«"
+   ],
+   [
+    "ï½",
+    "¶ï"
+   ],
+   [
+    "ðĿ",
+    "Ł"
+   ],
+   [
+    "Ġ×",
+    "©"
+   ],
+   [
+    "Ġà¤",
+    "ķ"
+   ],
+   [
+    "à¥įà¤",
+    "°"
+   ],
+   [
+    "Ø±Ø",
+    "¨ÙĬ"
+   ],
+   [
+    "HE",
+    "RE"
+   ],
+   [
+    "ht",
+    "ml"
+   ],
+   [
+    "ist",
+    "ant"
+   ],
+   [
+    "un",
+    "ct"
+   ],
+   [
+    "ve",
+    "ctor"
+   ],
+   [
+    "Õ¥",
+    "Õ"
+   ],
+   [
+    "à±",
+    "ģ"
+   ],
+   [
+    "Ġqu",
+    "ot"
+   ],
+   [
+    "íķľê",
+    "µŃ"
+   ],
+   [
+    "45",
+    "6"
+   ],
+   [
+    "_c",
+    "all"
+   ],
+   [
+    "ad",
+    "er"
+   ],
+   [
+    "iÃ",
+    "ª"
+   ],
+   [
+    "ide",
+    "og"
+   ],
+   [
+    "to",
+    "ol"
+   ],
+   [
+    "word",
+    "s"
+   ],
+   [
+    "¬è",
+    "ªŀ"
+   ],
+   [
+    "ÑĤ",
+    "Ð¸"
+   ],
+   [
+    "Ñĥ",
+    "ÑģÑģÐºÐ¸"
+   ],
+   [
+    "×ľ",
+    "×ķ"
+   ],
+   [
+    "áħ",
+    "¡"
+   ],
+   [
+    "æľ",
+    "¬èªŀ"
+   ],
+   [
+    "Ġ-",
+    ">"
+   ],
+   [
+    "Ġì",
+    "ķ"
+   ],
+   [
+    "Ġal",
+    "one"
+   ],
+   [
+    "Ġà¦",
+    "Ĩà¦"
+   ],
+   [
+    "Ġ..",
+    "."
+   ],
+   [
+    "à¤¿à¤",
+    "¯"
+   ],
+   [
+    "âĢįðŁ",
+    "ĳ"
+   ],
+   [
+    "raph",
+    "ic"
+   ],
+   [
+    "à¹Ħà¸",
+    "Ĺà¸"
+   ],
+   [
+    "ass",
+    "istant"
+   ],
+   [
+    "Ø§ÙĦØ¹",
+    "Ø±Ø¨ÙĬ"
+   ],
+   [
+    "áĥĲáĥ",
+    "łáĥ"
+   ],
+   [
+    "æĹ¥",
+    "æľ¬èªŀ"
+   ],
+   [
+    "(*",
+    ")"
+   ],
+   [
+    "He",
+    "llo"
+   ],
+   [
+    "IN",
+    "G"
+   ],
+   [
+    "Ph",
+    "one"
+   ],
+   [
+    "_he",
+    "ader"
+   ],
+   [
+    "bo",
+    "dy"
+   ],
+   [
+    "bre",
+    "ak"
+   ],
+   [
+    "cr",
+    "ip"
+   ],
+   [
+    "fra",
+    "g"
+   ],
+   [
+    "ix",
+    "ed"
+   ],
+   [
+    "ÃŁ",
+    "e"
+   ],
+   [
+    "Ðł",
+    "ÑĥÑģÑģÐºÐ¸"
+   ],
+   [
+    "æ¨¡å",
+    "ŀĭ"
+   ],
+   [
+    "çļ",
+    "Ħ"
+   ],
+   [
+    "ìĸ",
+    "´"
+   ],
+   [
+    "Ġíķľê",
+    "¸Ģ"
+   ],
+   [
+    "ensk",
+    "a"
+   ],
+   [
+    "examp",
+    "le"
+   ],
+   [
+    "retu",
+    "rn"
+   ],
+   [
+    "Ġbef",
+    "ore"
+   ],
+   [
+    "Ġfull",
+    "width"
+   ],
+   [
+    "Ã§Ã£",
+    "o"
+   ],
+   [
+    "ĠCOU",
+    "NT"
+   ],
+   [
+    "ï½¶ï",
+    "¾"
+   ],
+   [
+    "íķľêµŃ",
+    "ìĸ´"
+   ],
+   [
+    "ideog",
+    "raphic"
+   ],
+   [
+    "à¹Ħà¸Ĺà¸",
+    "¢"
+   ],
+   [
+    "Ø§ÙĦØ¹Ø±Ø¨ÙĬ",
+    "Ø©"
+   ],
+   [
+    "ÐłÑĥÑģÑģÐºÐ¸",
+    "Ð¹"
+   ],
+   [
+    "!",
+    "/"
+   ],
+   [
+    "\"",
+    "%"
+   ],
+   [
+    "\"",
+    ">"
+   ],
+   [
+    "#",
+    "in"
+   ],
+   [
+    "#",
+    "frag"
+   ],
+   [
+    "%",
+    ","
+   ],
+   [
+    "%",
+    "ãĢģ"
+   ],
+   [
+    "&",
+    "b"
+   ],
+   [
+    "'",
+    "'"
+   ],
+   [
+    "'",
+    ":"
+   ],
+   [
+    "'",
+    "D"
+   ],
+   [
+    "'",
+    "L"
+   ],
+   [
+    "'",
+    "M"
+   ],
+   [
+    "'",
+    "N"
+   ],
+   [
+    "'",
+    "S"
+   ],
+   [
+    "'",
+    "T"
+   ],
+   [
+    "'",
+    "V"
+   ],
+   [
+    "'",
+    "d"
+   ],
+   [
+    "'",
+    "m"
+   ],
+   [
+    "'",
+    "Å"
+   ],
+   [
+    "'",
+    "on"
+   ],
+   [
+    "'",
+    "re"
+   ],
+   [
+    "'",
+    "ll"
+   ],
+   [
+    "'",
+    "RE"
+   ],
+   [
+    "'",
+    "un"
+   ],
+   [
+    "'",
+    "ve"
+   ],
+   [
+    "'",
+    "Ã©"
+   ],
+   [
+    "(",
+    "?"
+   ],
+   [
+    "(",
+    "c"
+   ],
+   [
+    "(",
+    "text"
+   ],
+   [
+    "(",
+    "\"%"
+   ],
+   [
+    ")",
+    "*"
+   ],
+   [
+    ")",
+    ","
+   ],
+   [
+    ")",
+    "."
+   ],
+   [
+    ")",
+    "/"
+   ],
+   [
+    ")",
+    ";"
+   ],
+   [
+    "+",
+    "+"
+   ],
+   [
+    "+",
+    "\\"
+   ],
+   [
+    "-",
+    "I"
+   ],
+   [
+    "-",
+    "r"
+   ],
+   [
+    "-",
+    "z"
+   ],
+   [
+    "-",
+    "case"
+   ],
+   [
+    "-",
+    "words"
+   ],
+   [
+    "-",
+    "break"
+   ],
+   [
+    ".",
+    "t"
+   ],
+   [
+    ".",
+    "or"
+   ],
+   [
+    ".",
+    "com"
+   ],
+   [
+    "/",
+    "\""
+   ],
+   [
+    "/",
+    "."
+   ],
+   [
+    "/",
+    "a"
+   ],
+   [
+    "/",
+    "p"
+   ],
+   [
+    "/",
+    "Ċ"
+   ],
+   [
+    "/",
+    ".."
+   ],
+   [
+    "/",
+    "fi"
+   ],
+   [
+    "/",
+    "to"
+   ],
+   [
+    "/",
+    "path"
+   ],
+   [
+    "0",
+    "2"
+   ],
+   [
+    "0",
+    "6"
+   ],
+   [
+    "0",
+    "10"
+   ],
+   [
+    "1",
+    "5"
+   ],
+   [
+    "1",
+    "6"
+   ],
+   [
+    "1",
+    "8"
+   ],
+   [
+    "2",
+    "02"
+   ],
+   [
+    "3",
+    "2"
+   ],
+   [
+    "4",
+    "2"
+   ],
+   [
+    "5",
+    "0"
+   ],
+   [
+    "5",
+    "9"
+   ],
+   [
+    "5",
+    "00"
+   ],
+   [
+    "7",
+    "8"
+   ],
+   [
+    "9",
+    "9"
+   ],
+   [
+    ":",
+    "\\"
+   ],
+   [
+    ":",
+    "Ċ"
+   ],
+   [
+    ":",
+    "//"
+   ],
+   [
+    ";",
+    "ĊĊ"
+   ],
+   [
+    ";",
+    "/Ċ"
+   ],
+   [
+    "<",
+    "std"
+   ],
+   [
+    "<",
+    "html"
+   ],
+   [
+    "<",
+    "tool"
+   ],
+   [
+    "=",
+    "\""
+   ],
+   [
+    "=",
+    "t"
+   ],
+   [
+    ">",
+    "Ċ"
+   ],
+   [
+    ">",
+    "{\""
+   ],
+   [
+    "?",
+    "/"
+   ],
+   [
+    "?",
+    "<|"
+   ],
+   [
+    "?",
+    "qu"
+   ],
+   [
+    "@",
+    "example"
+   ],
+   [
+    "A",
+    "M"
+   ],
+   [
+    "A",
+    "S"
+   ],
+   [
+    "A",
+    "V"
+   ],
+   [
+    "A",
+    "r"
+   ],
+   [
+    "A",
+    "SE"
+   ],
+   [
+    "B",
+    "C"
+   ],
+   [
+    "B",
+    "a"
+   ],
+   [
+    "B",
+    "e"
+   ],
+   [
+    "C",
+    "J"
+   ],
+   [
+    "C",
+    "O"
+   ],
+   [
+    "C",
+    "T"
+   ],
+   [
+    "C",
+    "am"
+   ],
+   [
+    "C",
+    "om"
+   ],
+   [
+    "C",
+    "RE"
+   ],
+   [
+    "C",
+    "ase"
+   ],
+   [
+    "C",
+    "ASE"
+   ],
+   [
+    "D",
+    "e"
+   ],
+   [
+    "D",
+    "on"
+   ],
+   [
+    "D",
+    "one"
+   ],
+   [
+    "D",
+    "Ã³"
+   ],
+   [
+    "E",
+    "E"
+   ],
+   [
+    "E",
+    "d"
+   ]
+  ]
+ }
+}
