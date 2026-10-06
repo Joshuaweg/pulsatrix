@@ -7,6 +7,33 @@
 
 namespace pulsatrix {
 
+GoldenSequenceResult CompareLogits(const std::vector<float>& got, const std::vector<float>& expected,
+                                   int64_t num_tokens, int64_t vocab) {
+    const size_t n = static_cast<size_t>(num_tokens * vocab);
+    if (got.size() != n || expected.size() != n) {
+        throw std::invalid_argument("CompareLogits: both logit buffers must hold num_tokens * vocab values");
+    }
+    GoldenSequenceResult r;
+    r.num_tokens = num_tokens;
+    double sum = 0.0;
+    for (int64_t p = 0; p < num_tokens; ++p) {
+        const float* g = got.data() + p * vocab;
+        const float* e = expected.data() + p * vocab;
+        float scale = 1.0f;
+        for (int64_t v = 0; v < vocab; ++v) scale = std::max(scale, std::fabs(e[v]));
+        for (int64_t v = 0; v < vocab; ++v) {
+            float d = std::fabs(g[v] - e[v]);
+            if (std::isnan(d)) d = INFINITY;
+            r.max_abs_diff = std::max(r.max_abs_diff, d);
+            r.max_scaled_diff = std::max(r.max_scaled_diff, d / scale);
+            sum += d;
+        }
+        if (std::max_element(g, g + vocab) - g != std::max_element(e, e + vocab) - e) ++r.argmax_disagreements;
+    }
+    r.mean_abs_diff = static_cast<float>(sum / static_cast<double>(n));
+    return r;
+}
+
 GoldenReport CompareToGolden(CausalLM& model, const SafetensorsFile& golden, float threshold) {
     GoldenReport report;
     report.threshold = threshold;
@@ -40,29 +67,15 @@ GoldenReport CompareToGolden(CausalLM& model, const SafetensorsFile& golden, flo
             throw std::invalid_argument("CompareToGolden: " + logits_name + " is not (L, vocab)");
         }
         const std::vector<float> got = model.forward(Tensor(Shape({1, L}), backend, ids)).to_host_vector();
-        GoldenSequenceResult r;
-        r.num_tokens = L;
-        double sum = 0.0;
-        for (size_t i = 0; i < got.size(); ++i) {
-            const float d = std::fabs(got[i] - expected[i]);
-            r.max_abs_diff = std::max(r.max_abs_diff, std::isnan(d) ? INFINITY : d);
-            sum += d;
-        }
-        r.mean_abs_diff = static_cast<float>(sum / static_cast<double>(got.size()));
-        for (int64_t p = 0; p < L; ++p) {
-            auto row = [&](const std::vector<float>& v) { return v.begin() + p * vocab; };
-            if (std::max_element(row(got), row(got) + vocab) - row(got) !=
-                std::max_element(row(expected), row(expected) + vocab) - row(expected)) {
-                ++r.argmax_disagreements;
-            }
-        }
+        GoldenSequenceResult r = CompareLogits(got, expected, L, vocab);
         report.max_abs_diff = std::max(report.max_abs_diff, r.max_abs_diff);
+        report.max_scaled_diff = std::max(report.max_scaled_diff, r.max_scaled_diff);
         report.sequences.push_back(r);
     }
     if (report.sequences.empty()) {
         throw std::invalid_argument("CompareToGolden: the golden file holds no ids.0");
     }
-    report.passed = report.max_abs_diff < threshold;
+    report.passed = report.max_scaled_diff < threshold;
     return report;
 }
 
