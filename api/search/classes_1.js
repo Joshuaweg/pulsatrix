@@ -10,5 +10,6 @@ var searchData=
   ['benchmarkrecord_7',['BenchmarkRecord',['../structpulsatrix_1_1BenchmarkRecord.html',1,'pulsatrix']]],
   ['benchmarkreport_8',['BenchmarkReport',['../structpulsatrix_1_1BenchmarkReport.html',1,'pulsatrix']]],
   ['booleansemiring_9',['BooleanSemiring',['../structpulsatrix_1_1datalog_1_1BooleanSemiring.html',1,'pulsatrix::datalog']]],
-  ['boundedqueue_10',['BoundedQueue',['../classpulsatrix_1_1BoundedQueue.html',1,'pulsatrix']]]
+  ['boundedqueue_10',['BoundedQueue',['../classpulsatrix_1_1BoundedQueue.html',1,'pulsatrix']]],
+  ['bytemodel_11',['ByteModel',['../classpulsatrix_1_1ByteModel.html',1,'pulsatrix']]]
 ];

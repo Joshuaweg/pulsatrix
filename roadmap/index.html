@@ -1745,6 +1745,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="TOK: Tokenizers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-tok-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the TOK work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2418,6 +2435,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="TOK: Tokenizers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-tok-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the TOK work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3796,6 +3830,21 @@ scores into word scores.</p>
 </table>
 <p>Not planned: SentencePiece <code>.model</code> protobuf files (every target model also ships
 <code>tokenizer.json</code>) and a local Claude tokenizer (not public).</p>
+<h3 id="how-the-tok-work-departed-from-the-plan">How the TOK work departed from the plan<a class="headerlink" href="#how-the-tok-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>TOK-1</strong> is one concrete <code>TextTokenizer</code> built from components (<code>text_tokenizer.hpp</code>), as Hugging
+  Face's <code>Tokenizer</code> is, rather than an interface each tokenizer implements. The word-level, byte
+  and character tokenizers are factory functions (<code>tokenizer_components.hpp</code>).</li>
+<li>Offsets are UTF-8 byte offsets into the input, not characters. A token's source is then a plain
+    substring. A byte-level token inside a multi-byte character covers just its own bytes.</li>
+<li><code>NormalizedString</code> records each byte's origin, so normalizers and pre-tokenizers that change
+    text (NFC, byte-level mapping in TOK-2) keep offsets.</li>
+<li><code>Tokenizer::Tokenize</code> stays as it is for <code>TextDataset</code> and existing vocabularies. The new
+    word-level tokenizer matches it on ASCII. It keeps a non-ASCII character as one token, where
+    <code>Tokenize</code> splits it into bytes.</li>
+<li>Added tokens are matched in the raw text, longest first. Hugging Face can also match them after
+    normalization (<code>normalized: true</code>); TOK-2 handles that where a target model needs it.</li>
+</ul>
 <h2 id="xai-question-driven-explainability-framework">XAI: Question-driven explainability framework<a class="headerlink" href="#xai-question-driven-explainability-framework" title="Permanent link">&para;</a></h2>
 <p>This epic builds two frameworks into the library:</p>
 <ul>
