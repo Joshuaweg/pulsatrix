@@ -9,7 +9,7 @@ var searchData=
   ['temperature_6',['temperature',['../structpulsatrix_1_1GenerationConfig.html#ac368c345a29a4606e4ec802d91951dbb',1,'pulsatrix::GenerationConfig']]],
   ['temperature_5fc_7',['temperature_c',['../structpulsatrix_1_1GpuSample.html#ae527c8a5721440505d6b852c651161f0',1,'pulsatrix::GpuSample']]],
   ['terminal_5freward_8',['terminal_reward',['../structpulsatrix_1_1GFlowNetTrajectory.html#ae7394613c6b3469e69326d93da2a211a',1,'pulsatrix::GFlowNetTrajectory']]],
-  ['text_9',['text',['../structpulsatrix_1_1NormalizedString_1_1Piece.html#a93c2c7f60b45a08d7471f57b4a20fa56',1,'pulsatrix::NormalizedString::Piece']]],
+  ['text_9',['text',['../structpulsatrix_1_1NormalizedString_1_1Piece.html#a93c2c7f60b45a08d7471f57b4a20fa56',1,'pulsatrix::NormalizedString::Piece::text'],['../structpulsatrix_1_1TokenizerMismatch.html#a6fe1865940a4708d696224a8a7c55a7e',1,'pulsatrix::TokenizerMismatch::text']]],
   ['threshold_10',['threshold',['../structpulsatrix_1_1AttnLrpReport.html#a22de480806c8df1809b3b271cc797a7e',1,'pulsatrix::AttnLrpReport::threshold'],['../structpulsatrix_1_1GoldenReport.html#aa1053a0642af387b27eeb4c873048965',1,'pulsatrix::GoldenReport::threshold']]],
   ['tie_5fword_5fembeddings_11',['tie_word_embeddings',['../structpulsatrix_1_1HfModelConfig.html#add323927a5fcfa2262c1383e79085f86',1,'pulsatrix::HfModelConfig']]],
   ['time_5ftolerance_12',['time_tolerance',['../structpulsatrix_1_1CompareOptions.html#a0bf58d0670c8059687a238adba145add',1,'pulsatrix::CompareOptions']]],

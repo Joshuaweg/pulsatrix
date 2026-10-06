@@ -109,9 +109,17 @@ Inheritance diagram for pulsatrix::PreTokenizer:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpulsatrix_1_1PreTokenizer__inherit__graph.png" border="0" usemap="#apulsatrix_1_1PreTokenizer_inherit__map" alt="Inheritance graph"/></div>
 <map name="apulsatrix_1_1PreTokenizer_inherit__map" id="apulsatrix_1_1PreTokenizer_inherit__map">
-<area shape="rect" title="Splits text into the pieces the model tokenizes separately, and may change them (byte&#45; level mapping)..." alt="" coords="19,5,189,31"/>
-<area shape="rect" href="classpulsatrix_1_1WordPunctuationSplit.html" title="The split Tokenizer::Tokenize makes: runs of ASCII letters, digits and apostrophes are words,..." alt="" coords="5,79,203,119"/>
-<area shape="poly" title=" " alt="" coords="107,44,107,79,101,79,101,44"/>
+<area shape="rect" title="Splits text into the pieces the model tokenizes separately, and may change them (byte&#45; level mapping)..." alt="" coords="5,104,175,129"/>
+<area shape="rect" href="classpulsatrix_1_1ByteLevelPreTokenizer.html" title="Byte&#45;level pre&#45;tokenization (Hugging Face&#39;s ByteLevel): optionally prepends a space,..." alt="" coords="223,5,457,31"/>
+<area shape="poly" title=" " alt="" coords="119,94,166,66,222,40,260,28,261,33,224,44,169,70,122,99"/>
+<area shape="rect" href="classpulsatrix_1_1DigitsPreTokenizer.html" title="Splits off numeric characters (Unicode N), one by one or in runs (Hugging Face&#39;s Digits)." alt="" coords="237,55,443,80"/>
+<area shape="poly" title=" " alt="" coords="168,99,274,77,275,83,169,104"/>
+<area shape="rect" href="classpulsatrix_1_1SequencePreTokenizer.html" title="Runs pre&#45;tokenizers in order." alt="" coords="224,104,456,129"/>
+<area shape="poly" title=" " alt="" coords="188,114,224,114,224,119,188,119"/>
+<area shape="rect" href="classpulsatrix_1_1SplitPreTokenizer.html" title="Splits on a regex or a literal string (Hugging Face&#39;s Split pre&#45;tokenizer)." alt="" coords="241,153,439,179"/>
+<area shape="poly" title=" " alt="" coords="169,129,275,151,274,156,168,135"/>
+<area shape="rect" href="classpulsatrix_1_1WordPunctuationSplit.html" title="The split Tokenizer::Tokenize makes: runs of ASCII letters, digits and apostrophes are words,..." alt="" coords="241,203,439,243"/>
+<area shape="poly" title=" " alt="" coords="124,134,170,161,224,188,261,201,259,206,222,192,168,166,121,139"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -178,7 +186,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Replaces <code>splits</code> with their further-split (or transformed) pieces, in order. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1WordPunctuationSplit.html#a5a96b002c60e32a24ae89c04670be24e">pulsatrix::WordPunctuationSplit</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SplitPreTokenizer.html#aedaf90a220d4842e5fb418c5f0749621">pulsatrix::SplitPreTokenizer</a>, <a class="el" href="classpulsatrix_1_1DigitsPreTokenizer.html#a0b365cffed2f6a7e6fffe7797063267d">pulsatrix::DigitsPreTokenizer</a>, <a class="el" href="classpulsatrix_1_1ByteLevelPreTokenizer.html#a2c8bc35501d9f350d15d823f9a8693c0">pulsatrix::ByteLevelPreTokenizer</a>, <a class="el" href="classpulsatrix_1_1SequencePreTokenizer.html#a0f3ed331bfc6c7a730208e262a1da9f0">pulsatrix::SequencePreTokenizer</a>, and <a class="el" href="classpulsatrix_1_1WordPunctuationSplit.html#a5a96b002c60e32a24ae89c04670be24e">pulsatrix::WordPunctuationSplit</a>.</p>
 
 </div>
 </div>

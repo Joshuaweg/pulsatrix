@@ -26,5 +26,6 @@ var searchData=
   ['_7etexturecache_23',['~TextureCache',['../classpulsatrix_1_1TextureCache.html#a631a6a08f474232801eba06be1cd4e9b',1,'pulsatrix::TextureCache']]],
   ['_7etokenmodel_24',['~TokenModel',['../classpulsatrix_1_1TokenModel.html#a1646be3cfed5b62dd9f60b5b3ab3b157',1,'pulsatrix::TokenModel']]],
   ['_7etransform_25',['~Transform',['../classpulsatrix_1_1Transform.html#a52f2f6911828171ce40be1f4444cd271',1,'pulsatrix::Transform']]],
-  ['_7evizwindow_26',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
+  ['_7eunicoderegex_26',['~UnicodeRegex',['../classpulsatrix_1_1UnicodeRegex.html#a8a12dfb2d10af7af0b9688f72f58d63d',1,'pulsatrix::UnicodeRegex']]],
+  ['_7evizwindow_27',['~VizWindow',['../classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410',1,'pulsatrix::VizWindow']]]
 ];

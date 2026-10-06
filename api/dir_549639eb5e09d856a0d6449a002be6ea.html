@@ -173,6 +173,9 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="bounded__queue_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bounded__queue_8hpp.html">bounded_queue.hpp</a></td></tr>
 <tr class="memdesc:bounded__queue_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity thread-safe blocking queue &ndash; the staged-pipeline backbone. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="byte__level__bpe_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="byte__level__bpe_8hpp.html">byte_level_bpe.hpp</a></td></tr>
+<tr class="memdesc:byte__level__bpe_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The components byte-level BPE tokenizers are built from (TOK-2): NFC, regex and digit splitting, byte-level mapping, BPE, template post-processing and byte-level decoding, each following Hugging Face <code>tokenizers</code>. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="caching__allocator_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="caching__allocator_8hpp.html">caching_allocator.hpp</a></td></tr>
 <tr class="memdesc:caching__allocator_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A caching device-memory allocator (roadmap HIP-3): freed blocks are kept and reused for later requests of the same size class instead of going back to the driver. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -691,6 +694,12 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="tokenizer__components_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tokenizer__components_8hpp.html">tokenizer_components.hpp</a></td></tr>
 <tr class="memdesc:tokenizer__components_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pipeline components for TextTokenizer (TOK-1), and the word-level, byte and character tokenizers built from them. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="tokenizer__json_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tokenizer__json_8hpp.html">tokenizer_json.hpp</a></td></tr>
+<tr class="memdesc:tokenizer__json_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a Hugging Face <code>tokenizer.json</code> into a TextTokenizer (TOK-2). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="tokenizer__parity_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tokenizer__parity_8hpp.html">tokenizer_parity.hpp</a></td></tr>
+<tr class="memdesc:tokenizer__parity_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares a TextTokenizer with Hugging Face <code>tokenizers</code> on a reference corpus (TOK-2), as written by tools/tokenizers/make_tokenizer_reference.py. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="top__k_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="top__k_8hpp.html">top_k.hpp</a></td></tr>
 <tr class="memdesc:top__k_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Top-k selection along a tensor's last dimension, on any device (roadmap FND-3). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -709,6 +718,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="trial_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trial_8hpp.html">trial.hpp</a></td></tr>
 <tr class="memdesc:trial_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single hyperparameter-optimization trial: the configuration tried, plus every metric value recorded against it. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="unicode__regex_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unicode__regex_8hpp.html">unicode_regex.hpp</a></td></tr>
+<tr class="memdesc:unicode__regex_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A small backtracking regex engine over Unicode code points, for the pre-tokenizer patterns in <code>tokenizer.json</code> files (TOK-2). <code>std::regex</code> can't match Unicode categories. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="video__frame__directory__dataset_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__frame__directory__dataset_8hpp.html">video_frame_directory_dataset.hpp</a></td></tr>
 <tr class="memdesc:video__frame__directory__dataset_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Directory-of-pre-extracted-frames video Dataset (reduced-scope stub, no codec decode). <br /></td></tr>
