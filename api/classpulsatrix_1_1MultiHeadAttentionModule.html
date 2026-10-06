@@ -143,6 +143,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a822b6628b3817cc786d02a7b8c4447c1" id="r_a822b6628b3817cc786d02a7b8c4447c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a3f64b2a12f71d247d42e6d25f6cacb54">config</a>) override</td></tr>
 <tr class="memdesc:a822b6628b3817cc786d02a7b8c4447c1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation, composed from the sub-modules' own rules plus AttnLRP's Eq. 15 bilinear ("uniform") rule for the two batched matmuls.  <br /></td></tr>
 <tr class="separator:a822b6628b3817cc786d02a7b8c4447c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96f339eae28ed05de3f8fd1933154006" id="r_a96f339eae28ed05de3f8fd1933154006"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a96f339eae28ed05de3f8fd1933154006">key_relevance</a> () const</td></tr>
+<tr class="memdesc:a96f339eae28ed05de3f8fd1933154006"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1" title="LRP relevance propagation, composed from the sub-modules&#39; own rules plus AttnLRP&#39;s Eq....">propagate_relevance()</a>'s relevance at the K and V projection outputs, <code>(N * L, num_kv_heads * head_dim)</code>, after each shared head has summed its query heads' relevance (LLM-7 checks the per-head totals against LXT). RoPE and QK-Norm have already been propagated through, so K's is at k_proj's output, where a Hugging Face hook on k_proj sees it.  <br /></td></tr>
+<tr class="separator:a96f339eae28ed05de3f8fd1933154006"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3d5fcd6554971b76b17654a8f0a91b0" id="r_ae3d5fcd6554971b76b17654a8f0a91b0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#ae3d5fcd6554971b76b17654a8f0a91b0">value_relevance</a> () const</td></tr>
+<tr class="memdesc:ae3d5fcd6554971b76b17654a8f0a91b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The same at the V projection output.  <br /></td></tr>
+<tr class="separator:ae3d5fcd6554971b76b17654a8f0a91b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4efee768d212c6f9990b85ba1f070a47" id="r_a4efee768d212c6f9990b85ba1f070a47"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a4efee768d212c6f9990b85ba1f070a47">named_parameters</a> () override</td></tr>
 <tr class="memdesc:a4efee768d212c6f9990b85ba1f070a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every sub-module's parameters, flattened &ndash; Q/K/V/O weights and biases, plus the two QK-Norm gammas when enabled. RoPE and softmax contribute none.  <br /></td></tr>
 <tr class="separator:a4efee768d212c6f9990b85ba1f070a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -718,6 +724,31 @@ Pieces match a full pass when attention is causal. Without the causal mask a ful
 
 </div>
 </div>
+<a id="a96f339eae28ed05de3f8fd1933154006" name="a96f339eae28ed05de3f8fd1933154006"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96f339eae28ed05de3f8fd1933154006">&#9670;&#160;</a></span>key_relevance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MultiHeadAttentionModule::key_relevance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The last <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1" title="LRP relevance propagation, composed from the sub-modules&#39; own rules plus AttnLRP&#39;s Eq....">propagate_relevance()</a>'s relevance at the K and V projection outputs, <code>(N * L, num_kv_heads * head_dim)</code>, after each shared head has summed its query heads' relevance (LLM-7 checks the per-head totals against LXT). RoPE and QK-Norm have already been propagated through, so K's is at k_proj's output, where a Hugging Face hook on k_proj sees it. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>before any <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1" title="LRP relevance propagation, composed from the sub-modules&#39; own rules plus AttnLRP&#39;s Eq....">propagate_relevance()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a403e6584eb71aedadccf2ea8071f637e" name="a403e6584eb71aedadccf2ea8071f637e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a403e6584eb71aedadccf2ea8071f637e">&#9670;&#160;</a></span>last_attention_weights()</h2>
 
@@ -1235,6 +1266,31 @@ Pieces match a full pass when attention is causal. Without the causal mask a ful
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae3d5fcd6554971b76b17654a8f0a91b0" name="ae3d5fcd6554971b76b17654a8f0a91b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3d5fcd6554971b76b17654a8f0a91b0">&#9670;&#160;</a></span>value_relevance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::MultiHeadAttentionModule::value_relevance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The same at the V projection output. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>before any <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1" title="LRP relevance propagation, composed from the sub-modules&#39; own rules plus AttnLRP&#39;s Eq....">propagate_relevance()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

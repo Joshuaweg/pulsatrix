@@ -146,6 +146,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything that shapes a <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a> (LLM-1).  <a href="structpulsatrix_1_1AttentionConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttnLrpReport.html">AttnLrpReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A model's comparison against an AttnLRP reference file.  <a href="structpulsatrix_1_1AttnLrpReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttnLrpSequenceResult.html">AttnLrpSequenceResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One reference sequence's comparison.  <a href="structpulsatrix_1_1AttnLrpSequenceResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An explanation result: the raw attribution values, the method that produced them, and any relevant metadata (charter Part 2 SS4).  <a href="structpulsatrix_1_1Attribution.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1224,6 +1230,15 @@ Functions</h2></td></tr>
 <tr class="memitem:aba99c25698e39330189ccaf49b9cd27a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aba99c25698e39330189ccaf49b9cd27a">RunASHA</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, size_t max_configs_started, int initial_epoch_budget, double eta, int num_rungs, RNG &amp;rng)</td></tr>
 <tr class="memdesc:aba99c25698e39330189ccaf49b9cd27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper: draws max_configs_started configurations from space via RandomSample to serve as the queue, then runs RunASHAOnConfigQueue.  <br /></td></tr>
 <tr class="separator:aba99c25698e39330189ccaf49b9cd27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a397287eb17e907922b68ceec236ce20b" id="r_a397287eb17e907922b68ceec236ce20b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a397287eb17e907922b68ceec236ce20b">PearsonCorrelation</a> (const std::vector&lt; float &gt; &amp;x, const std::vector&lt; float &gt; &amp;y)</td></tr>
+<tr class="memdesc:a397287eb17e907922b68ceec236ce20b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pearson correlation of two equal-length vectors; 0 if either is constant.  <br /></td></tr>
+<tr class="separator:a397287eb17e907922b68ceec236ce20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cc3a4cffc0a90b2e3d347442e279535" id="r_a8cc3a4cffc0a90b2e3d347442e279535"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8cc3a4cffc0a90b2e3d347442e279535">LxtAttnLrpConfig</a> ()</td></tr>
+<tr class="memdesc:a8cc3a4cffc0a90b2e3d347442e279535"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rule configuration that matches LXT's AttnLRP on a Hugging Face model: the epsilon rule with a tiny epsilon, and biases kept in the denominator as LXT's gradient * input keeps them in z (Qwen2's QKV biases).  <br /></td></tr>
+<tr class="separator:a8cc3a4cffc0a90b2e3d347442e279535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bc545076451524a9ad1cc4c5c2b6eab" id="r_a1bc545076451524a9ad1cc4c5c2b6eab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttnLrpReport.html">AttnLrpReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1bc545076451524a9ad1cc4c5c2b6eab">CompareToAttnLrp</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a> &amp;reference, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config=<a class="el" href="namespacepulsatrix.html#a8cc3a4cffc0a90b2e3d347442e279535">LxtAttnLrpConfig</a>(), float threshold=0.99f)</td></tr>
+<tr class="memdesc:a1bc545076451524a9ad1cc4c5c2b6eab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains each <code>ids.&lt;k&gt;</code> sequence of an AttnLRP reference file (as written by tools/golden/make_attnlrp_reference.py) from the logit of <code>target.&lt;k&gt;</code> at the last position, seeded with that logit as LXT's examples do, and compares the input relevance and every layer's K/V-head relevance with the reference's.  <br /></td></tr>
+<tr class="separator:a1bc545076451524a9ad1cc4c5c2b6eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e0cd79959b261c8b59f554451342d31" id="r_a6e0cd79959b261c8b59f554451342d31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6e0cd79959b261c8b59f554451342d31">AudioPadCollate</a> ()</td></tr>
 <tr class="memdesc:a6e0cd79959b261c8b59f554451342d31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a CollateFn that zero-pads (silence) variable-length waveforms (sample.fields[0], shape (1, channels, num_samples) &ndash; <a class="el" href="classpulsatrix_1_1WavReader.html" title="Reads uncompressed 16-bit PCM WAV files directly – pulsatrix&#39;s first audio primitive (campaign_exai_d...">WavReader</a>'s/ <a class="el" href="classpulsatrix_1_1AudioFolderDataset.html" title="Dataset over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;audio_file.wav&gt;, structurally identi...">AudioFolderDataset</a>'s convention) to the batch's own max sample count, producing one (N, channels, max_samples) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>, plus a (N,) length field. Phase 4's version of PadCollate (Phase 3, text) &ndash; a second proof that the CollateFn extension point handles ragged/variable-length modalities with zero Dataset/DataLoader/Batch interface changes.  <br /></td></tr>
 <tr class="separator:a6e0cd79959b261c8b59f554451342d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3753,6 +3768,60 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the sizes don't match L * vocab. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1bc545076451524a9ad1cc4c5c2b6eab" name="a1bc545076451524a9ad1cc4c5c2b6eab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bc545076451524a9ad1cc4c5c2b6eab">&#9670;&#160;</a></span>CompareToAttnLrp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AttnLrpReport.html">AttnLrpReport</a> pulsatrix::CompareToAttnLrp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a> &amp;&#160;</td>
+          <td class="paramname"><em>reference</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em> = <code><a class="el" href="namespacepulsatrix.html#a8cc3a4cffc0a90b2e3d347442e279535">LxtAttnLrpConfig</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>threshold</em> = <code>0.99f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Explains each <code>ids.&lt;k&gt;</code> sequence of an AttnLRP reference file (as written by tools/golden/make_attnlrp_reference.py) from the logit of <code>target.&lt;k&gt;</code> at the last position, seeded with that logit as LXT's examples do, and compares the input relevance and every layer's K/V-head relevance with the reference's. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">threshold</td><td>The roadmap's criterion: correlation above 0.99. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the file holds no sequences or its tensors don't fit the model. </td></tr>
   </table>
   </dd>
 </dl>
@@ -6684,6 +6753,25 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a8cc3a4cffc0a90b2e3d347442e279535" name="a8cc3a4cffc0a90b2e3d347442e279535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cc3a4cffc0a90b2e3d347442e279535">&#9670;&#160;</a></span>LxtAttnLrpConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> pulsatrix::LxtAttnLrpConfig </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The rule configuration that matches LXT's AttnLRP on a Hugging Face model: the epsilon rule with a tiny epsilon, and biases kept in the denominator as LXT's gradient * input keeps them in z (Qwen2's QKV biases). </p>
+
+</div>
+</div>
 <a id="ad0f5ad755b0b0704f29e15db03268e39" name="ad0f5ad755b0b0704f29e15db03268e39"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0f5ad755b0b0704f29e15db03268e39">&#9670;&#160;</a></span>MakeCachedNextTokenLogits()</h2>
 
@@ -7776,6 +7864,36 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a397287eb17e907922b68ceec236ce20b" name="a397287eb17e907922b68ceec236ce20b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a397287eb17e907922b68ceec236ce20b">&#9670;&#160;</a></span>PearsonCorrelation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::PearsonCorrelation </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pearson correlation of two equal-length vectors; 0 if either is constant. </p>
 
 </div>
 </div>

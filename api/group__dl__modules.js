@@ -2,6 +2,7 @@ var group__dl__modules =
 [
     [ "adam_optimizer.hpp", "adam__optimizer_8hpp.html", null ],
     [ "assert.hpp", "assert_8hpp.html", null ],
+    [ "attnlrp_parity.hpp", "attnlrp__parity_8hpp.html", null ],
     [ "autograd.hpp", "autograd_8hpp.html", null ],
     [ "avg_pool2d_module.hpp", "avg__pool2d__module_8hpp.html", null ],
     [ "batch_norm_module.hpp", "batch__norm__module_8hpp.html", null ],

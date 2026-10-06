@@ -14,6 +14,7 @@ var classpulsatrix_1_1MultiHeadAttentionModule =
     [ "is_causal", "classpulsatrix_1_1MultiHeadAttentionModule.html#ae939f23be99c198ad1afea52a561dfad", null ],
     [ "k_norm", "classpulsatrix_1_1MultiHeadAttentionModule.html#aa30ab9a8442e4e2e2af30582543d2f44", null ],
     [ "k_proj", "classpulsatrix_1_1MultiHeadAttentionModule.html#a92a72fc82ddda97df2467b46bc465b0c", null ],
+    [ "key_relevance", "classpulsatrix_1_1MultiHeadAttentionModule.html#a96f339eae28ed05de3f8fd1933154006", null ],
     [ "last_attention_weights", "classpulsatrix_1_1MultiHeadAttentionModule.html#a403e6584eb71aedadccf2ea8071f637e", null ],
     [ "MakeKVCache", "classpulsatrix_1_1MultiHeadAttentionModule.html#a225357f7e75f0654e61e60becc036830", null ],
     [ "named_buffers", "classpulsatrix_1_1MultiHeadAttentionModule.html#a6f8fe74c035b9cca41fece7f8151df81", null ],
@@ -31,5 +32,6 @@ var classpulsatrix_1_1MultiHeadAttentionModule =
     [ "set_training", "classpulsatrix_1_1MultiHeadAttentionModule.html#a5949a91915019e6d0067f167f908c180", null ],
     [ "uses_qk_norm", "classpulsatrix_1_1MultiHeadAttentionModule.html#aa401137110ef1ce787af71a61654b484", null ],
     [ "uses_rope", "classpulsatrix_1_1MultiHeadAttentionModule.html#a84eaff4be5e5453e6d5fdeff04f98371", null ],
-    [ "v_proj", "classpulsatrix_1_1MultiHeadAttentionModule.html#a8a0bc7addff5c5002331b4251794e5aa", null ]
+    [ "v_proj", "classpulsatrix_1_1MultiHeadAttentionModule.html#a8a0bc7addff5c5002331b4251794e5aa", null ],
+    [ "value_relevance", "classpulsatrix_1_1MultiHeadAttentionModule.html#ae3d5fcd6554971b76b17654a8f0a91b0", null ]
 ];

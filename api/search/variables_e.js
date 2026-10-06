@@ -6,7 +6,7 @@ var searchData=
   ['pad_5fh_3',['pad_h',['../structpulsatrix_1_1ConvGeometry.html#ac1fb3333ab59c247cc99e77895125111',1,'pulsatrix::ConvGeometry']]],
   ['pad_5fw_4',['pad_w',['../structpulsatrix_1_1ConvGeometry.html#a29e6cf6e16c241e7238bc0bc0c18473f',1,'pulsatrix::ConvGeometry']]],
   ['partial_5fdependence_5',['partial_dependence',['../structpulsatrix_1_1PartialDependenceDocument.html#ae944eda6ffb8e3b0a817e2da847255a3',1,'pulsatrix::PartialDependenceDocument']]],
-  ['passed_6',['passed',['../structpulsatrix_1_1GoldenReport.html#a2c669457561d7c7a9480e35434ff6698',1,'pulsatrix::GoldenReport']]],
+  ['passed_6',['passed',['../structpulsatrix_1_1AttnLrpReport.html#a82b7c323aa56fc91b377d5fdfb62edcb',1,'pulsatrix::AttnLrpReport::passed'],['../structpulsatrix_1_1GoldenReport.html#a2c669457561d7c7a9480e35434ff6698',1,'pulsatrix::GoldenReport::passed']]],
   ['pci_5fdevice_7',['pci_device',['../structpulsatrix_1_1detail_1_1AmdGpuDevice.html#afc0ef8e91cab0dafef148baf8a74b184',1,'pulsatrix::detail::AmdGpuDevice']]],
   ['peak_5fin_5fuse_5fbytes_8',['peak_in_use_bytes',['../structpulsatrix_1_1CachingAllocator_1_1Stats.html#a04bd4207063f85f5e2020892a0a96466',1,'pulsatrix::CachingAllocator::Stats']]],
   ['pixels_9',['pixels',['../structpulsatrix_1_1RgbImageBuffer.html#ab94b83c444d6a08d99d4bf075e0c3e03',1,'pulsatrix::RgbImageBuffer']]],

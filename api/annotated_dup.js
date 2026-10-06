@@ -34,6 +34,8 @@ var annotated_dup =
       [ "AleResult", "structpulsatrix_1_1AleResult.html", "structpulsatrix_1_1AleResult" ],
       [ "ASHAResult", "structpulsatrix_1_1ASHAResult.html", "structpulsatrix_1_1ASHAResult" ],
       [ "AttentionConfig", "structpulsatrix_1_1AttentionConfig.html", "structpulsatrix_1_1AttentionConfig" ],
+      [ "AttnLrpReport", "structpulsatrix_1_1AttnLrpReport.html", "structpulsatrix_1_1AttnLrpReport" ],
+      [ "AttnLrpSequenceResult", "structpulsatrix_1_1AttnLrpSequenceResult.html", "structpulsatrix_1_1AttnLrpSequenceResult" ],
       [ "Attribution", "structpulsatrix_1_1Attribution.html", "structpulsatrix_1_1Attribution" ],
       [ "AttributionBarChart", "classpulsatrix_1_1AttributionBarChart.html", null ],
       [ "AttributionBeeswarmView", "classpulsatrix_1_1AttributionBeeswarmView.html", null ],

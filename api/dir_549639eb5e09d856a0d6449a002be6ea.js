@@ -8,6 +8,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "aggregator_module.hpp", "aggregator__module_8hpp.html", "aggregator__module_8hpp" ],
     [ "asha.hpp", "asha_8hpp.html", "asha_8hpp" ],
     [ "assert.hpp", "assert_8hpp.html", "assert_8hpp" ],
+    [ "attnlrp_parity.hpp", "attnlrp__parity_8hpp.html", "attnlrp__parity_8hpp" ],
     [ "attribution.hpp", "attribution_8hpp.html", "attribution_8hpp" ],
     [ "audio_collate.hpp", "audio__collate_8hpp.html", "audio__collate_8hpp" ],
     [ "audio_folder_dataset.hpp", "audio__folder__dataset_8hpp.html", "audio__folder__dataset_8hpp" ],
