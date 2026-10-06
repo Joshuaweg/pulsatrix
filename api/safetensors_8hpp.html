@@ -107,6 +107,7 @@ $(document).ready(function(){initNavTree('safetensors_8hpp.html',''); initResiza
 <div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -116,53 +117,65 @@ Include dependency graph for safetensors.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="safetensors_8hpp__incl.png" border="0" usemap="#ainclude_2pulsatrix_2safetensors_8hpp" alt=""/></div>
 <map name="ainclude_2pulsatrix_2safetensors_8hpp" id="ainclude_2pulsatrix_2safetensors_8hpp">
-<area shape="rect" title="Native safetensors reader and writer (roadmap IO&#45;1): the one file format pulsatrix reads and writes f..." alt="" coords="328,5,567,31"/>
-<area shape="rect" title=" " alt="" coords="139,299,209,324"/>
-<area shape="poly" title=" " alt="" coords="328,31,226,48,173,62,123,81,65,108,44,125,26,153,14,180,8,202,11,225,24,249,44,270,70,286,98,296,126,303,124,308,96,301,68,291,41,275,20,252,6,226,3,202,9,178,21,151,40,121,62,103,121,76,172,57,225,43,327,25"/>
-<area shape="rect" title=" " alt="" coords="439,299,506,324"/>
-<area shape="poly" title=" " alt="" coords="380,33,254,62,185,82,121,108,68,137,48,153,34,170,26,188,24,207,31,227,45,249,63,259,99,268,204,284,426,304,426,310,204,289,98,273,62,263,41,253,26,230,19,208,21,187,29,167,44,149,65,133,118,103,183,77,253,57,379,28"/>
-<area shape="rect" title=" " alt="" coords="598,79,649,104"/>
-<area shape="poly" title=" " alt="" coords="477,28,586,72,584,77,475,33"/>
-<area shape="rect" title=" " alt="" coords="851,152,910,177"/>
-<area shape="poly" title=" " alt="" coords="466,28,529,69,587,102,654,122,709,131,766,137,838,149,837,155,765,142,708,136,652,127,585,106,526,74,463,33"/>
-<area shape="rect" title=" " alt="" coords="673,79,733,104"/>
-<area shape="poly" title=" " alt="" coords="489,28,660,75,659,81,488,33"/>
-<area shape="rect" title=" " alt="" coords="56,225,119,251"/>
-<area shape="poly" title=" " alt="" coords="425,33,328,83,205,154,114,219,111,214,202,150,325,79,423,28"/>
-<area shape="rect" href="tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="372,79,523,104"/>
-<area shape="poly" title=" " alt="" coords="450,31,450,65,445,65,445,31"/>
-<area shape="poly" title=" " alt="" coords="523,100,686,124,838,149,837,155,685,129,522,106"/>
-<area shape="poly" title=" " alt="" coords="407,107,339,127,263,154,186,189,122,221,119,216,184,184,261,150,337,122,405,101"/>
-<area shape="rect" title=" " alt="" coords="511,225,597,251"/>
-<area shape="poly" title=" " alt="" coords="458,103,539,213,535,216,454,106"/>
-<area shape="rect" title=" " alt="" coords="143,225,253,251"/>
-<area shape="poly" title=" " alt="" coords="414,107,362,127,306,154,260,186,222,218,219,214,257,182,303,150,359,122,412,102"/>
-<area shape="rect" href="assert_8hpp.html" title="PULSATRIX_ASSERT – debug&#45;only invariant check for programmer errors, distinct from throw (used for ca..." alt="" coords="860,225,1011,251"/>
-<area shape="poly" title=" " alt="" coords="476,102,584,150,609,163,633,175,730,198,853,220,852,226,728,203,632,180,606,168,582,154,474,107"/>
-<area shape="rect" href="device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="621,225,836,251"/>
-<area shape="poly" title=" " alt="" coords="466,102,520,136,588,175,686,218,684,223,586,180,517,141,463,106"/>
-<area shape="rect" href="host__guard_8hpp.html" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="644,152,827,177"/>
-<area shape="poly" title=" " alt="" coords="494,101,676,146,675,151,493,107"/>
-<area shape="rect" href="shape_8hpp.html" title="Tensor dimension arithmetic – rank, element count, per&#45;dimension access." alt="" coords="316,152,467,177"/>
-<area shape="poly" title=" " alt="" coords="440,106,411,143,407,140,436,103"/>
-<area shape="rect" title=" " alt="" coords="1049,299,1110,324"/>
-<area shape="poly" title=" " alt="" coords="960,248,1045,290,1042,295,957,253"/>
-<area shape="rect" title=" " alt="" coords="921,299,987,324"/>
-<area shape="poly" title=" " alt="" coords="941,250,950,285,945,286,936,252"/>
-<area shape="poly" title=" " alt="" coords="640,253,223,306,223,301,639,248"/>
-<area shape="poly" title=" " alt="" coords="688,253,520,300,519,294,687,248"/>
-<area shape="poly" title=" " alt="" coords="816,175,956,198,1014,211,1046,223,1059,237,1068,252,1078,284,1073,286,1063,255,1054,240,1043,228,1013,216,955,203,815,180"/>
-<area shape="poly" title=" " alt="" coords="817,175,945,197,998,210,1025,224,1032,243,1024,262,1008,279,988,293,985,289,1004,275,1019,259,1026,243,1021,227,996,215,944,202,816,180"/>
-<area shape="poly" title=" " alt="" coords="737,178,734,212,728,212,732,177"/>
-<area shape="poly" title=" " alt="" coords="408,176,429,197,450,224,463,255,471,284,466,285,458,256,445,227,425,200,404,180"/>
-<area shape="poly" title=" " alt="" coords="339,180,133,227,131,222,338,175"/>
-<area shape="poly" title=" " alt="" coords="418,175,516,217,514,222,416,180"/>
-<area shape="poly" title=" " alt="" coords="361,180,243,223,241,218,359,175"/>
-<area shape="poly" title=" " alt="" coords="467,173,847,222,846,228,467,178"/>
-<area shape="rect" title=" " alt="" coords="278,225,337,251"/>
-<area shape="poly" title=" " alt="" coords="379,179,333,218,330,214,376,175"/>
-<area shape="rect" title=" " alt="" coords="361,225,435,251"/>
-<area shape="poly" title=" " alt="" coords="395,177,398,212,393,212,390,178"/>
+<area shape="rect" title="Native safetensors reader and writer (roadmap IO&#45;1): the one file format pulsatrix reads and writes f..." alt="" coords="380,5,618,31"/>
+<area shape="rect" title=" " alt="" coords="134,299,205,324"/>
+<area shape="poly" title=" " alt="" coords="380,26,318,32,251,43,183,59,117,81,58,107,37,125,19,153,12,171,8,196,10,224,21,249,41,270,67,285,95,296,122,302,120,307,93,301,65,290,38,274,17,252,5,225,3,196,7,170,14,151,33,121,55,103,115,76,181,54,250,38,317,27,379,21"/>
+<area shape="rect" title=" " alt="" coords="435,299,502,324"/>
+<area shape="poly" title=" " alt="" coords="410,33,267,60,191,79,121,103,64,132,43,149,28,166,19,185,18,204,25,226,41,249,59,259,95,268,200,284,422,304,421,310,199,289,94,273,57,263,37,253,20,228,13,205,14,183,24,163,40,145,62,128,119,99,189,74,266,54,409,28"/>
+<area shape="rect" title=" " alt="" coords="594,79,644,104"/>
+<area shape="poly" title=" " alt="" coords="520,28,589,69,586,74,517,33"/>
+<area shape="rect" title=" " alt="" coords="668,79,746,104"/>
+<area shape="poly" title=" " alt="" coords="533,28,661,72,659,77,531,33"/>
+<area shape="rect" title=" " alt="" coords="847,152,906,177"/>
+<area shape="poly" title=" " alt="" coords="509,29,538,66,559,85,583,102,617,118,647,128,702,136,760,139,834,149,833,155,760,145,701,141,645,133,615,123,580,106,556,90,534,69,504,32"/>
+<area shape="rect" title=" " alt="" coords="770,79,830,104"/>
+<area shape="poly" title=" " alt="" coords="552,28,757,76,756,81,550,33"/>
+<area shape="rect" title=" " alt="" coords="52,225,114,251"/>
+<area shape="poly" title=" " alt="" coords="468,33,347,81,273,115,200,154,151,187,109,219,106,215,148,183,198,150,271,111,345,76,466,28"/>
+<area shape="rect" href="tensor_8hpp.html" title="N&#45;dimensional tensor – owns a buffer via DeviceBackend*, RAII (Rule of Five)." alt="" coords="368,79,518,104"/>
+<area shape="poly" title=" " alt="" coords="492,33,463,69,458,66,488,29"/>
+<area shape="poly" title=" " alt="" coords="519,100,682,124,834,149,833,155,681,129,518,106"/>
+<area shape="poly" title=" " alt="" coords="403,107,335,127,259,154,182,189,117,221,115,216,180,184,257,150,333,122,401,101"/>
+<area shape="rect" title=" " alt="" coords="506,225,593,251"/>
+<area shape="poly" title=" " alt="" coords="454,103,535,213,531,216,450,106"/>
+<area shape="rect" title=" " alt="" coords="138,225,249,251"/>
+<area shape="poly" title=" " alt="" coords="409,107,357,127,302,154,256,186,218,218,214,214,253,182,299,150,355,122,407,102"/>
+<area shape="rect" href="assert_8hpp.html" title="PULSATRIX_ASSERT – debug&#45;only invariant check for programmer errors, distinct from throw (used for ca..." alt="" coords="856,225,1006,251"/>
+<area shape="poly" title=" " alt="" coords="472,102,580,150,604,163,629,175,725,198,848,220,847,226,724,203,627,180,602,168,578,154,470,107"/>
+<area shape="rect" href="device__backend_8hpp.html" title="Abstract interface isolating vendor&#45;specific memory/compute operations from Tensor/ComputationGraph." alt="" coords="617,225,832,251"/>
+<area shape="poly" title=" " alt="" coords="462,102,515,136,584,175,682,218,680,223,582,180,513,141,459,106"/>
+<area shape="rect" href="host__guard_8hpp.html" title="PULSATRIX_REQUIRE_HOST – always&#45;on guard for code paths that dereference Tensor::data() on the host." alt="" coords="640,152,822,177"/>
+<area shape="poly" title=" " alt="" coords="490,101,672,146,670,151,489,107"/>
+<area shape="rect" href="shape_8hpp.html" title="Tensor dimension arithmetic – rank, element count, per&#45;dimension access." alt="" coords="312,152,462,177"/>
+<area shape="poly" title=" " alt="" coords="436,106,407,143,402,140,432,103"/>
+<area shape="rect" title=" " alt="" coords="1044,299,1106,324"/>
+<area shape="poly" title=" " alt="" coords="955,248,1040,290,1038,295,953,253"/>
+<area shape="rect" title=" " alt="" coords="917,299,982,324"/>
+<area shape="poly" title=" " alt="" coords="937,250,946,285,941,286,931,252"/>
+<area shape="poly" title=" " alt="" coords="635,253,219,306,218,301,635,248"/>
+<area shape="poly" title=" " alt="" coords="684,253,516,300,515,294,682,248"/>
+<area shape="poly" title=" " alt="" coords="811,175,952,198,1010,211,1042,223,1054,237,1063,252,1074,284,1069,286,1058,255,1050,240,1039,228,1008,216,951,203,811,180"/>
+<area shape="poly" title=" " alt="" coords="812,175,941,197,993,210,1021,224,1027,243,1020,262,1003,279,984,293,981,289,1000,275,1015,259,1022,243,1017,227,991,215,940,202,811,180"/>
+<area shape="poly" title=" " alt="" coords="732,178,729,212,724,212,727,177"/>
+<area shape="poly" title=" " alt="" coords="403,176,425,197,445,224,459,255,466,284,461,285,453,256,441,227,421,200,399,180"/>
+<area shape="poly" title=" " alt="" coords="335,180,128,227,127,222,334,175"/>
+<area shape="poly" title=" " alt="" coords="414,175,511,217,509,222,412,180"/>
+<area shape="poly" title=" " alt="" coords="357,180,239,223,237,218,355,175"/>
+<area shape="poly" title=" " alt="" coords="463,173,842,222,842,228,462,178"/>
+<area shape="rect" title=" " alt="" coords="274,225,332,251"/>
+<area shape="poly" title=" " alt="" coords="375,179,329,218,326,214,372,175"/>
+<area shape="rect" title=" " alt="" coords="356,225,431,251"/>
+<area shape="poly" title=" " alt="" coords="391,177,394,212,389,212,385,178"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="safetensors_8hpp__dep__incl.png" border="0" usemap="#ainclude_2pulsatrix_2safetensors_8hppdep" alt=""/></div>
+<map name="ainclude_2pulsatrix_2safetensors_8hppdep" id="ainclude_2pulsatrix_2safetensors_8hppdep">
+<area shape="rect" title="Native safetensors reader and writer (roadmap IO&#45;1): the one file format pulsatrix reads and writes f..." alt="" coords="5,5,244,31"/>
+<area shape="rect" href="hf__model_8hpp.html" title="Hugging Face checkpoints: config.json and single or sharded safetensors (IO&#45;5)." alt="" coords="51,79,198,119"/>
+<area shape="poly" title=" " alt="" coords="127,44,127,79,122,79,122,44"/>
 </map>
 </div>
 </div>
@@ -174,7 +187,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One tensor's header entry. Offsets are relative to the start of the data section.  <a href="structpulsatrix_1_1SafetensorsTensorInfo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SafetensorsFile.html">pulsatrix::SafetensorsFile</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parsed, fully validated safetensors file held in memory.  <a href="classpulsatrix_1_1SafetensorsFile.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parsed, fully validated safetensors file, held in memory or memory-mapped. Copies share the same bytes.  <a href="classpulsatrix_1_1SafetensorsFile.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>

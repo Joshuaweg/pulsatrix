@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1SafetensorsFile.html
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classpulsatrix_1_1SafetensorsFile-members.html">List of all members</a>  </div>
@@ -101,7 +102,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1SafetensorsFile.html
 </div><!--header-->
 <div class="contents">
 
-<p>A parsed, fully validated safetensors file held in memory.  
+<p>A parsed, fully validated safetensors file, held in memory or memory-mapped. Copies share the same bytes.  
  <a href="classpulsatrix_1_1SafetensorsFile.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="safetensors_8hpp_source.html">safetensors.hpp</a>&gt;</code></p>
@@ -131,12 +132,15 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8956e82d2421e257b9a97663eb6eb01c" id="r_a8956e82d2421e257b9a97663eb6eb01c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SafetensorsFile.html#a8956e82d2421e257b9a97663eb6eb01c">Read</a> (const std::string &amp;path)</td></tr>
 <tr class="memdesc:a8956e82d2421e257b9a97663eb6eb01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads and validates a file.  <br /></td></tr>
 <tr class="separator:a8956e82d2421e257b9a97663eb6eb01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26065bb3d21821d8e33de4a3ed56632f" id="r_a26065bb3d21821d8e33de4a3ed56632f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SafetensorsFile.html#a26065bb3d21821d8e33de4a3ed56632f">Map</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:a26065bb3d21821d8e33de4a3ed56632f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memory-maps a file and validates it (IO-5): the operating system loads pages as tensors are read, so a multi-gigabyte checkpoint isn't copied into memory whole. The file must not change while any copy of this object lives.  <br /></td></tr>
+<tr class="separator:a26065bb3d21821d8e33de4a3ed56632f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a584a9697008014d76f1c584e112c636a" id="r_a584a9697008014d76f1c584e112c636a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SafetensorsFile.html#a584a9697008014d76f1c584e112c636a">Parse</a> (std::vector&lt; uint8_t &gt; <a class="el" href="classpulsatrix_1_1SafetensorsFile.html#ad1fb76fa1d076277c73870651171e6ff">bytes</a>)</td></tr>
 <tr class="memdesc:a584a9697008014d76f1c584e112c636a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates a file's bytes.  <br /></td></tr>
 <tr class="separator:a584a9697008014d76f1c584e112c636a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A parsed, fully validated safetensors file held in memory. </p>
+<div class="textblock"><p>A parsed, fully validated safetensors file, held in memory or memory-mapped. Copies share the same bytes. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad1fb76fa1d076277c73870651171e6ff" name="ad1fb76fa1d076277c73870651171e6ff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1fb76fa1d076277c73870651171e6ff">&#9670;&#160;</a></span>bytes()</h2>
@@ -210,6 +214,41 @@ Static Public Member Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if there is none. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a26065bb3d21821d8e33de4a3ed56632f" name="a26065bb3d21821d8e33de4a3ed56632f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26065bb3d21821d8e33de4a3ed56632f">&#9670;&#160;</a></span>Map()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a> pulsatrix::SafetensorsFile::Map </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Memory-maps a file and validates it (IO-5): the operating system loads pages as tensors are read, so a multi-gigabyte checkpoint isn't copied into memory whole. The file must not change while any copy of this object lives. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if the file can't be opened or mapped. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if its contents are not a valid safetensors file. </td></tr>
   </table>
   </dd>
 </dl>

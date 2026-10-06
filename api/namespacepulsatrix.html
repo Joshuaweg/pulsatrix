@@ -443,6 +443,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapGrid.html">HeatmapGrid</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A row-major 2D grid of unsigned magnitude values, ready for a heatmap plot.  <a href="structpulsatrix_1_1HeatmapGrid.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HfCheckpoint.html">HfCheckpoint</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Hugging Face checkpoint directory's weights: <code>model.safetensors</code>, or the shards listed by <code>model.safetensors.index.json</code> (IO-5). Shards are memory-mapped, so opening a checkpoint reads only headers, and a tensor's bytes are paged in when it is read.  <a href="classpulsatrix_1_1HfCheckpoint.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A decoder-only language model's <code>config.json</code>, with the values Hugging Face leaves to the model class filled in: every field is what the model actually uses.  <a href="structpulsatrix_1_1HfModelConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfRopeScaling.html">HfRopeScaling</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code>rope_scaling</code> (or <code>rope_parameters</code>) entry other than the default.  <a href="structpulsatrix_1_1HfRopeScaling.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1HIPBackend.html">HIPBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">HIP-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation, targeting AMD GPUs via ROCm.  <a href="classpulsatrix_1_1HIPBackend.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -736,7 +745,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core RWKV-4 time-mixing block (Peng et al. 2023, arXiv:2305.13048), input (N, L, d_model) -&gt; output (N, L, d_model).  <a href="classpulsatrix_1_1RWKVModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parsed, fully validated safetensors file held in memory.  <a href="classpulsatrix_1_1SafetensorsFile.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A parsed, fully validated safetensors file, held in memory or memory-mapped. Copies share the same bytes.  <a href="classpulsatrix_1_1SafetensorsFile.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SafetensorsTensorInfo.html">SafetensorsTensorInfo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One tensor's header entry. Offsets are relative to the start of the data section.  <a href="structpulsatrix_1_1SafetensorsTensorInfo.html#details">More...</a><br /></td></tr>
@@ -1445,6 +1454,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a46dfb5346e61792a6c94f75b5b4d8105" id="r_a46dfb5346e61792a6c94f75b5b4d8105"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a46dfb5346e61792a6c94f75b5b4d8105">ClipGradNorm</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module, float max_norm, bool error_if_nonfinite=false)</td></tr>
 <tr class="memdesc:a46dfb5346e61792a6c94f75b5b4d8105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales every trainable parameter's gradient so their global L2 norm is at most <code>max_norm</code>, as torch.nn.utils.clip_grad_norm_ does, and returns the norm before clipping.  <br /></td></tr>
 <tr class="separator:a46dfb5346e61792a6c94f75b5b4d8105"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29473722de7e79d863c300baecba52c2" id="r_a29473722de7e79d863c300baecba52c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a29473722de7e79d863c300baecba52c2">ParseHfConfig</a> (std::string_view json)</td></tr>
+<tr class="memdesc:a29473722de7e79d863c300baecba52c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses <code>config.json</code> text. A multimodal config's <code>text_config</code> is read for the language model.  <br /></td></tr>
+<tr class="separator:a29473722de7e79d863c300baecba52c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7d789f4f26278c9f981e5f6692d96bc" id="r_ab7d789f4f26278c9f981e5f6692d96bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab7d789f4f26278c9f981e5f6692d96bc">ReadHfConfig</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:ab7d789f4f26278c9f981e5f6692d96bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">ParseHfConfig on a file.  <br /></td></tr>
+<tr class="separator:ab7d789f4f26278c9f981e5f6692d96bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f72456585566c7d3dd290e3ac5f0af5" id="r_a0f72456585566c7d3dd290e3ac5f0af5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0f72456585566c7d3dd290e3ac5f0af5">ToAttentionConfig</a> (const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:a0f72456585566c7d3dd290e3ac5f0af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attention layer the config describes: rotate-half RoPE, causal, its head counts, biases, QK-Norm and epsilon.  <br /></td></tr>
+<tr class="separator:a0f72456585566c7d3dd290e3ac5f0af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87a0367a8a25871e968563e95fe39345" id="r_a87a0367a8a25871e968563e95fe39345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a87a0367a8a25871e968563e95fe39345">DecodeGenotype</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const std::vector&lt; double &gt; &amp;genotype)</td></tr>
 <tr class="memdesc:a87a0367a8a25871e968563e95fe39345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes a unit-hypercube genotype into a Configuration using space's own declared bounds: Continuous linearly, LogUniform geometrically (both identical to <a class="el" href="gp__bo_8hpp.html" title="The GP-BO trial loop: random-initialize, then repeatedly fit a GP to every trial observed so far and ...">gp_bo.hpp</a>'s UnitCubeToConfiguration); Integer by linear interpolation then rounding to the nearest integer (std::round &ndash; ties away from zero, portable); Categorical by linear interpolation into an index, floored, clamped to the last category (handles the gene == 1.0 boundary, which would otherwise floor to one-past-the-end).  <br /></td></tr>
 <tr class="separator:a87a0367a8a25871e968563e95fe39345"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7329,6 +7347,32 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a29473722de7e79d863c300baecba52c2" name="a29473722de7e79d863c300baecba52c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29473722de7e79d863c300baecba52c2">&#9670;&#160;</a></span>ParseHfConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> pulsatrix::ParseHfConfig </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses <code>config.json</code> text. A multimodal config's <code>text_config</code> is read for the language model. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the text isn't a JSON object, a required size is missing or not a positive integer (hidden_size, intermediate_size, num_hidden_layers, num_attention_heads, vocab_size), a field has the wrong type, or the head counts don't fit together. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a3823fb1770e2ac2f276c5544266698ab" name="a3823fb1770e2ac2f276c5544266698ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3823fb1770e2ac2f276c5544266698ab">&#9670;&#160;</a></span>ParseJson()</h2>
 
@@ -8093,6 +8137,32 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if population is empty or draw is outside [0, total_weight). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab7d789f4f26278c9f981e5f6692d96bc" name="ab7d789f4f26278c9f981e5f6692d96bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7d789f4f26278c9f981e5f6692d96bc">&#9670;&#160;</a></span>ReadHfConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> pulsatrix::ReadHfConfig </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ParseHfConfig on a file. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if it can't be read. </td></tr>
   </table>
   </dd>
 </dl>
@@ -10990,6 +11060,26 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a0f72456585566c7d3dd290e3ac5f0af5" name="a0f72456585566c7d3dd290e3ac5f0af5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f72456585566c7d3dd290e3ac5f0af5">&#9670;&#160;</a></span>ToAttentionConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> pulsatrix::ToAttentionConfig </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The attention layer the config describes: rotate-half RoPE, causal, its head counts, biases, QK-Norm and epsilon. </p>
 
 </div>
 </div>

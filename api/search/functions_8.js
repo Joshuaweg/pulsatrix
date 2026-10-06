@@ -6,7 +6,7 @@ var searchData=
   ['impute_3',['Impute',['../namespacepulsatrix.html#acf06d2190bfb60cc8810fcf24d1e99b2',1,'pulsatrix']]],
   ['in_5ffeatures_4',['in_features',['../classpulsatrix_1_1LinearModule.html#acbe57a37da3944e5a8bf8a716e23f72d',1,'pulsatrix::LinearModule']]],
   ['indexof_5',['IndexOf',['../classpulsatrix_1_1Vocabulary.html#aad956d5e6776e13be224d60b9de130cb',1,'pulsatrix::Vocabulary']]],
-  ['info_6',['info',['../classpulsatrix_1_1SafetensorsFile.html#ab365fbd4f1370695298d019fb59697d3',1,'pulsatrix::SafetensorsFile']]],
+  ['info_6',['info',['../classpulsatrix_1_1HfCheckpoint.html#a56c1b9e419fe91b0d67080b21bcb4a9f',1,'pulsatrix::HfCheckpoint::info()'],['../classpulsatrix_1_1SafetensorsFile.html#ab365fbd4f1370695298d019fb59697d3',1,'pulsatrix::SafetensorsFile::info()']]],
   ['inittagger_7',['InitTagger',['../namespacepulsatrix.html#a30c958ae5a99df9dd3b742c74911b541',1,'pulsatrix']]],
   ['inner_8',['inner',['../classpulsatrix_1_1ResidualModule.html#a5176ee3876dc7f536e1c785a42574328',1,'pulsatrix::ResidualModule']]],
   ['innovationtracker_9',['InnovationTracker',['../classpulsatrix_1_1InnovationTracker.html#a33dc673626ea4d9739ecd45384b391a7',1,'pulsatrix::InnovationTracker']]],

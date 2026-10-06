@@ -419,6 +419,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hugging-face-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hugging Face checkpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reproducibility" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1721,6 +1732,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hugging-face-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hugging Face checkpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reproducibility" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1970,7 +1992,34 @@ buffers aren't saved yet.</p>
 <p>The reader underneath (<code>safetensors.hpp</code>) treats every file as untrusted, and throws
 <code>std::invalid_argument</code> for anything outside the format: offsets past the end of the file,
 overlapping or missing byte ranges, sizes that overflow, and malformed headers. It's fuzzed under
-AddressSanitizer (<code>tools/fuzz/safetensors_fuzz.cpp</code>).</p>
+AddressSanitizer (<code>tools/fuzz/safetensors_fuzz.cpp</code>). <code>SafetensorsFile::Map</code> memory-maps a file
+instead of reading it, so only the parts you use are loaded: a 2.2 GB checkpoint opens in about a
+millisecond.</p>
+<h3 id="hugging-face-checkpoints">Hugging Face checkpoints<a class="headerlink" href="#hugging-face-checkpoints" title="Permanent link">&para;</a></h3>
+<p><code>hf_model.hpp</code> reads a model directory as downloaded from the Hub.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/hf_model.hpp"</span>
+
+<span class="n">HfModelConfig</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReadHfConfig</span><span class="p">(</span><span class="s">"SmolLM2-135M/config.json"</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">config</span><span class="p">.</span><span class="n">unsupported</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* features pulsatrix can't run yet, e.g. "rope_scaling \"llama3\" (LLM-6)" */</span><span class="w"> </span><span class="p">}</span>
+<span class="n">AttentionConfig</span><span class="w"> </span><span class="n">attention</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToAttentionConfig</span><span class="p">(</span><span class="n">config</span><span class="p">);</span><span class="w">  </span><span class="c1">// GQA, rotate-half RoPE, biases, QK-Norm</span>
+
+<span class="n">HfCheckpoint</span><span class="w"> </span><span class="n">weights</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HfCheckpoint</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">"SmolLM2-135M"</span><span class="p">);</span><span class="w">  </span><span class="c1">// model.safetensors or its sharded index</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">weights</span><span class="p">.</span><span class="n">names</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* weights.info(name), weights.tensor(name, &amp;backend) */</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>HfModelConfig</code> fills in what the file leaves to the model class: <code>head_dim</code> from the sizes,
+  Qwen2's Q/K/V biases, Qwen3's and Gemma 3's QK-Norm, and <code>eos_token_id</code> as a list. It reads
+  older (<code>rope_scaling</code>, <code>torch_dtype</code>) and newer (<code>rope_parameters</code>, <code>dtype</code>) field names, and a
+  multimodal config's <code>text_config</code>.</li>
+<li><code>unsupported</code> lists everything the config asks for that pulsatrix can't run yet, each with the
+  roadmap item that adds it, including architectures that aren't causal language models. A
+  loader should refuse a model whose list isn't empty rather than run it subtly wrong.</li>
+<li><code>HfCheckpoint</code> memory-maps every shard. The index must match its shards exactly (every listed
+  tensor present, nothing unlisted), and a shard must be a plain file name in the checkpoint
+  directory, so an index can't point outside it.</li>
+<li>Hub weights are usually bf16; reading them as fp32 is IO-6, and mapping Hugging Face names
+  onto pulsatrix modules is IO-4.</li>
+</ul>
 <h3 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h3>
 <p>Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
 <code>set_seed</code> sets one global seed (default 0). Anything built without its own seed, such as a

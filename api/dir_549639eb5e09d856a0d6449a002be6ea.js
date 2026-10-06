@@ -85,6 +85,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "grad_clipping.hpp", "grad__clipping_8hpp.html", "grad__clipping_8hpp" ],
     [ "group_norm_module.hpp", "group__norm__module_8hpp.html", "group__norm__module_8hpp" ],
     [ "gru_module.hpp", "gru__module_8hpp.html", "gru__module_8hpp" ],
+    [ "hf_model.hpp", "hf__model_8hpp.html", "hf__model_8hpp" ],
     [ "hip_backend.hpp", "hip__backend_8hpp.html", "hip__backend_8hpp" ],
     [ "hip_check.hpp", "hip__check_8hpp.html", "hip__check_8hpp" ],
     [ "hipblas_check.hpp", "hipblas__check_8hpp.html", "hipblas__check_8hpp" ],

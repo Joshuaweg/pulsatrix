@@ -26,6 +26,7 @@ var group__dl__modules =
     [ "grad_clipping.hpp", "grad__clipping_8hpp.html", null ],
     [ "group_norm_module.hpp", "group__norm__module_8hpp.html", null ],
     [ "gru_module.hpp", "gru__module_8hpp.html", null ],
+    [ "hf_model.hpp", "hf__model_8hpp.html", null ],
     [ "hip_backend.hpp", "hip__backend_8hpp.html", null ],
     [ "hip_check.hpp", "hip__check_8hpp.html", null ],
     [ "hipblas_check.hpp", "hipblas__check_8hpp.html", null ],

@@ -3187,6 +3187,13 @@ autoencoder dictionaries and a model zoo.</p>
 <li><strong>IO-2</strong> records a checksum of the model file in the optimizer file, so stale optimizer state
   from an earlier save is refused. A plain safetensors file with matching names loads as format
   version 0.</li>
+<li><strong>IO-5</strong> fills in the values each architecture implies but its <code>config.json</code> leaves out
+  (Qwen2's Q/K/V biases, Qwen3's and Gemma's QK-Norm, <code>head_dim</code>), and lists what pulsatrix can't
+  run yet instead of ignoring it, so a loader can refuse a model rather than run it subtly wrong.
+  It also did the memory-mapped reading the IO-1 follow-ups asked for: <code>SafetensorsFile::Map</code>, used
+  for every shard. A 2.2 GB checkpoint (bge-m3) opened in 1.1 ms with a 4.8 MB peak resident size.
+  A sharded index must match its shards exactly, and names only files inside the checkpoint
+  directory.</li>
 </ul>
 <h3 id="follow-ups-the-io-work-surfaced">Follow-ups the IO work surfaced<a class="headerlink" href="#follow-ups-the-io-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
@@ -3199,7 +3206,7 @@ autoencoder dictionaries and a model zoo.</p>
 <tbody>
 <tr>
 <td>Memory-mapped reading; files are read whole for now</td>
-<td>IO-5, for 1B-parameter models</td>
+<td>Done in IO-5 (<code>SafetensorsFile::Map</code>)</td>
 </tr>
 <tr>
 <td>Checkpointing SGD's momentum buffers (Adam and AdamW are covered)</td>
