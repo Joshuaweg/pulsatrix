@@ -15,6 +15,8 @@
 #include <cstring>
 #include <stdexcept>
 #include <string>
+#include <thread>
+#include <vector>
 
 namespace pulsatrix {
 
@@ -25,6 +27,54 @@ namespace {
 // were refactored onto this backend primitive, which is what makes that refactor
 // behavior-preserving.
 float sigmoid(float z) { return 1.0f / (1.0f + std::exp(-z)); }
+
+/**
+ * @brief Runs `body(j0, j1)` over column ranges that together cover `[0, n)`, on several threads
+ *        when the multiply (`m * k * n` multiply-adds) is big enough to pay for starting them.
+ * @note Splitting columns, not rows, keeps every output element's arithmetic on one thread and
+ *       in one order, so results don't depend on the thread count, and a single-row multiply
+ *       (one generated token) still spreads out.
+ */
+template <typename Body>
+void ForColumnRanges(size_t m, size_t k, size_t n, const Body& body) {
+    constexpr size_t kMinWorkPerThread = size_t{1} << 21;
+    constexpr size_t kMinColumnsPerThread = 64;
+    const size_t work = m * k * n;
+    size_t threads = std::max<size_t>(1, std::thread::hardware_concurrency());
+    threads = std::min({threads, work / kMinWorkPerThread, n / kMinColumnsPerThread});
+    if (threads <= 1) {
+        body(size_t{0}, n);
+        return;
+    }
+    std::vector<std::thread> pool;
+    pool.reserve(threads - 1);
+    const size_t chunk = (n + threads - 1) / threads;
+    for (size_t t = 1; t < threads; ++t) {
+        const size_t j0 = std::min(n, t * chunk);
+        const size_t j1 = std::min(n, j0 + chunk);
+        pool.emplace_back([&body, j0, j1] { body(j0, j1); });
+    }
+    body(size_t{0}, std::min(n, chunk));
+    for (std::thread& t : pool) t.join();
+}
+
+/**
+ * @brief Row i of op(A) * B over columns [j0, j1) into acc, for B stored (k x n): the i-p-j
+ *        order, so the inner loop reads B and acc contiguously and vectorizes.
+ * @note Each acc[j] still starts at 0 and adds its products in increasing p, as the plain i-j-p
+ *       dot product does, so results are bit-identical to it.
+ */
+void GemmRowRange(const float* a, bool transpose_a, const float* b, float* acc, size_t i, size_t m, size_t k,
+                  size_t n, size_t j0, size_t j1) {
+    std::fill(acc, acc + (j1 - j0), 0.0f);
+    for (size_t p = 0; p < k; ++p) {
+        const float a_ip = transpose_a ? a[p * m + i] : a[i * k + p];
+        const float* b_row = b + p * n + j0;
+        for (size_t j = 0; j < j1 - j0; ++j) {
+            acc[j] += a_ip * b_row[j];
+        }
+    }
+}
 }  // namespace
 
 void* CPUBackend::allocate(size_t bytes) {
@@ -58,15 +108,13 @@ void CPUBackend::fill(void* ptr, float value, size_t n) {
 }
 
 void CPUBackend::gemm(const float* a, const float* b, float* out, size_t m, size_t k, size_t n) {
-    for (size_t i = 0; i < m; ++i) {
-        for (size_t j = 0; j < n; ++j) {
-            float acc = 0.0f;
-            for (size_t p = 0; p < k; ++p) {
-                acc += a[i * k + p] * b[p * n + j];
-            }
-            out[i * n + j] = acc;
+    ForColumnRanges(m, k, n, [&](size_t j0, size_t j1) {
+        std::vector<float> acc(j1 - j0);
+        for (size_t i = 0; i < m; ++i) {
+            GemmRowRange(a, false, b, acc.data(), i, m, k, n, j0, j1);
+            std::copy(acc.begin(), acc.end(), out + i * n + j0);
         }
-    }
+    });
 }
 
 void CPUBackend::elementwise(ElementwiseOp op, const float* in, float* out, size_t n) {
@@ -122,18 +170,29 @@ void CPUBackend::mul(const float* a, const float* b, float* out, size_t n) {
 
 void CPUBackend::gemm_ex(const float* a, bool transpose_a, const float* b, bool transpose_b, float* out, size_t m,
                          size_t k, size_t n, float beta) {
-    for (size_t i = 0; i < m; ++i) {
-        for (size_t j = 0; j < n; ++j) {
-            float acc = 0.0f;
-            for (size_t p = 0; p < k; ++p) {
-                const float a_ip = transpose_a ? a[p * m + i] : a[i * k + p];
-                const float b_pj = transpose_b ? b[j * k + p] : b[p * n + j];
-                acc += a_ip * b_pj;
+    // beta == 0 must overwrite without reading out (it may be uninitialized).
+    auto store = [&](float* dst, float acc) { *dst = (beta == 0.0f) ? acc : beta * *dst + acc; };
+    ForColumnRanges(m, k, n, [&](size_t j0, size_t j1) {
+        if (transpose_b) {
+            // B^T: row j of B is contiguous in p, so the plain dot product already reads it in order.
+            for (size_t i = 0; i < m; ++i) {
+                for (size_t j = j0; j < j1; ++j) {
+                    float acc = 0.0f;
+                    for (size_t p = 0; p < k; ++p) {
+                        const float a_ip = transpose_a ? a[p * m + i] : a[i * k + p];
+                        acc += a_ip * b[j * k + p];
+                    }
+                    store(&out[i * n + j], acc);
+                }
             }
-            // beta == 0 must overwrite without reading out (it may be uninitialized).
-            out[i * n + j] = (beta == 0.0f) ? acc : beta * out[i * n + j] + acc;
+            return;
         }
-    }
+        std::vector<float> acc(j1 - j0);
+        for (size_t i = 0; i < m; ++i) {
+            GemmRowRange(a, transpose_a, b, acc.data(), i, m, k, n, j0, j1);
+            for (size_t j = j0; j < j1; ++j) store(&out[i * n + j], acc[j - j0]);
+        }
+    });
 }
 
 void CPUBackend::column_sums(const float* in, float* out, size_t rows, size_t cols, float beta) {
