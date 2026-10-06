@@ -5,7 +5,7 @@
 //   pulsatrix_golden golden/SmolLM2-135M                 # reads config, weights and golden.safetensors
 //   pulsatrix_golden golden/SmolLM2-135M --device hip --threshold 1e-3
 //
-// Exit status: 0 if every logit is within the threshold, 1 if not or on an error, 2 on a usage error.
+// Exit status: 0 if every logit is within the threshold (relative to its position's largest logit above 1), 1 if not or on an error, 2 on a usage error.
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
@@ -35,11 +35,12 @@ int Run(pulsatrix::DeviceBackend* backend, const std::string& dir, const std::st
     std::printf("%s @ %s (transformers %s)\n", meta("model").c_str(), meta("revision").c_str(), meta("transformers").c_str());
     for (size_t i = 0; i < r.sequences.size(); ++i) {
         const auto& s = r.sequences[i];
-        std::printf("  text %zu: %3lld tokens  max |diff| %.3g  mean %.3g  argmax disagreements %lld\n", i,
-                    static_cast<long long>(s.num_tokens), s.max_abs_diff, s.mean_abs_diff,
+        std::printf("  text %zu: %3lld tokens  max |diff| %.3g  scaled %.3g  mean %.3g  argmax disagreements %lld\n", i,
+                    static_cast<long long>(s.num_tokens), s.max_abs_diff, s.max_scaled_diff, s.mean_abs_diff,
                     static_cast<long long>(s.argmax_disagreements));
     }
-    std::printf("%s: max |diff| %.3g against threshold %.3g\n", r.passed ? "PASS" : "FAIL", r.max_abs_diff, r.threshold);
+    std::printf("%s: max scaled |diff| %.3g against threshold %.3g (max |diff| %.3g)\n", r.passed ? "PASS" : "FAIL",
+                r.max_scaled_diff, r.threshold, r.max_abs_diff);
     return r.passed ? 0 : 1;
 }
 

@@ -7,6 +7,7 @@
 
 #include <gtest/gtest.h>
 
+#include <cmath>
 #include <cstdlib>
 #include <filesystem>
 #include <stdexcept>
@@ -48,7 +49,28 @@ TEST(GoldenHarnessTest, CatchesASlightlyWrongWeight) {
     }
     GoldenReport r = CompareToGolden(*model, SafetensorsFile::Map(Tiny("llama") + "/golden.safetensors"));
     EXPECT_FALSE(r.passed);
-    EXPECT_GT(r.max_abs_diff, 1e-3f);
+    EXPECT_GT(r.max_scaled_diff, 1e-3f);
+}
+
+// The threshold scales with each position's largest logit once that exceeds 1 (CompareLogits).
+TEST(GoldenHarnessTest, ScalesTheThresholdByEachPositionsLargestLogit) {
+    // Position 0's logits reach 20, position 1's stay under 1.
+    const std::vector<float> expected = {20.0f, -3.0f, 1.0f, 0.5f, -0.25f, 0.1f};
+    std::vector<float> got = expected;
+    got[1] += 0.015f;  // 7.5e-4 of 20: drift, within 1e-3
+    GoldenSequenceResult drift = CompareLogits(got, expected, 2, 3);
+    EXPECT_NEAR(drift.max_abs_diff, 0.015f, 1e-6f);
+    EXPECT_NEAR(drift.max_scaled_diff, 0.015f / 20.0f, 1e-7f);
+    EXPECT_EQ(drift.argmax_disagreements, 0);
+
+    got = expected;
+    got[4] += 0.0015f;  // under a largest logit of 0.5 the threshold stays absolute
+    EXPECT_NEAR(CompareLogits(got, expected, 2, 3).max_scaled_diff, 0.0015f, 1e-7f);
+
+    got = expected;
+    got[2] = std::nanf("");
+    EXPECT_TRUE(std::isinf(CompareLogits(got, expected, 2, 3).max_scaled_diff));
+    EXPECT_THROW((void)CompareLogits(got, expected, 3, 3), std::invalid_argument);
 }
 
 TEST(GoldenHarnessTest, RejectsFilesThatArentGoldens) {
