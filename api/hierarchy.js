@@ -79,8 +79,13 @@ var hierarchy =
     [ "pulsatrix::DatasetValidator", "classpulsatrix_1_1DatasetValidator.html", null ],
     [ "pulsatrix::DataThreadPool", "classpulsatrix_1_1DataThreadPool.html", null ],
     [ "pulsatrix::Decoder", "classpulsatrix_1_1Decoder.html", [
+      [ "pulsatrix::ByteFallbackDecoder", "classpulsatrix_1_1ByteFallbackDecoder.html", null ],
       [ "pulsatrix::ByteLevelDecoder", "classpulsatrix_1_1ByteLevelDecoder.html", null ],
-      [ "pulsatrix::FuseDecoder", "classpulsatrix_1_1FuseDecoder.html", null ]
+      [ "pulsatrix::FuseDecoder", "classpulsatrix_1_1FuseDecoder.html", null ],
+      [ "pulsatrix::MetaspaceDecoder", "classpulsatrix_1_1MetaspaceDecoder.html", null ],
+      [ "pulsatrix::ReplaceDecoder", "classpulsatrix_1_1ReplaceDecoder.html", null ],
+      [ "pulsatrix::SequenceDecoder", "classpulsatrix_1_1SequenceDecoder.html", null ],
+      [ "pulsatrix::StripDecoder", "classpulsatrix_1_1StripDecoder.html", null ]
     ] ],
     [ "pulsatrix::DetailedBalanceLoss", "classpulsatrix_1_1DetailedBalanceLoss.html", null ],
     [ "pulsatrix::DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", [
@@ -228,6 +233,8 @@ var hierarchy =
     [ "pulsatrix::Normalizer", "classpulsatrix_1_1Normalizer.html", [
       [ "pulsatrix::AsciiLowercase", "classpulsatrix_1_1AsciiLowercase.html", null ],
       [ "pulsatrix::NfcNormalizer", "classpulsatrix_1_1NfcNormalizer.html", null ],
+      [ "pulsatrix::PrependNormalizer", "classpulsatrix_1_1PrependNormalizer.html", null ],
+      [ "pulsatrix::ReplaceNormalizer", "classpulsatrix_1_1ReplaceNormalizer.html", null ],
       [ "pulsatrix::SequenceNormalizer", "classpulsatrix_1_1SequenceNormalizer.html", null ]
     ] ],
     [ "pulsatrix::NullModelComparison< Result >", "structpulsatrix_1_1NullModelComparison.html", null ],
@@ -261,6 +268,7 @@ var hierarchy =
     [ "pulsatrix::PreTokenizer", "classpulsatrix_1_1PreTokenizer.html", [
       [ "pulsatrix::ByteLevelPreTokenizer", "classpulsatrix_1_1ByteLevelPreTokenizer.html", null ],
       [ "pulsatrix::DigitsPreTokenizer", "classpulsatrix_1_1DigitsPreTokenizer.html", null ],
+      [ "pulsatrix::MetaspacePreTokenizer", "classpulsatrix_1_1MetaspacePreTokenizer.html", null ],
       [ "pulsatrix::SequencePreTokenizer", "classpulsatrix_1_1SequencePreTokenizer.html", null ],
       [ "pulsatrix::SplitPreTokenizer", "classpulsatrix_1_1SplitPreTokenizer.html", null ],
       [ "pulsatrix::WordPunctuationSplit", "classpulsatrix_1_1WordPunctuationSplit.html", null ]

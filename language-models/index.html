@@ -1847,11 +1847,12 @@ four have been checked end to end:</p>
 <p>"Identical" means a correlation of 1.000000 with LXT, and per-token relevance that matches to the
 precision shown. The tokenizer check runs over a multilingual corpus: the Universal Declaration
 of Human Rights in about 530 languages, plus code, numbers, unusual whitespace and emoji. The
-gpt-oss tokenizer also matches exactly, although the gpt-oss model itself doesn't load yet.</p>
+tokenizers of gpt-oss, Gemma 3, TinyLlama and Mistral 7B also match exactly, although those models
+don't load yet.</p>
 <p><strong>Not supported yet.</strong> Loading a model with features pulsatrix can't run fails with a message
 that names them:
-- Gemma 3: sliding-window attention, its RMSNorm variant and its SentencePiece tokenizer
-  (roadmap LLM-9 and TOK-3)
+- Gemma 3: sliding-window attention and its RMSNorm variant (roadmap LLM-9). Its tokenizer
+  already works.
 - mixture-of-experts models
 - RoPE scaling other than Llama 3's and linear (for example YaRN)</p>
 <p>Nothing is silently approximated.</p>

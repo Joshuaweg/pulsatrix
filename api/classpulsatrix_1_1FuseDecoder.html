@@ -128,10 +128,14 @@ Collaboration diagram for pulsatrix::FuseDecoder:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a906d90e11d94325d42abcf2f1bd8c72f" id="r_a906d90e11d94325d42abcf2f1bd8c72f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FuseDecoder.html#a906d90e11d94325d42abcf2f1bd8c72f">decode</a> (const std::vector&lt; std::string &gt; &amp;tokens) const override</td></tr>
+<tr class="memdesc:a906d90e11d94325d42abcf2f1bd8c72f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The decoded text: <a class="el" href="classpulsatrix_1_1Decoder.html#ae42bfb87abefa49a08dc6f5a204ed325" title="The tokens after this decoder: by default decode()&#39;s text as one token.">decode_chain()</a> joined.  <br /></td></tr>
 <tr class="separator:a906d90e11d94325d42abcf2f1bd8c72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Decoder"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Decoder')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Decoder.html">pulsatrix::Decoder</a></td></tr>
 <tr class="memitem:a51f3fc113730523ca0f9c0a604dd86ac inherit pub_methods_classpulsatrix_1_1Decoder" id="r_a51f3fc113730523ca0f9c0a604dd86ac"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Decoder.html#a51f3fc113730523ca0f9c0a604dd86ac">~Decoder</a> ()=default</td></tr>
 <tr class="separator:a51f3fc113730523ca0f9c0a604dd86ac inherit pub_methods_classpulsatrix_1_1Decoder"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae42bfb87abefa49a08dc6f5a204ed325 inherit pub_methods_classpulsatrix_1_1Decoder" id="r_ae42bfb87abefa49a08dc6f5a204ed325"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Decoder.html#ae42bfb87abefa49a08dc6f5a204ed325">decode_chain</a> (std::vector&lt; std::string &gt; tokens) const</td></tr>
+<tr class="memdesc:ae42bfb87abefa49a08dc6f5a204ed325 inherit pub_methods_classpulsatrix_1_1Decoder"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tokens after this decoder: by default <a class="el" href="classpulsatrix_1_1Decoder.html#aad3b6c4a4375f06d708487e9889a1c0a" title="The decoded text: decode_chain() joined.">decode()</a>'s text as one token.  <br /></td></tr>
+<tr class="separator:ae42bfb87abefa49a08dc6f5a204ed325 inherit pub_methods_classpulsatrix_1_1Decoder"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Concatenates the tokens (Hugging Face's Fuse decoder). </p>
@@ -160,7 +164,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classpulsatrix_1_1Decoder.html#a0ec740c29769829a26af0f53bed1a8f3">pulsatrix::Decoder</a>.</p>
+<p>The decoded text: <a class="el" href="classpulsatrix_1_1Decoder.html#ae42bfb87abefa49a08dc6f5a204ed325" title="The tokens after this decoder: by default decode()&#39;s text as one token.">decode_chain()</a> joined. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Decoder.html#aad3b6c4a4375f06d708487e9889a1c0a">pulsatrix::Decoder</a>.</p>
 
 </div>
 </div>

@@ -20,5 +20,6 @@ var searchData=
   ['posterior_17',['Posterior',['../structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html',1,'pulsatrix::GaussianProcessRegressor']]],
   ['postprocessor_18',['PostProcessor',['../classpulsatrix_1_1PostProcessor.html',1,'pulsatrix']]],
   ['ppoclippedloss_19',['PPOClippedLoss',['../classpulsatrix_1_1PPOClippedLoss.html',1,'pulsatrix']]],
-  ['pretokenizer_20',['PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html',1,'pulsatrix']]]
+  ['prependnormalizer_20',['PrependNormalizer',['../classpulsatrix_1_1PrependNormalizer.html',1,'pulsatrix']]],
+  ['pretokenizer_21',['PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html',1,'pulsatrix']]]
 ];

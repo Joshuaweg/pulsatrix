@@ -1602,6 +1602,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#last" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Last
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2293,6 +2304,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#last" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Last
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2974,6 +2996,11 @@ AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <li>ONNX, GGUF and QLoRA (IO-8, IO-9, TRN-14)</li>
 <li>Python wheels and a vcpkg port (KS-11)</li>
 </ul>
+<h3 id="last">Last<a class="headerlink" href="#last" title="Permanent link">&para;</a></h3>
+<ul>
+<li>VIZ-8: shaped text (HarfBuzz and bidi) in the ImGui widgets, so Arabic, Hebrew and Indic
+  scripts read correctly in the native windows as well as in the SVG figures</li>
+</ul>
 <h2 id="fnd-foundations">FND: Foundations<a class="headerlink" href="#fnd-foundations" title="Permanent link">&para;</a></h2>
 <p>These unblock most of the other epics. <strong>All eight are done</strong> (2026-10-04, PRs
 <a href="https://github.com/Joshuaweg/pulsatrix/pull/33">#33</a> to
@@ -3516,7 +3543,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 <td>—</td>
 <td>P0</td>
 <td>M–L</td>
-<td></td>
+<td>Done through TOK-1 to TOK-3</td>
 </tr>
 <tr>
 <td>LLM-4</td>
@@ -3895,6 +3922,26 @@ scores into word scores.</p>
     byte's actual source, and the harness reports those lines separately.</li>
 <li><strong>JSON parser:</strong> duplicate keys are now found with a hash set past 32 keys. The old scan was
     quadratic, about 2×10¹⁰ comparisons for gpt-oss's 200k-entry vocabulary.</li>
+<li><strong>TOK-3</strong> (<code>sentencepiece_bpe.hpp</code>) adds the SentencePiece-style pieces. It covers spaces as
+  <code>▁</code> through the Replace and Prepend normalizers or the newer Metaspace pre-tokenizer, BPE byte
+  fallback and fused unknown tokens, and the ByteFallback, Replace, Strip, Metaspace and Sequence
+  decoders.</li>
+<li>Decoders became chains, as in Hugging Face: <code>decode_chain</code> maps a token list to a token list.
+    The TOK-2 decoders are unchanged.</li>
+<li><strong>Parity:</strong> Gemma 3, TinyLlama (the Llama 2 format) and Zephyr (Mistral 7B's) match
+    <code>tokenizers</code> exactly on the 10,000-line corpus, in ids, offsets and decoded text.</li>
+<li><strong>Prepend offsets:</strong> a prepended <code>▁</code> that becomes a token of its own now gets the first
+    character's span, as Hugging Face's <code>NormalizedString::prepend</code> gives it. That holds for the
+    Prepend normalizer, Metaspace and ByteLevel's <code>add_prefix_space</code>. Found by tightening the
+    harness: reference lines are excused from exact offsets only where NFC-style Unicode
+    normalization changed them, no longer for any normalizer.</li>
+<li><strong>Metaspace decoder:</strong> Hugging Face drops every <code>▁</code> in the first token, not only the one it
+    added, so pulsatrix does too.</li>
+<li><strong>CI fixtures:</strong> Gemma 3 and TinyLlama, plus variants no target uses: Gemma 3 without byte
+    fallback (fused unknown tokens) and the Metaspace form with and without splitting. Each has
+    a small alphabet, so byte fallback runs constantly.</li>
+<li><strong>Mutation-checked:</strong> removing byte fallback, <code>fuse_unk</code> or the Prepend offset rule fails the
+    fixtures that use it.</li>
 <li><strong>TOK-4</strong> (<code>AggregateToWords</code>, <code>word_scores.hpp</code>) takes words from the text, not from the
   tokenizer, so every tokenizer gives the same words.</li>
 <li>A token across several words splits its score by the bytes it has inside each. The rule
@@ -4773,6 +4820,15 @@ format, with static and web renderers next to it.</p>
 <td>M</td>
 <td></td>
 </tr>
+<tr>
+<td>VIZ-8</td>
+<td>Shaped text in the ImGui widgets. Each piece is shaped with HarfBuzz (through FreeType) and right-to-left runs are reordered (FriBidi, or UAX #9 for single-direction pieces); the shaped glyphs are rasterized with FreeType into a glyph atlas and drawn as textured quads in <code>TokenRelevanceView</code>. It passes when Arabic (joined, right to left), Hebrew, Devanagari, Bengali and Tamil (vowel signs and conjuncts) and Thai render the way HarfBuzz's own <code>hb-view</code> does, checked against reference images, and emoji ligatures (skin tones, ZWJ families, flags) show as one glyph</td>
+<td>Every character already shows (ImGui 1.92 plus system fonts), but ImGui places characters one after another, so complex scripts aren't readable in the native windows; today only the SVG shows them correctly</td>
+<td>—</td>
+<td>P3</td>
+<td>M</td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <p>(VIZ-5, the notebook path, moved to the NB epic.)</p>
@@ -4843,7 +4899,7 @@ format, with static and web renderers next to it.</p>
 <tr>
 <td>ImGui doesn't shape text: Arabic and Hebrew show unjoined and left to right, and Indic vowel signs and conjuncts aren't formed. Every character shows (system fonts merged as fallbacks, ImGui 1.92). Shaping the widget's text with HarfBuzz plus bidi reordering, drawn as glyph quads, would fix it</td>
 <td>Fonts work</td>
-<td>VIZ (unscheduled)</td>
+<td>VIZ-8</td>
 </tr>
 </tbody>
 </table>

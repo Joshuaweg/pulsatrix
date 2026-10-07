@@ -8,7 +8,7 @@ var searchData=
   ['batch_5fsize_5',['batch_size',['../structpulsatrix_1_1DataLoaderOptions.html#adf09df853ba54564e67dfce8c56a78a6',1,'pulsatrix::DataLoaderOptions']]],
   ['begin_6',['begin',['../structpulsatrix_1_1Offset.html#a2fa77da54d79aaf5a0ea5cf51ab9a3fd',1,'pulsatrix::Offset::begin'],['../structpulsatrix_1_1ModelToken.html#acd9fd2f9cb33b1cc534f3cf54f785e03',1,'pulsatrix::ModelToken::begin'],['../structpulsatrix_1_1UnicodeRegex_1_1Match.html#a843ca00c708daceb98e047269d1d1f07',1,'pulsatrix::UnicodeRegex::Match::begin']]],
   ['best_5fconfiguration_7',['best_configuration',['../structpulsatrix_1_1ASHAResult.html#aca4c069b0a03729638d36e004d845bfb',1,'pulsatrix::ASHAResult::best_configuration'],['../structpulsatrix_1_1HyperbandResult.html#aa659b006a6aefc74bfa876efb8ab1c36',1,'pulsatrix::HyperbandResult::best_configuration'],['../structpulsatrix_1_1SuccessiveHalvingResult.html#a509060c1a33838cec1d223ba7ed1fe42',1,'pulsatrix::SuccessiveHalvingResult::best_configuration']]],
-  ['best_5ffitness_8',['best_fitness',['../structpulsatrix_1_1NEATEvolutionResult.html#a2533b0466a2aef83afa69659baae7f7f',1,'pulsatrix::NEATEvolutionResult::best_fitness'],['../structpulsatrix_1_1ESResult.html#a059672f4174648b730bc4ee0ed502828',1,'pulsatrix::ESResult::best_fitness']]],
+  ['best_5ffitness_8',['best_fitness',['../structpulsatrix_1_1ESResult.html#a059672f4174648b730bc4ee0ed502828',1,'pulsatrix::ESResult::best_fitness'],['../structpulsatrix_1_1NEATEvolutionResult.html#a2533b0466a2aef83afa69659baae7f7f',1,'pulsatrix::NEATEvolutionResult::best_fitness']]],
   ['best_5fgenome_9',['best_genome',['../structpulsatrix_1_1NEATEvolutionResult.html#a036564729562b65f45e67d36030d64ff',1,'pulsatrix::NEATEvolutionResult']]],
   ['best_5fmetric_10',['best_metric',['../structpulsatrix_1_1ASHAResult.html#af61808a819df2b4abdd553d53ac02bd2',1,'pulsatrix::ASHAResult::best_metric'],['../structpulsatrix_1_1HyperbandResult.html#a4c9fd87de1e03dee1c2f3611eae07e4e',1,'pulsatrix::HyperbandResult::best_metric'],['../structpulsatrix_1_1PBTResult.html#aaf1daed5c34a6e073ee3b93037fe28c8',1,'pulsatrix::PBTResult::best_metric'],['../structpulsatrix_1_1SuccessiveHalvingResult.html#a57e706f43e946f8de6a474c235f7030a',1,'pulsatrix::SuccessiveHalvingResult::best_metric']]],
   ['best_5ftheta_11',['best_theta',['../structpulsatrix_1_1ESResult.html#ab37b31c0769c567980b190048135c5bd',1,'pulsatrix::ESResult']]],
@@ -18,5 +18,6 @@ var searchData=
   ['bos_5ftoken_5fid_15',['bos_token_id',['../structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102',1,'pulsatrix::HfModelConfig']]],
   ['bottom_16',['bottom',['../structpulsatrix_1_1WaterfallBar.html#a492341e89e384c8e1d8b6bbe54975c88',1,'pulsatrix::WaterfallBar']]],
   ['bottom_5findices_17',['bottom_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ab900a1310fa549b5a04fd56e44054016',1,'pulsatrix::PBTTruncationGroups']]],
-  ['busy_18',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]]
+  ['busy_18',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
+  ['byte_5ffallback_19',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
 ];
