@@ -230,6 +230,10 @@ TEST_F(HipBackendEquivalenceTest, ElementwiseGeluTanhMatchesCPUBackendOnRandomIn
     ExpectElementwiseMatchesCPU(cpu, hip, ElementwiseOp::GeluTanh, /*seed=*/12);
 }
 
+TEST_F(HipBackendEquivalenceTest, ElementwiseGeluMatchesCPUBackendOnRandomInput) {
+    ExpectElementwiseMatchesCPU(cpu, hip, ElementwiseOp::Gelu, /*seed=*/13);
+}
+
 // GPU-native-kernels Mission 1 primitives -- cases shared with the other GPU backend.
 PULSATRIX_PRIMITIVE_EQUIVALENCE_TESTS(HipBackendEquivalenceTest, hip)
 

@@ -154,6 +154,11 @@ void CPUBackend::elementwise(ElementwiseOp op, const float* in, float* out, size
                 out[i] = pointwise::gelu_tanh(in[i]);
             }
             break;
+        case ElementwiseOp::Gelu:
+            for (size_t i = 0; i < n; ++i) {
+                out[i] = pointwise::gelu(in[i]);
+            }
+            break;
     }
 }
 
@@ -255,6 +260,9 @@ void CPUBackend::elementwise_backward(ElementwiseOp op, const float* x, const fl
                 break;
             case ElementwiseOp::GeluTanh:
                 d = pointwise::gelu_tanh_grad(xi);
+                break;
+            case ElementwiseOp::Gelu:
+                d = pointwise::gelu_grad(xi);
                 break;
         }
         grad_in[i] = g * d;

@@ -8,7 +8,17 @@
 namespace pulsatrix {
 
 namespace {
-ElementwiseOp GateOp(GatedActivation a) { return a == GatedActivation::GeluTanh ? ElementwiseOp::GeluTanh : ElementwiseOp::Silu; }
+ElementwiseOp GateOp(GatedActivation a) {
+    switch (a) {
+        case GatedActivation::GeluTanh:
+            return ElementwiseOp::GeluTanh;
+        case GatedActivation::Gelu:
+            return ElementwiseOp::Gelu;
+        case GatedActivation::Silu:
+            break;
+    }
+    return ElementwiseOp::Silu;
+}
 }  // namespace
 namespace {
 

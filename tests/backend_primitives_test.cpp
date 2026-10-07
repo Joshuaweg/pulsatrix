@@ -312,5 +312,23 @@ TEST_F(BackendPrimitivesTest, GeluTanhMatchesPyTorch) {
     }
 }
 
+// Exact GELU (BERT's and ESM's MLP, PLM-1), against torch.nn.functional.gelu(x) and its autograd
+// gradient (torch 2.14.1).
+TEST_F(BackendPrimitivesTest, GeluMatchesPyTorch) {
+    const std::vector<float> x = {-3.0f, -1.0f, -0.25f, 0.0f, 0.5f, 1.0f, 2.0f, 4.0f};
+    const std::vector<float> y = {-0.004050225019454956f, -0.15865525603294373f, -0.10032341629266739f, 0.0f,
+                                  0.3457312285900116f,    0.8413447141647339f,   1.9544997215270996f,   3.999873638153076f};
+    const std::vector<float> dy = {-0.011945605278015137f, -0.08331543207168579f, 0.3046267032623291f, 0.5f,
+                                   0.867495059967041f,     1.083315372467041f,    1.085231900215149f,  1.000503659248352f};
+    std::vector<float> out(x.size()), grad(x.size());
+    const std::vector<float> ones(x.size(), 1.0f);
+    cpu.elementwise(ElementwiseOp::Gelu, x.data(), out.data(), x.size());
+    cpu.elementwise_backward(ElementwiseOp::Gelu, x.data(), ones.data(), grad.data(), x.size());
+    for (size_t i = 0; i < x.size(); ++i) {
+        EXPECT_NEAR(out[i], y[i], 1e-6f) << x[i];
+        EXPECT_NEAR(grad[i], dy[i], 1e-6f) << x[i];
+    }
+}
+
 }  // namespace
 }  // namespace pulsatrix

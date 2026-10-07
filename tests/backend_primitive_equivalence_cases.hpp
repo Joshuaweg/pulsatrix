@@ -457,7 +457,8 @@ inline void MultiBlockReductions(DeviceBackend& gpu) {
     }                                                                                               \
     TEST_F(FIXTURE, ElementwiseBackwardEveryOpMatchesCPU) {                                         \
         for (ElementwiseOp op : {ElementwiseOp::Relu, ElementwiseOp::Neg, ElementwiseOp::Tanh,      \
-                                 ElementwiseOp::Sigmoid, ElementwiseOp::Silu, ElementwiseOp::GeluTanh}) \
+                                 ElementwiseOp::Sigmoid, ElementwiseOp::Silu, ElementwiseOp::GeluTanh,  \
+                                 ElementwiseOp::Gelu})                                              \
             ::pulsatrix::primitive_equivalence::ElementwiseBackward(MEMBER, op);                   \
     }                                                                                               \
     TEST_F(FIXTURE, AxpbyInPlaceMatchesCPU) { ::pulsatrix::primitive_equivalence::AxpbyInPlace(MEMBER); } \
