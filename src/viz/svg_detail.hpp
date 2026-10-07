@@ -16,6 +16,8 @@
 #include "pulsatrix/viz/colormap.hpp"
 #include "pulsatrix/viz/plot_data.hpp"
 #include "pulsatrix/viz/svg.hpp"
+#include "../unicode.hpp"
+#include "../utf8.hpp"
 
 namespace pulsatrix {
 namespace svg_detail {
@@ -86,20 +88,55 @@ inline std::string Escape(std::string_view s) {
 }
 
 // @p s cut to at most @p max_chars characters, ending in an ellipsis when cut.
-inline std::string Truncate(std::string_view s, size_t max_chars) {
-    std::vector<std::string> chars = Characters(s);
-    if (chars.size() <= max_chars) {
-        std::string out;
-        for (const auto& c : chars) out += c;
-        return out;
+// How many monospace columns a character takes, as terminals count them (wcwidth): 0 for
+// combining marks, format characters (zero-width joiner, soft hyphen) and Hangul's combining
+// jamo, 2 for East Asian wide and fullwidth characters and emoji, 1 otherwise. Text widths are
+// estimated from this, so CJK labels get twice the room of Latin ones and accents none.
+inline size_t Columns(const std::string& ch) {
+    const char32_t c = utf8::Decode(ch, 0).value;
+    const unicode::Category cat = unicode::GetCategory(c);
+    if (cat == unicode::Category::Mn || cat == unicode::Category::Me || cat == unicode::Category::Cf ||
+        (c >= 0x1160 && c <= 0x11FF)) {
+        return 0;
     }
+    const bool wide = (c >= 0x1100 && c <= 0x115F) || c == 0x2329 || c == 0x232A || (c >= 0x2E80 && c <= 0xA4CF && c != 0x303F) ||
+                      (c >= 0xAC00 && c <= 0xD7A3) || (c >= 0xF900 && c <= 0xFAFF) || (c >= 0xFE10 && c <= 0xFE19) ||
+                      (c >= 0xFE30 && c <= 0xFE6F) || (c >= 0xFF00 && c <= 0xFF60) || (c >= 0xFFE0 && c <= 0xFFE6) ||
+                      (c >= 0x1F300 && c <= 0x1F64F) || (c >= 0x1F680 && c <= 0x1F6FF) || (c >= 0x1F900 && c <= 0x1F9FF) ||
+                      (c >= 0x20000 && c <= 0x3FFFD);
+    return wide ? 2 : 1;
+}
+
+inline size_t Columns(std::string_view s) {
+    size_t n = 0;
+    for (const std::string& ch : Characters(s)) n += Columns(ch);
+    return n;
+}
+
+// At most max_columns columns of s, ending in an ellipsis when cut.
+inline std::string Truncate(std::string_view s, size_t max_columns) {
+    std::vector<std::string> chars = Characters(s);
     std::string out;
-    for (size_t i = 0; i + 1 < max_chars && i < chars.size(); ++i) out += chars[i];
+    size_t used = 0;
+    for (size_t i = 0; i < chars.size(); ++i) {
+        used += Columns(chars[i]);
+        if (used > max_columns) break;
+        out += chars[i];
+        if (i + 1 == chars.size()) return out;
+    }
+    if (Columns(std::string_view(out)) == Columns(s)) return out;
+    // Cut: drop characters until the ellipsis (one column) fits.
+    std::vector<std::string> kept = Characters(out);
+    while (!kept.empty() && Columns(std::string_view(out)) + 1 > max_columns) {
+        kept.pop_back();
+        out.clear();
+        for (const auto& c : kept) out += c;
+    }
     return out + "\xE2\x80\xA6";
 }
 
 inline double TextWidth(std::string_view s, double font_size) {
-    return static_cast<double>(Characters(s).size()) * kCharWidthEm * font_size;
+    return static_cast<double>(Columns(s)) * kCharWidthEm * font_size;
 }
 
 // ---- numbers -------------------------------------------------------------------------------

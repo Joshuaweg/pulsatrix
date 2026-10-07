@@ -337,6 +337,7 @@ set(PULSATRIX_VIZ_SOURCES
     src/viz/image_grid_view.cpp
     src/viz/dataset_statistics_view.cpp
     src/viz/token_relevance_view.cpp
+    src/viz/fonts.cpp
 )
 
 if(PULSATRIX_ENABLE_VIZ)
@@ -362,14 +363,14 @@ if(PULSATRIX_ENABLE_VIZ)
     FetchContent_Declare(
         imgui
         GIT_REPOSITORY https://github.com/ocornut/imgui.git
-        GIT_TAG v1.90.9
+        GIT_TAG v1.92.5
     )
     FetchContent_MakeAvailable(imgui)
 
     FetchContent_Declare(
         implot
         GIT_REPOSITORY https://github.com/epezent/implot.git
-        GIT_TAG v0.16
+        GIT_TAG v0.17
     )
     FetchContent_MakeAvailable(implot)
 
@@ -388,6 +389,18 @@ if(PULSATRIX_ENABLE_VIZ)
     )
     target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends)
     target_link_libraries(imgui PUBLIC glfw OpenGL::GL)
+    # Every script's characters: 32-bit ImWchar reaches Unicode planes 1-16 (emoji, math
+    # alphanumerics, historic scripts). PUBLIC: everything that includes imgui.h must agree.
+    target_compile_definitions(imgui PUBLIC IMGUI_USE_WCHAR32)
+    # FreeType, when installed, draws color emoji and hints small text better than stb_truetype.
+    find_package(Freetype QUIET)
+    option(PULSATRIX_VIZ_FREETYPE "Draw ImGui text with FreeType (color emoji) when it is installed" ON)
+    if(PULSATRIX_VIZ_FREETYPE AND Freetype_FOUND)
+        target_sources(imgui PRIVATE ${imgui_SOURCE_DIR}/misc/freetype/imgui_freetype.cpp)
+        target_compile_definitions(imgui PUBLIC IMGUI_ENABLE_FREETYPE)
+        target_link_libraries(imgui PUBLIC Freetype::Freetype)
+        message(STATUS "pulsatrix_viz: ImGui text through FreeType ${FREETYPE_VERSION_STRING}")
+    endif()
 
     add_library(implot STATIC
         ${implot_SOURCE_DIR}/implot.cpp
@@ -405,6 +418,12 @@ if(PULSATRIX_ENABLE_VIZ)
     # in their own translation units, so they need imgui/implot's include dirs propagated
     # transitively through pulsatrix_viz, not just linked into it.
     target_link_libraries(pulsatrix_viz PUBLIC pulsatrix_core imgui implot)
+    # On Linux, fontconfig finds a fallback font for every script (viz/fonts.hpp).
+    find_package(Fontconfig QUIET)
+    if(Fontconfig_FOUND)
+        target_link_libraries(pulsatrix_viz PRIVATE Fontconfig::Fontconfig)
+        target_compile_definitions(pulsatrix_viz PRIVATE PULSATRIX_VIZ_WITH_FONTCONFIG)
+    endif()
 
     add_executable(explanation_dashboard_demo examples/viz/explanation_dashboard_demo.cpp)
     target_link_libraries(explanation_dashboard_demo PRIVATE pulsatrix_viz)

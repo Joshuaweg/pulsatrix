@@ -163,5 +163,22 @@ TEST(TokenStripSvgTest, WordViewDrawsContextWithoutBoxes) {
     EXPECT_EQ(svg.find(": 99"), std::string::npos);  // context relevance never shown in a tooltip
 }
 
+// Widths follow display columns: a CJK character takes two, a combining accent none.
+TEST(TokenStripSvgTest, WidthsFollowDisplayColumns) {
+    TokenRelevanceDocument doc;
+    doc.method = "m";
+    doc.tokens = {"ab", "\xE4\xB8\xAD\xE6\x96\x87", "e\xCC\x81"};  // "ab", "中文", "e" + combining acute
+    doc.relevance = {1.0f, 1.0f, 1.0f};
+    const std::string svg = RenderTokenStripSvg(doc);
+    std::vector<double> widths;
+    for (size_t at = svg.find("<rect class=\"token"); at != std::string::npos; at = svg.find("<rect class=\"token", at + 1)) {
+        const size_t w = svg.find("width=\"", at) + 7;
+        widths.push_back(std::stod(svg.substr(w, svg.find('"', w) - w)));
+    }
+    ASSERT_EQ(widths.size(), 3u);
+    EXPECT_DOUBLE_EQ(widths[1], 2.0 * widths[0]);  // two wide characters = four columns
+    EXPECT_DOUBLE_EQ(widths[2], widths[0] / 2.0);  // "é" from two code points = one column
+}
+
 }  // namespace
 }  // namespace pulsatrix

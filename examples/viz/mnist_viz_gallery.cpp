@@ -1015,7 +1015,7 @@ void Gallery::DrawImageSelector() {
 
 void Gallery::DrawDigit(const ImageRecord& rec, float size) {
     TextureId tex = textures_.GetOrUpload(rec.test_index, test_.images[static_cast<size_t>(rec.test_index)]);
-    ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<intptr_t>(tex)), ImVec2(size, size));
+    ImGui::Image(static_cast<ImTextureID>(tex), ImVec2(size, size));
 }
 
 void Gallery::DrawPage() {
