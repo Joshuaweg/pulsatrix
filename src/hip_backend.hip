@@ -376,13 +376,13 @@ void HIPBackend::rope_rotate(const float* in, const float* cos_table, const floa
 }
 
 void HIPBackend::attention_mask_fill(float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len,
-                                     size_t k_len, bool causal, size_t q_offset, float value) {
+                                     size_t k_len, bool causal, size_t q_offset, size_t window, float value) {
     const size_t n = batch * heads * q_len * k_len;
     if (n == 0 || (!causal && key_keep == nullptr)) {
         return;
     }
     gpu::attention_mask_fill_kernel<<<gpu::grid_size_for(n), gpu::kBlockSize, 0, stream_>>>(
-        scores, key_keep, heads, q_len, k_len, n, causal, q_offset, value);
+        scores, key_keep, heads, q_len, k_len, n, causal, q_offset, window, value);
     PULSATRIX_HIP_CHECK(hipGetLastError());
     debug_sync();
 }

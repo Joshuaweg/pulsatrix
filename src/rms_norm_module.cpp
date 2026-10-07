@@ -34,6 +34,20 @@ void RMSNormModule::set_gamma(const std::vector<float>& values) {
     gamma_ = Tensor(gamma_.shape(), backend_, values, gamma_.device());
 }
 
+namespace {
+
+/** @brief gamma + offset, computed in float as Hugging Face's `1.0 + weight.float()` is. */
+Tensor EffectiveGamma(const Tensor& gamma, float offset, DeviceBackend* backend) {
+    if (offset == 0.0f) return gamma;
+    const auto n = static_cast<size_t>(gamma.numel());
+    Tensor out(gamma.shape(), backend, gamma.device());
+    backend->fill(out.data(), offset, n);
+    backend->add(out.data(), gamma.data(), out.data(), n);
+    return out;
+}
+
+}  // namespace
+
 Tensor RMSNormModule::forward_impl(const Tensor& input) {
     if (input.rank() != 2 || input.shape().dim(1) != num_features_) {
         throw std::invalid_argument("RMSNormModule::forward: input must be rank-2 (N, num_features)");
@@ -45,7 +59,8 @@ Tensor RMSNormModule::forward_impl(const Tensor& input) {
     const DeviceType device = gamma_.device();
     last_rms_ = Tensor(Shape({N}), backend_, device);
     Tensor output(Shape({N, num_features_}), backend_, device);
-    backend_->rms_norm_forward(input.data(), gamma_.data(), output.data(), last_rms_.data(), static_cast<size_t>(N),
+    const Tensor gamma = EffectiveGamma(gamma_, weight_offset_, backend_);
+    backend_->rms_norm_forward(input.data(), gamma.data(), output.data(), last_rms_.data(), static_cast<size_t>(N),
                                static_cast<size_t>(num_features_), eps_);
 
     has_forwarded_ = true;
@@ -70,7 +85,8 @@ Tensor RMSNormModule::backward(const Tensor& grad_output) {
     const DeviceType device = gamma_.device();
     Tensor grad_input(Shape({N, num_features_}), backend_, device);
     Tensor gamma_terms(Shape({N, num_features_}), backend_, device);
-    backend_->rms_norm_backward(grad_output.data(), gamma_.data(), last_input_.data(), last_rms_.data(),
+    const Tensor gamma = EffectiveGamma(gamma_, weight_offset_, backend_);
+    backend_->rms_norm_backward(grad_output.data(), gamma.data(), last_input_.data(), last_rms_.data(),
                                 grad_input.data(), gamma_terms.data(), rows, cols);
     Tensor local_gamma_grad(Shape({num_features_}), backend_, device);
     backend_->column_sums(gamma_terms.data(), local_gamma_grad.data(), rows, cols, 0.0f);

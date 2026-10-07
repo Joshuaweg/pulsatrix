@@ -72,6 +72,8 @@ protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 
 private:
+    /** @brief Token embeddings times config.embed_scale (Gemma 3's sqrt(hidden_size)). */
+    [[nodiscard]] Tensor ScaleEmbeddings(const Tensor& x) const;
     HfModelConfig config_;
     DeviceBackend* backend_;
     EmbeddingModule embed_;

@@ -336,7 +336,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 | LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum difference under 1e-3 (relative to the position's largest logit above 1) | Catches layout bugs that still "load" | IO-4 | P0 | S || Done, [#81](https://github.com/Joshuaweg/pulsatrix/pull/81) (see below) |
 | LLM-7 | AttnLRP parity with LXT on SmolLM2 (per-token relevance correlation above 0.99), including the relevance split across shared key and value heads | The headline result: pulsatrix explains a real LLM and matches the reference | LLM-1, LLM-2, TOK-2, LLM-6 | P1 | M || Done, [#83](https://github.com/Joshuaweg/pulsatrix/pull/83) (see below) |
 | LLM-8 | Tuned lens and AtP* (corrected attribution patching) | Better versions of the logit lens and patching that already exist | LLM-1 | P2 | S–M | |
-| LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M | |
+| LLM-9 | Gemma 3 support: sliding-window attention, `(1 + w)` RMSNorm, embedding scaling | Unlocks Gemma Scope 2 dictionaries | LLM-1 | P3 | M || Done, [#91](https://github.com/Joshuaweg/pulsatrix/pull/91) (see below) |
 
 
 ### How the LLM work departed from the plan
@@ -415,13 +415,39 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
   - LXT 2.1 needs two shims under transformers 5; they are described in the generator and in
     `docs/interpretability/lrp.md`.
 
+- **LLM-9** runs Gemma 3 (the text model, `gemma3_text`), checked on Gemma 3 270M and on a tiny
+  fixture. Gemma 1 and 2, and logit softcapping, are still refused by name.
+  - **The pieces:**
+    - sliding-window attention, a window parameter on the attention mask on every backend,
+      including the KV-cache path
+    - each layer type's own RoPE base, with scaling only on full-attention layers, read from both
+      the older flat fields and the newer nested `rope_parameters`
+    - `query_pre_attn_scalar` as the score scale
+    - a GeGLU MLP (`ElementwiseOp::GeluTanh`, written once for CPU and GPU)
+    - `(1 + w)` RMSNorms, kept as an offset so the stored weight stays the checkpoint's
+    - sandwich norms, and embeddings scaled by `sqrt(hidden_size)`
+  - **Results on Gemma 3 270M:**
+    - logits within 1.6e-4 of `transformers` on CPU (4.6e-6 relative) and 1.2e-4 on the GPU
+    - greedy generation identical for 24 tokens
+    - AttnLRP matching LXT's own Gemma 3 patch (largest relative difference 5.5e-5, correlation
+      1.000000)
+  - **The real model's window (512) is longer than the golden texts**, so the tiny fixture checks
+    the window: 4 layers (sliding, sliding, full, sliding) with a 3-token window,
+    `query_pre_attn_scalar` 12, RoPE base 100 on sliding layers and linear scaling on the full one,
+    and norm weights drawn around 0.
+  - **Mutation-checked:** removing the `(1 + w)`, the embedding scale, the window, the sandwich
+    norms, the per-layer-type RoPE base or the score scale each fails the tiny fixture's logits,
+    golden and AttnLRP tests.
+  - **Config bugs fixed:** `attn_logit_softcapping: null` (off) was reported as unsupported, and
+    `layer_types` must now name one type per layer.
+
 ### Follow-ups the LLM work surfaced
 
 | Follow-up | Belongs with |
 |---|---|
 | Llama 3's `rope_scaling` changes the low RoPE frequencies at every position, so Llama-3.2 logits need it even on short text || Done in LLM-6 |
 | `SwiGLUModule` without biases: Llama-family MLPs have none, and IO-4's strict mode fails on unmapped keys | Done in IO-4 |
-| Gemma 3's `query_pre_attn_scalar` replaces the `1/sqrt(head_dim)` scale | LLM-9 |
+| Gemma 3's `query_pre_attn_scalar` replaces the `1/sqrt(head_dim)` scale | Done in LLM-9 |
 | Grouped-query attention materializes the repeated K and V; index the shared head inside the matmul instead | HIP-6 |
 | The CPU `gemm` is a single-threaded i-j-p loop that strides down the weight matrix; reorder to i-p-j (same summation order per element) and thread over rows | Done in [#82](https://github.com/Joshuaweg/pulsatrix/pull/82): i-p-j, threaded over columns; Llama-3.2-1B's golden run takes 33 s instead of more than an hour |
 

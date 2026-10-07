@@ -86,6 +86,13 @@ __global__ void silu_kernel(const float* in, float* out, size_t n) {
     }
 }
 
+__global__ void gelu_tanh_kernel(const float* in, float* out, size_t n) {
+    size_t i = global_index();
+    if (i < n) {
+        out[i] = pointwise::gelu_tanh(in[i]);
+    }
+}
+
 __global__ void exp_kernel(const float* in, float* out, size_t n) {
     size_t i = global_index();
     if (i < n) {
@@ -137,6 +144,9 @@ void launch_elementwise(ElementwiseOp op, const float* in, float* out, size_t n,
             return;
         case ElementwiseOp::Exp:
             exp_kernel<<<grid, kBlockSize, 0, stream>>>(in, out, n);
+            return;
+        case ElementwiseOp::GeluTanh:
+            gelu_tanh_kernel<<<grid, kBlockSize, 0, stream>>>(in, out, n);
             return;
     }
     // Reached only if ElementwiseOp gains a value this switch doesn't handle -- fail loudly
@@ -208,6 +218,9 @@ __global__ void elementwise_backward_kernel(int op, const float* x, const float*
             }
             case ElementwiseOp::Exp:
                 d = expf(xi);
+                break;
+            case ElementwiseOp::GeluTanh:
+                d = pointwise::gelu_tanh_grad(xi);
                 break;
         }
         grad_in[i] = grad_out[i] * d;
@@ -514,13 +527,13 @@ __global__ void rope_rotate_kernel(const float* in, const float* cos_table, cons
 }
 
 __global__ void attention_mask_fill_kernel(float* scores, const float* key_keep, size_t heads, size_t q_len,
-                                           size_t k_len, size_t total, bool causal, size_t q_offset, float value) {
+                                           size_t k_len, size_t total, bool causal, size_t q_offset, size_t window, float value) {
     size_t idx = global_index();  // flat index into (batch, heads, q_len, k_len)
     if (idx < total) {
         const size_t j = idx % k_len;
         const size_t i = (idx / k_len) % q_len;
         const size_t b = idx / (k_len * q_len * heads);
-        if (rows::attention_masked(key_keep, b, i, j, k_len, causal, q_offset)) {
+        if (rows::attention_masked(key_keep, b, i, j, k_len, causal, q_offset, window)) {
             scores[idx] = value;
         }
     }

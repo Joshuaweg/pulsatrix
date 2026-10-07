@@ -48,7 +48,7 @@ TEST_P(AttnLrpTinyTest, DoesNotMatchPlainGradientTimesInput) {
     EXPECT_EQ(r.metadata.at("rule"), "gradient * input");
 }
 
-INSTANTIATE_TEST_SUITE_P(TinyModels, AttnLrpTinyTest, ::testing::Values("llama", "qwen2", "qwen3"));
+INSTANTIATE_TEST_SUITE_P(TinyModels, AttnLrpTinyTest, ::testing::Values("llama", "qwen2", "qwen3", "gemma3"));
 
 TEST(AttnLrpHarnessTest, PearsonCorrelation) {
     EXPECT_NEAR(PearsonCorrelation({1, 2, 3, 4}, {2, 4, 6, 8}), 1.0, 1e-12);

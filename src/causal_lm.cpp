@@ -32,10 +32,18 @@ CausalLM::CausalLM(const HfModelConfig& config, DeviceBackend* backend, bool all
       backend_(backend),
       embed_(config.vocab_size, config.hidden_size, backend),
       norm_(config.hidden_size, backend, backend->device(), config.rms_norm_eps) {
-    const AttentionConfig attention = ToAttentionConfig(config);
+    norm_.set_weight_offset(config.norm_weight_offset);
+    TransformerBlockOptions options;
+    options.norm_eps = config.rms_norm_eps;
+    options.mlp_bias = config.mlp_bias;
+    options.mlp_activation = config.hidden_act == "silu" ? GatedActivation::Silu : GatedActivation::GeluTanh;
+    options.post_norms = config.post_norms;
+    options.norm_weight_offset = config.norm_weight_offset;
     for (int64_t i = 0; i < config.num_hidden_layers; ++i) {
-        layers_.push_back(std::make_unique<TransformerBlock>(attention, config.intermediate_size, backend,
-                                                             config.rms_norm_eps, config.mlp_bias));
+        // Each layer's own attention: Gemma 3 alternates sliding-window and full layers, each with
+        // its own RoPE base (LLM-9).
+        layers_.push_back(std::make_unique<TransformerBlock>(ToAttentionConfig(config, i), config.intermediate_size,
+                                                             backend, options));
     }
     if (config.tie_word_embeddings) {
         tied_head_ = std::make_unique<TiedLMHeadModule>(embed_, backend);
@@ -44,11 +52,18 @@ CausalLM::CausalLM(const HfModelConfig& config, DeviceBackend* backend, bool all
     }
 }
 
+Tensor CausalLM::ScaleEmbeddings(const Tensor& x) const {
+    if (config_.embed_scale == 1.0f) return x;
+    Tensor out(x.shape(), backend_, x.device());
+    backend_->axpby(config_.embed_scale, x.data(), 0.0f, nullptr, out.data(), static_cast<size_t>(x.numel()));
+    return out;
+}
+
 Tensor CausalLM::forward_impl(const Tensor& input) {
     if (input.rank() != 2) {
         throw std::invalid_argument("CausalLM::forward: input must be (N, L) token ids");
     }
-    Tensor x = embed_.forward(input);
+    Tensor x = ScaleEmbeddings(embed_.forward(input));
     for (auto& layer : layers_) x = layer->forward(x);
     last_hidden_shape_ = x.shape();
     const int64_t d = config_.hidden_size;
@@ -64,7 +79,7 @@ Tensor CausalLM::backward(const Tensor& grad_output) {
     g = tied_head_ ? tied_head_->backward(g) : lm_head_->backward(g);
     g = Reshaped(norm_.backward(g), last_hidden_shape_);
     for (auto it = layers_.rbegin(); it != layers_.rend(); ++it) g = (*it)->backward(g);
-    return embed_.backward(g);
+    return embed_.backward(ScaleEmbeddings(g));  // d(s e)/de = s
 }
 
 Tensor CausalLM::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
@@ -73,6 +88,7 @@ Tensor CausalLM::propagate_relevance(const Tensor& relevance_out, const LRPRuleC
     r = tied_head_ ? tied_head_->propagate_relevance(r, config) : lm_head_->propagate_relevance(r, config);
     r = Reshaped(norm_.propagate_relevance(r, config), last_hidden_shape_);
     for (auto it = layers_.rbegin(); it != layers_.rend(); ++it) r = (*it)->propagate_relevance(r, config);
+    // Scaling the embeddings by a constant passes relevance through unchanged.
     return embed_.propagate_relevance(r, config);
 }
 
@@ -104,7 +120,7 @@ NextTokenLogitsFn CausalLM::next_token_logits(int64_t max_length) {
     std::vector<TransformerBlock*> blocks;
     for (auto& layer : layers_) blocks.push_back(layer.get());
     Module* head = tied_head_ ? static_cast<Module*>(tied_head_.get()) : lm_head_.get();
-    return MakeCachedNextTokenLogits(embed_, blocks, {&norm_, head}, backend_, max_length);
+    return MakeCachedNextTokenLogits(embed_, blocks, {&norm_, head}, backend_, max_length, config_.embed_scale);
 }
 
 // ---- loading --------------------------------------------------------------------------------
@@ -194,7 +210,15 @@ std::vector<WeightMapping> HuggingFaceMapping(const HfModelConfig& c) {
         const std::string hf = "model.layers." + std::to_string(i) + ".";
         const std::string px = "layers." + std::to_string(i) + ".";
         m.push_back({hf + "input_layernorm.weight", px + "norm1.weight", T::Identity});
-        m.push_back({hf + "post_attention_layernorm.weight", px + "norm2.weight", T::Identity});
+        if (c.post_norms) {
+            // Gemma 3: post_attention_layernorm is the sandwich norm after attention, and
+            // pre_feedforward_layernorm the one before the MLP.
+            m.push_back({hf + "post_attention_layernorm.weight", px + "post_attn_norm.weight", T::Identity});
+            m.push_back({hf + "pre_feedforward_layernorm.weight", px + "norm2.weight", T::Identity});
+            m.push_back({hf + "post_feedforward_layernorm.weight", px + "post_mlp_norm.weight", T::Identity});
+        } else {
+            m.push_back({hf + "post_attention_layernorm.weight", px + "norm2.weight", T::Identity});
+        }
         for (const char* p : {"q_proj", "k_proj", "v_proj"}) {
             m.push_back({hf + "self_attn." + p + ".weight", px + "mha." + p + ".weight", T::Transpose});
             if (c.qkv_bias) m.push_back({hf + "self_attn." + p + ".bias", px + "mha." + p + ".bias", T::Identity});
