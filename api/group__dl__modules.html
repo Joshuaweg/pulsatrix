@@ -104,6 +104,9 @@ $(document).ready(function(){initNavTree('group__dl__modules.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
 Files</h2></td></tr>
+<tr class="memitem:activation__module_8hpp" id="r_activation__module_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="activation__module_8hpp.html">activation_module.hpp</a></td></tr>
+<tr class="memdesc:activation__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointwise activation chosen at construction: ReLU, tanh, sigmoid, SiLU, exact GELU or GELU's tanh approximation (PLM-1). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adam__optimizer_8hpp" id="r_adam__optimizer_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adam__optimizer_8hpp.html">adam_optimizer.hpp</a></td></tr>
 <tr class="memdesc:adam__optimizer_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adam optimizer &ndash; operates uniformly across any Module's parameters(). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,6 +175,12 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:embedding__module_8hpp" id="r_embedding__module_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="embedding__module_8hpp.html">embedding_module.hpp</a></td></tr>
 <tr class="memdesc:embedding__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lookup-table (row-select) layer &ndash; y = W[index], batched (N, L) -&gt; (N, L, embedding_dim). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:encoder__block_8hpp" id="r_encoder__block_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encoder__block_8hpp.html">encoder_block.hpp</a></td></tr>
+<tr class="memdesc:encoder__block_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A configurable transformer encoder layer (PLM-1): LayerNorm or RMSNorm, before or after each sublayer, and a plain or gated MLP. ESM-2's layer, BERT's layer and the Llama-style pre-norm layer are all settings of it. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:feed__forward__module_8hpp" id="r_feed__forward__module_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="feed__forward__module_8hpp.html">feed_forward_module.hpp</a></td></tr>
+<tr class="memdesc:feed__forward__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The plain transformer MLP, <code>Linear -&gt; activation -&gt; Linear</code>, of BERT, ESM and the original Transformer (PLM-1). The gated variant is SwiGLUModule. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:flatten__module_8hpp" id="r_flatten__module_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flatten__module_8hpp.html">flatten_module.hpp</a></td></tr>
 <tr class="memdesc:flatten__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reshape-only Module &ndash; flattens every non-batch dim of a (N, ...) input to (N, flattened_features), for chaining Conv2DModule's batched (N,C,H,W) output into a LinearModule's batched (N, in_features) input. <br /></td></tr>

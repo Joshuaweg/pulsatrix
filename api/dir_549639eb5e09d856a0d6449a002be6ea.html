@@ -101,9 +101,11 @@ Directory dependency graph for pulsatrix:</div>
 <div class="dyncontent">
 <div class="center"><img src="dir_549639eb5e09d856a0d6449a002be6ea_dep.png" border="0" usemap="#adir__549639eb5e09d856a0d6449a002be6ea__dep" alt="include/pulsatrix"/></div>
 <map name="adir__549639eb5e09d856a0d6449a002be6ea__dep" id="adir__549639eb5e09d856a0d6449a002be6ea__dep">
-<area shape="rect" href="dir_1df8ff9027259fc5f483c2d1b9c2e5ad.html" title="viz" alt="" coords="38,63,79,88"/>
-<area shape="rect" href="dir_549639eb5e09d856a0d6449a002be6ea.html" alt="" coords="27,52,193,99"/>
-<area shape="rect" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="16,16,204,109"/>
+<area shape="rect" href="dir_1df8ff9027259fc5f483c2d1b9c2e5ad.html" title="viz" alt="" coords="57,136,98,161"/>
+<area shape="poly" href="dir_000001_000002.html" alt="" coords="80,88,80,122,75,122,75,88"/>
+<area shape="rect" href="dir_000001_000002.html" title="1" alt="" coords="81,110,90,125"/>
+<area shape="rect" href="dir_549639eb5e09d856a0d6449a002be6ea.html" alt="" coords="27,52,128,172"/>
+<area shape="rect" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="16,16,139,183"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -117,6 +119,9 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="acquisition__functions_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="acquisition__functions_8hpp.html">acquisition_functions.hpp</a></td></tr>
 <tr class="memdesc:acquisition__functions_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bayesian-Optimization acquisition functions over a GP posterior: Expected Improvement, Probability of Improvement, GP-Upper-Confidence-Bound (Snoek, Larochelle, Adams, "Practical Bayesian Optimization of Machine Learning
        Algorithms," NeurIPS 2012). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="activation__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="activation__module_8hpp.html">activation_module.hpp</a></td></tr>
+<tr class="memdesc:activation__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointwise activation chosen at construction: ReLU, tanh, sigmoid, SiLU, exact GELU or GELU's tanh approximation (PLM-1). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="activation__snapshot_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="activation__snapshot_8hpp.html">activation_snapshot.hpp</a></td></tr>
 <tr class="memdesc:activation__snapshot_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Self-contained, enumerable copy of one forward pass's cached activations. <br /></td></tr>
@@ -319,6 +324,9 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="embedding__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="embedding__module_8hpp.html">embedding_module.hpp</a></td></tr>
 <tr class="memdesc:embedding__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lookup-table (row-select) layer &ndash; y = W[index], batched (N, L) -&gt; (N, L, embedding_dim). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="encoder__block_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encoder__block_8hpp.html">encoder_block.hpp</a></td></tr>
+<tr class="memdesc:encoder__block_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A configurable transformer encoder layer (PLM-1): LayerNorm or RMSNorm, before or after each sublayer, and a plain or gated MLP. ESM-2's layer, BERT's layer and the Llama-style pre-norm layer are all settings of it. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="environment_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="environment_8hpp.html">environment.hpp</a></td></tr>
 <tr class="memdesc:environment_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract RL environment interface (gymnasium-shaped reset/step) + StepResult. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,6 +345,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="explanation__metrics_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="explanation__metrics_8hpp.html">explanation_metrics.hpp</a></td></tr>
 <tr class="memdesc:explanation__metrics_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explanation-quality metrics in the Quantus families (roadmap XAI-5): faithfulness (deletion and insertion curves, with ROAD's imputation), randomization (the model-parameter randomization test) and complexity (sparseness and complexity). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="feed__forward__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="feed__forward__module_8hpp.html">feed_forward_module.hpp</a></td></tr>
+<tr class="memdesc:feed__forward__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The plain transformer MLP, <code>Linear -&gt; activation -&gt; Linear</code>, of BERT, ESM and the original Transformer (PLM-1). The gated variant is SwiGLUModule. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="fixed__topology__xor__network_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fixed__topology__xor__network_8hpp.html">fixed_topology_xor_network.hpp</a></td></tr>
 <tr class="memdesc:fixed__topology__xor__network_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A small, fixed-topology (2 input -&gt; 2 hidden -&gt; 1 output, both layers sigmoid) MLP whose weights are a flat parameter vector, plus a plain analytic fitness function scoring it against the four XOR patterns &ndash; the "fixed-topology network" and "plain
@@ -574,6 +585,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="ppo__clipped__loss_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ppo__clipped__loss_8hpp.html">ppo_clipped_loss.hpp</a></td></tr>
 <tr class="memdesc:ppo__clipped__loss_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">PPO's clipped surrogate objective (Schulman et al. 2017) over a batched rollout. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="relevance__graph_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="relevance__graph_8hpp.html">relevance_graph.hpp</a></td></tr>
+<tr class="memdesc:relevance__graph_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">A language model's attribution graph from AttnLRP (VIZ-4): how relevance for one predicted token flows from the input tokens through every layer's residual stream, ready for Neuronpedia's and circuit-tracer's graph viewers. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="relu__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="relu__module_8hpp.html">relu_module.hpp</a></td></tr>
 <tr class="memdesc:relu__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">ReLU activation &ndash; the second Module subclass, following LinearModule's pattern. <br /></td></tr>
