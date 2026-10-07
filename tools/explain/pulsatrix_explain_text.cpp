@@ -5,7 +5,8 @@
 //   pulsatrix_explain_text MODEL_DIR "..." --words -o paris.json      # per word, as JSON
 //
 // MODEL_DIR holds a Hugging Face config.json, safetensors weights and tokenizer.json. The output
-// format follows the extension of -o (.svg or .json); without -o the JSON goes to stdout.
+// format follows the extension of -o (.svg, .html or .json); without -o the JSON goes to stdout.
+// The HTML page is plain HTML: the browser lays out the text, so every script reads correctly.
 // Options: --words (word view), --split whitespace (words between spaces), --no-special (leave
 // BOS and other inserted tokens out of the token view), --target TEXT (explain that token
 // instead of the most likely one; it must be a single token), --device cpu|hip, --width W.
@@ -21,6 +22,7 @@
 #include "pulsatrix/causal_lm.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/tokenizer_json.hpp"
+#include "pulsatrix/viz/html.hpp"
 #include "pulsatrix/viz/svg.hpp"
 #include "pulsatrix/viz/text_relevance.hpp"
 #include "pulsatrix/word_scores.hpp"
@@ -32,7 +34,7 @@ namespace {
 
 [[noreturn]] void Usage(const std::string& problem) {
     std::cerr << "pulsatrix_explain_text: " << problem << "\n"
-              << "usage: pulsatrix_explain_text MODEL_DIR TEXT [-o OUT.svg|OUT.json] [--words] [--split whitespace]\n"
+              << "usage: pulsatrix_explain_text MODEL_DIR TEXT [-o OUT.svg|OUT.html|OUT.json] [--words] [--split whitespace]\n"
               << "       [--no-special] [--target TEXT] [--device cpu|hip] [--width W]\n";
     std::exit(2);
 }
@@ -77,7 +79,10 @@ int Run(pulsatrix::DeviceBackend* backend, const Options& o) {
     }
     std::string output;
     const bool svg = o.out.size() >= 4 && o.out.compare(o.out.size() - 4, 4, ".svg") == 0;
-    if (svg) {
+    const bool html = o.out.size() >= 5 && o.out.compare(o.out.size() - 5, 5, ".html") == 0;
+    if (html) {
+        output = RenderTokenRelevanceHtml(doc);
+    } else if (svg) {
         SvgOptions options;
         if (o.width > 0) options.width = o.width;
         output = RenderTokenStripSvg(doc, options);

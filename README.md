@@ -136,7 +136,7 @@ explanations and how the results were validated. For a full worked example, see 
 | Neuro-symbolic | Differentiable fuzzy logic, a Datalog engine, LRP through Datalog derivations | [Neuro-symbolic](https://joshuaweg.github.io/pulsatrix/neuro-symbolic/) |
 | Evolutionary computation | Genetic algorithms, NSGA-II, NEAT, Evolution Strategies, CMA-ES, PBT, E-GAN | [Evolutionary](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/) |
 | Hyperparameter optimization | Grid/random search, Gaussian-process BO, TPE, Successive Halving, Hyperband, ASHA | [HPO](https://joshuaweg.github.io/pulsatrix/hyperparameter-optimization/) |
-| Visualization | Versioned JSON documents and dependency-free SVG charts (bar, waterfall, heatmap, token and word relevance for text, beeswarm) in the core library; opt-in Dear ImGui + ImPlot windows, a live training dashboard and a token relevance view | [Visualization](https://joshuaweg.github.io/pulsatrix/visualization/) |
+| Visualization | Versioned JSON documents and dependency-free SVG charts (bar, waterfall, heatmap, token and word relevance for text, beeswarm) and interactive Vega-Lite HTML pages (hover, zoom, export) in the core library; opt-in Dear ImGui + ImPlot windows, a live training dashboard and a token relevance view | [Visualization](https://joshuaweg.github.io/pulsatrix/visualization/) |
 | System monitoring | Live CPU/GPU utilization, memory and temperature logging | [System monitoring](https://joshuaweg.github.io/pulsatrix/system-monitoring/) |
 | Python bindings | `Tensor`, core layers, LRP and every explainer, `SystemMonitor`, `set_seed` and deterministic mode | [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#python-bindings) |
 | Performance tools | `pulsatrix_bench` (step time, explanation time, LRP conservation; A/B comparison of builds), `scripts/profile_hip.sh` (per-op GPU kernel time) | [Benchmarks](https://joshuaweg.github.io/pulsatrix/benchmarks/), [GPU profiling](https://joshuaweg.github.io/pulsatrix/gpu-profiling/) |
@@ -152,7 +152,7 @@ trained end to end in its tests and has to reach a fixed score on CartPole.
   feature, with a walkthrough page for each.
 - Command-line tools built with the library:
   - `pulsatrix_explain_text` explains a language model's prediction and draws it.
-  - `pulsatrix_svg` turns a saved explanation into an SVG figure.
+  - `pulsatrix_svg` turns a saved explanation into an SVG figure or an interactive HTML page.
   - `pulsatrix_bench` runs the [benchmark suite](https://joshuaweg.github.io/pulsatrix/benchmarks/).
   - `pulsatrix_golden`, `pulsatrix_attnlrp` and `pulsatrix_tokenizer_parity` check a model's
     logits, explanations and tokenizer against Hugging Face and LXT (see
