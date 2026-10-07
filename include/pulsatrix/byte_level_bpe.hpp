@@ -100,6 +100,11 @@ struct BpeOptions {
     std::string end_of_word_suffix;
     /** @brief For characters the vocabulary lacks; without one they are dropped, as in Hugging Face. */
     std::optional<std::string> unk_token;
+    /** @brief A character the vocabulary lacks becomes its UTF-8 bytes as `<0x41>`-style tokens
+     *         (SentencePiece's byte fallback), before the unknown token is considered. */
+    bool byte_fallback = false;
+    /** @brief Consecutive unknown characters become one unknown token. */
+    bool fuse_unk = false;
 };
 
 /** @brief Byte-pair encoding: start from characters and apply merges, lowest rank first. */

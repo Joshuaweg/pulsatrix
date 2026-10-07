@@ -56,6 +56,16 @@ void NormalizedString::rebuild(const std::vector<Piece>& pieces) {
     origin_ = std::move(origin);
 }
 
+// ---- Decoder -------------------------------------------------------------------------------
+
+std::string Decoder::decode(const std::vector<std::string>& tokens) const {
+    std::string text;
+    for (const std::string& t : decode_chain(tokens)) text += t;
+    return text;
+}
+
+std::vector<std::string> Decoder::decode_chain(std::vector<std::string> tokens) const { return {decode(tokens)}; }
+
 // ---- TextTokenizer -------------------------------------------------------------------------
 
 TextTokenizer::TextTokenizer(std::shared_ptr<const TokenModel> model) : model_(std::move(model)) {
