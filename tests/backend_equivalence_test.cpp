@@ -200,6 +200,10 @@ TEST_F(BackendEquivalenceTest, ElementwiseGeluTanhMatchesCPUBackendOnRandomInput
     ExpectElementwiseMatchesCPU(cpu, cuda, ElementwiseOp::GeluTanh, /*seed=*/12);
 }
 
+TEST_F(BackendEquivalenceTest, ElementwiseGeluMatchesCPUBackendOnRandomInput) {
+    ExpectElementwiseMatchesCPU(cpu, cuda, ElementwiseOp::Gelu, /*seed=*/13);
+}
+
 // GPU-native-kernels Mission 1 primitives -- cases shared with the other GPU backend.
 PULSATRIX_PRIMITIVE_EQUIVALENCE_TESTS(BackendEquivalenceTest, cuda)
 
