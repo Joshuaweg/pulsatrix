@@ -7,6 +7,7 @@
 
 #include "pulsatrix/byte_level_bpe.hpp"
 #include "pulsatrix/json.hpp"
+#include "pulsatrix/sentencepiece_bpe.hpp"
 #include "pulsatrix/tokenizer_components.hpp"
 
 namespace pulsatrix {
@@ -35,9 +36,35 @@ std::string OptionalString(const JsonValue& obj, std::string_view key) {
 
 const std::string& TypeOf(const JsonValue& component) { return Member(component, "type").as_string(); }
 
+/** @brief A Replace pattern, {"String": ...} or {"Regex": ...}: (is_regex, text). */
+std::pair<bool, std::string> Pattern(const JsonValue& j) {
+    const JsonValue& pattern = Member(j, "pattern");
+    if (const JsonValue* r = pattern.find("Regex")) return {true, r->as_string()};
+    if (const JsonValue* s = pattern.find("String")) return {false, s->as_string()};
+    Unsupported("pattern (neither Regex nor String)");
+}
+
+PrependScheme Scheme(const JsonValue& j) {
+    if (const JsonValue* scheme = j.find("prepend_scheme"); scheme != nullptr && !scheme->is_null()) {
+        const std::string& s = scheme->as_string();
+        if (s == "always") return PrependScheme::Always;
+        if (s == "first") return PrependScheme::First;
+        if (s == "never") return PrependScheme::Never;
+        Unsupported("Metaspace prepend_scheme \"" + s + "\"");
+    }
+    return Flag(j, "add_prefix_space", true) ? PrependScheme::Always : PrependScheme::Never;  // older files
+}
+
 std::shared_ptr<const Normalizer> MakeNormalizer(const JsonValue& j) {
     const std::string& type = TypeOf(j);
     if (type == "NFC") return std::make_shared<NfcNormalizer>();
+    if (type == "Replace") {
+        const auto [regex, pattern] = Pattern(j);
+        const std::string& content = Member(j, "content").as_string();
+        return regex ? std::make_shared<ReplaceNormalizer>(ReplaceNormalizer::Regex(pattern, content))
+                     : std::make_shared<ReplaceNormalizer>(pattern, content);
+    }
+    if (type == "Prepend") return std::make_shared<PrependNormalizer>(Member(j, "prepend").as_string());
     if (type == "Sequence") {
         std::vector<std::shared_ptr<const Normalizer>> parts;
         for (const JsonValue& n : Member(j, "normalizers").as_array()) parts.push_back(MakeNormalizer(n));
@@ -75,6 +102,9 @@ std::shared_ptr<const PreTokenizer> MakePreTokenizer(const JsonValue& j) {
         Unsupported("Split pattern (neither Regex nor String)");
     }
     if (type == "Digits") return std::make_shared<DigitsPreTokenizer>(Flag(j, "individual_digits", false));
+    if (type == "Metaspace") {
+        return std::make_shared<MetaspacePreTokenizer>(Member(j, "replacement").as_string(), Scheme(j), Flag(j, "split", true));
+    }
     if (type == "ByteLevel") {
         return std::make_shared<ByteLevelPreTokenizer>(Flag(j, "add_prefix_space", true), Flag(j, "use_regex", true));
     }
@@ -84,6 +114,7 @@ std::shared_ptr<const PreTokenizer> MakePreTokenizer(const JsonValue& j) {
 std::shared_ptr<const TokenModel> MakeModel(const JsonValue& j) {
     const JsonValue* type_value = j.find("type");
     const std::string type = type_value != nullptr ? type_value->as_string() : "BPE";
+    if (type != "BPE" && type != "WordLevel") Unsupported("model \"" + type + "\"");
     std::unordered_map<std::string, int64_t> vocab;
     for (const auto& [token, id] : Member(j, "vocab").as_object()) vocab.emplace(token, id.as_int64());
     if (type == "WordLevel") {
@@ -96,8 +127,6 @@ std::shared_ptr<const TokenModel> MakeModel(const JsonValue& j) {
     }
     if (type != "BPE") Unsupported("model \"" + type + "\"");
     if (const JsonValue* dropout = j.find("dropout"); dropout != nullptr && !dropout->is_null()) Unsupported("BPE dropout");
-    if (Flag(j, "byte_fallback", false)) Unsupported("BPE byte_fallback (TOK-3)");
-    if (Flag(j, "fuse_unk", false)) Unsupported("BPE fuse_unk (TOK-3)");
     std::vector<std::pair<std::string, std::string>> merges;
     const JsonValue::Array& raw = Member(j, "merges").as_array();
     merges.reserve(raw.size());
@@ -120,6 +149,8 @@ std::shared_ptr<const TokenModel> MakeModel(const JsonValue& j) {
     options.continuing_subword_prefix = OptionalString(j, "continuing_subword_prefix");
     options.end_of_word_suffix = OptionalString(j, "end_of_word_suffix");
     if (const JsonValue* unk = j.find("unk_token"); unk != nullptr && !unk->is_null()) options.unk_token = unk->as_string();
+    options.byte_fallback = Flag(j, "byte_fallback", false);
+    options.fuse_unk = Flag(j, "fuse_unk", false);
     return std::make_shared<BpeModel>(std::move(vocab), merges, std::move(options));
 }
 
@@ -159,6 +190,23 @@ std::shared_ptr<const Decoder> MakeDecoder(const JsonValue& j) {
     const std::string& type = TypeOf(j);
     if (type == "ByteLevel") return std::make_shared<ByteLevelDecoder>();
     if (type == "Fuse") return std::make_shared<FuseDecoder>();
+    if (type == "ByteFallback") return std::make_shared<ByteFallbackDecoder>();
+    if (type == "Replace") {
+        const auto [regex, pattern] = Pattern(j);
+        const std::string& content = Member(j, "content").as_string();
+        return regex ? std::make_shared<ReplaceDecoder>(ReplaceDecoder::Regex(pattern, content))
+                     : std::make_shared<ReplaceDecoder>(pattern, content);
+    }
+    if (type == "Strip") {
+        return std::make_shared<StripDecoder>(Member(j, "content").as_string(), static_cast<size_t>(Member(j, "start").as_int64()),
+                                              static_cast<size_t>(Member(j, "stop").as_int64()));
+    }
+    if (type == "Metaspace") return std::make_shared<MetaspaceDecoder>(Member(j, "replacement").as_string(), Scheme(j));
+    if (type == "Sequence") {
+        std::vector<std::shared_ptr<const Decoder>> parts;
+        for (const JsonValue& d : Member(j, "decoders").as_array()) parts.push_back(MakeDecoder(d));
+        return std::make_shared<SequenceDecoder>(std::move(parts));
+    }
     Unsupported("decoder \"" + type + "\"");
 }
 
