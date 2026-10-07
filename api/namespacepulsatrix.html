@@ -122,6 +122,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ActivationModule.html">ActivationModule</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = f(x), elementwise, for one of the backend's activations. No parameters.  <a href="classpulsatrix_1_1ActivationModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ActivationSnapshot.html">ActivationSnapshot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A copyable, self-contained record of every activation cached during one forward pass, plus the node ids in topological order and each node's op_type/label metadata.  <a href="classpulsatrix_1_1ActivationSnapshot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -411,6 +414,18 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Embedding lookup table, rank-2 input (N, L) of float-encoded indices -&gt; rank-3 output (N, L, embedding_dim). Structurally unlike every other module in this codebase: forward is a pure selection (row copy), with no arithmetic mixing across input features.  <a href="classpulsatrix_1_1EmbeddingModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderBlock.html">EncoderBlock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One encoder layer. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(N, L, d_model) -&gt; (N, L, d_model)</code>.  <a href="classpulsatrix_1_1EncoderBlock.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderBlockOptions.html">EncoderBlockOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything about an <a class="el" href="classpulsatrix_1_1EncoderBlock.html" title="One encoder layer. Shape (N, L, d_model) -&gt; (N, L, d_model).">EncoderBlock</a> beyond its attention. The defaults are ESM-2's.  <a href="structpulsatrix_1_1EncoderBlockOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An ESM-2 masked language model: token embeddings (with ESM's token-dropout scaling), pre-LayerNorm encoder layers with rotary attention (<a class="el" href="classpulsatrix_1_1EncoderBlock.html" title="One encoder layer. Shape (N, L, d_model) -&gt; (N, L, d_model).">EncoderBlock</a>), a final LayerNorm, and the LM head: dense, GELU, LayerNorm, then the embedding table transposed plus a bias. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a>: token ids <code>(N, L)</code> to logits <code>(N, L, vocab)</code>.  <a href="classpulsatrix_1_1EncoderLM.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The settings of an ESM-family masked LM, from its Hugging Face <code>config.json</code>.  <a href="structpulsatrix_1_1EncoderLMConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of encoding one text.  <a href="structpulsatrix_1_1Encoding.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -428,11 +443,17 @@ Classes</h2></td></tr>
        was the model" (input label + <a class="el" href="classpulsatrix_1_1ConfidenceMeter.html" title="Draws a filled bar whose fill length encodes confidence (position/length, never color alone – hc_info...">ConfidenceMeter</a>), bottom row is "how trustworthy is
        this explanation" (<a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> conservation delta + explainer stability), visually separated by a rule (Gestalt proximity grouping &ndash; these are two different semantic questions, not one undifferentiated block of numbers).  <a href="classpulsatrix_1_1ExplanationScoreCard.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One FASTA record.  <a href="structpulsatrix_1_1FastaRecord.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.feature_dashboard.v1</code>: one learned feature (for example a sparse autoencoder unit) with its activation statistics and top-activating examples.  <a href="structpulsatrix_1_1FeatureDashboardDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureSensitivity.html">FeatureSensitivity</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How one feature's low and high value move the output, everything else held fixed.  <a href="structpulsatrix_1_1FeatureSensitivity.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FeedForwardModule.html">FeedForwardModule</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>fc2(f(fc1(x)))</code> over the last dimension. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(..., d_model) -&gt; (..., d_model)</code>.  <a href="classpulsatrix_1_1FeedForwardModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FieldStatistics.html">FieldStatistics</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptive statistics for one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position, aggregated across a whole <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>.  <a href="structpulsatrix_1_1FieldStatistics.html#details">More...</a><br /></td></tr>
@@ -1189,6 +1210,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf">Silu</a>
 , <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0">Exp</a>
 , <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f">GeluTanh</a>
+, <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b">Gelu</a>
 <br />
  }</td></tr>
 <tr class="memdesc:afec27fa326532e4ad62b32d54558b503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary elementwise operations supported by DeviceBackend::elementwise().  <a href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">More...</a><br /></td></tr>
@@ -1271,6 +1293,21 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ab997921e8dd2fcb16daefdcc05ce6550"><td class="mdescLeft">&#160;</td><td class="mdescRight">E-GAN's three named mutation objectives.  <a href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">More...</a><br /></td></tr>
 <tr class="separator:ab997921e8dd2fcb16daefdcc05ce6550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9b603c42e9e2a6f3680d4709c4745cd" id="r_aa9b603c42e9e2a6f3680d4709c4745cd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cd">NormType</a> { <a class="el" href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c">LayerNorm</a>
+, <a class="el" href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cda533a34c62723462c962ca7535ca06570">RMSNorm</a>
+ }</td></tr>
+<tr class="memdesc:aa9b603c42e9e2a6f3680d4709c4745cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The layer's normalization.  <a href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cd">More...</a><br /></td></tr>
+<tr class="separator:aa9b603c42e9e2a6f3680d4709c4745cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af006dd0a5403341bfc3ad106ea4a4077" id="r_af006dd0a5403341bfc3ad106ea4a4077"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077">NormPosition</a> { <a class="el" href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077afb55a965b77791b31ffd2bb548f71080">Pre</a>
+, <a class="el" href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077a03d947a2158373c3b9d74325850cb8b9">Post</a>
+ }</td></tr>
+<tr class="memdesc:af006dd0a5403341bfc3ad106ea4a4077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the norms sit.  <a href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077">More...</a><br /></td></tr>
+<tr class="separator:af006dd0a5403341bfc3ad106ea4a4077"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a871e9a9107ca439528eafcacf6eb7f46" id="r_a871e9a9107ca439528eafcacf6eb7f46"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46">MlpType</a> { <a class="el" href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46a4cd8413207629a963225f4314b53adcd">Plain</a>
+, <a class="el" href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46ae33f92b6ec382adfd412624ff0c83644">Gated</a>
+ }</td></tr>
+<tr class="memdesc:a871e9a9107ca439528eafcacf6eb7f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MLP's form.  <a href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46">More...</a><br /></td></tr>
+<tr class="separator:a871e9a9107ca439528eafcacf6eb7f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad77127af5416692cbd6eaeaba9ec0e0a" id="r_ad77127af5416692cbd6eaeaba9ec0e0a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a">FinishReason</a> { <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aa86d16d93f97145c1c4532ada5501eaeb">Eos</a>
 , <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275">Length</a>
  }</td></tr>
@@ -1355,8 +1392,9 @@ Enumerations</h2></td></tr>
 <tr class="separator:ad7a1ebc92bdef322b1c30385aac7c066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988785af20e321b62cf99997047a6985" id="r_a988785af20e321b62cf99997047a6985"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">GatedActivation</a> { <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf">Silu</a>
 , <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f">GeluTanh</a>
+, <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985af48cca1c6deaa6a1c34e4ee46954cf0b">Gelu</a>
  }</td></tr>
-<tr class="memdesc:a988785af20e321b62cf99997047a6985"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh approximation (GeGLU: Gemma, LLM-9).  <a href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">More...</a><br /></td></tr>
+<tr class="memdesc:a988785af20e321b62cf99997047a6985"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen), GELU's tanh approximation (GeGLU: Gemma, LLM-9) or exact GELU (GeGLU as first published).  <a href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">More...</a><br /></td></tr>
 <tr class="separator:a988785af20e321b62cf99997047a6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga36063879210fbfeed97464b5b089b871" id="r_ga36063879210fbfeed97464b5b089b871"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871">LogFormat</a> { <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871aaaffc9a26d918147e8944a8fd5e231b9">LogFormat::JsonLines</a>
 , <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871ab20daea8bfacec3891fcf5b7be4adca0">LogFormat::Csv</a>
@@ -1579,6 +1617,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a3184f58066a6c639cae2e009f6a8c8f9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3184f58066a6c639cae2e009f6a8c8f9">RunEGANTraining</a> (<a class="el" href="classpulsatrix_1_1GeneratorPopulation.html">GeneratorPopulation</a> &amp;population, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;discriminator, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;real_batch, int num_generations, int64_t noise_dim, int64_t per_generator_batch, const std::vector&lt; <a class="el" href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">MutationObjective</a> &gt; &amp;objectives, MakeGenerator make_generator, float g_learning_rate, DOptimizerT &amp;d_optimizer, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, RNG &amp;rng, float gamma=0.05f)</td></tr>
 <tr class="memdesc:a3184f58066a6c639cae2e009f6a8c8f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven wrapper: draws fresh standard-normal noise for every population member every generation, then runs RunEGANGeneration num_generations times.  <br /></td></tr>
 <tr class="separator:a3184f58066a6c639cae2e009f6a8c8f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa620e985a52f1c4f6977c3d0473c1ae6" id="r_aa620e985a52f1c4f6977c3d0473c1ae6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa620e985a52f1c4f6977c3d0473c1ae6">ParseEsmConfig</a> (std::string_view json)</td></tr>
+<tr class="memdesc:aa620e985a52f1c4f6977c3d0473c1ae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads an ESM <code>config.json</code>.  <br /></td></tr>
+<tr class="separator:aa620e985a52f1c4f6977c3d0473c1ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba1de7f66574e1aba32fb47ab356b252" id="r_aba1de7f66574e1aba32fb47ab356b252"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aba1de7f66574e1aba32fb47ab356b252">ReadEsmConfig</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:aba1de7f66574e1aba32fb47ab356b252"><td class="mdescLeft">&#160;</td><td class="mdescRight">ParseEsmConfig on a file.  <br /></td></tr>
+<tr class="separator:aba1de7f66574e1aba32fb47ab356b252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a048d145a932fe492ea444769908f014a" id="r_a048d145a932fe492ea444769908f014a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a048d145a932fe492ea444769908f014a">EsmMapping</a> (const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:a048d145a932fe492ea444769908f014a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name mapping from an <code>EsmForMaskedLM</code> checkpoint to <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>. Q/K/V, output, MLP and LM-head dense weights are transposed.  <br /></td></tr>
+<tr class="separator:a048d145a932fe492ea444769908f014a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa782e67904114c948b19f7ef6ec98514" id="r_aa782e67904114c948b19f7ef6ec98514"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa782e67904114c948b19f7ef6ec98514">EsmIgnoredTensors</a> (const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:aa782e67904114c948b19f7ef6ec98514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checkpoint tensors an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a> doesn't use: the absolute-position table and ids (unused with rotary), each layer's rotary <code>inv_freq</code> (recomputed), and the contact head (PLM-4).  <br /></td></tr>
+<tr class="separator:aa782e67904114c948b19f7ef6ec98514"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3bbc0b567e59d3f602e8e93b2b2dc8d" id="r_ab3bbc0b567e59d3f602e8e93b2b2dc8d"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab3bbc0b567e59d3f602e8e93b2b2dc8d">LoadEncoderLM</a> (const std::string &amp;directory, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:ab3bbc0b567e59d3f602e8e93b2b2dc8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an ESM-2 model directory: <code>config.json</code> and safetensors weights (one file or sharded), such as <code>facebook/esm2_t6_8M_UR50D</code>. LayerNorm parameters may be named <code>weight</code>/<code>bias</code> or, as transformers 5 saves them, <code>gamma</code>/<code>beta</code>. RoPE frequencies come from the checkpoint's <code>inv_freq</code> buffer when it has one (see <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#a8fdb496c35bdb14bba4c9cb582f18b18" title="RoPE frequencies to use instead of rope_theta&#39;s, one per pair. LoadEncoderLM fills them from the chec...">EncoderLMConfig::rope_inverse_frequencies</a>).  <br /></td></tr>
+<tr class="separator:ab3bbc0b567e59d3f602e8e93b2b2dc8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c67711003087c6fd392f5e9e4e8fc9e" id="r_a5c67711003087c6fd392f5e9e4e8fc9e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5c67711003087c6fd392f5e9e4e8fc9e">ESUpdateGivenPerturbations</a> (const std::vector&lt; double &gt; &amp;theta, const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;epsilons, const std::vector&lt; double &gt; &amp;fitnesses, double alpha, double sigma)</td></tr>
 <tr class="memdesc:a5c67711003087c6fd392f5e9e4e8fc9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure core: the exact ES parameter update given already-sampled perturbations and their fitness scores &ndash; &lsquo;theta&rsquo; = theta + (alpha / (N*sigma)) * sum_i(F_i * epsilon_i)`.  <br /></td></tr>
 <tr class="separator:a5c67711003087c6fd392f5e9e4e8fc9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1867,6 +1920,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a04988305f3fb93fa30aa30cfcbb09a6e" id="r_a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e">PolyakUpdate</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;source, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;destination, float tau)</td></tr>
 <tr class="memdesc:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Soft target-network update (Lillicrap et al. 2016 / Haarnoja et al. 2018): <code>destination_param[i] = tau * source_param[i] + (1 - tau) * destination_param[i]</code>, element-wise and in place.  <br /></td></tr>
 <tr class="separator:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73c55d10c6a32a7c7e755166a530a2e2" id="r_a73c55d10c6a32a7c7e755166a530a2e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73c55d10c6a32a7c7e755166a530a2e2">MakeEsmTokenizer</a> (const std::vector&lt; std::string &gt; &amp;vocab)</td></tr>
+<tr class="memdesc:a73c55d10c6a32a7c7e755166a530a2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESM's tokenizer (Hugging Face's <code>EsmTokenizer</code>) over a vocabulary listed one token per line, by id: <code>&lt;cls&gt; &lt;pad&gt; &lt;eos&gt; &lt;unk&gt; L A G V ... &lt;mask&gt;</code> for ESM-2.  <br /></td></tr>
+<tr class="separator:a73c55d10c6a32a7c7e755166a530a2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfe7a06213eb6609c835ff2916063d5f" id="r_abfe7a06213eb6609c835ff2916063d5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abfe7a06213eb6609c835ff2916063d5f">LoadEsmTokenizer</a> (const std::string &amp;vocab_path)</td></tr>
+<tr class="memdesc:abfe7a06213eb6609c835ff2916063d5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MakeEsmTokenizer on a <code>vocab.txt</code>.  <br /></td></tr>
+<tr class="separator:abfe7a06213eb6609c835ff2916063d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fa8bd5dd31583f9049360b9edb145f1" id="r_a1fa8bd5dd31583f9049360b9edb145f1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1fa8bd5dd31583f9049360b9edb145f1">ParseFasta</a> (std::string_view text)</td></tr>
+<tr class="memdesc:a1fa8bd5dd31583f9049360b9edb145f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses FASTA text: records start with <code>&gt;</code>, sequences may span lines, and blank lines and <code>;</code> comment lines are skipped. Line endings may be <code>\n</code> or <code>\r\n</code>.  <br /></td></tr>
+<tr class="separator:a1fa8bd5dd31583f9049360b9edb145f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6341fb8f3ca7d059a16b8a9bb27d95" id="r_aea6341fb8f3ca7d059a16b8a9bb27d95"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aea6341fb8f3ca7d059a16b8a9bb27d95">ReadFasta</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:aea6341fb8f3ca7d059a16b8a9bb27d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">ParseFasta on a file.  <br /></td></tr>
+<tr class="separator:aea6341fb8f3ca7d059a16b8a9bb27d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c45a1d14fc6e146990c4f6e40e19e9" id="r_a06c45a1d14fc6e146990c4f6e40e19e9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a06c45a1d14fc6e146990c4f6e40e19e9">WriteFasta</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; &amp;records, size_t width=60)</td></tr>
+<tr class="memdesc:a06c45a1d14fc6e146990c4f6e40e19e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">FASTA text for <code>records</code>, sequences wrapped at <code>width</code> residues (0: one line).  <br /></td></tr>
+<tr class="separator:a06c45a1d14fc6e146990c4f6e40e19e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7086aa42f9ed760fa08b132212f3d3a" id="r_ae7086aa42f9ed760fa08b132212f3d3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttributionGraph.html">AttributionGraph</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae7086aa42f9ed760fa08b132212f3d3a">BuildRelevanceGraph</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const std::vector&lt; int64_t &gt; &amp;ids, int64_t target, const <a class="el" href="structpulsatrix_1_1RelevanceGraphOptions.html">RelevanceGraphOptions</a> &amp;options)</td></tr>
 <tr class="memdesc:ae7086aa42f9ed760fa08b132212f3d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains the model's logit for <code>target</code> at the last position with <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> and returns the relevance flow as an attribution graph.  <br /></td></tr>
 <tr class="separator:ae7086aa42f9ed760fa08b132212f3d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2626,6 +2694,8 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </td></tr>
 <tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f" name="afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f"></a>GeluTanh&#160;</td><td class="fielddoc"><p>GELU, tanh approximation (gelu_pytorch_tanh) &ndash; the gate of Gemma's GeGLU (LLM-9) </p>
 </td></tr>
+<tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b" name="afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b"></a>Gelu&#160;</td><td class="fielddoc"><p>exact GELU, x * Phi(x) with erf &ndash; the MLP activation of BERT and ESM (PLM-1) </p>
+</td></tr>
 </table>
 
 </div>
@@ -2680,10 +2750,11 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </table>
 </div><div class="memdoc">
 
-<p>The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh approximation (GeGLU: Gemma, LLM-9). </p>
+<p>The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen), GELU's tanh approximation (GeGLU: Gemma, LLM-9) or exact GELU (GeGLU as first published). </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf" name="a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf"></a>Silu&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f" name="a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f"></a>GeluTanh&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a988785af20e321b62cf99997047a6985af48cca1c6deaa6a1c34e4ee46954cf0b" name="a988785af20e321b62cf99997047a6985af48cca1c6deaa6a1c34e4ee46954cf0b"></a>Gelu&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -2879,6 +2950,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
+<a id="a871e9a9107ca439528eafcacf6eb7f46" name="a871e9a9107ca439528eafcacf6eb7f46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a871e9a9107ca439528eafcacf6eb7f46">&#9670;&#160;</a></span>MlpType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46">pulsatrix::MlpType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The MLP's form. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a871e9a9107ca439528eafcacf6eb7f46a4cd8413207629a963225f4314b53adcd" name="a871e9a9107ca439528eafcacf6eb7f46a4cd8413207629a963225f4314b53adcd"></a>Plain&#160;</td><td class="fielddoc"><p><code>Linear -&gt; activation -&gt; Linear</code> (BERT, ESM): <a class="el" href="classpulsatrix_1_1FeedForwardModule.html" title="fc2(f(fc1(x))) over the last dimension. Shape (..., d_model) -&gt; (..., d_model).">FeedForwardModule</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a871e9a9107ca439528eafcacf6eb7f46ae33f92b6ec382adfd412624ff0c83644" name="a871e9a9107ca439528eafcacf6eb7f46ae33f92b6ec382adfd412624ff0c83644"></a>Gated&#160;</td><td class="fielddoc"><p><code>down(act(gate(x)) * up(x))</code> (Llama's SwiGLU, Gemma's GeGLU): <a class="el" href="classpulsatrix_1_1SwiGLUModule.html" title="down_proj(silu(gate_proj(x)) * up_proj(x)), the gated feedforward block used in place of a plain two-...">SwiGLUModule</a>. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ab997921e8dd2fcb16daefdcc05ce6550" name="ab997921e8dd2fcb16daefdcc05ce6550"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab997921e8dd2fcb16daefdcc05ce6550">&#9670;&#160;</a></span>MutationObjective</h2>
 
@@ -2904,6 +3005,64 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b" name="ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b"></a>Minimax&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763" name="ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763"></a>Heuristic&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46" name="ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46"></a>LeastSquares&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="af006dd0a5403341bfc3ad106ea4a4077" name="af006dd0a5403341bfc3ad106ea4a4077"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af006dd0a5403341bfc3ad106ea4a4077">&#9670;&#160;</a></span>NormPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077">pulsatrix::NormPosition</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Where the norms sit. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af006dd0a5403341bfc3ad106ea4a4077afb55a965b77791b31ffd2bb548f71080" name="af006dd0a5403341bfc3ad106ea4a4077afb55a965b77791b31ffd2bb548f71080"></a>Pre&#160;</td><td class="fielddoc"><p><code>y = x + f(norm(x))</code> (ESM, GPT-2, Llama). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af006dd0a5403341bfc3ad106ea4a4077a03d947a2158373c3b9d74325850cb8b9" name="af006dd0a5403341bfc3ad106ea4a4077a03d947a2158373c3b9d74325850cb8b9"></a>Post&#160;</td><td class="fielddoc"><p><code>y = norm(x + f(x))</code> (BERT and the original Transformer). </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="aa9b603c42e9e2a6f3680d4709c4745cd" name="aa9b603c42e9e2a6f3680d4709c4745cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9b603c42e9e2a6f3680d4709c4745cd">&#9670;&#160;</a></span>NormType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cd">pulsatrix::NormType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The layer's normalization. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c" name="aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c"></a>LayerNorm&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aa9b603c42e9e2a6f3680d4709c4745cda533a34c62723462c962ca7535ca06570" name="aa9b603c42e9e2a6f3680d4709c4745cda533a34c62723462c962ca7535ca06570"></a>RMSNorm&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -6006,6 +6165,46 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="aa782e67904114c948b19f7ef6ec98514" name="aa782e67904114c948b19f7ef6ec98514"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa782e67904114c948b19f7ef6ec98514">&#9670;&#160;</a></span>EsmIgnoredTensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; pulsatrix::EsmIgnoredTensors </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checkpoint tensors an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a> doesn't use: the absolute-position table and ids (unused with rotary), each layer's rotary <code>inv_freq</code> (recomputed), and the contact head (PLM-4). </p>
+
+</div>
+</div>
+<a id="a048d145a932fe492ea444769908f014a" name="a048d145a932fe492ea444769908f014a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a048d145a932fe492ea444769908f014a">&#9670;&#160;</a></span>EsmMapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1WeightMapping.html">WeightMapping</a> &gt; pulsatrix::EsmMapping </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The name mapping from an <code>EsmForMaskedLM</code> checkpoint to <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>. Q/K/V, output, MLP and LM-head dense weights are transposed. </p>
+
+</div>
+</div>
 <a id="af62aed5eada4dad1ac70104a7304cf5a" name="af62aed5eada4dad1ac70104a7304cf5a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af62aed5eada4dad1ac70104a7304cf5a">&#9670;&#160;</a></span>ESStep()</h2>
 
@@ -7533,6 +7732,68 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ab3bbc0b567e59d3f602e8e93b2b2dc8d" name="ab3bbc0b567e59d3f602e8e93b2b2dc8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3bbc0b567e59d3f602e8e93b2b2dc8d">&#9670;&#160;</a></span>LoadEncoderLM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &gt; pulsatrix::LoadEncoderLM </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads an ESM-2 model directory: <code>config.json</code> and safetensors weights (one file or sharded), such as <code>facebook/esm2_t6_8M_UR50D</code>. LayerNorm parameters may be named <code>weight</code>/<code>bias</code> or, as transformers 5 saves them, <code>gamma</code>/<code>beta</code>. RoPE frequencies come from the checkpoint's <code>inv_freq</code> buffer when it has one (see <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#a8fdb496c35bdb14bba4c9cb582f18b18" title="RoPE frequencies to use instead of rope_theta&#39;s, one per pair. LoadEncoderLM fills them from the chec...">EncoderLMConfig::rope_inverse_frequencies</a>). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an unsupported config or a weight that doesn't fit; std::runtime_error for a missing file. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abfe7a06213eb6609c835ff2916063d5f" name="abfe7a06213eb6609c835ff2916063d5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfe7a06213eb6609c835ff2916063d5f">&#9670;&#160;</a></span>LoadEsmTokenizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> pulsatrix::LoadEsmTokenizer </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>vocab_path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MakeEsmTokenizer on a <code>vocab.txt</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if it can't be read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a7770a1a560a76af4bf34d00a5289da6f" name="a7770a1a560a76af4bf34d00a5289da6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7770a1a560a76af4bf34d00a5289da6f">&#9670;&#160;</a></span>LoadTokenizerJson()</h2>
 
@@ -7857,6 +8118,38 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>as <a class="el" href="classpulsatrix_1_1CharModel.html" title="Every character (code point) is a token, looked up in a character list; unknown characters become the...">CharModel</a> does. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a73c55d10c6a32a7c7e755166a530a2e2" name="a73c55d10c6a32a7c7e755166a530a2e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73c55d10c6a32a7c7e755166a530a2e2">&#9670;&#160;</a></span>MakeEsmTokenizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> pulsatrix::MakeEsmTokenizer </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vocab</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ESM's tokenizer (Hugging Face's <code>EsmTokenizer</code>) over a vocabulary listed one token per line, by id: <code>&lt;cls&gt; &lt;pad&gt; &lt;eos&gt; &lt;unk&gt; L A G V ... &lt;mask&gt;</code> for ESM-2. </p>
+<ul>
+<li>Every vocabulary token is matched anywhere in the text, so <code>MKT&lt;mask&gt;Y</code> gives M, K, T, <code>&lt;mask&gt;</code>, Y.</li>
+<li>Whitespace is dropped.</li>
+<li>A run of other characters (between matches and whitespace) becomes one <code>&lt;unk&gt;</code>: lowercase <code>mkta</code> is a single <code>&lt;unk&gt;</code>, as in <code>EsmTokenizer</code>.</li>
+<li><a class="el" href="structpulsatrix_1_1Encoding.html" title="The result of encoding one text.">Encoding</a> adds <code>&lt;cls&gt;</code> before and <code>&lt;eos&gt;</code> after. decode() joins tokens with spaces.</li>
+</ul>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the vocabulary lacks <code>&lt;cls&gt;</code>, <code>&lt;eos&gt;</code> or <code>&lt;unk&gt;</code>, or a token repeats. </td></tr>
   </table>
   </dd>
 </dl>
@@ -8827,6 +9120,58 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aa620e985a52f1c4f6977c3d0473c1ae6" name="aa620e985a52f1c4f6977c3d0473c1ae6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa620e985a52f1c4f6977c3d0473c1ae6">&#9670;&#160;</a></span>ParseEsmConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> pulsatrix::ParseEsmConfig </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads an ESM <code>config.json</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for malformed JSON, a missing size, or a model this class doesn't run yet: anything but <code>EsmForMaskedLM</code>/<code>EsmModel</code>, absolute position embeddings (ESM-1b), <code>emb_layer_norm_before</code>, ESMFold, or an activation other than GELU. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1fa8bd5dd31583f9049360b9edb145f1" name="a1fa8bd5dd31583f9049360b9edb145f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fa8bd5dd31583f9049360b9edb145f1">&#9670;&#160;</a></span>ParseFasta()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; pulsatrix::ParseFasta </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses FASTA text: records start with <code>&gt;</code>, sequences may span lines, and blank lines and <code>;</code> comment lines are skipped. Line endings may be <code>\n</code> or <code>\r\n</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for sequence text before the first header, or an empty header. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="abec773be97792874c20508666b79fcf8" name="abec773be97792874c20508666b79fcf8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abec773be97792874c20508666b79fcf8">&#9670;&#160;</a></span>ParseFeatureDashboardDocument()</h2>
 
@@ -9779,6 +10124,58 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if population is empty or draw is outside [0, total_weight). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aba1de7f66574e1aba32fb47ab356b252" name="aba1de7f66574e1aba32fb47ab356b252"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba1de7f66574e1aba32fb47ab356b252">&#9670;&#160;</a></span>ReadEsmConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> pulsatrix::ReadEsmConfig </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ParseEsmConfig on a file. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if it can't be read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aea6341fb8f3ca7d059a16b8a9bb27d95" name="aea6341fb8f3ca7d059a16b8a9bb27d95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea6341fb8f3ca7d059a16b8a9bb27d95">&#9670;&#160;</a></span>ReadFasta()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; pulsatrix::ReadFasta </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ParseFasta on a file. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if it can't be read. </td></tr>
   </table>
   </dd>
 </dl>
@@ -15273,6 +15670,36 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Whether this build's ImGui uses FreeType (color emoji) rather than stb_truetype. </p>
+
+</div>
+</div>
+<a id="a06c45a1d14fc6e146990c4f6e40e19e9" name="a06c45a1d14fc6e146990c4f6e40e19e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06c45a1d14fc6e146990c4f6e40e19e9">&#9670;&#160;</a></span>WriteFasta()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::WriteFasta </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>records</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>width</em> = <code>60</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>FASTA text for <code>records</code>, sequences wrapped at <code>width</code> residues (0: one line). </p>
 
 </div>
 </div>

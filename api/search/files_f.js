@@ -7,5 +7,6 @@ var searchData=
   ['plot_5fdata_2ehpp_4',['plot_data.hpp',['../plot__data_8hpp.html',1,'']]],
   ['policy_5fgradient_5floss_2ehpp_5',['policy_gradient_loss.hpp',['../policy__gradient__loss_8hpp.html',1,'']]],
   ['polyak_5fupdate_2ehpp_6',['polyak_update.hpp',['../polyak__update_8hpp.html',1,'']]],
-  ['ppo_5fclipped_5floss_2ehpp_7',['ppo_clipped_loss.hpp',['../ppo__clipped__loss_8hpp.html',1,'']]]
+  ['ppo_5fclipped_5floss_2ehpp_7',['ppo_clipped_loss.hpp',['../ppo__clipped__loss_8hpp.html',1,'']]],
+  ['protein_5fsequences_2ehpp_8',['protein_sequences.hpp',['../protein__sequences_8hpp.html',1,'']]]
 ];

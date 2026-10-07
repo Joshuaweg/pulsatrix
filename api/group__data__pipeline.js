@@ -17,6 +17,7 @@ var group__data__pipeline =
     [ "image_transforms.hpp", "image__transforms_8hpp.html", null ],
     [ "iterable_dataset.hpp", "iterable__dataset_8hpp.html", null ],
     [ "mnist_dataset_adapter.hpp", "mnist__dataset__adapter_8hpp.html", null ],
+    [ "protein_sequences.hpp", "protein__sequences_8hpp.html", null ],
     [ "sampler.hpp", "sampler_8hpp.html", null ],
     [ "sentencepiece_bpe.hpp", "sentencepiece__bpe_8hpp.html", null ],
     [ "text_collate.hpp", "text__collate_8hpp.html", null ],

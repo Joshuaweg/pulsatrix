@@ -496,6 +496,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#encoder-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encoder layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#choosing-a-normalization-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -590,6 +601,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../protein-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -599,10 +637,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
@@ -620,8 +658,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1035,10 +1073,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
         
           
-          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
             
   
   
@@ -1056,8 +1094,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_17">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1565,10 +1603,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   
@@ -1586,8 +1624,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1640,6 +1678,34 @@
     
   
     Research Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/protein-language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
   
 
     
@@ -1836,6 +1902,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#encoder-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encoder layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#choosing-a-normalization-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1901,15 +1978,16 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
 <ul>
 <li><strong>Core</strong>: <code>Tensor</code>, <code>Shape</code>, <code>Module</code>, <code>ComputationGraph</code>/<code>Autograd</code>, <code>Node</code>, <code>OpType</code>,
   <code>DeviceBackend</code> (<code>CPUBackend</code>/<code>CUDABackend</code>/<code>HIPBackend</code>)</li>
-<li><strong>Layers</strong>: <code>LinearModule</code>, <code>Conv2DModule</code>, <code>ReluModule</code>, <code>FlattenModule</code>,
+<li><strong>Layers</strong>: <code>LinearModule</code>, <code>Conv2DModule</code>, <code>ReluModule</code>, <code>ActivationModule</code> (ReLU, tanh,
+  sigmoid, SiLU, exact GELU or GELU-tanh, chosen at construction), <code>FlattenModule</code>,
   <code>SequentialModule</code>, <code>DropoutModule</code>, <code>EmbeddingModule</code>, <code>ResidualModule</code>; normalization
   (<code>LayerNormModule</code>/<code>RMSNormModule</code>/<code>GroupNormModule</code>/<code>BatchNormModule</code>, with <code>BatchNormFold</code>
   to fold an eval-mode BatchNorm into the layer before it); pooling
   (<code>MaxPool2DModule</code>/<code>AvgPool2DModule</code>). <code>Conv2DModule</code> takes an optional <code>stride</code> and zero
   <code>padding</code>, as in <code>torch.nn.Conv2d</code>, and every LRP rule handles both.</li>
 <li><strong>Sequence &amp; attention</strong>: <code>RNNModule</code>/<code>LSTMModule</code>/<code>GRUModule</code>, <code>SoftmaxModule</code>,
-  <code>RoPEModule</code>, <code>MultiHeadAttentionModule</code>, <code>SwiGLUModule</code>, <code>TransformerBlock</code>,
-  <code>MambaModule</code>, <code>RWKVModule</code>, <code>RetNetModule</code></li>
+  <code>RoPEModule</code>, <code>MultiHeadAttentionModule</code>, <code>SwiGLUModule</code>, <code>FeedForwardModule</code>,
+  <code>TransformerBlock</code>, <code>EncoderBlock</code>, <code>MambaModule</code>, <code>RWKVModule</code>, <code>RetNetModule</code></li>
 <li><strong>Attention for pretrained LLMs</strong>: <code>MultiHeadAttentionModule</code> and <code>TransformerBlock</code> take an
   <code>AttentionConfig</code> with the settings Hugging Face checkpoints use: grouped-query attention
   (<code>num_kv_heads</code>), a <code>head_dim</code> independent of <code>d_model</code>, optional projection biases, a causal
@@ -2172,6 +2250,45 @@ parameters by name. A name selects that parameter and everything under it:</p>
 as without freezing. <code>LinearModule</code>, <code>Conv2DModule</code> and <code>EmbeddingModule</code> skip computing a
 frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
 nothing throws <code>std::invalid_argument</code>, so a typo can't leave the model silently trainable.</p>
+<h3 id="encoder-layers">Encoder layers<a class="headerlink" href="#encoder-layers" title="Permanent link">&para;</a></h3>
+<p><code>EncoderBlock</code> is one transformer encoder layer whose layout is chosen with
+<code>EncoderBlockOptions</code>:</p>
+<ul>
+<li><code>norm</code>: <code>NormType::LayerNorm</code> or <code>RMSNorm</code>.</li>
+<li><code>norm_position</code>:</li>
+<li><code>NormPosition::Pre</code> gives <code>x + f(norm(x))</code> (ESM, GPT-2, Llama).</li>
+<li><code>Post</code> gives <code>norm(x + f(x))</code> (BERT, the original Transformer).</li>
+<li><code>mlp</code>:</li>
+<li><code>MlpType::Plain</code> is <code>FeedForwardModule</code>: Linear → activation → Linear, as in BERT and ESM. Its default activation is exact GELU.</li>
+<li><code>Gated</code> is <code>SwiGLUModule</code>: SwiGLU, or GeGLU with <code>gate_activation</code>.</li>
+</ul>
+<p>Attention comes from the same <code>AttentionConfig</code> as <code>TransformerBlock</code>; an encoder leaves
+<code>causal</code> off. The defaults are ESM-2's layer:</p>
+<div class="highlight"><pre><span></span><code><span class="n">AttentionConfig</span><span class="w"> </span><span class="n">attention</span><span class="p">;</span>
+<span class="n">attention</span><span class="p">.</span><span class="n">d_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">320</span><span class="p">;</span>
+<span class="n">attention</span><span class="p">.</span><span class="n">num_heads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+<span class="n">attention</span><span class="p">.</span><span class="n">rope_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RoPELayout</span><span class="o">::</span><span class="n">RotateHalf</span><span class="p">;</span>
+<span class="n">EncoderBlock</span><span class="w"> </span><span class="nf">esm_layer</span><span class="p">(</span><span class="n">attention</span><span class="p">,</span><span class="w"> </span><span class="mi">1280</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// pre-LayerNorm (eps 1e-5), GELU MLP</span>
+
+<span class="n">EncoderBlockOptions</span><span class="w"> </span><span class="n">bert</span><span class="p">;</span>
+<span class="n">bert</span><span class="p">.</span><span class="n">norm_position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NormPosition</span><span class="o">::</span><span class="n">Post</span><span class="p">;</span>
+<span class="n">bert</span><span class="p">.</span><span class="n">norm_eps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-12f</span><span class="p">;</span>
+<span class="n">attention</span><span class="p">.</span><span class="n">use_rope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">  </span><span class="c1">// BERT adds learned positions before the first layer</span>
+<span class="n">EncoderBlock</span><span class="w"> </span><span class="nf">bert_layer</span><span class="p">(</span><span class="n">attention</span><span class="p">,</span><span class="w"> </span><span class="mi">1280</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">bert</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>Checked against <code>transformers</code>.</strong> The output and the input gradient match the library's own
+  <code>EsmLayer</code> and <code>BertLayer</code> to 2e-5 (<code>tools/generate_encoder_reference.py</code>).</li>
+<li><strong>The decoder layout reproduces <code>TransformerBlock</code>.</strong> Pre-RMSNorm with a gated SiLU MLP gives
+  <code>TransformerBlock</code>'s output, gradients and relevance exactly.</li>
+<li><strong>Parameter names.</strong> Parameters are named <code>norm1.*</code>, <code>mha.*</code>, <code>norm2.*</code> and <code>mlp.*</code>, so
+  <code>set_requires_grad</code> and weight loading work the same way.</li>
+<li><strong>LRP.</strong></li>
+<li>Each residual add uses the two-term epsilon rule.</li>
+<li>Norms and activations pass relevance through unchanged, as AttnLRP prescribes.</li>
+<li>Attention uses its AttnLRP rule.</li>
+<li>The result is linear in the incoming relevance in both layouts.</li>
+</ul>
 <h3 id="choosing-a-normalization-layer">Choosing a normalization layer<a class="headerlink" href="#choosing-a-normalization-layer" title="Permanent link">&para;</a></h3>
 <p><code>LayerNormModule</code>, <code>RMSNormModule</code>, <code>GroupNormModule</code> and <code>BatchNormModule</code> all implement the
 same <code>Module</code> contract (<code>forward()</code>, <code>backward()</code>, <code>propagate_relevance()</code>,
