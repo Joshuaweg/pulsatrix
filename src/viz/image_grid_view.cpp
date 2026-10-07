@@ -24,7 +24,7 @@ void ImageGridView::Draw(const char* title, const Dataset& dataset, TextureCache
         }
         TextureId texture = cache.GetOrUpload(i, sample.fields[0]);
         ImGui::BeginGroup();
-        ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<intptr_t>(texture)),
+        ImGui::Image(static_cast<ImTextureID>(texture),
                      ImVec2(thumbnail_size, thumbnail_size));
         size_t caption_index = static_cast<size_t>(i - start_index);
         if (captions != nullptr && caption_index < captions->size()) {
