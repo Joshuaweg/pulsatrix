@@ -109,6 +109,8 @@ add_library(pulsatrix_core
     src/kv_cache.cpp
     src/hf_model.cpp
     src/causal_lm.cpp
+    src/encoder_lm.cpp
+    src/protein_sequences.cpp
     src/golden_logits.cpp
     src/attnlrp_parity.cpp
     src/relevance_graph.cpp
