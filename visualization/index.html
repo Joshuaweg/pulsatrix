@@ -817,6 +817,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#interactive-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive HTML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#building-with-visualization-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1826,6 +1837,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#interactive-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interactive HTML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#building-with-visualization-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2388,8 +2410,80 @@ pulsatrix_svg<span class="w"> </span>sobol.json<span class="w"> </span>-o<span c
   because there's no honest bar length for them.</li>
 <li><strong>Text widths are estimated</strong> at 0.6 em per character, since there is no font library. Token
   strips use a monospace font, so their widths are exact. Long labels are shortened with an
-  ellipsis.</li>
+  ellipsis. For exact layout of any script, use the <a href="#interactive-html">HTML</a> token view.</li>
 </ul>
+<h2 id="interactive-html">Interactive HTML<a class="headerlink" href="#interactive-html" title="Permanent link">&para;</a></h2>
+<p><code>viz/html.hpp</code> writes the same views as self-contained HTML pages, drawn in the browser by
+<a href="https://vega.github.io/vega-lite/">Vega-Lite</a>. Hover any bar, point or cell to see its exact
+value. Zoom continuous charts with the mouse wheel and pan by dragging. Save a PNG or SVG from
+the <code>…</code> menu. Pages open in any browser and display in a Jupyter cell (<code>IPython.display.HTML</code>).
+There are two views the SVG doesn't have: the training log, with one zoomable chart per scalar
+and a histogram per weight tag, and the feature dashboard, with statistics, the activation
+histogram and top examples.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Draws</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RenderBarChartHtml</code>, <code>RenderWaterfallHtml</code>, <code>RenderHeatmapHtml</code>, <code>RenderBeeswarmHtml</code></td>
+<td>The attribution and heatmap views, as above</td>
+</tr>
+<tr>
+<td><code>RenderPartialDependenceHtml</code>, <code>RenderTornadoHtml</code>, <code>RenderCounterfactualHtml</code>, <code>RenderCounterfactualSetHtml</code>, <code>RenderMorrisHtml</code>, <code>RenderSobolHtml</code></td>
+<td>The CFS views, as above</td>
+</tr>
+<tr>
+<td><code>RenderTrainingLogHtml(doc)</code></td>
+<td>A line chart per scalar tag and a histogram per histogram tag (HTML only)</td>
+</tr>
+<tr>
+<td><code>RenderFeatureDashboardHtml(doc)</code></td>
+<td>A feature's statistics, activation histogram and top examples (HTML only)</td>
+</tr>
+<tr>
+<td><code>RenderTokenRelevanceHtml(doc)</code></td>
+<td>The text, each piece on a background colored by its relevance</td>
+</tr>
+</tbody>
+</table>
+<p>Each chart is also available as a bare Vega-Lite spec (<code>ToVegaLiteBarChart</code>, <code>ToVegaLiteHeatmap</code>,
+and so on) that you can embed in your own page, or wrap with <code>VegaLitePage(spec, heading)</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/html.hpp"</span>
+
+<span class="n">HtmlOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span><span class="w">  </span><span class="c1">// width, title, and where the scripts come from</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"bars.html"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderBarChartHtml</span><span class="p">(</span><span class="n">ToAttributionDocument</span><span class="p">(</span><span class="n">attribution</span><span class="p">),</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Where the JavaScript comes from.</strong> By default a page loads Vega, Vega-Lite and vega-embed
+(BSD-3-Clause) from the jsDelivr CDN. The versions are pinned, and Subresource Integrity hashes
+make the browser refuse any changed file. The page is a few kilobytes, but viewing it needs a
+network connection. For a page that works offline, or that you can mail as one file, copy the
+scripts in (about 830 KB more):</p>
+<div class="highlight"><pre><span></span><code>tools/render/fetch_vega.sh<span class="w"> </span>~/vega<span class="w">                     </span><span class="c1"># downloads and checks the three files once</span>
+pulsatrix_svg<span class="w"> </span>x.json<span class="w"> </span>-o<span class="w"> </span>x.html<span class="w"> </span>--inline-js<span class="w"> </span>~/vega<span class="w">     </span><span class="c1"># or set PULSATRIX_VEGA_DIR=~/vega</span>
+</code></pre></div>
+<p>In C++, set <code>options.scripts = HtmlScripts::Inline</code> and <code>options.script_dir</code>. <code>--offline</code> finds
+the scripts in <code>$PULSATRIX_VEGA_DIR</code>, a <code>vega/</code> directory next to <code>pulsatrix_svg</code>, or
+<code>share/pulsatrix/vega</code> beside its <code>bin/</code>.</p>
+<p><strong>From the command line.</strong> <code>pulsatrix_svg</code> writes HTML when the output ends in <code>.html</code> (or with
+<code>--html</code>), and takes the same options as for SVG:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_svg<span class="w"> </span>explanation.json<span class="w"> </span>-o<span class="w"> </span>bars.html<span class="w">               </span><span class="c1"># hover, zoom, export</span>
+pulsatrix_svg<span class="w"> </span>pd.json<span class="w"> </span>--ice<span class="w"> </span>centered<span class="w"> </span>-o<span class="w"> </span>ice.html
+pulsatrix_svg<span class="w"> </span>run.json<span class="w"> </span>-o<span class="w"> </span>run.html<span class="w">                        </span><span class="c1"># training log</span>
+pulsatrix_svg<span class="w"> </span>feature.json<span class="w"> </span>-o<span class="w"> </span>feature.html<span class="w">                </span><span class="c1"># feature dashboard</span>
+pulsatrix_explain_text<span class="w"> </span>MODEL_DIR<span class="w"> </span><span class="s2">"some text"</span><span class="w"> </span>-o<span class="w"> </span>why.html<span class="w">  </span><span class="c1"># token relevance, straight from a model</span>
+</code></pre></div>
+<p><strong>Text in every language.</strong> The token relevance page is plain HTML with no scripts. The browser
+lays out the text, so right-to-left scripts, joined Arabic letters, Indic conjuncts and emoji
+sequences all display correctly, and long text wraps to the window. Hover a piece to see its
+score.</p>
+<p><strong>Safety.</strong> Labels are escaped: a feature called <code>&lt;/script&gt;</code> stays text. The chart's data is
+embedded as JSON, not as code.</p>
 <h2 id="building-with-visualization-enabled">Building with visualization enabled<a class="headerlink" href="#building-with-visualization-enabled" title="Permanent link">&para;</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <p>The default build has no GUI dependencies. <code>-DPULSATRIX_ENABLE_VIZ=ON</code> adds these:</p>

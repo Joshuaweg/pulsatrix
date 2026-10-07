@@ -10,7 +10,8 @@ var searchData=
   ['histogram_7',['Histogram',['../structpulsatrix_1_1TrainingLogDocument_1_1Histogram.html',1,'pulsatrix::TrainingLogDocument']]],
   ['histogrambins_8',['HistogramBins',['../structpulsatrix_1_1HistogramBins.html',1,'pulsatrix']]],
   ['horizontalfliptransform_9',['HorizontalFlipTransform',['../classpulsatrix_1_1HorizontalFlipTransform.html',1,'pulsatrix']]],
-  ['hyperbandbracket_10',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
-  ['hyperbandresult_11',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
-  ['hypergridenv_12',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix']]]
+  ['htmloptions_10',['HtmlOptions',['../structpulsatrix_1_1HtmlOptions.html',1,'pulsatrix']]],
+  ['hyperbandbracket_11',['HyperbandBracket',['../structpulsatrix_1_1HyperbandBracket.html',1,'pulsatrix']]],
+  ['hyperbandresult_12',['HyperbandResult',['../structpulsatrix_1_1HyperbandResult.html',1,'pulsatrix']]],
+  ['hypergridenv_13',['HyperGridEnv',['../classpulsatrix_1_1HyperGridEnv.html',1,'pulsatrix']]]
 ];
