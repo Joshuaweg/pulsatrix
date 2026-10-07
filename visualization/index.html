@@ -840,6 +840,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fonts-and-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonts and languages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#build" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1838,6 +1849,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fonts-and-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonts and languages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#build" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2372,8 +2394,8 @@ pulsatrix_svg<span class="w"> </span>sobol.json<span class="w"> </span>-o<span c
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <p>The default build has no GUI dependencies. <code>-DPULSATRIX_ENABLE_VIZ=ON</code> adds these:</p>
 <ul>
-<li><strong>Network access at configure time.</strong> CMake downloads GLFW 3.4, Dear ImGui v1.90.9, and
-  ImPlot v0.16 with <code>FetchContent</code>.</li>
+<li><strong>Network access at configure time.</strong> CMake downloads GLFW 3.4, Dear ImGui v1.92.5, and
+  ImPlot v0.17 with <code>FetchContent</code>.</li>
 <li><strong>OpenGL development files.</strong> CMake runs <code>find_package(OpenGL REQUIRED)</code>. On Debian/Ubuntu,
   install <code>libgl1-mesa-dev</code>.</li>
 <li><strong>GLFW's build dependencies on Linux.</strong> GLFW 3.4 builds X11 and Wayland support by default.
@@ -2382,7 +2404,47 @@ pulsatrix_svg<span class="w"> </span>sobol.json<span class="w"> </span>-o<span c
   Wayland, add <code>-DGLFW_BUILD_WAYLAND=OFF</code>.</li>
 <li><strong>A display and a GPU driver</strong> to run anything that links <code>pulsatrix_viz</code>. That is why
   the option defaults to <code>OFF</code> and CI builds without it.</li>
+<li><strong>Optional: FreeType and fontconfig</strong>, for text in every language (see
+  <a href="#fonts-and-languages">Fonts and languages</a>). On Debian/Ubuntu, install
+  <code>libfreetype-dev libfontconfig1-dev</code>. CMake uses them when it finds them. Without them the
+  windows still work, using stb_truetype and a list of common font files.</li>
 </ul>
+<h3 id="fonts-and-languages">Fonts and languages<a class="headerlink" href="#fonts-and-languages" title="Permanent link">&para;</a></h3>
+<p>The windows show text in any language your system has fonts for: Chinese, Japanese, Korean,
+Cyrillic, Greek, Arabic, Hebrew, Indic scripts, Thai, Georgian, Armenian, Ethiopic, math symbols,
+emoji and more. A <code>VizWindow</code> starts from Dear ImGui's default font and merges system fonts in
+behind it, so the default look doesn't change. A fallback font is used only for characters the
+fonts before it lack, and each glyph is drawn the first time it's needed.</p>
+<p>How the fonts are found:</p>
+<ul>
+<li><strong>Linux with fontconfig</strong>: about forty sample characters, one per script plus symbols, math
+  and emoji, are each matched to the best installed font. That's typically 20 to 30 fonts, and it
+  adds about 0.1 s and 30 MB at startup.</li>
+<li><strong>Windows and macOS</strong>: the fonts that ship with the system (Segoe UI, Microsoft YaHei, Nirmala
+  UI, Segoe UI Emoji, ...; Helvetica, PingFang, Arial Unicode, ...).</li>
+<li><strong>Linux without fontconfig</strong>: common Noto and DejaVu files in the usual font directories.</li>
+</ul>
+<p>To choose fonts yourself, set <code>PULSATRIX_VIZ_FONTS</code> to font files, separated by <code>:</code> (<code>;</code> on
+Windows). They come first, before the system fonts. Set it to <code>none</code> to use only ImGui's default
+font. In code, pass a <code>VizFontOptions</code> to the <code>VizWindow</code> constructor:</p>
+<div class="highlight"><pre><span></span><code><span class="n">VizFontOptions</span><span class="w"> </span><span class="n">fonts</span><span class="p">;</span>
+<span class="n">fonts</span><span class="p">.</span><span class="n">fonts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="s">"/path/to/MyFont.ttf"</span><span class="p">}};</span><span class="w">  </span><span class="c1">// first in line, before the system fonts</span>
+<span class="n">fonts</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">18.0f</span><span class="p">;</span><span class="w">                      </span><span class="c1">// pixels; ImGui's default is 13</span>
+<span class="n">VizWindow</span><span class="w"> </span><span class="n">window</span><span class="p">(</span><span class="s">"my app"</span><span class="p">,</span><span class="w"> </span><span class="mi">1280</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="p">,</span><span class="w"> </span><span class="n">fonts</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Emoji.</strong> Emoji are drawn in color with a vector color font, such as Segoe UI Emoji (Windows)
+or Twemoji, when FreeType is available. Bitmap emoji fonts can't be scaled, so they are skipped.
+That covers Noto Color Emoji (the usual one on Linux) and Apple Color Emoji. On Linux, install
+a vector emoji font for color (for example Twemoji, from <code>mozilla/twemoji-colr</code>) and point
+<code>PULSATRIX_VIZ_FONTS</code> at it. Without one, emoji fall back to black-and-white glyphs where a text
+font has them.</p>
+<p><strong>Scripts that need text shaping.</strong> Dear ImGui places characters one after another. It can't join
+Arabic letters, lay out right-to-left text, or reorder and combine the vowel signs and conjuncts
+of Indic scripts, and a ligature such as an emoji with a skin tone shows as two glyphs. For these
+scripts every character appears, but not as a reader would write them. The SVG figures don't have
+this limit: the browser or SVG viewer shapes the text. <code>TokenRelevanceView</code> is fine for reading
+scores, and the SVG strip (<code>pulsatrix_explain_text ... -o out.svg</code>) shows the text itself
+correctly.</p>
 <h3 id="build">Build<a class="headerlink" href="#build" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DPULSATRIX_ENABLE_VIZ<span class="o">=</span>ON
 cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>training_dashboard_demo<span class="w"> </span>--config<span class="w"> </span>Release

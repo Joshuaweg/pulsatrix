@@ -356,6 +356,8 @@ var hierarchy =
     [ "pulsatrix::Trial", "classpulsatrix_1_1Trial.html", null ],
     [ "pulsatrix::UnicodeRegex", "classpulsatrix_1_1UnicodeRegex.html", null ],
     [ "pulsatrix::ValidationIssue", "structpulsatrix_1_1ValidationIssue.html", null ],
+    [ "pulsatrix::VizFontFile", "structpulsatrix_1_1VizFontFile.html", null ],
+    [ "pulsatrix::VizFontOptions", "structpulsatrix_1_1VizFontOptions.html", null ],
     [ "pulsatrix::VizWindow", "classpulsatrix_1_1VizWindow.html", null ],
     [ "pulsatrix::Vocabulary", "classpulsatrix_1_1Vocabulary.html", null ],
     [ "pulsatrix::WaterfallBar", "structpulsatrix_1_1WaterfallBar.html", null ],

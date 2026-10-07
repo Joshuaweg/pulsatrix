@@ -110,6 +110,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af24d3a1ef37b1d9fadcd1f9ff14573ad" id="r_af24d3a1ef37b1d9fadcd1f9ff14573ad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html#af24d3a1ef37b1d9fadcd1f9ff14573ad">VizWindow</a> (const std::string &amp;title, int width, int height)</td></tr>
 <tr class="memdesc:af24d3a1ef37b1d9fadcd1f9ff14573ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the GLFW window, OpenGL3 context, and ImGui/ImPlot contexts.  <br /></td></tr>
 <tr class="separator:af24d3a1ef37b1d9fadcd1f9ff14573ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14d9efe72b9636e2135e865302c782da" id="r_a14d9efe72b9636e2135e865302c782da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html#a14d9efe72b9636e2135e865302c782da">VizWindow</a> (const std::string &amp;title, int width, int height, const <a class="el" href="structpulsatrix_1_1VizFontOptions.html">VizFontOptions</a> &amp;<a class="el" href="classpulsatrix_1_1VizWindow.html#a19b057028d32ce7e84583cc53d6241b7">fonts</a>)</td></tr>
+<tr class="memdesc:a14d9efe72b9636e2135e865302c782da"><td class="mdescLeft">&#160;</td><td class="mdescRight">The same, with chosen fonts. The three-argument form uses <a class="el" href="namespacepulsatrix.html#ae7fa2ef6c5ed71f827fe70534a30e730" title="The font options a VizWindow uses when given none. With the environment variable PULSATRIX_VIZ_FONTS ...">DefaultVizFontOptions()</a>: ImGui's default font with every script's system font merged in as a fallback.  <br /></td></tr>
+<tr class="separator:a14d9efe72b9636e2135e865302c782da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19b057028d32ce7e84583cc53d6241b7" id="r_a19b057028d32ce7e84583cc53d6241b7"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structpulsatrix_1_1VizFontFile.html">VizFontFile</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html#a19b057028d32ce7e84583cc53d6241b7">fonts</a> () const</td></tr>
+<tr class="memdesc:a19b057028d32ce7e84583cc53d6241b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fonts merged into the default font, in priority order.  <br /></td></tr>
+<tr class="separator:a19b057028d32ce7e84583cc53d6241b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a639c868d13074d1914ab7e2a9dfa6410" id="r_a639c868d13074d1914ab7e2a9dfa6410"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html#a639c868d13074d1914ab7e2a9dfa6410">~VizWindow</a> ()</td></tr>
 <tr class="separator:a639c868d13074d1914ab7e2a9dfa6410"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a304a0d65ebad69223b9a527920518379" id="r_a304a0d65ebad69223b9a527920518379"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html#a304a0d65ebad69223b9a527920518379">VizWindow</a> (const <a class="el" href="classpulsatrix_1_1VizWindow.html">VizWindow</a> &amp;)=delete</td></tr>
@@ -131,7 +137,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This class &ndash; and everything that calls into ImGui or ImPlot &ndash; is deliberately NOT unit-tested via GoogleTest (see plans/okay-we-have-now-buzzing-moth.md Testing Strategy): a live window/GL context isn't meaningfully testable headlessly on this project's dev/CI machines. Verification is via manually running the demo apps. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af24d3a1ef37b1d9fadcd1f9ff14573ad" name="af24d3a1ef37b1d9fadcd1f9ff14573ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af24d3a1ef37b1d9fadcd1f9ff14573ad">&#9670;&#160;</a></span>VizWindow() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af24d3a1ef37b1d9fadcd1f9ff14573ad">&#9670;&#160;</a></span>VizWindow() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,6 +178,48 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a14d9efe72b9636e2135e865302c782da" name="a14d9efe72b9636e2135e865302c782da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14d9efe72b9636e2135e865302c782da">&#9670;&#160;</a></span>VizWindow() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::VizWindow::VizWindow </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>title</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1VizFontOptions.html">VizFontOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>fonts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The same, with chosen fonts. The three-argument form uses <a class="el" href="namespacepulsatrix.html#ae7fa2ef6c5ed71f827fe70534a30e730" title="The font options a VizWindow uses when given none. With the environment variable PULSATRIX_VIZ_FONTS ...">DefaultVizFontOptions()</a>: ImGui's default font with every script's system font merged in as a fallback. </p>
+
+</div>
+</div>
 <a id="a639c868d13074d1914ab7e2a9dfa6410" name="a639c868d13074d1914ab7e2a9dfa6410"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a639c868d13074d1914ab7e2a9dfa6410">&#9670;&#160;</a></span>~VizWindow()</h2>
 
@@ -190,7 +238,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a304a0d65ebad69223b9a527920518379" name="a304a0d65ebad69223b9a527920518379"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a304a0d65ebad69223b9a527920518379">&#9670;&#160;</a></span>VizWindow() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a304a0d65ebad69223b9a527920518379">&#9670;&#160;</a></span>VizWindow() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,6 +264,33 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a19b057028d32ce7e84583cc53d6241b7" name="a19b057028d32ce7e84583cc53d6241b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19b057028d32ce7e84583cc53d6241b7">&#9670;&#160;</a></span>fonts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structpulsatrix_1_1VizFontFile.html">VizFontFile</a> &gt; &amp; pulsatrix::VizWindow::fonts </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The fonts merged into the default font, in priority order. </p>
+
+</div>
+</div>
 <a id="a024443857738777e6fcd26046f0138ed" name="a024443857738777e6fcd26046f0138ed"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a024443857738777e6fcd26046f0138ed">&#9670;&#160;</a></span>operator=()</h2>
 

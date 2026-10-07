@@ -13,7 +13,7 @@ var searchData=
   ['in_5fnode_10',['in_node',['../structpulsatrix_1_1ConnectionGene.html#ab5d25b63f3f7fcd681f88eb1f35e0b87',1,'pulsatrix::ConnectionGene']]],
   ['in_5fuse_5fbytes_11',['in_use_bytes',['../structpulsatrix_1_1CachingAllocator_1_1Stats.html#a243afd423279ed3feb4e5af0703da45b',1,'pulsatrix::CachingAllocator::Stats']]],
   ['increase_12',['increase',['../structpulsatrix_1_1WaterfallBar.html#a9bacb9adb6230062d182250875bab03a',1,'pulsatrix::WaterfallBar']]],
-  ['index_13',['index',['../structpulsatrix_1_1GpuSample.html#aa616c7b9e03ca825e07bfa0f1dd7d436',1,'pulsatrix::GpuSample::index'],['../structpulsatrix_1_1CounterfactualTarget.html#a22a6743066250a20c60ac8ecd9b22a61',1,'pulsatrix::CounterfactualTarget::index']]],
+  ['index_13',['index',['../structpulsatrix_1_1GpuSample.html#aa616c7b9e03ca825e07bfa0f1dd7d436',1,'pulsatrix::GpuSample::index'],['../structpulsatrix_1_1VizFontFile.html#a899a4c9e5dfd732fb05c9df3262c688c',1,'pulsatrix::VizFontFile::index'],['../structpulsatrix_1_1CounterfactualTarget.html#a22a6743066250a20c60ac8ecd9b22a61',1,'pulsatrix::CounterfactualTarget::index']]],
   ['indices_14',['indices',['../structpulsatrix_1_1TopKResult.html#a0633e382957c1a52d448737aae26550f',1,'pulsatrix::TopKResult']]],
   ['inexact_5fline_5foffset_5fdifferences_15',['inexact_line_offset_differences',['../structpulsatrix_1_1TokenizerParityReport.html#aa8b86bd4c27a7192bf7868dbad6630f0',1,'pulsatrix::TokenizerParityReport']]],
   ['initial_5fbudget_16',['initial_budget',['../structpulsatrix_1_1HyperbandBracket.html#aaada5818addba11ae405a0c0cec0b316',1,'pulsatrix::HyperbandBracket']]],
