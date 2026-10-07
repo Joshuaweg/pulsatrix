@@ -110,9 +110,15 @@ needs one mean and one std per channel; it throws if the counts don't match the 
 ### Tokenizing for a Hugging Face model
 
 `LoadTokenizerJson` reads a model's `tokenizer.json` and runs the same pipeline Hugging Face
-`tokenizers` does: added tokens first, then the normalizer (NFC), the pre-tokenizer (regex,
-digit and byte-level splitting), BPE, and the post-processor (BOS and EOS). There's no Python
-involved.
+`tokenizers` does: added tokens first, then the normalizer, the pre-tokenizer, BPE, and the
+post-processor (BOS and EOS). There's no Python involved. Both kinds of BPE tokenizer that
+current models use are supported:
+
+- **Byte-level BPE** (SmolLM2, Qwen2.5 and Qwen3, Llama 3, gpt-oss, Mistral Nemo, DeepSeek): NFC,
+  regex and digit splitting, and bytes mapped to printable characters.
+- **SentencePiece-style BPE** (Gemma 3, Llama 2, Mistral 7B, TinyLlama): spaces as `▁`, and byte
+  fallback, where a character the vocabulary lacks is spelled as byte tokens such as `<0xC3>`.
+  Older files use Replace and Prepend for the spaces, newer ones Metaspace.
 
 ```cpp
 #include "pulsatrix/tokenizer_json.hpp"
@@ -126,6 +132,9 @@ Encoding e = tok.encode("Grüße, world!");
 // e.offsets: UTF-8 byte ranges of the input: text.substr(o.begin, o.end - o.begin)
 // e.special_tokens_mask: 1 for <|begin_of_text|> and other special tokens
 std::string back = tok.decode(e.ids, /*skip_special_tokens=*/true);  // "Grüße, world!"
+
+TextTokenizer gemma = LoadTokenizerJson("models/gemma-3-270m/tokenizer.json");
+gemma.encode("Grüße, world! 🦉").tokens;  // <bos> Gr ü ße , ▁world ! ▁ 🦉
 ```
 
 Offsets map every token back to the input, which explanations need to merge subword scores
@@ -136,9 +145,10 @@ gives it only the first.
 **Checked against Hugging Face:** on a 10,000-line multilingual corpus (the Universal
 Declaration of Human Rights in about 530 languages, plus code, numbers, whitespace and emoji
 stress lines), the ids and the decoded text match `tokenizers` 0.23 exactly for SmolLM2-135M,
-Qwen2.5, Qwen3, Llama 3.2 and gpt-oss (`tools/tokenizers/`, `pulsatrix_tokenizer_parity`).
-Offsets match on every line that round-trips exactly. A component the loader doesn't support,
-such as SentencePiece byte fallback (Gemma, TOK-3), is refused by name rather than approximated.
+Qwen2.5, Qwen3, Llama 3.2, gpt-oss, Gemma 3, TinyLlama and Zephyr (Mistral 7B's tokenizer)
+(`tools/tokenizers/`, `pulsatrix_tokenizer_parity`). Offsets match exactly too, except on lines
+NFC changes or that hold a character the vocabulary drops. A component the loader doesn't
+support, such as T5's Unigram model, is refused by name rather than approximated.
 
 ### Per-word scores
 

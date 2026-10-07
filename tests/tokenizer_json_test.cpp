@@ -9,6 +9,7 @@
 
 #include <gtest/gtest.h>
 
+#include <cstdio>
 #include <cstdlib>
 #include <filesystem>
 #include <memory>
@@ -18,6 +19,8 @@
 
 #include "pulsatrix/byte_level_bpe.hpp"
 #include "pulsatrix/json.hpp"
+#include "pulsatrix/sentencepiece_bpe.hpp"
+#include "pulsatrix/tokenizer_components.hpp"
 #include "pulsatrix/tokenizer_parity.hpp"
 #include "pulsatrix/unicode_regex.hpp"
 
@@ -42,9 +45,14 @@ TEST_P(TinyPipelineTest, MatchesHuggingFaceOnTheCiCorpus) {
     EXPECT_EQ(r.lines, 90u);
 }
 
-// SmolLM2 (digits, GPT-2 regex), Qwen2.5 and Qwen3 (NFC, Qwen regex, string and pair merges),
-// Llama 3.2 (Llama 3 regex, ignore_merges, BOS template) and gpt-oss (o200k regex, letter case).
-INSTANTIATE_TEST_SUITE_P(Pipelines, TinyPipelineTest, ::testing::Values("smollm2", "qwen2.5", "qwen3", "llama3.2", "gpt-oss"),
+// Byte-level BPE (TOK-2): SmolLM2 (digits, GPT-2 regex), Qwen2.5 and Qwen3 (NFC, Qwen regex,
+// string and pair merges), Llama 3.2 (Llama 3 regex, ignore_merges, BOS template) and gpt-oss
+// (o200k regex, letter case). SentencePiece-style BPE (TOK-3): Gemma 3 (spaces as ▁, byte
+// fallback), Gemma 3 without byte fallback (fused unknown tokens), TinyLlama (Llama 2: Prepend,
+// Strip) and the newer Metaspace form of the same, with and without splitting.
+INSTANTIATE_TEST_SUITE_P(Pipelines, TinyPipelineTest,
+                         ::testing::Values("smollm2", "qwen2.5", "qwen3", "llama3.2", "gpt-oss", "gemma-3", "gemma-3-unk",
+                                           "tinyllama", "metaspace-first", "metaspace-always"),
                          [](const auto& info) {
                              std::string n = info.param;
                              for (char& c : n) c = (c == '.' || c == '-') ? '_' : c;
@@ -92,7 +100,8 @@ TEST(TokenizerJsonTest, RefusesWhatItCantRunByName) {
         }
     };
     refuses(with(R"({"type": "Lowercase"})", "", ""), "Lowercase");
-    refuses(with("null", R"(, "byte_fallback": true)", ""), "byte_fallback");
+    refuses(with(R"({"type": "Precompiled", "precompiled_charsmap": ""})", "", ""), "Precompiled");
+    refuses(R"({"model": {"type": "Unigram", "vocab": [["a", 0.0]]}})", "Unigram");
     refuses(with("null", R"(, "dropout": 0.1)", ""), "dropout");
     refuses(with("null", "", R"({"id": 3, "content": "<s>", "special": true, "lstrip": true})"), "lstrip");
     refuses(with(R"({"type": "NFC"})", "", R"({"id": 3, "content": "<s>", "special": false, "normalized": true})"),
@@ -137,6 +146,69 @@ TEST(BpeModelTest, ARepeatedMergeTakesItsLastRank) {
     // ("b","c") appears at ranks 0 and 2; Hugging Face keeps rank 2, so ("a","b") at rank 1 wins.
     BpeModel bpe({{"a", 0}, {"b", 1}, {"c", 2}, {"ab", 3}, {"bc", 4}}, {{"b", "c"}, {"a", "b"}, {"b", "c"}});
     EXPECT_EQ(bpe.tokenize("abc")[0].id, 3);
+}
+
+// ---- SentencePiece-style (TOK-3) -------------------------------------------------------
+
+std::unordered_map<std::string, int64_t> ByteVocab(std::unordered_map<std::string, int64_t> vocab) {
+    for (int b = 0; b < 256; ++b) {
+        char name[8];
+        std::snprintf(name, sizeof name, "<0x%02X>", b);
+        vocab.emplace(name, 100 + b);
+    }
+    return vocab;
+}
+
+TEST(SentencePieceBpeTest, ByteFallbackSpellsUnknownCharactersAsBytes) {
+    BpeOptions options;
+    options.byte_fallback = true;
+    options.unk_token = "<unk>";
+    BpeModel bpe(ByteVocab({{"<unk>", 0}, {"a", 1}}), {}, options);
+    const std::vector<ModelToken> t = bpe.tokenize("a\xC3\xA9");  // "aé": é isn't in the vocabulary
+    ASSERT_EQ(t.size(), 3u);
+    EXPECT_EQ(t[1].value, "<0xC3>");
+    EXPECT_EQ(t[2].value, "<0xA9>");
+    EXPECT_EQ(t[1].begin, 1u);  // each byte token covers its own byte
+    EXPECT_EQ(t[2].begin, 2u);
+}
+
+TEST(SentencePieceBpeTest, FuseUnkJoinsConsecutiveUnknownCharacters) {
+    BpeOptions options;
+    options.unk_token = "<unk>";
+    const std::unordered_map<std::string, int64_t> vocab = {{"<unk>", 0}, {"a", 1}};
+    EXPECT_EQ(BpeModel(vocab, {}, options).tokenize("axyza").size(), 5u);  // a, unk, unk, unk, a
+    options.fuse_unk = true;
+    const std::vector<ModelToken> fused = BpeModel(vocab, {}, options).tokenize("axyza");
+    ASSERT_EQ(fused.size(), 3u);  // a, unk(xyz), a
+    EXPECT_EQ(fused[1].begin, 1u);
+    EXPECT_EQ(fused[1].end, 4u);
+}
+
+TEST(SentencePieceBpeTest, DecoderChain) {
+    // ByteFallback: a valid run becomes its text, an invalid one one U+FFFD per byte.
+    EXPECT_EQ(ByteFallbackDecoder().decode({"a", "<0xC3>", "<0xA9>", "b"}), "a\xC3\xA9" "b");
+    EXPECT_EQ(ByteFallbackDecoder().decode_chain({"<0xC3>", "x"}), (std::vector<std::string>{"\xEF\xBF\xBD", "x"}));
+    // Strip works on every token; after Fuse there is one.
+    EXPECT_EQ(StripDecoder(" ", 1, 0).decode_chain({"  a", " b "}), (std::vector<std::string>{" a", "b "}));
+    // Llama 2's chain.
+    SequenceDecoder llama2({std::make_shared<ReplaceDecoder>("\xE2\x96\x81", " "), std::make_shared<ByteFallbackDecoder>(),
+                            std::make_shared<FuseDecoder>(), std::make_shared<StripDecoder>(" ", 1, 0)});
+    EXPECT_EQ(llama2.decode({"\xE2\x96\x81Hi", "\xE2\x96\x81", "<0x21>"}), "Hi !");
+    // Metaspace drops every ▁ in the first token, as Hugging Face does.
+    EXPECT_EQ(MetaspaceDecoder("\xE2\x96\x81", PrependScheme::First).decode({"\xE2\x96\x81\xE2\x96\x81" "a", "\xE2\x96\x81" "b"}), "a b");
+    EXPECT_EQ(MetaspaceDecoder("\xE2\x96\x81", PrependScheme::Never).decode({"\xE2\x96\x81" "a"}), " a");
+}
+
+TEST(SentencePieceBpeTest, APrependedSpaceMarkerPointsAtTheFirstCharacter) {
+    NormalizedString n("Hi there");
+    PrependNormalizer("\xE2\x96\x81").normalize(n);
+    ReplaceNormalizer(" ", "\xE2\x96\x81").normalize(n);
+    EXPECT_EQ(n.text(), "\xE2\x96\x81Hi\xE2\x96\x81there");
+    EXPECT_EQ(n.original(0, 3), (Offset{0, 1}));   // the prepended ▁: the first character's span
+    EXPECT_EQ(n.original(5, 8), (Offset{2, 3}));   // the ▁ that replaced the space: the space
+    NormalizedString empty("");
+    PrependNormalizer("\xE2\x96\x81").normalize(empty);
+    EXPECT_TRUE(empty.empty());  // nothing to prepend to
 }
 
 TEST(ByteLevelTest, DecoderReplacesInvalidUtf8LikeRust) {

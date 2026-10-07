@@ -170,6 +170,7 @@ add_library(pulsatrix_core
     src/unicode.cpp
     src/unicode_regex.cpp
     src/byte_level_bpe.cpp
+    src/sentencepiece_bpe.cpp
     src/tokenizer_json.cpp
     src/tokenizer_parity.cpp
     src/word_scores.cpp

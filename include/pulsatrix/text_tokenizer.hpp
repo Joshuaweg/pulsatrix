@@ -135,10 +135,18 @@ public:
 };
 
 /** @brief Turns token strings back into text. */
+/**
+ * @brief Turns token strings back into text. As in Hugging Face, a decoder maps a token list to a
+ *        token list (decode_chain), so decoders compose (SequenceDecoder), and decode() joins the
+ *        result. Override at least one of the two.
+ */
 class Decoder {
 public:
     virtual ~Decoder() = default;
-    [[nodiscard]] virtual std::string decode(const std::vector<std::string>& tokens) const = 0;
+    /** @brief The decoded text: decode_chain() joined. */
+    [[nodiscard]] virtual std::string decode(const std::vector<std::string>& tokens) const;
+    /** @brief The tokens after this decoder: by default decode()'s text as one token. */
+    [[nodiscard]] virtual std::vector<std::string> decode_chain(std::vector<std::string> tokens) const;
 };
 
 /** @brief A token matched in the raw input before anything else runs, such as `<|im_start|>`. */

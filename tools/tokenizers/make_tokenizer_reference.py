@@ -19,8 +19,8 @@ corpus OUT_JSONL [--lines N]
     Rights in every language of the UDHR in XML project (downloaded; not committed), then
     seeded mixtures of both, up to N lines (default 10000).
 
-Every corpus and reference file is JSON lines. A reference line holds the text, whether the
-normalizer changed it, ids (add_special_tokens=True), plain_ids (False), offsets (in characters,
+Every corpus and reference file is JSON lines. A reference line holds the text, whether Unicode
+normalization (NFC and the like) changed it, ids (add_special_tokens=True), plain_ids (False), offsets (in characters,
 as Hugging Face reports them), and decode(ids) with and without skip_special_tokens.
 """
 
@@ -56,11 +56,25 @@ def read_jsonl(path):
         return [json.loads(line) for line in f if line.strip()]
 
 
+UNICODE_FORMS = ("NFC", "NFD", "NFKC", "NFKD")
+
+
+def uses_unicode_normalization(tok):
+    """Whether the normalizer includes NFC, NFD, NFKC or NFKD, the forms whose offsets Hugging Face
+    aligns by position (Replace and Prepend align exactly and are checked exactly)."""
+    def walk(n):
+        if not n:
+            return False
+        return n.get("type") in UNICODE_FORMS or any(walk(m) for m in n.get("normalizers", []))
+    return walk(json.loads(tok.to_str()).get("normalizer"))
+
+
 def reference(tok, texts):
     rows = []
+    unicode_forms = uses_unicode_normalization(tok)
     for text in texts:
         enc = tok.encode(text)
-        normalized = tok.normalizer is not None and tok.normalizer.normalize_str(text) != text
+        normalized = unicode_forms and tok.normalizer.normalize_str(text) != text
         rows.append({"text": text, "normalized": normalized,
                      "ids": enc.ids, "plain_ids": tok.encode(text, add_special_tokens=False).ids,
                      "offsets": [list(o) for o in enc.offsets],
@@ -69,9 +83,34 @@ def reference(tok, texts):
     return rows
 
 
+MAX_TINY_ADDED = 64
+
+
+def _metaspace(scheme, split):
+    def patch(t):
+        t["normalizer"] = None
+        t["pre_tokenizer"] = {"type": "Metaspace", "replacement": "\u2581", "prepend_scheme": scheme, "split": split}
+        t["decoder"] = {"type": "Metaspace", "replacement": "\u2581", "prepend_scheme": scheme, "split": split}
+    return patch
+
+
+def _no_byte_fallback(t):
+    t["model"]["byte_fallback"] = False
+
+
+# Named variants of a real pipeline, for paths no target model takes: SentencePiece's unknown
+# token without byte fallback (fuse_unk), and the newer Metaspace form of Llama 2 style files.
+VARIANTS = {"-unk": _no_byte_fallback, "metaspace-first": _metaspace("first", False),
+            "metaspace-always": _metaspace("always", True)}
+
+
 def tiny(name, template_path):
     template = json.load(open(template_path, encoding="utf-8"))
+    for key, patch in VARIANTS.items():
+        if name.endswith(key) or name == key:
+            patch(template)
     real_model = template["model"]
+    sentencepiece = bool(real_model.get("byte_fallback") or real_model.get("unk_token"))
     # Train a small BPE through the real normalizer and pre-tokenizer.
     skeleton = dict(template)
     skeleton["added_tokens"] = []
@@ -79,16 +118,27 @@ def tiny(name, template_path):
     skeleton["model"] = {"type": "BPE", "dropout": None, "unk_token": None, "continuing_subword_prefix": None,
                          "end_of_word_suffix": None, "fuse_unk": False, "byte_fallback": False, "vocab": {}, "merges": []}
     tok = Tokenizer.from_str(json.dumps(skeleton))
-    trainer = trainers.BpeTrainer(vocab_size=TINY_VOCAB, initial_alphabet=pre_tokenizers.ByteLevel.alphabet(),
-                                  show_progress=False)
+    if sentencepiece:
+        # A small alphabet, so many characters go through byte fallback (or the unknown token).
+        trainer = trainers.BpeTrainer(vocab_size=TINY_VOCAB, limit_alphabet=120, show_progress=False,
+                                      special_tokens=[real_model["unk_token"]] if real_model.get("unk_token") else [])
+    else:
+        trainer = trainers.BpeTrainer(vocab_size=TINY_VOCAB, initial_alphabet=pre_tokenizers.ByteLevel.alphabet(),
+                                      show_progress=False)
     tok.train_from_iterator(LINES * 3, trainer)
     trained = json.loads(tok.to_str())
 
     out = dict(template)
     model = trained["model"]
-    for key in ("ignore_merges", "continuing_subword_prefix", "end_of_word_suffix"):
+    for key in ("ignore_merges", "continuing_subword_prefix", "end_of_word_suffix", "unk_token", "fuse_unk",
+                "byte_fallback"):
         if key in real_model:
             model[key] = real_model[key]
+    if real_model.get("byte_fallback"):
+        for b in range(256):  # SentencePiece's byte tokens
+            token = "<0x%02X>" % b
+            if token not in model["vocab"]:
+                model["vocab"][token] = max(model["vocab"].values()) + 1
     if real_model["merges"] and isinstance(real_model["merges"][0], str):
         model["merges"] = [" ".join(m) for m in model["merges"]]  # the real file's "a b" format
     if real_model.get("ignore_merges"):
@@ -102,10 +152,20 @@ def tiny(name, template_path):
     remap = {}
     next_id = max(model["vocab"].values()) + 1
     added = []
-    for t in template["added_tokens"]:
-        remap[t["id"]] = next_id
-        added.append(dict(t, id=next_id))
-        next_id += 1
+    keep = template["added_tokens"]
+    if len(keep) > MAX_TINY_ADDED:  # Gemma has thousands: keep the first ones and the template's
+        used = set()
+        for p in [out.get("post_processor")] + list((out.get("post_processor") or {}).get("processors", [])):
+            for special in ((p or {}).get("special_tokens") or {}).values():
+                used.update(special["ids"])
+        keep = [t for i, t in enumerate(keep) if i < MAX_TINY_ADDED or t["id"] in used]
+    for t in keep:
+        if t["content"] in model["vocab"]:  # already a vocabulary token (<unk>): keep its id, as real files do
+            remap[t["id"]] = model["vocab"][t["content"]]
+        else:
+            remap[t["id"]] = next_id
+            next_id += 1
+        added.append(dict(t, id=remap[t["id"]]))
     out["added_tokens"] = added
 
     def renumber(processor):

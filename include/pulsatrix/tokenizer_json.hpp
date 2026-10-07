@@ -15,13 +15,13 @@ namespace pulsatrix {
  * @brief Builds the tokenizer a `tokenizer.json` describes.
  *
  * Supported components (anything else is refused by name, never approximated):
- * - normalizers: `NFC`, `Sequence`
+ * - normalizers: `NFC`, `Replace`, `Prepend`, `Sequence`
  * - pre-tokenizers: `Split` (regex or string pattern, every behavior, `invert`), `Digits`,
- *   `ByteLevel`, `Sequence`
+ *   `ByteLevel`, `Metaspace`, `Sequence`
  * - models: `BPE` (merges as `"a b"` strings or `["a", "b"]` pairs, `ignore_merges`, subword
- *   prefix and suffix, `unk_token`; not `dropout` or `byte_fallback`), `WordLevel`
+ *   prefix and suffix, `unk_token`, `byte_fallback`, `fuse_unk`; not `dropout`), `WordLevel`
  * - post-processors: `ByteLevel`, `TemplateProcessing` (single sequences), `Sequence`
- * - decoders: `ByteLevel`, `Fuse`
+ * - decoders: `ByteLevel`, `ByteFallback`, `Fuse`, `Replace`, `Strip`, `Metaspace`, `Sequence`
  * - added tokens without `lstrip`, `rstrip` or `single_word`, and with `normalized` only when
  *   there is no normalizer
  *
