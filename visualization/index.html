@@ -828,6 +828,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#attribution-graphs-neuronpedia-and-circuit-tracer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attribution graphs (Neuronpedia and circuit-tracer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#building-with-visualization-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1715,6 +1726,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/protein-language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protein Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1841,6 +1880,17 @@
     <span class="md-ellipsis">
       
         Interactive HTML
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attribution-graphs-neuronpedia-and-circuit-tracer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attribution graphs (Neuronpedia and circuit-tracer)
       
     </span>
   </a>
@@ -2484,6 +2534,59 @@ sequences all display correctly, and long text wraps to the window. Hover a piec
 score.</p>
 <p><strong>Safety.</strong> Labels are escaped: a feature called <code>&lt;/script&gt;</code> stays text. The chart's data is
 embedded as JSON, not as code.</p>
+<h2 id="attribution-graphs-neuronpedia-and-circuit-tracer">Attribution graphs (Neuronpedia and circuit-tracer)<a class="headerlink" href="#attribution-graphs-neuronpedia-and-circuit-tracer" title="Permanent link">&para;</a></h2>
+<p>An attribution graph shows how a prediction is built up through the layers of a network.
+pulsatrix writes graphs in the JSON format that
+<a href="https://www.neuronpedia.org/graph/validator">Neuronpedia's graph viewer</a> and Anthropic's
+<a href="https://github.com/decoderesearch/circuit-tracer">circuit-tracer</a> read, so a large graph gets a
+mature, interactive viewer with no extra code. The viewer lets you click a node to see what
+feeds it and what it feeds, prune weak nodes with a slider, and pin nodes into a subgraph.</p>
+<p><strong>From a language model.</strong> <code>pulsatrix_explain_text --graph</code> explains the next-token prediction
+with AttnLRP, the same as the token view, and records the relevance at every layer:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_explain_text<span class="w"> </span>MODEL_DIR<span class="w"> </span><span class="s2">"The Eiffel Tower is located in the city of"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--graph<span class="w"> </span>eiffel.json<span class="w"> </span>--viewer-dir<span class="w"> </span>graphs/
+</code></pre></div>
+<p><img alt="The Qwen2.5-0.5B graph for &quot; Paris&quot; in circuit-tracer's viewer" src="figures/attribution_graph_viewer.png" /></p>
+<ul>
+<li><strong>Nodes.</strong></li>
+<li>One per token at the bottom (the embeddings).</li>
+<li>One per token for the residual stream after each layer.</li>
+<li>The predicted token at the top, with its probability.</li>
+</ul>
+<p>A node's activation is its relevance for the prediction.
+- <strong>Links.</strong> A link from token <em>i</em> in one layer to token <em>j</em> in the next is the share of <em>j</em>'s
+  relevance that the layer passes back to <em>i</em>. Links between different tokens are attention
+  moving information; a token's own vertical path is its residual stream. The links leaving a
+  node add up to that node's relevance, and the bottom row matches the token view exactly.
+- <strong>Pruning.</strong> By default the file keeps the fewest links holding 98% of the relevance
+  (<code>--edge-threshold</code>). Each node's influence lets the viewer's slider hide the least relevant
+  nodes.
+- <strong>Cost.</strong> One block pass per layer and token: about 5 seconds for an 11-token prompt on
+  Qwen2.5-0.5B on a CPU. Prompts longer than 256 tokens are refused.
+- <strong>What the nodes are not.</strong> Nodes are residual-stream positions, not interpretable features. A
+  graph built from transcoder features (roadmap FEAT-5 and FEAT-10) would give each node a
+  meaning; this one shows where the information flows.</p>
+<p>In C++, <code>BuildRelevanceGraph(model, backend, ids, target, options)</code> (<code>relevance_graph.hpp</code>)
+returns the graph, and <code>ToNeuronpediaJson</code> (<code>viz/attribution_graph.hpp</code>) writes it.</p>
+<p><strong>From a circuit graph.</strong> The ablation-scored <code>circuit_graph.v1</code> documents export too. The input
+is in one column and the operations, in order, are in the next:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_svg<span class="w"> </span>circuit.json<span class="w"> </span>--neuronpedia<span class="w"> </span>--slug<span class="w"> </span>my-mlp<span class="w"> </span>--scan<span class="w"> </span>my-model<span class="w"> </span>-o<span class="w"> </span>my-mlp.json
+</code></pre></div>
+<p><strong>Viewing a graph.</strong></p>
+<ul>
+<li><strong>Locally, with circuit-tracer.</strong> <code>--viewer-dir DIR</code> writes the graph's entry into
+  <code>DIR/graph-metadata.json</code>, the index circuit-tracer's local viewer reads. Put the graph files in
+  the same directory and start its server there (<code>circuit-tracer start-server --graph_file_dir DIR</code>).
+  Open <code>http://127.0.0.1:8041/index.html?slug=SLUG</code>. Use <code>127.0.0.1</code> rather than <code>localhost</code>,
+  because on <code>localhost</code> the viewer loads Anthropic's hosted example graphs instead.</li>
+<li><strong>On Neuronpedia.</strong> Upload the file at
+  <a href="https://www.neuronpedia.org/graph/validator">neuronpedia.org/graph/validator</a>. Neuronpedia
+  uses <code>scan</code> as its model id.</li>
+</ul>
+<p>Every file is written against Neuronpedia's <code>graph-schema.json</code>. Before writing,
+<code>ToNeuronpediaJson</code> checks that node ids are unique, that links name real nodes, that numbers
+are finite, and that the output node's label carries its probability, which the viewer reads.
+<code>ParseNeuronpediaGraph</code> reads graphs that circuit-tracer or Neuronpedia wrote.</p>
 <h2 id="building-with-visualization-enabled">Building with visualization enabled<a class="headerlink" href="#building-with-visualization-enabled" title="Permanent link">&para;</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <p>The default build has no GUI dependencies. <code>-DPULSATRIX_ENABLE_VIZ=ON</code> adds these:</p>

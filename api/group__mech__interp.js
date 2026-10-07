@@ -8,6 +8,7 @@ var group__mech__interp =
     [ "hypergrid_env.hpp", "hypergrid__env_8hpp.html", null ],
     [ "learnable_scalar.hpp", "learnable__scalar_8hpp.html", null ],
     [ "linear_probe.hpp", "linear__probe_8hpp.html", null ],
+    [ "relevance_graph.hpp", "relevance__graph_8hpp.html", null ],
     [ "sparse_autoencoder.hpp", "sparse__autoencoder_8hpp.html", null ],
     [ "subtb_loss.hpp", "subtb__loss_8hpp.html", null ],
     [ "trajectory_balance_loss.hpp", "trajectory__balance__loss_8hpp.html", null ]

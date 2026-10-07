@@ -2,6 +2,7 @@ var dir_1df8ff9027259fc5f483c2d1b9c2e5ad =
 [
     [ "attribution_bar_chart.hpp", "attribution__bar__chart_8hpp.html", "attribution__bar__chart_8hpp" ],
     [ "attribution_beeswarm.hpp", "attribution__beeswarm_8hpp.html", "attribution__beeswarm_8hpp" ],
+    [ "attribution_graph.hpp", "attribution__graph_8hpp.html", "attribution__graph_8hpp" ],
     [ "attribution_waterfall.hpp", "attribution__waterfall_8hpp.html", "attribution__waterfall_8hpp" ],
     [ "circuit_graph_view.hpp", "circuit__graph__view_8hpp.html", "circuit__graph__view_8hpp" ],
     [ "colormap.hpp", "colormap_8hpp.html", "colormap_8hpp" ],

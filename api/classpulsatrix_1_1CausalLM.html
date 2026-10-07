@@ -136,6 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acb5aec59b9ca77c9573953bb5ca38d01" id="r_acb5aec59b9ca77c9573953bb5ca38d01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#acb5aec59b9ca77c9573953bb5ca38d01">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1CausalLM.html#a91ca6afb6c75aac837ecf1c062057de4">config</a>) override</td></tr>
 <tr class="memdesc:acb5aec59b9ca77c9573953bb5ca38d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes this module's contribution to <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation.  <br /></td></tr>
 <tr class="separator:acb5aec59b9ca77c9573953bb5ca38d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a100f79a58e72ef35559b72e47cb89f6b" id="r_a100f79a58e72ef35559b72e47cb89f6b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#a100f79a58e72ef35559b72e47cb89f6b">propagate_relevance_by_layer</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1CausalLM.html#a91ca6afb6c75aac837ecf1c062057de4">config</a>)</td></tr>
+<tr class="memdesc:a100f79a58e72ef35559b72e47cb89f6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">propagate_relevance, stopping at every block boundary: the relevance of the residual stream entering block 0 (the scaled embeddings), then leaving each block, each shaped like the hidden states <code>(N, L, hidden_size)</code>. Summing the first over hidden_size gives propagate_relevance's per-token relevance.  <br /></td></tr>
+<tr class="separator:a100f79a58e72ef35559b72e47cb89f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94b1bd3658b5ec1a7b2c51eaf26e02d4" id="r_a94b1bd3658b5ec1a7b2c51eaf26e02d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#a94b1bd3658b5ec1a7b2c51eaf26e02d4">op_type</a> () const override</td></tr>
 <tr class="memdesc:a94b1bd3658b5ec1a7b2c51eaf26e02d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A chain of other modules, as <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a>.  <br /></td></tr>
 <tr class="separator:a94b1bd3658b5ec1a7b2c51eaf26e02d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -628,6 +631,42 @@ Protected Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Relevance at this module's input. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a100f79a58e72ef35559b72e47cb89f6b" name="a100f79a58e72ef35559b72e47cb89f6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a100f79a58e72ef35559b72e47cb89f6b">&#9670;&#160;</a></span>propagate_relevance_by_layer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; pulsatrix::CausalLM::propagate_relevance_by_layer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>relevance_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>propagate_relevance, stopping at every block boundary: the relevance of the residual stream entering block 0 (the scaled embeddings), then leaving each block, each shaped like the hidden states <code>(N, L, hidden_size)</code>. Summing the first over hidden_size gives propagate_relevance's per-token relevance. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>before any <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
