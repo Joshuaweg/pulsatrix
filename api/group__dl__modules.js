@@ -1,5 +1,6 @@
 var group__dl__modules =
 [
+    [ "activation_module.hpp", "activation__module_8hpp.html", null ],
     [ "adam_optimizer.hpp", "adam__optimizer_8hpp.html", null ],
     [ "assert.hpp", "assert_8hpp.html", null ],
     [ "attnlrp_parity.hpp", "attnlrp__parity_8hpp.html", null ],
@@ -23,6 +24,9 @@ var group__dl__modules =
     [ "device_backend.hpp", "device__backend_8hpp.html", null ],
     [ "dropout_module.hpp", "dropout__module_8hpp.html", null ],
     [ "embedding_module.hpp", "embedding__module_8hpp.html", null ],
+    [ "encoder_block.hpp", "encoder__block_8hpp.html", null ],
+    [ "encoder_lm.hpp", "encoder__lm_8hpp.html", null ],
+    [ "feed_forward_module.hpp", "feed__forward__module_8hpp.html", null ],
     [ "flatten_module.hpp", "flatten__module_8hpp.html", null ],
     [ "generation.hpp", "generation_8hpp.html", null ],
     [ "golden_logits.hpp", "golden__logits_8hpp.html", null ],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['ice_0',['ice',['../structpulsatrix_1_1PartialDependenceDocument.html#ac0c4a59cdca6b5e368857a063c448f9c',1,'pulsatrix::PartialDependenceDocument']]],
-  ['id_1',['id',['../structpulsatrix_1_1CircuitNode.html#abd1bc9b44cf62ecd2f72e18b3d90211d',1,'pulsatrix::CircuitNode::id'],['../structpulsatrix_1_1NodeGene.html#ad61786639b2271758659ed8c7fec2a59',1,'pulsatrix::NodeGene::id'],['../structpulsatrix_1_1ModelToken.html#ae59148c20cc09214ac7a7660ad890b32',1,'pulsatrix::ModelToken::id'],['../structpulsatrix_1_1AddedToken.html#ac7106f17e913209761358eeca64c55b2',1,'pulsatrix::AddedToken::id'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html#a086ae30e12966c71de476c260fb02cf3',1,'pulsatrix::CircuitGraphDocument::Node::id']]],
+  ['id_1',['id',['../structpulsatrix_1_1CircuitNode.html#abd1bc9b44cf62ecd2f72e18b3d90211d',1,'pulsatrix::CircuitNode::id'],['../structpulsatrix_1_1NodeGene.html#ad61786639b2271758659ed8c7fec2a59',1,'pulsatrix::NodeGene::id'],['../structpulsatrix_1_1FastaRecord.html#a29bbc87fcc338254396c633f1f0d9cd4',1,'pulsatrix::FastaRecord::id'],['../structpulsatrix_1_1ModelToken.html#ae59148c20cc09214ac7a7660ad890b32',1,'pulsatrix::ModelToken::id'],['../structpulsatrix_1_1AddedToken.html#ac7106f17e913209761358eeca64c55b2',1,'pulsatrix::AddedToken::id'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html#a086ae30e12966c71de476c260fb02cf3',1,'pulsatrix::CircuitGraphDocument::Node::id']]],
   ['id_5fmismatches_2',['id_mismatches',['../structpulsatrix_1_1TokenizerParityReport.html#ae88599cae412cb65ea64d8489e31bff9',1,'pulsatrix::TokenizerParityReport']]],
   ['ids_3',['ids',['../structpulsatrix_1_1Encoding.html#af962133bfa305a0af8abd9b8aa3c3377',1,'pulsatrix::Encoding']]],
   ['ignore_4',['ignore',['../structpulsatrix_1_1WeightLoadOptions.html#aef8e6920f92c5a4fdb82471eb010945d',1,'pulsatrix::WeightLoadOptions']]],
@@ -24,7 +24,7 @@ var searchData=
   ['input_5flabel_21',['input_label',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a5cc0627fbdbed23c8324f07e0b597705',1,'pulsatrix::ExplanationScoreCard::Input']]],
   ['inputs_22',['inputs',['../structpulsatrix_1_1TaggingBatch.html#a314f1d2e41f1b00a623852e24939eeb1',1,'pulsatrix::TaggingBatch']]],
   ['integer_23',['integer',['../structpulsatrix_1_1CounterfactualConstraints.html#a80a2a2656d0ea51b37006b39948286b4',1,'pulsatrix::CounterfactualConstraints']]],
-  ['intermediate_5fsize_24',['intermediate_size',['../structpulsatrix_1_1HfModelConfig.html#a507feb0e16883a89f2dbe1ec0b10d77d',1,'pulsatrix::HfModelConfig']]],
+  ['intermediate_5fsize_24',['intermediate_size',['../structpulsatrix_1_1EncoderLMConfig.html#a08aca485ad94f71cbd0e275f888ddea6',1,'pulsatrix::EncoderLMConfig::intermediate_size'],['../structpulsatrix_1_1HfModelConfig.html#a507feb0e16883a89f2dbe1ec0b10d77d',1,'pulsatrix::HfModelConfig::intermediate_size']]],
   ['interval_25',['interval',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a58164a0a2597183f05e897ad303af19c',1,'pulsatrix::SystemMonitor::Options']]],
   ['is_5fdeterministic_26',['is_deterministic',['../structpulsatrix_1_1StabilityResult.html#a0773c6e9a6fd800eb0971458fe978d6a',1,'pulsatrix::StabilityResult']]],
   ['is_5fsigned_27',['is_signed',['../structpulsatrix_1_1HeatmapColorScale.html#abae34320f9cf364a55428b0367110661',1,'pulsatrix::HeatmapColorScale']]],

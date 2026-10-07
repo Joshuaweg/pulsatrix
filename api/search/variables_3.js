@@ -7,7 +7,7 @@ var searchData=
   ['data_5fseed_4',['data_seed',['../structpulsatrix_1_1FineTuneConfig.html#accb576e57c3e0a68609ceba816953c1d',1,'pulsatrix::FineTuneConfig']]],
   ['decode_5fmismatches_5',['decode_mismatches',['../structpulsatrix_1_1TokenizerParityReport.html#a65c7c81e6a7c37fa2d41ee4be0cff019',1,'pulsatrix::TokenizerParityReport']]],
   ['delta_6',['delta',['../structpulsatrix_1_1WaterfallStep.html#ac64eceb47fd75aa724ae08a0559ede22',1,'pulsatrix::WaterfallStep']]],
-  ['description_7',['description',['../structpulsatrix_1_1ValidationIssue.html#a677934aba055ef65ae99a49417b76cf6',1,'pulsatrix::ValidationIssue::description'],['../structpulsatrix_1_1AttributionGraph.html#a326c648614a447ac5aa9f5622a876c18',1,'pulsatrix::AttributionGraph::description']]],
+  ['description_7',['description',['../structpulsatrix_1_1ValidationIssue.html#a677934aba055ef65ae99a49417b76cf6',1,'pulsatrix::ValidationIssue::description'],['../structpulsatrix_1_1FastaRecord.html#a2048bc46cc86ca9853a94837de5b5f5f',1,'pulsatrix::FastaRecord::description'],['../structpulsatrix_1_1AttributionGraph.html#a326c648614a447ac5aa9f5622a876c18',1,'pulsatrix::AttributionGraph::description']]],
   ['detail_8',['detail',['../structpulsatrix_1_1MetricCapability.html#ad4090d9d12437504d0e571c99a39b52a',1,'pulsatrix::MetricCapability::detail'],['../structpulsatrix_1_1TokenizerMismatch.html#a6944624dfbe6c1fc2f547d4c3c3921db',1,'pulsatrix::TokenizerMismatch::detail']]],
   ['device_9',['device',['../structpulsatrix_1_1BenchmarkRecord.html#ac21be8fb8e322123759144fb900378a4',1,'pulsatrix::BenchmarkRecord::device'],['../structpulsatrix_1_1BenchmarkComparison.html#a0123c72d8905cb26a87a6eedd9afee2d',1,'pulsatrix::BenchmarkComparison::device']]],
   ['device_5fdir_10',['device_dir',['../structpulsatrix_1_1detail_1_1AmdGpuDevice.html#aa4b6b893dc8753be123ae6866b6ccde2',1,'pulsatrix::detail::AmdGpuDevice']]],
@@ -18,5 +18,5 @@ var searchData=
   ['done_15',['done',['../structpulsatrix_1_1StepResult.html#ae5bd2a2383e982da508334bc3bcf34b8',1,'pulsatrix::StepResult']]],
   ['dones_16',['dones',['../structpulsatrix_1_1ReplayBatch.html#adc6893d49007b0a84c4a4a1b623ae7fb',1,'pulsatrix::ReplayBatch']]],
   ['drop_5flast_17',['drop_last',['../structpulsatrix_1_1DataLoaderOptions.html#ac6f057701bbb19bed04ca1a441731483',1,'pulsatrix::DataLoaderOptions']]],
-  ['dtype_18',['dtype',['../structpulsatrix_1_1HfModelConfig.html#a49e927554f73d9ce86001f594231f5f7',1,'pulsatrix::HfModelConfig::dtype'],['../structpulsatrix_1_1SafetensorsTensorInfo.html#af007cc048c5787b6acdb538eae80fbd4',1,'pulsatrix::SafetensorsTensorInfo::dtype']]]
+  ['dtype_18',['dtype',['../structpulsatrix_1_1EncoderLMConfig.html#add2bbdefc077186a93a598a0d303fae1',1,'pulsatrix::EncoderLMConfig::dtype'],['../structpulsatrix_1_1HfModelConfig.html#a49e927554f73d9ce86001f594231f5f7',1,'pulsatrix::HfModelConfig::dtype'],['../structpulsatrix_1_1SafetensorsTensorInfo.html#af007cc048c5787b6acdb538eae80fbd4',1,'pulsatrix::SafetensorsTensorInfo::dtype']]]
 ];
