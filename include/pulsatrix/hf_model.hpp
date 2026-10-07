@@ -45,9 +45,14 @@ struct HfModelConfig {
     int64_t head_dim = 0;
     int64_t vocab_size = 0;
     float rms_norm_eps = 1e-6f;
-    /** @brief `rope_theta` (or `rope_parameters.rope_theta`), 10000 when absent. */
+    /** @brief `rope_theta` (or `rope_parameters.rope_theta`), 10000 when absent. With per-layer-type
+     *         RoPE (Gemma 3) it is the full-attention layers' base. */
     float rope_theta = 10000.0f;
+    /** @brief The full-attention layers' RoPE scaling (all layers' when there is one kind). */
     std::optional<HfRopeScaling> rope_scaling;
+    /** @brief Sliding-window layers' own RoPE base, unscaled (Gemma 3's `rope_local_base_freq`, or
+     *         `rope_parameters.sliding_attention.rope_theta`). Absent: they use rope_theta. */
+    std::optional<float> rope_local_base_freq;
     bool tie_word_embeddings = true;
     /** @brief Q, K and V projection biases: `attention_bias`, or the architecture's own rule (Qwen2
      *         always has them). */
@@ -70,6 +75,18 @@ struct HfModelConfig {
     std::optional<float> query_pre_attn_scalar;
     /** @brief `layer_types`, for example `"sliding_attention"` / `"full_attention"` per layer. */
     std::vector<std::string> layer_types;
+    /** @brief RMSNorms scale by `offset + w`: 1 for Gemma 3, whose norm weights are stored
+     *         centered on zero (LLM-9). */
+    float norm_weight_offset = 0.0f;
+    /** @brief Token embeddings are multiplied by this: `sqrt(hidden_size)` for Gemma 3. */
+    float embed_scale = 1.0f;
+    /** @brief Gemma 3's sandwich norms: attention and MLP outputs are normalized again before each
+     *         residual add. */
+    bool post_norms = false;
+
+    /** @brief Whether layer @p i uses sliding-window attention: per layer_types when given,
+     *         otherwise every layer when sliding_window is set (Mistral). */
+    [[nodiscard]] bool is_sliding_layer(int64_t i) const;
     /**
      * @brief Everything in the config that pulsatrix can't run yet, each naming the roadmap item
      *        that adds it (for example `"rope_scaling \"llama3\" (LLM-6)"`), including an
@@ -102,8 +119,13 @@ struct HfModelConfig {
 [[nodiscard]] std::vector<double> RopeInverseFrequencies(const HfModelConfig& config);
 
 /** @brief The attention layer the config describes: rotate-half RoPE (with its scaling),
- *         causal, its head counts, biases, QK-Norm and epsilon. */
+ *         causal, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm
+ *         offset. For a model whose layers differ, this is a full-attention layer. */
 [[nodiscard]] AttentionConfig ToAttentionConfig(const HfModelConfig& config);
+
+/** @brief Layer @p layer's attention (LLM-9): a sliding-window layer gets its window and its own
+ *         RoPE base, unscaled; a full-attention layer is ToAttentionConfig(config). */
+[[nodiscard]] AttentionConfig ToAttentionConfig(const HfModelConfig& config, int64_t layer);
 
 /**
  * @brief A Hugging Face checkpoint directory's weights: `model.safetensors`, or the shards listed

@@ -187,7 +187,8 @@ NextTokenLogitsFn MakeNextTokenLogits(std::vector<Module*> layers, DeviceBackend
 }
 
 NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding, std::vector<TransformerBlock*> blocks,
-                                            std::vector<Module*> head, DeviceBackend* backend, int64_t max_length) {
+                                            std::vector<Module*> head, DeviceBackend* backend, int64_t max_length,
+                                            float embed_scale) {
     if (blocks.empty()) {
         throw std::invalid_argument("MakeCachedNextTokenLogits: no blocks");
     }
@@ -207,8 +208,8 @@ NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding, std::vec
         state->caches.push_back(b->mha().MakeKVCache(1, max_length));
     }
     EmbeddingModule* emb = &embedding;
-    return [state, emb, blocks = std::move(blocks), head = std::move(head), backend,
-            max_length](const std::vector<int64_t>& tokens) {
+    return [state, emb, blocks = std::move(blocks), head = std::move(head), backend, max_length,
+            embed_scale](const std::vector<int64_t>& tokens) {
         if (tokens.empty()) {
             throw std::invalid_argument("MakeCachedNextTokenLogits: the sequence is empty");
         }
@@ -230,6 +231,11 @@ NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding, std::vec
         const auto fresh = static_cast<int64_t>(tokens.size() - shared);
         std::vector<float> ids(tokens.begin() + static_cast<std::ptrdiff_t>(shared), tokens.end());
         Tensor x = emb->forward(Tensor(Shape({1, fresh}), backend, ids));
+        if (embed_scale != 1.0f) {  // Gemma 3 scales its embeddings by sqrt(hidden_size)
+            Tensor scaled(x.shape(), backend, x.device());
+            backend->axpby(embed_scale, x.data(), 0.0f, nullptr, scaled.data(), static_cast<size_t>(x.numel()));
+            x = scaled;
+        }
         for (size_t i = 0; i < blocks.size(); ++i) {
             x = blocks[i]->forward_cached(x, state->caches[i]);
         }

@@ -27,6 +27,23 @@ PULSATRIX_HOST_DEVICE inline float counter_uniform(uint64_t seed, uint64_t k) {
     return static_cast<float>(z >> 40) * (1.0f / 16777216.0f);
 }
 
+// GELU, tanh approximation (Hugging Face's gelu_pytorch_tanh, PyTorch's approximate="tanh"):
+// 0.5 x (1 + tanh(sqrt(2/pi) (x + 0.044715 x^3))), the gate of Gemma's GeGLU MLP (LLM-9).
+PULSATRIX_HOST_DEVICE inline float gelu_tanh(float x) {
+    const float kBeta = 0.7978845608028654f;  // sqrt(2 / pi)
+    const float kKappa = 0.044715f;
+    return 0.5f * x * (1.0f + tanhf(kBeta * (x + kKappa * x * x * x)));
+}
+
+// d/dx gelu_tanh(x) = 0.5 (1 + t) + 0.5 x (1 - t^2) sqrt(2/pi) (1 + 3 * 0.044715 x^2).
+PULSATRIX_HOST_DEVICE inline float gelu_tanh_grad(float x) {
+    const float kBeta = 0.7978845608028654f;
+    const float kKappa = 0.044715f;
+    const float x2 = x * x;
+    const float t = tanhf(kBeta * (x + kKappa * x2 * x));
+    return 0.5f * (1.0f + t) + 0.5f * x * (1.0f - t * t) * kBeta * (1.0f + 3.0f * kKappa * x2);
+}
+
 // Overflow-free logistic sigmoid: the exponent argument is never positive. Moved here from
 // bce_with_logits_loss.cpp unchanged.
 PULSATRIX_HOST_DEVICE inline float stable_sigmoid(float x) {

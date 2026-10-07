@@ -52,6 +52,14 @@ struct AttentionConfig {
     bool out_bias = true;
     /** Query i attends only to keys 0..i (next-token language models). */
     bool causal = false;
+    /** With causal, query i sees only its last `sliding_window` positions, itself included
+     *  (Hugging Face's sliding-window layers, as in Gemma 3 and Mistral; LLM-9). 0 is no window. */
+    int64_t sliding_window = 0;
+    /** The factor scores are multiplied by before the softmax. 0 means `1 / sqrt(head_dim)`;
+     *  Gemma uses `query_pre_attn_scalar^-0.5` (LLM-9). */
+    float score_scale = 0.0f;
+    /** QK-Norm scales by `offset + gamma` (Gemma's `1 + w`; LLM-9). */
+    float qk_norm_weight_offset = 0.0f;
 };
 
 /**
@@ -336,6 +344,7 @@ private:
     void sum_kv_groups(Tensor& t) const;
     /** @brief Applies the cached forward's causal and padding masks to (N, H, L, L) data. */
     void fill_masked(Tensor& scores, float value) const;
+    [[nodiscard]] float score_scale() const;
 
     // Forward caches. Q/K/V are the post-QK-Norm, post-RoPE, head-split values -- exactly
     // the operands the two matmuls' backward and Eq. 15 rules need. K and V are already

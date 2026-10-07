@@ -25,9 +25,15 @@ This page walks through the whole path. The examples run as written on SmolLM2-1
 
 ## Supported models
 
-Llama-family decoder models load: Llama, SmolLM2, Qwen2/2.5 and Qwen3, including grouped-query
-attention, QKV biases, QK-Norm, tied or untied output layers, and Llama 3's RoPE scaling. These
-four have been checked end to end:
+Decoder models in the Llama family load: Llama, SmolLM2, Qwen2/2.5, Qwen3 and Gemma 3. That
+covers:
+
+- grouped-query attention, QKV biases, QK-Norm, and tied or untied output layers
+- Llama 3's RoPE scaling
+- Gemma 3's sliding-window layers, with their own RoPE base, its GeGLU MLP, its `(1 + w)` and
+  sandwich norms, and its scaled embeddings
+
+These five have been checked end to end:
 
 | Model | Logits vs `transformers` (CPU) | AttnLRP vs LXT | Tokenizer vs `tokenizers` |
 |---|---|---|---|
@@ -35,17 +41,18 @@ four have been checked end to end:
 | Qwen2.5-0.5B | within 1.1e-3 (6e-5 relative) | identical (8e-6) | 10,000 of 10,000 |
 | Qwen3-0.6B | within 1.6e-4 | identical (1.2e-5) | 10,000 of 10,000 |
 | Llama-3.2-1B | within 1.5e-4 | identical (2.3e-5) | 10,000 of 10,000 |
+| Gemma 3 270M | within 1.6e-4 | identical (5.5e-5) | 10,000 of 10,000 |
 
 "Identical" means a correlation of 1.000000 with LXT, and per-token relevance that matches to the
 precision shown. The tokenizer check runs over a multilingual corpus: the Universal Declaration
 of Human Rights in about 530 languages, plus code, numbers, unusual whitespace and emoji. The
-tokenizers of gpt-oss, Gemma 3, TinyLlama and Mistral 7B also match exactly, although those models
-don't load yet.
+tokenizers of gpt-oss, TinyLlama and Mistral 7B also match exactly, although those models aren't
+checked yet. Greedy generation is token-for-token identical to `transformers`' `generate()`
+on SmolLM2-135M and Gemma 3 270M.
 
 **Not supported yet.** Loading a model with features pulsatrix can't run fails with a message
 that names them:
-- Gemma 3: sliding-window attention and its RMSNorm variant (roadmap LLM-9). Its tokenizer
-  already works.
+- Gemma 1 and 2, and logit softcapping
 - mixture-of-experts models
 - RoPE scaling other than Llama 3's and linear (for example YaRN)
 

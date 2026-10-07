@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <memory>
 #include <optional>
 #include "pulsatrix/module.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
@@ -13,6 +14,21 @@
 #include "pulsatrix/swiglu_module.hpp"
 
 namespace pulsatrix {
+
+/** @brief The parts of a TransformerBlock beyond its attention (LLM-9 adds Gemma's). */
+struct TransformerBlockOptions {
+    /** @brief Stabilizer of the RMSNorms (Hugging Face `rms_norm_eps`). */
+    float norm_eps = 1e-6f;
+    /** @brief Biases on the MLP projections (Hugging Face `mlp_bias`). */
+    bool mlp_bias = true;
+    /** @brief The MLP's gate activation: SiLU, or GELU-tanh for Gemma. */
+    GatedActivation mlp_activation = GatedActivation::Silu;
+    /** @brief Gemma's sandwich norms: the attention's and the MLP's outputs are normalized again
+     *         before each residual add (`post_attention_layernorm`, `post_feedforward_layernorm`). */
+    bool post_norms = false;
+    /** @brief Every RMSNorm scales by `offset + gamma` (Gemma's `1 + w`). */
+    float norm_weight_offset = 0.0f;
+};
 
 /**
  * @brief `y1 = x + MHA(RMSNorm(x))`, `y2 = y1 + SwiGLU(RMSNorm(y1))`. Shape
@@ -79,6 +95,11 @@ public:
     TransformerBlock(const AttentionConfig& attention, int64_t d_ff, DeviceBackend* backend, float norm_eps = 1e-6f,
                      bool mlp_bias = true);
 
+    /** @brief A block with every option (LLM-9): Gemma's GeGLU MLP, sandwich norms and `1 + w`
+     *         norms. With default options it is the block above. */
+    TransformerBlock(const AttentionConfig& attention, int64_t d_ff, DeviceBackend* backend,
+                     const TransformerBlockOptions& options);
+
     /**
      * @brief Gradient w.r.t. this module's input; sub-module parameter gradients accumulate
      *        inside norm1_/mha_/norm2_/swiglu_ (reachable through parameters()).
@@ -132,6 +153,9 @@ public:
     [[nodiscard]] MultiHeadAttentionModule& mha() { return mha_; }
     [[nodiscard]] RMSNormModule& norm2() { return norm2_; }
     [[nodiscard]] SwiGLUModule& swiglu() { return swiglu_; }
+    /** @brief The sandwich norms after attention and after the MLP; nullptr without post_norms. */
+    [[nodiscard]] RMSNormModule* post_attn_norm() { return post_attn_norm_.get(); }
+    [[nodiscard]] RMSNormModule* post_mlp_norm() { return post_mlp_norm_.get(); }
     ///@}
 
 
@@ -155,6 +179,8 @@ private:
     MultiHeadAttentionModule mha_;
     RMSNormModule norm2_;
     SwiGLUModule swiglu_;
+    std::unique_ptr<RMSNormModule> post_attn_norm_;
+    std::unique_ptr<RMSNormModule> post_mlp_norm_;
 
     // Forward caches -- the four operands the two residual splits need.
     Shape last_input_shape_ = Shape({0});

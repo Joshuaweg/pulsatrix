@@ -184,6 +184,63 @@ const std::vector<float> kQwen3Logits = {
 };
 const std::vector<int64_t> kQwen3Generated = {26, 16, 58, 16, 58, 16, 52, 0};
 
+// gemma3 (LLM-9): 4 layers with a 3-token sliding window, per-layer-type RoPE, GeGLU, (1 + w) and
+// sandwich norms, scaled embeddings (tools/generate_hf_tiny_models.py gemma3).
+const std::vector<float> kGemma3Logits = {
+    -2.0180738f, -3.77181363f, 0.314126253f, 2.17128205f, 0.313516736f, 1.21866739f, -2.60906601f, 0.258412361f,
+    0.572933197f, -0.240730271f, 1.28486168f, -0.839658737f, 0.070149526f, 0.376997858f, -0.952599406f,
+    -0.681772232f, -0.536204457f, 1.22815895f, -0.926904202f, -0.568155885f, -0.699946821f, -1.41024852f,
+    1.62487376f, -2.01736975f, 1.31596684f, 0.34224087f, 0.559885561f, -0.0575814843f, 1.7470634f, 0.0662841573f,
+    2.20823193f, 0.290658325f, 2.89295125f, -0.218244284f, -0.279594511f, 0.0280360561f, 0.00353009487f,
+    -0.656120479f, 1.89669073f, -0.671418369f, -0.749841452f, -2.40149879f, -0.0233963728f, -3.3211844f,
+    -0.130320445f, -0.589810193f, 0.860077202f, -0.633916318f, 0.127395883f, 2.93163395f, 1.17284036f, 0.306190312f,
+    -0.68465811f, 0.518357992f, -1.8940134f, 0.125353947f, 0.798899055f, -1.15274239f, 0.483042747f, 0.0277178884f,
+    0.671954691f, 0.63135618f, -1.48016143f, -2.31551719f, 0.388973773f, -3.54211283f, 0.46110782f, -0.275997043f,
+    0.744945049f, 2.24558926f, -1.60987914f, 0.145536557f, 0.553810358f, -0.827634215f, 1.56568539f, -0.441394508f,
+    -0.371918917f, 0.452702999f, 0.339562386f, -1.52380455f, -1.11775649f, 2.6225462f, -0.730521441f, 0.771668375f,
+    -0.339342207f, 0.0386210829f, 0.456587315f, -2.1056695f, 0.0983960181f, 1.663903f, 1.37864244f, 0.520242214f,
+    0.053356953f, 0.408654124f, 2.22345924f, -0.674910486f, 1.85439563f, 1.32499945f, 1.14324236f, 1.1038295f,
+    0.35421443f, -0.663583338f, 1.30059862f, -0.565897346f, 0.566142499f, -2.17595649f, -1.07447433f, -2.75210428f,
+    -0.0659476891f, -0.689016104f, -0.486142039f, -0.183762118f, -0.730426788f, 1.34764433f, -0.365199655f,
+    0.828862369f, -2.21780896f, 0.162476018f, -0.817067564f, -0.23505196f, -0.746906936f, -1.46336985f,
+    0.597033501f, -1.31769514f, -0.379576474f, 1.80405402f, -0.0309317634f, -1.94720054f, -0.646136343f,
+    -3.14017224f, -1.45430684f, 0.54367286f, 1.85157478f, 0.824655771f, 0.882256091f, 0.367454082f, 0.568543434f,
+    -1.24327123f, 1.14706075f, -1.72355461f, 0.995930314f, 0.925638318f, 2.91183782f, -1.72961736f, -1.66525376f,
+    1.28328419f, 1.490973f, 2.48940945f, -0.412866771f, 0.700596631f, 0.449608654f, -0.570140362f, 0.372228652f,
+    -0.473140389f, -0.0325060561f, 0.83366257f, 0.0157843474f, 0.947471797f, 0.200282902f, -1.17347312f,
+    -0.0192264989f, -1.69250512f, 0.704376817f, 0.445290864f, 0.649802327f, -1.51011431f, 0.138381645f,
+    -0.0218863804f, 1.80851877f, -1.61843216f, 2.6614542f, -0.328128248f, 0.43138966f, -0.668653131f, -0.45291242f,
+    0.0677442104f, 0.723654032f, 1.77789783f, 0.606658578f, -1.76644719f, -0.630391419f, 1.62897754f, -1.12992692f,
+    2.16676569f, -0.944450319f, -0.414334536f, 0.0329406336f, -0.765986919f, 0.695706367f, 0.678957224f,
+    -1.12496412f, 1.43240201f, 0.286114663f, -3.45423532f, 0.412411064f, -0.269283235f, 1.32469201f, 3.25637937f,
+    -0.132323891f, -0.658572674f, 0.168015704f, -1.51076841f, 0.691926599f, -0.562119186f, -0.63208878f,
+    1.48169994f, 0.891688049f, -0.972680688f, -0.642345905f, 1.57801473f, -0.578565121f, 0.331506193f,
+    -0.301710039f, -0.880683243f, 0.11219389f, -2.90850234f, 0.4534944f, 2.18263125f, 1.5393784f, -0.149569795f,
+    -0.250449955f, 0.11318884f, 1.71248305f, 0.127393797f, 1.76927221f, 1.76754141f, 1.34515655f, 0.765972912f,
+    0.905507207f, -0.048219081f, 0.598684072f, -1.3792944f, 1.47902036f, -1.63919473f, -0.742463291f, -2.23071194f,
+    -0.803085983f, -0.829917073f, -0.707212925f, -1.09608626f, -0.824312806f, 1.03712392f, -1.00411463f,
+    0.499527752f, -1.12323141f, 0.311422408f, -0.0417097881f, -0.00644107303f, -0.710377872f, -0.545907617f,
+    0.0198695026f, -0.733133018f, -0.0261678491f, 2.92316771f, -0.437073439f, -1.89421427f, -1.00348997f,
+    -1.67118073f, -1.80009651f, 0.682999909f, 1.285815f, 0.47794649f, -0.779244184f, 0.533834577f, 0.554060698f,
+    -1.14421296f, 0.163940907f, -0.492506564f, 0.536100447f, 2.05584359f, 0.835758448f, -1.5119524f, -0.932121873f,
+    1.57043958f, 0.271794945f, -0.359992504f, 0.900321245f, -0.230746001f, 1.01967692f, -0.179833472f, 1.91464543f,
+    0.391882509f, -0.0578616858f, 0.00956638157f, 0.0592119992f, 0.153802872f, 0.789723516f, -1.35614264f,
+    -0.141898364f, -2.7665751f, -0.2661134f, -0.599588871f, -0.0210579932f, -1.13878679f, 0.480559886f,
+    0.186009526f, 1.03024721f, 0.195493296f, 0.749502361f, -2.32749176f, -0.102882147f, -0.943624437f,
+    -0.315918744f, -1.05758917f, -0.1013937f, 2.09803677f, 0.115168989f, -1.34431887f, -1.14989758f, 0.432911396f,
+    -1.68442261f, 2.17138267f, 2.06364441f, -0.465547144f, -0.330983937f, -0.54994148f, 2.23067737f, 1.22908568f,
+    -0.268156409f, -0.849553287f, -0.264045298f, -0.959286451f, -0.344530612f, -0.503778398f, 0.614561617f,
+    1.93839216f, -1.28018939f, 0.102710709f, 2.11270761f, -1.4438715f, 0.314790547f, 0.0900452137f, -0.625744164f,
+    1.58902729f, 0.34585315f, -1.14446807f, -0.305057406f, -0.555682123f, -1.89525437f, -2.13001037f, 0.147793949f,
+    -0.0134506226f, 1.07810557f, -0.229743645f, -0.706004202f, 1.77585208f, -1.30576897f, 0.214963913f,
+    0.142192781f, 0.105016038f, 2.02419853f, 0.425071239f, 0.359795243f, -0.797383249f, 0.459600836f, 0.92538631f,
+    -1.60098875f, -0.90376538f, -0.725153804f, 0.440014511f, -0.789666951f, -0.427056074f, 0.268557906f,
+    -1.22039282f, 0.965446353f, 0.222834408f, 0.720222354f, -2.16392899f, 0.144035771f, 0.290442586f, -0.946215868f,
+    -1.11464405f, -2.22700858f, -0.826391816f, 0.465257883f, 0.92076385f, -0.55880034f, -0.00524371862f,
+    -0.359653592f, -0.280038893f, -0.181222677f, 0.775200486f, -0.226738632f, -2.68281126f,
+};
+const std::vector<int64_t> kGemma3Generated = {8, 30, 30, 30, 30, 30, 30, 30};
+
 std::string Model(const std::string& name) { return std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf_tiny/" + name; }
 
 const std::vector<int64_t> kPrompt{3, 17, 42, 5, 60, 8};
@@ -198,7 +255,7 @@ protected:
 TEST_P(CausalLMTest, LogitsMatchTransformers) {
     const std::string name = GetParam();
     const std::vector<float>& expected =
-        name == "llama" ? kLlamaLogits : name == "qwen2" ? kQwen2Logits : kQwen3Logits;
+        name == "llama" ? kLlamaLogits : name == "qwen2" ? kQwen2Logits : name == "qwen3" ? kQwen3Logits : kGemma3Logits;
     std::unique_ptr<CausalLM> model = LoadCausalLM(Model(name), &backend);
     std::vector<float> ids(kPrompt.begin(), kPrompt.end());
     Tensor logits = model->forward(Tensor(Shape({1, 6}), &backend, ids));
@@ -213,14 +270,14 @@ TEST_P(CausalLMTest, LogitsMatchTransformers) {
 TEST_P(CausalLMTest, GreedyGenerationMatchesTransformers) {
     const std::string name = GetParam();
     const std::vector<int64_t>& expected =
-        name == "llama" ? kLlamaGenerated : name == "qwen2" ? kQwen2Generated : kQwen3Generated;
+        name == "llama" ? kLlamaGenerated : name == "qwen2" ? kQwen2Generated : name == "qwen3" ? kQwen3Generated : kGemma3Generated;
     std::unique_ptr<CausalLM> model = LoadCausalLM(Model(name), &backend);
     GenerationConfig g;
     g.max_new_tokens = 8;
     EXPECT_EQ(Generate(model->next_token_logits(32), kPrompt, g).new_tokens, expected) << name;
 }
 
-INSTANTIATE_TEST_SUITE_P(TinyModels, CausalLMTest, ::testing::Values("llama", "qwen2", "qwen3"));
+INSTANTIATE_TEST_SUITE_P(TinyModels, CausalLMTest, ::testing::Values("llama", "qwen2", "qwen3", "gemma3"));
 
 TEST(CausalLMLoadTest, ParameterNamesAndTyingFollowTheConfig) {
     CPUBackend backend;
@@ -332,10 +389,11 @@ TEST_F(LoadWeightsTest, RowSlicesSplitAFusedTensor) {
 
 TEST(CausalLMLoadTest, RefusesConfigsItCantRunFaithfully) {
     CPUBackend backend;
-    HfModelConfig gemma = ReadHfConfig(std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf/gemma-3-270m.config.json");
-    gemma.num_hidden_layers = 1;  // keep the test small; Gemma's features are what is refused
-    gemma.vocab_size = 16;
-    EXPECT_THROW(CausalLM(gemma, &backend), std::invalid_argument);
+    HfModelConfig yarn = ReadHfConfig(std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf/llama-3.2-1b.config.json");
+    yarn.num_hidden_layers = 1;  // keep the test small; the unsupported list is what is refused
+    yarn.vocab_size = 16;
+    yarn.unsupported.push_back("rope_scaling \"yarn\"");
+    EXPECT_THROW(CausalLM(yarn, &backend), std::invalid_argument);
     EXPECT_THROW((void)LoadCausalLM("/nonexistent", &backend), std::runtime_error);
 }
 

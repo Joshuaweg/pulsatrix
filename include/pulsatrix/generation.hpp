@@ -126,6 +126,6 @@ void ProcessLogits(std::vector<float>& logits, const std::vector<int64_t>& token
 [[nodiscard]] NextTokenLogitsFn MakeCachedNextTokenLogits(EmbeddingModule& embedding,
                                                           std::vector<TransformerBlock*> blocks,
                                                           std::vector<Module*> head, DeviceBackend* backend,
-                                                          int64_t max_length);
+                                                          int64_t max_length, float embed_scale = 1.0f);
 
 }  // namespace pulsatrix

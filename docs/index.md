@@ -29,7 +29,7 @@ Runs on CPU, CUDA or HIP/ROCm.
 statistics and outlier checks. Tokenizers load from a Hugging Face `tokenizer.json` and return
 offsets back into the text, and token scores can be merged into word scores.
 
-**[Language Models](language-models/index.md)**: load Llama, SmolLM2, Qwen2/2.5 and Qwen3 models
+**[Language Models](language-models/index.md)**: load Llama, SmolLM2, Qwen2/2.5, Qwen3 and Gemma 3 models
 from the Hugging Face Hub, generate text, and explain each prediction per token or per word with
 AttnLRP. Logits, token ids and explanations are checked against `transformers`, `tokenizers`
 and LXT, and `pulsatrix_explain_text` turns a prompt into an explanation figure in one command.
