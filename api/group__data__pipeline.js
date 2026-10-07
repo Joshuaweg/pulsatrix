@@ -18,6 +18,7 @@ var group__data__pipeline =
     [ "iterable_dataset.hpp", "iterable__dataset_8hpp.html", null ],
     [ "mnist_dataset_adapter.hpp", "mnist__dataset__adapter_8hpp.html", null ],
     [ "sampler.hpp", "sampler_8hpp.html", null ],
+    [ "sentencepiece_bpe.hpp", "sentencepiece__bpe_8hpp.html", null ],
     [ "text_collate.hpp", "text__collate_8hpp.html", null ],
     [ "text_dataset.hpp", "text__dataset_8hpp.html", null ],
     [ "text_tokenizer.hpp", "text__tokenizer_8hpp.html", null ],

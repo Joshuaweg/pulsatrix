@@ -119,10 +119,32 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a2ed335ab42fd368c6e89a39a673db335" id="r_a2ed335ab42fd368c6e89a39a673db335"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BpeOptions.html#a2ed335ab42fd368c6e89a39a673db335">unk_token</a></td></tr>
 <tr class="memdesc:a2ed335ab42fd368c6e89a39a673db335"><td class="mdescLeft">&#160;</td><td class="mdescRight">For characters the vocabulary lacks; without one they are dropped, as in Hugging Face.  <br /></td></tr>
 <tr class="separator:a2ed335ab42fd368c6e89a39a673db335"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f208e88c7098f2a7ad3fadda6c37b8" id="r_a45f208e88c7098f2a7ad3fadda6c37b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8">byte_fallback</a> = false</td></tr>
+<tr class="memdesc:a45f208e88c7098f2a7ad3fadda6c37b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">A character the vocabulary lacks becomes its UTF-8 bytes as <code>&lt;0x41&gt;</code>-style tokens (SentencePiece's byte fallback), before the unknown token is considered.  <br /></td></tr>
+<tr class="separator:a45f208e88c7098f2a7ad3fadda6c37b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a123b30c684f1e57952c068778792d6f3" id="r_a123b30c684f1e57952c068778792d6f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BpeOptions.html#a123b30c684f1e57952c068778792d6f3">fuse_unk</a> = false</td></tr>
+<tr class="memdesc:a123b30c684f1e57952c068778792d6f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consecutive unknown characters become one unknown token.  <br /></td></tr>
+<tr class="separator:a123b30c684f1e57952c068778792d6f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>BPE options beyond the vocabulary and merges, as <code>tokenizer.json</code> names them. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a45f208e88c7098f2a7ad3fadda6c37b8" name="a45f208e88c7098f2a7ad3fadda6c37b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45f208e88c7098f2a7ad3fadda6c37b8">&#9670;&#160;</a></span>byte_fallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::BpeOptions::byte_fallback = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A character the vocabulary lacks becomes its UTF-8 bytes as <code>&lt;0x41&gt;</code>-style tokens (SentencePiece's byte fallback), before the unknown token is considered. </p>
+
+</div>
+</div>
 <a id="a64edf2751f364f5fc76df9163a967b6e" name="a64edf2751f364f5fc76df9163a967b6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a64edf2751f364f5fc76df9163a967b6e">&#9670;&#160;</a></span>continuing_subword_prefix</h2>
 
@@ -152,6 +174,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Added after a piece's last character. </p>
+
+</div>
+</div>
+<a id="a123b30c684f1e57952c068778792d6f3" name="a123b30c684f1e57952c068778792d6f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a123b30c684f1e57952c068778792d6f3">&#9670;&#160;</a></span>fuse_unk</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::BpeOptions::fuse_unk = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Consecutive unknown characters become one unknown token. </p>
 
 </div>
 </div>

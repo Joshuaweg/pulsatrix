@@ -223,6 +223,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BpeOptions.html">BpeOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">BPE options beyond the vocabulary and merges, as <code>tokenizer.json</code> names them.  <a href="structpulsatrix_1_1BpeOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ByteFallbackDecoder.html">ByteFallbackDecoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns runs of <code>&lt;0x41&gt;</code>-style byte tokens back into text; a run that isn't valid UTF-8 becomes one U+FFFD per byte (Hugging Face's ByteFallback decoder).  <a href="classpulsatrix_1_1ByteFallbackDecoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ByteLevelDecoder.html">ByteLevelDecoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps byte-level characters back to bytes; invalid UTF-8 becomes U+FFFD, as in Hugging Face.  <a href="classpulsatrix_1_1ByteLevelDecoder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -608,6 +611,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html">MaxPool2DModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; deferred until a real use case needs them, same minimal-cut discipline as <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s original stride-1/no-padding scope cut.  <a href="classpulsatrix_1_1MaxPool2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MetaspaceDecoder.html">MetaspaceDecoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The replacement character back to spaces (Hugging Face's Metaspace decoder). Unless the scheme is Never, every replacement in the first token is dropped, as Hugging Face does, not only the one the pre-tokenizer put in front.  <a href="classpulsatrix_1_1MetaspaceDecoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MetaspacePreTokenizer.html">MetaspacePreTokenizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spaces become a replacement character (<code>▁</code>), one is put in front of each piece (or of the text's first piece only), and pieces are optionally split before each one (Hugging Face's Metaspace pre-tokenizer).  <a href="classpulsatrix_1_1MetaspacePreTokenizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MetricCapability.html">MetricCapability</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether one metric can be read on this machine, and from where &ndash; or why not.  <a href="structpulsatrix_1_1MetricCapability.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -749,6 +758,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PPOClippedLoss.html">PPOClippedLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean_b( -min( r_b * A_b, clamp(r_b, 1-eps, 1+eps) * A_b ) ), where <code>r_b = pi_new(a_b|s_b) / pi_old(a_b|s_b)</code> &ndash; the clipped surrogate objective of Schulman et al. 2017 (arXiv:1707.06347), negated so that minimizing it maximizes the objective the paper states.  <a href="classpulsatrix_1_1PPOClippedLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PrependNormalizer.html">PrependNormalizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Puts a string in front of non-empty text (Hugging Face's Prepend normalizer).  <a href="classpulsatrix_1_1PrependNormalizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PreTokenizer.html">PreTokenizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into the pieces the model tokenizes separately, and may change them (byte- level mapping).  <a href="classpulsatrix_1_1PreTokenizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -769,6 +781,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReparamGrad.html">ReparamGrad</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The (grad_mu, grad_log_sigma) pair both VAE building blocks produce.  <a href="structpulsatrix_1_1ReparamGrad.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReplaceDecoder.html">ReplaceDecoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces a literal string or regex in every token (Hugging Face's Replace decoder).  <a href="classpulsatrix_1_1ReplaceDecoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ReplaceNormalizer.html">ReplaceNormalizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces every match of a literal string or a regex (Hugging Face's Replace normalizer).  <a href="classpulsatrix_1_1ReplaceNormalizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReplayBatch.html">ReplayBatch</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One uniformly-sampled minibatch of transitions, one <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per transition field.  <a href="structpulsatrix_1_1ReplayBatch.html#details">More...</a><br /></td></tr>
@@ -855,6 +873,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sensitivity.v1</code>: how one output moves when each input feature, alone, goes to a low and a high value (CFS-3). The data behind a tornado chart.  <a href="structpulsatrix_1_1SensitivityDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequenceDecoder.html">SequenceDecoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs decoders in order, each on the previous one's tokens.  <a href="classpulsatrix_1_1SequenceDecoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequenceNormalizer.html">SequenceNormalizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs normalizers in order.  <a href="classpulsatrix_1_1SequenceNormalizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -908,6 +929,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1StepResult.html">StepResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What one <a class="el" href="classpulsatrix_1_1Environment.html#ad9703da6e1184b3b0d470d61c5fc552d" title="Advances the environment one timestep under the given action.">Environment::step()</a> produces: the next observation, this step's reward, and whether the episode ended.  <a href="structpulsatrix_1_1StepResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1StripDecoder.html">StripDecoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes up to <code>start</code> leading and <code>stop</code> trailing copies of a character from every token (Hugging Face's Strip decoder).  <a href="classpulsatrix_1_1StripDecoder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SubTBLoss.html">SubTBLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One sub-trajectory pair's contribution to the SubTB(λ) loss: <code>Δ(i,j) = log F(s_i) + Σ log P_F − log F(s_j) − Σ log P_B</code> (summed over the edges spanned by <code>[i,j)</code>), weighted by &lsquo;pair_weight_ratio = λ^{j-i} / Σ_{i&rsquo;&lt;j'} λ^{j'-i'}` (the pre-normalized share of the total weighted-average loss this specific pair contributes).  <a href="classpulsatrix_1_1SubTBLoss.html#details">More...</a><br /></td></tr>
@@ -1311,6 +1335,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:abb575cb311c04812afe7f12350d86eec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which family of values a named parameter draws from.  <a href="namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eec">More...</a><br /></td></tr>
 <tr class="separator:abb575cb311c04812afe7f12350d86eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7a1ebc92bdef322b1c30385aac7c066" id="r_ad7a1ebc92bdef322b1c30385aac7c066"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066">PrependScheme</a> { <a class="el" href="namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066a68eec46437c384d8dad18d5464ebc35c">Always</a>
+, <a class="el" href="namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066a7fb55ed0b7a30342ba6da306428cae04">First</a>
+, <a class="el" href="namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066a6e7b34fa59e1bd229b207892956dc41c">Never</a>
+ }</td></tr>
+<tr class="memdesc:ad7a1ebc92bdef322b1c30385aac7c066"><td class="mdescLeft">&#160;</td><td class="mdescRight">When Metaspace puts its replacement in front of a piece.  <a href="namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066">More...</a><br /></td></tr>
+<tr class="separator:ad7a1ebc92bdef322b1c30385aac7c066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga36063879210fbfeed97464b5b089b871" id="r_ga36063879210fbfeed97464b5b089b871"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871">LogFormat</a> { <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871aaaffc9a26d918147e8944a8fd5e231b9">LogFormat::JsonLines</a>
 , <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871ab20daea8bfacec3891fcf5b7be4adca0">LogFormat::Csv</a>
  }</td></tr>
@@ -2769,6 +2799,35 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045" name="abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045"></a>LogUniform&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044" name="abb575cb311c04812afe7f12350d86eecaa0faef0851b4294c06f2b94bb1cb2044"></a>Integer&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c" name="abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c"></a>Categorical&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ad7a1ebc92bdef322b1c30385aac7c066" name="ad7a1ebc92bdef322b1c30385aac7c066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7a1ebc92bdef322b1c30385aac7c066">&#9670;&#160;</a></span>PrependScheme</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066">pulsatrix::PrependScheme</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>When Metaspace puts its replacement in front of a piece. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad7a1ebc92bdef322b1c30385aac7c066a68eec46437c384d8dad18d5464ebc35c" name="ad7a1ebc92bdef322b1c30385aac7c066a68eec46437c384d8dad18d5464ebc35c"></a>Always&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7a1ebc92bdef322b1c30385aac7c066a7fb55ed0b7a30342ba6da306428cae04" name="ad7a1ebc92bdef322b1c30385aac7c066a7fb55ed0b7a30342ba6da306428cae04"></a>First&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7a1ebc92bdef322b1c30385aac7c066a6e7b34fa59e1bd229b207892956dc41c" name="ad7a1ebc92bdef322b1c30385aac7c066a6e7b34fa59e1bd229b207892956dc41c"></a>Never&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -8617,11 +8676,11 @@ template&lt;typename T &gt; </div>
 
 <p>Builds the tokenizer a <code>tokenizer.json</code> describes. </p>
 <p>Supported components (anything else is refused by name, never approximated):</p><ul>
-<li>normalizers: <code>NFC</code>, <code>Sequence</code></li>
-<li>pre-tokenizers: <code>Split</code> (regex or string pattern, every behavior, <code>invert</code>), <code>Digits</code>, <code>ByteLevel</code>, <code>Sequence</code></li>
-<li>models: <code>BPE</code> (merges as <code>"a b"</code> strings or <code>["a", "b"]</code> pairs, <code>ignore_merges</code>, subword prefix and suffix, <code>unk_token</code>; not <code>dropout</code> or <code>byte_fallback</code>), <code>WordLevel</code></li>
+<li>normalizers: <code>NFC</code>, <code>Replace</code>, <code>Prepend</code>, <code>Sequence</code></li>
+<li>pre-tokenizers: <code>Split</code> (regex or string pattern, every behavior, <code>invert</code>), <code>Digits</code>, <code>ByteLevel</code>, <code>Metaspace</code>, <code>Sequence</code></li>
+<li>models: <code>BPE</code> (merges as <code>"a b"</code> strings or <code>["a", "b"]</code> pairs, <code>ignore_merges</code>, subword prefix and suffix, <code>unk_token</code>, <code>byte_fallback</code>, <code>fuse_unk</code>; not <code>dropout</code>), <code>WordLevel</code></li>
 <li>post-processors: <code>ByteLevel</code>, <code>TemplateProcessing</code> (single sequences), <code>Sequence</code></li>
-<li>decoders: <code>ByteLevel</code>, <code>Fuse</code></li>
+<li>decoders: <code>ByteLevel</code>, <code>ByteFallback</code>, <code>Fuse</code>, <code>Replace</code>, <code>Strip</code>, <code>Metaspace</code>, <code>Sequence</code></li>
 <li>added tokens without <code>lstrip</code>, <code>rstrip</code> or <code>single_word</code>, and with <code>normalized</code> only when there is no normalizer</li>
 </ul>
 <dl class="exception"><dt>Exceptions</dt><dd>
