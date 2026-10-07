@@ -180,6 +180,11 @@ Larger changes that touch every module or backend.
 - ONNX, GGUF and QLoRA (IO-8, IO-9, TRN-14)
 - Python wheels and a vcpkg port (KS-11)
 
+### Last
+
+- VIZ-8: shaped text (HarfBuzz and bidi) in the ImGui widgets, so Arabic, Hebrew and Indic
+  scripts read correctly in the native windows as well as in the SVG figures
+
 ## FND: Foundations
 
 These unblock most of the other epics. **All eight are done** (2026-10-04, PRs
@@ -765,6 +770,7 @@ format, with static and web renderers next to it.
 | VIZ-4 | Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read | Large graphs get a mature viewer for free | VIZ-1 | P1 | M | |
 | VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each | (a) Done, [#87](https://github.com/Joshuaweg/pulsatrix/pull/87) (see below) |
 | VIZ-7 | A node editor for circuit graphs | Only if graphs outgrow the current view; VIZ-4 covers large ones | — | P3 | M | |
+| VIZ-8 | Shaped text in the ImGui widgets. Each piece is shaped with HarfBuzz (through FreeType) and right-to-left runs are reordered (FriBidi, or UAX #9 for single-direction pieces); the shaped glyphs are rasterized with FreeType into a glyph atlas and drawn as textured quads in `TokenRelevanceView`. It passes when Arabic (joined, right to left), Hebrew, Devanagari, Bengali and Tamil (vowel signs and conjuncts) and Thai render the way HarfBuzz's own `hb-view` does, checked against reference images, and emoji ligatures (skin tones, ZWJ families, flags) show as one glyph | Every character already shows (ImGui 1.92 plus system fonts), but ImGui places characters one after another, so complex scripts aren't readable in the native windows; today only the SVG shows them correctly | — | P3 | M | |
 
 (VIZ-5, the notebook path, moved to the NB epic.)
 
@@ -810,7 +816,7 @@ format, with static and web renderers next to it.
 | Nothing produces `feature_dashboard.v1` yet; its fields follow SAEDashboard | VIZ-1 | FEAT |
 | Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | Done in VIZ-6a: pieces are the text their offsets cover |
 | SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | Partly done: widths count display columns (CJK and emoji 2, combining marks 0); exact widths need VIZ-3 (the browser lays out text) |
-| ImGui doesn't shape text: Arabic and Hebrew show unjoined and left to right, and Indic vowel signs and conjuncts aren't formed. Every character shows (system fonts merged as fallbacks, ImGui 1.92). Shaping the widget's text with HarfBuzz plus bidi reordering, drawn as glyph quads, would fix it | Fonts work | VIZ (unscheduled) |
+| ImGui doesn't shape text: Arabic and Hebrew show unjoined and left to right, and Indic vowel signs and conjuncts aren't formed. Every character shows (system fonts merged as fallbacks, ImGui 1.92). Shaping the widget's text with HarfBuzz plus bidi reordering, drawn as glyph quads, would fix it | Fonts work | VIZ-8 |
 
 ## NB: Notebook layer
 
