@@ -14,9 +14,9 @@ namespace pulsatrix {
  *        a background colored by its relevance (DivergingColormap, scaled to the largest
  *        |relevance|), as the SVG token strip does. Unscored pieces (the spaces between words) are
  *        plain text, and a newline starts a new line. Hovering a piece shows its text and score.
- * @note ImGui's default font covers Latin-1 only, so other characters (CJK, emoji, "€") show as
- *       "?" until the application loads a font with those glyphs (ImGuiIO::Fonts); the
- *       document itself holds the right text, and the SVG strip shows it.
+ * @note Text in any script shows when the system has a font for it: VizWindow merges system
+ *       fonts in as fallbacks (`viz/fonts.hpp`). ImGui doesn't shape text, so Arabic, Hebrew
+ *       and Indic scripts appear unjoined and left to right; the SVG strip shows them correctly.
  * @note Call from an ImGui::Begin/End window body. Not unit-tested, like the other widgets
  *       (GoogleTest can't exercise ImGui draw calls); the document builders it is meant for are
  *       (`viz/text_relevance.hpp`).

@@ -794,6 +794,13 @@ format, with static and web renderers next to it.
     French and emoji line.
   - ImGui's default font is Latin-1 only, so the widget needs a loaded font for other scripts;
     the SVG has no such limit.
+- **Fonts.** Dear ImGui went from v1.90.9 to v1.92.5 and ImPlot from v0.16 to v0.17. ImGui 1.92
+  draws glyphs on first use, so no glyph ranges need building. `VizWindow` now merges a system
+  font for every script behind the default font (`viz/fonts.hpp`): one font per script through
+  fontconfig on Linux, the standard system fonts on Windows and macOS. ImGui text is 32-bit
+  (`IMGUI_USE_WCHAR32`), and FreeType, when installed, draws vector color emoji. Bitmap emoji fonts
+  can't be scaled and are skipped. Every widget and the MNIST gallery were rendered again and
+  checked by eye. ImGui still doesn't shape text (see the follow-ups).
 
 ### Follow-ups the VIZ work surfaced
 
@@ -802,7 +809,8 @@ format, with static and web renderers next to it.
 | SVG views for circuit graphs, training logs and feature dashboards | VIZ-2 | VIZ-4, VIZ-6 |
 | Nothing produces `feature_dashboard.v1` yet; its fields follow SAEDashboard | VIZ-1 | FEAT |
 | Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | Done in VIZ-6a: pieces are the text their offsets cover |
-| SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | VIZ-3 (the browser lays out text) |
+| SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | Partly done: widths count display columns (CJK and emoji 2, combining marks 0); exact widths need VIZ-3 (the browser lays out text) |
+| ImGui doesn't shape text: Arabic and Hebrew show unjoined and left to right, and Indic vowel signs and conjuncts aren't formed. Every character shows (system fonts merged as fallbacks, ImGui 1.92). Shaping the widget's text with HarfBuzz plus bidi reordering, drawn as glyph quads, would fix it | Fonts work | VIZ (unscheduled) |
 
 ## NB: Notebook layer
 

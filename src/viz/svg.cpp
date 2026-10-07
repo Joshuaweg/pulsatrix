@@ -36,7 +36,7 @@ std::string RenderBarChartSvg(const AttributionDocument& doc, int top_k, const S
     for (size_t i = 0; i < bars.values.size(); ++i) {
         min_v = std::min(min_v, static_cast<double>(bars.values[i]));
         max_v = std::max(max_v, static_cast<double>(bars.values[i]));
-        label_chars = std::max(label_chars, Characters(bars.labels[i]).size());
+        label_chars = std::max(label_chars, Columns(std::string_view(bars.labels[i])));
         value_chars = std::max(value_chars, ValueText(bars.values[i]).size());
     }
     const size_t max_label_chars = static_cast<size_t>(std::max(4.0, f.width() * 0.35 / (kCharWidthEm * fs)));
@@ -323,7 +323,7 @@ std::string RenderTokenStripSvg(const TokenRelevanceDocument& doc, const SvgOpti
             token.remove_prefix(nl + 1);
         }
         shown = Truncate(shown, max_chars);
-        const double w = static_cast<double>(std::max<size_t>(1, Characters(shown).size())) * char_w;
+        const double w = static_cast<double>(std::max<size_t>(1, Columns(std::string_view(shown)))) * char_w;
         if (x + w > right + 1e-9 && x > left) {
             x = left;
             y += line_h;

@@ -3,7 +3,7 @@
  *
  *  pulsatrix_explain_text MODEL_DIR "The Eiffel Tower is located in the city of" -o tokens.json
  *  pulsatrix_explain_text MODEL_DIR "The Eiffel Tower is located in the city of" --words -o words.json
- *  token_relevance_demo tokens.json words.json [--screenshot out.png]
+ *  token_relevance_demo tokens.json words.json [--font-size 20] [--screenshot out.png]
  *
  *  Each document gets its own section; the two share one color scale, so token and word views of
  *  the same explanation compare directly. --screenshot renders a few frames, writes a PNG and exits.
@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -30,16 +31,19 @@ int main(int argc, char** argv) {
     using namespace pulsatrix;
     std::vector<std::string> paths;
     std::string screenshot;
+    VizFontOptions fonts = DefaultVizFontOptions();
     for (int i = 1; i < argc; ++i) {
         const std::string a = argv[i];
         if (a == "--screenshot" && i + 1 < argc) {
             screenshot = argv[++i];
+        } else if (a == "--font-size" && i + 1 < argc) {
+            fonts.size = std::strtof(argv[++i], nullptr);
         } else {
             paths.push_back(a);
         }
     }
     if (paths.empty()) {
-        std::fprintf(stderr, "usage: token_relevance_demo DOC.json [DOC.json ...] [--screenshot OUT.png]\n");
+        std::fprintf(stderr, "usage: token_relevance_demo DOC.json [DOC.json ...] [--font-size PX] [--screenshot OUT.png]\n");
         return 2;
     }
     std::vector<TokenRelevanceDocument> docs;
@@ -60,7 +64,13 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    VizWindow window("pulsatrix -- token relevance", 900, 120 + 110 * static_cast<int>(docs.size()));
+    const float scale = fonts.size / 13.0f;
+    VizWindow window("pulsatrix -- token relevance", static_cast<int>(900 * scale),
+                     static_cast<int>((120 + 110 * static_cast<int>(docs.size())) * scale), fonts);
+    std::printf("%zu fallback fonts merged (FreeType: %s)\n", window.fonts().size(), VizFontsUseFreeType() ? "yes" : "no");
+    if (std::getenv("PULSATRIX_VIZ_FONTS_VERBOSE") != nullptr) {
+        for (const VizFontFile& f : window.fonts()) std::printf("  %s [%d]\n", f.path.c_str(), f.index);
+    }
     int frames = 0;
     window.run(
         [&]() {

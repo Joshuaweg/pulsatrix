@@ -283,8 +283,8 @@ Other options: `--top-k N`, `--width W`, `--font-size N`, `--title TEXT`.
 
 The default build has no GUI dependencies. `-DPULSATRIX_ENABLE_VIZ=ON` adds these:
 
-- **Network access at configure time.** CMake downloads GLFW 3.4, Dear ImGui v1.90.9, and
-  ImPlot v0.16 with `FetchContent`.
+- **Network access at configure time.** CMake downloads GLFW 3.4, Dear ImGui v1.92.5, and
+  ImPlot v0.17 with `FetchContent`.
 - **OpenGL development files.** CMake runs `find_package(OpenGL REQUIRED)`. On Debian/Ubuntu,
   install `libgl1-mesa-dev`.
 - **GLFW's build dependencies on Linux.** GLFW 3.4 builds X11 and Wayland support by default.
@@ -293,6 +293,53 @@ The default build has no GUI dependencies. `-DPULSATRIX_ENABLE_VIZ=ON` adds thes
   Wayland, add `-DGLFW_BUILD_WAYLAND=OFF`.
 - **A display and a GPU driver** to run anything that links `pulsatrix_viz`. That is why
   the option defaults to `OFF` and CI builds without it.
+- **Optional: FreeType and fontconfig**, for text in every language (see
+  [Fonts and languages](#fonts-and-languages)). On Debian/Ubuntu, install
+  `libfreetype-dev libfontconfig1-dev`. CMake uses them when it finds them. Without them the
+  windows still work, using stb_truetype and a list of common font files.
+
+### Fonts and languages
+
+The windows show text in any language your system has fonts for: Chinese, Japanese, Korean,
+Cyrillic, Greek, Arabic, Hebrew, Indic scripts, Thai, Georgian, Armenian, Ethiopic, math symbols,
+emoji and more. A `VizWindow` starts from Dear ImGui's default font and merges system fonts in
+behind it, so the default look doesn't change. A fallback font is used only for characters the
+fonts before it lack, and each glyph is drawn the first time it's needed.
+
+How the fonts are found:
+
+- **Linux with fontconfig**: about forty sample characters, one per script plus symbols, math
+  and emoji, are each matched to the best installed font. That's typically 20 to 30 fonts, and it
+  adds about 0.1 s and 30 MB at startup.
+- **Windows and macOS**: the fonts that ship with the system (Segoe UI, Microsoft YaHei, Nirmala
+  UI, Segoe UI Emoji, ...; Helvetica, PingFang, Arial Unicode, ...).
+- **Linux without fontconfig**: common Noto and DejaVu files in the usual font directories.
+
+To choose fonts yourself, set `PULSATRIX_VIZ_FONTS` to font files, separated by `:` (`;` on
+Windows). They come first, before the system fonts. Set it to `none` to use only ImGui's default
+font. In code, pass a `VizFontOptions` to the `VizWindow` constructor:
+
+```cpp
+VizFontOptions fonts;
+fonts.fonts = {{"/path/to/MyFont.ttf"}};  // first in line, before the system fonts
+fonts.size = 18.0f;                      // pixels; ImGui's default is 13
+VizWindow window("my app", 1280, 800, fonts);
+```
+
+**Emoji.** Emoji are drawn in color with a vector color font, such as Segoe UI Emoji (Windows)
+or Twemoji, when FreeType is available. Bitmap emoji fonts can't be scaled, so they are skipped.
+That covers Noto Color Emoji (the usual one on Linux) and Apple Color Emoji. On Linux, install
+a vector emoji font for color (for example Twemoji, from `mozilla/twemoji-colr`) and point
+`PULSATRIX_VIZ_FONTS` at it. Without one, emoji fall back to black-and-white glyphs where a text
+font has them.
+
+**Scripts that need text shaping.** Dear ImGui places characters one after another. It can't join
+Arabic letters, lay out right-to-left text, or reorder and combine the vowel signs and conjuncts
+of Indic scripts, and a ligature such as an emoji with a skin tone shows as two glyphs. For these
+scripts every character appears, but not as a reader would write them. The SVG figures don't have
+this limit: the browser or SVG viewer shapes the text. `TokenRelevanceView` is fine for reading
+scores, and the SVG strip (`pulsatrix_explain_text ... -o out.svg`) shows the text itself
+correctly.
 
 ### Build
 

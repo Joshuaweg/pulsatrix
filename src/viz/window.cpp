@@ -10,7 +10,10 @@
 
 namespace pulsatrix {
 
-VizWindow::VizWindow(const std::string& title, int width, int height) : window_(nullptr) {
+VizWindow::VizWindow(const std::string& title, int width, int height)
+    : VizWindow(title, width, height, DefaultVizFontOptions()) {}
+
+VizWindow::VizWindow(const std::string& title, int width, int height, const VizFontOptions& fonts) : window_(nullptr) {
     if (!glfwInit()) {
         throw std::runtime_error("VizWindow: glfwInit failed");
     }
@@ -31,6 +34,7 @@ VizWindow::VizWindow(const std::string& title, int width, int height) : window_(
     ImGui::CreateContext();
     ImPlot::CreateContext();
     ImGui::StyleColorsDark();
+    fonts_ = LoadVizFonts(fonts);
 
     ImGui_ImplGlfw_InitForOpenGL(window_, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
