@@ -367,6 +367,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -376,10 +403,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -397,8 +424,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1048,10 +1075,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
         
           
-          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
             
   
   
@@ -1069,8 +1096,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_16">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1578,10 +1605,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
         
           
-          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
             
   
   
@@ -1599,8 +1626,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_17">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2027,6 +2054,11 @@ drawing call over the data transforms:</p>
 <td>Live training curves</td>
 <td>a saved <code>training_log.v1</code>, after <code>ReplayTrainingLog</code></td>
 </tr>
+<tr>
+<td><code>TokenRelevanceView</code></td>
+<td>Text with each token or word colored by its relevance, with the score on hover</td>
+<td><code>TokenRelevanceDocument</code></td>
+</tr>
 </tbody>
 </table>
 <p><strong>JSON documents</strong> (<code>viz/document.hpp</code>, in <code>pulsatrix_core</code>). Every view's data can be saved as
@@ -2034,6 +2066,10 @@ a versioned JSON file and read back, so a figure can be redrawn later, by anothe
 a renderer outside pulsatrix. See <a href="#json-documents">JSON documents</a>.</p>
 <p><strong>SVG figures</strong> (<code>viz/svg.hpp</code>, in <code>pulsatrix_core</code>). Bar, waterfall, heatmap, token strip and
 beeswarm charts as standalone SVG files, with no GPU or display. See <a href="#svg-figures">SVG figures</a>.</p>
+<p><strong>Text explanations</strong> (<code>viz/text_relevance.hpp</code>, in <code>pulsatrix_core</code>). These build token or word
+relevance documents from a tokenizer's output, so the figure reads as the original text. The
+<code>pulsatrix_explain_text</code> tool goes from a Hugging Face model and a prompt straight to a figure.
+See <a href="#token-relevance-for-text">Token relevance for text</a>.</p>
 <p><strong>Infrastructure.</strong> <code>VizWindow</code> (<code>viz/window.hpp</code>) owns the window, the OpenGL context, and the
 ImGui/ImPlot setup. You write a per-frame draw callback and call <code>window.run(...)</code>.
 <code>TextureCache</code> uploads images to the GPU once and reuses them across frames.</p>
@@ -2386,6 +2422,10 @@ part of <code>pulsatrix_core</code>.</p>
 <tr>
 <td><code>live_inference_demo</code></td>
 <td>An <code>ExplanationScoreCard</code> that updates as it cycles through XOR inputs</td>
+</tr>
+<tr>
+<td><code>token_relevance_demo</code></td>
+<td><code>TokenRelevanceView</code> on token relevance documents, for example from <code>pulsatrix_explain_text</code></td>
 </tr>
 <tr>
 <td><code>mnist_viz_gallery</code></td>
