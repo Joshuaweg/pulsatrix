@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['optype_0',['OpType',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb',1,'pulsatrix']]]
+  ['parameterkind_0',['ParameterKind',['../namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eec',1,'pulsatrix']]],
+  ['prependscheme_1',['PrependScheme',['../namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066',1,'pulsatrix']]]
 ];

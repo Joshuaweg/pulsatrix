@@ -23,8 +23,7 @@ var device__backend_8hpp =
       [ "Sigmoid", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4", null ],
       [ "Silu", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf", null ],
       [ "Exp", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0", null ],
-      [ "GeluTanh", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f", null ],
-      [ "Gelu", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b", null ]
+      [ "GeluTanh", "device__backend_8hpp.html#afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f", null ]
     ] ],
     [ "LogicOp", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9e", [
       [ "ConjunctionForward", "device__backend_8hpp.html#a23ce7985a73e7df95c9467eac40d5d9eab09c932ce0af7600b64c202bc1f7c4f3", null ],
