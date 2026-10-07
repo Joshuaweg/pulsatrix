@@ -140,6 +140,8 @@ add_executable(pulsatrix_tests
     viz_document_test.cpp
     svg_render_test.cpp
     html_render_test.cpp
+    attribution_graph_test.cpp
+    relevance_graph_test.cpp
     benchmark_test.cpp
     caching_allocator_test.cpp
     rnn_module_test.cpp
@@ -338,6 +340,16 @@ add_test(NAME PulsatrixSvg.InlineJsNeedsTheScripts
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/heatmap.v1.json" --html
         --inline-js "${CMAKE_CURRENT_BINARY_DIR}/no_such_vega_dir")
 set_tests_properties(PulsatrixSvg.InlineJsNeedsTheScripts PROPERTIES WILL_FAIL TRUE)
+# VIZ-4: circuit graphs for Neuronpedia's viewer.
+add_test(NAME PulsatrixSvg.ExportsACircuitGraphForNeuronpedia
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/circuit_graph_finite.v1.json" --neuronpedia
+        --slug xor --scan xor-mlp -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_circuit_neuronpedia.json")
+add_test(NAME PulsatrixSvg.NeuronpediaRefusesANonFiniteCircuit
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/circuit_graph.v1.json" --neuronpedia)
+set_tests_properties(PulsatrixSvg.NeuronpediaRefusesANonFiniteCircuit PROPERTIES WILL_FAIL TRUE)
+add_test(NAME PulsatrixSvg.NeuronpediaNeedsACircuitGraph
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/heatmap.v1.json" --neuronpedia)
+set_tests_properties(PulsatrixSvg.NeuronpediaNeedsACircuitGraph PROPERTIES WILL_FAIL TRUE)
 # LLM-6: the golden-logit tool, on a tiny model.
 add_test(NAME PulsatrixGolden.TinyLlamaMatchesTransformers
     COMMAND pulsatrix_golden "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama")

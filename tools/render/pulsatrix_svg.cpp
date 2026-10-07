@@ -18,6 +18,7 @@
 //   pulsatrix_svg x.json -o x.html --inline-js vega/            # offline page, scripts copied in
 //
 //   pulsatrix_svg x.json -o x.html --offline                    # the same, scripts found automatically
+//   pulsatrix_svg circuit.json --neuronpedia -o graph.json      # circuit graph for Neuronpedia (VIZ-4)
 //
 // Options: -o FILE (default stdout), --html, --inline-js DIR (or $PULSATRIX_VEGA_DIR), --offline, --top-k N,
 //          --ice raw|centered|derivative, --max-curves N, --width W, --font-size N, --title TEXT.
@@ -32,6 +33,7 @@
 #include <string>
 #include <vector>
 
+#include "pulsatrix/viz/attribution_graph.hpp"
 #include "pulsatrix/viz/html.hpp"
 #include "pulsatrix/viz/svg.hpp"
 
@@ -40,7 +42,8 @@ namespace {
 constexpr const char* kUsage =
     "usage: pulsatrix_svg DOCUMENT.json... [-o FILE] [--top-k N] [--waterfall BASELINE]\n"
     "                     [--beeswarm I,J,...] [--ice raw|centered|derivative] [--max-curves N]\n"
-    "                     [--width W] [--font-size N] [--title TEXT] [--html] [--inline-js DIR] [--offline]\n";
+    "                     [--width W] [--font-size N] [--title TEXT] [--html] [--inline-js DIR] [--offline]\n"
+    "                     [--neuronpedia [--slug S] [--scan MODEL_ID]]\n";
 
 [[noreturn]] void Usage(const std::string& problem) {
     std::cerr << "pulsatrix_svg: " << problem << "\n" << kUsage;
@@ -131,6 +134,8 @@ int main(int argc, char** argv) {
     std::vector<int64_t> beeswarm_features;
     PartialDependenceSvgOptions pd_options;
     bool html = false;
+    bool neuronpedia = false;
+    std::string slug = "circuit-graph", scan = "pulsatrix";
     HtmlOptions html_options;
     if (const char* dir = std::getenv("PULSATRIX_VEGA_DIR"); dir != nullptr && *dir != '\0') {
         html_options.scripts = HtmlScripts::Inline;
@@ -177,6 +182,12 @@ int main(int argc, char** argv) {
             } else {
                 Usage("--ice needs raw, centered or derivative, got \"" + v + "\"");
             }
+        } else if (a == "--neuronpedia") {
+            neuronpedia = true;
+        } else if (a == "--slug") {
+            slug = value();
+        } else if (a == "--scan") {
+            scan = value();
         } else if (a == "--html") {
             html = true;
         } else if (a == "--inline-js") {
@@ -219,7 +230,13 @@ int main(int argc, char** argv) {
 
     try {
         std::string svg;
-        if (html) {
+        if (neuronpedia) {
+            const std::string json = ReadFile(inputs.front());
+            if (inputs.size() != 1 || VizDocumentKind(json) != "circuit_graph") {
+                throw std::invalid_argument("--neuronpedia exports one circuit_graph document");
+            }
+            svg = ToNeuronpediaJson(FromCircuitGraph(ParseCircuitGraphDocument(json), slug, scan));
+        } else if (html) {
             svg = RenderHtml(inputs, top_k, waterfall, baseline, beeswarm_features, pd_options, html_options);
         } else if (inputs.size() > 1 && beeswarm_features.empty()) {
             std::vector<CounterfactualDocument> docs;

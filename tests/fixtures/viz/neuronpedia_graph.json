@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "slug": "tiny-example",
+    "scan": "gemma-2-2b",
+    "transcoder_list": [],
+    "prompt_tokens": ["<bos>", "The", " cat"],
+    "prompt": "The cat",
+    "node_threshold": 0.8,
+    "schema_version": 1
+  },
+  "qParams": {"pinnedIds": [], "supernodes": [], "linkType": "both", "clickedId": "", "sg_pos": ""},
+  "nodes": [
+    {"node_id": "E_2_0", "feature": 0, "layer": "E", "ctx_idx": 0, "feature_type": "embedding", "token_prob": 0.0,
+     "is_target_logit": false, "run_idx": 0, "reverse_ctx_idx": 0, "jsNodeId": "E_2-0", "clerp": "", "influence": 0.1, "activation": null},
+    {"node_id": "0_253_1", "feature": 253, "layer": "0", "ctx_idx": 1, "feature_type": "cross layer transcoder", "token_prob": 0.0,
+     "is_target_logit": false, "run_idx": 0, "reverse_ctx_idx": 0, "jsNodeId": "0_253-0", "clerp": "", "influence": 0.48, "activation": 9.45},
+    {"node_id": "1_-1_2", "feature": -1, "layer": 1, "ctx_idx": 2, "feature_type": "mlp reconstruction error", "token_prob": 0.0,
+     "is_target_logit": false, "run_idx": 0, "reverse_ctx_idx": 0, "jsNodeId": "1_-1-2", "clerp": "", "influence": 0.7, "activation": null},
+    {"node_id": "27_9644_2", "feature": 9644, "layer": "27", "ctx_idx": 2, "feature_type": "logit", "token_prob": 0.31,
+     "is_target_logit": true, "run_idx": 0, "reverse_ctx_idx": 0, "jsNodeId": "L_9644-2", "clerp": "Output \" sat\" (p=0.310)", "influence": null, "activation": null}
+  ],
+  "links": [
+    {"source": "E_2_0", "target": "0_253_1", "weight": 12.96},
+    {"source": "0_253_1", "target": "27_9644_2", "weight": 3.5},
+    {"source": "1_-1_2", "target": "27_9644_2", "weight": -0.75}
+  ]
+}
