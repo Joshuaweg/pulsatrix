@@ -325,6 +325,8 @@ var annotated_dup =
       [ "UniformFrameSampleTransform", "classpulsatrix_1_1UniformFrameSampleTransform.html", "classpulsatrix_1_1UniformFrameSampleTransform" ],
       [ "ValidationIssue", "structpulsatrix_1_1ValidationIssue.html", "structpulsatrix_1_1ValidationIssue" ],
       [ "VideoFrameDirectoryDataset", "classpulsatrix_1_1VideoFrameDirectoryDataset.html", "classpulsatrix_1_1VideoFrameDirectoryDataset" ],
+      [ "VizFontFile", "structpulsatrix_1_1VizFontFile.html", "structpulsatrix_1_1VizFontFile" ],
+      [ "VizFontOptions", "structpulsatrix_1_1VizFontOptions.html", "structpulsatrix_1_1VizFontOptions" ],
       [ "VizWindow", "classpulsatrix_1_1VizWindow.html", "classpulsatrix_1_1VizWindow" ],
       [ "Vocabulary", "classpulsatrix_1_1Vocabulary.html", "classpulsatrix_1_1Vocabulary" ],
       [ "WaterfallBar", "structpulsatrix_1_1WaterfallBar.html", "structpulsatrix_1_1WaterfallBar" ],

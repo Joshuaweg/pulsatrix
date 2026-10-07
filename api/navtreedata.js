@@ -76,17 +76,17 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1ResidualModule.html#a428dba9ba879d95d5dafd2e00827e689",
 "classpulsatrix_1_1Shape.html#a55da7f85edc0c63e497eb803082071ec",
 "classpulsatrix_1_1TiedLMHeadModule.html",
-"classpulsatrix_1_1XorNetwork.html#ada65cdc5d77e6dd24102008ab05004e0",
-"functions_vars_h.html",
-"namespacepulsatrix.html#a3f819c9e8327878579023bf846100400",
-"namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baadc5ffc2b720501ba00de3be1477b435d",
-"structpulsatrix_1_1AttnLrpReport.html#af1170f083d3cb4b03af7d9cf5eab8507",
-"structpulsatrix_1_1CounterfactualDocument.html#a4fb1cee34b3908fcb88e35b3bf5cd050",
-"structpulsatrix_1_1FineTuneConfig.html#ae0bc643c74688b9e7c9b5f55541a0dde",
-"structpulsatrix_1_1IceResult.html#a5aa4f1accda37b37ba854089a067cdff",
-"structpulsatrix_1_1ParameterSpec.html#ab0ae31653eac46516d022779b5a87b23",
-"structpulsatrix_1_1SsmPassArgs.html#a0e6388bbd4fc1371e1a536c5dfd253f7",
-"structpulsatrix_1_1datalog_1_1AtomHash.html"
+"classpulsatrix_1_1XorNetwork.html#a5f219f9c5bf674697fd69f353aabbdc3",
+"functions_vars_c.html",
+"namespacepulsatrix.html#a39f0057413fe272184d9383bf5f4fd8a",
+"namespacepulsatrix.html#ace1b52ea553409ddd48421c5abcdd81b",
+"structpulsatrix_1_1AttnLrpReport.html#a22de480806c8df1809b3b271cc797a7e",
+"structpulsatrix_1_1CounterfactualConstraints.html#a80a2a2656d0ea51b37006b39948286b4",
+"structpulsatrix_1_1FineTuneConfig.html#a907b9f6369f09e9d4d82c43b01d39e49",
+"structpulsatrix_1_1HyperbandResult.html#acd40476a190257ab40522f8246dd0d55",
+"structpulsatrix_1_1ParameterSpec.html#a3be500795db0e793e3df0c76a9c1b357",
+"structpulsatrix_1_1SobolResult.html#ad9fb2fd352c6dcbd540ba6839cc76df4",
+"structpulsatrix_1_1WeightMapping.html#a9b86cbe28ba759d2199b285f99f371ee"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

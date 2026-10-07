@@ -16,7 +16,8 @@ var searchData=
   ['first_5forder_5fconf_13',['first_order_conf',['../structpulsatrix_1_1SobolResult.html#ac348606d8b8c9c16bfd553b01404c0f2',1,'pulsatrix::SobolResult::first_order_conf'],['../structpulsatrix_1_1SobolDocument_1_1Feature.html#ac667c9df36b0110976ebc60ac8d4ca27',1,'pulsatrix::SobolDocument::Feature::first_order_conf']]],
   ['fitness_14',['fitness',['../structpulsatrix_1_1Individual.html#afa2faded9944b1b972283820c29a7bad',1,'pulsatrix::Individual']]],
   ['font_5fsize_15',['font_size',['../structpulsatrix_1_1SvgOptions.html#ae2b9b25a0baf1161ad466de7bb4bfc6f',1,'pulsatrix::SvgOptions']]],
-  ['format_16',['format',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a2ba5a494827000db8cff2267b9780ec7',1,'pulsatrix::SystemMonitor::Options']]],
-  ['fractions_17',['fractions',['../structpulsatrix_1_1PerturbationCurve.html#ade2c0ba43f7ba541b8b434fe393fd919',1,'pulsatrix::PerturbationCurve']]],
-  ['from_18',['from',['../structpulsatrix_1_1CircuitEdge.html#aa5ed86f49caff54ad6a03ac4ddd4f3b2',1,'pulsatrix::CircuitEdge::from'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Edge.html#a7d0717f606edd8691dcb0e43071424e5',1,'pulsatrix::CircuitGraphDocument::Edge::from']]]
+  ['fonts_16',['fonts',['../structpulsatrix_1_1VizFontOptions.html#abfa8788cb7336bdefbd9237eec0adbf0',1,'pulsatrix::VizFontOptions']]],
+  ['format_17',['format',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a2ba5a494827000db8cff2267b9780ec7',1,'pulsatrix::SystemMonitor::Options']]],
+  ['fractions_18',['fractions',['../structpulsatrix_1_1PerturbationCurve.html#ade2c0ba43f7ba541b8b434fe393fd919',1,'pulsatrix::PerturbationCurve']]],
+  ['from_19',['from',['../structpulsatrix_1_1CircuitEdge.html#aa5ed86f49caff54ad6a03ac4ddd4f3b2',1,'pulsatrix::CircuitEdge::from'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Edge.html#a7d0717f606edd8691dcb0e43071424e5',1,'pulsatrix::CircuitGraphDocument::Edge::from']]]
 ];

@@ -1027,6 +1027,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VideoFrameDirectoryDataset.html">VideoFrameDirectoryDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;clip_name&gt;/&lt;sequentially-named-frame-image&gt;, decoding each clip's frames (via <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a>) into one (T, C, H, W) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per sample.  <a href="classpulsatrix_1_1VideoFrameDirectoryDataset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1VizFontFile.html">VizFontFile</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A font file, and the face to use when it holds several (<code>.ttc</code>).  <a href="structpulsatrix_1_1VizFontFile.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1VizFontOptions.html">VizFontOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which fonts a <a class="el" href="classpulsatrix_1_1VizWindow.html" title="Owns a GLFW window, OpenGL3 context, and ImGui/ImPlot context for the lifetime of one demo app....">VizWindow</a> loads.  <a href="structpulsatrix_1_1VizFontOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VizWindow.html">VizWindow</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owns a GLFW window, OpenGL3 context, and ImGui/ImPlot context for the lifetime of one demo app. Every examples/viz/*_demo.cpp uses this instead of hand-rolling the standard imgui_impl_glfw_opengl3 boilerplate.  <a href="classpulsatrix_1_1VizWindow.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2041,6 +2047,18 @@ Functions</h2></td></tr>
 <tr class="separator:af8ed5eb7aa5da0fbf8687ee45f639029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dceb11b4762c36fe8d4cf421de6de4f" id="r_a2dceb11b4762c36fe8d4cf421de6de4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SobolDocument.html">SobolDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2dceb11b4762c36fe8d4cf421de6de4f">ParseSobolDocument</a> (std::string_view json)</td></tr>
 <tr class="separator:a2dceb11b4762c36fe8d4cf421de6de4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a841a5c57e966084286c94f0feafae8be" id="r_a841a5c57e966084286c94f0feafae8be"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1VizFontFile.html">VizFontFile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a841a5c57e966084286c94f0feafae8be">FindFallbackFonts</a> ()</td></tr>
+<tr class="memdesc:a841a5c57e966084286c94f0feafae8be"><td class="mdescLeft">&#160;</td><td class="mdescRight">The system fonts that together cover as many scripts as this machine has fonts for, best first.  <br /></td></tr>
+<tr class="separator:a841a5c57e966084286c94f0feafae8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7fa2ef6c5ed71f827fe70534a30e730" id="r_ae7fa2ef6c5ed71f827fe70534a30e730"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1VizFontOptions.html">VizFontOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae7fa2ef6c5ed71f827fe70534a30e730">DefaultVizFontOptions</a> ()</td></tr>
+<tr class="memdesc:ae7fa2ef6c5ed71f827fe70534a30e730"><td class="mdescLeft">&#160;</td><td class="mdescRight">The font options a <a class="el" href="classpulsatrix_1_1VizWindow.html" title="Owns a GLFW window, OpenGL3 context, and ImGui/ImPlot context for the lifetime of one demo app....">VizWindow</a> uses when given none. With the environment variable PULSATRIX_VIZ_FONTS set to font paths (separated by ';', or ':' outside Windows), those fonts come first. Set to "none", only ImGui's default font is used.  <br /></td></tr>
+<tr class="separator:ae7fa2ef6c5ed71f827fe70534a30e730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25e5f83ee46d7d4320d6e7e0a7fdd9bb" id="r_a25e5f83ee46d7d4320d6e7e0a7fdd9bb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1VizFontFile.html">VizFontFile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a25e5f83ee46d7d4320d6e7e0a7fdd9bb">LoadVizFonts</a> (const <a class="el" href="structpulsatrix_1_1VizFontOptions.html">VizFontOptions</a> &amp;options)</td></tr>
+<tr class="memdesc:a25e5f83ee46d7d4320d6e7e0a7fdd9bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads ImGui's default font and merges <code>options'</code> fonts into it, in the current ImGui context. Since ImGui 1.92 glyphs are drawn on first use, so a merged font costs only its file in memory.  <br /></td></tr>
+<tr class="separator:a25e5f83ee46d7d4320d6e7e0a7fdd9bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e4fa77e8760ee4959256234cac168c2" id="r_a7e4fa77e8760ee4959256234cac168c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7e4fa77e8760ee4959256234cac168c2">VizFontsUseFreeType</a> ()</td></tr>
+<tr class="memdesc:a7e4fa77e8760ee4959256234cac168c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this build's ImGui uses FreeType (color emoji) rather than stb_truetype.  <br /></td></tr>
+<tr class="separator:a7e4fa77e8760ee4959256234cac168c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81a9c0a4ab6fc4d1d737368b0ec12b9" id="r_ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BarSeries.html">BarSeries</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab81a9c0a4ab6fc4d1d737368b0ec12b9">ToFeatureImportanceBars</a> (const <a class="el" href="structpulsatrix_1_1Attribution.html">Attribution</a> &amp;attr, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>)</td></tr>
 <tr class="memdesc:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="structpulsatrix_1_1Attribution.html" title="An explanation result: the raw attribution values, the method that produced them, and any relevant me...">Attribution</a>'s per-feature values into labeled, magnitude-sorted bars for a horizontal bar chart &ndash; the canonical XAI feature-importance encoding (hc_information_visualization.md SS5: position on a shared axis, Cleveland-McGill rank 1).  <br /></td></tr>
 <tr class="separator:ab81a9c0a4ab6fc4d1d737368b0ec12b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5403,6 +5421,25 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="ae7fa2ef6c5ed71f827fe70534a30e730" name="ae7fa2ef6c5ed71f827fe70534a30e730"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7fa2ef6c5ed71f827fe70534a30e730">&#9670;&#160;</a></span>DefaultVizFontOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1VizFontOptions.html">VizFontOptions</a> pulsatrix::DefaultVizFontOptions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The font options a <a class="el" href="classpulsatrix_1_1VizWindow.html" title="Owns a GLFW window, OpenGL3 context, and ImGui/ImPlot context for the lifetime of one demo app....">VizWindow</a> uses when given none. With the environment variable PULSATRIX_VIZ_FONTS set to font paths (separated by ';', or ':' outside Windows), those fonts come first. Set to "none", only ImGui's default font is used. </p>
+
+</div>
+</div>
 <a id="a08ca823b9f2196df3e5f407dee95fcc5" name="a08ca823b9f2196df3e5f407dee95fcc5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a08ca823b9f2196df3e5f407dee95fcc5">&#9670;&#160;</a></span>DeletionCurve()</h2>
 
@@ -6208,6 +6245,31 @@ template&lt;typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a841a5c57e966084286c94f0feafae8be" name="a841a5c57e966084286c94f0feafae8be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a841a5c57e966084286c94f0feafae8be">&#9670;&#160;</a></span>FindFallbackFonts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1VizFontFile.html">VizFontFile</a> &gt; pulsatrix::FindFallbackFonts </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The system fonts that together cover as many scripts as this machine has fonts for, best first. </p>
+<ul>
+<li>On Linux (with fontconfig), each of about forty sample characters, one per script plus symbols, math and emoji, is matched to the best installed font.</li>
+<li>On Windows and macOS, the standard fonts that ship with the system are used.</li>
+<li>Without fontconfig on Linux, common Noto, DejaVu and WenQuanYi files are looked for in the usual font directories.</li>
+</ul>
+<p>Fonts ImGui can't draw at every size are left out: bitmap-only color emoji fonts (Noto Color Emoji, Apple Color Emoji) hold one fixed size. Vector color emoji fonts (Segoe UI Emoji on Windows, Twemoji) are drawn in color when ImGui uses FreeType. </p>
 
 </div>
 </div>
@@ -7111,6 +7173,27 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a25e5f83ee46d7d4320d6e7e0a7fdd9bb" name="a25e5f83ee46d7d4320d6e7e0a7fdd9bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25e5f83ee46d7d4320d6e7e0a7fdd9bb">&#9670;&#160;</a></span>LoadVizFonts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1VizFontFile.html">VizFontFile</a> &gt; pulsatrix::LoadVizFonts </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1VizFontOptions.html">VizFontOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads ImGui's default font and merges <code>options'</code> fonts into it, in the current ImGui context. Since ImGui 1.92 glyphs are drawn on first use, so a merged font costs only its file in memory. </p>
+<dl class="section return"><dt>Returns</dt><dd>The fonts that loaded (missing or unreadable files are skipped). </dd></dl>
 
 </div>
 </div>
@@ -13791,6 +13874,25 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a7e4fa77e8760ee4959256234cac168c2" name="a7e4fa77e8760ee4959256234cac168c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e4fa77e8760ee4959256234cac168c2">&#9670;&#160;</a></span>VizFontsUseFreeType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::VizFontsUseFreeType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether this build's ImGui uses FreeType (color emoji) rather than stb_truetype. </p>
 
 </div>
 </div>

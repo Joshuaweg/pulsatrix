@@ -42,7 +42,7 @@ var searchData=
   ['next_5ftoken_5flogits_39',['next_token_logits',['../classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f',1,'pulsatrix::CausalLM']]],
   ['nexttokenlogitsfn_40',['NextTokenLogitsFn',['../namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157',1,'pulsatrix']]],
   ['nfcnormalizer_41',['NfcNormalizer',['../classpulsatrix_1_1NfcNormalizer.html',1,'pulsatrix']]],
-  ['node_42',['node',['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node()'],['../classpulsatrix_1_1Node.html',1,'pulsatrix::Node'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html',1,'pulsatrix::CircuitGraphDocument::Node'],['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()']]],
+  ['node_42',['node',['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()'],['../classpulsatrix_1_1Node.html',1,'pulsatrix::Node'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Node.html',1,'pulsatrix::CircuitGraphDocument::Node'],['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node()']]],
   ['node_2ehpp_43',['node.hpp',['../node_8hpp.html',1,'']]],
   ['node_5fcount_44',['node_count',['../classpulsatrix_1_1ComputationGraph.html#ab5e326cc6109e5677eb114e0a85f6b05',1,'pulsatrix::ComputationGraph']]],
   ['node_5fids_45',['node_ids',['../classpulsatrix_1_1ActivationSnapshot.html#a6555e73f40cd23280bdf0078e938f49d',1,'pulsatrix::ActivationSnapshot']]],
