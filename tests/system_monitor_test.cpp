@@ -438,7 +438,12 @@ TEST(SystemMonitorLog, CsvHasHeaderAndConsistentColumns) {
     for (const std::string& line : lines) {
         EXPECT_EQ(cells(line), cells(lines[0])) << line;
     }
-    EXPECT_EQ(lines.back().rfind("mark,", 0), 0u);
+    // The mark row follows the samples written before it. It needn't be the last line: the
+    // sampling thread can write one more sample between mark() and stop().
+    const auto mark = std::find_if(lines.begin() + 1, lines.end(), [](const std::string& l) { return l.rfind("mark,", 0) == 0; });
+    ASSERT_NE(mark, lines.end());
+    EXPECT_GE(mark - lines.begin(), 3);  // header + at least two samples come first
+    EXPECT_NE(mark->find("phase 2"), std::string::npos) << *mark;
 
     // A restart appends (no second header, no truncation).
     const std::size_t before = lines.size();
