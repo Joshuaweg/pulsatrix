@@ -126,7 +126,7 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores
 - HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)
-- VIZ-3, VIZ-6a: Vega-Lite HTML and the token relevance view
+- VIZ-3, VIZ-6a (**done**): Vega-Lite HTML and the token relevance view
 - NB-1, NB-2: native rich display and the `.ipynb`/HTML report writer
 - AGT-1 to AGT-4: the native orchestrator core
 - KS-8, KS-9: GPU CI on gfx1151 and a model zoo (ResNet18, SmolLM2)
@@ -812,7 +812,7 @@ format, with static and web renderers next to it.
 |---|---|---|---|---|---|---|
 | VIZ-1 | A versioned JSON document model (`pulsatrix.<kind>.v1`) for attributions, heatmaps, token relevance, circuit graphs, training logs and feature dashboards. The ImGui widgets read it too. NaN and infinity encode as null plus a flag | One source of truth for every renderer | — | P0 | M | Done, [#62](https://github.com/Joshuaweg/pulsatrix/pull/62) (see below) |
 | VIZ-2 | A dependency-free SVG renderer: bar, waterfall, heatmap, token strip, beeswarm | Publication figures with no GPU or display, including in CI | VIZ-1 | P0 | M | Done, [#63](https://github.com/Joshuaweg/pulsatrix/pull/63) (see below) |
-| VIZ-3 | Self-contained Vega-Lite HTML, with the JavaScript inlined or loaded from a CDN | Hover, zoom and export for free, in a browser or notebook | VIZ-1 | P1 | S | |
+| VIZ-3 | Self-contained Vega-Lite HTML, with the JavaScript inlined or loaded from a CDN | Hover, zoom and export for free, in a browser or notebook | VIZ-1 | P1 | S | Done, [#92](https://github.com/Joshuaweg/pulsatrix/pull/92) (see below) |
 | VIZ-4 | Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read | Large graphs get a mature viewer for free | VIZ-1 | P1 | M | |
 | VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each | (a) Done, [#87](https://github.com/Joshuaweg/pulsatrix/pull/87) (see below) |
 | VIZ-7 | A node editor for circuit graphs | Only if graphs outgrow the current view; VIZ-4 covers large ones | — | P3 | M | |
@@ -834,6 +834,22 @@ format, with static and web renderers next to it.
   cells and tokens are drawn gray; the bar, waterfall and beeswarm charts refuse non-finite
   values. Every stored test figure was rendered and checked by eye before it became a golden
   file.
+- **VIZ-3** (`viz/html.hpp`) covers every SVG view plus two the SVG lacks: the training log
+  and the feature dashboard. Each view is also available as a bare Vega-Lite spec for your own
+  page.
+  - Pages load Vega 6.4.0, Vega-Lite 6.4.3 and vega-embed 7.3.0 from jsDelivr, pinned and
+    checked with Subresource Integrity hashes.
+  - Or they carry the scripts inline (about 830 KB) from a directory that
+    `tools/render/fetch_vega.sh` fills after checking the files' SHA-384 hashes. Nothing is
+    downloaded at build time.
+  - The token relevance page is plain HTML with no scripts, so the browser shapes the text:
+    right to left, joined Arabic, Indic conjuncts.
+  - Non-finite values follow the SVG rules: gray heatmap cells and tokens. Training logs skip a
+    diverged step instead of refusing the log.
+  - Every spec was compiled with Vega-Lite and rendered with Vega in Node with no warnings
+    (`tools/render/validate_vega.mjs`). The pages were checked by eye in headless Chromium,
+    including a line in ten scripts.
+  - Circuit graphs have no HTML view; VIZ-4 exports them to Neuronpedia's viewer instead.
 - **VIZ-6a** builds token relevance documents from real explanations
   (`MakeTokenRelevanceDocument`, `MakeWordRelevanceDocument`), rather than adding a new
   document kind. `token_relevance.v1` gained optional `granularity`, `scored` (unscored context
@@ -861,7 +877,7 @@ format, with static and web renderers next to it.
 | SVG views for circuit graphs, training logs and feature dashboards | VIZ-2 | VIZ-4, VIZ-6 |
 | Nothing produces `feature_dashboard.v1` yet; its fields follow SAEDashboard | VIZ-1 | FEAT |
 | Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | Done in VIZ-6a: pieces are the text their offsets cover |
-| SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | Partly done: widths count display columns (CJK and emoji 2, combining marks 0); exact widths need VIZ-3 (the browser lays out text) |
+| SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | Done for text: widths count display columns (CJK and emoji 2, combining marks 0), and the HTML token view (VIZ-3, [#92](https://github.com/Joshuaweg/pulsatrix/pull/92)) lets the browser lay out and shape the text, so every script is exact there |
 | ImGui doesn't shape text: Arabic and Hebrew show unjoined and left to right, and Indic vowel signs and conjuncts aren't formed. Every character shows (system fonts merged as fallbacks, ImGui 1.92). Shaping the widget's text with HarfBuzz plus bidi reordering, drawn as glyph quads, would fix it | Fonts work | VIZ-8 |
 
 ## NB: Notebook layer
