@@ -196,6 +196,7 @@ add_library(pulsatrix_core
     src/viz/document.cpp
     src/viz/svg.cpp
     src/viz/text_relevance.cpp
+    src/viz/html.cpp
     src/viz/svg_whatif.cpp
     src/viz/document_whatif.cpp
     src/benchmark.cpp
