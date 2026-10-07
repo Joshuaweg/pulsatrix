@@ -193,8 +193,10 @@ void ByteLevelPreTokenizer::pre_tokenize(std::vector<NormalizedString>& splits) 
     std::vector<NormalizedString> pieces;
     for (NormalizedString& split : splits) {
         if (add_prefix_space_ && split.text().rfind(' ', 0) != 0) {
-            // An inserted space (empty origin), then every byte with its own origin.
-            std::vector<NormalizedString::Piece> rebuilt = {{" ", 0, 0}};
+            // The space comes from the first character's source (Hugging Face's prepend), then
+            // every byte keeps its own.
+            const size_t first = split.empty() ? 0 : std::max<size_t>(1, utf8::Decode(split.text(), 0).length);
+            std::vector<NormalizedString::Piece> rebuilt = {{" ", 0, first}};
             for (size_t i = 0; i < split.size(); ++i) rebuilt.push_back({split.text().substr(i, 1), i, i + 1});
             split.rebuild(rebuilt);
         }
@@ -266,7 +268,14 @@ std::vector<ModelToken> BpeModel::tokenize(std::string_view piece) const {
         size_t begin, end;
         ptrdiff_t prev, next;
     };
+    // Hugging Face's BPE::merge_word: each character's token, or its byte tokens, or the unknown
+    // token (fused across consecutive unknown characters when fuse_unk is set).
     std::vector<Symbol> symbols;
+    std::optional<Symbol> unk;  // a pending unknown token
+    auto flush_unk = [&] {
+        if (unk) symbols.push_back(*unk);
+        unk.reset();
+    };
     for (size_t i = 0; i < piece.size();) {
         const size_t length = std::max<size_t>(1, utf8::Decode(piece, i).length);
         std::string ch(piece.substr(i, length));
@@ -274,12 +283,42 @@ std::vector<ModelToken> BpeModel::tokenize(std::string_view piece) const {
         if (i + length == piece.size()) ch += options_.end_of_word_suffix;
         const auto it = vocab_.find(ch);
         if (it != vocab_.end()) {
+            flush_unk();
             symbols.push_back({it->second, i, i + length, 0, 0});
-        } else if (unk_id_) {
-            symbols.push_back({*unk_id_, i, i + length, 0, 0});
+            i += length;
+            continue;
+        }
+        if (options_.byte_fallback) {
+            std::vector<int64_t> bytes;
+            for (unsigned char b : ch) {
+                static const char* kHex = "0123456789ABCDEF";
+                const std::string name = std::string("<0x") + kHex[b >> 4] + kHex[b & 15] + ">";
+                const auto bt = vocab_.find(name);
+                if (bt == vocab_.end()) break;
+                bytes.push_back(bt->second);
+            }
+            if (bytes.size() == ch.size()) {
+                // One byte token per byte, each covering one byte of the piece (Hugging Face adds
+                // them without flushing a pending unknown token; so does this).
+                for (size_t k = 0; k < bytes.size(); ++k) {
+                    const size_t at = std::min(i + k, i + length - 1);
+                    symbols.push_back({bytes[k], at, at + 1, 0, 0});
+                }
+                i += length;
+                continue;
+            }
+        }
+        if (unk_id_) {
+            if (unk && options_.fuse_unk) {
+                unk->end = i + length;
+            } else {
+                flush_unk();
+                unk = Symbol{*unk_id_, i, i + length, 0, 0};
+            }
         }  // else dropped, as in Hugging Face
         i += length;
     }
+    flush_unk();
     for (size_t i = 0; i < symbols.size(); ++i) {
         symbols[i].prev = static_cast<ptrdiff_t>(i) - 1;
         symbols[i].next = i + 1 < symbols.size() ? static_cast<ptrdiff_t>(i) + 1 : -1;

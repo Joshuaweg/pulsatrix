@@ -1,0 +1,5456 @@
+{
+ "version": "1.0",
+ "truncation": null,
+ "padding": null,
+ "added_tokens": [
+  {
+   "id": 1256,
+   "content": "<pad>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1257,
+   "content": "<eos>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1258,
+   "content": "<bos>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 0,
+   "content": "<unk>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": true
+  },
+  {
+   "id": 1259,
+   "content": "<mask>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1260,
+   "content": "[multimodal]",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1261,
+   "content": "<unused0>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1262,
+   "content": "<unused1>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1263,
+   "content": "<unused2>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1264,
+   "content": "<unused3>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1265,
+   "content": "<unused4>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1266,
+   "content": "<unused5>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1267,
+   "content": "<unused6>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1268,
+   "content": "<unused7>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1269,
+   "content": "<unused8>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1270,
+   "content": "<unused9>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1271,
+   "content": "<unused10>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1272,
+   "content": "<unused11>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1273,
+   "content": "<unused12>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1274,
+   "content": "<unused13>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1275,
+   "content": "<unused14>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1276,
+   "content": "<unused15>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1277,
+   "content": "<unused16>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1278,
+   "content": "<unused17>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1279,
+   "content": "<unused18>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1280,
+   "content": "<unused19>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1281,
+   "content": "<unused20>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1282,
+   "content": "<unused21>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1283,
+   "content": "<unused22>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1284,
+   "content": "<unused23>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1285,
+   "content": "<unused24>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1286,
+   "content": "<unused25>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1287,
+   "content": "<unused26>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1288,
+   "content": "<unused27>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1289,
+   "content": "<unused28>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1290,
+   "content": "<unused29>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1291,
+   "content": "<unused30>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1292,
+   "content": "<unused31>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1293,
+   "content": "<unused32>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1294,
+   "content": "<unused33>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1295,
+   "content": "<unused34>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1296,
+   "content": "<unused35>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1297,
+   "content": "<unused36>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1298,
+   "content": "<unused37>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1299,
+   "content": "<unused38>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1300,
+   "content": "<unused39>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1301,
+   "content": "<unused40>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1302,
+   "content": "<unused41>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1303,
+   "content": "<unused42>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1304,
+   "content": "<unused43>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1305,
+   "content": "<unused44>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1306,
+   "content": "<unused45>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1307,
+   "content": "<unused46>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1308,
+   "content": "<unused47>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1309,
+   "content": "<unused48>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1310,
+   "content": "<unused49>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1311,
+   "content": "<unused50>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1312,
+   "content": "<unused51>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1313,
+   "content": "<unused52>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1314,
+   "content": "<unused53>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1315,
+   "content": "<unused54>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1316,
+   "content": "<unused55>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1317,
+   "content": "<unused56>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  },
+  {
+   "id": 1318,
+   "content": "<unused57>",
+   "single_word": false,
+   "lstrip": false,
+   "rstrip": false,
+   "normalized": false,
+   "special": false
+  }
+ ],
+ "normalizer": {
+  "type": "Replace",
+  "pattern": {
+   "String": " "
+  },
+  "content": "▁"
+ },
+ "pre_tokenizer": {
+  "type": "Split",
+  "pattern": {
+   "String": " "
+  },
+  "behavior": "MergedWithPrevious",
+  "invert": false
+ },
+ "post_processor": {
+  "type": "TemplateProcessing",
+  "single": [
+   {
+    "SpecialToken": {
+     "id": "<bos>",
+     "type_id": 0
+    }
+   },
+   {
+    "Sequence": {
+     "id": "A",
+     "type_id": 0
+    }
+   }
+  ],
+  "pair": [
+   {
+    "SpecialToken": {
+     "id": "<bos>",
+     "type_id": 0
+    }
+   },
+   {
+    "Sequence": {
+     "id": "A",
+     "type_id": 0
+    }
+   },
+   {
+    "SpecialToken": {
+     "id": "<bos>",
+     "type_id": 1
+    }
+   },
+   {
+    "Sequence": {
+     "id": "B",
+     "type_id": 1
+    }
+   }
+  ],
+  "special_tokens": {
+   "<bos>": {
+    "id": "<bos>",
+    "ids": [
+     1258
+    ],
+    "tokens": [
+     "<bos>"
+    ]
+   }
+  }
+ },
+ "decoder": {
+  "type": "Sequence",
+  "decoders": [
+   {
+    "type": "Replace",
+    "pattern": {
+     "String": "▁"
+    },
+    "content": " "
+   },
+   {
+    "type": "ByteFallback"
+   },
+   {
+    "type": "Fuse"
+   }
+  ]
+ },
+ "model": {
+  "type": "BPE",
+  "dropout": null,
+  "unk_token": "<unk>",
+  "continuing_subword_prefix": null,
+  "end_of_word_suffix": null,
+  "fuse_unk": true,
+  "byte_fallback": true,
+  "ignore_merges": false,
+  "vocab": {
+   "<unk>": 0,
+   "\t": 1,
+   "\n": 2,
+   "!": 3,
+   "\"": 4,
+   "&": 5,
+   "'": 6,
+   "(": 7,
+   ")": 8,
+   "*": 9,
+   "+": 10,
+   ",": 11,
+   "-": 12,
+   ".": 13,
+   "/": 14,
+   "0": 15,
+   "1": 16,
+   "2": 17,
+   "3": 18,
+   "4": 19,
+   "5": 20,
+   "6": 21,
+   "7": 22,
+   "8": 23,
+   "9": 24,
+   ":": 25,
+   ";": 26,
+   "<": 27,
+   "=": 28,
+   ">": 29,
+   "?": 30,
+   "A": 31,
+   "B": 32,
+   "C": 33,
+   "D": 34,
+   "E": 35,
+   "F": 36,
+   "G": 37,
+   "H": 38,
+   "I": 39,
+   "J": 40,
+   "K": 41,
+   "L": 42,
+   "M": 43,
+   "N": 44,
+   "O": 45,
+   "P": 46,
+   "R": 47,
+   "S": 48,
+   "T": 49,
+   "U": 50,
+   "V": 51,
+   "W": 52,
+   "[": 53,
+   "\\": 54,
+   "]": 55,
+   "_": 56,
+   "a": 57,
+   "b": 58,
+   "c": 59,
+   "d": 60,
+   "e": 61,
+   "f": 62,
+   "g": 63,
+   "h": 64,
+   "i": 65,
+   "j": 66,
+   "k": 67,
+   "l": 68,
+   "m": 69,
+   "n": 70,
+   "o": 71,
+   "p": 72,
+   "q": 73,
+   "r": 74,
+   "s": 75,
+   "t": 76,
+   "u": 77,
+   "v": 78,
+   "w": 79,
+   "x": 80,
+   "y": 81,
+   "z": 82,
+   "{": 83,
+   "|": 84,
+   "}": 85,
+   "à": 86,
+   "ä": 87,
+   "ç": 88,
+   "é": 89,
+   "ü": 90,
+   "́": 91,
+   "̈": 92,
+   "ι": 93,
+   "λ": 94,
+   "а": 95,
+   "и": 96,
+   "к": 97,
+   "р": 98,
+   "с": 99,
+   "ե": 100,
+   "ו": 101,
+   "ا": 102,
+   "ب": 103,
+   "ر": 104,
+   "ع": 105,
+   "ك": 106,
+   "ل": 107,
+   "م": 108,
+   "्": 109,
+   "்": 110,
+   "ა": 111,
+   "‍": 112,
+   "—": 113,
+   "▁": 114,
+   "、": 115,
+   "。": 116,
+   "あ": 117,
+   "中": 118,
+   "語": 119,
+   "한": 120,
+   "▁▁": 121,
+   ",▁": 122,
+   "!!": 123,
+   "aa": 124,
+   "11": 125,
+   "▁▁▁▁": 126,
+   "e▁": 127,
+   ":▁": 128,
+   "aaaa": 129,
+   "1111": 130,
+   "!!!!": 131,
+   "ab": 132,
+   "th": 133,
+   "an": 134,
+   "in": 135,
+   "abab": 136,
+   "er": 137,
+   "st": 138,
+   "s▁": 139,
+   "ar": 140,
+   "d▁": 141,
+   "en": 142,
+   "▁▁▁▁▁▁▁▁": 143,
+   "the▁": 144,
+   "aaaaaaaa": 145,
+   "11111111": 146,
+   "<|": 147,
+   "co": 148,
+   "!!!!!!!!": 149,
+   "or": 150,
+   "|>": 151,
+   "ああ": 152,
+   "pa": 153,
+   "the▁the▁": 154,
+   "al": 155,
+   "on": 156,
+   "se": 157,
+   "and▁": 158,
+   "abababab": 159,
+   "▁▁▁": 160,
+   "ce": 161,
+   "spa": 162,
+   "ra": 163,
+   "▁1": 164,
+   "space": 165,
+   "id": 166,
+   "le": 167,
+   "00": 168,
+   "ex": 169,
+   "im": 170,
+   "end": 171,
+   "at": 172,
+   "ic": 173,
+   "ll": 174,
+   "aaaaaaaaaaaaaaaa": 175,
+   "1111111111111111": 176,
+   "com": 177,
+   "im_": 178,
+   "am": 179,
+   "g▁": 180,
+   "re": 181,
+   "▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁": 182,
+   "!!!!!!!!!!!!!!!!": 183,
+   "ああああ": 184,
+   "23": 185,
+   ";▁": 186,
+   "a▁": 187,
+   "k▁": 188,
+   "ol": 189,
+   "the▁the▁the▁the▁": 190,
+   "ext": 191,
+   "as": 192,
+   "ch": 193,
+   "es": 194,
+   "li": 195,
+   "om": 196,
+   "ph": 197,
+   "qu": 198,
+   "text": 199,
+   "▁,▁": 200,
+   "star": 201,
+   "abababababababab": 202,
+   "start": 203,
+   "\n\n": 204,
+   ")▁": 205,
+   "..": 206,
+   "=▁": 207,
+   ">▁": 208,
+   "de": 209,
+   "el": 210,
+   "e,▁": 211,
+   "lin": 212,
+   "of": 213,
+   "ou": 214,
+   "po": 215,
+   "ro": 216,
+   "si": 217,
+   "s,▁": 218,
+   "un": 219,
+   "and": 220,
+   "ord": 221,
+   "▁123": 222,
+   "/▁": 223,
+   "10": 224,
+   "100": 225,
+   "E▁": 226,
+   "OU": 227,
+   "ag": 228,
+   "ct": 229,
+   "fi": 230,
+   "for": 231,
+   "it": 232,
+   "s:▁": 233,
+   "ter": 234,
+   "x▁": 235,
+   "ск": 236,
+   "ال": 237,
+   "▁'": 238,
+   "▁n": 239,
+   "ing": 240,
+   "<|end": 241,
+   "<|im_": 242,
+   "one": 243,
+   "space,▁": 244,
+   "compo": 245,
+   "compose": 246,
+   "!▁": 247,
+   "'s▁": 248,
+   ",▁▁": 249,
+   ":▁▁": 250,
+   "</": 251,
+   "HE": 252,
+   "Lin": 253,
+   "ase": 254,
+   "be": 255,
+   "der": 256,
+   "ht": 257,
+   "ip": 258,
+   "ke": 259,
+   "og": 260,
+   "ot": 261,
+   "o▁": 262,
+   "par": 263,
+   "sk": 264,
+   "su": 265,
+   "to": 266,
+   "tab": 267,
+   "tra": 268,
+   "us": 269,
+   "ver": 270,
+   "word": 271,
+   "́▁": 272,
+   "▁<": 273,
+   "▁M": 274,
+   "▁c": 275,
+   "▁qu": 276,
+   ",▁I": 277,
+   ",▁S": 278,
+   "th▁": 279,
+   "st▁": 280,
+   "con": 281,
+   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": 282,
+   "11111111111111111111111111111111": 283,
+   "▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁": 284,
+   "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!": 285,
+   "ああああああああ": 286,
+   "ash": 287,
+   "line": 288,
+   "▁1234": 289,
+   "ски": 290,
+   "2,▁": 291,
+   "5.": 292,
+   "??": 293,
+   "FC": 294,
+   "NFC": 295,
+   "SE": 296,
+   "_c": 297,
+   "_id": 298,
+   "af": 299,
+   "a:▁": 300,
+   "ci": 301,
+   "de▁": 302,
+   "dash": 303,
+   "ed": 304,
+   "em": 305,
+   "fim_": 306,
+   "gu": 307,
+   "he": 308,
+   "k,▁": 309,
+   "l>": 310,
+   "l▁": 311,
+   "mo": 312,
+   "mar": 313,
+   "ne": 314,
+   "n▁": 315,
+   "per": 316,
+   "sl": 317,
+   "tu": 318,
+   "um": 319,
+   "ull": 320,
+   "ve": 321,
+   "vs▁": 322,
+   "wid": 323,
+   "{\"": 324,
+   "ак": 325,
+   "и,▁": 326,
+   "رب": 327,
+   "▁|": 328,
+   "▁▁and▁": 329,
+   ",▁,▁": 330,
+   "the": 331,
+   "ant": 332,
+   "int": 333,
+   "str": 334,
+   "<|fim_": 335,
+   "path": 336,
+   "ali": 337,
+   "separ": 338,
+   "raph": 339,
+   "le.": 340,
+   "end|>": 341,
+   "at▁": 342,
+   "ator": 343,
+   "amp": 344,
+   "g▁space": 345,
+   "the▁the▁the▁the▁the▁the▁the▁the▁": 346,
+   "text|>": 347,
+   "abababababababababababababababab": 348,
+   "start|>": 349,
+   "decompose": 350,
+   "row": 351,
+   "and▁▁": 352,
+   "100,▁": 353,
+   "الع": 354,
+   "<|endof": 355,
+   "Line▁": 356,
+   "user": 357,
+   "▁quot": 358,
+   ",▁I'": 359,
+   "▁12345": 360,
+   "ски:▁": 361,
+   "_id|>": 362,
+   "after": 363,
+   "separator": 364,
+   "\t\t": 365,
+   "\nand▁": 366,
+   "\n▁▁▁": 367,
+   "\nLine▁": 368,
+   "\"}": 369,
+   "\",▁": 370,
+   "\":▁": 371,
+   "''": 372,
+   "'L": 373,
+   "'S": 374,
+   "'▁": 375,
+   "(*": 376,
+   "(NFC": 377,
+   "*▁": 378,
+   "++": 379,
+   ",00": 380,
+   "-0": 381,
+   "->▁": 382,
+   ".▁": 383,
+   "//▁": 384,
+   "/path": 385,
+   "0,▁": 386,
+   "14": 387,
+   "15": 388,
+   "123": 389,
+   "2,": 390,
+   "55": 391,
+   "7▁": 392,
+   "8▁": 393,
+   "9▁": 394,
+   "9,▁": 395,
+   "::": 396,
+   ":▁▁▁▁": 397,
+   ";;": 398,
+   "=1": 399,
+   "></": 400,
+   "Bo": 401,
+   "COU": 402,
+   "De": 403,
+   "D▁": 404,
+   "He": 405,
+   "IN": 406,
+   "It": 407,
+   "M▁": 408,
+   "NT": 409,
+   "Ne": 410,
+   "Ph": 411,
+   "RE": 412,
+   "Rom": 413,
+   "RE▁": 414,
+   "ST": 415,
+   "Sy": 416,
+   "Vit": 417,
+   "[i": 418,
+   "_he": 419,
+   "aS": 420,
+   "ac": 421,
+   "ai": 422,
+   "av": 423,
+   "aç": 424,
+   "a,▁": 425,
+   "ader": 426,
+   "bo": 427,
+   "bre": 428,
+   "cl": 429,
+   "cr": 430,
+   "case": 431,
+   "dy": 432,
+   "done": 433,
+   "d::": 434,
+   "e.": 435,
+   "et": 436,
+   "ed▁": 437,
+   "eog": 438,
+   "est▁": 439,
+   "fo": 440,
+   "f▁": 441,
+   "fin": 442,
+   "full": 443,
+   "gi": 444,
+   "hm": 445,
+   "hat▁": 446,
+   "io": 447,
+   "ix": 448,
+   "i▁": 449,
+   "ion": 450,
+   "ilin": 451,
+   "l,▁": 452,
+   "le▁": 453,
+   "la▁": 454,
+   "m▁": 455,
+   "ml>": 456,
+   "na": 457,
+   "ng": 458,
+   "no": 459,
+   "ng▁": 460,
+   "o,▁": 461,
+   "pun": 462,
+   "r.": 463,
+   "rc": 464,
+   "ri": 465,
+   "rü": 466,
+   "re▁": 467,
+   "rn▁": 468,
+   "s▁▁▁": 469,
+   "s\t\t": 470,
+   "tp": 471,
+   "tr": 472,
+   "tw": 473,
+   "ub": 474,
+   "x▁▁": 475,
+   "x|>": 476,
+   "y▁": 477,
+   "y,▁": 478,
+   "|▁": 479,
+   "à▁": 480,
+   "çe": 481,
+   "é▁": 482,
+   "́,▁▁": 483,
+   "а:▁": 484,
+   "рски:▁": 485,
+   "ار": 486,
+   "ا▁": 487,
+   "ك▁": 488,
+   "م▁": 489,
+   "აა": 490,
+   "▁.": 491,
+   "▁0": 492,
+   "▁B": 493,
+   "▁ו": 494,
+   "▁ST": 495,
+   "語。": 496,
+   ",▁C": 497,
+   ",▁D": 498,
+   ",▁W": 499,
+   ",▁m": 500,
+   ":▁م": 501,
+   "ther": 502,
+   "ano": 503,
+   "in▁": 504,
+   "stem": 505,
+   "stant": 506,
+   "std::": 507,
+   "s▁be": 508,
+   "ari": 509,
+   "arrow": 510,
+   "ent": 511,
+   "ensk": 512,
+   "the▁l": 513,
+   "cole▁": 514,
+   "on▁": 515,
+   "one▁": 516,
+   "and▁a▁": 517,
+   "ideog": 518,
+   "examp": 519,
+   "ic▁,▁": 520,
+   "retu": 521,
+   "ol_c": 522,
+   "assi": 523,
+   "lis": 524,
+   "list": 525,
+   ")▁>": 526,
+   "sis▁": 527,
+   "/▁and▁": 528,
+   "ctor": 529,
+   "fix|>": 530,
+   "▁nam": 531,
+   "<|im_end|>": 532,
+   "<|im_start|>": 533,
+   "one.": 534,
+   "HE'": 535,
+   "html>": 536,
+   "ipt": 537,
+   "tool_c": 538,
+   "tabs\t\t": 539,
+   "trailin": 540,
+   "ver▁": 541,
+   "words,▁": 542,
+   "▁c▁": 543,
+   "l▁j": 544,
+   "mark▁": 545,
+   "vector": 546,
+   "width": 547,
+   "и,▁а": 548,
+   "raphic": 549,
+   "decomposed": 550,
+   "العرب": 551,
+   "<|endoftext|>": 552,
+   "▁123456": 553,
+   "separator,▁": 554,
+   ",000": 555,
+   "COUNT": 556,
+   "Hell": 557,
+   "ING": 558,
+   "Phone▁": 559,
+   "[i]": 560,
+   "_header": 561,
+   "body": 562,
+   "brea": 563,
+   "cript": 564,
+   "final": 565,
+   "punct": 566,
+   "́,▁▁vs▁": 567,
+   "s▁befor": 568,
+   "enska:▁": 569,
+   "ideographic": 570,
+   "example.": 571,
+   "assistant": 572,
+   "tool_cal": 573,
+   "trailing▁space": 574,
+   "COUNT(*": 575,
+   "_header_id|>": 576,
+   "\t▁▁": 577,
+   "\ttabs\t\t": 578,
+   "\n/": 579,
+   "\n4": 580,
+   "\nW": 581,
+   "\n▁▁▁▁": 582,
+   "\nend": 583,
+   "\nstd::": 584,
+   "\n<|im_start|>": 585,
+   "!z": 586,
+   "!=▁": 587,
+   "!/▁and▁": 588,
+   "\"/": 589,
+   "\">": 590,
+   "\"b": 591,
+   "\"f": 592,
+   "\"x": 593,
+   "\"▁": 594,
+   "\"5.": 595,
+   "&&": 596,
+   "&b": 597,
+   "&amp": 598,
+   "'M": 599,
+   "'T": 600,
+   "'d": 601,
+   "'n": 602,
+   "'o": 603,
+   "'v": 604,
+   "'é": 605,
+   "':▁": 606,
+   "'on": 607,
+   "'ll": 608,
+   "'un": 609,
+   "'Ne": 610,
+   "'re▁": 611,
+   "(?": 612,
+   "(c": 613,
+   "(a▁": 614,
+   "(text": 615,
+   "(int": 616,
+   "(\"5.": 617,
+   ").": 618,
+   ");": 619,
+   "),▁": 620,
+   ")/▁": 621,
+   ")*▁": 622,
+   "+2": 623,
+   "+7": 624,
+   "+\\": 625,
+   "+=▁": 626,
+   ",\ttabs\t\t": 627,
+   "-4": 628,
+   "-I": 629,
+   "-z": 630,
+   "-10": 631,
+   "-case": 632,
+   "-rc": 633,
+   "-words,▁": 634,
+   "-brea": 635,
+   ".2": 636,
+   ".3": 637,
+   ".7": 638,
+   ".<|": 639,
+   ".▁▁▁": 640,
+   ".con": 641,
+   ".14": 642,
+   "//": 643,
+   "/h": 644,
+   "/re": 645,
+   "/..": 646,
+   "/fi": 647,
+   "/to": 648,
+   "/after": 649,
+   "/punct": 650,
+   "/\n/": 651,
+   "/.con": 652,
+   "02": 653,
+   "0▁": 654,
+   "0;▁": 655,
+   "16": 656,
+   "1F": 657,
+   "1,▁": 658,
+   "1▁1": 659,
+   "12,": 660,
+   "1.2": 661,
+   "2=": 662,
+   "2f": 663,
+   "2▁": 664,
+   "2、": 665,
+   "2▁123": 666,
+   "2▁<": 667,
+   "2+2": 668,
+   "202": 669,
+   "34": 670,
+   "3]": 671,
+   "3▁▁": 672,
+   "32,▁": 673,
+   "3.14": 674,
+   "4.": 675,
+   "4}": 676,
+   "4▁|": 677,
+   "5▁": 678,
+   "5,▁": 679,
+   "500": 680,
+   "5-0": 681,
+   "50,▁": 682,
+   "6▁": 683,
+   "6,▁": 684,
+   "6-10": 685,
+   "8。": 686,
+   "89,▁": 687,
+   "99,▁": 688,
+   ":\\": 689,
+   "::▁": 690,
+   ":▁▁▁": 691,
+   ":15": 692,
+   ":fo": 693,
+   ":\n▁▁▁▁": 694,
+   "://": 695,
+   ":16": 696,
+   ";\n\n": 697,
+   ";/\n/": 698,
+   "<p": 699,
+   "<▁1": 700,
+   "<=▁": 701,
+   "<std::": 702,
+   "<html>": 703,
+   "<vector": 704,
+   "<body": 705,
+   "<tool_cal": 706,
+   "=▁1": 707,
+   "=>▁": 708,
+   "=tw": 709,
+   "=\"x": 710,
+   ">\nstd::": 711,
+   "><p": 712,
+   ">=▁1": 713,
+   "?▁▁▁": 714,
+   "?qu": 715,
+   "?▁M": 716,
+   "?▁ו": 717,
+   "?/▁and▁": 718,
+   "?<|im_end|>": 719,
+   "AB": 720,
+   "AM": 721,
+   "AS": 722,
+   "AV": 723,
+   "Ar": 724,
+   "Á": 725,
+   "Ä": 726,
+   "ASE": 727,
+   "Ang": 728,
+   "Ba": 729,
+   "Be▁": 730,
+   "Ben": 731,
+   "CJ": 732,
+   "CO": 733,
+   "CT": 734,
+   "Cam": 735,
+   "Com": 736,
+   "Cde": 737,
+   "Case": 738,
+   "C++": 739,
+   "CRE": 740,
+   "CaS": 741,
+   "CASE": 742,
+   "Dn": 743,
+   "Don": 744,
+   "D,▁W": 745,
+   "Done.": 746,
+   "EN": 747,
+   "Ed▁": 748,
+   "Espa": 749,
+   "Ell": 750,
+   "Emo": 751,
+   "E'L": 752,
+   "Eng": 753,
+   "ECT": 754,
+   "FR": 755,
+   "Fr": 756,
+   "Fra": 757,
+   "GO": 758,
+   "GR": 759,
+   "Grü": 760,
+   "HT": 761,
+   "Ht": 762,
+   "Han": 763,
+   "Hà▁": 764,
+   "HAV": 765,
+   "IT": 766,
+   "Ix": 767,
+   "JW": 768,
+   "J‍": 769,
+   "Jsl": 770,
+   "Jav": 771,
+   "KN": 772,
+   "K▁": 773,
+   "Kel": 774,
+   "K,▁▁": 775,
+   "L▁": 776,
+   "LE▁": 777,
+   "LOU": 778,
+   "Ls:▁": 779,
+   "LECT": 780,
+   "LHt": 781,
+   "Ma": 782,
+   "Mü": 783,
+   "Mar": 784,
+   "Mag": 785,
+   "Mix": 786,
+   "Ni": 787,
+   "N'T": 788,
+   "NJW": 789,
+   "OP": 790,
+   "OW": 791,
+   "OM▁": 792,
+   "Ohm": 793,
+   "O'Ne": 794,
+   "ON'T": 795,
+   "PS": 796,
+   "Por": 797,
+   "Pre": 798,
+   "Pol": 799,
+   "Pli": 800,
+   "P▁B": 801,
+   "Re": 802,
+   "Ro": 803,
+   "Re▁": 804,
+   "RAS": 805,
+   "RLs:▁": 806,
+   "Su": 807,
+   "SE▁": 808,
+   "SCRE": 809,
+   "T.": 810,
+   "Th": 811,
+   "Ti": 812,
+   "Tü": 813,
+   "Tin": 814,
+   "T▁'": 815,
+   "Tub": 816,
+   "THE'": 817,
+   "TPS": 818,
+   "URLs:▁": 819,
+   "Ve▁": 820,
+   "VE▁": 821,
+   "Win": 822,
+   "Word": 823,
+   "WHE": 824,
+   "[a": 825,
+   "[ord": 826,
+   "[int": 827,
+   "[1,▁": 828,
+   "\\n": 829,
+   "\\Sy": 830,
+   "]▁▁▁": 831,
+   "]+\\": 832,
+   "]:\n▁▁▁▁": 833,
+   "_of": 834,
+   "_text|>": 835,
+   "_words,▁": 836,
+   "_CASE": 837,
+   "ad": 838,
+   "au": 839,
+   "az": 840,
+   "apo": 841,
+   "á▁": 842,
+   "a<|fim_": 843,
+   "a\",▁": 844,
+   "a[i]": 845,
+   "bi": 846,
+   "bl": 847,
+   "bu": 848,
+   "b̈": 849,
+   "b,▁": 850,
+   "bab": 851,
+   "bin": 852,
+   "bar": 853,
+   "ble": 854,
+   "bol": 855,
+   "bom": 856,
+   "bun": 857,
+   "b10": 858,
+   "b<|fim_": 859,
+   "brow": 860,
+   "bri": 861,
+   "b)▁>": 862,
+   "b[i]": 863,
+   "c̈": 864,
+   "ck▁": 865,
+   "cit": 866,
+   "cali": 867,
+   "cano": 868,
+   "ć,▁▁vs▁": 869,
+   "cDon": 870,
+   "d.": 871,
+   "di": 872,
+   "do": 873,
+   "d{": 874,
+   "dra": 875,
+   "dle": 876,
+   "dat": 877,
+   "dou": 878,
+   "d's▁": 879,
+   "dog": 880,
+   "d,▁I": 881,
+   "dic▁,▁": 882,
+   "ef": 883,
+   "ep": 884,
+   "e}": 885,
+   "ear": 886,
+   "e|>": 887,
+   "eend": 888,
+   "e\n\n": 889,
+   "e10": 890,
+   "e</": 891,
+   "eot": 892,
+   "é▁": 893,
+   "eci": 894,
+   "eed": 895,
+   "e\":▁": 896,
+   "é,▁▁vs▁": 897,
+   "e'd": 898,
+   "e(text": 899,
+   "e/.con": 900,
+   "eBa": 901,
+   "fra": 902,
+   "fel": 903,
+   "faç": 904,
+   "ffix|>": 905,
+   "f(\"5.": 906,
+   "feed": 907,
+   "g.": 908,
+   "gin": 909,
+   "gen": 910,
+   "gex": 911,
+   "ght": 912,
+   "gali": 913,
+   "gla▁": 914,
+   "gl▁j": 915,
+   "hy": 916,
+   "h語": 917,
+   "ham": 918,
+   "hai": 919,
+   "il": 920,
+   "is": 921,
+   "iz": 922,
+   "i,▁": 923,
+   "i:▁": 924,
+   "is▁": 925,
+   "ial": 926,
+   "ise": 927,
+   "ice": 928,
+   "ill": 929,
+   "i)▁": 930,
+   "i:▁▁": 931,
+   "i▁<": 932,
+   "ith▁": 933,
+   "ive": 934,
+   "i:▁▁▁▁": 935,
+   "if▁": 936,
+   "içe": 937,
+   "iPhone▁": 938,
+   "ibi": 939,
+   "jo": 940,
+   "jum": 941,
+   "jub": 942,
+   "ji:▁▁▁▁": 943,
+   "ks▁": 944,
+   "ken": 945,
+   "k;▁": 946,
+   "kspace,▁": 947,
+   "kçe": 948,
+   "l.": 949,
+   "ld": 950,
+   "lt": 951,
+   "lu": 952,
+   "lv": 953,
+   "lat": 954,
+   "las": 955,
+   "l>▁": 956,
+   "land": 957,
+   "l▁'": 958,
+   "ltra": 959,
+   "l'é": 960,
+   "mu": 961,
+   "mid": 962,
+   "mic": 963,
+   "mes": 964,
+   "met": 965,
+   "mix": 966,
+   "ment": 967,
+   "mbol": 968,
+   "mfeed": 969,
+   "n:▁": 970,
+   "ner": 971,
+   "n|>": 972,
+   "nam": 973,
+   "next": 974,
+   "nch": 975,
+   "nel": 976,
+   "null": 977,
+   "narrow": 978,
+   "n'on": 979,
+   "ndic▁,▁": 980,
+   "os": 981,
+   "o|": 982,
+   "ö": 983,
+   "o▁▁": 984,
+   "ok▁": 985,
+   "oci": 986,
+   "o\nLine▁": 987,
+   "over▁": 988,
+   "owidth": 989,
+   "o<|endoftext|>": 990,
+   "pr": 991,
+   "ps▁": 992,
+   "pic": 993,
+   "pre": 994,
+   "pes": 995,
+   "pne": 996,
+   "p></": 997,
+   "peci": 998,
+   "pfel": 999,
+   "<0x00>": 1000,
+   "<0x01>": 1001,
+   "<0x02>": 1002,
+   "<0x03>": 1003,
+   "<0x04>": 1004,
+   "<0x05>": 1005,
+   "<0x06>": 1006,
+   "<0x07>": 1007,
+   "<0x08>": 1008,
+   "<0x09>": 1009,
+   "<0x0A>": 1010,
+   "<0x0B>": 1011,
+   "<0x0C>": 1012,
+   "<0x0D>": 1013,
+   "<0x0E>": 1014,
+   "<0x0F>": 1015,
+   "<0x10>": 1016,
+   "<0x11>": 1017,
+   "<0x12>": 1018,
+   "<0x13>": 1019,
+   "<0x14>": 1020,
+   "<0x15>": 1021,
+   "<0x16>": 1022,
+   "<0x17>": 1023,
+   "<0x18>": 1024,
+   "<0x19>": 1025,
+   "<0x1A>": 1026,
+   "<0x1B>": 1027,
+   "<0x1C>": 1028,
+   "<0x1D>": 1029,
+   "<0x1E>": 1030,
+   "<0x1F>": 1031,
+   "<0x20>": 1032,
+   "<0x21>": 1033,
+   "<0x22>": 1034,
+   "<0x23>": 1035,
+   "<0x24>": 1036,
+   "<0x25>": 1037,
+   "<0x26>": 1038,
+   "<0x27>": 1039,
+   "<0x28>": 1040,
+   "<0x29>": 1041,
+   "<0x2A>": 1042,
+   "<0x2B>": 1043,
+   "<0x2C>": 1044,
+   "<0x2D>": 1045,
+   "<0x2E>": 1046,
+   "<0x2F>": 1047,
+   "<0x30>": 1048,
+   "<0x31>": 1049,
+   "<0x32>": 1050,
+   "<0x33>": 1051,
+   "<0x34>": 1052,
+   "<0x35>": 1053,
+   "<0x36>": 1054,
+   "<0x37>": 1055,
+   "<0x38>": 1056,
+   "<0x39>": 1057,
+   "<0x3A>": 1058,
+   "<0x3B>": 1059,
+   "<0x3C>": 1060,
+   "<0x3D>": 1061,
+   "<0x3E>": 1062,
+   "<0x3F>": 1063,
+   "<0x40>": 1064,
+   "<0x41>": 1065,
+   "<0x42>": 1066,
+   "<0x43>": 1067,
+   "<0x44>": 1068,
+   "<0x45>": 1069,
+   "<0x46>": 1070,
+   "<0x47>": 1071,
+   "<0x48>": 1072,
+   "<0x49>": 1073,
+   "<0x4A>": 1074,
+   "<0x4B>": 1075,
+   "<0x4C>": 1076,
+   "<0x4D>": 1077,
+   "<0x4E>": 1078,
+   "<0x4F>": 1079,
+   "<0x50>": 1080,
+   "<0x51>": 1081,
+   "<0x52>": 1082,
+   "<0x53>": 1083,
+   "<0x54>": 1084,
+   "<0x55>": 1085,
+   "<0x56>": 1086,
+   "<0x57>": 1087,
+   "<0x58>": 1088,
+   "<0x59>": 1089,
+   "<0x5A>": 1090,
+   "<0x5B>": 1091,
+   "<0x5C>": 1092,
+   "<0x5D>": 1093,
+   "<0x5E>": 1094,
+   "<0x5F>": 1095,
+   "<0x60>": 1096,
+   "<0x61>": 1097,
+   "<0x62>": 1098,
+   "<0x63>": 1099,
+   "<0x64>": 1100,
+   "<0x65>": 1101,
+   "<0x66>": 1102,
+   "<0x67>": 1103,
+   "<0x68>": 1104,
+   "<0x69>": 1105,
+   "<0x6A>": 1106,
+   "<0x6B>": 1107,
+   "<0x6C>": 1108,
+   "<0x6D>": 1109,
+   "<0x6E>": 1110,
+   "<0x6F>": 1111,
+   "<0x70>": 1112,
+   "<0x71>": 1113,
+   "<0x72>": 1114,
+   "<0x73>": 1115,
+   "<0x74>": 1116,
+   "<0x75>": 1117,
+   "<0x76>": 1118,
+   "<0x77>": 1119,
+   "<0x78>": 1120,
+   "<0x79>": 1121,
+   "<0x7A>": 1122,
+   "<0x7B>": 1123,
+   "<0x7C>": 1124,
+   "<0x7D>": 1125,
+   "<0x7E>": 1126,
+   "<0x7F>": 1127,
+   "<0x80>": 1128,
+   "<0x81>": 1129,
+   "<0x82>": 1130,
+   "<0x83>": 1131,
+   "<0x84>": 1132,
+   "<0x85>": 1133,
+   "<0x86>": 1134,
+   "<0x87>": 1135,
+   "<0x88>": 1136,
+   "<0x89>": 1137,
+   "<0x8A>": 1138,
+   "<0x8B>": 1139,
+   "<0x8C>": 1140,
+   "<0x8D>": 1141,
+   "<0x8E>": 1142,
+   "<0x8F>": 1143,
+   "<0x90>": 1144,
+   "<0x91>": 1145,
+   "<0x92>": 1146,
+   "<0x93>": 1147,
+   "<0x94>": 1148,
+   "<0x95>": 1149,
+   "<0x96>": 1150,
+   "<0x97>": 1151,
+   "<0x98>": 1152,
+   "<0x99>": 1153,
+   "<0x9A>": 1154,
+   "<0x9B>": 1155,
+   "<0x9C>": 1156,
+   "<0x9D>": 1157,
+   "<0x9E>": 1158,
+   "<0x9F>": 1159,
+   "<0xA0>": 1160,
+   "<0xA1>": 1161,
+   "<0xA2>": 1162,
+   "<0xA3>": 1163,
+   "<0xA4>": 1164,
+   "<0xA5>": 1165,
+   "<0xA6>": 1166,
+   "<0xA7>": 1167,
+   "<0xA8>": 1168,
+   "<0xA9>": 1169,
+   "<0xAA>": 1170,
+   "<0xAB>": 1171,
+   "<0xAC>": 1172,
+   "<0xAD>": 1173,
+   "<0xAE>": 1174,
+   "<0xAF>": 1175,
+   "<0xB0>": 1176,
+   "<0xB1>": 1177,
+   "<0xB2>": 1178,
+   "<0xB3>": 1179,
+   "<0xB4>": 1180,
+   "<0xB5>": 1181,
+   "<0xB6>": 1182,
+   "<0xB7>": 1183,
+   "<0xB8>": 1184,
+   "<0xB9>": 1185,
+   "<0xBA>": 1186,
+   "<0xBB>": 1187,
+   "<0xBC>": 1188,
+   "<0xBD>": 1189,
+   "<0xBE>": 1190,
+   "<0xBF>": 1191,
+   "<0xC0>": 1192,
+   "<0xC1>": 1193,
+   "<0xC2>": 1194,
+   "<0xC3>": 1195,
+   "<0xC4>": 1196,
+   "<0xC5>": 1197,
+   "<0xC6>": 1198,
+   "<0xC7>": 1199,
+   "<0xC8>": 1200,
+   "<0xC9>": 1201,
+   "<0xCA>": 1202,
+   "<0xCB>": 1203,
+   "<0xCC>": 1204,
+   "<0xCD>": 1205,
+   "<0xCE>": 1206,
+   "<0xCF>": 1207,
+   "<0xD0>": 1208,
+   "<0xD1>": 1209,
+   "<0xD2>": 1210,
+   "<0xD3>": 1211,
+   "<0xD4>": 1212,
+   "<0xD5>": 1213,
+   "<0xD6>": 1214,
+   "<0xD7>": 1215,
+   "<0xD8>": 1216,
+   "<0xD9>": 1217,
+   "<0xDA>": 1218,
+   "<0xDB>": 1219,
+   "<0xDC>": 1220,
+   "<0xDD>": 1221,
+   "<0xDE>": 1222,
+   "<0xDF>": 1223,
+   "<0xE0>": 1224,
+   "<0xE1>": 1225,
+   "<0xE2>": 1226,
+   "<0xE3>": 1227,
+   "<0xE4>": 1228,
+   "<0xE5>": 1229,
+   "<0xE6>": 1230,
+   "<0xE7>": 1231,
+   "<0xE8>": 1232,
+   "<0xE9>": 1233,
+   "<0xEA>": 1234,
+   "<0xEB>": 1235,
+   "<0xEC>": 1236,
+   "<0xED>": 1237,
+   "<0xEE>": 1238,
+   "<0xEF>": 1239,
+   "<0xF0>": 1240,
+   "<0xF1>": 1241,
+   "<0xF2>": 1242,
+   "<0xF3>": 1243,
+   "<0xF4>": 1244,
+   "<0xF5>": 1245,
+   "<0xF6>": 1246,
+   "<0xF7>": 1247,
+   "<0xF8>": 1248,
+   "<0xF9>": 1249,
+   "<0xFA>": 1250,
+   "<0xFB>": 1251,
+   "<0xFC>": 1252,
+   "<0xFD>": 1253,
+   "<0xFE>": 1254,
+   "<0xFF>": 1255
+  },
+  "merges": [
+   [
+    "▁",
+    "▁"
+   ],
+   [
+    ",",
+    "▁"
+   ],
+   [
+    "!",
+    "!"
+   ],
+   [
+    "a",
+    "a"
+   ],
+   [
+    "1",
+    "1"
+   ],
+   [
+    "▁▁",
+    "▁▁"
+   ],
+   [
+    "e",
+    "▁"
+   ],
+   [
+    ":",
+    "▁"
+   ],
+   [
+    "aa",
+    "aa"
+   ],
+   [
+    "11",
+    "11"
+   ],
+   [
+    "!!",
+    "!!"
+   ],
+   [
+    "a",
+    "b"
+   ],
+   [
+    "t",
+    "h"
+   ],
+   [
+    "a",
+    "n"
+   ],
+   [
+    "i",
+    "n"
+   ],
+   [
+    "ab",
+    "ab"
+   ],
+   [
+    "e",
+    "r"
+   ],
+   [
+    "s",
+    "t"
+   ],
+   [
+    "s",
+    "▁"
+   ],
+   [
+    "a",
+    "r"
+   ],
+   [
+    "d",
+    "▁"
+   ],
+   [
+    "e",
+    "n"
+   ],
+   [
+    "▁▁▁▁",
+    "▁▁▁▁"
+   ],
+   [
+    "th",
+    "e▁"
+   ],
+   [
+    "aaaa",
+    "aaaa"
+   ],
+   [
+    "1111",
+    "1111"
+   ],
+   [
+    "<",
+    "|"
+   ],
+   [
+    "c",
+    "o"
+   ],
+   [
+    "!!!!",
+    "!!!!"
+   ],
+   [
+    "o",
+    "r"
+   ],
+   [
+    "|",
+    ">"
+   ],
+   [
+    "あ",
+    "あ"
+   ],
+   [
+    "p",
+    "a"
+   ],
+   [
+    "the▁",
+    "the▁"
+   ],
+   [
+    "a",
+    "l"
+   ],
+   [
+    "o",
+    "n"
+   ],
+   [
+    "s",
+    "e"
+   ],
+   [
+    "an",
+    "d▁"
+   ],
+   [
+    "abab",
+    "abab"
+   ],
+   [
+    "▁▁",
+    "▁"
+   ],
+   [
+    "c",
+    "e"
+   ],
+   [
+    "s",
+    "pa"
+   ],
+   [
+    "r",
+    "a"
+   ],
+   [
+    "▁",
+    "1"
+   ],
+   [
+    "spa",
+    "ce"
+   ],
+   [
+    "i",
+    "d"
+   ],
+   [
+    "l",
+    "e"
+   ],
+   [
+    "0",
+    "0"
+   ],
+   [
+    "e",
+    "x"
+   ],
+   [
+    "i",
+    "m"
+   ],
+   [
+    "en",
+    "d"
+   ],
+   [
+    "a",
+    "t"
+   ],
+   [
+    "i",
+    "c"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "aaaaaaaa",
+    "aaaaaaaa"
+   ],
+   [
+    "11111111",
+    "11111111"
+   ],
+   [
+    "co",
+    "m"
+   ],
+   [
+    "im",
+    "_"
+   ],
+   [
+    "a",
+    "m"
+   ],
+   [
+    "g",
+    "▁"
+   ],
+   [
+    "r",
+    "e"
+   ],
+   [
+    "▁▁▁▁▁▁▁▁",
+    "▁▁▁▁▁▁▁▁"
+   ],
+   [
+    "!!!!!!!!",
+    "!!!!!!!!"
+   ],
+   [
+    "ああ",
+    "ああ"
+   ],
+   [
+    "2",
+    "3"
+   ],
+   [
+    ";",
+    "▁"
+   ],
+   [
+    "a",
+    "▁"
+   ],
+   [
+    "k",
+    "▁"
+   ],
+   [
+    "o",
+    "l"
+   ],
+   [
+    "the▁the▁",
+    "the▁the▁"
+   ],
+   [
+    "ex",
+    "t"
+   ],
+   [
+    "a",
+    "s"
+   ],
+   [
+    "c",
+    "h"
+   ],
+   [
+    "e",
+    "s"
+   ],
+   [
+    "l",
+    "i"
+   ],
+   [
+    "o",
+    "m"
+   ],
+   [
+    "p",
+    "h"
+   ],
+   [
+    "q",
+    "u"
+   ],
+   [
+    "t",
+    "ext"
+   ],
+   [
+    "▁",
+    ",▁"
+   ],
+   [
+    "st",
+    "ar"
+   ],
+   [
+    "abababab",
+    "abababab"
+   ],
+   [
+    "star",
+    "t"
+   ],
+   [
+    "\n",
+    "\n"
+   ],
+   [
+    ")",
+    "▁"
+   ],
+   [
+    ".",
+    "."
+   ],
+   [
+    "=",
+    "▁"
+   ],
+   [
+    ">",
+    "▁"
+   ],
+   [
+    "d",
+    "e"
+   ],
+   [
+    "e",
+    "l"
+   ],
+   [
+    "e",
+    ",▁"
+   ],
+   [
+    "l",
+    "in"
+   ],
+   [
+    "o",
+    "f"
+   ],
+   [
+    "o",
+    "u"
+   ],
+   [
+    "p",
+    "o"
+   ],
+   [
+    "r",
+    "o"
+   ],
+   [
+    "s",
+    "i"
+   ],
+   [
+    "s",
+    ",▁"
+   ],
+   [
+    "u",
+    "n"
+   ],
+   [
+    "an",
+    "d"
+   ],
+   [
+    "or",
+    "d"
+   ],
+   [
+    "▁1",
+    "23"
+   ],
+   [
+    "/",
+    "▁"
+   ],
+   [
+    "1",
+    "0"
+   ],
+   [
+    "1",
+    "00"
+   ],
+   [
+    "E",
+    "▁"
+   ],
+   [
+    "O",
+    "U"
+   ],
+   [
+    "a",
+    "g"
+   ],
+   [
+    "c",
+    "t"
+   ],
+   [
+    "f",
+    "i"
+   ],
+   [
+    "f",
+    "or"
+   ],
+   [
+    "i",
+    "t"
+   ],
+   [
+    "s",
+    ":▁"
+   ],
+   [
+    "t",
+    "er"
+   ],
+   [
+    "x",
+    "▁"
+   ],
+   [
+    "с",
+    "к"
+   ],
+   [
+    "ا",
+    "ل"
+   ],
+   [
+    "▁",
+    "'"
+   ],
+   [
+    "▁",
+    "n"
+   ],
+   [
+    "in",
+    "g"
+   ],
+   [
+    "<|",
+    "end"
+   ],
+   [
+    "<|",
+    "im_"
+   ],
+   [
+    "on",
+    "e"
+   ],
+   [
+    "space",
+    ",▁"
+   ],
+   [
+    "com",
+    "po"
+   ],
+   [
+    "compo",
+    "se"
+   ],
+   [
+    "!",
+    "▁"
+   ],
+   [
+    "'",
+    "s▁"
+   ],
+   [
+    ",",
+    "▁▁"
+   ],
+   [
+    ":",
+    "▁▁"
+   ],
+   [
+    "<",
+    "/"
+   ],
+   [
+    "H",
+    "E"
+   ],
+   [
+    "L",
+    "in"
+   ],
+   [
+    "a",
+    "se"
+   ],
+   [
+    "b",
+    "e"
+   ],
+   [
+    "d",
+    "er"
+   ],
+   [
+    "h",
+    "t"
+   ],
+   [
+    "i",
+    "p"
+   ],
+   [
+    "k",
+    "e"
+   ],
+   [
+    "o",
+    "g"
+   ],
+   [
+    "o",
+    "t"
+   ],
+   [
+    "o",
+    "▁"
+   ],
+   [
+    "p",
+    "ar"
+   ],
+   [
+    "s",
+    "k"
+   ],
+   [
+    "s",
+    "u"
+   ],
+   [
+    "t",
+    "o"
+   ],
+   [
+    "t",
+    "ab"
+   ],
+   [
+    "t",
+    "ra"
+   ],
+   [
+    "u",
+    "s"
+   ],
+   [
+    "v",
+    "er"
+   ],
+   [
+    "w",
+    "ord"
+   ],
+   [
+    "́",
+    "▁"
+   ],
+   [
+    "▁",
+    "<"
+   ],
+   [
+    "▁",
+    "M"
+   ],
+   [
+    "▁",
+    "c"
+   ],
+   [
+    "▁",
+    "qu"
+   ],
+   [
+    ",▁",
+    "I"
+   ],
+   [
+    ",▁",
+    "S"
+   ],
+   [
+    "th",
+    "▁"
+   ],
+   [
+    "st",
+    "▁"
+   ],
+   [
+    "co",
+    "n"
+   ],
+   [
+    "aaaaaaaaaaaaaaaa",
+    "aaaaaaaaaaaaaaaa"
+   ],
+   [
+    "1111111111111111",
+    "1111111111111111"
+   ],
+   [
+    "▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁",
+    "▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁"
+   ],
+   [
+    "!!!!!!!!!!!!!!!!",
+    "!!!!!!!!!!!!!!!!"
+   ],
+   [
+    "ああああ",
+    "ああああ"
+   ],
+   [
+    "as",
+    "h"
+   ],
+   [
+    "lin",
+    "e"
+   ],
+   [
+    "▁123",
+    "4"
+   ],
+   [
+    "ск",
+    "и"
+   ],
+   [
+    "2",
+    ",▁"
+   ],
+   [
+    "5",
+    "."
+   ],
+   [
+    "?",
+    "?"
+   ],
+   [
+    "F",
+    "C"
+   ],
+   [
+    "N",
+    "FC"
+   ],
+   [
+    "S",
+    "E"
+   ],
+   [
+    "_",
+    "c"
+   ],
+   [
+    "_",
+    "id"
+   ],
+   [
+    "a",
+    "f"
+   ],
+   [
+    "a",
+    ":▁"
+   ],
+   [
+    "c",
+    "i"
+   ],
+   [
+    "d",
+    "e▁"
+   ],
+   [
+    "d",
+    "ash"
+   ],
+   [
+    "e",
+    "d"
+   ],
+   [
+    "e",
+    "m"
+   ],
+   [
+    "f",
+    "im_"
+   ],
+   [
+    "g",
+    "u"
+   ],
+   [
+    "h",
+    "e"
+   ],
+   [
+    "k",
+    ",▁"
+   ],
+   [
+    "l",
+    ">"
+   ],
+   [
+    "l",
+    "▁"
+   ],
+   [
+    "m",
+    "o"
+   ],
+   [
+    "m",
+    "ar"
+   ],
+   [
+    "n",
+    "e"
+   ],
+   [
+    "n",
+    "▁"
+   ],
+   [
+    "p",
+    "er"
+   ],
+   [
+    "s",
+    "l"
+   ],
+   [
+    "t",
+    "u"
+   ],
+   [
+    "u",
+    "m"
+   ],
+   [
+    "u",
+    "ll"
+   ],
+   [
+    "v",
+    "e"
+   ],
+   [
+    "v",
+    "s▁"
+   ],
+   [
+    "w",
+    "id"
+   ],
+   [
+    "{",
+    "\""
+   ],
+   [
+    "а",
+    "к"
+   ],
+   [
+    "и",
+    ",▁"
+   ],
+   [
+    "ر",
+    "ب"
+   ],
+   [
+    "▁",
+    "|"
+   ],
+   [
+    "▁▁",
+    "and▁"
+   ],
+   [
+    ",▁",
+    ",▁"
+   ],
+   [
+    "th",
+    "e"
+   ],
+   [
+    "an",
+    "t"
+   ],
+   [
+    "in",
+    "t"
+   ],
+   [
+    "st",
+    "r"
+   ],
+   [
+    "<|",
+    "fim_"
+   ],
+   [
+    "pa",
+    "th"
+   ],
+   [
+    "al",
+    "i"
+   ],
+   [
+    "se",
+    "par"
+   ],
+   [
+    "ra",
+    "ph"
+   ],
+   [
+    "le",
+    "."
+   ],
+   [
+    "end",
+    "|>"
+   ],
+   [
+    "at",
+    "▁"
+   ],
+   [
+    "at",
+    "or"
+   ],
+   [
+    "am",
+    "p"
+   ],
+   [
+    "g▁",
+    "space"
+   ],
+   [
+    "the▁the▁the▁the▁",
+    "the▁the▁the▁the▁"
+   ],
+   [
+    "text",
+    "|>"
+   ],
+   [
+    "abababababababab",
+    "abababababababab"
+   ],
+   [
+    "start",
+    "|>"
+   ],
+   [
+    "de",
+    "compose"
+   ],
+   [
+    "ro",
+    "w"
+   ],
+   [
+    "and",
+    "▁▁"
+   ],
+   [
+    "100",
+    ",▁"
+   ],
+   [
+    "ال",
+    "ع"
+   ],
+   [
+    "<|end",
+    "of"
+   ],
+   [
+    "Lin",
+    "e▁"
+   ],
+   [
+    "us",
+    "er"
+   ],
+   [
+    "▁qu",
+    "ot"
+   ],
+   [
+    ",▁I",
+    "'"
+   ],
+   [
+    "▁1234",
+    "5"
+   ],
+   [
+    "ски",
+    ":▁"
+   ],
+   [
+    "_id",
+    "|>"
+   ],
+   [
+    "af",
+    "ter"
+   ],
+   [
+    "separ",
+    "ator"
+   ],
+   [
+    "\t",
+    "\t"
+   ],
+   [
+    "\n",
+    "and▁"
+   ],
+   [
+    "\n",
+    "▁▁▁"
+   ],
+   [
+    "\n",
+    "Line▁"
+   ],
+   [
+    "\"",
+    "}"
+   ],
+   [
+    "\"",
+    ",▁"
+   ],
+   [
+    "\"",
+    ":▁"
+   ],
+   [
+    "'",
+    "'"
+   ],
+   [
+    "'",
+    "L"
+   ],
+   [
+    "'",
+    "S"
+   ],
+   [
+    "'",
+    "▁"
+   ],
+   [
+    "(",
+    "*"
+   ],
+   [
+    "(",
+    "NFC"
+   ],
+   [
+    "*",
+    "▁"
+   ],
+   [
+    "+",
+    "+"
+   ],
+   [
+    ",",
+    "00"
+   ],
+   [
+    "-",
+    "0"
+   ],
+   [
+    "-",
+    ">▁"
+   ],
+   [
+    ".",
+    "▁"
+   ],
+   [
+    "/",
+    "/▁"
+   ],
+   [
+    "/",
+    "path"
+   ],
+   [
+    "0",
+    ",▁"
+   ],
+   [
+    "1",
+    "4"
+   ],
+   [
+    "1",
+    "5"
+   ],
+   [
+    "1",
+    "23"
+   ],
+   [
+    "2",
+    ","
+   ],
+   [
+    "5",
+    "5"
+   ],
+   [
+    "7",
+    "▁"
+   ],
+   [
+    "8",
+    "▁"
+   ],
+   [
+    "9",
+    "▁"
+   ],
+   [
+    "9",
+    ",▁"
+   ],
+   [
+    ":",
+    ":"
+   ],
+   [
+    ":",
+    "▁▁▁▁"
+   ],
+   [
+    ";",
+    ";"
+   ],
+   [
+    "=",
+    "1"
+   ],
+   [
+    ">",
+    "</"
+   ],
+   [
+    "B",
+    "o"
+   ],
+   [
+    "C",
+    "OU"
+   ],
+   [
+    "D",
+    "e"
+   ],
+   [
+    "D",
+    "▁"
+   ],
+   [
+    "H",
+    "e"
+   ],
+   [
+    "I",
+    "N"
+   ],
+   [
+    "I",
+    "t"
+   ],
+   [
+    "M",
+    "▁"
+   ],
+   [
+    "N",
+    "T"
+   ],
+   [
+    "N",
+    "e"
+   ],
+   [
+    "P",
+    "h"
+   ],
+   [
+    "R",
+    "E"
+   ],
+   [
+    "R",
+    "om"
+   ],
+   [
+    "R",
+    "E▁"
+   ],
+   [
+    "S",
+    "T"
+   ],
+   [
+    "S",
+    "y"
+   ],
+   [
+    "V",
+    "it"
+   ],
+   [
+    "[",
+    "i"
+   ],
+   [
+    "_",
+    "he"
+   ],
+   [
+    "a",
+    "S"
+   ],
+   [
+    "a",
+    "c"
+   ],
+   [
+    "a",
+    "i"
+   ],
+   [
+    "a",
+    "v"
+   ],
+   [
+    "a",
+    "ç"
+   ],
+   [
+    "a",
+    ",▁"
+   ],
+   [
+    "a",
+    "der"
+   ],
+   [
+    "b",
+    "o"
+   ],
+   [
+    "b",
+    "re"
+   ],
+   [
+    "c",
+    "l"
+   ],
+   [
+    "c",
+    "r"
+   ],
+   [
+    "c",
+    "ase"
+   ],
+   [
+    "d",
+    "y"
+   ],
+   [
+    "d",
+    "one"
+   ],
+   [
+    "d",
+    "::"
+   ],
+   [
+    "e",
+    "."
+   ],
+   [
+    "e",
+    "t"
+   ],
+   [
+    "e",
+    "d▁"
+   ],
+   [
+    "e",
+    "og"
+   ],
+   [
+    "e",
+    "st▁"
+   ],
+   [
+    "f",
+    "o"
+   ],
+   [
+    "f",
+    "▁"
+   ],
+   [
+    "f",
+    "in"
+   ],
+   [
+    "f",
+    "ull"
+   ],
+   [
+    "g",
+    "i"
+   ],
+   [
+    "h",
+    "m"
+   ],
+   [
+    "h",
+    "at▁"
+   ],
+   [
+    "i",
+    "o"
+   ],
+   [
+    "i",
+    "x"
+   ],
+   [
+    "i",
+    "▁"
+   ],
+   [
+    "i",
+    "on"
+   ],
+   [
+    "i",
+    "lin"
+   ],
+   [
+    "l",
+    ",▁"
+   ],
+   [
+    "l",
+    "e▁"
+   ],
+   [
+    "l",
+    "a▁"
+   ],
+   [
+    "m",
+    "▁"
+   ],
+   [
+    "m",
+    "l>"
+   ],
+   [
+    "n",
+    "a"
+   ],
+   [
+    "n",
+    "g"
+   ],
+   [
+    "n",
+    "o"
+   ],
+   [
+    "n",
+    "g▁"
+   ],
+   [
+    "o",
+    ",▁"
+   ],
+   [
+    "p",
+    "un"
+   ],
+   [
+    "r",
+    "."
+   ],
+   [
+    "r",
+    "c"
+   ],
+   [
+    "r",
+    "i"
+   ],
+   [
+    "r",
+    "ü"
+   ],
+   [
+    "r",
+    "e▁"
+   ],
+   [
+    "r",
+    "n▁"
+   ],
+   [
+    "s",
+    "▁▁▁"
+   ],
+   [
+    "s",
+    "\t\t"
+   ],
+   [
+    "t",
+    "p"
+   ],
+   [
+    "t",
+    "r"
+   ],
+   [
+    "t",
+    "w"
+   ],
+   [
+    "u",
+    "b"
+   ],
+   [
+    "x",
+    "▁▁"
+   ],
+   [
+    "x",
+    "|>"
+   ],
+   [
+    "y",
+    "▁"
+   ],
+   [
+    "y",
+    ",▁"
+   ],
+   [
+    "|",
+    "▁"
+   ],
+   [
+    "à",
+    "▁"
+   ],
+   [
+    "ç",
+    "e"
+   ],
+   [
+    "é",
+    "▁"
+   ],
+   [
+    "́",
+    ",▁▁"
+   ],
+   [
+    "а",
+    ":▁"
+   ],
+   [
+    "р",
+    "ски:▁"
+   ],
+   [
+    "ا",
+    "ر"
+   ],
+   [
+    "ا",
+    "▁"
+   ],
+   [
+    "ك",
+    "▁"
+   ],
+   [
+    "م",
+    "▁"
+   ],
+   [
+    "ა",
+    "ა"
+   ],
+   [
+    "▁",
+    "."
+   ],
+   [
+    "▁",
+    "0"
+   ],
+   [
+    "▁",
+    "B"
+   ],
+   [
+    "▁",
+    "ו"
+   ],
+   [
+    "▁",
+    "ST"
+   ],
+   [
+    "語",
+    "。"
+   ],
+   [
+    ",▁",
+    "C"
+   ],
+   [
+    ",▁",
+    "D"
+   ],
+   [
+    ",▁",
+    "W"
+   ],
+   [
+    ",▁",
+    "m"
+   ],
+   [
+    ":▁",
+    "م"
+   ],
+   [
+    "th",
+    "er"
+   ],
+   [
+    "an",
+    "o"
+   ],
+   [
+    "in",
+    "▁"
+   ],
+   [
+    "st",
+    "em"
+   ],
+   [
+    "st",
+    "ant"
+   ],
+   [
+    "st",
+    "d::"
+   ],
+   [
+    "s▁",
+    "be"
+   ],
+   [
+    "ar",
+    "i"
+   ],
+   [
+    "ar",
+    "row"
+   ],
+   [
+    "en",
+    "t"
+   ],
+   [
+    "en",
+    "sk"
+   ],
+   [
+    "the▁",
+    "l"
+   ],
+   [
+    "co",
+    "le▁"
+   ],
+   [
+    "on",
+    "▁"
+   ],
+   [
+    "on",
+    "e▁"
+   ],
+   [
+    "and▁",
+    "a▁"
+   ],
+   [
+    "id",
+    "eog"
+   ],
+   [
+    "ex",
+    "amp"
+   ],
+   [
+    "ic",
+    "▁,▁"
+   ],
+   [
+    "re",
+    "tu"
+   ],
+   [
+    "ol",
+    "_c"
+   ],
+   [
+    "as",
+    "si"
+   ],
+   [
+    "li",
+    "s"
+   ],
+   [
+    "li",
+    "st"
+   ],
+   [
+    ")▁",
+    ">"
+   ],
+   [
+    "si",
+    "s▁"
+   ],
+   [
+    "/▁",
+    "and▁"
+   ],
+   [
+    "ct",
+    "or"
+   ],
+   [
+    "fi",
+    "x|>"
+   ],
+   [
+    "▁n",
+    "am"
+   ],
+   [
+    "<|im_",
+    "end|>"
+   ],
+   [
+    "<|im_",
+    "start|>"
+   ],
+   [
+    "one",
+    "."
+   ],
+   [
+    "HE",
+    "'"
+   ],
+   [
+    "ht",
+    "ml>"
+   ],
+   [
+    "ip",
+    "t"
+   ],
+   [
+    "to",
+    "ol_c"
+   ],
+   [
+    "tab",
+    "s\t\t"
+   ],
+   [
+    "tra",
+    "ilin"
+   ],
+   [
+    "ver",
+    "▁"
+   ],
+   [
+    "word",
+    "s,▁"
+   ],
+   [
+    "▁c",
+    "▁"
+   ],
+   [
+    "l▁",
+    "j"
+   ],
+   [
+    "mar",
+    "k▁"
+   ],
+   [
+    "ve",
+    "ctor"
+   ],
+   [
+    "wid",
+    "th"
+   ],
+   [
+    "и,▁",
+    "а"
+   ],
+   [
+    "raph",
+    "ic"
+   ],
+   [
+    "decompose",
+    "d"
+   ],
+   [
+    "الع",
+    "رب"
+   ],
+   [
+    "<|endof",
+    "text|>"
+   ],
+   [
+    "▁12345",
+    "6"
+   ],
+   [
+    "separator",
+    ",▁"
+   ],
+   [
+    ",00",
+    "0"
+   ],
+   [
+    "COU",
+    "NT"
+   ],
+   [
+    "He",
+    "ll"
+   ],
+   [
+    "IN",
+    "G"
+   ],
+   [
+    "Ph",
+    "one▁"
+   ],
+   [
+    "[i",
+    "]"
+   ],
+   [
+    "_he",
+    "ader"
+   ],
+   [
+    "bo",
+    "dy"
+   ],
+   [
+    "bre",
+    "a"
+   ],
+   [
+    "cr",
+    "ipt"
+   ],
+   [
+    "fin",
+    "al"
+   ],
+   [
+    "pun",
+    "ct"
+   ],
+   [
+    "́,▁▁",
+    "vs▁"
+   ],
+   [
+    "s▁be",
+    "for"
+   ],
+   [
+    "ensk",
+    "a:▁"
+   ],
+   [
+    "ideog",
+    "raphic"
+   ],
+   [
+    "examp",
+    "le."
+   ],
+   [
+    "assi",
+    "stant"
+   ],
+   [
+    "tool_c",
+    "al"
+   ],
+   [
+    "trailin",
+    "g▁space"
+   ],
+   [
+    "COUNT",
+    "(*"
+   ],
+   [
+    "_header",
+    "_id|>"
+   ],
+   [
+    "\t",
+    "▁▁"
+   ],
+   [
+    "\t",
+    "tabs\t\t"
+   ],
+   [
+    "\n",
+    "/"
+   ],
+   [
+    "\n",
+    "4"
+   ],
+   [
+    "\n",
+    "W"
+   ],
+   [
+    "\n",
+    "▁▁▁▁"
+   ],
+   [
+    "\n",
+    "end"
+   ],
+   [
+    "\n",
+    "std::"
+   ],
+   [
+    "\n",
+    "<|im_start|>"
+   ],
+   [
+    "!",
+    "z"
+   ],
+   [
+    "!",
+    "=▁"
+   ],
+   [
+    "!",
+    "/▁and▁"
+   ],
+   [
+    "\"",
+    "/"
+   ],
+   [
+    "\"",
+    ">"
+   ],
+   [
+    "\"",
+    "b"
+   ],
+   [
+    "\"",
+    "f"
+   ],
+   [
+    "\"",
+    "x"
+   ],
+   [
+    "\"",
+    "▁"
+   ],
+   [
+    "\"",
+    "5."
+   ],
+   [
+    "&",
+    "&"
+   ],
+   [
+    "&",
+    "b"
+   ],
+   [
+    "&",
+    "amp"
+   ],
+   [
+    "'",
+    "M"
+   ],
+   [
+    "'",
+    "T"
+   ],
+   [
+    "'",
+    "d"
+   ],
+   [
+    "'",
+    "n"
+   ],
+   [
+    "'",
+    "o"
+   ],
+   [
+    "'",
+    "v"
+   ],
+   [
+    "'",
+    "é"
+   ],
+   [
+    "'",
+    ":▁"
+   ],
+   [
+    "'",
+    "on"
+   ],
+   [
+    "'",
+    "ll"
+   ],
+   [
+    "'",
+    "un"
+   ],
+   [
+    "'",
+    "Ne"
+   ],
+   [
+    "'",
+    "re▁"
+   ],
+   [
+    "(",
+    "?"
+   ],
+   [
+    "(",
+    "c"
+   ],
+   [
+    "(",
+    "a▁"
+   ],
+   [
+    "(",
+    "text"
+   ],
+   [
+    "(",
+    "int"
+   ],
+   [
+    "(",
+    "\"5."
+   ],
+   [
+    ")",
+    "."
+   ],
+   [
+    ")",
+    ";"
+   ],
+   [
+    ")",
+    ",▁"
+   ],
+   [
+    ")",
+    "/▁"
+   ],
+   [
+    ")",
+    "*▁"
+   ],
+   [
+    "+",
+    "2"
+   ],
+   [
+    "+",
+    "7"
+   ],
+   [
+    "+",
+    "\\"
+   ],
+   [
+    "+",
+    "=▁"
+   ],
+   [
+    ",",
+    "\ttabs\t\t"
+   ],
+   [
+    "-",
+    "4"
+   ],
+   [
+    "-",
+    "I"
+   ],
+   [
+    "-",
+    "z"
+   ],
+   [
+    "-",
+    "10"
+   ],
+   [
+    "-",
+    "case"
+   ],
+   [
+    "-",
+    "rc"
+   ],
+   [
+    "-",
+    "words,▁"
+   ],
+   [
+    "-",
+    "brea"
+   ],
+   [
+    ".",
+    "2"
+   ],
+   [
+    ".",
+    "3"
+   ],
+   [
+    ".",
+    "7"
+   ],
+   [
+    ".",
+    "<|"
+   ],
+   [
+    ".",
+    "▁▁▁"
+   ],
+   [
+    ".",
+    "con"
+   ],
+   [
+    ".",
+    "14"
+   ],
+   [
+    "/",
+    "/"
+   ],
+   [
+    "/",
+    "h"
+   ],
+   [
+    "/",
+    "re"
+   ],
+   [
+    "/",
+    ".."
+   ],
+   [
+    "/",
+    "fi"
+   ],
+   [
+    "/",
+    "to"
+   ],
+   [
+    "/",
+    "after"
+   ],
+   [
+    "/",
+    "punct"
+   ],
+   [
+    "/",
+    "\n/"
+   ],
+   [
+    "/",
+    ".con"
+   ],
+   [
+    "0",
+    "2"
+   ],
+   [
+    "0",
+    "▁"
+   ],
+   [
+    "0",
+    ";▁"
+   ],
+   [
+    "1",
+    "6"
+   ],
+   [
+    "1",
+    "F"
+   ],
+   [
+    "1",
+    ",▁"
+   ],
+   [
+    "1",
+    "▁1"
+   ],
+   [
+    "1",
+    "2,"
+   ],
+   [
+    "1",
+    ".2"
+   ],
+   [
+    "2",
+    "="
+   ],
+   [
+    "2",
+    "f"
+   ],
+   [
+    "2",
+    "▁"
+   ],
+   [
+    "2",
+    "、"
+   ],
+   [
+    "2",
+    "▁123"
+   ],
+   [
+    "2",
+    "▁<"
+   ],
+   [
+    "2",
+    "+2"
+   ],
+   [
+    "2",
+    "02"
+   ],
+   [
+    "3",
+    "4"
+   ],
+   [
+    "3",
+    "]"
+   ],
+   [
+    "3",
+    "▁▁"
+   ],
+   [
+    "3",
+    "2,▁"
+   ],
+   [
+    "3",
+    ".14"
+   ],
+   [
+    "4",
+    "."
+   ],
+   [
+    "4",
+    "}"
+   ],
+   [
+    "4",
+    "▁|"
+   ],
+   [
+    "5",
+    "▁"
+   ],
+   [
+    "5",
+    ",▁"
+   ],
+   [
+    "5",
+    "00"
+   ],
+   [
+    "5",
+    "-0"
+   ],
+   [
+    "5",
+    "0,▁"
+   ],
+   [
+    "6",
+    "▁"
+   ],
+   [
+    "6",
+    ",▁"
+   ],
+   [
+    "6",
+    "-10"
+   ],
+   [
+    "8",
+    "。"
+   ],
+   [
+    "8",
+    "9,▁"
+   ],
+   [
+    "9",
+    "9,▁"
+   ],
+   [
+    ":",
+    "\\"
+   ],
+   [
+    ":",
+    ":▁"
+   ],
+   [
+    ":",
+    "▁▁▁"
+   ],
+   [
+    ":",
+    "15"
+   ],
+   [
+    ":",
+    "fo"
+   ],
+   [
+    ":",
+    "\n▁▁▁▁"
+   ],
+   [
+    ":",
+    "//"
+   ],
+   [
+    ":",
+    "16"
+   ],
+   [
+    ";",
+    "\n\n"
+   ],
+   [
+    ";",
+    "/\n/"
+   ],
+   [
+    "<",
+    "p"
+   ],
+   [
+    "<",
+    "▁1"
+   ],
+   [
+    "<",
+    "=▁"
+   ],
+   [
+    "<",
+    "std::"
+   ],
+   [
+    "<",
+    "html>"
+   ],
+   [
+    "<",
+    "vector"
+   ],
+   [
+    "<",
+    "body"
+   ],
+   [
+    "<",
+    "tool_cal"
+   ],
+   [
+    "=",
+    "▁1"
+   ],
+   [
+    "=",
+    ">▁"
+   ],
+   [
+    "=",
+    "tw"
+   ],
+   [
+    "=",
+    "\"x"
+   ],
+   [
+    ">",
+    "\nstd::"
+   ],
+   [
+    ">",
+    "<p"
+   ],
+   [
+    ">",
+    "=▁1"
+   ],
+   [
+    "?",
+    "▁▁▁"
+   ],
+   [
+    "?",
+    "qu"
+   ],
+   [
+    "?",
+    "▁M"
+   ],
+   [
+    "?",
+    "▁ו"
+   ],
+   [
+    "?",
+    "/▁and▁"
+   ],
+   [
+    "?",
+    "<|im_end|>"
+   ],
+   [
+    "A",
+    "B"
+   ],
+   [
+    "A",
+    "M"
+   ],
+   [
+    "A",
+    "S"
+   ],
+   [
+    "A",
+    "V"
+   ],
+   [
+    "A",
+    "r"
+   ],
+   [
+    "A",
+    "́"
+   ],
+   [
+    "A",
+    "̈"
+   ],
+   [
+    "A",
+    "SE"
+   ],
+   [
+    "A",
+    "ng"
+   ],
+   [
+    "B",
+    "a"
+   ],
+   [
+    "B",
+    "e▁"
+   ],
+   [
+    "B",
+    "en"
+   ],
+   [
+    "C",
+    "J"
+   ],
+   [
+    "C",
+    "O"
+   ],
+   [
+    "C",
+    "T"
+   ],
+   [
+    "C",
+    "am"
+   ],
+   [
+    "C",
+    "om"
+   ],
+   [
+    "C",
+    "de"
+   ],
+   [
+    "C",
+    "ase"
+   ],
+   [
+    "C",
+    "++"
+   ],
+   [
+    "C",
+    "RE"
+   ],
+   [
+    "C",
+    "aS"
+   ],
+   [
+    "C",
+    "ASE"
+   ],
+   [
+    "D",
+    "n"
+   ],
+   [
+    "D",
+    "on"
+   ],
+   [
+    "D",
+    ",▁W"
+   ],
+   [
+    "D",
+    "one."
+   ],
+   [
+    "E",
+    "N"
+   ],
+   [
+    "E",
+    "d▁"
+   ],
+   [
+    "E",
+    "spa"
+   ],
+   [
+    "E",
+    "ll"
+   ],
+   [
+    "E",
+    "mo"
+   ],
+   [
+    "E",
+    "'L"
+   ],
+   [
+    "E",
+    "ng"
+   ],
+   [
+    "E",
+    "CT"
+   ],
+   [
+    "F",
+    "R"
+   ],
+   [
+    "F",
+    "r"
+   ],
+   [
+    "F",
+    "ra"
+   ],
+   [
+    "G",
+    "O"
+   ],
+   [
+    "G",
+    "R"
+   ],
+   [
+    "G",
+    "rü"
+   ],
+   [
+    "H",
+    "T"
+   ],
+   [
+    "H",
+    "t"
+   ],
+   [
+    "H",
+    "an"
+   ],
+   [
+    "H",
+    "à▁"
+   ],
+   [
+    "H",
+    "AV"
+   ],
+   [
+    "I",
+    "T"
+   ],
+   [
+    "I",
+    "x"
+   ],
+   [
+    "J",
+    "W"
+   ],
+   [
+    "J",
+    "‍"
+   ],
+   [
+    "J",
+    "sl"
+   ],
+   [
+    "J",
+    "av"
+   ],
+   [
+    "K",
+    "N"
+   ],
+   [
+    "K",
+    "▁"
+   ],
+   [
+    "K",
+    "el"
+   ],
+   [
+    "K",
+    ",▁▁"
+   ],
+   [
+    "L",
+    "▁"
+   ],
+   [
+    "L",
+    "E▁"
+   ],
+   [
+    "L",
+    "OU"
+   ],
+   [
+    "L",
+    "s:▁"
+   ],
+   [
+    "L",
+    "ECT"
+   ],
+   [
+    "L",
+    "Ht"
+   ],
+   [
+    "M",
+    "a"
+   ],
+   [
+    "M",
+    "ü"
+   ],
+   [
+    "M",
+    "ar"
+   ],
+   [
+    "M",
+    "ag"
+   ],
+   [
+    "M",
+    "ix"
+   ],
+   [
+    "N",
+    "i"
+   ],
+   [
+    "N",
+    "'T"
+   ],
+   [
+    "N",
+    "JW"
+   ],
+   [
+    "O",
+    "P"
+   ],
+   [
+    "O",
+    "W"
+   ],
+   [
+    "O",
+    "M▁"
+   ],
+   [
+    "O",
+    "hm"
+   ],
+   [
+    "O",
+    "'Ne"
+   ],
+   [
+    "O",
+    "N'T"
+   ],
+   [
+    "P",
+    "S"
+   ],
+   [
+    "P",
+    "or"
+   ],
+   [
+    "P",
+    "re"
+   ],
+   [
+    "P",
+    "ol"
+   ],
+   [
+    "P",
+    "li"
+   ],
+   [
+    "P",
+    "▁B"
+   ],
+   [
+    "R",
+    "e"
+   ],
+   [
+    "R",
+    "o"
+   ],
+   [
+    "R",
+    "e▁"
+   ],
+   [
+    "R",
+    "AS"
+   ],
+   [
+    "R",
+    "Ls:▁"
+   ],
+   [
+    "S",
+    "u"
+   ],
+   [
+    "S",
+    "E▁"
+   ],
+   [
+    "S",
+    "CRE"
+   ],
+   [
+    "T",
+    "."
+   ],
+   [
+    "T",
+    "h"
+   ],
+   [
+    "T",
+    "i"
+   ],
+   [
+    "T",
+    "ü"
+   ],
+   [
+    "T",
+    "in"
+   ],
+   [
+    "T",
+    "▁'"
+   ],
+   [
+    "T",
+    "ub"
+   ],
+   [
+    "T",
+    "HE'"
+   ],
+   [
+    "T",
+    "PS"
+   ],
+   [
+    "U",
+    "RLs:▁"
+   ],
+   [
+    "V",
+    "e▁"
+   ],
+   [
+    "V",
+    "E▁"
+   ],
+   [
+    "W",
+    "in"
+   ],
+   [
+    "W",
+    "ord"
+   ],
+   [
+    "W",
+    "HE"
+   ],
+   [
+    "[",
+    "a"
+   ],
+   [
+    "[",
+    "ord"
+   ],
+   [
+    "[",
+    "int"
+   ],
+   [
+    "[",
+    "1,▁"
+   ],
+   [
+    "\\",
+    "n"
+   ],
+   [
+    "\\",
+    "Sy"
+   ],
+   [
+    "]",
+    "▁▁▁"
+   ],
+   [
+    "]",
+    "+\\"
+   ],
+   [
+    "]",
+    ":\n▁▁▁▁"
+   ],
+   [
+    "_",
+    "of"
+   ],
+   [
+    "_",
+    "text|>"
+   ],
+   [
+    "_",
+    "words,▁"
+   ],
+   [
+    "_",
+    "CASE"
+   ],
+   [
+    "a",
+    "d"
+   ],
+   [
+    "a",
+    "u"
+   ],
+   [
+    "a",
+    "z"
+   ],
+   [
+    "a",
+    "po"
+   ],
+   [
+    "a",
+    "́▁"
+   ],
+   [
+    "a",
+    "<|fim_"
+   ],
+   [
+    "a",
+    "\",▁"
+   ],
+   [
+    "a",
+    "[i]"
+   ],
+   [
+    "b",
+    "i"
+   ],
+   [
+    "b",
+    "l"
+   ],
+   [
+    "b",
+    "u"
+   ],
+   [
+    "b",
+    "̈"
+   ],
+   [
+    "b",
+    ",▁"
+   ],
+   [
+    "b",
+    "ab"
+   ],
+   [
+    "b",
+    "in"
+   ],
+   [
+    "b",
+    "ar"
+   ],
+   [
+    "b",
+    "le"
+   ],
+   [
+    "b",
+    "ol"
+   ],
+   [
+    "b",
+    "om"
+   ],
+   [
+    "b",
+    "un"
+   ],
+   [
+    "b",
+    "10"
+   ],
+   [
+    "b",
+    "<|fim_"
+   ],
+   [
+    "b",
+    "row"
+   ],
+   [
+    "b",
+    "ri"
+   ],
+   [
+    "b",
+    ")▁>"
+   ],
+   [
+    "b",
+    "[i]"
+   ],
+   [
+    "c",
+    "̈"
+   ],
+   [
+    "c",
+    "k▁"
+   ],
+   [
+    "c",
+    "it"
+   ],
+   [
+    "c",
+    "ali"
+   ],
+   [
+    "c",
+    "ano"
+   ],
+   [
+    "c",
+    "́,▁▁vs▁"
+   ],
+   [
+    "c",
+    "Don"
+   ],
+   [
+    "d",
+    "."
+   ],
+   [
+    "d",
+    "i"
+   ],
+   [
+    "d",
+    "o"
+   ],
+   [
+    "d",
+    "{"
+   ],
+   [
+    "d",
+    "ra"
+   ],
+   [
+    "d",
+    "le"
+   ],
+   [
+    "d",
+    "at"
+   ],
+   [
+    "d",
+    "ou"
+   ],
+   [
+    "d",
+    "'s▁"
+   ],
+   [
+    "d",
+    "og"
+   ],
+   [
+    "d",
+    ",▁I"
+   ],
+   [
+    "d",
+    "ic▁,▁"
+   ],
+   [
+    "e",
+    "f"
+   ],
+   [
+    "e",
+    "p"
+   ],
+   [
+    "e",
+    "}"
+   ],
+   [
+    "e",
+    "ar"
+   ],
+   [
+    "e",
+    "|>"
+   ],
+   [
+    "e",
+    "end"
+   ],
+   [
+    "e",
+    "\n\n"
+   ],
+   [
+    "e",
+    "10"
+   ],
+   [
+    "e",
+    "</"
+   ],
+   [
+    "e",
+    "ot"
+   ],
+   [
+    "e",
+    "́▁"
+   ],
+   [
+    "e",
+    "ci"
+   ],
+   [
+    "e",
+    "ed"
+   ],
+   [
+    "e",
+    "\":▁"
+   ],
+   [
+    "e",
+    "́,▁▁vs▁"
+   ],
+   [
+    "e",
+    "'d"
+   ],
+   [
+    "e",
+    "(text"
+   ],
+   [
+    "e",
+    "/.con"
+   ],
+   [
+    "e",
+    "Ba"
+   ],
+   [
+    "f",
+    "ra"
+   ],
+   [
+    "f",
+    "el"
+   ],
+   [
+    "f",
+    "aç"
+   ],
+   [
+    "f",
+    "fix|>"
+   ],
+   [
+    "f",
+    "(\"5."
+   ],
+   [
+    "f",
+    "eed"
+   ],
+   [
+    "g",
+    "."
+   ],
+   [
+    "g",
+    "in"
+   ],
+   [
+    "g",
+    "en"
+   ],
+   [
+    "g",
+    "ex"
+   ],
+   [
+    "g",
+    "ht"
+   ],
+   [
+    "g",
+    "ali"
+   ],
+   [
+    "g",
+    "la▁"
+   ],
+   [
+    "g",
+    "l▁j"
+   ],
+   [
+    "h",
+    "y"
+   ],
+   [
+    "h",
+    "語"
+   ],
+   [
+    "h",
+    "am"
+   ],
+   [
+    "h",
+    "ai"
+   ],
+   [
+    "i",
+    "l"
+   ],
+   [
+    "i",
+    "s"
+   ],
+   [
+    "i",
+    "z"
+   ],
+   [
+    "i",
+    ",▁"
+   ],
+   [
+    "i",
+    ":▁"
+   ],
+   [
+    "i",
+    "s▁"
+   ],
+   [
+    "i",
+    "al"
+   ],
+   [
+    "i",
+    "se"
+   ],
+   [
+    "i",
+    "ce"
+   ],
+   [
+    "i",
+    "ll"
+   ],
+   [
+    "i",
+    ")▁"
+   ],
+   [
+    "i",
+    ":▁▁"
+   ],
+   [
+    "i",
+    "▁<"
+   ],
+   [
+    "i",
+    "th▁"
+   ],
+   [
+    "i",
+    "ve"
+   ],
+   [
+    "i",
+    ":▁▁▁▁"
+   ],
+   [
+    "i",
+    "f▁"
+   ],
+   [
+    "i",
+    "çe"
+   ],
+   [
+    "i",
+    "Phone▁"
+   ],
+   [
+    "i",
+    "bi"
+   ],
+   [
+    "j",
+    "o"
+   ],
+   [
+    "j",
+    "um"
+   ],
+   [
+    "j",
+    "ub"
+   ],
+   [
+    "j",
+    "i:▁▁▁▁"
+   ],
+   [
+    "k",
+    "s▁"
+   ],
+   [
+    "k",
+    "en"
+   ],
+   [
+    "k",
+    ";▁"
+   ],
+   [
+    "k",
+    "space,▁"
+   ],
+   [
+    "k",
+    "çe"
+   ],
+   [
+    "l",
+    "."
+   ],
+   [
+    "l",
+    "d"
+   ],
+   [
+    "l",
+    "t"
+   ],
+   [
+    "l",
+    "u"
+   ],
+   [
+    "l",
+    "v"
+   ],
+   [
+    "l",
+    "at"
+   ],
+   [
+    "l",
+    "as"
+   ],
+   [
+    "l",
+    ">▁"
+   ],
+   [
+    "l",
+    "and"
+   ],
+   [
+    "l",
+    "▁'"
+   ],
+   [
+    "l",
+    "tra"
+   ],
+   [
+    "l",
+    "'é"
+   ],
+   [
+    "m",
+    "u"
+   ],
+   [
+    "m",
+    "id"
+   ],
+   [
+    "m",
+    "ic"
+   ],
+   [
+    "m",
+    "es"
+   ],
+   [
+    "m",
+    "et"
+   ],
+   [
+    "m",
+    "ix"
+   ],
+   [
+    "m",
+    "ent"
+   ],
+   [
+    "m",
+    "bol"
+   ],
+   [
+    "m",
+    "feed"
+   ],
+   [
+    "n",
+    ":▁"
+   ],
+   [
+    "n",
+    "er"
+   ],
+   [
+    "n",
+    "|>"
+   ],
+   [
+    "n",
+    "am"
+   ],
+   [
+    "n",
+    "ext"
+   ],
+   [
+    "n",
+    "ch"
+   ],
+   [
+    "n",
+    "el"
+   ],
+   [
+    "n",
+    "ull"
+   ],
+   [
+    "n",
+    "arrow"
+   ],
+   [
+    "n",
+    "'on"
+   ],
+   [
+    "n",
+    "dic▁,▁"
+   ],
+   [
+    "o",
+    "s"
+   ],
+   [
+    "o",
+    "|"
+   ],
+   [
+    "o",
+    "̈"
+   ],
+   [
+    "o",
+    "▁▁"
+   ],
+   [
+    "o",
+    "k▁"
+   ],
+   [
+    "o",
+    "ci"
+   ],
+   [
+    "o",
+    "\nLine▁"
+   ],
+   [
+    "o",
+    "ver▁"
+   ],
+   [
+    "o",
+    "width"
+   ],
+   [
+    "o",
+    "<|endoftext|>"
+   ],
+   [
+    "p",
+    "r"
+   ],
+   [
+    "p",
+    "s▁"
+   ],
+   [
+    "p",
+    "ic"
+   ],
+   [
+    "p",
+    "re"
+   ],
+   [
+    "p",
+    "es"
+   ],
+   [
+    "p",
+    "ne"
+   ],
+   [
+    "p",
+    "></"
+   ],
+   [
+    "p",
+    "eci"
+   ],
+   [
+    "p",
+    "fel"
+   ]
+  ]
+ }
+}

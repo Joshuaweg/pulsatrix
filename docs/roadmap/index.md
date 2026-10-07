@@ -330,7 +330,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.
 |---|---|---|---|---|---|---|
 | LLM-1 | Attention upgrade: grouped-query attention (`num_kv_heads`), `head_dim` separate from `d_model / num_heads`, optional QKV bias, causal and padding masks, a RoPE layout flag (Hugging Face "rotate half" vs. adjacent pairs), and a position offset | Without these, no current small LLM loads | — | P0 | M | Done, [#67](https://github.com/Joshuaweg/pulsatrix/pull/67) (see below) |
 | LLM-2 | A tied LM head that shares the embedding matrix | SmolLM2, Qwen3 and Gemma 3 all tie their embeddings | — | P0 | S || Done, [#68](https://github.com/Joshuaweg/pulsatrix/pull/68) (see below) |
-| LLM-3 | Native tokenizers for the target models: [TOK-1 to TOK-3](#tok-tokenizers) | No Python needed to tokenize | — | P0 | M–L | |
+| LLM-3 | Native tokenizers for the target models: [TOK-1 to TOK-3](#tok-tokenizers) | No Python needed to tokenize | — | P0 | M–L | Done through TOK-1 to TOK-3 |
 | LLM-4 | Generation: greedy, temperature, top-k and top-p sampling, seeded, with EOS handling | Run the model, not just score it | LLM-1, FND-3 | P1 | S || Done, [#76](https://github.com/Joshuaweg/pulsatrix/pull/76) (see below) |
 | LLM-5 | A preallocated KV cache | Generation without recomputing the whole prefix | LLM-1 | P1 | M || Done, [#77](https://github.com/Joshuaweg/pulsatrix/pull/77) (see below) |
 | LLM-6 | Golden-logit harness: compare against Hugging Face on real text, fp32, maximum difference under 1e-3 (relative to the position's largest logit above 1) | Catches layout bugs that still "load" | IO-4 | P0 | S || Done, [#81](https://github.com/Joshuaweg/pulsatrix/pull/81) (see below) |
@@ -463,7 +463,7 @@ scores into word scores.
 |---|---|---|---|---|---|---|
 | TOK-1 | A `Tokenizer` interface: `encode` returns ids, token strings, character offsets and a special-token mask; `decode` returns text. Added tokens (special tokens such as `<\|im_start\|>`) are split out before anything else runs. The current tokenizer becomes the `WordLevel` model with a whitespace pre-tokenizer, and a byte tokenizer (256 ids plus specials) and a character tokenizer join it | One interface for every model, and offsets for every explanation | — | P0 | S || Done, [#84](https://github.com/Joshuaweg/pulsatrix/pull/84) (see below) |
 | TOK-2 | Byte-level BPE from `tokenizer.json`, with a small regex engine for the Split pre-tokenizer: alternation, character classes with Unicode categories (`\p{L}`, `\p{Lu}`, `\p{M}`, `\p{N}`…) over a generated category table, ranges, quantifiers, `(?i:…)` and the `(?!\S)` lookahead; `std::regex` can't match Unicode categories. Also digit splitting, an NFC normalizer from generated Unicode tables, both merge formats (`"a b"` strings and `["a", "b"]` pairs), `ignore_merges`, and template post-processing (BOS and EOS). It passes when ids match Hugging Face on a 10,000-line multilingual corpus for SmolLM2, Qwen2.5, Llama 3.2 and gpt-oss | Any byte-level BPE model loads without new code: SmolLM2, Qwen, Llama, gpt-oss, Mistral, DeepSeek, Phi-4 | TOK-1 | P0 | M || Done, [#85](https://github.com/Joshuaweg/pulsatrix/pull/85) (see below) |
-| TOK-3 | SentencePiece-style BPE: byte fallback (`<0x41>` tokens), `▁` replacement, `fuse_unk`, and the matching decoder chain. It passes the same corpus test for Gemma 3 | Gemma 3 and Gemma Scope 2 (LLM-9, FEAT) | TOK-2 | P1 | S | |
+| TOK-3 | SentencePiece-style BPE: byte fallback (`<0x41>` tokens), `▁` replacement, `fuse_unk`, and the matching decoder chain. It passes the same corpus test for Gemma 3 | Gemma 3 and Gemma Scope 2 (LLM-9, FEAT) | TOK-2 | P1 | S || Done, [#90](https://github.com/Joshuaweg/pulsatrix/pull/90) (see below) |
 | TOK-4 | Word-level aggregation: merge per-token scores (relevance, attributions, probe outputs) into per-word scores using the offsets, by sum, mean or maximum | Explanations people can read | TOK-1 | P1 | S || Done, [#86](https://github.com/Joshuaweg/pulsatrix/pull/86) (see below) |
 | TOK-5 | WordPiece (BERT normalizer and pre-tokenizer, `##` continuation) | BERT-family encoders, the most common models in XAI papers and tutorials | TOK-1 | P2 | S | |
 | TOK-6 | A byte-level BPE trainer that writes `tokenizer.json`, so a model trained from scratch in pulsatrix gets a real subword vocabulary that Hugging Face can also load | Small models trained on your own corpus | TOK-2 | P2 | M | |
@@ -511,6 +511,26 @@ Not planned: SentencePiece `.model` protobuf files (every target model also ship
     byte's actual source, and the harness reports those lines separately.
   - **JSON parser:** duplicate keys are now found with a hash set past 32 keys. The old scan was
     quadratic, about 2×10¹⁰ comparisons for gpt-oss's 200k-entry vocabulary.
+- **TOK-3** (`sentencepiece_bpe.hpp`) adds the SentencePiece-style pieces. It covers spaces as
+  `▁` through the Replace and Prepend normalizers or the newer Metaspace pre-tokenizer, BPE byte
+  fallback and fused unknown tokens, and the ByteFallback, Replace, Strip, Metaspace and Sequence
+  decoders.
+  - Decoders became chains, as in Hugging Face: `decode_chain` maps a token list to a token list.
+    The TOK-2 decoders are unchanged.
+  - **Parity:** Gemma 3, TinyLlama (the Llama 2 format) and Zephyr (Mistral 7B's) match
+    `tokenizers` exactly on the 10,000-line corpus, in ids, offsets and decoded text.
+  - **Prepend offsets:** a prepended `▁` that becomes a token of its own now gets the first
+    character's span, as Hugging Face's `NormalizedString::prepend` gives it. That holds for the
+    Prepend normalizer, Metaspace and ByteLevel's `add_prefix_space`. Found by tightening the
+    harness: reference lines are excused from exact offsets only where NFC-style Unicode
+    normalization changed them, no longer for any normalizer.
+  - **Metaspace decoder:** Hugging Face drops every `▁` in the first token, not only the one it
+    added, so pulsatrix does too.
+  - **CI fixtures:** Gemma 3 and TinyLlama, plus variants no target uses: Gemma 3 without byte
+    fallback (fused unknown tokens) and the Metaspace form with and without splitting. Each has
+    a small alphabet, so byte fallback runs constantly.
+  - **Mutation-checked:** removing byte fallback, `fuse_unk` or the Prepend offset rule fails the
+    fixtures that use it.
 - **TOK-4** (`AggregateToWords`, `word_scores.hpp`) takes words from the text, not from the
   tokenizer, so every tokenizer gives the same words.
   - A token across several words splits its score by the bytes it has inside each. The rule
