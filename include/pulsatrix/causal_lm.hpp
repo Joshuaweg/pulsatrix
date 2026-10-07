@@ -47,6 +47,14 @@ public:
 
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
+    /**
+     * @brief propagate_relevance, stopping at every block boundary: the relevance of the residual
+     *        stream entering block 0 (the scaled embeddings), then leaving each block, each shaped
+     *        like the hidden states `(N, L, hidden_size)`. Summing the first over hidden_size gives
+     *        propagate_relevance's per-token relevance.
+     * @throws std::logic_error before any forward().
+     */
+    [[nodiscard]] std::vector<Tensor> propagate_relevance_by_layer(const Tensor& relevance_out, const LRPRuleConfig& config);
     /** @brief A chain of other modules, as SequentialModule. */
     [[nodiscard]] OpType op_type() const override { return OpType::Composite; }
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
