@@ -143,6 +143,7 @@ add_executable(pulsatrix_tests
     attribution_graph_test.cpp
     relevance_graph_test.cpp
     encoder_block_test.cpp
+    encoder_lm_test.cpp
     benchmark_test.cpp
     caching_allocator_test.cpp
     rnn_module_test.cpp

@@ -34,6 +34,10 @@ from the Hugging Face Hub, generate text, and explain each prediction per token 
 AttnLRP. Logits, token ids and explanations are checked against `transformers`, `tokenizers`
 and LXT, and `pulsatrix_explain_text` turns a prompt into an explanation figure in one command.
 
+**[Protein Language Models](protein-models/index.md)**: load ESM-2 protein language models
+(8M to 650M parameters) from the Hugging Face Hub, read their per-residue representations and
+attention maps, and explain their predictions, with ESM's tokenizer and a FASTA reader.
+
 **[Interpretability](interpretability/index.md)**: explain a trained model's predictions.
 
 - [Layer-wise Relevance Propagation](interpretability/lrp.md): Epsilon, Gamma, AlphaBeta and
