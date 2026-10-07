@@ -98,6 +98,7 @@ Pass `-D<OPTION>=ON` or `OFF` when you configure.
 | `PULSATRIX_ENABLE_HIP` | `OFF` | Builds the HIP/ROCm backend for AMD GPUs. See [GPU backends](#gpu-backends). |
 | `PULSATRIX_ENABLE_PYTHON` | `OFF` | Builds the `pulsatrix_py` Python module. See [Python bindings](#python-bindings). |
 | `PULSATRIX_ENABLE_VIZ` | `OFF` | Builds the Dear ImGui + ImPlot visualization module and its GUI demos. JSON documents and SVG figures are always built. See [Visualization](visualization/index.md). |
+| `PULSATRIX_VIZ_FREETYPE` | `ON` | With `PULSATRIX_ENABLE_VIZ`, draws ImGui text with FreeType when it's installed, for color emoji. See [Fonts and languages](visualization/index.md#fonts-and-languages). |
 | `PULSATRIX_INSTALL` | `ON` at the top level, `OFF` as a subproject | Generates the `cmake --install` rules. See [Using pulsatrix in your own project](#using-pulsatrix-in-your-own-project). |
 | `PULSATRIX_BUILD_FUZZERS` | `OFF` | Builds the fuzz targets in `tools/fuzz/` (safetensors and JSON documents). |
 

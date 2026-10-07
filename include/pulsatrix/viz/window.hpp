@@ -6,6 +6,9 @@
 
 #include <functional>
 #include <string>
+#include <vector>
+
+#include "pulsatrix/viz/fonts.hpp"
 
 // Only compiled when PULSATRIX_ENABLE_VIZ builds pulsatrix_viz (see root CMakeLists.txt) --
 // this is the one header in the viz module allowed to assume ImGui/ImPlot/GLFW are present.
@@ -33,6 +36,11 @@ public:
      *         environment-dependent, not an internal invariant.
      */
     VizWindow(const std::string& title, int width, int height);
+    /** @brief The same, with chosen fonts. The three-argument form uses DefaultVizFontOptions():
+     *         ImGui's default font with every script's system font merged in as a fallback. */
+    VizWindow(const std::string& title, int width, int height, const VizFontOptions& fonts);
+    /** @brief The fonts merged into the default font, in priority order. */
+    [[nodiscard]] const std::vector<VizFontFile>& fonts() const { return fonts_; }
 
     ~VizWindow();
 
@@ -59,6 +67,7 @@ public:
 
 private:
     GLFWwindow* window_;
+    std::vector<VizFontFile> fonts_;
 };
 
 }  // namespace pulsatrix
