@@ -54,6 +54,7 @@
 #include "pulsatrix/saliency.hpp"
 #include "pulsatrix/tanh_gaussian_policy.hpp"
 #include "pulsatrix/encoder_block.hpp"
+#include "pulsatrix/encoder_lm.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/tied_lm_head_module.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -624,6 +625,25 @@ inline void ModuleRelevance(CPUBackend& cpu, DeviceBackend& gpu, Module& cm, Mod
 
 // LLM-2: the tied head's logits, input gradient, shared-table gradient and relevance. The
 // table is mirrored through the embedding, since the head owns no parameters.
+// PLM-2: the tiny ESM-2 end to end -- token dropout, padding, the biased tied head -- on both backends.
+inline void EncoderLMMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::string dir = std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf_tiny/esm";
+    std::unique_ptr<EncoderLM> cm = LoadEncoderLM(dir, &cpu), gm = LoadEncoderLM(dir, &gpu);
+    const std::vector<float> ids = {0, 20, 15, 32, 5, 19, 2, 1, 0, 6, 32, 32, 9, 2, 1, 1}, keep = {1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0};
+    cm->set_padding_mask(Tensor(Shape({2, 8}), &cpu, keep));
+    gm->set_padding_mask(Tensor(Shape({2, 8}), &gpu, keep));
+    Tensor cx(Shape({2, 8}), &cpu, ids), gx(Shape({2, 8}), &gpu, ids);
+    ExpectNear(cm->forward(cx), gm->forward(gx), 1e-4f);
+    const std::vector<float> dy = Random(2 * 8 * 33, 380);
+    (void)cm->backward(Tensor(Shape({2, 8, 33}), &cpu, dy));
+    (void)gm->backward(Tensor(Shape({2, 8, 33}), &gpu, dy));
+    ExpectParametersNear(*cm, *gm, 1e-3f);
+    const std::vector<float> r = Random(2 * 8 * 33, 381);
+    ExpectRelevanceAgrees(cm->propagate_relevance(Tensor(Shape({2, 8, 33}), &cpu, r), LRPRuleConfig{}),
+                          gm->propagate_relevance(Tensor(Shape({2, 8, 33}), &gpu, r), LRPRuleConfig{}));
+}
+
 inline void TiedLMHeadMatches(DeviceBackend& gpu) {
     CPUBackend cpu;
     EmbeddingModule ce(11, 6, &cpu), ge(11, 6, &gpu);
@@ -1499,6 +1519,7 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     }                                                                                                \
     TEST_F(FIXTURE, EmbeddingForwardBackwardMatchCPU) { ::pulsatrix::training_equivalence::EmbeddingMatches(MEMBER); } \
     TEST_F(FIXTURE, TiedLMHeadMatchesCPU) { ::pulsatrix::training_equivalence::TiedLMHeadMatches(MEMBER); } \
+    TEST_F(FIXTURE, EncoderLMMatchesCPU) { ::pulsatrix::training_equivalence::EncoderLMMatches(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \
