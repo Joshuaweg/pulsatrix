@@ -46,7 +46,8 @@ enum class ElementwiseOp {
     Tanh,     ///< tanh(x)
     Sigmoid,  ///< 1 / (1 + exp(-x))
     Silu,     ///< x * sigmoid(x) -- a.k.a. swish; the gate half of SwiGLU
-    Exp       ///< exp(x) -- GPU-native-kernels Mission 1b (Reparameterize, KL divergence)
+    Exp,      ///< exp(x) -- GPU-native-kernels Mission 1b (Reparameterize, KL divergence)
+    GeluTanh  ///< GELU, tanh approximation (gelu_pytorch_tanh) -- the gate of Gemma's GeGLU (LLM-9)
 };
 
 /** @brief Elementwise boolean gate for DeviceBackend::lrp_stabilized_divide(). */
@@ -477,11 +478,14 @@ public:
      * @param causal Also masks key j for query i when j > i + q_offset.
      * @param q_offset Absolute position of query 0 among the keys (0 unless a cache holds
      *        earlier keys).
+     * @param window With causal, a sliding window (LLM-9): also masks key j for query i when
+     *        j + window <= i + q_offset, so each query sees its last `window` positions, itself
+     *        included (Hugging Face's `kv_idx > q_idx - sliding_window`). 0 is no window.
      * @note Attention calls it three times per pass: value = lowest float on the scores before
      *       softmax, and value = 0 on the score gradient and on the score relevance.
      */
     virtual void attention_mask_fill(float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len,
-                                     size_t k_len, bool causal, size_t q_offset, float value) = 0;
+                                     size_t k_len, bool causal, size_t q_offset, size_t window, float value) = 0;
 
     /** @brief out[i][:] = table[indices[i]][:] for count rows of width dim. */
     virtual void gather_rows(const float* table, const float* indices, float* out, size_t count, size_t dim) = 0;

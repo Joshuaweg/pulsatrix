@@ -11,6 +11,10 @@
 
 namespace pulsatrix {
 
+/** @brief The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh
+ *         approximation (GeGLU: Gemma, LLM-9). */
+enum class GatedActivation { Silu, GeluTanh };
+
 /**
  * @brief `down_proj(silu(gate_proj(x)) * up_proj(x))`, the gated feedforward block used in
  *        place of a plain two-linear-layer MLP in most modern transformers. Rank-agnostic
@@ -58,8 +62,12 @@ public:
      *         upstream validation), same convention as every other constructor.
      * @param use_bias false builds the three projections without biases, as Llama-family MLPs
      *        are (IO-4).
+     * @param activation The gate's activation: SiLU (default) or GELU-tanh for Gemma's GeGLU.
+     *        Relevance treats it with the identity rule either way.
      */
-    SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend, bool use_bias = true);
+    SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend, bool use_bias = true,
+                 GatedActivation activation = GatedActivation::Silu);
+    [[nodiscard]] GatedActivation activation() const { return activation_; }
 
     /**
      * @brief Gradient w.r.t. this module's input; sub-module parameter gradients accumulate
@@ -124,6 +132,7 @@ private:
     int64_t d_model_;
     int64_t d_ff_;
     DeviceBackend* backend_;
+    GatedActivation activation_ = GatedActivation::Silu;
 
     LinearModule gate_proj_;
     LinearModule up_proj_;

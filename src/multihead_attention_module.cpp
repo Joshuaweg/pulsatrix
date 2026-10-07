@@ -115,6 +115,8 @@ MultiHeadAttentionModule::MultiHeadAttentionModule(const AttentionConfig& config
     if (use_qk_norm_) {
         q_norm_ = std::make_unique<RMSNormModule>(head_dim_, backend, backend->device(), config_.qk_norm_eps);
         k_norm_ = std::make_unique<RMSNormModule>(head_dim_, backend, backend->device(), config_.qk_norm_eps);
+        q_norm_->set_weight_offset(config_.qk_norm_weight_offset);
+        k_norm_->set_weight_offset(config_.qk_norm_weight_offset);
         // RMSNormModule zero-initializes gamma; a zero gamma here would annihilate Q and K
         // and make attention uniform regardless of the input. See the header's note.
         const std::vector<float> ones(static_cast<size_t>(head_dim_), 1.0f);
@@ -184,13 +186,18 @@ void MultiHeadAttentionModule::sum_kv_groups(Tensor& t) const {
     t = std::move(out);
 }
 
+float MultiHeadAttentionModule::score_scale() const {
+    return config_.score_scale > 0.0f ? config_.score_scale : 1.0f / std::sqrt(static_cast<float>(head_dim_));
+}
+
 void MultiHeadAttentionModule::fill_masked(Tensor& scores, float value) const {
     if (!config_.causal && !last_has_key_keep_) {
         return;
     }
     const auto n = static_cast<size_t>(last_N_), l = static_cast<size_t>(last_L_);
     backend_->attention_mask_fill(scores.data(), last_has_key_keep_ ? last_key_keep_.data() : nullptr, n,
-                                  static_cast<size_t>(num_heads_), l, l, config_.causal, /*q_offset=*/0, value);
+                                  static_cast<size_t>(num_heads_), l, l, config_.causal, /*q_offset=*/0,
+                                  static_cast<size_t>(config_.sliding_window), value);
 }
 
 Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
@@ -263,7 +270,7 @@ Tensor MultiHeadAttentionModule::forward_impl(const Tensor& input) {
     // straight into gemm without a gather.
     Tensor scores_raw(Shape({N, H, L, L}), backend_, device);
     Tensor scores(Shape({N, H, L, L}), backend_, device);
-    const float inv_sqrt_d = 1.0f / std::sqrt(static_cast<float>(D));
+    const float inv_sqrt_d = score_scale();
     for (int64_t nh = 0; nh < N * H; ++nh) {
         // K read transposed in place by gemm_ex -- no host transpose copy.
         backend_->gemm_ex(q.data() + nh * L * D, false, k.data() + nh * L * D, true, scores_raw.data() + nh * L * L,
@@ -345,7 +352,7 @@ Tensor MultiHeadAttentionModule::backward(const Tensor& grad_output) {
     fill_masked(grad_scores, 0.0f);
 
     // --- Step 5' : scores = Q @ K^T / sqrt(head_dim) ------------------------------------
-    const float inv_sqrt_d = 1.0f / std::sqrt(static_cast<float>(D));
+    const float inv_sqrt_d = score_scale();
     Tensor grad_scores_raw(grad_scores.shape(), backend_, device);
     backend_->axpby(inv_sqrt_d, grad_scores.data(), 0.0f, nullptr, grad_scores_raw.data(),
                     static_cast<size_t>(grad_scores.numel()));
@@ -559,11 +566,12 @@ Tensor MultiHeadAttentionModule::forward_cached(const Tensor& input, KVCache& ca
         backend_->gemm_ex(q.data() + nh * L * D, false, cache.keys().data() + kv * max_len * D, true,
                           scores.data() + nh * L * total, l, d, t, 0.0f);
     }
-    const float inv_sqrt_d = 1.0f / std::sqrt(static_cast<float>(D));
+    const float inv_sqrt_d = score_scale();
     backend_->axpby(inv_sqrt_d, scores.data(), 0.0f, nullptr, scores.data(), static_cast<size_t>(scores.numel()));
     if (config_.causal || has_key_keep_) {
         backend_->attention_mask_fill(scores.data(), has_key_keep_ ? key_keep_.data() : nullptr, n, h, l, t,
-                                      config_.causal, static_cast<size_t>(past), std::numeric_limits<float>::lowest());
+                                      config_.causal, static_cast<size_t>(past), static_cast<size_t>(config_.sliding_window),
+                                      std::numeric_limits<float>::lowest());
     }
     backend_->softmax_rows(scores.data(), scores.data(), n * h * l, t);
     Tensor context(Shape({N, H, L, D}), backend_, device);

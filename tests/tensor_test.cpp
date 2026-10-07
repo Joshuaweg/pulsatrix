@@ -75,7 +75,7 @@ public:
                 (override));
     MOCK_METHOD(void, attention_mask_fill,
                 (float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len, size_t k_len,
-                 bool causal, size_t q_offset, float value),
+                 bool causal, size_t q_offset, size_t window, float value),
                 (override));
     MOCK_METHOD(void, gather_rows, (const float* table, const float* indices, float* out, size_t count, size_t dim),
                 (override));

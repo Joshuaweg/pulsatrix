@@ -53,7 +53,7 @@ public:
                      size_t seq_len, size_t head_dim, bool inverse, bool rotate_half) override;
     void permute_0213(const float* in, float* out, size_t d0, size_t d1, size_t d2, size_t d3) override;
     void attention_mask_fill(float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len,
-                             size_t k_len, bool causal, size_t q_offset, float value) override;
+                             size_t k_len, bool causal, size_t q_offset, size_t window, float value) override;
     void gather_rows(const float* table, const float* indices, float* out, size_t count, size_t dim) override;
     void scatter_add_rows(const float* src, const float* indices, float* table, size_t count, size_t dim) override;
     void tanh_gaussian_forward(const float* mean, const float* log_std, const float* eps, float* action,

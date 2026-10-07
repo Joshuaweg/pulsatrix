@@ -226,21 +226,23 @@ inline void BceWithLogits(DeviceBackend& gpu) {
 
 // ---- LLM-1 ---------------------------------------------------------------------------------
 
-// Causal and padding masks together, with a query offset: the masked set must match the CPU's
-// exactly, and the kept scores must be untouched (bit-exact either way).
+// Causal and padding masks together, with a query offset and a sliding window (LLM-9): the masked
+// set must match the CPU's exactly, and the kept scores must be untouched (bit-exact either way).
 inline void AttentionMaskFill(DeviceBackend& gpu) {
     CPUBackend cpu;
     const size_t batch = 2, heads = 3, q_len = 4, k_len = 6, q_offset = 2;
     const std::vector<float> keep = {1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0};
     for (bool causal : {false, true}) {
         for (bool padded : {false, true}) {
-            std::vector<float> scores = Random(batch * heads * q_len * k_len, 405);
-            DeviceBuffer dscores(gpu, scores), dkeep(gpu, keep);
-            cpu.attention_mask_fill(scores.data(), padded ? keep.data() : nullptr, batch, heads, q_len, k_len, causal,
-                                    q_offset, -7.0f);
-            gpu.attention_mask_fill(dscores.get(), padded ? dkeep.get() : nullptr, batch, heads, q_len, k_len,
-                                    causal, q_offset, -7.0f);
-            EXPECT_EQ(scores, dscores.host());
+            for (size_t window : {size_t{0}, size_t{2}, size_t{3}}) {
+                std::vector<float> scores = Random(batch * heads * q_len * k_len, 405);
+                DeviceBuffer dscores(gpu, scores), dkeep(gpu, keep);
+                cpu.attention_mask_fill(scores.data(), padded ? keep.data() : nullptr, batch, heads, q_len, k_len, causal,
+                                        q_offset, window, -7.0f);
+                gpu.attention_mask_fill(dscores.get(), padded ? dkeep.get() : nullptr, batch, heads, q_len, k_len,
+                                        causal, q_offset, window, -7.0f);
+                EXPECT_EQ(scores, dscores.host());
+            }
         }
     }
 }
@@ -455,7 +457,7 @@ inline void MultiBlockReductions(DeviceBackend& gpu) {
     }                                                                                               \
     TEST_F(FIXTURE, ElementwiseBackwardEveryOpMatchesCPU) {                                         \
         for (ElementwiseOp op : {ElementwiseOp::Relu, ElementwiseOp::Neg, ElementwiseOp::Tanh,      \
-                                 ElementwiseOp::Sigmoid, ElementwiseOp::Silu})                      \
+                                 ElementwiseOp::Sigmoid, ElementwiseOp::Silu, ElementwiseOp::GeluTanh}) \
             ::pulsatrix::primitive_equivalence::ElementwiseBackward(MEMBER, op);                   \
     }                                                                                               \
     TEST_F(FIXTURE, AxpbyInPlaceMatchesCPU) { ::pulsatrix::primitive_equivalence::AxpbyInPlace(MEMBER); } \
