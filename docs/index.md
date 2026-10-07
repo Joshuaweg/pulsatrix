@@ -69,7 +69,8 @@ Halving, Hyperband and ASHA.
 **[Visualization](visualization/index.md)**: versioned JSON documents for explanations,
 heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts
 (including token and word relevance for text), interactive HTML pages with hover, zoom and
-export, and the `pulsatrix_svg` tool; and, optionally,
+export, attribution graphs for Neuronpedia's and circuit-tracer's viewers, and the
+`pulsatrix_svg` tool; and, optionally,
 native Dear ImGui + ImPlot windows with a live training dashboard and a token relevance view.
 
 **[System Monitoring](system-monitoring.md)**: log CPU/GPU utilization, memory and

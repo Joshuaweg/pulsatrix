@@ -7,13 +7,24 @@
 // MODEL_DIR holds a Hugging Face config.json, safetensors weights and tokenizer.json. The output
 // format follows the extension of -o (.svg, .html or .json); without -o the JSON goes to stdout.
 // The HTML page is plain HTML: the browser lays out the text, so every script reads correctly.
+//
+//   pulsatrix_explain_text MODEL_DIR "..." --graph paris.json --viewer-dir graphs/   # attribution graph
+//
+// --graph writes an attribution graph (VIZ-4) for Neuronpedia's or circuit-tracer's viewer: the
+// residual stream at every layer and token, linked by the relevance each block passes back.
+// --viewer-dir also adds it to DIR/graph-metadata.json, the index circuit-tracer's local viewer
+// reads. --slug, --scan (the model id; default the directory's name) and --edge-threshold X
+// (keep links holding this share of the relevance; default 0.98) go with it.
 // Options: --words (word view), --split whitespace (words between spaces), --no-special (leave
 // BOS and other inserted tokens out of the token view), --target TEXT (explain that token
 // instead of the most likely one; it must be a single token), --device cpu|hip, --width W.
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <cctype>
+#include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -22,6 +33,9 @@
 #include "pulsatrix/causal_lm.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/tokenizer_json.hpp"
+#include "pulsatrix/json.hpp"
+#include "pulsatrix/relevance_graph.hpp"
+#include "pulsatrix/viz/attribution_graph.hpp"
 #include "pulsatrix/viz/html.hpp"
 #include "pulsatrix/viz/svg.hpp"
 #include "pulsatrix/viz/text_relevance.hpp"
@@ -35,15 +49,57 @@ namespace {
 [[noreturn]] void Usage(const std::string& problem) {
     std::cerr << "pulsatrix_explain_text: " << problem << "\n"
               << "usage: pulsatrix_explain_text MODEL_DIR TEXT [-o OUT.svg|OUT.html|OUT.json] [--words] [--split whitespace]\n"
-              << "       [--no-special] [--target TEXT] [--device cpu|hip] [--width W]\n";
+              << "       [--no-special] [--target TEXT] [--device cpu|hip] [--width W]\n"
+              << "       [--graph OUT.json [--viewer-dir DIR] [--slug S] [--scan MODEL_ID] [--edge-threshold X]]\n";
     std::exit(2);
 }
 
 struct Options {
-    std::string dir, text, out, target, device = "cpu";
+    std::string dir, text, out, target, device = "cpu", graph, viewer_dir, slug, scan;
+    double edge_threshold = 0.98;
     bool words = false, whitespace = false, special = true;
     int width = 0;
 };
+
+/** @brief The slug from a file name: its stem, lowercased, with other characters as dashes. */
+std::string SlugOf(const std::string& path) {
+    std::string stem = std::filesystem::path(path).stem().string(), slug;
+    for (char c : stem) slug += std::isalnum(static_cast<unsigned char>(c)) ? static_cast<char>(std::tolower(static_cast<unsigned char>(c))) : '-';
+    return slug.empty() ? "graph" : slug;
+}
+
+void WriteGraph(pulsatrix::CausalLM& model, pulsatrix::DeviceBackend* backend, const pulsatrix::TextTokenizer& tok,
+                const pulsatrix::Encoding& e, int64_t target, const std::string& target_text, const Options& o) {
+    using namespace pulsatrix;
+    RelevanceGraphOptions g;
+    g.edge_threshold = o.edge_threshold;
+    g.slug = o.slug.empty() ? SlugOf(o.graph) : o.slug;
+    g.scan = o.scan.empty() ? std::filesystem::path(o.dir).lexically_normal().filename().string() : o.scan;
+    if (g.scan.empty()) g.scan = std::filesystem::path(o.dir).lexically_normal().parent_path().filename().string();
+    g.prompt = o.text;
+    for (int64_t id : e.ids) g.prompt_tokens.push_back(tok.decode({id}));
+    g.target_text = target_text;
+    const AttributionGraph graph = BuildRelevanceGraph(model, backend, e.ids, target, g);
+    const std::string json = ToNeuronpediaJson(graph);
+    std::ofstream(o.graph, std::ios::binary) << json;
+    if (!o.viewer_dir.empty()) {
+        // circuit-tracer's add_graph_metadata: DIR/graph-metadata.json lists each graph's metadata.
+        const std::string index = o.viewer_dir + "/graph-metadata.json";
+        JsonValue::Array graphs;
+        if (std::ifstream in(index, std::ios::binary); in) {
+            std::stringstream ss;
+            ss << in.rdbuf();
+            for (const auto& entry : ParseJson(ss.str()).find("graphs")->as_array()) {
+                const JsonValue* slug = entry.find("slug");
+                if (slug == nullptr || slug->as_string() != graph.slug) graphs.push_back(entry);
+            }
+        }
+        graphs.push_back(*ParseJson(json).find("metadata"));
+        std::ofstream(index, std::ios::binary) << WriteJson(JsonValue::Object{{"graphs", std::move(graphs)}});
+    }
+    std::cerr << "graph of \"" << target_text << "\": " << graph.nodes.size() << " nodes, " << graph.links.size() << " links; wrote "
+              << o.graph << "\n";
+}
 
 int Run(pulsatrix::DeviceBackend* backend, const Options& o) {
     using namespace pulsatrix;
@@ -69,6 +125,10 @@ int Run(pulsatrix::DeviceBackend* backend, const Options& o) {
         model->propagate_relevance(Tensor(logits.shape(), backend, seed), LxtAttnLrpConfig()).to_host_vector();
 
     const std::string target_text = tok.decode({target});
+    if (!o.graph.empty()) {
+        WriteGraph(*model, backend, tok, e, target, target_text, o);
+        if (o.out.empty()) return 0;
+    }
     TokenRelevanceDocument doc;
     if (o.words) {
         const WordScores w = AggregateToWords(o.text, e, relevance, WordAggregation::Sum,
@@ -121,6 +181,11 @@ int main(int argc, char** argv) {
         else if (a == "--target") o.target = value();
         else if (a == "--device") o.device = value();
         else if (a == "--width") o.width = std::atoi(value().c_str());
+        else if (a == "--graph") o.graph = value();
+        else if (a == "--viewer-dir") o.viewer_dir = value();
+        else if (a == "--slug") o.slug = value();
+        else if (a == "--scan") o.scan = value();
+        else if (a == "--edge-threshold") o.edge_threshold = std::atof(value().c_str());
         else Usage("unknown option " + a);
     }
     try {
