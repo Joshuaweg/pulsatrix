@@ -102,7 +102,6 @@ var hierarchy =
     [ "pulsatrix::datalog::DualSemiring< T >", "structpulsatrix_1_1datalog_1_1DualSemiring.html", null ],
     [ "pulsatrix::CircuitGraphDocument::Edge", "structpulsatrix_1_1CircuitGraphDocument_1_1Edge.html", null ],
     [ "pulsatrix::EigenResult", "structpulsatrix_1_1EigenResult.html", null ],
-    [ "pulsatrix::EncoderBlockOptions", "structpulsatrix_1_1EncoderBlockOptions.html", null ],
     [ "pulsatrix::Encoding", "structpulsatrix_1_1Encoding.html", null ],
     [ "pulsatrix::Environment", "classpulsatrix_1_1Environment.html", [
       [ "pulsatrix::CartPoleEnv", "classpulsatrix_1_1CartPoleEnv.html", null ],
@@ -183,7 +182,6 @@ var hierarchy =
     [ "pulsatrix::MnistIdxLoader", "classpulsatrix_1_1MnistIdxLoader.html", null ],
     [ "pulsatrix::ModelToken", "structpulsatrix_1_1ModelToken.html", null ],
     [ "pulsatrix::Module", "classpulsatrix_1_1Module.html", [
-      [ "pulsatrix::ActivationModule", "classpulsatrix_1_1ActivationModule.html", null ],
       [ "pulsatrix::AggregatorModule", "classpulsatrix_1_1AggregatorModule.html", null ],
       [ "pulsatrix::AvgPool2DModule", "classpulsatrix_1_1AvgPool2DModule.html", null ],
       [ "pulsatrix::BatchNormModule", "classpulsatrix_1_1BatchNormModule.html", null ],
@@ -193,8 +191,6 @@ var hierarchy =
       [ "pulsatrix::DisjunctionModule", "classpulsatrix_1_1DisjunctionModule.html", null ],
       [ "pulsatrix::DropoutModule", "classpulsatrix_1_1DropoutModule.html", null ],
       [ "pulsatrix::EmbeddingModule", "classpulsatrix_1_1EmbeddingModule.html", null ],
-      [ "pulsatrix::EncoderBlock", "classpulsatrix_1_1EncoderBlock.html", null ],
-      [ "pulsatrix::FeedForwardModule", "classpulsatrix_1_1FeedForwardModule.html", null ],
       [ "pulsatrix::FlattenModule", "classpulsatrix_1_1FlattenModule.html", null ],
       [ "pulsatrix::GRUModule", "classpulsatrix_1_1GRUModule.html", null ],
       [ "pulsatrix::GroupNormModule", "classpulsatrix_1_1GroupNormModule.html", null ],

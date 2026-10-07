@@ -122,9 +122,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ActivationModule.html">ActivationModule</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = f(x), elementwise, for one of the backend's activations. No parameters.  <a href="classpulsatrix_1_1ActivationModule.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ActivationSnapshot.html">ActivationSnapshot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A copyable, self-contained record of every activation cached during one forward pass, plus the node ids in topological order and each node's op_type/label metadata.  <a href="classpulsatrix_1_1ActivationSnapshot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -414,12 +411,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Embedding lookup table, rank-2 input (N, L) of float-encoded indices -&gt; rank-3 output (N, L, embedding_dim). Structurally unlike every other module in this codebase: forward is a pure selection (row copy), with no arithmetic mixing across input features.  <a href="classpulsatrix_1_1EmbeddingModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderBlock.html">EncoderBlock</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One encoder layer. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(N, L, d_model) -&gt; (N, L, d_model)</code>.  <a href="classpulsatrix_1_1EncoderBlock.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderBlockOptions.html">EncoderBlockOptions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything about an <a class="el" href="classpulsatrix_1_1EncoderBlock.html" title="One encoder layer. Shape (N, L, d_model) -&gt; (N, L, d_model).">EncoderBlock</a> beyond its attention. The defaults are ESM-2's.  <a href="structpulsatrix_1_1EncoderBlockOptions.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of encoding one text.  <a href="structpulsatrix_1_1Encoding.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -442,9 +433,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureSensitivity.html">FeatureSensitivity</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How one feature's low and high value move the output, everything else held fixed.  <a href="structpulsatrix_1_1FeatureSensitivity.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FeedForwardModule.html">FeedForwardModule</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>fc2(f(fc1(x)))</code> over the last dimension. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(..., d_model) -&gt; (..., d_model)</code>.  <a href="classpulsatrix_1_1FeedForwardModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FieldStatistics.html">FieldStatistics</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Descriptive statistics for one <a class="el" href="structpulsatrix_1_1Sample.html" title="One dataset sample: an ordered list of Tensor fields (e.g. {features, label} or {image,...">Sample</a> field position, aggregated across a whole <a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a>.  <a href="structpulsatrix_1_1FieldStatistics.html#details">More...</a><br /></td></tr>
@@ -1201,7 +1189,6 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf">Silu</a>
 , <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0">Exp</a>
 , <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f">GeluTanh</a>
-, <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b">Gelu</a>
 <br />
  }</td></tr>
 <tr class="memdesc:afec27fa326532e4ad62b32d54558b503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary elementwise operations supported by DeviceBackend::elementwise().  <a href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">More...</a><br /></td></tr>
@@ -1284,21 +1271,6 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ab997921e8dd2fcb16daefdcc05ce6550"><td class="mdescLeft">&#160;</td><td class="mdescRight">E-GAN's three named mutation objectives.  <a href="namespacepulsatrix.html#ab997921e8dd2fcb16daefdcc05ce6550">More...</a><br /></td></tr>
 <tr class="separator:ab997921e8dd2fcb16daefdcc05ce6550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9b603c42e9e2a6f3680d4709c4745cd" id="r_aa9b603c42e9e2a6f3680d4709c4745cd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cd">NormType</a> { <a class="el" href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c">LayerNorm</a>
-, <a class="el" href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cda533a34c62723462c962ca7535ca06570">RMSNorm</a>
- }</td></tr>
-<tr class="memdesc:aa9b603c42e9e2a6f3680d4709c4745cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The layer's normalization.  <a href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cd">More...</a><br /></td></tr>
-<tr class="separator:aa9b603c42e9e2a6f3680d4709c4745cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af006dd0a5403341bfc3ad106ea4a4077" id="r_af006dd0a5403341bfc3ad106ea4a4077"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077">NormPosition</a> { <a class="el" href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077afb55a965b77791b31ffd2bb548f71080">Pre</a>
-, <a class="el" href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077a03d947a2158373c3b9d74325850cb8b9">Post</a>
- }</td></tr>
-<tr class="memdesc:af006dd0a5403341bfc3ad106ea4a4077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where the norms sit.  <a href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077">More...</a><br /></td></tr>
-<tr class="separator:af006dd0a5403341bfc3ad106ea4a4077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a871e9a9107ca439528eafcacf6eb7f46" id="r_a871e9a9107ca439528eafcacf6eb7f46"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46">MlpType</a> { <a class="el" href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46a4cd8413207629a963225f4314b53adcd">Plain</a>
-, <a class="el" href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46ae33f92b6ec382adfd412624ff0c83644">Gated</a>
- }</td></tr>
-<tr class="memdesc:a871e9a9107ca439528eafcacf6eb7f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MLP's form.  <a href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46">More...</a><br /></td></tr>
-<tr class="separator:a871e9a9107ca439528eafcacf6eb7f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad77127af5416692cbd6eaeaba9ec0e0a" id="r_ad77127af5416692cbd6eaeaba9ec0e0a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a">FinishReason</a> { <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aa86d16d93f97145c1c4532ada5501eaeb">Eos</a>
 , <a class="el" href="namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275">Length</a>
  }</td></tr>
@@ -1383,9 +1355,8 @@ Enumerations</h2></td></tr>
 <tr class="separator:ad7a1ebc92bdef322b1c30385aac7c066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988785af20e321b62cf99997047a6985" id="r_a988785af20e321b62cf99997047a6985"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">GatedActivation</a> { <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf">Silu</a>
 , <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f">GeluTanh</a>
-, <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985af48cca1c6deaa6a1c34e4ee46954cf0b">Gelu</a>
  }</td></tr>
-<tr class="memdesc:a988785af20e321b62cf99997047a6985"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen), GELU's tanh approximation (GeGLU: Gemma, LLM-9) or exact GELU (GeGLU as first published).  <a href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">More...</a><br /></td></tr>
+<tr class="memdesc:a988785af20e321b62cf99997047a6985"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh approximation (GeGLU: Gemma, LLM-9).  <a href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">More...</a><br /></td></tr>
 <tr class="separator:a988785af20e321b62cf99997047a6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga36063879210fbfeed97464b5b089b871" id="r_ga36063879210fbfeed97464b5b089b871"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871">LogFormat</a> { <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871aaaffc9a26d918147e8944a8fd5e231b9">LogFormat::JsonLines</a>
 , <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871ab20daea8bfacec3891fcf5b7be4adca0">LogFormat::Csv</a>
@@ -2655,8 +2626,6 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </td></tr>
 <tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f" name="afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f"></a>GeluTanh&#160;</td><td class="fielddoc"><p>GELU, tanh approximation (gelu_pytorch_tanh) &ndash; the gate of Gemma's GeGLU (LLM-9) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b" name="afec27fa326532e4ad62b32d54558b503af48cca1c6deaa6a1c34e4ee46954cf0b"></a>Gelu&#160;</td><td class="fielddoc"><p>exact GELU, x * Phi(x) with erf &ndash; the MLP activation of BERT and ESM (PLM-1) </p>
-</td></tr>
 </table>
 
 </div>
@@ -2711,11 +2680,10 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </table>
 </div><div class="memdoc">
 
-<p>The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen), GELU's tanh approximation (GeGLU: Gemma, LLM-9) or exact GELU (GeGLU as first published). </p>
+<p>The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh approximation (GeGLU: Gemma, LLM-9). </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf" name="a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf"></a>Silu&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f" name="a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f"></a>GeluTanh&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a988785af20e321b62cf99997047a6985af48cca1c6deaa6a1c34e4ee46954cf0b" name="a988785af20e321b62cf99997047a6985af48cca1c6deaa6a1c34e4ee46954cf0b"></a>Gelu&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -2911,36 +2879,6 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
-<a id="a871e9a9107ca439528eafcacf6eb7f46" name="a871e9a9107ca439528eafcacf6eb7f46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a871e9a9107ca439528eafcacf6eb7f46">&#9670;&#160;</a></span>MlpType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46">pulsatrix::MlpType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The MLP's form. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a871e9a9107ca439528eafcacf6eb7f46a4cd8413207629a963225f4314b53adcd" name="a871e9a9107ca439528eafcacf6eb7f46a4cd8413207629a963225f4314b53adcd"></a>Plain&#160;</td><td class="fielddoc"><p><code>Linear -&gt; activation -&gt; Linear</code> (BERT, ESM): <a class="el" href="classpulsatrix_1_1FeedForwardModule.html" title="fc2(f(fc1(x))) over the last dimension. Shape (..., d_model) -&gt; (..., d_model).">FeedForwardModule</a>. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a871e9a9107ca439528eafcacf6eb7f46ae33f92b6ec382adfd412624ff0c83644" name="a871e9a9107ca439528eafcacf6eb7f46ae33f92b6ec382adfd412624ff0c83644"></a>Gated&#160;</td><td class="fielddoc"><p><code>down(act(gate(x)) * up(x))</code> (Llama's SwiGLU, Gemma's GeGLU): <a class="el" href="classpulsatrix_1_1SwiGLUModule.html" title="down_proj(silu(gate_proj(x)) * up_proj(x)), the gated feedforward block used in place of a plain two-...">SwiGLUModule</a>. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
 <a id="ab997921e8dd2fcb16daefdcc05ce6550" name="ab997921e8dd2fcb16daefdcc05ce6550"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab997921e8dd2fcb16daefdcc05ce6550">&#9670;&#160;</a></span>MutationObjective</h2>
 
@@ -2966,64 +2904,6 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b" name="ab997921e8dd2fcb16daefdcc05ce6550a380c18e239f03cf9c0a846c7defd029b"></a>Minimax&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763" name="ab997921e8dd2fcb16daefdcc05ce6550a271aa2fdaeb524af30faf88584424763"></a>Heuristic&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46" name="ab997921e8dd2fcb16daefdcc05ce6550ad143c366b3274edc1e5496e302795a46"></a>LeastSquares&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="af006dd0a5403341bfc3ad106ea4a4077" name="af006dd0a5403341bfc3ad106ea4a4077"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af006dd0a5403341bfc3ad106ea4a4077">&#9670;&#160;</a></span>NormPosition</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077">pulsatrix::NormPosition</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Where the norms sit. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af006dd0a5403341bfc3ad106ea4a4077afb55a965b77791b31ffd2bb548f71080" name="af006dd0a5403341bfc3ad106ea4a4077afb55a965b77791b31ffd2bb548f71080"></a>Pre&#160;</td><td class="fielddoc"><p><code>y = x + f(norm(x))</code> (ESM, GPT-2, Llama). </p>
-</td></tr>
-<tr><td class="fieldname"><a id="af006dd0a5403341bfc3ad106ea4a4077a03d947a2158373c3b9d74325850cb8b9" name="af006dd0a5403341bfc3ad106ea4a4077a03d947a2158373c3b9d74325850cb8b9"></a>Post&#160;</td><td class="fielddoc"><p><code>y = norm(x + f(x))</code> (BERT and the original Transformer). </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<a id="aa9b603c42e9e2a6f3680d4709c4745cd" name="aa9b603c42e9e2a6f3680d4709c4745cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9b603c42e9e2a6f3680d4709c4745cd">&#9670;&#160;</a></span>NormType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cd">pulsatrix::NormType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The layer's normalization. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c" name="aa9b603c42e9e2a6f3680d4709c4745cdac363ac7ca063bb8a75fb8a11883bcb2c"></a>LayerNorm&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aa9b603c42e9e2a6f3680d4709c4745cda533a34c62723462c962ca7535ca06570" name="aa9b603c42e9e2a6f3680d4709c4745cda533a34c62723462c962ca7535ca06570"></a>RMSNorm&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
