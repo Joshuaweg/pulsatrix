@@ -23,13 +23,14 @@ var searchData=
   ['rope_5fbase_20',['rope_base',['../structpulsatrix_1_1AttentionConfig.html#ac186a454599c0f64cf83dc63026da08a',1,'pulsatrix::AttentionConfig']]],
   ['rope_5finverse_5ffrequencies_21',['rope_inverse_frequencies',['../structpulsatrix_1_1AttentionConfig.html#a014fa007d6902dcabdf51c5ebabc6e9e',1,'pulsatrix::AttentionConfig']]],
   ['rope_5flayout_22',['rope_layout',['../structpulsatrix_1_1AttentionConfig.html#a0fe86a56ad802d98e3111e9aa690f153',1,'pulsatrix::AttentionConfig']]],
-  ['rope_5fscaling_23',['rope_scaling',['../structpulsatrix_1_1HfModelConfig.html#a7846ab56f6edd788243eaff38c0c7e41',1,'pulsatrix::HfModelConfig']]],
-  ['rope_5ftheta_24',['rope_theta',['../structpulsatrix_1_1HfModelConfig.html#aeddd2b2b33e2d8ea20adda6aa55604ac',1,'pulsatrix::HfModelConfig']]],
-  ['rounds_25',['rounds',['../structpulsatrix_1_1CounterfactualResult.html#aa15577d4a8ee458fc1cb84329d4d362a',1,'pulsatrix::CounterfactualResult']]],
-  ['row_5fbegin_26',['row_begin',['../structpulsatrix_1_1WeightMapping.html#a9b86cbe28ba759d2199b285f99f371ee',1,'pulsatrix::WeightMapping']]],
-  ['row_5fcount_27',['row_count',['../structpulsatrix_1_1WeightMapping.html#aa9e184dc005f3c80d749fde30746bd0a',1,'pulsatrix::WeightMapping']]],
-  ['row_5flabels_28',['row_labels',['../structpulsatrix_1_1HeatmapDocument.html#a9663e7df4640216ae5d68ba0d52e6179',1,'pulsatrix::HeatmapDocument']]],
-  ['rows_29',['rows',['../structpulsatrix_1_1CsvTable.html#a382cf4a2da8b53e079dae6ef705f8c8d',1,'pulsatrix::CsvTable::rows'],['../structpulsatrix_1_1RlRowArgs.html#a3cc8d89e08f6f3425270bc2f0d58af3e',1,'pulsatrix::RlRowArgs::rows'],['../structpulsatrix_1_1HeatmapDocument.html#af269686e10c62f1bb843fc384a52d137',1,'pulsatrix::HeatmapDocument::rows'],['../structpulsatrix_1_1HeatmapGrid.html#aaed2dbeebcfc74ae63b85207681232ae',1,'pulsatrix::HeatmapGrid::rows']]],
-  ['rule_30',['rule',['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig']]],
-  ['rung_31',['rung',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a3ca06fb5b61ce6ea3a425b909a43c99f',1,'pulsatrix::detail::ASHACandidate']]]
+  ['rope_5flocal_5fbase_5ffreq_23',['rope_local_base_freq',['../structpulsatrix_1_1HfModelConfig.html#ac043f3c361322db9bc8189a1291930db',1,'pulsatrix::HfModelConfig']]],
+  ['rope_5fscaling_24',['rope_scaling',['../structpulsatrix_1_1HfModelConfig.html#a7846ab56f6edd788243eaff38c0c7e41',1,'pulsatrix::HfModelConfig']]],
+  ['rope_5ftheta_25',['rope_theta',['../structpulsatrix_1_1HfModelConfig.html#aeddd2b2b33e2d8ea20adda6aa55604ac',1,'pulsatrix::HfModelConfig']]],
+  ['rounds_26',['rounds',['../structpulsatrix_1_1CounterfactualResult.html#aa15577d4a8ee458fc1cb84329d4d362a',1,'pulsatrix::CounterfactualResult']]],
+  ['row_5fbegin_27',['row_begin',['../structpulsatrix_1_1WeightMapping.html#a9b86cbe28ba759d2199b285f99f371ee',1,'pulsatrix::WeightMapping']]],
+  ['row_5fcount_28',['row_count',['../structpulsatrix_1_1WeightMapping.html#aa9e184dc005f3c80d749fde30746bd0a',1,'pulsatrix::WeightMapping']]],
+  ['row_5flabels_29',['row_labels',['../structpulsatrix_1_1HeatmapDocument.html#a9663e7df4640216ae5d68ba0d52e6179',1,'pulsatrix::HeatmapDocument']]],
+  ['rows_30',['rows',['../structpulsatrix_1_1CsvTable.html#a382cf4a2da8b53e079dae6ef705f8c8d',1,'pulsatrix::CsvTable::rows'],['../structpulsatrix_1_1RlRowArgs.html#a3cc8d89e08f6f3425270bc2f0d58af3e',1,'pulsatrix::RlRowArgs::rows'],['../structpulsatrix_1_1HeatmapDocument.html#af269686e10c62f1bb843fc384a52d137',1,'pulsatrix::HeatmapDocument::rows'],['../structpulsatrix_1_1HeatmapGrid.html#aaed2dbeebcfc74ae63b85207681232ae',1,'pulsatrix::HeatmapGrid::rows']]],
+  ['rule_31',['rule',['../structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489',1,'pulsatrix::LRPRuleConfig']]],
+  ['rung_32',['rung',['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a3ca06fb5b61ce6ea3a425b909a43c99f',1,'pulsatrix::detail::ASHACandidate']]]
 ];

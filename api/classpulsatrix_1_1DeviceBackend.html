@@ -210,9 +210,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a441f01bb9aa5581f616d15a8d898d6bd" id="r_a441f01bb9aa5581f616d15a8d898d6bd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a441f01bb9aa5581f616d15a8d898d6bd">permute_0213</a> (const float *in, float *out, size_t d0, size_t d1, size_t d2, size_t d3)=0</td></tr>
 <tr class="memdesc:a441f01bb9aa5581f616d15a8d898d6bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swaps the middle two axes: in (d0, d1, d2, d3) -&gt; out (d0, d2, d1, d3).  <br /></td></tr>
 <tr class="separator:a441f01bb9aa5581f616d15a8d898d6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46d870b58b2cdbf7d06428479f3759ca" id="r_a46d870b58b2cdbf7d06428479f3759ca"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a46d870b58b2cdbf7d06428479f3759ca">attention_mask_fill</a> (float *scores, const float *key_keep, size_t batch, size_t heads, size_t q_len, size_t k_len, bool causal, size_t q_offset, float value)=0</td></tr>
-<tr class="memdesc:a46d870b58b2cdbf7d06428479f3759ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the masked entries of (batch, heads, q_len, k_len) attention scores with value, in place (LLM-1).  <br /></td></tr>
-<tr class="separator:a46d870b58b2cdbf7d06428479f3759ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70445515627f61d60a4f315024cf09b5" id="r_a70445515627f61d60a4f315024cf09b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a70445515627f61d60a4f315024cf09b5">attention_mask_fill</a> (float *scores, const float *key_keep, size_t batch, size_t heads, size_t q_len, size_t k_len, bool causal, size_t q_offset, size_t window, float value)=0</td></tr>
+<tr class="memdesc:a70445515627f61d60a4f315024cf09b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the masked entries of (batch, heads, q_len, k_len) attention scores with value, in place (LLM-1).  <br /></td></tr>
+<tr class="separator:a70445515627f61d60a4f315024cf09b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96b91d19e3f763089db8add216159296" id="r_a96b91d19e3f763089db8add216159296"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DeviceBackend.html#a96b91d19e3f763089db8add216159296">gather_rows</a> (const float *table, const float *indices, float *out, size_t count, size_t dim)=0</td></tr>
 <tr class="memdesc:a96b91d19e3f763089db8add216159296"><td class="mdescLeft">&#160;</td><td class="mdescRight">out[i][:] = table[indices[i]][:] for count rows of width dim.  <br /></td></tr>
 <tr class="separator:a96b91d19e3f763089db8add216159296"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -953,8 +953,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a46d870b58b2cdbf7d06428479f3759ca" name="a46d870b58b2cdbf7d06428479f3759ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46d870b58b2cdbf7d06428479f3759ca">&#9670;&#160;</a></span>attention_mask_fill()</h2>
+<a id="a70445515627f61d60a4f315024cf09b5" name="a70445515627f61d60a4f315024cf09b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70445515627f61d60a4f315024cf09b5">&#9670;&#160;</a></span>attention_mask_fill()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1013,6 +1013,12 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>value</em>&#160;</td>
         </tr>
@@ -1035,12 +1041,13 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">key_keep</td><td>(batch, k_len): 0 masks that key for every query and head, anything else keeps it. nullptr masks no key. </td></tr>
     <tr><td class="paramname">causal</td><td>Also masks key j for query i when j &gt; i + q_offset. </td></tr>
     <tr><td class="paramname">q_offset</td><td>Absolute position of query 0 among the keys (0 unless a cache holds earlier keys). </td></tr>
+    <tr><td class="paramname">window</td><td>With causal, a sliding window (LLM-9): also masks key j for query i when j + window &lt;= i + q_offset, so each query sees its last <code>window</code> positions, itself included (Hugging Face's <code>kv_idx &gt; q_idx - sliding_window</code>). 0 is no window. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Attention calls it three times per pass: value = lowest float on the scores before softmax, and value = 0 on the score gradient and on the score relevance. </dd></dl>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ad821eed6eed2f0f469fa888b66b219bf">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#ab6338898c1395ec75ce9f805033df61a">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#aeaec7bfdfb3b100d75a9e38654b02107">pulsatrix::HIPBackend</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1CPUBackend.html#ae9f5e7b04de5f554f506f944ef2d68fd">pulsatrix::CPUBackend</a>, <a class="el" href="classpulsatrix_1_1CUDABackend.html#a44a5a6c63f5068c83afe5376a8098f55">pulsatrix::CUDABackend</a>, and <a class="el" href="classpulsatrix_1_1HIPBackend.html#a88045fa14e74990b0a2b4d65effd66bf">pulsatrix::HIPBackend</a>.</p>
 
 </div>
 </div>

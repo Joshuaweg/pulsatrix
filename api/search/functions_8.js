@@ -22,6 +22,7 @@ var searchData=
   ['is_5freshape_5fcompatible_19',['is_reshape_compatible',['../classpulsatrix_1_1Shape.html#a8d623d00d5f760cf2f218b8be91869ab',1,'pulsatrix::Shape']]],
   ['is_5fscored_20',['is_scored',['../structpulsatrix_1_1TokenRelevanceDocument.html#a1c9331be9fd402745545640e6173030c',1,'pulsatrix::TokenRelevanceDocument']]],
   ['is_5fsequence_21',['is_sequence',['../structpulsatrix_1_1TemplatePostProcessor_1_1Item.html#a841c7e2ae3924961c0f475fa21aea87e',1,'pulsatrix::TemplatePostProcessor::Item']]],
-  ['is_5ftraining_22',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]],
-  ['is_5fvariable_23',['is_variable',['../classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c',1,'pulsatrix::datalog::Term']]]
+  ['is_5fsliding_5flayer_22',['is_sliding_layer',['../structpulsatrix_1_1HfModelConfig.html#a9beb0d38ad330514932883b341cb3101',1,'pulsatrix::HfModelConfig']]],
+  ['is_5ftraining_23',['is_training',['../classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518',1,'pulsatrix::Module']]],
+  ['is_5fvariable_24',['is_variable',['../classpulsatrix_1_1datalog_1_1Term.html#a0df4a38ba33a9270c6b587057d82300c',1,'pulsatrix::datalog::Term']]]
 ];

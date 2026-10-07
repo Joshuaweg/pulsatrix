@@ -312,6 +312,7 @@ var namespacepulsatrix =
     [ "Transform", "classpulsatrix_1_1Transform.html", "classpulsatrix_1_1Transform" ],
     [ "TransformDataset", "classpulsatrix_1_1TransformDataset.html", "classpulsatrix_1_1TransformDataset" ],
     [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html", "classpulsatrix_1_1TransformerBlock" ],
+    [ "TransformerBlockOptions", "structpulsatrix_1_1TransformerBlockOptions.html", "structpulsatrix_1_1TransformerBlockOptions" ],
     [ "Trial", "classpulsatrix_1_1Trial.html", "classpulsatrix_1_1Trial" ],
     [ "UnicodeRegex", "classpulsatrix_1_1UnicodeRegex.html", "classpulsatrix_1_1UnicodeRegex" ],
     [ "UniformFrameSampleTransform", "classpulsatrix_1_1UniformFrameSampleTransform.html", "classpulsatrix_1_1UniformFrameSampleTransform" ],
@@ -367,11 +368,16 @@ var namespacepulsatrix =
       [ "Tanh", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acc132a41cab5676334f353a22a0aa5c5", null ],
       [ "Sigmoid", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4", null ],
       [ "Silu", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf", null ],
-      [ "Exp", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0", null ]
+      [ "Exp", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0", null ],
+      [ "GeluTanh", "namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f", null ]
     ] ],
     [ "FinishReason", "namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a", [
       [ "Eos", "namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aa86d16d93f97145c1c4532ada5501eaeb", null ],
       [ "Length", "namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275", null ]
+    ] ],
+    [ "GatedActivation", "namespacepulsatrix.html#a988785af20e321b62cf99997047a6985", [
+      [ "Silu", "namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf", null ],
+      [ "GeluTanh", "namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f", null ]
     ] ],
     [ "IceStyle", "namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1ba", [
       [ "Raw", "namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baa65e65c8ab0d8609ce12fc68a03cb8e00", null ],
@@ -615,7 +621,7 @@ var namespacepulsatrix =
     [ "lrp_rule_name", "namespacepulsatrix.html#a70d91036da1e9b810ec33f0b81f04cc7", null ],
     [ "LxtAttnLrpConfig", "namespacepulsatrix.html#a8cc3a4cffc0a90b2e3d347442e279535", null ],
     [ "MakeByteTokenizer", "namespacepulsatrix.html#abe1f90f0013f3fd10785ef875351d7b4", null ],
-    [ "MakeCachedNextTokenLogits", "namespacepulsatrix.html#ad0f5ad755b0b0704f29e15db03268e39", null ],
+    [ "MakeCachedNextTokenLogits", "namespacepulsatrix.html#add21f6178694d0d0795bc60e374dc345", null ],
     [ "MakeCharTokenizer", "namespacepulsatrix.html#a42a51b3f39ce4900e0f3bcb50d83e404", null ],
     [ "MakeNextTokenLogits", "namespacepulsatrix.html#a6cfa666246da5421f8bba0105d28340f", null ],
     [ "MakeTaggingBatch", "namespacepulsatrix.html#af53e6ecf02fb76a731ba39e140ba653d", null ],
@@ -732,6 +738,7 @@ var namespacepulsatrix =
     [ "TellGivenSamples", "namespacepulsatrix.html#a35ece12427833bb65b0071348e83bdc3", null ],
     [ "TimeIt", "namespacepulsatrix.html#a9a61731245dd8ff9ebe10415b973df2d", null ],
     [ "ToAttentionConfig", "namespacepulsatrix.html#a0f72456585566c7d3dd290e3ac5f0af5", null ],
+    [ "ToAttentionConfig", "namespacepulsatrix.html#ad64730dfcec06e9aeecdef5787e60c8a", null ],
     [ "ToAttribution", "namespacepulsatrix.html#a6465cd5ee1442b5670cefdd371344d38", null ],
     [ "ToAttributionDocument", "namespacepulsatrix.html#a45d561a459b544c10eb8e5e627666f85", null ],
     [ "ToBeeswarmPoints", "namespacepulsatrix.html#a01b52699d2edf209e0fa4a98e4d8fc99", null ],

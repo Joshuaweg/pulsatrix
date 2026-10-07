@@ -134,6 +134,12 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aa9d289d8aaa70c63ec24eb58d6d9460c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27d2717e9fa359479dc7540941542417" id="r_a27d2717e9fa359479dc7540941542417"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html#a27d2717e9fa359479dc7540941542417">causal</a> = false</td></tr>
 <tr class="separator:a27d2717e9fa359479dc7540941542417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62270fe60076c91cebd467c5904d9b25" id="r_a62270fe60076c91cebd467c5904d9b25"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html#a62270fe60076c91cebd467c5904d9b25">sliding_window</a> = 0</td></tr>
+<tr class="separator:a62270fe60076c91cebd467c5904d9b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6e7122841959dd65889569c1ab0e925" id="r_aa6e7122841959dd65889569c1ab0e925"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html#aa6e7122841959dd65889569c1ab0e925">score_scale</a> = 0.0f</td></tr>
+<tr class="separator:aa6e7122841959dd65889569c1ab0e925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1cbd71320d8aa613f7ea60e3984bc85" id="r_af1cbd71320d8aa613f7ea60e3984bc85"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html#af1cbd71320d8aa613f7ea60e3984bc85">qk_norm_weight_offset</a> = 0.0f</td></tr>
+<tr class="separator:af1cbd71320d8aa613f7ea60e3984bc85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Everything that shapes a <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a> (LLM-1). </p>
@@ -242,6 +248,21 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="af1cbd71320d8aa613f7ea60e3984bc85" name="af1cbd71320d8aa613f7ea60e3984bc85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1cbd71320d8aa613f7ea60e3984bc85">&#9670;&#160;</a></span>qk_norm_weight_offset</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::AttentionConfig::qk_norm_weight_offset = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>QK-Norm scales by <code>offset + gamma</code> (Gemma's <code>1 + w</code>; LLM-9). </p>
+
+</div>
+</div>
 <a id="a53c023b2fcca8ac1ab19cc413325b857" name="a53c023b2fcca8ac1ab19cc413325b857"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a53c023b2fcca8ac1ab19cc413325b857">&#9670;&#160;</a></span>qkv_bias</h2>
 
@@ -298,6 +319,36 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa6e7122841959dd65889569c1ab0e925" name="aa6e7122841959dd65889569c1ab0e925"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6e7122841959dd65889569c1ab0e925">&#9670;&#160;</a></span>score_scale</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::AttentionConfig::score_scale = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The factor scores are multiplied by before the softmax. 0 means <code>1 / sqrt(head_dim)</code>; Gemma uses <code>query_pre_attn_scalar^-0.5</code> (LLM-9). </p>
+
+</div>
+</div>
+<a id="a62270fe60076c91cebd467c5904d9b25" name="a62270fe60076c91cebd467c5904d9b25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62270fe60076c91cebd467c5904d9b25">&#9670;&#160;</a></span>sliding_window</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::AttentionConfig::sliding_window = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>With causal, query i sees only its last <code>sliding_window</code> positions, itself included (Hugging Face's sliding-window layers, as in Gemma 3 and Mistral; LLM-9). 0 is no window. </p>
 
 </div>
 </div>

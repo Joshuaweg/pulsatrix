@@ -4,7 +4,7 @@ var searchData=
   ['make_5fhost_5fsources_1',['make_host_sources',['../namespacepulsatrix_1_1detail.html#ab66e00b359d236abc3ccb03eae5e0898',1,'pulsatrix::detail']]],
   ['make_5fvariable_2',['make_variable',['../classpulsatrix_1_1datalog_1_1Term.html#aafa9c17f14a551d5ffbd7eb8b31c309e',1,'pulsatrix::datalog::Term']]],
   ['makebytetokenizer_3',['MakeByteTokenizer',['../namespacepulsatrix.html#abe1f90f0013f3fd10785ef875351d7b4',1,'pulsatrix']]],
-  ['makecachednexttokenlogits_4',['MakeCachedNextTokenLogits',['../namespacepulsatrix.html#ad0f5ad755b0b0704f29e15db03268e39',1,'pulsatrix']]],
+  ['makecachednexttokenlogits_4',['MakeCachedNextTokenLogits',['../namespacepulsatrix.html#add21f6178694d0d0795bc60e374dc345',1,'pulsatrix']]],
   ['makechartokenizer_5',['MakeCharTokenizer',['../namespacepulsatrix.html#a42a51b3f39ce4900e0f3bcb50d83e404',1,'pulsatrix']]],
   ['makekvcache_6',['MakeKVCache',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a225357f7e75f0654e61e60becc036830',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['makenexttokenlogits_7',['MakeNextTokenLogits',['../namespacepulsatrix.html#a6cfa666246da5421f8bba0105d28340f',1,'pulsatrix']]],

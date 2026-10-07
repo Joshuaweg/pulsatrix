@@ -10,7 +10,7 @@ var classpulsatrix_1_1DeviceBackend =
     [ "aggregator_forward", "classpulsatrix_1_1DeviceBackend.html#a97bc41553f0e7961448e154ab70b4c31", null ],
     [ "aggregator_lrp", "classpulsatrix_1_1DeviceBackend.html#a0f99c3bf8321cec4e22b56e3a3ded9e3", null ],
     [ "allocate", "classpulsatrix_1_1DeviceBackend.html#a1af6d806be26395c4114f96727149c88", null ],
-    [ "attention_mask_fill", "classpulsatrix_1_1DeviceBackend.html#a46d870b58b2cdbf7d06428479f3759ca", null ],
+    [ "attention_mask_fill", "classpulsatrix_1_1DeviceBackend.html#a70445515627f61d60a4f315024cf09b5", null ],
     [ "avg_pool_backward", "classpulsatrix_1_1DeviceBackend.html#ad98634c838f184b6c504eaeae1cc7839", null ],
     [ "avg_pool_forward", "classpulsatrix_1_1DeviceBackend.html#ac4dfd694be54814690c3436028a8b0f9", null ],
     [ "axpby", "classpulsatrix_1_1DeviceBackend.html#a5a6bdc040ec70deb167b7a44a7691854", null ],

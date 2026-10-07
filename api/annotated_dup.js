@@ -328,6 +328,7 @@ var annotated_dup =
       [ "Transform", "classpulsatrix_1_1Transform.html", "classpulsatrix_1_1Transform" ],
       [ "TransformDataset", "classpulsatrix_1_1TransformDataset.html", "classpulsatrix_1_1TransformDataset" ],
       [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html", "classpulsatrix_1_1TransformerBlock" ],
+      [ "TransformerBlockOptions", "structpulsatrix_1_1TransformerBlockOptions.html", "structpulsatrix_1_1TransformerBlockOptions" ],
       [ "Trial", "classpulsatrix_1_1Trial.html", "classpulsatrix_1_1Trial" ],
       [ "UnicodeRegex", "classpulsatrix_1_1UnicodeRegex.html", "classpulsatrix_1_1UnicodeRegex" ],
       [ "UniformFrameSampleTransform", "classpulsatrix_1_1UniformFrameSampleTransform.html", "classpulsatrix_1_1UniformFrameSampleTransform" ],

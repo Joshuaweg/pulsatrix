@@ -128,9 +128,11 @@ Collaboration diagram for pulsatrix::SwiGLUModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af7785d7087c556c8faf374b177c6e865" id="r_af7785d7087c556c8faf374b177c6e865"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#af7785d7087c556c8faf374b177c6e865">SwiGLUModule</a> (int64_t <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#abeed20e92962a694223e738f03668227">d_model</a>, int64_t <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54">d_ff</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, bool use_bias=true)</td></tr>
-<tr class="memdesc:af7785d7087c556c8faf374b177c6e865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a SwiGLU block with zero-initialized projections.  <br /></td></tr>
-<tr class="separator:af7785d7087c556c8faf374b177c6e865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9774eada76738a3fdc6459a6545c13a7" id="r_a9774eada76738a3fdc6459a6545c13a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a9774eada76738a3fdc6459a6545c13a7">SwiGLUModule</a> (int64_t <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#abeed20e92962a694223e738f03668227">d_model</a>, int64_t <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a41c1b11b78ae3959c4235902cb989f54">d_ff</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, bool use_bias=true, <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">GatedActivation</a> <a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a9c266cfbe9eb9f0b845332be43bb5414">activation</a>=<a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf">GatedActivation::Silu</a>)</td></tr>
+<tr class="memdesc:a9774eada76738a3fdc6459a6545c13a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a SwiGLU block with zero-initialized projections.  <br /></td></tr>
+<tr class="separator:a9774eada76738a3fdc6459a6545c13a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c266cfbe9eb9f0b845332be43bb5414" id="r_a9c266cfbe9eb9f0b845332be43bb5414"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">GatedActivation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a9c266cfbe9eb9f0b845332be43bb5414">activation</a> () const</td></tr>
+<tr class="separator:a9c266cfbe9eb9f0b845332be43bb5414"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabebe9bd5eb5e02e33ad0fecbd635492" id="r_aabebe9bd5eb5e02e33ad0fecbd635492"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#aabebe9bd5eb5e02e33ad0fecbd635492">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:aabebe9bd5eb5e02e33ad0fecbd635492"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input; sub-module parameter gradients accumulate inside gate_proj_/up_proj_/down_proj_ (reachable through <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>).  <br /></td></tr>
 <tr class="separator:aabebe9bd5eb5e02e33ad0fecbd635492"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,8 +202,8 @@ Protected Member Functions</h2></td></tr>
 <dd>
 <code><a class="el" href="classpulsatrix_1_1SwiGLUModule.html#a193e9e312e1d9a20df41c6627ce20cd9" title="Elementwise per this module&#39;s own op_type() note above.">op_type()</a></code> reuses <code><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bbaab6e9fd932f9015e01b8813e750049ec">OpType::Elementwise</a></code> &ndash; same resolution <code><a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a></code> made (the hand-written novel part is an elementwise gate multiply, not a new operation category). Contrast <code><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a></code>, which earned a new category for genuinely novel cross-position mixing this module does not do &ndash; every position here is processed independently. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af7785d7087c556c8faf374b177c6e865" name="af7785d7087c556c8faf374b177c6e865"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7785d7087c556c8faf374b177c6e865">&#9670;&#160;</a></span>SwiGLUModule()</h2>
+<a id="a9774eada76738a3fdc6459a6545c13a7" name="a9774eada76738a3fdc6459a6545c13a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9774eada76738a3fdc6459a6545c13a7">&#9670;&#160;</a></span>SwiGLUModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +230,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>use_bias</em> = <code>true</code>&#160;</td>
+          <td class="paramname"><em>use_bias</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">GatedActivation</a>&#160;</td>
+          <td class="paramname"><em>activation</em> = <code><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf">GatedActivation::Silu</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -256,6 +264,7 @@ Protected Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">use_bias</td><td>false builds the three projections without biases, as Llama-family MLPs are (IO-4). </td></tr>
+    <tr><td class="paramname">activation</td><td>The gate's activation: SiLU (default) or GELU-tanh for Gemma's GeGLU. Relevance treats it with the identity rule either way. </td></tr>
   </table>
   </dd>
 </dl>
@@ -263,6 +272,31 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9c266cfbe9eb9f0b845332be43bb5414" name="a9c266cfbe9eb9f0b845332be43bb5414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c266cfbe9eb9f0b845332be43bb5414">&#9670;&#160;</a></span>activation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">GatedActivation</a> pulsatrix::SwiGLUModule::activation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aabebe9bd5eb5e02e33ad0fecbd635492" name="aabebe9bd5eb5e02e33ad0fecbd635492"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabebe9bd5eb5e02e33ad0fecbd635492">&#9670;&#160;</a></span>backward()</h2>
 

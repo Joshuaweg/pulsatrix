@@ -361,6 +361,7 @@ var hierarchy =
       [ "pulsatrix::ResizeTransform", "classpulsatrix_1_1ResizeTransform.html", null ],
       [ "pulsatrix::UniformFrameSampleTransform", "classpulsatrix_1_1UniformFrameSampleTransform.html", null ]
     ] ],
+    [ "pulsatrix::TransformerBlockOptions", "structpulsatrix_1_1TransformerBlockOptions.html", null ],
     [ "pulsatrix::Trial", "classpulsatrix_1_1Trial.html", null ],
     [ "pulsatrix::UnicodeRegex", "classpulsatrix_1_1UnicodeRegex.html", null ],
     [ "pulsatrix::ValidationIssue", "structpulsatrix_1_1ValidationIssue.html", null ],

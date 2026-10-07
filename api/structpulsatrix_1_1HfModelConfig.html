@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1HfModelConfig.html'
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structpulsatrix_1_1HfModelConfig-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::HfModelConfig Struct Reference</div></div>
@@ -105,6 +106,12 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1HfModelConfig.html'
 
 <p><code>#include &lt;<a class="el" href="hf__model_8hpp_source.html">hf_model.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a9beb0d38ad330514932883b341cb3101" id="r_a9beb0d38ad330514932883b341cb3101"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a9beb0d38ad330514932883b341cb3101">is_sliding_layer</a> (int64_t i) const</td></tr>
+<tr class="memdesc:a9beb0d38ad330514932883b341cb3101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether layer <code>i</code> uses sliding-window attention: per layer_types when given, otherwise every layer when sliding_window is set (Mistral).  <br /></td></tr>
+<tr class="separator:a9beb0d38ad330514932883b341cb3101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ad80446f7689bb3619d06cc0a2b7ef0bc" id="r_ad80446f7689bb3619d06cc0a2b7ef0bc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#ad80446f7689bb3619d06cc0a2b7ef0bc">architecture</a></td></tr>
@@ -132,10 +139,14 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a9c5d046f102bb44566c0c67d205d5af7" id="r_a9c5d046f102bb44566c0c67d205d5af7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a9c5d046f102bb44566c0c67d205d5af7">rms_norm_eps</a> = 1e-6f</td></tr>
 <tr class="separator:a9c5d046f102bb44566c0c67d205d5af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeddd2b2b33e2d8ea20adda6aa55604ac" id="r_aeddd2b2b33e2d8ea20adda6aa55604ac"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#aeddd2b2b33e2d8ea20adda6aa55604ac">rope_theta</a> = 10000.0f</td></tr>
-<tr class="memdesc:aeddd2b2b33e2d8ea20adda6aa55604ac"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>rope_theta</code> (or <code>rope_parameters.rope_theta</code>), 10000 when absent.  <br /></td></tr>
+<tr class="memdesc:aeddd2b2b33e2d8ea20adda6aa55604ac"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>rope_theta</code> (or <code>rope_parameters.rope_theta</code>), 10000 when absent. With per-layer-type RoPE (Gemma 3) it is the full-attention layers' base.  <br /></td></tr>
 <tr class="separator:aeddd2b2b33e2d8ea20adda6aa55604ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7846ab56f6edd788243eaff38c0c7e41" id="r_a7846ab56f6edd788243eaff38c0c7e41"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structpulsatrix_1_1HfRopeScaling.html">HfRopeScaling</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a7846ab56f6edd788243eaff38c0c7e41">rope_scaling</a></td></tr>
+<tr class="memdesc:a7846ab56f6edd788243eaff38c0c7e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full-attention layers' RoPE scaling (all layers' when there is one kind).  <br /></td></tr>
 <tr class="separator:a7846ab56f6edd788243eaff38c0c7e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac043f3c361322db9bc8189a1291930db" id="r_ac043f3c361322db9bc8189a1291930db"><td class="memItemLeft" align="right" valign="top">std::optional&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#ac043f3c361322db9bc8189a1291930db">rope_local_base_freq</a></td></tr>
+<tr class="memdesc:ac043f3c361322db9bc8189a1291930db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sliding-window layers' own RoPE base, unscaled (Gemma 3's <code>rope_local_base_freq</code>, or <code>rope_parameters.sliding_attention.rope_theta</code>). Absent: they use rope_theta.  <br /></td></tr>
+<tr class="separator:ac043f3c361322db9bc8189a1291930db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add323927a5fcfa2262c1383e79085f86" id="r_add323927a5fcfa2262c1383e79085f86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#add323927a5fcfa2262c1383e79085f86">tie_word_embeddings</a> = true</td></tr>
 <tr class="separator:add323927a5fcfa2262c1383e79085f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6f46c7f0b880e2792e46f533d19ab73" id="r_ae6f46c7f0b880e2792e46f533d19ab73"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#ae6f46c7f0b880e2792e46f533d19ab73">qkv_bias</a> = false</td></tr>
@@ -170,13 +181,43 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a3b1982b576b18dd12bd34bba688d1257" id="r_a3b1982b576b18dd12bd34bba688d1257"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a3b1982b576b18dd12bd34bba688d1257">layer_types</a></td></tr>
 <tr class="memdesc:a3b1982b576b18dd12bd34bba688d1257"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>layer_types</code>, for example <code>"sliding_attention"</code> / <code>"full_attention"</code> per layer.  <br /></td></tr>
 <tr class="separator:a3b1982b576b18dd12bd34bba688d1257"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbc64a3ea683ec13d8e8a2a4faa6a337" id="r_abbc64a3ea683ec13d8e8a2a4faa6a337"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#abbc64a3ea683ec13d8e8a2a4faa6a337">norm_weight_offset</a> = 0.0f</td></tr>
+<tr class="memdesc:abbc64a3ea683ec13d8e8a2a4faa6a337"><td class="mdescLeft">&#160;</td><td class="mdescRight">RMSNorms scale by <code>offset + w</code>: 1 for Gemma 3, whose norm weights are stored centered on zero (LLM-9).  <br /></td></tr>
+<tr class="separator:abbc64a3ea683ec13d8e8a2a4faa6a337"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01fe2a845efbb645784bf7528af86006" id="r_a01fe2a845efbb645784bf7528af86006"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a01fe2a845efbb645784bf7528af86006">embed_scale</a> = 1.0f</td></tr>
+<tr class="memdesc:a01fe2a845efbb645784bf7528af86006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Token embeddings are multiplied by this: <code>sqrt(hidden_size)</code> for Gemma 3.  <br /></td></tr>
+<tr class="separator:a01fe2a845efbb645784bf7528af86006"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af54ceeff0cc87d791e4b5eb1207cd731" id="r_af54ceeff0cc87d791e4b5eb1207cd731"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#af54ceeff0cc87d791e4b5eb1207cd731">post_norms</a> = false</td></tr>
+<tr class="memdesc:af54ceeff0cc87d791e4b5eb1207cd731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gemma 3's sandwich norms: attention and MLP outputs are normalized again before each residual add.  <br /></td></tr>
+<tr class="separator:af54ceeff0cc87d791e4b5eb1207cd731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85e9e6a494043aea3e4c62b2e22bff16" id="r_a85e9e6a494043aea3e4c62b2e22bff16"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HfModelConfig.html#a85e9e6a494043aea3e4c62b2e22bff16">unsupported</a></td></tr>
 <tr class="memdesc:a85e9e6a494043aea3e4c62b2e22bff16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything in the config that pulsatrix can't run yet, each naming the roadmap item that adds it (for example <code>"rope_scaling \"llama3\" (LLM-6)"</code>), including an architecture that isn't a <code>...ForCausalLM</code> decoder. Empty means the model maps onto pulsatrix's modules exactly; a loader should refuse otherwise.  <br /></td></tr>
 <tr class="separator:a85e9e6a494043aea3e4c62b2e22bff16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A decoder-only language model's <code>config.json</code>, with the values Hugging Face leaves to the model class filled in: every field is what the model actually uses. </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9beb0d38ad330514932883b341cb3101" name="a9beb0d38ad330514932883b341cb3101"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9beb0d38ad330514932883b341cb3101">&#9670;&#160;</a></span>is_sliding_layer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::HfModelConfig::is_sliding_layer </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether layer <code>i</code> uses sliding-window attention: per layer_types when given, otherwise every layer when sliding_window is set (Mistral). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a id="ad80446f7689bb3619d06cc0a2b7ef0bc" name="ad80446f7689bb3619d06cc0a2b7ef0bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad80446f7689bb3619d06cc0a2b7ef0bc">&#9670;&#160;</a></span>architecture</h2>
 
@@ -220,6 +261,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p><code>torch_dtype</code> (newer files: <code>dtype</code>), for example <code>"bfloat16"</code>. </p>
+
+</div>
+</div>
+<a id="a01fe2a845efbb645784bf7528af86006" name="a01fe2a845efbb645784bf7528af86006"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01fe2a845efbb645784bf7528af86006">&#9670;&#160;</a></span>embed_scale</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::HfModelConfig::embed_scale = 1.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Token embeddings are multiplied by this: <code>sqrt(hidden_size)</code> for Gemma 3. </p>
 
 </div>
 </div>
@@ -359,6 +416,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="abbc64a3ea683ec13d8e8a2a4faa6a337" name="abbc64a3ea683ec13d8e8a2a4faa6a337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbc64a3ea683ec13d8e8a2a4faa6a337">&#9670;&#160;</a></span>norm_weight_offset</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::HfModelConfig::norm_weight_offset = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RMSNorms scale by <code>offset + w</code>: 1 for Gemma 3, whose norm weights are stored centered on zero (LLM-9). </p>
+
+</div>
+</div>
 <a id="a3c321e3ac75ebf77601993b55c55be6c" name="a3c321e3ac75ebf77601993b55c55be6c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c321e3ac75ebf77601993b55c55be6c">&#9670;&#160;</a></span>num_attention_heads</h2>
 
@@ -416,6 +489,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Output projection bias (Llama's <code>attention_bias</code> covers it; Qwen2 never has one). </p>
+
+</div>
+</div>
+<a id="af54ceeff0cc87d791e4b5eb1207cd731" name="af54ceeff0cc87d791e4b5eb1207cd731"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af54ceeff0cc87d791e4b5eb1207cd731">&#9670;&#160;</a></span>post_norms</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::HfModelConfig::post_norms = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gemma 3's sandwich norms: attention and MLP outputs are normalized again before each residual add. </p>
 
 </div>
 </div>
@@ -479,6 +568,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ac043f3c361322db9bc8189a1291930db" name="ac043f3c361322db9bc8189a1291930db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac043f3c361322db9bc8189a1291930db">&#9670;&#160;</a></span>rope_local_base_freq</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;float&gt; pulsatrix::HfModelConfig::rope_local_base_freq</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sliding-window layers' own RoPE base, unscaled (Gemma 3's <code>rope_local_base_freq</code>, or <code>rope_parameters.sliding_attention.rope_theta</code>). Absent: they use rope_theta. </p>
+
+</div>
+</div>
 <a id="a7846ab56f6edd788243eaff38c0c7e41" name="a7846ab56f6edd788243eaff38c0c7e41"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7846ab56f6edd788243eaff38c0c7e41">&#9670;&#160;</a></span>rope_scaling</h2>
 
@@ -490,6 +595,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>The full-attention layers' RoPE scaling (all layers' when there is one kind). </p>
 
 </div>
 </div>
@@ -505,7 +612,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code>rope_theta</code> (or <code>rope_parameters.rope_theta</code>), 10000 when absent. </p>
+<p><code>rope_theta</code> (or <code>rope_parameters.rope_theta</code>), 10000 when absent. With per-layer-type RoPE (Gemma 3) it is the full-attention layers' base. </p>
 
 </div>
 </div>

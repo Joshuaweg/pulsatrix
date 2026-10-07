@@ -1,7 +1,7 @@
 var searchData=
 [
   ['sigmoid_0',['Sigmoid',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a21eebb164e4b8b9bcf64fdb4d8d5dff4',1,'pulsatrix']]],
-  ['silu_1',['Silu',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf',1,'pulsatrix']]],
+  ['silu_1',['silu',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf',1,'pulsatrix::Silu'],['../namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf',1,'pulsatrix::Silu']]],
   ['stabilizeddiv_2',['StabilizedDiv',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883af7357d9f8c4df9c447eaaec3710f1a2f',1,'pulsatrix']]],
   ['string_3',['String',['../classpulsatrix_1_1JsonValue.html#abc4394f62a71b7f447ca50e841ecc98da27118326006d3829667a400ad23d5d98',1,'pulsatrix::JsonValue']]],
   ['sum_4',['Sum',['../namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954aa0ec87054b5e5b7847d0d8780a01a3d5',1,'pulsatrix']]],

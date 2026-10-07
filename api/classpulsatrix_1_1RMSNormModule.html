@@ -146,6 +146,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad392df4e399db2fc74d29003452c840e" id="r_ad392df4e399db2fc74d29003452c840e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#ad392df4e399db2fc74d29003452c840e">set_gamma</a> (const std::vector&lt; float &gt; &amp;values)</td></tr>
 <tr class="memdesc:ad392df4e399db2fc74d29003452c840e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector overload for runtime-sized sources &ndash; see <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>'s own vector ctor.  <br /></td></tr>
 <tr class="separator:ad392df4e399db2fc74d29003452c840e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd2e9bfdd5a4d2836d27782c5f0a14a4" id="r_afd2e9bfdd5a4d2836d27782c5f0a14a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#afd2e9bfdd5a4d2836d27782c5f0a14a4">set_weight_offset</a> (float offset)</td></tr>
+<tr class="memdesc:afd2e9bfdd5a4d2836d27782c5f0a14a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales by <code>offset + gamma</code> instead of <code>gamma</code> (LLM-9). Gemma stores its RMSNorm weights centered on zero and multiplies by <code>1 + w</code>; with an offset of 1 the parameter stays the checkpoint's <code>w</code>, so loading and saving don't change it. The default is 0.  <br /></td></tr>
+<tr class="separator:afd2e9bfdd5a4d2836d27782c5f0a14a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b282b9aad698dfd72f063673ad7249" id="r_aa3b282b9aad698dfd72f063673ad7249"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#aa3b282b9aad698dfd72f063673ad7249">weight_offset</a> () const</td></tr>
+<tr class="separator:aa3b282b9aad698dfd72f063673ad7249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af06d24d862e4b31909945018968fb29b" id="r_af06d24d862e4b31909945018968fb29b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#af06d24d862e4b31909945018968fb29b">gamma</a> () const</td></tr>
 <tr class="separator:af06d24d862e4b31909945018968fb29b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88db1f2da306fa931b21d8374751ef7" id="r_af88db1f2da306fa931b21d8374751ef7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#af88db1f2da306fa931b21d8374751ef7">gamma_grad</a> () const</td></tr>
@@ -590,6 +595,59 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Overwrites the gamma buffer &ndash; test/initialization use only. </p>
+
+</div>
+</div>
+<a id="afd2e9bfdd5a4d2836d27782c5f0a14a4" name="afd2e9bfdd5a4d2836d27782c5f0a14a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd2e9bfdd5a4d2836d27782c5f0a14a4">&#9670;&#160;</a></span>set_weight_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::RMSNormModule::set_weight_offset </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>offset</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scales by <code>offset + gamma</code> instead of <code>gamma</code> (LLM-9). Gemma stores its RMSNorm weights centered on zero and multiplies by <code>1 + w</code>; with an offset of 1 the parameter stays the checkpoint's <code>w</code>, so loading and saving don't change it. The default is 0. </p>
+
+</div>
+</div>
+<a id="aa3b282b9aad698dfd72f063673ad7249" name="aa3b282b9aad698dfd72f063673ad7249"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3b282b9aad698dfd72f063673ad7249">&#9670;&#160;</a></span>weight_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::RMSNormModule::weight_offset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
