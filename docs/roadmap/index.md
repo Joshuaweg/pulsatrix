@@ -1096,7 +1096,7 @@ sources are in [Protein language models: research and plan](protein-language-mod
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | PLM-1 | Encoder block options: LayerNorm or RMSNorm, a plain or gated MLP, exact (erf) GELU with its LRP rule, and attention and MLP biases | Every BERT-style encoder needs it, not just ESM | — | P0 | M | Done, [#94](https://github.com/Joshuaweg/pulsatrix/pull/94) (see below) |
-| PLM-2 | `EncoderLM` and ESM-2 loading: token-dropout scaling, rotate-half RoPE, final LayerNorm, LM head; `EsmForMaskedLM` configs and weights; ESM `vocab.txt` tokenizer and a FASTA reader. Golden parity of logits, hidden states and attentions with `transformers` on a tiny generated ESM and on `esm2_t6_8M` and `esm2_t33_650M` | The foundation; must match the reference before anything else | PLM-1 | P0 | M | |
+| PLM-2 | `EncoderLM` and ESM-2 loading: token-dropout scaling, rotate-half RoPE, final LayerNorm, LM head; `EsmForMaskedLM` configs and weights; ESM `vocab.txt` tokenizer and a FASTA reader. Golden parity of logits, hidden states and attentions with `transformers` on a tiny generated ESM and on `esm2_t6_8M` and `esm2_t33_650M` | The foundation; must match the reference before anything else | PLM-1 | P0 | M | Done, [#95](https://github.com/Joshuaweg/pulsatrix/pull/95) (see below) |
 | PLM-3 | Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and full single-mutant scans. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset | The headline use and the strongest numerical check | PLM-2 | P0 | M | |
 | PLM-4 | Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with `transformers`, the top-K head average, a PDB/mmCIF reader, and precision at L, L/2 and L/5 by sequence separation | Shows whether the model learned the fold; feeds the head grid | PLM-2 | P1 | M | |
 | PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | |
@@ -1122,6 +1122,22 @@ sources are in [Protein language models: research and plan](protein-language-mod
   - Post-norm relevance can get very large with random weights, because a residual split's
     `a + b` can be near zero. That's the epsilon rule's known behavior, not a defect; trained
     weights keep the sums well away from zero.
+
+- **PLM-2** matches transformers on ESM-2 8M and 650M to float32 precision: logits, every hidden
+  state and every attention map, with worst differences of 3.7e-6 relative and 1.3e-5 absolute.
+  Getting there took three findings:
+  - **Stored RoPE frequencies.** The checkpoints store `inv_freq` rounded to fp16, and
+    transformers uses the stored values. With exactly computed frequencies, attention differed
+    by 2e-4: 100 times float noise, found by rebuilding layer 0 in float64. `LoadEncoderLM`
+    now reads the stored frequencies.
+  - **New names in transformers 5.** It saves `LayerNorm` parameters as `gamma`/`beta`, and the
+    layers' shared `inv_freq` once under a wildcard name
+    (`esm.encoder.layer.*.attention...`). The loader accepts both.
+  - **Tokenizer splitting.** `EsmTokenizer` matches every vocabulary token anywhere, then
+    makes each leftover run one `<unk>`. The tokenizer reproduces this with added tokens, a
+    whitespace split and a word-level lookup, and matches on 12 edge cases.
+  - Also: `EncoderLM` on GPU matches the CPU, with padding and masks. Hidden states and
+    attention maps are exposed for probes, SAEs and contacts. A FASTA reader was added.
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.

@@ -493,6 +493,7 @@ The full write-up is in [Protein language models: research and plan](protein-lan
 - **PLM-1, PLM-2.** The Hugging Face `EsmConfig` sets `position_embedding_type` (`"rotary"` for ESM-2), `token_dropout`, `emb_layer_norm_before` and `layer_norm_eps` [V].
   - **Falsifier:** logits that don't match `transformers` to float precision on `esm2_t6_8M`.
   - **Fails when:** token-dropout scaling is skipped at inference. The input embeddings are then off by the mask-ratio factor even with no masks.
+  - **Result (PLM-2, #95):** the falsifier doesn't fire. 8M and 650M match within 4e-6 relative (logits, hidden states) and 1.3e-5 absolute (attention), once RoPE uses the checkpoint's stored fp16-rounded `inv_freq` [V]. Computing it exactly misses by 2e-4.
 - **PLM-3.** ProteinGym: 217 DMS substitution assays, scored by masked-marginal log-odds and Spearman correlation [V]. The best methods reach about 0.45–0.48 average Spearman (MSA Pairformer, VespaG) [V].
   - **Falsifier:** per-assay Spearman more than 0.01 from ProteinGym's published ESM-2 scores.
 - **PLM-4.** Contacts: ESM's logistic regression over attention maps after symmetrizing and APC. arXiv 2606.21876 (2026): averaging the top-K heads, chosen with 10 labeled proteins, matches the Categorical Jacobian in one forward pass [V].
