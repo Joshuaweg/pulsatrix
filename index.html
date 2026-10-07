@@ -434,6 +434,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -443,10 +470,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -464,8 +491,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -879,10 +906,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
         
           
-          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
             
   
   
@@ -900,8 +927,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_16">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1409,10 +1436,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
         
           
-          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
             
   
   
@@ -1430,8 +1457,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_17">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1621,12 +1648,17 @@ safetensors or as checkpoints with optimizer state, and <code>set_seed</code> ma
 Runs on CPU, CUDA or HIP/ROCm.</p>
 <p><strong><a href="data-pipeline/">Data Loading, Transformation &amp; Validation</a></strong>: <code>Dataset</code> and
 <code>DataLoader</code> with readers for CSV, images, text, audio and video frames, plus dataset
-statistics and outlier checks.</p>
+statistics and outlier checks. Tokenizers load from a Hugging Face <code>tokenizer.json</code> and return
+offsets back into the text, and token scores can be merged into word scores.</p>
+<p><strong><a href="language-models/">Language Models</a></strong>: load Llama, SmolLM2, Qwen2/2.5 and Qwen3 models
+from the Hugging Face Hub, generate text, and explain each prediction per token or per word with
+AttnLRP. Logits, token ids and explanations are checked against <code>transformers</code>, <code>tokenizers</code>
+and LXT, and <code>pulsatrix_explain_text</code> turns a prompt into an explanation figure in one command.</p>
 <p><strong><a href="interpretability/">Interpretability</a></strong>: explain a trained model's predictions.</p>
 <ul>
 <li><a href="interpretability/lrp/">Layer-wise Relevance Propagation</a>: Epsilon, Gamma, AlphaBeta and
   ZBox rules, Zennit's composite presets, and AttnLRP/MambaLRP for attention and state-space
-  layers.</li>
+  layers. AttnLRP matches LXT on real language models.</li>
 <li><a href="interpretability/model-agnostic/">Model-agnostic explainers</a>: KernelSHAP, LIME and partial
   dependence plots.</li>
 <li><a href="interpretability/deep-learning-approaches/">Gradient-based explainers</a>: Saliency,
@@ -1650,9 +1682,9 @@ NSGA-II, NEAT, Evolution Strategies, CMA-ES, Population Based Training and E-GAN
 search, Bayesian optimization (Gaussian process and TPE), and early stopping with Successive
 Halving, Hyperband and ASHA.</p>
 <p><strong><a href="visualization/">Visualization</a></strong>: versioned JSON documents for explanations,
-heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts and the
-<code>pulsatrix_svg</code> tool; and, optionally, native Dear ImGui + ImPlot windows with a live training
-dashboard.</p>
+heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts
+(including token and word relevance for text) and the <code>pulsatrix_svg</code> tool; and, optionally,
+native Dear ImGui + ImPlot windows with a live training dashboard and a token relevance view.</p>
 <p><strong><a href="system-monitoring/">System Monitoring</a></strong>: log CPU/GPU utilization, memory and
 temperatures while you train.</p>
 <p><strong><a href="gpu-profiling/">GPU Profiling</a></strong> and <strong><a href="benchmarks/">Benchmarks</a></strong>: per-op GPU kernel
@@ -1661,7 +1693,7 @@ LRP conservation, with an A/B comparison between two builds.</p>
 <p><strong>Python bindings</strong>: <code>Tensor</code>, the core layers, LRP and the other explainers, and seeding from
 Python. See <a href="getting-started/#python-bindings">Getting Started</a>.</p>
 <p>Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,270 CPU tests (2,400 with the HIP backend) that run in CI on Windows and Linux.</p>
+2,460 CPU tests (2,600 with the HIP backend) that run in CI on Windows and Linux.</p>
 <h2 id="more-resources">More resources<a class="headerlink" href="#more-resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="getting-started/#using-pulsatrix-in-your-own-project">Using pulsatrix in your project</a></strong>:

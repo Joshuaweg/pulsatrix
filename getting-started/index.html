@@ -552,6 +552,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../language-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -561,10 +588,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -582,8 +609,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -997,10 +1024,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
         
           
-          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
             
   
   
@@ -1018,8 +1045,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_16">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1527,10 +1554,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
         
           
-          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
             
   
   
@@ -1548,8 +1575,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_17">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1896,6 +1923,8 @@ network's predictions. The core of it looks like this (full source:
 <li><a href="https://github.com/Joshuaweg/pulsatrix/tree/master/examples">Examples</a>: the full list of demos.</li>
 <li><a href="../recipes/">Recipes</a>: short programs that each show one feature, with a walkthrough.</li>
 <li><a href="../interpretability/lrp/">LRP</a>: explain your model's predictions.</li>
+<li><a href="../language-models/">Language models</a>: load a Hugging Face model, generate text and
+  explain its predictions.</li>
 <li><a href="../benchmarks/">Benchmarks</a>: <code>./build/pulsatrix_bench run</code> measures training and explanation
   speed on every backend in your build.</li>
 </ul>
@@ -2027,7 +2056,9 @@ cmake<span class="w"> </span>--install<span class="w"> </span>build<span class="
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">pulsatrix::core</span><span class="p">)</span>
 </code></pre></div>
 <p>Configure your project with <code>-DCMAKE_PREFIX_PATH=/path/to/prefix</code>. The package installs the core
-library, its headers and the <code>pulsatrix_svg</code> and <code>pulsatrix_bench</code> tools. A build with the CUDA or HIP backend also installs that backend's
+library, its headers and the command-line tools (<code>pulsatrix_svg</code>, <code>pulsatrix_bench</code>,
+<code>pulsatrix_explain_text</code>, <code>pulsatrix_golden</code>, <code>pulsatrix_attnlrp</code> and
+<code>pulsatrix_tokenizer_parity</code>). A build with the CUDA or HIP backend also installs that backend's
 headers, and <code>find_package</code> then looks for the same CUDA or ROCm libraries (ROCm through
 <code>ROCM_PATH</code>, as in the build). <code>pulsatrix_HAS_CUDA</code> and <code>pulsatrix_HAS_HIP</code> say which backends the
 installed build has. The visualization module and the Python bindings aren't installed.</p>
