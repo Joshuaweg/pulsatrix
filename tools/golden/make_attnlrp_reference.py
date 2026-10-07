@@ -77,7 +77,8 @@ def main():
     out = a.out or os.path.join(a.model_dir, "attnlrp.safetensors")
 
     config = AutoConfig.from_pretrained(a.model_dir)
-    modeling = importlib.import_module("transformers.models.%s.modeling_%s" % (config.model_type, config.model_type))
+    family = config.model_type.removesuffix("_text")  # gemma3_text lives in transformers.models.gemma3
+    modeling = importlib.import_module("transformers.models.%s.modeling_%s" % (family, family))
     if not a.plain_gradient:
         patch_map = dict(get_default_map(modeling))
         patch_map[modeling] = patch_eager_attention

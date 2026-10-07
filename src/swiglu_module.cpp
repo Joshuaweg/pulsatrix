@@ -6,6 +6,10 @@
 #include "pulsatrix/assert.hpp"
 
 namespace pulsatrix {
+
+namespace {
+ElementwiseOp GateOp(GatedActivation a) { return a == GatedActivation::GeluTanh ? ElementwiseOp::GeluTanh : ElementwiseOp::Silu; }
+}  // namespace
 namespace {
 
 /**
@@ -32,7 +36,7 @@ namespace {
 
 }  // namespace
 
-SwiGLUModule::SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend, bool use_bias)
+SwiGLUModule::SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend, bool use_bias, GatedActivation activation)
     : d_model_(d_model),
       d_ff_(d_ff),
       backend_(backend),
@@ -42,6 +46,7 @@ SwiGLUModule::SwiGLUModule(int64_t d_model, int64_t d_ff, DeviceBackend* backend
       last_gate_pre_(Shape({0}), backend),
       last_gate_post_(Shape({0}), backend),
       last_up_(Shape({0}), backend) {
+    activation_ = activation;
     // External boundary (construction arguments can originate from Phase 5's Python
     // bindings with no upstream validation).
     if (d_model <= 0) {
@@ -68,7 +73,7 @@ Tensor SwiGLUModule::forward_impl(const Tensor& input) {
 
     Tensor gate_pre = gate_proj_.forward(flat_input);  // (n_flat, d_ff)
     Tensor gate_post(gate_pre.shape(), backend_);
-    backend_->elementwise(ElementwiseOp::Silu, gate_pre.data(), gate_post.data(),
+    backend_->elementwise(GateOp(activation_), gate_pre.data(), gate_post.data(),
                            static_cast<size_t>(gate_pre.numel()));
 
     Tensor up = up_proj_.forward(flat_input);  // (n_flat, d_ff)
@@ -106,9 +111,9 @@ Tensor SwiGLUModule::backward(const Tensor& grad_output) {
     Tensor grad_up(grad_hidden.shape(), backend_);
     backend_->mul(grad_hidden.data(), last_gate_post_.data(), grad_up.data(), n);
 
-    // silu'(x) = sigmoid(x) + x*sigmoid(x)*(1-sigmoid(x)), from the cached pre-activation.
+    // The gate activation's derivative, from the cached pre-activation.
     Tensor grad_gate_pre(grad_hidden.shape(), backend_);
-    backend_->elementwise_backward(ElementwiseOp::Silu, last_gate_pre_.data(), grad_gate_post.data(),
+    backend_->elementwise_backward(GateOp(activation_), last_gate_pre_.data(), grad_gate_post.data(),
                                    grad_gate_pre.data(), n);
 
     Tensor grad_from_gate = gate_proj_.backward(grad_gate_pre);  // (n_flat, d_model)

@@ -111,10 +111,15 @@ PULSATRIX_HOST_DEVICE inline void rope_rotate(const float* in, const float* cos_
 
 // ---- Attention masks (MultiHeadAttentionModule, LLM-1) ------------------------------------------
 
-// Whether score (b, ., i, j) is masked: a causal future key, or a key key_keep marks as padding.
+// Whether score (b, ., i, j) is masked: a causal future key, a key further back than a sliding
+// window (window > 0: query i + q_offset sees keys j + window > i + q_offset), or a key key_keep
+// marks as padding.
 PULSATRIX_HOST_DEVICE inline bool attention_masked(const float* key_keep, size_t b, size_t i, size_t j, size_t k_len,
-                                                   bool causal, size_t q_offset) {
+                                                   bool causal, size_t q_offset, size_t window) {
     if (causal && j > i + q_offset) {
+        return true;
+    }
+    if (causal && window > 0 && j + window <= i + q_offset) {
         return true;
     }
     return key_keep != nullptr && key_keep[b * k_len + j] == 0.0f;

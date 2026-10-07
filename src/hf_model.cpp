@@ -68,6 +68,12 @@ std::optional<HfRopeScaling> RopeScaling(const JsonValue& o) {
     const JsonValue* v = Member(o, "rope_scaling");
     if (v == nullptr) v = Member(o, "rope_parameters");
     if (v == nullptr) return std::nullopt;
+    // Per-layer-type parameters (Gemma 3 in newer files): the full-attention layers' scaling.
+    if (v->type() == JsonValue::Type::Object) {
+        if (const JsonValue* full = v->find("full_attention"); full != nullptr && full->type() == JsonValue::Type::Object) {
+            v = full;
+        }
+    }
     if (v->type() != JsonValue::Type::Object) Bad("rope_scaling must be an object");
     HfRopeScaling r;
     r.type = OptionalString(*v, "rope_type").value_or(OptionalString(*v, "type").value_or("default"));
@@ -129,10 +135,21 @@ HfModelConfig ParseHfConfig(std::string_view json) {
         c.head_dim = c.hidden_size / c.num_attention_heads;
     }
     c.rms_norm_eps = static_cast<float>(OptionalNumber(t, "rms_norm_eps").value_or(1e-6));
+    const JsonValue* rope_params = Member(t, "rope_parameters");
+    if (rope_params != nullptr && rope_params->type() != JsonValue::Type::Object) rope_params = nullptr;
+    const JsonValue* rope_full = rope_params != nullptr ? rope_params->find("full_attention") : nullptr;
+    const JsonValue* rope_sliding = rope_params != nullptr ? rope_params->find("sliding_attention") : nullptr;
     if (auto theta = OptionalNumber(t, "rope_theta")) {
         c.rope_theta = static_cast<float>(*theta);
-    } else if (const JsonValue* rp = Member(t, "rope_parameters"); rp != nullptr && rp->type() == JsonValue::Type::Object) {
-        c.rope_theta = static_cast<float>(OptionalNumber(*rp, "rope_theta").value_or(10000.0));
+    } else if (rope_full != nullptr && rope_full->type() == JsonValue::Type::Object) {
+        c.rope_theta = static_cast<float>(OptionalNumber(*rope_full, "rope_theta").value_or(10000.0));
+    } else if (rope_params != nullptr) {
+        c.rope_theta = static_cast<float>(OptionalNumber(*rope_params, "rope_theta").value_or(10000.0));
+    }
+    if (auto local = OptionalNumber(t, "rope_local_base_freq")) {
+        c.rope_local_base_freq = static_cast<float>(*local);
+    } else if (rope_sliding != nullptr && rope_sliding->type() == JsonValue::Type::Object) {
+        if (auto theta = OptionalNumber(*rope_sliding, "rope_theta")) c.rope_local_base_freq = static_cast<float>(*theta);
     }
     c.rope_scaling = RopeScaling(t);
     c.tie_word_embeddings =
@@ -183,26 +200,46 @@ HfModelConfig ParseHfConfig(std::string_view json) {
     if (c.rope_scaling && c.rope_scaling->type != "llama3" && c.rope_scaling->type != "linear") {
         c.unsupported.push_back("rope_scaling \"" + c.rope_scaling->type + "\"");
     }
-    if (c.sliding_window && *c.sliding_window < c.max_position_embeddings) {
-        c.unsupported.push_back("sliding-window attention (LLM-9)");
+    // Sliding-window attention (LLM-9): per layer_types when the config lists them, otherwise on
+    // every layer (Mistral). Qwen2's max_window_layers rule without layer_types isn't followed.
+    if (c.sliding_window && *c.sliding_window >= c.max_position_embeddings && c.max_position_embeddings > 0) {
+        c.sliding_window.reset();  // a window no sequence can exceed changes nothing
     }
-    // Gemma scales scores by query_pre_attn_scalar^-0.5; only a value other than head_dim differs
-    // from the usual scale.
-    if (c.query_pre_attn_scalar && *c.query_pre_attn_scalar != static_cast<float>(c.head_dim)) {
-        c.unsupported.push_back("query_pre_attn_scalar (LLM-9)");
+    if (c.sliding_window && c.layer_types.empty() && type == "qwen2") {
+        c.unsupported.push_back("Qwen2's sliding window without layer_types (max_window_layers)");
     }
-    if (type.rfind("gemma", 0) == 0) {
-        c.unsupported.push_back("Gemma's (1 + w) RMSNorm and embedding scaling (LLM-9)");
+    if (!c.layer_types.empty() && static_cast<int64_t>(c.layer_types.size()) != c.num_hidden_layers) {
+        Bad("layer_types must name one type per layer");
     }
-    if (c.hidden_act != "silu") c.unsupported.push_back("activation \"" + c.hidden_act + "\" in the MLP");
+    for (const std::string& lt : c.layer_types) {
+        if (lt != "full_attention" && lt != "sliding_attention") c.unsupported.push_back("layer type \"" + lt + "\"");
+    }
+    // Gemma 3 (LLM-9): (1 + w) RMSNorms, embeddings scaled by sqrt(hidden_size), sandwich norms.
+    if (type == "gemma3" || type == "gemma3_text") {
+        c.norm_weight_offset = 1.0f;
+        c.embed_scale = static_cast<float>(std::sqrt(static_cast<double>(c.hidden_size)));
+        c.post_norms = true;
+    } else if (type.rfind("gemma", 0) == 0) {
+        c.unsupported.push_back("Gemma 1 and 2 (" + type + "); LLM-9 covers Gemma 3");
+    }
+    if (c.hidden_act != "silu" && c.hidden_act != "gelu_pytorch_tanh" && c.hidden_act != "gelu_new") {
+        c.unsupported.push_back("activation \"" + c.hidden_act + "\" in the MLP");
+    }
     if (c.mlp_bias) c.unsupported.push_back("MLP biases (IO-4)");
-    if (Member(t, "attn_logit_softcapping") || Member(t, "final_logit_softcapping")) {
-        c.unsupported.push_back("logit softcapping");
+    for (const char* softcap : {"attn_logit_softcapping", "final_logit_softcapping"}) {
+        const JsonValue* v = Member(t, softcap);
+        if (v != nullptr && !v->is_null()) c.unsupported.push_back(std::string("logit softcapping (") + softcap + ")");
     }
     return c;
 }
 
 HfModelConfig ReadHfConfig(const std::string& path) { return ParseHfConfig(ReadText(path)); }
+
+bool HfModelConfig::is_sliding_layer(int64_t i) const {
+    if (!sliding_window) return false;
+    if (layer_types.empty()) return true;
+    return i >= 0 && static_cast<size_t>(i) < layer_types.size() && layer_types[static_cast<size_t>(i)] == "sliding_attention";
+}
 
 std::vector<double> RopeInverseFrequencies(const HfModelConfig& config) {
     const int64_t half = config.head_dim / 2;
@@ -253,6 +290,21 @@ AttentionConfig ToAttentionConfig(const HfModelConfig& config) {
     a.qkv_bias = config.qkv_bias;
     a.out_bias = config.out_bias;
     a.causal = true;
+    if (config.query_pre_attn_scalar) {
+        a.score_scale = static_cast<float>(1.0 / std::sqrt(static_cast<double>(*config.query_pre_attn_scalar)));
+    }
+    a.qk_norm_weight_offset = config.norm_weight_offset;
+    return a;
+}
+
+AttentionConfig ToAttentionConfig(const HfModelConfig& config, int64_t layer) {
+    AttentionConfig a = ToAttentionConfig(config);
+    if (!config.is_sliding_layer(layer)) return a;
+    a.sliding_window = *config.sliding_window;
+    if (config.rope_local_base_freq) {  // Gemma 3: the local layers' own base, without scaling
+        a.rope_base = *config.rope_local_base_freq;
+        a.rope_inverse_frequencies.clear();
+    }
     return a;
 }
 

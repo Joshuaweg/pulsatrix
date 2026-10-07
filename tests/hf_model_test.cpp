@@ -116,18 +116,60 @@ TEST(HfConfigTest, Llama32RopeScalingMatchesHuggingFace) {
     EXPECT_THROW((void)RopeInverseFrequencies(yarn), std::invalid_argument);
 }
 
-TEST(HfConfigTest, GemmaListsEverythingPulsatrixCantRunYet) {
+// Gemma 3 270M's real config (LLM-9): everything it asks for runs.
+TEST(HfConfigTest, Gemma3RunsWithEveryFeature) {
     HfModelConfig c = ReadHfConfig(Fixture("gemma-3-270m"));
     EXPECT_EQ(c.model_type, "gemma3_text");
     EXPECT_EQ(c.head_dim, 256);
     EXPECT_EQ(c.hidden_act, "gelu_pytorch_tanh");  // from hidden_activation
     EXPECT_EQ(c.sliding_window, 512);
     EXPECT_TRUE(c.qk_norm);
-    EXPECT_EQ(c.layer_types.size(), 4u);
-    EXPECT_TRUE(Mentions(c.unsupported, "sliding-window"));
-    EXPECT_TRUE(Mentions(c.unsupported, "(1 + w)"));
-    EXPECT_TRUE(Mentions(c.unsupported, "gelu_pytorch_tanh"));
-    EXPECT_FALSE(Mentions(c.unsupported, "query_pre_attn_scalar"));  // 256 == head_dim
+    EXPECT_TRUE(c.post_norms);
+    EXPECT_FLOAT_EQ(c.norm_weight_offset, 1.0f);
+    EXPECT_FLOAT_EQ(c.embed_scale, static_cast<float>(std::sqrt(640.0)));
+    EXPECT_EQ(c.rope_local_base_freq, 10000.0f);
+    EXPECT_FLOAT_EQ(c.rope_theta, 1e6f);
+    EXPECT_TRUE(c.unsupported.empty()) << (c.unsupported.empty() ? "" : c.unsupported[0]);
+    // Every sixth layer is full attention.
+    EXPECT_TRUE(c.is_sliding_layer(0));
+    EXPECT_FALSE(c.is_sliding_layer(5));
+    const AttentionConfig sliding = ToAttentionConfig(c, 0);
+    EXPECT_EQ(sliding.sliding_window, 512);
+    EXPECT_FLOAT_EQ(sliding.rope_base, 10000.0f);
+    EXPECT_FLOAT_EQ(sliding.score_scale, 1.0f / 16.0f);  // query_pre_attn_scalar 256
+    EXPECT_FLOAT_EQ(sliding.qk_norm_weight_offset, 1.0f);
+    const AttentionConfig full = ToAttentionConfig(c, 5);
+    EXPECT_EQ(full.sliding_window, 0);
+    EXPECT_FLOAT_EQ(full.rope_base, 1e6f);
+}
+
+// transformers 5 writes per-layer-type RoPE as nested rope_parameters (the tiny fixture does).
+TEST(HfConfigTest, Gemma3PerLayerTypeRopeParameters) {
+    HfModelConfig c = ReadHfConfig(std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf_tiny/gemma3/config.json");
+    EXPECT_FLOAT_EQ(c.rope_theta, 10000.0f);
+    EXPECT_EQ(c.rope_local_base_freq, 100.0f);
+    ASSERT_TRUE(c.rope_scaling.has_value());  // the full-attention layers' scaling
+    EXPECT_EQ(c.rope_scaling->type, "linear");
+    EXPECT_FLOAT_EQ(c.rope_scaling->factor, 2.0f);
+    EXPECT_TRUE(ToAttentionConfig(c, 0).rope_inverse_frequencies.empty());   // sliding: base 100, unscaled
+    EXPECT_EQ(ToAttentionConfig(c, 2).rope_inverse_frequencies.size(), 8u);  // full: scaled frequencies
+    EXPECT_FLOAT_EQ(ToAttentionConfig(c, 2).score_scale, static_cast<float>(1.0 / std::sqrt(12.0)));
+}
+
+TEST(HfConfigTest, Gemma1And2AndSoftcappingAreStillRefused) {
+    const std::string base = R"("hidden_size": 64, "intermediate_size": 128, "num_hidden_layers": 2,
+        "num_attention_heads": 4, "vocab_size": 100, "hidden_activation": "gelu_pytorch_tanh")";
+    HfModelConfig gemma2 = ParseHfConfig(R"({"architectures": ["Gemma2ForCausalLM"], "model_type": "gemma2", )" + base +
+                                         R"(, "attn_logit_softcapping": 50.0, "final_logit_softcapping": 30.0})");
+    EXPECT_TRUE(Mentions(gemma2.unsupported, "Gemma 1 and 2"));
+    EXPECT_TRUE(Mentions(gemma2.unsupported, "attn_logit_softcapping"));
+    EXPECT_TRUE(Mentions(gemma2.unsupported, "final_logit_softcapping"));
+    HfModelConfig nulls = ParseHfConfig(R"({"architectures": ["Gemma3ForCausalLM"], "model_type": "gemma3_text", )" + base +
+                                        R"(, "attn_logit_softcapping": null})");
+    EXPECT_TRUE(nulls.unsupported.empty());  // null means off
+    EXPECT_THROW((void)ParseHfConfig(R"({"architectures": ["Gemma3ForCausalLM"], "model_type": "gemma3_text", )" + base +
+                                     R"(, "sliding_window": 4, "layer_types": ["sliding_attention"]})"),
+                 std::invalid_argument);  // one layer type for two layers
 }
 
 TEST(HfConfigTest, NewerAndMultimodalLayouts) {

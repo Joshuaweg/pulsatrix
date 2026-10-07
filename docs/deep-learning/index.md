@@ -35,6 +35,12 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   mask, the RoPE pair layout (`RoPELayout::RotateHalf` for Llama-family models) and base
   (`rope_theta`), and QK-Norm. `set_key_padding_mask()` masks padding tokens and
   `set_position_offset()` shifts RoPE positions. `LinearModule` can be built without a bias.
+  The settings Gemma 3 adds (LLM-9) are:
+  - `AttentionConfig::sliding_window`, so each query sees only its last positions
+  - `score_scale` (Gemma's `query_pre_attn_scalar^-0.5`)
+  - `qk_norm_weight_offset`
+  - `TransformerBlockOptions`, which gives a GeGLU MLP (`GatedActivation::GeluTanh`), sandwich
+    norms around attention and the MLP, and `(1 + w)` RMSNorms (`RMSNormModule::set_weight_offset`)
   `TiedLMHeadModule` is the output layer of models with `tie_word_embeddings`: it computes logits
   with an `EmbeddingModule`'s table, which stays a single parameter whose gradient sums both
   uses.
@@ -186,7 +192,7 @@ for (const std::string& name : weights.names()) { /* weights.info(name), weights
   exactly, and rounds fp64; integer tensors stay raw bytes (`bytes()`).
 
 **Loading a model.** `LoadCausalLM` builds a `CausalLM` (embedding, transformer blocks, final
-RMSNorm, tied or untied head: Llama, SmolLM2, Qwen2/2.5, Qwen3) from a downloaded model directory
+RMSNorm, tied or untied head: Llama, SmolLM2, Qwen2/2.5, Qwen3, Gemma 3) from a downloaded model directory
 and loads its weights by name:
 
 ```cpp

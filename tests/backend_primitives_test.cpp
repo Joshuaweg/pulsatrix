@@ -294,5 +294,23 @@ TEST_F(BackendPrimitivesTest, AccumulateRowsAddsIntoTheRunningValueRowByRow) {
     EXPECT_EQ(out, (std::vector<float>{14, 26}));
 }
 
+// GELU's tanh approximation (Gemma's GeGLU gate, LLM-9), against torch.nn.functional.gelu(x,
+// approximate="tanh") and its autograd gradient (torch 2.14.1).
+TEST_F(BackendPrimitivesTest, GeluTanhMatchesPyTorch) {
+    const std::vector<float> x = {-3.0f, -1.0f, -0.25f, 0.0f, 0.5f, 1.0f, 2.0f, 4.0f};
+    const std::vector<float> y = {-0.0036374330520629883f, -0.15880799293518066f, -0.10032464563846588f, 0.0f,
+                                  0.3457140028476715f,     0.8411920070648193f,  1.9545977115631104f,   3.999929904937744f};
+    const std::vector<float> dy = {-0.011584296822547913f, -0.08296409249305725f, 0.3046458959579468f, 0.5f,
+                                   0.8673698902130127f,    1.0829640626907349f,   1.0860992670059204f, 1.0003349781036377f};
+    std::vector<float> out(x.size()), grad(x.size());
+    const std::vector<float> ones(x.size(), 1.0f);
+    cpu.elementwise(ElementwiseOp::GeluTanh, x.data(), out.data(), x.size());
+    cpu.elementwise_backward(ElementwiseOp::GeluTanh, x.data(), ones.data(), grad.data(), x.size());
+    for (size_t i = 0; i < x.size(); ++i) {
+        EXPECT_NEAR(out[i], y[i], 1e-6f) << x[i];
+        EXPECT_NEAR(grad[i], dy[i], 1e-6f) << x[i];
+    }
+}
+
 }  // namespace
 }  // namespace pulsatrix

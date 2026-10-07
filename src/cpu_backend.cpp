@@ -149,6 +149,11 @@ void CPUBackend::elementwise(ElementwiseOp op, const float* in, float* out, size
                 out[i] = std::exp(in[i]);
             }
             break;
+        case ElementwiseOp::GeluTanh:
+            for (size_t i = 0; i < n; ++i) {
+                out[i] = pointwise::gelu_tanh(in[i]);
+            }
+            break;
     }
 }
 
@@ -247,6 +252,9 @@ void CPUBackend::elementwise_backward(ElementwiseOp op, const float* x, const fl
             }
             case ElementwiseOp::Exp:
                 d = std::exp(xi);
+                break;
+            case ElementwiseOp::GeluTanh:
+                d = pointwise::gelu_tanh_grad(xi);
                 break;
         }
         grad_in[i] = g * d;
@@ -411,13 +419,13 @@ void CPUBackend::rope_rotate(const float* in, const float* cos_table, const floa
 }
 
 void CPUBackend::attention_mask_fill(float* scores, const float* key_keep, size_t batch, size_t heads, size_t q_len,
-                                     size_t k_len, bool causal, size_t q_offset, float value) {
+                                     size_t k_len, bool causal, size_t q_offset, size_t window, float value) {
     for (size_t b = 0; b < batch; ++b) {
         for (size_t h = 0; h < heads; ++h) {
             for (size_t i = 0; i < q_len; ++i) {
                 float* row = scores + ((b * heads + h) * q_len + i) * k_len;
                 for (size_t j = 0; j < k_len; ++j) {
-                    if (rows::attention_masked(key_keep, b, i, j, k_len, causal, q_offset)) {
+                    if (rows::attention_masked(key_keep, b, i, j, k_len, causal, q_offset, window)) {
                         row[j] = value;
                     }
                 }

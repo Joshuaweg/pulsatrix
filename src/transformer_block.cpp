@@ -51,16 +51,50 @@ TransformerBlock::TransformerBlock(int64_t d_model, int64_t num_heads, int64_t d
 
 TransformerBlock::TransformerBlock(const AttentionConfig& attention, int64_t d_ff, DeviceBackend* backend,
                                    float norm_eps, bool mlp_bias)
+    : TransformerBlock(attention, d_ff, backend, TransformerBlockOptions{norm_eps, mlp_bias}) {}
+
+TransformerBlock::TransformerBlock(const AttentionConfig& attention, int64_t d_ff, DeviceBackend* backend,
+                                   const TransformerBlockOptions& options)
     : d_model_(attention.d_model),
       backend_(backend),
-      norm1_(attention.d_model > 0 ? attention.d_model : 1, backend, backend->device(), norm_eps),
+      norm1_(attention.d_model > 0 ? attention.d_model : 1, backend, backend->device(), options.norm_eps),
       mha_(attention, backend),
-      norm2_(attention.d_model > 0 ? attention.d_model : 1, backend, backend->device(), norm_eps),
-      swiglu_(attention.d_model, d_ff, backend, mlp_bias),
+      norm2_(attention.d_model > 0 ? attention.d_model : 1, backend, backend->device(), options.norm_eps),
+      swiglu_(attention.d_model, d_ff, backend, options.mlp_bias, options.mlp_activation),
       last_x_(Shape({0}), backend),
       last_attn_out_(Shape({0}), backend),
       last_y1_(Shape({0}), backend),
-      last_ffn_out_(Shape({0}), backend) {}
+      last_ffn_out_(Shape({0}), backend) {
+    norm1_.set_weight_offset(options.norm_weight_offset);
+    norm2_.set_weight_offset(options.norm_weight_offset);
+    if (options.post_norms) {
+        const int64_t d = attention.d_model > 0 ? attention.d_model : 1;
+        post_attn_norm_ = std::make_unique<RMSNormModule>(d, backend, backend->device(), options.norm_eps);
+        post_mlp_norm_ = std::make_unique<RMSNormModule>(d, backend, backend->device(), options.norm_eps);
+        post_attn_norm_->set_weight_offset(options.norm_weight_offset);
+        post_mlp_norm_->set_weight_offset(options.norm_weight_offset);
+    }
+}
+
+namespace {
+
+/** @brief A sandwich norm over (..., d) values, or the values themselves when there is none. */
+Tensor PostNorm(RMSNormModule* norm, const Tensor& x, int64_t n_flat, int64_t d) {
+    if (norm == nullptr) return x;
+    return reshaped(norm->forward(reshaped(x, Shape({n_flat, d}))), x.shape());
+}
+
+Tensor PostNormBackward(RMSNormModule* norm, const Tensor& g, int64_t n_flat, int64_t d) {
+    if (norm == nullptr) return g;
+    return reshaped(norm->backward(reshaped(g, Shape({n_flat, d}))), g.shape());
+}
+
+Tensor PostNormRelevance(RMSNormModule* norm, const Tensor& r, int64_t n_flat, int64_t d, const LRPRuleConfig& config) {
+    if (norm == nullptr) return r;
+    return reshaped(norm->propagate_relevance(reshaped(r, Shape({n_flat, d})), config), r.shape());
+}
+
+}  // namespace
 
 Tensor TransformerBlock::forward_impl(const Tensor& input) {
     // Device-generic (GPU-native-kernels Mission 2): norms, attention, SwiGLU and the two
@@ -76,14 +110,14 @@ Tensor TransformerBlock::forward_impl(const Tensor& input) {
 
     Tensor norm1_out_flat = norm1_.forward(reshaped(input, Shape({n_flat, d_model_})));
     Tensor norm1_out = reshaped(norm1_out_flat, last_input_shape_);
-    Tensor attn_out = mha_.forward(norm1_out);
+    Tensor attn_out = PostNorm(post_attn_norm_.get(), mha_.forward(norm1_out), n_flat, d_model_);
 
     Tensor y1(input.shape(), backend_);
     backend_->add(input.data(), attn_out.data(), y1.data(), static_cast<size_t>(y1.numel()));
 
     Tensor norm2_out_flat = norm2_.forward(reshaped(y1, Shape({n_flat, d_model_})));
     Tensor norm2_out = reshaped(norm2_out_flat, last_input_shape_);
-    Tensor ffn_out = swiglu_.forward(norm2_out);
+    Tensor ffn_out = PostNorm(post_mlp_norm_.get(), swiglu_.forward(norm2_out), n_flat, d_model_);
 
     Tensor y2(input.shape(), backend_);
     backend_->add(y1.data(), ffn_out.data(), y2.data(), static_cast<size_t>(y2.numel()));
@@ -105,10 +139,13 @@ Tensor TransformerBlock::forward_cached(const Tensor& input, KVCache& cache) {
     has_forwarded_ = false;
     const Shape shape = input.shape();
     const int64_t n_flat = flatten_leading_dims(shape, d_model_);
-    Tensor attn_out = mha_.forward_cached(reshaped(norm1_.forward(reshaped(input, Shape({n_flat, d_model_}))), shape), cache);
+    Tensor attn_out = PostNorm(post_attn_norm_.get(),
+                               mha_.forward_cached(reshaped(norm1_.forward(reshaped(input, Shape({n_flat, d_model_}))), shape), cache),
+                               n_flat, d_model_);
     Tensor y1(shape, backend_);
     backend_->add(input.data(), attn_out.data(), y1.data(), static_cast<size_t>(y1.numel()));
-    Tensor ffn_out = swiglu_.forward(reshaped(norm2_.forward(reshaped(y1, Shape({n_flat, d_model_}))), shape));
+    Tensor ffn_out = PostNorm(post_mlp_norm_.get(), swiglu_.forward(reshaped(norm2_.forward(reshaped(y1, Shape({n_flat, d_model_}))), shape)),
+                              n_flat, d_model_);
     Tensor y2(shape, backend_);
     backend_->add(y1.data(), ffn_out.data(), y2.data(), static_cast<size_t>(y2.numel()));
     return y2;
@@ -127,7 +164,7 @@ Tensor TransformerBlock::backward(const Tensor& grad_output) {
 
     // y2 = y1 + ffn_out: both branches receive grad_output unchanged (real gradient of a
     // plain sum, not the LRP epsilon split -- that only applies to propagate_relevance).
-    Tensor grad_ffn_out = grad_output;
+    Tensor grad_ffn_out = PostNormBackward(post_mlp_norm_.get(), grad_output, n_flat, d_model_);
     Tensor grad_norm2_out = swiglu_.backward(grad_ffn_out);
     Tensor grad_y1_from_norm2 =
         reshaped(norm2_.backward(reshaped(grad_norm2_out, Shape({n_flat, d_model_}))), last_input_shape_);
@@ -137,7 +174,7 @@ Tensor TransformerBlock::backward(const Tensor& grad_output) {
                   static_cast<size_t>(grad_y1.numel()));
 
     // y1 = x + attn_out: same structure, one level up.
-    Tensor grad_attn_out = grad_y1;
+    Tensor grad_attn_out = PostNormBackward(post_attn_norm_.get(), grad_y1, n_flat, d_model_);
     Tensor grad_norm1_out = mha_.backward(grad_attn_out);
     Tensor grad_x_from_norm1 =
         reshaped(norm1_.backward(reshaped(grad_norm1_out, Shape({n_flat, d_model_}))), last_input_shape_);
@@ -166,7 +203,7 @@ Tensor TransformerBlock::propagate_relevance(const Tensor& relevance_out, const 
     Tensor r_ffn_out(relevance_out.shape(), backend_);
     residual_split(last_y1_, last_ffn_out_, relevance_out, config.epsilon, r_y1_direct, r_ffn_out, backend_);
 
-    Tensor r_norm2_out = swiglu_.propagate_relevance(r_ffn_out, config);
+    Tensor r_norm2_out = swiglu_.propagate_relevance(PostNormRelevance(post_mlp_norm_.get(), r_ffn_out, n_flat, d_model_, config), config);
     Tensor r_y1_from_norm2 = reshaped(
         norm2_.propagate_relevance(reshaped(r_norm2_out, Shape({n_flat, d_model_})), config), last_input_shape_);
 
@@ -178,7 +215,7 @@ Tensor TransformerBlock::propagate_relevance(const Tensor& relevance_out, const 
     Tensor r_attn_out(relevance_out.shape(), backend_);
     residual_split(last_x_, last_attn_out_, r_y1, config.epsilon, r_x_direct, r_attn_out, backend_);
 
-    Tensor r_norm1_out = mha_.propagate_relevance(r_attn_out, config);
+    Tensor r_norm1_out = mha_.propagate_relevance(PostNormRelevance(post_attn_norm_.get(), r_attn_out, n_flat, d_model_, config), config);
     Tensor r_x_from_norm1 = reshaped(
         norm1_.propagate_relevance(reshaped(r_norm1_out, Shape({n_flat, d_model_})), config), last_input_shape_);
 
@@ -194,6 +231,8 @@ std::vector<NamedBufferRef> TransformerBlock::named_buffers() {
     append_named_buffers(result, "mha", mha_);
     append_named_buffers(result, "norm2", norm2_);
     append_named_buffers(result, "swiglu", swiglu_);
+    if (post_attn_norm_) append_named_buffers(result, "post_attn_norm", *post_attn_norm_);
+    if (post_mlp_norm_) append_named_buffers(result, "post_mlp_norm", *post_mlp_norm_);
     return result;
 }
 
@@ -203,6 +242,8 @@ std::vector<NamedParamRef> TransformerBlock::named_parameters() {
     append_named_parameters(params, "mha", mha_);
     append_named_parameters(params, "norm2", norm2_);
     append_named_parameters(params, "swiglu", swiglu_);
+    if (post_attn_norm_) append_named_parameters(params, "post_attn_norm", *post_attn_norm_);
+    if (post_mlp_norm_) append_named_parameters(params, "post_mlp_norm", *post_mlp_norm_);
     return params;
 }
 
@@ -212,6 +253,8 @@ void TransformerBlock::set_training(bool training) {
     mha_.set_training(training);
     norm2_.set_training(training);
     swiglu_.set_training(training);
+    if (post_attn_norm_) post_attn_norm_->set_training(training);
+    if (post_mlp_norm_) post_mlp_norm_->set_training(training);
 }
 
 }  // namespace pulsatrix

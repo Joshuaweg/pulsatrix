@@ -69,6 +69,14 @@ public:
     /** @brief Vector overload for runtime-sized sources -- see Tensor's own vector ctor. */
     void set_gamma(const std::vector<float>& values);
 
+    /**
+     * @brief Scales by `offset + gamma` instead of `gamma` (LLM-9). Gemma stores its RMSNorm
+     *        weights centered on zero and multiplies by `1 + w`; with an offset of 1 the parameter
+     *        stays the checkpoint's `w`, so loading and saving don't change it. The default is 0.
+     */
+    void set_weight_offset(float offset) { weight_offset_ = offset; }
+    [[nodiscard]] float weight_offset() const { return weight_offset_; }
+
     [[nodiscard]] const Tensor& gamma() const { return gamma_; }
     [[nodiscard]] const Tensor& gamma_grad() const { return gamma_grad_; }
 
@@ -100,6 +108,7 @@ protected:
 
 private:
     int64_t num_features_;
+    float weight_offset_ = 0.0f;
     float eps_;
     DeviceBackend* backend_;
     Tensor gamma_;

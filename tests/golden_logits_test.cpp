@@ -34,7 +34,7 @@ TEST_P(GoldenTinyTest, MatchesTransformersWellInsideTheThreshold) {
     EXPECT_EQ(r.metadata.at("dtype"), "float32");
 }
 
-INSTANTIATE_TEST_SUITE_P(TinyModels, GoldenTinyTest, ::testing::Values("llama", "qwen2", "qwen3"));
+INSTANTIATE_TEST_SUITE_P(TinyModels, GoldenTinyTest, ::testing::Values("llama", "qwen2", "qwen3", "gemma3"));
 
 // The harness's reason to exist: a wrong weight that still loads is caught.
 TEST(GoldenHarnessTest, CatchesASlightlyWrongWeight) {
