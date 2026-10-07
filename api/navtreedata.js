@@ -78,16 +78,16 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1Tensor.html#ad3b83981e51409e6f14f2b41859a1e91",
 "classpulsatrix_1_1VideoFrameDirectoryDataset.html#a6fe300c006ceb80929600cfadcc1bb4f",
 "files.html",
-"namespacepulsatrix.html#a11fce34145f32225b378bcce7746584a",
-"namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8",
-"structpulsatrix_1_1ASHAResult.html#af61808a819df2b4abdd553d53ac02bd2",
-"structpulsatrix_1_1CircuitGraphDocument.html#a1d4d7de75c8218fd95483e8f3a8ef2dc",
-"structpulsatrix_1_1Encoding.html#af962133bfa305a0af8abd9b8aa3c3377",
-"structpulsatrix_1_1HfModelConfig.html#a09890ee3caa777e40dd3daf1c4bbc9e2",
-"structpulsatrix_1_1NamedBufferRef.html",
-"structpulsatrix_1_1SafetensorsTensorInfo.html#aade7adbbfeddfced933c306256814a7a",
-"structpulsatrix_1_1TopKResult.html#a605de6c1baf34e802e884a5444f7d650",
-"word__scores_8hpp.html"
+"namespacepulsatrix.html#a0f72456585566c7d3dd290e3ac5f0af5",
+"namespacepulsatrix.html#aa24e5d1eb71df9875232f5602cd845c3",
+"relu__module_8hpp.html",
+"structpulsatrix_1_1CMAESState.html#a8aa21589dba05a6e8b1fdc0bee7aa1bb",
+"structpulsatrix_1_1DominantEigenResult.html#a3557716c2274f69f71b7151c293b3028",
+"structpulsatrix_1_1HeatmapColorScale.html#a2ceb7cd7afd372b9029c2a6c2e73a370",
+"structpulsatrix_1_1MorrisDocument_1_1Feature.html#a5d5684fecf546a15a55beabfa96930b3",
+"structpulsatrix_1_1RgbImageBuffer.html#ab94b83c444d6a08d99d4bf075e0c3e03",
+"structpulsatrix_1_1TokenRelevanceDocument.html#a39957961f7c503032652f410f3b3b693",
+"structpulsatrix_1_1detail_1_1RawReading.html#aa84d7d398e726e04b248073640f5cc77"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

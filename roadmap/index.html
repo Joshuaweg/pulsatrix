@@ -2947,7 +2947,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores</li>
 <li>HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)</li>
-<li>VIZ-3, VIZ-6a: Vega-Lite HTML and the token relevance view</li>
+<li>VIZ-3, VIZ-6a (<strong>done</strong>): Vega-Lite HTML and the token relevance view</li>
 <li>NB-1, NB-2: native rich display and the <code>.ipynb</code>/HTML report writer</li>
 <li>AGT-1 to AGT-4: the native orchestrator core</li>
 <li>KS-8, KS-9: GPU CI on gfx1151 and a model zoo (ResNet18, SmolLM2)</li>
@@ -4824,7 +4824,7 @@ format, with static and web renderers next to it.</p>
 <td>VIZ-1</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/92">#92</a> (see below)</td>
 </tr>
 <tr>
 <td>VIZ-4</td>
@@ -4879,6 +4879,22 @@ format, with static and web renderers next to it.</p>
   cells and tokens are drawn gray; the bar, waterfall and beeswarm charts refuse non-finite
   values. Every stored test figure was rendered and checked by eye before it became a golden
   file.</li>
+<li><strong>VIZ-3</strong> (<code>viz/html.hpp</code>) covers every SVG view plus two the SVG lacks: the training log
+  and the feature dashboard. Each view is also available as a bare Vega-Lite spec for your own
+  page.</li>
+<li>Pages load Vega 6.4.0, Vega-Lite 6.4.3 and vega-embed 7.3.0 from jsDelivr, pinned and
+    checked with Subresource Integrity hashes.</li>
+<li>Or they carry the scripts inline (about 830 KB) from a directory that
+    <code>tools/render/fetch_vega.sh</code> fills after checking the files' SHA-384 hashes. Nothing is
+    downloaded at build time.</li>
+<li>The token relevance page is plain HTML with no scripts, so the browser shapes the text:
+    right to left, joined Arabic, Indic conjuncts.</li>
+<li>Non-finite values follow the SVG rules: gray heatmap cells and tokens. Training logs skip a
+    diverged step instead of refusing the log.</li>
+<li>Every spec was compiled with Vega-Lite and rendered with Vega in Node with no warnings
+    (<code>tools/render/validate_vega.mjs</code>). The pages were checked by eye in headless Chromium,
+    including a line in ten scripts.</li>
+<li>Circuit graphs have no HTML view; VIZ-4 exports them to Neuronpedia's viewer instead.</li>
 <li><strong>VIZ-6a</strong> builds token relevance documents from real explanations
   (<code>MakeTokenRelevanceDocument</code>, <code>MakeWordRelevanceDocument</code>), rather than adding a new
   document kind. <code>token_relevance.v1</code> gained optional <code>granularity</code>, <code>scored</code> (unscored context
@@ -4927,7 +4943,7 @@ format, with static and web renderers next to it.</p>
 <tr>
 <td>SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels</td>
 <td>VIZ-2</td>
-<td>Partly done: widths count display columns (CJK and emoji 2, combining marks 0); exact widths need VIZ-3 (the browser lays out text)</td>
+<td>Done for text: widths count display columns (CJK and emoji 2, combining marks 0), and the HTML token view (VIZ-3, <a href="https://github.com/Joshuaweg/pulsatrix/pull/92">#92</a>) lets the browser lay out and shape the text, so every script is exact there</td>
 </tr>
 <tr>
 <td>ImGui doesn't shape text: Arabic and Hebrew show unjoined and left to right, and Indic vowel signs and conjuncts aren't formed. Every character shows (system fonts merged as fallbacks, ImGui 1.92). Shaping the widget's text with HarfBuzz plus bidi reordering, drawn as glyph quads, would fix it</td>

@@ -11,6 +11,7 @@ var group__visualization =
     [ "document.hpp", "document_8hpp.html", null ],
     [ "explanation_score_card.hpp", "explanation__score__card_8hpp.html", null ],
     [ "fonts.hpp", "fonts_8hpp.html", null ],
+    [ "html.hpp", "html_8hpp.html", null ],
     [ "image_grid_view.hpp", "image__grid__view_8hpp.html", null ],
     [ "implot_metrics_sink.hpp", "implot__metrics__sink_8hpp.html", null ],
     [ "plot_data.hpp", "plot__data_8hpp.html", null ],

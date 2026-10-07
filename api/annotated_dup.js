@@ -156,6 +156,7 @@ var annotated_dup =
       [ "HIPBackend", "classpulsatrix_1_1HIPBackend.html", "classpulsatrix_1_1HIPBackend" ],
       [ "HistogramBins", "structpulsatrix_1_1HistogramBins.html", "structpulsatrix_1_1HistogramBins" ],
       [ "HorizontalFlipTransform", "classpulsatrix_1_1HorizontalFlipTransform.html", "classpulsatrix_1_1HorizontalFlipTransform" ],
+      [ "HtmlOptions", "structpulsatrix_1_1HtmlOptions.html", "structpulsatrix_1_1HtmlOptions" ],
       [ "HyperbandBracket", "structpulsatrix_1_1HyperbandBracket.html", "structpulsatrix_1_1HyperbandBracket" ],
       [ "HyperbandResult", "structpulsatrix_1_1HyperbandResult.html", "structpulsatrix_1_1HyperbandResult" ],
       [ "HyperGridEnv", "classpulsatrix_1_1HyperGridEnv.html", "classpulsatrix_1_1HyperGridEnv" ],

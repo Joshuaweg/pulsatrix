@@ -10,6 +10,7 @@ var dir_1df8ff9027259fc5f483c2d1b9c2e5ad =
     [ "document.hpp", "document_8hpp.html", "document_8hpp" ],
     [ "explanation_score_card.hpp", "explanation__score__card_8hpp.html", "explanation__score__card_8hpp" ],
     [ "fonts.hpp", "fonts_8hpp.html", "fonts_8hpp" ],
+    [ "html.hpp", "html_8hpp.html", "html_8hpp" ],
     [ "image_grid_view.hpp", "image__grid__view_8hpp.html", "image__grid__view_8hpp" ],
     [ "implot_metrics_sink.hpp", "implot__metrics__sink_8hpp.html", "implot__metrics__sink_8hpp" ],
     [ "plot_data.hpp", "plot__data_8hpp.html", "plot__data_8hpp" ],

@@ -89,7 +89,7 @@ var searchData=
   ['predicate_5fa_86',['predicate_a',['../classpulsatrix_1_1ToyKnowledgeBase.html#aa0cc22b6c4ca2729734ac5ea46226fd4',1,'pulsatrix::ToyKnowledgeBase']]],
   ['predicate_5fb_87',['predicate_b',['../classpulsatrix_1_1ToyKnowledgeBase.html#a05ce49df36fd9d9cbcf4f46caa11e667',1,'pulsatrix::ToyKnowledgeBase']]],
   ['predicate_5fname_88',['predicate_name',['../classpulsatrix_1_1datalog_1_1Atom.html#a59082adb6b2d9884daf4628587d87b0a',1,'pulsatrix::datalog::Atom']]],
-  ['predict_89',['predict',['../classpulsatrix_1_1GaussianProcessRegressor.html#a1d2e6b45c1f9a49af49c0085e7fb04f1',1,'pulsatrix::GaussianProcessRegressor::Predict()'],['../classpulsatrix_1_1MnistConvNet.html#a046825443b04adfbf4eac4962552185c',1,'pulsatrix::MnistConvNet::predict()']]],
+  ['predict_89',['predict',['../classpulsatrix_1_1MnistConvNet.html#a046825443b04adfbf4eac4962552185c',1,'pulsatrix::MnistConvNet::predict()'],['../classpulsatrix_1_1GaussianProcessRegressor.html#a1d2e6b45c1f9a49af49c0085e7fb04f1',1,'pulsatrix::GaussianProcessRegressor::Predict()']]],
   ['predictfn_90',['PredictFn',['../namespacepulsatrix.html#a0cfe98a4b9d257145af8f113d714d226',1,'pulsatrix']]],
   ['prefetch_5fbatches_91',['prefetch_batches',['../structpulsatrix_1_1DataLoaderOptions.html#a7ceefe8b1ecafbaef471af7126c0b809',1,'pulsatrix::DataLoaderOptions']]],
   ['prependnormalizer_92',['prependnormalizer',['../classpulsatrix_1_1PrependNormalizer.html#a2621258be1d03fd0fe7449f4fb7e561d',1,'pulsatrix::PrependNormalizer::PrependNormalizer()'],['../classpulsatrix_1_1PrependNormalizer.html',1,'pulsatrix::PrependNormalizer']]],

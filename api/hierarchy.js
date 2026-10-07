@@ -142,6 +142,7 @@ var hierarchy =
     [ "pulsatrix::HfRopeScaling", "structpulsatrix_1_1HfRopeScaling.html", null ],
     [ "pulsatrix::TrainingLogDocument::Histogram", "structpulsatrix_1_1TrainingLogDocument_1_1Histogram.html", null ],
     [ "pulsatrix::HistogramBins", "structpulsatrix_1_1HistogramBins.html", null ],
+    [ "pulsatrix::HtmlOptions", "structpulsatrix_1_1HtmlOptions.html", null ],
     [ "pulsatrix::HyperbandBracket", "structpulsatrix_1_1HyperbandBracket.html", null ],
     [ "pulsatrix::HyperbandResult", "structpulsatrix_1_1HyperbandResult.html", null ],
     [ "pulsatrix::IceResult", "structpulsatrix_1_1IceResult.html", null ],

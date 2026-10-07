@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['safetensorsdtype_0',['SafetensorsDtype',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57b',1,'pulsatrix']]],
-  ['splitbehavior_1',['SplitBehavior',['../namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2',1,'pulsatrix']]],
-  ['ssmpassop_2',['SsmPassOp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883',1,'pulsatrix']]]
+  ['recurrentcellop_0',['RecurrentCellOp',['../namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400',1,'pulsatrix']]],
+  ['rlrowop_1',['RlRowOp',['../namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930',1,'pulsatrix']]],
+  ['ropelayout_2',['RoPELayout',['../namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044',1,'pulsatrix']]]
 ];

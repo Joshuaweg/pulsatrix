@@ -28,8 +28,11 @@ var searchData=
   ['kunktoken_25',['kUnkToken',['../classpulsatrix_1_1Vocabulary.html#afc3a1419ab5f15f4a600a081e94cdadb',1,'pulsatrix::Vocabulary']]],
   ['kv_5fcache_2ehpp_26',['kv_cache.hpp',['../kv__cache_8hpp.html',1,'']]],
   ['kvcache_27',['kvcache',['../classpulsatrix_1_1KVCache.html#aacb983515174bc92d0ff3aee98f1d04b',1,'pulsatrix::KVCache::KVCache()'],['../classpulsatrix_1_1KVCache.html',1,'pulsatrix::KVCache']]],
-  ['kvizdocumentversion_28',['kVizDocumentVersion',['../namespacepulsatrix.html#ad7c306e18124f3aeb68cde6615b337b5',1,'pulsatrix']]],
-  ['kvocab_29',['kVocab',['../classpulsatrix_1_1TinyTagger.html#a052db03bbdaa2c14bc78dadb71d986d0',1,'pulsatrix::TinyTagger']]],
-  ['kw_30',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
-  ['kxthreshold_31',['kxthreshold',['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold']]]
+  ['kvegaembedversion_28',['kVegaEmbedVersion',['../namespacepulsatrix.html#a69da35a089b7c4138a52bd0a2344dc57',1,'pulsatrix']]],
+  ['kvegaliteversion_29',['kVegaLiteVersion',['../namespacepulsatrix.html#a34805eba94fcb8268ead2b919a9c6ea2',1,'pulsatrix']]],
+  ['kvegaversion_30',['kVegaVersion',['../namespacepulsatrix.html#aa2f0de394cd273dd8a83b33b814742d3',1,'pulsatrix']]],
+  ['kvizdocumentversion_31',['kVizDocumentVersion',['../namespacepulsatrix.html#ad7c306e18124f3aeb68cde6615b337b5',1,'pulsatrix']]],
+  ['kvocab_32',['kVocab',['../classpulsatrix_1_1TinyTagger.html#a052db03bbdaa2c14bc78dadb71d986d0',1,'pulsatrix::TinyTagger']]],
+  ['kw_33',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
+  ['kxthreshold_34',['kxthreshold',['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold'],['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold']]]
 ];
