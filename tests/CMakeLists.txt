@@ -139,6 +139,7 @@ add_executable(pulsatrix_tests
     json_test.cpp
     viz_document_test.cpp
     svg_render_test.cpp
+    html_render_test.cpp
     benchmark_test.cpp
     caching_allocator_test.cpp
     rnn_module_test.cpp
@@ -326,6 +327,17 @@ add_test(NAME PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution.v1.json"
         "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/attribution.v1.json")
 set_tests_properties(PulsatrixSvg.RejectsSeveralDocumentsWithoutBeeswarm PROPERTIES WILL_FAIL TRUE)
+# VIZ-3: HTML output from the same tool.
+add_test(NAME PulsatrixSvg.WritesHtml
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/training_log.v1.json"
+        -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_training_log.html")
+add_test(NAME PulsatrixSvg.RejectsATrainingLogAsSvg
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/training_log.v1.json")
+set_tests_properties(PulsatrixSvg.RejectsATrainingLogAsSvg PROPERTIES WILL_FAIL TRUE)
+add_test(NAME PulsatrixSvg.InlineJsNeedsTheScripts
+    COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/heatmap.v1.json" --html
+        --inline-js "${CMAKE_CURRENT_BINARY_DIR}/no_such_vega_dir")
+set_tests_properties(PulsatrixSvg.InlineJsNeedsTheScripts PROPERTIES WILL_FAIL TRUE)
 # LLM-6: the golden-logit tool, on a tiny model.
 add_test(NAME PulsatrixGolden.TinyLlamaMatchesTransformers
     COMMAND pulsatrix_golden "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/hf_tiny/llama")
