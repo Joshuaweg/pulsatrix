@@ -68,8 +68,9 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
 - **Ready-made examples**: `XorNetwork` (a tiny MLP that learns XOR), `MnistConvNet` (a
   Conv2D MNIST classifier) and `MnistIdxLoader` (reads the MNIST IDX files)
 
-The CPU backend is always built. To build the GPU backends, configure CMake with
-`-DPULSATRIX_ENABLE_CUDA=ON` or `-DPULSATRIX_ENABLE_HIP=ON`.
+The CPU backend is always built, and its large matrix multiplies use every core, splitting the
+work so results are identical to a single-threaded run. To build the GPU backends, configure
+CMake with `-DPULSATRIX_ENABLE_CUDA=ON` or `-DPULSATRIX_ENABLE_HIP=ON`.
 
 Every layer and loss checks that the tensors it's given live on its own device, and throws
 `std::invalid_argument` if not; move a tensor first with `Tensor::to()`. `EmbeddingModule` is the
@@ -164,7 +165,7 @@ millisecond.
 #include "pulsatrix/hf_model.hpp"
 
 HfModelConfig config = ReadHfConfig("SmolLM2-135M/config.json");
-if (!config.unsupported.empty()) { /* features pulsatrix can't run yet, e.g. "rope_scaling \"llama3\" (LLM-6)" */ }
+if (!config.unsupported.empty()) { /* features pulsatrix can't run yet, e.g. "sliding-window attention (LLM-9)" */ }
 AttentionConfig attention = ToAttentionConfig(config);  // GQA, rotate-half RoPE, biases, QK-Norm
 
 HfCheckpoint weights = HfCheckpoint::Open("SmolLM2-135M");  // model.safetensors or its sharded index
@@ -196,8 +197,10 @@ Tensor logits = model->forward(ids);                      // (1, L) token ids ->
 GenerationResult out = Generate(model->next_token_logits(512), prompt_ids, GenerationConfig{});
 ```
 
-The real SmolLM2-135M loads in about half a second, its logits are within 5e-4 of transformers',
-and its greedy continuations are identical. `CausalLM` is an ordinary module, so `backward()`,
+The real SmolLM2-135M loads in under a second, and its greedy continuations are identical to
+transformers'. SmolLM2-135M, Qwen2.5-0.5B, Qwen3-0.6B and Llama-3.2-1B (with Llama 3's RoPE
+scaling) all give logits within 1e-3 of transformers'. For tokenizing, generating and explaining
+with these models end to end, see the [Language Models guide](../language-models/index.md). `CausalLM` is an ordinary module, so `backward()`,
 `propagate_relevance()` and checkpoints work on it. Loading is strict: a config with features
 pulsatrix can't run yet is refused, and every parameter must be loaded and every checkpoint
 tensor used. `LoadWeights` with a `WeightMapping` manifest (source name, target name, a transpose,

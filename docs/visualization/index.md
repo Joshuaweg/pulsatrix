@@ -49,6 +49,7 @@ drawing call over the data transforms:
 | `DatasetStatisticsView` | Per-field histograms of a dataset | — |
 | `ImageGridView` | A grid of image thumbnails with captions | — |
 | `TrainingDashboard`, `ImPlotMetricsSink::Draw()` | Live training curves | a saved `training_log.v1`, after `ReplayTrainingLog` |
+| `TokenRelevanceView` | Text with each token or word colored by its relevance, with the score on hover | `TokenRelevanceDocument` |
 
 **JSON documents** (`viz/document.hpp`, in `pulsatrix_core`). Every view's data can be saved as
 a versioned JSON file and read back, so a figure can be redrawn later, by another program or by
@@ -56,6 +57,11 @@ a renderer outside pulsatrix. See [JSON documents](#json-documents).
 
 **SVG figures** (`viz/svg.hpp`, in `pulsatrix_core`). Bar, waterfall, heatmap, token strip and
 beeswarm charts as standalone SVG files, with no GPU or display. See [SVG figures](#svg-figures).
+
+**Text explanations** (`viz/text_relevance.hpp`, in `pulsatrix_core`). These build token or word
+relevance documents from a tokenizer's output, so the figure reads as the original text. The
+`pulsatrix_explain_text` tool goes from a Hugging Face model and a prompt straight to a figure.
+See [Token relevance for text](#token-relevance-for-text).
 
 **Infrastructure.** `VizWindow` (`viz/window.hpp`) owns the window, the OpenGL context, and the
 ImGui/ImPlot setup. You write a per-frame draw callback and call `window.run(...)`.
@@ -319,6 +325,7 @@ part of `pulsatrix_core`.
 | `explanation_dashboard_demo` | Bar chart, waterfall, saliency heatmap, circuit graph, and score card for a small XOR network |
 | `dataset_preview_demo` | `DatasetStatisticsView` and `ImageGridView` on small synthetic datasets |
 | `live_inference_demo` | An `ExplanationScoreCard` that updates as it cycles through XOR inputs |
+| `token_relevance_demo` | `TokenRelevanceView` on token relevance documents, for example from `pulsatrix_explain_text` |
 | `mnist_viz_gallery` | Every widget on MNIST digits (see [below](#mnist-gallery)) |
 
 ## How to implement

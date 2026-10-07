@@ -17,6 +17,10 @@ This section has three parts:
   `IntegratedGradients`, `GradCAM` and counterfactuals (`FindCounterfactual`). They read a pulsatrix network's gradients and
   activations, so they are faster and see inside the model.
 
+To explain a pretrained language model's predictions over text, see
+**[Language Models](../language-models/index.md)**. It covers AttnLRP on Hugging Face models,
+word-level scores and figures.
+
 Full API reference: [Doxygen: Interpretability](../api/group__interpretability.html)
 
 ## Shared infrastructure
