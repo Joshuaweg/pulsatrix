@@ -47,7 +47,8 @@ enum class ElementwiseOp {
     Sigmoid,  ///< 1 / (1 + exp(-x))
     Silu,     ///< x * sigmoid(x) -- a.k.a. swish; the gate half of SwiGLU
     Exp,      ///< exp(x) -- GPU-native-kernels Mission 1b (Reparameterize, KL divergence)
-    GeluTanh  ///< GELU, tanh approximation (gelu_pytorch_tanh) -- the gate of Gemma's GeGLU (LLM-9)
+    GeluTanh,  ///< GELU, tanh approximation (gelu_pytorch_tanh) -- the gate of Gemma's GeGLU (LLM-9)
+    Gelu       ///< exact GELU, x * Phi(x) with erf -- the MLP activation of BERT and ESM (PLM-1)
 };
 
 /** @brief Elementwise boolean gate for DeviceBackend::lrp_stabilized_divide(). */

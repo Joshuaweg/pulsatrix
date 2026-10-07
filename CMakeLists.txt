@@ -75,6 +75,9 @@ add_library(pulsatrix_core
     src/multihead_attention_module.cpp
     src/swiglu_module.cpp
     src/transformer_block.cpp
+    src/activation_module.cpp
+    src/feed_forward_module.cpp
+    src/encoder_block.cpp
     src/residual_module.cpp
     src/conjunction_module.cpp
     src/disjunction_module.cpp

@@ -44,6 +44,20 @@ PULSATRIX_HOST_DEVICE inline float gelu_tanh_grad(float x) {
     return 0.5f * (1.0f + t) + 0.5f * x * (1.0f - t * t) * kBeta * (1.0f + 3.0f * kKappa * x2);
 }
 
+// Exact GELU (PyTorch's default, Hugging Face's "gelu"): x * Phi(x) = 0.5 x (1 + erf(x / sqrt 2)),
+// the MLP activation of BERT and ESM (PLM-1).
+PULSATRIX_HOST_DEVICE inline float gelu(float x) {
+    const float kInvSqrt2 = 0.7071067811865476f;
+    return 0.5f * x * (1.0f + erff(x * kInvSqrt2));
+}
+
+// d/dx gelu(x) = Phi(x) + x phi(x), with phi the standard normal density.
+PULSATRIX_HOST_DEVICE inline float gelu_grad(float x) {
+    const float kInvSqrt2 = 0.7071067811865476f;
+    const float kInvSqrt2Pi = 0.3989422804014327f;  // 1 / sqrt(2 pi)
+    return 0.5f * (1.0f + erff(x * kInvSqrt2)) + x * kInvSqrt2Pi * expf(-0.5f * x * x);
+}
+
 // Overflow-free logistic sigmoid: the exponent argument is never positive. Moved here from
 // bce_with_logits_loss.cpp unchanged.
 PULSATRIX_HOST_DEVICE inline float stable_sigmoid(float x) {

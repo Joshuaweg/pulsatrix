@@ -20,15 +20,16 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
 
 - **Core**: `Tensor`, `Shape`, `Module`, `ComputationGraph`/`Autograd`, `Node`, `OpType`,
   `DeviceBackend` (`CPUBackend`/`CUDABackend`/`HIPBackend`)
-- **Layers**: `LinearModule`, `Conv2DModule`, `ReluModule`, `FlattenModule`,
+- **Layers**: `LinearModule`, `Conv2DModule`, `ReluModule`, `ActivationModule` (ReLU, tanh,
+  sigmoid, SiLU, exact GELU or GELU-tanh, chosen at construction), `FlattenModule`,
   `SequentialModule`, `DropoutModule`, `EmbeddingModule`, `ResidualModule`; normalization
   (`LayerNormModule`/`RMSNormModule`/`GroupNormModule`/`BatchNormModule`, with `BatchNormFold`
   to fold an eval-mode BatchNorm into the layer before it); pooling
   (`MaxPool2DModule`/`AvgPool2DModule`). `Conv2DModule` takes an optional `stride` and zero
   `padding`, as in `torch.nn.Conv2d`, and every LRP rule handles both.
 - **Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule`, `SoftmaxModule`,
-  `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `TransformerBlock`,
-  `MambaModule`, `RWKVModule`, `RetNetModule`
+  `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `FeedForwardModule`,
+  `TransformerBlock`, `EncoderBlock`, `MambaModule`, `RWKVModule`, `RetNetModule`
 - **Attention for pretrained LLMs**: `MultiHeadAttentionModule` and `TransformerBlock` take an
   `AttentionConfig` with the settings Hugging Face checkpoints use: grouped-query attention
   (`num_kv_heads`), a `head_dim` independent of `d_model`, optional projection biases, a causal
@@ -343,6 +344,48 @@ A frozen parameter is never changed by any optimizer (`SGDOptimizer`, `AdamOptim
 as without freezing. `LinearModule`, `Conv2DModule` and `EmbeddingModule` skip computing a
 frozen weight's gradient altogether, which is where fine-tuning saves time. A name that matches
 nothing throws `std::invalid_argument`, so a typo can't leave the model silently trainable.
+
+### Encoder layers
+
+`EncoderBlock` is one transformer encoder layer whose layout is chosen with
+`EncoderBlockOptions`:
+
+- `norm`: `NormType::LayerNorm` or `RMSNorm`.
+- `norm_position`:
+  - `NormPosition::Pre` gives `x + f(norm(x))` (ESM, GPT-2, Llama).
+  - `Post` gives `norm(x + f(x))` (BERT, the original Transformer).
+- `mlp`:
+  - `MlpType::Plain` is `FeedForwardModule`: Linear → activation → Linear, as in BERT and ESM. Its default activation is exact GELU.
+  - `Gated` is `SwiGLUModule`: SwiGLU, or GeGLU with `gate_activation`.
+
+Attention comes from the same `AttentionConfig` as `TransformerBlock`; an encoder leaves
+`causal` off. The defaults are ESM-2's layer:
+
+```cpp
+AttentionConfig attention;
+attention.d_model = 320;
+attention.num_heads = 20;
+attention.rope_layout = RoPELayout::RotateHalf;
+EncoderBlock esm_layer(attention, 1280, &backend);  // pre-LayerNorm (eps 1e-5), GELU MLP
+
+EncoderBlockOptions bert;
+bert.norm_position = NormPosition::Post;
+bert.norm_eps = 1e-12f;
+attention.use_rope = false;  // BERT adds learned positions before the first layer
+EncoderBlock bert_layer(attention, 1280, &backend, bert);
+```
+
+- **Checked against `transformers`.** The output and the input gradient match the library's own
+  `EsmLayer` and `BertLayer` to 2e-5 (`tools/generate_encoder_reference.py`).
+- **The decoder layout reproduces `TransformerBlock`.** Pre-RMSNorm with a gated SiLU MLP gives
+  `TransformerBlock`'s output, gradients and relevance exactly.
+- **Parameter names.** Parameters are named `norm1.*`, `mha.*`, `norm2.*` and `mlp.*`, so
+  `set_requires_grad` and weight loading work the same way.
+- **LRP.**
+  - Each residual add uses the two-term epsilon rule.
+  - Norms and activations pass relevance through unchanged, as AttnLRP prescribes.
+  - Attention uses its AttnLRP rule.
+  - The result is linear in the incoming relevance in both layouts.
 
 ### Choosing a normalization layer
 

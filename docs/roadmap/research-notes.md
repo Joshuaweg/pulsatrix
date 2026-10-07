@@ -484,3 +484,19 @@ below record the reasoning they were built on.
   | Quantus | Evaluation metrics |
   | TransformerLens and nnsight | Hook points |
   | SAELens | SAE training at scale |
+
+## PLM: Protein language models
+
+The full write-up is in [Protein language models: research and plan](protein-language-models.md).
+
+- **Choice of model.** ESM-2 (Lin et al., *Science* 2023). The `facebook/esm2_*` checkpoints ship `model.safetensors`, `config.json` and `vocab.txt` under MIT [V] (Hugging Face, checked 2026-10-07). ESM C's license depends on size; check each one before supporting it.
+- **PLM-1, PLM-2.** The Hugging Face `EsmConfig` sets `position_embedding_type` (`"rotary"` for ESM-2), `token_dropout`, `emb_layer_norm_before` and `layer_norm_eps` [V].
+  - **Falsifier:** logits that don't match `transformers` to float precision on `esm2_t6_8M`.
+  - **Fails when:** token-dropout scaling is skipped at inference. The input embeddings are then off by the mask-ratio factor even with no masks.
+- **PLM-3.** ProteinGym: 217 DMS substitution assays, scored by masked-marginal log-odds and Spearman correlation [V]. The best methods reach about 0.45–0.48 average Spearman (MSA Pairformer, VespaG) [V].
+  - **Falsifier:** per-assay Spearman more than 0.01 from ProteinGym's published ESM-2 scores.
+- **PLM-4.** Contacts: ESM's logistic regression over attention maps after symmetrizing and APC. arXiv 2606.21876 (2026): averaging the top-K heads, chosen with 10 labeled proteins, matches the Categorical Jacobian in one forward pass [V].
+  - **Fails when:** testing in distribution. Leakage-clean splits score 30–36 points lower [V].
+- **PLM-6.** arXiv 2606.22181 (2026): integrated gradients on a well-performing ESM-2 allergen classifier didn't recover annotated epitopes [V]. Residue explanations need quantitative checks against an independent signal, not just a plausible look.
+- **PLM-7.** ESM-2 sampled UniRef50 clusters uniformly, with a random UniRef90 member per cluster; 15% of tokens are masked 80/10/10 [V] (NVIDIA BioNeMo docs). UniRef-only masked-LM training overfits, which metagenomic data mitigates (Cheng et al., ICML 2024 workshop) [V]. Yearly UniRef snapshots show no data saturation yet (arXiv 2507.22210) [V].
+- **PLM-8.** InterPLM (Simon and Zou, *Nature Methods* 2025): SAEs with 10,420 latents on ESM-2-8M (all 6 layers) and 650M, matched to Swiss-Prot concepts. Neurons are much less interpretable than SAE features [V].

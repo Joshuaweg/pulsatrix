@@ -11,9 +11,9 @@
 
 namespace pulsatrix {
 
-/** @brief The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh
- *         approximation (GeGLU: Gemma, LLM-9). */
-enum class GatedActivation { Silu, GeluTanh };
+/** @brief The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen), GELU's tanh
+ *         approximation (GeGLU: Gemma, LLM-9) or exact GELU (GeGLU as first published). */
+enum class GatedActivation { Silu, GeluTanh, Gelu };
 
 /**
  * @brief `down_proj(silu(gate_proj(x)) * up_proj(x))`, the gated feedforward block used in
