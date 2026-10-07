@@ -91,6 +91,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 | 7. New patterns and architectures | [ARCH](#arch-new-architectures) |
 | 8. Kitchen sink | [KS](#ks-kitchen-sink), [FND](#fnd-foundations) |
 | 9. HIP efficiency for training and tuning | [HIP](#hip-training-efficiency-on-amd-gpus) |
+| 10. Protein language models | [PLM](#plm-protein-language-models) |
 
 ## Milestones
 
@@ -160,6 +161,18 @@ Feature discovery on real models, and agents that can drive the library.
 - IO-7: `.npy`/`.npz`, for published SAE dictionaries
 - ARCH-1 to ARCH-3: B-cos layers, concept bottleneck models, mixture of experts
 - HIP-8: hipBLASLt and bf16 GEMM
+
+### PLM "Proteins" (in progress)
+
+Its own epic, started 2026-10-07 after VIZ-4. The research behind it is in
+[Protein language models: research and plan](protein-language-models.md).
+
+- PLM-1, PLM-2: an encoder block, then ESM-2 matching `transformers` to float precision
+- PLM-3, PLM-4: zero-shot variant scoring on ProteinGym, and contacts against real structures
+- PLM-5, PLM-6: protein views (mutation map, logo, contact map, 3D structure) and checked
+  residue-level explanations
+- PLM-7 to PLM-9: masked-LM training and fine-tuning heads, probes and SAE features, and an
+  end-to-end tutorial
 
 ### Backlog, not yet scheduled
 
@@ -1067,6 +1080,51 @@ AGT-5 has to follow these security rules:
 | Run `pulsatrix_bench` and its A/B comparison on the GPU in CI | KS-2 | KS-8 |
 | The CUDA path of `pulsatrix_bench` has never run; there is no NVIDIA GPU here | KS-2 | KS-8 |
 | Benchmarks on real models (ResNet18, SmolLM2) next to the fixed small ones | KS-2 | KS-9 |
+
+## PLM: Protein language models
+
+Protein language models are transformers trained on amino-acid sequences by filling in hidden
+residues. Along the way they learn which positions tolerate change, which residues touch in the
+fold and which motifs mark functional sites. The epic builds for ESM-2 first: it is MIT-licensed,
+the most studied, 8M to 650M parameters (fits in fp32 here), and a BERT-style encoder that
+pulsatrix mostly has. Pretraining at ESM-2's scale (about 10²¹ FLOPs) isn't realistic on one
+workstation, so the epic loads the published checkpoints, explains and evaluates them, and
+fine-tunes small heads; small models are trained from scratch only to check the training code.
+Every item is checked against published numbers. The full research, the views and the data
+sources are in [Protein language models: research and plan](protein-language-models.md).
+
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| PLM-1 | Encoder block options: LayerNorm or RMSNorm, a plain or gated MLP, exact (erf) GELU with its LRP rule, and attention and MLP biases | Every BERT-style encoder needs it, not just ESM | — | P0 | M | Done, [#94](https://github.com/Joshuaweg/pulsatrix/pull/94) (see below) |
+| PLM-2 | `EncoderLM` and ESM-2 loading: token-dropout scaling, rotate-half RoPE, final LayerNorm, LM head; `EsmForMaskedLM` configs and weights; ESM `vocab.txt` tokenizer and a FASTA reader. Golden parity of logits, hidden states and attentions with `transformers` on a tiny generated ESM and on `esm2_t6_8M` and `esm2_t33_650M` | The foundation; must match the reference before anything else | PLM-1 | P0 | M | |
+| PLM-3 | Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and full single-mutant scans. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset | The headline use and the strongest numerical check | PLM-2 | P0 | M | |
+| PLM-4 | Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with `transformers`, the top-K head average, a PDB/mmCIF reader, and precision at L, L/2 and L/5 by sequence separation | Shows whether the model learned the fold; feeds the head grid | PLM-2 | P1 | M | |
+| PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | |
+| PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | |
+| PLM-7 | Masked-LM training: the 15% (80/10/10) masking collator with token dropout, cropping and cluster-weighted sampling; an ESM-2-8M-shaped model on a UniRef50 sample, checked against BioNeMo's curve; per-residue and per-protein fine-tuning heads | Training and transfer learning; full pretraining waits on HIP-11 | PLM-2 | P1 | M | |
+| PLM-8 | Probes and features: per-layer linear probes (DSSP, accessibility, binding sites) with control tasks; an InterPLM-style SAE on ESM-2-8M with features matched to Swiss-Prot annotations; a feature dashboard with a structure panel | Concept-level interpretability | PLM-5, FEAT-1 | P2 | L | |
+| PLM-9 | A tutorial on one protein (TEM-1 β-lactamase): scan every mutation against its DMS, draw the contact map against its structure, and show relevance on the 3D structure | The whole path, end to end | PLM-3 to PLM-6 | P1 | S | |
+
+### How the PLM work departed from the plan
+
+- **PLM-1** added `EncoderBlock` as a new class instead of options on `TransformerBlock`.
+  `TransformerBlock` keeps the decoder path (KV cache, Gemma's sandwich norms) and its accessors'
+  types. `EncoderBlock` covers the encoder layouts: pre- or post-norm, LayerNorm or RMSNorm, and a
+  plain or gated MLP. With pre-RMSNorm and a gated MLP it reproduces `TransformerBlock` exactly,
+  which a test checks.
+  - Also new: `ActivationModule` (any pointwise activation), `FeedForwardModule`, and exact GELU
+    as a backend op (`ElementwiseOp::Gelu`, CPU and GPU kernels, plus `GatedActivation::Gelu`).
+  - Checked:
+    - ESM-2's and BERT's layers match `transformers` (`EsmLayer`, `BertLayer`) to 2e-5 in output and input gradient.
+    - Parameter gradients match finite differences in both layouts.
+    - LRP is linear in both layouts.
+    - The new GPU cases pass on gfx1151, and so does the full HIP suite (2663 tests).
+  - Post-norm relevance can get very large with random weights, because a residual split's
+    `a + b` can be near zero. That's the epsilon rule's known behavior, not a defect; trained
+    weights keep the sums well away from zero.
+
+Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
+pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.
 
 ## Open questions
 

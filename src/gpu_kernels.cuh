@@ -93,6 +93,13 @@ __global__ void gelu_tanh_kernel(const float* in, float* out, size_t n) {
     }
 }
 
+__global__ void gelu_kernel(const float* in, float* out, size_t n) {
+    size_t i = global_index();
+    if (i < n) {
+        out[i] = pointwise::gelu(in[i]);
+    }
+}
+
 __global__ void exp_kernel(const float* in, float* out, size_t n) {
     size_t i = global_index();
     if (i < n) {
@@ -147,6 +154,9 @@ void launch_elementwise(ElementwiseOp op, const float* in, float* out, size_t n,
             return;
         case ElementwiseOp::GeluTanh:
             gelu_tanh_kernel<<<grid, kBlockSize, 0, stream>>>(in, out, n);
+            return;
+        case ElementwiseOp::Gelu:
+            gelu_kernel<<<grid, kBlockSize, 0, stream>>>(in, out, n);
             return;
     }
     // Reached only if ElementwiseOp gains a value this switch doesn't handle -- fail loudly
@@ -221,6 +231,9 @@ __global__ void elementwise_backward_kernel(int op, const float* x, const float*
                 break;
             case ElementwiseOp::GeluTanh:
                 d = pointwise::gelu_tanh_grad(xi);
+                break;
+            case ElementwiseOp::Gelu:
+                d = pointwise::gelu_grad(xi);
                 break;
         }
         grad_in[i] = grad_out[i] * d;

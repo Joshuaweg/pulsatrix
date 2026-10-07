@@ -124,7 +124,7 @@ explanations and how the results were validated. For a full worked example, see 
 | Training | SGD (momentum, Nesterov), Adam, AdamW with parameter groups; learning-rate schedules; gradient clipping; token-accurate gradient accumulation | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Saving and loading | Native safetensors reader and writer; checkpoints with buffers, optimizer state and format versions | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Layers | Linear, Conv2D (stride, padding), BatchNorm with running statistics, eval mode and folding, other normalization, pooling, dropout, embeddings, residual blocks | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
-| Sequence models | RNN/LSTM/GRU, multi-head attention, `TransformerBlock`, Mamba, RetNet, RWKV | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Sequence models | RNN/LSTM/GRU, multi-head attention, `TransformerBlock`, encoder layers in ESM-2, BERT or Llama layout (`EncoderBlock`), Mamba, RetNet, RWKV | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Generative blocks | VAE, GAN and diffusion losses and sampling steps | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Language models | Load Llama, SmolLM2, Qwen2/2.5, Qwen3 and Gemma 3 checkpoints from the Hugging Face Hub; generate with greedy or sampled decoding and a KV cache; explain predictions per token or per word with AttnLRP | [Language models](https://joshuaweg.github.io/pulsatrix/language-models/) |
 | LRP | Epsilon, Gamma, AlphaBeta, ZBox; Zennit composites; AttnLRP, MambaLRP | [LRP](https://joshuaweg.github.io/pulsatrix/interpretability/lrp/) |

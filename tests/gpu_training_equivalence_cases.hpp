@@ -53,6 +53,7 @@
 #include "pulsatrix/rwkv_module.hpp"
 #include "pulsatrix/saliency.hpp"
 #include "pulsatrix/tanh_gaussian_policy.hpp"
+#include "pulsatrix/encoder_block.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/tied_lm_head_module.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -413,6 +414,27 @@ inline void TransformerBlockMatches(DeviceBackend& gpu) {
     ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 5, 8}), 340);
 }
 
+// PLM-1: ESM-2's layout (pre-LayerNorm, rotate-half RoPE, exact-GELU MLP) and BERT's (post-LayerNorm).
+inline EncoderBlockOptions EncoderLayout(bool post) {
+    EncoderBlockOptions o;
+    if (post) o.norm_position = NormPosition::Post;
+    return o;
+}
+
+inline AttentionConfig EncoderAttention() {
+    AttentionConfig a;
+    a.d_model = 8;
+    a.num_heads = 2;
+    a.rope_layout = RoPELayout::RotateHalf;
+    return a;
+}
+
+inline void EncoderBlockMatches(DeviceBackend& gpu, bool post) {
+    CPUBackend cpu;
+    EncoderBlock cm(EncoderAttention(), 16, &cpu, EncoderLayout(post)), gm(EncoderAttention(), 16, &gpu, EncoderLayout(post));
+    ModuleForwardBackward(cpu, gpu, cm, gm, Shape({2, 5, 8}), post ? 342 : 341);
+}
+
 // Repeated indices: the scatter-add must accumulate them, in token order.
 inline void EmbeddingMatches(DeviceBackend& gpu) {
     CPUBackend cpu;
@@ -682,6 +704,12 @@ inline void TransformerBlockRelevance(DeviceBackend& gpu) {
     CPUBackend cpu;
     TransformerBlock cm(8, 2, 16, &cpu), gm(8, 2, 16, &gpu);
     ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 5, 8}), 560);
+}
+
+inline void EncoderBlockRelevance(DeviceBackend& gpu, bool post) {
+    CPUBackend cpu;
+    EncoderBlock cm(EncoderAttention(), 16, &cpu, EncoderLayout(post)), gm(EncoderAttention(), 16, &gpu, EncoderLayout(post));
+    ModuleRelevance(cpu, gpu, cm, gm, Shape({2, 5, 8}), post ? 562 : 561);
 }
 
 inline void EmbeddingRelevance(DeviceBackend& gpu) {
@@ -1465,6 +1493,10 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     TEST_F(FIXTURE, TransformerBlockForwardBackwardMatchCPU) {                                       \
         ::pulsatrix::training_equivalence::TransformerBlockMatches(MEMBER);                          \
     }                                                                                                \
+    TEST_F(FIXTURE, EncoderBlockForwardBackwardMatchCPU) {                                           \
+        ::pulsatrix::training_equivalence::EncoderBlockMatches(MEMBER, false);                       \
+        ::pulsatrix::training_equivalence::EncoderBlockMatches(MEMBER, true);                        \
+    }                                                                                                \
     TEST_F(FIXTURE, EmbeddingForwardBackwardMatchCPU) { ::pulsatrix::training_equivalence::EmbeddingMatches(MEMBER); } \
     TEST_F(FIXTURE, TiedLMHeadMatchesCPU) { ::pulsatrix::training_equivalence::TiedLMHeadMatches(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
@@ -1489,6 +1521,10 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     }                                                                                                \
     TEST_F(FIXTURE, TransformerBlockRelevanceAgreesWithCPU) {                                        \
         ::pulsatrix::training_equivalence::TransformerBlockRelevance(MEMBER);                        \
+    }                                                                                                \
+    TEST_F(FIXTURE, EncoderBlockRelevanceAgreesWithCPU) {                                            \
+        ::pulsatrix::training_equivalence::EncoderBlockRelevance(MEMBER, false);                     \
+        ::pulsatrix::training_equivalence::EncoderBlockRelevance(MEMBER, true);                      \
     }                                                                                                \
     TEST_F(FIXTURE, EmbeddingRelevanceAgreesWithCPU) { ::pulsatrix::training_equivalence::EmbeddingRelevance(MEMBER); } \
     TEST_F(FIXTURE, ConjunctionEveryTNormMatchesCPU) {                                               \
