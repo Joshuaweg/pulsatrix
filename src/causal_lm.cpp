@@ -82,14 +82,24 @@ Tensor CausalLM::backward(const Tensor& grad_output) {
     return embed_.backward(ScaleEmbeddings(g));  // d(s e)/de = s
 }
 
-Tensor CausalLM::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+std::vector<Tensor> CausalLM::propagate_relevance_by_layer(const Tensor& relevance_out, const LRPRuleConfig& config) {
+    if (last_hidden_shape_.numel() == 0) throw std::logic_error("CausalLM::propagate_relevance_by_layer: called before any forward()");
     const int64_t rows = relevance_out.numel() / config_.vocab_size;
     Tensor r = Reshaped(relevance_out, Shape({rows, config_.vocab_size}));
     r = tied_head_ ? tied_head_->propagate_relevance(r, config) : lm_head_->propagate_relevance(r, config);
     r = Reshaped(norm_.propagate_relevance(r, config), last_hidden_shape_);
-    for (auto it = layers_.rbegin(); it != layers_.rend(); ++it) r = (*it)->propagate_relevance(r, config);
+    std::vector<Tensor> boundaries(layers_.size() + 1, r);
+    for (size_t i = layers_.size(); i-- > 0;) {
+        boundaries[i + 1] = r;
+        r = layers_[i]->propagate_relevance(r, config);
+    }
+    boundaries[0] = r;
+    return boundaries;
+}
+
+Tensor CausalLM::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
     // Scaling the embeddings by a constant passes relevance through unchanged.
-    return embed_.propagate_relevance(r, config);
+    return embed_.propagate_relevance(propagate_relevance_by_layer(relevance_out, config).front(), config);
 }
 
 std::vector<NamedParamRef> CausalLM::named_parameters() {

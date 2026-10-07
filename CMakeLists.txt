@@ -108,6 +108,7 @@ add_library(pulsatrix_core
     src/causal_lm.cpp
     src/golden_logits.cpp
     src/attnlrp_parity.cpp
+    src/relevance_graph.cpp
     src/dropout_module.cpp
     src/sequential_module.cpp
     src/top_k.cpp
@@ -197,6 +198,7 @@ add_library(pulsatrix_core
     src/viz/svg.cpp
     src/viz/text_relevance.cpp
     src/viz/html.cpp
+    src/viz/attribution_graph.cpp
     src/viz/svg_whatif.cpp
     src/viz/document_whatif.cpp
     src/benchmark.cpp

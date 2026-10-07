@@ -151,7 +151,8 @@ trained end to end in its tests and has to reach a fixed score on CartPole.
 - [Recipes](https://joshuaweg.github.io/pulsatrix/recipes/): short programs that each show one
   feature, with a walkthrough page for each.
 - Command-line tools built with the library:
-  - `pulsatrix_explain_text` explains a language model's prediction and draws it.
+  - `pulsatrix_explain_text` explains a language model's prediction and draws it, or writes an
+    attribution graph for Neuronpedia's and circuit-tracer's viewers.
   - `pulsatrix_svg` turns a saved explanation into an SVG figure or an interactive HTML page.
   - `pulsatrix_bench` runs the [benchmark suite](https://joshuaweg.github.io/pulsatrix/benchmarks/).
   - `pulsatrix_golden`, `pulsatrix_attnlrp` and `pulsatrix_tokenizer_parity` check a model's

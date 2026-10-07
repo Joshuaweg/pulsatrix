@@ -152,7 +152,7 @@ Feature discovery on real models, and agents that can drive the library.
   steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
-- VIZ-4, VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector
+- VIZ-4 (**done**), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector
 - AGT-5, AGT-8: the native MCP server and automated feature descriptions
 - NB-3: Python notebook display
 - LLM-8, LLM-9: tuned lens, AtP*, Gemma 3
@@ -781,7 +781,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S |
 | FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — |
 | FEAT-9 | Parameter decomposition (SPD and VPD) | Interpretability in weight space; few libraries have it | FND-4 | P2 | L–XL |
-| FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first | FEAT-5 | P2 | XL |
+| FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first. VIZ-4's AttnLRP graph (residual-stream nodes) and Neuronpedia export are the starting point: transcoder features would replace the nodes | FEAT-5 | P2 | XL |
 
 Open: no LRP rule exists yet for propagating relevance through a block top-k. FEAT-6 needs one.
 
@@ -813,7 +813,7 @@ format, with static and web renderers next to it.
 | VIZ-1 | A versioned JSON document model (`pulsatrix.<kind>.v1`) for attributions, heatmaps, token relevance, circuit graphs, training logs and feature dashboards. The ImGui widgets read it too. NaN and infinity encode as null plus a flag | One source of truth for every renderer | — | P0 | M | Done, [#62](https://github.com/Joshuaweg/pulsatrix/pull/62) (see below) |
 | VIZ-2 | A dependency-free SVG renderer: bar, waterfall, heatmap, token strip, beeswarm | Publication figures with no GPU or display, including in CI | VIZ-1 | P0 | M | Done, [#63](https://github.com/Joshuaweg/pulsatrix/pull/63) (see below) |
 | VIZ-3 | Self-contained Vega-Lite HTML, with the JavaScript inlined or loaded from a CDN | Hover, zoom and export for free, in a browser or notebook | VIZ-1 | P1 | S | Done, [#92](https://github.com/Joshuaweg/pulsatrix/pull/92) (see below) |
-| VIZ-4 | Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read | Large graphs get a mature viewer for free | VIZ-1 | P1 | M | |
+| VIZ-4 | Export circuit graphs in the attribution-graph schema that Neuronpedia and circuit-tracer read | Large graphs get a mature viewer for free | VIZ-1 | P1 | M | Done, [#93](https://github.com/Joshuaweg/pulsatrix/pull/93) (see below) |
 | VIZ-6 | New views: (a) token relevance for text, (b) feature dashboards, (c) an embedding projector, (d) an attention head grid, (e) SHAP force, decision and dependence plots | Fill the gaps between the current widgets and the reference tools | VIZ-1 | P2 | M each | (a) Done, [#87](https://github.com/Joshuaweg/pulsatrix/pull/87) (see below) |
 | VIZ-7 | A node editor for circuit graphs | Only if graphs outgrow the current view; VIZ-4 covers large ones | — | P3 | M | |
 | VIZ-8 | Shaped text in the ImGui widgets. Each piece is shaped with HarfBuzz (through FreeType) and right-to-left runs are reordered (FriBidi, or UAX #9 for single-direction pieces); the shaped glyphs are rasterized with FreeType into a glyph atlas and drawn as textured quads in `TokenRelevanceView`. It passes when Arabic (joined, right to left), Hebrew, Devanagari, Bengali and Tamil (vowel signs and conjuncts) and Thai render the way HarfBuzz's own `hb-view` does, checked against reference images, and emoji ligatures (skin tones, ZWJ families, flags) show as one glyph | Every character already shows (ImGui 1.92 plus system fonts), but ImGui places characters one after another, so complex scripts aren't readable in the native windows; today only the SVG shows them correctly | — | P3 | M | |
@@ -850,6 +850,27 @@ format, with static and web renderers next to it.
     (`tools/render/validate_vega.mjs`). The pages were checked by eye in headless Chromium,
     including a line in ten scripts.
   - Circuit graphs have no HTML view; VIZ-4 exports them to Neuronpedia's viewer instead.
+- **VIZ-4** checked the falsifier first. Neuronpedia's `graph-schema.json` needs no
+  transcoder-specific fields: `feature_type` is free text and `feature` may be null. But the
+  viewer lays nodes out as layer × token, and the circuit graph has no tokens.
+  - So VIZ-4 also builds a token-level graph for language models from AttnLRP
+    (`BuildRelevanceGraph`). Nodes are the residual stream at each layer and token. Links run
+    each block's LRP once per output position, which is exact because the rules are linear in
+    the incoming relevance.
+  - A node's outgoing links sum to its relevance (tested on the four tiny models). Breaking the
+    per-position split fails that test. The embedding row equals the token view (6e-7 on
+    Qwen2.5-0.5B).
+  - Layer totals aren't equal from layer to layer: LRP through norms and biases isn't
+    conservative, the same as in LXT.
+  - `CausalLM::propagate_relevance_by_layer` returns the relevance at every block boundary;
+    `propagate_relevance` now calls it, so LXT parity covers both.
+  - Viewer quirks, found in circuit-tracer's frontend and handled:
+    - the output node's label must hold `(p=...)`, which the viewer parses;
+    - features seen at more than ⅔ of the positions are hidden, so residual nodes use their
+      position as their feature, and circuit graphs get two columns instead of one.
+  - Checked: graphs validate against `graph-schema.json` with Python `jsonschema`. They were
+    viewed in circuit-tracer's frontend in headless Chromium: the Qwen2.5-0.5B " Paris" graph,
+    clicked through, and an exported circuit graph.
 - **VIZ-6a** builds token relevance documents from real explanations
   (`MakeTokenRelevanceDocument`, `MakeWordRelevanceDocument`), rather than adding a new
   document kind. `token_relevance.v1` gained optional `granularity`, `scored` (unscored context
@@ -874,7 +895,7 @@ format, with static and web renderers next to it.
 
 | Follow-up | Found in | Belongs with |
 |---|---|---|
-| SVG views for circuit graphs, training logs and feature dashboards | VIZ-2 | VIZ-4, VIZ-6 |
+| SVG views for circuit graphs, training logs and feature dashboards | VIZ-2 | Done: training logs and dashboards in HTML (VIZ-3); circuit graphs in Neuronpedia's viewer (VIZ-4) |
 | Nothing produces `feature_dashboard.v1` yet; its fields follow SAEDashboard | VIZ-1 | FEAT |
 | Byte-level BPE tokens must be decoded to UTF-8 before they go into a document | VIZ-1 | Done in VIZ-6a: pieces are the text their offsets cover |
 | SVG text widths are estimated (0.6 em), so very wide scripts such as CJK can overflow labels | VIZ-2 | Done for text: widths count display columns (CJK and emoji 2, combining marks 0), and the HTML token view (VIZ-3, [#92](https://github.com/Joshuaweg/pulsatrix/pull/92)) lets the browser lay out and shape the text, so every script is exact there |
