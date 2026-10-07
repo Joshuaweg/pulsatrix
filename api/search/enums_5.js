@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['icestyle_0',['IceStyle',['../namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1ba',1,'pulsatrix']]]
+  ['gatedactivation_0',['GatedActivation',['../namespacepulsatrix.html#a988785af20e321b62cf99997047a6985',1,'pulsatrix']]]
 ];

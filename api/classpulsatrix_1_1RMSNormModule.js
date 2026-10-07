@@ -11,5 +11,7 @@ var classpulsatrix_1_1RMSNormModule =
     [ "op_type", "classpulsatrix_1_1RMSNormModule.html#ae7db12b7a7b18c22371735e6e97c475e", null ],
     [ "propagate_relevance", "classpulsatrix_1_1RMSNormModule.html#a118b29388de9e763cdc090a665e83831", null ],
     [ "set_gamma", "classpulsatrix_1_1RMSNormModule.html#ad392df4e399db2fc74d29003452c840e", null ],
-    [ "set_gamma", "classpulsatrix_1_1RMSNormModule.html#a370eeaebf5af05be269a58e508e4a9a8", null ]
+    [ "set_gamma", "classpulsatrix_1_1RMSNormModule.html#a370eeaebf5af05be269a58e508e4a9a8", null ],
+    [ "set_weight_offset", "classpulsatrix_1_1RMSNormModule.html#afd2e9bfdd5a4d2836d27782c5f0a14a4", null ],
+    [ "weight_offset", "classpulsatrix_1_1RMSNormModule.html#aa3b282b9aad698dfd72f063673ad7249", null ]
 ];

@@ -1916,6 +1916,12 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   mask, the RoPE pair layout (<code>RoPELayout::RotateHalf</code> for Llama-family models) and base
   (<code>rope_theta</code>), and QK-Norm. <code>set_key_padding_mask()</code> masks padding tokens and
   <code>set_position_offset()</code> shifts RoPE positions. <code>LinearModule</code> can be built without a bias.
+  The settings Gemma 3 adds (LLM-9) are:</li>
+<li><code>AttentionConfig::sliding_window</code>, so each query sees only its last positions</li>
+<li><code>score_scale</code> (Gemma's <code>query_pre_attn_scalar^-0.5</code>)</li>
+<li><code>qk_norm_weight_offset</code></li>
+<li><code>TransformerBlockOptions</code>, which gives a GeGLU MLP (<code>GatedActivation::GeluTanh</code>), sandwich
+    norms around attention and the MLP, and <code>(1 + w)</code> RMSNorms (<code>RMSNormModule::set_weight_offset</code>)
   <code>TiedLMHeadModule</code> is the output layer of models with <code>tie_word_embeddings</code>: it computes logits
   with an <code>EmbeddingModule</code>'s table, which stays a single parameter whose gradient sums both
   uses.</li>
@@ -2049,7 +2055,7 @@ millisecond.</p>
   exactly, and rounds fp64; integer tensors stay raw bytes (<code>bytes()</code>).</li>
 </ul>
 <p><strong>Loading a model.</strong> <code>LoadCausalLM</code> builds a <code>CausalLM</code> (embedding, transformer blocks, final
-RMSNorm, tied or untied head: Llama, SmolLM2, Qwen2/2.5, Qwen3) from a downloaded model directory
+RMSNorm, tied or untied head: Llama, SmolLM2, Qwen2/2.5, Qwen3, Gemma 3) from a downloaded model directory
 and loads its weights by name:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/causal_lm.hpp"</span>
 

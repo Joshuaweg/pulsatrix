@@ -1036,6 +1036,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y1 = x + MHA(RMSNorm(x))</code>, <code>y2 = y1 + SwiGLU(RMSNorm(y1))</code>. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(N, L, d_model) -&gt; (N, L, d_model)</code>.  <a href="classpulsatrix_1_1TransformerBlock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TransformerBlockOptions.html">TransformerBlockOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parts of a <a class="el" href="classpulsatrix_1_1TransformerBlock.html" title="y1 = x + MHA(RMSNorm(x)), y2 = y1 + SwiGLU(RMSNorm(y1)). Shape (N, L, d_model) -&gt; (N,...">TransformerBlock</a> beyond its attention (LLM-9 adds Gemma's).  <a href="structpulsatrix_1_1TransformerBlockOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Trial.html">Trial</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A configuration paired with the metric history observed while evaluating it (instantiate a network under this configuration, train it, record whatever metrics the training loop reports). Deliberately decoupled from <a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a> &ndash; a <a class="el" href="classpulsatrix_1_1Trial.html" title="A configuration paired with the metric history observed while evaluating it (instantiate a network un...">Trial</a> records what actually happened, a <a class="el" href="classpulsatrix_1_1SearchSpace.html" title="Describes a hyperparameter search space as an ordered list of named, typed parameters....">SearchSpace</a> describes what could be proposed; neither needs to reference the other directly.  <a href="classpulsatrix_1_1Trial.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1177,6 +1180,7 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a17aeea3715b4cdfdf861f237f4011edf">Silu</a>
 , <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0">Exp</a>
+, <a class="el" href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f">GeluTanh</a>
 <br />
  }</td></tr>
 <tr class="memdesc:afec27fa326532e4ad62b32d54558b503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary elementwise operations supported by DeviceBackend::elementwise().  <a href="namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503">More...</a><br /></td></tr>
@@ -1341,6 +1345,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ad7a1ebc92bdef322b1c30385aac7c066"><td class="mdescLeft">&#160;</td><td class="mdescRight">When Metaspace puts its replacement in front of a piece.  <a href="namespacepulsatrix.html#ad7a1ebc92bdef322b1c30385aac7c066">More...</a><br /></td></tr>
 <tr class="separator:ad7a1ebc92bdef322b1c30385aac7c066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988785af20e321b62cf99997047a6985" id="r_a988785af20e321b62cf99997047a6985"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">GatedActivation</a> { <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf">Silu</a>
+, <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f">GeluTanh</a>
+ }</td></tr>
+<tr class="memdesc:a988785af20e321b62cf99997047a6985"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh approximation (GeGLU: Gemma, LLM-9).  <a href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">More...</a><br /></td></tr>
+<tr class="separator:a988785af20e321b62cf99997047a6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga36063879210fbfeed97464b5b089b871" id="r_ga36063879210fbfeed97464b5b089b871"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871">LogFormat</a> { <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871aaaffc9a26d918147e8944a8fd5e231b9">LogFormat::JsonLines</a>
 , <a class="el" href="group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871ab20daea8bfacec3891fcf5b7be4adca0">LogFormat::Csv</a>
  }</td></tr>
@@ -1619,9 +1628,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6cfa666246da5421f8bba0105d28340f" id="r_a6cfa666246da5421f8bba0105d28340f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6cfa666246da5421f8bba0105d28340f">MakeNextTokenLogits</a> (std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; layers, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a6cfa666246da5421f8bba0105d28340f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A NextTokenLogitsFn for a stack of pulsatrix modules that maps token ids <code>(1, L)</code> to logits <code>(1, L, vocab)</code> (for example <a class="el" href="classpulsatrix_1_1EmbeddingModule.html" title="Embedding lookup table, rank-2 input (N, L) of float-encoded indices -&gt; rank-3 output (N,...">EmbeddingModule</a>, causal TransformerBlocks, an RMSNorm and a <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html" title="logits = x @ E^T, where E is a token embedding table (vocab, d_model) that the head shares rather tha...">TiedLMHeadModule</a>): it runs the whole sequence through the modules and returns the last position's logits.  <br /></td></tr>
 <tr class="separator:a6cfa666246da5421f8bba0105d28340f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0f5ad755b0b0704f29e15db03268e39" id="r_ad0f5ad755b0b0704f29e15db03268e39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad0f5ad755b0b0704f29e15db03268e39">MakeCachedNextTokenLogits</a> (<a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a> &amp;embedding, std::vector&lt; <a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a> * &gt; blocks, std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; head, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t max_length)</td></tr>
-<tr class="memdesc:ad0f5ad755b0b0704f29e15db03268e39"><td class="mdescLeft">&#160;</td><td class="mdescRight">A NextTokenLogitsFn for embedding -&gt; transformer blocks -&gt; head layers that keeps a KV cache per block (LLM-5): each call runs only the tokens after the longest prefix it has already processed, so generating n tokens costs one pass over the prompt and then one position per token, instead of n passes over the whole sequence. A call with a different history (a new prompt, or a shorter or edited one) truncates the caches to the shared prefix and continues from there.  <br /></td></tr>
-<tr class="separator:ad0f5ad755b0b0704f29e15db03268e39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add21f6178694d0d0795bc60e374dc345" id="r_add21f6178694d0d0795bc60e374dc345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#add21f6178694d0d0795bc60e374dc345">MakeCachedNextTokenLogits</a> (<a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a> &amp;embedding, std::vector&lt; <a class="el" href="classpulsatrix_1_1TransformerBlock.html">TransformerBlock</a> * &gt; blocks, std::vector&lt; <a class="el" href="classpulsatrix_1_1Module.html">Module</a> * &gt; head, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, int64_t max_length, float embed_scale=1.0f)</td></tr>
+<tr class="memdesc:add21f6178694d0d0795bc60e374dc345"><td class="mdescLeft">&#160;</td><td class="mdescRight">A NextTokenLogitsFn for embedding -&gt; transformer blocks -&gt; head layers that keeps a KV cache per block (LLM-5): each call runs only the tokens after the longest prefix it has already processed, so generating n tokens costs one pass over the prompt and then one position per token, instead of n passes over the whole sequence. A call with a different history (a new prompt, or a shorter or edited one) truncates the caches to the shared prefix and continues from there.  <br /></td></tr>
+<tr class="separator:add21f6178694d0d0795bc60e374dc345"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07c587513b12f0ed1c2eae8fef64e2ad" id="r_a07c587513b12f0ed1c2eae8fef64e2ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a07c587513b12f0ed1c2eae8fef64e2ad">SliceBatch</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t, int64_t start, int64_t count, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:a07c587513b12f0ed1c2eae8fef64e2ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts rows [start, start+count) along t's leading dimension into a new <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> &ndash; the inverse of <a class="el" href="classpulsatrix_1_1Tensor.html#a15c8264d40dc71b5a5295b1b78098496" title="Concatenates N tensors along their leading dimension into one batch Tensor – pulsatrix&#39;s collate-time...">Tensor::Stack</a>, needed to split a pooled discriminator gradient back into each population member's own slice.  <br /></td></tr>
 <tr class="separator:a07c587513b12f0ed1c2eae8fef64e2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1684,8 +1693,11 @@ Functions</h2></td></tr>
 <tr class="memdesc:aaa9bdc6f7114dfcc96ef30a0df72f43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The RoPE frequency of each pair, <code>head_dim / 2</code> of them, as Hugging Face computes them: <code>rope_theta^(-2i / head_dim)</code>, then rescaled by <code>rope_scaling</code> when it is <code>"linear"</code> (all divided by the factor) or <code>"llama3"</code> (low frequencies divided by the factor, high ones kept, the band between interpolated; LLM-6).  <br /></td></tr>
 <tr class="separator:aaa9bdc6f7114dfcc96ef30a0df72f43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f72456585566c7d3dd290e3ac5f0af5" id="r_a0f72456585566c7d3dd290e3ac5f0af5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0f72456585566c7d3dd290e3ac5f0af5">ToAttentionConfig</a> (const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;config)</td></tr>
-<tr class="memdesc:a0f72456585566c7d3dd290e3ac5f0af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attention layer the config describes: rotate-half RoPE (with its scaling), causal, its head counts, biases, QK-Norm and epsilon.  <br /></td></tr>
+<tr class="memdesc:a0f72456585566c7d3dd290e3ac5f0af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attention layer the config describes: rotate-half RoPE (with its scaling), causal, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm offset. For a model whose layers differ, this is a full-attention layer.  <br /></td></tr>
 <tr class="separator:a0f72456585566c7d3dd290e3ac5f0af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad64730dfcec06e9aeecdef5787e60c8a" id="r_ad64730dfcec06e9aeecdef5787e60c8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad64730dfcec06e9aeecdef5787e60c8a">ToAttentionConfig</a> (const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;config, int64_t layer)</td></tr>
+<tr class="memdesc:ad64730dfcec06e9aeecdef5787e60c8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer <code>layer's</code> attention (LLM-9): a sliding-window layer gets its window and its own RoPE base, unscaled; a full-attention layer is ToAttentionConfig(config).  <br /></td></tr>
+<tr class="separator:ad64730dfcec06e9aeecdef5787e60c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87a0367a8a25871e968563e95fe39345" id="r_a87a0367a8a25871e968563e95fe39345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a87a0367a8a25871e968563e95fe39345">DecodeGenotype</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, const std::vector&lt; double &gt; &amp;genotype)</td></tr>
 <tr class="memdesc:a87a0367a8a25871e968563e95fe39345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes a unit-hypercube genotype into a Configuration using space's own declared bounds: Continuous linearly, LogUniform geometrically (both identical to <a class="el" href="gp__bo_8hpp.html" title="The GP-BO trial loop: random-initialize, then repeatedly fit a GP to every trial observed so far and ...">gp_bo.hpp</a>'s UnitCubeToConfiguration); Integer by linear interpolation then rounding to the nearest integer (std::round &ndash; ties away from zero, portable); Categorical by linear interpolation into an index, floored, clamped to the last category (handles the gene == 1.0 boundary, which would otherwise floor to one-past-the-end).  <br /></td></tr>
 <tr class="separator:a87a0367a8a25871e968563e95fe39345"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2507,6 +2519,8 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </td></tr>
 <tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0" name="afec27fa326532e4ad62b32d54558b503acad39a154bffb61175f674d6eefaf6d0"></a>Exp&#160;</td><td class="fielddoc"><p>exp(x) &ndash; GPU-native-kernels Mission 1b (<a class="el" href="classpulsatrix_1_1Reparameterize.html" title="VAE reparameterization trick (Kingma &amp; Welling 2013, arXiv:1312.6114), z[b,d] = mu[b,...">Reparameterize</a>, KL divergence) </p>
 </td></tr>
+<tr><td class="fieldname"><a id="afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f" name="afec27fa326532e4ad62b32d54558b503a2def035d9851f43e5bb24c50b324d47f"></a>GeluTanh&#160;</td><td class="fielddoc"><p>GELU, tanh approximation (gelu_pytorch_tanh) &ndash; the gate of Gemma's GeGLU (LLM-9) </p>
+</td></tr>
 </table>
 
 </div>
@@ -2537,6 +2551,34 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </td></tr>
 <tr><td class="fieldname"><a id="ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275" name="ad77127af5416692cbd6eaeaba9ec0e0aaba2a9c6c8c77e03f83ef8bf543612275"></a>Length&#160;</td><td class="fielddoc"><p>max_new_tokens were generated. </p>
 </td></tr>
+</table>
+
+</div>
+</div>
+<a id="a988785af20e321b62cf99997047a6985" name="a988785af20e321b62cf99997047a6985"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a988785af20e321b62cf99997047a6985">&#9670;&#160;</a></span>GatedActivation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">pulsatrix::GatedActivation</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh approximation (GeGLU: Gemma, LLM-9). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf" name="a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf"></a>Silu&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f" name="a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f"></a>GeluTanh&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -7434,8 +7476,8 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
-<a id="ad0f5ad755b0b0704f29e15db03268e39" name="ad0f5ad755b0b0704f29e15db03268e39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0f5ad755b0b0704f29e15db03268e39">&#9670;&#160;</a></span>MakeCachedNextTokenLogits()</h2>
+<a id="add21f6178694d0d0795bc60e374dc345" name="add21f6178694d0d0795bc60e374dc345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add21f6178694d0d0795bc60e374dc345">&#9670;&#160;</a></span>MakeCachedNextTokenLogits()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7468,7 +7510,13 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int64_t&#160;</td>
-          <td class="paramname"><em>max_length</em>&#160;</td>
+          <td class="paramname"><em>max_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>embed_scale</em> = <code>1.0f</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -12406,7 +12454,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a0f72456585566c7d3dd290e3ac5f0af5" name="a0f72456585566c7d3dd290e3ac5f0af5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f72456585566c7d3dd290e3ac5f0af5">&#9670;&#160;</a></span>ToAttentionConfig()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f72456585566c7d3dd290e3ac5f0af5">&#9670;&#160;</a></span>ToAttentionConfig() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -12421,7 +12469,37 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
       </table>
 </div><div class="memdoc">
 
-<p>The attention layer the config describes: rotate-half RoPE (with its scaling), causal, its head counts, biases, QK-Norm and epsilon. </p>
+<p>The attention layer the config describes: rotate-half RoPE (with its scaling), causal, its head counts, biases, QK-Norm and epsilon, and Gemma's score scale and QK-Norm offset. For a model whose layers differ, this is a full-attention layer. </p>
+
+</div>
+</div>
+<a id="ad64730dfcec06e9aeecdef5787e60c8a" name="ad64730dfcec06e9aeecdef5787e60c8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad64730dfcec06e9aeecdef5787e60c8a">&#9670;&#160;</a></span>ToAttentionConfig() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a> pulsatrix::ToAttentionConfig </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>layer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Layer <code>layer's</code> attention (LLM-9): a sliding-window layer gets its window and its own RoPE base, unscaled; a full-attention layer is ToAttentionConfig(config). </p>
 
 </div>
 </div>

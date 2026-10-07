@@ -11,10 +11,11 @@ var searchData=
   ['pci_5fdevice_8',['pci_device',['../structpulsatrix_1_1detail_1_1AmdGpuDevice.html#afc0ef8e91cab0dafef148baf8a74b184',1,'pulsatrix::detail::AmdGpuDevice']]],
   ['peak_5fin_5fuse_5fbytes_9',['peak_in_use_bytes',['../structpulsatrix_1_1CachingAllocator_1_1Stats.html#a04bd4207063f85f5e2020892a0a96466',1,'pulsatrix::CachingAllocator::Stats']]],
   ['pixels_10',['pixels',['../structpulsatrix_1_1RgbImageBuffer.html#ab94b83c444d6a08d99d4bf075e0c3e03',1,'pulsatrix::RgbImageBuffer']]],
-  ['power_5fwatts_11',['power_watts',['../structpulsatrix_1_1GpuSample.html#a426da3a91454388da327cfd65c083099',1,'pulsatrix::GpuSample']]],
-  ['prefetch_5fbatches_12',['prefetch_batches',['../structpulsatrix_1_1DataLoaderOptions.html#a7ceefe8b1ecafbaef471af7126c0b809',1,'pulsatrix::DataLoaderOptions']]],
-  ['process_5fcpu_5fpercent_13',['process_cpu_percent',['../structpulsatrix_1_1SystemSample.html#a7f41e49f5d0d6d2955897bc18f22fd21',1,'pulsatrix::SystemSample']]],
-  ['process_5fcpu_5fseconds_14',['process_cpu_seconds',['../structpulsatrix_1_1detail_1_1RawReading.html#aa8b3b344e50f919bfc2688eb561b1847',1,'pulsatrix::detail::RawReading']]],
-  ['process_5frss_5fbytes_15',['process_rss_bytes',['../structpulsatrix_1_1SystemSample.html#a869527fad58b4b0075e9c50781ad991e',1,'pulsatrix::SystemSample::process_rss_bytes'],['../structpulsatrix_1_1detail_1_1RawReading.html#aa84d7d398e726e04b248073640f5cc77',1,'pulsatrix::detail::RawReading::process_rss_bytes']]],
-  ['proximity_5fweight_16',['proximity_weight',['../structpulsatrix_1_1DiverseCounterfactualOptions.html#abb4aa35c859c2f5c9804f08404fe3aa3',1,'pulsatrix::DiverseCounterfactualOptions']]]
+  ['post_5fnorms_11',['post_norms',['../structpulsatrix_1_1HfModelConfig.html#af54ceeff0cc87d791e4b5eb1207cd731',1,'pulsatrix::HfModelConfig::post_norms'],['../structpulsatrix_1_1TransformerBlockOptions.html#abd27ba44bbe5d002a99bc98e5836ee92',1,'pulsatrix::TransformerBlockOptions::post_norms']]],
+  ['power_5fwatts_12',['power_watts',['../structpulsatrix_1_1GpuSample.html#a426da3a91454388da327cfd65c083099',1,'pulsatrix::GpuSample']]],
+  ['prefetch_5fbatches_13',['prefetch_batches',['../structpulsatrix_1_1DataLoaderOptions.html#a7ceefe8b1ecafbaef471af7126c0b809',1,'pulsatrix::DataLoaderOptions']]],
+  ['process_5fcpu_5fpercent_14',['process_cpu_percent',['../structpulsatrix_1_1SystemSample.html#a7f41e49f5d0d6d2955897bc18f22fd21',1,'pulsatrix::SystemSample']]],
+  ['process_5fcpu_5fseconds_15',['process_cpu_seconds',['../structpulsatrix_1_1detail_1_1RawReading.html#aa8b3b344e50f919bfc2688eb561b1847',1,'pulsatrix::detail::RawReading']]],
+  ['process_5frss_5fbytes_16',['process_rss_bytes',['../structpulsatrix_1_1SystemSample.html#a869527fad58b4b0075e9c50781ad991e',1,'pulsatrix::SystemSample::process_rss_bytes'],['../structpulsatrix_1_1detail_1_1RawReading.html#aa84d7d398e726e04b248073640f5cc77',1,'pulsatrix::detail::RawReading::process_rss_bytes']]],
+  ['proximity_5fweight_17',['proximity_weight',['../structpulsatrix_1_1DiverseCounterfactualOptions.html#abb4aa35c859c2f5c9804f08404fe3aa3',1,'pulsatrix::DiverseCounterfactualOptions']]]
 ];

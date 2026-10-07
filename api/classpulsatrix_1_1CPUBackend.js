@@ -9,7 +9,7 @@ var classpulsatrix_1_1CPUBackend =
     [ "aggregator_forward", "classpulsatrix_1_1CPUBackend.html#a62bfd935e8acbfad13bb6d2c907f2cfa", null ],
     [ "aggregator_lrp", "classpulsatrix_1_1CPUBackend.html#a805dbc60d8b59e886f325d3dc3d6d172", null ],
     [ "allocate", "classpulsatrix_1_1CPUBackend.html#a92d381019f12f267de72bc531ad2bd8e", null ],
-    [ "attention_mask_fill", "classpulsatrix_1_1CPUBackend.html#ad821eed6eed2f0f469fa888b66b219bf", null ],
+    [ "attention_mask_fill", "classpulsatrix_1_1CPUBackend.html#ae9f5e7b04de5f554f506f944ef2d68fd", null ],
     [ "avg_pool_backward", "classpulsatrix_1_1CPUBackend.html#ab69744bf016d5898abc75ba8d905a7be", null ],
     [ "avg_pool_forward", "classpulsatrix_1_1CPUBackend.html#a99c73ff2d9dd2f873f8217139a81aadf", null ],
     [ "axpby", "classpulsatrix_1_1CPUBackend.html#a7150c012d9431e8245f724301fadcf73", null ],

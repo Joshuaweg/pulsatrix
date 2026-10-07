@@ -12,7 +12,7 @@ var classpulsatrix_1_1HIPBackend =
     [ "aggregator_forward", "classpulsatrix_1_1HIPBackend.html#ade4993fe5f2f7a4dc5fd0c41f4322645", null ],
     [ "aggregator_lrp", "classpulsatrix_1_1HIPBackend.html#a0401ec38fd9c4fb2dd2fca20fb1fdeb1", null ],
     [ "allocate", "classpulsatrix_1_1HIPBackend.html#aff78faa24ac9c1246184103ff88e3c40", null ],
-    [ "attention_mask_fill", "classpulsatrix_1_1HIPBackend.html#aeaec7bfdfb3b100d75a9e38654b02107", null ],
+    [ "attention_mask_fill", "classpulsatrix_1_1HIPBackend.html#a88045fa14e74990b0a2b4d65effd66bf", null ],
     [ "avg_pool_backward", "classpulsatrix_1_1HIPBackend.html#ac518aed2257556188bccbc2083053979", null ],
     [ "avg_pool_forward", "classpulsatrix_1_1HIPBackend.html#aed7299b00f38173e4ee9799e49ceefb9", null ],
     [ "axpby", "classpulsatrix_1_1HIPBackend.html#af6224fc26feb843529feb6afb107ffec", null ],

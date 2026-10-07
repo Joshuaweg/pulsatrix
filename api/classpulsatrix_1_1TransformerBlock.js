@@ -2,6 +2,7 @@ var classpulsatrix_1_1TransformerBlock =
 [
     [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html#acde60b9083910b814406bc6a10d7deee", null ],
     [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html#ab85ffd3c332929ea907cb85313d7788b", null ],
+    [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html#ae2410742a84161ec8a628075b4961f05", null ],
     [ "backward", "classpulsatrix_1_1TransformerBlock.html#abc0a1563e2a85b6998d197edfcf9e861", null ],
     [ "compute_device", "classpulsatrix_1_1TransformerBlock.html#ab76a3f0b3b5d175132e8f49641c491d3", null ],
     [ "d_model", "classpulsatrix_1_1TransformerBlock.html#a39ba98c6b35d8b44af755fedb2056a38", null ],
@@ -13,6 +14,8 @@ var classpulsatrix_1_1TransformerBlock =
     [ "norm1", "classpulsatrix_1_1TransformerBlock.html#a1bbd0d5f3158fe58f3d69b119acba2e2", null ],
     [ "norm2", "classpulsatrix_1_1TransformerBlock.html#a25965a91fbf957a98559125f731017fd", null ],
     [ "op_type", "classpulsatrix_1_1TransformerBlock.html#a5ffc207019fabf83c19613c2d3e711b7", null ],
+    [ "post_attn_norm", "classpulsatrix_1_1TransformerBlock.html#a550eb95e1985c9ba02ec262fd78e3c98", null ],
+    [ "post_mlp_norm", "classpulsatrix_1_1TransformerBlock.html#af7b872cf1e0e23845d28cc5bff8f0e79", null ],
     [ "propagate_relevance", "classpulsatrix_1_1TransformerBlock.html#ae6ce7ebbbcae1b88709d0e9058652529", null ],
     [ "set_training", "classpulsatrix_1_1TransformerBlock.html#af80237833850ddabf8613bfeacb16879", null ],
     [ "swiglu", "classpulsatrix_1_1TransformerBlock.html#aa5863fb9245c9acb78bf597c6fe8af7b", null ]

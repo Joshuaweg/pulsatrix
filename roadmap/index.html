@@ -3674,8 +3674,41 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
     calls <code>logit.backward(logit)</code>, which multiplies every relevance by the logit again. A
     per-text scale like that leaves correlation unchanged, so the harness also reports the largest
     relative difference.</li>
-<li>LXT 2.1 needs two shims under transformers 5; they are described in the generator and in
-    <code>docs/interpretability/lrp.md</code>.</li>
+<li>
+<p>LXT 2.1 needs two shims under transformers 5; they are described in the generator and in
+    <code>docs/interpretability/lrp.md</code>.</p>
+</li>
+<li>
+<p><strong>LLM-9</strong> runs Gemma 3 (the text model, <code>gemma3_text</code>), checked on Gemma 3 270M and on a tiny
+  fixture. Gemma 1 and 2, and logit softcapping, are still refused by name.</p>
+</li>
+<li><strong>The pieces:</strong><ul>
+<li>sliding-window attention, a window parameter on the attention mask on every backend,
+  including the KV-cache path</li>
+<li>each layer type's own RoPE base, with scaling only on full-attention layers, read from both
+  the older flat fields and the newer nested <code>rope_parameters</code></li>
+<li><code>query_pre_attn_scalar</code> as the score scale</li>
+<li>a GeGLU MLP (<code>ElementwiseOp::GeluTanh</code>, written once for CPU and GPU)</li>
+<li><code>(1 + w)</code> RMSNorms, kept as an offset so the stored weight stays the checkpoint's</li>
+<li>sandwich norms, and embeddings scaled by <code>sqrt(hidden_size)</code></li>
+</ul>
+</li>
+<li><strong>Results on Gemma 3 270M:</strong><ul>
+<li>logits within 1.6e-4 of <code>transformers</code> on CPU (4.6e-6 relative) and 1.2e-4 on the GPU</li>
+<li>greedy generation identical for 24 tokens</li>
+<li>AttnLRP matching LXT's own Gemma 3 patch (largest relative difference 5.5e-5, correlation
+  1.000000)</li>
+</ul>
+</li>
+<li><strong>The real model's window (512) is longer than the golden texts</strong>, so the tiny fixture checks
+    the window: 4 layers (sliding, sliding, full, sliding) with a 3-token window,
+    <code>query_pre_attn_scalar</code> 12, RoPE base 100 on sliding layers and linear scaling on the full one,
+    and norm weights drawn around 0.</li>
+<li><strong>Mutation-checked:</strong> removing the <code>(1 + w)</code>, the embedding scale, the window, the sandwich
+    norms, the per-layer-type RoPE base or the score scale each fails the tiny fixture's logits,
+    golden and AttnLRP tests.</li>
+<li><strong>Config bugs fixed:</strong> <code>attn_logit_softcapping: null</code> (off) was reported as unsupported, and
+    <code>layer_types</code> must now name one type per layer.</li>
 </ul>
 <h3 id="follow-ups-the-llm-work-surfaced">Follow-ups the LLM work surfaced<a class="headerlink" href="#follow-ups-the-llm-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
@@ -3696,7 +3729,7 @@ autoencoders and transcoders for every layer, so it pays off for the FEAT epic.<
 </tr>
 <tr>
 <td>Gemma 3's <code>query_pre_attn_scalar</code> replaces the <code>1/sqrt(head_dim)</code> scale</td>
-<td>LLM-9</td>
+<td>Done in LLM-9</td>
 </tr>
 <tr>
 <td>Grouped-query attention materializes the repeated K and V; index the shared head inside the matmul instead</td>

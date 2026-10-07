@@ -95,7 +95,8 @@ $(document).ready(function(){initNavTree('swiglu__module_8hpp.html',''); initRes
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">swiglu_module.hpp File Reference<div class="ingroups"><a class="el" href="group__dl__modules.html">Deep Learning Modules and Layers</a></div></div></div>
 </div><!--header-->
 <div class="contents">
@@ -236,6 +237,14 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacepulsatrix" id="r_namespacepulsatrix"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html">pulsatrix</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a988785af20e321b62cf99997047a6985" id="r_a988785af20e321b62cf99997047a6985"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">pulsatrix::GatedActivation</a> { <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a17aeea3715b4cdfdf861f237f4011edf">pulsatrix::Silu</a>
+, <a class="el" href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985a2def035d9851f43e5bb24c50b324d47f">pulsatrix::GeluTanh</a>
+ }</td></tr>
+<tr class="memdesc:a988785af20e321b62cf99997047a6985"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gate activation of a gated MLP: SiLU (SwiGLU: Llama, Qwen) or GELU's tanh approximation (GeGLU: Gemma, LLM-9).  <a href="namespacepulsatrix.html#a988785af20e321b62cf99997047a6985">More...</a><br /></td></tr>
+<tr class="separator:a988785af20e321b62cf99997047a6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SwiGLU gated feedforward block &ndash; second module composed from real <code>LinearModule</code> sub-objects, plus a diagonal specialization of AttnLRP's Eq. 15 bilinear rule. </p>
