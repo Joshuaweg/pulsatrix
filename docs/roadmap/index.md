@@ -1130,7 +1130,7 @@ sources are in [Protein language models: research and plan](protein-language-mod
 | PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | Done, [#98](https://github.com/Joshuaweg/pulsatrix/pull/98) (see below) |
 | PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | Done, [#99](https://github.com/Joshuaweg/pulsatrix/pull/99) (see below) |
 | PLM-7 | Masked-LM training: the 15% (80/10/10) masking collator with token dropout, cropping and cluster-weighted sampling; an ESM-2-8M-shaped model on a UniRef50 sample, checked against BioNeMo's curve; per-residue and per-protein fine-tuning heads | Training and transfer learning; full pretraining waits on HIP-11 | PLM-2 | P1 | M | Done, [#100](https://github.com/Joshuaweg/pulsatrix/pull/100) (see below) |
-| PLM-8 | Probes and features: per-layer linear probes (DSSP, accessibility, binding sites) with control tasks; an InterPLM-style SAE on ESM-2-8M with features matched to Swiss-Prot annotations; a feature dashboard with a structure panel | Concept-level interpretability | PLM-5, FEAT-1 | P2 | L | |
+| PLM-8 | Probes and features: per-layer linear probes (DSSP, accessibility, binding sites) with control tasks; an InterPLM-style SAE on ESM-2-8M with features matched to Swiss-Prot annotations; a feature dashboard with a structure panel | Concept-level interpretability | PLM-5, FEAT-1 | P2 | L | Done, [#103](https://github.com/Joshuaweg/pulsatrix/pull/103) (see below) |
 | PLM-9 | A tutorial on one protein (TEM-1 β-lactamase): scan every mutation against its DMS, draw the contact map against its structure, and show relevance on the 3D structure | The whole path, end to end | PLM-3 to PLM-6 | P1 | S | Done, [#101](https://github.com/Joshuaweg/pulsatrix/pull/101) (see below) |
 
 ### How the PLM work departed from the plan
@@ -1279,6 +1279,30 @@ sources are in [Protein language models: research and plan](protein-language-mod
     residues and reports the differences.
   - **Two numberings.** The scan numbers the precursor from 1 and the structure uses Ambler's
     numbering; residue ids keep them apart.
+
+- **PLM-8** (after FEAT-1, #102) adds the probes, SAE features and dashboards, in
+  `protein_concepts.hpp` and `pulsatrix_probe_esm`.
+  - **Labels.** Swiss-Prot annotations stand in for DSSP and accessibility: 3,000 random
+    reviewed proteins that have 3D structures, so helices and strands come from structures,
+    plus binding and active sites, disulfides, signal peptides, transmembrane spans, zinc
+    fingers, coiled coils and motifs. Accessibility isn't among UniProt's features and wasn't
+    computed.
+  - **The control task became a sequence control.** Hewitt and Liang's control task (labels
+    fixed per token type) gave balanced accuracy 1.0 at every layer. Twenty amino acids are
+    trivially separable, so a linear probe learns it from any representation. The control is
+    a linear probe on one-hot local sequence (±3) instead, beside a randomly initialized model.
+    - With it, disulfide probes show no gain at all: they find cysteines.
+    - Secondary structure gains +0.20 (8M) and +0.25 (650M) balanced accuracy.
+  - **The SAE.** 2,560 latents on ESM-2 8M layer 4: held-out L0 17, 66% of the variance
+    explained, no dead latents. Inputs are standardized per dimension; unstandardized, a few
+    huge dimensions dominated and it explained 33%.
+    - Single features beat single neurons on sparse concepts: disulfides 0.69 against 0.18,
+      zinc fingers 0.29 against 0.05, signal peptides 0.44 against 0.34.
+    - Neurons win on helices and strands.
+    - A random model's SAE matches disulfides (0.39) and coiled coils (0.26) too, so matches
+      are leads, not proof.
+  - **Dashboards** carry a structure panel (`StructurePanelHtml`, factored out of the structure
+    page). Protein examples wrap residue by residue.
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.

@@ -114,8 +114,10 @@ struct HtmlOptions {
 [[nodiscard]] std::string RenderSobolHtml(const SobolDocument& doc, int top_k = 10, const HtmlOptions& options = {});
 [[nodiscard]] std::string RenderTrainingLogHtml(const TrainingLogDocument& doc, const HtmlOptions& options = {});
 /** @brief The feature's statistics, its activation histogram, and its top examples with each
- *         token shaded by its activation. */
-[[nodiscard]] std::string RenderFeatureDashboardHtml(const FeatureDashboardDocument& doc, const HtmlOptions& options = {});
+ *         token shaded by its activation. @p extra_html is appended as is, such as a structure
+ *         panel (StructurePanelHtml, PLM-8). */
+[[nodiscard]] std::string RenderFeatureDashboardHtml(const FeatureDashboardDocument& doc, const HtmlOptions& options = {},
+                                                     const std::string& extra_html = "");
 
 /**
  * @brief The text with each piece (token or word) on a background colored by its relevance, as
