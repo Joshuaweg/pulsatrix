@@ -3201,7 +3201,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
 <p>Feature discovery on real models, and agents that can drive the library.</p>
 <ul>
-<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 to FEAT-4 (<strong>done</strong>) to FEAT-7: the featurizer interface, TopK
+<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 to FEAT-5 (<strong>done</strong>) to FEAT-7: the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering</li>
 <li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology</li>
@@ -4915,7 +4915,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/108">#108</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-6</td>
@@ -5066,7 +5066,29 @@ none.
   - <strong>On ESM-2 8M</strong> Matryoshka absorbs least and finds the best single features for helix and
 transmembrane, at 0.90 loss recovered to TopK's 0.96. JumpReLU matches TopK's loss
 recovered with 12.6 latents instead of 16
-(<a href="../mechanistic-interpretability/#batchtopk-matryoshka-and-jumprelu">table</a>).</p>
+(<a href="../mechanistic-interpretability/#batchtopk-matryoshka-and-jumprelu">table</a>).
+- <strong>FEAT-5</strong> adds <code>Transcoder</code> (<code>transcoder.hpp</code>), with an optional skip connection, and an MLP
+  hook on <code>EncoderBlock</code> and <code>TransformerBlock</code>.
+  - <strong>TopK activation and AuxK,</strong> as Paulo et al. train them, rather than Dunefsky et al.'s L1
+penalty.
+  - <strong>The interface grew, compatibly.</strong> <code>Featurizer</code> gains <code>output_dim()</code>, <code>predict()</code> (the
+full output, skip connection included) and <code>loss_and_backward_with_target()</code>, which
+autoencoders refuse. <code>TrainFeaturizer</code> gains an overload with targets.
+<code>EvaluateReconstruction</code> is now <code>EvaluatePrediction</code> with the input as its target, and
+uses <code>predict()</code>.
+  - <strong>Splicing an MLP needed its own hook,</strong> since <code>HiddenStateHook</code> sits between blocks.
+<code>set_mlp_hook()</code> sees the MLP's input and output, and its return value is what reaches the
+residual stream. It reads the training pairs and splices the transcoder in
+(<code>MlpSpliceHook</code>, <code>MlpAblationHook</code>, <code>MeasureMlpLossRecovered</code>). It doesn't run in
+<code>forward_cached()</code>.
+  - <strong>Absorption refuses transcoders.</strong> It compares decoder directions with a probe in the
+input space, and a transcoder writes to another space.
+  - <strong>Checked against a PyTorch rendering</strong> (<code>tools/golden/make_transcoder_golden.py</code>), with
+different input and output sizes, the skip connection and AuxK.
+  - <strong>On ESM-2 8M</strong> the skip transcoder beats the plain one on every measure (loss recovered
+0.72 vs 0.59 with the layer-4 MLP replaced). Against a residual-stream TopK SAE its concept
+features are mixed: better on 3 of 6 concepts, worse on 2
+(<a href="../mechanistic-interpretability/#transcoders">table</a>).</p>
 </li>
 </ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>

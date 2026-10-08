@@ -145,7 +145,8 @@ var hierarchy =
     [ "pulsatrix::Featurizer", "classpulsatrix_1_1Featurizer.html", [
       [ "pulsatrix::JumpReLUSparseAutoencoder", "classpulsatrix_1_1JumpReLUSparseAutoencoder.html", null ],
       [ "pulsatrix::SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html", null ],
-      [ "pulsatrix::TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", null ]
+      [ "pulsatrix::TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", null ],
+      [ "pulsatrix::Transcoder", "classpulsatrix_1_1Transcoder.html", null ]
     ] ],
     [ "pulsatrix::FeaturizerLoss", "structpulsatrix_1_1FeaturizerLoss.html", null ],
     [ "pulsatrix::FieldStatistics", "structpulsatrix_1_1FieldStatistics.html", null ],
@@ -260,6 +261,7 @@ var hierarchy =
       [ "pulsatrix::TiedLMHeadModule", "classpulsatrix_1_1TiedLMHeadModule.html", null ],
       [ "pulsatrix::TinyTagger", "classpulsatrix_1_1TinyTagger.html", null ],
       [ "pulsatrix::TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", null ],
+      [ "pulsatrix::Transcoder", "classpulsatrix_1_1Transcoder.html", null ],
       [ "pulsatrix::TransformerBlock", "classpulsatrix_1_1TransformerBlock.html", null ]
     ] ],
     [ "pulsatrix::MorrisDocument", "structpulsatrix_1_1MorrisDocument.html", null ],
@@ -426,6 +428,7 @@ var hierarchy =
     [ "pulsatrix::TrainingDashboard", "classpulsatrix_1_1TrainingDashboard.html", null ],
     [ "pulsatrix::TrainingLogDocument", "structpulsatrix_1_1TrainingLogDocument.html", null ],
     [ "pulsatrix::TrajectoryBalanceLoss", "classpulsatrix_1_1TrajectoryBalanceLoss.html", null ],
+    [ "pulsatrix::TranscoderOptions", "structpulsatrix_1_1TranscoderOptions.html", null ],
     [ "pulsatrix::Transform", "classpulsatrix_1_1Transform.html", [
       [ "pulsatrix::CenterCropTransform", "classpulsatrix_1_1CenterCropTransform.html", null ],
       [ "pulsatrix::Compose", "classpulsatrix_1_1Compose.html", null ],

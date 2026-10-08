@@ -15,5 +15,6 @@ var classpulsatrix_1_1EncoderBlock =
     [ "options", "classpulsatrix_1_1EncoderBlock.html#ad3090cc0e206f21ca4e79664fbf53fcb", null ],
     [ "propagate_relevance", "classpulsatrix_1_1EncoderBlock.html#a0770403d5054d5f90bcfee8fbaa6f197", null ],
     [ "release_activations", "classpulsatrix_1_1EncoderBlock.html#a40880f1857366f1f40d63073eeb20830", null ],
+    [ "set_mlp_hook", "classpulsatrix_1_1EncoderBlock.html#afb3fbdd1df4b833bceb94eeeca2c0a76", null ],
     [ "set_training", "classpulsatrix_1_1EncoderBlock.html#aa96be02019495a1f9e1aafbd488ca024", null ]
 ];

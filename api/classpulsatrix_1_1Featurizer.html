@@ -109,13 +109,15 @@ Inheritance diagram for pulsatrix::Featurizer:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpulsatrix_1_1Featurizer__inherit__graph.png" border="0" usemap="#apulsatrix_1_1Featurizer_inherit__map" alt="Inheritance graph"/></div>
 <map name="apulsatrix_1_1Featurizer_inherit__map" id="apulsatrix_1_1Featurizer_inherit__map">
-<area shape="rect" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),..." alt="" coords="5,70,157,95"/>
+<area shape="rect" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),..." alt="" coords="5,95,157,121"/>
 <area shape="rect" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html" title="A JumpReLU sparse autoencoder: z = pre · H(pre &#45; θ) with pre = x W_enc + b_enc, and x̂ = z W_dec + b_..." alt="" coords="228,5,427,45"/>
-<area shape="poly" title=" " alt="" coords="149,64,240,43,242,48,150,69"/>
+<area shape="poly" title=" " alt="" coords="122,87,204,55,244,43,245,48,206,60,124,92"/>
 <area shape="rect" href="classpulsatrix_1_1SparseAutoencoder.html" title="A sparse autoencoder (SAE): LinearModule(dim, hidden_dim) &#45;&gt; ReluModule &#45;&gt; LinearModule(hidden_dim,..." alt="" coords="221,70,434,95"/>
-<area shape="poly" title=" " alt="" coords="171,80,220,80,220,85,171,85"/>
+<area shape="poly" title=" " alt="" coords="171,96,220,91,221,96,171,101"/>
 <area shape="rect" href="classpulsatrix_1_1TopKSparseAutoencoder.html" title="A TopK sparse autoencoder: z = ReLU(TopK_k(W_enc (x &#45; b_dec) + b_enc)), x̂ = z W_dec + b_dec." alt="" coords="205,119,449,145"/>
-<area shape="poly" title=" " alt="" coords="159,95,264,117,263,122,158,101"/>
+<area shape="poly" title=" " alt="" coords="171,114,205,117,205,123,171,119"/>
+<area shape="rect" href="classpulsatrix_1_1Transcoder.html" title="A transcoder: z = ReLU(TopK_k(x W_enc + b_enc)), ŷ = z W_dec + b_dec [+ x W_skip],..." alt="" coords="249,169,406,194"/>
+<area shape="poly" title=" " alt="" coords="125,124,206,153,256,166,255,171,205,159,123,129"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -127,20 +129,29 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a608a06263a3ae856a67a695ac828aef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0398f904de3ffdf229c21a6cc84b493a" id="r_a0398f904de3ffdf229c21a6cc84b493a"><td class="memItemLeft" align="right" valign="top">virtual int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#a0398f904de3ffdf229c21a6cc84b493a">num_features</a> () const =0</td></tr>
 <tr class="separator:a0398f904de3ffdf229c21a6cc84b493a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1470ea443c4b88bdada3cb6086b6d9f6" id="r_a1470ea443c4b88bdada3cb6086b6d9f6"><td class="memItemLeft" align="right" valign="top">virtual int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#a1470ea443c4b88bdada3cb6086b6d9f6">output_dim</a> () const</td></tr>
+<tr class="memdesc:a1470ea443c4b88bdada3cb6086b6d9f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="classpulsatrix_1_1Featurizer.html#a97a7b776076afc8a6944b48dc27c5d5a" title="The reconstruction from codes, (N, output_dim).">decode()</a> produces: <a class="el" href="classpulsatrix_1_1Featurizer.html#a608a06263a3ae856a67a695ac828aef4">input_dim()</a> for an autoencoder.  <br /></td></tr>
+<tr class="separator:a1470ea443c4b88bdada3cb6086b6d9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31f93b9181db7e5fc6f4afab0ffc6947" id="r_a31f93b9181db7e5fc6f4afab0ffc6947"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#a31f93b9181db7e5fc6f4afab0ffc6947">encode</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x)=0</td></tr>
 <tr class="memdesc:a31f93b9181db7e5fc6f4afab0ffc6947"><td class="mdescLeft">&#160;</td><td class="mdescRight">The codes for a batch, <code>(N, num_features)</code>.  <br /></td></tr>
 <tr class="separator:a31f93b9181db7e5fc6f4afab0ffc6947"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97a7b776076afc8a6944b48dc27c5d5a" id="r_a97a7b776076afc8a6944b48dc27c5d5a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#a97a7b776076afc8a6944b48dc27c5d5a">decode</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;codes)=0</td></tr>
-<tr class="memdesc:a97a7b776076afc8a6944b48dc27c5d5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reconstruction from codes, <code>(N, input_dim)</code>.  <br /></td></tr>
+<tr class="memdesc:a97a7b776076afc8a6944b48dc27c5d5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reconstruction from codes, <code>(N, output_dim)</code>.  <br /></td></tr>
 <tr class="separator:a97a7b776076afc8a6944b48dc27c5d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae137329f3e015b12127500c3654f58f3" id="r_ae137329f3e015b12127500c3654f58f3"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#ae137329f3e015b12127500c3654f58f3">predict</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x)</td></tr>
+<tr class="memdesc:ae137329f3e015b12127500c3654f58f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The full output for a batch, <code>(N, output_dim)</code>: decode(encode(x)), plus any part that bypasses the codes (a transcoder's skip connection).  <br /></td></tr>
+<tr class="separator:ae137329f3e015b12127500c3654f58f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa49f61c48d9f24e7851361dc89ca2269" id="r_aa49f61c48d9f24e7851361dc89ca2269"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#aa49f61c48d9f24e7851361dc89ca2269">loss_and_backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, std::vector&lt; float &gt; *codes=nullptr)=0</td></tr>
 <tr class="memdesc:aa49f61c48d9f24e7851361dc89ca2269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the training loss on <code>x</code> and adds its gradients to the parameters' (zero them first). When <code>codes</code> is given, it receives the batch's codes, row-major <code>(N, num_features)</code>, for metrics.  <br /></td></tr>
 <tr class="separator:aa49f61c48d9f24e7851361dc89ca2269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8700739272f49420dbdeaa8f4f0043ea" id="r_a8700739272f49420dbdeaa8f4f0043ea"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#a8700739272f49420dbdeaa8f4f0043ea">loss_and_backward_with_target</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;target, std::vector&lt; float &gt; *codes=nullptr)</td></tr>
+<tr class="memdesc:a8700739272f49420dbdeaa8f4f0043ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">The loss for predicting <code>target</code>, <code>(N, output_dim)</code>, from <code>x:</code> a transcoder's.  <br /></td></tr>
+<tr class="separator:a8700739272f49420dbdeaa8f4f0043ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb8e310dc8714a654b887410089226b0" id="r_afb8e310dc8714a654b887410089226b0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#afb8e310dc8714a654b887410089226b0">normalize_decoder</a> ()=0</td></tr>
 <tr class="memdesc:afb8e310dc8714a654b887410089226b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rescales every feature so its decoder direction has unit L2 norm, scaling its code by the inverse where the encoder allows it, so reconstructions don't change. Training with unit-norm decoders keeps a sparsity penalty from being dodged by shrinking codes and growing directions, and makes code sizes comparable across features.  <br /></td></tr>
 <tr class="separator:afb8e310dc8714a654b887410089226b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c5fc9fbffd0c1f4c282110987d368bb" id="r_a7c5fc9fbffd0c1f4c282110987d368bb"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#a7c5fc9fbffd0c1f4c282110987d368bb">decoder_direction</a> (int64_t i)=0</td></tr>
-<tr class="memdesc:a7c5fc9fbffd0c1f4c282110987d368bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature <code>i's</code> decoder direction, <code>input_dim</code> values.  <br /></td></tr>
+<tr class="memdesc:a7c5fc9fbffd0c1f4c282110987d368bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature <code>i's</code> decoder direction, <code>output_dim</code> values.  <br /></td></tr>
 <tr class="separator:a7c5fc9fbffd0c1f4c282110987d368bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08b49240a436a5b43cf4e54037161bb8" id="r_a08b49240a436a5b43cf4e54037161bb8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#a08b49240a436a5b43cf4e54037161bb8">parameters_module</a> ()=0</td></tr>
 <tr class="memdesc:a08b49240a436a5b43cf4e54037161bb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The trainable parameters, for an optimizer's <code>step()</code> and <code>zero_grad()</code>, and for checkpoints.  <br /></td></tr>
@@ -149,6 +160,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A featurizer maps activations <code>x</code>, <code>(N, input_dim)</code>, to codes <code>f = encode(x)</code>, <code>(N, num_features)</code>, and reconstructs <code>x ≈ decode(f) = f D + b</code>: feature i writes along its decoder direction <code>D[i]</code>. </p>
 <p>Sparse autoencoders (<a class="el" href="classpulsatrix_1_1SparseAutoencoder.html" title="A sparse autoencoder (SAE): LinearModule(dim, hidden_dim) -&gt; ReluModule -&gt; LinearModule(hidden_dim,...">SparseAutoencoder</a>) were the first. TopK, BatchTopK and Matryoshka (<a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html" title="A TopK sparse autoencoder: z = ReLU(TopK_k(W_enc (x - b_dec) + b_enc)), x̂ = z W_dec + b_dec.">TopKSparseAutoencoder</a>) and JumpReLU (<a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html" title="A JumpReLU sparse autoencoder: z = pre · H(pre - θ) with pre = x W_enc + b_enc, and x̂ = z W_dec + b_...">JumpReLUSparseAutoencoder</a>) follow, and transcoders and block-sparse featurizers (FEAT-5, FEAT-6) will too, so training, metrics and views work for all of them.</p>
+<p>A <b>transcoder</b> (FEAT-5) predicts another activation instead of reconstructing its input: an MLP's output from its input. It has an <a class="el" href="classpulsatrix_1_1Featurizer.html#a1470ea443c4b88bdada3cb6086b6d9f6" title="What decode() produces: input_dim() for an autoencoder.">output_dim()</a>, <a class="el" href="classpulsatrix_1_1Featurizer.html#ae137329f3e015b12127500c3654f58f3" title="The full output for a batch, (N, output_dim): decode(encode(x)), plus any part that bypasses the code...">predict()</a> adds what doesn't go through the codes (a skip connection), and it trains with <a class="el" href="classpulsatrix_1_1Featurizer.html#a8700739272f49420dbdeaa8f4f0043ea" title="The loss for predicting target, (N, output_dim), from x: a transcoder&#39;s.">loss_and_backward_with_target()</a>.</p>
 <dl class="section note"><dt>Note</dt><dd>A featurizer is a discovery tool: a low reconstruction error says nothing about whether its directions are meaningful or causal. Compare features with probes and baselines. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aed204e17f18df79019528675128e9bd1" name="aed204e17f18df79019528675128e9bd1"></a>
@@ -201,9 +213,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The reconstruction from codes, <code>(N, input_dim)</code>. </p>
+<p>The reconstruction from codes, <code>(N, output_dim)</code>. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aae2785f483b7b2d0ed6eb7dbf3163736">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a343febaa391644c8210f2029e4a0d648">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a21567ad2ece9a37cd07809cd1a5fd940">pulsatrix::TopKSparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aae2785f483b7b2d0ed6eb7dbf3163736">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a343febaa391644c8210f2029e4a0d648">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a21567ad2ece9a37cd07809cd1a5fd940">pulsatrix::TopKSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1Transcoder.html#a1ec01287347752252556e94d78c2c72c">pulsatrix::Transcoder</a>.</p>
 
 </div>
 </div>
@@ -231,9 +243,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Feature <code>i's</code> decoder direction, <code>input_dim</code> values. </p>
+<p>Feature <code>i's</code> decoder direction, <code>output_dim</code> values. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aab21231eac7a69326ce95777f4da383f">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ae0e4444e4f7ea020d8a2c68d3b0864e9">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a61200ca556eb051611903c63e67140d1">pulsatrix::TopKSparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aab21231eac7a69326ce95777f4da383f">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ae0e4444e4f7ea020d8a2c68d3b0864e9">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a61200ca556eb051611903c63e67140d1">pulsatrix::TopKSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1Transcoder.html#a1b302a6d875b4de365d48ad163d05ac3">pulsatrix::Transcoder</a>.</p>
 
 </div>
 </div>
@@ -263,7 +275,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The codes for a batch, <code>(N, num_features)</code>. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aa48e5ed9a2fabd31cd3b0b53c4ba2bd0">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ab76c58cc4bb37b253204bcf93c3eeefd">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a06ee590cc58c9590963efb6f38ee47d2">pulsatrix::TopKSparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aa48e5ed9a2fabd31cd3b0b53c4ba2bd0">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ab76c58cc4bb37b253204bcf93c3eeefd">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a06ee590cc58c9590963efb6f38ee47d2">pulsatrix::TopKSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1Transcoder.html#a67252742859599a924b8f059ab2213ee">pulsatrix::Transcoder</a>.</p>
 
 </div>
 </div>
@@ -290,7 +302,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aeb8fd27ddedb7604ecec70f9385ccafe">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a238312dc4a9fb2548f3a3bcddb912907">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a5b81b981f9ecbd151f87338d449b9268">pulsatrix::TopKSparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aeb8fd27ddedb7604ecec70f9385ccafe">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a238312dc4a9fb2548f3a3bcddb912907">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a5b81b981f9ecbd151f87338d449b9268">pulsatrix::TopKSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1Transcoder.html#ad283a8ddb26281b3d819c5f5747371f9">pulsatrix::Transcoder</a>.</p>
 
 </div>
 </div>
@@ -336,7 +348,59 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a881a3069e30e010a6b338cb5c1cccb2c">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#a15dec469b36772c881d5bdfa4427444a">pulsatrix::JumpReLUSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#acfc173485edf19ceb6562b006b051d2c">pulsatrix::TopKSparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a881a3069e30e010a6b338cb5c1cccb2c">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#a15dec469b36772c881d5bdfa4427444a">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#acfc173485edf19ceb6562b006b051d2c">pulsatrix::TopKSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1Transcoder.html#ab2161ce887160c63a92d3bc04f88dce5">pulsatrix::Transcoder</a>.</p>
+
+</div>
+</div>
+<a id="a8700739272f49420dbdeaa8f4f0043ea" name="a8700739272f49420dbdeaa8f4f0043ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8700739272f49420dbdeaa8f4f0043ea">&#9670;&#160;</a></span>loss_and_backward_with_target()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a> pulsatrix::Featurizer::loss_and_backward_with_target </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; float &gt; *&#160;</td>
+          <td class="paramname"><em>codes</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The loss for predicting <code>target</code>, <code>(N, output_dim)</code>, from <code>x:</code> a transcoder's. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for an autoencoder, whose target is its input (the default). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classpulsatrix_1_1Transcoder.html#a366d8052d5823d9cd8a03fab2d81988c">pulsatrix::Transcoder</a>.</p>
 
 </div>
 </div>
@@ -365,7 +429,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Rescales every feature so its decoder direction has unit L2 norm, scaling its code by the inverse where the encoder allows it, so reconstructions don't change. Training with unit-norm decoders keeps a sparsity penalty from being dodged by shrinking codes and growing directions, and makes code sizes comparable across features. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aaa314b19d6cb6cc1e27c0a8b038b9dbe">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ac6609a74baee393de44cd646fcc0299d">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a4bb326cf73922d479cb59c3b88b20249">pulsatrix::TopKSparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#aaa314b19d6cb6cc1e27c0a8b038b9dbe">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ac6609a74baee393de44cd646fcc0299d">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a4bb326cf73922d479cb59c3b88b20249">pulsatrix::TopKSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1Transcoder.html#a4e3b49170dca702ea2e1e78e243c5476">pulsatrix::Transcoder</a>.</p>
 
 </div>
 </div>
@@ -392,7 +456,36 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#a258470247c953a1e52c5dd06437a89f5">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#afd947c6840f4d21082c986e1ee1863c0">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a7b40c6c56f1c0061323ea0f1d88905c4">pulsatrix::TopKSparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#a258470247c953a1e52c5dd06437a89f5">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#afd947c6840f4d21082c986e1ee1863c0">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a7b40c6c56f1c0061323ea0f1d88905c4">pulsatrix::TopKSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1Transcoder.html#a1da5ae70acb16ae9797b9c7cb6d4f17a">pulsatrix::Transcoder</a>.</p>
+
+</div>
+</div>
+<a id="a1470ea443c4b88bdada3cb6086b6d9f6" name="a1470ea443c4b88bdada3cb6086b6d9f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1470ea443c4b88bdada3cb6086b6d9f6">&#9670;&#160;</a></span>output_dim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int64_t pulsatrix::Featurizer::output_dim </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>What <a class="el" href="classpulsatrix_1_1Featurizer.html#a97a7b776076afc8a6944b48dc27c5d5a" title="The reconstruction from codes, (N, output_dim).">decode()</a> produces: <a class="el" href="classpulsatrix_1_1Featurizer.html#a608a06263a3ae856a67a695ac828aef4">input_dim()</a> for an autoencoder. </p>
+
+<p>Reimplemented in <a class="el" href="classpulsatrix_1_1Transcoder.html#a9b317dadecc8a52168a696c484fd8a32">pulsatrix::Transcoder</a>.</p>
 
 </div>
 </div>
@@ -421,7 +514,37 @@ Public Member Functions</h2></td></tr>
 
 <p>The trainable parameters, for an optimizer's <code>step()</code> and <code>zero_grad()</code>, and for checkpoints. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#a05ee217d38c91d9a22a42c9dfc2d2071">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a275cf2ff176d969d726373652f7ec946">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a6226407316a37b860e772ad7512c61e6">pulsatrix::TopKSparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1JumpReLUSparseAutoencoder.html#a05ee217d38c91d9a22a42c9dfc2d2071">pulsatrix::JumpReLUSparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a275cf2ff176d969d726373652f7ec946">pulsatrix::SparseAutoencoder</a>, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a6226407316a37b860e772ad7512c61e6">pulsatrix::TopKSparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1Transcoder.html#a11c0cfa3a1f4b3060de3f38f79be8761">pulsatrix::Transcoder</a>.</p>
+
+</div>
+</div>
+<a id="ae137329f3e015b12127500c3654f58f3" name="ae137329f3e015b12127500c3654f58f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae137329f3e015b12127500c3654f58f3">&#9670;&#160;</a></span>predict()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::Featurizer::predict </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The full output for a batch, <code>(N, output_dim)</code>: decode(encode(x)), plus any part that bypasses the codes (a transcoder's skip connection). </p>
+
+<p>Reimplemented in <a class="el" href="classpulsatrix_1_1Transcoder.html#a9623694e21c063d7baa5ea7a2cc41841">pulsatrix::Transcoder</a>.</p>
 
 </div>
 </div>

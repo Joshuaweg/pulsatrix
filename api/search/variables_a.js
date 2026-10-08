@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['k_0',['k',['../structpulsatrix_1_1TopKSaeOptions.html#a8daf32516c0c77c4e4e027f773c080cf',1,'pulsatrix::TopKSaeOptions']]],
+  ['k_0',['k',['../structpulsatrix_1_1TranscoderOptions.html#ae6c2ee1d4c06a217db4aa751e53471d4',1,'pulsatrix::TranscoderOptions::k'],['../structpulsatrix_1_1TopKSaeOptions.html#a8daf32516c0c77c4e4e027f773c080cf',1,'pulsatrix::TopKSaeOptions::k']]],
   ['k3dmolversion_1',['k3DmolVersion',['../namespacepulsatrix.html#a53e58562b930b7ba3a9cea70bc7a3f02',1,'pulsatrix']]],
-  ['k_5faux_2',['k_aux',['../structpulsatrix_1_1TopKSaeOptions.html#acbdcd018b4b77fbe892973cb144076ec',1,'pulsatrix::TopKSaeOptions']]],
+  ['k_5faux_2',['k_aux',['../structpulsatrix_1_1TranscoderOptions.html#a52870092c52e8fb7af75a0c385fd2485',1,'pulsatrix::TranscoderOptions::k_aux'],['../structpulsatrix_1_1TopKSaeOptions.html#acbdcd018b4b77fbe892973cb144076ec',1,'pulsatrix::TopKSaeOptions::k_aux']]],
   ['kactionrangetolerance_3',['kActionRangeTolerance',['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a2187caee1327ef0b8673afd1a5bdb7d0',1,'pulsatrix::ContinuousCartPoleEnv']]],
   ['kaminoacids_4',['kAminoAcids',['../namespacepulsatrix.html#af7d75f38b69b19b1abfb76e5ba0370ca',1,'pulsatrix']]],
   ['kcheckpointformatversion_5',['kCheckpointFormatVersion',['../namespacepulsatrix.html#a184725fa40c9e9ad2bbcdcbe2e9236cf',1,'pulsatrix']]],
@@ -15,13 +15,13 @@ var searchData=
   ['kh_12',['kh',['../structpulsatrix_1_1ConvGeometry.html#a25629392ac9ed80e051edf1947af4c8f',1,'pulsatrix::ConvGeometry']]],
   ['kheads_13',['kHeads',['../classpulsatrix_1_1TinyTagger.html#abd1f2a1e0c72695b07c8f5be770da04d',1,'pulsatrix::TinyTagger']]],
   ['kignoreindex_14',['kIgnoreIndex',['../classpulsatrix_1_1TokenCrossEntropyLoss.html#a179bb970fc18d8fd27c6058a2581d3c8',1,'pulsatrix::TokenCrossEntropyLoss']]],
-  ['kind_15',['kind',['../structpulsatrix_1_1EncoderTarget.html#ae2d7694b62d34da5296b59c20cc66bfe',1,'pulsatrix::EncoderTarget::kind'],['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind'],['../structpulsatrix_1_1Imputation.html#ad987ae934546d28263ad94a6b6907bd9',1,'pulsatrix::Imputation::kind'],['../structpulsatrix_1_1CounterfactualTarget.html#a0e7b28ee3fd8bc1457c09afbeebc9fa7',1,'pulsatrix::CounterfactualTarget::kind'],['../structpulsatrix_1_1BenchmarkComparison.html#a0f2ec12d3bffe53f43d177c0752e6127',1,'pulsatrix::BenchmarkComparison::kind'],['../structpulsatrix_1_1BenchmarkRecord.html#af5adc5717a715d6b1ed4a8f2ed483bdc',1,'pulsatrix::BenchmarkRecord::kind']]],
+  ['kind_15',['kind',['../structpulsatrix_1_1CounterfactualTarget.html#a0e7b28ee3fd8bc1457c09afbeebc9fa7',1,'pulsatrix::CounterfactualTarget::kind'],['../structpulsatrix_1_1ParameterSpec.html#a4ed5a9b63c8562ebf60f1a5fc06994a1',1,'pulsatrix::ParameterSpec::kind'],['../structpulsatrix_1_1EncoderTarget.html#ae2d7694b62d34da5296b59c20cc66bfe',1,'pulsatrix::EncoderTarget::kind'],['../structpulsatrix_1_1Imputation.html#ad987ae934546d28263ad94a6b6907bd9',1,'pulsatrix::Imputation::kind'],['../structpulsatrix_1_1BenchmarkComparison.html#a0f2ec12d3bffe53f43d177c0752e6127',1,'pulsatrix::BenchmarkComparison::kind'],['../structpulsatrix_1_1BenchmarkRecord.html#af5adc5717a715d6b1ed4a8f2ed483bdc',1,'pulsatrix::BenchmarkRecord::kind']]],
   ['klogprobstabilizer_16',['kLogProbStabilizer',['../classpulsatrix_1_1TanhGaussianPolicy.html#a70e084dd37bfa0a8c7c9fe4f67a8d66d',1,'pulsatrix::TanhGaussianPolicy']]],
   ['klongrange_17',['kLongRange',['../namespacepulsatrix.html#a31b9ea5e0b7630734453a841016c03a7',1,'pulsatrix']]],
   ['kmediumrange_18',['kMediumRange',['../namespacepulsatrix.html#a49f75d00f35298ffe41e59bc9ee36ceb',1,'pulsatrix']]],
   ['kseqlen_19',['kSeqLen',['../classpulsatrix_1_1TinyTagger.html#a0887f70a018b0327b0a9d4eeba66b66f',1,'pulsatrix::TinyTagger']]],
   ['kshortrange_20',['kShortRange',['../namespacepulsatrix.html#aef5c1104db4974b34c5b34de49a24863',1,'pulsatrix']]],
-  ['kthetathreshold_21',['kthetathreshold',['../classpulsatrix_1_1CartPoleEnv.html#a578bd10772e6d773551b3b1706e30cf2',1,'pulsatrix::CartPoleEnv::kThetaThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a6c349416d875dd3fed7966e880ca4770',1,'pulsatrix::ContinuousCartPoleEnv::kThetaThreshold']]],
+  ['kthetathreshold_21',['kthetathreshold',['../classpulsatrix_1_1ContinuousCartPoleEnv.html#a6c349416d875dd3fed7966e880ca4770',1,'pulsatrix::ContinuousCartPoleEnv::kThetaThreshold'],['../classpulsatrix_1_1CartPoleEnv.html#a578bd10772e6d773551b3b1706e30cf2',1,'pulsatrix::CartPoleEnv::kThetaThreshold']]],
   ['kunkindex_22',['kUnkIndex',['../classpulsatrix_1_1Vocabulary.html#adf6ce45df1fa2aec244bef15f7387dc1',1,'pulsatrix::Vocabulary']]],
   ['kunktoken_23',['kUnkToken',['../classpulsatrix_1_1Vocabulary.html#afc3a1419ab5f15f4a600a081e94cdadb',1,'pulsatrix::Vocabulary']]],
   ['kvegaembedversion_24',['kVegaEmbedVersion',['../namespacepulsatrix.html#a69da35a089b7c4138a52bd0a2344dc57',1,'pulsatrix']]],
@@ -30,5 +30,5 @@ var searchData=
   ['kvizdocumentversion_27',['kVizDocumentVersion',['../namespacepulsatrix.html#ad7c306e18124f3aeb68cde6615b337b5',1,'pulsatrix']]],
   ['kvocab_28',['kVocab',['../classpulsatrix_1_1TinyTagger.html#a052db03bbdaa2c14bc78dadb71d986d0',1,'pulsatrix::TinyTagger']]],
   ['kw_29',['kw',['../structpulsatrix_1_1ConvGeometry.html#a3c71499e1d2935fabe6d79fc021be996',1,'pulsatrix::ConvGeometry']]],
-  ['kxthreshold_30',['kxthreshold',['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold'],['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold']]]
+  ['kxthreshold_30',['kxthreshold',['../classpulsatrix_1_1CartPoleEnv.html#a66dd76bb785b90ab53706444344acd95',1,'pulsatrix::CartPoleEnv::kXThreshold'],['../classpulsatrix_1_1ContinuousCartPoleEnv.html#aa61c33724968ad0d501b922dd341078a',1,'pulsatrix::ContinuousCartPoleEnv::kXThreshold']]]
 ];

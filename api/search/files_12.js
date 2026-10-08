@@ -20,7 +20,8 @@ var searchData=
   ['tpe_2ehpp_17',['tpe.hpp',['../tpe_8hpp.html',1,'']]],
   ['training_5fdashboard_2ehpp_18',['training_dashboard.hpp',['../training__dashboard_8hpp.html',1,'']]],
   ['trajectory_5fbalance_5floss_2ehpp_19',['trajectory_balance_loss.hpp',['../trajectory__balance__loss_8hpp.html',1,'']]],
-  ['transform_2ehpp_20',['transform.hpp',['../transform_8hpp.html',1,'']]],
-  ['transformer_5fblock_2ehpp_21',['transformer_block.hpp',['../transformer__block_8hpp.html',1,'']]],
-  ['trial_2ehpp_22',['trial.hpp',['../trial_8hpp.html',1,'']]]
+  ['transcoder_2ehpp_20',['transcoder.hpp',['../transcoder_8hpp.html',1,'']]],
+  ['transform_2ehpp_21',['transform.hpp',['../transform_8hpp.html',1,'']]],
+  ['transformer_5fblock_2ehpp_22',['transformer_block.hpp',['../transformer__block_8hpp.html',1,'']]],
+  ['trial_2ehpp_23',['trial.hpp',['../trial_8hpp.html',1,'']]]
 ];

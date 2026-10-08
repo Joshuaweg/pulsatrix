@@ -29,9 +29,11 @@ var searchData=
   ['trainingdashboard_26',['TrainingDashboard',['../classpulsatrix_1_1TrainingDashboard.html',1,'pulsatrix']]],
   ['traininglogdocument_27',['TrainingLogDocument',['../structpulsatrix_1_1TrainingLogDocument.html',1,'pulsatrix']]],
   ['trajectorybalanceloss_28',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
-  ['transform_29',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
-  ['transformdataset_30',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
-  ['transformerblock_31',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
-  ['transformerblockoptions_32',['TransformerBlockOptions',['../structpulsatrix_1_1TransformerBlockOptions.html',1,'pulsatrix']]],
-  ['trial_33',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
+  ['transcoder_29',['Transcoder',['../classpulsatrix_1_1Transcoder.html',1,'pulsatrix']]],
+  ['transcoderoptions_30',['TranscoderOptions',['../structpulsatrix_1_1TranscoderOptions.html',1,'pulsatrix']]],
+  ['transform_31',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
+  ['transformdataset_32',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
+  ['transformerblock_33',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
+  ['transformerblockoptions_34',['TransformerBlockOptions',['../structpulsatrix_1_1TransformerBlockOptions.html',1,'pulsatrix']]],
+  ['trial_35',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
 ];

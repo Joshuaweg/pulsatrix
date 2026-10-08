@@ -136,6 +136,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a0653148532f797cbe23d39756cb97695" id="r_a0653148532f797cbe23d39756cb97695"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1detail.html#a0653148532f797cbe23d39756cb97695">ShapKernelWeight</a> (int64_t n, int64_t coalition_size)</td></tr>
 <tr class="memdesc:a0653148532f797cbe23d39756cb97695"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SHAP kernel pi(z') = (n-1) / [C(n,|z'|) * |z'| * (n-|z'|)], for 1 &lt;= |z'| &lt;= n-1.  <br /></td></tr>
 <tr class="separator:a0653148532f797cbe23d39756cb97695"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa844b06a1cc9eb8b4afe2996248c9c3a" id="r_aa844b06a1cc9eb8b4afe2996248c9c3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1detail.html#aa844b06a1cc9eb8b4afe2996248c9c3a">ApplyMlpHook</a> (const <a class="el" href="namespacepulsatrix.html#ab7ef3f7938dc5997394d2c33c190b2a8">MlpHook</a> &amp;hook, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;output)</td></tr>
+<tr class="memdesc:aa844b06a1cc9eb8b4afe2996248c9c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>hook</code> and checks its result keeps the shape.  <br /></td></tr>
+<tr class="separator:aa844b06a1cc9eb8b4afe2996248c9c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab66e00b359d236abc3ccb03eae5e0898" id="r_ab66e00b359d236abc3ccb03eae5e0898"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1detail_1_1PlatformSources.html">PlatformSources</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1detail.html#ab66e00b359d236abc3ccb03eae5e0898">make_host_sources</a> ()</td></tr>
 <tr class="memdesc:ab66e00b359d236abc3ccb03eae5e0898"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sources for the host this binary runs on (Linux/Windows + NVML, or a stub).  <br /></td></tr>
 <tr class="separator:ab66e00b359d236abc3ccb03eae5e0898"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,6 +191,56 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Runs <code>hook</code> and checks its result keeps the shape. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if not. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa844b06a1cc9eb8b4afe2996248c9c3a" name="aa844b06a1cc9eb8b4afe2996248c9c3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa844b06a1cc9eb8b4afe2996248c9c3a">&#9670;&#160;</a></span>ApplyMlpHook()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::detail::ApplyMlpHook </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#ab7ef3f7938dc5997394d2c33c190b2a8">MlpHook</a> &amp;&#160;</td>
+          <td class="paramname"><em>hook</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
