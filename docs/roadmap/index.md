@@ -162,7 +162,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
 Feature discovery on real models, and agents that can drive the library.
 
-- FEAT-1 (**done**, for PLM-8), FEAT-2 to FEAT-5 (**done**) to FEAT-7: the featurizer interface, TopK
+- FEAT-1 (**done**, for PLM-8), FEAT-2 to FEAT-5 and FEAT-7 (**done**), FEAT-6: the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
@@ -808,7 +808,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — | Done, [#107](https://github.com/Joshuaweg/pulsatrix/pull/107) (see below) |
 | FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M | Done, [#108](https://github.com/Joshuaweg/pulsatrix/pull/108) (see below) |
 | FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L |
-| FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S |
+| FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S | Done (see below) |
 | FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — |
 | FEAT-9 | Parameter decomposition (SPD and VPD) | Interpretability in weight space; few libraries have it | FND-4 | P2 | L–XL |
 | FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first. VIZ-4's AttnLRP graph (residual-stream nodes) and Neuronpedia export are the starting point: transcoder features would replace the nodes | FEAT-5 | P2 | XL |
@@ -924,6 +924,20 @@ Open: no LRP rule exists yet for propagating relevance through a block top-k. FE
     0.72 vs 0.59 with the layer-4 MLP replaced). Against a residual-stream TopK SAE its concept
     features are mixed: better on 3 of 6 concepts, worse on 2
     ([table](../mechanistic-interpretability/index.md#transcoders)).
+- **FEAT-7** adds `steering.hpp`: `DifferenceOfMeans`, `FeaturizerDirection`, `SteeringHook`
+  (a HiddenStateHook) and `MeasureSteering`.
+  - **The reliability report follows Tan et al.** Each input's steerability is its slope of
+    behavior against the coefficient. The report gives the mean, the spread, the anti-steerable
+    share, and random directions of the same norm as the control (`over_random`).
+  - **The behavior is a callback,** so any scalar works: a logit difference, a log-probability,
+    a probe's score.
+  - **Steering adds to every row** in MeasureSteering. SteeringHook itself takes a row mask.
+  - **On ESM-2 8M the report caught a false success.** Steering layer 4 toward transmembrane
+    residues looks right on average at coefficient ±2, but random directions do more, and the
+    response isn't linear. At ±0.5 the difference of means steers soluble proteins the wrong
+    way for 66% of them, and the SAE feature doesn't steer at all
+    ([table](../mechanistic-interpretability/index.md#steering-a-model)).
+    `pulsatrix_steer_esm` defaults to ±0.5.
 
 ## ARCH: New architectures
 
