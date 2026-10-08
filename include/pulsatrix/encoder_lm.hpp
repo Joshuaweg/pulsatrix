@@ -86,6 +86,14 @@ public:
 
     /** @throws std::logic_error before any forward(); std::invalid_argument for a shape mismatch. */
     [[nodiscard]] Tensor backward(const Tensor& grad_output) override;
+    /**
+     * @brief backward() from the gradient at last_hidden_state() (after the final LayerNorm),
+     *        `(N, L, hidden_size)`, for a head of your own on the representations (PLM-7). The LM
+     *        head gets no gradient.
+     * @return The gradient at the embedding table's output, as backward() returns.
+     * @throws std::logic_error before any forward(); std::invalid_argument for a shape mismatch.
+     */
+    [[nodiscard]] Tensor backward_hidden(const Tensor& grad_hidden);
     /** @brief Relevance per input token, `(N, L)`. */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
     /**
