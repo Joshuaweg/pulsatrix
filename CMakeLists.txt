@@ -135,6 +135,7 @@ add_library(pulsatrix_core
     src/tagger_finetune_example.cpp
     src/explanation_metrics.cpp
     src/featurizer.cpp
+    src/topk_sparse_autoencoder.cpp
     src/null_model_baseline.cpp
     src/caching_allocator.cpp
     src/rnn_module.cpp
