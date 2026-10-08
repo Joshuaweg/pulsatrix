@@ -1353,6 +1353,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../recipes/protein-models/protein_tem1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEM-1 End to End
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../recipes/visualization/training_dashboard/" class="md-nav__link">
         
   
@@ -5819,7 +5847,7 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <td>PLM-3 to PLM-6</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/101">#101</a> (see below)</td>
 </tr>
 </tbody>
 </table>
@@ -5981,8 +6009,25 @@ sources are in <a href="protein-language-models/">Protein language models: resea
   substitution barely moves the mean of 286 residues' representations.</li>
 </ul>
 </li>
-<li>Not done: training in bf16 (HIP-11) and token-budget batches. Batches here are fixed
-    counts of cropped sequences.</li>
+<li>
+<p>Not done: training in bf16 (HIP-11) and token-budget batches. Batches here are fixed
+    counts of cropped sequences.</p>
+</li>
+<li>
+<p><strong>PLM-9</strong> is a recipe, <code>protein_tem1_recipe</code>, with a walkthrough page.</p>
+</li>
+<li><strong>Results with 650M</strong> (82 s on gfx1151):<ul>
+<li>the scan's Spearman is 0.7315 (ProteinGym's 0.731);</li>
+<li>contacts against 1BTL reach P@L 0.665;</li>
+<li>the most damaging mutation, K73S on the catalytic lysine, is explained first by S70, the
+  catalytic serine, and the deletion check calls it faithful.</li>
+</ul>
+</li>
+<li><strong>The crystal isn't the assay's protein.</strong> 1BTL differs from the scanned TEM-1 at V84I and
+    A184V, so the recipe places the structure by the ungapped alignment with the most identical
+    residues and reports the differences.</li>
+<li><strong>Two numberings.</strong> The scan numbers the precursor from 1 and the structure uses Ambler's
+    numbering; residue ids keep them apart.</li>
 </ul>
 <p>Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.</p>
