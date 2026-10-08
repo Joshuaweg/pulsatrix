@@ -23,6 +23,9 @@ var searchData=
   ['ppoclippedloss_20',['PPOClippedLoss',['../classpulsatrix_1_1PPOClippedLoss.html',1,'pulsatrix']]],
   ['prependnormalizer_21',['PrependNormalizer',['../classpulsatrix_1_1PrependNormalizer.html',1,'pulsatrix']]],
   ['pretokenizer_22',['PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html',1,'pulsatrix']]],
-  ['proteingymassay_23',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]],
-  ['proteinstructure_24',['ProteinStructure',['../structpulsatrix_1_1ProteinStructure.html',1,'pulsatrix']]]
+  ['probeoptions_23',['ProbeOptions',['../structpulsatrix_1_1ProbeOptions.html',1,'pulsatrix']]],
+  ['proberesult_24',['ProbeResult',['../structpulsatrix_1_1ProbeResult.html',1,'pulsatrix']]],
+  ['proteinfeature_25',['ProteinFeature',['../structpulsatrix_1_1ProteinFeature.html',1,'pulsatrix']]],
+  ['proteingymassay_26',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]],
+  ['proteinstructure_27',['ProteinStructure',['../structpulsatrix_1_1ProteinStructure.html',1,'pulsatrix']]]
 ];

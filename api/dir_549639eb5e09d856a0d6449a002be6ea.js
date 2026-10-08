@@ -157,6 +157,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "policy_gradient_loss.hpp", "policy__gradient__loss_8hpp.html", "policy__gradient__loss_8hpp" ],
     [ "polyak_update.hpp", "polyak__update_8hpp.html", "polyak__update_8hpp" ],
     [ "ppo_clipped_loss.hpp", "ppo__clipped__loss_8hpp.html", "ppo__clipped__loss_8hpp" ],
+    [ "protein_concepts.hpp", "protein__concepts_8hpp.html", "protein__concepts_8hpp" ],
     [ "protein_contacts.hpp", "protein__contacts_8hpp.html", "protein__contacts_8hpp" ],
     [ "protein_explanations.hpp", "protein__explanations_8hpp.html", "protein__explanations_8hpp" ],
     [ "protein_sequences.hpp", "protein__sequences_8hpp.html", "protein__sequences_8hpp" ],

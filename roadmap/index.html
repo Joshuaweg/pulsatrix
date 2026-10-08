@@ -1636,10 +1636,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#plm-proteins-in-progress" class="md-nav__link">
+  <a href="#plm-proteins" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PLM "Proteins" (in progress)
+        PLM "Proteins"
       
     </span>
   </a>
@@ -2163,6 +2163,17 @@
     <span class="md-ellipsis">
       
         How the PLM work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-plm-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the PLM work surfaced
       
     </span>
   </a>
@@ -2422,10 +2433,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#plm-proteins-in-progress" class="md-nav__link">
+  <a href="#plm-proteins" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PLM "Proteins" (in progress)
+        PLM "Proteins"
       
     </span>
   </a>
@@ -2955,6 +2966,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-plm-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the PLM work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3000,7 +3022,9 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
 <h2 id="where-v10-stands">Where v1.0 stands<a class="headerlink" href="#where-v10-stands" title="Permanent link">&para;</a></h2>
 <p>v1.0 is strong on explainability and thin on the foundations that larger models need.
 <strong>v1.1, "Foundations and trust", is complete</strong> (2026-10-04): every item in its
-<a href="#v11-foundations-and-trust">milestone</a> is done.</p>
+<a href="#v11-foundations-and-trust">milestone</a> is done.
+<strong>The PLM epic, protein language models, is complete</strong> (2026-10-08): every item in
+<a href="#plm-protein-language-models">PLM</a> is done.</p>
 <ul>
 <li><strong>Strong.</strong> LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -3025,6 +3049,17 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
   embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5). Hugging
   Face configs, sharded checkpoints and bf16 weights load into a <code>CausalLM</code> (IO-4 to IO-6): the
   real SmolLM2-135M runs and matches transformers.</li>
+<li><strong>Protein language models</strong> (<a href="#plm-protein-language-models">PLM-1 to PLM-9</a>). ESM-2 8M to
+  650M load from Hugging Face and match transformers to float precision. On top of that:</li>
+<li>zero-shot variant scoring that reproduces ProteinGym's published numbers;</li>
+<li>contacts checked against PDB and mmCIF structures;</li>
+<li>mutation maps, sequence logos, contact maps, residue tracks and a 3D structure page;</li>
+<li>AttnLRP residue explanations, matched to LXT and tested by deletion, randomization and
+    agreement with DMS and conservation;</li>
+<li>masked-LM training and fine-tuning heads;</li>
+<li>probes and SAE features matched to Swiss-Prot annotations, through the new featurizer
+    interface (<a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT-1</a>);</li>
+<li>an end-to-end recipe on TEM-1 β-lactamase.</li>
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Its container runs ROCm 10.0.0, the
@@ -3166,8 +3201,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
 <p>Feature discovery on real models, and agents that can drive the library.</p>
 <ul>
-<li>FEAT-1 to FEAT-7: the featurizer interface, TopK and its family, metrics, transcoders, BSF,
-  steering</li>
+<li>FEAT-1 (<strong>done</strong>, for PLM-8) to FEAT-7: the featurizer interface, TopK and its family,
+  metrics, transcoders, BSF, steering</li>
 <li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology</li>
 <li>VIZ-4 (<strong>done</strong>), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector</li>
@@ -3179,8 +3214,11 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>ARCH-1 to ARCH-3: B-cos layers, concept bottleneck models, mixture of experts</li>
 <li>HIP-8: hipBLASLt and bf16 GEMM</li>
 </ul>
-<h3 id="plm-proteins-in-progress">PLM "Proteins" (in progress)<a class="headerlink" href="#plm-proteins-in-progress" title="Permanent link">&para;</a></h3>
-<p>Its own epic, started 2026-10-07 after VIZ-4. The research behind it is in
+<h3 id="plm-proteins">PLM "Proteins"<a class="headerlink" href="#plm-proteins" title="Permanent link">&para;</a></h3>
+<p>Its own epic, started 2026-10-07 after VIZ-4. <strong>Complete</strong> (2026-10-08, PRs
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/94">#94</a> to
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/103">#103</a>, with FEAT-1 in
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/102">#102</a>). The research behind it is in
 <a href="protein-language-models/">Protein language models: research and plan</a>.</p>
 <ul>
 <li>PLM-1, PLM-2: an encoder block, then ESM-2 matching <code>transformers</code> to float precision</li>
@@ -5926,7 +5964,7 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <td>PLM-5, FEAT-1</td>
 <td>P2</td>
 <td>L</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/103">#103</a> (see below)</td>
 </tr>
 <tr>
 <td>PLM-9</td>
@@ -6114,9 +6152,92 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <li><strong>The crystal isn't the assay's protein.</strong> 1BTL differs from the scanned TEM-1 at V84I and
     A184V, so the recipe places the structure by the ungapped alignment with the most identical
     residues and reports the differences.</li>
-<li><strong>Two numberings.</strong> The scan numbers the precursor from 1 and the structure uses Ambler's
-    numbering; residue ids keep them apart.</li>
+<li>
+<p><strong>Two numberings.</strong> The scan numbers the precursor from 1 and the structure uses Ambler's
+    numbering; residue ids keep them apart.</p>
+</li>
+<li>
+<p><strong>PLM-8</strong> (after FEAT-1, #102) adds the probes, SAE features and dashboards, in
+  <code>protein_concepts.hpp</code> and <code>pulsatrix_probe_esm</code>.</p>
+</li>
+<li><strong>Labels.</strong> Swiss-Prot annotations stand in for DSSP and accessibility: 3,000 random
+    reviewed proteins that have 3D structures, so helices and strands come from structures,
+    plus binding and active sites, disulfides, signal peptides, transmembrane spans, zinc
+    fingers, coiled coils and motifs. Accessibility isn't among UniProt's features and wasn't
+    computed.</li>
+<li><strong>The control task became a sequence control.</strong> Hewitt and Liang's control task (labels
+    fixed per token type) gave balanced accuracy 1.0 at every layer. Twenty amino acids are
+    trivially separable, so a linear probe learns it from any representation. The control is
+    a linear probe on one-hot local sequence (±3) instead, beside a randomly initialized model.<ul>
+<li>With it, disulfide probes show no gain at all: they find cysteines.</li>
+<li>Secondary structure gains +0.20 (8M) and +0.25 (650M) balanced accuracy.</li>
 </ul>
+</li>
+<li><strong>The SAE.</strong> 2,560 latents on ESM-2 8M layer 4: held-out L0 17, 66% of the variance
+    explained, no dead latents. Inputs are standardized per dimension; unstandardized, a few
+    huge dimensions dominated and it explained 33%.<ul>
+<li>Single features beat single neurons on sparse concepts: disulfides 0.69 against 0.18,
+  zinc fingers 0.29 against 0.05, signal peptides 0.44 against 0.34.</li>
+<li>Neurons win on helices and strands.</li>
+<li>A random model's SAE matches disulfides (0.39) and coiled coils (0.26) too, so matches
+  are leads, not proof.</li>
+</ul>
+</li>
+<li><strong>Dashboards</strong> carry a structure panel (<code>StructurePanelHtml</code>, factored out of the structure
+    page). Protein examples wrap residue by residue.</li>
+</ul>
+<h3 id="follow-ups-the-plm-work-surfaced">Follow-ups the PLM work surfaced<a class="headerlink" href="#follow-ups-the-plm-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Found in</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loading ESM-2 650M takes about 10 GB on the host</td>
+<td>PLM-3</td>
+<td>FND-9</td>
+</tr>
+<tr>
+<td>1024-token passes take about 3.7 s on gfx1151, and an 8M training step 3.3 s</td>
+<td>PLM-3, PLM-7</td>
+<td>HIP-13</td>
+</tr>
+<tr>
+<td>Structures are read as their observed residues: a chain with unresolved loops is scored on a shortened sequence. Reading SEQRES and <code>_pdbx_poly_seq_scheme</code> would keep the gaps</td>
+<td>PLM-4</td>
+<td>A follow-up to PLM-4</td>
+</tr>
+<tr>
+<td>3Dmol.js doesn't read insertion codes from mmCIF, so the structure page matches them in PDB files only</td>
+<td>PLM-5</td>
+<td>PLM-5 follow-up, or a 3Dmol.js release that reads them</td>
+</tr>
+<tr>
+<td>TEM-1's K73S explanation keeps most of its residue ranking while the top 14 of 33 layers are randomized</td>
+<td>PLM-6</td>
+<td>Research: which residue explanations depend on the whole model</td>
+</tr>
+<tr>
+<td>Training needs bf16 and token-budget batches to scale past toy runs</td>
+<td>PLM-7</td>
+<td>HIP-11</td>
+</tr>
+<tr>
+<td>Mean-pooled heads don't beat zero-shot on single mutants of long proteins</td>
+<td>PLM-7</td>
+<td>A per-residue or difference head, if wanted</td>
+</tr>
+<tr>
+<td>Solvent-accessibility labels (computed from structures), and probe splits that keep homologs apart. Also, Hewitt and Liang's control task is trivial with few token types: on 20 amino acids a linear probe learns it perfectly, so INT-3 should offer a sequence-window control</td>
+<td>PLM-8</td>
+<td>INT-3 (probe controls)</td>
+</tr>
+</tbody>
+</table>
 <p>Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.</p>
 <h2 id="open-questions">Open questions<a class="headerlink" href="#open-questions" title="Permanent link">&para;</a></h2>

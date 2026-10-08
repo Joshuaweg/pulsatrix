@@ -9,7 +9,7 @@ var html_8hpp =
     [ "RenderBeeswarmHtml", "html_8hpp.html#a8a9a4ba49a0267187c81ccee5c5b18f9", null ],
     [ "RenderCounterfactualHtml", "html_8hpp.html#a43202fe9630809371f6736178ef26106", null ],
     [ "RenderCounterfactualSetHtml", "html_8hpp.html#ab9cec2825b93838cd3a432fefece6ff9", null ],
-    [ "RenderFeatureDashboardHtml", "html_8hpp.html#a99a9f0ebe79cfe67821f1084d1fb4aac", null ],
+    [ "RenderFeatureDashboardHtml", "html_8hpp.html#a4bb622fc8568ab5fb2bb93ec6c3a3e18", null ],
     [ "RenderHeatmapHtml", "html_8hpp.html#a3c89c3270ad7a129c150b504c8a76d81", null ],
     [ "RenderMorrisHtml", "html_8hpp.html#ad2e6bdfe7ddb3183aa44261502371425", null ],
     [ "RenderPartialDependenceHtml", "html_8hpp.html#a4ed4391a880a8e349a249ef189ebb717", null ],
