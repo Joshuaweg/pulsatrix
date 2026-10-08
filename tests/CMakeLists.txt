@@ -147,6 +147,7 @@ add_executable(pulsatrix_tests
     variant_scoring_test.cpp
     protein_contacts_test.cpp
     protein_structure_test.cpp
+    protein_views_test.cpp
     fitness_metrics_test.cpp
     benchmark_test.cpp
     caching_allocator_test.cpp
@@ -325,6 +326,15 @@ add_test(NAME PulsatrixSvg.RendersACounterfactualSet
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/counterfactual.v1.json"
         "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/counterfactual.v1.json"
         -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_counterfactual_set.svg")
+# PLM-5: the protein documents, as figures and as pages.
+foreach(kind mutation_map sequence_logo contact_map residue_tracks)
+    add_test(NAME PulsatrixSvg.Renders_${kind}
+        COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/${kind}.v1.json"
+            -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_${kind}.svg")
+    add_test(NAME PulsatrixSvg.Renders_${kind}_page
+        COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/${kind}.v1.json"
+            -o "${CMAKE_CURRENT_BINARY_DIR}/pulsatrix_svg_${kind}.html")
+endforeach()
 add_test(NAME PulsatrixSvg.RejectsAnUnknownIceStyle
     COMMAND pulsatrix_svg "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/viz/partial_dependence.v1.json" --ice sideways)
 set_tests_properties(PulsatrixSvg.RejectsAnUnknownIceStyle PROPERTIES WILL_FAIL TRUE)
