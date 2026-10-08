@@ -205,17 +205,19 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="featurizer_8hpp__dep__incl.png" border="0" usemap="#ainclude_2pulsatrix_2featurizer_8hppdep" alt=""/></div>
 <map name="ainclude_2pulsatrix_2featurizer_8hppdep" id="ainclude_2pulsatrix_2featurizer_8hppdep">
-<area shape="rect" title="The featurizer family&#39;s common interface (FEAT&#45;1): models that rewrite activations as sparse codes ov..." alt="" coords="421,5,645,31"/>
+<area shape="rect" title="The featurizer family&#39;s common interface (FEAT&#45;1): models that rewrite activations as sparse codes ov..." alt="" coords="523,5,747,31"/>
 <area shape="rect" href="featurizer__metrics_8hpp.html" title="How good a featurizer is (FEAT&#45;3), after SAEBench (Karvonen et al., arXiv 2503.09532): reconstruction..." alt="" coords="5,79,203,119"/>
-<area shape="poly" title=" " alt="" coords="458,36,203,82,202,77,457,30"/>
+<area shape="poly" title=" " alt="" coords="536,35,215,81,203,83,203,78,214,76,536,30"/>
 <area shape="rect" href="jumprelu__sparse__autoencoder_8hpp.html" title="The JumpReLU sparse autoencoder (FEAT&#45;4; Rajamanoharan et al., &quot;Jumping Ahead: &#160;&#160;&#160;&#160;&#160;&#160;&#160;Improving Recon..." alt="" coords="227,79,419,119"/>
-<area shape="poly" title=" " alt="" coords="491,38,374,81,372,76,489,33"/>
+<area shape="poly" title=" " alt="" coords="577,37,398,81,397,76,576,31"/>
 <area shape="rect" href="protein__concepts_8hpp.html" title="What a protein language model&#39;s representations encode (PLM&#45;8): per&#45;residue concepts from Swiss&#45;Prot ..." alt="" coords="443,79,623,119"/>
-<area shape="poly" title=" " alt="" coords="536,44,536,79,531,79,531,44"/>
+<area shape="poly" title=" " alt="" coords="611,41,559,81,556,76,608,37"/>
 <area shape="rect" href="sparse__autoencoder_8hpp.html" title="Sparse autoencoder – reconstructs an activation through an overcomplete, L1&#45;penalized hidden layer,..." alt="" coords="647,79,825,119"/>
-<area shape="poly" title=" " alt="" coords="576,33,688,76,686,81,575,38"/>
+<area shape="poly" title=" " alt="" coords="662,37,713,76,710,81,659,41"/>
 <area shape="rect" href="topk__sparse__autoencoder_8hpp.html" title="The TopK sparse autoencoder (FEAT&#45;2; Gao et al., &quot;Scaling and evaluating sparse &#160;&#160;&#160;&#160;&#160;&#160;&#160;autoencoders&quot;,..." alt="" coords="849,79,1036,119"/>
-<area shape="poly" title=" " alt="" coords="607,31,849,77,848,82,606,36"/>
+<area shape="poly" title=" " alt="" coords="694,31,869,76,868,81,692,37"/>
+<area shape="rect" href="transcoder_8hpp.html" title="Transcoders and skip transcoders (FEAT&#45;5): sparse, wide replacements for an MLP that predict its outp..." alt="" coords="1061,86,1291,111"/>
+<area shape="poly" title=" " alt="" coords="728,30,1048,76,1099,83,1098,89,1048,81,728,35"/>
 </map>
 </div>
 </div>
@@ -250,6 +252,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a533843d3b356df74583b5b643566cef9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a533843d3b356df74583b5b643566cef9">pulsatrix::TrainFeaturizer</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, Optimizer &amp;optimizer, bool unit_norm_decoder=true, <a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html">FeatureActivityTracker</a> *tracker=nullptr)</td></tr>
 <tr class="memdesc:a533843d3b356df74583b5b643566cef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">One training step for any featurizer: zero the gradients, loss_and_backward(), one optimizer step, then normalize_decoder() when <code>unit_norm_decoder</code>. When <code>tracker</code> is given it observes the batch's codes.  <br /></td></tr>
 <tr class="separator:a533843d3b356df74583b5b643566cef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af544e6caff820e89d095f03164e22d6c" id="r_af544e6caff820e89d095f03164e22d6c"><td class="memTemplParams" colspan="2">template&lt;typename Optimizer &gt; </td></tr>
+<tr class="memitem:af544e6caff820e89d095f03164e22d6c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af544e6caff820e89d095f03164e22d6c">pulsatrix::TrainFeaturizer</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;target, Optimizer &amp;optimizer, bool unit_norm_decoder=true, <a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html">FeatureActivityTracker</a> *tracker=nullptr)</td></tr>
+<tr class="memdesc:af544e6caff820e89d095f03164e22d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">TrainFeaturizer for a transcoder: one step on predicting <code>target</code> from <code>x</code>.  <br /></td></tr>
+<tr class="separator:af544e6caff820e89d095f03164e22d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The featurizer family's common interface (FEAT-1): models that rewrite activations as sparse codes over learned directions and back, such as sparse autoencoders, with a shared training step and metrics (L0, dead and dense latents). </p>

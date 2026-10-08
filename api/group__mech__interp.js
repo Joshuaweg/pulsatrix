@@ -11,9 +11,11 @@ var group__mech__interp =
     [ "jumprelu_sparse_autoencoder.hpp", "jumprelu__sparse__autoencoder_8hpp.html", null ],
     [ "learnable_scalar.hpp", "learnable__scalar_8hpp.html", null ],
     [ "linear_probe.hpp", "linear__probe_8hpp.html", null ],
+    [ "mlp_hook.hpp", "mlp__hook_8hpp.html", null ],
     [ "relevance_graph.hpp", "relevance__graph_8hpp.html", null ],
     [ "sparse_autoencoder.hpp", "sparse__autoencoder_8hpp.html", null ],
     [ "subtb_loss.hpp", "subtb__loss_8hpp.html", null ],
     [ "topk_sparse_autoencoder.hpp", "topk__sparse__autoencoder_8hpp.html", null ],
-    [ "trajectory_balance_loss.hpp", "trajectory__balance__loss_8hpp.html", null ]
+    [ "trajectory_balance_loss.hpp", "trajectory__balance__loss_8hpp.html", null ],
+    [ "transcoder.hpp", "transcoder_8hpp.html", null ]
 ];

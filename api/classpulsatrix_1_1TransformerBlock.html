@@ -172,6 +172,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a25965a91fbf957a98559125f731017fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5863fb9245c9acb78bf597c6fe8af7b" id="r_aa5863fb9245c9acb78bf597c6fe8af7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1SwiGLUModule.html">SwiGLUModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#aa5863fb9245c9acb78bf597c6fe8af7b">swiglu</a> ()</td></tr>
 <tr class="separator:aa5863fb9245c9acb78bf597c6fe8af7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab331623d7b52ea6758452c55cee20532" id="r_ab331623d7b52ea6758452c55cee20532"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#ab331623d7b52ea6758452c55cee20532">set_mlp_hook</a> (<a class="el" href="namespacepulsatrix.html#ab7ef3f7938dc5997394d2c33c190b2a8">MlpHook</a> hook)</td></tr>
+<tr class="memdesc:ab331623d7b52ea6758452c55cee20532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <code>hook</code> on the MLP's input (after norm2) and output (after any post-MLP norm) during <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, not <a class="el" href="classpulsatrix_1_1TransformerBlock.html#af95614faa4c2f954597dc90486f16084" title="The block for new positions only, with attention against cache (LLM-5); see MultiHeadAttentionModule:...">forward_cached()</a> (MlpHook). An empty function removes it.  <br /></td></tr>
+<tr class="separator:ab331623d7b52ea6758452c55cee20532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a550eb95e1985c9ba02ec262fd78e3c98" id="r_a550eb95e1985c9ba02ec262fd78e3c98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1RMSNormModule.html">RMSNormModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TransformerBlock.html#a550eb95e1985c9ba02ec262fd78e3c98">post_attn_norm</a> ()</td></tr>
 <tr class="memdesc:a550eb95e1985c9ba02ec262fd78e3c98"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sandwich norms after attention and after the MLP; nullptr without post_norms.  <br /></td></tr>
 <tr class="separator:a550eb95e1985c9ba02ec262fd78e3c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -841,6 +844,34 @@ Protected Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3). </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="ab331623d7b52ea6758452c55cee20532" name="ab331623d7b52ea6758452c55cee20532"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab331623d7b52ea6758452c55cee20532">&#9670;&#160;</a></span>set_mlp_hook()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::TransformerBlock::set_mlp_hook </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ab7ef3f7938dc5997394d2c33c190b2a8">MlpHook</a>&#160;</td>
+          <td class="paramname"><em>hook</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls <code>hook</code> on the MLP's input (after norm2) and output (after any post-MLP norm) during <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, not <a class="el" href="classpulsatrix_1_1TransformerBlock.html#af95614faa4c2f954597dc90486f16084" title="The block for new positions only, with attention against cache (LLM-5); see MultiHeadAttentionModule:...">forward_cached()</a> (MlpHook). An empty function removes it. </p>
 
 </div>
 </div>

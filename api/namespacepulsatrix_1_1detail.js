@@ -7,6 +7,7 @@ var namespacepulsatrix_1_1detail =
     [ "PlatformSources", "classpulsatrix_1_1detail_1_1PlatformSources.html", "classpulsatrix_1_1detail_1_1PlatformSources" ],
     [ "RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", "structpulsatrix_1_1detail_1_1RawReading" ],
     [ "ApplyHiddenStateHook", "namespacepulsatrix_1_1detail.html#a724b689f421ead7cb35b72ba8b29725e", null ],
+    [ "ApplyMlpHook", "namespacepulsatrix_1_1detail.html#aa844b06a1cc9eb8b4afe2996248c9c3a", null ],
     [ "BinomialCoefficient", "namespacepulsatrix_1_1detail.html#a085b925c9cceac3dcaeec1f0147baccf", null ],
     [ "cpu_percent_from_deltas", "namespacepulsatrix_1_1detail.html#a81d907a8f9dbc036cf0950c8b155f4b4", null ],
     [ "csv_header", "namespacepulsatrix_1_1detail.html#a26af653e9ecee46ed1421fde31cb2ec1", null ],

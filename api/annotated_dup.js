@@ -391,6 +391,8 @@ var annotated_dup =
       [ "TrainingDashboard", "classpulsatrix_1_1TrainingDashboard.html", null ],
       [ "TrainingLogDocument", "structpulsatrix_1_1TrainingLogDocument.html", "structpulsatrix_1_1TrainingLogDocument" ],
       [ "TrajectoryBalanceLoss", "classpulsatrix_1_1TrajectoryBalanceLoss.html", "classpulsatrix_1_1TrajectoryBalanceLoss" ],
+      [ "Transcoder", "classpulsatrix_1_1Transcoder.html", "classpulsatrix_1_1Transcoder" ],
+      [ "TranscoderOptions", "structpulsatrix_1_1TranscoderOptions.html", "structpulsatrix_1_1TranscoderOptions" ],
       [ "Transform", "classpulsatrix_1_1Transform.html", "classpulsatrix_1_1Transform" ],
       [ "TransformDataset", "classpulsatrix_1_1TransformDataset.html", "classpulsatrix_1_1TransformDataset" ],
       [ "TransformerBlock", "classpulsatrix_1_1TransformerBlock.html", "classpulsatrix_1_1TransformerBlock" ],

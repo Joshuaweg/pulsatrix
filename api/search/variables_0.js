@@ -25,6 +25,6 @@ var searchData=
   ['atoms_22',['atoms',['../structpulsatrix_1_1StructureResidue.html#acf65b822eee59995a80322751813e4b2',1,'pulsatrix::StructureResidue']]],
   ['attribution_23',['attribution',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa',1,'pulsatrix::ExplanationScoreCard::Input']]],
   ['auc_24',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve::auc'],['../structpulsatrix_1_1FitnessMetrics.html#adeaa141ed59dd66717e2fc92fefec76b',1,'pulsatrix::FitnessMetrics::auc'],['../structpulsatrix_1_1ProbeResult.html#a70e722d81a4f084147e54231737ce857',1,'pulsatrix::ProbeResult::auc'],['../structpulsatrix_1_1ResidueDeletionCurve.html#a38a2f8ded1037eb96d09a0e6de67b0f2',1,'pulsatrix::ResidueDeletionCurve::auc']]],
-  ['aux_5fcoefficient_25',['aux_coefficient',['../structpulsatrix_1_1TopKSaeOptions.html#a8c842b9f74a139244f693e4fd986ab4b',1,'pulsatrix::TopKSaeOptions']]],
+  ['aux_5fcoefficient_25',['aux_coefficient',['../structpulsatrix_1_1TopKSaeOptions.html#a8c842b9f74a139244f693e4fd986ab4b',1,'pulsatrix::TopKSaeOptions::aux_coefficient'],['../structpulsatrix_1_1TranscoderOptions.html#aa14f48057646edecec79874277ca364f',1,'pulsatrix::TranscoderOptions::aux_coefficient']]],
   ['available_26',['available',['../structpulsatrix_1_1MetricCapability.html#aedf248268fb7014def3128b5f5f55956',1,'pulsatrix::MetricCapability']]]
 ];

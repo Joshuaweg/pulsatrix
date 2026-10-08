@@ -519,6 +519,9 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="metrics__sink_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="metrics__sink_8hpp.html">metrics_sink.hpp</a></td></tr>
 <tr class="memdesc:metrics__sink_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps monitoring/visualization tools out of the training core &ndash; same OCP/DIP pattern as DeviceBackend/ExplainerContext. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="mlp__hook_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mlp__hook_8hpp.html">mlp_hook.hpp</a></td></tr>
+<tr class="memdesc:mlp__hook_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads or replaces a transformer block's MLP output during forward() (FEAT-5), for collecting a transcoder's training pairs and splicing it in. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="mnist__classifier__example_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mnist__classifier__example_8hpp.html">mnist_classifier_example.hpp</a></td></tr>
 <tr class="memdesc:mnist__classifier__example_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Real MNIST classifier: Conv2DModule -&gt; ReluModule -&gt; FlattenModule -&gt; LinearModule -&gt; CrossEntropyLoss, mirroring XorNetwork's training-loop pattern and grad_cam_mnist_demo.cpp's network shape exactly. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -767,6 +770,10 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="trajectory__balance__loss_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="trajectory__balance__loss_8hpp.html">trajectory_balance_loss.hpp</a></td></tr>
 <tr class="memdesc:trajectory__balance__loss_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">GFlowNet Trajectory Balance loss (Malkin et al. 2022, arXiv:2201.13259). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="transcoder_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transcoder_8hpp.html">transcoder.hpp</a></td></tr>
+<tr class="memdesc:transcoder_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transcoders and skip transcoders (FEAT-5): sparse, wide replacements for an MLP that predict its output from its input (Dunefsky et al., "Transcoders Find Interpretable LLM
+       Feature Circuits", arXiv 2406.11944), optionally beside a linear skip connection (Paulo et al., "Transcoders Beat Sparse Autoencoders for Interpretability", arXiv 2501.18823). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="transform_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transform_8hpp.html">transform.hpp</a></td></tr>
 <tr class="memdesc:transform_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample-level preprocessing abstraction &ndash; Transform, Compose, TransformDataset. <br /></td></tr>

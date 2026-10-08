@@ -17,6 +17,7 @@ var classpulsatrix_1_1TransformerBlock =
     [ "post_attn_norm", "classpulsatrix_1_1TransformerBlock.html#a550eb95e1985c9ba02ec262fd78e3c98", null ],
     [ "post_mlp_norm", "classpulsatrix_1_1TransformerBlock.html#af7b872cf1e0e23845d28cc5bff8f0e79", null ],
     [ "propagate_relevance", "classpulsatrix_1_1TransformerBlock.html#ae6ce7ebbbcae1b88709d0e9058652529", null ],
+    [ "set_mlp_hook", "classpulsatrix_1_1TransformerBlock.html#ab331623d7b52ea6758452c55cee20532", null ],
     [ "set_training", "classpulsatrix_1_1TransformerBlock.html#af80237833850ddabf8613bfeacb16879", null ],
     [ "swiglu", "classpulsatrix_1_1TransformerBlock.html#aa5863fb9245c9acb78bf597c6fe8af7b", null ]
 ];
