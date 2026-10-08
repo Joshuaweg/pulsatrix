@@ -379,6 +379,8 @@ var annotated_dup =
       [ "TokenRelevanceDocument", "structpulsatrix_1_1TokenRelevanceDocument.html", "structpulsatrix_1_1TokenRelevanceDocument" ],
       [ "TokenRelevanceView", "classpulsatrix_1_1TokenRelevanceView.html", null ],
       [ "TopKResult", "structpulsatrix_1_1TopKResult.html", "structpulsatrix_1_1TopKResult" ],
+      [ "TopKSaeOptions", "structpulsatrix_1_1TopKSaeOptions.html", "structpulsatrix_1_1TopKSaeOptions" ],
+      [ "TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", "classpulsatrix_1_1TopKSparseAutoencoder" ],
       [ "ToyKnowledgeBase", "classpulsatrix_1_1ToyKnowledgeBase.html", "classpulsatrix_1_1ToyKnowledgeBase" ],
       [ "TrainingDashboard", "classpulsatrix_1_1TrainingDashboard.html", null ],
       [ "TrainingLogDocument", "structpulsatrix_1_1TrainingLogDocument.html", "structpulsatrix_1_1TrainingLogDocument" ],

@@ -728,6 +728,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Featurizers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topk-sparse-autoencoders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TopK sparse autoencoders
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1795,6 +1812,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Featurizers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topk-sparse-autoencoders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TopK sparse autoencoders
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1883,7 +1917,7 @@ model's or environment's structure.</p>
 </tr>
 <tr>
 <td>Can a layer's activations be split into sparser, more interpretable directions?</td>
-<td><code>SparseAutoencoder</code></td>
+<td><code>SparseAutoencoder</code>, <code>TopKSparseAutoencoder</code></td>
 </tr>
 <tr>
 <td>Which layers does the output depend on for this input?</td>
@@ -2003,6 +2037,38 @@ one interface (<code>featurizer.hpp</code>), so training and metrics work for al
 - <strong>The SAE is a Module.</strong> It maps input to reconstruction, with <code>backward()</code>, LRP and
   parameters named <code>encoder.*</code> and <code>decoder.*</code>, so checkpoints and optimizers work as for any
   model.</p>
+<h4 id="topk-sparse-autoencoders">TopK sparse autoencoders<a class="headerlink" href="#topk-sparse-autoencoders" title="Permanent link">&para;</a></h4>
+<p><code>TopKSparseAutoencoder</code> (Gao et al., arXiv 2406.04093) keeps each input's k largest latents
+and zeroes the rest, so L0 is k by construction and there is no L1 penalty:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/topk_sparse_autoencoder.hpp"</span>
+
+<span class="n">TopKSaeOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w">                     </span><span class="c1">// active latents per input</span>
+<span class="n">options</span><span class="p">.</span><span class="n">dead_after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1'000'000</span><span class="p">;</span><span class="w">     </span><span class="c1">// inputs without firing before a latent counts as dead</span>
+<span class="n">TopKSparseAutoencoder</span><span class="w"> </span><span class="nf">sae</span><span class="p">(</span><span class="cm">/*dim=*/</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="cm">/*num_features=*/</span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="n">sae</span><span class="p">.</span><span class="n">initialize_bias</span><span class="p">(</span><span class="n">first_batch</span><span class="p">);</span><span class="w">   </span><span class="c1">// b_dec starts at the data's mean</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">batches</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">FeaturizerLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span><span class="w">  </span><span class="c1">// loss.sparsity is the AuxK term</span>
+<span class="p">}</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sae</span><span class="p">.</span><span class="n">dead_latents</span><span class="p">();</span>
+</code></pre></div>
+<ul>
+<li><strong>No shrinkage.</strong> An L1 penalty pulls every code toward zero. On sums of 3 of 12 known
+  directions (<code>tests/topk_sparse_autoencoder_test.cpp</code>), an L1 SAE's reconstructions have 0.88
+  of the data's norm; TopK's have 1.00, and it recovers at least 11 of the 12 directions.</li>
+<li><strong>Dead latents and AuxK.</strong> A latent outside every input's top k gets no gradient. The
+  auxiliary loss has the k_aux largest dead latents (default: half the input dimension)
+  reconstruct the main reconstruction's error, weighted by 1/32. It only reaches latents whose
+  pre-activation is positive, since TopK's ReLU still applies. In the test, 30 of 64 latents are
+  dead after training with it and 48 without.</li>
+<li><strong>Decoder directions</strong> are unit vectors after every step, and the decoder's gradient loses
+  its component along each one. Unlike <code>SparseAutoencoder</code>, the scale isn't moved into the
+  encoder: that would change which latents win the top k.</li>
+<li><strong>Checked against PyTorch.</strong> The loss, every gradient and two Adam steps match a PyTorch
+  rendering of the method (<code>tools/golden/make_topk_sae_golden.py</code>) to 1e-5.</li>
+<li><strong>Resuming training.</strong> Checkpoints hold the parameters. Save <code>inputs_since_fired()</code> too, and
+  restore it with <code>set_inputs_since_fired()</code>, or every latent starts out alive again.</li>
+</ul>
 <p>A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
 whether its directions mean anything. Compare features with probes and with a randomly
 initialized model's.</p>

@@ -3201,8 +3201,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
 <p>Feature discovery on real models, and agents that can drive the library.</p>
 <ul>
-<li>FEAT-1 (<strong>done</strong>, for PLM-8) to FEAT-7: the featurizer interface, TopK and its family,
-  metrics, transcoders, BSF, steering</li>
+<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 (<strong>done</strong>) to FEAT-7: the featurizer interface, TopK
+  and its family, metrics, transcoders, BSF, steering</li>
 <li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology</li>
 <li>VIZ-4 (<strong>done</strong>), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector</li>
@@ -4888,7 +4888,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1, FND-3</td>
 <td>P0</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/105">#105</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-3</td>
@@ -5005,7 +5005,22 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 </table>
 <p>Under unit norm 0.05 also collapses reconstruction on that Gaussian data. The control now
 uses 0.01 and checks L0, and a new test pins the comparison above.
-  - The SAE recipe's expected output changed with it.</p>
+  - The SAE recipe's expected output changed with it.
+- <strong>FEAT-2</strong> adds <code>TopKSparseAutoencoder</code> (<code>topk_sparse_autoencoder.hpp</code>), a <code>Featurizer</code>
+  and a <code>Module</code>.
+  - <strong>Checked against PyTorch,</strong> not against Gao et al.'s code: OpenAI's <code>sparse_autoencoder</code>
+package isn't maintained and needs Triton. A PyTorch rendering of the paper's method gives
+the loss, the gradients and two Adam steps, matched to 1e-5.
+  - <strong>AuxK only reaches latents with positive pre-activations,</strong> as in the paper: the ReLU
+applies to the auxiliary codes too. A latent pushed below zero everywhere stays dead.
+  - <strong>Unit-norm decoders without moving the scale into the encoder,</strong> as Gao et al. do. Moving
+it, as FEAT-1 does for the L1 SAE, would change which latents win the top k.
+  - <strong><code>b_dec</code> starts at the data's mean,</strong> not its geometric median.
+  - <strong>Dead-latent counters aren't in checkpoints;</strong> <code>inputs_since_fired()</code> and
+<code>set_inputs_since_fired()</code> save and restore them.
+  - <strong>Selection runs on the host.</strong> <code>top_k</code> runs on the device, but the codes, the auxiliary
+selection and the gradient routing are host loops. That is fine at PLM-8's scale; a large
+SAE would want them on the device.</p>
 </li>
 </ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>

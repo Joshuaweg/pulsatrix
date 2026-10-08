@@ -109,9 +109,11 @@ Inheritance diagram for pulsatrix::Featurizer:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpulsatrix_1_1Featurizer__inherit__graph.png" border="0" usemap="#apulsatrix_1_1Featurizer_inherit__map" alt="Inheritance graph"/></div>
 <map name="apulsatrix_1_1Featurizer_inherit__map" id="apulsatrix_1_1Featurizer_inherit__map">
-<area shape="rect" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),..." alt="" coords="36,5,188,31"/>
+<area shape="rect" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),..." alt="" coords="163,5,315,31"/>
 <area shape="rect" href="classpulsatrix_1_1SparseAutoencoder.html" title="A sparse autoencoder (SAE): LinearModule(dim, hidden_dim) &#45;&gt; ReluModule &#45;&gt; LinearModule(hidden_dim,..." alt="" coords="5,79,219,104"/>
-<area shape="poly" title=" " alt="" coords="115,44,115,79,109,79,109,44"/>
+<area shape="poly" title=" " alt="" coords="208,40,134,81,131,76,205,35"/>
+<area shape="rect" href="classpulsatrix_1_1TopKSparseAutoencoder.html" title="A TopK sparse autoencoder: z = ReLU(TopK_k(W_enc (x &#45; b_dec) + b_enc)), x̂ = z W_dec + b_dec." alt="" coords="243,79,487,104"/>
+<area shape="poly" title=" " alt="" coords="272,35,346,76,343,81,270,40"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -199,7 +201,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The reconstruction from codes, <code>(N, input_dim)</code>. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a343febaa391644c8210f2029e4a0d648">pulsatrix::SparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a343febaa391644c8210f2029e4a0d648">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a21567ad2ece9a37cd07809cd1a5fd940">pulsatrix::TopKSparseAutoencoder</a>.</p>
 
 </div>
 </div>
@@ -229,7 +231,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Feature <code>i's</code> decoder direction, <code>input_dim</code> values. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ae0e4444e4f7ea020d8a2c68d3b0864e9">pulsatrix::SparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ae0e4444e4f7ea020d8a2c68d3b0864e9">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a61200ca556eb051611903c63e67140d1">pulsatrix::TopKSparseAutoencoder</a>.</p>
 
 </div>
 </div>
@@ -259,7 +261,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The codes for a batch, <code>(N, num_features)</code>. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ab76c58cc4bb37b253204bcf93c3eeefd">pulsatrix::SparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ab76c58cc4bb37b253204bcf93c3eeefd">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a06ee590cc58c9590963efb6f38ee47d2">pulsatrix::TopKSparseAutoencoder</a>.</p>
 
 </div>
 </div>
@@ -286,7 +288,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a238312dc4a9fb2548f3a3bcddb912907">pulsatrix::SparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a238312dc4a9fb2548f3a3bcddb912907">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a5b81b981f9ecbd151f87338d449b9268">pulsatrix::TopKSparseAutoencoder</a>.</p>
 
 </div>
 </div>
@@ -332,7 +334,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a881a3069e30e010a6b338cb5c1cccb2c">pulsatrix::SparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a881a3069e30e010a6b338cb5c1cccb2c">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#acfc173485edf19ceb6562b006b051d2c">pulsatrix::TopKSparseAutoencoder</a>.</p>
 
 </div>
 </div>
@@ -361,7 +363,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Rescales every feature so its decoder direction has unit L2 norm, scaling its code by the inverse where the encoder allows it, so reconstructions don't change. Training with unit-norm decoders keeps a sparsity penalty from being dodged by shrinking codes and growing directions, and makes code sizes comparable across features. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ac6609a74baee393de44cd646fcc0299d">pulsatrix::SparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ac6609a74baee393de44cd646fcc0299d">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a4bb326cf73922d479cb59c3b88b20249">pulsatrix::TopKSparseAutoencoder</a>.</p>
 
 </div>
 </div>
@@ -388,7 +390,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#afd947c6840f4d21082c986e1ee1863c0">pulsatrix::SparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#afd947c6840f4d21082c986e1ee1863c0">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a7b40c6c56f1c0061323ea0f1d88905c4">pulsatrix::TopKSparseAutoencoder</a>.</p>
 
 </div>
 </div>
@@ -417,7 +419,7 @@ Public Member Functions</h2></td></tr>
 
 <p>The trainable parameters, for an optimizer's <code>step()</code> and <code>zero_grad()</code>, and for checkpoints. </p>
 
-<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a275cf2ff176d969d726373652f7ec946">pulsatrix::SparseAutoencoder</a>.</p>
+<p>Implemented in <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a275cf2ff176d969d726373652f7ec946">pulsatrix::SparseAutoencoder</a>, and <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a6226407316a37b860e772ad7512c61e6">pulsatrix::TopKSparseAutoencoder</a>.</p>
 
 </div>
 </div>
