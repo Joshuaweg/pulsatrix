@@ -143,6 +143,7 @@ var hierarchy =
     [ "pulsatrix::FeatureDashboardDocument", "structpulsatrix_1_1FeatureDashboardDocument.html", null ],
     [ "pulsatrix::FeatureSensitivity", "structpulsatrix_1_1FeatureSensitivity.html", null ],
     [ "pulsatrix::Featurizer", "classpulsatrix_1_1Featurizer.html", [
+      [ "pulsatrix::JumpReLUSparseAutoencoder", "classpulsatrix_1_1JumpReLUSparseAutoencoder.html", null ],
       [ "pulsatrix::SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html", null ],
       [ "pulsatrix::TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", null ]
     ] ],
@@ -187,6 +188,7 @@ var hierarchy =
     [ "pulsatrix::TemplatePostProcessor::Item", "structpulsatrix_1_1TemplatePostProcessor_1_1Item.html", null ],
     [ "pulsatrix::IterableDataset", "classpulsatrix_1_1IterableDataset.html", null ],
     [ "pulsatrix::JsonValue", "classpulsatrix_1_1JsonValue.html", null ],
+    [ "pulsatrix::JumpReLUSaeOptions", "structpulsatrix_1_1JumpReLUSaeOptions.html", null ],
     [ "pulsatrix::KernelSHAP", "classpulsatrix_1_1KernelSHAP.html", null ],
     [ "pulsatrix::KLDivergenceLoss", "classpulsatrix_1_1KLDivergenceLoss.html", null ],
     [ "pulsatrix::KVCache", "classpulsatrix_1_1KVCache.html", null ],
@@ -235,6 +237,7 @@ var hierarchy =
       [ "pulsatrix::FlattenModule", "classpulsatrix_1_1FlattenModule.html", null ],
       [ "pulsatrix::GRUModule", "classpulsatrix_1_1GRUModule.html", null ],
       [ "pulsatrix::GroupNormModule", "classpulsatrix_1_1GroupNormModule.html", null ],
+      [ "pulsatrix::JumpReLUSparseAutoencoder", "classpulsatrix_1_1JumpReLUSparseAutoencoder.html", null ],
       [ "pulsatrix::LSTMModule", "classpulsatrix_1_1LSTMModule.html", null ],
       [ "pulsatrix::LayerNormModule", "classpulsatrix_1_1LayerNormModule.html", null ],
       [ "pulsatrix::LinearModule", "classpulsatrix_1_1LinearModule.html", null ],

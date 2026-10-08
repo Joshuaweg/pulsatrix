@@ -3201,7 +3201,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
 <p>Feature discovery on real models, and agents that can drive the library.</p>
 <ul>
-<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2, FEAT-3 (<strong>done</strong>) to FEAT-7: the featurizer interface, TopK
+<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 to FEAT-4 (<strong>done</strong>) to FEAT-7: the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering</li>
 <li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology</li>
@@ -4906,7 +4906,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-2</td>
 <td>P1</td>
 <td>—</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/107">#107</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-5</td>
@@ -5044,7 +5044,29 @@ reports every metric for both. On ESM-2 8M it changed the reading of three resul
 where the probe's F1 is at least 0.5. The numbers are in the
 <a href="../mechanistic-interpretability/#measuring-a-featurizer">mechanistic-interpretability guide</a>.
   - <strong><code>pulsatrix_probe_esm --featurizer topk</code>.</strong> At the same L0, a TopK SAE beats PLM-8's L1
-SAE on every measure: explained variance 0.78 vs 0.66, loss recovered 0.96 vs 0.90.</p>
+SAE on every measure: explained variance 0.78 vs 0.66, loss recovered 0.96 vs 0.90.
+- <strong>FEAT-4</strong> adds BatchTopK and Matryoshka as options of <code>TopKSparseAutoencoder</code>
+  (<code>batch_topk</code>, <code>matryoshka_prefixes</code>), and <code>JumpReLUSparseAutoencoder</code>.
+  - <strong>Options, not classes, for the TopK family.</strong> Both variants change only selection and the
+loss, so they share TopK's AuxK, decoder handling and Module code. BatchTopK's inference
+threshold, a moving average of each training batch's smallest kept activation, is a buffer,
+so checkpoints keep it.
+  - <strong>Matryoshka sums its prefix losses,</strong> as the paper does: FeaturizerLoss::total is that sum
+plus AuxK, and <code>reconstruction</code> is the full dictionary's error.
+  - <strong>JumpReLU's λ is per element.</strong> The loss uses the mean squared error over elements, where
+the paper sums over dimensions, so λ is smaller by the input dimension. There is no λ
+warm-up built in; <code>set_l0_coefficient()</code> lets a training loop do it.
+  - <strong>All three match PyTorch renderings of their papers</strong>
+(<code>tools/golden/make_sae_variants_golden.py</code>): loss, gradients (JumpReLU's straight-through
+threshold gradients included) and two Adam steps.
+  - <strong>The absorption test needed a tight budget.</strong> At k = 3, with about 1.6 true features per
+input, plain BatchTopK absorbed nothing: merging a parent into its children saved no
+latents. At k = 2 it absorbs in 6.6% to 12.6% of inputs over four seeds, and Matryoshka in
+none.
+  - <strong>On ESM-2 8M</strong> Matryoshka absorbs least and finds the best single features for helix and
+transmembrane, at 0.90 loss recovered to TopK's 0.96. JumpReLU matches TopK's loss
+recovered with 12.6 latents instead of 16
+(<a href="../mechanistic-interpretability/#batchtopk-matryoshka-and-jumprelu">table</a>).</p>
 </li>
 </ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>

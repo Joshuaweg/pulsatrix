@@ -14,6 +14,7 @@ var classpulsatrix_1_1TopKSparseAutoencoder =
     [ "input_dim", "classpulsatrix_1_1TopKSparseAutoencoder.html#a5b81b981f9ecbd151f87338d449b9268", null ],
     [ "inputs_since_fired", "classpulsatrix_1_1TopKSparseAutoencoder.html#aa64b05456f155f7616accb6520799833", null ],
     [ "loss_and_backward", "classpulsatrix_1_1TopKSparseAutoencoder.html#acfc173485edf19ceb6562b006b051d2c", null ],
+    [ "named_buffers", "classpulsatrix_1_1TopKSparseAutoencoder.html#a959387d83137300bd49bd36a760e2321", null ],
     [ "named_parameters", "classpulsatrix_1_1TopKSparseAutoencoder.html#abfa572cee8febe415396ec92fb8d1a40", null ],
     [ "normalize_decoder", "classpulsatrix_1_1TopKSparseAutoencoder.html#a4bb326cf73922d479cb59c3b88b20249", null ],
     [ "num_features", "classpulsatrix_1_1TopKSparseAutoencoder.html#a7b40c6c56f1c0061323ea0f1d88905c4", null ],
@@ -23,5 +24,7 @@ var classpulsatrix_1_1TopKSparseAutoencoder =
     [ "propagate_relevance", "classpulsatrix_1_1TopKSparseAutoencoder.html#ab1ddc42c93fadeefa87e85aaa8f2fc8f", null ],
     [ "release_activations", "classpulsatrix_1_1TopKSparseAutoencoder.html#a790aff3350b445301f685f38dc9de8a7", null ],
     [ "set_inputs_since_fired", "classpulsatrix_1_1TopKSparseAutoencoder.html#a9e611c2efb8feac9b1d25e5a09efaa73", null ],
-    [ "set_training", "classpulsatrix_1_1TopKSparseAutoencoder.html#a451bd1aee083e890c6ae583a98df0ee2", null ]
+    [ "set_threshold", "classpulsatrix_1_1TopKSparseAutoencoder.html#ab531fe37648b22722d3b7fa229608498", null ],
+    [ "set_training", "classpulsatrix_1_1TopKSparseAutoencoder.html#a451bd1aee083e890c6ae583a98df0ee2", null ],
+    [ "threshold", "classpulsatrix_1_1TopKSparseAutoencoder.html#af1210cccd5830390007cefadf7c4eb6d", null ]
 ];

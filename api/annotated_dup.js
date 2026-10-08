@@ -202,6 +202,8 @@ var annotated_dup =
       [ "IntegratedGradients", "classpulsatrix_1_1IntegratedGradients.html", "classpulsatrix_1_1IntegratedGradients" ],
       [ "IterableDataset", "classpulsatrix_1_1IterableDataset.html", "classpulsatrix_1_1IterableDataset" ],
       [ "JsonValue", "classpulsatrix_1_1JsonValue.html", "classpulsatrix_1_1JsonValue" ],
+      [ "JumpReLUSaeOptions", "structpulsatrix_1_1JumpReLUSaeOptions.html", "structpulsatrix_1_1JumpReLUSaeOptions" ],
+      [ "JumpReLUSparseAutoencoder", "classpulsatrix_1_1JumpReLUSparseAutoencoder.html", "classpulsatrix_1_1JumpReLUSparseAutoencoder" ],
       [ "KernelSHAP", "classpulsatrix_1_1KernelSHAP.html", "classpulsatrix_1_1KernelSHAP" ],
       [ "KLDivergenceLoss", "classpulsatrix_1_1KLDivergenceLoss.html", "classpulsatrix_1_1KLDivergenceLoss" ],
       [ "KVCache", "classpulsatrix_1_1KVCache.html", "classpulsatrix_1_1KVCache" ],

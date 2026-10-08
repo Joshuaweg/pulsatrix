@@ -171,6 +171,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9e611c2efb8feac9b1d25e5a09efaa73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a202d230a73141983d931405243ac9018" id="r_a202d230a73141983d931405243ac9018"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structpulsatrix_1_1TopKSaeOptions.html">TopKSaeOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a202d230a73141983d931405243ac9018">options</a> () const</td></tr>
 <tr class="separator:a202d230a73141983d931405243ac9018"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1210cccd5830390007cefadf7c4eb6d" id="r_af1210cccd5830390007cefadf7c4eb6d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#af1210cccd5830390007cefadf7c4eb6d">threshold</a> () const</td></tr>
+<tr class="memdesc:af1210cccd5830390007cefadf7c4eb6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">BatchTopK's inference threshold; negative until a training batch sets it.  <br /></td></tr>
+<tr class="separator:af1210cccd5830390007cefadf7c4eb6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab531fe37648b22722d3b7fa229608498" id="r_ab531fe37648b22722d3b7fa229608498"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#ab531fe37648b22722d3b7fa229608498">set_threshold</a> (float <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#af1210cccd5830390007cefadf7c4eb6d">threshold</a>)</td></tr>
+<tr class="memdesc:ab531fe37648b22722d3b7fa229608498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the inference threshold (negative: select across the batch).  <br /></td></tr>
+<tr class="separator:ab531fe37648b22722d3b7fa229608498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a381da0e6a45d87dd40b6f0af9ab78e01" id="r_a381da0e6a45d87dd40b6f0af9ab78e01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a381da0e6a45d87dd40b6f0af9ab78e01">encoder</a> ()</td></tr>
 <tr class="separator:a381da0e6a45d87dd40b6f0af9ab78e01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac67f05788c4be67e695d6d0f73c43eaa" id="r_ac67f05788c4be67e695d6d0f73c43eaa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#ac67f05788c4be67e695d6d0f73c43eaa">decoder</a> ()</td></tr>
@@ -187,6 +193,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abfa572cee8febe415396ec92fb8d1a40" id="r_abfa572cee8febe415396ec92fb8d1a40"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#abfa572cee8febe415396ec92fb8d1a40">named_parameters</a> () override</td></tr>
 <tr class="memdesc:abfa572cee8febe415396ec92fb8d1a40"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
 <tr class="separator:abfa572cee8febe415396ec92fb8d1a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a959387d83137300bd49bd36a760e2321" id="r_a959387d83137300bd49bd36a760e2321"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a959387d83137300bd49bd36a760e2321">named_buffers</a> () override</td></tr>
+<tr class="memdesc:a959387d83137300bd49bd36a760e2321"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's buffers: state a checkpoint must save that no optimizer updates.  <br /></td></tr>
+<tr class="separator:a959387d83137300bd49bd36a760e2321"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a455ce88915b2821e5d0c3db2d1cc98" id="r_a1a455ce88915b2821e5d0c3db2d1cc98"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a1a455ce88915b2821e5d0c3db2d1cc98">compute_device</a> () const override</td></tr>
 <tr class="memdesc:a1a455ce88915b2821e5d0c3db2d1cc98"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device this module computes on, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> can reject an input on another device before any kernel sees it (roadmap FND-8).  <br /></td></tr>
 <tr class="separator:a1a455ce88915b2821e5d0c3db2d1cc98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,9 +217,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module" id="r_acad2aa6565d456d5a57be421c05537b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule) const</td></tr>
 <tr class="memdesc:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">propagate_relevance()</a> implements <code>rule</code> (no silent fallback: callers such as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass()</a> throw rather than run a module on a rule it does not implement).  <br /></td></tr>
 <tr class="separator:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module" id="r_a05e4c9483d5577e3da94df3ee55e7699"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">named_buffers</a> ()</td></tr>
-<tr class="memdesc:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's buffers: state a checkpoint must save that no optimizer updates.  <br /></td></tr>
-<tr class="separator:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
 <tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
 <tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,8 +243,10 @@ Protected Member Functions</h2></td></tr>
 <li><b>Dead latents.</b> A latent that stops firing gets no gradient and stays dead. The auxiliary loss has the k_aux largest dead latents reconstruct the residual <code>x - x̂</code>; its normalized squared error <code>|ê - e|² / |e|²</code>, weighted by aux_coefficient, gives them a gradient. The training loss is <code>mean((x̂ - x)²) + aux_coefficient * that</code>.</li>
 <li><b><a class="el" href="classpulsatrix_1_1Decoder.html" title="Turns token strings back into text.">Decoder</a> directions</b> have unit norm after every <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a4bb326cf73922d479cb59c3b88b20249" title="Unit decoder rows (Gao et al.: the encoder isn&#39;t rescaled).">normalize_decoder()</a>. Rows are rescaled as Gao et al. do, without moving the scale into the encoder (which would change which latents are selected), and the decoder's gradient loses its component along each direction.</li>
 <li><b>Initialization</b> (Gao et al.): random unit decoder directions, the encoder their transpose, <code>b_enc = 0</code>, and <code>b_dec = 0</code> until <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#ad706ced26eae3d692e36ac2c911cc2e8" title="Sets b_dec to the mean of x, (N, dim), as Gao et al. start it (they use the geometric median; the mea...">initialize_bias()</a> sets it to the data's mean.</li>
+<li><b>BatchTopK</b> (batch_topk) selects across the batch in training and by <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#af1210cccd5830390007cefadf7c4eb6d" title="BatchTopK&#39;s inference threshold; negative until a training batch sets it.">threshold()</a> at inference. Before any training batch has set the threshold, <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#a06ee590cc58c9590963efb6f38ee47d2" title="The codes for a batch, (N, num_features).">encode()</a> selects across the batch it is given.</li>
+<li><b>Matryoshka</b> (matryoshka_prefixes) adds the prefixes' losses: <a class="el" href="structpulsatrix_1_1FeaturizerLoss.html#aeda1edca20901e39ce1e89b0c90e395f" title="What was minimized: reconstruction + sparsity, except that a Matryoshka SAE adds every prefix&#39;s recon...">FeaturizerLoss::total</a> is their sum plus the auxiliary loss, and <code>reconstruction</code> is the full dictionary's.</li>
 </ul>
-<p>It is a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> from input to reconstruction, with parameters named <code>encoder.*</code> and <code>decoder.*</code>; the decoder's bias is <code>b_dec</code>. </p>
+<p>It is a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> from input to reconstruction, with parameters named <code>encoder.*</code> and <code>decoder.*</code>; the decoder's bias is <code>b_dec</code>. BatchTopK's threshold is a buffer, <code>threshold</code>, so checkpoints keep it. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af28200752fc168ea8004f683b3b5d456" name="af28200752fc168ea8004f683b3b5d456"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af28200752fc168ea8004f683b3b5d456">&#9670;&#160;</a></span>TopKSparseAutoencoder()</h2>
@@ -279,7 +287,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if dim or num_features &lt; 1, k outside [1, num_features], k_aux &lt; 0, aux_coefficient &lt; 0 or dead_after &lt; 1. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if dim or num_features &lt; 1, k outside [1, num_features], k_aux &lt; 0, aux_coefficient &lt; 0, dead_after &lt; 1, threshold_decay outside [0, 1), or prefixes that aren't increasing within [1, num_features]. </td></tr>
   </table>
   </dd>
 </dl>
@@ -656,6 +664,36 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a959387d83137300bd49bd36a760e2321" name="a959387d83137300bd49bd36a760e2321"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a959387d83137300bd49bd36a760e2321">&#9670;&#160;</a></span>named_buffers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; pulsatrix::TopKSparseAutoencoder::named_buffers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This module's buffers: state a checkpoint must save that no optimizer updates. </p>
+<dl class="section return"><dt>Returns</dt><dd>{name, tensor} entries, named like <a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html#abfa572cee8febe415396ec92fb8d1a40" title="This module&#39;s trainable parameters, each with its hierarchical name – the one place a module declares...">named_parameters()</a>, in a fixed order. Default: empty. <a class="el" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e...">BatchNormModule</a> reports its running statistics; containers prefix their layers' buffers the way they prefix parameters. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
 <a id="abfa572cee8febe415396ec92fb8d1a40" name="abfa572cee8febe415396ec92fb8d1a40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abfa572cee8febe415396ec92fb8d1a40">&#9670;&#160;</a></span>named_parameters()</h2>
 
@@ -924,6 +962,26 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ab531fe37648b22722d3b7fa229608498" name="ab531fe37648b22722d3b7fa229608498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab531fe37648b22722d3b7fa229608498">&#9670;&#160;</a></span>set_threshold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::TopKSparseAutoencoder::set_threshold </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>threshold</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the inference threshold (negative: select across the batch). </p>
+
+</div>
+</div>
 <a id="a451bd1aee083e890c6ae583a98df0ee2" name="a451bd1aee083e890c6ae583a98df0ee2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a451bd1aee083e890c6ae583a98df0ee2">&#9670;&#160;</a></span>set_training()</h2>
 
@@ -955,6 +1013,25 @@ Protected Member Functions</h2></td></tr>
 <a class="el" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e...">BatchNormModule</a> keeps running statistics in training mode and normalizes with them in eval mode; <a class="el" href="classpulsatrix_1_1DropoutModule.html" title="y = (mask_i ? x_i / (1 - p) : 0) at training time (inverted dropout – scaling happens at training tim...">DropoutModule</a> is the identity in eval mode. Call set_training(false) before explaining a model that has either, so a sample's explanation doesn't depend on the rest of its batch. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="af1210cccd5830390007cefadf7c4eb6d" name="af1210cccd5830390007cefadf7c4eb6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1210cccd5830390007cefadf7c4eb6d">&#9670;&#160;</a></span>threshold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::TopKSparseAutoencoder::threshold </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>BatchTopK's inference threshold; negative until a training batch sets it. </p>
 
 </div>
 </div>

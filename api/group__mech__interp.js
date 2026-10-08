@@ -8,6 +8,7 @@ var group__mech__interp =
     [ "gflownet_forward_policy.hpp", "gflownet__forward__policy_8hpp.html", null ],
     [ "gflownet_trajectory.hpp", "gflownet__trajectory_8hpp.html", null ],
     [ "hypergrid_env.hpp", "hypergrid__env_8hpp.html", null ],
+    [ "jumprelu_sparse_autoencoder.hpp", "jumprelu__sparse__autoencoder_8hpp.html", null ],
     [ "learnable_scalar.hpp", "learnable__scalar_8hpp.html", null ],
     [ "linear_probe.hpp", "linear__probe_8hpp.html", null ],
     [ "relevance_graph.hpp", "relevance__graph_8hpp.html", null ],

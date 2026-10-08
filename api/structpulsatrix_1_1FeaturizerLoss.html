@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1FeaturizerLoss.html
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aeda1edca20901e39ce1e89b0c90e395f" id="r_aeda1edca20901e39ce1e89b0c90e395f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html#aeda1edca20901e39ce1e89b0c90e395f">total</a> = 0.0f</td></tr>
-<tr class="memdesc:aeda1edca20901e39ce1e89b0c90e395f"><td class="mdescLeft">&#160;</td><td class="mdescRight">What was minimized: reconstruction + sparsity.  <br /></td></tr>
+<tr class="memdesc:aeda1edca20901e39ce1e89b0c90e395f"><td class="mdescLeft">&#160;</td><td class="mdescRight">What was minimized: reconstruction + sparsity, except that a Matryoshka SAE adds every prefix's reconstruction error (<a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html" title="A TopK sparse autoencoder: z = ReLU(TopK_k(W_enc (x - b_dec) + b_enc)), x̂ = z W_dec + b_dec.">TopKSparseAutoencoder</a>).  <br /></td></tr>
 <tr class="separator:aeda1edca20901e39ce1e89b0c90e395f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a412277c60c6515d0344ef8e8567f4f43" id="r_a412277c60c6515d0344ef8e8567f4f43"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html#a412277c60c6515d0344ef8e8567f4f43">reconstruction</a> = 0.0f</td></tr>
 <tr class="memdesc:a412277c60c6515d0344ef8e8567f4f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mean squared reconstruction error over every element.  <br /></td></tr>
@@ -164,7 +164,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>What was minimized: reconstruction + sparsity. </p>
+<p>What was minimized: reconstruction + sparsity, except that a Matryoshka SAE adds every prefix's reconstruction error (<a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html" title="A TopK sparse autoencoder: z = ReLU(TopK_k(W_enc (x - b_dec) + b_enc)), x̂ = z W_dec + b_dec.">TopKSparseAutoencoder</a>). </p>
 
 </div>
 </div>
