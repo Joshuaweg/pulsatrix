@@ -56,6 +56,10 @@ Recipes link to the related full demo where one exists.
 
 - [Datalog LRP bridge](neuro-symbolic/datalog_lrp_bridge.md)
 
+## Protein Language Models
+
+- [One protein end to end: TEM-1 β-lactamase](protein-models/protein_tem1.md)
+
 ## Visualization
 
 - [Live training dashboard](visualization/training_dashboard.md)
