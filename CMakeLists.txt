@@ -139,6 +139,7 @@ add_library(pulsatrix_core
     src/topk_sparse_autoencoder.cpp
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp
+    src/steering.cpp
     src/null_model_baseline.cpp
     src/caching_allocator.cpp
     src/rnn_module.cpp
@@ -669,6 +670,11 @@ add_executable(pulsatrix_probe_esm tools/plm/pulsatrix_probe_esm.cpp)
 target_link_libraries(pulsatrix_probe_esm PRIVATE pulsatrix_core)
 target_compile_definitions(pulsatrix_probe_esm PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
 
+# pulsatrix_steer_esm: steering ESM-2 toward transmembrane residues, with a reliability report (FEAT-7).
+add_executable(pulsatrix_steer_esm tools/plm/pulsatrix_steer_esm.cpp)
+target_link_libraries(pulsatrix_steer_esm PRIVATE pulsatrix_core)
+target_compile_definitions(pulsatrix_steer_esm PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
+
 # pulsatrix_explain_text: AttnLRP on a language model's prediction, as a token relevance figure (VIZ-6a).
 add_executable(pulsatrix_explain_text tools/explain/pulsatrix_explain_text.cpp)
 target_link_libraries(pulsatrix_explain_text PRIVATE pulsatrix_core)
@@ -741,7 +747,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym pulsatrix_contacts pulsatrix_protein_views pulsatrix_explain_protein pulsatrix_train_esm pulsatrix_finetune_esm pulsatrix_probe_esm RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym pulsatrix_contacts pulsatrix_protein_views pulsatrix_explain_protein pulsatrix_train_esm pulsatrix_finetune_esm pulsatrix_probe_esm pulsatrix_steer_esm RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"

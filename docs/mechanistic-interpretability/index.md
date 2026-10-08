@@ -18,6 +18,7 @@ model's or environment's structure.
 | Is concept X linearly readable from layer L? | `LinearProbe` |
 | Can a layer's activations be split into sparser, more interpretable directions? | `SparseAutoencoder`, `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder` |
 | What does an MLP compute, in sparse, interpretable steps? | `Transcoder` |
+| Can a direction push the model's behavior, and how reliably? | `SteeringHook`, `MeasureSteering` |
 | Which layers does the output depend on for this input? | `ExplainerContext::build_circuit_graph()` → `CircuitGraph` |
 | What happens to the output if I overwrite one activation? | `ExplainerContext::forward_pass_with_patch()` |
 | What would the model predict if layer L were the last layer? | `ExplainerContext::logit_lens()` |
@@ -390,6 +391,72 @@ Absorption, where the probe finds the concept (F1 at least 0.5; below that the r
 A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
 whether its directions mean anything. Compare features with probes and with a randomly
 initialized model's.
+
+### Steering a model
+
+Steering adds a direction to the residual stream to push a model's behavior one way
+(`steering.hpp`). Use the difference of means between activations with and without the concept
+by default. A featurizer's decoder direction is the option, and on AxBench (Wu et al., arXiv
+2501.17148) it usually steers worse.
+
+```cpp
+#include "pulsatrix/steering.hpp"
+
+std::vector<float> v = DifferenceOfMeans(with_concept, without_concept, hidden);  // (N, d) each
+model.set_hidden_state_hook(SteeringHook(/*position=*/4, v, /*coefficient=*/1.0f));
+
+// How reliably it works: each input's slope of behavior against the coefficient, beside random
+// directions of the same norm.
+SteeringReport r = MeasureSteering([&](int64_t i, const HiddenStateHook& hook) {
+    model.set_hidden_state_hook(hook);
+    double b = Behavior(model, inputs[i]);  // a logit difference, a log-probability, ...
+    model.set_hidden_state_hook({});
+    return b;
+}, inputs.size(), /*position=*/4, v);
+// r.mean_steerability, r.steerability_sd, r.anti_steerable_fraction, r.over_random
+```
+
+An average effect hides a lot. Tan et al. (NeurIPS 2024) find that steering vectors often fail
+on many individual inputs, move some the wrong way, and misgeneralize out of distribution. So
+the report gives:
+- **each input's steerability,** the least-squares slope of its behavior against the
+  coefficient, with the mean and spread over inputs;
+- **the anti-steerable share,** the inputs with a negative slope;
+- **random directions of the same norm** as the control. `over_random` is the mean
+  steerability divided by the largest random mean; below about 1 the direction does no better
+  than noise.
+
+**On ESM-2 8M: a steering vector that fails its checks.** `pulsatrix_steer_esm` steers layer 4
+toward transmembrane residues.
+- **The direction** is the difference of means between transmembrane residues and the rest, over
+  800 proteins (norm 9.1, against a mean residual norm of 29). The alternative is the TopK SAE
+  feature that best matches transmembrane residues (F1 0.64), scaled to the same norm.
+- **The behavior** should rise: the log-probability of a hydrophobic residue minus a polar one,
+  at masked positions.
+- **The inputs** are 100 held-out soluble proteins.
+
+| Coefficients | Direction | Mean steerability | Spread | Anti-steerable | Largest random | `over_random` |
+|---|---|---|---|---|---|---|
+| ±2 | Difference of means | +0.087 | 0.092 | 18% | 0.296 | 0.29 |
+| ±2 | SAE feature | +0.023 | 0.091 | 32% | 0.296 | 0.08 |
+| ±0.5 | Difference of means | **−0.139** | 0.257 | **66%** | 0.099 | −1.41 |
+| ±0.5 | SAE feature | +0.002 | 0.198 | 46% | 0.099 | 0.02 |
+| ±0.25 | Difference of means | **−0.208** | 0.264 | **78%** | 0.106 | −1.96 |
+
+- **At large coefficients the average looks right, and it isn't steering.** At ±2 the added
+  vector has norm 18, and any such perturbation disrupts the model. Random directions of the
+  same norm move the behavior more than the difference of means does. The behavior also rises
+  at both −1 and +1, which a linear direction can't explain.
+- **In the linear regime the difference of means steers the wrong way.** At small coefficients,
+  adding "transmembrane minus other" makes soluble proteins' masked positions *less*
+  hydrophobic, for about three proteins in four. The representation of an observed
+  transmembrane residue is evidently not what makes later layers predict hydrophobic ones. On
+  held-out transmembrane proteins the slope is about zero, with half of them anti-steerable.
+- **The SAE feature doesn't steer at all,** at any scale: `over_random` near 0.
+- **The point of the report.** A mean effect at one large coefficient would have reported a
+  success. The per-input slopes, the anti-steerable share and the random control show there is
+  none. A probe that reads a concept doesn't give a direction that writes it.
+
 
 ### Building a circuit graph
 
