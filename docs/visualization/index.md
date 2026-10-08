@@ -109,6 +109,10 @@ There are six kinds. Each has a struct, a writer (`ToJson`) and a reader (`Parse
 | `pulsatrix.counterfactual.v1` | `CounterfactualDocument` | `target`, `valid`, `output_before`, `output_after`, and per feature its `name`, `original` and `counterfactual` value and distance `scale` | `CounterfactualResult` |
 | `pulsatrix.sensitivity.v1` | `SensitivityDocument` | `target`, the unchanged `output`, and per feature its `name`, `value`, `low`, `high`, `output_low` and `output_high` | `LocalSensitivityResult` |
 | `pulsatrix.partial_dependence.v1` | `PartialDependenceDocument` | `method` (`"partial_dependence"` or `"ale"`), `feature`, `target`, `grid`, `partial_dependence`, and optionally `num_instances` ICE curves (`ice`) and the instances' `feature_values` | `IceResult`, `AleResult` |
+| `pulsatrix.mutation_map.v1` | `MutationMapDocument` | `title`, `sequence`, `first_position`, `method`, `alphabet`, and row-major `values` (residues × alphabet) | `VariantScorer::single_mutant_scan` |
+| `pulsatrix.sequence_logo.v1` | `SequenceLogoDocument` | `title`, `sequence`, `first_position`, `method`, `alphabet`, and row-major `probabilities` (positions × alphabet, each row a distribution) | `ResidueLogProbs` |
+| `pulsatrix.contact_map.v1` | `ContactMapDocument` | `title`, `sequence`, `first_position`, `method`, `predicted` (L × L) and `truth` (L × L of 0, 1 and NaN, or empty) | `ContactMap` |
+| `pulsatrix.residue_tracks.v1` | `ResidueTracksDocument` | `title`, `sequence`, `first_position`, `tracks` (`name`, one value per residue, `signed`), `features` (`name`, `start`, `end`, `category`) and `residue_ids` | — |
 
 ### Token relevance for text
 
@@ -225,6 +229,10 @@ magnitudes.
 | `RenderCounterfactualSvg(doc, max_rows)` | Whether the target is reached, then each changed feature, costliest first, with its old and new value and its change in units of its scale | `CounterfactualDocument` |
 | `RenderTornadoSvg(doc, top_k)` | One row per feature, largest swing first: bars from the unchanged output to the output at the feature's low and high values | `SensitivityDocument` |
 | `RenderPartialDependenceSvg(doc, view)` | ICE curves under their average, raw, centered or as slopes, with a rug of the inputs' values | `PartialDependenceDocument` |
+| `RenderMutationMapSvg(doc)` | Every substitution's score, a row per amino acid and a column per residue, the wild type dotted; long sequences wrap | `MutationMapDocument` (protein views, `viz/protein_views.hpp`) |
+| `RenderSequenceLogoSvg(doc)` | A sequence logo: letters stacked to each position's information content | `SequenceLogoDocument` |
+| `RenderContactMapSvg(doc)` | Predicted contacts above the diagonal; the structure's contacts and the top L predictions, right or wrong, below | `ContactMapDocument` |
+| `RenderResidueTracksSvg(doc)` | Per-residue tracks and annotated features under the sequence | `ResidueTracksDocument` |
 
 ```cpp
 #include <fstream>

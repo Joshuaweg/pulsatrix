@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Downloads the Vega, Vega-Lite and vega-embed builds the HTML views load (VIZ-3), at the pinned
-# versions in include/pulsatrix/viz/html.hpp, and checks their SHA-384 hashes. With them, pages
+# Downloads the Vega, Vega-Lite and vega-embed builds the HTML views load (VIZ-3), and 3Dmol.js for
+# the structure page (PLM-5), at the pinned versions in include/pulsatrix/viz/html.hpp and
+# protein_views.hpp, and checks their SHA-384 hashes. With them, pages
 # can carry the scripts inline and work offline:
 #
 #   tools/render/fetch_vega.sh ~/.cache/pulsatrix/vega
@@ -26,3 +27,4 @@ fetch() {  # package version file sha384-hex
 fetch vega 6.4.0 vega.min.js 54a75c26bdd968120931b55ca294c023f244b9491263aaa7c15bbd88bbb0d039d0f60435263b1f649857150020362e37
 fetch vega-lite 6.4.3 vega-lite.min.js f7fef480d09f3aee86ef15ef91dade31fbaa004b286862555d5d8137f24b45791299c1af9ccaadb11c7c1d9b54580bc8
 fetch vega-embed 7.3.0 vega-embed.min.js 32ecb5411c5815e36b035cd285cd4ab4de0e7e2a6447feb582df875aa379edcd59c6edce7b5e93b2296caee5558df28b
+fetch 3dmol 2.5.5 3Dmol-min.js 3ac73361b95dbeb1e0b25afd7c5a7f8b81a22d27aec3d97e40896ff7d213c3cb283b05dca0679f94530b83e094fd7d5d

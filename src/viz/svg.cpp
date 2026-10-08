@@ -20,6 +20,21 @@
 
 namespace pulsatrix {
 
+std::string svg_detail::PngDataUri(const std::vector<unsigned char>& rgb, int64_t width, int64_t height) {
+    std::vector<unsigned char> png;
+    auto sink = [](void* ctx, void* data, int size) {
+        auto* out = static_cast<std::vector<unsigned char>*>(ctx);
+        out->insert(out->end(), static_cast<unsigned char*>(data), static_cast<unsigned char*>(data) + size);
+    };
+    if (width <= 0 || height <= 0 || width > std::numeric_limits<int>::max() / 3 || height > std::numeric_limits<int>::max() ||
+        rgb.size() != static_cast<size_t>(width * height * 3) ||
+        stbi_write_png_to_func(sink, &png, static_cast<int>(width), static_cast<int>(height), 3, rgb.data(), static_cast<int>(width) * 3) ==
+            0) {
+        throw std::invalid_argument("the image can't be encoded as PNG");
+    }
+    return "data:image/png;base64," + svg_detail::Base64(png);
+}
+
 using namespace svg_detail;
 
 // ---- bar chart ------------------------------------------------------------------------------
@@ -249,20 +264,15 @@ std::string RenderHeatmapSvg(const HeatmapDocument& doc, const SvgOptions& optio
             rgb[static_cast<size_t>(i) * 3 + 1] = byte(c.g);
             rgb[static_cast<size_t>(i) * 3 + 2] = byte(c.b);
         }
-        std::vector<unsigned char> png;
-        auto sink = [](void* ctx, void* data, int size) {
-            auto* out = static_cast<std::vector<unsigned char>*>(ctx);
-            out->insert(out->end(), static_cast<unsigned char*>(data), static_cast<unsigned char*>(data) + size);
-        };
-        if (doc.cols > std::numeric_limits<int>::max() / 3 || doc.rows > std::numeric_limits<int>::max() ||
-            stbi_write_png_to_func(sink, &png, static_cast<int>(doc.cols), static_cast<int>(doc.rows), 3, rgb.data(),
-                                   static_cast<int>(doc.cols) * 3) == 0) {
+        std::string uri;
+        try {
+            uri = PngDataUri(rgb, doc.cols, doc.rows);
+        } catch (const std::invalid_argument&) {
             throw std::invalid_argument("RenderHeatmapSvg: the grid is too large to encode");
         }
         f.body() += "<image class=\"heatmap-image\" x=\"" + Num(x0) + "\" y=\"" + Num(y0) + "\" width=\"" + Num(grid_w) +
-                    "\" height=\"" + Num(grid_h) +
-                    "\" preserveAspectRatio=\"none\" style=\"image-rendering:pixelated\" href=\"data:image/png;base64," +
-                    Base64(png) + "\"/>\n";
+                    "\" height=\"" + Num(grid_h) + "\" preserveAspectRatio=\"none\" style=\"image-rendering:pixelated\" href=\"" +
+                    uri + "\"/>\n";
     }
     f.body() += "<rect class=\"frame\" x=\"" + Num(x0) + "\" y=\"" + Num(y0) + "\" width=\"" + Num(grid_w) + "\" height=\"" +
                 Num(grid_h) + "\" fill=\"none\" stroke=\"" + kAxisColor + "\" stroke-width=\"0.5\"/>\n";
