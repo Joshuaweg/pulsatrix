@@ -16,7 +16,7 @@ model's or environment's structure.
 |---|---|
 | What did each layer output for this input? | `ExplainerContext::activation_snapshot()` → `ActivationSnapshot` |
 | Is concept X linearly readable from layer L? | `LinearProbe` |
-| Can a layer's activations be split into sparser, more interpretable directions? | `SparseAutoencoder` |
+| Can a layer's activations be split into sparser, more interpretable directions? | `SparseAutoencoder`, `TopKSparseAutoencoder` |
 | Which layers does the output depend on for this input? | `ExplainerContext::build_circuit_graph()` → `CircuitGraph` |
 | What happens to the output if I overwrite one activation? | `ExplainerContext::forward_pass_with_patch()` |
 | What would the model predict if layer L were the last layer? | `ExplainerContext::logit_lens()` |
@@ -130,6 +130,41 @@ std::vector<int64_t> dense = activity.dense(0.1);       // firing on more than 1
 - **The SAE is a Module.** It maps input to reconstruction, with `backward()`, LRP and
   parameters named `encoder.*` and `decoder.*`, so checkpoints and optimizers work as for any
   model.
+
+#### TopK sparse autoencoders
+
+`TopKSparseAutoencoder` (Gao et al., arXiv 2406.04093) keeps each input's k largest latents
+and zeroes the rest, so L0 is k by construction and there is no L1 penalty:
+
+```cpp
+#include "pulsatrix/topk_sparse_autoencoder.hpp"
+
+TopKSaeOptions options;
+options.k = 32;                     // active latents per input
+options.dead_after = 1'000'000;     // inputs without firing before a latent counts as dead
+TopKSparseAutoencoder sae(/*dim=*/320, /*num_features=*/4096, &backend, options);
+sae.initialize_bias(first_batch);   // b_dec starts at the data's mean
+for (const Tensor& batch : batches) {
+    FeaturizerLoss loss = TrainFeaturizer(sae, batch, opt);  // loss.sparsity is the AuxK term
+}
+std::vector<int64_t> dead = sae.dead_latents();
+```
+
+- **No shrinkage.** An L1 penalty pulls every code toward zero. On sums of 3 of 12 known
+  directions (`tests/topk_sparse_autoencoder_test.cpp`), an L1 SAE's reconstructions have 0.88
+  of the data's norm; TopK's have 1.00, and it recovers at least 11 of the 12 directions.
+- **Dead latents and AuxK.** A latent outside every input's top k gets no gradient. The
+  auxiliary loss has the k_aux largest dead latents (default: half the input dimension)
+  reconstruct the main reconstruction's error, weighted by 1/32. It only reaches latents whose
+  pre-activation is positive, since TopK's ReLU still applies. In the test, 30 of 64 latents are
+  dead after training with it and 48 without.
+- **Decoder directions** are unit vectors after every step, and the decoder's gradient loses
+  its component along each one. Unlike `SparseAutoencoder`, the scale isn't moved into the
+  encoder: that would change which latents win the top k.
+- **Checked against PyTorch.** The loss, every gradient and two Adam steps match a PyTorch
+  rendering of the method (`tools/golden/make_topk_sae_golden.py`) to 1e-5.
+- **Resuming training.** Checkpoints hold the parameters. Save `inputs_since_fired()` too, and
+  restore it with `set_inputs_since_fired()`, or every latent starts out alive again.
 
 A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
 whether its directions mean anything. Compare features with probes and with a randomly
