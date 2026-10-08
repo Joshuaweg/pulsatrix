@@ -110,4 +110,10 @@ Tensor RMSNormModule::propagate_relevance(const Tensor& relevance_out, const LRP
     return Tensor(relevance_out);
 }
 
+void RMSNormModule::release_activations() {
+    release_tensor(last_input_);
+    release_tensor(last_rms_);
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix

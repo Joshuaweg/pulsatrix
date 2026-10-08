@@ -93,6 +93,8 @@ public:
         };
     }
 
+    void release_activations() override;
+
 protected:
     /**
      * @brief The actual forward computation -- per-position row copy from weight_.

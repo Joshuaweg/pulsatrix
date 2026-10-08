@@ -75,4 +75,9 @@ Tensor SoftmaxModule::propagate_relevance(const Tensor& relevance_out, const LRP
     return relevance_in;
 }
 
+void SoftmaxModule::release_activations() {
+    release_tensor(last_input_);
+    release_tensor(last_output_);
+}
+
 }  // namespace pulsatrix

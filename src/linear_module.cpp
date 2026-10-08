@@ -176,4 +176,10 @@ Tensor LinearModule::propagate_relevance(const Tensor& relevance_out, const LRPR
     return relevance_in;
 }
 
+void LinearModule::release_activations() {
+    release_tensor(last_input_);
+    release_tensor(last_pre_bias_output_);
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix

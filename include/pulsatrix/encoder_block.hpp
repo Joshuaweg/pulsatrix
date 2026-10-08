@@ -94,6 +94,8 @@ public:
     [[nodiscard]] Module& mlp() { return *mlp_; }
     ///@}
 
+    void release_activations() override;
+
 protected:
     /** @throws std::invalid_argument unless the input is rank 3 with last dimension d_model. */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

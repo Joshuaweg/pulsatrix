@@ -78,4 +78,11 @@ void FeedForwardModule::set_training(bool training) {
     fc2_.set_training(training);
 }
 
+void FeedForwardModule::release_activations() {
+    fc1_.release_activations();
+    act_.release_activations();
+    fc2_.release_activations();
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix

@@ -73,6 +73,8 @@ public:
     /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
+    void release_activations() override;
+
 protected:
     /**
      * @brief Numerically stable softmax over the last axis, per row (subtract the row max
