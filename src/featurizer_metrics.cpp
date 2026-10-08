@@ -147,9 +147,17 @@ std::vector<bool> RowMask(const std::vector<bool>& rows, int64_t n, const char* 
 
 ReconstructionMetrics EvaluateReconstruction(Featurizer& f, const Tensor& x, double dense_rate, int64_t batch) {
     CheckBatch(f, x, "EvaluateReconstruction");
-    if (batch < 1) throw std::invalid_argument("EvaluateReconstruction: batch must be positive");
-    const int64_t N = x.shape().dim(0), d = f.input_dim(), m = f.num_features();
-    const std::vector<float> xv = x.to_host_vector();
+    return EvaluatePrediction(f, x, x, dense_rate, batch);
+}
+
+ReconstructionMetrics EvaluatePrediction(Featurizer& f, const Tensor& x, const Tensor& target, double dense_rate, int64_t batch) {
+    CheckBatch(f, x, "EvaluatePrediction");
+    if (batch < 1) throw std::invalid_argument("EvaluatePrediction: batch must be positive");
+    const int64_t N = x.shape().dim(0), in = f.input_dim(), d = f.output_dim(), m = f.num_features();
+    if (target.rank() != 2 || target.shape().dim(0) != N || target.shape().dim(1) != d) {
+        throw std::invalid_argument("EvaluatePrediction: the targets must be (N, output_dim)");
+    }
+    const std::vector<float> xin = x.to_host_vector(), xv = target.to_host_vector();
     std::vector<double> mean(static_cast<size_t>(d), 0.0);
     for (int64_t r = 0; r < N; ++r) {
         for (int64_t j = 0; j < d; ++j) mean[static_cast<size_t>(j)] += xv[static_cast<size_t>(r * d + j)];
@@ -161,9 +169,8 @@ ReconstructionMetrics EvaluateReconstruction(Featurizer& f, const Tensor& x, dou
     double err = 0, var = 0, cos = 0, ratio = 0, active = 0;
     for (int64_t r0 = 0; r0 < N; r0 += batch) {
         const int64_t n = std::min(batch, N - r0);
-        const Tensor xb(Shape({n, d}), x.backend(), std::vector<float>(xv.begin() + r0 * d, xv.begin() + (r0 + n) * d), x.device());
-        const Tensor codes = f.encode(xb);
-        const std::vector<float> c = codes.to_host_vector(), xh = f.decode(codes).to_host_vector();
+        const Tensor xb(Shape({n, in}), x.backend(), std::vector<float>(xin.begin() + r0 * in, xin.begin() + (r0 + n) * in), x.device());
+        const std::vector<float> c = f.encode(xb).to_host_vector(), xh = f.predict(xb).to_host_vector();
         for (int64_t r = 0; r < n; ++r) {
             double dot = 0, a2 = 0, b2 = 0;
             for (int64_t j = 0; j < d; ++j) {
@@ -243,6 +250,54 @@ HiddenStateHook AblationHook(int64_t position, std::vector<bool> rows) {
     };
 }
 
+MlpHook MlpSpliceHook(Featurizer& transcoder, std::vector<bool> rows) {
+    Featurizer* f = &transcoder;
+    return [f, rows = std::move(rows)](const Tensor& input, const Tensor& output) -> Tensor {
+        const int64_t in = f->input_dim(), out = f->output_dim();
+        if (input.shape().dim(input.rank() - 1) != in || output.shape().dim(output.rank() - 1) != out) {
+            throw std::invalid_argument("MlpSpliceHook: the MLP's sizes aren't the transcoder's");
+        }
+        const int64_t n = input.numel() / in;
+        const std::vector<bool> use = RowMask(rows, n, "MlpSpliceHook");
+        const std::vector<float> xin = input.to_host_vector();
+        std::vector<float> y = output.to_host_vector(), picked;
+        for (int64_t r = 0; r < n; ++r) {
+            if (use[static_cast<size_t>(r)]) picked.insert(picked.end(), xin.begin() + r * in, xin.begin() + (r + 1) * in);
+        }
+        if (picked.empty()) return output;
+        const auto k = static_cast<int64_t>(picked.size()) / in;
+        const std::vector<float> yh = f->predict(Tensor(Shape({k, in}), input.backend(), picked, input.device())).to_host_vector();
+        for (int64_t r = 0, q = 0; r < n; ++r) {
+            if (!use[static_cast<size_t>(r)]) continue;
+            std::copy(yh.begin() + q * out, yh.begin() + (q + 1) * out, y.begin() + r * out);
+            ++q;
+        }
+        return Tensor(output.shape(), output.backend(), y, output.device());
+    };
+}
+
+MlpHook MlpAblationHook(std::vector<bool> rows) {
+    return [rows = std::move(rows)](const Tensor&, const Tensor& output) -> Tensor {
+        const int64_t d = output.shape().dim(output.rank() - 1), n = output.numel() / d;
+        const std::vector<bool> use = RowMask(rows, n, "MlpAblationHook");
+        std::vector<float> y = output.to_host_vector();
+        for (int64_t r = 0; r < n; ++r) {
+            if (use[static_cast<size_t>(r)]) std::fill_n(y.begin() + r * d, d, 0.0f);
+        }
+        return Tensor(output.shape(), output.backend(), y, output.device());
+    };
+}
+
+LossRecovered MeasureMlpLossRecovered(Featurizer& transcoder, const std::function<double(const MlpHook&)>& loss, const std::vector<bool>& rows) {
+    LossRecovered out;
+    out.clean = loss(MlpHook{});
+    out.spliced = loss(MlpSpliceHook(transcoder, rows));
+    out.ablated = loss(MlpAblationHook(rows));
+    const double gap = out.ablated - out.clean;
+    out.recovered = gap > 0 ? (out.ablated - out.spliced) / gap : std::numeric_limits<double>::quiet_NaN();
+    return out;
+}
+
 LossRecovered MeasureLossRecovered(Featurizer& featurizer, int64_t position, const std::function<double(const HiddenStateHook&)>& loss,
                                    const std::vector<bool>& rows) {
     LossRecovered out;
@@ -256,6 +311,7 @@ LossRecovered MeasureLossRecovered(Featurizer& featurizer, int64_t position, con
 
 AbsorptionResult FeatureAbsorption(Featurizer& f, const Tensor& x, const std::vector<int>& labels, const AbsorptionOptions& o) {
     CheckBatch(f, x, "FeatureAbsorption");
+    if (f.output_dim() != f.input_dim()) throw std::invalid_argument("FeatureAbsorption: needs an autoencoder (output_dim == input_dim)");
     const int64_t N = x.shape().dim(0), d = f.input_dim(), m = f.num_features();
     if (static_cast<int64_t>(labels.size()) != N) throw std::invalid_argument("FeatureAbsorption: labels must have one value per input");
     if (std::any_of(labels.begin(), labels.end(), [](int y) { return y != 0 && y != 1; })) {

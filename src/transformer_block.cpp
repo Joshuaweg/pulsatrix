@@ -118,6 +118,7 @@ Tensor TransformerBlock::forward_impl(const Tensor& input) {
     Tensor norm2_out_flat = norm2_.forward(reshaped(y1, Shape({n_flat, d_model_})));
     Tensor norm2_out = reshaped(norm2_out_flat, last_input_shape_);
     Tensor ffn_out = PostNorm(post_mlp_norm_.get(), swiglu_.forward(norm2_out), n_flat, d_model_);
+    if (mlp_hook_) ffn_out = detail::ApplyMlpHook(mlp_hook_, norm2_out, ffn_out);
 
     Tensor y2(input.shape(), backend_);
     backend_->add(y1.data(), ffn_out.data(), y2.data(), static_cast<size_t>(y2.numel()));

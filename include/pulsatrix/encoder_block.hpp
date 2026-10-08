@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 
+#include "pulsatrix/mlp_hook.hpp"
 #include "pulsatrix/module.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
 #include "pulsatrix/swiglu_module.hpp"
@@ -92,6 +93,9 @@ public:
     [[nodiscard]] MultiHeadAttentionModule& mha() { return mha_; }
     [[nodiscard]] Module& norm2() { return *norm2_; }
     [[nodiscard]] Module& mlp() { return *mlp_; }
+    /** @brief Calls @p hook on the MLP's input and output during forward() (MlpHook). An empty
+     *         function removes it. */
+    void set_mlp_hook(MlpHook hook) { mlp_hook_ = std::move(hook); }
     ///@}
 
     void release_activations() override;
@@ -112,6 +116,7 @@ private:
     MultiHeadAttentionModule mha_;
     std::unique_ptr<Module> norm2_;
     std::unique_ptr<Module> mlp_;
+    MlpHook mlp_hook_;
 
     // Forward caches: the operands of the two residual splits.
     Shape last_input_shape_ = Shape({0});
