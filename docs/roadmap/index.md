@@ -12,6 +12,8 @@ Nothing here is a promise. Priorities move as items land and as measurements com
 v1.0 is strong on explainability and thin on the foundations that larger models need.
 **v1.1, "Foundations and trust", is complete** (2026-10-04): every item in its
 [milestone](#v11-foundations-and-trust) is done.
+**The PLM epic, protein language models, is complete** (2026-10-08): every item in
+[PLM](#plm-protein-language-models) is done.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -36,6 +38,17 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5). Hugging
   Face configs, sharded checkpoints and bf16 weights load into a `CausalLM` (IO-4 to IO-6): the
   real SmolLM2-135M runs and matches transformers.
+- **Protein language models** ([PLM-1 to PLM-9](#plm-protein-language-models)). ESM-2 8M to
+  650M load from Hugging Face and match transformers to float precision. On top of that:
+  - zero-shot variant scoring that reproduces ProteinGym's published numbers;
+  - contacts checked against PDB and mmCIF structures;
+  - mutation maps, sequence logos, contact maps, residue tracks and a 3D structure page;
+  - AttnLRP residue explanations, matched to LXT and tested by deletion, randomization and
+    agreement with DMS and conservation;
+  - masked-LM training and fine-tuning heads;
+  - probes and SAE features matched to Swiss-Prot annotations, through the new featurizer
+    interface ([FEAT-1](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf));
+  - an end-to-end recipe on TEM-1 β-lactamase.
 - **HIP backend.** It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   `dot` and `sum`, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Its container runs ROCm 10.0.0, the
@@ -149,8 +162,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
 Feature discovery on real models, and agents that can drive the library.
 
-- FEAT-1 to FEAT-7: the featurizer interface, TopK and its family, metrics, transcoders, BSF,
-  steering
+- FEAT-1 (**done**, for PLM-8) to FEAT-7: the featurizer interface, TopK and its family,
+  metrics, transcoders, BSF, steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
 - VIZ-4 (**done**), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector
@@ -162,9 +175,12 @@ Feature discovery on real models, and agents that can drive the library.
 - ARCH-1 to ARCH-3: B-cos layers, concept bottleneck models, mixture of experts
 - HIP-8: hipBLASLt and bf16 GEMM
 
-### PLM "Proteins" (in progress)
+### PLM "Proteins"
 
-Its own epic, started 2026-10-07 after VIZ-4. The research behind it is in
+Its own epic, started 2026-10-07 after VIZ-4. **Complete** (2026-10-08, PRs
+[#94](https://github.com/Joshuaweg/pulsatrix/pull/94) to
+[#103](https://github.com/Joshuaweg/pulsatrix/pull/103), with FEAT-1 in
+[#102](https://github.com/Joshuaweg/pulsatrix/pull/102)). The research behind it is in
 [Protein language models: research and plan](protein-language-models.md).
 
 - PLM-1, PLM-2: an encoder block, then ESM-2 matching `transformers` to float precision
@@ -1303,6 +1319,19 @@ sources are in [Protein language models: research and plan](protein-language-mod
       are leads, not proof.
   - **Dashboards** carry a structure panel (`StructurePanelHtml`, factored out of the structure
     page). Protein examples wrap residue by residue.
+
+### Follow-ups the PLM work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| Loading ESM-2 650M takes about 10 GB on the host | PLM-3 | FND-9 |
+| 1024-token passes take about 3.7 s on gfx1151, and an 8M training step 3.3 s | PLM-3, PLM-7 | HIP-13 |
+| Structures are read as their observed residues: a chain with unresolved loops is scored on a shortened sequence. Reading SEQRES and `_pdbx_poly_seq_scheme` would keep the gaps | PLM-4 | A follow-up to PLM-4 |
+| 3Dmol.js doesn't read insertion codes from mmCIF, so the structure page matches them in PDB files only | PLM-5 | PLM-5 follow-up, or a 3Dmol.js release that reads them |
+| TEM-1's K73S explanation keeps most of its residue ranking while the top 14 of 33 layers are randomized | PLM-6 | Research: which residue explanations depend on the whole model |
+| Training needs bf16 and token-budget batches to scale past toy runs | PLM-7 | HIP-11 |
+| Mean-pooled heads don't beat zero-shot on single mutants of long proteins | PLM-7 | A per-residue or difference head, if wanted |
+| Solvent-accessibility labels (computed from structures), and probe splits that keep homologs apart. Also, Hewitt and Liang's control task is trivial with few token types: on 20 amino acids a linear probe learns it perfectly, so INT-3 should offer a sequence-window control | PLM-8 | INT-3 (probe controls) |
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.
