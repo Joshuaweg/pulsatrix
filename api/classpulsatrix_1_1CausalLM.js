@@ -15,5 +15,6 @@ var classpulsatrix_1_1CausalLM =
     [ "op_type", "classpulsatrix_1_1CausalLM.html#a94b1bd3658b5ec1a7b2c51eaf26e02d4", null ],
     [ "propagate_relevance", "classpulsatrix_1_1CausalLM.html#acb5aec59b9ca77c9573953bb5ca38d01", null ],
     [ "propagate_relevance_by_layer", "classpulsatrix_1_1CausalLM.html#a100f79a58e72ef35559b72e47cb89f6b", null ],
+    [ "set_hidden_state_hook", "classpulsatrix_1_1CausalLM.html#a78167d4cedaa787b7ef25ebc24817a0f", null ],
     [ "set_training", "classpulsatrix_1_1CausalLM.html#a99f307bff531cf6235f9bfe8a6ab63bc", null ]
 ];

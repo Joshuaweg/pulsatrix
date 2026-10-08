@@ -122,6 +122,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a724b689f421ead7cb35b72ba8b29725e" id="r_a724b689f421ead7cb35b72ba8b29725e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1detail.html#a724b689f421ead7cb35b72ba8b29725e">ApplyHiddenStateHook</a> (const <a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> &amp;hook, int64_t position, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x)</td></tr>
+<tr class="memdesc:a724b689f421ead7cb35b72ba8b29725e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <code>hook</code> and checks its result keeps the shape.  <br /></td></tr>
+<tr class="separator:a724b689f421ead7cb35b72ba8b29725e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1497a7c5a8bce93d9130ee4ddae5dd1a" id="r_a1497a7c5a8bce93d9130ee4ddae5dd1a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1detail.html#a1497a7c5a8bce93d9130ee4ddae5dd1a">module_type_name</a> (const <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;module)</td></tr>
 <tr class="memdesc:a1497a7c5a8bce93d9130ee4ddae5dd1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dynamic type's readable name (e.g. "pulsatrix::SoftmaxModule"), for error messages.  <br /></td></tr>
 <tr class="separator:a1497a7c5a8bce93d9130ee4ddae5dd1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,6 +162,56 @@ Functions</h2></td></tr>
 <tr class="separator:a894c29e52d9afde6fb8bf30ecce27301"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a724b689f421ead7cb35b72ba8b29725e" name="a724b689f421ead7cb35b72ba8b29725e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a724b689f421ead7cb35b72ba8b29725e">&#9670;&#160;</a></span>ApplyHiddenStateHook()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::detail::ApplyHiddenStateHook </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> &amp;&#160;</td>
+          <td class="paramname"><em>hook</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Runs <code>hook</code> and checks its result keeps the shape. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if not. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a085b925c9cceac3dcaeec1f0147baccf" name="a085b925c9cceac3dcaeec1f0147baccf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a085b925c9cceac3dcaeec1f0147baccf">&#9670;&#160;</a></span>BinomialCoefficient()</h2>
 

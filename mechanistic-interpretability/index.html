@@ -742,6 +742,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#measuring-a-featurizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measuring a featurizer
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1826,6 +1837,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#measuring-a-featurizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measuring a featurizer
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2068,6 +2090,164 @@ and zeroes the rest, so L0 is k by construction and there is no L1 penalty:</p>
   rendering of the method (<code>tools/golden/make_topk_sae_golden.py</code>) to 1e-5.</li>
 <li><strong>Resuming training.</strong> Checkpoints hold the parameters. Save <code>inputs_since_fired()</code> too, and
   restore it with <code>set_inputs_since_fired()</code>, or every latent starts out alive again.</li>
+</ul>
+<h4 id="measuring-a-featurizer">Measuring a featurizer<a class="headerlink" href="#measuring-a-featurizer" title="Permanent link">&para;</a></h4>
+<p><code>featurizer_metrics.hpp</code> holds SAEBench's core measures (Karvonen et al., arXiv 2503.09532).
+None of them says a featurizer is useful, and its authors find that they don't reliably predict
+usefulness. Each needs a baseline: the same featurizer trained on a randomly initialized model's
+activations (<code>NullModelBaseline</code>), and, for a concept, a linear probe.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/featurizer_metrics.hpp"</span>
+
+<span class="c1">// Reconstruction on held-out activations.</span>
+<span class="n">ReconstructionMetrics</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EvaluateReconstruction</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span>
+<span class="c1">// r.explained_variance, r.cosine, r.norm_ratio (below 1: shrunk codes), r.l0,</span>
+<span class="c1">// r.dead_fraction (never fired), r.dense_fraction (fired on more than 10% of inputs)</span>
+
+<span class="c1">// Loss recovered: splice the reconstructions back in at a position (0 is the embeddings,</span>
+<span class="c1">// i is layer i's output) and compare the model's loss with the clean and zero-ablated ones.</span>
+<span class="n">LossRecovered</span><span class="w"> </span><span class="n">lr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureLossRecovered</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="cm">/*position=*/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">HiddenStateHook</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hook</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">set_hidden_state_hook</span><span class="p">(</span><span class="n">hook</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HeldOutLoss</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">set_hidden_state_hook</span><span class="p">({});</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">loss</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="c1">// lr.recovered = (ablated - spliced) / (ablated - clean)</span>
+
+<span class="c1">// Feature absorption for one concept (labels 0/1 per input), with a linear-probe baseline.</span>
+<span class="n">AbsorptionResult</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FeatureAbsorption</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">,</span><span class="w"> </span><span class="n">labels</span><span class="p">);</span>
+<span class="c1">// a.probe_f1, a.main_features, a.main_f1, a.absorption_rate, a.absorbing_features</span>
+</code></pre></div>
+<ul>
+<li><strong>Splicing.</strong> <code>CausalLM</code> and <code>EncoderLM</code> call a <code>HiddenStateHook</code> at every position during
+  <code>forward()</code>, and continue with whatever it returns. <code>SpliceHook</code> and <code>AblationHook</code> build the
+  two replacements. A <code>rows</code> mask limits them to the rows the featurizer was trained on, for
+  example residues but not <code>&lt;cls&gt;</code> and <code>&lt;eos&gt;</code>.</li>
+<li><strong>Absorption</strong> (Chanin et al., arXiv 2409.14507). A feature that stands for a concept stays
+  silent where a more specific feature fires instead and carries the concept's direction: a
+  "starts with S" feature that skips "short". The steps:</li>
+<li>A logistic probe finds the concept's direction.</li>
+<li>The main features are those that each raise F1 by at least 0.03.</li>
+<li>A held-out positive the probe finds counts as absorbed when no main feature fires on it,
+     and other features aligned with the probe (cosine at least 0.025) carry at least 40% of
+     its projection onto the probe.</li>
+</ul>
+<p>The test plants a parent concept with ten rare children and finds every absorbed input.</p>
+<p><strong>On ESM-2 8M.</strong> <code>pulsatrix_probe_esm --sae</code> reports all of these for an SAE on layer 4's
+residues (2,000 Swiss-Prot proteins, 2,560 latents), beside the same SAE trained on a randomly
+initialized ESM-2:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>L1 SAE</th>
+<th>TopK SAE (k = 16)</th>
+<th>L1, random model</th>
+<th>TopK, random model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0</td>
+<td>17.0</td>
+<td>16.0</td>
+<td>7.4</td>
+<td>16.0</td>
+</tr>
+<tr>
+<td>Explained variance</td>
+<td>0.66</td>
+<td>0.78</td>
+<td>0.74</td>
+<td>0.95</td>
+</tr>
+<tr>
+<td>Norm ratio <code>\|x̂\|/\|x\|</code></td>
+<td>0.80</td>
+<td>0.87</td>
+<td>0.87</td>
+<td>0.98</td>
+</tr>
+<tr>
+<td>Dead latents</td>
+<td>0%</td>
+<td>2.5%</td>
+<td>53%</td>
+<td>85%</td>
+</tr>
+<tr>
+<td>Masked-LM loss: clean 2.37, zero-ablated 3.91</td>
+<td>2.52 spliced</td>
+<td>2.44 spliced</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Loss recovered</td>
+<td>0.90</td>
+<td>0.96</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>TopK beats L1 at the same L0</strong> on every measure, and its codes are shrunk less.</li>
+<li><strong>Read the baseline before the score.</strong> The random model's SAEs explain <em>more</em> variance, with
+  most latents dead: a random network's representations are easy to compress. Explained variance
+  alone says nothing about whether the model learned anything.</li>
+<li><strong>Loss recovered needs a position that matters.</strong> Zeroing layer 4 of the random model doesn't
+  raise its loss (3.55 vs 3.57 clean), so there is nothing to recover, and <code>recovered</code> is NaN.</li>
+</ul>
+<p>Absorption, where the probe finds the concept (F1 at least 0.5; below that the random model
+"absorbs" as much, and the rate means nothing):</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Probe F1</th>
+<th>L1: absorbed (random model)</th>
+<th>TopK: absorbed (random model)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Helix</td>
+<td>0.69</td>
+<td>42% (10%)</td>
+<td>25% (15%)</td>
+</tr>
+<tr>
+<td>Beta strand</td>
+<td>0.55</td>
+<td>57% (1%)</td>
+<td>50% (8%)</td>
+</tr>
+<tr>
+<td>Transmembrane</td>
+<td>0.79</td>
+<td>34% (21%)</td>
+<td>30% (17%)</td>
+</tr>
+<tr>
+<td>Signal peptide</td>
+<td>0.90</td>
+<td>19% (26%)</td>
+<td>12% (37%)</td>
+</tr>
+<tr>
+<td>Zinc finger</td>
+<td>0.62</td>
+<td>30% (13%)</td>
+<td>12% (71%)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>The baseline decides here too.</strong> Helix, strand and transmembrane residues missed by the
+  concept's main features are carried by other aligned features well above the random model's
+  rate: absorption, as Chanin et al. describe it. For signal peptides and zinc fingers the
+  random model scores as high or higher, so those rates aren't evidence of anything.</li>
+<li><strong>TopK absorbs less than L1</strong> for every concept here.</li>
 </ul>
 <p>A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
 whether its directions mean anything. Compare features with probes and with a randomly

@@ -122,6 +122,11 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AbsorptionOptions.html">AbsorptionOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AbsorptionResult.html">AbsorptionResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a15496a5463aed293576fafbe396c0073" title="Feature absorption (Chanin et al.; SAEBench&#39;s version, in outline). A concept is absorbed when the fe...">FeatureAbsorption()</a>'s result, on the held-out inputs.  <a href="structpulsatrix_1_1AbsorptionResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ActivationModule.html">ActivationModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = f(x), elementwise, for one of the backend's activations. No parameters.  <a href="classpulsatrix_1_1ActivationModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -680,6 +685,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LocalSensitivityResult.html">LocalSensitivityResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One-at-a-time sensitivity of one output around one input.  <a href="structpulsatrix_1_1LocalSensitivityResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LossRecovered.html">LossRecovered</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a0f041cc2b4d0f3b20771c2277381febe" title="Loss recovered, SAEBench&#39;s main downstream measure.">MeasureLossRecovered()</a>'s result: the model's loss three ways.  <a href="structpulsatrix_1_1LossRecovered.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html">LRP</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whole-model <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to the input through every module's own propagate_relevance() rule.  <a href="classpulsatrix_1_1LRP.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -900,6 +908,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RandomizationResult.html">RandomizationResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model-parameter randomization test's result.  <a href="structpulsatrix_1_1RandomizationResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReconstructionMetrics.html">ReconstructionMetrics</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#afb724b74a8b0dea386aec8265563eca3" title="Encodes and reconstructs x, (N, input_dim), in batches of batch rows.">EvaluateReconstruction()</a>'s result.  <a href="structpulsatrix_1_1ReconstructionMetrics.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RecurrentCellArgs.html">RecurrentCellArgs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operand pointers for <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a3f1a7579cba30481c5bc8cfab97c5bbd" title="One fused recurrent-cell pass over n elements (see RecurrentCellOp for slots).">DeviceBackend::recurrent_cell</a> (passed to kernels by value).  <a href="structpulsatrix_1_1RecurrentCellArgs.html#details">More...</a><br /></td></tr>
@@ -1284,6 +1295,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a5418afb94636789e3e253e44cdac5339" id="r_a5418afb94636789e3e253e44cdac5339"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> = std::function&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(int64_t position, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;hidden)&gt;</td></tr>
+<tr class="memdesc:a5418afb94636789e3e253e44cdac5339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads or replaces a language model's residual stream during forward() (FEAT-3): called with a position, 0 for the embeddings entering layer 0 and i for layer i's output, and the hidden states there, <code>(N, L, hidden_size)</code> on the model's device. What it returns, the same shape, is what the model continues with: return the input unchanged to only read it. Splicing a featurizer's reconstruction back in uses it (MeasureLossRecovered, <a class="el" href="featurizer__metrics_8hpp.html" title="How good a featurizer is (FEAT-3), after SAEBench (Karvonen et al., arXiv 2503.09532): reconstruction...">featurizer_metrics.hpp</a>).  <br /></td></tr>
+<tr class="separator:a5418afb94636789e3e253e44cdac5339"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a062f52068d0980a5b3771b192f0f0250" id="r_a062f52068d0980a5b3771b192f0f0250"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a062f52068d0980a5b3771b192f0f0250">CollateFn</a> = std::function&lt; <a class="el" href="structpulsatrix_1_1Batch.html">Batch</a>(std::vector&lt; <a class="el" href="structpulsatrix_1_1Sample.html">Sample</a> &gt;, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *)&gt;</td></tr>
 <tr class="memdesc:a062f52068d0980a5b3771b192f0f0250"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function assembling a list of Samples into one <a class="el" href="structpulsatrix_1_1Batch.html" title="One collated batch: one stacked Tensor per Sample field position.">Batch</a> &ndash; pulsatrix's analogue of PyTorch's collate_fn. The standard extension point for ragged/variable-length modalities (text padding, variable-length audio): a caller-supplied CollateFn replacing DefaultCollate, not a subclass hierarchy.  <br /></td></tr>
 <tr class="separator:a062f52068d0980a5b3771b192f0f0250"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1850,6 +1864,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a533843d3b356df74583b5b643566cef9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a533843d3b356df74583b5b643566cef9">TrainFeaturizer</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, Optimizer &amp;optimizer, bool unit_norm_decoder=true, <a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html">FeatureActivityTracker</a> *tracker=nullptr)</td></tr>
 <tr class="memdesc:a533843d3b356df74583b5b643566cef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">One training step for any featurizer: zero the gradients, loss_and_backward(), one optimizer step, then normalize_decoder() when <code>unit_norm_decoder</code>. When <code>tracker</code> is given it observes the batch's codes.  <br /></td></tr>
 <tr class="separator:a533843d3b356df74583b5b643566cef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb724b74a8b0dea386aec8265563eca3" id="r_afb724b74a8b0dea386aec8265563eca3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ReconstructionMetrics.html">ReconstructionMetrics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afb724b74a8b0dea386aec8265563eca3">EvaluateReconstruction</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, double dense_rate=0.1, int64_t batch=4096)</td></tr>
+<tr class="memdesc:afb724b74a8b0dea386aec8265563eca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes and reconstructs <code>x</code>, <code>(N, input_dim)</code>, in batches of <code>batch</code> rows.  <br /></td></tr>
+<tr class="separator:afb724b74a8b0dea386aec8265563eca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a551f53c71f7048ba9737423b9d57dd" id="r_a8a551f53c71f7048ba9737423b9d57dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8a551f53c71f7048ba9737423b9d57dd">SpliceHook</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, int64_t position, std::vector&lt; bool &gt; rows={})</td></tr>
+<tr class="memdesc:a8a551f53c71f7048ba9737423b9d57dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splices the featurizer in at one position: a hook that replaces the hidden states there, <code>(N, L, input_dim)</code>, by their reconstructions, and leaves other positions alone.  <br /></td></tr>
+<tr class="separator:a8a551f53c71f7048ba9737423b9d57dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1184cf3eab567420501e3a607b99a2b4" id="r_a1184cf3eab567420501e3a607b99a2b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1184cf3eab567420501e3a607b99a2b4">AblationHook</a> (int64_t position, std::vector&lt; bool &gt; rows={})</td></tr>
+<tr class="memdesc:a1184cf3eab567420501e3a607b99a2b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zero-ablates one position: the same rows set to 0 instead of reconstructed.  <br /></td></tr>
+<tr class="separator:a1184cf3eab567420501e3a607b99a2b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f041cc2b4d0f3b20771c2277381febe" id="r_a0f041cc2b4d0f3b20771c2277381febe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1LossRecovered.html">LossRecovered</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0f041cc2b4d0f3b20771c2277381febe">MeasureLossRecovered</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, int64_t position, const std::function&lt; double(const <a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> &amp;)&gt; &amp;loss, const std::vector&lt; bool &gt; &amp;rows={})</td></tr>
+<tr class="memdesc:a0f041cc2b4d0f3b20771c2277381febe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loss recovered, SAEBench's main downstream measure.  <br /></td></tr>
+<tr class="separator:a0f041cc2b4d0f3b20771c2277381febe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15496a5463aed293576fafbe396c0073" id="r_a15496a5463aed293576fafbe396c0073"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AbsorptionResult.html">AbsorptionResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a15496a5463aed293576fafbe396c0073">FeatureAbsorption</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const std::vector&lt; int &gt; &amp;labels, const <a class="el" href="structpulsatrix_1_1AbsorptionOptions.html">AbsorptionOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a15496a5463aed293576fafbe396c0073"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature absorption (Chanin et al.; SAEBench's version, in outline). A concept is absorbed when the features that stand for it stay silent on an input that has it, because a more specific feature fires instead and carries its direction: a "starts
+       with S" feature that skips "short", which a "short" feature covers.  <br /></td></tr>
+<tr class="separator:a15496a5463aed293576fafbe396c0073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a383a816a6ee859218999a53b32056d8f" id="r_a383a816a6ee859218999a53b32056d8f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a383a816a6ee859218999a53b32056d8f">SpearmanCorrelation</a> (const std::vector&lt; double &gt; &amp;x, const std::vector&lt; double &gt; &amp;y)</td></tr>
 <tr class="memdesc:a383a816a6ee859218999a53b32056d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spearman's rank correlation, ties given their average rank (scipy's <code>spearmanr</code>). NaN if either input is constant.  <br /></td></tr>
 <tr class="separator:a383a816a6ee859218999a53b32056d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2829,6 +2859,23 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Explains <code>input</code> using the model in its current state. </p>
+
+</div>
+</div>
+<a id="a5418afb94636789e3e253e44cdac5339" name="a5418afb94636789e3e253e44cdac5339"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5418afb94636789e3e253e44cdac5339">&#9670;&#160;</a></span>HiddenStateHook</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">pulsatrix::HiddenStateHook</a> = typedef std::function&lt;<a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>(int64_t position, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&amp; hidden)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads or replaces a language model's residual stream during forward() (FEAT-3): called with a position, 0 for the embeddings entering layer 0 and i for layer i's output, and the hidden states there, <code>(N, L, hidden_size)</code> on the model's device. What it returns, the same shape, is what the model continues with: return the input unchanged to only read it. Splicing a featurizer's reconstruction back in uses it (MeasureLossRecovered, <a class="el" href="featurizer__metrics_8hpp.html" title="How good a featurizer is (FEAT-3), after SAEBench (Karvonen et al., arXiv 2503.09532): reconstruction...">featurizer_metrics.hpp</a>). </p>
+<dl class="section note"><dt>Note</dt><dd>backward() and the relevance passes after a forward() that changed the stream run as if the replacement were an input: no gradient flows through the hook. </dd></dl>
 
 </div>
 </div>
@@ -3999,6 +4046,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a1184cf3eab567420501e3a607b99a2b4" name="a1184cf3eab567420501e3a607b99a2b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1184cf3eab567420501e3a607b99a2b4">&#9670;&#160;</a></span>AblationHook()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> pulsatrix::AblationHook </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; bool &gt;&#160;</td>
+          <td class="paramname"><em>rows</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Zero-ablates one position: the same rows set to 0 instead of reconstructed. </p>
+
+</div>
+</div>
 <a id="a9969ba30da557b617c083a42527ae783" name="a9969ba30da557b617c083a42527ae783"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9969ba30da557b617c083a42527ae783">&#9670;&#160;</a></span>AggregateToWords() <span class="overload">[1/2]</span></h2>
 
@@ -7529,6 +7606,60 @@ template&lt;typename Genotype , typename FitnessT , typename FitnessFn &gt; </di
 
 </div>
 </div>
+<a id="afb724b74a8b0dea386aec8265563eca3" name="afb724b74a8b0dea386aec8265563eca3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb724b74a8b0dea386aec8265563eca3">&#9670;&#160;</a></span>EvaluateReconstruction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ReconstructionMetrics.html">ReconstructionMetrics</a> pulsatrix::EvaluateReconstruction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dense_rate</em> = <code>0.1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch</em> = <code>4096</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Encodes and reconstructs <code>x</code>, <code>(N, input_dim)</code>, in batches of <code>batch</code> rows. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dense_rate</td><td>A feature firing on more than this share of inputs counts as dense. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a batch that isn't <code>(N, input_dim)</code> with N &gt; 0, or batch &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="abf980c4f81efaaafcbfd21722b3d7d3e" name="abf980c4f81efaaafcbfd21722b3d7d3e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf980c4f81efaaafcbfd21722b3d7d3e">&#9670;&#160;</a></span>ExpectedImprovement()</h2>
 
@@ -7709,6 +7840,67 @@ template&lt;typename RNG &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>&ndash; propagated from Dominates if objective vectors have inconsistent sizes. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a15496a5463aed293576fafbe396c0073" name="a15496a5463aed293576fafbe396c0073"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15496a5463aed293576fafbe396c0073">&#9670;&#160;</a></span>FeatureAbsorption()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AbsorptionResult.html">AbsorptionResult</a> pulsatrix::FeatureAbsorption </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1AbsorptionOptions.html">AbsorptionOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Feature absorption (Chanin et al.; SAEBench's version, in outline). A concept is absorbed when the features that stand for it stay silent on an input that has it, because a more specific feature fires instead and carries its direction: a "starts
+       with S" feature that skips "short", which a "short" feature covers. </p>
+<ol type="1">
+<li>A logistic probe on the raw activations finds the concept's direction (and is the baseline).</li>
+<li>Features are ranked by their mean code on positives minus negatives; the main features are added, best first, while each raises F1 by min_f1_gain.</li>
+<li>On held-out positives the probe finds but no main feature fires on, the input is absorbed when firing features whose decoder directions align with the probe carry min_share of the input's projection onto it, measured from the mean of the negatives.</li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td><code>(N, input_dim)</code>.</td></tr>
+    <tr><td class="paramname">labels</td><td>0 or 1 per input. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for mismatched sizes, labels other than 0 and 1, or a train or test split without both classes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -9945,6 +10137,54 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Each residue's mean score over its substitutions (the wild type left out): how much the model minds a change there. NaN where none was scored. </p>
+
+</div>
+</div>
+<a id="a0f041cc2b4d0f3b20771c2277381febe" name="a0f041cc2b4d0f3b20771c2277381febe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f041cc2b4d0f3b20771c2277381febe">&#9670;&#160;</a></span>MeasureLossRecovered()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1LossRecovered.html">LossRecovered</a> pulsatrix::MeasureLossRecovered </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; double(const <a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>loss</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rows</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loss recovered, SAEBench's main downstream measure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loss</td><td>Runs the model with the hook it is given installed (for example with <a class="el" href="classpulsatrix_1_1CausalLM.html#a78167d4cedaa787b7ef25ebc24817a0f" title="Calls hook at every position during forward() (not during next_token_logits()&#39;s cached passes)....">CausalLM::set_hidden_state_hook()</a>), removes it, and returns the loss: cross-entropy on held-out text, or a masked-LM loss. It is called with an empty hook for the clean loss. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -16079,6 +16319,49 @@ Scoped to the small, dense, well-conditioned systems this codebase's callers act
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8a551f53c71f7048ba9737423b9d57dd" name="a8a551f53c71f7048ba9737423b9d57dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a551f53c71f7048ba9737423b9d57dd">&#9670;&#160;</a></span>SpliceHook()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> pulsatrix::SpliceHook </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; bool &gt;&#160;</td>
+          <td class="paramname"><em>rows</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Splices the featurizer in at one position: a hook that replaces the hidden states there, <code>(N, L, input_dim)</code>, by their reconstructions, and leaves other positions alone. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rows</td><td>Which of the <code>N * L</code> rows to replace (all when empty), for example only residues, not special tokens or padding, if that is what the featurizer was trained on. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The hook throws std::invalid_argument if the hidden size isn't input_dim or <code>rows</code> has the wrong length. </dd></dl>
 
 </div>
 </div>

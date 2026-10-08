@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lrpcomposite_0',['LRPComposite',['../namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d',1,'pulsatrix']]]
+  ['hiddenstatehook_0',['HiddenStateHook',['../namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339',1,'pulsatrix']]]
 ];
