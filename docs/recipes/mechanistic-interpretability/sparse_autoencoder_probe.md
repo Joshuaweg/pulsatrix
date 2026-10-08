@@ -35,11 +35,11 @@ Full source: [`examples/recipes/sparse_autoencoder_probe.cpp`](https://github.co
 Sparse autoencoder + linear probe recipe
 
 === SparseAutoencoder (dim=4, hidden_dim=12, l1_lambda=0.01) ===
-epoch   0 | reconstruction loss 0.449937 | mean hidden activation 0.1743
-epoch 100 | reconstruction loss 0.005154 | mean hidden activation 0.2456
-epoch 200 | reconstruction loss 0.001135 | mean hidden activation 0.1759
-epoch 300 | reconstruction loss 0.000665 | mean hidden activation 0.1412
-final reconstruction error: 0.000660
+epoch   0 | reconstruction loss 0.468599 | mean hidden activation 0.0480
+epoch 100 | reconstruction loss 0.004234 | mean hidden activation 0.2122
+epoch 200 | reconstruction loss 0.002660 | mean hidden activation 0.1929
+epoch 300 | reconstruction loss 0.002269 | mean hidden activation 0.1824
+final reconstruction error: 0.002264
 
 === LinearProbe (activation_dim=4) ===
 probe accuracy: 93.8% (chance level is 50%)
@@ -54,7 +54,9 @@ accuracy of 100.0%.
 
 The `SparseAutoencoder` is `LinearModule(4,12) -> ReLU -> LinearModule(12,4)`. Its hidden layer
 is overcomplete: 3x wider than the input. It is trained with MSE to reconstruct its own input.
-An L1 penalty on the hidden ReLU activations keeps them sparse.
+An L1 penalty on the hidden ReLU activations keeps them sparse. Each feature's decoder direction
+is kept at unit length, so the penalty can't be met by shrinking the activations and growing the
+decoder instead (see [Featurizers](../../mechanistic-interpretability/index.md#featurizers)).
 
 The `LinearProbe` is a separate, simpler model: `LinearModule(4,1)` trained with
 `BCEWithLogitsLoss` on the *same* activations against a binary label. The data is built so the
