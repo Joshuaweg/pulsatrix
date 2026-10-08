@@ -11,6 +11,7 @@ var explanation__metrics_8hpp =
     [ "Impute", "explanation__metrics_8hpp.html#acf06d2190bfb60cc8810fcf24d1e99b2", null ],
     [ "InsertionCurve", "explanation__metrics_8hpp.html#a165ca5a11779f2081a18fc5d7657c5cc", null ],
     [ "ModelParameterRandomizationTest", "explanation__metrics_8hpp.html#a684eb4ee86d14926a8ed769bfe3fc93f", null ],
+    [ "ModelParameterRandomizationTest", "explanation__metrics_8hpp.html#a6bf1b89f72720caba33f5bc2888ae612", null ],
     [ "Sparseness", "explanation__metrics_8hpp.html#a075765c1ff718201b05df992e65b2b71", null ],
     [ "SpearmanRankCorrelation", "explanation__metrics_8hpp.html#ac661529a753d02d953fea71ff2b8165f", null ]
 ];

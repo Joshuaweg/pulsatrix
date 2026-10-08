@@ -113,7 +113,9 @@ var hierarchy =
     [ "pulsatrix::CircuitGraphDocument::Edge", "structpulsatrix_1_1CircuitGraphDocument_1_1Edge.html", null ],
     [ "pulsatrix::EigenResult", "structpulsatrix_1_1EigenResult.html", null ],
     [ "pulsatrix::EncoderBlockOptions", "structpulsatrix_1_1EncoderBlockOptions.html", null ],
+    [ "pulsatrix::EncoderExplainer", "classpulsatrix_1_1EncoderExplainer.html", null ],
     [ "pulsatrix::EncoderLMConfig", "structpulsatrix_1_1EncoderLMConfig.html", null ],
+    [ "pulsatrix::EncoderTarget", "structpulsatrix_1_1EncoderTarget.html", null ],
     [ "pulsatrix::Encoding", "structpulsatrix_1_1Encoding.html", null ],
     [ "pulsatrix::Environment", "classpulsatrix_1_1Environment.html", [
       [ "pulsatrix::CartPoleEnv", "classpulsatrix_1_1CartPoleEnv.html", null ],
@@ -180,6 +182,7 @@ var hierarchy =
     [ "pulsatrix::LabeledProtein", "structpulsatrix_1_1LabeledProtein.html", null ],
     [ "pulsatrix::LearnableScalar", "classpulsatrix_1_1LearnableScalar.html", null ],
     [ "pulsatrix::LIME", "classpulsatrix_1_1LIME.html", null ],
+    [ "pulsatrix::LinearHead", "structpulsatrix_1_1LinearHead.html", null ],
     [ "pulsatrix::LinearProbe", "classpulsatrix_1_1LinearProbe.html", null ],
     [ "pulsatrix::AttributionGraph::Link", "structpulsatrix_1_1AttributionGraph_1_1Link.html", null ],
     [ "pulsatrix::LocalSensitivityResult", "structpulsatrix_1_1LocalSensitivityResult.html", null ],
@@ -305,6 +308,7 @@ var hierarchy =
     [ "pulsatrix::ProteinGymAssay", "structpulsatrix_1_1ProteinGymAssay.html", null ],
     [ "pulsatrix::ProteinStructure", "structpulsatrix_1_1ProteinStructure.html", null ],
     [ "pulsatrix::QRResult", "structpulsatrix_1_1QRResult.html", null ],
+    [ "pulsatrix::RandomizationCheckResult", "structpulsatrix_1_1RandomizationCheckResult.html", null ],
     [ "pulsatrix::RandomizationResult", "structpulsatrix_1_1RandomizationResult.html", null ],
     [ "pulsatrix::detail::RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", null ],
     [ "pulsatrix::datalog::RealSemiring< T >", "structpulsatrix_1_1datalog_1_1RealSemiring.html", null ],
@@ -315,7 +319,10 @@ var hierarchy =
     [ "pulsatrix::ReparamGrad", "structpulsatrix_1_1ReparamGrad.html", null ],
     [ "pulsatrix::ReplayBatch", "structpulsatrix_1_1ReplayBatch.html", null ],
     [ "pulsatrix::ReplayBuffer", "classpulsatrix_1_1ReplayBuffer.html", null ],
+    [ "pulsatrix::ResidueAgreement", "structpulsatrix_1_1ResidueAgreement.html", null ],
+    [ "pulsatrix::ResidueDeletionCurve", "structpulsatrix_1_1ResidueDeletionCurve.html", null ],
     [ "pulsatrix::ResidueLogProbs", "structpulsatrix_1_1ResidueLogProbs.html", null ],
+    [ "pulsatrix::ResidueRelevance", "structpulsatrix_1_1ResidueRelevance.html", null ],
     [ "pulsatrix::ResidueTracksDocument", "structpulsatrix_1_1ResidueTracksDocument.html", null ],
     [ "pulsatrix::ResumableTrial", "classpulsatrix_1_1ResumableTrial.html", [
       [ "pulsatrix::PBTResumableTrial", "classpulsatrix_1_1PBTResumableTrial.html", null ]

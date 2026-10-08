@@ -21,7 +21,7 @@ var searchData=
   ['font_5fsize_18',['font_size',['../structpulsatrix_1_1SvgOptions.html#ae2b9b25a0baf1161ad466de7bb4bfc6f',1,'pulsatrix::SvgOptions']]],
   ['fonts_19',['fonts',['../structpulsatrix_1_1VizFontOptions.html#abfa8788cb7336bdefbd9237eec0adbf0',1,'pulsatrix::VizFontOptions']]],
   ['format_20',['format',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a2ba5a494827000db8cff2267b9780ec7',1,'pulsatrix::SystemMonitor::Options']]],
-  ['fractions_21',['fractions',['../structpulsatrix_1_1PerturbationCurve.html#ade2c0ba43f7ba541b8b434fe393fd919',1,'pulsatrix::PerturbationCurve']]],
+  ['fractions_21',['fractions',['../structpulsatrix_1_1PerturbationCurve.html#ade2c0ba43f7ba541b8b434fe393fd919',1,'pulsatrix::PerturbationCurve::fractions'],['../structpulsatrix_1_1ResidueDeletionCurve.html#a73365a84e4512e5011d8560c3d361587',1,'pulsatrix::ResidueDeletionCurve::fractions']]],
   ['from_22',['from',['../structpulsatrix_1_1CircuitEdge.html#aa5ed86f49caff54ad6a03ac4ddd4f3b2',1,'pulsatrix::CircuitEdge::from'],['../structpulsatrix_1_1CircuitGraphDocument_1_1Edge.html#a7d0717f606edd8691dcb0e43071424e5',1,'pulsatrix::CircuitGraphDocument::Edge::from']]],
   ['fuse_5funk_23',['fuse_unk',['../structpulsatrix_1_1BpeOptions.html#a123b30c684f1e57952c068778792d6f3',1,'pulsatrix::BpeOptions']]]
 ];

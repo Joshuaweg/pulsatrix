@@ -6,6 +6,7 @@ var structpulsatrix_1_1LRPRuleConfig =
     [ "epsilon_bias_in_denominator", "structpulsatrix_1_1LRPRuleConfig.html#ace420e2114f01fc83687eeed487884fc", null ],
     [ "gamma", "structpulsatrix_1_1LRPRuleConfig.html#a8d65fffbd435bcc131073f7100573ab9", null ],
     [ "high", "structpulsatrix_1_1LRPRuleConfig.html#ab2d7caeadd3b4bc6ec0f7e10425bd9eb", null ],
+    [ "layer_norm_detach_std", "structpulsatrix_1_1LRPRuleConfig.html#a553694996bafa5120299435f599998b1", null ],
     [ "low", "structpulsatrix_1_1LRPRuleConfig.html#a1b5c9c82b341f76234eeb5358ab63209", null ],
     [ "rule", "structpulsatrix_1_1LRPRuleConfig.html#af2058e16402ec127db79a8f37bdaf489", null ]
 ];

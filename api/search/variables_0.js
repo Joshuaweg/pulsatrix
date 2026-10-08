@@ -18,6 +18,6 @@ var searchData=
   ['at_5fl5_15',['at_l5',['../structpulsatrix_1_1ContactPrecisions.html#a658bcd1d24ad67652df099a063503f7b',1,'pulsatrix::ContactPrecisions']]],
   ['atoms_16',['atoms',['../structpulsatrix_1_1StructureResidue.html#acf65b822eee59995a80322751813e4b2',1,'pulsatrix::StructureResidue']]],
   ['attribution_17',['attribution',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa',1,'pulsatrix::ExplanationScoreCard::Input']]],
-  ['auc_18',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve::auc'],['../structpulsatrix_1_1FitnessMetrics.html#adeaa141ed59dd66717e2fc92fefec76b',1,'pulsatrix::FitnessMetrics::auc']]],
+  ['auc_18',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve::auc'],['../structpulsatrix_1_1FitnessMetrics.html#adeaa141ed59dd66717e2fc92fefec76b',1,'pulsatrix::FitnessMetrics::auc'],['../structpulsatrix_1_1ResidueDeletionCurve.html#a38a2f8ded1037eb96d09a0e6de67b0f2',1,'pulsatrix::ResidueDeletionCurve::auc']]],
   ['available_19',['available',['../structpulsatrix_1_1MetricCapability.html#aedf248268fb7014def3128b5f5f55956',1,'pulsatrix::MetricCapability']]]
 ];
