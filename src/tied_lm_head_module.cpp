@@ -110,4 +110,10 @@ Tensor TiedLMHeadModule::propagate_relevance(const Tensor& relevance_out, const 
     return reshaped(relevance_in, last_input_shape_);
 }
 
+void TiedLMHeadModule::release_activations() {
+    release_tensor(last_input_);
+    release_tensor(last_logits_);
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix

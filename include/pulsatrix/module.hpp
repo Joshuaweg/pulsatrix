@@ -253,6 +253,16 @@ public:
     /** @brief Whether this module is currently in training mode. */
     [[nodiscard]] bool is_training() const { return training_; }
 
+    /**
+     * @brief Frees the tensors forward() kept for backward() and the relevance passes;
+     *        containers release their children too. Inference that only needs the output
+     *        calls it after each forward, so a deep model holds one layer's activations at a
+     *        time (a 1024-token ESM-2 650M pass otherwise keeps over 10 GB of them).
+     * @note Until the next forward(), backward() and relevance calls are invalid. The default
+     *       has nothing to free.
+     */
+    virtual void release_activations() {}
+
 protected:
     /** @brief The actual forward computation. Called by forward() after precondition checks. */
     [[nodiscard]] virtual Tensor forward_impl(const Tensor& input) = 0;
@@ -280,6 +290,9 @@ inline void append_named_parameters(std::vector<NamedParamRef>& out, const std::
         out.push_back({prefix + "." + p.name, p.ref});
     }
 }
+
+/** @brief Frees @p t's buffer: it becomes an empty tensor on the same backend and device. */
+inline void release_tensor(Tensor& t) { t = Tensor(Shape({0}), t.backend(), t.device()); }
 
 /** @brief Appends `child`'s named buffers to `out`, each renamed to `prefix.name`. */
 inline void append_named_buffers(std::vector<NamedBufferRef>& out, const std::string& prefix, Module& child) {

@@ -98,6 +98,16 @@ public:
     [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;
     void set_training(bool training) override;
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
+    /** @brief Frees every forward cache, last_hidden_state() and hidden_states() included. */
+    void release_activations() override;
+    /**
+     * @brief With @p keep false, forward() keeps nothing for backward() or the relevance passes:
+     *        each layer frees its activations once its output is computed, so a pass holds one
+     *        layer's at a time. hidden_states() stays empty; last_hidden_state() is still set.
+     *        For scoring and embedding, where only the outputs are needed. Defaults to true.
+     */
+    void set_keep_activations(bool keep) { keep_activations_ = keep; }
+    [[nodiscard]] bool keep_activations() const { return keep_activations_; }
 
     /**
      * @brief Masks padding for the following forward passes: @p keep is `(N, L)`, 1 for a real
@@ -154,6 +164,7 @@ private:
     Tensor last_hidden_;
     Shape last_ids_shape_ = Shape({0});
     bool has_forwarded_ = false;
+    bool keep_activations_ = true;
 };
 
 /**

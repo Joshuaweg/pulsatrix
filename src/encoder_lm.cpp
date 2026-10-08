@@ -3,6 +3,7 @@
 #include <cmath>
 #include <filesystem>
 #include <fstream>
+#include <initializer_list>
 #include <sstream>
 #include <stdexcept>
 
@@ -209,10 +210,14 @@ Tensor EncoderLM::forward_impl(const Tensor& input) {
     backend_->mul(raw.data(), embed_scale_.data(), x.data(), static_cast<size_t>(x.numel()));
 
     hidden_.clear();
-    hidden_.push_back(x);
+    if (keep_activations_) hidden_.push_back(x);
     for (auto& layer : layers_) {
         x = layer->forward(x);
-        hidden_.push_back(x);
+        if (keep_activations_) {
+            hidden_.push_back(x);
+        } else {
+            layer->release_activations();
+        }
     }
     last_hidden_ = Rows(norm_, x, h);
     const Tensor head = Rows(lm_norm_, lm_gelu_.forward(Rows(lm_dense_, last_hidden_, h)), h);
@@ -221,6 +226,11 @@ Tensor EncoderLM::forward_impl(const Tensor& input) {
     backend_->add_row_vector(last_logits_nobias_.data(), lm_bias_.data(), logits.data(), static_cast<size_t>(N * L), static_cast<size_t>(V));
     last_ids_shape_ = input.shape();
     has_forwarded_ = true;
+    if (!keep_activations_) {
+        const Tensor kept = last_hidden_;  // (N, L, hidden): small next to a layer's activations
+        release_activations();
+        last_hidden_ = kept;
+    }
     return Reshaped(logits, Shape({N, L, V}));
 }
 
@@ -375,6 +385,15 @@ std::unique_ptr<EncoderLM> LoadEncoderLM(const std::string& directory, DeviceBac
     }
     (void)LoadWeights(*model, checkpoint, mapping, options);
     return model;
+}
+
+void EncoderLM::release_activations() {
+    embed_.release_activations();
+    for (auto& layer : layers_) layer->release_activations();
+    for (Module* m : std::initializer_list<Module*>{&norm_, &lm_dense_, &lm_gelu_, &lm_norm_, &lm_decoder_}) m->release_activations();
+    for (Tensor* t : {&embed_scale_, &last_logits_nobias_, &last_hidden_}) release_tensor(*t);
+    hidden_.clear();
+    has_forwarded_ = false;
 }
 
 }  // namespace pulsatrix

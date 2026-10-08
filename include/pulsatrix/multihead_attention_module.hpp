@@ -297,6 +297,8 @@ public:
     /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
+    void release_activations() override;
+
 protected:
     /**
      * @brief Runs the 9-step pipeline: project -> split heads -> (QK-Norm) -> (RoPE) ->

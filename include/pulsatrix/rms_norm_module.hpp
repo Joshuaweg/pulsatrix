@@ -103,6 +103,8 @@ public:
     /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return gamma_.device(); }
 
+    void release_activations() override;
+
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 

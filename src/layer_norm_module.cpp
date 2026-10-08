@@ -116,4 +116,11 @@ Tensor LayerNormModule::propagate_relevance(const Tensor& relevance_out, const L
     return Tensor(relevance_out);
 }
 
+void LayerNormModule::release_activations() {
+    release_tensor(last_input_);
+    release_tensor(last_xhat_);
+    release_tensor(last_std_);
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix

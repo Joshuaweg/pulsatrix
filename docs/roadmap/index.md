@@ -214,6 +214,7 @@ These unblock most of the other epics. **All eight are done** (2026-10-04, PRs
 | FND-6 | Conv2D stride and padding | Needed to load VGG and ResNet, the standard LRP benchmark models | — | P0 | M | Done, #38 |
 | FND-7 | A seeding and determinism API (`set_seed`, a flag that forbids nondeterministic paths) | Reproducible explanations. Most of the pieces already exist | — | P0 | S | Done, #39 (see below) |
 | FND-8 | Device-consistency checks at module and loss boundaries, and fix `Tensor::Stack` tagging (`plans/gpu_review.md` #1, #2) | A CPU tensor fed to a GPU module aborts the process on gfx1151 | — | P0 | S | Done, #40 |
+| FND-9 | Memory at load: allocate each parameter's gradient on the first backward instead of at construction, and have the loaders stop holding a second copy of the weights | ESM-2 650M (2.6 GB of weights) peaks at 10.2 GB while loading, which leaves little of a 32 GB host for anything else. Inference never needs the gradients | — | P1 | M | |
 
 ### How the FND work departed from the plan
 
@@ -947,6 +948,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 | HIP-10 | Zero-copy staging buffers on APUs, enabled only when the device reports itself as integrated | Saves a copy on Strix Halo without slowing discrete GPUs | HIP-3 | P2 | — | |
 | HIP-11 | Full bf16 training | Halves memory traffic and reaches the matrix cores. Needs a dtype in `Tensor` | IO-6 | P2 | XL | |
 | HIP-12 | HIP graphs, WMMA or rocWMMA kernels, FlashAttention for training only, MIOpen | Last: graphs have measured slowdowns on gfx11, and FlashAttention never builds the attention matrix that AttnLRP needs | HIP-4 | P3 | — | |
+| HIP-13 | Long-sequence encoder inference: profile ESM-2 650M at 1024 tokens with `scripts/profile_hip.sh`, then speed up the kernels that dominate (attention's `(N, H, L, L)` matmuls and softmax, the MLP GEMMs). An attention path that never builds the attention matrix is allowed here, for forwards that keep no activations | A 1024-token masked pass takes about 3.7 s on gfx1151, so ProteinGym's BRCA1 assay (1,863 residues) takes about 1 h 55 min | HIP-1 | P1 | L | |
 
 The HIP items above are done (2026-10-04). Measurements are in [GPU Profiling](../gpu-profiling.md).
 
@@ -1097,7 +1099,7 @@ sources are in [Protein language models: research and plan](protein-language-mod
 |---|---|---|---|---|---|---|
 | PLM-1 | Encoder block options: LayerNorm or RMSNorm, a plain or gated MLP, exact (erf) GELU with its LRP rule, and attention and MLP biases | Every BERT-style encoder needs it, not just ESM | — | P0 | M | Done, [#94](https://github.com/Joshuaweg/pulsatrix/pull/94) (see below) |
 | PLM-2 | `EncoderLM` and ESM-2 loading: token-dropout scaling, rotate-half RoPE, final LayerNorm, LM head; `EsmForMaskedLM` configs and weights; ESM `vocab.txt` tokenizer and a FASTA reader. Golden parity of logits, hidden states and attentions with `transformers` on a tiny generated ESM and on `esm2_t6_8M` and `esm2_t33_650M` | The foundation; must match the reference before anything else | PLM-1 | P0 | M | Done, [#95](https://github.com/Joshuaweg/pulsatrix/pull/95) (see below) |
-| PLM-3 | Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and full single-mutant scans. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset | The headline use and the strongest numerical check | PLM-2 | P0 | M | |
+| PLM-3 | Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and full single-mutant scans. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset | The headline use and the strongest numerical check | PLM-2 | P0 | M || Done, [#96](https://github.com/Joshuaweg/pulsatrix/pull/96) (see below) |
 | PLM-4 | Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with `transformers`, the top-K head average, a PDB/mmCIF reader, and precision at L, L/2 and L/5 by sequence separation | Shows whether the model learned the fold; feeds the head grid | PLM-2 | P1 | M | |
 | PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | |
 | PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | |
@@ -1138,6 +1140,20 @@ sources are in [Protein language models: research and plan](protein-language-mod
     whitespace split and a word-level lookup, and matches on 12 edge cases.
   - Also: `EncoderLM` on GPU matches the CPU, with padding and masks. Hidden states and
     attention maps are exposed for probes, SAEs and contacts. A FASTA reader was added.
+
+- **PLM-3** matches ProteinGym's published ESM-2 650M results on 14 assays: Spearman to the
+  three decimals published, and on 13 of them every variant's score within 9e-5. The metrics
+  match scipy, scikit-learn and ProteinGym's own NDCG and top-recall code.
+  - **Memory.** The first full run was killed by the out-of-memory killer at 26 GB on the host.
+    Every module keeps its forward activations for `backward()` and LRP, and attention keeps
+    two `(N, H, L, L)` tensors per layer: over 10 GB per 1024-token sequence for 650M.
+    `Module::release_activations()` (all modules on the encoder path) and
+    `EncoderLM::set_keep_activations(false)` now let a forward hold one layer's activations at a
+    time, with identical outputs. `VariantScorer` uses them, and sizes each batch by a memory
+    budget (`max_pass_bytes`), refusing a pass that can't fit. BRCA1 (1863 residues) at batch 8
+    then peaks at the model's own 10.2 GB on CPU and 16 GB on GPU.
+  - Not done here, now backlog items: the 10 GB it takes to load 650M (FND-9), and the speed of
+    1024-token passes on gfx1151, about 3.7 s each (HIP-13).
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.
