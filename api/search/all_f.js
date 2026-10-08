@@ -87,7 +87,7 @@ var searchData=
   ['polyakupdate_84',['PolyakUpdate',['../namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e',1,'pulsatrix']]],
   ['polynomialmutation_85',['PolynomialMutation',['../namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0',1,'pulsatrix']]],
   ['polynomialmutationbydraw_86',['PolynomialMutationByDraw',['../namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9',1,'pulsatrix']]],
-  ['pooling_87',['pooling',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba43c8fdf1b340cd45e02e0b66ba2f81a7',1,'pulsatrix::Pooling'],['../classpulsatrix_1_1SequenceHead.html#a29518298931cb7ce6cc497bd3b5e4464',1,'pulsatrix::SequenceHead::pooling() const'],['../classpulsatrix_1_1SequenceHead.html#ae86bd8d09472070c3db97423e5ce5649',1,'pulsatrix::SequenceHead::Pooling']]],
+  ['pooling_87',['pooling',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba43c8fdf1b340cd45e02e0b66ba2f81a7',1,'pulsatrix::Pooling'],['../classpulsatrix_1_1SequenceHead.html#ae86bd8d09472070c3db97423e5ce5649',1,'pulsatrix::SequenceHead::Pooling'],['../classpulsatrix_1_1SequenceHead.html#a29518298931cb7ce6cc497bd3b5e4464',1,'pulsatrix::SequenceHead::pooling() const']]],
   ['pop_88',['pop',['../classpulsatrix_1_1BoundedQueue.html#ac2b059005f8804264543a4995db59c4e',1,'pulsatrix::BoundedQueue']]],
   ['position_89',['position',['../structpulsatrix_1_1Mutation.html#a0fcf5483fd436e204b65035bc8f791ae',1,'pulsatrix::Mutation']]],
   ['position_5foffset_90',['position_offset',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a6e89515f2ce59260428b90212f3bf6bb',1,'pulsatrix::MultiHeadAttentionModule::position_offset()'],['../classpulsatrix_1_1RoPEModule.html#ae7eebd9fe0906210d202b88799452bfa',1,'pulsatrix::RoPEModule::position_offset()']]],

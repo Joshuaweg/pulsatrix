@@ -1106,6 +1106,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1StabilityResult.html">StabilityResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of measuring an explainer's variance across repeated runs on the same input.  <a href="structpulsatrix_1_1StabilityResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SteeringOptions.html">SteeringOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SteeringReport.html">SteeringReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a1cb19516e6b90fded5a89c07c2ef9fc8" title="Measures steering along direction, and along random directions of the same norm.">MeasureSteering()</a>'s result.  <a href="structpulsatrix_1_1SteeringReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1StepResult.html">StepResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What one <a class="el" href="classpulsatrix_1_1Environment.html#ad9703da6e1184b3b0d470d61c5fc552d" title="Advances the environment one timestep under the given action.">Environment::step()</a> produces: the next observation, this step's reward, and whether the episode ended.  <a href="structpulsatrix_1_1StepResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2348,6 +2353,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a9db00216eaf37da6e93cdbc40371c65e" id="r_a9db00216eaf37da6e93cdbc40371c65e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9db00216eaf37da6e93cdbc40371c65e">SinusoidalTimestepEmbedding</a> (int64_t t, int64_t embedding_dim, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, float base=10000.0f)</td></tr>
 <tr class="memdesc:a9db00216eaf37da6e93cdbc40371c65e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard Transformer-style sinusoidal encoding of a diffusion timestep <code>t</code>: <code>emb[2i] = sin(t / base^(2i/embedding_dim))</code>, <code>emb[2i+1] = cos(t / base^(2i/embedding_dim))</code> for <code>i in [0, embedding_dim/2)</code>.  <br /></td></tr>
 <tr class="separator:a9db00216eaf37da6e93cdbc40371c65e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0c4189a448065ddbe2710704b2bec80" id="r_ad0c4189a448065ddbe2710704b2bec80"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad0c4189a448065ddbe2710704b2bec80">DifferenceOfMeans</a> (const std::vector&lt; float &gt; &amp;positive, const std::vector&lt; float &gt; &amp;negative, int64_t d)</td></tr>
+<tr class="memdesc:ad0c4189a448065ddbe2710704b2bec80"><td class="mdescLeft">&#160;</td><td class="mdescRight">The difference of means: the mean of <code>positive</code> minus the mean of <code>negative</code>, both <code>(N, d)</code> row-major. The simple baseline that usually wins.  <br /></td></tr>
+<tr class="separator:ad0c4189a448065ddbe2710704b2bec80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a946e4344a18c0bf6211bf617f22bb7a3" id="r_a946e4344a18c0bf6211bf617f22bb7a3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a946e4344a18c0bf6211bf617f22bb7a3">FeaturizerDirection</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, int64_t feature)</td></tr>
+<tr class="memdesc:a946e4344a18c0bf6211bf617f22bb7a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature <code>feature's</code> decoder direction, as a steering direction (unit length for a featurizer with unit-norm decoders).  <br /></td></tr>
+<tr class="separator:a946e4344a18c0bf6211bf617f22bb7a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a355a33ede3e334c7ca725b77cdce82e9" id="r_a355a33ede3e334c7ca725b77cdce82e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a355a33ede3e334c7ca725b77cdce82e9">SteeringHook</a> (int64_t position, std::vector&lt; float &gt; direction, float coefficient, std::vector&lt; bool &gt; rows={})</td></tr>
+<tr class="memdesc:a355a33ede3e334c7ca725b77cdce82e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A hook that adds <code>coefficient * direction</code> to the hidden states at <code>position</code> (0 is the embeddings, i layer i's output), for the rows in <code>rows</code> (every row when empty). Install it with <a class="el" href="classpulsatrix_1_1CausalLM.html#a78167d4cedaa787b7ef25ebc24817a0f" title="Calls hook at every position during forward() (not during next_token_logits()&#39;s cached passes)....">CausalLM::set_hidden_state_hook()</a> or <a class="el" href="classpulsatrix_1_1EncoderLM.html#a64292c78f9be9ee2ea788d4cd6c59823" title="Calls hook at every position during forward(): 0 is the scaled embeddings, i layer i&#39;s output (before...">EncoderLM::set_hidden_state_hook()</a>.  <br /></td></tr>
+<tr class="separator:a355a33ede3e334c7ca725b77cdce82e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cb19516e6b90fded5a89c07c2ef9fc8" id="r_a1cb19516e6b90fded5a89c07c2ef9fc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SteeringReport.html">SteeringReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1cb19516e6b90fded5a89c07c2ef9fc8">MeasureSteering</a> (const std::function&lt; double(int64_t i, const <a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> &amp;hook)&gt; &amp;behavior, int64_t num_inputs, int64_t position, const std::vector&lt; float &gt; &amp;direction, const <a class="el" href="structpulsatrix_1_1SteeringOptions.html">SteeringOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a1cb19516e6b90fded5a89c07c2ef9fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures steering along <code>direction</code>, and along random directions of the same norm.  <br /></td></tr>
+<tr class="separator:a1cb19516e6b90fded5a89c07c2ef9fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa54b946112a389becc102e114672dcbd" id="r_aa54b946112a389becc102e114672dcbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SuccessiveHalvingResult.html">SuccessiveHalvingResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa54b946112a389becc102e114672dcbd">RunSuccessiveHalvingOnConfigs</a> (std::vector&lt; <a class="el" href="namespacepulsatrix.html#a58099b24d92ae2c4916748b60ecf36e3">Configuration</a> &gt; configs, const <a class="el" href="namespacepulsatrix.html#a6bc143576cb71fab19f76a88330f5a4f">TrialFactory</a> &amp;make_trial, int initial_epoch_budget, double eta)</td></tr>
 <tr class="memdesc:aa54b946112a389becc102e114672dcbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs Successive Halving over an explicit, caller-supplied list of configurations &ndash; the pure, deterministic core; RunSuccessiveHalving (below) is the thin SearchSpace/RNG-sampling wrapper around it.  <br /></td></tr>
 <tr class="separator:aa54b946112a389becc102e114672dcbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6960,6 +6977,48 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="ad0c4189a448065ddbe2710704b2bec80" name="ad0c4189a448065ddbe2710704b2bec80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0c4189a448065ddbe2710704b2bec80">&#9670;&#160;</a></span>DifferenceOfMeans()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::DifferenceOfMeans </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>positive</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>negative</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The difference of means: the mean of <code>positive</code> minus the mean of <code>negative</code>, both <code>(N, d)</code> row-major. The simple baseline that usually wins. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for empty sets or rows of different sizes. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="afb4965a44bd544dcdcd56d7c3b602c8e" name="afb4965a44bd544dcdcd56d7c3b602c8e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afb4965a44bd544dcdcd56d7c3b602c8e">&#9670;&#160;</a></span>DivergingColormap()</h2>
 
@@ -8068,6 +8127,36 @@ template&lt;typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a946e4344a18c0bf6211bf617f22bb7a3" name="a946e4344a18c0bf6211bf617f22bb7a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a946e4344a18c0bf6211bf617f22bb7a3">&#9670;&#160;</a></span>FeaturizerDirection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::FeaturizerDirection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>feature</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Feature <code>feature's</code> decoder direction, as a steering direction (unit length for a featurizer with unit-norm decoders). </p>
 
 </div>
 </div>
@@ -10322,6 +10411,67 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Loss recovered for a transcoder spliced in for an MLP: <code>loss</code> installs the MlpHook it is given on the MLP's block, runs the model, removes it and returns the loss. Ablation zeroes the MLP's output. </p>
+
+</div>
+</div>
+<a id="a1cb19516e6b90fded5a89c07c2ef9fc8" name="a1cb19516e6b90fded5a89c07c2ef9fc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cb19516e6b90fded5a89c07c2ef9fc8">&#9670;&#160;</a></span>MeasureSteering()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SteeringReport.html">SteeringReport</a> pulsatrix::MeasureSteering </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; double(int64_t i, const <a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> &amp;hook)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>behavior</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SteeringOptions.html">SteeringOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Measures steering along <code>direction</code>, and along random directions of the same norm. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">behavior</td><td>Returns input <code>i's</code> behavior, a number that steering should raise (a logit difference, a log-probability, a probe's score), with the hook it is given installed; it must remove the hook afterwards. It is called with each coefficient for each input. </td></tr>
+    <tr><td class="paramname">num_inputs</td><td>How many inputs <code>behavior</code> knows. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for no inputs, fewer than two distinct coefficients, an empty or all-zero direction, or random_directions &lt; 0. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -16677,6 +16827,49 @@ Scoped to the small, dense, well-conditioned systems this codebase's callers act
 </div><div class="memdoc">
 
 <p>Standard normal PDF, phi(z) = (1/sqrt(2*pi)) * exp(-z^2/2). </p>
+
+</div>
+</div>
+<a id="a355a33ede3e334c7ca725b77cdce82e9" name="a355a33ede3e334c7ca725b77cdce82e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a355a33ede3e334c7ca725b77cdce82e9">&#9670;&#160;</a></span>SteeringHook()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> pulsatrix::SteeringHook </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; float &gt;&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>coefficient</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; bool &gt;&#160;</td>
+          <td class="paramname"><em>rows</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A hook that adds <code>coefficient * direction</code> to the hidden states at <code>position</code> (0 is the embeddings, i layer i's output), for the rows in <code>rows</code> (every row when empty). Install it with <a class="el" href="classpulsatrix_1_1CausalLM.html#a78167d4cedaa787b7ef25ebc24817a0f" title="Calls hook at every position during forward() (not during next_token_logits()&#39;s cached passes)....">CausalLM::set_hidden_state_hook()</a> or <a class="el" href="classpulsatrix_1_1EncoderLM.html#a64292c78f9be9ee2ea788d4cd6c59823" title="Calls hook at every position during forward(): 0 is the scaled embeddings, i layer i&#39;s output (before...">EncoderLM::set_hidden_state_hook()</a>. </p>
+<dl class="section note"><dt>Note</dt><dd>The hook throws std::invalid_argument if the hidden size isn't the direction's, or <code>rows</code> has the wrong length. </dd></dl>
 
 </div>
 </div>

@@ -46,5 +46,6 @@ var searchData=
   ['output_5fdim_43',['output_dim',['../classpulsatrix_1_1Transcoder.html#a9b317dadecc8a52168a696c484fd8a32',1,'pulsatrix::Transcoder::output_dim()'],['../classpulsatrix_1_1Featurizer.html#a1470ea443c4b88bdada3cb6086b6d9f6',1,'pulsatrix::Featurizer::output_dim()']]],
   ['output_5fhigh_44',['output_high',['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#a3c349f03abe021f03398f9077315a6c6',1,'pulsatrix::SensitivityDocument::Feature::output_high'],['../structpulsatrix_1_1FeatureSensitivity.html#a9b3c67a22b120e48166863dd326c428a',1,'pulsatrix::FeatureSensitivity::output_high']]],
   ['output_5flow_45',['output_low',['../structpulsatrix_1_1SensitivityDocument_1_1Feature.html#ad68b122417aa6c258a60285586c53e76',1,'pulsatrix::SensitivityDocument::Feature::output_low'],['../structpulsatrix_1_1FeatureSensitivity.html#a1fd8b6be56cb3cd841d0b0c4cf7bba1d',1,'pulsatrix::FeatureSensitivity::output_low']]],
-  ['outputvalue_46',['OutputValue',['../namespacepulsatrix.html#a189de4428b3209ea42fe9421d70329fca110eaf940a77d3832e0bea6decf34db0',1,'pulsatrix']]]
+  ['outputvalue_46',['OutputValue',['../namespacepulsatrix.html#a189de4428b3209ea42fe9421d70329fca110eaf940a77d3832e0bea6decf34db0',1,'pulsatrix']]],
+  ['over_5frandom_47',['over_random',['../structpulsatrix_1_1SteeringReport.html#a89e470a49d3c4e237301400e4dd9ae5f',1,'pulsatrix::SteeringReport']]]
 ];
