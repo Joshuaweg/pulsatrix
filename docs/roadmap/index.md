@@ -805,7 +805,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-1 | A `Featurizer` interface (encode, decode, loss, decoder normalization), with the existing SAE ported to it and given unit-norm decoders, an L0 metric and dead-latent tracking | One interface for the whole family | — | P0 | M | Done, [#102](https://github.com/Joshuaweg/pulsatrix/pull/102) (see below) |
 | FEAT-2 | TopK SAE with the auxiliary loss for dead latents | Removes L1 shrinkage; sets sparsity directly | FEAT-1, FND-3 | P0 | M | Done, [#105](https://github.com/Joshuaweg/pulsatrix/pull/105) (see below) |
 | FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M | Done, [#106](https://github.com/Joshuaweg/pulsatrix/pull/106) (see below) |
-| FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — | Done (see below) |
+| FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — | Done, [#107](https://github.com/Joshuaweg/pulsatrix/pull/107) (see below) |
 | FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M |
 | FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L |
 | FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S |
