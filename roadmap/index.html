@@ -5783,7 +5783,7 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <td>PLM-3, PLM-4</td>
 <td>P1</td>
 <td>L</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/98">#98</a> (see below)</td>
 </tr>
 <tr>
 <td>PLM-6</td>
@@ -5897,8 +5897,33 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <li><strong>Two choices in precision.</strong> Pairs with an unknown distance are dropped before ranking;
     ESM's code ranks them with a score of minus infinity. Ties keep row order. On real
     structures the two agree exactly.</li>
-<li>Not done: the full SEQRES sequence. The model sees the observed residues, so a chain with
-    unresolved loops is scored on a shortened sequence. AlphaFold DB models have no gaps.</li>
+<li>
+<p>Not done: the full SEQRES sequence. The model sees the observed residues, so a chain with
+    unresolved loops is scored on a shortened sequence. AlphaFold DB models have no gaps.</p>
+</li>
+<li>
+<p><strong>PLM-5</strong> adds four viz documents (<code>mutation_map</code>, <code>sequence_logo</code>, <code>contact_map</code>,
+  <code>residue_tracks</code>), with builders from the model's outputs, SVG figures, HTML pages and a 3D
+  structure page. <code>tools/plm/pulsatrix_protein_views</code> makes all of them for one protein.</p>
+</li>
+<li><strong>Pages hold the SVG, not Vega-Lite.</strong> A contact map has L² cells (69,000 for TEM-1) and a
+    logo needs stretched letters, neither of which Vega-Lite handles well. So each page embeds
+    the figure, with a tooltip on every cell, and needs no scripts. Only the structure page loads
+    a library.</li>
+<li><strong>3Dmol.js, not Mol*.</strong> 3Dmol.js is one 540 KB file (BSD-3-Clause), easy to pin, hash and
+    inline. Mol* is several megabytes. 3Dmol.js reads author chain ids and numbering from mmCIF,
+    as the PLM-4 reader does, so residue ids line up. It doesn't read insertion codes from mmCIF;
+    PDB files carry them.</li>
+<li><strong>Logo letters are stretched text.</strong> Each letter is bold sans-serif text scaled to its box, so
+    a figure needs no glyph outlines. A letter's ink fills its box to within a few percent,
+    depending on the installed font (Helvetica, Arial or Liberation Sans).</li>
+<li>Checked: every figure, by eye, in Chromium and cairosvg, on fixtures (now golden files) and on
+    ESM-2 650M's output for TEM-1 (1BTL). The contact map's long-range precision there is 0.665,
+    the same value PLM-4 measured. The structure page was driven in headless Chromium: the menu
+    switches tracks, and hovering labels a residue with its value.</li>
+<li>Figures number residues consecutively from <code>first_position</code>. A structure whose author
+    numbering skips numbers (TEM-1's Ambler numbering skips 239 and 253) is numbered by position
+    in the figures, by author id on the structure page.</li>
 </ul>
 <p>Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.</p>

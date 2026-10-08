@@ -2293,6 +2293,30 @@ read the same data. The documents are part of <code>pulsatrix_core</code> and ne
 <td><code>method</code> (<code>"partial_dependence"</code> or <code>"ale"</code>), <code>feature</code>, <code>target</code>, <code>grid</code>, <code>partial_dependence</code>, and optionally <code>num_instances</code> ICE curves (<code>ice</code>) and the instances' <code>feature_values</code></td>
 <td><code>IceResult</code>, <code>AleResult</code></td>
 </tr>
+<tr>
+<td><code>pulsatrix.mutation_map.v1</code></td>
+<td><code>MutationMapDocument</code></td>
+<td><code>title</code>, <code>sequence</code>, <code>first_position</code>, <code>method</code>, <code>alphabet</code>, and row-major <code>values</code> (residues × alphabet)</td>
+<td><code>VariantScorer::single_mutant_scan</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.sequence_logo.v1</code></td>
+<td><code>SequenceLogoDocument</code></td>
+<td><code>title</code>, <code>sequence</code>, <code>first_position</code>, <code>method</code>, <code>alphabet</code>, and row-major <code>probabilities</code> (positions × alphabet, each row a distribution)</td>
+<td><code>ResidueLogProbs</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.contact_map.v1</code></td>
+<td><code>ContactMapDocument</code></td>
+<td><code>title</code>, <code>sequence</code>, <code>first_position</code>, <code>method</code>, <code>predicted</code> (L × L) and <code>truth</code> (L × L of 0, 1 and NaN, or empty)</td>
+<td><code>ContactMap</code></td>
+</tr>
+<tr>
+<td><code>pulsatrix.residue_tracks.v1</code></td>
+<td><code>ResidueTracksDocument</code></td>
+<td><code>title</code>, <code>sequence</code>, <code>first_position</code>, <code>tracks</code> (<code>name</code>, one value per residue, <code>signed</code>), <code>features</code> (<code>name</code>, <code>start</code>, <code>end</code>, <code>category</code>) and <code>residue_ids</code></td>
+<td>—</td>
+</tr>
 </tbody>
 </table>
 <h3 id="token-relevance-for-text">Token relevance for text<a class="headerlink" href="#token-relevance-for-text" title="Permanent link">&para;</a></h3>
@@ -2444,6 +2468,26 @@ magnitudes.</p>
 <td><code>RenderPartialDependenceSvg(doc, view)</code></td>
 <td>ICE curves under their average, raw, centered or as slopes, with a rug of the inputs' values</td>
 <td><code>PartialDependenceDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderMutationMapSvg(doc)</code></td>
+<td>Every substitution's score, a row per amino acid and a column per residue, the wild type dotted; long sequences wrap</td>
+<td><code>MutationMapDocument</code> (protein views, <code>viz/protein_views.hpp</code>)</td>
+</tr>
+<tr>
+<td><code>RenderSequenceLogoSvg(doc)</code></td>
+<td>A sequence logo: letters stacked to each position's information content</td>
+<td><code>SequenceLogoDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderContactMapSvg(doc)</code></td>
+<td>Predicted contacts above the diagonal; the structure's contacts and the top L predictions, right or wrong, below</td>
+<td><code>ContactMapDocument</code></td>
+</tr>
+<tr>
+<td><code>RenderResidueTracksSvg(doc)</code></td>
+<td>Per-residue tracks and annotated features under the sequence</td>
+<td><code>ResidueTracksDocument</code></td>
 </tr>
 </tbody>
 </table>
