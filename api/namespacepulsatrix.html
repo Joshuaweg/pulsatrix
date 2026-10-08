@@ -288,6 +288,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitNode.html">CircuitNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One node of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>: a computation-graph node plus its importance score.  <a href="structpulsatrix_1_1CircuitNode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ClusterSampler.html">ClusterSampler</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cluster-weighted sampling, as ESM-2 drew UniRef50: a cluster uniformly, then one of its members uniformly, so large families don't dominate. With every sequence its own cluster, it is uniform sampling with replacement.  <a href="classpulsatrix_1_1ClusterSampler.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CMAES.html">CMAES</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RNG-driven ask-tell wrapper: caches the z-samples an <a class="el" href="classpulsatrix_1_1CMAES.html#acffc98c6e3ceb9d66b0d407893a6ad92" title="Draws lambda fresh offspring from the current state, caching the standard- normal samples used for th...">Ask()</a> call draws so a matching <a class="el" href="classpulsatrix_1_1CMAES.html#a0d4e24cb8e8c40071f604a0e2c490bc0" title="Updates the internal state from the most recent Ask() call&#39;s offspring and their fitness values (maxi...">Tell()</a> call can reuse them without the caller needing to track them.  <a href="classpulsatrix_1_1CMAES.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -684,6 +687,18 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MambaModule.html">MambaModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Core Mamba/S6 selective-scan recurrence (Gu &amp; Dao 2023, arXiv:2312.00752), input (N, L, d_model) -&gt; output (N, L, d_model).  <a href="classpulsatrix_1_1MambaModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedLMBatch.html">MaskedLMBatch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One collated batch, on the collator's backend.  <a href="structpulsatrix_1_1MaskedLMBatch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaskedLMCollator.html">MaskedLMCollator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns sequences into masked-LM batches as ESM-2 was trained: <code>&lt;cls&gt;</code> + residues + <code>&lt;eos&gt;</code>, cropped to a random window when too long, then each residue picked with probability 0.15; of those, 80% become <code>&lt;mask&gt;</code>, 10% a random amino acid (uniform over the 20 standard ones) and 10% stay. <code>&lt;cls&gt;</code>, <code>&lt;eos&gt;</code> and padding are never picked. Draws come from a seeded portable generator, so a seed gives the same batches on every platform.  <a href="classpulsatrix_1_1MaskedLMCollator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedLMEvaluation.html">MaskedLMEvaluation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masked-LM quality on held-out sequences.  <a href="structpulsatrix_1_1MaskedLMEvaluation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MaskedLMOptions.html">MaskedLMOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESM-2's masking (Lin et al. 2023; BERT's 80/10/10).  <a href="structpulsatrix_1_1MaskedLMOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html">MaxPool2DModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; deferred until a real use case needs them, same minimal-cut discipline as <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s original stride-1/no-padding scope cut.  <a href="classpulsatrix_1_1MaxPool2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -989,6 +1004,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequenceDecoder.html">SequenceDecoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs decoders in order, each on the previous one's tokens.  <a href="classpulsatrix_1_1SequenceDecoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequenceHead.html">SequenceHead</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A head on an encoder's representations (last_hidden_state), for fine-tuning or probing. <code><a class="el" href="classpulsatrix_1_1SequenceHead.html#ae86bd8d09472070c3db97423e5ce5649a3d6c9ac08ada31c184094bbc67afe00d">Pooling::Mean</a></code> averages each sequence's residues (not <code>&lt;cls&gt;</code>, <code>&lt;eos&gt;</code> or padding) and applies a linear layer: <code>(N, L, hidden)</code> to <code>(N, outputs)</code>, for per-protein labels. <code><a class="el" href="classpulsatrix_1_1SequenceHead.html#ae86bd8d09472070c3db97423e5ce5649a502dc7376b77fe99dc71147f55e6305f">Pooling::PerResidue</a></code> applies it to every token: <code>(N, L, hidden)</code> to <code>(N, L, outputs)</code>, for per-residue labels (use -100 targets at <code>&lt;cls&gt;</code>, <code>&lt;eos&gt;</code> and padding).  <a href="classpulsatrix_1_1SequenceHead.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sequence_logo.v1</code>: a distribution over letters at each residue, such as what a masked language model predicts there, drawn as a sequence logo.  <a href="structpulsatrix_1_1SequenceLogoDocument.html#details">More...</a><br /></td></tr>
@@ -2127,6 +2145,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a859c3f2767384bde8c718ef66f9cd2d9" id="r_a859c3f2767384bde8c718ef66f9cd2d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a859c3f2767384bde8c718ef66f9cd2d9">TrueContacts</a> (const <a class="el" href="structpulsatrix_1_1StructureChain.html">StructureChain</a> &amp;chain, double threshold=8.0, <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">ContactAtom</a> atom=<a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442">ContactAtom::Beta</a>)</td></tr>
 <tr class="memdesc:a859c3f2767384bde8c718ef66f9cd2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">True contacts: 1 where two residues are closer than <code>threshold</code> (8 Å by convention), 0 where they aren't, and NaN where a distance is unknown.  <br /></td></tr>
 <tr class="separator:a859c3f2767384bde8c718ef66f9cd2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe78015ff3c42983850d99d06c472687" id="r_afe78015ff3c42983850d99d06c472687"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afe78015ff3c42983850d99d06c472687">InitializeEsm</a> (<a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &amp;model, uint64_t seed, float std=0.02f)</td></tr>
+<tr class="memdesc:afe78015ff3c42983850d99d06c472687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a model for training from scratch as transformers' <code>EsmPreTrainedModel</code> does: linear weights and the embedding table from N(0, std²) (the <code>&lt;pad&gt;</code> row zeroed), biases 0, LayerNorm gains 1 and offsets 0. Deterministic for a seed.  <br /></td></tr>
+<tr class="separator:afe78015ff3c42983850d99d06c472687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b72ab2ae189b6a601eff9d35dd7a5d4" id="r_a8b72ab2ae189b6a601eff9d35dd7a5d4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8b72ab2ae189b6a601eff9d35dd7a5d4">MaskedLMForwardBackward</a> (<a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &amp;model, const <a class="el" href="structpulsatrix_1_1MaskedLMBatch.html">MaskedLMBatch</a> &amp;batch, <a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html">TokenCrossEntropyLoss</a> &amp;loss, float normalizer=0.0f)</td></tr>
+<tr class="memdesc:a8b72ab2ae189b6a601eff9d35dd7a5d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">One masked-LM forward and backward: sets the batch's padding mask, runs the model, and accumulates the gradient of the cross-entropy over the picked tokens, divided by <code>normalizer</code> (0: the batch's own num_targets, i.e. the mean). Gradients add to what's there; zero them between optimizer steps.  <br /></td></tr>
+<tr class="separator:a8b72ab2ae189b6a601eff9d35dd7a5d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a566cb61fe83cc4548e68ae45ace346af" id="r_a566cb61fe83cc4548e68ae45ace346af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MaskedLMEvaluation.html">MaskedLMEvaluation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a566cb61fe83cc4548e68ae45ace346af">EvaluateMaskedLM</a> (<a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &amp;model, const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;tokenizer, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const std::vector&lt; std::string &gt; &amp;sequences, int64_t batch_size=8, uint64_t seed=0, <a class="el" href="structpulsatrix_1_1MaskedLMOptions.html">MaskedLMOptions</a> options={})</td></tr>
+<tr class="memdesc:a566cb61fe83cc4548e68ae45ace346af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masks <code>sequences</code> with a collator seeded by <code>seed</code> (so every model sees the same masks) and measures the loss over the picked tokens, in batches of <code>batch_size</code>. The model keeps no activations while it runs.  <br /></td></tr>
+<tr class="separator:a566cb61fe83cc4548e68ae45ace346af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a728235ce38aa96f3415951cb72df8b4f" id="r_a728235ce38aa96f3415951cb72df8b4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a728235ce38aa96f3415951cb72df8b4f">ResidueMask</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;ids, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *keep, const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;tokenizer, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a728235ce38aa96f3415951cb72df8b4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The residue mask for <a class="el" href="classpulsatrix_1_1SequenceHead.html#ae86bd8d09472070c3db97423e5ce5649a3d6c9ac08ada31c184094bbc67afe00d">SequenceHead::Pooling::Mean</a> from token ids and a padding mask (or none): 1 for every real token that isn't <code>&lt;cls&gt;</code> or <code>&lt;eos&gt;</code>.  <br /></td></tr>
+<tr class="separator:a728235ce38aa96f3415951cb72df8b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5afa1d6d5a7e637d2e166817a142d97" id="r_ac5afa1d6d5a7e637d2e166817a142d97"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ProteinGymAssay.html">ProteinGymAssay</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac5afa1d6d5a7e637d2e166817a142d97">ReadProteinGymReference</a> (const std::string &amp;path)</td></tr>
 <tr class="memdesc:ac5afa1d6d5a7e637d2e166817a142d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every assay in a reference file.  <br /></td></tr>
 <tr class="separator:ac5afa1d6d5a7e637d2e166817a142d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7115,6 +7145,66 @@ template&lt;typename FitnessFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a566cb61fe83cc4548e68ae45ace346af" name="a566cb61fe83cc4548e68ae45ace346af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a566cb61fe83cc4548e68ae45ace346af">&#9670;&#160;</a></span>EvaluateMaskedLM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MaskedLMEvaluation.html">MaskedLMEvaluation</a> pulsatrix::EvaluateMaskedLM </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>tokenizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>sequences</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch_size</em> = <code>8</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1MaskedLMOptions.html">MaskedLMOptions</a>&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Masks <code>sequences</code> with a collator seeded by <code>seed</code> (so every model sees the same masks) and measures the loss over the picked tokens, in batches of <code>batch_size</code>. The model keeps no activations while it runs. </p>
+
+</div>
+</div>
 <a id="aae7507a27a53dfd4562d8b21106fe1a6" name="aae7507a27a53dfd4562d8b21106fe1a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae7507a27a53dfd4562d8b21106fe1a6">&#9670;&#160;</a></span>EvaluateNEATPhenotype()</h2>
 
@@ -8331,6 +8421,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="afe78015ff3c42983850d99d06c472687" name="afe78015ff3c42983850d99d06c472687"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe78015ff3c42983850d99d06c472687">&#9670;&#160;</a></span>InitializeEsm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::InitializeEsm </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>std</em> = <code>0.02f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes a model for training from scratch as transformers' <code>EsmPreTrainedModel</code> does: linear weights and the embedding table from N(0, std²) (the <code>&lt;pad&gt;</code> row zeroed), biases 0, LayerNorm gains 1 and offsets 0. Deterministic for a seed. </p>
+
+</div>
+</div>
 <a id="a30c958ae5a99df9dd3b742c74911b541" name="a30c958ae5a99df9dd3b742c74911b541"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a30c958ae5a99df9dd3b742c74911b541">&#9670;&#160;</a></span>InitTagger()</h2>
 
@@ -9366,6 +9492,49 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8b72ab2ae189b6a601eff9d35dd7a5d4" name="a8b72ab2ae189b6a601eff9d35dd7a5d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b72ab2ae189b6a601eff9d35dd7a5d4">&#9670;&#160;</a></span>MaskedLMForwardBackward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::MaskedLMForwardBackward </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MaskedLMBatch.html">MaskedLMBatch</a> &amp;&#160;</td>
+          <td class="paramname"><em>batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html">TokenCrossEntropyLoss</a> &amp;&#160;</td>
+          <td class="paramname"><em>loss</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>normalizer</em> = <code>0.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>One masked-LM forward and backward: sets the batch's padding mask, runs the model, and accumulates the gradient of the cross-entropy over the picked tokens, divided by <code>normalizer</code> (0: the batch's own num_targets, i.e. the mean). Gradients add to what's there; zero them between optimizer steps. </p>
+<dl class="section return"><dt>Returns</dt><dd>The loss (mean over picked tokens unless a normalizer is given). </dd></dl>
 
 </div>
 </div>
@@ -13298,6 +13467,48 @@ template&lt;typename RNG &gt; </div>
 </div><div class="memdoc">
 
 <p><code>chain's</code> residue ids, for <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html#a07ac28ce867f26e5a4f78a6c089f8e73" title="Empty, or each residue&#39;s id in a structure: the author&#39;s number and insertion code,...">ResidueTracksDocument::residue_ids</a>. </p>
+
+</div>
+</div>
+<a id="a728235ce38aa96f3415951cb72df8b4f" name="a728235ce38aa96f3415951cb72df8b4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a728235ce38aa96f3415951cb72df8b4f">&#9670;&#160;</a></span>ResidueMask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::ResidueMask </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>ids</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> *&#160;</td>
+          <td class="paramname"><em>keep</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>tokenizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The residue mask for <a class="el" href="classpulsatrix_1_1SequenceHead.html#ae86bd8d09472070c3db97423e5ce5649a3d6c9ac08ada31c184094bbc67afe00d">SequenceHead::Pooling::Mean</a> from token ids and a padding mask (or none): 1 for every real token that isn't <code>&lt;cls&gt;</code> or <code>&lt;eos&gt;</code>. </p>
 
 </div>
 </div>

@@ -627,6 +627,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#training-and-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training and fine-tuning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Training and fine-tuning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#heads-for-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heads for fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#explaining-residue-by-residue" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2003,6 +2031,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#training-and-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training and fine-tuning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Training and fine-tuning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#heads-for-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heads for fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#explaining-residue-by-residue" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2072,7 +2128,7 @@ train them further and explain their predictions.</p>
 which residues touch from the model's attention and checks them against experimental
 structures, draws all of it the way biologists read it (mutation maps, sequence logos,
 contact maps, residue tracks and the 3D structure), and explains its predictions residue by
-residue, with checks on those explanations. Training comes next (see the
+residue, with checks on those explanations, and it trains and fine-tunes them (see the
 <a href="../roadmap/#plm-protein-language-models">roadmap</a> and the
 <a href="../roadmap/protein-language-models/">research and plan</a>).</p>
 <h2 id="whats-inside">What's inside<a class="headerlink" href="#whats-inside" title="Permanent link">&para;</a></h2>
@@ -2586,8 +2642,167 @@ consecutively in the figures; the structure page uses the real ids.</p>
 <li><code>propagate_relevance()</code> explains a logit with LRP and returns relevance per input token.
   <code>propagate_relevance_by_layer()</code> stops at every layer, which is what attribution graphs use;
   <code>propagate_hidden_relevance_by_layer()</code> starts from the representations, for your own head.</li>
-<li>The masking step for masked-LM training and fine-tuning heads are roadmap item PLM-7.</li>
+<li><code>backward_hidden()</code> starts the backward pass from the representations, for a head of your own.</li>
 </ul>
+<h2 id="training-and-fine-tuning">Training and fine-tuning<a class="headerlink" href="#training-and-fine-tuning" title="Permanent link">&para;</a></h2>
+<p><code>protein_training.hpp</code> has ESM-2's training pipeline:</p>
+<ul>
+<li><strong><code>MaskedLMCollator</code>.</strong> It masks sequences as ESM-2 was trained:</li>
+<li>each residue is picked with probability 0.15;</li>
+<li>of those, 80% become <code>&lt;mask&gt;</code>, 10% a random amino acid and 10% stay;</li>
+<li>sequences longer than 1,024 tokens are cropped to a random window;</li>
+<li>batches are padded, with a padding mask.</li>
+</ul>
+<p>A seed gives the same batches on every platform. Token dropout is the model's own forward pass.
+- <strong><code>ClusterSampler</code>.</strong> It draws a cluster uniformly, then one of its members, as ESM-2 drew
+  UniRef50, so large families don't dominate.
+- <strong><code>InitializeEsm</code>.</strong> It initializes a model for training from scratch as transformers does.
+- <strong><code>MaskedLMForwardBackward</code>.</strong> One training step's loss and gradients.
+- <strong><code>EvaluateMaskedLM</code>.</strong> Perplexity and accuracy on held-out sequences, always masked the same
+  way.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/protein_training.hpp"</span>
+
+<span class="n">EncoderLM</span><span class="w"> </span><span class="n">model</span><span class="p">(</span><span class="n">ReadEsmConfig</span><span class="p">(</span><span class="s">"esm2_t6_8M_UR50D/config.json"</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">InitializeEsm</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="cm">/*seed=*/</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">MaskedLMCollator</span><span class="w"> </span><span class="nf">collator</span><span class="p">(</span><span class="n">tok</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">AdamWOptimizer</span><span class="w"> </span><span class="nf">opt</span><span class="p">(</span><span class="mf">4e-4f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.9f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.98f</span><span class="p">);</span>
+<span class="n">TokenCrossEntropyLoss</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">MaskedLMBatch</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collator</span><span class="p">.</span><span class="n">collate</span><span class="p">(</span><span class="n">sequences</span><span class="p">);</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MaskedLMForwardBackward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">loss</span><span class="p">);</span>
+<span class="n">opt</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>It matches transformers.</strong> On a padded, masked batch, one training step's loss and the
+gradient of every parameter match <code>EsmForMaskedLM</code>'s within 1e-4 (relative). Three AdamW steps
+match <code>torch.optim.AdamW</code>'s losses and weights
+(<code>tools/golden/make_esm_training_golden.py</code>, run in CI on the tiny model).</p>
+<p><code>tools/plm/pulsatrix_train_esm</code> trains or evaluates:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>tools/plm/fetch_uniref50_sample.py<span class="w"> </span>~/.cache/pulsatrix/uniref<span class="w">   </span><span class="c1"># ~95k UniRef50 representatives</span>
+pulsatrix_train_esm<span class="w"> </span>--config<span class="w"> </span>esm2_t6_8M_UR50D/config.json<span class="w"> </span>--vocab<span class="w"> </span>esm2_t6_8M_UR50D/vocab.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--train<span class="w"> </span>train.fasta<span class="w"> </span>--valid<span class="w"> </span>valid.fasta<span class="w"> </span>--out<span class="w"> </span>run/<span class="w"> </span>--steps<span class="w"> </span><span class="m">4000</span><span class="w"> </span>--device<span class="w"> </span>hip
+pulsatrix_train_esm<span class="w"> </span>--evaluate<span class="w"> </span>esm2_t33_650M_UR50D<span class="w"> </span>--valid<span class="w"> </span>valid.fasta<span class="w"> </span>--max-tokens<span class="w"> </span><span class="m">1024</span>
+</code></pre></div>
+<p>The published checkpoints on 2,000 held-out sequences of that sample (85,498 masked tokens):</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Perplexity</th>
+<th>Accuracy</th>
+<th>Published perplexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ESM-2 8M</td>
+<td>10.89</td>
+<td>27.8%</td>
+<td>10.33 (Lin et al. 2023)</td>
+</tr>
+<tr>
+<td>ESM-2 650M</td>
+<td>5.96</td>
+<td>45.2%</td>
+<td>6.95 (Lin et al.); 7.00 (BioNeMo, on a 2024 UniRef50 sample)</td>
+</tr>
+</tbody>
+</table>
+<p>The sample isn't held out from ESM-2's training data (UniRef 2021_04), which likely explains
+650M's lower perplexity here. Full pretraining is far beyond one workstation, and bf16 (HIP-11)
+isn't done.</p>
+<p><strong>From scratch.</strong> An ESM-2-8M-shaped model (6 layers, width 320), initialized with
+<code>InitializeEsm</code>, trained on gfx1151. The run used 4,000 steps of 16 sequences cropped to 512
+tokens, AdamW at 4e-4 with 500 warmup steps and linear decay, β₂ 0.98, and clipping at 1. Its
+held-out perplexity, on 500 sequences:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>0</th>
+<th>500</th>
+<th>1,000</th>
+<th>2,000</th>
+<th>3,000</th>
+<th>4,000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Perplexity</td>
+<td>35.7</td>
+<td>14.9</td>
+<td>14.7</td>
+<td>14.3</td>
+<td>14.2</td>
+<td>14.1</td>
+</tr>
+</tbody>
+</table>
+<p>That is below the 18.2 that amino-acid frequencies alone give, so the model learned from
+context, but far above ESM-2 8M's 10.9. It saw about 2.5 million masked tokens; ESM-2 trained on
+hundreds of billions. The run took 3.7 hours (about 3.3 s per step: GPU speed is roadmap item
+HIP-13). <code>training_log.v1.json</code> draws as an HTML page with <code>pulsatrix_svg</code>.</p>
+<h3 id="heads-for-fine-tuning">Heads for fine-tuning<a class="headerlink" href="#heads-for-fine-tuning" title="Permanent link">&para;</a></h3>
+<p><code>SequenceHead</code> is a linear layer on the representations:</p>
+<ul>
+<li><code>Pooling::Mean</code> averages each sequence's residues, for per-protein labels.</li>
+<li><code>Pooling::PerResidue</code> applies to every token, for per-residue labels.</li>
+</ul>
+<p>Train it alone on a frozen encoder (a probe), or with the encoder: pass its <code>backward()</code> to
+<code>EncoderLM::backward_hidden()</code>. Its <code>propagate_relevance()</code> gives a head's relevance at the
+representations, for <code>propagate_hidden_relevance_by_layer()</code>.</p>
+<p><code>tools/plm/pulsatrix_finetune_esm</code> runs two tasks on the GPU:</p>
+<ul>
+<li><strong>Per protein.</strong> A deep mutational scan's fitness, learned from 80% of its variants and
+  tested on the rest.</li>
+<li><strong>Per residue.</strong> How buried each residue is (Cβ neighbors within 10 Å), learned on seven
+  structures and tested on three others.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Model</th>
+<th>Zero-shot</th>
+<th>Probe</th>
+<th>Fine-tuned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ubiquitin DMS (239 test variants)</td>
+<td>8M</td>
+<td>0.16</td>
+<td>0.36</td>
+<td>0.56</td>
+</tr>
+<tr>
+<td>TEM-1 DMS (999 test variants)</td>
+<td>8M</td>
+<td>0.43</td>
+<td>0.28</td>
+<td>0.27</td>
+</tr>
+<tr>
+<td>Burial (3 test proteins)</td>
+<td>8M</td>
+<td></td>
+<td>0.68</td>
+<td></td>
+</tr>
+<tr>
+<td>Burial (3 test proteins)</td>
+<td>650M</td>
+<td></td>
+<td>0.82</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Held-out Spearman correlations. On ubiquitin, fine-tuning beats both the probe and the
+zero-shot score. On TEM-1, neither head beats the zero-shot score: a single substitution barely
+moves the mean of 286 residues' representations. Use per-residue features at the mutated
+position, or the zero-shot score itself, for single mutants of long proteins.</p>
 <h2 id="explaining-residue-by-residue">Explaining residue by residue<a class="headerlink" href="#explaining-residue-by-residue" title="Permanent link">&para;</a></h2>
 <p><code>EncoderExplainer</code> (<code>protein_explanations.hpp</code>) runs AttnLRP from one of four targets back to
 the input residues:</p>

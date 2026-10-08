@@ -139,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a55dfc36c61747d6c8dafb0ae050a3452"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f4d95e60cba1197dd5ff1841d2165d5" id="r_a3f4d95e60cba1197dd5ff1841d2165d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#a3f4d95e60cba1197dd5ff1841d2165d5">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="separator:a3f4d95e60cba1197dd5ff1841d2165d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59ad15d83a170e314f14b52e3a00a1e2" id="r_a59ad15d83a170e314f14b52e3a00a1e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#a59ad15d83a170e314f14b52e3a00a1e2">backward_hidden</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_hidden)</td></tr>
+<tr class="memdesc:a59ad15d83a170e314f14b52e3a00a1e2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1EncoderLM.html#a3f4d95e60cba1197dd5ff1841d2165d5">backward()</a> from the gradient at <a class="el" href="classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1" title="The last forward pass&#39;s final-LayerNorm output, (N, L, hidden_size): the per-residue representations ...">last_hidden_state()</a> (after the final LayerNorm), <code>(N, L, hidden_size)</code>, for a head of your own on the representations (PLM-7). The LM head gets no gradient.  <br /></td></tr>
+<tr class="separator:a59ad15d83a170e314f14b52e3a00a1e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b50b75722028d5cb2ec5eda2491cef6" id="r_a1b50b75722028d5cb2ec5eda2491cef6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#a1b50b75722028d5cb2ec5eda2491cef6">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1EncoderLM.html#a172c9b659cec26384df7069bb08d42be">config</a>) override</td></tr>
 <tr class="memdesc:a1b50b75722028d5cb2ec5eda2491cef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relevance per input token, <code>(N, L)</code>.  <br /></td></tr>
 <tr class="separator:a1b50b75722028d5cb2ec5eda2491cef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -318,6 +321,33 @@ Protected Member Functions</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a59ad15d83a170e314f14b52e3a00a1e2" name="a59ad15d83a170e314f14b52e3a00a1e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59ad15d83a170e314f14b52e3a00a1e2">&#9670;&#160;</a></span>backward_hidden()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::EncoderLM::backward_hidden </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>grad_hidden</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classpulsatrix_1_1EncoderLM.html#a3f4d95e60cba1197dd5ff1841d2165d5">backward()</a> from the gradient at <a class="el" href="classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1" title="The last forward pass&#39;s final-LayerNorm output, (N, L, hidden_size): the per-residue representations ...">last_hidden_state()</a> (after the final LayerNorm), <code>(N, L, hidden_size)</code>, for a head of your own on the representations (PLM-7). The LM head gets no gradient. </p>
+<dl class="section return"><dt>Returns</dt><dd>The gradient at the embedding table's output, as <a class="el" href="classpulsatrix_1_1EncoderLM.html#a3f4d95e60cba1197dd5ff1841d2165d5">backward()</a> returns. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>before any <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>; std::invalid_argument for a shape mismatch. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

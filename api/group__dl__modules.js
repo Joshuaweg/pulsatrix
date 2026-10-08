@@ -56,6 +56,7 @@ var group__dl__modules =
     [ "noise_schedule.hpp", "noise__schedule_8hpp.html", null ],
     [ "op_type.hpp", "op__type_8hpp.html", null ],
     [ "param_groups.hpp", "param__groups_8hpp.html", null ],
+    [ "protein_training.hpp", "protein__training_8hpp.html", null ],
     [ "relu_module.hpp", "relu__module_8hpp.html", null ],
     [ "reparameterize.hpp", "reparameterize_8hpp.html", null ],
     [ "residual_module.hpp", "residual__module_8hpp.html", null ],
