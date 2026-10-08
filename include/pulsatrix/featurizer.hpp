@@ -16,7 +16,8 @@ namespace pulsatrix {
 
 /** @brief One batch's loss, split into its parts. */
 struct FeaturizerLoss {
-    /** @brief What was minimized: reconstruction + sparsity. */
+    /** @brief What was minimized: reconstruction + sparsity, except that a Matryoshka SAE adds
+     *         every prefix's reconstruction error (TopKSparseAutoencoder). */
     float total = 0.0f;
     /** @brief Mean squared reconstruction error over every element. */
     float reconstruction = 0.0f;
@@ -29,9 +30,10 @@ struct FeaturizerLoss {
  *        `(N, num_features)`, and reconstructs `x ≈ decode(f) = f D + b`: feature i writes
  *        along its decoder direction `D[i]`.
  *
- * Sparse autoencoders (SparseAutoencoder) are the first; TopK, JumpReLU, transcoders and
- * block-sparse featurizers (FEAT-2 to FEAT-6) follow the same interface, so training,
- * metrics and views work for all of them.
+ * Sparse autoencoders (SparseAutoencoder) were the first. TopK, BatchTopK and Matryoshka
+ * (TopKSparseAutoencoder) and JumpReLU (JumpReLUSparseAutoencoder) follow, and transcoders and
+ * block-sparse featurizers (FEAT-5, FEAT-6) will too, so training, metrics and views work for
+ * all of them.
  *
  * @note A featurizer is a discovery tool: a low reconstruction error says nothing about whether
  *       its directions are meaningful or causal. Compare features with probes and baselines.

@@ -162,7 +162,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
 Feature discovery on real models, and agents that can drive the library.
 
-- FEAT-1 (**done**, for PLM-8), FEAT-2, FEAT-3 (**done**) to FEAT-7: the featurizer interface, TopK
+- FEAT-1 (**done**, for PLM-8), FEAT-2 to FEAT-4 (**done**) to FEAT-7: the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
@@ -805,7 +805,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-1 | A `Featurizer` interface (encode, decode, loss, decoder normalization), with the existing SAE ported to it and given unit-norm decoders, an L0 metric and dead-latent tracking | One interface for the whole family | — | P0 | M | Done, [#102](https://github.com/Joshuaweg/pulsatrix/pull/102) (see below) |
 | FEAT-2 | TopK SAE with the auxiliary loss for dead latents | Removes L1 shrinkage; sets sparsity directly | FEAT-1, FND-3 | P0 | M | Done, [#105](https://github.com/Joshuaweg/pulsatrix/pull/105) (see below) |
 | FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M | Done, [#106](https://github.com/Joshuaweg/pulsatrix/pull/106) (see below) |
-| FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — |
+| FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — | Done (see below) |
 | FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M |
 | FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L |
 | FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S |
@@ -880,6 +880,28 @@ Open: no LRP rule exists yet for propagating relevance through a block top-k. FE
     [mechanistic-interpretability guide](../mechanistic-interpretability/index.md#measuring-a-featurizer).
   - **`pulsatrix_probe_esm --featurizer topk`.** At the same L0, a TopK SAE beats PLM-8's L1
     SAE on every measure: explained variance 0.78 vs 0.66, loss recovered 0.96 vs 0.90.
+- **FEAT-4** adds BatchTopK and Matryoshka as options of `TopKSparseAutoencoder`
+  (`batch_topk`, `matryoshka_prefixes`), and `JumpReLUSparseAutoencoder`.
+  - **Options, not classes, for the TopK family.** Both variants change only selection and the
+    loss, so they share TopK's AuxK, decoder handling and Module code. BatchTopK's inference
+    threshold, a moving average of each training batch's smallest kept activation, is a buffer,
+    so checkpoints keep it.
+  - **Matryoshka sums its prefix losses,** as the paper does: FeaturizerLoss::total is that sum
+    plus AuxK, and `reconstruction` is the full dictionary's error.
+  - **JumpReLU's λ is per element.** The loss uses the mean squared error over elements, where
+    the paper sums over dimensions, so λ is smaller by the input dimension. There is no λ
+    warm-up built in; `set_l0_coefficient()` lets a training loop do it.
+  - **All three match PyTorch renderings of their papers**
+    (`tools/golden/make_sae_variants_golden.py`): loss, gradients (JumpReLU's straight-through
+    threshold gradients included) and two Adam steps.
+  - **The absorption test needed a tight budget.** At k = 3, with about 1.6 true features per
+    input, plain BatchTopK absorbed nothing: merging a parent into its children saved no
+    latents. At k = 2 it absorbs in 6.6% to 12.6% of inputs over four seeds, and Matryoshka in
+    none.
+  - **On ESM-2 8M** Matryoshka absorbs least and finds the best single features for helix and
+    transmembrane, at 0.90 loss recovered to TopK's 0.96. JumpReLU matches TopK's loss
+    recovered with 12.6 latents instead of 16
+    ([table](../mechanistic-interpretability/index.md#batchtopk-matryoshka-and-jumprelu)).
 
 ## ARCH: New architectures
 
