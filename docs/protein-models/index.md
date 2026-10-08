@@ -7,6 +7,9 @@ which motifs mark functional sites. pulsatrix loads the published ESM-2 checkpoi
 C++, on CPU or GPU, with no Python. You can run them, read their internal representations,
 train them further and explain their predictions.
 
+For the whole path on one enzyme, see the recipe
+[One protein end to end: TEM-1 β-lactamase](../recipes/protein-models/protein_tem1.md).
+
 It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. It predicts
 which residues touch from the model's attention and checks them against experimental
 structures, draws all of it the way biologists read it (mutation maps, sequence logos,

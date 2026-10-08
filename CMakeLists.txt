@@ -598,6 +598,10 @@ if(PULSATRIX_BUILD_EXAMPLES)
 
     add_executable(mnist_lrp_recipe examples/recipes/mnist_lrp.cpp)
     target_link_libraries(mnist_lrp_recipe PRIVATE pulsatrix_core)
+
+    add_executable(protein_tem1_recipe examples/recipes/protein_tem1.cpp)
+    target_link_libraries(protein_tem1_recipe PRIVATE pulsatrix_core)
+    target_compile_definitions(protein_tem1_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
 endif()
 
 if(PULSATRIX_BUILD_TESTS)
