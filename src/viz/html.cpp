@@ -12,9 +12,63 @@
 #include "pulsatrix/ice.hpp"
 #include "pulsatrix/viz/colormap.hpp"
 #include "pulsatrix/viz/plot_data.hpp"
+#include "html_detail.hpp"
 #include "svg_detail.hpp"
 
 namespace pulsatrix {
+
+namespace html_detail {
+
+/** @brief JSON for a <script> element: "<" escaped so a label holding "</script>" can't end it. */
+std::string ScriptSafe(const std::string& json) {
+    std::string out;
+    out.reserve(json.size());
+    for (char c : json) {
+        if (c == '<') {
+            out += "\\u003c";
+        } else {
+            out += c;
+        }
+    }
+    return out;
+}
+
+std::string ReadScript(const std::string& dir, const char* name) {
+    const std::string path = dir + "/" + name;
+    std::ifstream in(path, std::ios::binary);
+    if (!in) {
+        throw std::runtime_error(std::string("HTML views: can't read ") + path +
+                                 " for inline scripts (tools/render/fetch_vega.sh downloads it)");
+    }
+    std::stringstream ss;
+    ss << in.rdbuf();
+    std::string js = ss.str();
+    // "</script" inside the library would end the element early.
+    for (size_t at = js.find("</script"); at != std::string::npos; at = js.find("</script", at + 2)) js.replace(at, 2, "<\\/");
+    return js;
+}
+
+constexpr const char* kStyle =
+    "body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;margin:24px;color:#222;background:#fff;"
+    "max-width:1100px}"
+    "h1{font-size:18px;font-weight:600;margin:0 0 12px}"
+    ".muted{color:#666}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}"
+    ".tokens{line-height:2.1;white-space:pre-wrap;font-size:16px;margin:12px 0}"
+    ".tokens span.s{border-radius:3px;padding:2px 1px}"
+    ".legend{display:flex;align-items:center;gap:8px;font-size:13px;color:#666;margin-top:12px}"
+    ".legend .bar{width:220px;height:10px;border:1px solid #999}"
+    "table{border-collapse:collapse;font-size:14px}td,th{padding:4px 10px;text-align:left}"
+    "th{color:#666;font-weight:500;border-bottom:1px solid #ddd}"
+    "figure{margin:12px 0;overflow-x:auto}figure svg{display:block}";
+
+std::string Page(const std::string& heading, const std::string& head_extra, const std::string& body) {
+    return "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
+           "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>" +
+           svg_detail::Escape(heading) + "</title>\n<style>" + kStyle + "</style>\n" + head_extra + "</head>\n<body>\n" + body +
+           "</body>\n</html>\n";
+}
+
+}  // namespace html_detail
 
 namespace {
 
@@ -97,54 +151,9 @@ void CheckTopK(int top_k, const char* what) {
 }
 
 std::string Escape(std::string_view s) { return svg_detail::Escape(s); }
-
-/** @brief JSON for a <script> element: "<" escaped so a label holding "</script>" can't end it. */
-std::string ScriptSafe(const std::string& json) {
-    std::string out;
-    out.reserve(json.size());
-    for (char c : json) {
-        if (c == '<') {
-            out += "\\u003c";
-        } else {
-            out += c;
-        }
-    }
-    return out;
-}
-
-std::string ReadScript(const std::string& dir, const char* name) {
-    const std::string path = dir + "/" + name;
-    std::ifstream in(path, std::ios::binary);
-    if (!in) {
-        throw std::runtime_error(std::string("HTML views: can't read ") + path +
-                                 " for inline scripts (tools/render/fetch_vega.sh downloads it)");
-    }
-    std::stringstream ss;
-    ss << in.rdbuf();
-    std::string js = ss.str();
-    // "</script" inside the library would end the element early.
-    for (size_t at = js.find("</script"); at != std::string::npos; at = js.find("</script", at + 2)) js.replace(at, 2, "<\\/");
-    return js;
-}
-
-constexpr const char* kStyle =
-    "body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;margin:24px;color:#222;background:#fff;"
-    "max-width:1100px}"
-    "h1{font-size:18px;font-weight:600;margin:0 0 12px}"
-    ".muted{color:#666}.mono{font-family:ui-monospace,Menlo,Consolas,monospace}"
-    ".tokens{line-height:2.1;white-space:pre-wrap;font-size:16px;margin:12px 0}"
-    ".tokens span.s{border-radius:3px;padding:2px 1px}"
-    ".legend{display:flex;align-items:center;gap:8px;font-size:13px;color:#666;margin-top:12px}"
-    ".legend .bar{width:220px;height:10px;border:1px solid #999}"
-    "table{border-collapse:collapse;font-size:14px}td,th{padding:4px 10px;text-align:left}"
-    "th{color:#666;font-weight:500;border-bottom:1px solid #ddd}";
-
-std::string Page(const std::string& heading, const std::string& head_extra, const std::string& body) {
-    return "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
-           "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>" +
-           Escape(heading) + "</title>\n<style>" + kStyle + "</style>\n" + head_extra + "</head>\n<body>\n" + body +
-           "</body>\n</html>\n";
-}
+using html_detail::Page;
+using html_detail::ReadScript;
+using html_detail::ScriptSafe;
 
 std::string Scripts(const HtmlOptions& options) {
     if (options.scripts == HtmlScripts::Inline) {

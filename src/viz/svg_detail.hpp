@@ -389,5 +389,9 @@ inline std::string Base64(const std::vector<unsigned char>& bytes) {
     return out;
 }
 
+// A `data:image/png;base64,...` URI for @p width x @p height RGB pixels, row-major (svg.cpp).
+// @throws std::invalid_argument if the image can't be encoded.
+std::string PngDataUri(const std::vector<unsigned char>& rgb, int64_t width, int64_t height);
+
 }  // namespace svg_detail
 }  // namespace pulsatrix

@@ -1,4 +1,5 @@
-// Fuzz target for the JSON parser and the viz document readers (roadmap VIZ-1). The property:
+// Fuzz target for the JSON parser and the viz document readers (roadmap VIZ-1, and PLM-5's protein
+// documents). The property:
 // any input either reads as a document or throws std::invalid_argument, and a document that
 // reads writes back to JSON that reads to the same bytes again and renders as SVG (VIZ-2) or is
 // refused with std::invalid_argument. Anything else -- another
@@ -21,6 +22,7 @@
 
 #include "pulsatrix/json.hpp"
 #include "pulsatrix/viz/document.hpp"
+#include "pulsatrix/viz/protein_views.hpp"
 #include "pulsatrix/viz/svg.hpp"
 
 namespace {
@@ -64,6 +66,10 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     ReadAndRewrite(text, pulsatrix::ParseCircuitGraphDocument);
     ReadAndRewrite(text, pulsatrix::ParseTrainingLogDocument);
     ReadAndRewrite(text, pulsatrix::ParseFeatureDashboardDocument);
+    ReadAndRewrite(text, pulsatrix::ParseMutationMapDocument);
+    ReadAndRewrite(text, pulsatrix::ParseSequenceLogoDocument);
+    ReadAndRewrite(text, pulsatrix::ParseContactMapDocument);
+    ReadAndRewrite(text, pulsatrix::ParseResidueTracksDocument);
     // Whatever reads must also render, or be refused with std::invalid_argument (VIZ-2).
     try {
         pulsatrix::AttributionDocument a = pulsatrix::ParseAttributionDocument(text);
@@ -78,6 +84,22 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     }
     try {
         (void)pulsatrix::RenderTokenStripSvg(pulsatrix::ParseTokenRelevanceDocument(text));
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderMutationMapSvg(pulsatrix::ParseMutationMapDocument(text));
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderSequenceLogoSvg(pulsatrix::ParseSequenceLogoDocument(text));
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderContactMapSvg(pulsatrix::ParseContactMapDocument(text));
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        (void)pulsatrix::RenderResidueTracksSvg(pulsatrix::ParseResidueTracksDocument(text));
     } catch (const std::invalid_argument&) {
     }
     return 0;
@@ -104,7 +126,25 @@ std::vector<std::string> seeds() {
     f.histogram_edges = {0.0f, 1.0f};
     f.histogram_counts = {3};
     f.top_examples = {{"e", {"a"}, {2.0f}}};
-    return {ToJson(a), ToJson(h), ToJson(t), ToJson(c), ToJson(l), ToJson(f)};
+    MutationMapDocument mm;
+    mm.sequence = "MK";
+    mm.alphabet = "AKM";
+    mm.values = {1.0f, nan, 0.0f, -2.0f, 0.0f, 3.0f};
+    SequenceLogoDocument lg;
+    lg.sequence = "M";
+    lg.alphabet = "MK";
+    lg.probabilities = {0.75f, 0.25f};
+    ContactMapDocument cm;
+    cm.sequence = "MKT";
+    cm.predicted = {1, 0.5f, 0.1f, 0.5f, 1, 0.2f, 0.1f, 0.2f, 1};
+    cm.truth = {1, 1, 0, 1, 1, nan, 0, nan, 1};
+    ResidueTracksDocument rt;
+    rt.sequence = "MKT";
+    rt.first_position = 10;
+    rt.tracks = {{"x", {1.0f, nan, -1.0f}, true}};
+    rt.features = {{"f", 10, 11, "site"}};
+    rt.residue_ids = {"10", "11", "11A"};
+    return {ToJson(a), ToJson(h), ToJson(t), ToJson(c), ToJson(l), ToJson(f), ToJson(mm), ToJson(lg), ToJson(cm), ToJson(rt)};
 }
 
 }  // namespace
