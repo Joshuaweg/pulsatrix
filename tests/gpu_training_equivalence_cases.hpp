@@ -58,6 +58,7 @@
 #include "pulsatrix/protein_contacts.hpp"
 #include "pulsatrix/protein_explanations.hpp"
 #include "pulsatrix/protein_sequences.hpp"
+#include "pulsatrix/protein_training.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/tied_lm_head_module.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -682,6 +683,40 @@ inline void EncoderExplanationsMatch(DeviceBackend& gpu) {
         for (float v : c.residues) scale = std::max(scale, std::abs(static_cast<double>(v)));
         for (size_t i = 0; i < c.residues.size(); ++i) EXPECT_NEAR(c.residues[i], g.residues[i], 1e-3 * scale + 1e-6) << c.target << " " << i;
     }
+}
+
+// PLM-7: a masked-LM step with AdamW, and a mean-pooled head trained into the encoder.
+inline void MaskedLMTrainingMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::string dir = std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf_tiny/esm";
+    std::unique_ptr<EncoderLM> cm = LoadEncoderLM(dir, &cpu), gm = LoadEncoderLM(dir, &gpu);
+    const TextTokenizer tok = LoadEsmTokenizer(dir + "/vocab.txt");
+    MaskedLMCollator cc(tok, &cpu, {}, 4), gc(tok, &gpu, {}, 4);
+    const std::vector<std::string> seqs = {"MKTAYIAKQRQISFVKSHFSRQLEER", "MQIFVKTLTGKTITLEV", "GSHMLEDPKK"};
+    const MaskedLMBatch cb = cc.collate(seqs), gb = gc.collate(seqs);
+    TokenCrossEntropyLoss cl(&cpu), gl(&gpu);
+    AdamWOptimizer co(1e-3f, &cpu, 0.01f, 0.9f, 0.98f), go(1e-3f, &gpu, 0.01f, 0.9f, 0.98f);
+    for (int step = 0; step < 2; ++step) {
+        co.zero_grad(*cm);
+        go.zero_grad(*gm);
+        EXPECT_NEAR(MaskedLMForwardBackward(*cm, cb, cl), MaskedLMForwardBackward(*gm, gb, gl), 1e-4f) << "step " << step;
+        co.step(*cm);
+        go.step(*gm);
+    }
+    ExpectParametersNear(*cm, *gm, 1e-3f);
+
+    SequenceHead ch(cm->config().hidden_size, 3, SequenceHead::Pooling::Mean, &cpu), gh(gm->config().hidden_size, 3, SequenceHead::Pooling::Mean, &gpu);
+    RandomizeAndMirror(ch, gh, 391);
+    ch.set_residue_mask(ResidueMask(cb.ids, &cb.keep, tok, &cpu));
+    gh.set_residue_mask(ResidueMask(gb.ids, &gb.keep, tok, &gpu));
+    cm->set_padding_mask(cb.keep);
+    gm->set_padding_mask(gb.keep);
+    (void)cm->forward(cb.ids);
+    (void)gm->forward(gb.ids);
+    ExpectNear(ch.forward(cm->last_hidden_state()), gh.forward(gm->last_hidden_state()), 1e-4f);
+    const std::vector<float> dy = Random(3 * 3, 392);
+    ExpectNear(cm->backward_hidden(ch.backward(Tensor(Shape({3, 3}), &cpu, dy))), gm->backward_hidden(gh.backward(Tensor(Shape({3, 3}), &gpu, dy))),
+               1e-3f);
 }
 
 inline void TiedLMHeadMatches(DeviceBackend& gpu) {
@@ -1562,6 +1597,7 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     TEST_F(FIXTURE, EncoderLMMatchesCPU) { ::pulsatrix::training_equivalence::EncoderLMMatches(MEMBER); } \
     TEST_F(FIXTURE, ContactsMatchCPU) { ::pulsatrix::training_equivalence::ContactsMatch(MEMBER); } \
     TEST_F(FIXTURE, EncoderExplanationsMatchCPU) { ::pulsatrix::training_equivalence::EncoderExplanationsMatch(MEMBER); } \
+    TEST_F(FIXTURE, MaskedLMTrainingMatchesCPU) { ::pulsatrix::training_equivalence::MaskedLMTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \

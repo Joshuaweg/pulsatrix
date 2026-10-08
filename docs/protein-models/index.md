@@ -11,7 +11,7 @@ It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 number
 which residues touch from the model's attention and checks them against experimental
 structures, draws all of it the way biologists read it (mutation maps, sequence logos,
 contact maps, residue tracks and the 3D structure), and explains its predictions residue by
-residue, with checks on those explanations. Training comes next (see the
+residue, with checks on those explanations, and it trains and fine-tunes them (see the
 [roadmap](../roadmap/index.md#plm-protein-language-models) and the
 [research and plan](../roadmap/protein-language-models.md)).
 
@@ -353,7 +353,108 @@ consecutively in the figures; the structure page uses the real ids.
 - `propagate_relevance()` explains a logit with LRP and returns relevance per input token.
   `propagate_relevance_by_layer()` stops at every layer, which is what attribution graphs use;
   `propagate_hidden_relevance_by_layer()` starts from the representations, for your own head.
-- The masking step for masked-LM training and fine-tuning heads are roadmap item PLM-7.
+- `backward_hidden()` starts the backward pass from the representations, for a head of your own.
+
+## Training and fine-tuning
+
+`protein_training.hpp` has ESM-2's training pipeline:
+
+- **`MaskedLMCollator`.** It masks sequences as ESM-2 was trained:
+  - each residue is picked with probability 0.15;
+  - of those, 80% become `<mask>`, 10% a random amino acid and 10% stay;
+  - sequences longer than 1,024 tokens are cropped to a random window;
+  - batches are padded, with a padding mask.
+
+  A seed gives the same batches on every platform. Token dropout is the model's own forward pass.
+- **`ClusterSampler`.** It draws a cluster uniformly, then one of its members, as ESM-2 drew
+  UniRef50, so large families don't dominate.
+- **`InitializeEsm`.** It initializes a model for training from scratch as transformers does.
+- **`MaskedLMForwardBackward`.** One training step's loss and gradients.
+- **`EvaluateMaskedLM`.** Perplexity and accuracy on held-out sequences, always masked the same
+  way.
+
+```cpp
+#include "pulsatrix/protein_training.hpp"
+
+EncoderLM model(ReadEsmConfig("esm2_t6_8M_UR50D/config.json"), &backend);
+InitializeEsm(model, /*seed=*/0);
+MaskedLMCollator collator(tok, &backend);
+AdamWOptimizer opt(4e-4f, &backend, 0.01f, 0.9f, 0.98f);
+TokenCrossEntropyLoss loss(&backend);
+MaskedLMBatch batch = collator.collate(sequences);
+opt.zero_grad(model);
+float l = MaskedLMForwardBackward(model, batch, loss);
+opt.step(model);
+```
+
+**It matches transformers.** On a padded, masked batch, one training step's loss and the
+gradient of every parameter match `EsmForMaskedLM`'s within 1e-4 (relative). Three AdamW steps
+match `torch.optim.AdamW`'s losses and weights
+(`tools/golden/make_esm_training_golden.py`, run in CI on the tiny model).
+
+`tools/plm/pulsatrix_train_esm` trains or evaluates:
+
+```bash
+python3 tools/plm/fetch_uniref50_sample.py ~/.cache/pulsatrix/uniref   # ~95k UniRef50 representatives
+pulsatrix_train_esm --config esm2_t6_8M_UR50D/config.json --vocab esm2_t6_8M_UR50D/vocab.txt \
+    --train train.fasta --valid valid.fasta --out run/ --steps 4000 --device hip
+pulsatrix_train_esm --evaluate esm2_t33_650M_UR50D --valid valid.fasta --max-tokens 1024
+```
+
+The published checkpoints on 2,000 held-out sequences of that sample (85,498 masked tokens):
+
+| Model | Perplexity | Accuracy | Published perplexity |
+|---|---|---|---|
+| ESM-2 8M | 10.89 | 27.8% | 10.33 (Lin et al. 2023) |
+| ESM-2 650M | 5.96 | 45.2% | 6.95 (Lin et al.); 7.00 (BioNeMo, on a 2024 UniRef50 sample) |
+
+The sample isn't held out from ESM-2's training data (UniRef 2021_04), which likely explains
+650M's lower perplexity here. Full pretraining is far beyond one workstation, and bf16 (HIP-11)
+isn't done.
+
+**From scratch.** An ESM-2-8M-shaped model (6 layers, width 320), initialized with
+`InitializeEsm`, trained on gfx1151. The run used 4,000 steps of 16 sequences cropped to 512
+tokens, AdamW at 4e-4 with 500 warmup steps and linear decay, β₂ 0.98, and clipping at 1. Its
+held-out perplexity, on 500 sequences:
+
+| Step | 0 | 500 | 1,000 | 2,000 | 3,000 | 4,000 |
+|---|---|---|---|---|---|---|
+| Perplexity | 35.7 | 14.9 | 14.7 | 14.3 | 14.2 | 14.1 |
+
+That is below the 18.2 that amino-acid frequencies alone give, so the model learned from
+context, but far above ESM-2 8M's 10.9. It saw about 2.5 million masked tokens; ESM-2 trained on
+hundreds of billions. The run took 3.7 hours (about 3.3 s per step: GPU speed is roadmap item
+HIP-13). `training_log.v1.json` draws as an HTML page with `pulsatrix_svg`.
+
+### Heads for fine-tuning
+
+`SequenceHead` is a linear layer on the representations:
+
+- `Pooling::Mean` averages each sequence's residues, for per-protein labels.
+- `Pooling::PerResidue` applies to every token, for per-residue labels.
+
+Train it alone on a frozen encoder (a probe), or with the encoder: pass its `backward()` to
+`EncoderLM::backward_hidden()`. Its `propagate_relevance()` gives a head's relevance at the
+representations, for `propagate_hidden_relevance_by_layer()`.
+
+`tools/plm/pulsatrix_finetune_esm` runs two tasks on the GPU:
+
+- **Per protein.** A deep mutational scan's fitness, learned from 80% of its variants and
+  tested on the rest.
+- **Per residue.** How buried each residue is (Cβ neighbors within 10 Å), learned on seven
+  structures and tested on three others.
+
+| Task | Model | Zero-shot | Probe | Fine-tuned |
+|---|---|---|---|---|
+| Ubiquitin DMS (239 test variants) | 8M | 0.16 | 0.36 | 0.56 |
+| TEM-1 DMS (999 test variants) | 8M | 0.43 | 0.28 | 0.27 |
+| Burial (3 test proteins) | 8M | | 0.68 | |
+| Burial (3 test proteins) | 650M | | 0.82 | |
+
+Held-out Spearman correlations. On ubiquitin, fine-tuning beats both the probe and the
+zero-shot score. On TEM-1, neither head beats the zero-shot score: a single substitution barely
+moves the mean of 286 residues' representations. Use per-residue features at the mutated
+position, or the zero-shot score itself, for single mutants of long proteins.
 
 ## Explaining residue by residue
 
