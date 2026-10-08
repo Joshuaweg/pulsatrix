@@ -784,9 +784,9 @@ Sparse autoencoders have real limits: they lose to linear probes out of distribu
 with their features loses to simple difference-of-means vectors, and BSF still splits features.
 They ship here as discovery tools with metrics and baselines, not as detectors.
 
-| ID | Item | Why | Depends on | P | Effort |
-|---|---|---|---|---|---|
-| FEAT-1 | A `Featurizer` interface (encode, decode, loss, decoder normalization), with the existing SAE ported to it and given unit-norm decoders, an L0 metric and dead-latent tracking | One interface for the whole family | — | P0 | M |
+| ID | Item | Why | Depends on | P | Effort | Status |
+|---|---|---|---|---|---|---|
+| FEAT-1 | A `Featurizer` interface (encode, decode, loss, decoder normalization), with the existing SAE ported to it and given unit-norm decoders, an L0 metric and dead-latent tracking | One interface for the whole family | — | P0 | M | Done, [#102](https://github.com/Joshuaweg/pulsatrix/pull/102) (see below) |
 | FEAT-2 | TopK SAE with the auxiliary loss for dead latents | Removes L1 shrinkage; sets sparsity directly | FEAT-1, FND-3 | P0 | M |
 | FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M |
 | FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — |
@@ -798,6 +798,32 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first. VIZ-4's AttnLRP graph (residual-stream nodes) and Neuronpedia export are the starting point: transcoder features would replace the nodes | FEAT-5 | P2 | XL |
 
 Open: no LRP rule exists yet for propagating relevance through a block top-k. FEAT-6 needs one.
+
+### How the FEAT work departed from the plan
+
+- **FEAT-1** adds the `Featurizer` interface (`featurizer.hpp`): `encode`, `decode`,
+  `loss_and_backward`, `normalize_decoder` and `decoder_direction`. Alongside it:
+  - `TrainFeaturizer`, a step for any featurizer;
+  - `MeanL0`;
+  - `FeatureActivityTracker`, for dead latents and dense ones (firing rates).
+  - **The port.** `SparseAutoencoder` implements the interface, and is now also a `Module`
+    (input to reconstruction, with backward, LRP and named parameters), so checkpoints work.
+    Its old API is unchanged.
+  - **Unit-norm decoders, on by default.** Normalizing moves each direction's length into the
+    encoder's row and bias. A ReLU passes a positive scale through, so reconstructions don't
+    change; a test checks it.
+  - **This changed an existing test.** The L1 control in `sparse_autoencoder_test.cpp` measured
+    sparsity by the mean activation, and with free decoders most of that drop was the penalty
+    shrinking codes, not silencing features. At l1_lambda 0.05:
+
+    | Decoders | Mean activation | L0 (active features per input) |
+    |---|---|---|
+    | Free | ×0.19 | ×0.58 |
+    | Unit-norm | | ×0.21 |
+
+    Under unit norm 0.05 also collapses reconstruction on that Gaussian data. The control now
+    uses 0.01 and checks L0, and a new test pins the comparison above.
+  - The SAE recipe's expected output changed with it.
 
 ## ARCH: New architectures
 
