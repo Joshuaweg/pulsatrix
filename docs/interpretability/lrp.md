@@ -145,7 +145,11 @@ the literature:
 | `RetNetModule` | AttnLRP-style rule over the retention scores |
 | `RWKVModule` | MambaLRP-style rule adapted to the WKV quotient |
 
-Normalization layers pass relevance through unchanged. For a `BatchNormModule` after a
+Normalization layers pass relevance through unchanged by default. With
+`LRPRuleConfig::layer_norm_detach_std` (set by `LxtAttnLrpConfig()`), `LayerNormModule` uses
+AttnLRP's rule as LXT applies it instead: the standard deviation is held constant, and the rest,
+`γ (x - mean) / std + β`, takes the epsilon rule. For RMSNorm, which has no mean or bias, the two
+are the same. For a `BatchNormModule` after a
 `Conv2DModule`, fold the BatchNorm into the convolution while explaining, as Zennit's
 canonizer does. The convolution's rule then covers the combined affine map:
 
@@ -216,7 +220,9 @@ Known differences and gaps:
 
 - LXT stabilizes with `z + ε` for every sign of `z`; pulsatrix and Zennit use `z + ε·sign(z)`.
   They differ only where `|z|` is on the order of ε.
-- Not covered by the reference tests: LayerNorm and the recurrent and state-space rules.
+- LayerNorm is covered through ESM-2 (PLM-6, [Protein language models](../protein-models/index.md#explaining-residue-by-residue)):
+  4.8e-5 against LXT's rules on the 650M model.
+- Not covered by the reference tests: the recurrent and state-space rules.
 
 ## See also
 

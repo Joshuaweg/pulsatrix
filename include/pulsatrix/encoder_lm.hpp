@@ -94,6 +94,13 @@ public:
      *         layer 0 (the scaled embeddings), then the relevance leaving each layer.
      */
     [[nodiscard]] std::vector<Tensor> propagate_relevance_by_layer(const Tensor& relevance_out, const LRPRuleConfig& config);
+    /**
+     * @brief propagate_relevance_by_layer from relevance at last_hidden_state() (after the final
+     *        LayerNorm), `(N, L, hidden_size)`, for a head of your own on the representations:
+     *        a probe, a regression or a classifier (PLM-6).
+     * @throws std::logic_error before any forward(); std::invalid_argument for a shape mismatch.
+     */
+    [[nodiscard]] std::vector<Tensor> propagate_hidden_relevance_by_layer(const Tensor& relevance_hidden, const LRPRuleConfig& config);
     [[nodiscard]] OpType op_type() const override { return OpType::Composite; }
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
     [[nodiscard]] std::vector<NamedBufferRef> named_buffers() override;
@@ -152,7 +159,8 @@ private:
     [[nodiscard]] Tensor Rows(Module& m, const Tensor& x, int64_t width) const;
     [[nodiscard]] Tensor RowsBackward(Module& m, const Tensor& g, int64_t width) const;
     [[nodiscard]] Tensor RowsRelevance(Module& m, const Tensor& r, int64_t width, const LRPRuleConfig& config) const;
-    /** @brief Relevance at the final LayerNorm's input, from relevance at the logits. */
+    /** @brief Relevance at the final LayerNorm's output (last_hidden_state), from relevance at the
+     *         logits. */
     [[nodiscard]] Tensor HeadRelevance(const Tensor& relevance_out, const LRPRuleConfig& config);
 
     EncoderLMConfig config_;

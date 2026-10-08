@@ -67,6 +67,7 @@ double PearsonCorrelation(const std::vector<float>& x, const std::vector<float>&
 LRPRuleConfig LxtAttnLrpConfig() {
     LRPRuleConfig config{1e-9f};
     config.epsilon_bias_in_denominator = true;
+    config.layer_norm_detach_std = true;
     return config;
 }
 
