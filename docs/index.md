@@ -36,7 +36,8 @@ and LXT, and `pulsatrix_explain_text` turns a prompt into an explanation figure 
 
 **[Protein Language Models](protein-models/index.md)**: load ESM-2 protein language models
 (8M to 650M parameters) from the Hugging Face Hub, read their per-residue representations and
-attention maps, and explain their predictions, with ESM's tokenizer and a FASTA reader.
+attention maps, score mutations zero-shot, predict contacts and check them against PDB and mmCIF
+structures, and explain their predictions.
 
 **[Interpretability](interpretability/index.md)**: explain a trained model's predictions.
 

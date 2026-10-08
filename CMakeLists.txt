@@ -110,7 +110,9 @@ add_library(pulsatrix_core
     src/hf_model.cpp
     src/causal_lm.cpp
     src/encoder_lm.cpp
+    src/protein_contacts.cpp
     src/protein_sequences.cpp
+    src/protein_structure.cpp
     src/variant_scoring.cpp
     src/fitness_metrics.cpp
     src/proteingym.cpp
@@ -623,6 +625,11 @@ add_executable(pulsatrix_proteingym tools/plm/pulsatrix_proteingym.cpp)
 target_link_libraries(pulsatrix_proteingym PRIVATE pulsatrix_core)
 target_compile_definitions(pulsatrix_proteingym PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
 
+# pulsatrix_contacts: contacts from an ESM-2 model's attention, scored against structures (PLM-4).
+add_executable(pulsatrix_contacts tools/plm/pulsatrix_contacts.cpp)
+target_link_libraries(pulsatrix_contacts PRIVATE pulsatrix_core)
+target_compile_definitions(pulsatrix_contacts PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
+
 # pulsatrix_explain_text: AttnLRP on a language model's prediction, as a token relevance figure (VIZ-6a).
 add_executable(pulsatrix_explain_text tools/explain/pulsatrix_explain_text.cpp)
 target_link_libraries(pulsatrix_explain_text PRIVATE pulsatrix_core)
@@ -695,7 +702,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym pulsatrix_contacts RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
