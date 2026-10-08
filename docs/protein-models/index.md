@@ -7,8 +7,8 @@ which motifs mark functional sites. pulsatrix loads the published ESM-2 checkpoi
 C++, on CPU or GPU, with no Python. You can run them, read their internal representations,
 train them further and explain their predictions.
 
-This is the start of the PLM epic. Variant scoring, contact maps, protein views and explanations
-come next (see the [roadmap](../roadmap/index.md#plm-protein-language-models) and the
+It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. Contact maps,
+protein views and explanations come next (see the [roadmap](../roadmap/index.md#plm-protein-language-models) and the
 [research and plan](../roadmap/protein-language-models.md)).
 
 ## What's inside
@@ -104,6 +104,80 @@ Padding is kept out of attention and out of token dropout's count, as in Hugging
   - a run of them becomes a single `<unk>` (`mkta` is one token).
 
   Uppercase your sequences first.
+
+## Scoring mutations
+
+A deep mutational scan measures how thousands of single and multiple substitutions change a
+protein's function. ESM-2 predicts those effects with no training on the protein: a substitution
+scores `log p(mutant) - log p(wild type)` at its position, and a multiple mutant the sum of its
+substitutions. Higher means the model finds the variant more plausible.
+
+```cpp
+#include "pulsatrix/variant_scoring.hpp"
+
+VariantScorer scorer(*model, tok, &backend);
+const std::string seq = "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG";
+ResidueLogProbs m = scorer.masked_marginals(seq);         // one masked pass per residue
+double s = scorer.score(m, seq, ParseMutations("K11R:I44A"));
+std::vector<float> scan = scorer.single_mutant_scan(m, seq);  // L x 20, every substitution
+```
+
+- **Masked marginals** (`masked_marginals`), ProteinGym's choice for ESM-2, mask each residue in
+  turn: one forward pass per residue, however many variants there are.
+- **Wild-type marginals** (`wild_type_marginals`) read the same log-ratios from one unmasked
+  pass. They are much faster and somewhat less accurate.
+- **Pseudo-log-likelihood** (`pseudo_log_likelihood`) sums `log p(residue)` with each residue
+  masked: a score for a whole sequence.
+
+Sequences longer than the model's 1024-token window are cut, for each masked position, to the
+window ProteinGym's `get_optimal_window` picks around it.
+
+### Memory
+
+Scoring needs only the logits, so `VariantScorer` runs the model with
+`EncoderLM::set_keep_activations(false)`: each layer frees the activations it would keep for
+`backward()` and LRP as soon as its output is computed. A 1024-token ESM-2 650M pass otherwise
+holds over 10 GB of them per sequence. `VariantScoringOptions::max_pass_bytes` (default 4 GiB)
+bounds each pass by `ScoringPassBytes`: long windows run fewer per batch, and a pass that can't
+fit even one sequence is refused instead of exhausting memory. Loading 650M itself peaks at about
+10 GB on the host (roadmap FND-9), so on a 32 GB machine run it on the GPU, or watch the rest.
+
+### ProteinGym
+
+`tools/plm/pulsatrix_proteingym` runs ProteinGym's substitution benchmark and reports its five
+metrics (Spearman, AUC, MCC, NDCG and top-10% recall, in `fitness_metrics.hpp`, checked against
+scipy, scikit-learn and ProteinGym's own code), beside the published numbers if given:
+
+```bash
+pulsatrix_proteingym esm2_t33_650M_UR50D --device hip \
+    --reference DMS_substitutions.csv --dms-dir DMS_ProteinGym_substitutions \
+    --assays BLAT_ECOLX_Stiffler_2015,RL40A_YEAST_Roscoe_2013 \
+    --published spearman_dms.csv --published-column "ESM2 (650M)" \
+    --published-scores zero_shot_substitutions_scores --published-score-column ESM2_650M
+```
+
+On 14 assays with ESM-2 650M (gfx1151), pulsatrix matches ProteinGym's published Spearman to the
+three decimals it reports. On the 13 shorter ones, compared variant by variant, every score is
+within 9e-5 of ProteinGym's:
+
+| Assay | Length | Variants | Spearman | Published | Seconds |
+|---|---|---|---|---|---|
+| BLAT_ECOLX_Stiffler_2015 | 286 | 4996 | 0.7315 | 0.731 | 65.8 |
+| BRCA1_HUMAN_Findlay_2018 | 1863 | 1837 | 0.5149 | 0.515 | 6902 |
+| CALM1_HUMAN_Weile_2017 | 149 | 1813 | 0.2116 | 0.212 | 16.6 |
+| DNJA1_HUMAN_Tsuboyama_2023_2LO1 | 65 | 2264 | 0.8029 | 0.803 | 3.3 |
+| EPHB2_HUMAN_Tsuboyama_2023_1F0M | 66 | 1960 | 0.8105 | 0.810 | 3.4 |
+| PIN1_HUMAN_Tsuboyama_2023_1I6C | 39 | 802 | 0.6699 | 0.670 | 1.4 |
+| PR40A_HUMAN_Tsuboyama_2023_1UZC | 63 | 2033 | 0.8047 | 0.805 | 3.2 |
+| RASH_HUMAN_Bandaru_2017 | 189 | 3134 | 0.4976 | 0.498 | 27.5 |
+| RL40A_YEAST_Roscoe_2013 | 128 | 1195 | 0.5986 | 0.599 | 12.4 |
+| SQSTM_MOUSE_Tsuboyama_2023_2RRU | 40 | 707 | 0.6180 | 0.618 | 1.5 |
+| SUMO1_HUMAN_Weile_2017 | 101 | 1700 | 0.5093 | 0.509 | 7.7 |
+| TCRG1_MOUSE_Tsuboyama_2023_1E0L | 37 | 1058 | 0.7692 | 0.769 | 1.2 |
+| TPMT_HUMAN_Matreyek_2018 | 245 | 3648 | 0.5387 | 0.539 | 47.9 |
+| UBC9_HUMAN_Weile_2017 | 159 | 2563 | 0.4726 | 0.473 | 19.5 |
+
+BRCA1 is the one assay longer than the window; its two hours are what roadmap HIP-13 is for.
 
 ## Training and explaining
 

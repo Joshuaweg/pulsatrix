@@ -159,4 +159,10 @@ Tensor RoPEModule::propagate_relevance(const Tensor& relevance_out, const LRPRul
     return relevance_in;
 }
 
+void RoPEModule::release_activations() {
+    release_tensor(last_input_);
+    release_tensor(last_output_);
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix

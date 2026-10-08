@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <initializer_list>
 #include <limits>
 #include <stdexcept>
 #include <string>
@@ -626,6 +627,25 @@ void MultiHeadAttentionModule::set_training(bool training) {
         q_norm_->set_training(training);
         k_norm_->set_training(training);
     }
+}
+
+void MultiHeadAttentionModule::release_activations() {
+    q_proj_.release_activations();
+    k_proj_.release_activations();
+    v_proj_.release_activations();
+    out_proj_.release_activations();
+    softmax_.release_activations();
+    if (use_rope_) {
+        q_rope_->release_activations();
+        k_rope_->release_activations();
+    }
+    if (use_qk_norm_) {
+        q_norm_->release_activations();
+        k_norm_->release_activations();
+    }
+    for (Tensor* t : {&last_key_keep_, &last_q_, &last_k_, &last_v_, &last_scores_raw_, &last_attn_, &last_context_, &last_key_relevance_, &last_value_relevance_}) release_tensor(*t);
+    has_forwarded_ = false;
+    has_relevance_ = false;
 }
 
 }  // namespace pulsatrix

@@ -208,6 +208,30 @@ TEST(EncoderLM, RejectsBadInput) {
     EXPECT_NO_THROW((void)model->forward(Tensor(Shape({1, 4}), &cpu, {0, 4, 5, 2})));
 }
 
+TEST(EncoderLM, WithoutKeptActivationsGivesTheSameOutputsAndFreesTheCaches) {
+    CPUBackend cpu;
+    std::unique_ptr<EncoderLM> model = LoadEncoderLM(TinyEsm(), &cpu);
+    const Tensor ids(Shape({2, 6}), &cpu, {0, 5, 32, 7, 9, 2, 0, 11, 4, 32, 6, 2});
+    const std::vector<float> logits = model->forward(ids).to_host_vector();
+    const std::vector<float> final_hidden = model->last_hidden_state().to_host_vector();
+
+    model->set_keep_activations(false);
+    EXPECT_EQ(model->forward(ids).to_host_vector(), logits);
+    EXPECT_EQ(model->last_hidden_state().to_host_vector(), final_hidden);
+    EXPECT_TRUE(model->hidden_states().empty());
+    for (int64_t i = 0; i < model->num_layers(); ++i) EXPECT_EQ(model->layer(i).mha().last_attention_weights().numel(), 0) << "layer " << i;
+    const Tensor grad(Shape({2, 6, model->config().vocab_size}), &cpu);
+    EXPECT_THROW((void)model->backward(grad), std::logic_error);
+
+    model->set_keep_activations(true);
+    EXPECT_EQ(model->forward(ids).to_host_vector(), logits);
+    EXPECT_EQ(model->hidden_states().size(), static_cast<size_t>(model->num_layers() + 1));
+    EXPECT_NO_THROW((void)model->backward(grad));
+    model->release_activations();
+    EXPECT_EQ(model->last_hidden_state().numel(), 0);
+    EXPECT_THROW((void)model->backward(grad), std::logic_error);
+}
+
 TEST(EsmConfig, RefusesWhatEncoderLMDoesntRun) {
     const std::string base = R"({"model_type": "esm", "architectures": ["EsmForMaskedLM"], "vocab_size": 33, "hidden_size": 32,
         "intermediate_size": 48, "num_hidden_layers": 2, "num_attention_heads": 4, "position_embedding_type": "rotary",

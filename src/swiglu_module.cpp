@@ -185,4 +185,14 @@ std::vector<NamedParamRef> SwiGLUModule::named_parameters() {
     return params;
 }
 
+void SwiGLUModule::release_activations() {
+    gate_proj_.release_activations();
+    up_proj_.release_activations();
+    down_proj_.release_activations();
+    release_tensor(last_gate_pre_);
+    release_tensor(last_gate_post_);
+    release_tensor(last_up_);
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix

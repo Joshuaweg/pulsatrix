@@ -1,5 +1,6 @@
 #include "pulsatrix/encoder_block.hpp"
 
+#include <initializer_list>
 #include <stdexcept>
 
 #include "pulsatrix/feed_forward_module.hpp"
@@ -145,6 +146,15 @@ void EncoderBlock::set_training(bool training) {
     mha_.set_training(training);
     norm2_->set_training(training);
     mlp_->set_training(training);
+}
+
+void EncoderBlock::release_activations() {
+    norm1_->release_activations();
+    mha_.release_activations();
+    norm2_->release_activations();
+    mlp_->release_activations();
+    for (Tensor* t : {&last_x_, &last_attn_out_, &last_y1_, &last_mlp_out_}) release_tensor(*t);
+    has_forwarded_ = false;
 }
 
 }  // namespace pulsatrix
