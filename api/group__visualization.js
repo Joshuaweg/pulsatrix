@@ -16,6 +16,8 @@ var group__visualization =
     [ "image_grid_view.hpp", "image__grid__view_8hpp.html", null ],
     [ "implot_metrics_sink.hpp", "implot__metrics__sink_8hpp.html", null ],
     [ "plot_data.hpp", "plot__data_8hpp.html", null ],
+    [ "protein_documents.hpp", "protein__documents_8hpp.html", null ],
+    [ "protein_views.hpp", "protein__views_8hpp.html", null ],
     [ "saliency_heatmap_view.hpp", "saliency__heatmap__view_8hpp.html", null ],
     [ "svg.hpp", "svg_8hpp.html", null ],
     [ "text_relevance.hpp", "text__relevance_8hpp.html", null ],

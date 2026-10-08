@@ -79,17 +79,17 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1TinyTagger.html#a79ca9470a920d5631bacbc59d9f8604d",
 "classpulsatrix_1_1datalog_1_1Atom.html",
 "functions_vars_i.html",
-"namespacepulsatrix.html#a3184f58066a6c639cae2e009f6a8c8f9",
-"namespacepulsatrix.html#aaf1d7cc456b87e2b0713eff66fc17954a3d6c9ac08ada31c184094bbc67afe00d",
-"ppo__clipped__loss_8hpp.html",
-"structpulsatrix_1_1Batch.html#acf26718c1152ebb7909ac080c95f9084",
-"structpulsatrix_1_1CounterfactualOptions.html#a2017a31e4f567e298a6877ee30740f87",
-"structpulsatrix_1_1FeatureSensitivity.html",
-"structpulsatrix_1_1HfModelConfig.html#a7a4c57f6b21b91b98d6d850c94e74467",
-"structpulsatrix_1_1NEATEvolutionResult.html#a69058f39364cf12172a9e4ac480ac2dd",
-"structpulsatrix_1_1RgbColor.html#a018874e3dd38efe9377b1f0ac57f59d7",
-"structpulsatrix_1_1TanhGaussianGrad.html",
-"structpulsatrix_1_1datalog_1_1RealSemiring.html"
+"namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45",
+"namespacepulsatrix.html#aa620e985a52f1c4f6977c3d0473c1ae6",
+"namespacepulsatrix_1_1param__select.html#a422efd2f5dbe491c49e41ee6cfb7ada3",
+"structpulsatrix_1_1AttributionGraph_1_1Node.html#a5732ce5cdbb1f37dcdf6946ebf5a4d71",
+"structpulsatrix_1_1ConvGeometry.html#a8645a4ca83c4bd6c5d07150ca2874b86",
+"structpulsatrix_1_1ExplanationScoreCard_1_1Input.html",
+"structpulsatrix_1_1HeatmapDocument.html#a8b07de1f07abf9e45eb620ce0c5a9dbc",
+"structpulsatrix_1_1MorrisDocument_1_1Feature.html#a7d43a0057865fe5e433d0eed79909d5a",
+"structpulsatrix_1_1RandomizationResult.html#ac16329284a86e3795474e1381c6a09a3",
+"structpulsatrix_1_1SobolResult.html#a41db65dca3a2c7d76075748d570ca894",
+"structpulsatrix_1_1VizFontFile.html#aa881dfd10f5c076ed7572b58799740eb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

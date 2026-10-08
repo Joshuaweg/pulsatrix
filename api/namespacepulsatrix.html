@@ -322,6 +322,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A square matrix over a sequence's residue pairs, row-major: predicted contact probabilities, distances, or true contacts.  <a href="structpulsatrix_1_1ContactMap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.contact_map.v1</code>: predicted contacts between a sequence's residues, and the true ones when a structure is known. Drawn as one square: predictions above the diagonal, the structure below it, with the best predictions marked right or wrong.  <a href="structpulsatrix_1_1ContactMapDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactMapViewOptions.html">ContactMapViewOptions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for RenderContactMapSvg.  <a href="structpulsatrix_1_1ContactMapViewOptions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactOptions.html">ContactOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactPrecisions.html">ContactPrecisions</a></td></tr>
@@ -726,6 +732,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MutationLoss.html">MutationLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes one of E-GAN's three named mutation objectives against a discriminator's own raw logit output, and its gradient w.r.t. those logits. Every objective trains the generator to make the discriminator's output move toward the "real" (1) class &ndash; they differ only in <em>how</em> that pressure is shaped (saturating vs. non-saturating vs. quadratic).  <a href="classpulsatrix_1_1MutationLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.mutation_map.v1</code>: a score for every substitution, residue by residue, such as a model's log-odds <code>log p(mutant) - log p(wild type)</code> or a deep mutational scan's measurements.  <a href="structpulsatrix_1_1MutationMapDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> state that is saved with a model but never trained, such as BatchNorm's running statistics, with its hierarchical name (roadmap IO-2). Named like parameters.  <a href="structpulsatrix_1_1NamedBufferRef.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -879,6 +888,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResidueLogProbs.html">ResidueLogProbs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log-probabilities of every token at each residue: <code>length</code> rows of <code>vocab</code> values.  <a href="structpulsatrix_1_1ResidueLogProbs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.residue_tracks.v1</code>: per-residue signals stacked under a sequence, and annotated stretches (domains, sites), as in a genome or protein browser. The same document colors a 3D structure (RenderStructureHtml).  <a href="structpulsatrix_1_1ResidueTracksDocument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResizeTransform.html">ResizeTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every transform in this file operates on sample.fields[0], assumed to be an image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> of shape (1, channels, height, width) &ndash; the convention <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>, <a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>, and <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a> all already share (image/features first, label last).  <a href="classpulsatrix_1_1ResizeTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -956,6 +968,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequenceDecoder.html">SequenceDecoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs decoders in order, each on the previous one's tokens.  <a href="classpulsatrix_1_1SequenceDecoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sequence_logo.v1</code>: a distribution over letters at each residue, such as what a masked language model predicts there, drawn as a sequence logo.  <a href="structpulsatrix_1_1SequenceLogoDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequenceNormalizer.html">SequenceNormalizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs normalizers in order.  <a href="classpulsatrix_1_1SequenceNormalizer.html#details">More...</a><br /></td></tr>
@@ -2448,6 +2463,63 @@ Functions</h2></td></tr>
 <tr class="memitem:a080ecc6a0d774b0d732e2540fb615c9b" id="r_a080ecc6a0d774b0d732e2540fb615c9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RgbImageBuffer.html">RgbImageBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a080ecc6a0d774b0d732e2540fb615c9b">ToRgbImageBuffer</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;image_chw)</td></tr>
 <tr class="memdesc:a080ecc6a0d774b0d732e2540fb615c9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a decoded image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> into an interleaved-RGB byte buffer for GPU texture upload (the data-preview "image grid" touchpoint's pure half &ndash; the actual glTexImage2D call lives in <a class="el" href="classpulsatrix_1_1TextureCache.html" title="Uploads decoded image Tensors to OpenGL textures, keyed and cached by an arbitrary integer key (e....">TextureCache</a>, which is GL-dependent and untestable here).  <br /></td></tr>
 <tr class="separator:a080ecc6a0d774b0d732e2540fb615c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c70e17a0a2f46ef425f7f5116cbaa1f" id="r_a8c70e17a0a2f46ef425f7f5116cbaa1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8c70e17a0a2f46ef425f7f5116cbaa1f">MakeMutationMapDocument</a> (std::string_view sequence, const std::vector&lt; float &gt; &amp;scan, std::string method=&quot;&quot;, int64_t first_position=1)</td></tr>
+<tr class="memdesc:a8c70e17a0a2f46ef425f7f5116cbaa1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A mutation map from <a class="el" href="classpulsatrix_1_1VariantScorer.html#a4e6c63cd75eb7b0e11411e19e274e91d" title="Every single substitution: row i, column j is log p(kAminoAcids[j]) - log p(wild        type) at resi...">VariantScorer::single_mutant_scan</a> (<code>L x 20</code>, in kAminoAcids order).  <br /></td></tr>
+<tr class="separator:a8c70e17a0a2f46ef425f7f5116cbaa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48f09b49a4bfd7fcb0c6a187ad8e707e" id="r_a48f09b49a4bfd7fcb0c6a187ad8e707e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a48f09b49a4bfd7fcb0c6a187ad8e707e">ToJson</a> (const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a48f09b49a4bfd7fcb0c6a187ad8e707e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb5b947b6b28e74878bbbb18a28335e6" id="r_adb5b947b6b28e74878bbbb18a28335e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adb5b947b6b28e74878bbbb18a28335e6">ParseMutationMapDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:adb5b947b6b28e74878bbbb18a28335e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3777da7be1e93db0075fbe1256718596" id="r_a3777da7be1e93db0075fbe1256718596"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3777da7be1e93db0075fbe1256718596">MakeSequenceLogoDocument</a> (const <a class="el" href="structpulsatrix_1_1ResidueLogProbs.html">ResidueLogProbs</a> &amp;log_probs, const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;tokenizer, std::string_view sequence, std::string method=&quot;&quot;, int64_t first_position=1)</td></tr>
+<tr class="memdesc:a3777da7be1e93db0075fbe1256718596"><td class="mdescLeft">&#160;</td><td class="mdescRight">A logo from a model's log-probabilities (<a class="el" href="classpulsatrix_1_1VariantScorer.html#a09435879bd9f38f042710b4043c3673c" title="Each residue&#39;s distribution with that residue masked.">VariantScorer::masked_marginals</a> or wild_type_marginals): each residue's probabilities over the 20 amino acids, renormalized to sum to 1 (special and rare tokens dropped).  <br /></td></tr>
+<tr class="separator:a3777da7be1e93db0075fbe1256718596"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73db12a95ed7701c30c8c10c739e918e" id="r_a73db12a95ed7701c30c8c10c739e918e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73db12a95ed7701c30c8c10c739e918e">InformationContent</a> (const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;doc)</td></tr>
+<tr class="memdesc:a73db12a95ed7701c30c8c10c739e918e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each position's information content in bits, <code>log2(letters) - entropy</code>: 0 when every letter is equally likely, <code>log2(20)</code> (4.32) when one is certain. A logo stacks the letters to this height, each in proportion to its probability.  <br /></td></tr>
+<tr class="separator:a73db12a95ed7701c30c8c10c739e918e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9876fb802002c15f93971e013d8d4061" id="r_a9876fb802002c15f93971e013d8d4061"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9876fb802002c15f93971e013d8d4061">ToJson</a> (const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a9876fb802002c15f93971e013d8d4061"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9d3394e788c0e9aab9246bc9e8adba7" id="r_ab9d3394e788c0e9aab9246bc9e8adba7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab9d3394e788c0e9aab9246bc9e8adba7">ParseSequenceLogoDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:ab9d3394e788c0e9aab9246bc9e8adba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fa6760122e251b331f67f62eeb33a70" id="r_a2fa6760122e251b331f67f62eeb33a70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2fa6760122e251b331f67f62eeb33a70">MakeContactMapDocument</a> (std::string_view sequence, const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;predicted, const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> *truth=nullptr, std::string method=&quot;&quot;, int64_t first_position=1)</td></tr>
+<tr class="memdesc:a2fa6760122e251b331f67f62eeb33a70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pairs a prediction with the structure's contacts (TrueContacts), if any.  <br /></td></tr>
+<tr class="separator:a2fa6760122e251b331f67f62eeb33a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81177bae8565dd9b82c6d1829b79b27c" id="r_a81177bae8565dd9b82c6d1829b79b27c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a81177bae8565dd9b82c6d1829b79b27c">ToJson</a> (const <a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a81177bae8565dd9b82c6d1829b79b27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a652b908174731d5464c59241c6d9d165" id="r_a652b908174731d5464c59241c6d9d165"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a652b908174731d5464c59241c6d9d165">ParseContactMapDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:a652b908174731d5464c59241c6d9d165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afca9e26f5552eb9f6779daab739f59a1" id="r_afca9e26f5552eb9f6779daab739f59a1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afca9e26f5552eb9f6779daab739f59a1">MeanSubstitutionScore</a> (const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;doc)</td></tr>
+<tr class="memdesc:afca9e26f5552eb9f6779daab739f59a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each residue's mean score over its substitutions (the wild type left out): how much the model minds a change there. NaN where none was scored.  <br /></td></tr>
+<tr class="separator:afca9e26f5552eb9f6779daab739f59a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3378fae6f11657828143a4a825d35038" id="r_a3378fae6f11657828143a4a825d35038"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3378fae6f11657828143a4a825d35038">ResidueIds</a> (const <a class="el" href="structpulsatrix_1_1StructureChain.html">StructureChain</a> &amp;chain)</td></tr>
+<tr class="memdesc:a3378fae6f11657828143a4a825d35038"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>chain's</code> residue ids, for <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html#a07ac28ce867f26e5a4f78a6c089f8e73" title="Empty, or each residue&#39;s id in a structure: the author&#39;s number and insertion code,...">ResidueTracksDocument::residue_ids</a>.  <br /></td></tr>
+<tr class="separator:a3378fae6f11657828143a4a825d35038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cac87fb441609597ed45ef44a31fdf0" id="r_a1cac87fb441609597ed45ef44a31fdf0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1cac87fb441609597ed45ef44a31fdf0">ToJson</a> (const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;doc)</td></tr>
+<tr class="separator:a1cac87fb441609597ed45ef44a31fdf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a955afaafbc5cbd80bac77dff2ccb207a" id="r_a955afaafbc5cbd80bac77dff2ccb207a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a955afaafbc5cbd80bac77dff2ccb207a">ParseResidueTracksDocument</a> (std::string_view json)</td></tr>
+<tr class="separator:a955afaafbc5cbd80bac77dff2ccb207a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1910ccecd81ffdf49c8e0280b40a03eb" id="r_a1910ccecd81ffdf49c8e0280b40a03eb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1910ccecd81ffdf49c8e0280b40a03eb">RenderMutationMapSvg</a> (const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a1910ccecd81ffdf49c8e0280b40a03eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A mutation map: a row per letter of the alphabet, a column per residue, each cell colored by its score (diverging, scaled to the largest |score|). The wild type's cell has a dot, and the sequence runs along the top. Unscored cells are gray.  <br /></td></tr>
+<tr class="separator:a1910ccecd81ffdf49c8e0280b40a03eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecba6274abd92d1142ec1b572776183f" id="r_aecba6274abd92d1142ec1b572776183f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aecba6274abd92d1142ec1b572776183f">RenderSequenceLogoSvg</a> (const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:aecba6274abd92d1142ec1b572776183f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A sequence logo: at each position, the letters stacked to the position's information content in bits (InformationContent), each as tall as its share, the likeliest on top. Letters are colored by chemistry, as WebLogo does: hydrophobic black, polar green, amide purple, basic blue, acidic red. The sequence's own letters run underneath.  <br /></td></tr>
+<tr class="separator:aecba6274abd92d1142ec1b572776183f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9de9a74e347d42119297b14d0c75232" id="r_ab9de9a74e347d42119297b14d0c75232"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab9de9a74e347d42119297b14d0c75232">RenderContactMapSvg</a> (const <a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1ContactMapViewOptions.html">ContactMapViewOptions</a> &amp;view={}, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ab9de9a74e347d42119297b14d0c75232"><td class="mdescLeft">&#160;</td><td class="mdescRight">A contact map: one square, residue against residue. Above the diagonal, the predicted scores (white to dark blue). Below it, the true contacts in gray, and the L best-scored pairs at least <code>min_separation</code> apart as dots: blue where the structure has a contact, red where it doesn't, hollow where it's unknown. A caption gives the precision at L for those pairs and for long-range ones (24 apart and more), as ContactPrecision computes it. Without a structure, the lower triangle shows the dots alone.  <br /></td></tr>
+<tr class="separator:ab9de9a74e347d42119297b14d0c75232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b5e4e527745c68937647d6777f4713e" id="r_a7b5e4e527745c68937647d6777f4713e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7b5e4e527745c68937647d6777f4713e">RenderResidueTracksSvg</a> (const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a7b5e4e527745c68937647d6777f4713e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Residue tracks: a ruler and the sequence, then a row of colored cells per track (signed tracks diverging around zero, others Viridis from their minimum or zero), then a row of labeled spans per feature category. Each track has its own scale, shown in a legend.  <br /></td></tr>
+<tr class="separator:a7b5e4e527745c68937647d6777f4713e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa25fc405f5617ca9f3b39d3cc6258d2f" id="r_aa25fc405f5617ca9f3b39d3cc6258d2f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa25fc405f5617ca9f3b39d3cc6258d2f">RenderMutationMapHtml</a> (const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;options={})</td></tr>
+<tr class="separator:aa25fc405f5617ca9f3b39d3cc6258d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b9ea80b9076317ee5304cdc6d454611" id="r_a9b9ea80b9076317ee5304cdc6d454611"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9b9ea80b9076317ee5304cdc6d454611">RenderSequenceLogoHtml</a> (const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;options={})</td></tr>
+<tr class="separator:a9b9ea80b9076317ee5304cdc6d454611"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d562a779d30bddf3edcdc336e976dcb" id="r_a8d562a779d30bddf3edcdc336e976dcb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8d562a779d30bddf3edcdc336e976dcb">RenderContactMapHtml</a> (const <a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1ContactMapViewOptions.html">ContactMapViewOptions</a> &amp;view={}, const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;options={})</td></tr>
+<tr class="separator:a8d562a779d30bddf3edcdc336e976dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4955f9a444fe6d18d996976696f4878b" id="r_a4955f9a444fe6d18d996976696f4878b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4955f9a444fe6d18d996976696f4878b">RenderResidueTracksHtml</a> (const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;doc, const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;options={})</td></tr>
+<tr class="separator:a4955f9a444fe6d18d996976696f4878b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53dc4b6d4a783c927086c4639faa7579" id="r_a53dc4b6d4a783c927086c4639faa7579"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a53dc4b6d4a783c927086c4639faa7579">RenderStructureHtml</a> (const std::string &amp;structure, const std::string &amp;chain, const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;tracks, const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:a53dc4b6d4a783c927086c4639faa7579"><td class="mdescLeft">&#160;</td><td class="mdescRight">A 3D structure, drawn as a cartoon with 3Dmol.js, with the residues of <code>chain</code> colored by one of <code>tracks'</code> tracks at a time (a menu switches between them). Hovering a residue shows its name, number and value. Other chains are light gray, ligands are sticks, and water is hidden.  <br /></td></tr>
+<tr class="separator:a53dc4b6d4a783c927086c4639faa7579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7ea947d4abd55ea6c393c762a3c429c" id="r_ac7ea947d4abd55ea6c393c762a3c429c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac7ea947d4abd55ea6c393c762a3c429c">RenderBarChartSvg</a> (const <a class="el" href="structpulsatrix_1_1AttributionDocument.html">AttributionDocument</a> &amp;doc, int <a class="el" href="namespacepulsatrix.html#a307af1ed1935c2c78f7e2aead3f70c45">top_k</a>=10, const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ac7ea947d4abd55ea6c393c762a3c429c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal bars of the <code>top_k</code> features with the largest |attribution|, largest first, on an axis through zero, each colored by its signed value and labeled with it. Labels come from metadata["feature_names"] (comma-separated) when present.  <br /></td></tr>
 <tr class="separator:ac7ea947d4abd55ea6c393c762a3c429c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2534,6 +2606,9 @@ Variables</h2></td></tr>
 <tr class="separator:a34805eba94fcb8268ead2b919a9c6ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69da35a089b7c4138a52bd0a2344dc57" id="r_a69da35a089b7c4138a52bd0a2344dc57"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a69da35a089b7c4138a52bd0a2344dc57">kVegaEmbedVersion</a> = &quot;7.3.0&quot;</td></tr>
 <tr class="separator:a69da35a089b7c4138a52bd0a2344dc57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e58562b930b7ba3a9cea70bc7a3f02" id="r_a53e58562b930b7ba3a9cea70bc7a3f02"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a53e58562b930b7ba3a9cea70bc7a3f02">k3DmolVersion</a> = &quot;2.5.5&quot;</td></tr>
+<tr class="memdesc:a53e58562b930b7ba3a9cea70bc7a3f02"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 3Dmol.js version the structure page loads.  <br /></td></tr>
+<tr class="separator:a53e58562b930b7ba3a9cea70bc7a3f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a062f52068d0980a5b3771b192f0f0250" name="a062f52068d0980a5b3771b192f0f0250"></a>
@@ -7993,6 +8068,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a73db12a95ed7701c30c8c10c739e918e" name="a73db12a95ed7701c30c8c10c739e918e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73db12a95ed7701c30c8c10c739e918e">&#9670;&#160;</a></span>InformationContent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::InformationContent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each position's information content in bits, <code>log2(letters) - entropy</code>: 0 when every letter is equally likely, <code>log2(20)</code> (4.32) when one is certain. A logo stacks the letters to this height, each in proportion to its probability. </p>
+
+</div>
+</div>
 <a id="a30c958ae5a99df9dd3b742c74911b541" name="a30c958ae5a99df9dd3b742c74911b541"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a30c958ae5a99df9dd3b742c74911b541">&#9670;&#160;</a></span>InitTagger()</h2>
 
@@ -8628,6 +8723,60 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a2fa6760122e251b331f67f62eeb33a70" name="a2fa6760122e251b331f67f62eeb33a70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fa6760122e251b331f67f62eeb33a70">&#9670;&#160;</a></span>MakeContactMapDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> pulsatrix::MakeContactMapDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>predicted</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> *&#160;</td>
+          <td class="paramname"><em>truth</em> = <code>nullptr</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>method</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>first_position</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pairs a prediction with the structure's contacts (TrueContacts), if any. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a map isn't <code>L x L</code> for the sequence's L residues. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a73c55d10c6a32a7c7e755166a530a2e2" name="a73c55d10c6a32a7c7e755166a530a2e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73c55d10c6a32a7c7e755166a530a2e2">&#9670;&#160;</a></span>MakeEsmTokenizer()</h2>
 
@@ -8654,6 +8803,54 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the vocabulary lacks <code>&lt;cls&gt;</code>, <code>&lt;eos&gt;</code> or <code>&lt;unk&gt;</code>, or a token repeats. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8c70e17a0a2f46ef425f7f5116cbaa1f" name="a8c70e17a0a2f46ef425f7f5116cbaa1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c70e17a0a2f46ef425f7f5116cbaa1f">&#9670;&#160;</a></span>MakeMutationMapDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> pulsatrix::MakeMutationMapDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>scan</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>method</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>first_position</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A mutation map from <a class="el" href="classpulsatrix_1_1VariantScorer.html#a4e6c63cd75eb7b0e11411e19e274e91d" title="Every single substitution: row i, column j is log p(kAminoAcids[j]) - log p(wild        type) at resi...">VariantScorer::single_mutant_scan</a> (<code>L x 20</code>, in kAminoAcids order). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>scan</code> isn't 20 values per residue of <code>sequence</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -8698,6 +8895,60 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>(when called) if the output isn't rank 3 with one row per token. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3777da7be1e93db0075fbe1256718596" name="a3777da7be1e93db0075fbe1256718596"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3777da7be1e93db0075fbe1256718596">&#9670;&#160;</a></span>MakeSequenceLogoDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> pulsatrix::MakeSequenceLogoDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ResidueLogProbs.html">ResidueLogProbs</a> &amp;&#160;</td>
+          <td class="paramname"><em>log_probs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>tokenizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>method</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>first_position</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A logo from a model's log-probabilities (<a class="el" href="classpulsatrix_1_1VariantScorer.html#a09435879bd9f38f042710b4043c3673c" title="Each residue&#39;s distribution with that residue masked.">VariantScorer::masked_marginals</a> or wild_type_marginals): each residue's probabilities over the 20 amino acids, renormalized to sum to 1 (special and rare tokens dropped). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>log_probs</code> doesn't have one row per residue of <code>sequence</code>, or the tokenizer lacks an amino acid. </td></tr>
   </table>
   </dd>
 </dl>
@@ -8902,6 +9153,26 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Matthews correlation of binary <code>labels</code> and <code>predicted</code> (sklearn's <code>matthews_corrcoef</code>); 0 when a row or column of the confusion matrix is empty. </p>
+
+</div>
+</div>
+<a id="afca9e26f5552eb9f6779daab739f59a1" name="afca9e26f5552eb9f6779daab739f59a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afca9e26f5552eb9f6779daab739f59a1">&#9670;&#160;</a></span>MeanSubstitutionScore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::MeanSubstitutionScore </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each residue's mean score over its substitutions (the wild type left out): how much the model minds a change there. NaN where none was scored. </p>
 
 </div>
 </div>
@@ -9739,6 +10010,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a652b908174731d5464c59241c6d9d165" name="a652b908174731d5464c59241c6d9d165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a652b908174731d5464c59241c6d9d165">&#9670;&#160;</a></span>ParseContactMapDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> pulsatrix::ParseContactMapDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af2b2b534011e6bcc5dfdb77fbb4ae3b4" name="af2b2b534011e6bcc5dfdb77fbb4ae3b4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af2b2b534011e6bcc5dfdb77fbb4ae3b4">&#9670;&#160;</a></span>ParseCounterfactualDocument()</h2>
 
@@ -9942,6 +10231,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="adb5b947b6b28e74878bbbb18a28335e6" name="adb5b947b6b28e74878bbbb18a28335e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb5b947b6b28e74878bbbb18a28335e6">&#9670;&#160;</a></span>ParseMutationMapDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> pulsatrix::ParseMutationMapDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2e24a41c7c62ed9e135f3b2527e91d95" name="a2e24a41c7c62ed9e135f3b2527e91d95"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e24a41c7c62ed9e135f3b2527e91d95">&#9670;&#160;</a></span>ParseMutations()</h2>
 
@@ -10043,6 +10350,24 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a955afaafbc5cbd80bac77dff2ccb207a" name="a955afaafbc5cbd80bac77dff2ccb207a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a955afaafbc5cbd80bac77dff2ccb207a">&#9670;&#160;</a></span>ParseResidueTracksDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> pulsatrix::ParseResidueTracksDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ab2dcb3007fd52399a8ed5f907d067216" name="ab2dcb3007fd52399a8ed5f907d067216"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2dcb3007fd52399a8ed5f907d067216">&#9670;&#160;</a></span>ParseSensitivityDocument()</h2>
 
@@ -10051,6 +10376,24 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a> pulsatrix::ParseSensitivityDocument </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab9d3394e788c0e9aab9246bc9e8adba7" name="ab9d3394e788c0e9aab9246bc9e8adba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9d3394e788c0e9aab9246bc9e8adba7">&#9670;&#160;</a></span>ParseSequenceLogoDocument()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> pulsatrix::ParseSequenceLogoDocument </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>json</em></td><td>)</td>
@@ -11341,6 +11684,82 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a8d562a779d30bddf3edcdc336e976dcb" name="a8d562a779d30bddf3edcdc336e976dcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d562a779d30bddf3edcdc336e976dcb">&#9670;&#160;</a></span>RenderContactMapHtml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderContactMapHtml </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMapViewOptions.html">ContactMapViewOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>view</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab9de9a74e347d42119297b14d0c75232" name="ab9de9a74e347d42119297b14d0c75232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9de9a74e347d42119297b14d0c75232">&#9670;&#160;</a></span>RenderContactMapSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderContactMapSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMapViewOptions.html">ContactMapViewOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>view</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A contact map: one square, residue against residue. Above the diagonal, the predicted scores (white to dark blue). Below it, the true contacts in gray, and the L best-scored pairs at least <code>min_separation</code> apart as dots: blue where the structure has a contact, red where it doesn't, hollow where it's unknown. A caption gives the precision at L for those pairs and for long-range ones (24 apart and more), as ContactPrecision computes it. Without a structure, the lower triangle shows the dots alone. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a document ToJson rejects, min_separation &lt; 1, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a43202fe9630809371f6736178ef26106" name="a43202fe9630809371f6736178ef26106"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a43202fe9630809371f6736178ef26106">&#9670;&#160;</a></span>RenderCounterfactualHtml()</h2>
 
@@ -11646,6 +12065,71 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="aa25fc405f5617ca9f3b39d3cc6258d2f" name="aa25fc405f5617ca9f3b39d3cc6258d2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa25fc405f5617ca9f3b39d3cc6258d2f">&#9670;&#160;</a></span>RenderMutationMapHtml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderMutationMapHtml </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1910ccecd81ffdf49c8e0280b40a03eb" name="a1910ccecd81ffdf49c8e0280b40a03eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1910ccecd81ffdf49c8e0280b40a03eb">&#9670;&#160;</a></span>RenderMutationMapSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderMutationMapSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A mutation map: a row per letter of the alphabet, a column per residue, each cell colored by its score (diverging, scaled to the largest |score|). The wild type's cell has a dot, and the sequence runs along the top. Unscored cells are gray. </p>
+<dl class="section note"><dt>Note</dt><dd>Up to 12,000 cells are drawn as one rectangle each, with a tooltip such as <code>K11R: -2.31</code>; larger maps are drawn as images, without tooltips. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a document ToJson rejects, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a4ed4391a880a8e349a249ef189ebb717" name="a4ed4391a880a8e349a249ef189ebb717"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4ed4391a880a8e349a249ef189ebb717">&#9670;&#160;</a></span>RenderPartialDependenceHtml()</h2>
 
@@ -11722,6 +12206,135 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a4955f9a444fe6d18d996976696f4878b" name="a4955f9a444fe6d18d996976696f4878b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4955f9a444fe6d18d996976696f4878b">&#9670;&#160;</a></span>RenderResidueTracksHtml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderResidueTracksHtml </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7b5e4e527745c68937647d6777f4713e" name="a7b5e4e527745c68937647d6777f4713e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b5e4e527745c68937647d6777f4713e">&#9670;&#160;</a></span>RenderResidueTracksSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderResidueTracksSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Residue tracks: a ruler and the sequence, then a row of colored cells per track (signed tracks diverging around zero, others Viridis from their minimum or zero), then a row of labeled spans per feature category. Each track has its own scale, shown in a legend. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a document ToJson rejects, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9b9ea80b9076317ee5304cdc6d454611" name="a9b9ea80b9076317ee5304cdc6d454611"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b9ea80b9076317ee5304cdc6d454611">&#9670;&#160;</a></span>RenderSequenceLogoHtml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderSequenceLogoHtml </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aecba6274abd92d1142ec1b572776183f" name="aecba6274abd92d1142ec1b572776183f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecba6274abd92d1142ec1b572776183f">&#9670;&#160;</a></span>RenderSequenceLogoSvg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderSequenceLogoSvg </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SvgOptions.html">SvgOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A sequence logo: at each position, the letters stacked to the position's information content in bits (InformationContent), each as tall as its share, the likeliest on top. Letters are colored by chemistry, as WebLogo does: hydrophobic black, polar green, amide purple, basic blue, acidic red. The sequence's own letters run underneath. </p>
+<dl class="section note"><dt>Note</dt><dd>Letters are bold sans-serif text stretched to their box, so a glyph's ink fills it to within a few percent depending on the installed font (Helvetica, Arial or Liberation Sans). </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a document ToJson rejects, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a876a391e2acbcd2b3ce6068f2ce2a339" name="a876a391e2acbcd2b3ce6068f2ce2a339"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a876a391e2acbcd2b3ce6068f2ce2a339">&#9670;&#160;</a></span>RenderSobolHtml()</h2>
 
@@ -11792,6 +12405,63 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for an empty document, a non-finite value, top_k &lt; 1, or unusable options. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a53dc4b6d4a783c927086c4639faa7579" name="a53dc4b6d4a783c927086c4639faa7579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53dc4b6d4a783c927086c4639faa7579">&#9670;&#160;</a></span>RenderStructureHtml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::RenderStructureHtml </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>structure</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>chain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>tracks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1HtmlOptions.html">HtmlOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A 3D structure, drawn as a cartoon with 3Dmol.js, with the residues of <code>chain</code> colored by one of <code>tracks'</code> tracks at a time (a menu switches between them). Hovering a residue shows its name, number and value. Other chains are light gray, ligands are sticks, and water is hidden. </p>
+<p>Track values reach residues through <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html#a07ac28ce867f26e5a4f78a6c089f8e73" title="Empty, or each residue&#39;s id in a structure: the author&#39;s number and insertion code,...">ResidueTracksDocument::residue_ids</a> when it has them; without them, the chain's residues (<a class="el" href="structpulsatrix_1_1ProteinStructure.html" title="The protein chains of a structure&#39;s first model.">ProteinStructure</a>'s reading of the file) must have the tracks' sequence, one for one.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">structure</td><td>The text of a PDB or mmCIF file (mmCIF when it starts with <code>data_</code>), embedded in the page. </td></tr>
+    <tr><td class="paramname">options</td><td><a class="el" href="namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567a4b335085de5262aba6ea08f93d524393" title="From the jsDelivr CDN, pinned to the versions above and checked with Subresource Integrity hashes....">HtmlScripts::Cdn</a> loads 3Dmol.js from jsDelivr, pinned and checked with a Subresource Integrity hash; <a class="el" href="namespacepulsatrix.html#a8de26e99febee574ce230489c26fa567a0125cf5f3ca38b312ca5d3b511c45a13" title="Copied into the page from script_dir, so it works offline and can be mailed as one file (about 830 KB...">HtmlScripts::Inline</a> copies <code>3Dmol-min.js</code> from <code>script_dir</code> (<code>tools/render/fetch_vega.sh</code> downloads it). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Insertion codes are matched in PDB files only: 3Dmol.js doesn't read them from mmCIF. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the structure can't be read, has no chain <code>chain</code>, a residue id isn't in the chain, the sequences don't match, or <code>tracks</code> has no track; std::runtime_error if inline scripts can't be read. </td></tr>
   </table>
   </dd>
 </dl>
@@ -12231,6 +12901,26 @@ template&lt;typename RNG &gt; </div>
 </div><div class="memdoc">
 
 <p>Distances between the residues of <code>chain</code>, in Ångström, <code>L x L</code> for its L residues. A residue missing the atoms <code>atom</code> needs gives NaN in its row and column. </p>
+
+</div>
+</div>
+<a id="a3378fae6f11657828143a4a825d35038" name="a3378fae6f11657828143a4a825d35038"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3378fae6f11657828143a4a825d35038">&#9670;&#160;</a></span>ResidueIds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; pulsatrix::ResidueIds </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1StructureChain.html">StructureChain</a> &amp;&#160;</td>
+          <td class="paramname"><em>chain</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>chain's</code> residue ids, for <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html#a07ac28ce867f26e5a4f78a6c089f8e73" title="Empty, or each residue&#39;s id in a structure: the author&#39;s number and insertion code,...">ResidueTracksDocument::residue_ids</a>. </p>
 
 </div>
 </div>
@@ -15108,7 +15798,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="aa0b432bea4ddfc0135ebfd55d5b78818" name="aa0b432bea4ddfc0135ebfd55d5b78818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0b432bea4ddfc0135ebfd55d5b78818">&#9670;&#160;</a></span>ToJson() <span class="overload">[1/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15132,7 +15822,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a013e5eb67a4e009e0c77adfe60ca3799" name="a013e5eb67a4e009e0c77adfe60ca3799"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a013e5eb67a4e009e0c77adfe60ca3799">&#9670;&#160;</a></span>ToJson() <span class="overload">[2/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15156,7 +15846,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a78fac3d6c2d0c19d16dae11ee8cf561a" name="a78fac3d6c2d0c19d16dae11ee8cf561a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78fac3d6c2d0c19d16dae11ee8cf561a">&#9670;&#160;</a></span>ToJson() <span class="overload">[3/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15179,8 +15869,32 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a81177bae8565dd9b82c6d1829b79b27c" name="a81177bae8565dd9b82c6d1829b79b27c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81177bae8565dd9b82c6d1829b79b27c">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMapDocument.html">ContactMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the sequence is empty, predicted isn't L x L, or truth is neither empty nor L x L of 0, 1 and NaN. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae1bd894b2f804084cd61b94d4e4bd520" name="ae1bd894b2f804084cd61b94d4e4bd520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[4/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd894b2f804084cd61b94d4e4bd520">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15204,7 +15918,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ac0c52d3b599e7bf169118db77357e61c" name="ac0c52d3b599e7bf169118db77357e61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[5/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c52d3b599e7bf169118db77357e61c">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15228,7 +15942,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ab956a7775fa51f615c268b6635ca4a58" name="ab956a7775fa51f615c268b6635ca4a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[6/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab956a7775fa51f615c268b6635ca4a58">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15252,7 +15966,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a3723b86c310dfa94b0a9346dcaba88ef" name="a3723b86c310dfa94b0a9346dcaba88ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[7/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3723b86c310dfa94b0a9346dcaba88ef">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15269,8 +15983,32 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a48f09b49a4bfd7fcb0c6a187ad8e707e" name="a48f09b49a4bfd7fcb0c6a187ad8e707e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f09b49a4bfd7fcb0c6a187ad8e707e">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1MutationMapDocument.html">MutationMapDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the sequence or alphabet is empty, a letter repeats in the alphabet, or values isn't residues x alphabet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a08917aaabe7b0581e886617112b4b22f" name="a08917aaabe7b0581e886617112b4b22f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[8/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08917aaabe7b0581e886617112b4b22f">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15293,8 +16031,32 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a1cac87fb441609597ed45ef44a31fdf0" name="a1cac87fb441609597ed45ef44a31fdf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cac87fb441609597ed45ef44a31fdf0">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the sequence is empty, a track's length isn't the sequence's, a name is empty, a feature's start is after its end or outside the sequence, or residue_ids is neither empty nor one per residue. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a619059d9817446489ce8017256877dd3" name="a619059d9817446489ce8017256877dd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[9/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a619059d9817446489ce8017256877dd3">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15311,8 +16073,32 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 
 </div>
 </div>
+<a id="a9876fb802002c15f93971e013d8d4061" name="a9876fb802002c15f93971e013d8d4061"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9876fb802002c15f93971e013d8d4061">&#9670;&#160;</a></span>ToJson() <span class="overload">[13/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ToJson </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1SequenceLogoDocument.html">SequenceLogoDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>doc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the alphabet is empty or repeats a letter, the probabilities aren't positions x alphabet, a row isn't a distribution, or a non-empty sequence has another length. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="af8ed5eb7aa5da0fbf8687ee45f639029" name="af8ed5eb7aa5da0fbf8687ee45f639029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[10/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af8ed5eb7aa5da0fbf8687ee45f639029">&#9670;&#160;</a></span>ToJson() <span class="overload">[14/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15330,7 +16116,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="ad3cdd9d157bcc91df671e6c976c56a21" name="ad3cdd9d157bcc91df671e6c976c56a21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[11/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cdd9d157bcc91df671e6c976c56a21">&#9670;&#160;</a></span>ToJson() <span class="overload">[15/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -15354,7 +16140,7 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div>
 </div>
 <a id="a5c45799fc127623333c36aade7d18eb3" name="a5c45799fc127623333c36aade7d18eb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[12/12]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c45799fc127623333c36aade7d18eb3">&#9670;&#160;</a></span>ToJson() <span class="overload">[16/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -16971,6 +17757,30 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a53e58562b930b7ba3a9cea70bc7a3f02" name="a53e58562b930b7ba3a9cea70bc7a3f02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53e58562b930b7ba3a9cea70bc7a3f02">&#9670;&#160;</a></span>k3DmolVersion</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char* pulsatrix::k3DmolVersion = &quot;2.5.5&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The 3Dmol.js version the structure page loads. </p>
+
+</div>
+</div>
 <a id="af7d75f38b69b19b1abfb76e5ba0370ca" name="af7d75f38b69b19b1abfb76e5ba0370ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7d75f38b69b19b1abfb76e5ba0370ca">&#9670;&#160;</a></span>kAminoAcids</h2>
 

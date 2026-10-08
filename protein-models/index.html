@@ -577,6 +577,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#protein-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protein views
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protein views">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-structure-in-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The structure in 3D
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-the-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From the command line
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#training-and-explaining" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1886,6 +1925,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#protein-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protein views
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protein views">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-structure-in-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The structure in 3D
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-the-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From the command line
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#training-and-explaining" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1936,7 +2014,8 @@ C++, on CPU or GPU, with no Python. You can run them, read their internal repres
 train them further and explain their predictions.</p>
 <p>It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. It predicts
 which residues touch from the model's attention and checks them against experimental
-structures. Protein views and explanations come next (see the
+structures, and draws all of it the way biologists read it: mutation maps, sequence logos,
+contact maps, residue tracks and the 3D structure. Checked explanations come next (see the
 <a href="../roadmap/#plm-protein-language-models">roadmap</a> and the
 <a href="../roadmap/protein-language-models/">research and plan</a>).</p>
 <h2 id="whats-inside">What's inside<a class="headerlink" href="#whats-inside" title="Permanent link">&para;</a></h2>
@@ -2367,6 +2446,80 @@ predicted probabilities are within 3.1e-5 of transformers' with ESM-2 8M and 650
 precisions are equal. Both formats of all 17 chains in 13 entries give the same sequences as
 biotite, and distances within 1e-4 Å. CI runs the same checks on the tiny ESM-2 and on crambin
 (<code>tests/fixtures/structures</code>).</p>
+<h2 id="protein-views">Protein views<a class="headerlink" href="#protein-views" title="Permanent link">&para;</a></h2>
+<p><code>viz/protein_documents.hpp</code> turns the model's outputs into four
+<a href="../visualization/#json-documents">viz documents</a>, and <code>viz/protein_views.hpp</code> draws
+them. Each is an SVG figure (for papers and CI: no fonts, GPU or browser needed) or an HTML page
+holding that figure, whose cells show their values on hover. The pages have no scripts, so they
+work offline.</p>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Built by</th>
+<th>Shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MutationMapDocument</code></td>
+<td><code>MakeMutationMapDocument(seq, scorer.single_mutant_scan(m, seq))</code></td>
+<td>Every substitution's score, a row per amino acid and a column per residue, the wild type dotted</td>
+</tr>
+<tr>
+<td><code>SequenceLogoDocument</code></td>
+<td><code>MakeSequenceLogoDocument(m, tok, seq)</code></td>
+<td>What the model expects at each residue: letters stacked to the position's information content, colored by chemistry</td>
+</tr>
+<tr>
+<td><code>ContactMapDocument</code></td>
+<td><code>MakeContactMapDocument(seq, predicted, &amp;truth)</code></td>
+<td>Predicted contacts above the diagonal; below, the structure's contacts in gray and the L best predictions as dots, blue if right and red if wrong, with the precision</td>
+</tr>
+<tr>
+<td><code>ResidueTracksDocument</code></td>
+<td>Any per-residue values, plus annotated stretches</td>
+<td>Tracks stacked under the sequence: <code>MeanSubstitutionScore</code> (how much the model minds a change), <code>InformationContent</code>, or your own</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/protein_views.hpp"</span>
+
+<span class="n">ResidueLogProbs</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scorer</span><span class="p">.</span><span class="n">masked_marginals</span><span class="p">(</span><span class="n">seq</span><span class="p">);</span>
+<span class="n">MutationMapDocument</span><span class="w"> </span><span class="n">scan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeMutationMapDocument</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">scorer</span><span class="p">.</span><span class="n">single_mutant_scan</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">),</span><span class="w"> </span><span class="s">"masked_marginals"</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"scan.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderMutationMapSvg</span><span class="p">(</span><span class="n">scan</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"logo.html"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderSequenceLogoHtml</span><span class="p">(</span><span class="n">MakeSequenceLogoDocument</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">));</span>
+
+<span class="n">ResidueTracksDocument</span><span class="w"> </span><span class="n">tracks</span><span class="p">;</span>
+<span class="n">tracks</span><span class="p">.</span><span class="n">sequence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seq</span><span class="p">;</span>
+<span class="n">tracks</span><span class="p">.</span><span class="n">tracks</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="s">"mean substitution score"</span><span class="p">,</span><span class="w"> </span><span class="n">MeanSubstitutionScore</span><span class="p">(</span><span class="n">scan</span><span class="p">),</span><span class="w"> </span><span class="cm">/*signed=*/</span><span class="nb">true</span><span class="p">});</span>
+<span class="n">tracks</span><span class="p">.</span><span class="n">features</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="s">"catalytic motif"</span><span class="p">,</span><span class="w"> </span><span class="mi">70</span><span class="p">,</span><span class="w"> </span><span class="mi">73</span><span class="p">,</span><span class="w"> </span><span class="s">"site"</span><span class="p">});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"tracks.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderResidueTracksSvg</span><span class="p">(</span><span class="n">tracks</span><span class="p">);</span>
+</code></pre></div>
+<p>ESM-2 650M on TEM-1 β-lactamase (1BTL): the logo of its first 60 residues. The catalytic
+serine's motif, S70-T-F-K73, is the most conserved stretch.</p>
+<p><img alt="Sequence logo of TEM-1 residues 26 to 85" src="figures/tem1_logo.png" /></p>
+<p>Its contact map against the crystal structure: 66% of the top L long-range predictions are right.</p>
+<p><img alt="Predicted and true contacts of TEM-1" src="figures/tem1_contact_map.svg" /></p>
+<h3 id="the-structure-in-3d">The structure in 3D<a class="headerlink" href="#the-structure-in-3d" title="Permanent link">&para;</a></h3>
+<p><code>RenderStructureHtml(structure_text, chain, tracks)</code> draws a PDB or mmCIF file with
+<a href="https://3dmol.csb.pitt.edu/">3Dmol.js</a> and colors the chain by any track, with a menu to switch
+tracks. Hovering a residue shows its value. Residues are matched by <code>residue_ids</code> (author number
+plus insertion code, <code>ResidueIds(chain)</code> gives them), or one for one when the chain's sequence is
+the tracks' sequence. 3Dmol.js 2.5.5 loads from jsDelivr, pinned and checked by its hash, or is
+copied into the page with <code>HtmlScripts::Inline</code> (<code>tools/render/fetch_vega.sh</code> downloads it).</p>
+<p><img alt="TEM-1 colored by information content" src="figures/tem1_structure.png" /></p>
+<h3 id="from-the-command-line">From the command line<a class="headerlink" href="#from-the-command-line" title="Permanent link">&para;</a></h3>
+<p><code>tools/plm/pulsatrix_protein_views</code> runs all of it for one protein, from a sequence or a
+structure, and writes each document as JSON, SVG and HTML, plus the structure page:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_protein_views<span class="w"> </span>esm2_t33_650M_UR50D<span class="w"> </span>--structure<span class="w"> </span>1BTL.cif<span class="w"> </span>--chain<span class="w"> </span>A<span class="w"> </span>--out<span class="w"> </span>tem1/<span class="w"> </span>--device<span class="w"> </span>hip
+</code></pre></div>
+<p>For TEM-1 with 650M on gfx1151, that takes a minute, most of it the masked marginals (one pass per
+residue). <code>pulsatrix_svg</code> draws any saved document again: <code>pulsatrix_svg tem1/contact_map.v1.json
+-o contacts.svg</code>.</p>
+<p>Positions are numbered from the document's <code>first_position</code>, one per residue. A structure whose
+author numbering skips numbers (TEM-1's Ambler numbering skips 239 and 253) is numbered
+consecutively in the figures; the structure page uses the real ids.</p>
 <h2 id="training-and-explaining">Training and explaining<a class="headerlink" href="#training-and-explaining" title="Permanent link">&para;</a></h2>
 <p><code>EncoderLM</code> is an ordinary <code>Module</code>, so the rest of the library applies:</p>
 <ul>

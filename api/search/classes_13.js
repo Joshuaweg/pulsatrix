@@ -23,12 +23,13 @@ var searchData=
   ['tokenrelevanceview_20',['TokenRelevanceView',['../classpulsatrix_1_1TokenRelevanceView.html',1,'pulsatrix']]],
   ['topkresult_21',['TopKResult',['../structpulsatrix_1_1TopKResult.html',1,'pulsatrix']]],
   ['toyknowledgebase_22',['ToyKnowledgeBase',['../classpulsatrix_1_1ToyKnowledgeBase.html',1,'pulsatrix']]],
-  ['trainingdashboard_23',['TrainingDashboard',['../classpulsatrix_1_1TrainingDashboard.html',1,'pulsatrix']]],
-  ['traininglogdocument_24',['TrainingLogDocument',['../structpulsatrix_1_1TrainingLogDocument.html',1,'pulsatrix']]],
-  ['trajectorybalanceloss_25',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
-  ['transform_26',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
-  ['transformdataset_27',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
-  ['transformerblock_28',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
-  ['transformerblockoptions_29',['TransformerBlockOptions',['../structpulsatrix_1_1TransformerBlockOptions.html',1,'pulsatrix']]],
-  ['trial_30',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
+  ['track_23',['Track',['../structpulsatrix_1_1ResidueTracksDocument_1_1Track.html',1,'pulsatrix::ResidueTracksDocument']]],
+  ['trainingdashboard_24',['TrainingDashboard',['../classpulsatrix_1_1TrainingDashboard.html',1,'pulsatrix']]],
+  ['traininglogdocument_25',['TrainingLogDocument',['../structpulsatrix_1_1TrainingLogDocument.html',1,'pulsatrix']]],
+  ['trajectorybalanceloss_26',['TrajectoryBalanceLoss',['../classpulsatrix_1_1TrajectoryBalanceLoss.html',1,'pulsatrix']]],
+  ['transform_27',['Transform',['../classpulsatrix_1_1Transform.html',1,'pulsatrix']]],
+  ['transformdataset_28',['TransformDataset',['../classpulsatrix_1_1TransformDataset.html',1,'pulsatrix']]],
+  ['transformerblock_29',['TransformerBlock',['../classpulsatrix_1_1TransformerBlock.html',1,'pulsatrix']]],
+  ['transformerblockoptions_30',['TransformerBlockOptions',['../structpulsatrix_1_1TransformerBlockOptions.html',1,'pulsatrix']]],
+  ['trial_31',['Trial',['../classpulsatrix_1_1Trial.html',1,'pulsatrix']]]
 ];

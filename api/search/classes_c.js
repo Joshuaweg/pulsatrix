@@ -20,5 +20,6 @@ var searchData=
   ['mseloss_17',['MSELoss',['../classpulsatrix_1_1MSELoss.html',1,'pulsatrix']]],
   ['multiheadattentionmodule_18',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
   ['mutation_19',['Mutation',['../structpulsatrix_1_1Mutation.html',1,'pulsatrix']]],
-  ['mutationloss_20',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]]
+  ['mutationloss_20',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]],
+  ['mutationmapdocument_21',['MutationMapDocument',['../structpulsatrix_1_1MutationMapDocument.html',1,'pulsatrix']]]
 ];
