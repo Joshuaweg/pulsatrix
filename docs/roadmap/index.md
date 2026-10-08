@@ -1105,7 +1105,7 @@ sources are in [Protein language models: research and plan](protein-language-mod
 | PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | Done, [#99](https://github.com/Joshuaweg/pulsatrix/pull/99) (see below) |
 | PLM-7 | Masked-LM training: the 15% (80/10/10) masking collator with token dropout, cropping and cluster-weighted sampling; an ESM-2-8M-shaped model on a UniRef50 sample, checked against BioNeMo's curve; per-residue and per-protein fine-tuning heads | Training and transfer learning; full pretraining waits on HIP-11 | PLM-2 | P1 | M | Done, [#100](https://github.com/Joshuaweg/pulsatrix/pull/100) (see below) |
 | PLM-8 | Probes and features: per-layer linear probes (DSSP, accessibility, binding sites) with control tasks; an InterPLM-style SAE on ESM-2-8M with features matched to Swiss-Prot annotations; a feature dashboard with a structure panel | Concept-level interpretability | PLM-5, FEAT-1 | P2 | L | |
-| PLM-9 | A tutorial on one protein (TEM-1 β-lactamase): scan every mutation against its DMS, draw the contact map against its structure, and show relevance on the 3D structure | The whole path, end to end | PLM-3 to PLM-6 | P1 | S | |
+| PLM-9 | A tutorial on one protein (TEM-1 β-lactamase): scan every mutation against its DMS, draw the contact map against its structure, and show relevance on the 3D structure | The whole path, end to end | PLM-3 to PLM-6 | P1 | S | Done (see below) |
 
 ### How the PLM work departed from the plan
 
@@ -1241,6 +1241,18 @@ sources are in [Protein language models: research and plan](protein-language-mod
       substitution barely moves the mean of 286 residues' representations.
   - Not done: training in bf16 (HIP-11) and token-budget batches. Batches here are fixed
     counts of cropped sequences.
+
+- **PLM-9** is a recipe, `protein_tem1_recipe`, with a walkthrough page.
+  - **Results with 650M** (82 s on gfx1151):
+    - the scan's Spearman is 0.7315 (ProteinGym's 0.731);
+    - contacts against 1BTL reach P@L 0.665;
+    - the most damaging mutation, K73S on the catalytic lysine, is explained first by S70, the
+      catalytic serine, and the deletion check calls it faithful.
+  - **The crystal isn't the assay's protein.** 1BTL differs from the scanned TEM-1 at V84I and
+    A184V, so the recipe places the structure by the ungapped alignment with the most identical
+    residues and reports the differences.
+  - **Two numberings.** The scan numbers the precursor from 1 and the structure uses Ambler's
+    numbering; residue ids keep them apart.
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.
