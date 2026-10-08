@@ -75,6 +75,15 @@ struct LRPRuleConfig {
      *        conservative pre-bias z = xW, under which the bias absorbs no relevance.
      */
     bool epsilon_bias_in_denominator = false;
+    /**
+     * @brief LayerNormModule only: AttnLRP's normalization rule as LXT applies it. The standard
+     *        deviation is held constant, and the rest, `gamma (x - mean) / std + beta`, is linear
+     *        and takes the epsilon rule, its mean subtraction included (the bias in the
+     *        denominator as epsilon_bias_in_denominator says). The default (false) passes relevance
+     *        through unchanged, which is the same for RMSNorm but ignores LayerNorm's mean and
+     *        bias. LxtAttnLrpConfig() sets it.
+     */
+    bool layer_norm_detach_std = false;
 };
 
 }  // namespace pulsatrix

@@ -247,7 +247,18 @@ RandomizationResult ModelParameterRandomizationTest(Module& model, const Explain
         }
     }
     std::reverse(layers.begin(), layers.end());
+    return ModelParameterRandomizationTest(model, explain, input, seed, layers);
+}
 
+RandomizationResult ModelParameterRandomizationTest(Module& model, const ExplainFn& explain, const Tensor& input, uint64_t seed,
+                                                    const std::vector<std::string>& layers) {
+    const std::vector<NamedParamRef> params = model.named_parameters();
+    for (const std::string& layer : layers) {
+        const bool found = std::any_of(params.begin(), params.end(), [&](const NamedParamRef& p) {
+            return p.name == layer || p.name.rfind(layer + ".", 0) == 0;
+        });
+        if (!found) throw std::invalid_argument("ModelParameterRandomizationTest: no parameter is in layer \"" + layer + "\"");
+    }
     ParameterSnapshot saved(model);  // restores the model however this returns
     std::vector<float> original;
     for (double v : magnitudes(explain(input))) {

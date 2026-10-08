@@ -256,6 +256,34 @@ TEST_F(LayerNormModuleTest, PropagateRelevanceConservesTotalRelevance) {
     EXPECT_FLOAT_EQ(sum_in, sum_out);
 }
 
+// LXT's AttnLRP rule (PLM-6): with std held constant, relevance is x * d(y . g)/dx where
+// g = R / y, so R_x = x * (c - mean(c)) / std with c = gamma * g.
+TEST_F(LayerNormModuleTest, DetachedStdRuleIsGradientTimesInputWithStdConstant) {
+    LayerNormModule norm(3, &backend);
+    norm.set_gamma({1.5f, -0.5f, 2.0f});
+    norm.set_beta({0.25f, 0.1f, -0.3f});
+    const std::vector<float> x = {1.0f, 2.0f, 4.0f};
+    const Tensor y = norm.forward(Tensor(Shape({1, 3}), &backend, x));
+    const std::vector<float> g = {0.7f, -1.2f, 0.4f};  // the gradient arriving at y
+    std::vector<float> r(3);
+    for (size_t i = 0; i < 3; ++i) r[i] = y.data()[i] * g[i];  // gradient * input at the output
+    LRPRuleConfig config{1e-9f};
+    config.epsilon_bias_in_denominator = true;
+    config.layer_norm_detach_std = true;
+    const Tensor rin = norm.propagate_relevance(Tensor(Shape({1, 3}), &backend, r), config);
+
+    const double mean = 7.0 / 3.0;
+    double var = 0;
+    for (float v : x) var += (v - mean) * (v - mean) / 3.0;
+    const double sd = std::sqrt(var + 1e-6);
+    const double c[3] = {1.5 * g[0], -0.5 * g[1], 2.0 * g[2]};
+    const double cmean = (c[0] + c[1] + c[2]) / 3.0;
+    for (size_t i = 0; i < 3; ++i) EXPECT_NEAR(rin.data()[i], x[i] * (c[i] - cmean) / sd, 1e-5) << i;
+    // The default still passes relevance through.
+    const Tensor pass = norm.propagate_relevance(Tensor(Shape({1, 3}), &backend, r), LRPRuleConfig{});
+    for (size_t i = 0; i < 3; ++i) EXPECT_FLOAT_EQ(pass.data()[i], r[i]);
+}
+
 TEST_F(LayerNormModuleTest, ParametersExposesGammaAndBetaByPointer) {
     LayerNormModule norm(2, &backend);
     auto params = norm.parameters();
