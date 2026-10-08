@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/recipes/deep-learning/xor_training/">
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/recipes/protein-models/protein_tem1/">
       
       
-        <link rel="prev" href="../../">
+        <link rel="prev" href="../../neuro-symbolic/datalog_lrp_bridge/">
       
       
-        <link rel="next" href="../sequence_models_rnn_lstm_gru/">
+        <link rel="next" href="../../visualization/training_dashboard/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>XOR Training - Pulsatrix</title>
+        <title>TEM-1 End to End - Pulsatrix</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#recipe-xor-training-walkthrough" class="md-skip">
+        <a href="#recipe-one-protein-end-to-end-tem-1-lactamase" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              XOR Training
+              TEM-1 End to End
             
           </span>
         </div>
@@ -932,37 +932,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    XOR Training
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../deep-learning/xor_training/" class="md-nav__link">
         
   
   
@@ -978,59 +951,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#code" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#expected-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Expected output
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-happening" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's happening
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1043,7 +963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sequence_models_rnn_lstm_gru/" class="md-nav__link">
+      <a href="../../deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
         
   
   
@@ -1071,7 +991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../residual_and_norm_layers/" class="md-nav__link">
+      <a href="../../deep-learning/residual_and_norm_layers/" class="md-nav__link">
         
   
   
@@ -1099,7 +1019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tagger_finetune/" class="md-nav__link">
+      <a href="../../deep-learning/tagger_finetune/" class="md-nav__link">
         
   
   
@@ -1432,10 +1352,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../protein-models/protein_tem1/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TEM-1 End to End
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1451,6 +1398,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected output
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-happening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's happening
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1735,59 +1735,117 @@
   
 
 
-<h1 id="recipe-xor-training-walkthrough">Recipe: XOR Training Walkthrough<a class="headerlink" href="#recipe-xor-training-walkthrough" title="Permanent link">&para;</a></h1>
-<p><strong>What you'll build:</strong> a tiny <code>Linear(2,4) -&gt; ReLU -&gt; Linear(4,1)</code> network trained on XOR. XOR is
-the classic problem a single linear layer can't solve, but a small MLP can represent exactly.</p>
-<p>CMake target: <code>xor_training_recipe</code> (<code>examples/recipes/xor_training.cpp</code>).</p>
-<p>Run it: <code>./build/xor_training_recipe</code> (Windows: <code>build\Release\xor_training_recipe.exe</code>).</p>
-<h2 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="n">XorNetwork</span><span class="w"> </span><span class="nf">net</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">optimizer</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">NoOpMetricsSink</span><span class="w"> </span><span class="n">sink</span><span class="p">;</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">Tensor</span><span class="p">,</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">dataset</span><span class="p">;</span>
-<span class="n">dataset</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">}),</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">}));</span>
-<span class="n">dataset</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">}),</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">}));</span>
-<span class="n">dataset</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">}),</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">}));</span>
-<span class="n">dataset</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">}),</span><span class="w"> </span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.0f</span><span class="p">}));</span>
-
-<span class="kt">int</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">epoch</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">300</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">epoch</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">dataset</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">net</span><span class="p">.</span><span class="n">train_step</span><span class="p">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">,</span><span class="w"> </span><span class="n">sink</span><span class="p">,</span><span class="w"> </span><span class="n">step</span><span class="o">++</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Full source: <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/recipes/xor_training.cpp"><code>examples/recipes/xor_training.cpp</code></a>.</p>
-<h2 id="expected-output">Expected output<a class="headerlink" href="#expected-output" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>XOR training recipe -- Linear(2,4)-&gt;ReLU-&gt;Linear(4,1), Adam(lr=0.01)
-epoch     0 | mean loss 0.370519
-epoch    50 | mean loss 0.099930
-epoch   100 | mean loss 0.015606
-epoch   150 | mean loss 0.000720
-epoch   200 | mean loss 0.000022
-epoch   250 | mean loss 0.000000
-epoch   300 | mean loss 0.000000
-
-Final predictions:
-  (0, 0) -&gt; raw 0.0001, rounded 0 (target 0)
-  (0, 1) -&gt; raw 1.0000, rounded 1 (target 1)
-  (1, 0) -&gt; raw 1.0000, rounded 1 (target 1)
-  (1, 1) -&gt; raw 0.0000, rounded 0 (target 0)
-</code></pre></div>
-<h2 id="whats-happening">What's happening<a class="headerlink" href="#whats-happening" title="Permanent link">&para;</a></h2>
-<p><code>XorNetwork</code> chains its <code>LinearModule</code> and <code>ReluModule</code> layers directly. Each <code>train_step()</code> call:</p>
+<h1 id="recipe-one-protein-end-to-end-tem-1-lactamase">Recipe: One Protein End to End (TEM-1 β-Lactamase)<a class="headerlink" href="#recipe-one-protein-end-to-end-tem-1-lactamase" title="Permanent link">&para;</a></h1>
+<p><strong>What you'll build:</strong> the whole protein path on one enzyme, TEM-1 β-lactamase, the enzyme that
+makes <em>E. coli</em> resistant to ampicillin. ESM-2 has never seen a measurement of it, yet:</p>
 <ol>
-<li>zeroes the gradients,</li>
-<li>runs the forward pass and computes the MSE loss,</li>
-<li>calls each layer's <code>backward()</code> in reverse order to fill its parameter gradients,</li>
-<li>applies one <code>AdamOptimizer</code> step per <code>LinearModule</code>, and</li>
-<li>logs the loss to the metrics sink.</li>
+<li>It scores all 4,996 single mutants of a deep mutational scan (Stiffler et al. 2015). Their
+   correlation with the measured resistance is reported, and the model's mutation map is drawn
+   beside the measured one.</li>
+<li>It predicts which residues touch from its attention, checked against the crystal structure
+   (PDB 1BTL).</li>
+<li>It explains the most damaging mutation residue by residue. A deletion check tests the
+   explanation, and the result is shown on the 3D structure.</li>
 </ol>
-<p>The loss drops to (numerically) zero well before 300 epochs. This network can represent XOR
-exactly, so there's no approximation error left to converge past.</p>
-<p>See also: <a href="../../../deep-learning/#building-and-training-a-small-network">Deep Learning Modules and Layers</a>.</p>
+<p>CMake target: <code>protein_tem1_recipe</code> (<code>examples/recipes/protein_tem1.cpp</code>).</p>
+<div class="highlight"><pre><span></span><code>./build/protein_tem1_recipe<span class="w"> </span>MODEL_DIR<span class="w"> </span>PROTEINGYM_DIR<span class="w"> </span>1BTL.cif<span class="w"> </span>out/<span class="w"> </span><span class="o">[</span>--device<span class="w"> </span>hip<span class="o">]</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The recipe needs three downloads (about 1 GB in all, mostly the ProteinGym assays):</p>
+<ul>
+<li>An ESM-2 checkpoint, such as
+  <a href="https://huggingface.co/facebook/esm2_t33_650M_UR50D"><code>facebook/esm2_t33_650M_UR50D</code></a>
+  (2.6 GB, see <a href="../../../protein-models/">Protein language models</a>), or <code>esm2_t6_8M_UR50D</code>
+  (31 MB) to try it on a CPU.</li>
+<li>ProteinGym's <code>DMS_substitutions.csv</code> and <code>DMS_ProteinGym_substitutions/</code> from
+  <a href="https://proteingym.org">proteingym.org</a>.</li>
+<li><code>https://files.rcsb.org/download/1BTL.cif</code>.</li>
+</ul>
+<p>With 650M the recipe takes 82 seconds on an AMD gfx1151 GPU. With 8M it takes a minute on a
+CPU.</p>
+</div>
+<h2 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1. Every mutation, zero-shot: one masked pass per residue.</span>
+<span class="n">VariantScorer</span><span class="w"> </span><span class="nf">scorer</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">,</span><span class="w"> </span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ResidueLogProbs</span><span class="w"> </span><span class="n">marginals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scorer</span><span class="p">.</span><span class="n">masked_marginals</span><span class="p">(</span><span class="n">seq</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scorer</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">marginals</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">ParseMutations</span><span class="p">(</span><span class="s">"K71S"</span><span class="p">));</span><span class="w">       </span><span class="c1">// log p(S) - log p(K)</span>
+<span class="n">MutationMapDocument</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MakeMutationMapDocument</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">scorer</span><span class="p">.</span><span class="n">single_mutant_scan</span><span class="p">(</span><span class="n">marginals</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">));</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"map.svg"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderMutationMapSvg</span><span class="p">(</span><span class="n">map</span><span class="p">);</span>
+
+<span class="c1">// 2. Contacts from attention, against the structure.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">StructureChain</span><span class="w"> </span><span class="n">chain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReadStructure</span><span class="p">(</span><span class="s">"1BTL.cif"</span><span class="p">).</span><span class="n">chain</span><span class="p">(</span><span class="s">"A"</span><span class="p">);</span>
+<span class="n">ContactPredictor</span><span class="w"> </span><span class="nf">predictor</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">,</span><span class="w"> </span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ContactMap</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">predictor</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">chain</span><span class="p">.</span><span class="n">sequence</span><span class="p">(),</span><span class="w"> </span><span class="n">LoadEsmContactHead</span><span class="p">(</span><span class="n">model_dir</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">config</span><span class="p">()));</span>
+<span class="n">ContactEvaluation</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EvaluateContacts</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">TrueContacts</span><span class="p">(</span><span class="n">chain</span><span class="p">));</span><span class="w">         </span><span class="c1">// precision at L, L/2, L/5</span>
+
+<span class="c1">// 3. Explain a mutation, check the explanation, and paint it on the structure.</span>
+<span class="n">EncoderExplainer</span><span class="w"> </span><span class="nf">explainer</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">,</span><span class="w"> </span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">EncoderTarget</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EncoderTarget</span><span class="o">::</span><span class="n">ForMutation</span><span class="p">(</span><span class="n">ParseMutations</span><span class="p">(</span><span class="s">"K71S"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ResidueRelevance</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explainer</span><span class="p">.</span><span class="n">explain</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">ResidueDeletionCurve</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DeletionCheck</span><span class="p">(</span><span class="n">explainer</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">residues</span><span class="p">);</span>
+<span class="n">ResidueTracksDocument</span><span class="w"> </span><span class="n">tracks</span><span class="p">;</span><span class="w">  </span><span class="c1">// the relevance, measured sensitivity and the model's own scores</span>
+<span class="c1">// ... tracks.residue_ids = ResidueIds(chain), so values land on the structure's residues ...</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="p">(</span><span class="s">"structure.html"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RenderStructureHtml</span><span class="p">(</span><span class="n">cif_text</span><span class="p">,</span><span class="w"> </span><span class="s">"A"</span><span class="p">,</span><span class="w"> </span><span class="n">tracks</span><span class="p">);</span>
+</code></pre></div>
+<p>Full source:
+<a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/recipes/protein_tem1.cpp"><code>examples/recipes/protein_tem1.cpp</code></a>.</p>
+<h2 id="expected-output">Expected output<a class="headerlink" href="#expected-output" title="Permanent link">&para;</a></h2>
+<p>With ESM-2 650M on the GPU:</p>
+<div class="highlight"><pre><span></span><code>BLAT_ECOLX_Stiffler_2015: 286 residues, 4996 measured variants; model esm2_t33_650M_UR50D
+
+1. Scoring every mutation
+  Spearman with the measured fitness: 0.7315 over 4996 variants
+
+2. Contacts against 1BTL.cif
+  chain A: 263 residues, precursor positions 24 to 286; V84I A184V in the crystal
+  long-range precision: P@L 0.665, P@L/2 0.824, P@L/5 0.923
+
+3. Explaining K71S (Ambler K73S), the most damaging mutation measured
+  log-odds -12.308; most relevant residues (Ambler): S70 -0.146 L76 -0.132 Y46 -0.090 S130 -0.085
+    C123 -0.080 S59 -0.077 G87 -0.076 S53 -0.076
+  deletion check: area 3.711, against 5.458 for random orders (faithful)
+</code></pre></div>
+<p>It also writes <code>mutation_map_model.svg</code>, <code>mutation_map_measured.svg</code>, <code>contact_map.svg</code>,
+<code>residue_tracks.svg</code> and <code>structure.html</code> into the output directory. With ESM-2 8M the numbers
+are lower but the story holds:</p>
+<ul>
+<li>the scan's Spearman is 0.40 and the contacts' P@L 0.05;</li>
+<li>K73S's explanation is still led by S70;</li>
+<li>the deletion check is still faithful.</li>
+</ul>
+<p>The model's map (top) and the measurements (bottom), residues 1 to 70. Blue is damaging, and
+the dots mark the wild type. The signal peptide (1–23) wasn't measured.</p>
+<p><img alt="TEM-1 mutation map, model and measured" src="../figures/tem1_mutation_maps.png" /></p>
+<p>The explanation of K73S on the structure. Blue residues pull the log-odds down, toward "this
+mutation is bad".</p>
+<p><img alt="Relevance for K73S on TEM-1" src="../figures/tem1_relevance_structure.png" /></p>
+<h2 id="whats-happening">What's happening<a class="headerlink" href="#whats-happening" title="Permanent link">&para;</a></h2>
+<p><strong>Zero-shot fitness.</strong> The model has only learned which residues proteins tend to have where.
+A substitution scores <code>log p(mutant) - log p(wild type)</code> with that residue masked. Its 0.73
+correlation with measured ampicillin resistance is ProteinGym's published ESM-2 650M number for
+this assay. The maps agree where it matters: whole columns of blue mark residues that tolerate no
+change, around the catalytic S70 (sequence position 68) and K73 for example.</p>
+<p><strong>Two numberings.</strong> The scan numbers the 286-residue precursor from 1. The crystal structure uses
+Ambler's numbering for class A β-lactamases: the mature protein starts at 26, and 239 and 253
+are skipped. The recipe places the structure's 263 residues in the precursor. It finds the
+ungapped placement with the most identical residues, which shows the crystal's two variants
+(V84I, A184V). The figures and the structure page then use the structure's own residue ids
+(<code>ResidueIds</code>), so K71S in the scan is K73S on the structure.</p>
+<p><strong>Contacts.</strong> ESM's contact head gives a long-range P@L of 0.67 on this structure. That is two
+in three of the top L pairs at least 24 residues apart are real contacts, from a model that was
+never shown a structure.</p>
+<p><strong>The explanation.</strong> The most damaging mutation hits K73, the catalytic lysine. AttnLRP traces
+its log-odds back to S70, the catalytic serine that K73 activates. Next come residues around the
+active site, S130 of the SDN loop among them.</p>
+<p>The deletion check says the explanation is faithful: masking the residues it ranks first moves
+the log-odds toward zero faster than random orders do. But <a href="../../../protein-models/#explaining-residue-by-residue">Explaining residue by
+residue</a> also found that this
+explanation survives randomizing the model's top 14 layers. So read it as which residues the
+model leans on for this prediction, not as a map of the active site.</p>
+<p>See also: <a href="../../../protein-models/">Protein language models</a> for each step on its own, and
+<code>pulsatrix_protein_views</code> and <code>pulsatrix_explain_protein</code> for the same views and checks on any
+protein.</p>
 
 
 
