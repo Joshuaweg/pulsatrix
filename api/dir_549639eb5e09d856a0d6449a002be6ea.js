@@ -160,6 +160,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "protein_explanations.hpp", "protein__explanations_8hpp.html", "protein__explanations_8hpp" ],
     [ "protein_sequences.hpp", "protein__sequences_8hpp.html", "protein__sequences_8hpp" ],
     [ "protein_structure.hpp", "protein__structure_8hpp.html", "protein__structure_8hpp" ],
+    [ "protein_training.hpp", "protein__training_8hpp.html", "protein__training_8hpp" ],
     [ "proteingym.hpp", "proteingym_8hpp.html", "proteingym_8hpp" ],
     [ "relevance_graph.hpp", "relevance__graph_8hpp.html", "relevance__graph_8hpp" ],
     [ "relu_module.hpp", "relu__module_8hpp.html", "relu__module_8hpp" ],

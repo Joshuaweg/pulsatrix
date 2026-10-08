@@ -3,6 +3,7 @@ var classpulsatrix_1_1EncoderLM =
     [ "AttentionObserver", "classpulsatrix_1_1EncoderLM.html#a8c94f06deb70a8d3e194a7ef51a24315", null ],
     [ "EncoderLM", "classpulsatrix_1_1EncoderLM.html#a55dfc36c61747d6c8dafb0ae050a3452", null ],
     [ "backward", "classpulsatrix_1_1EncoderLM.html#a3f4d95e60cba1197dd5ff1841d2165d5", null ],
+    [ "backward_hidden", "classpulsatrix_1_1EncoderLM.html#a59ad15d83a170e314f14b52e3a00a1e2", null ],
     [ "clear_padding_mask", "classpulsatrix_1_1EncoderLM.html#acd008e79de3b150be0ea4401eb12b30f", null ],
     [ "compute_device", "classpulsatrix_1_1EncoderLM.html#a649223ace1757051519628351dc0135d", null ],
     [ "config", "classpulsatrix_1_1EncoderLM.html#a172c9b659cec26384df7069bb08d42be", null ],

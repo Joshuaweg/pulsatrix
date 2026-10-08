@@ -5801,7 +5801,7 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <td>PLM-2</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/100">#100</a> (see below)</td>
 </tr>
 <tr>
 <td>PLM-8</td>
@@ -5949,7 +5949,9 @@ sources are in <a href="protein-language-models/">Protein language models: resea
   0.03-0.10), where those two agree with each other (0.29-0.50).</li>
 </ul>
 </li>
-<li><strong>Two fixes along the way.</strong><ul>
+<li>
+<p><strong>Two fixes along the way.</strong></p>
+<ul>
 <li>Deletion orders residues by support for the value's sign. Otherwise a negative log-odds
   is "deleted" in the wrong direction.</li>
 <li>Randomization redraws weight matrices only. The shared routine redrew LayerNorm gains from
@@ -5957,6 +5959,30 @@ sources are in <a href="protein-language-models/">Protein language models: resea
   randomization (similarity stayed at 0.7-0.8).</li>
 </ul>
 </li>
+<li>
+<p><strong>PLM-7</strong> trains ESM-2-shaped models. It has the masking collator, cluster sampling, ESM's
+  initialization, a training step, evaluation, and heads per protein and per residue. One step's
+  loss and every gradient match transformers, and three AdamW steps match <code>torch.optim.AdamW</code>.
+  GPU matches CPU.</p>
+</li>
+<li><strong>BioNeMo has no 8M curve.</strong> Its recipe page gives only validation perplexities for 650M and
+    3B (7.00, 6.00). The check became the published checkpoints' perplexity on our own UniRef50
+    sample: 8M 10.89 (paper 10.33), 650M 5.96 (paper 6.95). The sample isn't held out from
+    ESM-2's training data, which likely explains the low 650M figure.</li>
+<li><strong>From scratch,</strong> an 8M-shaped model reached perplexity 14.1 in 4,000 steps, against 18.2
+    for amino-acid frequencies. It took 3.7 hours, which is HIP-13's speed problem again.</li>
+<li><strong>UniRef50 sampling.</strong> UniProt's FASTA is sorted longest first, and the REST stream by
+    accession, which clumps organisms. <code>fetch_uniref50_sample.py</code> takes up to 150
+    representatives from each of about 960 accession prefixes instead.</li>
+<li><strong>Heads:</strong><ul>
+<li>A per-residue burial probe reaches Spearman 0.68 (8M) and 0.82 (650M) on held-out proteins.</li>
+<li>On ubiquitin's DMS, fine-tuning beats the probe and the zero-shot score (0.56, 0.36, 0.16).</li>
+<li>On TEM-1's, neither mean-pooled head beats zero-shot (0.27-0.28 against 0.43): one
+  substitution barely moves the mean of 286 residues' representations.</li>
+</ul>
+</li>
+<li>Not done: training in bf16 (HIP-11) and token-budget batches. Batches here are fixed
+    counts of cropped sequences.</li>
 </ul>
 <p>Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.</p>

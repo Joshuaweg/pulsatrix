@@ -21,7 +21,7 @@ var searchData=
   ['learnablescalar_18',['LearnableScalar',['../classpulsatrix_1_1LearnableScalar.html#a96e78b909dbafd720d8eb62685c71050',1,'pulsatrix::LearnableScalar']]],
   ['learning_5frate_19',['learning_rate',['../classpulsatrix_1_1AdamOptimizer.html#aeb150c11772a1d4371bca596708a796f',1,'pulsatrix::AdamOptimizer::learning_rate()'],['../classpulsatrix_1_1SGDOptimizer.html#ae5186738110ba173facccbba74814438',1,'pulsatrix::SGDOptimizer::learning_rate()']]],
   ['length_20',['length',['../classpulsatrix_1_1KVCache.html#a511eba347fd15b814d98c5b178c32a5e',1,'pulsatrix::KVCache::length()'],['../structpulsatrix_1_1ContactMapDocument.html#a7476979776fbba7b29888a890372625a',1,'pulsatrix::ContactMapDocument::length()']]],
-  ['linear_21',['Linear',['../classpulsatrix_1_1LRSchedule.html#a90920633abfbf1e0ca2927da96486f12',1,'pulsatrix::LRSchedule']]],
+  ['linear_21',['linear',['../classpulsatrix_1_1LRSchedule.html#a90920633abfbf1e0ca2927da96486f12',1,'pulsatrix::LRSchedule::Linear()'],['../classpulsatrix_1_1SequenceHead.html#a4d4b52ea612eca82cf07ee0e0ab625be',1,'pulsatrix::SequenceHead::linear()']]],
   ['linear1_22',['linear1',['../classpulsatrix_1_1XorNetwork.html#aea8944b7f9aa6259490ff2d4410b8dc1',1,'pulsatrix::XorNetwork']]],
   ['linear1_5fweight_23',['linear1_weight',['../classpulsatrix_1_1XorNetwork.html#ada65cdc5d77e6dd24102008ab05004e0',1,'pulsatrix::XorNetwork']]],
   ['linear2_24',['linear2',['../classpulsatrix_1_1XorNetwork.html#a5f219f9c5bf674697fd69f353aabbdc3',1,'pulsatrix::XorNetwork']]],

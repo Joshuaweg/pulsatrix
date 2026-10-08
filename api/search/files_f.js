@@ -13,6 +13,7 @@ var searchData=
   ['protein_5fexplanations_2ehpp_10',['protein_explanations.hpp',['../protein__explanations_8hpp.html',1,'']]],
   ['protein_5fsequences_2ehpp_11',['protein_sequences.hpp',['../protein__sequences_8hpp.html',1,'']]],
   ['protein_5fstructure_2ehpp_12',['protein_structure.hpp',['../protein__structure_8hpp.html',1,'']]],
-  ['protein_5fviews_2ehpp_13',['protein_views.hpp',['../protein__views_8hpp.html',1,'']]],
-  ['proteingym_2ehpp_14',['proteingym.hpp',['../proteingym_8hpp.html',1,'']]]
+  ['protein_5ftraining_2ehpp_13',['protein_training.hpp',['../protein__training_8hpp.html',1,'']]],
+  ['protein_5fviews_2ehpp_14',['protein_views.hpp',['../protein__views_8hpp.html',1,'']]],
+  ['proteingym_2ehpp_15',['proteingym.hpp',['../proteingym_8hpp.html',1,'']]]
 ];
