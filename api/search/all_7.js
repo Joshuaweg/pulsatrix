@@ -17,7 +17,7 @@ var searchData=
   ['hfcheckpoint_14',['HfCheckpoint',['../classpulsatrix_1_1HfCheckpoint.html',1,'pulsatrix']]],
   ['hfmodelconfig_15',['HfModelConfig',['../structpulsatrix_1_1HfModelConfig.html',1,'pulsatrix']]],
   ['hfropescaling_16',['HfRopeScaling',['../structpulsatrix_1_1HfRopeScaling.html',1,'pulsatrix']]],
-  ['hidden_17',['Hidden',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a7acdf85c69cc3c5305456a293524386e',1,'pulsatrix::NodeGene']]],
+  ['hidden_17',['hidden',['../structpulsatrix_1_1NodeGene.html#a64663eaaff545087a7584d5dab39b0d4a7acdf85c69cc3c5305456a293524386e',1,'pulsatrix::NodeGene::Hidden'],['../structpulsatrix_1_1ResidueEmbeddings.html#ace72c384a2d5e36631ddd2f967bf6051',1,'pulsatrix::ResidueEmbeddings::hidden']]],
   ['hidden_5fact_18',['hidden_act',['../structpulsatrix_1_1HfModelConfig.html#ac802a1a7823830a4a2e088527942feb3',1,'pulsatrix::HfModelConfig']]],
   ['hidden_5fdim_19',['hidden_dim',['../classpulsatrix_1_1SparseAutoencoder.html#aaf8d745803e44e25bf469d24b84433ec',1,'pulsatrix::SparseAutoencoder']]],
   ['hidden_5fsize_20',['hidden_size',['../structpulsatrix_1_1HfModelConfig.html#a56686b879c679aa4d88aa531e4ce860e',1,'pulsatrix::HfModelConfig::hidden_size'],['../structpulsatrix_1_1EncoderLMConfig.html#aaa3bcb9d42af40f59662382f1406c7a0',1,'pulsatrix::EncoderLMConfig::hidden_size']]],

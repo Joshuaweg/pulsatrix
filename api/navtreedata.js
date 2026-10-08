@@ -80,17 +80,18 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1TransformerBlock.html#ab76a3f0b3b5d175132e8f49641c491d3",
 "classpulsatrix_1_1detail_1_1LinuxSources.html#ad81fd3f08a2639c9733f75b0326523d1",
 "namespacemembers_d.html",
-"namespacepulsatrix.html#a6176ba0afe78bd0aa69aec2b670d5b8c",
-"namespacepulsatrix.html#acc1e37df8ef4f10a7d04762733588931",
-"structpulsatrix_1_1AleResult.html",
-"structpulsatrix_1_1BpeOptions.html#a5360b06dc1875cc1ea4b31b9a5499a19",
-"structpulsatrix_1_1CounterfactualTarget.html#ac8cd503291d021072068f908c1fd6211",
-"structpulsatrix_1_1FeaturizerLoss.html#a412277c60c6515d0344ef8e8567f4f43",
-"structpulsatrix_1_1HfModelConfig.html#aa7ec116684b345d1f52a8654ebebd9af",
-"structpulsatrix_1_1MorrisResult.html#a2167f8c190b0c8f1ed4ac8d67af7efb2",
-"structpulsatrix_1_1RelevanceGraphOptions.html#a214810c2b0e394c77f228793c3a07dfa",
-"structpulsatrix_1_1SobolDocument.html#a8bf6b9aeb957a9dd41f257a30ef063ee",
-"structpulsatrix_1_1TransformerBlockOptions.html#abd27ba44bbe5d002a99bc98e5836ee92"
+"namespacepulsatrix.html#a5f71b96d7325b539335f0c1fe77c0715",
+"namespacepulsatrix.html#ac55b0127cfe9bf4ce7793fef9db97400aeb5497c21260ca12facce3759273ab44",
+"structpulsatrix_1_1AdamOptimizer_1_1AdamState.html#a19f69e9bf38af0dadbc9f3a272747092",
+"structpulsatrix_1_1BenchmarkRecord.html#aa0e8a36791bb0646ff509feab44d2d6d",
+"structpulsatrix_1_1CounterfactualOptions.html#a5c7cd1bcdb84b7c5b0d6a13307b3ded3",
+"structpulsatrix_1_1FeatureDashboardDocument.html#a325ad258f03af8d4323d023ceb047158",
+"structpulsatrix_1_1HfModelConfig.html",
+"structpulsatrix_1_1ModelToken.html#aa5b9b6d6dc5e594cf3894ab94599c12d",
+"structpulsatrix_1_1ProbeOptions.html#a85976594ed80033ab9a116c62ef20f93",
+"structpulsatrix_1_1RolloutBatch.html#ad2b3cfdbccb757646d25f08147afc51f",
+"structpulsatrix_1_1TemplatePostProcessor_1_1Item.html",
+"structpulsatrix_1_1datalog_1_1TermHash.html#acdcd1731d0c974bd205ef5b95a4cfef6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
