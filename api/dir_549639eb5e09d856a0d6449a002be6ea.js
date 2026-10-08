@@ -192,6 +192,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "sinusoidal_timestep_embedding.hpp", "sinusoidal__timestep__embedding_8hpp.html", "sinusoidal__timestep__embedding_8hpp" ],
     [ "softmax_module.hpp", "softmax__module_8hpp.html", "softmax__module_8hpp" ],
     [ "sparse_autoencoder.hpp", "sparse__autoencoder_8hpp.html", "sparse__autoencoder_8hpp" ],
+    [ "steering.hpp", "steering_8hpp.html", "steering_8hpp" ],
     [ "subtb_loss.hpp", "subtb__loss_8hpp.html", "subtb__loss_8hpp" ],
     [ "successive_halving.hpp", "successive__halving_8hpp.html", "successive__halving_8hpp" ],
     [ "survivor_selection.hpp", "survivor__selection_8hpp.html", "survivor__selection_8hpp" ],

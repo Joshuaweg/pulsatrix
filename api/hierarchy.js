@@ -390,6 +390,8 @@ var hierarchy =
     [ "pulsatrix::SsmPassArgs", "structpulsatrix_1_1SsmPassArgs.html", null ],
     [ "pulsatrix::StabilityResult", "structpulsatrix_1_1StabilityResult.html", null ],
     [ "pulsatrix::CachingAllocator::Stats", "structpulsatrix_1_1CachingAllocator_1_1Stats.html", null ],
+    [ "pulsatrix::SteeringOptions", "structpulsatrix_1_1SteeringOptions.html", null ],
+    [ "pulsatrix::SteeringReport", "structpulsatrix_1_1SteeringReport.html", null ],
     [ "pulsatrix::StepResult", "structpulsatrix_1_1StepResult.html", null ],
     [ "pulsatrix::StructureChain", "structpulsatrix_1_1StructureChain.html", null ],
     [ "pulsatrix::StructureResidue", "structpulsatrix_1_1StructureResidue.html", null ],

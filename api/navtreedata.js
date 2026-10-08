@@ -81,18 +81,18 @@ var NAVTREEINDEX =
 "classpulsatrix_1_1VideoFrameDirectoryDataset.html#a77b1ffda7ac9479a47c63d998fd2c360",
 "featurizer_8hpp.html",
 "namespacepulsatrix.html#a0873bbb14c1456e1862355ece8f3ac9c",
-"namespacepulsatrix.html#a87a0367a8a25871e968563e95fe39345",
-"namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779aaf70b1ac863830a4e1ce6268c8399f54",
-"structpulsatrix_1_1AleResult.html",
-"structpulsatrix_1_1BpeOptions.html",
-"structpulsatrix_1_1CounterfactualResult.html#a85483c6d75fe998703e30ffe4fecafb4",
-"structpulsatrix_1_1FeatureDashboardDocument_1_1Example.html#a03e442c42e60eafb86c315854464a6f1",
-"structpulsatrix_1_1HfModelConfig.html#a3c321e3ac75ebf77601993b55c55be6c",
-"structpulsatrix_1_1MnistDataset.html#a84784f8903ae0e3fef56ee7f1b1edc42",
-"structpulsatrix_1_1ProbeOptions.html",
-"structpulsatrix_1_1RlRowArgs.html#a011a51dacb5a353a7c528e6bec15388f",
-"structpulsatrix_1_1SystemSample.html#a232aec337561aaeccbec56c26e605adf",
-"structpulsatrix_1_1WordScore.html#a3767c32ede293b83d1cc0d43a142a6e9"
+"namespacepulsatrix.html#a871e9a9107ca439528eafcacf6eb7f46ae33f92b6ec382adfd412624ff0c83644",
+"namespacepulsatrix.html#ae7086aa42f9ed760fa08b132212f3d3a",
+"structpulsatrix_1_1AddedToken.html#a4d8ce8346f51cb5b2438cf79d8d1501c",
+"structpulsatrix_1_1BenchmarkReport.html#a4bdc131a4b5638508305e7d1b2cbeed2",
+"structpulsatrix_1_1CounterfactualResult.html#a3910fac3e455395906f178147e00333a",
+"structpulsatrix_1_1FeatureDashboardDocument.html#ae7917be816b39b7fc1d6ebec9cb617f0",
+"structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102",
+"structpulsatrix_1_1MetricRecord.html#a9a8505d3a28002bf7994a03b32740ccf",
+"structpulsatrix_1_1Point3.html#a19b5b7532a3c735608d9d2c2308cba7b",
+"structpulsatrix_1_1RgbImageBuffer.html#aaa6dc3c779d05dbcfb9b0e94ed1c3f82",
+"structpulsatrix_1_1StructureResidue.html#a138d80b0c2596892d4837ff62665a2b3",
+"structpulsatrix_1_1WavData.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

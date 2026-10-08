@@ -3201,7 +3201,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
 <p>Feature discovery on real models, and agents that can drive the library.</p>
 <ul>
-<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 to FEAT-5 (<strong>done</strong>) to FEAT-7: the featurizer interface, TopK
+<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 to FEAT-5 and FEAT-7 (<strong>done</strong>), FEAT-6: the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering</li>
 <li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology</li>
@@ -4933,7 +4933,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/109">#109</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-8</td>
@@ -5088,7 +5088,21 @@ different input and output sizes, the skip connection and AuxK.
   - <strong>On ESM-2 8M</strong> the skip transcoder beats the plain one on every measure (loss recovered
 0.72 vs 0.59 with the layer-4 MLP replaced). Against a residual-stream TopK SAE its concept
 features are mixed: better on 3 of 6 concepts, worse on 2
-(<a href="../mechanistic-interpretability/#transcoders">table</a>).</p>
+(<a href="../mechanistic-interpretability/#transcoders">table</a>).
+- <strong>FEAT-7</strong> adds <code>steering.hpp</code>: <code>DifferenceOfMeans</code>, <code>FeaturizerDirection</code>, <code>SteeringHook</code>
+  (a HiddenStateHook) and <code>MeasureSteering</code>.
+  - <strong>The reliability report follows Tan et al.</strong> Each input's steerability is its slope of
+behavior against the coefficient. The report gives the mean, the spread, the anti-steerable
+share, and random directions of the same norm as the control (<code>over_random</code>).
+  - <strong>The behavior is a callback,</strong> so any scalar works: a logit difference, a log-probability,
+a probe's score.
+  - <strong>Steering adds to every row</strong> in MeasureSteering. SteeringHook itself takes a row mask.
+  - <strong>On ESM-2 8M the report caught a false success.</strong> Steering layer 4 toward transmembrane
+residues looks right on average at coefficient ±2, but random directions do more, and the
+response isn't linear. At ±0.5 the difference of means steers soluble proteins the wrong
+way for 66% of them, and the SAE feature doesn't steer at all
+(<a href="../mechanistic-interpretability/#steering-a-model">table</a>).
+<code>pulsatrix_steer_esm</code> defaults to ±0.5.</p>
 </li>
 </ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>

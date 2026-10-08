@@ -354,6 +354,8 @@ var annotated_dup =
       [ "SplitPreTokenizer", "classpulsatrix_1_1SplitPreTokenizer.html", "classpulsatrix_1_1SplitPreTokenizer" ],
       [ "SsmPassArgs", "structpulsatrix_1_1SsmPassArgs.html", "structpulsatrix_1_1SsmPassArgs" ],
       [ "StabilityResult", "structpulsatrix_1_1StabilityResult.html", "structpulsatrix_1_1StabilityResult" ],
+      [ "SteeringOptions", "structpulsatrix_1_1SteeringOptions.html", "structpulsatrix_1_1SteeringOptions" ],
+      [ "SteeringReport", "structpulsatrix_1_1SteeringReport.html", "structpulsatrix_1_1SteeringReport" ],
       [ "StepResult", "structpulsatrix_1_1StepResult.html", "structpulsatrix_1_1StepResult" ],
       [ "StripDecoder", "classpulsatrix_1_1StripDecoder.html", "classpulsatrix_1_1StripDecoder" ],
       [ "StructureChain", "structpulsatrix_1_1StructureChain.html", "structpulsatrix_1_1StructureChain" ],
