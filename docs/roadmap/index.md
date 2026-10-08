@@ -1103,7 +1103,7 @@ sources are in [Protein language models: research and plan](protein-language-mod
 | PLM-4 | Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with `transformers`, the top-K head average, a PDB/mmCIF reader, and precision at L, L/2 and L/5 by sequence separation | Shows whether the model learned the fold; feeds the head grid | PLM-2 | P1 | M | Done, [#97](https://github.com/Joshuaweg/pulsatrix/pull/97) (see below) |
 | PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | Done, [#98](https://github.com/Joshuaweg/pulsatrix/pull/98) (see below) |
 | PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | Done, [#99](https://github.com/Joshuaweg/pulsatrix/pull/99) (see below) |
-| PLM-7 | Masked-LM training: the 15% (80/10/10) masking collator with token dropout, cropping and cluster-weighted sampling; an ESM-2-8M-shaped model on a UniRef50 sample, checked against BioNeMo's curve; per-residue and per-protein fine-tuning heads | Training and transfer learning; full pretraining waits on HIP-11 | PLM-2 | P1 | M | |
+| PLM-7 | Masked-LM training: the 15% (80/10/10) masking collator with token dropout, cropping and cluster-weighted sampling; an ESM-2-8M-shaped model on a UniRef50 sample, checked against BioNeMo's curve; per-residue and per-protein fine-tuning heads | Training and transfer learning; full pretraining waits on HIP-11 | PLM-2 | P1 | M | Done, [#100](https://github.com/Joshuaweg/pulsatrix/pull/100) (see below) |
 | PLM-8 | Probes and features: per-layer linear probes (DSSP, accessibility, binding sites) with control tasks; an InterPLM-style SAE on ESM-2-8M with features matched to Swiss-Prot annotations; a feature dashboard with a structure panel | Concept-level interpretability | PLM-5, FEAT-1 | P2 | L | |
 | PLM-9 | A tutorial on one protein (TEM-1 β-lactamase): scan every mutation against its DMS, draw the contact map against its structure, and show relevance on the 3D structure | The whole path, end to end | PLM-3 to PLM-6 | P1 | S | |
 
@@ -1220,6 +1220,27 @@ sources are in [Protein language models: research and plan](protein-language-mod
     - Randomization redraws weight matrices only. The shared routine redrew LayerNorm gains from
       their own small spread, which made a pre-LN block nearly a residual connection and hid the
       randomization (similarity stayed at 0.7-0.8).
+
+- **PLM-7** trains ESM-2-shaped models. It has the masking collator, cluster sampling, ESM's
+  initialization, a training step, evaluation, and heads per protein and per residue. One step's
+  loss and every gradient match transformers, and three AdamW steps match `torch.optim.AdamW`.
+  GPU matches CPU.
+  - **BioNeMo has no 8M curve.** Its recipe page gives only validation perplexities for 650M and
+    3B (7.00, 6.00). The check became the published checkpoints' perplexity on our own UniRef50
+    sample: 8M 10.89 (paper 10.33), 650M 5.96 (paper 6.95). The sample isn't held out from
+    ESM-2's training data, which likely explains the low 650M figure.
+  - **From scratch,** an 8M-shaped model reached perplexity 14.1 in 4,000 steps, against 18.2
+    for amino-acid frequencies. It took 3.7 hours, which is HIP-13's speed problem again.
+  - **UniRef50 sampling.** UniProt's FASTA is sorted longest first, and the REST stream by
+    accession, which clumps organisms. `fetch_uniref50_sample.py` takes up to 150
+    representatives from each of about 960 accession prefixes instead.
+  - **Heads:**
+    - A per-residue burial probe reaches Spearman 0.68 (8M) and 0.82 (650M) on held-out proteins.
+    - On ubiquitin's DMS, fine-tuning beats the probe and the zero-shot score (0.56, 0.36, 0.16).
+    - On TEM-1's, neither mean-pooled head beats zero-shot (0.27-0.28 against 0.43): one
+      substitution barely moves the mean of 286 residues' representations.
+  - Not done: training in bf16 (HIP-11) and token-budget batches. Batches here are fixed
+    counts of cropped sequences.
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.

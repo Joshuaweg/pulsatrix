@@ -246,8 +246,15 @@ Tensor EncoderLM::backward(const Tensor& grad_output) {
         backend_->column_sums(g_flat.data(), lm_bias_grad_.data(), static_cast<size_t>(N * L), static_cast<size_t>(V), 1.0f);
     }
     Tensor g = Reshaped(lm_decoder_.backward(g_flat), Shape({N, L, h}));
-    g = RowsBackward(lm_dense_, lm_gelu_.backward(RowsBackward(lm_norm_, g, h)), h);
-    g = RowsBackward(norm_, g, h);
+    return backward_hidden(RowsBackward(lm_dense_, lm_gelu_.backward(RowsBackward(lm_norm_, g, h)), h));
+}
+
+Tensor EncoderLM::backward_hidden(const Tensor& grad_hidden) {
+    require_device(grad_hidden, *compute_device(), "EncoderLM::backward_hidden");
+    if (!has_forwarded_) throw std::logic_error("EncoderLM::backward_hidden: called before any forward()");
+    const int64_t N = last_ids_shape_.dim(0), L = last_ids_shape_.dim(1), h = config_.hidden_size;
+    if (grad_hidden.numel() != N * L * h) throw std::invalid_argument("EncoderLM::backward_hidden: the gradient must be (N, L, hidden_size)");
+    Tensor g = RowsBackward(norm_, Reshaped(grad_hidden, Shape({N, L, h})), h);
     for (auto it = layers_.rbegin(); it != layers_.rend(); ++it) g = (*it)->backward(g);
     Tensor g_embed(g.shape(), backend_);
     backend_->mul(g.data(), embed_scale_.data(), g_embed.data(), static_cast<size_t>(g.numel()));
