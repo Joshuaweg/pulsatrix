@@ -14,10 +14,13 @@
 //   probe on the residues' local sequence (one-hot, +-3 residues) and on the same layer of a
 //   randomly initialized model. Uses --probe-proteins proteins (default 600).
 // --sae: trains a featurizer on layer --sae-layer's residues of --sae-proteins proteins (default
-//   2000), each dimension standardized by the training residues: --featurizer l1 (a
-//   SparseAutoencoder, FEAT-1; --l1, default 0.003) or topk (a TopKSparseAutoencoder, FEAT-2; --k,
-//   default 32), with --features latents (default 8 x hidden), --sae-epochs (default 10) and
-//   --sae-batch (default 512). An SAE trained the same way on a randomly initialized model is the
+//   2000), each dimension standardized by the training residues, with --features latents (default
+//   8 x hidden), --sae-epochs (default 10) and --sae-batch (default 512). --featurizer picks it:
+//   - l1: a SparseAutoencoder (FEAT-1), --l1 (default 0.003);
+//   - topk: a TopKSparseAutoencoder (FEAT-2), --k (default 32);
+//   - batchtopk, matryoshka: BatchTopK, and Matryoshka BatchTopK with prefixes of 1/16 and 1/4
+//     of the latents (FEAT-4), --k;
+//   - jumprelu: a JumpReLUSparseAutoencoder (FEAT-4), --l0 (default 0.05). An SAE trained the same way on a randomly initialized model is the
 //   baseline for everything that follows (FEAT-3):
 //   - reconstruction on held-out residues: explained variance, cosine, norm ratio, L0, dead and
 //     dense latents;
@@ -53,6 +56,7 @@
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/encoder_lm.hpp"
 #include "pulsatrix/featurizer_metrics.hpp"
+#include "pulsatrix/jumprelu_sparse_autoencoder.hpp"
 #include "pulsatrix/protein_concepts.hpp"
 #include "pulsatrix/protein_sequences.hpp"
 #include "pulsatrix/protein_training.hpp"
@@ -72,7 +76,8 @@ using namespace pulsatrix;
     std::cerr << "pulsatrix_probe_esm: " << problem << "\n"
               << "usage: pulsatrix_probe_esm MODEL_DIR --annotations FILE.jsonl --out DIR (--probes | --sae)\n"
               << "       [--layers 0,1,...] [--concepts A,B,...] [--probe-proteins N] [--sae-layer L] [--sae-proteins N]\n"
-              << "       [--featurizer l1|topk] [--features N] [--l1 L] [--k K] [--sae-epochs N] [--sae-batch N]\n"
+              << "       [--featurizer l1|topk|batchtopk|matryoshka|jumprelu] [--features N] [--l1 L] [--k K] [--l0 L]\n"
+              << "       [--sae-epochs N] [--sae-batch N]\n"
               << "       [--loss-proteins N] [--structures DIR] [--seed S] [--device cpu|hip]\n";
     std::exit(2);
 }
@@ -86,7 +91,7 @@ struct Options {
                                          "Coiled coil", "Motif"};
     int64_t probe_proteins = 600, sae_proteins = 2000, sae_layer = -1, features = 0, sae_epochs = 10, sae_batch = 512, k = 32,
             loss_proteins = 100;
-    float l1 = 0.003f;
+    float l1 = 0.003f, l0 = 0.05f;
     uint64_t seed = 0;
 };
 
@@ -195,11 +200,24 @@ std::unique_ptr<Featurizer> TrainSae(DeviceBackend* backend, const std::vector<f
     const int64_t m = o.features > 0 ? o.features : 8 * hidden;
     const auto N = static_cast<int64_t>(rows.size() / static_cast<size_t>(hidden));
     std::unique_ptr<Featurizer> sae;
-    if (o.featurizer == "topk") {
+    if (o.featurizer == "jumprelu") {
+        JumpReLUSaeOptions j;
+        j.l0_coefficient = o.l0;
+        j.bandwidth = 0.05f;
+        j.initial_threshold = 0.1f;
+        j.seed = o.seed + 11;
+        auto jump = std::make_unique<JumpReLUSparseAutoencoder>(hidden, m, backend, j);
+        const int64_t sample = std::min<int64_t>(N, 65536);
+        jump->initialize_bias(Tensor(Shape({sample, hidden}), backend, std::vector<float>(rows.begin(), rows.begin() + sample * hidden),
+                                     backend->device()));
+        sae = std::move(jump);
+    } else if (o.featurizer != "l1") {
         TopKSaeOptions t;
         t.k = o.k;
         t.dead_after = N;  // a latent silent for a whole epoch is dead
         t.seed = o.seed + 11;
+        t.batch_topk = o.featurizer == "batchtopk" || o.featurizer == "matryoshka";
+        if (o.featurizer == "matryoshka") t.matryoshka_prefixes = {m / 16, m / 4};
         auto topk = std::make_unique<TopKSparseAutoencoder>(hidden, m, backend, t);
         const int64_t sample = std::min<int64_t>(N, 65536);
         topk->initialize_bias(Tensor(Shape({sample, hidden}), backend, std::vector<float>(rows.begin(), rows.begin() + sample * hidden),
@@ -362,7 +380,7 @@ void RunSae(DeviceBackend* backend, EncoderLM& model, const TextTokenizer& tok, 
     const ReconstructionMetrics rec = EvaluateReconstruction(*sae, Tensor(Shape({held_rows, trained.hidden}), backend, test_rows, backend->device()));
     const ReconstructionMetrics rec_random =
         EvaluateReconstruction(*sae_random, Tensor(Shape({held_rows, untrained.hidden}), backend, test_rows_random, backend->device()));
-    std::printf("%s SAE on layer %ld, %ld latents; held-out residues:\n", o.featurizer == "topk" ? "TopK" : "L1", static_cast<long>(layer),
+    std::printf("%s SAE on layer %ld, %ld latents; held-out residues:\n", o.featurizer.c_str(), static_cast<long>(layer),
                 static_cast<long>(codes.num_features));
     std::printf("  %-14s %8s %8s %8s %8s %8s %8s\n", "", "EV", "cosine", "|x^|/|x|", "L0", "dead", "dense");
     for (const auto& [label, r] : {std::pair<const char*, const ReconstructionMetrics*>{"trained model", &rec}, {"random model", &rec_random}}) {
@@ -553,6 +571,7 @@ int main(int argc, char** argv) {
         else if (a == "--l1") o.l1 = std::strtof(value().c_str(), nullptr);
         else if (a == "--featurizer") o.featurizer = value();
         else if (a == "--k") o.k = std::atoll(value().c_str());
+        else if (a == "--l0") o.l0 = std::strtof(value().c_str(), nullptr);
         else if (a == "--loss-proteins") o.loss_proteins = std::atoll(value().c_str());
         else if (a == "--sae-epochs") o.sae_epochs = std::atoll(value().c_str());
         else if (a == "--sae-batch") o.sae_batch = std::atoll(value().c_str());
@@ -562,7 +581,9 @@ int main(int argc, char** argv) {
     }
     if (o.annotations.empty() || o.out.empty()) Usage("needs --annotations and --out");
     if (!o.probes && !o.sae) Usage("needs --probes, --sae or both");
-    if (o.featurizer != "l1" && o.featurizer != "topk") Usage("--featurizer must be l1 or topk");
+    if (o.featurizer != "l1" && o.featurizer != "topk" && o.featurizer != "batchtopk" && o.featurizer != "matryoshka" && o.featurizer != "jumprelu") {
+        Usage("--featurizer must be l1, topk, batchtopk, matryoshka or jumprelu");
+    }
     try {
         if (o.device == "cpu") {
             CPUBackend cpu;

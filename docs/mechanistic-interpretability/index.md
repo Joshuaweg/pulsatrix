@@ -166,6 +166,66 @@ std::vector<int64_t> dead = sae.dead_latents();
 - **Resuming training.** Checkpoints hold the parameters. Save `inputs_since_fired()` too, and
   restore it with `set_inputs_since_fired()`, or every latent starts out alive again.
 
+#### BatchTopK, Matryoshka and JumpReLU
+
+Three variants fix specific failures of TopK:
+
+| Variant | Fixes | How |
+|---|---|---|
+| BatchTopK (Bussmann et al., arXiv 2412.06410): `TopKSaeOptions::batch_topk` | Every input gets exactly k latents, however much it contains | Training keeps the batch's `N * k` largest activations wherever they fall. Inference uses a threshold learned from training (`threshold()`, saved in checkpoints) |
+| Matryoshka (Bussmann et al., arXiv 2503.17547): `matryoshka_prefixes` | Absorption, and features split as the dictionary grows | The loss sums the reconstruction errors of nested prefixes, `[0, m/16)`, `[0, m/4)` and all `m`, so the first latents must work alone and learn general features |
+| JumpReLU (Rajamanoharan et al., arXiv 2407.14435): `JumpReLUSparseAutoencoder` | L0 fixed by hand instead of learned | Each latent learns a threshold θ, and the loss penalizes L0 directly (λ). The step's gradient comes from straight-through estimators with a rectangle kernel |
+
+```cpp
+TopKSaeOptions o;
+o.k = 16;
+o.batch_topk = true;
+o.matryoshka_prefixes = {256, 1024};         // 4096 is added
+TopKSparseAutoencoder matryoshka(320, 4096, &backend, o);
+
+JumpReLUSaeOptions j;
+j.l0_coefficient = 0.01f;                    // λ: higher means sparser
+JumpReLUSparseAutoencoder jump(320, 4096, &backend, j);
+```
+
+On synthetic data (`tests/sae_variants_test.cpp`):
+- **BatchTopK spends latents where inputs need them.** It uses 1.1 latents on one-direction
+  inputs and 4.6 on five-direction inputs, at an average of k = 3.
+- **Matryoshka stops absorption.** The data is Chanin et al.'s toy hierarchy: a parent feature
+  with ten rare children. The parent is absorbed into its children in 6.6% to 12.6% of inputs
+  with plain BatchTopK (four data seeds), and in none with Matryoshka.
+- **JumpReLU's λ trades L0 for reconstruction.** At λ = 0.005, L0 is 6.3 and 2 of 12 true
+  directions are recovered. At λ = 0.05, L0 is 2.6 and all 12 are. Too little penalty spreads
+  features across latents.
+
+All three match PyTorch renderings of their papers (`tools/golden/make_sae_variants_golden.py`)
+in loss, gradients and two Adam steps.
+
+**On ESM-2 8M** (layer 4, 2,560 latents, the setup below). `pulsatrix_probe_esm --featurizer`
+trains each variant. JumpReLU's L0 isn't set directly: λ = 0.005 gave 12.6, 0.01 gave 7.6 and
+0.02 gave 4.9.
+
+| | L1 | TopK | BatchTopK | Matryoshka | JumpReLU (λ 0.005) |
+|---|---|---|---|---|---|
+| L0 | 17.0 | 16.0 | 16.5 | 16.5 | 12.6 |
+| Explained variance | 0.66 | 0.78 | 0.78 | 0.77 | 0.75 |
+| Loss recovered | 0.90 | 0.96 | 0.95 | 0.90 | 0.95 |
+| Helix: best feature's F1 | 0.16 | 0.33 | 0.33 | **0.48** | 0.37 |
+| Transmembrane: best feature's F1 | 0.52 | 0.63 | 0.69 | **0.78** | 0.73 |
+| Absorbed: helix (random model) | 42% (10%) | 25% (15%) | 27% (5%) | **22%** (15%) | 29% (8%) |
+| Absorbed: strand (random model) | 57% (1%) | 50% (8%) | 38% (16%) | **35%** (10%) | 38% (8%) |
+| Absorbed: transmembrane (random model) | 34% (21%) | 30% (17%) | 19% (2%) | **9%** (4%) | 34% (11%) |
+
+- **Matryoshka finds the cleanest concept features.** It absorbs least, and its best single
+  features match helix and transmembrane residues best. As Bussmann et al. report, it pays in
+  reconstruction: it recovers 0.90 of the loss to TopK's 0.96.
+- **BatchTopK matches TopK** in reconstruction and absorbs less.
+- **JumpReLU matches TopK's loss recovered with 12.6 latents** instead of 16. It absorbs no
+  less.
+- The random model's absorption is the floor for each figure. For example, Matryoshka's 9% on
+  transmembrane is close to its random-model 4%.
+
+
 #### Measuring a featurizer
 
 `featurizer_metrics.hpp` holds SAEBench's core measures (Karvonen et al., arXiv 2503.09532).

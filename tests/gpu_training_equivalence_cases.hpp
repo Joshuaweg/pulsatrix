@@ -61,6 +61,7 @@
 #include "pulsatrix/protein_training.hpp"
 #include "pulsatrix/sparse_autoencoder.hpp"
 #include "pulsatrix/topk_sparse_autoencoder.hpp"
+#include "pulsatrix/jumprelu_sparse_autoencoder.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/tied_lm_head_module.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -756,6 +757,41 @@ inline void TopKFeaturizerTrainingMatches(DeviceBackend& gpu) {
     EXPECT_EQ(c.dead_latents(), g.dead_latents());
     ExpectParametersNear(c, g, 1e-3f);
     ExpectNear(c.encode(cx), g.encode(gx), 1e-4f);
+}
+
+// FEAT-4: Matryoshka BatchTopK (its threshold too) and JumpReLU (its thresholds' straight-through
+// gradient too).
+inline void SaeVariantsTrainingMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::vector<float> x = Random(32 * 6, 395);
+    const Tensor cx(Shape({32, 6}), &cpu, x), gx(Shape({32, 6}), &gpu, x);
+    TopKSaeOptions o;
+    o.k = 3;
+    o.dead_after = 32;
+    o.batch_topk = true;
+    o.matryoshka_prefixes = {4, 10};
+    TopKSparseAutoencoder c(6, 16, &cpu, o), g(6, 16, &gpu, o);
+    AdamOptimizer co(0.01f, &cpu), go(0.01f, &gpu);
+    for (int step = 0; step < 5; ++step) {
+        const FeaturizerLoss cl = TrainFeaturizer(c, cx, co), gl = TrainFeaturizer(g, gx, go);
+        EXPECT_NEAR(cl.total, gl.total, 1e-4f) << "step " << step;
+    }
+    ExpectParametersNear(c, g, 1e-3f);
+    EXPECT_NEAR(c.threshold(), g.threshold(), 1e-4f);
+    ExpectNear(c.encode(cx), g.encode(gx), 1e-4f);
+
+    JumpReLUSaeOptions j;
+    j.bandwidth = 0.5f;
+    j.initial_threshold = 0.2f;
+    j.l0_coefficient = 0.01f;
+    JumpReLUSparseAutoencoder cj(6, 16, &cpu, j), gj(6, 16, &gpu, j);
+    AdamOptimizer cjo(0.01f, &cpu), gjo(0.01f, &gpu);
+    for (int step = 0; step < 5; ++step) {
+        const FeaturizerLoss cl = TrainFeaturizer(cj, cx, cjo), gl = TrainFeaturizer(gj, gx, gjo);
+        EXPECT_NEAR(cl.total, gl.total, 1e-4f) << "step " << step;
+    }
+    ExpectParametersNear(cj, gj, 1e-3f);
+    ExpectNear(cj.encode(cx), gj.encode(gx), 1e-4f);
 }
 
 inline void TiedLMHeadMatches(DeviceBackend& gpu) {
@@ -1639,6 +1675,7 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     TEST_F(FIXTURE, MaskedLMTrainingMatchesCPU) { ::pulsatrix::training_equivalence::MaskedLMTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, FeaturizerTrainingMatchesCPU) { ::pulsatrix::training_equivalence::FeaturizerTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, TopKFeaturizerTrainingMatchesCPU) { ::pulsatrix::training_equivalence::TopKFeaturizerTrainingMatches(MEMBER); } \
+    TEST_F(FIXTURE, SaeVariantsTrainingMatchCPU) { ::pulsatrix::training_equivalence::SaeVariantsTrainingMatch(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \
