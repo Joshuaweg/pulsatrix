@@ -1102,7 +1102,7 @@ sources are in [Protein language models: research and plan](protein-language-mod
 | PLM-3 | Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and full single-mutant scans. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset | The headline use and the strongest numerical check | PLM-2 | P0 | M | Done, [#96](https://github.com/Joshuaweg/pulsatrix/pull/96) (see below) |
 | PLM-4 | Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with `transformers`, the top-K head average, a PDB/mmCIF reader, and precision at L, L/2 and L/5 by sequence separation | Shows whether the model learned the fold; feeds the head grid | PLM-2 | P1 | M | Done, [#97](https://github.com/Joshuaweg/pulsatrix/pull/97) (see below) |
 | PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | Done, [#98](https://github.com/Joshuaweg/pulsatrix/pull/98) (see below) |
-| PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | |
+| PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | Done, [#99](https://github.com/Joshuaweg/pulsatrix/pull/99) (see below) |
 | PLM-7 | Masked-LM training: the 15% (80/10/10) masking collator with token dropout, cropping and cluster-weighted sampling; an ESM-2-8M-shaped model on a UniRef50 sample, checked against BioNeMo's curve; per-residue and per-protein fine-tuning heads | Training and transfer learning; full pretraining waits on HIP-11 | PLM-2 | P1 | M | |
 | PLM-8 | Probes and features: per-layer linear probes (DSSP, accessibility, binding sites) with control tasks; an InterPLM-style SAE on ESM-2-8M with features matched to Swiss-Prot annotations; a feature dashboard with a structure panel | Concept-level interpretability | PLM-5, FEAT-1 | P2 | L | |
 | PLM-9 | A tutorial on one protein (TEM-1 β-lactamase): scan every mutation against its DMS, draw the contact map against its structure, and show relevance on the 3D structure | The whole path, end to end | PLM-3 to PLM-6 | P1 | S | |
@@ -1194,6 +1194,32 @@ sources are in [Protein language models: research and plan](protein-language-mod
   - Figures number residues consecutively from `first_position`. A structure whose author
     numbering skips numbers (TEM-1's Ambler numbering skips 239 and 253) is numbered by position
     in the figures, by author id on the structure page.
+
+- **PLM-6** explains ESM-2 with AttnLRP from four targets: a masked residue's logit, a mutation's
+  log-odds, and linear heads per protein and per residue. It matches LXT's rules on transformers'
+  ESM-2 to 4.8e-5 on 650M, for every token and layer. Residue relevance graphs export to
+  Neuronpedia's viewer.
+  - **LayerNorm's rule was wrong for AttnLRP.** `LayerNormModule` passed relevance straight
+    through, which equals LXT's rule for RMSNorm but not for LayerNorm: LXT holds only the
+    standard deviation constant, so the mean subtraction and the bias stay in the explanation.
+    The first comparison missed by a factor of 4,000. `LRPRuleConfig::layer_norm_detach_std` adds
+    LXT's rule, and `LxtAttnLrpConfig()` turns it on. The default is unchanged, so earlier
+    results stand. LLM-7's models use RMSNorm, so their parity was never affected.
+  - **No LXT patch for ESM.** LXT 2.1 patches BERT but not ESM, so the reference applies its
+    rules to ESM the way the BERT patch does: `make_esm_attnlrp_reference.py`, with a
+    plain-gradient negative control.
+  - **The checks found what they're for.**
+    - Deletion confirms faithfulness on ubiquitin and TEM-1.
+    - TEM-1's explanation keeps most of its ranking (0.83) while the top 14 layers are
+      randomized: it mostly reflects the lower layers.
+    - The relevance profile barely agrees with DMS sensitivity or conservation (Spearman
+      0.03-0.10), where those two agree with each other (0.29-0.50).
+  - **Two fixes along the way.**
+    - Deletion orders residues by support for the value's sign. Otherwise a negative log-odds
+      is "deleted" in the wrong direction.
+    - Randomization redraws weight matrices only. The shared routine redrew LayerNorm gains from
+      their own small spread, which made a pre-LN block nearly a residual connection and hid the
+      randomization (similarity stayed at 0.7-0.8).
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.

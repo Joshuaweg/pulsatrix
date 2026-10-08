@@ -104,7 +104,7 @@ Tensor LayerNormModule::backward(const Tensor& grad_output) {
     return grad_input;
 }
 
-Tensor LayerNormModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig&) {
+Tensor LayerNormModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
     require_device(relevance_out, *compute_device(), "LayerNormModule::propagate_relevance");
     if (!has_forwarded_) {
         throw std::logic_error("LayerNormModule::propagate_relevance: called before any forward()");
@@ -113,7 +113,31 @@ Tensor LayerNormModule::propagate_relevance(const Tensor& relevance_out, const L
         throw std::invalid_argument(
             "LayerNormModule::propagate_relevance: relevance_out size must match the cached forward shape");
     }
-    return Tensor(relevance_out);
+    if (!config.layer_norm_detach_std) return Tensor(relevance_out);
+    // y = gamma * xhat + beta with std held constant: g = R / stab(z) by the epsilon rule, then
+    // R_x = x * d(y . g)/dx = x * (c - mean(c)) / std, where c = gamma * g.
+    const int64_t F = gamma_.numel(), N = relevance_out.numel() / F;
+    const std::vector<float> r = relevance_out.to_host_vector(), x = last_input_.to_host_vector(), xhat = last_xhat_.to_host_vector(),
+                             sd = last_std_.to_host_vector(), gamma = gamma_.to_host_vector(), beta = beta_.to_host_vector();
+    std::vector<float> out(static_cast<size_t>(N * F));
+    std::vector<double> c(static_cast<size_t>(F));
+    for (int64_t n = 0; n < N; ++n) {
+        double mean = 0;
+        for (int64_t i = 0; i < F; ++i) {
+            const size_t k = static_cast<size_t>(n * F + i);
+            const double z = static_cast<double>(gamma[static_cast<size_t>(i)]) * xhat[k] +
+                             (config.epsilon_bias_in_denominator ? beta[static_cast<size_t>(i)] : 0.0f);
+            const double stab = z + (z >= 0 ? config.epsilon : -config.epsilon);
+            c[static_cast<size_t>(i)] = gamma[static_cast<size_t>(i)] * (r[k] / stab);
+            mean += c[static_cast<size_t>(i)];
+        }
+        mean /= static_cast<double>(F);
+        for (int64_t i = 0; i < F; ++i) {
+            const size_t k = static_cast<size_t>(n * F + i);
+            out[k] = static_cast<float>(x[k] * (c[static_cast<size_t>(i)] - mean) / sd[static_cast<size_t>(n)]);
+        }
+    }
+    return Tensor(relevance_out.shape(), relevance_out.backend(), out, relevance_out.device());
 }
 
 void LayerNormModule::release_activations() {

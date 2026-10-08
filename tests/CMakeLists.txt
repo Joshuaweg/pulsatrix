@@ -148,6 +148,7 @@ add_executable(pulsatrix_tests
     protein_contacts_test.cpp
     protein_structure_test.cpp
     protein_views_test.cpp
+    protein_explanations_test.cpp
     fitness_metrics_test.cpp
     benchmark_test.cpp
     caching_allocator_test.cpp

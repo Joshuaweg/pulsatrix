@@ -9,8 +9,9 @@ train them further and explain their predictions.
 
 It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. It predicts
 which residues touch from the model's attention and checks them against experimental
-structures, and draws all of it the way biologists read it: mutation maps, sequence logos,
-contact maps, residue tracks and the 3D structure. Checked explanations come next (see the
+structures, draws all of it the way biologists read it (mutation maps, sequence logos,
+contact maps, residue tracks and the 3D structure), and explains its predictions residue by
+residue, with checks on those explanations. Training comes next (see the
 [roadmap](../roadmap/index.md#plm-protein-language-models) and the
 [research and plan](../roadmap/protein-language-models.md)).
 
@@ -350,9 +351,95 @@ consecutively in the figures; the structure page uses the real ids.
   fine-tuning.
 - `TokenCrossEntropyLoss` with ignore-index -100 is the masked-LM loss.
 - `propagate_relevance()` explains a logit with LRP and returns relevance per input token.
-  `propagate_relevance_by_layer()` stops at every layer, which is what attribution graphs use.
-- The masking step for masked-LM training, fine-tuning heads, and checked residue-level
-  explanations are roadmap items PLM-7 and PLM-6.
+  `propagate_relevance_by_layer()` stops at every layer, which is what attribution graphs use;
+  `propagate_hidden_relevance_by_layer()` starts from the representations, for your own head.
+- The masking step for masked-LM training and fine-tuning heads are roadmap item PLM-7.
+
+## Explaining residue by residue
+
+`EncoderExplainer` (`protein_explanations.hpp`) runs AttnLRP from one of four targets back to
+the input residues:
+
+| Target | Explains |
+|---|---|
+| `EncoderTarget::MaskedToken(i, 'L')` | The logit of L at residue i, with i masked |
+| `EncoderTarget::ForMutation(ParseMutations("K48F")[0])` | The mutation's log-odds, `logit(F) - logit(K)` at the masked residue: its masked-marginal score |
+| `EncoderTarget::ProteinHead(head)` | A linear head on the mean of the residues' representations (a per-protein regression or probe) |
+| `EncoderTarget::ResidueHead(head, i)` | A linear head on residue i's representation |
+
+```cpp
+#include "pulsatrix/protein_explanations.hpp"
+
+EncoderExplainer explainer(*model, tok, &backend);
+ResidueRelevance r = explainer.explain(seq, EncoderTarget::ForMutation(ParseMutations("K48F")[0]));
+// r.residues: one value per residue; r.layers: per token after every layer; r.value: the log-odds
+AttributionGraph g = explainer.relevance_graph(seq, target, options);  // for Neuronpedia's viewer
+```
+
+**It matches LXT.** `LxtAttnLrpConfig()` applies AttnLRP's rules as LXT does: the identity rule
+on GELU, the uniform rule at attention's matmuls, the epsilon rule elsewhere, and LayerNorm with
+only its standard deviation held constant. LXT has no ESM patch, so
+`tools/golden/make_esm_attnlrp_reference.py` applies those rules to transformers' ESM-2 the way
+LXT's BERT patch does. On all four targets, for every token and after every layer:
+
+| Model | Worst difference (relative to the largest relevance) | Lowest correlation |
+|---|---|---|
+| Tiny random ESM-2 (CI) | under 1e-4 | 1.0000 |
+| ESM-2 8M | 1.5e-4 | 1.000000 |
+| ESM-2 650M | 4.8e-5 | 1.000000 |
+
+Plain gradient × input, the negative control, misses by more than 5%.
+
+### The checks
+
+A residue map can look plausible and still not explain the model: a 2026 study found integrated
+gradients on a well-performing ESM-2 classifier didn't recover annotated epitopes. So
+explanations come with checks against something independent of how they look:
+
+- **`DeletionCheck`.** It masks residues in the order they support the value, and compares
+  that with random orders. A faithful explanation moves the value toward zero faster.
+- **`RandomizationCheck`** (Adebayo et al. 2018). It randomizes the weight matrices from the LM
+  head down, layer by layer, and re-explains. An explanation that stays the same isn't
+  explaining the model.
+- **`CompareResidueSignals`.** It compares a per-residue explanation with an independent signal:
+  - `DmsPositionSensitivity`, how much a deep mutational scan's single mutants hurt at each
+    residue;
+  - `AlignmentConservation`, from an A2M alignment such as ProteinGym's.
+- **`RelevanceProfile`.** It turns explanations into a per-protein signal to compare: how much
+  the model draws on each residue when predicting the others. That's one explanation per
+  residue.
+
+`tools/plm/pulsatrix_explain_protein` runs all of them:
+
+```bash
+pulsatrix_explain_protein esm2_t33_650M_UR50D --assay BLAT_ECOLX_Stiffler_2015 \
+    --reference DMS_substitutions.csv --dms-dir DMS_ProteinGym_substitutions \
+    --msa BLAT_ECOLX_full_11-26-2021_b02.a2m --profile --out tem1/ --device hip
+```
+
+ESM-2 650M on gfx1151, explaining each assay's most damaging single mutant:
+
+| | Ubiquitin (RL40A_YEAST, K48F) | TEM-1 (BLAT_ECOLX, K71S) |
+|---|---|---|
+| Deletion: value left (area), relevant first vs random | 3.81 vs 5.23: faithful | 3.27 vs 5.23: faithful |
+| Randomization: similarity after the LM head; after the top 14 layers (32 to 19) | 0.25; 0.08 | 0.67; 0.83 |
+| Profile vs DMS sensitivity: Spearman (top-10% overlap, chance) | 0.04 (0.29, 0.09) | 0.08 (0.19, 0.10) |
+| Profile vs conservation | 0.03 (0.00, 0.09) | 0.10 (0.38, 0.10) |
+| Conservation vs DMS sensitivity, for scale | 0.29 | 0.50 |
+
+What this says:
+
+- **Deletion.** Both explanations rank residues by how much the prediction needs them.
+- **Randomization.** Ubiquitin's explanation depends on the whole model. TEM-1's doesn't: its
+  residue ranking survives randomizing the top 14 layers and only drops (to 0.16) once layer 18
+  is randomized too.
+  So most of what that map shows comes from the lower layers.
+- **Agreement.** Neither protein's relevance profile matches the functional signals: what the
+  model draws on to predict residues isn't where mutations hurt or where the family is
+  conserved. Read relevance maps as what the model uses, not as maps of function.
+
+The run takes 2 minutes for ubiquitin (128 residues) and 6 for TEM-1 (286), most of it the
+profile.
 
 ## Checking against Hugging Face
 
