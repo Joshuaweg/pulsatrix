@@ -5,6 +5,10 @@
 
 namespace pulsatrix {
 
+FeaturizerLoss Featurizer::loss_and_backward_with_target(const Tensor&, const Tensor&, std::vector<float>*) {
+    throw std::invalid_argument("Featurizer::loss_and_backward_with_target: this featurizer reconstructs its input; use loss_and_backward()");
+}
+
 FeatureActivityTracker::FeatureActivityTracker(int64_t num_features) {
     if (num_features < 1) throw std::invalid_argument("FeatureActivityTracker: num_features must be at least 1");
     fired_.assign(static_cast<size_t>(num_features), 0);

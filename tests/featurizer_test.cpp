@@ -41,7 +41,8 @@ TEST(Featurizer, NormalizingTheDecoderKeepsReconstructionsAndMakesDirectionsUnit
     for (size_t i = 0; i < before.size(); ++i) EXPECT_NEAR(after[i], before[i], 1e-5) << i;
     for (int64_t f = 0; f < sae.num_features(); ++f) {
         double sq = 0;
-        for (float v : sae.decoder_direction(f)) sq += static_cast<double>(v) * v;
+        const std::vector<float> direction = sae.decoder_direction(f);
+        for (float v : direction) sq += static_cast<double>(v) * v;
         EXPECT_NEAR(std::sqrt(sq), 1.0, 1e-5) << f;
     }
     // decode(encode(x)) is the reconstruction.

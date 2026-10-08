@@ -35,6 +35,10 @@ struct FeaturizerLoss {
  * block-sparse featurizers (FEAT-5, FEAT-6) will too, so training, metrics and views work for
  * all of them.
  *
+ * A **transcoder** (FEAT-5) predicts another activation instead of reconstructing its input: an
+ * MLP's output from its input. It has an output_dim(), predict() adds what doesn't go through the
+ * codes (a skip connection), and it trains with loss_and_backward_with_target().
+ *
  * @note A featurizer is a discovery tool: a low reconstruction error says nothing about whether
  *       its directions are meaningful or causal. Compare features with probes and baselines.
  */
@@ -44,11 +48,16 @@ public:
 
     [[nodiscard]] virtual int64_t input_dim() const = 0;
     [[nodiscard]] virtual int64_t num_features() const = 0;
+    /** @brief What decode() produces: input_dim() for an autoencoder. */
+    [[nodiscard]] virtual int64_t output_dim() const { return input_dim(); }
 
     /** @brief The codes for a batch, `(N, num_features)`. */
     [[nodiscard]] virtual Tensor encode(const Tensor& x) = 0;
-    /** @brief The reconstruction from codes, `(N, input_dim)`. */
+    /** @brief The reconstruction from codes, `(N, output_dim)`. */
     [[nodiscard]] virtual Tensor decode(const Tensor& codes) = 0;
+    /** @brief The full output for a batch, `(N, output_dim)`: decode(encode(x)), plus any part
+     *         that bypasses the codes (a transcoder's skip connection). */
+    [[nodiscard]] virtual Tensor predict(const Tensor& x) { return decode(encode(x)); }
 
     /**
      * @brief Computes the training loss on @p x and adds its gradients to the parameters'
@@ -57,6 +66,11 @@ public:
      * @throws std::invalid_argument for a batch that isn't `(N, input_dim)` with N > 0.
      */
     virtual FeaturizerLoss loss_and_backward(const Tensor& x, std::vector<float>* codes = nullptr) = 0;
+    /**
+     * @brief The loss for predicting @p target, `(N, output_dim)`, from @p x: a transcoder's.
+     * @throws std::invalid_argument for an autoencoder, whose target is its input (the default).
+     */
+    virtual FeaturizerLoss loss_and_backward_with_target(const Tensor& x, const Tensor& target, std::vector<float>* codes = nullptr);
 
     /**
      * @brief Rescales every feature so its decoder direction has unit L2 norm, scaling its code
@@ -66,7 +80,7 @@ public:
      */
     virtual void normalize_decoder() = 0;
 
-    /** @brief Feature @p i's decoder direction, `input_dim` values. */
+    /** @brief Feature @p i's decoder direction, `output_dim` values. */
     [[nodiscard]] virtual std::vector<float> decoder_direction(int64_t i) = 0;
 
     /** @brief The trainable parameters, for an optimizer's `step()` and `zero_grad()`, and for
@@ -129,6 +143,19 @@ FeaturizerLoss TrainFeaturizer(Featurizer& featurizer, const Tensor& x, Optimize
     optimizer.zero_grad(featurizer.parameters_module());
     std::vector<float> codes;
     const FeaturizerLoss loss = featurizer.loss_and_backward(x, tracker != nullptr ? &codes : nullptr);
+    optimizer.step(featurizer.parameters_module());
+    if (unit_norm_decoder) featurizer.normalize_decoder();
+    if (tracker != nullptr) tracker->observe(codes);
+    return loss;
+}
+
+/** @brief TrainFeaturizer for a transcoder: one step on predicting @p target from @p x. */
+template <typename Optimizer>
+FeaturizerLoss TrainFeaturizer(Featurizer& featurizer, const Tensor& x, const Tensor& target, Optimizer& optimizer,
+                               bool unit_norm_decoder = true, FeatureActivityTracker* tracker = nullptr) {
+    optimizer.zero_grad(featurizer.parameters_module());
+    std::vector<float> codes;
+    const FeaturizerLoss loss = featurizer.loss_and_backward_with_target(x, target, tracker != nullptr ? &codes : nullptr);
     optimizer.step(featurizer.parameters_module());
     if (unit_norm_decoder) featurizer.normalize_decoder();
     if (tracker != nullptr) tracker->observe(codes);
