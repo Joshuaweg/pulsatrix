@@ -211,8 +211,10 @@ Tensor EncoderLM::forward_impl(const Tensor& input) {
 
     hidden_.clear();
     if (keep_activations_) hidden_.push_back(x);
-    for (auto& layer : layers_) {
+    for (size_t i = 0; i < layers_.size(); ++i) {
+        auto& layer = layers_[i];
         x = layer->forward(x);
+        if (attention_observer_) attention_observer_(static_cast<int64_t>(i), layer->mha().last_attention_weights());
         if (keep_activations_) {
             hidden_.push_back(x);
         } else {

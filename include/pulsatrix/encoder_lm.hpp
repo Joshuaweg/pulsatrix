@@ -5,6 +5,7 @@
  */
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <optional>
 #include <string>
@@ -109,6 +110,16 @@ public:
     void set_keep_activations(bool keep) { keep_activations_ = keep; }
     [[nodiscard]] bool keep_activations() const { return keep_activations_; }
 
+    /** @brief Called with a layer's index and its attention probabilities, `(N, heads, L, L)` on the
+     *         model's device, during forward(). */
+    using AttentionObserver = std::function<void(int64_t layer, const Tensor& attention)>;
+    /**
+     * @brief Calls @p observer after each layer's forward, before set_keep_activations(false) frees
+     *        its activations, so every attention map can be read with only one held at a time.
+     *        Contacts (PLM-4) use it. An empty function removes the observer.
+     */
+    void set_attention_observer(AttentionObserver observer) { attention_observer_ = std::move(observer); }
+
     /**
      * @brief Masks padding for the following forward passes: @p keep is `(N, L)`, 1 for a real
      *        token and 0 for padding, as Hugging Face's `attention_mask`.
@@ -165,6 +176,7 @@ private:
     Shape last_ids_shape_ = Shape({0});
     bool has_forwarded_ = false;
     bool keep_activations_ = true;
+    AttentionObserver attention_observer_;
 };
 
 /**
@@ -173,8 +185,8 @@ private:
  */
 [[nodiscard]] std::vector<WeightMapping> EsmMapping(const EncoderLMConfig& config);
 /** @brief Checkpoint tensors an ESM-2 EncoderLM doesn't use: the absolute-position table and ids
- *         (unused with rotary), each layer's rotary `inv_freq` (recomputed), and the contact head
- *         (PLM-4). */
+ *         (unused with rotary), each layer's rotary `inv_freq` (read separately), and the contact
+ *         head (LoadEsmContactHead reads it). */
 [[nodiscard]] std::vector<std::string> EsmIgnoredTensors(const EncoderLMConfig& config);
 
 /**
