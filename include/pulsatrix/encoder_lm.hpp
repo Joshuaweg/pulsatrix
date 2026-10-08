@@ -134,6 +134,10 @@ public:
      *        Contacts (PLM-4) use it. An empty function removes the observer.
      */
     void set_attention_observer(AttentionObserver observer) { attention_observer_ = std::move(observer); }
+    /** @brief Calls @p hook at every position during forward(): 0 is the scaled embeddings, i
+     *         layer i's output (before the final LayerNorm for the last). An empty function
+     *         removes it. hidden_states() records what the hook returned. */
+    void set_hidden_state_hook(HiddenStateHook hook) { hidden_state_hook_ = std::move(hook); }
 
     /**
      * @brief Masks padding for the following forward passes: @p keep is `(N, L)`, 1 for a real
@@ -193,6 +197,7 @@ private:
     bool has_forwarded_ = false;
     bool keep_activations_ = true;
     AttentionObserver attention_observer_;
+    HiddenStateHook hidden_state_hook_;
 };
 
 /**

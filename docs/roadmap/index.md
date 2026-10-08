@@ -162,7 +162,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
 Feature discovery on real models, and agents that can drive the library.
 
-- FEAT-1 (**done**, for PLM-8), FEAT-2 (**done**) to FEAT-7: the featurizer interface, TopK
+- FEAT-1 (**done**, for PLM-8), FEAT-2, FEAT-3 (**done**) to FEAT-7: the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
@@ -804,7 +804,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 |---|---|---|---|---|---|---|
 | FEAT-1 | A `Featurizer` interface (encode, decode, loss, decoder normalization), with the existing SAE ported to it and given unit-norm decoders, an L0 metric and dead-latent tracking | One interface for the whole family | — | P0 | M | Done, [#102](https://github.com/Joshuaweg/pulsatrix/pull/102) (see below) |
 | FEAT-2 | TopK SAE with the auxiliary loss for dead latents | Removes L1 shrinkage; sets sparsity directly | FEAT-1, FND-3 | P0 | M | Done, [#105](https://github.com/Joshuaweg/pulsatrix/pull/105) (see below) |
-| FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M |
+| FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M | Done (see below) |
 | FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — |
 | FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M |
 | FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L |
@@ -855,6 +855,31 @@ Open: no LRP rule exists yet for propagating relevance through a block top-k. FE
   - **Selection runs on the host.** `top_k` runs on the device, but the codes, the auxiliary
     selection and the gradient routing are host loops. That is fine at PLM-8's scale; a large
     SAE would want them on the device.
+- **FEAT-3** adds `featurizer_metrics.hpp`: `EvaluateReconstruction` (explained variance,
+  cosine, norm ratio, L0, dead and dense latents), `MeasureLossRecovered` with `SpliceHook` and
+  `AblationHook`, and `FeatureAbsorption`.
+  - **Splicing needed a hook.** `CausalLM` and `EncoderLM` gain `set_hidden_state_hook()`,
+    called at every position during `forward()`; what it returns replaces the hidden states.
+    It doesn't run in `next_token_logits()`'s cached passes.
+  - **Absorption works for any binary concept,** not only first letters as in Chanin et al.
+    The probe is fit on half the inputs, the main features are picked by SAEBench's k-sparse
+    rule (each must raise F1 by 0.03), and the rate is scored on the other half. The probe is
+    the baseline and is always reported.
+  - **Its unit test plants the answer.** A featurizer with set weights has a parent concept
+    and ten rare children that absorb it; every absorbed input is found, and none in a
+    featurizer without the hierarchy.
+  - **The random-model baseline runs in the tool,** not inside the metrics:
+    `pulsatrix_probe_esm --sae` trains the same featurizer on a randomly initialized ESM-2 and
+    reports every metric for both. On ESM-2 8M it changed the reading of three results:
+    - the random model's SAEs explain more variance;
+    - its loss can't be recovered, because ablating the layer doesn't hurt it;
+    - for weakly probed concepts it "absorbs" as much as the trained one.
+
+    So `recovered` is NaN unless ablation raises the loss, and the tool prints absorption only
+    where the probe's F1 is at least 0.5. The numbers are in the
+    [mechanistic-interpretability guide](../mechanistic-interpretability/index.md#measuring-a-featurizer).
+  - **`pulsatrix_probe_esm --featurizer topk`.** At the same L0, a TopK SAE beats PLM-8's L1
+    SAE on every measure: explained variance 0.78 vs 0.66, loss recovered 0.96 vs 0.90.
 
 ## ARCH: New architectures
 

@@ -6,8 +6,10 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -21,6 +23,27 @@
 #include "pulsatrix/transformer_block.hpp"
 
 namespace pulsatrix {
+
+/**
+ * @brief Reads or replaces a language model's residual stream during forward() (FEAT-3): called
+ *        with a position, 0 for the embeddings entering layer 0 and i for layer i's output, and
+ *        the hidden states there, `(N, L, hidden_size)` on the model's device. What it returns,
+ *        the same shape, is what the model continues with: return the input unchanged to only
+ *        read it. Splicing a featurizer's reconstruction back in uses it
+ *        (MeasureLossRecovered, featurizer_metrics.hpp).
+ * @note backward() and the relevance passes after a forward() that changed the stream run as if
+ *       the replacement were an input: no gradient flows through the hook.
+ */
+using HiddenStateHook = std::function<Tensor(int64_t position, const Tensor& hidden)>;
+
+namespace detail {
+/** @brief Runs @p hook and checks its result keeps the shape. @throws std::invalid_argument if not. */
+inline Tensor ApplyHiddenStateHook(const HiddenStateHook& hook, int64_t position, const Tensor& x) {
+    Tensor out = hook(position, x);
+    if (out.shape() != x.shape()) throw std::invalid_argument("hidden-state hook: the replacement must keep the hidden states' shape");
+    return out;
+}
+}  // namespace detail
 
 /**
  * @brief Token embedding, `num_hidden_layers` pre-norm transformer blocks, a final RMSNorm and a
@@ -69,6 +92,10 @@ public:
      */
     [[nodiscard]] NextTokenLogitsFn next_token_logits(int64_t max_length);
 
+    /** @brief Calls @p hook at every position during forward() (not during next_token_logits()'s
+     *         cached passes). An empty function removes it. */
+    void set_hidden_state_hook(HiddenStateHook hook) { hidden_state_hook_ = std::move(hook); }
+
     [[nodiscard]] const HfModelConfig& config() const { return config_; }
     [[nodiscard]] EmbeddingModule& embed_tokens() { return embed_; }
     [[nodiscard]] TransformerBlock& layer(int64_t i) { return *layers_.at(static_cast<size_t>(i)); }
@@ -90,6 +117,7 @@ private:
     std::unique_ptr<TiedLMHeadModule> tied_head_;
     std::unique_ptr<LinearModule> lm_head_;
     Shape last_hidden_shape_ = Shape({0});
+    HiddenStateHook hidden_state_hook_;
 };
 
 /** @brief How a source tensor becomes a target parameter. */
