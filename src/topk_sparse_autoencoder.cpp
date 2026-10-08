@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <numeric>
 #include <stdexcept>
 #include <string>
 
@@ -28,11 +29,24 @@ TopKSparseAutoencoder::TopKSparseAutoencoder(int64_t dim, int64_t num_features, 
       backend_(backend),
       options_(options),
       encoder_(dim > 0 ? dim : 1, num_features > 0 ? num_features : 1, backend),
-      decoder_(num_features > 0 ? num_features : 1, dim > 0 ? dim : 1, backend) {
+      decoder_(num_features > 0 ? num_features : 1, dim > 0 ? dim : 1, backend),
+      threshold_(Shape({1}), backend, std::vector<float>{-1.0f}, backend->device()) {
     if (dim < 1 || num_features < 1) throw std::invalid_argument("TopKSparseAutoencoder: dim and num_features must be positive");
     if (options.k < 1 || options.k > num_features) throw std::invalid_argument("TopKSparseAutoencoder: k must be in [1, num_features]");
     if (options.k_aux < 0 || options.aux_coefficient < 0 || options.dead_after < 1) {
         throw std::invalid_argument("TopKSparseAutoencoder: k_aux and aux_coefficient must not be negative, dead_after must be positive");
+    }
+    if (options.threshold_decay < 0.0f || options.threshold_decay >= 1.0f) {
+        throw std::invalid_argument("TopKSparseAutoencoder: threshold_decay must be in [0, 1)");
+    }
+    std::vector<int64_t>& prefixes = options_.matryoshka_prefixes;
+    if (!prefixes.empty()) {
+        for (size_t i = 0; i < prefixes.size(); ++i) {
+            if (prefixes[i] < 1 || prefixes[i] > num_features || (i > 0 && prefixes[i] <= prefixes[i - 1])) {
+                throw std::invalid_argument("TopKSparseAutoencoder: Matryoshka prefixes must increase within [1, num_features]");
+            }
+        }
+        if (prefixes.back() != num_features) prefixes.push_back(num_features);
     }
     if (options_.k_aux == 0) options_.k_aux = std::max<int64_t>(1, dim / 2);
     // Random unit decoder directions; the encoder starts as their transpose.
@@ -84,30 +98,55 @@ Tensor TopKSparseAutoencoder::Centered(const Tensor& x) {
     return Tensor(x.shape(), backend_, v, backend_->device());
 }
 
-TopKSparseAutoencoder::Pass TopKSparseAutoencoder::Encode(const Tensor& x, Tensor* centered) {
-    const Tensor xc = Centered(x);
-    if (centered != nullptr) *centered = xc;
-    const Tensor pre = encoder_.forward(xc);
-    const TopKResult top = top_k(pre, options_.k);
-    const std::vector<float> values = top.values.to_host_vector(), indices = top.indices.to_host_vector();
+float TopKSparseAutoencoder::threshold() const { return threshold_.to_host_vector()[0]; }
+
+void TopKSparseAutoencoder::set_threshold(float threshold) {
+    threshold_ = Tensor(Shape({1}), backend_, std::vector<float>{threshold}, backend_->device());
+}
+
+TopKSparseAutoencoder::Pass TopKSparseAutoencoder::Encode(const Tensor& x, bool training) {
+    const Tensor pre = encoder_.forward(Centered(x));
     const int64_t N = x.shape().dim(0), k = options_.k;
     Pass p;
     p.pre = pre.to_host_vector();
     p.codes.assign(static_cast<size_t>(N * m_), 0.0f);
-    p.kept.resize(static_cast<size_t>(N * k));
-    for (int64_t r = 0; r < N; ++r) {
-        for (int64_t j = 0; j < k; ++j) {
-            const auto i = static_cast<int64_t>(indices[static_cast<size_t>(r * k + j)]);
-            p.kept[static_cast<size_t>(r * k + j)] = i;
-            p.codes[static_cast<size_t>(r * m_ + i)] = std::max(0.0f, values[static_cast<size_t>(r * k + j)]);  // ReLU(TopK)
+    if (!options_.batch_topk) {
+        const TopKResult top = top_k(pre, k);
+        const std::vector<float> values = top.values.to_host_vector(), indices = top.indices.to_host_vector();
+        for (int64_t r = 0; r < N; ++r) {
+            for (int64_t j = 0; j < k; ++j) {
+                const auto i = static_cast<int64_t>(indices[static_cast<size_t>(r * k + j)]);
+                p.codes[static_cast<size_t>(r * m_ + i)] = std::max(0.0f, values[static_cast<size_t>(r * k + j)]);  // ReLU(TopK)
+            }
         }
+        return p;
+    }
+    const float theta = threshold();
+    if (!training && theta >= 0.0f) {
+        for (size_t i = 0; i < p.pre.size(); ++i) p.codes[i] = p.pre[i] > theta ? p.pre[i] : 0.0f;
+        return p;
+    }
+    // The batch's N * k largest activations, ties to the lower index; then ReLU.
+    std::vector<int64_t> order(p.pre.size());
+    std::iota(order.begin(), order.end(), int64_t{0});
+    const auto keep = static_cast<std::ptrdiff_t>(N * k);
+    std::nth_element(order.begin(), order.begin() + keep - 1, order.end(), [&](int64_t a, int64_t b) {
+        const float va = p.pre[static_cast<size_t>(a)], vb = p.pre[static_cast<size_t>(b)];
+        return va > vb || (va == vb && a < b);
+    });
+    p.min_kept = -1.0f;
+    for (std::ptrdiff_t q = 0; q < keep; ++q) {
+        const auto i = static_cast<size_t>(order[static_cast<size_t>(q)]);
+        if (p.pre[i] <= 0.0f) continue;
+        p.codes[i] = p.pre[i];
+        p.min_kept = p.min_kept < 0.0f ? p.pre[i] : std::min(p.min_kept, p.pre[i]);
     }
     return p;
 }
 
 Tensor TopKSparseAutoencoder::encode(const Tensor& x) {
     Check(x, "TopKSparseAutoencoder::encode");
-    const Pass p = Encode(x);
+    const Pass p = Encode(x, false);
     return Tensor(Shape({x.shape().dim(0), m_}), backend_, p.codes, backend_->device());
 }
 
@@ -155,30 +194,40 @@ void TopKSparseAutoencoder::ProjectDecoderGradient() {
 
 FeaturizerLoss TopKSparseAutoencoder::loss_and_backward(const Tensor& x, std::vector<float>* codes_out) {
     Check(x, "TopKSparseAutoencoder::loss_and_backward");
-    const int64_t N = x.shape().dim(0), k = options_.k;
+    const int64_t N = x.shape().dim(0);
     const std::vector<int64_t> dead = dead_latents();  // from the inputs before this batch
-    Tensor xc = x;
-    const Pass p = Encode(x, &xc);
-    const Tensor codes(Shape({N, m_}), backend_, p.codes, backend_->device());
-    const std::vector<float> xh = decoder_.forward(codes).to_host_vector(), xv = x.to_host_vector();
+    const Pass p = Encode(x, true);
+    const std::vector<float> xv = x.to_host_vector();
     FeaturizerLoss loss;
     const double n_el = static_cast<double>(N * dim_);
-    std::vector<float> g_main(xh.size()), residual(xh.size());
-    double mse = 0;
-    for (size_t i = 0; i < xh.size(); ++i) {
-        const double d = static_cast<double>(xh[i]) - xv[i];
-        mse += d * d;
-        g_main[i] = static_cast<float>(2.0 * d / n_el);
-        residual[i] = static_cast<float>(-d);  // e = x - x̂
-    }
-    loss.reconstruction = static_cast<float>(mse / n_el);
-    // Main path: back through the decoder; only the kept, positive latents pass it on.
-    const std::vector<float> g_codes = decoder_.backward(Tensor(Shape({N, dim_}), backend_, g_main, backend_->device())).to_host_vector();
-    std::vector<float> g_pre(static_cast<size_t>(N * m_), 0.0f);
-    for (int64_t r = 0; r < N; ++r) {
-        for (int64_t j = 0; j < k; ++j) {
-            const auto i = static_cast<size_t>(r * m_ + p.kept[static_cast<size_t>(r * k + j)]);
-            if (p.codes[i] > 0.0f) g_pre[i] = g_codes[i];
+    // Main path, once per Matryoshka prefix (once for the whole dictionary without them): the
+    // prefix's reconstruction error, back through the decoder to the prefix's positive codes.
+    std::vector<int64_t> sizes = options_.matryoshka_prefixes;
+    if (sizes.empty()) sizes.push_back(m_);
+    std::vector<float> g_pre(static_cast<size_t>(N * m_), 0.0f), residual;
+    double prefix_losses = 0;
+    for (int64_t size : sizes) {
+        std::vector<float> c = p.codes;
+        if (size < m_) {
+            for (int64_t r = 0; r < N; ++r) std::fill(c.begin() + r * m_ + size, c.begin() + (r + 1) * m_, 0.0f);
+        }
+        const std::vector<float> xh = decoder_.forward(Tensor(Shape({N, m_}), backend_, c, backend_->device())).to_host_vector();
+        std::vector<float> g(xh.size());
+        double mse = 0;
+        for (size_t i = 0; i < xh.size(); ++i) {
+            const double d = static_cast<double>(xh[i]) - xv[i];
+            mse += d * d;
+            g[i] = static_cast<float>(2.0 * d / n_el);
+        }
+        prefix_losses += mse / n_el;
+        if (size == m_) {
+            loss.reconstruction = static_cast<float>(mse / n_el);
+            residual.resize(xh.size());
+            for (size_t i = 0; i < xh.size(); ++i) residual[i] = xv[i] - xh[i];  // e = x - x̂
+        }
+        const std::vector<float> g_codes = decoder_.backward(Tensor(Shape({N, dim_}), backend_, g, backend_->device())).to_host_vector();
+        for (size_t i = 0; i < g_pre.size(); ++i) {
+            if (c[i] > 0.0f) g_pre[i] += g_codes[i];
         }
     }
     // Auxiliary path: the k_aux largest dead latents reconstruct the residual.
@@ -224,7 +273,12 @@ FeaturizerLoss TopKSparseAutoencoder::loss_and_backward(const Tensor& x, std::ve
             if (aux[i] > 0.0f) g_pre[i] += g_aux_codes[i];
         }
     }
-    loss.total = loss.reconstruction + loss.sparsity;
+    loss.total = static_cast<float>(prefix_losses) + loss.sparsity;
+    // BatchTopK's inference threshold follows the smallest kept activation.
+    if (options_.batch_topk && p.min_kept > 0.0f) {
+        const float theta = threshold();
+        set_threshold(theta < 0.0f ? p.min_kept : options_.threshold_decay * theta + (1.0f - options_.threshold_decay) * p.min_kept);
+    }
     // Through the encoder, and the bias subtraction: x - b_dec sends minus its gradient to b_dec.
     const std::vector<float> g_xc = encoder_.backward(Tensor(Shape({N, m_}), backend_, g_pre, backend_->device())).to_host_vector();
     Tensor* bias_grad = GradOf(decoder_, "bias");
@@ -266,23 +320,19 @@ std::vector<float> TopKSparseAutoencoder::decoder_direction(int64_t i) {
 
 Tensor TopKSparseAutoencoder::forward_impl(const Tensor& input) {
     Check(input, "TopKSparseAutoencoder::forward");
-    const Pass p = Encode(input);
+    const Pass p = Encode(input, false);
     last_codes_ = p.codes;
-    last_kept_ = p.kept;
     last_rows_ = input.shape().dim(0);
     return decoder_.forward(Tensor(Shape({last_rows_, m_}), backend_, p.codes, backend_->device()));
 }
 
 Tensor TopKSparseAutoencoder::backward(const Tensor& grad_output) {
     if (last_rows_ == 0) throw std::logic_error("TopKSparseAutoencoder::backward: called before any forward()");
-    const int64_t N = last_rows_, k = options_.k;
+    const int64_t N = last_rows_;
     const std::vector<float> g_codes = decoder_.backward(grad_output).to_host_vector();
     std::vector<float> g_pre(static_cast<size_t>(N * m_), 0.0f);
-    for (int64_t r = 0; r < N; ++r) {
-        for (int64_t j = 0; j < k; ++j) {
-            const auto i = static_cast<size_t>(r * m_ + last_kept_[static_cast<size_t>(r * k + j)]);
-            if (last_codes_[i] > 0.0f) g_pre[i] = g_codes[i];
-        }
+    for (size_t i = 0; i < g_pre.size(); ++i) {
+        if (last_codes_[i] > 0.0f) g_pre[i] = g_codes[i];
     }
     const Tensor g_xc = encoder_.backward(Tensor(Shape({N, m_}), backend_, g_pre, backend_->device()));
     const std::vector<float> gx = g_xc.to_host_vector();
@@ -311,6 +361,8 @@ std::vector<NamedParamRef> TopKSparseAutoencoder::named_parameters() {
     return out;
 }
 
+std::vector<NamedBufferRef> TopKSparseAutoencoder::named_buffers() { return {{"threshold", &threshold_}}; }
+
 void TopKSparseAutoencoder::set_training(bool training) {
     Module::set_training(training);
     encoder_.set_training(training);
@@ -321,7 +373,6 @@ void TopKSparseAutoencoder::release_activations() {
     encoder_.release_activations();
     decoder_.release_activations();
     last_codes_.clear();
-    last_kept_.clear();
     last_rows_ = 0;
 }
 

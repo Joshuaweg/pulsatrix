@@ -137,6 +137,7 @@ add_library(pulsatrix_core
     src/featurizer.cpp
     src/featurizer_metrics.cpp
     src/topk_sparse_autoencoder.cpp
+    src/jumprelu_sparse_autoencoder.cpp
     src/null_model_baseline.cpp
     src/caching_allocator.cpp
     src/rnn_module.cpp
