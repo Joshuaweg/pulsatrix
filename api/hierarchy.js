@@ -141,7 +141,8 @@ var hierarchy =
     [ "pulsatrix::FeatureDashboardDocument", "structpulsatrix_1_1FeatureDashboardDocument.html", null ],
     [ "pulsatrix::FeatureSensitivity", "structpulsatrix_1_1FeatureSensitivity.html", null ],
     [ "pulsatrix::Featurizer", "classpulsatrix_1_1Featurizer.html", [
-      [ "pulsatrix::SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html", null ]
+      [ "pulsatrix::SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html", null ],
+      [ "pulsatrix::TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", null ]
     ] ],
     [ "pulsatrix::FeaturizerLoss", "structpulsatrix_1_1FeaturizerLoss.html", null ],
     [ "pulsatrix::FieldStatistics", "structpulsatrix_1_1FieldStatistics.html", null ],
@@ -252,6 +253,7 @@ var hierarchy =
       [ "pulsatrix::SwiGLUModule", "classpulsatrix_1_1SwiGLUModule.html", null ],
       [ "pulsatrix::TiedLMHeadModule", "classpulsatrix_1_1TiedLMHeadModule.html", null ],
       [ "pulsatrix::TinyTagger", "classpulsatrix_1_1TinyTagger.html", null ],
+      [ "pulsatrix::TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", null ],
       [ "pulsatrix::TransformerBlock", "classpulsatrix_1_1TransformerBlock.html", null ]
     ] ],
     [ "pulsatrix::MorrisDocument", "structpulsatrix_1_1MorrisDocument.html", null ],
@@ -411,6 +413,7 @@ var hierarchy =
     [ "pulsatrix::TokenRelevanceDocument", "structpulsatrix_1_1TokenRelevanceDocument.html", null ],
     [ "pulsatrix::TokenRelevanceView", "classpulsatrix_1_1TokenRelevanceView.html", null ],
     [ "pulsatrix::TopKResult", "structpulsatrix_1_1TopKResult.html", null ],
+    [ "pulsatrix::TopKSaeOptions", "structpulsatrix_1_1TopKSaeOptions.html", null ],
     [ "pulsatrix::ToyKnowledgeBase", "classpulsatrix_1_1ToyKnowledgeBase.html", null ],
     [ "pulsatrix::ResidueTracksDocument::Track", "structpulsatrix_1_1ResidueTracksDocument_1_1Track.html", null ],
     [ "pulsatrix::TrainingDashboard", "classpulsatrix_1_1TrainingDashboard.html", null ],

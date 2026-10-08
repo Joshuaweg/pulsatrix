@@ -208,6 +208,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "tokenizer_json.hpp", "tokenizer__json_8hpp.html", "tokenizer__json_8hpp" ],
     [ "tokenizer_parity.hpp", "tokenizer__parity_8hpp.html", "tokenizer__parity_8hpp" ],
     [ "top_k.hpp", "top__k_8hpp.html", "top__k_8hpp" ],
+    [ "topk_sparse_autoencoder.hpp", "topk__sparse__autoencoder_8hpp.html", "topk__sparse__autoencoder_8hpp" ],
     [ "tpe.hpp", "tpe_8hpp.html", "tpe_8hpp" ],
     [ "trajectory_balance_loss.hpp", "trajectory__balance__loss_8hpp.html", "trajectory__balance__loss_8hpp" ],
     [ "transform.hpp", "transform_8hpp.html", "transform_8hpp" ],
