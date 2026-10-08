@@ -20,7 +20,11 @@
 //   - topk: a TopKSparseAutoencoder (FEAT-2), --k (default 32);
 //   - batchtopk, matryoshka: BatchTopK, and Matryoshka BatchTopK with prefixes of 1/16 and 1/4
 //     of the latents (FEAT-4), --k;
-//   - jumprelu: a JumpReLUSparseAutoencoder (FEAT-4), --l0 (default 0.05). An SAE trained the same way on a randomly initialized model is the
+//   - jumprelu: a JumpReLUSparseAutoencoder (FEAT-4), --l0 (default 0.05);
+//   - transcoder, skip-transcoder: a Transcoder (FEAT-5), --k, trained on the MLP that writes
+//     into layer --sae-layer's output: its input (after the block's LayerNorm) to its output.
+//     Reports prediction quality, loss recovered with the MLP replaced, and concept matching
+//     (absorption is an autoencoder metric). An SAE trained the same way on a randomly initialized model is the
 //   baseline for everything that follows (FEAT-3):
 //   - reconstruction on held-out residues: explained variance, cosine, norm ratio, L0, dead and
 //     dense latents;
@@ -62,6 +66,7 @@
 #include "pulsatrix/protein_training.hpp"
 #include "pulsatrix/sparse_autoencoder.hpp"
 #include "pulsatrix/topk_sparse_autoencoder.hpp"
+#include "pulsatrix/transcoder.hpp"
 #include "pulsatrix/viz/document.hpp"
 #include "pulsatrix/viz/protein_views.hpp"
 #ifdef PULSATRIX_GOLDEN_WITH_HIP
@@ -76,7 +81,8 @@ using namespace pulsatrix;
     std::cerr << "pulsatrix_probe_esm: " << problem << "\n"
               << "usage: pulsatrix_probe_esm MODEL_DIR --annotations FILE.jsonl --out DIR (--probes | --sae)\n"
               << "       [--layers 0,1,...] [--concepts A,B,...] [--probe-proteins N] [--sae-layer L] [--sae-proteins N]\n"
-              << "       [--featurizer l1|topk|batchtopk|matryoshka|jumprelu] [--features N] [--l1 L] [--k K] [--l0 L]\n"
+              << "       [--featurizer l1|topk|batchtopk|matryoshka|jumprelu|transcoder|skip-transcoder] [--features N] [--l1 L]\n"
+              << "       [--k K] [--l0 L]\n"
               << "       [--sae-epochs N] [--sae-batch N]\n"
               << "       [--loss-proteins N] [--structures DIR] [--seed S] [--device cpu|hip]\n";
     std::exit(2);
@@ -258,28 +264,33 @@ struct Scale {
  *         standardizes before encoding and undoes it after decoding, so it can be spliced in. */
 class Standardized : public Featurizer {
 public:
-    Standardized(Featurizer& inner, Scale scale) : inner_(inner), scale_(std::move(scale)) {}
+    Standardized(Featurizer& inner, Scale scale) : Standardized(inner, scale, scale) {}
+    /** @brief A transcoder: inputs and outputs standardized separately. */
+    Standardized(Featurizer& inner, Scale in, Scale out) : inner_(inner), in_(std::move(in)), out_(std::move(out)) {}
     [[nodiscard]] int64_t input_dim() const override { return inner_.input_dim(); }
+    [[nodiscard]] int64_t output_dim() const override { return inner_.output_dim(); }
     [[nodiscard]] int64_t num_features() const override { return inner_.num_features(); }
-    [[nodiscard]] Tensor encode(const Tensor& x) override {
-        std::vector<float> v = x.to_host_vector();
-        for (size_t i = 0; i < v.size(); ++i) v[i] = static_cast<float>((v[i] - scale_.mean[i % scale_.mean.size()]) / scale_.sd[i % scale_.sd.size()]);
-        return inner_.encode(Tensor(x.shape(), x.backend(), v, x.device()));
-    }
-    [[nodiscard]] Tensor decode(const Tensor& codes) override {
-        const Tensor y = inner_.decode(codes);
-        std::vector<float> v = y.to_host_vector();
-        for (size_t i = 0; i < v.size(); ++i) v[i] = static_cast<float>(v[i] * scale_.sd[i % scale_.sd.size()] + scale_.mean[i % scale_.mean.size()]);
-        return Tensor(y.shape(), y.backend(), v, y.device());
-    }
+    [[nodiscard]] Tensor encode(const Tensor& x) override { return inner_.encode(In(x)); }
+    [[nodiscard]] Tensor decode(const Tensor& codes) override { return Out(inner_.decode(codes)); }
+    [[nodiscard]] Tensor predict(const Tensor& x) override { return Out(inner_.predict(In(x))); }
     FeaturizerLoss loss_and_backward(const Tensor&, std::vector<float>*) override { throw std::logic_error("Standardized: evaluation only"); }
     void normalize_decoder() override {}
     [[nodiscard]] std::vector<float> decoder_direction(int64_t i) override { return inner_.decoder_direction(i); }
     [[nodiscard]] Module& parameters_module() override { return inner_.parameters_module(); }
 
 private:
+    Tensor In(const Tensor& x) const {
+        std::vector<float> v = x.to_host_vector();
+        for (size_t i = 0; i < v.size(); ++i) v[i] = static_cast<float>((v[i] - in_.mean[i % in_.mean.size()]) / in_.sd[i % in_.sd.size()]);
+        return Tensor(x.shape(), x.backend(), v, x.device());
+    }
+    Tensor Out(const Tensor& y) const {
+        std::vector<float> v = y.to_host_vector();
+        for (size_t i = 0; i < v.size(); ++i) v[i] = static_cast<float>(v[i] * out_.sd[i % out_.sd.size()] + out_.mean[i % out_.mean.size()]);
+        return Tensor(y.shape(), y.backend(), v, y.device());
+    }
     Featurizer& inner_;
-    Scale scale_;
+    Scale in_, out_;
 };
 
 /** @brief Loss recovered over held-out proteins: each protein's masked-LM loss, weighted by its
@@ -323,6 +334,212 @@ std::vector<float> HeldOutRows(const ResidueEmbeddings& e, const std::vector<boo
         if (test[static_cast<size_t>(r)]) out.insert(out.end(), e.row(0, r), e.row(0, r) + e.hidden);
     }
     return out;
+}
+
+/** @brief Each residue's MLP input and output in block @p block, `residues x hidden` each. */
+struct MlpPairs {
+    std::vector<float> in, out;
+};
+
+MlpPairs CollectMlpPairs(EncoderLM& model, const TextTokenizer& tok, DeviceBackend* backend, const std::vector<std::string>& sequences,
+                         int64_t block) {
+    const int64_t h = model.config().hidden_size;
+    const auto cls = tok.token_to_id("<cls>"), eos = tok.token_to_id("<eos>");
+    MlpPairs pairs;
+    model.layer(block).set_mlp_hook([&](const Tensor& in, const Tensor& out) {
+        const std::vector<float> a = in.to_host_vector(), b = out.to_host_vector();
+        pairs.in.insert(pairs.in.end(), a.begin() + h, a.end() - h);  // drop <cls> and <eos>
+        pairs.out.insert(pairs.out.end(), b.begin() + h, b.end() - h);
+        return out;
+    });
+    const bool keep = model.keep_activations();
+    model.set_keep_activations(false);
+    model.clear_padding_mask();
+    for (const std::string& s : sequences) {
+        std::vector<float> ids{static_cast<float>(*cls)};
+        for (char c : s) ids.push_back(static_cast<float>(*tok.token_to_id(std::string(1, c))));
+        ids.push_back(static_cast<float>(*eos));
+        (void)model.forward(Tensor(Shape({1, static_cast<int64_t>(ids.size())}), backend, ids, backend->device()));
+    }
+    model.set_keep_activations(keep);
+    model.layer(block).set_mlp_hook({});
+    return pairs;
+}
+
+/** @brief Per-dimension mean and standard deviation of the rows marked in @p use. */
+Scale FitScale(const std::vector<float>& rows, int64_t d, const std::vector<bool>& use) {
+    Scale s{std::vector<double>(static_cast<size_t>(d), 0.0), std::vector<double>(static_cast<size_t>(d), 0.0)};
+    double n = 0;
+    for (size_t r = 0; r < use.size(); ++r) {
+        if (!use[r]) continue;
+        n += 1;
+        for (int64_t j = 0; j < d; ++j) s.mean[static_cast<size_t>(j)] += rows[r * static_cast<size_t>(d) + static_cast<size_t>(j)];
+    }
+    for (double& m : s.mean) m /= n;
+    for (size_t r = 0; r < use.size(); ++r) {
+        if (!use[r]) continue;
+        for (int64_t j = 0; j < d; ++j) {
+            const double v = rows[r * static_cast<size_t>(d) + static_cast<size_t>(j)] - s.mean[static_cast<size_t>(j)];
+            s.sd[static_cast<size_t>(j)] += v * v;
+        }
+    }
+    for (double& v : s.sd) v = std::sqrt(v / n) + 1e-6;
+    return s;
+}
+
+/** @brief The rows marked in @p use, standardized by @p s. */
+std::vector<float> Pick(const std::vector<float>& rows, int64_t d, const std::vector<bool>& use, const Scale& s) {
+    std::vector<float> out;
+    for (size_t r = 0; r < use.size(); ++r) {
+        if (!use[r]) continue;
+        for (int64_t j = 0; j < d; ++j) {
+            out.push_back(static_cast<float>((rows[r * static_cast<size_t>(d) + static_cast<size_t>(j)] - s.mean[static_cast<size_t>(j)]) /
+                                             s.sd[static_cast<size_t>(j)]));
+        }
+    }
+    return out;
+}
+
+std::unique_ptr<Transcoder> TrainTranscoder(DeviceBackend* backend, const std::vector<float>& x, const std::vector<float>& y, int64_t hidden,
+                                            const Options& o, const char* name) {
+    const int64_t m = o.features > 0 ? o.features : 8 * hidden;
+    const auto N = static_cast<int64_t>(x.size() / static_cast<size_t>(hidden));
+    TranscoderOptions t;
+    t.k = o.k;
+    t.skip = o.featurizer == "skip-transcoder";
+    t.dead_after = N;
+    t.seed = o.seed + 11;
+    auto tc = std::make_unique<Transcoder>(hidden, hidden, m, backend, t);
+    tc->initialize_bias(Tensor(Shape({N, hidden}), backend, y, backend->device()));
+    AdamOptimizer opt(1e-3f, backend);
+    std::vector<int64_t> order(static_cast<size_t>(N));
+    std::iota(order.begin(), order.end(), int64_t{0});
+    std::mt19937_64 rng(o.seed + 5);
+    const int64_t B = o.sae_batch;
+    std::vector<float> xb(static_cast<size_t>(B * hidden)), yb(static_cast<size_t>(B * hidden));
+    for (int64_t epoch = 1; epoch <= o.sae_epochs; ++epoch) {
+        std::shuffle(order.begin(), order.end(), rng);
+        FeaturizerLoss last;
+        for (int64_t from = 0; from + B <= N; from += B) {
+            for (int64_t b = 0; b < B; ++b) {
+                const int64_t r = order[static_cast<size_t>(from + b)];
+                std::copy_n(x.begin() + r * hidden, hidden, xb.begin() + b * hidden);
+                std::copy_n(y.begin() + r * hidden, hidden, yb.begin() + b * hidden);
+            }
+            last = TrainFeaturizer(*tc, Tensor(Shape({B, hidden}), backend, xb, backend->device()),
+                                   Tensor(Shape({B, hidden}), backend, yb, backend->device()), opt);
+        }
+        std::fprintf(stderr, "  %s transcoder epoch %ld: prediction %.4f, aux %.4f, dead %zu\n", name, static_cast<long>(epoch), last.reconstruction,
+                     last.sparsity, tc->dead_latents().size());
+    }
+    return tc;
+}
+
+/** @brief SplicedMaskedLM for a transcoder replacing block @p block's MLP. */
+LossRecovered SplicedMlpMaskedLM(EncoderLM& model, const TextTokenizer& tok, DeviceBackend* backend, Featurizer& f, int64_t block,
+                                 const std::vector<std::string>& sequences, uint64_t seed) {
+    LossRecovered total;
+    int64_t tokens = 0;
+    for (size_t i = 0; i < sequences.size(); ++i) {
+        std::vector<bool> rows(sequences[i].size() + 2, true);
+        rows.front() = rows.back() = false;
+        int64_t n = 0;
+        auto loss = [&](const MlpHook& hook) {
+            model.layer(block).set_mlp_hook(hook);
+            const MaskedLMEvaluation e = EvaluateMaskedLM(model, tok, backend, {sequences[i]}, 1, seed + i);
+            model.layer(block).set_mlp_hook({});
+            n = e.tokens;
+            return e.loss;
+        };
+        const LossRecovered r = MeasureMlpLossRecovered(f, loss, rows);
+        if (n == 0) continue;
+        total.clean += r.clean * static_cast<double>(n);
+        total.spliced += r.spliced * static_cast<double>(n);
+        total.ablated += r.ablated * static_cast<double>(n);
+        tokens += n;
+    }
+    if (tokens == 0) throw std::runtime_error("loss recovered: no masked tokens");
+    total.clean /= static_cast<double>(tokens);
+    total.spliced /= static_cast<double>(tokens);
+    total.ablated /= static_cast<double>(tokens);
+    total.recovered = total.ablated > total.clean ? (total.ablated - total.spliced) / (total.ablated - total.clean)
+                                                  : std::numeric_limits<double>::quiet_NaN();
+    return total;
+}
+
+void RunTranscoder(DeviceBackend* backend, EncoderLM& model, const TextTokenizer& tok, const Options& o, const Sample& s) {
+    const int64_t layer = o.sae_layer >= 0 ? o.sae_layer : model.num_layers() * 2 / 3;
+    if (layer < 1 || layer > model.num_layers()) throw std::invalid_argument("a transcoder needs --sae-layer in [1, num_layers]");
+    const int64_t block = layer - 1, h = model.config().hidden_size;
+    std::fprintf(stderr, "collecting MLP pairs of block %ld for %zu proteins\n", static_cast<long>(block), s.proteins.size());
+    const MlpPairs trained = CollectMlpPairs(model, tok, backend, Sequences(s), block);
+    std::unique_ptr<EncoderLM> random = RandomModel(o.model, backend, o.seed + 7);
+    const MlpPairs untrained = CollectMlpPairs(*random, tok, backend, Sequences(s), block);
+    const std::vector<bool> train = ResidueFlags(s, false), test = ResidueFlags(s, true);
+    struct Fit {
+        Scale in, out;
+        std::unique_ptr<Transcoder> t;
+        std::vector<float> test_in, test_out;
+    };
+    auto fit = [&](const MlpPairs& p, const char* name) {
+        Fit f;
+        f.in = FitScale(p.in, h, train);
+        f.out = FitScale(p.out, h, train);
+        f.t = TrainTranscoder(backend, Pick(p.in, h, train, f.in), Pick(p.out, h, train, f.out), h, o, name);
+        f.test_in = Pick(p.in, h, test, f.in);
+        f.test_out = Pick(p.out, h, test, f.out);
+        return f;
+    };
+    Fit a = fit(trained, "trained-model"), b = fit(untrained, "random-model");
+    const auto held_rows = static_cast<int64_t>(a.test_in.size() / static_cast<size_t>(h));
+    auto t = [&](const std::vector<float>& v) { return Tensor(Shape({held_rows, h}), backend, v, backend->device()); };
+    const ReconstructionMetrics ra = EvaluatePrediction(*a.t, t(a.test_in), t(a.test_out)), rb = EvaluatePrediction(*b.t, t(b.test_in), t(b.test_out));
+    std::printf("%s on block %ld's MLP (into layer %ld), %ld latents; held-out residues:\n", o.featurizer.c_str(), static_cast<long>(block),
+                static_cast<long>(layer), static_cast<long>(a.t->num_features()));
+    std::printf("  %-14s %8s %8s %8s %8s %8s %8s\n", "", "EV", "cosine", "|y^|/|y|", "L0", "dead", "dense");
+    for (const auto& [label, r] : {std::pair<const char*, const ReconstructionMetrics*>{"trained model", &ra}, {"random model", &rb}}) {
+        std::printf("  %-14s %8.3f %8.3f %8.3f %8.1f %7.1f%% %7.1f%%\n", label, r->explained_variance, r->cosine, r->norm_ratio, r->l0,
+                    100 * r->dead_fraction, 100 * r->dense_fraction);
+    }
+    std::vector<std::string> loss_sequences;
+    for (size_t i = 0; i < s.proteins.size() && static_cast<int64_t>(loss_sequences.size()) < o.loss_proteins; ++i) {
+        if (s.test[i] && s.proteins[i].sequence.size() <= 1022) loss_sequences.push_back(s.proteins[i].sequence);
+    }
+    Standardized sa(*a.t, a.in, a.out), sb(*b.t, b.in, b.out);
+    const LossRecovered la = SplicedMlpMaskedLM(model, tok, backend, sa, block, loss_sequences, o.seed + 13);
+    const LossRecovered lb = SplicedMlpMaskedLM(*random, tok, backend, sb, block, loss_sequences, o.seed + 13);
+    std::printf("  masked-LM loss (nats), MLP replaced  clean  spliced  zero-ablated  recovered\n");
+    std::printf("  %-34s %7.3f %8.3f %13.3f %10.3f\n", "trained model", la.clean, la.spliced, la.ablated, la.recovered);
+    std::printf("  %-34s %7.3f %8.3f %13.3f %10.3f\n\n", "random model", lb.clean, lb.spliced, lb.ablated, lb.recovered);
+
+    Sample held;
+    for (size_t i = 0; i < s.proteins.size(); ++i) {
+        if (s.test[i]) held.proteins.push_back(s.proteins[i]);
+    }
+    const SparseCodes codes = EncodeSparse(*a.t, a.test_in, backend), codes_random = EncodeSparse(*b.t, b.test_in, backend);
+    const SparseCodes neurons = NeuronCodes(a.test_in, h);
+    std::vector<std::string> concepts = {"Helix", "Beta strand", "Turn"};
+    concepts.insert(concepts.end(), o.concepts.begin(), o.concepts.end());
+    std::ofstream csv(o.out + "/concepts.csv");
+    csv << "concept,positives,feature,f1,precision,recall,neuron_f1,random_model_f1\n";
+    std::printf("%-16s %9s   %7s %6s %6s %6s  %7s  %7s\n", "concept", "positives", "feature", "F1", "prec", "recall", "neuron", "random");
+    for (const std::string& c : concepts) {
+        const std::vector<int> labels = Labels(held, c);
+        const ConceptMatch m = MatchConcept(codes, labels, c), n = MatchConcept(neurons, labels, c), r = MatchConcept(codes_random, labels, c);
+        if (m.positives == 0) continue;
+        std::printf("%-16s %9ld   %7ld %6.3f %6.3f %6.3f  %7.3f  %7.3f\n", c.c_str(), static_cast<long>(m.positives), static_cast<long>(m.feature),
+                    m.f1, m.precision, m.recall, n.f1, r.f1);
+        csv << '"' << c << "\"," << m.positives << ',' << m.feature << ',' << m.f1 << ',' << m.precision << ',' << m.recall << ',' << n.f1 << ','
+            << r.f1 << '\n';
+    }
+    std::ofstream metrics(o.out + "/featurizer_metrics.csv");
+    metrics << "model,explained_variance,cosine,norm_ratio,l0,dead_fraction,dense_fraction,loss_clean,loss_spliced,loss_ablated,loss_recovered\n";
+    for (const auto& [label, r, l] : {std::tuple<const char*, const ReconstructionMetrics*, const LossRecovered*>{"trained", &ra, &la},
+                                     {"random", &rb, &lb}}) {
+        metrics << label << ',' << r->explained_variance << ',' << r->cosine << ',' << r->norm_ratio << ',' << r->l0 << ',' << r->dead_fraction << ','
+                << r->dense_fraction << ',' << l->clean << ',' << l->spliced << ',' << l->ablated << ',' << l->recovered << '\n';
+    }
+    std::printf("\nwrote %s/concepts.csv and %s/featurizer_metrics.csv\n", o.out.c_str(), o.out.c_str());
 }
 
 /** @brief Absorption is measured against the probe's direction; below this F1 the probe hasn't
@@ -539,7 +756,10 @@ int Run(DeviceBackend* backend, const Options& o) {
     const std::vector<AnnotatedProtein> all = ReadAnnotatedProteins(o.annotations);
     std::filesystem::create_directories(o.out);
     if (o.probes) RunProbes(backend, *model, tok, o, Choose(all, o.probe_proteins, o.seed));
-    if (o.sae) RunSae(backend, *model, tok, o, Choose(all, o.sae_proteins, o.seed));
+    if (o.sae) {
+        const bool transcoder = o.featurizer == "transcoder" || o.featurizer == "skip-transcoder";
+        (transcoder ? RunTranscoder : RunSae)(backend, *model, tok, o, Choose(all, o.sae_proteins, o.seed));
+    }
     return 0;
 }
 
@@ -581,8 +801,9 @@ int main(int argc, char** argv) {
     }
     if (o.annotations.empty() || o.out.empty()) Usage("needs --annotations and --out");
     if (!o.probes && !o.sae) Usage("needs --probes, --sae or both");
-    if (o.featurizer != "l1" && o.featurizer != "topk" && o.featurizer != "batchtopk" && o.featurizer != "matryoshka" && o.featurizer != "jumprelu") {
-        Usage("--featurizer must be l1, topk, batchtopk, matryoshka or jumprelu");
+    const std::vector<std::string> featurizers = {"l1", "topk", "batchtopk", "matryoshka", "jumprelu", "transcoder", "skip-transcoder"};
+    if (std::find(featurizers.begin(), featurizers.end(), o.featurizer) == featurizers.end()) {
+        Usage("--featurizer must be l1, topk, batchtopk, matryoshka, jumprelu, transcoder or skip-transcoder");
     }
     try {
         if (o.device == "cpu") {

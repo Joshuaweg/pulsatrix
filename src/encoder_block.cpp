@@ -76,7 +76,9 @@ Tensor EncoderBlock::forward_impl(const Tensor& input) {
     last_x_ = input;
     last_attn_out_ = mha_.forward(pre ? Norm(*norm1_, input) : input);
     last_y1_ = pre ? Add(input, last_attn_out_, backend_) : Norm(*norm1_, Add(input, last_attn_out_, backend_));
-    last_mlp_out_ = mlp_->forward(pre ? Norm(*norm2_, last_y1_) : last_y1_);
+    const Tensor mlp_in = pre ? Norm(*norm2_, last_y1_) : last_y1_;
+    last_mlp_out_ = mlp_->forward(mlp_in);
+    if (mlp_hook_) last_mlp_out_ = detail::ApplyMlpHook(mlp_hook_, mlp_in, last_mlp_out_);
     has_forwarded_ = true;
     const Tensor sum = Add(last_y1_, last_mlp_out_, backend_);
     return pre ? sum : Norm(*norm2_, sum);

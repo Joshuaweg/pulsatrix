@@ -16,7 +16,8 @@ model's or environment's structure.
 |---|---|
 | What did each layer output for this input? | `ExplainerContext::activation_snapshot()` → `ActivationSnapshot` |
 | Is concept X linearly readable from layer L? | `LinearProbe` |
-| Can a layer's activations be split into sparser, more interpretable directions? | `SparseAutoencoder`, `TopKSparseAutoencoder` |
+| Can a layer's activations be split into sparser, more interpretable directions? | `SparseAutoencoder`, `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder` |
+| What does an MLP compute, in sparse, interpretable steps? | `Transcoder` |
 | Which layers does the output depend on for this input? | `ExplainerContext::build_circuit_graph()` → `CircuitGraph` |
 | What happens to the output if I overwrite one activation? | `ExplainerContext::forward_pass_with_patch()` |
 | What would the model predict if layer L were the last layer? | `ExplainerContext::logit_lens()` |
@@ -224,6 +225,83 @@ trains each variant. JumpReLU's L0 isn't set directly: λ = 0.005 gave 12.6, 0.0
   less.
 - The random model's absorption is the floor for each figure. For example, Matryoshka's 9% on
   transmembrane is close to its random-model 4%.
+
+
+#### Transcoders
+
+An SAE explains what is in an activation. A transcoder (Dunefsky et al., arXiv 2406.11944)
+explains a computation: it predicts an MLP's output from the MLP's input through sparse latents,
+so each latent reads from the input and writes to the output. A skip transcoder (Paulo et al.,
+arXiv 2501.18823) adds a linear map from input to output. That map takes the MLP's linear part,
+and the latents only explain what's left.
+
+```cpp
+#include "pulsatrix/transcoder.hpp"
+
+TranscoderOptions o;
+o.k = 16;
+o.skip = true;
+Transcoder t(/*input_dim=*/320, /*output_dim=*/320, /*num_features=*/2560, &backend, o);
+
+// Training pairs: read the MLP's input and output with the block's hook.
+model.layer(3).set_mlp_hook([&](const Tensor& in, const Tensor& out) {
+    Collect(in, out);
+    return out;               // returning the output unchanged only reads it
+});
+...
+t.initialize_bias(targets);
+FeaturizerLoss loss = TrainFeaturizer(t, inputs, targets, opt);
+
+// Quality: how well it predicts the MLP, and the loss with it in the MLP's place.
+ReconstructionMetrics fit = EvaluatePrediction(t, held_in, held_out);
+LossRecovered lr = MeasureMlpLossRecovered(t, [&](const MlpHook& hook) {
+    model.layer(3).set_mlp_hook(hook);
+    double loss = HeldOutLoss(model);
+    model.layer(3).set_mlp_hook({});
+    return loss;
+});
+```
+
+- **The MLP hook.** `EncoderBlock::set_mlp_hook()` and `TransformerBlock::set_mlp_hook()` see
+  the MLP's input (after the block's norm) and its output, and whatever the hook returns is
+  added to the residual stream. `MlpSpliceHook` and `MlpAblationHook` build the replacements.
+- **`predict()` vs `decode()`.** `predict(x)` is the transcoder's full output, skip connection
+  included. `decode(codes)` is the latents' part alone. Every `Featurizer` now has `predict()`
+  and `output_dim()`, and `EvaluatePrediction` measures prediction against a target.
+- **Absorption doesn't apply.** It compares decoder directions with a probe in the input space,
+  and a transcoder writes to another space. Compare its latents with concepts by F1 instead.
+- **Checked against PyTorch** (`tools/golden/make_transcoder_golden.py`), skip connection and
+  AuxK included. On a synthetic MLP with a large linear part, at k = 3, the skip connection
+  cuts the unexplained variance from 10.9% to 1.5%.
+
+**On ESM-2 8M.** `pulsatrix_probe_esm --featurizer transcoder` (or `skip-transcoder`) trains
+on the MLP that writes into layer 4, at k = 16 with 2,560 latents. Each result is shown against
+the same transcoder trained on a randomly initialized model:
+
+| | Transcoder | Skip transcoder |
+|---|---|---|
+| Explained variance of the MLP's output (random model) | 0.67 (0.96) | 0.81 (0.997) |
+| Dead latents | 25% | 8% |
+| Masked-LM loss with the MLP replaced: clean 2.37, MLP zeroed 2.61 | 2.47 | 2.44 |
+| Loss recovered | 0.59 | 0.72 |
+
+- **The skip connection helps everywhere.** It predicts the MLP better, recovers more of the
+  loss, and leaves fewer latents dead.
+- **Loss recovered is harder here than for an SAE.** Zeroing this MLP costs only 0.24 nats, so
+  splicing has a small gap to close. It isn't comparable with an SAE's loss recovered at the
+  residual stream.
+- **A random model's MLP is almost linear,** so its transcoders explain nearly all of it.
+  Explained variance alone means nothing here either.
+
+Against the TopK SAE on layer 4's residual stream (same k and width), the skip transcoder's best
+single feature per concept is:
+- better for helix (0.40 vs 0.33), disulfide bonds (0.70 vs 0.63) and signal peptides (0.72 vs
+  0.66);
+- equal for zinc fingers (0.40);
+- worse for strands (0.25 vs 0.33) and transmembrane (0.60 vs 0.63).
+
+That is mixed, not the clear win Paulo et al. report for language models. Their measure was
+automated interpretability scores, not concept F1.
 
 
 #### Measuring a featurizer

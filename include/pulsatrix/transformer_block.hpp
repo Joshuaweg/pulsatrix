@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <optional>
+#include "pulsatrix/mlp_hook.hpp"
 #include "pulsatrix/module.hpp"
 #include "pulsatrix/multihead_attention_module.hpp"
 #include "pulsatrix/rms_norm_module.hpp"
@@ -153,6 +154,9 @@ public:
     [[nodiscard]] MultiHeadAttentionModule& mha() { return mha_; }
     [[nodiscard]] RMSNormModule& norm2() { return norm2_; }
     [[nodiscard]] SwiGLUModule& swiglu() { return swiglu_; }
+    /** @brief Calls @p hook on the MLP's input (after norm2) and output (after any post-MLP norm)
+     *         during forward(), not forward_cached() (MlpHook). An empty function removes it. */
+    void set_mlp_hook(MlpHook hook) { mlp_hook_ = std::move(hook); }
     /** @brief The sandwich norms after attention and after the MLP; nullptr without post_norms. */
     [[nodiscard]] RMSNormModule* post_attn_norm() { return post_attn_norm_.get(); }
     [[nodiscard]] RMSNormModule* post_mlp_norm() { return post_mlp_norm_.get(); }
@@ -189,6 +193,7 @@ private:
     Tensor last_y1_;        ///< x + attn_out, (N, L, d_model).
     Tensor last_ffn_out_;   ///< swiglu_'s output, (N, L, d_model).
     bool has_forwarded_ = false;
+    MlpHook mlp_hook_;
 };
 
 }  // namespace pulsatrix
