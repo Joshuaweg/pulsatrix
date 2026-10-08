@@ -162,8 +162,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
 Feature discovery on real models, and agents that can drive the library.
 
-- FEAT-1 (**done**, for PLM-8) to FEAT-7: the featurizer interface, TopK and its family,
-  metrics, transcoders, BSF, steering
+- FEAT-1 (**done**, for PLM-8), FEAT-2 (**done**) to FEAT-7: the featurizer interface, TopK
+  and its family, metrics, transcoders, BSF, steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
 - VIZ-4 (**done**), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector
@@ -803,7 +803,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | FEAT-1 | A `Featurizer` interface (encode, decode, loss, decoder normalization), with the existing SAE ported to it and given unit-norm decoders, an L0 metric and dead-latent tracking | One interface for the whole family | — | P0 | M | Done, [#102](https://github.com/Joshuaweg/pulsatrix/pull/102) (see below) |
-| FEAT-2 | TopK SAE with the auxiliary loss for dead latents | Removes L1 shrinkage; sets sparsity directly | FEAT-1, FND-3 | P0 | M |
+| FEAT-2 | TopK SAE with the auxiliary loss for dead latents | Removes L1 shrinkage; sets sparsity directly | FEAT-1, FND-3 | P0 | M | Done (see below) |
 | FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M |
 | FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — |
 | FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M |
@@ -840,6 +840,21 @@ Open: no LRP rule exists yet for propagating relevance through a block top-k. FE
     Under unit norm 0.05 also collapses reconstruction on that Gaussian data. The control now
     uses 0.01 and checks L0, and a new test pins the comparison above.
   - The SAE recipe's expected output changed with it.
+- **FEAT-2** adds `TopKSparseAutoencoder` (`topk_sparse_autoencoder.hpp`), a `Featurizer`
+  and a `Module`.
+  - **Checked against PyTorch,** not against Gao et al.'s code: OpenAI's `sparse_autoencoder`
+    package isn't maintained and needs Triton. A PyTorch rendering of the paper's method gives
+    the loss, the gradients and two Adam steps, matched to 1e-5.
+  - **AuxK only reaches latents with positive pre-activations,** as in the paper: the ReLU
+    applies to the auxiliary codes too. A latent pushed below zero everywhere stays dead.
+  - **Unit-norm decoders without moving the scale into the encoder,** as Gao et al. do. Moving
+    it, as FEAT-1 does for the L1 SAE, would change which latents win the top k.
+  - **`b_dec` starts at the data's mean,** not its geometric median.
+  - **Dead-latent counters aren't in checkpoints;** `inputs_since_fired()` and
+    `set_inputs_since_fired()` save and restore them.
+  - **Selection runs on the host.** `top_k` runs on the device, but the codes, the auxiliary
+    selection and the gradient routing are host loops. That is fine at PLM-8's scale; a large
+    SAE would want them on the device.
 
 ## ARCH: New architectures
 
