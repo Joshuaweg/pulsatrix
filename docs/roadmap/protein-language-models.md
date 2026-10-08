@@ -1,6 +1,6 @@
 # Protein language models: research and plan
 
-Status: **accepted** as its own epic (PLM in the [roadmap](index.md#plm-protein-language-models)), 2026-10-07. Researched 2026-10-07.
+Status: **complete** (2026-10-08). Accepted as its own epic (PLM in the [roadmap](index.md#plm-protein-language-models)) and researched on 2026-10-07. What was built, and where it departed from this plan, is in the roadmap's PLM section and the [Protein language models](../protein-models/index.md) guide.
 
 ## What a protein language model is
 
