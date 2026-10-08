@@ -64,7 +64,11 @@ Tensor CausalLM::forward_impl(const Tensor& input) {
         throw std::invalid_argument("CausalLM::forward: input must be (N, L) token ids");
     }
     Tensor x = ScaleEmbeddings(embed_.forward(input));
-    for (auto& layer : layers_) x = layer->forward(x);
+    if (hidden_state_hook_) x = detail::ApplyHiddenStateHook(hidden_state_hook_, 0, x);
+    for (size_t i = 0; i < layers_.size(); ++i) {
+        x = layers_[i]->forward(x);
+        if (hidden_state_hook_) x = detail::ApplyHiddenStateHook(hidden_state_hook_, static_cast<int64_t>(i) + 1, x);
+    }
     last_hidden_shape_ = x.shape();
     const int64_t d = config_.hidden_size;
     const int64_t rows = x.numel() / d;
