@@ -9,7 +9,8 @@ train them further and explain their predictions.
 
 It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. It predicts
 which residues touch from the model's attention and checks them against experimental
-structures. Protein views and explanations come next (see the
+structures, and draws all of it the way biologists read it: mutation maps, sequence logos,
+contact maps, residue tracks and the 3D structure. Checked explanations come next (see the
 [roadmap](../roadmap/index.md#plm-protein-language-models) and the
 [research and plan](../roadmap/protein-language-models.md)).
 
@@ -273,6 +274,73 @@ predicted probabilities are within 3.1e-5 of transformers' with ESM-2 8M and 650
 precisions are equal. Both formats of all 17 chains in 13 entries give the same sequences as
 biotite, and distances within 1e-4 Å. CI runs the same checks on the tiny ESM-2 and on crambin
 (`tests/fixtures/structures`).
+
+## Protein views
+
+`viz/protein_documents.hpp` turns the model's outputs into four
+[viz documents](../visualization/index.md#json-documents), and `viz/protein_views.hpp` draws
+them. Each is an SVG figure (for papers and CI: no fonts, GPU or browser needed) or an HTML page
+holding that figure, whose cells show their values on hover. The pages have no scripts, so they
+work offline.
+
+| Document | Built by | Shows |
+|---|---|---|
+| `MutationMapDocument` | `MakeMutationMapDocument(seq, scorer.single_mutant_scan(m, seq))` | Every substitution's score, a row per amino acid and a column per residue, the wild type dotted |
+| `SequenceLogoDocument` | `MakeSequenceLogoDocument(m, tok, seq)` | What the model expects at each residue: letters stacked to the position's information content, colored by chemistry |
+| `ContactMapDocument` | `MakeContactMapDocument(seq, predicted, &truth)` | Predicted contacts above the diagonal; below, the structure's contacts in gray and the L best predictions as dots, blue if right and red if wrong, with the precision |
+| `ResidueTracksDocument` | Any per-residue values, plus annotated stretches | Tracks stacked under the sequence: `MeanSubstitutionScore` (how much the model minds a change), `InformationContent`, or your own |
+
+```cpp
+#include "pulsatrix/viz/protein_views.hpp"
+
+ResidueLogProbs m = scorer.masked_marginals(seq);
+MutationMapDocument scan = MakeMutationMapDocument(seq, scorer.single_mutant_scan(m, seq), "masked_marginals");
+std::ofstream("scan.svg") << RenderMutationMapSvg(scan);
+std::ofstream("logo.html") << RenderSequenceLogoHtml(MakeSequenceLogoDocument(m, tok, seq));
+
+ResidueTracksDocument tracks;
+tracks.sequence = seq;
+tracks.tracks.push_back({"mean substitution score", MeanSubstitutionScore(scan), /*signed=*/true});
+tracks.features.push_back({"catalytic motif", 70, 73, "site"});
+std::ofstream("tracks.svg") << RenderResidueTracksSvg(tracks);
+```
+
+ESM-2 650M on TEM-1 β-lactamase (1BTL): the logo of its first 60 residues. The catalytic
+serine's motif, S70-T-F-K73, is the most conserved stretch.
+
+![Sequence logo of TEM-1 residues 26 to 85](figures/tem1_logo.png)
+
+Its contact map against the crystal structure: 66% of the top L long-range predictions are right.
+
+![Predicted and true contacts of TEM-1](figures/tem1_contact_map.svg)
+
+### The structure in 3D
+
+`RenderStructureHtml(structure_text, chain, tracks)` draws a PDB or mmCIF file with
+[3Dmol.js](https://3dmol.csb.pitt.edu/) and colors the chain by any track, with a menu to switch
+tracks. Hovering a residue shows its value. Residues are matched by `residue_ids` (author number
+plus insertion code, `ResidueIds(chain)` gives them), or one for one when the chain's sequence is
+the tracks' sequence. 3Dmol.js 2.5.5 loads from jsDelivr, pinned and checked by its hash, or is
+copied into the page with `HtmlScripts::Inline` (`tools/render/fetch_vega.sh` downloads it).
+
+![TEM-1 colored by information content](figures/tem1_structure.png)
+
+### From the command line
+
+`tools/plm/pulsatrix_protein_views` runs all of it for one protein, from a sequence or a
+structure, and writes each document as JSON, SVG and HTML, plus the structure page:
+
+```bash
+pulsatrix_protein_views esm2_t33_650M_UR50D --structure 1BTL.cif --chain A --out tem1/ --device hip
+```
+
+For TEM-1 with 650M on gfx1151, that takes a minute, most of it the masked marginals (one pass per
+residue). `pulsatrix_svg` draws any saved document again: `pulsatrix_svg tem1/contact_map.v1.json
+-o contacts.svg`.
+
+Positions are numbered from the document's `first_position`, one per residue. A structure whose
+author numbering skips numbers (TEM-1's Ambler numbering skips 239 and 253) is numbered
+consecutively in the figures; the structure page uses the real ids.
 
 ## Training and explaining
 

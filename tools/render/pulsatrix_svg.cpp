@@ -12,6 +12,10 @@
 //   pulsatrix_svg cf1.json cf2.json cf3.json -o set.svg        # counterfactual set (CFS-7)
 //   pulsatrix_svg morris.json -o morris.svg                    # morris: mu*-sigma scatter (CFS-4)
 //   pulsatrix_svg sobol.json -o sobol.svg                      # sobol: index bars (CFS-4)
+//   pulsatrix_svg scan.json -o scan.svg                        # mutation_map (PLM-5)
+//   pulsatrix_svg logo.json -o logo.svg                        # sequence_logo (PLM-5)
+//   pulsatrix_svg contacts.json -o contacts.svg                # contact_map (PLM-5)
+//   pulsatrix_svg tracks.json -o tracks.svg                    # residue_tracks (PLM-5)
 //
 //   pulsatrix_svg explanation.json -o explanation.html          # interactive: hover, zoom, export
 //   pulsatrix_svg run.json -o run.html                          # training_log (HTML only)
@@ -35,6 +39,7 @@
 
 #include "pulsatrix/viz/attribution_graph.hpp"
 #include "pulsatrix/viz/html.hpp"
+#include "pulsatrix/viz/protein_views.hpp"
 #include "pulsatrix/viz/svg.hpp"
 
 namespace {
@@ -118,6 +123,10 @@ std::string RenderHtml(const std::vector<std::string>& inputs, int top_k, bool w
     if (kind == "partial_dependence") return RenderPartialDependenceHtml(ParsePartialDependenceDocument(json), pd, options);
     if (kind == "training_log") return RenderTrainingLogHtml(ParseTrainingLogDocument(json), options);
     if (kind == "feature_dashboard") return RenderFeatureDashboardHtml(ParseFeatureDashboardDocument(json), options);
+    if (kind == "mutation_map") return RenderMutationMapHtml(ParseMutationMapDocument(json), options);
+    if (kind == "sequence_logo") return RenderSequenceLogoHtml(ParseSequenceLogoDocument(json), options);
+    if (kind == "contact_map") return RenderContactMapHtml(ParseContactMapDocument(json), {}, options);
+    if (kind == "residue_tracks") return RenderResidueTracksHtml(ParseResidueTracksDocument(json), options);
     throw std::invalid_argument("there is no HTML view for " + kind + " documents yet");
 }
 
@@ -270,6 +279,14 @@ int main(int argc, char** argv) {
                 svg = RenderTornadoSvg(ParseSensitivityDocument(json), top_k, options);
             } else if (kind == "partial_dependence") {
                 svg = RenderPartialDependenceSvg(ParsePartialDependenceDocument(json), pd_options, options);
+            } else if (kind == "mutation_map") {
+                svg = RenderMutationMapSvg(ParseMutationMapDocument(json), options);
+            } else if (kind == "sequence_logo") {
+                svg = RenderSequenceLogoSvg(ParseSequenceLogoDocument(json), options);
+            } else if (kind == "contact_map") {
+                svg = RenderContactMapSvg(ParseContactMapDocument(json), {}, options);
+            } else if (kind == "residue_tracks") {
+                svg = RenderResidueTracksSvg(ParseResidueTracksDocument(json), options);
             } else {
                 throw std::invalid_argument("there is no SVG view for " + kind + " documents yet");
             }

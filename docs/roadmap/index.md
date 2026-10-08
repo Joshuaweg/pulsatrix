@@ -1101,7 +1101,7 @@ sources are in [Protein language models: research and plan](protein-language-mod
 | PLM-2 | `EncoderLM` and ESM-2 loading: token-dropout scaling, rotate-half RoPE, final LayerNorm, LM head; `EsmForMaskedLM` configs and weights; ESM `vocab.txt` tokenizer and a FASTA reader. Golden parity of logits, hidden states and attentions with `transformers` on a tiny generated ESM and on `esm2_t6_8M` and `esm2_t33_650M` | The foundation; must match the reference before anything else | PLM-1 | P0 | M | Done, [#95](https://github.com/Joshuaweg/pulsatrix/pull/95) (see below) |
 | PLM-3 | Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and full single-mutant scans. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset | The headline use and the strongest numerical check | PLM-2 | P0 | M | Done, [#96](https://github.com/Joshuaweg/pulsatrix/pull/96) (see below) |
 | PLM-4 | Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with `transformers`, the top-K head average, a PDB/mmCIF reader, and precision at L, L/2 and L/5 by sequence separation | Shows whether the model learned the fold; feeds the head grid | PLM-2 | P1 | M | Done, [#97](https://github.com/Joshuaweg/pulsatrix/pull/97) (see below) |
-| PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | |
+| PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | Done (see below) |
 | PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | |
 | PLM-7 | Masked-LM training: the 15% (80/10/10) masking collator with token dropout, cropping and cluster-weighted sampling; an ESM-2-8M-shaped model on a UniRef50 sample, checked against BioNeMo's curve; per-residue and per-protein fine-tuning heads | Training and transfer learning; full pretraining waits on HIP-11 | PLM-2 | P1 | M | |
 | PLM-8 | Probes and features: per-layer linear probes (DSSP, accessibility, binding sites) with control tasks; an InterPLM-style SAE on ESM-2-8M with features matched to Swiss-Prot annotations; a feature dashboard with a structure panel | Concept-level interpretability | PLM-5, FEAT-1 | P2 | L | |
@@ -1172,6 +1172,28 @@ sources are in [Protein language models: research and plan](protein-language-mod
     structures the two agree exactly.
   - Not done: the full SEQRES sequence. The model sees the observed residues, so a chain with
     unresolved loops is scored on a shortened sequence. AlphaFold DB models have no gaps.
+
+- **PLM-5** adds four viz documents (`mutation_map`, `sequence_logo`, `contact_map`,
+  `residue_tracks`), with builders from the model's outputs, SVG figures, HTML pages and a 3D
+  structure page. `tools/plm/pulsatrix_protein_views` makes all of them for one protein.
+  - **Pages hold the SVG, not Vega-Lite.** A contact map has L² cells (69,000 for TEM-1) and a
+    logo needs stretched letters, neither of which Vega-Lite handles well. So each page embeds
+    the figure, with a tooltip on every cell, and needs no scripts. Only the structure page loads
+    a library.
+  - **3Dmol.js, not Mol\*.** 3Dmol.js is one 540 KB file (BSD-3-Clause), easy to pin, hash and
+    inline. Mol\* is several megabytes. 3Dmol.js reads author chain ids and numbering from mmCIF,
+    as the PLM-4 reader does, so residue ids line up. It doesn't read insertion codes from mmCIF;
+    PDB files carry them.
+  - **Logo letters are stretched text.** Each letter is bold sans-serif text scaled to its box, so
+    a figure needs no glyph outlines. A letter's ink fills its box to within a few percent,
+    depending on the installed font (Helvetica, Arial or Liberation Sans).
+  - Checked: every figure, by eye, in Chromium and cairosvg, on fixtures (now golden files) and on
+    ESM-2 650M's output for TEM-1 (1BTL). The contact map's long-range precision there is 0.665,
+    the same value PLM-4 measured. The structure page was driven in headless Chromium: the menu
+    switches tracks, and hovering labels a residue with its value.
+  - Figures number residues consecutively from `first_position`. A structure whose author
+    numbering skips numbers (TEM-1's Ambler numbering skips 239 and 253) is numbered by position
+    in the figures, by author id on the structure page.
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.
