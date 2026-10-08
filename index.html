@@ -1711,7 +1711,8 @@ AttnLRP. Logits, token ids and explanations are checked against <code>transforme
 and LXT, and <code>pulsatrix_explain_text</code> turns a prompt into an explanation figure in one command.</p>
 <p><strong><a href="protein-models/">Protein Language Models</a></strong>: load ESM-2 protein language models
 (8M to 650M parameters) from the Hugging Face Hub, read their per-residue representations and
-attention maps, and explain their predictions, with ESM's tokenizer and a FASTA reader.</p>
+attention maps, score mutations zero-shot, predict contacts and check them against PDB and mmCIF
+structures, and explain their predictions.</p>
 <p><strong><a href="interpretability/">Interpretability</a></strong>: explain a trained model's predictions.</p>
 <ul>
 <li><a href="interpretability/lrp/">Layer-wise Relevance Propagation</a>: Epsilon, Gamma, AlphaBeta and

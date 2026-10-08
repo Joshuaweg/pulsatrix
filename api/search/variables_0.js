@@ -12,7 +12,11 @@ var searchData=
   ['append_9',['append',['../structpulsatrix_1_1SystemMonitor_1_1Options.html#a38b1c37b3b1e263823120cca03d24272',1,'pulsatrix::SystemMonitor::Options']]],
   ['architecture_10',['architecture',['../structpulsatrix_1_1EncoderLMConfig.html#aeb30ca0859861354fcf43e71f78a38af',1,'pulsatrix::EncoderLMConfig::architecture'],['../structpulsatrix_1_1HfModelConfig.html#ad80446f7689bb3619d06cc0a2b7ef0bc',1,'pulsatrix::HfModelConfig::architecture']]],
   ['argmax_5fdisagreements_11',['argmax_disagreements',['../structpulsatrix_1_1GoldenSequenceResult.html#af8add1a57fdb3ba1790edc5544cc2eb5',1,'pulsatrix::GoldenSequenceResult']]],
-  ['attribution_12',['attribution',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa',1,'pulsatrix::ExplanationScoreCard::Input']]],
-  ['auc_13',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve::auc'],['../structpulsatrix_1_1FitnessMetrics.html#adeaa141ed59dd66717e2fc92fefec76b',1,'pulsatrix::FitnessMetrics::auc']]],
-  ['available_14',['available',['../structpulsatrix_1_1MetricCapability.html#aedf248268fb7014def3128b5f5f55956',1,'pulsatrix::MetricCapability']]]
+  ['at_5fl_12',['at_l',['../structpulsatrix_1_1ContactPrecisions.html#af6c8561d2dad4e8316f2da4e04eef860',1,'pulsatrix::ContactPrecisions']]],
+  ['at_5fl2_13',['at_l2',['../structpulsatrix_1_1ContactPrecisions.html#a543d636e6e4e93591d954427f60a5f9b',1,'pulsatrix::ContactPrecisions']]],
+  ['at_5fl5_14',['at_l5',['../structpulsatrix_1_1ContactPrecisions.html#a658bcd1d24ad67652df099a063503f7b',1,'pulsatrix::ContactPrecisions']]],
+  ['atoms_15',['atoms',['../structpulsatrix_1_1StructureResidue.html#acf65b822eee59995a80322751813e4b2',1,'pulsatrix::StructureResidue']]],
+  ['attribution_16',['attribution',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa',1,'pulsatrix::ExplanationScoreCard::Input']]],
+  ['auc_17',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve::auc'],['../structpulsatrix_1_1FitnessMetrics.html#adeaa141ed59dd66717e2fc92fefec76b',1,'pulsatrix::FitnessMetrics::auc']]],
+  ['available_18',['available',['../structpulsatrix_1_1MetricCapability.html#aedf248268fb7014def3128b5f5f55956',1,'pulsatrix::MetricCapability']]]
 ];

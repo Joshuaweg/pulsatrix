@@ -5765,7 +5765,7 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <td>PLM-2</td>
 <td>P0</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/96">#96</a> (see below)</td>
 </tr>
 <tr>
 <td>PLM-4</td>
@@ -5774,7 +5774,7 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <td>PLM-2</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/97">#97</a> (see below)</td>
 </tr>
 <tr>
 <td>PLM-5</td>
@@ -5876,8 +5876,29 @@ sources are in <a href="protein-language-models/">Protein language models: resea
     time, with identical outputs. <code>VariantScorer</code> uses them, and sizes each batch by a memory
     budget (<code>max_pass_bytes</code>), refusing a pass that can't fit. BRCA1 (1863 residues) at batch 8
     then peaks at the model's own 10.2 GB on CPU and 16 GB on GPU.</li>
-<li>Not done here, now backlog items: the 10 GB it takes to load 650M (FND-9), and the speed of
-    1024-token passes on gfx1151, about 3.7 s each (HIP-13).</li>
+<li>
+<p>Not done here, now backlog items: the 10 GB it takes to load 650M (FND-9), and the speed of
+    1024-token passes on gfx1151, about 3.7 s each (HIP-13).</p>
+</li>
+<li>
+<p><strong>PLM-4</strong> matches transformers' <code>predict_contacts</code> within 3.1e-5 on ESM-2 8M and 650M, on CPU
+  and GPU, for ten proteins with experimental structures. The structure reader matches biotite
+  on 17 chains in both formats. The precision equals ESM's <code>compute_precisions</code> on every case.</p>
+</li>
+<li><strong>Streamed attention.</strong> <code>EncoderLM::set_attention_observer()</code> hands each layer's attention
+    to a callback during <code>forward()</code>. <code>ContactPredictor</code> folds it into the result there, so a
+    pass holds one layer's maps instead of all 660 of 650M's heads.</li>
+<li><strong>The top-K average needs no regression.</strong> On five proteins, the ten heads ranked best on
+    five others score a mean long-range P@L of 0.642, against 0.637 for ESM's trained head.
+    All ten are in layers 22 to 32.</li>
+<li><strong>Our own reader, not a dependency.</strong> PDB and mmCIF readers came out small enough to own
+    (first model, <code>ATOM</code> plus selenomethionine, residues with a Cα, the first alternate
+    location). Author chain ids and numbering in both formats make the two agree.</li>
+<li><strong>Two choices in precision.</strong> Pairs with an unknown distance are dropped before ranking;
+    ESM's code ranks them with a score of minus infinity. Ties keep row order. On real
+    structures the two agree exactly.</li>
+<li>Not done: the full SEQRES sequence. The model sees the observed residues, so a chain with
+    unresolved loops is scored on a shortened sequence. AlphaFold DB models have no gaps.</li>
 </ul>
 <p>Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.</p>

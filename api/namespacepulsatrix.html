@@ -158,6 +158,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything that shapes a <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a> (LLM-1).  <a href="structpulsatrix_1_1AttentionConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionHead.html">AttentionHead</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One attention head: <code>layer</code> from 0, <code>head</code> within it from 0.  <a href="structpulsatrix_1_1AttentionHead.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttnLrpReport.html">AttnLrpReport</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A model's comparison against an AttnLRP reference file.  <a href="structpulsatrix_1_1AttnLrpReport.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -313,6 +316,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ConservationResult.html">ConservationResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of comparing a relevance-propagation step's input and output totals.  <a href="structpulsatrix_1_1ConservationResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactEvaluation.html">ContactEvaluation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">PrecisionAtL in each of the short, medium and long ranges.  <a href="structpulsatrix_1_1ContactEvaluation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A square matrix over a sequence's residue pairs, row-major: predicted contact probabilities, distances, or true contacts.  <a href="structpulsatrix_1_1ContactMap.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactOptions.html">ContactOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ContactPrecisions.html">ContactPrecisions</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Precision of the top L, L/2 and L/5 pairs, L the sequence length (rounded down).  <a href="structpulsatrix_1_1ContactPrecisions.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ContactPredictor.html">ContactPredictor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contacts from a masked LM's attention, the way ESM predicts them: one forward pass over <code>&lt;cls&gt;</code> + the sequence + <code>&lt;eos&gt;</code>, every head's map turned into ContactFeatures, then combined. Each map is used as its layer finishes, so a pass holds one layer's at a time. Sequences are run one at a time, with no padding.  <a href="classpulsatrix_1_1ContactPredictor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ContinuousCartPoleEnv.html">ContinuousCartPoleEnv</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cart-pole balancing task with a <em>continuous</em> action: the action is a single force fraction in [-1, 1] rather than a discrete left/right choice.  <a href="classpulsatrix_1_1ContinuousCartPoleEnv.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -438,6 +455,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Environment.html">Environment</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for every RL environment (<a class="el" href="classpulsatrix_1_1CartPoleEnv.html" title="The classic cart-pole balancing task (Barto, Sutton &amp; Anderson 1983), the same equations OpenAI Gym&#39;s...">CartPoleEnv</a>, and whatever later phases add).  <a href="classpulsatrix_1_1Environment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EsmContactHead.html">EsmContactHead</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESM's contact head (<code>EsmContactPredictionHead</code>): a logistic regression over every head's corrected attention map, <code>sigmoid(sum_c weight[c] * f_c(i, j) + bias)</code>. Channel <code>c = layer * heads + head</code>, as transformers stacks them.  <a href="structpulsatrix_1_1EsmContactHead.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ESResult.html">ESResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of a full Evolution Strategies run.  <a href="structpulsatrix_1_1ESResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -524,6 +544,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1GRUModule.html">GRUModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard GRU recurrence (Cho et al. 2014), h_0 = 0 (zero-initialized, not learnable &ndash; the same deliberate scope cut RNNModule/LSTMModule made, and the same thing that makes this module's conservation exact; see the <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> note below): z_t = sigmoid(x_t @ W_xz + h_{t-1} @ W_hz + b_z) (update gate), r_t = sigmoid(x_t @ W_xr + h_{t-1} @ W_hr + b_r) (reset gate), hn_prev_t = h_{t-1} @ W_hn (internal projection, no bias), n_t = tanh(x_t @ W_xn + r_t * hn_prev_t + b_n) (candidate), h_t = (1 - z_t) * h_{t-1} + z_t * n_t. Note the reset gate multiplies the <em>projected</em> previous hidden state <code>hn_prev_t</code>, not <code>h_{t-1}</code> itself &ndash; that projection is a distinct cached intermediate, and it is what gives GRU's <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule a different shape from LSTM's. Input (N, L, input_size) -&gt; output (N, L, hidden_size), the full hidden-state sequence (matches <a class="el" href="classpulsatrix_1_1RNNModule.html" title="h_t = tanh(x_t @ W_xh + h_{t-1} @ W_hh + b_h), h_0 = 0 (zero-initialized, not learnable – a deliberat...">RNNModule</a>'s/LSTMModule's convention). Single layer, no bidirectional/multi-layer/variable-length support.  <a href="classpulsatrix_1_1GRUModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeadPrecision.html">HeadPrecision</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1HeatmapColorScale.html">HeatmapColorScale</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The color-scale range and colormap family a heatmap's values call for.  <a href="structpulsatrix_1_1HeatmapColorScale.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -604,6 +626,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1KVCache.html">KVCache</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One attention layer's keys and values for the positions processed so far, in buffers allocated once for <code>max_length</code> positions, so generation never reallocates or copies the past.  <a href="classpulsatrix_1_1KVCache.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LabeledProtein.html">LabeledProtein</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A protein with known contacts, to choose heads with.  <a href="structpulsatrix_1_1LabeledProtein.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LayerNormModule.html">LayerNormModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y_{n,i} = gamma_i * (x_{n,i} - mu_n)/std_n + beta_i, mu_n = mean_i(x_{n,i}), std_n = sqrt(var_i(x_{n,i}) + eps), computed independently per batch row n. Batched ((N, num_features)), migrated from the original unbatched (rank-1) scope by campaign_exai_dl_library_batch_dimension_support.  <a href="classpulsatrix_1_1LayerNormModule.html#details">More...</a><br /></td></tr>
@@ -788,6 +813,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1PerturbationOptions.html">PerturbationOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for <a class="el" href="namespacepulsatrix.html#a08ca823b9f2196df3e5f407dee95fcc5" title="Deletion (MoRF): removes features from most to least relevant, imputing them, and records the target ...">DeletionCurve()</a> and <a class="el" href="namespacepulsatrix.html#a165ca5a11779f2081a18fc5d7657c5cc" title="Insertion: starts from the fully imputed input and restores features from most to least relevant....">InsertionCurve()</a>.  <a href="structpulsatrix_1_1PerturbationOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Point3.html">Point3</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A position in Ångström.  <a href="structpulsatrix_1_1Point3.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PolicyGradientLoss.html">PolicyGradientLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = mean_b( -log pi(a_b | s_b) * G_b ), where <code>a_b</code> is the action actually taken on step <code>b</code> of a rollout and <code>G_b</code> its return &ndash; the REINFORCE policy-gradient surrogate of Williams 1992.  <a href="classpulsatrix_1_1PolicyGradientLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -805,6 +833,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProteinGymAssay.html">ProteinGymAssay</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One assay's row of ProteinGym's reference file (<code>DMS_substitutions.csv</code>).  <a href="structpulsatrix_1_1ProteinGymAssay.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProteinStructure.html">ProteinStructure</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The protein chains of a structure's first model.  <a href="structpulsatrix_1_1ProteinStructure.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1QRResult.html">QRResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a281ea330d1061f3fdd9fd8578e3b2c2f" title="Thin QR factorization by Householder reflections.">QR()</a>'s result, the thin factorization A = Q R.  <a href="structpulsatrix_1_1QRResult.html#details">More...</a><br /></td></tr>
@@ -920,6 +951,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SensitivityDocument.html">SensitivityDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.sensitivity.v1</code>: how one output moves when each input feature, alone, goes to a low and a high value (CFS-3). The data behind a tornado chart.  <a href="structpulsatrix_1_1SensitivityDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pairs <code>(i, j)</code> counted by separation <code>j - i</code>: at least <code>min</code>, and under <code>max</code> unless <code>max</code> is 0.  <a href="structpulsatrix_1_1SeparationRange.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SequenceDecoder.html">SequenceDecoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs decoders in order, each on the previous one's tokens.  <a href="classpulsatrix_1_1SequenceDecoder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -979,6 +1013,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1StripDecoder.html">StripDecoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes up to <code>start</code> leading and <code>stop</code> trailing copies of a character from every token (Hugging Face's Strip decoder).  <a href="classpulsatrix_1_1StripDecoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1StructureChain.html">StructureChain</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A chain's residues, in file order.  <a href="structpulsatrix_1_1StructureChain.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1StructureResidue.html">StructureResidue</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One residue of a chain and its atoms.  <a href="structpulsatrix_1_1StructureResidue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SubTBLoss.html">SubTBLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One sub-trajectory pair's contribution to the SubTB(λ) loss: <code>Δ(i,j) = log F(s_i) + Σ log P_F − log F(s_j) − Σ log P_B</code> (summed over the edges spanned by <code>[i,j)</code>), weighted by &lsquo;pair_weight_ratio = λ^{j-i} / Σ_{i&rsquo;&lt;j'} λ^{j'-i'}` (the pre-normalized share of the total weighted-average loss this specific pair contributes).  <a href="classpulsatrix_1_1SubTBLoss.html#details">More...</a><br /></td></tr>
@@ -1372,6 +1412,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a94d9ac6240473b5362d1e8e5c11157bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The op-type tag a Node carries. Charter Part 2 §3: nodes are tagged by a small closed set of op types rather than by concrete layer class, so a query like "find the last conv layer's activations" (Grad-CAM) works by querying op type, not by string-matching a layer name.  <a href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">More...</a><br /></td></tr>
 <tr class="separator:a94d9ac6240473b5362d1e8e5c11157bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73a0c4c4eb2de07fef8d33c69e4618cc" id="r_a73a0c4c4eb2de07fef8d33c69e4618cc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">ContactAtom</a> { <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442">Beta</a>
+, <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca6132295fcf5570fb8b0a944ef322a598">Alpha</a>
+, <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca2cb2ce3670408b98b4bcc8e158585e38">VirtualBeta</a>
+ }</td></tr>
+<tr class="memdesc:a73a0c4c4eb2de07fef8d33c69e4618cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which atom stands for a residue in residue distances.  <a href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">More...</a><br /></td></tr>
+<tr class="separator:a73a0c4c4eb2de07fef8d33c69e4618cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad459b72b938b5edbe52c75cbc8ee743a" id="r_ad459b72b938b5edbe52c75cbc8ee743a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a">VariantStrategy</a> { <a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743aa368b1156e5dca80ce71e8eaa4f9b0d06">MaskedMarginals</a>
 , <a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743aa8fea96a293e0c36852a4c4d7c139bdb6">WildTypeMarginals</a>
  }</td></tr>
@@ -1655,7 +1701,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a048d145a932fe492ea444769908f014a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name mapping from an <code>EsmForMaskedLM</code> checkpoint to <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>. Q/K/V, output, MLP and LM-head dense weights are transposed.  <br /></td></tr>
 <tr class="separator:a048d145a932fe492ea444769908f014a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa782e67904114c948b19f7ef6ec98514" id="r_aa782e67904114c948b19f7ef6ec98514"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa782e67904114c948b19f7ef6ec98514">EsmIgnoredTensors</a> (const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;config)</td></tr>
-<tr class="memdesc:aa782e67904114c948b19f7ef6ec98514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checkpoint tensors an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a> doesn't use: the absolute-position table and ids (unused with rotary), each layer's rotary <code>inv_freq</code> (recomputed), and the contact head (PLM-4).  <br /></td></tr>
+<tr class="memdesc:aa782e67904114c948b19f7ef6ec98514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checkpoint tensors an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a> doesn't use: the absolute-position table and ids (unused with rotary), each layer's rotary <code>inv_freq</code> (read separately), and the contact head (LoadEsmContactHead reads it).  <br /></td></tr>
 <tr class="separator:aa782e67904114c948b19f7ef6ec98514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3bbc0b567e59d3f602e8e93b2b2dc8d" id="r_ab3bbc0b567e59d3f602e8e93b2b2dc8d"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab3bbc0b567e59d3f602e8e93b2b2dc8d">LoadEncoderLM</a> (const std::string &amp;directory, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:ab3bbc0b567e59d3f602e8e93b2b2dc8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an ESM-2 model directory: <code>config.json</code> and safetensors weights (one file or sharded), such as <code>facebook/esm2_t6_8M_UR50D</code>. LayerNorm parameters may be named <code>weight</code>/<code>bias</code> or, as transformers 5 saves them, <code>gamma</code>/<code>beta</code>. RoPE frequencies come from the checkpoint's <code>inv_freq</code> buffer when it has one (see <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html#a8fdb496c35bdb14bba4c9cb582f18b18" title="RoPE frequencies to use instead of rope_theta&#39;s, one per pair. LoadEncoderLM fills them from the chec...">EncoderLMConfig::rope_inverse_frequencies</a>).  <br /></td></tr>
@@ -1975,6 +2021,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a04988305f3fb93fa30aa30cfcbb09a6e" id="r_a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a04988305f3fb93fa30aa30cfcbb09a6e">PolyakUpdate</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;source, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;destination, float tau)</td></tr>
 <tr class="memdesc:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Soft target-network update (Lillicrap et al. 2016 / Haarnoja et al. 2018): <code>destination_param[i] = tau * source_param[i] + (1 - tau) * destination_param[i]</code>, element-wise and in place.  <br /></td></tr>
 <tr class="separator:a04988305f3fb93fa30aa30cfcbb09a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a609014e4528035ff2d03e99efc0578f2" id="r_a609014e4528035ff2d03e99efc0578f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1EsmContactHead.html">EsmContactHead</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a609014e4528035ff2d03e99efc0578f2">LoadEsmContactHead</a> (const std::string &amp;directory, const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:a609014e4528035ff2d03e99efc0578f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the contact head from an ESM-2 checkpoint directory: <code>esm.contact_head.regression.*</code> (<code>EsmForMaskedLM</code>) or <code>contact_head.regression.*</code> (<code>EsmModel</code>).  <br /></td></tr>
+<tr class="separator:a609014e4528035ff2d03e99efc0578f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ccbd3a48e5c96acac0e21de5b8b2056" id="r_a7ccbd3a48e5c96acac0e21de5b8b2056"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a7ccbd3a48e5c96acac0e21de5b8b2056">ContactFeatures</a> (const float *attention, int64_t tokens)</td></tr>
+<tr class="memdesc:a7ccbd3a48e5c96acac0e21de5b8b2056"><td class="mdescLeft">&#160;</td><td class="mdescRight">One head's contact features from its attention map over <code>&lt;cls&gt;</code>, L residues and <code>&lt;eos&gt;</code> (<code>tokens x tokens</code>, row-major, <code>tokens = L + 2</code>): the residue block, made symmetric (<code>A + Aᵀ</code>), then corrected by the average product (APC): <code>F - rowsum * colsum / total</code>.  <br /></td></tr>
+<tr class="separator:a7ccbd3a48e5c96acac0e21de5b8b2056"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa95c438c499597f405850e6b95d5c8a7" id="r_aa95c438c499597f405850e6b95d5c8a7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa95c438c499597f405850e6b95d5c8a7">ContactPrecision</a> (const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;predicted, const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;truth, <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a> range, int64_t top)</td></tr>
+<tr class="memdesc:aa95c438c499597f405850e6b95d5c8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fraction of the <code>top</code> highest-scoring pairs in <code>range</code> that are true contacts.  <br /></td></tr>
+<tr class="separator:aa95c438c499597f405850e6b95d5c8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e44cc9a605596f33fed01f82e298c4" id="r_a26e44cc9a605596f33fed01f82e298c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContactPrecisions.html">ContactPrecisions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a26e44cc9a605596f33fed01f82e298c4">PrecisionAtL</a> (const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;predicted, const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;truth, <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a> range)</td></tr>
+<tr class="separator:a26e44cc9a605596f33fed01f82e298c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a101a5b4793456098b9c27070e1fb1c41" id="r_a101a5b4793456098b9c27070e1fb1c41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContactEvaluation.html">ContactEvaluation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a101a5b4793456098b9c27070e1fb1c41">EvaluateContacts</a> (const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;predicted, const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;truth)</td></tr>
+<tr class="separator:a101a5b4793456098b9c27070e1fb1c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9521995a242e243082cd61ff252b255e" id="r_a9521995a242e243082cd61ff252b255e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1HeadPrecision.html">HeadPrecision</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9521995a242e243082cd61ff252b255e">RankContactHeads</a> (<a class="el" href="classpulsatrix_1_1ContactPredictor.html">ContactPredictor</a> &amp;predictor, const std::vector&lt; <a class="el" href="structpulsatrix_1_1LabeledProtein.html">LabeledProtein</a> &gt; &amp;proteins, <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a> range=<a class="el" href="namespacepulsatrix.html#a31b9ea5e0b7630734453a841016c03a7">kLongRange</a>)</td></tr>
+<tr class="memdesc:a9521995a242e243082cd61ff252b255e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every head, best first, by its features' mean precision at L in <code>range</code> over <code>proteins</code>. The top K make an unsupervised predictor with <a class="el" href="classpulsatrix_1_1ContactPredictor.html#a6ec5c906c4b641d27ee634dc4f7e6463" title="The mean of heads&#39; ContactFeatures: an unsupervised predictor with no regression. Scores rank pairs; ...">ContactPredictor::average_heads</a> (arXiv 2606.21876 chooses them with 10 labeled proteins). Choose heads on proteins you won't evaluate on.  <br /></td></tr>
+<tr class="separator:a9521995a242e243082cd61ff252b255e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73c55d10c6a32a7c7e755166a530a2e2" id="r_a73c55d10c6a32a7c7e755166a530a2e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73c55d10c6a32a7c7e755166a530a2e2">MakeEsmTokenizer</a> (const std::vector&lt; std::string &gt; &amp;vocab)</td></tr>
 <tr class="memdesc:a73c55d10c6a32a7c7e755166a530a2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESM's tokenizer (Hugging Face's <code>EsmTokenizer</code>) over a vocabulary listed one token per line, by id: <code>&lt;cls&gt; &lt;pad&gt; &lt;eos&gt; &lt;unk&gt; L A G V ... &lt;mask&gt;</code> for ESM-2.  <br /></td></tr>
 <tr class="separator:a73c55d10c6a32a7c7e755166a530a2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1990,6 +2052,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a06c45a1d14fc6e146990c4f6e40e19e9" id="r_a06c45a1d14fc6e146990c4f6e40e19e9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a06c45a1d14fc6e146990c4f6e40e19e9">WriteFasta</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; &amp;records, size_t width=60)</td></tr>
 <tr class="memdesc:a06c45a1d14fc6e146990c4f6e40e19e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">FASTA text for <code>records</code>, sequences wrapped at <code>width</code> residues (0: one line).  <br /></td></tr>
 <tr class="separator:a06c45a1d14fc6e146990c4f6e40e19e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a549a78998cf79bf30d853774d22187cf" id="r_a549a78998cf79bf30d853774d22187cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProteinStructure.html">ProteinStructure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a549a78998cf79bf30d853774d22187cf">ParsePdb</a> (std::string_view text)</td></tr>
+<tr class="memdesc:a549a78998cf79bf30d853774d22187cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads PDB-format text: the <code>ATOM</code> records, and the <code>HETATM</code> records of selenomethionine, of the first model.  <br /></td></tr>
+<tr class="separator:a549a78998cf79bf30d853774d22187cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72b305d45b33ee14d19b23de3d4737ac" id="r_a72b305d45b33ee14d19b23de3d4737ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProteinStructure.html">ProteinStructure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a72b305d45b33ee14d19b23de3d4737ac">ParseMmcif</a> (std::string_view text)</td></tr>
+<tr class="memdesc:a72b305d45b33ee14d19b23de3d4737ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads mmCIF text: the <code>_atom_site</code> loop, with the same choices as ParsePdb. Chains and residue numbers are the author's (<code>auth_asym_id</code>, <code>auth_seq_id</code>), as in PDB files, so both formats of one entry give the same structure.  <br /></td></tr>
+<tr class="separator:a72b305d45b33ee14d19b23de3d4737ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbd45d0876377efe00a432b630000be7" id="r_adbd45d0876377efe00a432b630000be7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ProteinStructure.html">ProteinStructure</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adbd45d0876377efe00a432b630000be7">ReadStructure</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:adbd45d0876377efe00a432b630000be7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a structure file: mmCIF for <code>.cif</code> or <code>.mmcif</code>, PDB format otherwise (<code>.pdb</code>, <code>.ent</code>).  <br /></td></tr>
+<tr class="separator:adbd45d0876377efe00a432b630000be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0141df779c2dfa577645dc0a78c09c5" id="r_ae0141df779c2dfa577645dc0a78c09c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae0141df779c2dfa577645dc0a78c09c5">ResidueDistances</a> (const <a class="el" href="structpulsatrix_1_1StructureChain.html">StructureChain</a> &amp;chain, <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">ContactAtom</a> atom=<a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442">ContactAtom::Beta</a>)</td></tr>
+<tr class="memdesc:ae0141df779c2dfa577645dc0a78c09c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distances between the residues of <code>chain</code>, in Ångström, <code>L x L</code> for its L residues. A residue missing the atoms <code>atom</code> needs gives NaN in its row and column.  <br /></td></tr>
+<tr class="separator:ae0141df779c2dfa577645dc0a78c09c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a859c3f2767384bde8c718ef66f9cd2d9" id="r_a859c3f2767384bde8c718ef66f9cd2d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a859c3f2767384bde8c718ef66f9cd2d9">TrueContacts</a> (const <a class="el" href="structpulsatrix_1_1StructureChain.html">StructureChain</a> &amp;chain, double threshold=8.0, <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">ContactAtom</a> atom=<a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442">ContactAtom::Beta</a>)</td></tr>
+<tr class="memdesc:a859c3f2767384bde8c718ef66f9cd2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">True contacts: 1 where two residues are closer than <code>threshold</code> (8 Å by convention), 0 where they aren't, and NaN where a distance is unknown.  <br /></td></tr>
+<tr class="separator:a859c3f2767384bde8c718ef66f9cd2d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5afa1d6d5a7e637d2e166817a142d97" id="r_ac5afa1d6d5a7e637d2e166817a142d97"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ProteinGymAssay.html">ProteinGymAssay</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac5afa1d6d5a7e637d2e166817a142d97">ReadProteinGymReference</a> (const std::string &amp;path)</td></tr>
 <tr class="memdesc:ac5afa1d6d5a7e637d2e166817a142d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every assay in a reference file.  <br /></td></tr>
 <tr class="separator:ac5afa1d6d5a7e637d2e166817a142d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2437,6 +2514,13 @@ Variables</h2></td></tr>
 <tr class="memitem:abdfe136720681063b92cf1cda99ccfa5" id="r_abdfe136720681063b92cf1cda99ccfa5"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abdfe136720681063b92cf1cda99ccfa5">kFixedTopologyXORNumParams</a> = 9</td></tr>
 <tr class="memdesc:abdfe136720681063b92cf1cda99ccfa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total flat-parameter count: 2*2 (input-&gt;hidden weights) + 2 (hidden biases) + 2 (hidden-&gt;output weights) + 1 (output bias) = 9.  <br /></td></tr>
 <tr class="separator:abdfe136720681063b92cf1cda99ccfa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef5c1104db4974b34c5b34de49a24863" id="r_aef5c1104db4974b34c5b34de49a24863"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aef5c1104db4974b34c5b34de49a24863">kShortRange</a> {6, 12}</td></tr>
+<tr class="memdesc:aef5c1104db4974b34c5b34de49a24863"><td class="mdescLeft">&#160;</td><td class="mdescRight">CASP's and ESM's ranges: short 6–11, medium 12–23, long 24 and up.  <br /></td></tr>
+<tr class="separator:aef5c1104db4974b34c5b34de49a24863"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49f75d00f35298ffe41e59bc9ee36ceb" id="r_a49f75d00f35298ffe41e59bc9ee36ceb"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a49f75d00f35298ffe41e59bc9ee36ceb">kMediumRange</a> {12, 24}</td></tr>
+<tr class="separator:a49f75d00f35298ffe41e59bc9ee36ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31b9ea5e0b7630734453a841016c03a7" id="r_a31b9ea5e0b7630734453a841016c03a7"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a31b9ea5e0b7630734453a841016c03a7">kLongRange</a> {24, 0}</td></tr>
+<tr class="separator:a31b9ea5e0b7630734453a841016c03a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7d75f38b69b19b1abfb76e5ba0370ca" id="r_af7d75f38b69b19b1abfb76e5ba0370ca"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af7d75f38b69b19b1abfb76e5ba0370ca">kAminoAcids</a> = &quot;ACDEFGHIKLMNPQRSTVWY&quot;</td></tr>
 <tr class="memdesc:af7d75f38b69b19b1abfb76e5ba0370ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 20 standard amino acids, in the order SingleMutantScan's columns use.  <br /></td></tr>
 <tr class="separator:af7d75f38b69b19b1abfb76e5ba0370ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2672,6 +2756,38 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192" name="aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192"></a>ExpectedImprovement&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9" name="aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9"></a>ProbabilityOfImprovement&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9" name="aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9"></a>UpperConfidenceBound&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a73a0c4c4eb2de07fef8d33c69e4618cc" name="a73a0c4c4eb2de07fef8d33c69e4618cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73a0c4c4eb2de07fef8d33c69e4618cc">&#9670;&#160;</a></span>ContactAtom</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">pulsatrix::ContactAtom</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Which atom stands for a residue in residue distances. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442" name="a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442"></a>Beta&#160;</td><td class="fielddoc"><p>Cβ, or Cα for glycine (CASP's definition). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a73a0c4c4eb2de07fef8d33c69e4618cca6132295fcf5570fb8b0a944ef322a598" name="a73a0c4c4eb2de07fef8d33c69e4618cca6132295fcf5570fb8b0a944ef322a598"></a>Alpha&#160;</td><td class="fielddoc"><p>Cα. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a73a0c4c4eb2de07fef8d33c69e4618cca2cb2ce3670408b98b4bcc8e158585e38" name="a73a0c4c4eb2de07fef8d33c69e4618cca2cb2ce3670408b98b4bcc8e158585e38"></a>VirtualBeta&#160;</td><td class="fielddoc"><p>A Cβ placed from the backbone (N, Cα, C) with ideal geometry, for every residue, glycine included. ESM's contact-prediction example and trRosetta use it. </p>
+</td></tr>
 </table>
 
 </div>
@@ -5906,6 +6022,97 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 
 </div>
 </div>
+<a id="a7ccbd3a48e5c96acac0e21de5b8b2056" name="a7ccbd3a48e5c96acac0e21de5b8b2056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ccbd3a48e5c96acac0e21de5b8b2056">&#9670;&#160;</a></span>ContactFeatures()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> pulsatrix::ContactFeatures </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>attention</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>tokens</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>One head's contact features from its attention map over <code>&lt;cls&gt;</code>, L residues and <code>&lt;eos&gt;</code> (<code>tokens x tokens</code>, row-major, <code>tokens = L + 2</code>): the residue block, made symmetric (<code>A + Aᵀ</code>), then corrected by the average product (APC): <code>F - rowsum * colsum / total</code>. </p>
+<dl class="section return"><dt>Returns</dt><dd>The <code>L x L</code> features, the input to ESM's regression. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>tokens</code> is under 3. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa95c438c499597f405850e6b95d5c8a7" name="aa95c438c499597f405850e6b95d5c8a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa95c438c499597f405850e6b95d5c8a7">&#9670;&#160;</a></span>ContactPrecision()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::ContactPrecision </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>predicted</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>truth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a>&#160;</td>
+          <td class="paramname"><em>range</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>top</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The fraction of the <code>top</code> highest-scoring pairs in <code>range</code> that are true contacts. </p>
+<ul>
+<li>Only pairs <code>i &lt; j</code> whose truth is known (not NaN) compete.</li>
+<li>Ties keep the order <code>(i, j)</code>, row by row.</li>
+<li>With fewer than <code>top</code> such pairs, the missing ones count as wrong, as in ESM's <code>compute_precisions</code>. <dl class="section return"><dt>Returns</dt><dd>NaN if <code>top</code> is 0. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the maps' sizes differ, or <code>top</code> is negative. </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
+
+</div>
+</div>
 <a id="aebb422f24fb615d810cc32915daf01ec" name="aebb422f24fb615d810cc32915daf01ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebb422f24fb615d810cc32915daf01ec">&#9670;&#160;</a></span>CountTargetTokens()</h2>
 
@@ -6330,7 +6537,7 @@ If a front is uniform in some objective (max == min across the whole front), tha
       </table>
 </div><div class="memdoc">
 
-<p>Checkpoint tensors an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a> doesn't use: the absolute-position table and ids (unused with rotary), each layer's rotary <code>inv_freq</code> (recomputed), and the contact head (PLM-4). </p>
+<p>Checkpoint tensors an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a> doesn't use: the absolute-position table and ids (unused with rotary), each layer's rotary <code>inv_freq</code> (read separately), and the contact head (LoadEsmContactHead reads it). </p>
 
 </div>
 </div>
@@ -6523,6 +6730,34 @@ template&lt;typename FitnessFn , typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a101a5b4793456098b9c27070e1fb1c41" name="a101a5b4793456098b9c27070e1fb1c41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a101a5b4793456098b9c27070e1fb1c41">&#9670;&#160;</a></span>EvaluateContacts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ContactEvaluation.html">ContactEvaluation</a> pulsatrix::EvaluateContacts </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>predicted</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>truth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -7995,6 +8230,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for an unsupported config or a weight that doesn't fit; std::runtime_error for a missing file. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a609014e4528035ff2d03e99efc0578f2" name="a609014e4528035ff2d03e99efc0578f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a609014e4528035ff2d03e99efc0578f2">&#9670;&#160;</a></span>LoadEsmContactHead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1EsmContactHead.html">EsmContactHead</a> pulsatrix::LoadEsmContactHead </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads the contact head from an ESM-2 checkpoint directory: <code>esm.contact_head.regression.*</code> (<code>EsmForMaskedLM</code>) or <code>contact_head.regression.*</code> (<code>EsmModel</code>). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the checkpoint has no contact head, or its size isn't <code>layers * heads</code> of <code>config</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -9627,6 +9898,32 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a72b305d45b33ee14d19b23de3d4737ac" name="a72b305d45b33ee14d19b23de3d4737ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72b305d45b33ee14d19b23de3d4737ac">&#9670;&#160;</a></span>ParseMmcif()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ProteinStructure.html">ProteinStructure</a> pulsatrix::ParseMmcif </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads mmCIF text: the <code>_atom_site</code> loop, with the same choices as ParsePdb. Chains and residue numbers are the author's (<code>auth_asym_id</code>, <code>auth_seq_id</code>), as in PDB files, so both formats of one entry give the same structure. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for malformed CIF, an <code>_atom_site</code> loop missing a needed column, or no protein residues. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a512cfc844bd8a05b5af92c0565d331d3" name="a512cfc844bd8a05b5af92c0565d331d3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a512cfc844bd8a05b5af92c0565d331d3">&#9670;&#160;</a></span>ParseMorrisDocument()</h2>
 
@@ -9712,6 +10009,37 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a549a78998cf79bf30d853774d22187cf" name="a549a78998cf79bf30d853774d22187cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a549a78998cf79bf30d853774d22187cf">&#9670;&#160;</a></span>ParsePdb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ProteinStructure.html">ProteinStructure</a> pulsatrix::ParsePdb </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads PDB-format text: the <code>ATOM</code> records, and the <code>HETATM</code> records of selenomethionine, of the first model. </p>
+<ul>
+<li>A residue is kept when it has a Cα atom, so nucleic acids and stray atoms are left out.</li>
+<li>Waters, ions and ligands (other <code>HETATM</code> records) are left out.</li>
+<li>Of alternate locations, each atom's first is kept. <dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a malformed coordinate, or no protein residues. </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
 
 </div>
 </div>
@@ -10186,6 +10514,40 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a26e44cc9a605596f33fed01f82e298c4" name="a26e44cc9a605596f33fed01f82e298c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26e44cc9a605596f33fed01f82e298c4">&#9670;&#160;</a></span>PrecisionAtL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ContactPrecisions.html">ContactPrecisions</a> pulsatrix::PrecisionAtL </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>predicted</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>truth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a>&#160;</td>
+          <td class="paramname"><em>range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a4588b52e5db8b067e5b3a86a3d66ddd0" name="a4588b52e5db8b067e5b3a86a3d66ddd0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4588b52e5db8b067e5b3a86a3d66ddd0">&#9670;&#160;</a></span>ProbabilityOfImprovement()</h2>
 
@@ -10468,6 +10830,48 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a9521995a242e243082cd61ff252b255e" name="a9521995a242e243082cd61ff252b255e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9521995a242e243082cd61ff252b255e">&#9670;&#160;</a></span>RankContactHeads()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1HeadPrecision.html">HeadPrecision</a> &gt; pulsatrix::RankContactHeads </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ContactPredictor.html">ContactPredictor</a> &amp;&#160;</td>
+          <td class="paramname"><em>predictor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1LabeledProtein.html">LabeledProtein</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>proteins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a>&#160;</td>
+          <td class="paramname"><em>range</em> = <code><a class="el" href="namespacepulsatrix.html#a31b9ea5e0b7630734453a841016c03a7">kLongRange</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Every head, best first, by its features' mean precision at L in <code>range</code> over <code>proteins</code>. The top K make an unsupervised predictor with <a class="el" href="classpulsatrix_1_1ContactPredictor.html#a6ec5c906c4b641d27ee634dc4f7e6463" title="The mean of heads&#39; ContactFeatures: an unsupervised predictor with no regression. Scores rank pairs; ...">ContactPredictor::average_heads</a> (arXiv 2606.21876 chooses them with 10 labeled proteins). Choose heads on proteins you won't evaluate on. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for no proteins, or a contact map that doesn't fit its sequence. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a22532e4874cd35681db7270ced4fc066" name="a22532e4874cd35681db7270ced4fc066"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22532e4874cd35681db7270ced4fc066">&#9670;&#160;</a></span>RankSelect()</h2>
 
@@ -10676,6 +11080,32 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::runtime_error</td><td>if it can't be read; std::invalid_argument if a needed column is missing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="adbd45d0876377efe00a432b630000be7" name="adbd45d0876377efe00a432b630000be7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbd45d0876377efe00a432b630000be7">&#9670;&#160;</a></span>ReadStructure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ProteinStructure.html">ProteinStructure</a> pulsatrix::ReadStructure </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads a structure file: mmCIF for <code>.cif</code> or <code>.mmcif</code>, PDB format otherwise (<code>.pdb</code>, <code>.ent</code>). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if it can't be read; what ParsePdb or ParseMmcif throws. </td></tr>
   </table>
   </dd>
 </dl>
@@ -11771,6 +12201,36 @@ template&lt;typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ae0141df779c2dfa577645dc0a78c09c5" name="ae0141df779c2dfa577645dc0a78c09c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0141df779c2dfa577645dc0a78c09c5">&#9670;&#160;</a></span>ResidueDistances()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> pulsatrix::ResidueDistances </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1StructureChain.html">StructureChain</a> &amp;&#160;</td>
+          <td class="paramname"><em>chain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">ContactAtom</a>&#160;</td>
+          <td class="paramname"><em>atom</em> = <code><a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442">ContactAtom::Beta</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Distances between the residues of <code>chain</code>, in Ångström, <code>L x L</code> for its L residues. A residue missing the atoms <code>atom</code> needs gives NaN in its row and column. </p>
 
 </div>
 </div>
@@ -15896,6 +16356,42 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a859c3f2767384bde8c718ef66f9cd2d9" name="a859c3f2767384bde8c718ef66f9cd2d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a859c3f2767384bde8c718ef66f9cd2d9">&#9670;&#160;</a></span>TrueContacts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ContactMap.html">ContactMap</a> pulsatrix::TrueContacts </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1StructureChain.html">StructureChain</a> &amp;&#160;</td>
+          <td class="paramname"><em>chain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>threshold</em> = <code>8.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">ContactAtom</a>&#160;</td>
+          <td class="paramname"><em>atom</em> = <code><a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442">ContactAtom::Beta</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>True contacts: 1 where two residues are closer than <code>threshold</code> (8 Å by convention), 0 where they aren't, and NaN where a distance is unknown. </p>
+
+</div>
+</div>
 <a id="a00dc6490fb03959b449db691a86eeead" name="a00dc6490fb03959b449db691a86eeead"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a00dc6490fb03959b449db691a86eeead">&#9670;&#160;</a></span>TwoPointCrossover()</h2>
 
@@ -16544,6 +17040,74 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Total flat-parameter count: 2*2 (input-&gt;hidden weights) + 2 (hidden biases) + 2 (hidden-&gt;output weights) + 1 (output bias) = 9. </p>
+
+</div>
+</div>
+<a id="a31b9ea5e0b7630734453a841016c03a7" name="a31b9ea5e0b7630734453a841016c03a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31b9ea5e0b7630734453a841016c03a7">&#9670;&#160;</a></span>kLongRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a> pulsatrix::kLongRange {24, 0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a49f75d00f35298ffe41e59bc9ee36ceb" name="a49f75d00f35298ffe41e59bc9ee36ceb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49f75d00f35298ffe41e59bc9ee36ceb">&#9670;&#160;</a></span>kMediumRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a> pulsatrix::kMediumRange {12, 24}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aef5c1104db4974b34c5b34de49a24863" name="aef5c1104db4974b34c5b34de49a24863"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef5c1104db4974b34c5b34de49a24863">&#9670;&#160;</a></span>kShortRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a> pulsatrix::kShortRange {6, 12}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CASP's and ESM's ranges: short 6–11, medium 12–23, long 24 and up. </p>
 
 </div>
 </div>

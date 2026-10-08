@@ -8,6 +8,8 @@ var searchData=
   ['policy_5fgradient_5floss_2ehpp_5',['policy_gradient_loss.hpp',['../policy__gradient__loss_8hpp.html',1,'']]],
   ['polyak_5fupdate_2ehpp_6',['polyak_update.hpp',['../polyak__update_8hpp.html',1,'']]],
   ['ppo_5fclipped_5floss_2ehpp_7',['ppo_clipped_loss.hpp',['../ppo__clipped__loss_8hpp.html',1,'']]],
-  ['protein_5fsequences_2ehpp_8',['protein_sequences.hpp',['../protein__sequences_8hpp.html',1,'']]],
-  ['proteingym_2ehpp_9',['proteingym.hpp',['../proteingym_8hpp.html',1,'']]]
+  ['protein_5fcontacts_2ehpp_8',['protein_contacts.hpp',['../protein__contacts_8hpp.html',1,'']]],
+  ['protein_5fsequences_2ehpp_9',['protein_sequences.hpp',['../protein__sequences_8hpp.html',1,'']]],
+  ['protein_5fstructure_2ehpp_10',['protein_structure.hpp',['../protein__structure_8hpp.html',1,'']]],
+  ['proteingym_2ehpp_11',['proteingym.hpp',['../proteingym_8hpp.html',1,'']]]
 ];

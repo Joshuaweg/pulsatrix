@@ -14,11 +14,12 @@ var searchData=
   ['best_5ftheta_11',['best_theta',['../structpulsatrix_1_1ESResult.html#ab37b31c0769c567980b190048135c5bd',1,'pulsatrix::ESResult']]],
   ['best_5ftrial_5findex_12',['best_trial_index',['../structpulsatrix_1_1PBTResult.html#a1fd50c0fc63c85ac47d75008aea47e6a',1,'pulsatrix::PBTResult']]],
   ['beta_13',['beta',['../structpulsatrix_1_1LRPRuleConfig.html#ab2b564702fc0049fe1699a895fd63812',1,'pulsatrix::LRPRuleConfig']]],
-  ['bin_5fedges_14',['bin_edges',['../structpulsatrix_1_1HistogramBins.html#ad4bbdebd74ab26d941736736a58e0570',1,'pulsatrix::HistogramBins']]],
-  ['bins_15',['bins',['../structpulsatrix_1_1DmsVariants.html#ab4c7fc2e797810209063b3ea8967cfe8',1,'pulsatrix::DmsVariants']]],
-  ['bos_5ftoken_5fid_16',['bos_token_id',['../structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102',1,'pulsatrix::HfModelConfig']]],
-  ['bottom_17',['bottom',['../structpulsatrix_1_1WaterfallBar.html#a492341e89e384c8e1d8b6bbe54975c88',1,'pulsatrix::WaterfallBar']]],
-  ['bottom_5findices_18',['bottom_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ab900a1310fa549b5a04fd56e44054016',1,'pulsatrix::PBTTruncationGroups']]],
-  ['busy_19',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
-  ['byte_5ffallback_20',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
+  ['bias_14',['bias',['../structpulsatrix_1_1EsmContactHead.html#ad0ae8ec36e8b7a557a920954ad34af2c',1,'pulsatrix::EsmContactHead']]],
+  ['bin_5fedges_15',['bin_edges',['../structpulsatrix_1_1HistogramBins.html#ad4bbdebd74ab26d941736736a58e0570',1,'pulsatrix::HistogramBins']]],
+  ['bins_16',['bins',['../structpulsatrix_1_1DmsVariants.html#ab4c7fc2e797810209063b3ea8967cfe8',1,'pulsatrix::DmsVariants']]],
+  ['bos_5ftoken_5fid_17',['bos_token_id',['../structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102',1,'pulsatrix::HfModelConfig']]],
+  ['bottom_18',['bottom',['../structpulsatrix_1_1WaterfallBar.html#a492341e89e384c8e1d8b6bbe54975c88',1,'pulsatrix::WaterfallBar']]],
+  ['bottom_5findices_19',['bottom_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ab900a1310fa549b5a04fd56e44054016',1,'pulsatrix::PBTTruncationGroups']]],
+  ['busy_20',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
+  ['byte_5ffallback_21',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
 ];
