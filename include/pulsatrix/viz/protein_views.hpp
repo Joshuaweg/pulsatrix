@@ -107,4 +107,25 @@ struct ContactMapViewOptions {
 [[nodiscard]] std::string RenderStructureHtml(const std::string& structure, const std::string& chain,
                                               const ResidueTracksDocument& tracks, const HtmlOptions& options = {});
 
+/**
+ * @brief RenderStructureHtml's viewer as a fragment to place in any page: the track menu, the
+ *        legend, the 3D view and its scripts. Its elements' ids start with @p id, so a page can
+ *        hold several.
+ * @throws what RenderStructureHtml throws, or std::invalid_argument for an id that isn't
+ *         lowercase letters, digits and hyphens.
+ */
+[[nodiscard]] std::string StructurePanelHtml(const std::string& structure, const std::string& chain, const ResidueTracksDocument& tracks,
+                                             const HtmlOptions& options, const std::string& id);
+
+/**
+ * @brief A feature dashboard (RenderFeatureDashboardHtml) with a structure panel (PLM-8): top
+ *        example @p example drawn on @p structure's @p chain, colored by the feature's activation.
+ *        The example's tokens must be single residues matching the chain one for one, as an
+ *        AlphaFold DB model of the protein does.
+ * @throws std::invalid_argument for no such example, tokens that aren't residues, or what
+ *         StructurePanelHtml throws.
+ */
+[[nodiscard]] std::string RenderFeatureDashboardHtml(const FeatureDashboardDocument& doc, const std::string& structure,
+                                                     const std::string& chain, size_t example, const HtmlOptions& options = {});
+
 }  // namespace pulsatrix
