@@ -266,13 +266,22 @@ Tensor EncoderLM::HeadRelevance(const Tensor& relevance_out, const LRPRuleConfig
     backend_->lrp_residual_split(last_logits_nobias_.data(), bias_rows.data(), r.data(), r_decoder.data(), r_bias.data(),
                                  static_cast<size_t>(r.numel()), config.epsilon);
     Tensor rel = Reshaped(lm_decoder_.propagate_relevance(r_decoder, config), Shape({N, L, h}));
-    rel = RowsRelevance(lm_dense_, lm_gelu_.propagate_relevance(RowsRelevance(lm_norm_, rel, h, config), config), h, config);
-    return RowsRelevance(norm_, rel, h, config);
+    return RowsRelevance(lm_dense_, lm_gelu_.propagate_relevance(RowsRelevance(lm_norm_, rel, h, config), config), h, config);
 }
 
 std::vector<Tensor> EncoderLM::propagate_relevance_by_layer(const Tensor& relevance_out, const LRPRuleConfig& config) {
     require_device(relevance_out, *compute_device(), "EncoderLM::propagate_relevance_by_layer");
-    Tensor r = HeadRelevance(relevance_out, config);
+    return propagate_hidden_relevance_by_layer(HeadRelevance(relevance_out, config), config);
+}
+
+std::vector<Tensor> EncoderLM::propagate_hidden_relevance_by_layer(const Tensor& relevance_hidden, const LRPRuleConfig& config) {
+    require_device(relevance_hidden, *compute_device(), "EncoderLM::propagate_hidden_relevance_by_layer");
+    if (!has_forwarded_) throw std::logic_error("EncoderLM::propagate_hidden_relevance_by_layer: called before any forward()");
+    const int64_t N = last_ids_shape_.dim(0), L = last_ids_shape_.dim(1), h = config_.hidden_size;
+    if (relevance_hidden.numel() != N * L * h) {
+        throw std::invalid_argument("EncoderLM::propagate_hidden_relevance_by_layer: relevance must be (N, L, hidden_size)");
+    }
+    Tensor r = RowsRelevance(norm_, Reshaped(relevance_hidden, Shape({N, L, h})), h, config);
     std::vector<Tensor> boundaries(layers_.size() + 1, r);
     for (size_t i = layers_.size(); i-- > 0;) {
         boundaries[i + 1] = r;

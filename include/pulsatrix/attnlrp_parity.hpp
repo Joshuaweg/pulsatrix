@@ -54,8 +54,9 @@ struct AttnLrpReport {
 [[nodiscard]] double PearsonCorrelation(const std::vector<float>& x, const std::vector<float>& y);
 
 /** @brief The rule configuration that matches LXT's AttnLRP on a Hugging Face model: the epsilon
- *         rule with a tiny epsilon, and biases kept in the denominator as LXT's gradient * input
- *         keeps them in z (Qwen2's QKV biases). */
+ *         rule with a tiny epsilon, biases kept in the denominator as LXT's gradient * input
+ *         keeps them in z (Qwen2's QKV biases), and LayerNorm with only its standard deviation
+ *         held constant (LRPRuleConfig::layer_norm_detach_std; ESM-2, PLM-6). */
 [[nodiscard]] LRPRuleConfig LxtAttnLrpConfig();
 
 /**

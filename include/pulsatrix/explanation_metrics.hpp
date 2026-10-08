@@ -139,4 +139,10 @@ struct RandomizationResult {
 [[nodiscard]] RandomizationResult ModelParameterRandomizationTest(Module& model, const ExplainFn& explain,
                                                                   const Tensor& input, uint64_t seed);
 
+/** @brief ModelParameterRandomizationTest over @p layers, in the order given: each a prefix of
+ *         named_parameters() names, such as `"layers.11"`, randomized cumulatively.
+ *  @throws std::invalid_argument if a layer names no parameter. */
+[[nodiscard]] RandomizationResult ModelParameterRandomizationTest(Module& model, const ExplainFn& explain, const Tensor& input,
+                                                                  uint64_t seed, const std::vector<std::string>& layers);
+
 }  // namespace pulsatrix
