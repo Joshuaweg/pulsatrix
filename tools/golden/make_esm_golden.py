@@ -14,6 +14,8 @@ esm_golden.safetensors holds, for each sequence k:
     hidden.<k>.<i> F32 [L, H]       i = 0: the embeddings after token dropout; i = 1..layers: each
                                     layer's output; "final.<k>" is after emb_layer_norm_after
     attn.<k>.<i>   F32 [heads, L, L] layer i's attention probabilities (eager attention)
+    contacts.<k>   F32 [L-2, L-2]   predict_contacts, the contact head's output (PLM-4), for the
+                                    sequences without <mask>
 and a padded batch of sequences 0 and 2:
     batch.ids I64 [2, L], batch.mask I64 [2, L], batch.logits F32 [2, L, V]
 plus tokenizer cases: tok.<j> I64, the ids of metadata "tok.<j>". Metadata records the sequences,
@@ -88,6 +90,8 @@ def main():
             out[f"final.{k}"] = captured["final"][0].float().contiguous()
             for i, att in enumerate(r.attentions):
                 out[f"attn.{k}.{i}"] = att[0].float().contiguous()
+            if "<mask>" not in s:
+                out[f"contacts.{k}"] = model.predict_contacts(ids, torch.ones_like(ids))[0].float().contiguous()
         batch = tok([SEQUENCES[0], SEQUENCES[2]], return_tensors="pt", padding=True)
         r = model(batch["input_ids"], attention_mask=batch["attention_mask"])
         out["batch.ids"] = batch["input_ids"].to(torch.int64)

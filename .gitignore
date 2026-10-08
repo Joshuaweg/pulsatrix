@@ -5,6 +5,8 @@ _deps/
 *.o
 *.ilk
 *.pdb
+# ...but not protein structures in PDB format, used as test fixtures
+!tests/fixtures/structures/*.pdb
 *.exp
 *.lib
 *.dll

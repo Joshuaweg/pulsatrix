@@ -1099,8 +1099,8 @@ sources are in [Protein language models: research and plan](protein-language-mod
 |---|---|---|---|---|---|---|
 | PLM-1 | Encoder block options: LayerNorm or RMSNorm, a plain or gated MLP, exact (erf) GELU with its LRP rule, and attention and MLP biases | Every BERT-style encoder needs it, not just ESM | — | P0 | M | Done, [#94](https://github.com/Joshuaweg/pulsatrix/pull/94) (see below) |
 | PLM-2 | `EncoderLM` and ESM-2 loading: token-dropout scaling, rotate-half RoPE, final LayerNorm, LM head; `EsmForMaskedLM` configs and weights; ESM `vocab.txt` tokenizer and a FASTA reader. Golden parity of logits, hidden states and attentions with `transformers` on a tiny generated ESM and on `esm2_t6_8M` and `esm2_t33_650M` | The foundation; must match the reference before anything else | PLM-1 | P0 | M | Done, [#95](https://github.com/Joshuaweg/pulsatrix/pull/95) (see below) |
-| PLM-3 | Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and full single-mutant scans. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset | The headline use and the strongest numerical check | PLM-2 | P0 | M || Done, [#96](https://github.com/Joshuaweg/pulsatrix/pull/96) (see below) |
-| PLM-4 | Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with `transformers`, the top-K head average, a PDB/mmCIF reader, and precision at L, L/2 and L/5 by sequence separation | Shows whether the model learned the fold; feeds the head grid | PLM-2 | P1 | M | |
+| PLM-3 | Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and full single-mutant scans. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset | The headline use and the strongest numerical check | PLM-2 | P0 | M | Done, [#96](https://github.com/Joshuaweg/pulsatrix/pull/96) (see below) |
+| PLM-4 | Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with `transformers`, the top-K head average, a PDB/mmCIF reader, and precision at L, L/2 and L/5 by sequence separation | Shows whether the model learned the fold; feeds the head grid | PLM-2 | P1 | M | Done, [#97](https://github.com/Joshuaweg/pulsatrix/pull/97) (see below) |
 | PLM-5 | Protein views: the mutation map (L × 20), sequence logos, contact maps (predicted and true triangles), residue tracks, and a 3D structure page (Mol* or 3Dmol.js, CDN or inline) colored by any per-residue score | The views biologists read; reuses VIZ-1 to VIZ-3 | PLM-3, PLM-4 | P1 | L | |
 | PLM-6 | Explaining encoders: AttnLRP to a masked position, a mutation's log-odds or a fine-tuned head; per-residue relevance; attribution graphs over residues (VIZ-4); a sanity suite (randomized weights, deletion curves, agreement with DMS sensitivity and conservation) | Residue explanations that are checked, not just drawn | PLM-2, PLM-5 | P1 | M | |
 | PLM-7 | Masked-LM training: the 15% (80/10/10) masking collator with token dropout, cropping and cluster-weighted sampling; an ESM-2-8M-shaped model on a UniRef50 sample, checked against BioNeMo's curve; per-residue and per-protein fine-tuning heads | Training and transfer learning; full pretraining waits on HIP-11 | PLM-2 | P1 | M | |
@@ -1154,6 +1154,24 @@ sources are in [Protein language models: research and plan](protein-language-mod
     then peaks at the model's own 10.2 GB on CPU and 16 GB on GPU.
   - Not done here, now backlog items: the 10 GB it takes to load 650M (FND-9), and the speed of
     1024-token passes on gfx1151, about 3.7 s each (HIP-13).
+
+- **PLM-4** matches transformers' `predict_contacts` within 3.1e-5 on ESM-2 8M and 650M, on CPU
+  and GPU, for ten proteins with experimental structures. The structure reader matches biotite
+  on 17 chains in both formats. The precision equals ESM's `compute_precisions` on every case.
+  - **Streamed attention.** `EncoderLM::set_attention_observer()` hands each layer's attention
+    to a callback during `forward()`. `ContactPredictor` folds it into the result there, so a
+    pass holds one layer's maps instead of all 660 of 650M's heads.
+  - **The top-K average needs no regression.** On five proteins, the ten heads ranked best on
+    five others score a mean long-range P@L of 0.642, against 0.637 for ESM's trained head.
+    All ten are in layers 22 to 32.
+  - **Our own reader, not a dependency.** PDB and mmCIF readers came out small enough to own
+    (first model, `ATOM` plus selenomethionine, residues with a Cα, the first alternate
+    location). Author chain ids and numbering in both formats make the two agree.
+  - **Two choices in precision.** Pairs with an unknown distance are dropped before ranking;
+    ESM's code ranks them with a score of minus infinity. Ties keep row order. On real
+    structures the two agree exactly.
+  - Not done: the full SEQRES sequence. The model sees the observed residues, so a chain with
+    unresolved loops is scored on a shortened sequence. AlphaFold DB models have no gaps.
 
 Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.
