@@ -5,5 +5,6 @@ var module_8hpp =
     [ "pulsatrix::NamedBufferRef", "structpulsatrix_1_1NamedBufferRef.html", "structpulsatrix_1_1NamedBufferRef" ],
     [ "pulsatrix::Module", "classpulsatrix_1_1Module.html", "classpulsatrix_1_1Module" ],
     [ "append_named_buffers", "module_8hpp.html#afe66ae61773532438fa7d80b9f26596c", null ],
-    [ "append_named_parameters", "module_8hpp.html#a8d4d176932520c4b6229ffd1454471de", null ]
+    [ "append_named_parameters", "module_8hpp.html#a8d4d176932520c4b6229ffd1454471de", null ],
+    [ "release_tensor", "module_8hpp.html#adcfb14c67666eab8cfe009824f318631", null ]
 ];

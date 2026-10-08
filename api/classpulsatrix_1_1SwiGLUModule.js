@@ -13,5 +13,6 @@ var classpulsatrix_1_1SwiGLUModule =
     [ "named_parameters", "classpulsatrix_1_1SwiGLUModule.html#ace63830acc8508b912164c6464478efb", null ],
     [ "op_type", "classpulsatrix_1_1SwiGLUModule.html#a193e9e312e1d9a20df41c6627ce20cd9", null ],
     [ "propagate_relevance", "classpulsatrix_1_1SwiGLUModule.html#ab12c4cbb436937d6bd6dc966dccea298", null ],
+    [ "release_activations", "classpulsatrix_1_1SwiGLUModule.html#aa9ce9c7d92b0ef44676d3ccd8befab4b", null ],
     [ "up_proj", "classpulsatrix_1_1SwiGLUModule.html#a219452cb9a7a6ae1f453ba04aa50f5e8", null ]
 ];

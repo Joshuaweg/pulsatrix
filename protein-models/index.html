@@ -499,6 +499,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#scoring-mutations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scoring mutations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scoring mutations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proteingym" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ProteinGym
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#training-and-explaining" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1730,6 +1769,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#scoring-mutations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scoring mutations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scoring mutations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proteingym" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ProteinGym
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#training-and-explaining" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1778,8 +1856,8 @@ way it learned which positions tolerate change, which residues touch in the fold
 which motifs mark functional sites. pulsatrix loads the published ESM-2 checkpoints natively in
 C++, on CPU or GPU, with no Python. You can run them, read their internal representations,
 train them further and explain their predictions.</p>
-<p>This is the start of the PLM epic. Variant scoring, contact maps, protein views and explanations
-come next (see the <a href="../roadmap/#plm-protein-language-models">roadmap</a> and the
+<p>It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. Contact maps,
+protein views and explanations come next (see the <a href="../roadmap/#plm-protein-language-models">roadmap</a> and the
 <a href="../roadmap/protein-language-models/">research and plan</a>).</p>
 <h2 id="whats-inside">What's inside<a class="headerlink" href="#whats-inside" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1896,6 +1974,177 @@ the 650M model takes about 6 seconds to load and run.</p>
 <li>a run of them becomes a single <code>&lt;unk&gt;</code> (<code>mkta</code> is one token).</li>
 </ul>
 <p>Uppercase your sequences first.</p>
+<h2 id="scoring-mutations">Scoring mutations<a class="headerlink" href="#scoring-mutations" title="Permanent link">&para;</a></h2>
+<p>A deep mutational scan measures how thousands of single and multiple substitutions change a
+protein's function. ESM-2 predicts those effects with no training on the protein: a substitution
+scores <code>log p(mutant) - log p(wild type)</code> at its position, and a multiple mutant the sum of its
+substitutions. Higher means the model finds the variant more plausible.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/variant_scoring.hpp"</span>
+
+<span class="n">VariantScorer</span><span class="w"> </span><span class="nf">scorer</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG"</span><span class="p">;</span>
+<span class="n">ResidueLogProbs</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scorer</span><span class="p">.</span><span class="n">masked_marginals</span><span class="p">(</span><span class="n">seq</span><span class="p">);</span><span class="w">         </span><span class="c1">// one masked pass per residue</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scorer</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">ParseMutations</span><span class="p">(</span><span class="s">"K11R:I44A"</span><span class="p">));</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">scan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scorer</span><span class="p">.</span><span class="n">single_mutant_scan</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">seq</span><span class="p">);</span><span class="w">  </span><span class="c1">// L x 20, every substitution</span>
+</code></pre></div>
+<ul>
+<li><strong>Masked marginals</strong> (<code>masked_marginals</code>), ProteinGym's choice for ESM-2, mask each residue in
+  turn: one forward pass per residue, however many variants there are.</li>
+<li><strong>Wild-type marginals</strong> (<code>wild_type_marginals</code>) read the same log-ratios from one unmasked
+  pass. They are much faster and somewhat less accurate.</li>
+<li><strong>Pseudo-log-likelihood</strong> (<code>pseudo_log_likelihood</code>) sums <code>log p(residue)</code> with each residue
+  masked: a score for a whole sequence.</li>
+</ul>
+<p>Sequences longer than the model's 1024-token window are cut, for each masked position, to the
+window ProteinGym's <code>get_optimal_window</code> picks around it.</p>
+<h3 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h3>
+<p>Scoring needs only the logits, so <code>VariantScorer</code> runs the model with
+<code>EncoderLM::set_keep_activations(false)</code>: each layer frees the activations it would keep for
+<code>backward()</code> and LRP as soon as its output is computed. A 1024-token ESM-2 650M pass otherwise
+holds over 10 GB of them per sequence. <code>VariantScoringOptions::max_pass_bytes</code> (default 4 GiB)
+bounds each pass by <code>ScoringPassBytes</code>: long windows run fewer per batch, and a pass that can't
+fit even one sequence is refused instead of exhausting memory. Loading 650M itself peaks at about
+10 GB on the host (roadmap FND-9), so on a 32 GB machine run it on the GPU, or watch the rest.</p>
+<h3 id="proteingym">ProteinGym<a class="headerlink" href="#proteingym" title="Permanent link">&para;</a></h3>
+<p><code>tools/plm/pulsatrix_proteingym</code> runs ProteinGym's substitution benchmark and reports its five
+metrics (Spearman, AUC, MCC, NDCG and top-10% recall, in <code>fitness_metrics.hpp</code>, checked against
+scipy, scikit-learn and ProteinGym's own code), beside the published numbers if given:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_proteingym<span class="w"> </span>esm2_t33_650M_UR50D<span class="w"> </span>--device<span class="w"> </span>hip<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--reference<span class="w"> </span>DMS_substitutions.csv<span class="w"> </span>--dms-dir<span class="w"> </span>DMS_ProteinGym_substitutions<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--assays<span class="w"> </span>BLAT_ECOLX_Stiffler_2015,RL40A_YEAST_Roscoe_2013<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--published<span class="w"> </span>spearman_dms.csv<span class="w"> </span>--published-column<span class="w"> </span><span class="s2">"ESM2 (650M)"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--published-scores<span class="w"> </span>zero_shot_substitutions_scores<span class="w"> </span>--published-score-column<span class="w"> </span>ESM2_650M
+</code></pre></div>
+<p>On 14 assays with ESM-2 650M (gfx1151), pulsatrix matches ProteinGym's published Spearman to the
+three decimals it reports. On the 13 shorter ones, compared variant by variant, every score is
+within 9e-5 of ProteinGym's:</p>
+<table>
+<thead>
+<tr>
+<th>Assay</th>
+<th>Length</th>
+<th>Variants</th>
+<th>Spearman</th>
+<th>Published</th>
+<th>Seconds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BLAT_ECOLX_Stiffler_2015</td>
+<td>286</td>
+<td>4996</td>
+<td>0.7315</td>
+<td>0.731</td>
+<td>65.8</td>
+</tr>
+<tr>
+<td>BRCA1_HUMAN_Findlay_2018</td>
+<td>1863</td>
+<td>1837</td>
+<td>0.5149</td>
+<td>0.515</td>
+<td>6902</td>
+</tr>
+<tr>
+<td>CALM1_HUMAN_Weile_2017</td>
+<td>149</td>
+<td>1813</td>
+<td>0.2116</td>
+<td>0.212</td>
+<td>16.6</td>
+</tr>
+<tr>
+<td>DNJA1_HUMAN_Tsuboyama_2023_2LO1</td>
+<td>65</td>
+<td>2264</td>
+<td>0.8029</td>
+<td>0.803</td>
+<td>3.3</td>
+</tr>
+<tr>
+<td>EPHB2_HUMAN_Tsuboyama_2023_1F0M</td>
+<td>66</td>
+<td>1960</td>
+<td>0.8105</td>
+<td>0.810</td>
+<td>3.4</td>
+</tr>
+<tr>
+<td>PIN1_HUMAN_Tsuboyama_2023_1I6C</td>
+<td>39</td>
+<td>802</td>
+<td>0.6699</td>
+<td>0.670</td>
+<td>1.4</td>
+</tr>
+<tr>
+<td>PR40A_HUMAN_Tsuboyama_2023_1UZC</td>
+<td>63</td>
+<td>2033</td>
+<td>0.8047</td>
+<td>0.805</td>
+<td>3.2</td>
+</tr>
+<tr>
+<td>RASH_HUMAN_Bandaru_2017</td>
+<td>189</td>
+<td>3134</td>
+<td>0.4976</td>
+<td>0.498</td>
+<td>27.5</td>
+</tr>
+<tr>
+<td>RL40A_YEAST_Roscoe_2013</td>
+<td>128</td>
+<td>1195</td>
+<td>0.5986</td>
+<td>0.599</td>
+<td>12.4</td>
+</tr>
+<tr>
+<td>SQSTM_MOUSE_Tsuboyama_2023_2RRU</td>
+<td>40</td>
+<td>707</td>
+<td>0.6180</td>
+<td>0.618</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>SUMO1_HUMAN_Weile_2017</td>
+<td>101</td>
+<td>1700</td>
+<td>0.5093</td>
+<td>0.509</td>
+<td>7.7</td>
+</tr>
+<tr>
+<td>TCRG1_MOUSE_Tsuboyama_2023_1E0L</td>
+<td>37</td>
+<td>1058</td>
+<td>0.7692</td>
+<td>0.769</td>
+<td>1.2</td>
+</tr>
+<tr>
+<td>TPMT_HUMAN_Matreyek_2018</td>
+<td>245</td>
+<td>3648</td>
+<td>0.5387</td>
+<td>0.539</td>
+<td>47.9</td>
+</tr>
+<tr>
+<td>UBC9_HUMAN_Weile_2017</td>
+<td>159</td>
+<td>2563</td>
+<td>0.4726</td>
+<td>0.473</td>
+<td>19.5</td>
+</tr>
+</tbody>
+</table>
+<p>BRCA1 is the one assay longer than the window; its two hours are what roadmap HIP-13 is for.</p>
 <h2 id="training-and-explaining">Training and explaining<a class="headerlink" href="#training-and-explaining" title="Permanent link">&para;</a></h2>
 <p><code>EncoderLM</code> is an ordinary <code>Module</code>, so the rest of the library applies:</p>
 <ul>

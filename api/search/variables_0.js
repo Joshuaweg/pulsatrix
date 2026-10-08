@@ -13,6 +13,6 @@ var searchData=
   ['architecture_10',['architecture',['../structpulsatrix_1_1EncoderLMConfig.html#aeb30ca0859861354fcf43e71f78a38af',1,'pulsatrix::EncoderLMConfig::architecture'],['../structpulsatrix_1_1HfModelConfig.html#ad80446f7689bb3619d06cc0a2b7ef0bc',1,'pulsatrix::HfModelConfig::architecture']]],
   ['argmax_5fdisagreements_11',['argmax_disagreements',['../structpulsatrix_1_1GoldenSequenceResult.html#af8add1a57fdb3ba1790edc5544cc2eb5',1,'pulsatrix::GoldenSequenceResult']]],
   ['attribution_12',['attribution',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#aa7287e31a4f03ba1dcca6a075aae3efa',1,'pulsatrix::ExplanationScoreCard::Input']]],
-  ['auc_13',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve']]],
+  ['auc_13',['auc',['../structpulsatrix_1_1PerturbationCurve.html#a45a5fd741c00e4ad4a160600c3e5b946',1,'pulsatrix::PerturbationCurve::auc'],['../structpulsatrix_1_1FitnessMetrics.html#adeaa141ed59dd66717e2fc92fefec76b',1,'pulsatrix::FitnessMetrics::auc']]],
   ['available_14',['available',['../structpulsatrix_1_1MetricCapability.html#aedf248268fb7014def3128b5f5f55956',1,'pulsatrix::MetricCapability']]]
 ];

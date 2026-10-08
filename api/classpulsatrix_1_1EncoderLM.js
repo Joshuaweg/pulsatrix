@@ -8,6 +8,7 @@ var classpulsatrix_1_1EncoderLM =
     [ "embed_tokens", "classpulsatrix_1_1EncoderLM.html#ad5d3bd1a20f9f33e92e32b34b517d75c", null ],
     [ "forward_impl", "classpulsatrix_1_1EncoderLM.html#a7c70aef811652c70e2a57a49a111c63e", null ],
     [ "hidden_states", "classpulsatrix_1_1EncoderLM.html#a6f891751deb596726404c51198083765", null ],
+    [ "keep_activations", "classpulsatrix_1_1EncoderLM.html#a4e452e0f873c6c69d047b539f698c333", null ],
     [ "last_hidden_state", "classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1", null ],
     [ "layer", "classpulsatrix_1_1EncoderLM.html#a693235b4eca3b1fadb8f21619a21a7e6", null ],
     [ "named_buffers", "classpulsatrix_1_1EncoderLM.html#ad7e1634391690a9e39afb9b6a1d65768", null ],
@@ -16,6 +17,8 @@ var classpulsatrix_1_1EncoderLM =
     [ "op_type", "classpulsatrix_1_1EncoderLM.html#a38aa47a6e629f4fc9de8d739583ce767", null ],
     [ "propagate_relevance", "classpulsatrix_1_1EncoderLM.html#a1b50b75722028d5cb2ec5eda2491cef6", null ],
     [ "propagate_relevance_by_layer", "classpulsatrix_1_1EncoderLM.html#ade0b43e51b971af8693bb48487e1c2dd", null ],
+    [ "release_activations", "classpulsatrix_1_1EncoderLM.html#afdd98dbe925feb3a9d2276f21bbf80ba", null ],
+    [ "set_keep_activations", "classpulsatrix_1_1EncoderLM.html#ac4f04bc8b881c0627d2023f6054ea94d", null ],
     [ "set_padding_mask", "classpulsatrix_1_1EncoderLM.html#aa5c554da2f1fc8247feb3c8db9202e03", null ],
     [ "set_training", "classpulsatrix_1_1EncoderLM.html#a97a3a9342731bd37b3930b0810e82a6b", null ]
 ];

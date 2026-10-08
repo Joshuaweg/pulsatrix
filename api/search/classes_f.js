@@ -21,5 +21,6 @@ var searchData=
   ['postprocessor_18',['PostProcessor',['../classpulsatrix_1_1PostProcessor.html',1,'pulsatrix']]],
   ['ppoclippedloss_19',['PPOClippedLoss',['../classpulsatrix_1_1PPOClippedLoss.html',1,'pulsatrix']]],
   ['prependnormalizer_20',['PrependNormalizer',['../classpulsatrix_1_1PrependNormalizer.html',1,'pulsatrix']]],
-  ['pretokenizer_21',['PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html',1,'pulsatrix']]]
+  ['pretokenizer_21',['PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html',1,'pulsatrix']]],
+  ['proteingymassay_22',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]]
 ];

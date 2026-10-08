@@ -143,6 +143,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a67289e2db4eca3ae9f937ec4e072b720" id="r_a67289e2db4eca3ae9f937ec4e072b720"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SoftmaxModule.html#a67289e2db4eca3ae9f937ec4e072b720">compute_device</a> () const override</td></tr>
 <tr class="memdesc:a67289e2db4eca3ae9f937ec4e072b720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
 <tr class="separator:a67289e2db4eca3ae9f937ec4e072b720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a157ac5eca576dc9241363259859f6f0b" id="r_a157ac5eca576dc9241363259859f6f0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SoftmaxModule.html#a157ac5eca576dc9241363259859f6f0b">release_activations</a> () override</td></tr>
+<tr class="memdesc:a157ac5eca576dc9241363259859f6f0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the tensors <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> kept for <a class="el" href="classpulsatrix_1_1SoftmaxModule.html#ac3429255b8183231a1087d2d68351263" title="Computes the gradient w.r.t. this module&#39;s input.">backward()</a> and the relevance passes; containers release their children too. Inference that only needs the output calls it after each forward, so a deep model holds one layer's activations at a time (a 1024-token ESM-2 650M pass otherwise keeps over 10 GB of them).  <br /></td></tr>
+<tr class="separator:a157ac5eca576dc9241363259859f6f0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
 <tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
 <tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -407,6 +410,36 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 3). </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a157ac5eca576dc9241363259859f6f0b" name="a157ac5eca576dc9241363259859f6f0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a157ac5eca576dc9241363259859f6f0b">&#9670;&#160;</a></span>release_activations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SoftmaxModule::release_activations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Frees the tensors <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> kept for <a class="el" href="classpulsatrix_1_1SoftmaxModule.html#ac3429255b8183231a1087d2d68351263" title="Computes the gradient w.r.t. this module&#39;s input.">backward()</a> and the relevance passes; containers release their children too. Inference that only needs the output calls it after each forward, so a deep model holds one layer's activations at a time (a 1024-token ESM-2 650M pass otherwise keeps over 10 GB of them). </p>
+<dl class="section note"><dt>Note</dt><dd>Until the next <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, <a class="el" href="classpulsatrix_1_1SoftmaxModule.html#ac3429255b8183231a1087d2d68351263" title="Computes the gradient w.r.t. this module&#39;s input.">backward()</a> and relevance calls are invalid. The default has nothing to free. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afac98fa4d23d97300c5a6d5bc68412e5">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

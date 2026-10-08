@@ -6,6 +6,7 @@ var classpulsatrix_1_1EmbeddingModule =
     [ "named_parameters", "classpulsatrix_1_1EmbeddingModule.html#a76b4f62a3470dff120e9eb2b5fca1e5a", null ],
     [ "op_type", "classpulsatrix_1_1EmbeddingModule.html#a14cc586412aaf44f2c6955ed5164a2c8", null ],
     [ "propagate_relevance", "classpulsatrix_1_1EmbeddingModule.html#a36e97f51ac2b0e4c79620456ff1f13c9", null ],
+    [ "release_activations", "classpulsatrix_1_1EmbeddingModule.html#a64fe8dbd8d71a61b8ec1e016fe9af72e", null ],
     [ "set_weight", "classpulsatrix_1_1EmbeddingModule.html#a2820e22b949be4089d13130341c1e104", null ],
     [ "set_weight", "classpulsatrix_1_1EmbeddingModule.html#addce64c4cc8528c4640896c21180874d", null ],
     [ "weight", "classpulsatrix_1_1EmbeddingModule.html#aa6703211c219623ce0470e3c79228c18", null ],

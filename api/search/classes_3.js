@@ -14,10 +14,11 @@ var searchData=
   ['disjunctionmodule_11',['DisjunctionModule',['../classpulsatrix_1_1DisjunctionModule.html',1,'pulsatrix']]],
   ['diversecounterfactualoptions_12',['DiverseCounterfactualOptions',['../structpulsatrix_1_1DiverseCounterfactualOptions.html',1,'pulsatrix']]],
   ['diversecounterfactualresult_13',['DiverseCounterfactualResult',['../structpulsatrix_1_1DiverseCounterfactualResult.html',1,'pulsatrix']]],
-  ['dominanteigenresult_14',['DominantEigenResult',['../structpulsatrix_1_1DominantEigenResult.html',1,'pulsatrix']]],
-  ['dqnagent_15',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
-  ['dqnloss_16',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
-  ['dropoutmodule_17',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
-  ['dualnumber_18',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
-  ['dualsemiring_19',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
+  ['dmsvariants_14',['DmsVariants',['../structpulsatrix_1_1DmsVariants.html',1,'pulsatrix']]],
+  ['dominanteigenresult_15',['DominantEigenResult',['../structpulsatrix_1_1DominantEigenResult.html',1,'pulsatrix']]],
+  ['dqnagent_16',['DQNAgent',['../classpulsatrix_1_1DQNAgent.html',1,'pulsatrix']]],
+  ['dqnloss_17',['DQNLoss',['../classpulsatrix_1_1DQNLoss.html',1,'pulsatrix']]],
+  ['dropoutmodule_18',['DropoutModule',['../classpulsatrix_1_1DropoutModule.html',1,'pulsatrix']]],
+  ['dualnumber_19',['DualNumber',['../structpulsatrix_1_1datalog_1_1DualNumber.html',1,'pulsatrix::datalog']]],
+  ['dualsemiring_20',['DualSemiring',['../structpulsatrix_1_1datalog_1_1DualSemiring.html',1,'pulsatrix::datalog']]]
 ];

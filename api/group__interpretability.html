@@ -94,7 +94,8 @@ $(document).ready(function(){initNavTree('group__interpretability.html',''); ini
 
 <div class="header">
   <div class="summary">
-<a href="#groups">Modules</a>  </div>
+<a href="#groups">Modules</a> &#124;
+<a href="#files">Files</a>  </div>
   <div class="headertitle"><div class="title">Interpretability</div></div>
 </div><!--header-->
 <div class="contents">
@@ -123,6 +124,18 @@ Modules</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__interpretability__lrp" id="r_group__interpretability__lrp"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__interpretability__lrp.html">Layer-wise Relevance Propagation</a></td></tr>
 <tr class="memdesc:group__interpretability__lrp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whole-model LRP (LRP, LRPTarget, LRPSeed), rule selection (LRPRule, LRPRuleConfig), Zennit-style composites (lrp_composite), conservation checks, and BatchNormFold (folds an eval-mode BatchNorm into the preceding layer before LRP). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:fitness__metrics_8hpp" id="r_fitness__metrics_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fitness__metrics_8hpp.html">fitness_metrics.hpp</a></td></tr>
+<tr class="memdesc:fitness__metrics_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">ProteinGym's metrics for how well predicted variant scores track measured fitness (PLM-3), computed exactly as ProteinGym's <code>performance_DMS_benchmarks.py</code> does. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:proteingym_8hpp" id="r_proteingym_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="proteingym_8hpp.html">proteingym.hpp</a></td></tr>
+<tr class="memdesc:proteingym_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Running ProteinGym's deep-mutational-scanning substitution benchmarks (PLM-3): read an assay, score every variant with a protein language model, and compute ProteinGym's metrics. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:variant__scoring_8hpp" id="r_variant__scoring_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="variant__scoring_8hpp.html">variant_scoring.hpp</a></td></tr>
+<tr class="memdesc:variant__scoring_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zero-shot variant effects from a protein language model (PLM-3): how much the model prefers a mutant residue over the wild type, with no training on the protein. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

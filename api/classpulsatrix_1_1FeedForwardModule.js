@@ -11,5 +11,6 @@ var classpulsatrix_1_1FeedForwardModule =
     [ "named_parameters", "classpulsatrix_1_1FeedForwardModule.html#ac3ece80060e402e0867d02ac5070e577", null ],
     [ "op_type", "classpulsatrix_1_1FeedForwardModule.html#ab826a7fb761f2f40541f3965736a778d", null ],
     [ "propagate_relevance", "classpulsatrix_1_1FeedForwardModule.html#ab15de3fce8877ec528fe89639536da6f", null ],
+    [ "release_activations", "classpulsatrix_1_1FeedForwardModule.html#a49491dbade4126c547adcb44e8d00684", null ],
     [ "set_training", "classpulsatrix_1_1FeedForwardModule.html#a4f4da571e9a03b5ec28eca988de31a51", null ]
 ];
