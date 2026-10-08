@@ -145,6 +145,8 @@ add_executable(pulsatrix_tests
     encoder_block_test.cpp
     encoder_lm_test.cpp
     variant_scoring_test.cpp
+    protein_contacts_test.cpp
+    protein_structure_test.cpp
     fitness_metrics_test.cpp
     benchmark_test.cpp
     caching_allocator_test.cpp

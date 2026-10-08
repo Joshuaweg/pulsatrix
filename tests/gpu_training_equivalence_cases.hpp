@@ -55,6 +55,8 @@
 #include "pulsatrix/tanh_gaussian_policy.hpp"
 #include "pulsatrix/encoder_block.hpp"
 #include "pulsatrix/encoder_lm.hpp"
+#include "pulsatrix/protein_contacts.hpp"
+#include "pulsatrix/protein_sequences.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/tied_lm_head_module.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -642,6 +644,24 @@ inline void EncoderLMMatches(DeviceBackend& gpu) {
     const std::vector<float> r = Random(2 * 8 * 33, 381);
     ExpectRelevanceAgrees(cm->propagate_relevance(Tensor(Shape({2, 8, 33}), &cpu, r), LRPRuleConfig{}),
                           gm->propagate_relevance(Tensor(Shape({2, 8, 33}), &gpu, r), LRPRuleConfig{}));
+}
+
+// PLM-4: contacts from the tiny ESM-2's attention, read layer by layer off the device.
+inline void ContactsMatch(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::string dir = std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf_tiny/esm";
+    std::unique_ptr<EncoderLM> cm = LoadEncoderLM(dir, &cpu), gm = LoadEncoderLM(dir, &gpu);
+    const TextTokenizer tok = LoadEsmTokenizer(dir + "/vocab.txt");
+    const EsmContactHead head = LoadEsmContactHead(dir, cm->config());
+    ContactPredictor cp(*cm, tok, &cpu), gp(*gm, tok, &gpu);
+    const std::string seq = "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQ";
+    const ContactMap c = cp.predict(seq, head), g = gp.predict(seq, head);
+    const ContactMap ca = cp.average_heads(seq, {{0, 1}, {1, 2}}), ga = gp.average_heads(seq, {{0, 1}, {1, 2}});
+    ASSERT_EQ(c.values.size(), g.values.size());
+    for (size_t k = 0; k < c.values.size(); ++k) {
+        EXPECT_NEAR(c.values[k], g.values[k], 1e-5f) << k;
+        EXPECT_NEAR(ca.values[k], ga.values[k], 1e-5f) << k;
+    }
 }
 
 inline void TiedLMHeadMatches(DeviceBackend& gpu) {
@@ -1520,6 +1540,7 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     TEST_F(FIXTURE, EmbeddingForwardBackwardMatchCPU) { ::pulsatrix::training_equivalence::EmbeddingMatches(MEMBER); } \
     TEST_F(FIXTURE, TiedLMHeadMatchesCPU) { ::pulsatrix::training_equivalence::TiedLMHeadMatches(MEMBER); } \
     TEST_F(FIXTURE, EncoderLMMatchesCPU) { ::pulsatrix::training_equivalence::EncoderLMMatches(MEMBER); } \
+    TEST_F(FIXTURE, ContactsMatchCPU) { ::pulsatrix::training_equivalence::ContactsMatch(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \

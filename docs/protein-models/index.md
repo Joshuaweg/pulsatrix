@@ -7,8 +7,10 @@ which motifs mark functional sites. pulsatrix loads the published ESM-2 checkpoi
 C++, on CPU or GPU, with no Python. You can run them, read their internal representations,
 train them further and explain their predictions.
 
-It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. Contact maps,
-protein views and explanations come next (see the [roadmap](../roadmap/index.md#plm-protein-language-models) and the
+It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. It predicts
+which residues touch from the model's attention and checks them against experimental
+structures. Protein views and explanations come next (see the
+[roadmap](../roadmap/index.md#plm-protein-language-models) and the
 [research and plan](../roadmap/protein-language-models.md)).
 
 ## What's inside
@@ -75,7 +77,9 @@ After `forward()`:
 - **`hidden_states()`** holds the embeddings, then every layer's output. Probes and sparse
   autoencoders read these. Early and middle layers often work better than the last.
 - **`layer(i).mha().last_attention_weights()`** is `(N, heads, L, L)`, each layer's attention.
-  Some heads track which residues touch in the structure (contacts, roadmap PLM-4).
+  Some heads track which residues touch in the structure (see [Predicting contacts](#predicting-contacts)).
+  `set_attention_observer()` hands each layer's map to a callback during `forward()`, so all of
+  them can be read even with `set_keep_activations(false)`.
 
 **Batches of different lengths.** Pad each sequence with `<pad>` (id 1) and pass a mask:
 
@@ -178,6 +182,97 @@ within 9e-5 of ProteinGym's:
 | UBC9_HUMAN_Weile_2017 | 159 | 2563 | 0.4726 | 0.473 | 19.5 |
 
 BRCA1 is the one assay longer than the window; its two hours are what roadmap HIP-13 is for.
+
+## Predicting contacts
+
+Two residues are in contact when they sit within 8 Å in the folded protein. ESM-2 was never
+shown a structure, yet some of its attention heads point at contacts. ESM's contact head reads
+them out (`protein_contacts.hpp`):
+
+1. Each head's attention map over the residues is made symmetric (`A + Aᵀ`).
+2. The average product correction (APC), `F - rowsum * colsum / total`, removes what every
+   residue attends to regardless of partner.
+3. A logistic regression over every head's corrected map, trained by ESM's authors on a few
+   structures and shipped in the checkpoint, gives a probability per residue pair.
+
+```cpp
+#include "pulsatrix/protein_contacts.hpp"
+
+EsmContactHead head = LoadEsmContactHead("esm2_t33_650M_UR50D", model->config());
+ContactPredictor predictor(*model, tok, &backend);
+ContactMap p = predictor.predict(seq, head);  // L x L contact probabilities
+
+ProteinStructure s = ReadStructure("1UBQ.cif");  // or .pdb
+const StructureChain& chain = s.chain("A");
+ContactMap truth = TrueContacts(chain);  // Cβ (Cα for glycine) under 8 Å
+ContactEvaluation e = EvaluateContacts(predictor.predict(chain.sequence(), head), truth);
+// e.long_range.at_l: of the L best-scored pairs at least 24 residues apart, the fraction in contact
+```
+
+- **One pass, one layer at a time.** The prediction is a single forward pass over `<cls>` + the
+  sequence + `<eos>`. Each layer's attention is folded into the result as soon as the layer
+  finishes and is then freed, so memory doesn't grow with the number of layers.
+  `ContactOptions::max_pass_bytes` bounds the pass as it does for scoring.
+- **Heads instead of a regression.** `average_heads(seq, heads)` averages chosen heads' corrected
+  maps. `RankContactHeads` orders every head by its long-range precision at L on proteins with
+  known structures. A 2026 paper (arXiv 2606.21876) reports that the best few heads, chosen on
+  10 proteins, do as well as more expensive methods. `for_each_head` streams every head's map,
+  for a head grid.
+- **Precision at L.** `ContactPrecision` takes the top-scored pairs `i < j` within a separation
+  range (CASP's short 6–11, medium 12–23 and long 24+) and counts how many are true contacts.
+  Pairs with an unknown distance don't compete. `PrecisionAtL` uses the top L, L/2 and L/5,
+  L being the sequence length. Where there are fewer pairs than the count, the missing ones count
+  as wrong, as in ESM's own `compute_precisions`.
+
+### Structures
+
+`ReadStructure` reads PDB and mmCIF files (`ParsePdb`, `ParseMmcif` for text), such as
+`https://files.rcsb.org/download/1UBQ.cif` or AlphaFold DB models. It keeps the first model's
+protein chains, with the author's chain ids and residue numbers in both formats:
+
+- `ATOM` records, and selenomethionine (`MSE`, read as M) from `HETATM`;
+- residues that have a Cα, so waters, ligands and nucleic acids drop out;
+- the first of each atom's alternate locations.
+
+`StructureChain::sequence()` is the observed sequence: residues missing from the file are
+missing from it too, so predict on that sequence when you compare. `ResidueDistances` measures
+Cβ (Cα for glycine), Cα, or a virtual Cβ placed from the backbone, as ESM's example and
+trRosetta do. A residue missing the atoms it needs gives NaN, which the precision skips.
+
+### Results
+
+`tools/plm/pulsatrix_contacts` predicts and scores contacts for a list of structures. With
+`--choose-heads`, it also ranks the heads on other proteins and scores the average of the best
+K:
+
+```bash
+pulsatrix_contacts esm2_t33_650M_UR50D --structures structures \
+    --proteins 1UBQ:A,2LZM:A,1BTL:A,4AKE:A,2PTN:A \
+    --choose-heads 1PGA:A,1CRN:A,1A3N:A,3P0G:B,5P21:A --top-k 10
+```
+
+Long-range precision with ESM-2 650M. Its ten heads were chosen on five other proteins; all are
+famous structures the model has likely seen sequences of, so expect lower numbers on new folds.
+
+| Protein | Length | P@L | P@L/2 | P@L/5 | Top-10 heads P@L | Top-10 heads P@L/5 |
+|---|---|---|---|---|---|---|
+| Ubiquitin (1UBQ) | 76 | 0.645 | 0.895 | 1.000 | 0.632 | 0.933 |
+| T4 lysozyme (2LZM) | 164 | 0.463 | 0.683 | 0.875 | 0.470 | 0.844 |
+| TEM-1 β-lactamase (1BTL) | 263 | 0.665 | 0.824 | 0.923 | 0.681 | 0.904 |
+| Adenylate kinase (4AKE) | 214 | 0.696 | 0.869 | 0.976 | 0.668 | 0.905 |
+| Trypsin (2PTN) | 223 | 0.717 | 0.838 | 0.977 | 0.758 | 1.000 |
+| Mean | | 0.637 | 0.822 | 0.950 | 0.642 | 0.917 |
+
+The ten heads sit in layers 22 to 32 of 33 and match the trained head without any regression.
+ESM-2 8M reaches a mean long-range P@L of only 0.12 on the same proteins.
+
+**Checked against transformers and biotite.** `tools/golden/make_contact_golden.py` records
+transformers' `predict_contacts`, the precision by both pulsatrix's definition and ESM's
+`compute_precisions`, and biotite's reading of every structure. On ten proteins, pulsatrix's
+predicted probabilities are within 3.1e-5 of transformers' with ESM-2 8M and 650M, and the
+precisions are equal. Both formats of all 17 chains in 13 entries give the same sequences as
+biotite, and distances within 1e-4 Å. CI runs the same checks on the tiny ESM-2 and on crambin
+(`tests/fixtures/structures`).
 
 ## Training and explaining
 
