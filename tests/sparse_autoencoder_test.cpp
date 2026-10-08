@@ -533,26 +533,23 @@ constexpr int64_t kControlHeldoutSize = 256;
 constexpr int kControlEpochs = 400;
 constexpr float kControlLearningRate = 0.01f;
 constexpr unsigned kControlSeed = 11;
-constexpr float kControlPenalty = 0.05f;
+// With unit-norm decoders (FEAT-1) the penalty can't be dodged by shrinking codes and growing
+// directions, so it bites harder than it used to: 0.05 now collapses reconstruction on this
+// data (0.54), and 0.01 is the comparable setting.
+constexpr float kControlPenalty = 0.01f;
 
 // Reconstruction-fidelity bound. The data is standard Gaussian, so the variance per element
 // is ~1 and the error a trivial "reconstruct the mean" baseline would achieve is ~1.0 --
-// this bound therefore says both runs explain at least 95% of the input variance. Chosen
-// from the measured numbers with roughly an order of magnitude of margin: the penalized
-// run, by far the looser of the two, measures 0.0056 and the unpenalized one 0.0013 (see
-// the mission file's Completion Summary). The point of the bound is that the penalty costs
-// *some* fidelity -- it costs 4.3x here, which is expected and fine -- but does not collapse
-// reconstruction altogether, which would make its sparsity vacuous: an SAE that outputs
-// zeros is perfectly sparse and perfectly useless.
+// this bound therefore says both runs explain at least 95% of the input variance. Measured:
+// the penalized run 0.0090, the unpenalized one 0.0026. The point of the bound is that the
+// penalty costs *some* fidelity but does not collapse reconstruction altogether, which would
+// make its sparsity vacuous: an SAE that outputs zeros is perfectly sparse and perfectly useless.
 constexpr float kMaxReconstructionError = 0.05f;
 
-// Sparsity-gap bound. The penalized run's mean hidden activation must be no more than ~a
-// third of the unpenalized run's -- a gap far too large to attribute to run-to-run drift,
-// given that everything except l1_lambda is held identical (same seed, same data, same
-// optimizer, same epochs). Measured ratio is 0.0568 / 0.3701 = 0.153, so this bound carries
-// better than 2x margin while still being tight enough that a merely-nudged hidden layer
-// would fail it.
-constexpr float kMaxSparsityRatio = 0.35f;
+// Sparsity-gap bound, on L0 (active features per input), which the codes' scale can't game.
+// Measured: 10.5 penalized against 18.3 unpenalized, a ratio of 0.57; everything but
+// l1_lambda is held identical (same seed, data, optimizer and epochs).
+constexpr double kMaxL0Ratio = 0.7;
 
 std::vector<float> make_gaussian_batch(TestRng& rng, int64_t n) {
     std::vector<float> values;
@@ -566,14 +563,16 @@ std::vector<float> make_gaussian_batch(TestRng& rng, int64_t n) {
 struct ControlResult {
     float reconstruction_error = 0.0f;
     float mean_hidden_activation = 0.0f;
+    double l0 = 0.0;
 };
 
 // The single shared training procedure. Both controls call exactly this, and its only
 // parameter beyond the data is l1_lambda -- precisely so neither run can quietly be given
 // an advantage the other didn't get.
 ControlResult train_and_score_heldout(DeviceBackend* backend, const std::vector<float>& train_values,
-                                      const std::vector<float>& heldout_values, float l1_lambda) {
+                                      const std::vector<float>& heldout_values, float l1_lambda, bool unit_norm = true) {
     SparseAutoencoder sae(kControlDim, kControlHiddenDim, l1_lambda, backend, kControlSeed);
+    sae.set_unit_norm_decoder(unit_norm);
     AdamOptimizer optimizer(kControlLearningRate, backend);
 
     const Tensor train_batch(Shape({kControlTrainSize, kControlDim}), backend, train_values);
@@ -582,7 +581,7 @@ ControlResult train_and_score_heldout(DeviceBackend* backend, const std::vector<
     }
 
     const Tensor heldout_batch(Shape({kControlHeldoutSize, kControlDim}), backend, heldout_values);
-    return {sae.reconstruction_error(heldout_batch), sae.mean_hidden_activation(heldout_batch)};
+    return {sae.reconstruction_error(heldout_batch), sae.mean_hidden_activation(heldout_batch), MeanL0(sae, heldout_batch)};
 }
 
 class SparseAutoencoderControlTest : public ::testing::Test {
@@ -600,10 +599,10 @@ TEST_F(SparseAutoencoderControlTest, TheL1PenaltyLowersHiddenActivationWithoutCo
 
     std::cout << "[SparseAutoencoder] penalized   (l1_lambda=" << kControlPenalty
               << "): held-out reconstruction_error=" << penalized.reconstruction_error
-              << ", mean_hidden_activation=" << penalized.mean_hidden_activation << std::endl;
+              << ", mean_hidden_activation=" << penalized.mean_hidden_activation << ", L0=" << penalized.l0 << std::endl;
     std::cout << "[SparseAutoencoder] unpenalized (l1_lambda=0): held-out reconstruction_error="
               << unpenalized.reconstruction_error
-              << ", mean_hidden_activation=" << unpenalized.mean_hidden_activation << std::endl;
+              << ", mean_hidden_activation=" << unpenalized.mean_hidden_activation << ", L0=" << unpenalized.l0 << std::endl;
 
     // (a) Neither run may collapse reconstruction -- the penalized one is the one at risk.
     EXPECT_LT(unpenalized.reconstruction_error, kMaxReconstructionError)
@@ -612,9 +611,30 @@ TEST_F(SparseAutoencoderControlTest, TheL1PenaltyLowersHiddenActivationWithoutCo
         << "held-out reconstruction error of the penalized run -- a penalty that destroys "
            "reconstruction makes its own sparsity vacuous";
 
-    // (b) The penalty must be load-bearing on the metric it targets, not merely present.
-    EXPECT_LT(penalized.mean_hidden_activation, unpenalized.mean_hidden_activation * kMaxSparsityRatio)
-        << "penalized mean hidden activation vs. the identical run with l1_lambda = 0";
+    // (b) The penalty must make the codes sparser, not merely present.
+    EXPECT_LT(penalized.l0, unpenalized.l0 * kMaxL0Ratio) << "penalized L0 vs. the identical run with l1_lambda = 0";
+    EXPECT_LT(penalized.mean_hidden_activation, unpenalized.mean_hidden_activation);
+}
+
+// Why decoders are kept at unit norm (FEAT-1): without it, an L1 penalty is largely paid by
+// shrinking every code and growing the decoder to compensate, so the codes' mean falls much
+// more than the number of active features. At l1_lambda = 0.05 here, free decoders cut the mean
+// activation to 0.19 of the unpenalized run's but L0 only to 0.58 of it; unit-norm decoders
+// cut L0 to 0.21.
+TEST_F(SparseAutoencoderControlTest, WithFreeDecodersTheL1PenaltyShrinksCodesMoreThanItSparsifiesThem) {
+    TestRng rng(20260924u);
+    const std::vector<float> train_values = make_gaussian_batch(rng, kControlTrainSize);
+    const std::vector<float> heldout_values = make_gaussian_batch(rng, kControlHeldoutSize);
+    const ControlResult free_none = train_and_score_heldout(&backend, train_values, heldout_values, 0.0f, false);
+    const ControlResult free_l1 = train_and_score_heldout(&backend, train_values, heldout_values, 0.05f, false);
+    const ControlResult unit_none = train_and_score_heldout(&backend, train_values, heldout_values, 0.0f, true);
+    const ControlResult unit_l1 = train_and_score_heldout(&backend, train_values, heldout_values, 0.05f, true);
+    const double free_activation_ratio = free_l1.mean_hidden_activation / free_none.mean_hidden_activation;
+    const double free_l0_ratio = free_l1.l0 / free_none.l0, unit_l0_ratio = unit_l1.l0 / unit_none.l0;
+    std::cout << "[SparseAutoencoder] l1_lambda 0.05, free decoders: activation x" << free_activation_ratio << ", L0 x" << free_l0_ratio
+              << "; unit-norm decoders: L0 x" << unit_l0_ratio << std::endl;
+    EXPECT_LT(free_activation_ratio, 0.5 * free_l0_ratio);  // mostly shrinking, not sparsifying
+    EXPECT_LT(unit_l0_ratio, 0.5 * free_l0_ratio);           // unit norm turns the penalty into sparsity
 }
 
 // The control above compares two *different* lambdas at one point. This one pins the

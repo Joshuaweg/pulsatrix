@@ -32,7 +32,8 @@ model's or environment's structure.
 - **Probing**: `LinearProbe` trains a linear classifier to test whether a binary concept is
   linearly decodable from a layer's activations.
 - **Decomposition**: `SparseAutoencoder` reconstructs activations through a wider hidden layer
-  with an L1 penalty, so each example uses only a few hidden units. `CircuitGraph` scores
+  with an L1 penalty, so each example uses only a few hidden units. It is the first
+  [featurizer](#featurizers). `CircuitGraph` scores
   every node by how much zeroing it changes the output.
 - **Baselines**: compare a probe's accuracy or a sparse autoencoder's statistics against a
   randomly re-initialized copy of the model with `NullModelBaseline`
@@ -89,6 +90,50 @@ linearly. The probe accepts any `(N, activation_dim)` batch, so you can also tes
 synthetic data first as a sanity check.
 
 Recipe: [Sparse autoencoder + linear probe](../recipes/mechanistic-interpretability/sparse_autoencoder_probe.md).
+
+### Featurizers
+
+A featurizer rewrites activations `x` as sparse codes `f = encode(x)` over learned directions
+and reconstructs `x ≈ decode(f)`: feature i writes along its decoder direction. Sparse
+autoencoders, and the TopK, JumpReLU and block-sparse variants planned in the FEAT epic, share
+one interface (`featurizer.hpp`), so training and metrics work for all of them:
+
+```cpp
+#include "pulsatrix/featurizer.hpp"
+#include "pulsatrix/sparse_autoencoder.hpp"
+
+SparseAutoencoder sae(/*dim=*/320, /*hidden_dim=*/4096, /*l1_lambda=*/1e-3f, &backend);
+AdamOptimizer opt(1e-3f, &backend);
+FeatureActivityTracker activity(sae.num_features());
+for (const Tensor& batch : batches) {
+    FeaturizerLoss loss = TrainFeaturizer(sae, batch, opt, /*unit_norm_decoder=*/true, &activity);
+}
+double l0 = MeanL0(sae, held_out);                      // active features per input
+std::vector<int64_t> dead = activity.dead(1'000'000);   // silent for the last million inputs
+std::vector<int64_t> dense = activity.dense(0.1);       // firing on more than 10% of inputs
+```
+
+- **Unit-norm decoders.** After every step each decoder direction is rescaled to unit length.
+  The scale moves into the encoder, which a ReLU passes through unchanged, so reconstructions
+  don't move.
+
+  Without it, an L1 penalty is largely paid by shrinking every code and growing the decoder.
+  On the control data in `tests/sparse_autoencoder_test.cpp`, a penalty of 0.05 with free
+  decoders cuts the mean activation to 0.19 of the unpenalized run's but L0 only to 0.58. With
+  unit-norm decoders it cuts L0 to 0.21. Judge sparsity by L0, not the mean activation.
+- **Dead and dense latents.** `FeatureActivityTracker` counts how often each feature fires and
+  when it last did.
+  - Dead features never fire, so they never learn.
+  - Dense ones fire on most inputs and usually encode a bias, not a concept.
+
+  Both waste capacity; report them with every featurizer.
+- **The SAE is a Module.** It maps input to reconstruction, with `backward()`, LRP and
+  parameters named `encoder.*` and `decoder.*`, so checkpoints and optimizers work as for any
+  model.
+
+A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
+whether its directions mean anything. Compare features with probes and with a randomly
+initialized model's.
 
 ### Building a circuit graph
 
