@@ -627,6 +627,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#explaining-residue-by-residue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explaining residue by residue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Explaining residue by residue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#checking-against-hugging-face" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1975,6 +2003,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#explaining-residue-by-residue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explaining residue by residue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Explaining residue by residue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#checking-against-hugging-face" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2014,8 +2070,9 @@ C++, on CPU or GPU, with no Python. You can run them, read their internal repres
 train them further and explain their predictions.</p>
 <p>It scores mutations zero-shot and reproduces ProteinGym's published ESM-2 numbers. It predicts
 which residues touch from the model's attention and checks them against experimental
-structures, and draws all of it the way biologists read it: mutation maps, sequence logos,
-contact maps, residue tracks and the 3D structure. Checked explanations come next (see the
+structures, draws all of it the way biologists read it (mutation maps, sequence logos,
+contact maps, residue tracks and the 3D structure), and explains its predictions residue by
+residue, with checks on those explanations. Training comes next (see the
 <a href="../roadmap/#plm-protein-language-models">roadmap</a> and the
 <a href="../roadmap/protein-language-models/">research and plan</a>).</p>
 <h2 id="whats-inside">What's inside<a class="headerlink" href="#whats-inside" title="Permanent link">&para;</a></h2>
@@ -2527,10 +2584,151 @@ consecutively in the figures; the structure page uses the real ids.</p>
   fine-tuning.</li>
 <li><code>TokenCrossEntropyLoss</code> with ignore-index -100 is the masked-LM loss.</li>
 <li><code>propagate_relevance()</code> explains a logit with LRP and returns relevance per input token.
-  <code>propagate_relevance_by_layer()</code> stops at every layer, which is what attribution graphs use.</li>
-<li>The masking step for masked-LM training, fine-tuning heads, and checked residue-level
-  explanations are roadmap items PLM-7 and PLM-6.</li>
+  <code>propagate_relevance_by_layer()</code> stops at every layer, which is what attribution graphs use;
+  <code>propagate_hidden_relevance_by_layer()</code> starts from the representations, for your own head.</li>
+<li>The masking step for masked-LM training and fine-tuning heads are roadmap item PLM-7.</li>
 </ul>
+<h2 id="explaining-residue-by-residue">Explaining residue by residue<a class="headerlink" href="#explaining-residue-by-residue" title="Permanent link">&para;</a></h2>
+<p><code>EncoderExplainer</code> (<code>protein_explanations.hpp</code>) runs AttnLRP from one of four targets back to
+the input residues:</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Explains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EncoderTarget::MaskedToken(i, 'L')</code></td>
+<td>The logit of L at residue i, with i masked</td>
+</tr>
+<tr>
+<td><code>EncoderTarget::ForMutation(ParseMutations("K48F")[0])</code></td>
+<td>The mutation's log-odds, <code>logit(F) - logit(K)</code> at the masked residue: its masked-marginal score</td>
+</tr>
+<tr>
+<td><code>EncoderTarget::ProteinHead(head)</code></td>
+<td>A linear head on the mean of the residues' representations (a per-protein regression or probe)</td>
+</tr>
+<tr>
+<td><code>EncoderTarget::ResidueHead(head, i)</code></td>
+<td>A linear head on residue i's representation</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/protein_explanations.hpp"</span>
+
+<span class="n">EncoderExplainer</span><span class="w"> </span><span class="nf">explainer</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">tok</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">ResidueRelevance</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explainer</span><span class="p">.</span><span class="n">explain</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">EncoderTarget</span><span class="o">::</span><span class="n">ForMutation</span><span class="p">(</span><span class="n">ParseMutations</span><span class="p">(</span><span class="s">"K48F"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]));</span>
+<span class="c1">// r.residues: one value per residue; r.layers: per token after every layer; r.value: the log-odds</span>
+<span class="n">AttributionGraph</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explainer</span><span class="p">.</span><span class="n">relevance_graph</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span><span class="w">  </span><span class="c1">// for Neuronpedia's viewer</span>
+</code></pre></div>
+<p><strong>It matches LXT.</strong> <code>LxtAttnLrpConfig()</code> applies AttnLRP's rules as LXT does: the identity rule
+on GELU, the uniform rule at attention's matmuls, the epsilon rule elsewhere, and LayerNorm with
+only its standard deviation held constant. LXT has no ESM patch, so
+<code>tools/golden/make_esm_attnlrp_reference.py</code> applies those rules to transformers' ESM-2 the way
+LXT's BERT patch does. On all four targets, for every token and after every layer:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Worst difference (relative to the largest relevance)</th>
+<th>Lowest correlation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tiny random ESM-2 (CI)</td>
+<td>under 1e-4</td>
+<td>1.0000</td>
+</tr>
+<tr>
+<td>ESM-2 8M</td>
+<td>1.5e-4</td>
+<td>1.000000</td>
+</tr>
+<tr>
+<td>ESM-2 650M</td>
+<td>4.8e-5</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+<p>Plain gradient × input, the negative control, misses by more than 5%.</p>
+<h3 id="the-checks">The checks<a class="headerlink" href="#the-checks" title="Permanent link">&para;</a></h3>
+<p>A residue map can look plausible and still not explain the model: a 2026 study found integrated
+gradients on a well-performing ESM-2 classifier didn't recover annotated epitopes. So
+explanations come with checks against something independent of how they look:</p>
+<ul>
+<li><strong><code>DeletionCheck</code>.</strong> It masks residues in the order they support the value, and compares
+  that with random orders. A faithful explanation moves the value toward zero faster.</li>
+<li><strong><code>RandomizationCheck</code></strong> (Adebayo et al. 2018). It randomizes the weight matrices from the LM
+  head down, layer by layer, and re-explains. An explanation that stays the same isn't
+  explaining the model.</li>
+<li><strong><code>CompareResidueSignals</code>.</strong> It compares a per-residue explanation with an independent signal:</li>
+<li><code>DmsPositionSensitivity</code>, how much a deep mutational scan's single mutants hurt at each
+    residue;</li>
+<li><code>AlignmentConservation</code>, from an A2M alignment such as ProteinGym's.</li>
+<li><strong><code>RelevanceProfile</code>.</strong> It turns explanations into a per-protein signal to compare: how much
+  the model draws on each residue when predicting the others. That's one explanation per
+  residue.</li>
+</ul>
+<p><code>tools/plm/pulsatrix_explain_protein</code> runs all of them:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_explain_protein<span class="w"> </span>esm2_t33_650M_UR50D<span class="w"> </span>--assay<span class="w"> </span>BLAT_ECOLX_Stiffler_2015<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--reference<span class="w"> </span>DMS_substitutions.csv<span class="w"> </span>--dms-dir<span class="w"> </span>DMS_ProteinGym_substitutions<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--msa<span class="w"> </span>BLAT_ECOLX_full_11-26-2021_b02.a2m<span class="w"> </span>--profile<span class="w"> </span>--out<span class="w"> </span>tem1/<span class="w"> </span>--device<span class="w"> </span>hip
+</code></pre></div>
+<p>ESM-2 650M on gfx1151, explaining each assay's most damaging single mutant:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Ubiquitin (RL40A_YEAST, K48F)</th>
+<th>TEM-1 (BLAT_ECOLX, K71S)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deletion: value left (area), relevant first vs random</td>
+<td>3.81 vs 5.23: faithful</td>
+<td>3.27 vs 5.23: faithful</td>
+</tr>
+<tr>
+<td>Randomization: similarity after the LM head; after the top 14 layers (32 to 19)</td>
+<td>0.25; 0.08</td>
+<td>0.67; 0.83</td>
+</tr>
+<tr>
+<td>Profile vs DMS sensitivity: Spearman (top-10% overlap, chance)</td>
+<td>0.04 (0.29, 0.09)</td>
+<td>0.08 (0.19, 0.10)</td>
+</tr>
+<tr>
+<td>Profile vs conservation</td>
+<td>0.03 (0.00, 0.09)</td>
+<td>0.10 (0.38, 0.10)</td>
+</tr>
+<tr>
+<td>Conservation vs DMS sensitivity, for scale</td>
+<td>0.29</td>
+<td>0.50</td>
+</tr>
+</tbody>
+</table>
+<p>What this says:</p>
+<ul>
+<li><strong>Deletion.</strong> Both explanations rank residues by how much the prediction needs them.</li>
+<li><strong>Randomization.</strong> Ubiquitin's explanation depends on the whole model. TEM-1's doesn't: its
+  residue ranking survives randomizing the top 14 layers and only drops (to 0.16) once layer 18
+  is randomized too.
+  So most of what that map shows comes from the lower layers.</li>
+<li><strong>Agreement.</strong> Neither protein's relevance profile matches the functional signals: what the
+  model draws on to predict residues isn't where mutations hurt or where the family is
+  conserved. Read relevance maps as what the model uses, not as maps of function.</li>
+</ul>
+<p>The run takes 2 minutes for ubiquitin (128 residues) and 6 for TEM-1 (286), most of it the
+profile.</p>
 <h2 id="checking-against-hugging-face">Checking against Hugging Face<a class="headerlink" href="#checking-against-hugging-face" title="Permanent link">&para;</a></h2>
 <p><code>tools/golden/make_esm_golden.py</code> records transformers' outputs for a model:
 - logits;

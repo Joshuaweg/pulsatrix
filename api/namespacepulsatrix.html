@@ -449,11 +449,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderBlockOptions.html">EncoderBlockOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything about an <a class="el" href="classpulsatrix_1_1EncoderBlock.html" title="One encoder layer. Shape (N, L, d_model) -&gt; (N, L, d_model).">EncoderBlock</a> beyond its attention. The defaults are ESM-2's.  <a href="structpulsatrix_1_1EncoderBlockOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderExplainer.html">EncoderExplainer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AttnLRP for an ESM-2 <a class="el" href="classpulsatrix_1_1EncoderLM.html" title="An ESM-2 masked language model: token embeddings (with ESM&#39;s token-dropout scaling),...">EncoderLM</a>: explains a target (<a class="el" href="structpulsatrix_1_1EncoderTarget.html" title="What an explanation explains. Residues are numbered from 0 here.">EncoderTarget</a>) as relevance on the input residues, with LXT's rules by default (the identity rule on LayerNorm and GELU, the uniform rule at attention's matmuls, epsilon elsewhere), so it matches LXT's AttnLRP.  <a href="classpulsatrix_1_1EncoderExplainer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html">EncoderLM</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An ESM-2 masked language model: token embeddings (with ESM's token-dropout scaling), pre-LayerNorm encoder layers with rotary attention (<a class="el" href="classpulsatrix_1_1EncoderBlock.html" title="One encoder layer. Shape (N, L, d_model) -&gt; (N, L, d_model).">EncoderBlock</a>), a final LayerNorm, and the LM head: dense, GELU, LayerNorm, then the embedding table transposed plus a bias. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a>: token ids <code>(N, L)</code> to logits <code>(N, L, vocab)</code>.  <a href="classpulsatrix_1_1EncoderLM.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The settings of an ESM-family masked LM, from its Hugging Face <code>config.json</code>.  <a href="structpulsatrix_1_1EncoderLMConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1EncoderTarget.html">EncoderTarget</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What an explanation explains. Residues are numbered from 0 here.  <a href="structpulsatrix_1_1EncoderTarget.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Encoding.html">Encoding</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of encoding one text.  <a href="structpulsatrix_1_1Encoding.html#details">More...</a><br /></td></tr>
@@ -644,6 +650,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LIME.html">LIME</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fits a locality-weighted linear surrogate around one input: perturb x with Gaussian noise, weight each perturbed sample by an exponential locality kernel pi(z) = exp(-||z-x||^2 / (2*sigma^2)), fit w* = argmin_w sum_i pi_i*(f(z_i) - f(x) - w^T(z_i-x))^2 + l2_lambda*||w||^2 via fit_weighted_linear_regression.  <a href="classpulsatrix_1_1LIME.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LinearHead.html">LinearHead</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A linear head on the model's representations (last_hidden_state): <code>weight . h + bias</code>.  <a href="structpulsatrix_1_1LinearHead.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) &ndash; migrated from the original unbatched (rank-1) scope by campaign_exai_dl_library_batch_dimension_support (breaking migration to always-batched; a single example is N=1, not a structurally different case).  <a href="classpulsatrix_1_1LinearModule.html#details">More...</a><br /></td></tr>
@@ -849,6 +858,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1QRResult.html">QRResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a281ea330d1061f3fdd9fd8578e3b2c2f" title="Thin QR factorization by Householder reflections.">QR()</a>'s result, the thin factorization A = Q R.  <a href="structpulsatrix_1_1QRResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RandomizationCheckResult.html">RandomizationCheckResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The randomization check's result: after randomizing <code>layers[0..i]</code>, how similar the explanation stays (Spearman of |relevance| per residue with the original).  <a href="structpulsatrix_1_1RandomizationCheckResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1RandomizationResult.html">RandomizationResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model-parameter randomization test's result.  <a href="structpulsatrix_1_1RandomizationResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -885,8 +897,17 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = x + inner-&gt;forward(x)</code> for an arbitrary already-built <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>. The classic ResNet shortcut connection, owning its own native relevance-split rule &ndash; the charter's explicitly named failure mode to avoid is Captum/Zennit's "Canonizer
        surgery" (an external post-hoc graph rewrite for residual connections).  <a href="classpulsatrix_1_1ResidualModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResidueAgreement.html">ResidueAgreement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a per-residue explanation agrees with an independent per-residue signal.  <a href="structpulsatrix_1_1ResidueAgreement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResidueDeletionCurve.html">ResidueDeletionCurve</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A deletion curve against its random baseline.  <a href="structpulsatrix_1_1ResidueDeletionCurve.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResidueLogProbs.html">ResidueLogProbs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log-probabilities of every token at each residue: <code>length</code> rows of <code>vocab</code> values.  <a href="structpulsatrix_1_1ResidueLogProbs.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResidueRelevance.html">ResidueRelevance</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relevance per residue for one explained value.  <a href="structpulsatrix_1_1ResidueRelevance.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResidueTracksDocument.html">ResidueTracksDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.residue_tracks.v1</code>: per-residue signals stacked under a sequence, and annotated stretches (domains, sites), as in a genome or protein browser. The same document colors a 3D structure (RenderStructureHtml).  <a href="structpulsatrix_1_1ResidueTracksDocument.html#details">More...</a><br /></td></tr>
@@ -1547,7 +1568,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a397287eb17e907922b68ceec236ce20b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pearson correlation of two equal-length vectors; 0 if either is constant.  <br /></td></tr>
 <tr class="separator:a397287eb17e907922b68ceec236ce20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cc3a4cffc0a90b2e3d347442e279535" id="r_a8cc3a4cffc0a90b2e3d347442e279535"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8cc3a4cffc0a90b2e3d347442e279535">LxtAttnLrpConfig</a> ()</td></tr>
-<tr class="memdesc:a8cc3a4cffc0a90b2e3d347442e279535"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rule configuration that matches LXT's AttnLRP on a Hugging Face model: the epsilon rule with a tiny epsilon, and biases kept in the denominator as LXT's gradient * input keeps them in z (Qwen2's QKV biases).  <br /></td></tr>
+<tr class="memdesc:a8cc3a4cffc0a90b2e3d347442e279535"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rule configuration that matches LXT's AttnLRP on a Hugging Face model: the epsilon rule with a tiny epsilon, biases kept in the denominator as LXT's gradient * input keeps them in z (Qwen2's QKV biases), and LayerNorm with only its standard deviation held constant (<a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#a553694996bafa5120299435f599998b1" title="LayerNormModule only: AttnLRP&#39;s normalization rule as LXT applies it. The standard deviation is held ...">LRPRuleConfig::layer_norm_detach_std</a>; ESM-2, PLM-6).  <br /></td></tr>
 <tr class="separator:a8cc3a4cffc0a90b2e3d347442e279535"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bc545076451524a9ad1cc4c5c2b6eab" id="r_a1bc545076451524a9ad1cc4c5c2b6eab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttnLrpReport.html">AttnLrpReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1bc545076451524a9ad1cc4c5c2b6eab">CompareToAttnLrp</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const <a class="el" href="classpulsatrix_1_1SafetensorsFile.html">SafetensorsFile</a> &amp;reference, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config=<a class="el" href="namespacepulsatrix.html#a8cc3a4cffc0a90b2e3d347442e279535">LxtAttnLrpConfig</a>(), float threshold=0.99f)</td></tr>
 <tr class="memdesc:a1bc545076451524a9ad1cc4c5c2b6eab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains each <code>ids.&lt;k&gt;</code> sequence of an AttnLRP reference file (as written by tools/golden/make_attnlrp_reference.py) from the logit of <code>target.&lt;k&gt;</code> at the last position, seeded with that logit as LXT's examples do, and compares the input relevance and every layer's K/V-head relevance with the reference's.  <br /></td></tr>
@@ -1765,6 +1786,9 @@ Functions</h2></td></tr>
 <tr class="memdesc:a684eb4ee86d14926a8ed769bfe3fc93f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model-parameter randomization test (Adebayo et al., "Sanity Checks for Saliency
        Maps", NeurIPS 2018), cascading: randomizes the model's layers from the output down, re-explains <code>input</code> after each, and measures how similar the explanation stays.  <br /></td></tr>
 <tr class="separator:a684eb4ee86d14926a8ed769bfe3fc93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bf1b89f72720caba33f5bc2888ae612" id="r_a6bf1b89f72720caba33f5bc2888ae612"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RandomizationResult.html">RandomizationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6bf1b89f72720caba33f5bc2888ae612">ModelParameterRandomizationTest</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;explain, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, uint64_t seed, const std::vector&lt; std::string &gt; &amp;layers)</td></tr>
+<tr class="memdesc:a6bf1b89f72720caba33f5bc2888ae612"><td class="mdescLeft">&#160;</td><td class="mdescRight">ModelParameterRandomizationTest over <code>layers</code>, in the order given: each a prefix of named_parameters() names, such as <code>"layers.11"</code>, randomized cumulatively.  <br /></td></tr>
+<tr class="separator:a6bf1b89f72720caba33f5bc2888ae612"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a383a816a6ee859218999a53b32056d8f" id="r_a383a816a6ee859218999a53b32056d8f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a383a816a6ee859218999a53b32056d8f">SpearmanCorrelation</a> (const std::vector&lt; double &gt; &amp;x, const std::vector&lt; double &gt; &amp;y)</td></tr>
 <tr class="memdesc:a383a816a6ee859218999a53b32056d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spearman's rank correlation, ties given their average rank (scipy's <code>spearmanr</code>). NaN if either input is constant.  <br /></td></tr>
 <tr class="separator:a383a816a6ee859218999a53b32056d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2052,6 +2076,27 @@ Functions</h2></td></tr>
 <tr class="memitem:a9521995a242e243082cd61ff252b255e" id="r_a9521995a242e243082cd61ff252b255e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1HeadPrecision.html">HeadPrecision</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a9521995a242e243082cd61ff252b255e">RankContactHeads</a> (<a class="el" href="classpulsatrix_1_1ContactPredictor.html">ContactPredictor</a> &amp;predictor, const std::vector&lt; <a class="el" href="structpulsatrix_1_1LabeledProtein.html">LabeledProtein</a> &gt; &amp;proteins, <a class="el" href="structpulsatrix_1_1SeparationRange.html">SeparationRange</a> range=<a class="el" href="namespacepulsatrix.html#a31b9ea5e0b7630734453a841016c03a7">kLongRange</a>)</td></tr>
 <tr class="memdesc:a9521995a242e243082cd61ff252b255e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every head, best first, by its features' mean precision at L in <code>range</code> over <code>proteins</code>. The top K make an unsupervised predictor with <a class="el" href="classpulsatrix_1_1ContactPredictor.html#a6ec5c906c4b641d27ee634dc4f7e6463" title="The mean of heads&#39; ContactFeatures: an unsupervised predictor with no regression. Scores rank pairs; ...">ContactPredictor::average_heads</a> (arXiv 2606.21876 chooses them with 10 labeled proteins). Choose heads on proteins you won't evaluate on.  <br /></td></tr>
 <tr class="separator:a9521995a242e243082cd61ff252b255e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35396ad11d7e57acf8e70561ac46fcec" id="r_a35396ad11d7e57acf8e70561ac46fcec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ResidueAgreement.html">ResidueAgreement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a35396ad11d7e57acf8e70561ac46fcec">CompareResidueSignals</a> (const std::vector&lt; float &gt; &amp;relevance, const std::vector&lt; float &gt; &amp;signal, double top_fraction=0.1)</td></tr>
+<tr class="memdesc:a35396ad11d7e57acf8e70561ac46fcec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares |relevance| with <code>signal</code> over the residues where both are finite; <code>top_fraction</code> picks k (at least 1).  <br /></td></tr>
+<tr class="separator:a35396ad11d7e57acf8e70561ac46fcec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e0e926aad5682e47e4ee3319591e75d" id="r_a6e0e926aad5682e47e4ee3319591e75d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6e0e926aad5682e47e4ee3319591e75d">DmsPositionSensitivity</a> (const <a class="el" href="structpulsatrix_1_1DmsVariants.html">DmsVariants</a> &amp;variants, std::string_view sequence, int64_t offset=1)</td></tr>
+<tr class="memdesc:a6e0e926aad5682e47e4ee3319591e75d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each residue's sensitivity in a deep mutational scan: minus the mean score of its single mutants (higher scores being fitter, as in ProteinGym), so residues that tolerate no change rank highest. NaN where no single mutant was measured. Multiple mutants are skipped.  <br /></td></tr>
+<tr class="separator:a6e0e926aad5682e47e4ee3319591e75d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80210273b4a933b3a1838af103371b77" id="r_a80210273b4a933b3a1838af103371b77"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a80210273b4a933b3a1838af103371b77">AlignmentConservation</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; &amp;alignment)</td></tr>
+<tr class="memdesc:a80210273b4a933b3a1838af103371b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conservation of each query residue in a multiple sequence alignment whose first record is the query: <code>log2(20) - entropy</code> of the column's amino acids, in bits, times the share of sequences without a gap there. NaN for query residues outside the alignment's focus columns (lowercase).  <br /></td></tr>
+<tr class="separator:a80210273b4a933b3a1838af103371b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdc5d7f8ad01f1e29984467e35bc560a" id="r_afdc5d7f8ad01f1e29984467e35bc560a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afdc5d7f8ad01f1e29984467e35bc560a">AlignmentQuery</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; &amp;alignment)</td></tr>
+<tr class="memdesc:afdc5d7f8ad01f1e29984467e35bc560a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The query's residues in <code>alignment's</code> first record: its letters, uppercased.  <br /></td></tr>
+<tr class="separator:afdc5d7f8ad01f1e29984467e35bc560a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4af758799767958b9dd2c2a12bc93c5" id="r_aa4af758799767958b9dd2c2a12bc93c5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aa4af758799767958b9dd2c2a12bc93c5">RelevanceProfile</a> (<a class="el" href="classpulsatrix_1_1EncoderExplainer.html">EncoderExplainer</a> &amp;explainer, std::string_view sequence, const std::function&lt; void(int64_t done, int64_t total)&gt; &amp;progress={})</td></tr>
+<tr class="memdesc:aa4af758799767958b9dd2c2a12bc93c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">How much the model draws on each residue when it predicts the others: the mean, over every residue's masked wild-type logit (<a class="el" href="structpulsatrix_1_1EncoderTarget.html#ab2973a41dbfb309be90d97f5f817612a">EncoderTarget::MaskedToken</a>), of each residue's share of the explanation's total |relevance|. A per-protein explanation to compare with per-residue signals such as DMS sensitivity or conservation.  <br /></td></tr>
+<tr class="separator:aa4af758799767958b9dd2c2a12bc93c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef34fda2ec9c92ef8729c53e906b051" id="r_a1ef34fda2ec9c92ef8729c53e906b051"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ResidueDeletionCurve.html">ResidueDeletionCurve</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1ef34fda2ec9c92ef8729c53e906b051">DeletionCheck</a> (<a class="el" href="classpulsatrix_1_1EncoderExplainer.html">EncoderExplainer</a> &amp;explainer, std::string_view sequence, const <a class="el" href="structpulsatrix_1_1EncoderTarget.html">EncoderTarget</a> &amp;target, const std::vector&lt; float &gt; &amp;relevance, int64_t steps=20, int64_t random_orders=5, uint64_t seed=0)</td></tr>
+<tr class="memdesc:a1ef34fda2ec9c92ef8729c53e906b051"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masks residues (<code>&lt;mask&gt;</code>) in order of how much they support the explained value (relevance of the value's own sign, largest first) and records the value, beside <code>random_orders</code> random orders. A faithful explanation moves the value toward zero faster than random. The explained residue itself is never masked twice: a masked target's residue stays masked throughout, and isn't counted.  <br /></td></tr>
+<tr class="separator:a1ef34fda2ec9c92ef8729c53e906b051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0873bbb14c1456e1862355ece8f3ac9c" id="r_a0873bbb14c1456e1862355ece8f3ac9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RandomizationCheckResult.html">RandomizationCheckResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0873bbb14c1456e1862355ece8f3ac9c">RandomizationCheck</a> (<a class="el" href="classpulsatrix_1_1EncoderExplainer.html">EncoderExplainer</a> &amp;explainer, std::string_view sequence, const <a class="el" href="structpulsatrix_1_1EncoderTarget.html">EncoderTarget</a> &amp;target, uint64_t seed=0)</td></tr>
+<tr class="memdesc:a0873bbb14c1456e1862355ece8f3ac9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cascading model randomization (Adebayo et al. 2018) over the encoder's own layers, top down: the LM head, then each layer from the last to the first, then the embeddings. Each step redraws the group's weight matrices (Gaussian, each with its own standard deviation) and re-explains. Norm gains and biases are kept: redrawn from their own small spread, a pre-LN block's gains shrink toward zero and the block becomes its residual connection, which would hide the randomization. The model's parameters are restored before returning.  <br /></td></tr>
+<tr class="separator:a0873bbb14c1456e1862355ece8f3ac9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73c55d10c6a32a7c7e755166a530a2e2" id="r_a73c55d10c6a32a7c7e755166a530a2e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1TextTokenizer.html">TextTokenizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73c55d10c6a32a7c7e755166a530a2e2">MakeEsmTokenizer</a> (const std::vector&lt; std::string &gt; &amp;vocab)</td></tr>
 <tr class="memdesc:a73c55d10c6a32a7c7e755166a530a2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESM's tokenizer (Hugging Face's <code>EsmTokenizer</code>) over a vocabulary listed one token per line, by id: <code>&lt;cls&gt; &lt;pad&gt; &lt;eos&gt; &lt;unk&gt; L A G V ... &lt;mask&gt;</code> for ESM-2.  <br /></td></tr>
 <tr class="separator:a73c55d10c6a32a7c7e755166a530a2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3953,6 +3998,54 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
+<a id="a80210273b4a933b3a1838af103371b77" name="a80210273b4a933b3a1838af103371b77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80210273b4a933b3a1838af103371b77">&#9670;&#160;</a></span>AlignmentConservation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::AlignmentConservation </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>alignment</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Conservation of each query residue in a multiple sequence alignment whose first record is the query: <code>log2(20) - entropy</code> of the column's amino acids, in bits, times the share of sequences without a gap there. NaN for query residues outside the alignment's focus columns (lowercase). </p>
+<p>Reads both A2M layouts: column-aligned files, where every record has the query's length and lowercase marks non-focus columns (ProteinGym's and EVE's), and standard A2M, where lowercase letters and '.' are insertions and the match columns (uppercase and '-') line up. </p><dl class="section note"><dt>Note</dt><dd>Sequences are counted unweighted; tools that reweight by similarity give somewhat different numbers for families with many near-duplicates. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>One value per query residue (its letters, any case). </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for no records, or records whose match columns don't line up. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afdc5d7f8ad01f1e29984467e35bc560a" name="afdc5d7f8ad01f1e29984467e35bc560a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdc5d7f8ad01f1e29984467e35bc560a">&#9670;&#160;</a></span>AlignmentQuery()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::AlignmentQuery </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>alignment</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The query's residues in <code>alignment's</code> first record: its letters, uppercased. </p>
+
+</div>
+</div>
 <a id="aba26bb47a841c985070a3d37cff2a423" name="aba26bb47a841c985070a3d37cff2a423"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba26bb47a841c985070a3d37cff2a423">&#9670;&#160;</a></span>AllocateOffspringCounts()</h2>
 
@@ -5009,6 +5102,48 @@ One difference from PyTorch: a NaN or infinite norm leaves the gradients unchang
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the sizes don't match L * vocab. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a35396ad11d7e57acf8e70561ac46fcec" name="a35396ad11d7e57acf8e70561ac46fcec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35396ad11d7e57acf8e70561ac46fcec">&#9670;&#160;</a></span>CompareResidueSignals()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ResidueAgreement.html">ResidueAgreement</a> pulsatrix::CompareResidueSignals </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>relevance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>signal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>top_fraction</em> = <code>0.1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compares |relevance| with <code>signal</code> over the residues where both are finite; <code>top_fraction</code> picks k (at least 1). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the lengths differ, fewer than 3 residues compare, or top_fraction isn't in (0, 1]. </td></tr>
   </table>
   </dd>
 </dl>
@@ -6370,6 +6505,72 @@ If a front is uniform in some objective (max == min across the whole front), tha
 
 </div>
 </div>
+<a id="a1ef34fda2ec9c92ef8729c53e906b051" name="a1ef34fda2ec9c92ef8729c53e906b051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ef34fda2ec9c92ef8729c53e906b051">&#9670;&#160;</a></span>DeletionCheck()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ResidueDeletionCurve.html">ResidueDeletionCurve</a> pulsatrix::DeletionCheck </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1EncoderExplainer.html">EncoderExplainer</a> &amp;&#160;</td>
+          <td class="paramname"><em>explainer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1EncoderTarget.html">EncoderTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>relevance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>steps</em> = <code>20</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>random_orders</em> = <code>5</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Masks residues (<code>&lt;mask&gt;</code>) in order of how much they support the explained value (relevance of the value's own sign, largest first) and records the value, beside <code>random_orders</code> random orders. A faithful explanation moves the value toward zero faster than random. The explained residue itself is never masked twice: a masked target's residue stays masked throughout, and isn't counted. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if <code>relevance</code> doesn't have one value per residue, steps &lt; 1 or random_orders &lt; 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a08ca823b9f2196df3e5f407dee95fcc5" name="a08ca823b9f2196df3e5f407dee95fcc5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a08ca823b9f2196df3e5f407dee95fcc5">&#9670;&#160;</a></span>DeletionCurve()</h2>
 
@@ -6546,6 +6747,48 @@ If a front is uniform in some objective (max == min across the whole front), tha
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if discriminator has no parameters. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6e0e926aad5682e47e4ee3319591e75d" name="a6e0e926aad5682e47e4ee3319591e75d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e0e926aad5682e47e4ee3319591e75d">&#9670;&#160;</a></span>DmsPositionSensitivity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::DmsPositionSensitivity </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DmsVariants.html">DmsVariants</a> &amp;&#160;</td>
+          <td class="paramname"><em>variants</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each residue's sensitivity in a deep mutational scan: minus the mean score of its single mutants (higher scores being fitter, as in ProteinGym), so residues that tolerate no change rank highest. NaN where no single mutant was measured. Multiple mutants are skipped. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a mutant doesn't parse or doesn't match <code>sequence</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -8594,7 +8837,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>The rule configuration that matches LXT's AttnLRP on a Hugging Face model: the epsilon rule with a tiny epsilon, and biases kept in the denominator as LXT's gradient * input keeps them in z (Qwen2's QKV biases). </p>
+<p>The rule configuration that matches LXT's AttnLRP on a Hugging Face model: the epsilon rule with a tiny epsilon, biases kept in the denominator as LXT's gradient * input keeps them in z (Qwen2's QKV biases), and LayerNorm with only its standard deviation held constant (<a class="el" href="structpulsatrix_1_1LRPRuleConfig.html#a553694996bafa5120299435f599998b1" title="LayerNormModule only: AttnLRP&#39;s normalization rule as LXT applies it. The standard deviation is held ...">LRPRuleConfig::layer_norm_detach_std</a>; ESM-2, PLM-6). </p>
 
 </div>
 </div>
@@ -9233,7 +9476,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div>
 </div>
 <a id="a684eb4ee86d14926a8ed769bfe3fc93f" name="a684eb4ee86d14926a8ed769bfe3fc93f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a684eb4ee86d14926a8ed769bfe3fc93f">&#9670;&#160;</a></span>ModelParameterRandomizationTest()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a684eb4ee86d14926a8ed769bfe3fc93f">&#9670;&#160;</a></span>ModelParameterRandomizationTest() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9275,6 +9518,60 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>An explanation that stays similar after its model was randomized can't be explaining the model. Each parameter tensor is replaced by Gaussian noise with that tensor's own standard deviation, drawn from a portable generator seeded by <code>seed</code>. Layers are the first segment of named_parameters() names (a <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a>'s indices, for example). </dd>
 <dd>
 The model's parameters are restored exactly before returning, even if <code>explain</code> throws. </dd></dl>
+
+</div>
+</div>
+<a id="a6bf1b89f72720caba33f5bc2888ae612" name="a6bf1b89f72720caba33f5bc2888ae612"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bf1b89f72720caba33f5bc2888ae612">&#9670;&#160;</a></span>ModelParameterRandomizationTest() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RandomizationResult.html">RandomizationResult</a> pulsatrix::ModelParameterRandomizationTest </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;&#160;</td>
+          <td class="paramname"><em>explain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>layers</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ModelParameterRandomizationTest over <code>layers</code>, in the order given: each a prefix of named_parameters() names, such as <code>"layers.11"</code>, randomized cumulatively. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a layer names no parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -11099,6 +11396,49 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a0873bbb14c1456e1862355ece8f3ac9c" name="a0873bbb14c1456e1862355ece8f3ac9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0873bbb14c1456e1862355ece8f3ac9c">&#9670;&#160;</a></span>RandomizationCheck()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1RandomizationCheckResult.html">RandomizationCheckResult</a> pulsatrix::RandomizationCheck </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1EncoderExplainer.html">EncoderExplainer</a> &amp;&#160;</td>
+          <td class="paramname"><em>explainer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1EncoderTarget.html">EncoderTarget</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>seed</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cascading model randomization (Adebayo et al. 2018) over the encoder's own layers, top down: the LM head, then each layer from the last to the first, then the embeddings. Each step redraws the group's weight matrices (Gaussian, each with its own standard deviation) and re-explains. Norm gains and biases are kept: redrawn from their own small spread, a pre-LN block's gains shrink toward zero and the block becomes its residual connection, which would hide the randomization. The model's parameters are restored before returning. </p>
+<dl class="section note"><dt>Note</dt><dd>A copy of every parameter is held while it runs. </dd></dl>
+
+</div>
+</div>
 <a id="aa6ea52ad0a3275de0825182eac0b8660" name="aa6ea52ad0a3275de0825182eac0b8660"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6ea52ad0a3275de0825182eac0b8660">&#9670;&#160;</a></span>RandomSample()</h2>
 
@@ -11523,6 +11863,43 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Frees <code>t's</code> buffer: it becomes an empty tensor on the same backend and device. </p>
+
+</div>
+</div>
+<a id="aa4af758799767958b9dd2c2a12bc93c5" name="aa4af758799767958b9dd2c2a12bc93c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4af758799767958b9dd2c2a12bc93c5">&#9670;&#160;</a></span>RelevanceProfile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::RelevanceProfile </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1EncoderExplainer.html">EncoderExplainer</a> &amp;&#160;</td>
+          <td class="paramname"><em>explainer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; void(int64_t done, int64_t total)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>progress</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How much the model draws on each residue when it predicts the others: the mean, over every residue's masked wild-type logit (<a class="el" href="structpulsatrix_1_1EncoderTarget.html#ab2973a41dbfb309be90d97f5f817612a">EncoderTarget::MaskedToken</a>), of each residue's share of the explanation's total |relevance|. A per-protein explanation to compare with per-residue signals such as DMS sensitivity or conservation. </p>
+<dl class="section note"><dt>Note</dt><dd>Cost: one explanation per residue. <code>progress</code>, if set, is called after each. </dd></dl>
 
 </div>
 </div>

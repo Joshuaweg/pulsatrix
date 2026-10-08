@@ -5792,7 +5792,7 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <td>PLM-2, PLM-5</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/99">#99</a> (see below)</td>
 </tr>
 <tr>
 <td>PLM-7</td>
@@ -5921,9 +5921,42 @@ sources are in <a href="protein-language-models/">Protein language models: resea
     ESM-2 650M's output for TEM-1 (1BTL). The contact map's long-range precision there is 0.665,
     the same value PLM-4 measured. The structure page was driven in headless Chromium: the menu
     switches tracks, and hovering labels a residue with its value.</li>
-<li>Figures number residues consecutively from <code>first_position</code>. A structure whose author
+<li>
+<p>Figures number residues consecutively from <code>first_position</code>. A structure whose author
     numbering skips numbers (TEM-1's Ambler numbering skips 239 and 253) is numbered by position
-    in the figures, by author id on the structure page.</li>
+    in the figures, by author id on the structure page.</p>
+</li>
+<li>
+<p><strong>PLM-6</strong> explains ESM-2 with AttnLRP from four targets: a masked residue's logit, a mutation's
+  log-odds, and linear heads per protein and per residue. It matches LXT's rules on transformers'
+  ESM-2 to 4.8e-5 on 650M, for every token and layer. Residue relevance graphs export to
+  Neuronpedia's viewer.</p>
+</li>
+<li><strong>LayerNorm's rule was wrong for AttnLRP.</strong> <code>LayerNormModule</code> passed relevance straight
+    through, which equals LXT's rule for RMSNorm but not for LayerNorm: LXT holds only the
+    standard deviation constant, so the mean subtraction and the bias stay in the explanation.
+    The first comparison missed by a factor of 4,000. <code>LRPRuleConfig::layer_norm_detach_std</code> adds
+    LXT's rule, and <code>LxtAttnLrpConfig()</code> turns it on. The default is unchanged, so earlier
+    results stand. LLM-7's models use RMSNorm, so their parity was never affected.</li>
+<li><strong>No LXT patch for ESM.</strong> LXT 2.1 patches BERT but not ESM, so the reference applies its
+    rules to ESM the way the BERT patch does: <code>make_esm_attnlrp_reference.py</code>, with a
+    plain-gradient negative control.</li>
+<li><strong>The checks found what they're for.</strong><ul>
+<li>Deletion confirms faithfulness on ubiquitin and TEM-1.</li>
+<li>TEM-1's explanation keeps most of its ranking (0.83) while the top 14 layers are
+  randomized: it mostly reflects the lower layers.</li>
+<li>The relevance profile barely agrees with DMS sensitivity or conservation (Spearman
+  0.03-0.10), where those two agree with each other (0.29-0.50).</li>
+</ul>
+</li>
+<li><strong>Two fixes along the way.</strong><ul>
+<li>Deletion orders residues by support for the value's sign. Otherwise a negative log-odds
+  is "deleted" in the wrong direction.</li>
+<li>Randomization redraws weight matrices only. The shared routine redrew LayerNorm gains from
+  their own small spread, which made a pre-LN block nearly a residual connection and hid the
+  randomization (similarity stayed at 0.7-0.8).</li>
+</ul>
+</li>
 </ul>
 <p>Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.</p>

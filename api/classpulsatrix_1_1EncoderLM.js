@@ -16,6 +16,7 @@ var classpulsatrix_1_1EncoderLM =
     [ "named_parameters", "classpulsatrix_1_1EncoderLM.html#aedcc25986873778e0b22c6be2e60a302", null ],
     [ "num_layers", "classpulsatrix_1_1EncoderLM.html#ad5655e50e6f47ef54e09df4ba5427121", null ],
     [ "op_type", "classpulsatrix_1_1EncoderLM.html#a38aa47a6e629f4fc9de8d739583ce767", null ],
+    [ "propagate_hidden_relevance_by_layer", "classpulsatrix_1_1EncoderLM.html#a23cca231f6961987330821d97ac157fc", null ],
     [ "propagate_relevance", "classpulsatrix_1_1EncoderLM.html#a1b50b75722028d5cb2ec5eda2491cef6", null ],
     [ "propagate_relevance_by_layer", "classpulsatrix_1_1EncoderLM.html#ade0b43e51b971af8693bb48487e1c2dd", null ],
     [ "release_activations", "classpulsatrix_1_1EncoderLM.html#afdd98dbe925feb3a9d2276f21bbf80ba", null ],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['has_5fstability_0',['has_stability',['../structpulsatrix_1_1ExplanationScoreCard_1_1Input.html#a6ee536c46431a4b61425927c7ee0cb40',1,'pulsatrix::ExplanationScoreCard::Input']]],
-  ['head_1',['head',['../structpulsatrix_1_1AttentionHead.html#affe0d1a51e120c7752e2af9464339009',1,'pulsatrix::AttentionHead::head'],['../structpulsatrix_1_1HeadPrecision.html#a62999593f3f2ad66959f64aba12b08c0',1,'pulsatrix::HeadPrecision::head']]],
+  ['head_1',['head',['../structpulsatrix_1_1AttentionHead.html#affe0d1a51e120c7752e2af9464339009',1,'pulsatrix::AttentionHead::head'],['../structpulsatrix_1_1HeadPrecision.html#a62999593f3f2ad66959f64aba12b08c0',1,'pulsatrix::HeadPrecision::head'],['../structpulsatrix_1_1EncoderTarget.html#ad894c6188bb9dcad9c9240b9c4305be3',1,'pulsatrix::EncoderTarget::head']]],
   ['head_5fdim_2',['head_dim',['../structpulsatrix_1_1HfModelConfig.html#a193c0d6fecdb894434336a4894c2e137',1,'pulsatrix::HfModelConfig::head_dim'],['../structpulsatrix_1_1AttentionConfig.html#a1b2affef801794344314071788d7e5e5',1,'pulsatrix::AttentionConfig::head_dim']]],
   ['header_3',['header',['../structpulsatrix_1_1CsvTable.html#a05532a48ae5c290fbf7acde55cf913b5',1,'pulsatrix::CsvTable']]],
   ['heads_4',['heads',['../structpulsatrix_1_1EsmContactHead.html#ae5231f045dda2dd20182b4f915c3cca8',1,'pulsatrix::EsmContactHead']]],

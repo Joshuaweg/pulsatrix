@@ -145,6 +145,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ade0b43e51b971af8693bb48487e1c2dd" id="r_ade0b43e51b971af8693bb48487e1c2dd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#ade0b43e51b971af8693bb48487e1c2dd">propagate_relevance_by_layer</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1EncoderLM.html#a172c9b659cec26384df7069bb08d42be">config</a>)</td></tr>
 <tr class="memdesc:ade0b43e51b971af8693bb48487e1c2dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">propagate_relevance, stopping at every layer boundary.  <br /></td></tr>
 <tr class="separator:ade0b43e51b971af8693bb48487e1c2dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23cca231f6961987330821d97ac157fc" id="r_a23cca231f6961987330821d97ac157fc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#a23cca231f6961987330821d97ac157fc">propagate_hidden_relevance_by_layer</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_hidden, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;<a class="el" href="classpulsatrix_1_1EncoderLM.html#a172c9b659cec26384df7069bb08d42be">config</a>)</td></tr>
+<tr class="memdesc:a23cca231f6961987330821d97ac157fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">propagate_relevance_by_layer from relevance at <a class="el" href="classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1" title="The last forward pass&#39;s final-LayerNorm output, (N, L, hidden_size): the per-residue representations ...">last_hidden_state()</a> (after the final LayerNorm), <code>(N, L, hidden_size)</code>, for a head of your own on the representations: a probe, a regression or a classifier (PLM-6).  <br /></td></tr>
+<tr class="separator:a23cca231f6961987330821d97ac157fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38aa47a6e629f4fc9de8d739583ce767" id="r_a38aa47a6e629f4fc9de8d739583ce767"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#a38aa47a6e629f4fc9de8d739583ce767">op_type</a> () const override</td></tr>
 <tr class="memdesc:a38aa47a6e629f4fc9de8d739583ce767"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's operation-category tag, for <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> node tagging.  <br /></td></tr>
 <tr class="separator:a38aa47a6e629f4fc9de8d739583ce767"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -670,6 +673,42 @@ Protected Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Added in Phase 2 Mission 0 alongside <a class="el" href="classpulsatrix_1_1EncoderLM.html#a3f4d95e60cba1197dd5ff1841d2165d5">backward()</a> &ndash; lets graph-wiring code tag nodes generically through a Module* rather than switching on concrete subclass. </dd></dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a23cca231f6961987330821d97ac157fc" name="a23cca231f6961987330821d97ac157fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23cca231f6961987330821d97ac157fc">&#9670;&#160;</a></span>propagate_hidden_relevance_by_layer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; pulsatrix::EncoderLM::propagate_hidden_relevance_by_layer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>relevance_hidden</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>propagate_relevance_by_layer from relevance at <a class="el" href="classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1" title="The last forward pass&#39;s final-LayerNorm output, (N, L, hidden_size): the per-residue representations ...">last_hidden_state()</a> (after the final LayerNorm), <code>(N, L, hidden_size)</code>, for a head of your own on the representations: a probe, a regression or a classifier (PLM-6). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>before any <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>; std::invalid_argument for a shape mismatch. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
