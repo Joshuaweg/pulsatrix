@@ -487,11 +487,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One FASTA record.  <a href="structpulsatrix_1_1FastaRecord.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html">FeatureActivityTracker</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How often each feature fires, and how long since it last did. A feature that hasn't fired in a long window is <b>dead</b>: it no longer learns, and wastes capacity. One that fires on most inputs is <b>dense</b>, usually a sign it encodes a bias, not a feature.  <a href="classpulsatrix_1_1FeatureActivityTracker.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureDashboardDocument.html">FeatureDashboardDocument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>pulsatrix.feature_dashboard.v1</code>: one learned feature (for example a sparse autoencoder unit) with its activation statistics and top-activating examples.  <a href="structpulsatrix_1_1FeatureDashboardDocument.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeatureSensitivity.html">FeatureSensitivity</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How one feature's low and high value move the output, everything else held fixed.  <a href="structpulsatrix_1_1FeatureSensitivity.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A featurizer maps activations <code>x</code>, <code>(N, input_dim)</code>, to codes <code>f = encode(x)</code>, <code>(N, num_features)</code>, and reconstructs <code>x ≈ decode(f) = f D + b</code>: feature i writes along its decoder direction <code>D[i]</code>.  <a href="classpulsatrix_1_1Featurizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One batch's loss, split into its parts.  <a href="structpulsatrix_1_1FeaturizerLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FeedForwardModule.html">FeedForwardModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>fc2(f(fc1(x)))</code> over the last dimension. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(..., d_model) -&gt; (..., d_model)</code>.  <a href="classpulsatrix_1_1FeedForwardModule.html#details">More...</a><br /></td></tr>
@@ -1807,6 +1816,16 @@ Functions</h2></td></tr>
 <tr class="memitem:a6bf1b89f72720caba33f5bc2888ae612" id="r_a6bf1b89f72720caba33f5bc2888ae612"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1RandomizationResult.html">RandomizationResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a6bf1b89f72720caba33f5bc2888ae612">ModelParameterRandomizationTest</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const <a class="el" href="namespacepulsatrix.html#af0e563c5452d92e9003dedfe6a588b6a">ExplainFn</a> &amp;explain, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, uint64_t seed, const std::vector&lt; std::string &gt; &amp;layers)</td></tr>
 <tr class="memdesc:a6bf1b89f72720caba33f5bc2888ae612"><td class="mdescLeft">&#160;</td><td class="mdescRight">ModelParameterRandomizationTest over <code>layers</code>, in the order given: each a prefix of named_parameters() names, such as <code>"layers.11"</code>, randomized cumulatively.  <br /></td></tr>
 <tr class="separator:a6bf1b89f72720caba33f5bc2888ae612"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97609000f48b7f7d190d002af3d09896" id="r_a97609000f48b7f7d190d002af3d09896"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a97609000f48b7f7d190d002af3d09896">MeanL0</a> (const std::vector&lt; float &gt; &amp;codes, int64_t num_features, float threshold=0.0f)</td></tr>
+<tr class="memdesc:a97609000f48b7f7d190d002af3d09896"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mean number of codes above <code>threshold</code> per input (L0), for codes row-major <code>(N, num_features)</code>.  <br /></td></tr>
+<tr class="separator:a97609000f48b7f7d190d002af3d09896"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af94ee0e0bdac318f32ad08185ecaee58" id="r_af94ee0e0bdac318f32ad08185ecaee58"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af94ee0e0bdac318f32ad08185ecaee58">MeanL0</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, float threshold=0.0f)</td></tr>
+<tr class="memdesc:af94ee0e0bdac318f32ad08185ecaee58"><td class="mdescLeft">&#160;</td><td class="mdescRight">MeanL0 of a featurizer's codes for <code>x</code>.  <br /></td></tr>
+<tr class="separator:af94ee0e0bdac318f32ad08185ecaee58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a533843d3b356df74583b5b643566cef9" id="r_a533843d3b356df74583b5b643566cef9"><td class="memTemplParams" colspan="2">template&lt;typename Optimizer &gt; </td></tr>
+<tr class="memitem:a533843d3b356df74583b5b643566cef9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a533843d3b356df74583b5b643566cef9">TrainFeaturizer</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, Optimizer &amp;optimizer, bool unit_norm_decoder=true, <a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html">FeatureActivityTracker</a> *tracker=nullptr)</td></tr>
+<tr class="memdesc:a533843d3b356df74583b5b643566cef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">One training step for any featurizer: zero the gradients, loss_and_backward(), one optimizer step, then normalize_decoder() when <code>unit_norm_decoder</code>. When <code>tracker</code> is given it observes the batch's codes.  <br /></td></tr>
+<tr class="separator:a533843d3b356df74583b5b643566cef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a383a816a6ee859218999a53b32056d8f" id="r_a383a816a6ee859218999a53b32056d8f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a383a816a6ee859218999a53b32056d8f">SpearmanCorrelation</a> (const std::vector&lt; double &gt; &amp;x, const std::vector&lt; double &gt; &amp;y)</td></tr>
 <tr class="memdesc:a383a816a6ee859218999a53b32056d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spearman's rank correlation, ties given their average rank (scipy's <code>spearmanr</code>). NaN if either input is constant.  <br /></td></tr>
 <tr class="separator:a383a816a6ee859218999a53b32056d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -9565,6 +9584,84 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Matthews correlation of binary <code>labels</code> and <code>predicted</code> (sklearn's <code>matthews_corrcoef</code>); 0 when a row or column of the confusion matrix is empty. </p>
+
+</div>
+</div>
+<a id="a97609000f48b7f7d190d002af3d09896" name="a97609000f48b7f7d190d002af3d09896"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97609000f48b7f7d190d002af3d09896">&#9670;&#160;</a></span>MeanL0() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::MeanL0 </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>codes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_features</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>threshold</em> = <code>0.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The mean number of codes above <code>threshold</code> per input (L0), for codes row-major <code>(N, num_features)</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a size that isn't a whole number of rows, or no rows. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af94ee0e0bdac318f32ad08185ecaee58" name="af94ee0e0bdac318f32ad08185ecaee58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af94ee0e0bdac318f32ad08185ecaee58">&#9670;&#160;</a></span>MeanL0() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::MeanL0 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>threshold</em> = <code>0.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>MeanL0 of a featurizer's codes for <code>x</code>. </p>
 
 </div>
 </div>
@@ -17680,6 +17777,62 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if attr.values is not rank 1 or batch-1 rank 2. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a533843d3b356df74583b5b643566cef9" name="a533843d3b356df74583b5b643566cef9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a533843d3b356df74583b5b643566cef9">&#9670;&#160;</a></span>TrainFeaturizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Optimizer &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a> pulsatrix::TrainFeaturizer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optimizer &amp;&#160;</td>
+          <td class="paramname"><em>optimizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>unit_norm_decoder</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html">FeatureActivityTracker</a> *&#160;</td>
+          <td class="paramname"><em>tracker</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>One training step for any featurizer: zero the gradients, loss_and_backward(), one optimizer step, then normalize_decoder() when <code>unit_norm_decoder</code>. When <code>tracker</code> is given it observes the batch's codes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Optimizer</td><td><a class="el" href="classpulsatrix_1_1SGDOptimizer.html" title="param -= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a Module e...">SGDOptimizer</a>, <a class="el" href="classpulsatrix_1_1AdamOptimizer.html" title="Adam (Kingma &amp; Ba, 2015): per-parameter moving averages of gradient (m) and squared gradient (v),...">AdamOptimizer</a> or <a class="el" href="classpulsatrix_1_1AdamWOptimizer.html" title="AdamW (Loshchilov &amp; Hutter, &quot;Decoupled Weight Decay Regularization&quot;, arXiv 1711.05101): Adam whose we...">AdamWOptimizer</a>: anything with <code>zero_grad(<a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>&amp;)</code> and <code>step(<a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>&amp;)</code>. </td></tr>
   </table>
   </dd>
 </dl>

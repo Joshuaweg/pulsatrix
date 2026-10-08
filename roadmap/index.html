@@ -1977,6 +1977,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="FEAT: Featurizers, sparse autoencoders and Goodfire BSF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-feat-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the FEAT work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2745,6 +2762,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="FEAT: Featurizers, sparse autoencoders and Goodfire BSF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-feat-work-departed-from-the-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the FEAT work departed from the plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4796,6 +4830,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <th>Depends on</th>
 <th>P</th>
 <th>Effort</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
@@ -4806,6 +4841,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>—</td>
 <td>P0</td>
 <td>M</td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/102">#102</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-2</td>
@@ -4814,6 +4850,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1, FND-3</td>
 <td>P0</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>FEAT-3</td>
@@ -4822,6 +4859,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1, XAI-6</td>
 <td>P0</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>FEAT-4</td>
@@ -4830,6 +4868,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-2</td>
 <td>P1</td>
 <td>—</td>
+<td></td>
 </tr>
 <tr>
 <td>FEAT-5</td>
@@ -4838,6 +4877,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1</td>
 <td>P1</td>
 <td>M</td>
+<td></td>
 </tr>
 <tr>
 <td>FEAT-6</td>
@@ -4846,6 +4886,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-2, FND-4</td>
 <td>P1</td>
 <td>L</td>
+<td></td>
 </tr>
 <tr>
 <td>FEAT-7</td>
@@ -4854,6 +4895,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1</td>
 <td>P1</td>
 <td>S</td>
+<td></td>
 </tr>
 <tr>
 <td>FEAT-8</td>
@@ -4862,6 +4904,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1, IO-2</td>
 <td>P2</td>
 <td>—</td>
+<td></td>
 </tr>
 <tr>
 <td>FEAT-9</td>
@@ -4870,6 +4913,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FND-4</td>
 <td>P2</td>
 <td>L–XL</td>
+<td></td>
 </tr>
 <tr>
 <td>FEAT-10</td>
@@ -4878,10 +4922,54 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-5</td>
 <td>P2</td>
 <td>XL</td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <p>Open: no LRP rule exists yet for propagating relevance through a block top-k. FEAT-6 needs one.</p>
+<h3 id="how-the-feat-work-departed-from-the-plan">How the FEAT work departed from the plan<a class="headerlink" href="#how-the-feat-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>FEAT-1</strong> adds the <code>Featurizer</code> interface (<code>featurizer.hpp</code>): <code>encode</code>, <code>decode</code>,
+  <code>loss_and_backward</code>, <code>normalize_decoder</code> and <code>decoder_direction</code>. Alongside it:</li>
+<li><code>TrainFeaturizer</code>, a step for any featurizer;</li>
+<li><code>MeanL0</code>;</li>
+<li><code>FeatureActivityTracker</code>, for dead latents and dense ones (firing rates).</li>
+<li><strong>The port.</strong> <code>SparseAutoencoder</code> implements the interface, and is now also a <code>Module</code>
+    (input to reconstruction, with backward, LRP and named parameters), so checkpoints work.
+    Its old API is unchanged.</li>
+<li><strong>Unit-norm decoders, on by default.</strong> Normalizing moves each direction's length into the
+    encoder's row and bias. A ReLU passes a positive scale through, so reconstructions don't
+    change; a test checks it.</li>
+<li>
+<p><strong>This changed an existing test.</strong> The L1 control in <code>sparse_autoencoder_test.cpp</code> measured
+    sparsity by the mean activation, and with free decoders most of that drop was the penalty
+    shrinking codes, not silencing features. At l1_lambda 0.05:</p>
+<table>
+<thead>
+<tr>
+<th>Decoders</th>
+<th>Mean activation</th>
+<th>L0 (active features per input)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Free</td>
+<td>×0.19</td>
+<td>×0.58</td>
+</tr>
+<tr>
+<td>Unit-norm</td>
+<td></td>
+<td>×0.21</td>
+</tr>
+</tbody>
+</table>
+<p>Under unit norm 0.05 also collapses reconstruction on that Gaussian data. The control now
+uses 0.01 and checks L0, and a new test pins the comparison above.
+  - The SAE recipe's expected output changed with it.</p>
+</li>
+</ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>
 <p>These are ranked by how well they fit an explainability-first library.</p>
 <table>
