@@ -151,6 +151,7 @@ add_executable(pulsatrix_tests
     protein_explanations_test.cpp
     protein_training_test.cpp
     featurizer_test.cpp
+    featurizer_metrics_test.cpp
     topk_sparse_autoencoder_test.cpp
     protein_concepts_test.cpp
     fitness_metrics_test.cpp

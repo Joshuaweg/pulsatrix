@@ -166,6 +166,89 @@ std::vector<int64_t> dead = sae.dead_latents();
 - **Resuming training.** Checkpoints hold the parameters. Save `inputs_since_fired()` too, and
   restore it with `set_inputs_since_fired()`, or every latent starts out alive again.
 
+#### Measuring a featurizer
+
+`featurizer_metrics.hpp` holds SAEBench's core measures (Karvonen et al., arXiv 2503.09532).
+None of them says a featurizer is useful, and its authors find that they don't reliably predict
+usefulness. Each needs a baseline: the same featurizer trained on a randomly initialized model's
+activations (`NullModelBaseline`), and, for a concept, a linear probe.
+
+```cpp
+#include "pulsatrix/featurizer_metrics.hpp"
+
+// Reconstruction on held-out activations.
+ReconstructionMetrics r = EvaluateReconstruction(sae, held_out);
+// r.explained_variance, r.cosine, r.norm_ratio (below 1: shrunk codes), r.l0,
+// r.dead_fraction (never fired), r.dense_fraction (fired on more than 10% of inputs)
+
+// Loss recovered: splice the reconstructions back in at a position (0 is the embeddings,
+// i is layer i's output) and compare the model's loss with the clean and zero-ablated ones.
+LossRecovered lr = MeasureLossRecovered(sae, /*position=*/4, [&](const HiddenStateHook& hook) {
+    model.set_hidden_state_hook(hook);
+    double loss = HeldOutLoss(model);
+    model.set_hidden_state_hook({});
+    return loss;
+});
+// lr.recovered = (ablated - spliced) / (ablated - clean)
+
+// Feature absorption for one concept (labels 0/1 per input), with a linear-probe baseline.
+AbsorptionResult a = FeatureAbsorption(sae, held_out, labels);
+// a.probe_f1, a.main_features, a.main_f1, a.absorption_rate, a.absorbing_features
+```
+
+- **Splicing.** `CausalLM` and `EncoderLM` call a `HiddenStateHook` at every position during
+  `forward()`, and continue with whatever it returns. `SpliceHook` and `AblationHook` build the
+  two replacements. A `rows` mask limits them to the rows the featurizer was trained on, for
+  example residues but not `<cls>` and `<eos>`.
+- **Absorption** (Chanin et al., arXiv 2409.14507). A feature that stands for a concept stays
+  silent where a more specific feature fires instead and carries the concept's direction: a
+  "starts with S" feature that skips "short". The steps:
+  1. A logistic probe finds the concept's direction.
+  2. The main features are those that each raise F1 by at least 0.03.
+  3. A held-out positive the probe finds counts as absorbed when no main feature fires on it,
+     and other features aligned with the probe (cosine at least 0.025) carry at least 40% of
+     its projection onto the probe.
+
+  The test plants a parent concept with ten rare children and finds every absorbed input.
+
+**On ESM-2 8M.** `pulsatrix_probe_esm --sae` reports all of these for an SAE on layer 4's
+residues (2,000 Swiss-Prot proteins, 2,560 latents), beside the same SAE trained on a randomly
+initialized ESM-2:
+
+| | L1 SAE | TopK SAE (k = 16) | L1, random model | TopK, random model |
+|---|---|---|---|---|
+| L0 | 17.0 | 16.0 | 7.4 | 16.0 |
+| Explained variance | 0.66 | 0.78 | 0.74 | 0.95 |
+| Norm ratio `\|x̂\|/\|x\|` | 0.80 | 0.87 | 0.87 | 0.98 |
+| Dead latents | 0% | 2.5% | 53% | 85% |
+| Masked-LM loss: clean 2.37, zero-ablated 3.91 | 2.52 spliced | 2.44 spliced | | |
+| Loss recovered | 0.90 | 0.96 | none | none |
+
+- **TopK beats L1 at the same L0** on every measure, and its codes are shrunk less.
+- **Read the baseline before the score.** The random model's SAEs explain *more* variance, with
+  most latents dead: a random network's representations are easy to compress. Explained variance
+  alone says nothing about whether the model learned anything.
+- **Loss recovered needs a position that matters.** Zeroing layer 4 of the random model doesn't
+  raise its loss (3.55 vs 3.57 clean), so there is nothing to recover, and `recovered` is NaN.
+
+Absorption, where the probe finds the concept (F1 at least 0.5; below that the random model
+"absorbs" as much, and the rate means nothing):
+
+| Concept | Probe F1 | L1: absorbed (random model) | TopK: absorbed (random model) |
+|---|---|---|---|
+| Helix | 0.69 | 42% (10%) | 25% (15%) |
+| Beta strand | 0.55 | 57% (1%) | 50% (8%) |
+| Transmembrane | 0.79 | 34% (21%) | 30% (17%) |
+| Signal peptide | 0.90 | 19% (26%) | 12% (37%) |
+| Zinc finger | 0.62 | 30% (13%) | 12% (71%) |
+
+- **The baseline decides here too.** Helix, strand and transmembrane residues missed by the
+  concept's main features are carried by other aligned features well above the random model's
+  rate: absorption, as Chanin et al. describe it. For signal peptides and zinc fingers the
+  random model scores as high or higher, so those rates aren't evidence of anything.
+- **TopK absorbs less than L1** for every concept here.
+
+
 A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
 whether its directions mean anything. Compare features with probes and with a randomly
 initialized model's.

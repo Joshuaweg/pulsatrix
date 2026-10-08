@@ -210,11 +210,13 @@ Tensor EncoderLM::forward_impl(const Tensor& input) {
     backend_->mul(raw.data(), embed_scale_.data(), x.data(), static_cast<size_t>(x.numel()));
 
     hidden_.clear();
+    if (hidden_state_hook_) x = detail::ApplyHiddenStateHook(hidden_state_hook_, 0, x);
     if (keep_activations_) hidden_.push_back(x);
     for (size_t i = 0; i < layers_.size(); ++i) {
         auto& layer = layers_[i];
         x = layer->forward(x);
         if (attention_observer_) attention_observer_(static_cast<int64_t>(i), layer->mha().last_attention_weights());
+        if (hidden_state_hook_) x = detail::ApplyHiddenStateHook(hidden_state_hook_, static_cast<int64_t>(i) + 1, x);
         if (keep_activations_) {
             hidden_.push_back(x);
         } else {
