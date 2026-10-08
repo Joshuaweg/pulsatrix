@@ -3238,6 +3238,15 @@ AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <td>S</td>
 <td>Done, #40</td>
 </tr>
+<tr>
+<td>FND-9</td>
+<td>Memory at load: allocate each parameter's gradient on the first backward instead of at construction, and have the loaders stop holding a second copy of the weights</td>
+<td>ESM-2 650M (2.6 GB of weights) peaks at 10.2 GB while loading, which leaves little of a 32 GB host for anything else. Inference never needs the gradients</td>
+<td>—</td>
+<td>P1</td>
+<td>M</td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <h3 id="how-the-fnd-work-departed-from-the-plan">How the FND work departed from the plan<a class="headerlink" href="#how-the-fnd-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
@@ -5305,6 +5314,15 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>—</td>
 <td></td>
 </tr>
+<tr>
+<td>HIP-13</td>
+<td>Long-sequence encoder inference: profile ESM-2 650M at 1024 tokens with <code>scripts/profile_hip.sh</code>, then speed up the kernels that dominate (attention's <code>(N, H, L, L)</code> matmuls and softmax, the MLP GEMMs). An attention path that never builds the attention matrix is allowed here, for forwards that keep no activations</td>
+<td>A 1024-token masked pass takes about 3.7 s on gfx1151, so ProteinGym's BRCA1 assay (1,863 residues) takes about 1 h 55 min</td>
+<td>HIP-1</td>
+<td>P1</td>
+<td>L</td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <p>The HIP items above are done (2026-10-04). Measurements are in <a href="../gpu-profiling/">GPU Profiling</a>.</p>
@@ -5841,8 +5859,25 @@ sources are in <a href="protein-language-models/">Protein language models: resea
 <li><strong>Tokenizer splitting.</strong> <code>EsmTokenizer</code> matches every vocabulary token anywhere, then
     makes each leftover run one <code>&lt;unk&gt;</code>. The tokenizer reproduces this with added tokens, a
     whitespace split and a word-level lookup, and matches on 12 edge cases.</li>
-<li>Also: <code>EncoderLM</code> on GPU matches the CPU, with padding and masks. Hidden states and
-    attention maps are exposed for probes, SAEs and contacts. A FASTA reader was added.</li>
+<li>
+<p>Also: <code>EncoderLM</code> on GPU matches the CPU, with padding and masks. Hidden states and
+    attention maps are exposed for probes, SAEs and contacts. A FASTA reader was added.</p>
+</li>
+<li>
+<p><strong>PLM-3</strong> matches ProteinGym's published ESM-2 650M results on 14 assays: Spearman to the
+  three decimals published, and on 13 of them every variant's score within 9e-5. The metrics
+  match scipy, scikit-learn and ProteinGym's own NDCG and top-recall code.</p>
+</li>
+<li><strong>Memory.</strong> The first full run was killed by the out-of-memory killer at 26 GB on the host.
+    Every module keeps its forward activations for <code>backward()</code> and LRP, and attention keeps
+    two <code>(N, H, L, L)</code> tensors per layer: over 10 GB per 1024-token sequence for 650M.
+    <code>Module::release_activations()</code> (all modules on the encoder path) and
+    <code>EncoderLM::set_keep_activations(false)</code> now let a forward hold one layer's activations at a
+    time, with identical outputs. <code>VariantScorer</code> uses them, and sizes each batch by a memory
+    budget (<code>max_pass_bytes</code>), refusing a pass that can't fit. BRCA1 (1863 residues) at batch 8
+    then peaks at the model's own 10.2 GB on CPU and 16 GB on GPU.</li>
+<li>Not done here, now backlog items: the 10 GB it takes to load 650M (FND-9), and the speed of
+    1024-token passes on gfx1151, about 3.7 s each (HIP-13).</li>
 </ul>
 <p>Later, if wanted: ESM C and AMPLIFY weight mappings, SaProt's structure tokens, autoregressive
 pLMs (ProGen2, through CausalLM), MSA-conditioned models and ESMFold.</p>

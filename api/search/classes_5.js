@@ -8,6 +8,7 @@ var searchData=
   ['feedforwardmodule_5',['FeedForwardModule',['../classpulsatrix_1_1FeedForwardModule.html',1,'pulsatrix']]],
   ['fieldstatistics_6',['FieldStatistics',['../structpulsatrix_1_1FieldStatistics.html',1,'pulsatrix']]],
   ['finetuneconfig_7',['FineTuneConfig',['../structpulsatrix_1_1FineTuneConfig.html',1,'pulsatrix']]],
-  ['flattenmodule_8',['FlattenModule',['../classpulsatrix_1_1FlattenModule.html',1,'pulsatrix']]],
-  ['fusedecoder_9',['FuseDecoder',['../classpulsatrix_1_1FuseDecoder.html',1,'pulsatrix']]]
+  ['fitnessmetrics_8',['FitnessMetrics',['../structpulsatrix_1_1FitnessMetrics.html',1,'pulsatrix']]],
+  ['flattenmodule_9',['FlattenModule',['../classpulsatrix_1_1FlattenModule.html',1,'pulsatrix']]],
+  ['fusedecoder_10',['FuseDecoder',['../classpulsatrix_1_1FuseDecoder.html',1,'pulsatrix']]]
 ];

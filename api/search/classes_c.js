@@ -19,5 +19,6 @@ var searchData=
   ['morrisresult_16',['MorrisResult',['../structpulsatrix_1_1MorrisResult.html',1,'pulsatrix']]],
   ['mseloss_17',['MSELoss',['../classpulsatrix_1_1MSELoss.html',1,'pulsatrix']]],
   ['multiheadattentionmodule_18',['MultiHeadAttentionModule',['../classpulsatrix_1_1MultiHeadAttentionModule.html',1,'pulsatrix']]],
-  ['mutationloss_19',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]]
+  ['mutation_19',['Mutation',['../structpulsatrix_1_1Mutation.html',1,'pulsatrix']]],
+  ['mutationloss_20',['MutationLoss',['../classpulsatrix_1_1MutationLoss.html',1,'pulsatrix']]]
 ];

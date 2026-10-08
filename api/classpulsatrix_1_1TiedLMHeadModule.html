@@ -152,6 +152,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0b809fb332ed42a9fed0c8af44d1163e" id="r_a0b809fb332ed42a9fed0c8af44d1163e"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html#a0b809fb332ed42a9fed0c8af44d1163e">compute_device</a> () const override</td></tr>
 <tr class="memdesc:a0b809fb332ed42a9fed0c8af44d1163e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device this module computes on, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> can reject an input on another device before any kernel sees it (roadmap FND-8).  <br /></td></tr>
 <tr class="separator:a0b809fb332ed42a9fed0c8af44d1163e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07e8a321ad9f7d2a8bb4c15b6218c275" id="r_a07e8a321ad9f7d2a8bb4c15b6218c275"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html#a07e8a321ad9f7d2a8bb4c15b6218c275">release_activations</a> () override</td></tr>
+<tr class="memdesc:a07e8a321ad9f7d2a8bb4c15b6218c275"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the tensors <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> kept for <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html#a8a527dee4c5c472f9be291aaa8fc8315" title="Input gradient grad @ E; adds grad^T @ x into the embedding&#39;s weight gradient unless the embedding is...">backward()</a> and the relevance passes; containers release their children too. Inference that only needs the output calls it after each forward, so a deep model holds one layer's activations at a time (a 1024-token ESM-2 650M pass otherwise keeps over 10 GB of them).  <br /></td></tr>
+<tr class="separator:a07e8a321ad9f7d2a8bb4c15b6218c275"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
 <tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
 <tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -465,6 +468,36 @@ The embedding must outlive this module, and stay on the same backend. </dd></dl>
 </dl>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a07e8a321ad9f7d2a8bb4c15b6218c275" name="a07e8a321ad9f7d2a8bb4c15b6218c275"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07e8a321ad9f7d2a8bb4c15b6218c275">&#9670;&#160;</a></span>release_activations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::TiedLMHeadModule::release_activations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Frees the tensors <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> kept for <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html#a8a527dee4c5c472f9be291aaa8fc8315" title="Input gradient grad @ E; adds grad^T @ x into the embedding&#39;s weight gradient unless the embedding is...">backward()</a> and the relevance passes; containers release their children too. Inference that only needs the output calls it after each forward, so a deep model holds one layer's activations at a time (a 1024-token ESM-2 650M pass otherwise keeps over 10 GB of them). </p>
+<dl class="section note"><dt>Note</dt><dd>Until the next <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, <a class="el" href="classpulsatrix_1_1TiedLMHeadModule.html#a8a527dee4c5c472f9be291aaa8fc8315" title="Input gradient grad @ E; adds grad^T @ x into the embedding&#39;s weight gradient unless the embedding is...">backward()</a> and relevance calls are invalid. The default has nothing to free. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afac98fa4d23d97300c5a6d5bc68412e5">pulsatrix::Module</a>.</p>
 
 </div>
 </div>

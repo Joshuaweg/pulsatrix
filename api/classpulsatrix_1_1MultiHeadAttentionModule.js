@@ -27,6 +27,7 @@ var classpulsatrix_1_1MultiHeadAttentionModule =
     [ "propagate_relevance", "classpulsatrix_1_1MultiHeadAttentionModule.html#a822b6628b3817cc786d02a7b8c4447c1", null ],
     [ "q_norm", "classpulsatrix_1_1MultiHeadAttentionModule.html#a34f8fd613c89c700c41dade619af0a92", null ],
     [ "q_proj", "classpulsatrix_1_1MultiHeadAttentionModule.html#a5e5bf6e73917ac7a7fbab08bc3311a6f", null ],
+    [ "release_activations", "classpulsatrix_1_1MultiHeadAttentionModule.html#a0fd1d4e2e43373ea010bce25ffefaa9b", null ],
     [ "set_key_padding_mask", "classpulsatrix_1_1MultiHeadAttentionModule.html#ac0dfa1bc8022c886ac529f9133d46bfb", null ],
     [ "set_position_offset", "classpulsatrix_1_1MultiHeadAttentionModule.html#ada9caf0447f28b2aabec8791ccbf91aa", null ],
     [ "set_training", "classpulsatrix_1_1MultiHeadAttentionModule.html#a5949a91915019e6d0067f167f908c180", null ],

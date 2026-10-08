@@ -153,6 +153,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a649223ace1757051519628351dc0135d" id="r_a649223ace1757051519628351dc0135d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#a649223ace1757051519628351dc0135d">compute_device</a> () const override</td></tr>
 <tr class="memdesc:a649223ace1757051519628351dc0135d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device this module computes on, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> can reject an input on another device before any kernel sees it (roadmap FND-8).  <br /></td></tr>
 <tr class="separator:a649223ace1757051519628351dc0135d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdd98dbe925feb3a9d2276f21bbf80ba" id="r_afdd98dbe925feb3a9d2276f21bbf80ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#afdd98dbe925feb3a9d2276f21bbf80ba">release_activations</a> () override</td></tr>
+<tr class="memdesc:afdd98dbe925feb3a9d2276f21bbf80ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees every forward cache, <a class="el" href="classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1" title="The last forward pass&#39;s final-LayerNorm output, (N, L, hidden_size): the per-residue representations ...">last_hidden_state()</a> and <a class="el" href="classpulsatrix_1_1EncoderLM.html#a6f891751deb596726404c51198083765" title="The last forward pass&#39;s hidden states, each (N, L, hidden_size): the scaled embeddings,...">hidden_states()</a> included.  <br /></td></tr>
+<tr class="separator:afdd98dbe925feb3a9d2276f21bbf80ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f04bc8b881c0627d2023f6054ea94d" id="r_ac4f04bc8b881c0627d2023f6054ea94d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#ac4f04bc8b881c0627d2023f6054ea94d">set_keep_activations</a> (bool keep)</td></tr>
+<tr class="memdesc:ac4f04bc8b881c0627d2023f6054ea94d"><td class="mdescLeft">&#160;</td><td class="mdescRight">With <code>keep</code> false, <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> keeps nothing for <a class="el" href="classpulsatrix_1_1EncoderLM.html#a3f4d95e60cba1197dd5ff1841d2165d5">backward()</a> or the relevance passes: each layer frees its activations once its output is computed, so a pass holds one layer's at a time. <a class="el" href="classpulsatrix_1_1EncoderLM.html#a6f891751deb596726404c51198083765" title="The last forward pass&#39;s hidden states, each (N, L, hidden_size): the scaled embeddings,...">hidden_states()</a> stays empty; <a class="el" href="classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1" title="The last forward pass&#39;s final-LayerNorm output, (N, L, hidden_size): the per-residue representations ...">last_hidden_state()</a> is still set. For scoring and embedding, where only the outputs are needed. Defaults to true.  <br /></td></tr>
+<tr class="separator:ac4f04bc8b881c0627d2023f6054ea94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e452e0f873c6c69d047b539f698c333" id="r_a4e452e0f873c6c69d047b539f698c333"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#a4e452e0f873c6c69d047b539f698c333">keep_activations</a> () const</td></tr>
+<tr class="separator:a4e452e0f873c6c69d047b539f698c333"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5c554da2f1fc8247feb3c8db9202e03" id="r_aa5c554da2f1fc8247feb3c8db9202e03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1EncoderLM.html#aa5c554da2f1fc8247feb3c8db9202e03">set_padding_mask</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;keep)</td></tr>
 <tr class="memdesc:aa5c554da2f1fc8247feb3c8db9202e03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masks padding for the following forward passes: <code>keep</code> is <code>(N, L)</code>, 1 for a real token and 0 for padding, as Hugging Face's <code>attention_mask</code>.  <br /></td></tr>
 <tr class="separator:aa5c554da2f1fc8247feb3c8db9202e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -443,6 +451,31 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a4e452e0f873c6c69d047b539f698c333" name="a4e452e0f873c6c69d047b539f698c333"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e452e0f873c6c69d047b539f698c333">&#9670;&#160;</a></span>keep_activations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::EncoderLM::keep_activations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="acdec5cd4bc94505d9fabac8662f4f0a1" name="acdec5cd4bc94505d9fabac8662f4f0a1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acdec5cd4bc94505d9fabac8662f4f0a1">&#9670;&#160;</a></span>last_hidden_state()</h2>
 
@@ -681,6 +714,63 @@ Protected Member Functions</h2></td></tr>
 
 <p>propagate_relevance, stopping at every layer boundary. </p>
 <dl class="section return"><dt>Returns</dt><dd>One tensor per boundary, each shaped <code>(N, L, hidden_size)</code>: the relevance entering layer 0 (the scaled embeddings), then the relevance leaving each layer. </dd></dl>
+
+</div>
+</div>
+<a id="afdd98dbe925feb3a9d2276f21bbf80ba" name="afdd98dbe925feb3a9d2276f21bbf80ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdd98dbe925feb3a9d2276f21bbf80ba">&#9670;&#160;</a></span>release_activations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::EncoderLM::release_activations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Frees every forward cache, <a class="el" href="classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1" title="The last forward pass&#39;s final-LayerNorm output, (N, L, hidden_size): the per-residue representations ...">last_hidden_state()</a> and <a class="el" href="classpulsatrix_1_1EncoderLM.html#a6f891751deb596726404c51198083765" title="The last forward pass&#39;s hidden states, each (N, L, hidden_size): the scaled embeddings,...">hidden_states()</a> included. </p>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afac98fa4d23d97300c5a6d5bc68412e5">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="ac4f04bc8b881c0627d2023f6054ea94d" name="ac4f04bc8b881c0627d2023f6054ea94d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4f04bc8b881c0627d2023f6054ea94d">&#9670;&#160;</a></span>set_keep_activations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::EncoderLM::set_keep_activations </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>keep</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>With <code>keep</code> false, <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> keeps nothing for <a class="el" href="classpulsatrix_1_1EncoderLM.html#a3f4d95e60cba1197dd5ff1841d2165d5">backward()</a> or the relevance passes: each layer frees its activations once its output is computed, so a pass holds one layer's at a time. <a class="el" href="classpulsatrix_1_1EncoderLM.html#a6f891751deb596726404c51198083765" title="The last forward pass&#39;s hidden states, each (N, L, hidden_size): the scaled embeddings,...">hidden_states()</a> stays empty; <a class="el" href="classpulsatrix_1_1EncoderLM.html#acdec5cd4bc94505d9fabac8662f4f0a1" title="The last forward pass&#39;s final-LayerNorm output, (N, L, hidden_size): the per-residue representations ...">last_hidden_state()</a> is still set. For scoring and embedding, where only the outputs are needed. Defaults to true. </p>
 
 </div>
 </div>

@@ -5,7 +5,7 @@ var searchData=
   ['base_5ffact_5frelevance_2',['base_fact_relevance',['../structpulsatrix_1_1datalog_1_1NeuralPredicateRelevanceResult.html#a119752504dd2a4e6a4e83f3a2c1b549a',1,'pulsatrix::datalog::NeuralPredicateRelevanceResult']]],
   ['base_5ffacts_3',['base_facts',['../structpulsatrix_1_1datalog_1_1RelevanceResult.html#a68582982d8c588102445cea4dc531d71',1,'pulsatrix::datalog::RelevanceResult']]],
   ['baseline_4',['baseline',['../structpulsatrix_1_1BenchmarkComparison.html#aa33257b2eb49ff3a401b10f6c937e7aa',1,'pulsatrix::BenchmarkComparison']]],
-  ['batch_5fsize_5',['batch_size',['../structpulsatrix_1_1DataLoaderOptions.html#adf09df853ba54564e67dfce8c56a78a6',1,'pulsatrix::DataLoaderOptions']]],
+  ['batch_5fsize_5',['batch_size',['../structpulsatrix_1_1DataLoaderOptions.html#adf09df853ba54564e67dfce8c56a78a6',1,'pulsatrix::DataLoaderOptions::batch_size'],['../structpulsatrix_1_1VariantScoringOptions.html#a34a87eb5d280585b2f9372763fb3e9f0',1,'pulsatrix::VariantScoringOptions::batch_size']]],
   ['begin_6',['begin',['../structpulsatrix_1_1Offset.html#a2fa77da54d79aaf5a0ea5cf51ab9a3fd',1,'pulsatrix::Offset::begin'],['../structpulsatrix_1_1ModelToken.html#acd9fd2f9cb33b1cc534f3cf54f785e03',1,'pulsatrix::ModelToken::begin'],['../structpulsatrix_1_1UnicodeRegex_1_1Match.html#a843ca00c708daceb98e047269d1d1f07',1,'pulsatrix::UnicodeRegex::Match::begin']]],
   ['best_5fconfiguration_7',['best_configuration',['../structpulsatrix_1_1ASHAResult.html#aca4c069b0a03729638d36e004d845bfb',1,'pulsatrix::ASHAResult::best_configuration'],['../structpulsatrix_1_1HyperbandResult.html#aa659b006a6aefc74bfa876efb8ab1c36',1,'pulsatrix::HyperbandResult::best_configuration'],['../structpulsatrix_1_1SuccessiveHalvingResult.html#a509060c1a33838cec1d223ba7ed1fe42',1,'pulsatrix::SuccessiveHalvingResult::best_configuration']]],
   ['best_5ffitness_8',['best_fitness',['../structpulsatrix_1_1ESResult.html#a059672f4174648b730bc4ee0ed502828',1,'pulsatrix::ESResult::best_fitness'],['../structpulsatrix_1_1NEATEvolutionResult.html#a2533b0466a2aef83afa69659baae7f7f',1,'pulsatrix::NEATEvolutionResult::best_fitness']]],
@@ -15,9 +15,10 @@ var searchData=
   ['best_5ftrial_5findex_12',['best_trial_index',['../structpulsatrix_1_1PBTResult.html#a1fd50c0fc63c85ac47d75008aea47e6a',1,'pulsatrix::PBTResult']]],
   ['beta_13',['beta',['../structpulsatrix_1_1LRPRuleConfig.html#ab2b564702fc0049fe1699a895fd63812',1,'pulsatrix::LRPRuleConfig']]],
   ['bin_5fedges_14',['bin_edges',['../structpulsatrix_1_1HistogramBins.html#ad4bbdebd74ab26d941736736a58e0570',1,'pulsatrix::HistogramBins']]],
-  ['bos_5ftoken_5fid_15',['bos_token_id',['../structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102',1,'pulsatrix::HfModelConfig']]],
-  ['bottom_16',['bottom',['../structpulsatrix_1_1WaterfallBar.html#a492341e89e384c8e1d8b6bbe54975c88',1,'pulsatrix::WaterfallBar']]],
-  ['bottom_5findices_17',['bottom_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ab900a1310fa549b5a04fd56e44054016',1,'pulsatrix::PBTTruncationGroups']]],
-  ['busy_18',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
-  ['byte_5ffallback_19',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
+  ['bins_15',['bins',['../structpulsatrix_1_1DmsVariants.html#ab4c7fc2e797810209063b3ea8967cfe8',1,'pulsatrix::DmsVariants']]],
+  ['bos_5ftoken_5fid_16',['bos_token_id',['../structpulsatrix_1_1HfModelConfig.html#a0dcf48a72d20ad8a0568f554050d7102',1,'pulsatrix::HfModelConfig']]],
+  ['bottom_17',['bottom',['../structpulsatrix_1_1WaterfallBar.html#a492341e89e384c8e1d8b6bbe54975c88',1,'pulsatrix::WaterfallBar']]],
+  ['bottom_5findices_18',['bottom_indices',['../structpulsatrix_1_1PBTTruncationGroups.html#ab900a1310fa549b5a04fd56e44054016',1,'pulsatrix::PBTTruncationGroups']]],
+  ['busy_19',['busy',['../structpulsatrix_1_1detail_1_1CpuTimes.html#ac1a80e25d6ac7bed845faa0743d81afb',1,'pulsatrix::detail::CpuTimes']]],
+  ['byte_5ffallback_20',['byte_fallback',['../structpulsatrix_1_1BpeOptions.html#a45f208e88c7098f2a7ad3fadda6c37b8',1,'pulsatrix::BpeOptions']]]
 ];

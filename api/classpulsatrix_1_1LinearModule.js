@@ -12,6 +12,7 @@ var classpulsatrix_1_1LinearModule =
     [ "op_type", "classpulsatrix_1_1LinearModule.html#ab015875efc2e6c2e50f5882af4f8730b", null ],
     [ "out_features", "classpulsatrix_1_1LinearModule.html#a2b89c3914c77d29b443a2ef0de2d17d8", null ],
     [ "propagate_relevance", "classpulsatrix_1_1LinearModule.html#a171e265daec59933d3a066bd5f368316", null ],
+    [ "release_activations", "classpulsatrix_1_1LinearModule.html#ac46a7ada828398e795281854a62e3a33", null ],
     [ "set_bias", "classpulsatrix_1_1LinearModule.html#a91b0468b38c09433e5fb0589874623e2", null ],
     [ "set_bias", "classpulsatrix_1_1LinearModule.html#aadfa38a958379182534527247154e29e", null ],
     [ "set_weight", "classpulsatrix_1_1LinearModule.html#a9aee297a7e982b199628e1e64b1c08bf", null ],

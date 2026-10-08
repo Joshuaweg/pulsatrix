@@ -10,5 +10,6 @@ var classpulsatrix_1_1RoPEModule =
     [ "op_type", "classpulsatrix_1_1RoPEModule.html#a90556c7db2828a357ba1e048e64fbd19", null ],
     [ "position_offset", "classpulsatrix_1_1RoPEModule.html#ae7eebd9fe0906210d202b88799452bfa", null ],
     [ "propagate_relevance", "classpulsatrix_1_1RoPEModule.html#ad45fa29cefa434cfad4cb986e4c30158", null ],
+    [ "release_activations", "classpulsatrix_1_1RoPEModule.html#a11715e073f02530fd68328b799ae71e4", null ],
     [ "set_position_offset", "classpulsatrix_1_1RoPEModule.html#ab676e91ccd04e2dd6b5575cd05dd716b", null ]
 ];

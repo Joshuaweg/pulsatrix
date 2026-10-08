@@ -7,5 +7,6 @@ var classpulsatrix_1_1ActivationModule =
     [ "op", "classpulsatrix_1_1ActivationModule.html#a943739f7838e4635c4b1e275bcc31d09", null ],
     [ "op_type", "classpulsatrix_1_1ActivationModule.html#a9c466345d50f8dce5c16bedeb254900a", null ],
     [ "propagate_relevance", "classpulsatrix_1_1ActivationModule.html#ac8d16be0ed8d485bc875920198c35a15", null ],
+    [ "release_activations", "classpulsatrix_1_1ActivationModule.html#a61f752a249d66773a478d19ab043e7cd", null ],
     [ "supports_lrp_rule", "classpulsatrix_1_1ActivationModule.html#ab52bca84413e69c01a68bc1266364d1d", null ]
 ];

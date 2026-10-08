@@ -152,6 +152,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ASHAResult.html">ASHAResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The best configuration/metric found, the total epoch budget spent, and how many distinct configurations were ever started (as opposed to promoted).  <a href="structpulsatrix_1_1ASHAResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AssayResult.html">AssayResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One assay's result.  <a href="structpulsatrix_1_1AssayResult.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AttentionConfig.html">AttentionConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Everything that shapes a <a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html" title="softmax(Q @ K^T / sqrt(head_dim)) @ V, multi-head, with optional RoPE and optional QK-Norm....">MultiHeadAttentionModule</a> (LLM-1).  <a href="structpulsatrix_1_1AttentionConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -396,6 +399,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DiverseCounterfactualResult.html">DiverseCounterfactualResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of counterfactuals and DiCE's set-level metrics (Mothilal et al. 2020).  <a href="structpulsatrix_1_1DiverseCounterfactualResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DmsVariants.html">DmsVariants</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An assay's measured variants: <code>mutant</code>, <code>DMS_score</code> and <code>DMS_score_bin</code> columns.  <a href="structpulsatrix_1_1DmsVariants.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DominantEigenResult.html">DominantEigenResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#abd341561ba3ab500db9ee6888d176cfe" title="The dominant eigenpair of a symmetric matrix by power iteration – cheaper than SymmetricEigen() when ...">PowerIteration()</a>'s result.  <a href="structpulsatrix_1_1DominantEigenResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -460,6 +466,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FineTuneConfig.html">FineTuneConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Training settings. The defaults are the recipe's.  <a href="structpulsatrix_1_1FineTuneConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1FitnessMetrics.html">FitnessMetrics</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All five, as ProteinGym reports them.  <a href="structpulsatrix_1_1FitnessMetrics.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FlattenModule.html">FlattenModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y = reshape(x, {N, x.numel()/N}), N = x.shape().dim(0). No parameters, no gradient math beyond reshaping.  <a href="classpulsatrix_1_1FlattenModule.html#details">More...</a><br /></td></tr>
@@ -686,6 +695,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MultiHeadAttentionModule.html">MultiHeadAttentionModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>softmax(Q @ K^T / sqrt(head_dim)) @ V</code>, multi-head, with optional RoPE and optional QK-Norm. <a class="el" href="classpulsatrix_1_1Shape.html" title="An N-dimensional shape. A plain aggregate of dimensions with no invariant beyond &quot;non-negative dimens...">Shape</a> <code>(N, L, d_model) -&gt; (N, L, d_model)</code>.  <a href="classpulsatrix_1_1MultiHeadAttentionModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Mutation.html">Mutation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One substitution, numbered from 1 as variant tables write it: <code>A23G</code>.  <a href="structpulsatrix_1_1Mutation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MutationLoss.html">MutationLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes one of E-GAN's three named mutation objectives against a discriminator's own raw logit output, and its gradient w.r.t. those logits. Every objective trains the generator to make the discriminator's output move toward the "real" (1) class &ndash; they differ only in <em>how</em> that pressure is shaped (saturating vs. non-saturating vs. quadratic).  <a href="classpulsatrix_1_1MutationLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -791,6 +803,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1PreTokenizer.html">PreTokenizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits text into the pieces the model tokenizes separately, and may change them (byte- level mapping).  <a href="classpulsatrix_1_1PreTokenizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ProteinGymAssay.html">ProteinGymAssay</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One assay's row of ProteinGym's reference file (<code>DMS_substitutions.csv</code>).  <a href="structpulsatrix_1_1ProteinGymAssay.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1QRResult.html">QRResult</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#a281ea330d1061f3fdd9fd8578e3b2c2f" title="Thin QR factorization by Householder reflections.">QR()</a>'s result, the thin factorization A = Q R.  <a href="structpulsatrix_1_1QRResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -829,6 +844,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html">ResidualModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = x + inner-&gt;forward(x)</code> for an arbitrary already-built <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>. The classic ResNet shortcut connection, owning its own native relevance-split rule &ndash; the charter's explicitly named failure mode to avoid is Captum/Zennit's "Canonizer
        surgery" (an external post-hoc graph rewrite for residual connections).  <a href="classpulsatrix_1_1ResidualModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResidueLogProbs.html">ResidueLogProbs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log-probabilities of every token at each residue: <code>length</code> rows of <code>vocab</code> values.  <a href="structpulsatrix_1_1ResidueLogProbs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResizeTransform.html">ResizeTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every transform in this file operates on sample.fields[0], assumed to be an image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> of shape (1, channels, height, width) &ndash; the convention <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>, <a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>, and <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a> all already share (image/features first, label last).  <a href="classpulsatrix_1_1ResizeTransform.html#details">More...</a><br /></td></tr>
@@ -1079,6 +1097,11 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ValidationIssue.html">ValidationIssue</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One detected data-quality issue: a missing (NaN) value or a statistical outlier.  <a href="structpulsatrix_1_1ValidationIssue.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VariantScorer.html">VariantScorer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scores variants with a masked language model and its tokenizer, the way ProteinGym scores ESM models. A higher score means the model finds the variant more plausible.  <a href="classpulsatrix_1_1VariantScorer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1VariantScoringOptions.html">VariantScoringOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VideoFrameDirectoryDataset.html">VideoFrameDirectoryDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;clip_name&gt;/&lt;sequentially-named-frame-image&gt;, decoding each clip's frames (via <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a>) into one (T, C, H, W) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per sample.  <a href="classpulsatrix_1_1VideoFrameDirectoryDataset.html#details">More...</a><br /></td></tr>
@@ -1349,6 +1372,11 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a94d9ac6240473b5362d1e8e5c11157bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The op-type tag a Node carries. Charter Part 2 §3: nodes are tagged by a small closed set of op types rather than by concrete layer class, so a query like "find the last conv layer's activations" (Grad-CAM) works by querying op type, not by string-matching a layer name.  <a href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">More...</a><br /></td></tr>
 <tr class="separator:a94d9ac6240473b5362d1e8e5c11157bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad459b72b938b5edbe52c75cbc8ee743a" id="r_ad459b72b938b5edbe52c75cbc8ee743a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a">VariantStrategy</a> { <a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743aa368b1156e5dca80ce71e8eaa4f9b0d06">MaskedMarginals</a>
+, <a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743aa8fea96a293e0c36852a4c4d7c139bdb6">WildTypeMarginals</a>
+ }</td></tr>
+<tr class="memdesc:ad459b72b938b5edbe52c75cbc8ee743a"><td class="mdescLeft">&#160;</td><td class="mdescRight">How variants are scored.  <a href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a">More...</a><br /></td></tr>
+<tr class="separator:ad459b72b938b5edbe52c75cbc8ee743a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89b7a7289be539d1acdd882186624044" id="r_a89b7a7289be539d1acdd882186624044"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044">RoPELayout</a> { <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044a54607b51fc9d8414153c7147fc056c5c">AdjacentPairs</a>
 , <a class="el" href="namespacepulsatrix.html#a89b7a7289be539d1acdd882186624044ac511759c9946791b469c82b78075b1bb">RotateHalf</a>
  }</td></tr>
@@ -1676,6 +1704,30 @@ Functions</h2></td></tr>
 <tr class="memdesc:a684eb4ee86d14926a8ed769bfe3fc93f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The model-parameter randomization test (Adebayo et al., "Sanity Checks for Saliency
        Maps", NeurIPS 2018), cascading: randomizes the model's layers from the output down, re-explains <code>input</code> after each, and measures how similar the explanation stays.  <br /></td></tr>
 <tr class="separator:a684eb4ee86d14926a8ed769bfe3fc93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a383a816a6ee859218999a53b32056d8f" id="r_a383a816a6ee859218999a53b32056d8f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a383a816a6ee859218999a53b32056d8f">SpearmanCorrelation</a> (const std::vector&lt; double &gt; &amp;x, const std::vector&lt; double &gt; &amp;y)</td></tr>
+<tr class="memdesc:a383a816a6ee859218999a53b32056d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spearman's rank correlation, ties given their average rank (scipy's <code>spearmanr</code>). NaN if either input is constant.  <br /></td></tr>
+<tr class="separator:a383a816a6ee859218999a53b32056d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb3d11b2402f2163882ee0ce4142907a" id="r_aeb3d11b2402f2163882ee0ce4142907a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aeb3d11b2402f2163882ee0ce4142907a">RocAuc</a> (const std::vector&lt; int &gt; &amp;labels, const std::vector&lt; double &gt; &amp;scores)</td></tr>
+<tr class="memdesc:aeb3d11b2402f2163882ee0ce4142907a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Area under the ROC curve of <code>scores</code> for <code>labels</code> (0 or 1), ties counted half (sklearn's <code>roc_auc_score</code>). NaN if only one class is present.  <br /></td></tr>
+<tr class="separator:aeb3d11b2402f2163882ee0ce4142907a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19e45cfa5e5d4446f41f940ef6834ff1" id="r_a19e45cfa5e5d4446f41f940ef6834ff1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a19e45cfa5e5d4446f41f940ef6834ff1">MatthewsCorrelation</a> (const std::vector&lt; int &gt; &amp;labels, const std::vector&lt; int &gt; &amp;predicted)</td></tr>
+<tr class="memdesc:a19e45cfa5e5d4446f41f940ef6834ff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matthews correlation of binary <code>labels</code> and <code>predicted</code> (sklearn's <code>matthews_corrcoef</code>); 0 when a row or column of the confusion matrix is empty.  <br /></td></tr>
+<tr class="separator:a19e45cfa5e5d4446f41f940ef6834ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06add74fb796b4006845b48048aaa76e" id="r_a06add74fb796b4006845b48048aaa76e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a06add74fb796b4006845b48048aaa76e">MedianSplitMcc</a> (const std::vector&lt; int &gt; &amp;labels, const std::vector&lt; double &gt; &amp;scores)</td></tr>
+<tr class="memdesc:a06add74fb796b4006845b48048aaa76e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ProteinGym's MCC: <code>scores</code> at or above their median predict 1.  <br /></td></tr>
+<tr class="separator:a06add74fb796b4006845b48048aaa76e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a053defb68cf20b8bbd61c3dccfcb6fb6" id="r_a053defb68cf20b8bbd61c3dccfcb6fb6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a053defb68cf20b8bbd61c3dccfcb6fb6">Ndcg</a> (const std::vector&lt; double &gt; &amp;true_scores, const std::vector&lt; double &gt; &amp;predicted, double top_percent=10.0)</td></tr>
+<tr class="memdesc:a053defb68cf20b8bbd61c3dccfcb6fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">ProteinGym's NDCG: gains are the true scores min-max scaled to [0, 1]; the variants the model ranks in the top <code>top_percent</code> (floor of the count) contribute gain / log2(rank + 1), normalized by the same sum for the truly best ones. Zero gains are dropped.  <br /></td></tr>
+<tr class="separator:a053defb68cf20b8bbd61c3dccfcb6fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a836c7692dfc93354ad00456277ed8344" id="r_a836c7692dfc93354ad00456277ed8344"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a836c7692dfc93354ad00456277ed8344">TopRecall</a> (const std::vector&lt; double &gt; &amp;true_scores, const std::vector&lt; double &gt; &amp;predicted, double top_true=10.0, double top_model=10.0)</td></tr>
+<tr class="memdesc:a836c7692dfc93354ad00456277ed8344"><td class="mdescLeft">&#160;</td><td class="mdescRight">ProteinGym's top recall: of the variants at or above the true scores' (100 - top) percentile, the fraction also at or above the predicted scores' percentile. Percentiles interpolate linearly, as numpy's do.  <br /></td></tr>
+<tr class="separator:a836c7692dfc93354ad00456277ed8344"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af55f56ee6839b1d938051137d3648505" id="r_af55f56ee6839b1d938051137d3648505"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af55f56ee6839b1d938051137d3648505">Percentile</a> (std::vector&lt; double &gt; values, double q)</td></tr>
+<tr class="memdesc:af55f56ee6839b1d938051137d3648505"><td class="mdescLeft">&#160;</td><td class="mdescRight">The q-th percentile (0 to 100) with linear interpolation (numpy's default).  <br /></td></tr>
+<tr class="separator:af55f56ee6839b1d938051137d3648505"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31e082250772b2c3a48088131b24257b" id="r_a31e082250772b2c3a48088131b24257b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1FitnessMetrics.html">FitnessMetrics</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a31e082250772b2c3a48088131b24257b">EvaluateFitness</a> (const std::vector&lt; double &gt; &amp;dms_scores, const std::vector&lt; int &gt; &amp;dms_bins, const std::vector&lt; double &gt; &amp;predicted)</td></tr>
+<tr class="memdesc:a31e082250772b2c3a48088131b24257b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structpulsatrix_1_1FitnessMetrics.html" title="All five, as ProteinGym reports them.">FitnessMetrics</a> for one assay: measured scores and their binarized labels, and predictions.  <br /></td></tr>
+<tr class="separator:a31e082250772b2c3a48088131b24257b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a416909cba1eaf572fc95d96d7495a0dc" id="r_a416909cba1eaf572fc95d96d7495a0dc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a416909cba1eaf572fc95d96d7495a0dc">FixedTopologyXORForward</a> (const std::vector&lt; double &gt; &amp;theta, const std::array&lt; double, 2 &gt; &amp;inputs)</td></tr>
 <tr class="memdesc:a416909cba1eaf572fc95d96d7495a0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward pass: theta layout is [w1_00, w1_01, b1_0, w1_10, w1_11, b1_1, w2_0, w2_1, b2] &ndash; <code>h_j = sigmoid(w1_j0*x0 + w1_j1*x1 + b1_j)</code> for j in {0,1}, <code>y = sigmoid(w2_0*h0 + w2_1*h1 + b2)</code>.  <br /></td></tr>
 <tr class="separator:a416909cba1eaf572fc95d96d7495a0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1823,6 +1875,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8d4d176932520c4b6229ffd1454471de" id="r_a8d4d176932520c4b6229ffd1454471de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a8d4d176932520c4b6229ffd1454471de">append_named_parameters</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; &amp;out, const std::string &amp;prefix, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;child)</td></tr>
 <tr class="memdesc:a8d4d176932520c4b6229ffd1454471de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends <code>child</code>'s named parameters to <code>out</code>, each renamed to <code>prefix.name</code> &ndash; the one step every container's named_parameters() repeats per child.  <br /></td></tr>
 <tr class="separator:a8d4d176932520c4b6229ffd1454471de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcfb14c67666eab8cfe009824f318631" id="r_adcfb14c67666eab8cfe009824f318631"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#adcfb14c67666eab8cfe009824f318631">release_tensor</a> (<a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;t)</td></tr>
+<tr class="memdesc:adcfb14c67666eab8cfe009824f318631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees <code>t's</code> buffer: it becomes an empty tensor on the same backend and device.  <br /></td></tr>
+<tr class="separator:adcfb14c67666eab8cfe009824f318631"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe66ae61773532438fa7d80b9f26596c" id="r_afe66ae61773532438fa7d80b9f26596c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#afe66ae61773532438fa7d80b9f26596c">append_named_buffers</a> (std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt; &amp;out, const std::string &amp;prefix, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;child)</td></tr>
 <tr class="memdesc:afe66ae61773532438fa7d80b9f26596c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends <code>child</code>'s named buffers to <code>out</code>, each renamed to <code>prefix.name</code>.  <br /></td></tr>
 <tr class="separator:afe66ae61773532438fa7d80b9f26596c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1935,6 +1990,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a06c45a1d14fc6e146990c4f6e40e19e9" id="r_a06c45a1d14fc6e146990c4f6e40e19e9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a06c45a1d14fc6e146990c4f6e40e19e9">WriteFasta</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1FastaRecord.html">FastaRecord</a> &gt; &amp;records, size_t width=60)</td></tr>
 <tr class="memdesc:a06c45a1d14fc6e146990c4f6e40e19e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">FASTA text for <code>records</code>, sequences wrapped at <code>width</code> residues (0: one line).  <br /></td></tr>
 <tr class="separator:a06c45a1d14fc6e146990c4f6e40e19e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5afa1d6d5a7e637d2e166817a142d97" id="r_ac5afa1d6d5a7e637d2e166817a142d97"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ProteinGymAssay.html">ProteinGymAssay</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ac5afa1d6d5a7e637d2e166817a142d97">ReadProteinGymReference</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:ac5afa1d6d5a7e637d2e166817a142d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every assay in a reference file.  <br /></td></tr>
+<tr class="separator:ac5afa1d6d5a7e637d2e166817a142d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51115451a2a0f575bcba7d29f21821c4" id="r_a51115451a2a0f575bcba7d29f21821c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DmsVariants.html">DmsVariants</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a51115451a2a0f575bcba7d29f21821c4">ReadDmsVariants</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:a51115451a2a0f575bcba7d29f21821c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads an assay's CSV.  <br /></td></tr>
+<tr class="separator:a51115451a2a0f575bcba7d29f21821c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37ee2f6c42016cc358ecfe83b22c9e6e" id="r_a37ee2f6c42016cc358ecfe83b22c9e6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AssayResult.html">AssayResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a37ee2f6c42016cc358ecfe83b22c9e6e">EvaluateAssay</a> (<a class="el" href="classpulsatrix_1_1VariantScorer.html">VariantScorer</a> &amp;scorer, const <a class="el" href="structpulsatrix_1_1ProteinGymAssay.html">ProteinGymAssay</a> &amp;assay, const <a class="el" href="structpulsatrix_1_1DmsVariants.html">DmsVariants</a> &amp;variants, <a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a">VariantStrategy</a> strategy=<a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743aa368b1156e5dca80ce71e8eaa4f9b0d06">VariantStrategy::MaskedMarginals</a>)</td></tr>
+<tr class="memdesc:a37ee2f6c42016cc358ecfe83b22c9e6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scores every variant of <code>assay</code> and evaluates them against the measurements.  <br /></td></tr>
+<tr class="separator:a37ee2f6c42016cc358ecfe83b22c9e6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7086aa42f9ed760fa08b132212f3d3a" id="r_ae7086aa42f9ed760fa08b132212f3d3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttributionGraph.html">AttributionGraph</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae7086aa42f9ed760fa08b132212f3d3a">BuildRelevanceGraph</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend, const std::vector&lt; int64_t &gt; &amp;ids, int64_t target, const <a class="el" href="structpulsatrix_1_1RelevanceGraphOptions.html">RelevanceGraphOptions</a> &amp;options)</td></tr>
 <tr class="memdesc:ae7086aa42f9ed760fa08b132212f3d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explains the model's logit for <code>target</code> at the last position with <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> and returns the relevance flow as an attribution graph.  <br /></td></tr>
 <tr class="separator:ae7086aa42f9ed760fa08b132212f3d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2065,6 +2129,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a2d278aa15e82c07f12370078484d3e92"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classpulsatrix_1_1Trial.html">Trial</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2d278aa15e82c07f12370078484d3e92">RunTPELoop</a> (const <a class="el" href="classpulsatrix_1_1SearchSpace.html">SearchSpace</a> &amp;space, ObjectiveFn objective_fn, size_t num_initial_random, size_t num_iterations, double gamma, size_t num_candidates, RNG &amp;rng)</td></tr>
 <tr class="memdesc:a2d278aa15e82c07f12370078484d3e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs TPE: num_initial_random uniformly-random trials (RandomSample), then num_iterations trials each chosen by splitting all trials so far into good/bad by the gamma quantile (maximization convention: good = highest objective values) and picking, among num_candidates uniformly-random candidates, the one maximizing LogDensityRatio.  <br /></td></tr>
 <tr class="separator:a2d278aa15e82c07f12370078484d3e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e24a41c7c62ed9e135f3b2527e91d95" id="r_a2e24a41c7c62ed9e135f3b2527e91d95"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1Mutation.html">Mutation</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2e24a41c7c62ed9e135f3b2527e91d95">ParseMutations</a> (std::string_view text)</td></tr>
+<tr class="memdesc:a2e24a41c7c62ed9e135f3b2527e91d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a variant, <code>A23G</code>, or several joined by <code>:</code>, <code>A23G:L45P</code> (ProteinGym's format).  <br /></td></tr>
+<tr class="separator:a2e24a41c7c62ed9e135f3b2527e91d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad89f3394de890a7273b03490f64af96" id="r_aad89f3394de890a7273b03490f64af96"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#aad89f3394de890a7273b03490f64af96">ApplyMutations</a> (std::string_view sequence, const std::vector&lt; <a class="el" href="structpulsatrix_1_1Mutation.html">Mutation</a> &gt; &amp;mutations, int64_t offset=1)</td></tr>
+<tr class="memdesc:aad89f3394de890a7273b03490f64af96"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>sequence</code> with <code>mutations</code> applied; position p is <code>sequence[p - offset]</code>.  <br /></td></tr>
+<tr class="separator:aad89f3394de890a7273b03490f64af96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7bdeb2d964dcd43f083e990cfea9e3b" id="r_ae7bdeb2d964dcd43f083e990cfea9e3b"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae7bdeb2d964dcd43f083e990cfea9e3b">ScoringPassBytes</a> (const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;config, int64_t length)</td></tr>
+<tr class="memdesc:ae7bdeb2d964dcd43f083e990cfea9e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Roughly the most memory one sequence of <code>length</code> tokens takes in a forward pass of <code>config's</code> model that keeps no activations (EncoderLM::set_keep_activations(false)): one layer's attention scores and their softmax copies, its projections and MLP, and the logits. The weights aren't counted.  <br /></td></tr>
+<tr class="separator:ae7bdeb2d964dcd43f083e990cfea9e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1395be9b0abfd58b2d643d89ba4200a" id="r_af1395be9b0abfd58b2d643d89ba4200a"><td class="memItemLeft" align="right" valign="top">std::pair&lt; int64_t, int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af1395be9b0abfd58b2d643d89ba4200a">OptimalWindow</a> (int64_t position, int64_t length, int64_t window)</td></tr>
+<tr class="memdesc:af1395be9b0abfd58b2d643d89ba4200a"><td class="mdescLeft">&#160;</td><td class="mdescRight">ProteinGym's <code>get_optimal_window</code>: the token range <code>[begin, end)</code> around <code>position</code> in a sequence of <code>length</code> tokens, for a model that sees <code>window</code> tokens.  <br /></td></tr>
+<tr class="separator:af1395be9b0abfd58b2d643d89ba4200a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a581f2cf70ed5529bc7a208a4218a7762" id="r_a581f2cf70ed5529bc7a208a4218a7762"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a581f2cf70ed5529bc7a208a4218a7762">ToNeuronpediaJson</a> (const <a class="el" href="structpulsatrix_1_1AttributionGraph.html">AttributionGraph</a> &amp;graph)</td></tr>
 <tr class="memdesc:a581f2cf70ed5529bc7a208a4218a7762"><td class="mdescLeft">&#160;</td><td class="mdescRight">The graph as Neuronpedia/circuit-tracer JSON, including circuit-tracer's optional node fields (<code>token_prob</code>, <code>is_target_logit</code>) and an empty <code>qParams</code>.  <br /></td></tr>
 <tr class="separator:a581f2cf70ed5529bc7a208a4218a7762"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2361,6 +2437,9 @@ Variables</h2></td></tr>
 <tr class="memitem:abdfe136720681063b92cf1cda99ccfa5" id="r_abdfe136720681063b92cf1cda99ccfa5"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#abdfe136720681063b92cf1cda99ccfa5">kFixedTopologyXORNumParams</a> = 9</td></tr>
 <tr class="memdesc:abdfe136720681063b92cf1cda99ccfa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total flat-parameter count: 2*2 (input-&gt;hidden weights) + 2 (hidden biases) + 2 (hidden-&gt;output weights) + 1 (output bias) = 9.  <br /></td></tr>
 <tr class="separator:abdfe136720681063b92cf1cda99ccfa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7d75f38b69b19b1abfb76e5ba0370ca" id="r_af7d75f38b69b19b1abfb76e5ba0370ca"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af7d75f38b69b19b1abfb76e5ba0370ca">kAminoAcids</a> = &quot;ACDEFGHIKLMNPQRSTVWY&quot;</td></tr>
+<tr class="memdesc:af7d75f38b69b19b1abfb76e5ba0370ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 20 standard amino acids, in the order SingleMutantScan's columns use.  <br /></td></tr>
+<tr class="separator:af7d75f38b69b19b1abfb76e5ba0370ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7c306e18124f3aeb68cde6615b337b5" id="r_ad7c306e18124f3aeb68cde6615b337b5"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad7c306e18124f3aeb68cde6615b337b5">kVizDocumentVersion</a> = 1</td></tr>
 <tr class="memdesc:ad7c306e18124f3aeb68cde6615b337b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The document format version this build writes and reads.  <br /></td></tr>
 <tr class="separator:ad7c306e18124f3aeb68cde6615b337b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3449,6 +3528,34 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 </div>
 </div>
+<a id="ad459b72b938b5edbe52c75cbc8ee743a" name="ad459b72b938b5edbe52c75cbc8ee743a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad459b72b938b5edbe52c75cbc8ee743a">&#9670;&#160;</a></span>VariantStrategy</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a">pulsatrix::VariantStrategy</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How variants are scored. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad459b72b938b5edbe52c75cbc8ee743aa368b1156e5dca80ce71e8eaa4f9b0d06" name="ad459b72b938b5edbe52c75cbc8ee743aa368b1156e5dca80ce71e8eaa4f9b0d06"></a>MaskedMarginals&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad459b72b938b5edbe52c75cbc8ee743aa8fea96a293e0c36852a4c4d7c139bdb6" name="ad459b72b938b5edbe52c75cbc8ee743aa8fea96a293e0c36852a4c4d7c139bdb6"></a>WildTypeMarginals&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="ae7ceb8ee1ca517e2ce811f4f6761d779" name="ae7ceb8ee1ca517e2ce811f4f6761d779"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7ceb8ee1ca517e2ce811f4f6761d779">&#9670;&#160;</a></span>WeightTransform</h2>
 
@@ -3869,6 +3976,48 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 
 <p>Appends <code>child</code>'s named parameters to <code>out</code>, each renamed to <code>prefix.name</code> &ndash; the one step every container's named_parameters() repeats per child. </p>
 <dl class="section note"><dt>Note</dt><dd>A child that overrides only the legacy parameters() hook reports no names; its parameters are appended under positional names (<code>prefix.0</code>, <code>prefix.1</code>, ...) so a container never hides them from an optimizer that used to see them. </dd></dl>
+
+</div>
+</div>
+<a id="aad89f3394de890a7273b03490f64af96" name="aad89f3394de890a7273b03490f64af96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad89f3394de890a7273b03490f64af96">&#9670;&#160;</a></span>ApplyMutations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pulsatrix::ApplyMutations </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sequence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structpulsatrix_1_1Mutation.html">Mutation</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mutations</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>sequence</code> with <code>mutations</code> applied; position p is <code>sequence[p - offset]</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a position is outside the sequence or its residue isn't the listed wild type. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -6329,6 +6478,90 @@ template&lt;typename FitnessFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a37ee2f6c42016cc358ecfe83b22c9e6e" name="a37ee2f6c42016cc358ecfe83b22c9e6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37ee2f6c42016cc358ecfe83b22c9e6e">&#9670;&#160;</a></span>EvaluateAssay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AssayResult.html">AssayResult</a> pulsatrix::EvaluateAssay </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1VariantScorer.html">VariantScorer</a> &amp;&#160;</td>
+          <td class="paramname"><em>scorer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1ProteinGymAssay.html">ProteinGymAssay</a> &amp;&#160;</td>
+          <td class="paramname"><em>assay</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1DmsVariants.html">DmsVariants</a> &amp;&#160;</td>
+          <td class="paramname"><em>variants</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743a">VariantStrategy</a>&#160;</td>
+          <td class="paramname"><em>strategy</em> = <code><a class="el" href="namespacepulsatrix.html#ad459b72b938b5edbe52c75cbc8ee743aa368b1156e5dca80ce71e8eaa4f9b0d06">VariantStrategy::MaskedMarginals</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scores every variant of <code>assay</code> and evaluates them against the measurements. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if a variant doesn't match the assay's sequence. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a31e082250772b2c3a48088131b24257b" name="a31e082250772b2c3a48088131b24257b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31e082250772b2c3a48088131b24257b">&#9670;&#160;</a></span>EvaluateFitness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1FitnessMetrics.html">FitnessMetrics</a> pulsatrix::EvaluateFitness </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dms_scores</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dms_bins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>predicted</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="structpulsatrix_1_1FitnessMetrics.html" title="All five, as ProteinGym reports them.">FitnessMetrics</a> for one assay: measured scores and their binarized labels, and predictions. </p>
+
+</div>
+</div>
 <a id="aae7507a27a53dfd4562d8b21106fe1a6" name="aae7507a27a53dfd4562d8b21106fe1a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae7507a27a53dfd4562d8b21106fe1a6">&#9670;&#160;</a></span>EvaluateNEATPhenotype()</h2>
 
@@ -8371,6 +8604,36 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a19e45cfa5e5d4446f41f940ef6834ff1" name="a19e45cfa5e5d4446f41f940ef6834ff1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19e45cfa5e5d4446f41f940ef6834ff1">&#9670;&#160;</a></span>MatthewsCorrelation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::MatthewsCorrelation </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>predicted</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Matthews correlation of binary <code>labels</code> and <code>predicted</code> (sklearn's <code>matthews_corrcoef</code>); 0 when a row or column of the confusion matrix is empty. </p>
+
+</div>
+</div>
 <a id="a1b0b92b9316f35e591eef693d59fa911" name="a1b0b92b9316f35e591eef693d59fa911"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b0b92b9316f35e591eef693d59fa911">&#9670;&#160;</a></span>MedianAbsoluteDeviation()</h2>
 
@@ -8394,6 +8657,36 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a06add74fb796b4006845b48048aaa76e" name="a06add74fb796b4006845b48048aaa76e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06add74fb796b4006845b48048aaa76e">&#9670;&#160;</a></span>MedianSplitMcc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::MedianSplitMcc </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>scores</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ProteinGym's MCC: <code>scores</code> at or above their median predict 1. </p>
 
 </div>
 </div>
@@ -8565,6 +8858,43 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a053defb68cf20b8bbd61c3dccfcb6fb6" name="a053defb68cf20b8bbd61c3dccfcb6fb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a053defb68cf20b8bbd61c3dccfcb6fb6">&#9670;&#160;</a></span>Ndcg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::Ndcg </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>true_scores</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>predicted</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>top_percent</em> = <code>10.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ProteinGym's NDCG: gains are the true scores min-max scaled to [0, 1]; the variants the model ranks in the top <code>top_percent</code> (floor of the count) contribute gain / log2(rank + 1), normalized by the same sum for the truly best ones. Zero gains are dropped. </p>
+<dl class="section note"><dt>Note</dt><dd>Tied predicted scores are ranked in input order (a stable sort). numpy's default argsort isn't stable, so ProteinGym may order exact ties differently. </dd></dl>
 
 </div>
 </div>
@@ -8949,6 +9279,42 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="af1395be9b0abfd58b2d643d89ba4200a" name="af1395be9b0abfd58b2d643d89ba4200a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1395be9b0abfd58b2d643d89ba4200a">&#9670;&#160;</a></span>OptimalWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; int64_t, int64_t &gt; pulsatrix::OptimalWindow </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>window</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ProteinGym's <code>get_optimal_window</code>: the token range <code>[begin, end)</code> around <code>position</code> in a sequence of <code>length</code> tokens, for a model that sees <code>window</code> tokens. </p>
+
+</div>
+</div>
 <a id="a3191b79a9d4bc8fc4e547d1a3e3aa525" name="a3191b79a9d4bc8fc4e547d1a3e3aa525"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3191b79a9d4bc8fc4e547d1a3e3aa525">&#9670;&#160;</a></span>OptimizerStatePath()</h2>
 
@@ -9279,6 +9645,32 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a2e24a41c7c62ed9e135f3b2527e91d95" name="a2e24a41c7c62ed9e135f3b2527e91d95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e24a41c7c62ed9e135f3b2527e91d95">&#9670;&#160;</a></span>ParseMutations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1Mutation.html">Mutation</a> &gt; pulsatrix::ParseMutations </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses a variant, <code>A23G</code>, or several joined by <code>:</code>, <code>A23G:L45P</code> (ProteinGym's format). </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for anything else. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a6447a134e0d9fcd100427454015b3fb7" name="a6447a134e0d9fcd100427454015b3fb7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6447a134e0d9fcd100427454015b3fb7">&#9670;&#160;</a></span>ParseNeuronpediaGraph()</h2>
 
@@ -9456,6 +9848,36 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Pearson correlation of two equal-length vectors; 0 if either is constant. </p>
+
+</div>
+</div>
+<a id="af55f56ee6839b1d938051137d3648505" name="af55f56ee6839b1d938051137d3648505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af55f56ee6839b1d938051137d3648505">&#9670;&#160;</a></span>Percentile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::Percentile </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The q-th percentile (0 to 100) with linear interpolation (numpy's default). </p>
 
 </div>
 </div>
@@ -10130,6 +10552,32 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a51115451a2a0f575bcba7d29f21821c4" name="a51115451a2a0f575bcba7d29f21821c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51115451a2a0f575bcba7d29f21821c4">&#9670;&#160;</a></span>ReadDmsVariants()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1DmsVariants.html">DmsVariants</a> pulsatrix::ReadDmsVariants </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads an assay's CSV. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>/ std::invalid_argument as above. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aba1de7f66574e1aba32fb47ab356b252" name="aba1de7f66574e1aba32fb47ab356b252"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba1de7f66574e1aba32fb47ab356b252">&#9670;&#160;</a></span>ReadEsmConfig()</h2>
 
@@ -10208,6 +10656,32 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="ac5afa1d6d5a7e637d2e166817a142d97" name="ac5afa1d6d5a7e637d2e166817a142d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5afa1d6d5a7e637d2e166817a142d97">&#9670;&#160;</a></span>ReadProteinGymReference()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1ProteinGymAssay.html">ProteinGymAssay</a> &gt; pulsatrix::ReadProteinGymReference </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Every assay in a reference file. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if it can't be read; std::invalid_argument if a needed column is missing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a27ada5559b2ea9d71fdb73638e9e0101" name="a27ada5559b2ea9d71fdb73638e9e0101"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a27ada5559b2ea9d71fdb73638e9e0101">&#9670;&#160;</a></span>ReinitializeParameters()</h2>
 
@@ -10248,6 +10722,34 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Keeps each tensor's scale, so activations stay in a realistic range. A tensor whose values are all equal (a zero bias, say) has standard deviation 0 and becomes all zeros. Buffers, such as BatchNorm's running statistics, are left alone. </dd></dl>
+
+</div>
+</div>
+<a id="adcfb14c67666eab8cfe009824f318631" name="adcfb14c67666eab8cfe009824f318631"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcfb14c67666eab8cfe009824f318631">&#9670;&#160;</a></span>release_tensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::release_tensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Frees <code>t's</code> buffer: it becomes an empty tensor on the same backend and device. </p>
 
 </div>
 </div>
@@ -11313,6 +11815,36 @@ template&lt;typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aeb3d11b2402f2163882ee0ce4142907a" name="aeb3d11b2402f2163882ee0ce4142907a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb3d11b2402f2163882ee0ce4142907a">&#9670;&#160;</a></span>RocAuc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::RocAuc </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>labels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>scores</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Area under the ROC curve of <code>scores</code> for <code>labels</code> (0 or 1), ties counted half (sklearn's <code>roc_auc_score</code>). NaN if only one class is present. </p>
 
 </div>
 </div>
@@ -12710,6 +13242,36 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="ae7bdeb2d964dcd43f083e990cfea9e3b" name="ae7bdeb2d964dcd43f083e990cfea9e3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7bdeb2d964dcd43f083e990cfea9e3b">&#9670;&#160;</a></span>ScoringPassBytes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::ScoringPassBytes </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1EncoderLMConfig.html">EncoderLMConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Roughly the most memory one sequence of <code>length</code> tokens takes in a forward pass of <code>config's</code> model that keeps no activations (EncoderLM::set_keep_activations(false)): one layer's attention scores and their softmax copies, its projections and MLP, and the logits. The weights aren't counted. </p>
+
+</div>
+</div>
 <a id="a3b2ebcf822ff6e68e95388365ae2774c" name="a3b2ebcf822ff6e68e95388365ae2774c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b2ebcf822ff6e68e95388365ae2774c">&#9670;&#160;</a></span>SerializeSafetensors()</h2>
 
@@ -13090,6 +13652,42 @@ Scoped to the small, dense, well-conditioned systems this codebase's callers act
 
 <p>Gini index of the attribution magnitudes (Chalasani et al. 2020; Quantus Sparseness): 0 when relevance is spread evenly, approaching 1 when one feature holds it all. </p>
 <dl class="section return"><dt>Returns</dt><dd>0 for an all-zero attribution (Quantus would return NaN). </dd></dl>
+
+</div>
+</div>
+<a id="a383a816a6ee859218999a53b32056d8f" name="a383a816a6ee859218999a53b32056d8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a383a816a6ee859218999a53b32056d8f">&#9670;&#160;</a></span>SpearmanCorrelation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::SpearmanCorrelation </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Spearman's rank correlation, ties given their average rank (scipy's <code>spearmanr</code>). NaN if either input is constant. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for sizes that differ or &lt; 2. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -14513,6 +15111,48 @@ Selection only &ndash; no gradient. A module that routes gradients through a top
 
 </div>
 </div>
+<a id="a836c7692dfc93354ad00456277ed8344" name="a836c7692dfc93354ad00456277ed8344"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a836c7692dfc93354ad00456277ed8344">&#9670;&#160;</a></span>TopRecall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pulsatrix::TopRecall </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>true_scores</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>predicted</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>top_true</em> = <code>10.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>top_model</em> = <code>10.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ProteinGym's top recall: of the variants at or above the true scores' (100 - top) percentile, the fraction also at or above the predicted scores' percentile. Percentiles interpolate linearly, as numpy's do. </p>
+
+</div>
+</div>
 <a id="a080ecc6a0d774b0d732e2540fb615c9b" name="a080ecc6a0d774b0d732e2540fb615c9b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a080ecc6a0d774b0d732e2540fb615c9b">&#9670;&#160;</a></span>ToRgbImageBuffer()</h2>
 
@@ -15835,6 +16475,30 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="af7d75f38b69b19b1abfb76e5ba0370ca" name="af7d75f38b69b19b1abfb76e5ba0370ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7d75f38b69b19b1abfb76e5ba0370ca">&#9670;&#160;</a></span>kAminoAcids</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char* pulsatrix::kAminoAcids = &quot;ACDEFGHIKLMNPQRSTVWY&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The 20 standard amino acids, in the order SingleMutantScan's columns use. </p>
+
+</div>
+</div>
 <a id="a184725fa40c9e9ad2bbcdcbe2e9236cf" name="a184725fa40c9e9ad2bbcdcbe2e9236cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a184725fa40c9e9ad2bbcdcbe2e9236cf">&#9670;&#160;</a></span>kCheckpointFormatVersion</h2>
 

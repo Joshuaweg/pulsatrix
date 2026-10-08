@@ -8,6 +8,7 @@ var classpulsatrix_1_1TiedLMHeadModule =
     [ "named_parameters", "classpulsatrix_1_1TiedLMHeadModule.html#a02d1fcace11e192a006e218d64efd0e4", null ],
     [ "op_type", "classpulsatrix_1_1TiedLMHeadModule.html#a55786970ab1e22fa80adc2161421f5b9", null ],
     [ "propagate_relevance", "classpulsatrix_1_1TiedLMHeadModule.html#a436682dc6aeb612adb724a60ef412b52", null ],
+    [ "release_activations", "classpulsatrix_1_1TiedLMHeadModule.html#a07e8a321ad9f7d2a8bb4c15b6218c275", null ],
     [ "supports_lrp_rule", "classpulsatrix_1_1TiedLMHeadModule.html#a2922111a19923ab99ef5baabab233b61", null ],
     [ "vocab_size", "classpulsatrix_1_1TiedLMHeadModule.html#a2e7bb695ab38f99a8c16fca097602cb2", null ]
 ];

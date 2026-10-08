@@ -12,6 +12,7 @@ var classpulsatrix_1_1LayerNormModule =
     [ "named_parameters", "classpulsatrix_1_1LayerNormModule.html#ace346d5dabeb76a7c0c9b40b59c55d60", null ],
     [ "op_type", "classpulsatrix_1_1LayerNormModule.html#a0f33a311a4cf2e07dea2bba358eea533", null ],
     [ "propagate_relevance", "classpulsatrix_1_1LayerNormModule.html#aa925d9184d24e72c93a990b35b33250a", null ],
+    [ "release_activations", "classpulsatrix_1_1LayerNormModule.html#ab2f6fe8b0d3dea8c2b95732603731348", null ],
     [ "set_beta", "classpulsatrix_1_1LayerNormModule.html#acf7cf07ea7f3a3b0e7cd23fd7247e93c", null ],
     [ "set_beta", "classpulsatrix_1_1LayerNormModule.html#a3f5cb8449cddac847d1d1538a1b6c054", null ],
     [ "set_gamma", "classpulsatrix_1_1LayerNormModule.html#ab37709e2af14993a102e6c9810cb080a", null ],
