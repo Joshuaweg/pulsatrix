@@ -21,7 +21,7 @@ var searchData=
   ['next_5fbatch_18',['next_batch',['../classpulsatrix_1_1DataLoader.html#a97fa3fea040e8418fc872eb9f82a4979',1,'pulsatrix::DataLoader']]],
   ['next_5fseed_19',['next_seed',['../namespacepulsatrix.html#a197aabe57442bbda9ca90932d761964b',1,'pulsatrix']]],
   ['next_5ftoken_5flogits_20',['next_token_logits',['../classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f',1,'pulsatrix::CausalLM']]],
-  ['node_21',['node',['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()'],['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node(NodeId id) const']]],
+  ['node_21',['node',['../classpulsatrix_1_1ComputationGraph.html#af5eba68bbe526999533be0392d1990fd',1,'pulsatrix::ComputationGraph::node()'],['../classpulsatrix_1_1Node.html#abb97e65a26ff9f6e5e4ded1e9358c5c2',1,'pulsatrix::Node::Node()']]],
   ['node_5fcount_22',['node_count',['../classpulsatrix_1_1ComputationGraph.html#ab5e326cc6109e5677eb114e0a85f6b05',1,'pulsatrix::ComputationGraph']]],
   ['node_5fids_23',['node_ids',['../classpulsatrix_1_1ActivationSnapshot.html#a6555e73f40cd23280bdf0078e938f49d',1,'pulsatrix::ActivationSnapshot']]],
   ['nodes_24',['nodes',['../classpulsatrix_1_1CircuitGraph.html#a75946c183cbbae25f2adcc4e39993532',1,'pulsatrix::CircuitGraph::nodes()'],['../classpulsatrix_1_1NEATGenome.html#aa92a4876b75160090c7750cb2a120039',1,'pulsatrix::NEATGenome::nodes()']]],

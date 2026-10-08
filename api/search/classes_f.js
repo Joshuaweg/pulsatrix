@@ -16,11 +16,13 @@ var searchData=
   ['perturbationoptions_13',['PerturbationOptions',['../structpulsatrix_1_1PerturbationOptions.html',1,'pulsatrix']]],
   ['piece_14',['Piece',['../structpulsatrix_1_1NormalizedString_1_1Piece.html',1,'pulsatrix::NormalizedString']]],
   ['platformsources_15',['PlatformSources',['../classpulsatrix_1_1detail_1_1PlatformSources.html',1,'pulsatrix::detail']]],
-  ['policygradientloss_16',['PolicyGradientLoss',['../classpulsatrix_1_1PolicyGradientLoss.html',1,'pulsatrix']]],
-  ['posterior_17',['Posterior',['../structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html',1,'pulsatrix::GaussianProcessRegressor']]],
-  ['postprocessor_18',['PostProcessor',['../classpulsatrix_1_1PostProcessor.html',1,'pulsatrix']]],
-  ['ppoclippedloss_19',['PPOClippedLoss',['../classpulsatrix_1_1PPOClippedLoss.html',1,'pulsatrix']]],
-  ['prependnormalizer_20',['PrependNormalizer',['../classpulsatrix_1_1PrependNormalizer.html',1,'pulsatrix']]],
-  ['pretokenizer_21',['PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html',1,'pulsatrix']]],
-  ['proteingymassay_22',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]]
+  ['point3_16',['Point3',['../structpulsatrix_1_1Point3.html',1,'pulsatrix']]],
+  ['policygradientloss_17',['PolicyGradientLoss',['../classpulsatrix_1_1PolicyGradientLoss.html',1,'pulsatrix']]],
+  ['posterior_18',['Posterior',['../structpulsatrix_1_1GaussianProcessRegressor_1_1Posterior.html',1,'pulsatrix::GaussianProcessRegressor']]],
+  ['postprocessor_19',['PostProcessor',['../classpulsatrix_1_1PostProcessor.html',1,'pulsatrix']]],
+  ['ppoclippedloss_20',['PPOClippedLoss',['../classpulsatrix_1_1PPOClippedLoss.html',1,'pulsatrix']]],
+  ['prependnormalizer_21',['PrependNormalizer',['../classpulsatrix_1_1PrependNormalizer.html',1,'pulsatrix']]],
+  ['pretokenizer_22',['PreTokenizer',['../classpulsatrix_1_1PreTokenizer.html',1,'pulsatrix']]],
+  ['proteingymassay_23',['ProteinGymAssay',['../structpulsatrix_1_1ProteinGymAssay.html',1,'pulsatrix']]],
+  ['proteinstructure_24',['ProteinStructure',['../structpulsatrix_1_1ProteinStructure.html',1,'pulsatrix']]]
 ];
