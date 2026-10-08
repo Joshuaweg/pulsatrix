@@ -19,6 +19,7 @@
 
 #include "pulsatrix/causal_lm.hpp"  // HiddenStateHook
 #include "pulsatrix/featurizer.hpp"
+#include "pulsatrix/mlp_hook.hpp"
 
 namespace pulsatrix {
 
@@ -51,6 +52,13 @@ struct ReconstructionMetrics {
  */
 [[nodiscard]] ReconstructionMetrics EvaluateReconstruction(Featurizer& featurizer, const Tensor& x, double dense_rate = 0.1,
                                                            int64_t batch = 4096);
+/**
+ * @brief EvaluateReconstruction for a transcoder: predict(x) against @p target,
+ *        `(N, output_dim)`. Explained variance is relative to the targets' variance.
+ * @throws std::invalid_argument for mismatched shapes.
+ */
+[[nodiscard]] ReconstructionMetrics EvaluatePrediction(Featurizer& featurizer, const Tensor& x, const Tensor& target,
+                                                       double dense_rate = 0.1, int64_t batch = 4096);
 
 /**
  * @brief Splices the featurizer in at one position: a hook that replaces the hidden states there,
@@ -63,6 +71,16 @@ struct ReconstructionMetrics {
 [[nodiscard]] HiddenStateHook SpliceHook(Featurizer& featurizer, int64_t position, std::vector<bool> rows = {});
 /** @brief Zero-ablates one position: the same rows set to 0 instead of reconstructed. */
 [[nodiscard]] HiddenStateHook AblationHook(int64_t position, std::vector<bool> rows = {});
+
+/**
+ * @brief Splices a transcoder in for an MLP (install it with EncoderBlock::set_mlp_hook() or
+ *        TransformerBlock::set_mlp_hook()): the MLP's output rows are replaced by predict() of
+ *        its input rows.
+ * @param rows As SpliceHook's: which of the `N * L` rows to replace, all when empty.
+ */
+[[nodiscard]] MlpHook MlpSpliceHook(Featurizer& transcoder, std::vector<bool> rows = {});
+/** @brief Zero-ablates an MLP: its output rows set to 0. */
+[[nodiscard]] MlpHook MlpAblationHook(std::vector<bool> rows = {});
 
 /** @brief MeasureLossRecovered()'s result: the model's loss three ways. */
 struct LossRecovered {
@@ -85,6 +103,14 @@ struct LossRecovered {
 [[nodiscard]] LossRecovered MeasureLossRecovered(Featurizer& featurizer, int64_t position,
                                                  const std::function<double(const HiddenStateHook&)>& loss,
                                                  const std::vector<bool>& rows = {});
+
+/**
+ * @brief Loss recovered for a transcoder spliced in for an MLP: @p loss installs the MlpHook it is
+ *        given on the MLP's block, runs the model, removes it and returns the loss. Ablation zeroes
+ *        the MLP's output.
+ */
+[[nodiscard]] LossRecovered MeasureMlpLossRecovered(Featurizer& transcoder, const std::function<double(const MlpHook&)>& loss,
+                                                    const std::vector<bool>& rows = {});
 
 struct AbsorptionOptions {
     /** @brief The share of inputs used to fit the probe and pick the main features; the rest are
@@ -141,7 +167,11 @@ struct AbsorptionResult {
  *    input's projection onto it, measured from the mean of the negatives.
  *
  * @param x `(N, input_dim)`. @param labels 0 or 1 per input.
- * @throws std::invalid_argument for mismatched sizes, labels other than 0 and 1, or a train or
+ * @note For autoencoders: the probe lives in the input space and the decoder directions must too,
+ *       so a featurizer whose output_dim differs from its input_dim is refused. For a transcoder
+ *       the spaces differ even when the sizes match; compare its features with MatchConcept-style
+ *       F1 instead.
+ * @throws std::invalid_argument for a featurizer whose output_dim isn't its input_dim, mismatched sizes, labels other than 0 and 1, or a train or
  *         test split without both classes.
  */
 [[nodiscard]] AbsorptionResult FeatureAbsorption(Featurizer& featurizer, const Tensor& x, const std::vector<int>& labels,

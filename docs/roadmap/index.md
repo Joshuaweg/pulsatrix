@@ -162,7 +162,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
 Feature discovery on real models, and agents that can drive the library.
 
-- FEAT-1 (**done**, for PLM-8), FEAT-2 to FEAT-4 (**done**) to FEAT-7: the featurizer interface, TopK
+- FEAT-1 (**done**, for PLM-8), FEAT-2 to FEAT-5 (**done**) to FEAT-7: the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
@@ -806,7 +806,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-2 | TopK SAE with the auxiliary loss for dead latents | Removes L1 shrinkage; sets sparsity directly | FEAT-1, FND-3 | P0 | M | Done, [#105](https://github.com/Joshuaweg/pulsatrix/pull/105) (see below) |
 | FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M | Done, [#106](https://github.com/Joshuaweg/pulsatrix/pull/106) (see below) |
 | FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — | Done, [#107](https://github.com/Joshuaweg/pulsatrix/pull/107) (see below) |
-| FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M |
+| FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M | Done (see below) |
 | FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L |
 | FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S |
 | FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — |
@@ -902,6 +902,28 @@ Open: no LRP rule exists yet for propagating relevance through a block top-k. FE
     transmembrane, at 0.90 loss recovered to TopK's 0.96. JumpReLU matches TopK's loss
     recovered with 12.6 latents instead of 16
     ([table](../mechanistic-interpretability/index.md#batchtopk-matryoshka-and-jumprelu)).
+- **FEAT-5** adds `Transcoder` (`transcoder.hpp`), with an optional skip connection, and an MLP
+  hook on `EncoderBlock` and `TransformerBlock`.
+  - **TopK activation and AuxK,** as Paulo et al. train them, rather than Dunefsky et al.'s L1
+    penalty.
+  - **The interface grew, compatibly.** `Featurizer` gains `output_dim()`, `predict()` (the
+    full output, skip connection included) and `loss_and_backward_with_target()`, which
+    autoencoders refuse. `TrainFeaturizer` gains an overload with targets.
+    `EvaluateReconstruction` is now `EvaluatePrediction` with the input as its target, and
+    uses `predict()`.
+  - **Splicing an MLP needed its own hook,** since `HiddenStateHook` sits between blocks.
+    `set_mlp_hook()` sees the MLP's input and output, and its return value is what reaches the
+    residual stream. It reads the training pairs and splices the transcoder in
+    (`MlpSpliceHook`, `MlpAblationHook`, `MeasureMlpLossRecovered`). It doesn't run in
+    `forward_cached()`.
+  - **Absorption refuses transcoders.** It compares decoder directions with a probe in the
+    input space, and a transcoder writes to another space.
+  - **Checked against a PyTorch rendering** (`tools/golden/make_transcoder_golden.py`), with
+    different input and output sizes, the skip connection and AuxK.
+  - **On ESM-2 8M** the skip transcoder beats the plain one on every measure (loss recovered
+    0.72 vs 0.59 with the layer-4 MLP replaced). Against a residual-stream TopK SAE its concept
+    features are mixed: better on 3 of 6 concepts, worse on 2
+    ([table](../mechanistic-interpretability/index.md#transcoders)).
 
 ## ARCH: New architectures
 

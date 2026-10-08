@@ -62,6 +62,7 @@
 #include "pulsatrix/sparse_autoencoder.hpp"
 #include "pulsatrix/topk_sparse_autoencoder.hpp"
 #include "pulsatrix/jumprelu_sparse_autoencoder.hpp"
+#include "pulsatrix/transcoder.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/tied_lm_head_module.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -792,6 +793,27 @@ inline void SaeVariantsTrainingMatch(DeviceBackend& gpu) {
     }
     ExpectParametersNear(cj, gj, 1e-3f);
     ExpectNear(cj.encode(cx), gj.encode(gx), 1e-4f);
+}
+
+// FEAT-5: a skip transcoder with AuxK active, input 6 to output 5.
+inline void TranscoderTrainingMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::vector<float> x = Random(32 * 6, 396), y = Random(32 * 5, 397);
+    const Tensor cx(Shape({32, 6}), &cpu, x), gx(Shape({32, 6}), &gpu, x), cy(Shape({32, 5}), &cpu, y), gy(Shape({32, 5}), &gpu, y);
+    TranscoderOptions o;
+    o.k = 3;
+    o.skip = true;
+    o.dead_after = 32;
+    Transcoder c(6, 5, 16, &cpu, o), g(6, 5, 16, &gpu, o);
+    c.initialize_bias(cy);
+    g.initialize_bias(gy);
+    AdamOptimizer co(0.01f, &cpu), go(0.01f, &gpu);
+    for (int step = 0; step < 5; ++step) {
+        const FeaturizerLoss cl = TrainFeaturizer(c, cx, cy, co), gl = TrainFeaturizer(g, gx, gy, go);
+        EXPECT_NEAR(cl.total, gl.total, 1e-4f) << "step " << step;
+    }
+    ExpectParametersNear(c, g, 1e-3f);
+    ExpectNear(c.predict(cx), g.predict(gx), 1e-4f);
 }
 
 inline void TiedLMHeadMatches(DeviceBackend& gpu) {
@@ -1676,6 +1698,7 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     TEST_F(FIXTURE, FeaturizerTrainingMatchesCPU) { ::pulsatrix::training_equivalence::FeaturizerTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, TopKFeaturizerTrainingMatchesCPU) { ::pulsatrix::training_equivalence::TopKFeaturizerTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, SaeVariantsTrainingMatchCPU) { ::pulsatrix::training_equivalence::SaeVariantsTrainingMatch(MEMBER); } \
+    TEST_F(FIXTURE, TranscoderTrainingMatchesCPU) { ::pulsatrix::training_equivalence::TranscoderTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \
