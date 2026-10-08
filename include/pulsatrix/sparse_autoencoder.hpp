@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "pulsatrix/determinism.hpp"
+#include "pulsatrix/featurizer.hpp"
 #include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/mse_loss.hpp"
 #include "pulsatrix/relu_module.hpp"
@@ -55,13 +56,22 @@ namespace pulsatrix {
  *       zero init is not merely degenerate but dead: with an all-zero decoder weight the
  *       gradient reaching the hidden layer is identically zero, so the encoder never
  *       receives any gradient and the autoencoder cannot leave the origin.
+ * @note **Featurizer (FEAT-1).** It implements the Featurizer interface: encode() gives the
+ *       ReLU codes, decode() the reconstruction, and TrainFeaturizer() trains it like any other
+ *       featurizer. It is also a Module from input to reconstruction, with backward() and LRP,
+ *       and parameters named `encoder.*` and `decoder.*`.
+ * @note **Unit-norm decoders.** By default every feature's decoder direction (a row of the
+ *       decoder's weight) has unit L2 norm: at construction and after every train_step(). The
+ *       rescaling moves the norm into the encoder's row and bias, which a ReLU passes through
+ *       unchanged, so reconstructions don't move. Without it an L1 penalty can be dodged by
+ *       shrinking codes and growing directions. set_unit_norm_decoder(false) turns it off.
  * @note `hidden_dim > dim` is **not** enforced. An undercomplete or square autoencoder is
  *       still a well-formed object with well-defined training behavior; rejecting it would
  *       turn a modeling choice into a hard error for no correctness gain. Explicit
  *       decision (mission exit gate asked for it to be made, not assumed), pinned by
  *       ConstructorAcceptsAnUndercompleteHiddenDimension.
  */
-class SparseAutoencoder {
+class SparseAutoencoder : public Module, public Featurizer {
 public:
     /**
      * @brief Constructs a sparse autoencoder over activations of a given dimension.
@@ -113,6 +123,7 @@ public:
         // would otherwise saturate the decoder's input from the first step).
         init_layer(encoder_, rng, 1.0f / std::sqrt(static_cast<float>(dim)));
         init_layer(decoder_, rng, 1.0f / std::sqrt(static_cast<float>(hidden_dim)));
+        normalize_decoder();
     }
 
     /**
@@ -157,30 +168,114 @@ public:
     template <typename OptimizerT>
     float train_step(const Tensor& input_batch, OptimizerT& optimizer) {
         validate_batch(input_batch, "SparseAutoencoder::train_step");
+        optimizer.zero_grad(*this);
+        const FeaturizerLoss loss = loss_and_backward(input_batch);
+        optimizer.step(*this);
+        if (unit_norm_decoder_) normalize_decoder();
+        return loss.reconstruction;
+    }
 
-        optimizer.zero_grad(encoder_);
-        optimizer.zero_grad(decoder_);
+    // ---- Featurizer ----------------------------------------------------------------------
 
+    [[nodiscard]] int64_t input_dim() const override { return dim_; }
+    [[nodiscard]] int64_t num_features() const override { return hidden_dim_; }
+    /** @brief The ReLU codes, `(N, hidden_dim)`. */
+    [[nodiscard]] Tensor encode(const Tensor& x) override {
+        validate_batch(x, "SparseAutoencoder::encode");
+        return hidden_codes(x);
+    }
+    /** @brief The reconstruction from codes, `(N, dim)`. */
+    [[nodiscard]] Tensor decode(const Tensor& codes) override {
+        if (codes.rank() != 2 || codes.shape().dim(1) != hidden_dim_ || codes.shape().dim(0) <= 0) {
+            throw std::invalid_argument("SparseAutoencoder::decode: codes must be (N, hidden_dim) with N > 0");
+        }
+        return decoder_.forward(codes);
+    }
+    /**
+     * @brief Mean squared reconstruction error plus `l1_lambda * mean_over_inputs(sum_i f_i)`,
+     *        with both gradients added to the parameters'. See train_step() for the L1 term's
+     *        gradient.
+     */
+    FeaturizerLoss loss_and_backward(const Tensor& input_batch, std::vector<float>* codes = nullptr) override {
+        validate_batch(input_batch, "SparseAutoencoder::loss_and_backward");
         const Tensor hidden = relu_.forward(encoder_.forward(input_batch));
         const Tensor reconstruction = decoder_.forward(hidden);
-        const float reconstruction_loss = loss_.forward(reconstruction, input_batch);
-
+        FeaturizerLoss loss;
+        loss.reconstruction = loss_.forward(reconstruction, input_batch);
         const Tensor grad_reconstruction = loss_.backward();
         Tensor grad_hidden = decoder_.backward(grad_reconstruction);
-
         const float batch_size = static_cast<float>(input_batch.shape().dim(0));
         Tensor l1_grad(grad_hidden.shape(), backend_, grad_hidden.device());
         l1_grad.fill(l1_lambda_ / batch_size);
         grad_hidden.accumulate(l1_grad);
-
         const Tensor grad_pre_activation = relu_.backward(grad_hidden);
         (void)encoder_.backward(grad_pre_activation);  // the input has no upstream to receive this
+        const std::vector<float> h = hidden.to_host_vector();
+        double sum = 0.0;
+        for (float v : h) sum += v;
+        loss.sparsity = static_cast<float>(l1_lambda_ * sum / batch_size);
+        loss.total = loss.reconstruction + loss.sparsity;
+        if (codes != nullptr) *codes = h;
+        return loss;
+    }
+    /** @brief Unit-norm decoder rows, the norm moved into the encoder's row and bias: the ReLU
+     *         passes a positive scale through, so reconstructions don't change. A feature whose
+     *         direction is zero is left alone. */
+    void normalize_decoder() override {
+        std::vector<float> dec = decoder_.weight().to_host_vector(), enc = encoder_.weight().to_host_vector(),
+                           bias = encoder_.bias().to_host_vector();
+        for (int64_t i = 0; i < hidden_dim_; ++i) {
+            double sq = 0.0;
+            for (int64_t j = 0; j < dim_; ++j) sq += static_cast<double>(dec[static_cast<size_t>(i * dim_ + j)]) * dec[static_cast<size_t>(i * dim_ + j)];
+            const double norm = std::sqrt(sq);
+            if (norm == 0.0) continue;
+            for (int64_t j = 0; j < dim_; ++j) dec[static_cast<size_t>(i * dim_ + j)] = static_cast<float>(dec[static_cast<size_t>(i * dim_ + j)] / norm);
+            for (int64_t j = 0; j < dim_; ++j) enc[static_cast<size_t>(j * hidden_dim_ + i)] = static_cast<float>(enc[static_cast<size_t>(j * hidden_dim_ + i)] * norm);
+            bias[static_cast<size_t>(i)] = static_cast<float>(bias[static_cast<size_t>(i)] * norm);
+        }
+        decoder_.set_weight(dec);
+        encoder_.set_weight(enc);
+        encoder_.set_bias(bias);
+    }
+    [[nodiscard]] std::vector<float> decoder_direction(int64_t i) override {
+        if (i < 0 || i >= hidden_dim_) throw std::invalid_argument("SparseAutoencoder::decoder_direction: no such feature");
+        const std::vector<float> dec = decoder_.weight().to_host_vector();
+        return {dec.begin() + static_cast<std::ptrdiff_t>(i * dim_), dec.begin() + static_cast<std::ptrdiff_t>((i + 1) * dim_)};
+    }
+    [[nodiscard]] Module& parameters_module() override { return *this; }
 
-        optimizer.step(encoder_);
-        optimizer.step(decoder_);
-        // relu_ has no parameters (Module::parameters() default) -- stepping it would be a
-        // safe no-op but would imply there is something to update.
-        return reconstruction_loss;
+    /** @brief Whether train_step() keeps decoder directions at unit norm (the default). */
+    [[nodiscard]] bool unit_norm_decoder() const { return unit_norm_decoder_; }
+    void set_unit_norm_decoder(bool on) { unit_norm_decoder_ = on; }
+
+    // ---- Module: input to reconstruction --------------------------------------------------
+
+    /** @brief Backward from the reconstruction's gradient to the input's, through the decoder,
+     *         the ReLU and the encoder, adding to their parameters' gradients. */
+    [[nodiscard]] Tensor backward(const Tensor& grad_output) override {
+        return encoder_.backward(relu_.backward(decoder_.backward(grad_output)));
+    }
+    /** @brief Each layer's own rule, from the reconstruction back to the input. */
+    [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override {
+        return encoder_.propagate_relevance(relu_.propagate_relevance(decoder_.propagate_relevance(relevance_out, config), config), config);
+    }
+    [[nodiscard]] OpType op_type() const override { return OpType::Composite; }
+    [[nodiscard]] std::vector<NamedParamRef> named_parameters() override {
+        std::vector<NamedParamRef> out;
+        append_named_parameters(out, "encoder", encoder_);
+        append_named_parameters(out, "decoder", decoder_);
+        return out;
+    }
+    [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
+    void set_training(bool training) override {
+        Module::set_training(training);
+        encoder_.set_training(training);
+        decoder_.set_training(training);
+    }
+    void release_activations() override {
+        encoder_.release_activations();
+        relu_.release_activations();
+        decoder_.release_activations();
     }
 
     /**
@@ -204,7 +299,7 @@ public:
      */
     [[nodiscard]] Tensor reconstruct(const Tensor& input_batch) const {
         validate_batch(input_batch, "SparseAutoencoder::reconstruct");
-        return decoder_.forward(encode(input_batch));
+        return decoder_.forward(hidden_codes(input_batch));
     }
 
     /**
@@ -260,7 +355,7 @@ public:
     [[nodiscard]] float mean_hidden_activation(const Tensor& input_batch) const {
         validate_batch(input_batch, "SparseAutoencoder::mean_hidden_activation");
 
-        const Tensor hidden = encode(input_batch);
+        const Tensor hidden = hidden_codes(input_batch);
         const int64_t n = hidden.numel();
         float sum = 0.0f;
         for (int64_t i = 0; i < n; ++i) {
@@ -293,10 +388,17 @@ public:
     /** @brief Const overload of decoder(). */
     [[nodiscard]] const LinearModule& decoder() const { return decoder_; }
 
+protected:
+    /** @brief The reconstruction, `(N, dim)`. @throws std::invalid_argument for a malformed batch. */
+    [[nodiscard]] Tensor forward_impl(const Tensor& input) override {
+        validate_batch(input, "SparseAutoencoder::forward");
+        return decoder_.forward(relu_.forward(encoder_.forward(input)));
+    }
+
 private:
     /** @brief Post-ReLU hidden activation for a batch. Forward-only, unvalidated (callers
      *         are this class's own already-validated entry points). */
-    [[nodiscard]] Tensor encode(const Tensor& input_batch) const { return relu_.forward(encoder_.forward(input_batch)); }
+    [[nodiscard]] Tensor hidden_codes(const Tensor& input_batch) const { return relu_.forward(encoder_.forward(input_batch)); }
 
     /** @brief Fills one layer's weight and bias with uniform values in [-scale, scale). */
     static void init_layer(LinearModule& layer, std::mt19937& rng, float scale) {
@@ -355,6 +457,7 @@ private:
     mutable ReluModule relu_;
     mutable LinearModule decoder_;
     MSELoss loss_;
+    bool unit_norm_decoder_ = true;
 };
 
 }  // namespace pulsatrix
