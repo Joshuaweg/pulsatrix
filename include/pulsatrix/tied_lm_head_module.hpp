@@ -64,6 +64,8 @@ public:
 
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
+    void release_activations() override;
+
 protected:
     /**
      * @param input `(..., d_model)`, rank >= 2.

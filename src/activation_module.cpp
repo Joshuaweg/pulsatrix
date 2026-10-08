@@ -36,4 +36,9 @@ Tensor ActivationModule::propagate_relevance(const Tensor& relevance_out, const 
     return Tensor(relevance_out);
 }
 
+void ActivationModule::release_activations() {
+    release_tensor(last_input_);
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix

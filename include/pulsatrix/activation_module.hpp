@@ -33,6 +33,8 @@ public:
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
     [[nodiscard]] ElementwiseOp op() const { return op_; }
 
+    void release_activations() override;
+
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
 

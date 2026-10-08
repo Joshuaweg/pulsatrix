@@ -41,6 +41,8 @@ public:
     [[nodiscard]] ActivationModule& activation() { return act_; }
     [[nodiscard]] LinearModule& fc2() { return fc2_; }
 
+    void release_activations() override;
+
 protected:
     /** @throws std::invalid_argument unless the input is rank >= 2 with last dimension d_model. */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

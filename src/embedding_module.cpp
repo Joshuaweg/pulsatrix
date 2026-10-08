@@ -123,4 +123,9 @@ Tensor EmbeddingModule::propagate_relevance(const Tensor& relevance_out, const L
     return relevance_in;
 }
 
+void EmbeddingModule::release_activations() {
+    release_tensor(last_indices_);
+    has_forwarded_ = false;
+}
+
 }  // namespace pulsatrix
