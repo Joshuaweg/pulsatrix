@@ -3201,7 +3201,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
 <p>Feature discovery on real models, and agents that can drive the library.</p>
 <ul>
-<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 (<strong>done</strong>) to FEAT-7: the featurizer interface, TopK
+<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2, FEAT-3 (<strong>done</strong>) to FEAT-7: the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering</li>
 <li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology</li>
@@ -4897,7 +4897,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1, XAI-6</td>
 <td>P0</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/106">#106</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-4</td>
@@ -5020,7 +5020,31 @@ it, as FEAT-1 does for the L1 SAE, would change which latents win the top k.
 <code>set_inputs_since_fired()</code> save and restore them.
   - <strong>Selection runs on the host.</strong> <code>top_k</code> runs on the device, but the codes, the auxiliary
 selection and the gradient routing are host loops. That is fine at PLM-8's scale; a large
-SAE would want them on the device.</p>
+SAE would want them on the device.
+- <strong>FEAT-3</strong> adds <code>featurizer_metrics.hpp</code>: <code>EvaluateReconstruction</code> (explained variance,
+  cosine, norm ratio, L0, dead and dense latents), <code>MeasureLossRecovered</code> with <code>SpliceHook</code> and
+  <code>AblationHook</code>, and <code>FeatureAbsorption</code>.
+  - <strong>Splicing needed a hook.</strong> <code>CausalLM</code> and <code>EncoderLM</code> gain <code>set_hidden_state_hook()</code>,
+called at every position during <code>forward()</code>; what it returns replaces the hidden states.
+It doesn't run in <code>next_token_logits()</code>'s cached passes.
+  - <strong>Absorption works for any binary concept,</strong> not only first letters as in Chanin et al.
+The probe is fit on half the inputs, the main features are picked by SAEBench's k-sparse
+rule (each must raise F1 by 0.03), and the rate is scored on the other half. The probe is
+the baseline and is always reported.
+  - <strong>Its unit test plants the answer.</strong> A featurizer with set weights has a parent concept
+and ten rare children that absorb it; every absorbed input is found, and none in a
+featurizer without the hierarchy.
+  - <strong>The random-model baseline runs in the tool,</strong> not inside the metrics:
+<code>pulsatrix_probe_esm --sae</code> trains the same featurizer on a randomly initialized ESM-2 and
+reports every metric for both. On ESM-2 8M it changed the reading of three results:
+- the random model's SAEs explain more variance;
+- its loss can't be recovered, because ablating the layer doesn't hurt it;
+- for weakly probed concepts it "absorbs" as much as the trained one.</p>
+<p>So <code>recovered</code> is NaN unless ablation raises the loss, and the tool prints absorption only
+where the probe's F1 is at least 0.5. The numbers are in the
+<a href="../mechanistic-interpretability/#measuring-a-featurizer">mechanistic-interpretability guide</a>.
+  - <strong><code>pulsatrix_probe_esm --featurizer topk</code>.</strong> At the same L0, a TopK SAE beats PLM-8's L1
+SAE on every measure: explained variance 0.78 vs 0.66, loss recovered 0.96 vs 0.90.</p>
 </li>
 </ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>

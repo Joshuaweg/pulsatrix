@@ -6,7 +6,7 @@ var searchData=
   ['elapsed_5fseconds_3',['elapsed_seconds',['../structpulsatrix_1_1SystemSample.html#a24f5ddfd403268ca24ca5775faa3f827',1,'pulsatrix::SystemSample']]],
   ['embed_5fscale_4',['embed_scale',['../structpulsatrix_1_1HfModelConfig.html#a01fe2a845efbb645784bf7528af86006',1,'pulsatrix::HfModelConfig']]],
   ['enabled_5',['enabled',['../structpulsatrix_1_1ConnectionGene.html#ae8cfc87807eb7600e16bf96a4f65650e',1,'pulsatrix::ConnectionGene']]],
-  ['end_6',['end',['../structpulsatrix_1_1ResidueTracksDocument_1_1Feature.html#acf0a8a4113aa7c283e6509b2c4be83be',1,'pulsatrix::ResidueTracksDocument::Feature::end'],['../structpulsatrix_1_1UnicodeRegex_1_1Match.html#a13de8ac0b460e8a1c6ce31d5cf216dfb',1,'pulsatrix::UnicodeRegex::Match::end'],['../structpulsatrix_1_1ModelToken.html#aa5b9b6d6dc5e594cf3894ab94599c12d',1,'pulsatrix::ModelToken::end'],['../structpulsatrix_1_1Offset.html#a7d4e3fa49c3c9bbe60e24b1392295755',1,'pulsatrix::Offset::end'],['../structpulsatrix_1_1ProteinFeature.html#a113cdcb6c0374c3c4b3be84c586709de',1,'pulsatrix::ProteinFeature::end']]],
+  ['end_6',['end',['../structpulsatrix_1_1ProteinFeature.html#a113cdcb6c0374c3c4b3be84c586709de',1,'pulsatrix::ProteinFeature::end'],['../structpulsatrix_1_1Offset.html#a7d4e3fa49c3c9bbe60e24b1392295755',1,'pulsatrix::Offset::end'],['../structpulsatrix_1_1ModelToken.html#aa5b9b6d6dc5e594cf3894ab94599c12d',1,'pulsatrix::ModelToken::end'],['../structpulsatrix_1_1UnicodeRegex_1_1Match.html#a13de8ac0b460e8a1c6ce31d5cf216dfb',1,'pulsatrix::UnicodeRegex::Match::end'],['../structpulsatrix_1_1ResidueTracksDocument_1_1Feature.html#acf0a8a4113aa7c283e6509b2c4be83be',1,'pulsatrix::ResidueTracksDocument::Feature::end']]],
   ['end_5fof_5fword_5fsuffix_7',['end_of_word_suffix',['../structpulsatrix_1_1BpeOptions.html#a5360b06dc1875cc1ea4b31b9a5499a19',1,'pulsatrix::BpeOptions']]],
   ['environment_8',['environment',['../structpulsatrix_1_1BenchmarkReport.html#a95ee6a705c9a1dc75d1b6e7174e6127b',1,'pulsatrix::BenchmarkReport']]],
   ['eos_9',['eos',['../structpulsatrix_1_1ResidueRelevance.html#a9f0218400a2b6958a3f6a5517ad5d5e8',1,'pulsatrix::ResidueRelevance']]],
@@ -15,5 +15,6 @@ var searchData=
   ['eps_12',['eps',['../structpulsatrix_1_1RecurrentCellArgs.html#a06f5a6fe94693e0ea2c07ea2bfb12d1d',1,'pulsatrix::RecurrentCellArgs::eps'],['../structpulsatrix_1_1SsmPassArgs.html#a4a2d4d6fe8a614f6fd5333aa7e5c3a15',1,'pulsatrix::SsmPassArgs::eps']]],
   ['epsilon_13',['epsilon',['../structpulsatrix_1_1LRPRuleConfig.html#a41a03360ab748cd978bea186731a1750',1,'pulsatrix::LRPRuleConfig']]],
   ['epsilon_5fbias_5fin_5fdenominator_14',['epsilon_bias_in_denominator',['../structpulsatrix_1_1LRPRuleConfig.html#ace420e2114f01fc83687eeed487884fc',1,'pulsatrix::LRPRuleConfig']]],
-  ['examples_15',['examples',['../structpulsatrix_1_1TokenizerParityReport.html#a25f928483f9eadf98c6b04aa60853c5d',1,'pulsatrix::TokenizerParityReport']]]
+  ['examples_15',['examples',['../structpulsatrix_1_1TokenizerParityReport.html#a25f928483f9eadf98c6b04aa60853c5d',1,'pulsatrix::TokenizerParityReport']]],
+  ['explained_5fvariance_16',['explained_variance',['../structpulsatrix_1_1ReconstructionMetrics.html#a9f876fa9d1ba14a9bb8cca0ae8113c5e',1,'pulsatrix::ReconstructionMetrics']]]
 ];

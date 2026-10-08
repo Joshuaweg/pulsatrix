@@ -10,10 +10,11 @@ var searchData=
   ['link_7',['Link',['../structpulsatrix_1_1AttributionGraph_1_1Link.html',1,'pulsatrix::AttributionGraph']]],
   ['linuxsources_8',['LinuxSources',['../classpulsatrix_1_1detail_1_1LinuxSources.html',1,'pulsatrix::detail']]],
   ['localsensitivityresult_9',['LocalSensitivityResult',['../structpulsatrix_1_1LocalSensitivityResult.html',1,'pulsatrix']]],
-  ['lrp_10',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
-  ['lrpruleconfig_11',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
-  ['lrptarget_12',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
-  ['lrschedule_13',['LRSchedule',['../classpulsatrix_1_1LRSchedule.html',1,'pulsatrix']]],
-  ['lrscheduler_14',['LRScheduler',['../classpulsatrix_1_1LRScheduler.html',1,'pulsatrix']]],
-  ['lstmmodule_15',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
+  ['lossrecovered_10',['LossRecovered',['../structpulsatrix_1_1LossRecovered.html',1,'pulsatrix']]],
+  ['lrp_11',['LRP',['../classpulsatrix_1_1LRP.html',1,'pulsatrix']]],
+  ['lrpruleconfig_12',['LRPRuleConfig',['../structpulsatrix_1_1LRPRuleConfig.html',1,'pulsatrix']]],
+  ['lrptarget_13',['LRPTarget',['../structpulsatrix_1_1LRPTarget.html',1,'pulsatrix']]],
+  ['lrschedule_14',['LRSchedule',['../classpulsatrix_1_1LRSchedule.html',1,'pulsatrix']]],
+  ['lrscheduler_15',['LRScheduler',['../classpulsatrix_1_1LRScheduler.html',1,'pulsatrix']]],
+  ['lstmmodule_16',['LSTMModule',['../classpulsatrix_1_1LSTMModule.html',1,'pulsatrix']]]
 ];

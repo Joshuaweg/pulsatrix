@@ -1,5 +1,7 @@
 var hierarchy =
 [
+    [ "pulsatrix::AbsorptionOptions", "structpulsatrix_1_1AbsorptionOptions.html", null ],
+    [ "pulsatrix::AbsorptionResult", "structpulsatrix_1_1AbsorptionResult.html", null ],
     [ "pulsatrix::ActivationSnapshot", "classpulsatrix_1_1ActivationSnapshot.html", null ],
     [ "pulsatrix::AdamOptimizer", "classpulsatrix_1_1AdamOptimizer.html", [
       [ "pulsatrix::AdamWOptimizer", "classpulsatrix_1_1AdamWOptimizer.html", null ]
@@ -195,6 +197,7 @@ var hierarchy =
     [ "pulsatrix::LinearProbe", "classpulsatrix_1_1LinearProbe.html", null ],
     [ "pulsatrix::AttributionGraph::Link", "structpulsatrix_1_1AttributionGraph_1_1Link.html", null ],
     [ "pulsatrix::LocalSensitivityResult", "structpulsatrix_1_1LocalSensitivityResult.html", null ],
+    [ "pulsatrix::LossRecovered", "structpulsatrix_1_1LossRecovered.html", null ],
     [ "pulsatrix::LRP", "classpulsatrix_1_1LRP.html", null ],
     [ "pulsatrix::LRPRuleConfig", "structpulsatrix_1_1LRPRuleConfig.html", null ],
     [ "pulsatrix::LRPTarget", "structpulsatrix_1_1LRPTarget.html", null ],
@@ -331,6 +334,7 @@ var hierarchy =
     [ "pulsatrix::RandomizationResult", "structpulsatrix_1_1RandomizationResult.html", null ],
     [ "pulsatrix::detail::RawReading", "structpulsatrix_1_1detail_1_1RawReading.html", null ],
     [ "pulsatrix::datalog::RealSemiring< T >", "structpulsatrix_1_1datalog_1_1RealSemiring.html", null ],
+    [ "pulsatrix::ReconstructionMetrics", "structpulsatrix_1_1ReconstructionMetrics.html", null ],
     [ "pulsatrix::RecurrentCellArgs", "structpulsatrix_1_1RecurrentCellArgs.html", null ],
     [ "pulsatrix::RelevanceGraphOptions", "structpulsatrix_1_1RelevanceGraphOptions.html", null ],
     [ "pulsatrix::datalog::RelevanceResult", "structpulsatrix_1_1datalog_1_1RelevanceResult.html", null ],

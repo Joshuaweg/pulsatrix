@@ -22,6 +22,7 @@ var classpulsatrix_1_1EncoderLM =
     [ "propagate_relevance_by_layer", "classpulsatrix_1_1EncoderLM.html#ade0b43e51b971af8693bb48487e1c2dd", null ],
     [ "release_activations", "classpulsatrix_1_1EncoderLM.html#afdd98dbe925feb3a9d2276f21bbf80ba", null ],
     [ "set_attention_observer", "classpulsatrix_1_1EncoderLM.html#a3ded5e37790662cbdfc92ac0f2625ef1", null ],
+    [ "set_hidden_state_hook", "classpulsatrix_1_1EncoderLM.html#a64292c78f9be9ee2ea788d4cd6c59823", null ],
     [ "set_keep_activations", "classpulsatrix_1_1EncoderLM.html#ac4f04bc8b881c0627d2023f6054ea94d", null ],
     [ "set_padding_mask", "classpulsatrix_1_1EncoderLM.html#aa5c554da2f1fc8247feb3c8db9202e03", null ],
     [ "set_training", "classpulsatrix_1_1EncoderLM.html#a97a3a9342731bd37b3930b0810e82a6b", null ]

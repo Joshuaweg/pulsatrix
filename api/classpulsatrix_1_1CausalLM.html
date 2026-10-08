@@ -157,6 +157,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae51ea44ac86b795d537c158aaff5921f" id="r_ae51ea44ac86b795d537c158aaff5921f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ad9a1fe66874ff77912dd431c00acc157">NextTokenLogitsFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f">next_token_logits</a> (int64_t max_length)</td></tr>
 <tr class="memdesc:ae51ea44ac86b795d537c158aaff5921f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cached next-token function for Generate (LLM-5): one pass over the prompt, then one position per new token.  <br /></td></tr>
 <tr class="separator:ae51ea44ac86b795d537c158aaff5921f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78167d4cedaa787b7ef25ebc24817a0f" id="r_a78167d4cedaa787b7ef25ebc24817a0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#a78167d4cedaa787b7ef25ebc24817a0f">set_hidden_state_hook</a> (<a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a> hook)</td></tr>
+<tr class="memdesc:a78167d4cedaa787b7ef25ebc24817a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <code>hook</code> at every position during <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> (not during <a class="el" href="classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f" title="A cached next-token function for Generate (LLM-5): one pass over the prompt, then one position per ne...">next_token_logits()</a>'s cached passes). An empty function removes it.  <br /></td></tr>
+<tr class="separator:a78167d4cedaa787b7ef25ebc24817a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91ca6afb6c75aac837ecf1c062057de4" id="r_a91ca6afb6c75aac837ecf1c062057de4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structpulsatrix_1_1HfModelConfig.html">HfModelConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#a91ca6afb6c75aac837ecf1c062057de4">config</a> () const</td></tr>
 <tr class="separator:a91ca6afb6c75aac837ecf1c062057de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd56ae0478d49c9fe14323a83d8de17c" id="r_afd56ae0478d49c9fe14323a83d8de17c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1EmbeddingModule.html">EmbeddingModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CausalLM.html#afd56ae0478d49c9fe14323a83d8de17c">embed_tokens</a> ()</td></tr>
@@ -670,6 +673,34 @@ Protected Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a78167d4cedaa787b7ef25ebc24817a0f" name="a78167d4cedaa787b7ef25ebc24817a0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78167d4cedaa787b7ef25ebc24817a0f">&#9670;&#160;</a></span>set_hidden_state_hook()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::CausalLM::set_hidden_state_hook </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepulsatrix.html#a5418afb94636789e3e253e44cdac5339">HiddenStateHook</a>&#160;</td>
+          <td class="paramname"><em>hook</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls <code>hook</code> at every position during <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> (not during <a class="el" href="classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f" title="A cached next-token function for Generate (LLM-5): one pass over the prompt, then one position per ne...">next_token_logits()</a>'s cached passes). An empty function removes it. </p>
 
 </div>
 </div>
