@@ -59,7 +59,8 @@ constexpr const char* kStyle =
     ".legend .bar{width:220px;height:10px;border:1px solid #999}"
     "table{border-collapse:collapse;font-size:14px}td,th{padding:4px 10px;text-align:left}"
     "th{color:#666;font-weight:500;border-bottom:1px solid #ddd}"
-    "figure{margin:12px 0;overflow-x:auto}figure svg{display:block}";
+    "figure{margin:12px 0;overflow-x:auto}figure svg{display:block}"
+    ".tokens.residues{word-break:break-all;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.9}";
 
 std::string Page(const std::string& heading, const std::string& head_extra, const std::string& body) {
     return "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
@@ -756,7 +757,7 @@ std::string RenderTrainingLogHtml(const TrainingLogDocument& doc, const HtmlOpti
     return VegaLitePage(ToVegaLiteTrainingLog(doc, options), Heading(options, "Training log"), options);
 }
 
-std::string RenderFeatureDashboardHtml(const FeatureDashboardDocument& doc, const HtmlOptions& options) {
+std::string RenderFeatureDashboardHtml(const FeatureDashboardDocument& doc, const HtmlOptions& options, const std::string& extra_html) {
     (void)ToJson(doc);
     const std::string heading = Heading(options, doc.source + " feature " + std::to_string(doc.feature_index));
     std::string stats = "<h1>" + Escape(heading) + "</h1>\n<p class=\"muted\">active on " +
@@ -769,16 +770,19 @@ std::string RenderFeatureDashboardHtml(const FeatureDashboardDocument& doc, cons
         for (const auto& e : doc.top_examples) {
             examples += "<p class=\"muted\">" + Escape(e.label) + "</p>\n";
             if (!e.tokens.empty()) {
-                examples += "<div class=\"tokens\" dir=\"auto\">" + TokenSpans(e.tokens, e.activations, {}, scale, false) + "</div>\n";
+                // A protein's residues have no spaces between them: let its line break anywhere.
+                const bool residues = std::all_of(e.tokens.begin(), e.tokens.end(), [](const std::string& t) { return t.size() == 1; });
+                examples += std::string("<div class=\"tokens") + (residues ? " residues" : "") + "\" dir=\"auto\">" +
+                            TokenSpans(e.tokens, e.activations, {}, scale, false) + "</div>\n";
             } else if (!e.activations.empty()) {
                 examples += "<p class=\"mono\">activation " + svg_detail::ValueText(e.activations[0]) + "</p>\n";
             }
         }
     }
-    if (doc.histogram_counts.empty()) return Page(heading, "", stats + examples);
+    if (doc.histogram_counts.empty()) return Page(heading, "", stats + examples + extra_html);
     HtmlOptions chart = options;
     chart.title = "Activations";
-    return ChartPage(ToVegaLiteFeatureHistogram(doc, chart), heading, options, stats, examples);
+    return ChartPage(ToVegaLiteFeatureHistogram(doc, chart), heading, options, stats, examples + extra_html);
 }
 
 std::string RenderTokenRelevanceHtml(const TokenRelevanceDocument& doc, const HtmlOptions& options) {

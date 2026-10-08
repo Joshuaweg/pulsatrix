@@ -605,9 +605,10 @@ namespace {
 constexpr const char* k3DmolSri = "sha384-OsczYbldvrHgslr9fFp/i4GiLSeuw9l+QIlv99ITw8soOwXcoGeflFMLg+CU/X1d";
 
 constexpr const char* kStructureScript = R"JS(
-(function () {
-  var d = JSON.parse(document.getElementById('structure-data').textContent);
-  var viewer = $3Dmol.createViewer('viewer', {backgroundColor: 'white'});
+(function (p) {
+  var el = function (name) { return document.getElementById(p + '-' + name); };
+  var d = JSON.parse(el('data').textContent);
+  var viewer = $3Dmol.createViewer(el('viewer'), {backgroundColor: 'white'});
   viewer.addModel(d.structure, d.format);
   viewer.setStyle({}, {cartoon: {color: '#e3e3e3'}});
   viewer.setStyle({hetflag: true}, {stick: {colorscheme: 'grayCarbon', radius: 0.18}});
@@ -622,9 +623,9 @@ constexpr const char* kStructureScript = R"JS(
       return c === undefined ? '#bdbdbd' : c;
     }}});
     viewer.render();
-    document.getElementById('legend-bar').style.background = 'linear-gradient(to right,' + t.stops.join(',') + ')';
-    document.getElementById('legend-lo').textContent = t.lo;
-    document.getElementById('legend-hi').textContent = t.hi;
+    el('legend-bar').style.background = 'linear-gradient(to right,' + t.stops.join(',') + ')';
+    el('legend-lo').textContent = t.lo;
+    el('legend-hi').textContent = t.hi;
   }
   viewer.setHoverable({chain: d.chain, hetflag: false}, true, function (atom, v) {
     if (atom.label) return;
@@ -634,20 +635,23 @@ constexpr const char* kStructureScript = R"JS(
   }, function (atom, v) {
     if (atom.label) { v.removeLabel(atom.label); delete atom.label; }
   });
-  var select = document.getElementById('track');
+  var select = el('track');
   d.tracks.forEach(function (t, i) { var o = document.createElement('option'); o.value = i; o.textContent = t.name; select.appendChild(o); });
   select.addEventListener('change', function () { paint(Number(select.value)); });
   viewer.zoomTo({chain: d.chain});
   paint(0);
-})();
+})
 )JS";
 
 }  // namespace
 
-std::string RenderStructureHtml(const std::string& structure, const std::string& chain_id, const ResidueTracksDocument& tracks,
-                                const HtmlOptions& options) {
-    Check(protein_detail::ResidueTracksProblem(tracks), "RenderStructureHtml");
-    if (tracks.tracks.empty()) throw std::invalid_argument("RenderStructureHtml: the document has no track to color by");
+std::string StructurePanelHtml(const std::string& structure, const std::string& chain_id, const ResidueTracksDocument& tracks,
+                               const HtmlOptions& options, const std::string& id) {
+    if (id.empty() || id.find_first_not_of("abcdefghijklmnopqrstuvwxyz0123456789-") != std::string::npos) {
+        throw std::invalid_argument("StructurePanelHtml: the id must be lowercase letters, digits and hyphens");
+    }
+    Check(protein_detail::ResidueTracksProblem(tracks), "StructurePanelHtml");
+    if (tracks.tracks.empty()) throw std::invalid_argument("StructurePanelHtml: the document has no track to color by");
     const size_t start = structure.find_first_not_of(" \t\r\n");
     const bool mmcif = start != std::string::npos && structure.compare(start, 5, "data_") == 0;
     const ProteinStructure parsed = mmcif ? ParseMmcif(structure) : ParsePdb(structure);
@@ -656,14 +660,14 @@ std::string RenderStructureHtml(const std::string& structure, const std::string&
     std::vector<std::string> ids = tracks.residue_ids;
     if (ids.empty()) {
         if (chain.sequence() != tracks.sequence) {
-            throw std::invalid_argument("RenderStructureHtml: chain " + chain_id + "'s residues (" + std::to_string(chain.residues.size()) +
+            throw std::invalid_argument("StructurePanelHtml: chain " + chain_id + "'s residues (" + std::to_string(chain.residues.size()) +
                                         ") don't match the tracks' sequence; give residue_ids");
         }
         ids = chain_ids;
     } else {
         const std::set<std::string> known(chain_ids.begin(), chain_ids.end());
-        for (const std::string& id : ids) {
-            if (known.count(id) == 0) throw std::invalid_argument("RenderStructureHtml: chain " + chain_id + " has no residue " + id);
+        for (const std::string& rid : ids) {
+            if (known.count(rid) == 0) throw std::invalid_argument("StructurePanelHtml: chain " + chain_id + " has no residue " + rid);
         }
     }
 
@@ -695,23 +699,41 @@ std::string RenderStructureHtml(const std::string& structure, const std::string&
 
     std::string scripts;
     if (options.scripts == HtmlScripts::Inline) {
-        if (options.script_dir.empty()) throw std::invalid_argument("RenderStructureHtml: inline scripts need script_dir");
+        if (options.script_dir.empty()) throw std::invalid_argument("StructurePanelHtml: inline scripts need script_dir");
         scripts = "<script>" + html_detail::ReadScript(options.script_dir, "3Dmol-min.js") + "</script>\n";
     } else {
         scripts = std::string("<script src=\"https://cdn.jsdelivr.net/npm/3dmol@") + k3DmolVersion + "/build/3Dmol-min.js\" integrity=\"" + k3DmolSri +
                   "\" crossorigin=\"anonymous\"></script>\n";
     }
-    const std::string heading = options.title.empty() ? (tracks.title.empty() ? "Structure, chain " + chain_id : tracks.title) : options.title;
     const int height = std::max(320, options.width * 3 / 4);
-    const std::string body =
-        "<h1>" + Escape(heading) + "</h1>\n<div class=\"legend\"><label>Color by <select id=\"track\"></select></label>"
-        "<span id=\"legend-lo\"></span><div class=\"bar\" id=\"legend-bar\"></div><span id=\"legend-hi\"></span>"
-        "<span>gray: no value</span></div>\n<div id=\"viewer\" style=\"position:relative;width:" + std::to_string(options.width) +
-        "px;max-width:100%;height:" + std::to_string(height) + "px;margin-top:12px;border:1px solid #ddd\"></div>\n"
-        "<p class=\"muted\">Drag to rotate, scroll to zoom; hover a residue for its value.</p>\n"
-        "<script type=\"application/json\" id=\"structure-data\">" + html_detail::ScriptSafe(WriteJson(data)) + "</script>\n" + scripts +
-        "<script>" + kStructureScript + "</script>\n";
-    return html_detail::Page(heading, "", body);
+    return "<div class=\"legend\"><label>Color by <select id=\"" + id + "-track\"></select></label><span id=\"" + id +
+           "-legend-lo\"></span><div class=\"bar\" id=\"" + id + "-legend-bar\"></div><span id=\"" + id +
+           "-legend-hi\"></span><span>gray: no value</span></div>\n<div id=\"" + id + "-viewer\" style=\"position:relative;width:" +
+           std::to_string(options.width) + "px;max-width:100%;height:" + std::to_string(height) +
+           "px;margin-top:12px;border:1px solid #ddd\"></div>\n"
+           "<p class=\"muted\">Drag to rotate, scroll to zoom; hover a residue for its value.</p>\n"
+           "<script type=\"application/json\" id=\"" + id + "-data\">" + html_detail::ScriptSafe(WriteJson(data)) + "</script>\n" + scripts +
+           "<script>" + kStructureScript + "('" + id + "');</script>\n";
+}
+
+std::string RenderStructureHtml(const std::string& structure, const std::string& chain_id, const ResidueTracksDocument& tracks,
+                                const HtmlOptions& options) {
+    const std::string heading = options.title.empty() ? (tracks.title.empty() ? "Structure, chain " + chain_id : tracks.title) : options.title;
+    return html_detail::Page(heading, "", "<h1>" + Escape(heading) + "</h1>\n" + StructurePanelHtml(structure, chain_id, tracks, options, "structure"));
+}
+
+std::string RenderFeatureDashboardHtml(const FeatureDashboardDocument& doc, const std::string& structure, const std::string& chain,
+                                       size_t example, const HtmlOptions& options) {
+    if (example >= doc.top_examples.size()) throw std::invalid_argument("RenderFeatureDashboardHtml: no such example");
+    const auto& e = doc.top_examples[example];
+    ResidueTracksDocument tracks;
+    for (const std::string& t : e.tokens) {
+        if (t.size() != 1) throw std::invalid_argument("RenderFeatureDashboardHtml: the example's tokens must be single residues");
+        tracks.sequence += t;
+    }
+    tracks.tracks.push_back({"feature " + std::to_string(doc.feature_index) + " activation", e.activations, false});
+    const std::string panel = "<h1>On the structure: " + Escape(e.label) + "</h1>\n" + StructurePanelHtml(structure, chain, tracks, options, "panel");
+    return RenderFeatureDashboardHtml(doc, options, panel);
 }
 
 }  // namespace pulsatrix

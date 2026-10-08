@@ -545,6 +545,90 @@ What this says:
 The run takes 2 minutes for ubiquitin (128 residues) and 6 for TEM-1 (286), most of it the
 profile.
 
+## Probes and features
+
+What do the representations encode? `protein_concepts.hpp` answers this two ways, with labels
+from Swiss-Prot. `tools/plm/fetch_swissprot_annotations.py` draws 3,000 reviewed proteins
+that have 3D structures, so their helices and strands come from structures. Their binding and
+active sites, disulfides, signal peptides, transmembrane spans and more come along too.
+
+- **Probes** ask whether a concept can be read out of a layer linearly.
+  - `EmbedResidues` keeps each residue's representation at chosen layers.
+  - `TrainLinearProbe` trains a softmax probe and scores held-out proteins.
+
+  Every probe comes with two controls:
+  - the same probe on the residue's local sequence (one-hot, ±3 residues, from
+    `SequenceWindowFeatures`);
+  - the same layer of a randomly initialized model.
+
+  Hewitt and Liang's control task, labels fixed per token type, is no control here: with only 20
+  amino acids, a linear probe learns it perfectly from any representation.
+- **Features** ask which directions the model uses unprompted, following InterPLM.
+  1. A sparse autoencoder ([featurizer](../mechanistic-interpretability/index.md#featurizers)) is
+     trained on one layer's residues, each dimension standardized.
+  2. `MatchConcept` scores every feature against every concept, by the best F1 over activation
+     thresholds.
+  3. The baselines are single neurons and an SAE trained on a random model.
+
+`tools/plm/pulsatrix_probe_esm` runs both. `--probes` tests every layer. `--sae` trains the SAE
+and writes a feature dashboard for each concept's best feature. When an AlphaFold model is
+available, the dashboard draws the top protein in 3D, colored by the feature (`--structures`).
+
+**Probes**, on 600 proteins split 80/20 by protein. Each cell gives the probe at its best layer,
+then its gain over the local-sequence control, then the random model at that layer. Secondary
+structure is three-state balanced accuracy; the other concepts are ROC AUC.
+
+| Concept | ESM-2 8M | ESM-2 650M (layer 33) |
+|---|---|---|
+| Secondary structure | 0.66 (layer 5), +0.20, 0.40 | 0.71, +0.25, 0.38 |
+| Binding site | 0.83 (layer 3), +0.13, 0.67 | 0.80, +0.11, 0.67 |
+| Active site | 0.89 (layer 5), +0.07, 0.75 | 0.93, +0.11, 0.72 |
+| Zinc finger | 0.995 (layer 5), +0.25, 0.95 | 0.99, +0.24, 0.50 |
+| Motif | 0.76 (layer 6), +0.18, 0.63 | 0.70, +0.12, 0.59 |
+| Signal peptide | 0.999, +0.11, 0.86 | 0.999, +0.11, 0.82 |
+| Transmembrane | 0.997, +0.08, 0.92 | 0.99, +0.07, 0.87 |
+| Disulfide bond | 0.997, +0.00, 0.997 | 0.99, −0.01, 1.00 |
+
+- **The controls matter.**
+  - Disulfide bonds score 0.99 at every layer, and on the random model too: the probe only
+    finds the cysteines, and sequence alone does as well.
+  - Signal peptides, transmembrane spans and coiled coils are nearly as easy from local sequence
+    and composition, so the model's gain there is small.
+- **Where the model adds most.** Secondary structure, zinc fingers and binding sites gain the
+  most over local sequence. 650M's last layer is ahead on secondary structure and active sites.
+- **Layer 0 isn't a baseline.** Its representation is the residue alone, without neighbors,
+  which is why it falls below the local-sequence control.
+- **Possible leakage.** The split separates proteins but doesn't cluster them by sequence, so
+  homologs on both sides can flatter the numbers.
+
+**SAE features**, ESM-2 8M layer 4: 2,560 latents trained on 1,600 proteins' residues, held-out
+L0 17, 66% of the variance explained. Best F1 of a single feature against each concept on 400
+held-out proteins:
+
+| Concept | SAE feature | Best single neuron | SAE on a random model |
+|---|---|---|---|
+| Disulfide bond | 0.69 | 0.18 | 0.39 |
+| Transmembrane | 0.52 | 0.53 | 0.34 |
+| Signal peptide | 0.44 | 0.34 | 0.08 |
+| Zinc finger | 0.29 | 0.05 | 0.12 |
+| Coiled coil | 0.29 | 0.05 | 0.26 |
+| Beta strand | 0.16 | 0.33 | 0.13 |
+| Helix | 0.16 | 0.50 | 0.11 |
+| Binding site | 0.12 | 0.08 | 0.11 |
+| Active site | 0.05 | 0.05 | 0.03 |
+
+The zinc-finger feature's dashboard shows it lighting the annotated zinc fingers of its top
+proteins, such as Q9LZR5's residues 267 to 287, with an activation histogram and the protein's
+AlphaFold model colored by the feature.
+
+- **Where features win.** Sparse, local concepts get single features that neurons don't have:
+  disulfide-bonded cysteines, signal peptides, zinc fingers, coiled coils.
+- **Where neurons win.** Concepts covering a third of all residues, such as helices and strands,
+  are spread over many features, so no single sparse one recalls them.
+- **The random model.** A random model's SAE finds some concepts too: disulfides, since a
+  feature for "cysteine" goes a long way, and coiled coils, from their sequence repeats. So a
+  feature matching a concept is a lead to check, not proof the model learned it.
+
 ## Checking against Hugging Face
 
 `tools/golden/make_esm_golden.py` records transformers' outputs for a model:
