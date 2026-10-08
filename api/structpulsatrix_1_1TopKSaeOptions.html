@@ -118,6 +118,15 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a0bcc241932b756f54985d5ec466868f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ce00159d667b41393da8d484e2d9c71" id="r_a4ce00159d667b41393da8d484e2d9c71"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TopKSaeOptions.html#a4ce00159d667b41393da8d484e2d9c71">seed</a> = 0</td></tr>
 <tr class="separator:a4ce00159d667b41393da8d484e2d9c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64904ecf6cd53cf702c9cd9601f304fd" id="r_a64904ecf6cd53cf702c9cd9601f304fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TopKSaeOptions.html#a64904ecf6cd53cf702c9cd9601f304fd">batch_topk</a> = false</td></tr>
+<tr class="memdesc:a64904ecf6cd53cf702c9cd9601f304fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">BatchTopK: in training, keep the batch's <code>N * k</code> largest activations wherever they fall, so L0 is k on average and inputs that need more latents get them. Inference uses a threshold instead, an exponential moving average of the smallest kept value per training batch (threshold()), so an input's codes don't depend on its batch.  <br /></td></tr>
+<tr class="separator:a64904ecf6cd53cf702c9cd9601f304fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc21a1c7e6b9cd34225e5dd53ab52b4" id="r_a5fc21a1c7e6b9cd34225e5dd53ab52b4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TopKSaeOptions.html#a5fc21a1c7e6b9cd34225e5dd53ab52b4">threshold_decay</a> = 0.99f</td></tr>
+<tr class="memdesc:a5fc21a1c7e6b9cd34225e5dd53ab52b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The threshold's moving-average decay, per training batch.  <br /></td></tr>
+<tr class="separator:a5fc21a1c7e6b9cd34225e5dd53ab52b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c64836deb62326d11041de07ab5bbb" id="r_a96c64836deb62326d11041de07ab5bbb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TopKSaeOptions.html#a96c64836deb62326d11041de07ab5bbb">matryoshka_prefixes</a></td></tr>
+<tr class="memdesc:a96c64836deb62326d11041de07ab5bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matryoshka: nested dictionary sizes, increasing (for example {m/16, m/4, m}); the full size is added if missing. Training minimizes the sum of every prefix's reconstruction error, the prefix using only latents [0, size), so the first latents learn general features on their own and the later ones refine them. Empty: off.  <br /></td></tr>
+<tr class="separator:a96c64836deb62326d11041de07ab5bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a8c842b9f74a139244f693e4fd986ab4b" name="a8c842b9f74a139244f693e4fd986ab4b"></a>
@@ -133,6 +142,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The auxiliary loss's weight, 1/32 in Gao et al.; 0 turns it off. </p>
+
+</div>
+</div>
+<a id="a64904ecf6cd53cf702c9cd9601f304fd" name="a64904ecf6cd53cf702c9cd9601f304fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64904ecf6cd53cf702c9cd9601f304fd">&#9670;&#160;</a></span>batch_topk</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::TopKSaeOptions::batch_topk = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>BatchTopK: in training, keep the batch's <code>N * k</code> largest activations wherever they fall, so L0 is k on average and inputs that need more latents get them. Inference uses a threshold instead, an exponential moving average of the smallest kept value per training batch (threshold()), so an input's codes don't depend on its batch. </p>
 
 </div>
 </div>
@@ -184,6 +209,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a96c64836deb62326d11041de07ab5bbb" name="a96c64836deb62326d11041de07ab5bbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96c64836deb62326d11041de07ab5bbb">&#9670;&#160;</a></span>matryoshka_prefixes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int64_t&gt; pulsatrix::TopKSaeOptions::matryoshka_prefixes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Matryoshka: nested dictionary sizes, increasing (for example {m/16, m/4, m}); the full size is added if missing. Training minimizes the sum of every prefix's reconstruction error, the prefix using only latents [0, size), so the first latents learn general features on their own and the later ones refine them. Empty: off. </p>
+
+</div>
+</div>
 <a id="a4ce00159d667b41393da8d484e2d9c71" name="a4ce00159d667b41393da8d484e2d9c71"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4ce00159d667b41393da8d484e2d9c71">&#9670;&#160;</a></span>seed</h2>
 
@@ -195,6 +236,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5fc21a1c7e6b9cd34225e5dd53ab52b4" name="a5fc21a1c7e6b9cd34225e5dd53ab52b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fc21a1c7e6b9cd34225e5dd53ab52b4">&#9670;&#160;</a></span>threshold_decay</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float pulsatrix::TopKSaeOptions::threshold_decay = 0.99f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The threshold's moving-average decay, per training batch. </p>
 
 </div>
 </div>

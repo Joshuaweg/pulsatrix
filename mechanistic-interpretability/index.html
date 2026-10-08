@@ -743,6 +743,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#batchtopk-matryoshka-and-jumprelu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BatchTopK, Matryoshka and JumpReLU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#measuring-a-featurizer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1838,6 +1849,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#batchtopk-matryoshka-and-jumprelu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BatchTopK, Matryoshka and JumpReLU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#measuring-a-featurizer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2090,6 +2112,146 @@ and zeroes the rest, so L0 is k by construction and there is no L1 penalty:</p>
   rendering of the method (<code>tools/golden/make_topk_sae_golden.py</code>) to 1e-5.</li>
 <li><strong>Resuming training.</strong> Checkpoints hold the parameters. Save <code>inputs_since_fired()</code> too, and
   restore it with <code>set_inputs_since_fired()</code>, or every latent starts out alive again.</li>
+</ul>
+<h4 id="batchtopk-matryoshka-and-jumprelu">BatchTopK, Matryoshka and JumpReLU<a class="headerlink" href="#batchtopk-matryoshka-and-jumprelu" title="Permanent link">&para;</a></h4>
+<p>Three variants fix specific failures of TopK:</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Fixes</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BatchTopK (Bussmann et al., arXiv 2412.06410): <code>TopKSaeOptions::batch_topk</code></td>
+<td>Every input gets exactly k latents, however much it contains</td>
+<td>Training keeps the batch's <code>N * k</code> largest activations wherever they fall. Inference uses a threshold learned from training (<code>threshold()</code>, saved in checkpoints)</td>
+</tr>
+<tr>
+<td>Matryoshka (Bussmann et al., arXiv 2503.17547): <code>matryoshka_prefixes</code></td>
+<td>Absorption, and features split as the dictionary grows</td>
+<td>The loss sums the reconstruction errors of nested prefixes, <code>[0, m/16)</code>, <code>[0, m/4)</code> and all <code>m</code>, so the first latents must work alone and learn general features</td>
+</tr>
+<tr>
+<td>JumpReLU (Rajamanoharan et al., arXiv 2407.14435): <code>JumpReLUSparseAutoencoder</code></td>
+<td>L0 fixed by hand instead of learned</td>
+<td>Each latent learns a threshold θ, and the loss penalizes L0 directly (λ). The step's gradient comes from straight-through estimators with a rectangle kernel</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="n">TopKSaeOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span>
+<span class="n">o</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="n">o</span><span class="p">.</span><span class="n">batch_topk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="n">o</span><span class="p">.</span><span class="n">matryoshka_prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">256</span><span class="p">,</span><span class="w"> </span><span class="mi">1024</span><span class="p">};</span><span class="w">         </span><span class="c1">// 4096 is added</span>
+<span class="n">TopKSparseAutoencoder</span><span class="w"> </span><span class="nf">matryoshka</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+
+<span class="n">JumpReLUSaeOptions</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="n">j</span><span class="p">.</span><span class="n">l0_coefficient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">;</span><span class="w">                    </span><span class="c1">// λ: higher means sparser</span>
+<span class="n">JumpReLUSparseAutoencoder</span><span class="w"> </span><span class="nf">jump</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
+</code></pre></div>
+<p>On synthetic data (<code>tests/sae_variants_test.cpp</code>):
+- <strong>BatchTopK spends latents where inputs need them.</strong> It uses 1.1 latents on one-direction
+  inputs and 4.6 on five-direction inputs, at an average of k = 3.
+- <strong>Matryoshka stops absorption.</strong> The data is Chanin et al.'s toy hierarchy: a parent feature
+  with ten rare children. The parent is absorbed into its children in 6.6% to 12.6% of inputs
+  with plain BatchTopK (four data seeds), and in none with Matryoshka.
+- <strong>JumpReLU's λ trades L0 for reconstruction.</strong> At λ = 0.005, L0 is 6.3 and 2 of 12 true
+  directions are recovered. At λ = 0.05, L0 is 2.6 and all 12 are. Too little penalty spreads
+  features across latents.</p>
+<p>All three match PyTorch renderings of their papers (<code>tools/golden/make_sae_variants_golden.py</code>)
+in loss, gradients and two Adam steps.</p>
+<p><strong>On ESM-2 8M</strong> (layer 4, 2,560 latents, the setup below). <code>pulsatrix_probe_esm --featurizer</code>
+trains each variant. JumpReLU's L0 isn't set directly: λ = 0.005 gave 12.6, 0.01 gave 7.6 and
+0.02 gave 4.9.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>L1</th>
+<th>TopK</th>
+<th>BatchTopK</th>
+<th>Matryoshka</th>
+<th>JumpReLU (λ 0.005)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0</td>
+<td>17.0</td>
+<td>16.0</td>
+<td>16.5</td>
+<td>16.5</td>
+<td>12.6</td>
+</tr>
+<tr>
+<td>Explained variance</td>
+<td>0.66</td>
+<td>0.78</td>
+<td>0.78</td>
+<td>0.77</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>Loss recovered</td>
+<td>0.90</td>
+<td>0.96</td>
+<td>0.95</td>
+<td>0.90</td>
+<td>0.95</td>
+</tr>
+<tr>
+<td>Helix: best feature's F1</td>
+<td>0.16</td>
+<td>0.33</td>
+<td>0.33</td>
+<td><strong>0.48</strong></td>
+<td>0.37</td>
+</tr>
+<tr>
+<td>Transmembrane: best feature's F1</td>
+<td>0.52</td>
+<td>0.63</td>
+<td>0.69</td>
+<td><strong>0.78</strong></td>
+<td>0.73</td>
+</tr>
+<tr>
+<td>Absorbed: helix (random model)</td>
+<td>42% (10%)</td>
+<td>25% (15%)</td>
+<td>27% (5%)</td>
+<td><strong>22%</strong> (15%)</td>
+<td>29% (8%)</td>
+</tr>
+<tr>
+<td>Absorbed: strand (random model)</td>
+<td>57% (1%)</td>
+<td>50% (8%)</td>
+<td>38% (16%)</td>
+<td><strong>35%</strong> (10%)</td>
+<td>38% (8%)</td>
+</tr>
+<tr>
+<td>Absorbed: transmembrane (random model)</td>
+<td>34% (21%)</td>
+<td>30% (17%)</td>
+<td>19% (2%)</td>
+<td><strong>9%</strong> (4%)</td>
+<td>34% (11%)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Matryoshka finds the cleanest concept features.</strong> It absorbs least, and its best single
+  features match helix and transmembrane residues best. As Bussmann et al. report, it pays in
+  reconstruction: it recovers 0.90 of the loss to TopK's 0.96.</li>
+<li><strong>BatchTopK matches TopK</strong> in reconstruction and absorbs less.</li>
+<li><strong>JumpReLU matches TopK's loss recovered with 12.6 latents</strong> instead of 16. It absorbs no
+  less.</li>
+<li>The random model's absorption is the floor for each figure. For example, Matryoshka's 9% on
+  transmembrane is close to its random-model 4%.</li>
 </ul>
 <h4 id="measuring-a-featurizer">Measuring a featurizer<a class="headerlink" href="#measuring-a-featurizer" title="Permanent link">&para;</a></h4>
 <p><code>featurizer_metrics.hpp</code> holds SAEBench's core measures (Karvonen et al., arXiv 2503.09532).

@@ -113,6 +113,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "integrated_gradients.hpp", "integrated__gradients_8hpp.html", "integrated__gradients_8hpp" ],
     [ "iterable_dataset.hpp", "iterable__dataset_8hpp.html", "iterable__dataset_8hpp" ],
     [ "json.hpp", "json_8hpp.html", "json_8hpp" ],
+    [ "jumprelu_sparse_autoencoder.hpp", "jumprelu__sparse__autoencoder_8hpp.html", "jumprelu__sparse__autoencoder_8hpp" ],
     [ "kernel_shap.hpp", "kernel__shap_8hpp.html", "kernel__shap_8hpp" ],
     [ "kl_divergence_loss.hpp", "kl__divergence__loss_8hpp.html", "kl__divergence__loss_8hpp" ],
     [ "kv_cache.hpp", "kv__cache_8hpp.html", "kv__cache_8hpp" ],
