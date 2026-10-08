@@ -720,6 +720,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#featurizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Featurizers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#building-a-circuit-graph" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1776,6 +1787,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#featurizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Featurizers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#building-a-circuit-graph" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1894,7 +1916,8 @@ model's or environment's structure.</p>
 <li><strong>Probing</strong>: <code>LinearProbe</code> trains a linear classifier to test whether a binary concept is
   linearly decodable from a layer's activations.</li>
 <li><strong>Decomposition</strong>: <code>SparseAutoencoder</code> reconstructs activations through a wider hidden layer
-  with an L1 penalty, so each example uses only a few hidden units. <code>CircuitGraph</code> scores
+  with an L1 penalty, so each example uses only a few hidden units. It is the first
+  <a href="#featurizers">featurizer</a>. <code>CircuitGraph</code> scores
   every node by how much zeroing it changes the output.</li>
 <li><strong>Baselines</strong>: compare a probe's accuracy or a sparse autoencoder's statistics against a
   randomly re-initialized copy of the model with <code>NullModelBaseline</code>
@@ -1945,6 +1968,44 @@ linearly decodable from that layer. Chance-level accuracy means it is not, at le
 linearly. The probe accepts any <code>(N, activation_dim)</code> batch, so you can also test it on
 synthetic data first as a sanity check.</p>
 <p>Recipe: <a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/">Sparse autoencoder + linear probe</a>.</p>
+<h3 id="featurizers">Featurizers<a class="headerlink" href="#featurizers" title="Permanent link">&para;</a></h3>
+<p>A featurizer rewrites activations <code>x</code> as sparse codes <code>f = encode(x)</code> over learned directions
+and reconstructs <code>x ≈ decode(f)</code>: feature i writes along its decoder direction. Sparse
+autoencoders, and the TopK, JumpReLU and block-sparse variants planned in the FEAT epic, share
+one interface (<code>featurizer.hpp</code>), so training and metrics work for all of them:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/featurizer.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/sparse_autoencoder.hpp"</span>
+
+<span class="n">SparseAutoencoder</span><span class="w"> </span><span class="nf">sae</span><span class="p">(</span><span class="cm">/*dim=*/</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="cm">/*hidden_dim=*/</span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="cm">/*l1_lambda=*/</span><span class="mf">1e-3f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">opt</span><span class="p">(</span><span class="mf">1e-3f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">FeatureActivityTracker</span><span class="w"> </span><span class="nf">activity</span><span class="p">(</span><span class="n">sae</span><span class="p">.</span><span class="n">num_features</span><span class="p">());</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">batches</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">FeaturizerLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">,</span><span class="w"> </span><span class="cm">/*unit_norm_decoder=*/</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">activity</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">l0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeanL0</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span><span class="w">                      </span><span class="c1">// active features per input</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">activity</span><span class="p">.</span><span class="n">dead</span><span class="p">(</span><span class="mi">1'000'000</span><span class="p">);</span><span class="w">   </span><span class="c1">// silent for the last million inputs</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dense</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">activity</span><span class="p">.</span><span class="n">dense</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span><span class="w">       </span><span class="c1">// firing on more than 10% of inputs</span>
+</code></pre></div>
+<ul>
+<li><strong>Unit-norm decoders.</strong> After every step each decoder direction is rescaled to unit length.
+  The scale moves into the encoder, which a ReLU passes through unchanged, so reconstructions
+  don't move.</li>
+</ul>
+<p>Without it, an L1 penalty is largely paid by shrinking every code and growing the decoder.
+  On the control data in <code>tests/sparse_autoencoder_test.cpp</code>, a penalty of 0.05 with free
+  decoders cuts the mean activation to 0.19 of the unpenalized run's but L0 only to 0.58. With
+  unit-norm decoders it cuts L0 to 0.21. Judge sparsity by L0, not the mean activation.
+- <strong>Dead and dense latents.</strong> <code>FeatureActivityTracker</code> counts how often each feature fires and
+  when it last did.
+  - Dead features never fire, so they never learn.
+  - Dense ones fire on most inputs and usually encode a bias, not a concept.</p>
+<p>Both waste capacity; report them with every featurizer.
+- <strong>The SAE is a Module.</strong> It maps input to reconstruction, with <code>backward()</code>, LRP and
+  parameters named <code>encoder.*</code> and <code>decoder.*</code>, so checkpoints and optimizers work as for any
+  model.</p>
+<p>A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
+whether its directions mean anything. Compare features with probes and with a randomly
+initialized model's.</p>
 <h3 id="building-a-circuit-graph">Building a circuit graph<a class="headerlink" href="#building-a-circuit-graph" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explainer_context.hpp"</span>

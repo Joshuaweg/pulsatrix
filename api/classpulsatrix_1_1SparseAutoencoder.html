@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1SparseAutoencoder.ht
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classpulsatrix_1_1SparseAutoencoder-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::SparseAutoencoder Class Reference</div></div>
 </div><!--header-->
@@ -104,6 +105,30 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1SparseAutoencoder.ht
  <a href="classpulsatrix_1_1SparseAutoencoder.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="sparse__autoencoder_8hpp_source.html">sparse_autoencoder.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for pulsatrix::SparseAutoencoder:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpulsatrix_1_1SparseAutoencoder__inherit__graph.png" border="0" usemap="#apulsatrix_1_1SparseAutoencoder_inherit__map" alt="Inheritance graph"/></div>
+<map name="apulsatrix_1_1SparseAutoencoder_inherit__map" id="apulsatrix_1_1SparseAutoencoder_inherit__map">
+<area shape="rect" title="A sparse autoencoder (SAE): LinearModule(dim, hidden_dim) &#45;&gt; ReluModule &#45;&gt; LinearModule(hidden_dim,..." alt="" coords="50,79,263,104"/>
+<area shape="rect" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...)." alt="" coords="5,5,140,31"/>
+<area shape="poly" title=" " alt="" coords="98,38,145,76,141,80,95,42"/>
+<area shape="rect" href="classpulsatrix_1_1Featurizer.html" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),..." alt="" coords="165,5,317,31"/>
+<area shape="poly" title=" " alt="" coords="218,42,172,80,169,76,215,38"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for pulsatrix::SparseAutoencoder:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpulsatrix_1_1SparseAutoencoder__coll__graph.png" border="0" usemap="#apulsatrix_1_1SparseAutoencoder_coll__map" alt="Collaboration graph"/></div>
+<map name="apulsatrix_1_1SparseAutoencoder_coll__map" id="apulsatrix_1_1SparseAutoencoder_coll__map">
+<area shape="rect" title="A sparse autoencoder (SAE): LinearModule(dim, hidden_dim) &#45;&gt; ReluModule &#45;&gt; LinearModule(hidden_dim,..." alt="" coords="50,79,263,104"/>
+<area shape="rect" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...)." alt="" coords="5,5,140,31"/>
+<area shape="poly" title=" " alt="" coords="98,38,145,76,141,80,95,42"/>
+<area shape="rect" href="classpulsatrix_1_1Featurizer.html" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),..." alt="" coords="165,5,317,31"/>
+<area shape="poly" title=" " alt="" coords="218,42,172,80,169,76,215,38"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -116,6 +141,54 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad998baf773ce0b6e05bfbb0ee75fdd10"><td class="memTemplItemLeft" align="right" valign="top">float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10">train_step</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input_batch, OptimizerT &amp;optimizer)</td></tr>
 <tr class="memdesc:ad998baf773ce0b6e05bfbb0ee75fdd10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injected at the hidden layer, one optimizer update of the encoder's and decoder's parameters.  <br /></td></tr>
 <tr class="separator:ad998baf773ce0b6e05bfbb0ee75fdd10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a238312dc4a9fb2548f3a3bcddb912907" id="r_a238312dc4a9fb2548f3a3bcddb912907"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a238312dc4a9fb2548f3a3bcddb912907">input_dim</a> () const override</td></tr>
+<tr class="separator:a238312dc4a9fb2548f3a3bcddb912907"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd947c6840f4d21082c986e1ee1863c0" id="r_afd947c6840f4d21082c986e1ee1863c0"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#afd947c6840f4d21082c986e1ee1863c0">num_features</a> () const override</td></tr>
+<tr class="separator:afd947c6840f4d21082c986e1ee1863c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab76c58cc4bb37b253204bcf93c3eeefd" id="r_ab76c58cc4bb37b253204bcf93c3eeefd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ab76c58cc4bb37b253204bcf93c3eeefd">encode</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x) override</td></tr>
+<tr class="memdesc:ab76c58cc4bb37b253204bcf93c3eeefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ReLU codes, <code>(N, hidden_dim)</code>.  <br /></td></tr>
+<tr class="separator:ab76c58cc4bb37b253204bcf93c3eeefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343febaa391644c8210f2029e4a0d648" id="r_a343febaa391644c8210f2029e4a0d648"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a343febaa391644c8210f2029e4a0d648">decode</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;codes) override</td></tr>
+<tr class="memdesc:a343febaa391644c8210f2029e4a0d648"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reconstruction from codes, <code>(N, dim)</code>.  <br /></td></tr>
+<tr class="separator:a343febaa391644c8210f2029e4a0d648"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881a3069e30e010a6b338cb5c1cccb2c" id="r_a881a3069e30e010a6b338cb5c1cccb2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a881a3069e30e010a6b338cb5c1cccb2c">loss_and_backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input_batch, std::vector&lt; float &gt; *codes=nullptr) override</td></tr>
+<tr class="memdesc:a881a3069e30e010a6b338cb5c1cccb2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mean squared reconstruction error plus <code>l1_lambda * mean_over_inputs(sum_i f_i)</code>, with both gradients added to the parameters'. See <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10" title="Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injec...">train_step()</a> for the L1 term's gradient.  <br /></td></tr>
+<tr class="separator:a881a3069e30e010a6b338cb5c1cccb2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6609a74baee393de44cd646fcc0299d" id="r_ac6609a74baee393de44cd646fcc0299d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ac6609a74baee393de44cd646fcc0299d">normalize_decoder</a> () override</td></tr>
+<tr class="memdesc:ac6609a74baee393de44cd646fcc0299d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit-norm decoder rows, the norm moved into the encoder's row and bias: the ReLU passes a positive scale through, so reconstructions don't change. A feature whose direction is zero is left alone.  <br /></td></tr>
+<tr class="separator:ac6609a74baee393de44cd646fcc0299d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0e4444e4f7ea020d8a2c68d3b0864e9" id="r_ae0e4444e4f7ea020d8a2c68d3b0864e9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ae0e4444e4f7ea020d8a2c68d3b0864e9">decoder_direction</a> (int64_t i) override</td></tr>
+<tr class="memdesc:ae0e4444e4f7ea020d8a2c68d3b0864e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feature <code>i's</code> decoder direction, <code>input_dim</code> values.  <br /></td></tr>
+<tr class="separator:ae0e4444e4f7ea020d8a2c68d3b0864e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275cf2ff176d969d726373652f7ec946" id="r_a275cf2ff176d969d726373652f7ec946"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a275cf2ff176d969d726373652f7ec946">parameters_module</a> () override</td></tr>
+<tr class="memdesc:a275cf2ff176d969d726373652f7ec946"><td class="mdescLeft">&#160;</td><td class="mdescRight">The trainable parameters, for an optimizer's <code>step()</code> and <code>zero_grad()</code>, and for checkpoints.  <br /></td></tr>
+<tr class="separator:a275cf2ff176d969d726373652f7ec946"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa364a1cfcd19ddf57467d747696406d2" id="r_aa364a1cfcd19ddf57467d747696406d2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#aa364a1cfcd19ddf57467d747696406d2">unit_norm_decoder</a> () const</td></tr>
+<tr class="memdesc:aa364a1cfcd19ddf57467d747696406d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10" title="Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injec...">train_step()</a> keeps decoder directions at unit norm (the default).  <br /></td></tr>
+<tr class="separator:aa364a1cfcd19ddf57467d747696406d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afef6355977b30977cfc7e8cdc2665ced" id="r_afef6355977b30977cfc7e8cdc2665ced"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#afef6355977b30977cfc7e8cdc2665ced">set_unit_norm_decoder</a> (bool on)</td></tr>
+<tr class="separator:afef6355977b30977cfc7e8cdc2665ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acab371f7463a0fcff2d7787c90bdf6a6" id="r_acab371f7463a0fcff2d7787c90bdf6a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
+<tr class="memdesc:acab371f7463a0fcff2d7787c90bdf6a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backward from the reconstruction's gradient to the input's, through the decoder, the ReLU and the encoder, adding to their parameters' gradients.  <br /></td></tr>
+<tr class="separator:acab371f7463a0fcff2d7787c90bdf6a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a249f00b5ef70003542f58d9b995d1241" id="r_a249f00b5ef70003542f58d9b995d1241"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a249f00b5ef70003542f58d9b995d1241">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
+<tr class="memdesc:a249f00b5ef70003542f58d9b995d1241"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each layer's own rule, from the reconstruction back to the input.  <br /></td></tr>
+<tr class="separator:a249f00b5ef70003542f58d9b995d1241"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1475c824975108737b846055e25cfd18" id="r_a1475c824975108737b846055e25cfd18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a1475c824975108737b846055e25cfd18">op_type</a> () const override</td></tr>
+<tr class="memdesc:a1475c824975108737b846055e25cfd18"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's operation-category tag, for <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> node tagging.  <br /></td></tr>
+<tr class="separator:a1475c824975108737b846055e25cfd18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a684de1aef40b9c1b7e2093ff0a9d4b10" id="r_a684de1aef40b9c1b7e2093ff0a9d4b10"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a684de1aef40b9c1b7e2093ff0a9d4b10">named_parameters</a> () override</td></tr>
+<tr class="memdesc:a684de1aef40b9c1b7e2093ff0a9d4b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1).  <br /></td></tr>
+<tr class="separator:a684de1aef40b9c1b7e2093ff0a9d4b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade099a137ffc31a4ee2b73d6af214949" id="r_ade099a137ffc31a4ee2b73d6af214949"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ade099a137ffc31a4ee2b73d6af214949">compute_device</a> () const override</td></tr>
+<tr class="memdesc:ade099a137ffc31a4ee2b73d6af214949"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device this module computes on, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> can reject an input on another device before any kernel sees it (roadmap FND-8).  <br /></td></tr>
+<tr class="separator:ade099a137ffc31a4ee2b73d6af214949"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1213f2af5d06115e2e0e1668a30129af" id="r_a1213f2af5d06115e2e0e1668a30129af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a1213f2af5d06115e2e0e1668a30129af">set_training</a> (bool training) override</td></tr>
+<tr class="memdesc:a1213f2af5d06115e2e0e1668a30129af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default).  <br /></td></tr>
+<tr class="separator:a1213f2af5d06115e2e0e1668a30129af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e1dfb3917389be437209de007df00cd" id="r_a4e1dfb3917389be437209de007df00cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a4e1dfb3917389be437209de007df00cd">release_activations</a> () override</td></tr>
+<tr class="memdesc:a4e1dfb3917389be437209de007df00cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the tensors <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> kept for <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6" title="Backward from the reconstruction&#39;s gradient to the input&#39;s, through the decoder, the ReLU and the enc...">backward()</a> and the relevance passes; containers release their children too. Inference that only needs the output calls it after each forward, so a deep model holds one layer's activations at a time (a 1024-token ESM-2 650M pass otherwise keeps over 10 GB of them).  <br /></td></tr>
+<tr class="separator:a4e1dfb3917389be437209de007df00cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab2de8d942a7bcbfb32d837139fa970d" id="r_aab2de8d942a7bcbfb32d837139fa970d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#aab2de8d942a7bcbfb32d837139fa970d">reconstruct</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input_batch) const</td></tr>
 <tr class="memdesc:aab2de8d942a7bcbfb32d837139fa970d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SAE's reconstruction of a batch &ndash; the encoder-&gt;ReLU-&gt;decoder forward path, forward-only: no loss, no backward, no parameter update.  <br /></td></tr>
 <tr class="separator:aab2de8d942a7bcbfb32d837139fa970d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,6 +219,39 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1af230a4ca6ec3dd12ebae76f6e640fa" id="r_a1af230a4ca6ec3dd12ebae76f6e640fa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1LinearModule.html">LinearModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a1af230a4ca6ec3dd12ebae76f6e640fa">decoder</a> () const</td></tr>
 <tr class="memdesc:a1af230a4ca6ec3dd12ebae76f6e640fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const overload of <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ace9b3723207021b67c6126f1c0d4f5c0" title="The decoder – same rationale as encoder().">decoder()</a>.  <br /></td></tr>
 <tr class="separator:a1af230a4ca6ec3dd12ebae76f6e640fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
+<tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
+<tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module" id="r_a5cb3b4aac3d2364c973009413fde6a21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21">forward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input)</td></tr>
+<tr class="memdesc:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs this module's forward computation.  <br /></td></tr>
+<tr class="separator:a5cb3b4aac3d2364c973009413fde6a21 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module" id="r_a91e80b510f8f04ca2911532dabe16879"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a91e80b510f8f04ca2911532dabe16879">forward_traced</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, <a class="el" href="namespacepulsatrix.html#a2b8dc3d7d2cef35f192d191f09156e67">NodeId</a> input_node, <a class="el" href="classpulsatrix_1_1ComputationGraph.html">ComputationGraph</a> &amp;graph, <a class="el" href="classpulsatrix_1_1Autograd.html">Autograd</a> &amp;autograd)</td></tr>
+<tr class="memdesc:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> while also registering a <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> node (tagged with this module's <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e" title="This module&#39;s operation-category tag, for ComputationGraph node tagging.">op_type()</a>, parented to input_node) and wiring an <a class="el" href="classpulsatrix_1_1Autograd.html" title="Computes gradients by walking a ComputationGraph in reverse topological order.">Autograd</a> backward function that reuses this module's own <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a" title="Computes the gradient w.r.t. this module&#39;s input, given the gradient w.r.t. its output....">backward()</a> &ndash; the opt-in traced/explainable path, per Phase 2 Mission 0.  <br /></td></tr>
+<tr class="separator:a91e80b510f8f04ca2911532dabe16879 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module" id="r_acad2aa6565d456d5a57be421c05537b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a> rule) const</td></tr>
+<tr class="memdesc:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683" title="Computes this module&#39;s contribution to LRP relevance propagation.">propagate_relevance()</a> implements <code>rule</code> (no silent fallback: callers such as <a class="el" href="classpulsatrix_1_1ExplainerContext.html#aa2523c0bf46521532e9aa406efc7558b" title="Propagates LRP relevance from the network output back to the input through every module&#39;s own propaga...">ExplainerContext::relevance_pass()</a> throw rather than run a module on a rule it does not implement).  <br /></td></tr>
+<tr class="separator:acad2aa6565d456d5a57be421c05537b6 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module" id="r_a05e4c9483d5577e3da94df3ee55e7699"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">named_buffers</a> ()</td></tr>
+<tr class="memdesc:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's buffers: state a checkpoint must save that no optimizer updates.  <br /></td></tr>
+<tr class="separator:a05e4c9483d5577e3da94df3ee55e7699 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module" id="r_a06b89fd2a7cc85503196c85f3c9ea17f"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="structpulsatrix_1_1ParamRef.html">ParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f">parameters</a> ()</td></tr>
+<tr class="memdesc:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">This module's trainable parameters and their gradients, for an optimizer to update uniformly across module types.  <br /></td></tr>
+<tr class="separator:a06b89fd2a7cc85503196c85f3c9ea17f inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module" id="r_a2a5c993f1497ed7cd88654d6058f80c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a2a5c993f1497ed7cd88654d6058f80c2">set_requires_grad</a> (bool requires_grad, const std::string &amp;prefix=&quot;&quot;)</td></tr>
+<tr class="memdesc:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Freezes (<code>false</code>) or unfreezes (<code>true</code>) parameters by name (roadmap FND-2).  <br /></td></tr>
+<tr class="separator:a2a5c993f1497ed7cd88654d6058f80c2 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module" id="r_a708ed1a999e528bfa47ea8f341cee518"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#a708ed1a999e528bfa47ea8f341cee518">is_training</a> () const</td></tr>
+<tr class="memdesc:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this module is currently in training mode.  <br /></td></tr>
+<tr class="separator:a708ed1a999e528bfa47ea8f341cee518 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classpulsatrix_1_1Featurizer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Featurizer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Featurizer.html">pulsatrix::Featurizer</a></td></tr>
+<tr class="memitem:aed204e17f18df79019528675128e9bd1 inherit pub_methods_classpulsatrix_1_1Featurizer" id="r_aed204e17f18df79019528675128e9bd1"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Featurizer.html#aed204e17f18df79019528675128e9bd1">~Featurizer</a> ()=default</td></tr>
+<tr class="separator:aed204e17f18df79019528675128e9bd1 inherit pub_methods_classpulsatrix_1_1Featurizer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:afb1dab7ef833a17bd4a2861da73ed6f1" id="r_afb1dab7ef833a17bd4a2861da73ed6f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#afb1dab7ef833a17bd4a2861da73ed6f1">forward_impl</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input) override</td></tr>
+<tr class="memdesc:afb1dab7ef833a17bd4a2861da73ed6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The reconstruction, <code>(N, dim)</code>.  <br /></td></tr>
+<tr class="separator:afb1dab7ef833a17bd4a2861da73ed6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A sparse autoencoder (SAE): <code>LinearModule(dim, hidden_dim)</code> -&gt; <code><a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a></code> -&gt; <code>LinearModule(hidden_dim, dim)</code>, trained with <code><a class="el" href="classpulsatrix_1_1MSELoss.html" title="MSE = mean((prediction - target)^2).">MSELoss</a></code> to reconstruct its own input while an L1 penalty on the hidden ReLU activation pushes most hidden units to zero on any given example. </p>
@@ -157,6 +263,10 @@ Mirrors LinearProbe/XorNetwork's established shape rather than inventing a train
 <code>train_step</code> is a template on the optimizer type rather than taking an <code>Optimizer&amp;</code>, for exactly the reason <a class="el" href="classpulsatrix_1_1LinearProbe.html" title="A linear probe: LinearModule(activation_dim, 1) + BCEWithLogitsLoss, trained on (activation,...">LinearProbe</a> documents: this codebase has no <code>Optimizer</code> base class. <code><a class="el" href="classpulsatrix_1_1SGDOptimizer.html" title="param -= learning_rate * (grad + weight_decay * param), per parameter, for every parameter a Module e...">SGDOptimizer</a></code>, <code><a class="el" href="classpulsatrix_1_1AdamOptimizer.html" title="Adam (Kingma &amp; Ba, 2015): per-parameter moving averages of gradient (m) and squared gradient (v),...">AdamOptimizer</a></code> and <code><a class="el" href="classpulsatrix_1_1AdamWOptimizer.html" title="AdamW (Loshchilov &amp; Hutter, &quot;Decoupled Weight Decay Regularization&quot;, arXiv 1711.05101): Adam whose we...">AdamWOptimizer</a></code> share the <code>step(<a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>&amp;)</code> / <code>zero_grad(<a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>&amp;)</code> shape (a compile-time, duck-typed contract), so the template accepts any of them. </dd>
 <dd>
 Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <a class="el" href="classpulsatrix_1_1LinearProbe.html" title="A linear probe: LinearModule(activation_dim, 1) + BCEWithLogitsLoss, trained on (activation,...">LinearProbe</a>, zero init is not merely degenerate but dead: with an all-zero decoder weight the gradient reaching the hidden layer is identically zero, so the encoder never receives any gradient and the autoencoder cannot leave the origin. </dd>
+<dd>
+<b><a class="el" href="classpulsatrix_1_1Featurizer.html" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),...">Featurizer</a> (FEAT-1).</b> It implements the <a class="el" href="classpulsatrix_1_1Featurizer.html" title="A featurizer maps activations x, (N, input_dim), to codes f = encode(x), (N, num_features),...">Featurizer</a> interface: <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ab76c58cc4bb37b253204bcf93c3eeefd" title="The ReLU codes, (N, hidden_dim).">encode()</a> gives the ReLU codes, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a343febaa391644c8210f2029e4a0d648" title="The reconstruction from codes, (N, dim).">decode()</a> the reconstruction, and <a class="el" href="namespacepulsatrix.html#a533843d3b356df74583b5b643566cef9" title="One training step for any featurizer: zero the gradients, loss_and_backward(), one optimizer step,...">TrainFeaturizer()</a> trains it like any other featurizer. It is also a <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> from input to reconstruction, with <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6" title="Backward from the reconstruction&#39;s gradient to the input&#39;s, through the decoder, the ReLU and the enc...">backward()</a> and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a>, and parameters named <code>encoder.*</code> and <code>decoder.*</code>. </dd>
+<dd>
+<b>Unit-norm decoders.</b> By default every feature's decoder direction (a row of the decoder's weight) has unit L2 norm: at construction and after every <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10" title="Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injec...">train_step()</a>. The rescaling moves the norm into the encoder's row and bias, which a ReLU passes through unchanged, so reconstructions don't move. Without it an L1 penalty can be dodged by shrinking codes and growing directions. set_unit_norm_decoder(false) turns it off. </dd>
 <dd>
 <code>hidden_dim &gt; dim</code> is <b>not</b> enforced. An undercomplete or square autoencoder is still a well-formed object with well-defined training behavior; rejecting it would turn a modeling choice into a hard error for no correctness gain. Explicit decision (mission exit gate asked for it to be made, not assumed), pinned by ConstructorAcceptsAnUndercompleteHiddenDimension. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -282,6 +392,96 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="acab371f7463a0fcff2d7787c90bdf6a6" name="acab371f7463a0fcff2d7787c90bdf6a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acab371f7463a0fcff2d7787c90bdf6a6">&#9670;&#160;</a></span>backward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::SparseAutoencoder::backward </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>grad_output</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Backward from the reconstruction's gradient to the input's, through the decoder, the ReLU and the encoder, adding to their parameters' gradients. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="ade099a137ffc31a4ee2b73d6af214949" name="ade099a137ffc31a4ee2b73d6af214949"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade099a137ffc31a4ee2b73d6af214949">&#9670;&#160;</a></span>compute_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt; pulsatrix::SparseAutoencoder::compute_device </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The device this module computes on, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> can reject an input on another device before any kernel sees it (roadmap FND-8). </p>
+<dl class="section return"><dt>Returns</dt><dd>std::nullopt (the default) skips the check: a container whose layers check their own inputs, or a user module written before this existed. Every in-tree layer returns its device; <a class="el" href="classpulsatrix_1_1EmbeddingModule.html" title="Embedding lookup table, rank-2 input (N, L) of float-encoded indices -&gt; rank-3 output (N,...">EmbeddingModule</a> doesn't, because it reads its indices through their own backend and so accepts them from any device. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afd37c963b83700f669591c3d619aea33">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a343febaa391644c8210f2029e4a0d648" name="a343febaa391644c8210f2029e4a0d648"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a343febaa391644c8210f2029e4a0d648">&#9670;&#160;</a></span>decode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::SparseAutoencoder::decode </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>codes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The reconstruction from codes, <code>(N, dim)</code>. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Featurizer.html#a97a7b776076afc8a6944b48dc27c5d5a">pulsatrix::Featurizer</a>.</p>
+
+</div>
+</div>
 <a id="ace9b3723207021b67c6126f1c0d4f5c0" name="ace9b3723207021b67c6126f1c0d4f5c0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace9b3723207021b67c6126f1c0d4f5c0">&#9670;&#160;</a></span>decoder() <span class="overload">[1/2]</span></h2>
 
@@ -336,6 +536,36 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
 
 </div>
 </div>
+<a id="ae0e4444e4f7ea020d8a2c68d3b0864e9" name="ae0e4444e4f7ea020d8a2c68d3b0864e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0e4444e4f7ea020d8a2c68d3b0864e9">&#9670;&#160;</a></span>decoder_direction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; float &gt; pulsatrix::SparseAutoencoder::decoder_direction </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Feature <code>i's</code> decoder direction, <code>input_dim</code> values. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Featurizer.html#a7c5fc9fbffd0c1f4c282110987d368bb">pulsatrix::Featurizer</a>.</p>
+
+</div>
+</div>
 <a id="a43f17ceaabf381782506c43c5a094830" name="a43f17ceaabf381782506c43c5a094830"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a43f17ceaabf381782506c43c5a094830">&#9670;&#160;</a></span>dim()</h2>
 
@@ -360,6 +590,36 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
 </div><div class="memdoc">
 
 <p>Width of the activation vectors this SAE reconstructs. </p>
+
+</div>
+</div>
+<a id="ab76c58cc4bb37b253204bcf93c3eeefd" name="ab76c58cc4bb37b253204bcf93c3eeefd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab76c58cc4bb37b253204bcf93c3eeefd">&#9670;&#160;</a></span>encode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::SparseAutoencoder::encode </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The ReLU codes, <code>(N, hidden_dim)</code>. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Featurizer.html#a31f93b9181db7e5fc6f4afab0ffc6947">pulsatrix::Featurizer</a>.</p>
 
 </div>
 </div>
@@ -417,6 +677,42 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
 
 </div>
 </div>
+<a id="afb1dab7ef833a17bd4a2861da73ed6f1" name="afb1dab7ef833a17bd4a2861da73ed6f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb1dab7ef833a17bd4a2861da73ed6f1">&#9670;&#160;</a></span>forward_impl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::SparseAutoencoder::forward_impl </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The reconstruction, <code>(N, dim)</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a malformed batch. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a64d2dd3268af1b112aaeb1c8286351a9">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
 <a id="aaf8d745803e44e25bf469d24b84433ec" name="aaf8d745803e44e25bf469d24b84433ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaf8d745803e44e25bf469d24b84433ec">&#9670;&#160;</a></span>hidden_dim()</h2>
 
@@ -444,6 +740,33 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
 
 </div>
 </div>
+<a id="a238312dc4a9fb2548f3a3bcddb912907" name="a238312dc4a9fb2548f3a3bcddb912907"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a238312dc4a9fb2548f3a3bcddb912907">&#9670;&#160;</a></span>input_dim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::SparseAutoencoder::input_dim </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Featurizer.html#a608a06263a3ae856a67a695ac828aef4">pulsatrix::Featurizer</a>.</p>
+
+</div>
+</div>
 <a id="a855fe79c745c35fb7204b18199606fd5" name="a855fe79c745c35fb7204b18199606fd5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a855fe79c745c35fb7204b18199606fd5">&#9670;&#160;</a></span>l1_lambda()</h2>
 
@@ -468,6 +791,46 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
 </div><div class="memdoc">
 
 <p>Coefficient of the L1 penalty on the hidden activation. </p>
+
+</div>
+</div>
+<a id="a881a3069e30e010a6b338cb5c1cccb2c" name="a881a3069e30e010a6b338cb5c1cccb2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a881a3069e30e010a6b338cb5c1cccb2c">&#9670;&#160;</a></span>loss_and_backward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a> pulsatrix::SparseAutoencoder::loss_and_backward </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_batch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; float &gt; *&#160;</td>
+          <td class="paramname"><em>codes</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mean squared reconstruction error plus <code>l1_lambda * mean_over_inputs(sum_i f_i)</code>, with both gradients added to the parameters'. See <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10" title="Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injec...">train_step()</a> for the L1 term's gradient. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Featurizer.html#aa49f61c48d9f24e7851361dc89ca2269">pulsatrix::Featurizer</a>.</p>
 
 </div>
 </div>
@@ -514,6 +877,193 @@ Small <b>seeded random</b> weight init, not zero init &ndash; and here, unlike <
 Reports mean <em>magnitude</em>, not a count of active units. A fraction-nonzero metric (L0) would be the other natural choice and is not offered here: it is not what the penalty term optimizes, and it would be discontinuous in the parameters, making it a poor thing to compare two training runs by. This metric is the one the penalty actually targets, which is the property the mission's paired control tests. </dd>
 <dd>
 <code>const</code> for the same reason <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#a1633b9319e302047a58bccb54c64a037" title="Mean squared reconstruction error over the batch – forward-only, no backward, no parameter update.">reconstruction_error()</a> is &ndash; see its note. </dd></dl>
+
+</div>
+</div>
+<a id="a684de1aef40b9c1b7e2093ff0a9d4b10" name="a684de1aef40b9c1b7e2093ff0a9d4b10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a684de1aef40b9c1b7e2093ff0a9d4b10">&#9670;&#160;</a></span>named_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt; pulsatrix::SparseAutoencoder::named_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This module's trainable parameters, each with its hierarchical name &ndash; the one place a module declares its parameters (roadmap FND-1). </p>
+<dl class="section return"><dt>Returns</dt><dd>{name, {value, grad}} entries pointing directly at this module's own members, in a fixed order. Names are unique within the module tree. Default: empty (a parameterless module like <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a> needs no override). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Override this, not <a class="el" href="classpulsatrix_1_1Module.html#a06b89fd2a7cc85503196c85f3c9ea17f" title="This module&#39;s trainable parameters and their gradients, for an optimizer to update uniformly across m...">parameters()</a>: saving, loading, freezing by name and optimizer parameter groups all key on these names. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="ac6609a74baee393de44cd646fcc0299d" name="ac6609a74baee393de44cd646fcc0299d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6609a74baee393de44cd646fcc0299d">&#9670;&#160;</a></span>normalize_decoder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SparseAutoencoder::normalize_decoder </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unit-norm decoder rows, the norm moved into the encoder's row and bias: the ReLU passes a positive scale through, so reconstructions don't change. A feature whose direction is zero is left alone. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Featurizer.html#afb8e310dc8714a654b887410089226b0">pulsatrix::Featurizer</a>.</p>
+
+</div>
+</div>
+<a id="afd947c6840f4d21082c986e1ee1863c0" name="afd947c6840f4d21082c986e1ee1863c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd947c6840f4d21082c986e1ee1863c0">&#9670;&#160;</a></span>num_features()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t pulsatrix::SparseAutoencoder::num_features </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Featurizer.html#a0398f904de3ffdf229c21a6cc84b493a">pulsatrix::Featurizer</a>.</p>
+
+</div>
+</div>
+<a id="a1475c824975108737b846055e25cfd18" name="a1475c824975108737b846055e25cfd18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1475c824975108737b846055e25cfd18">&#9670;&#160;</a></span>op_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">OpType</a> pulsatrix::SparseAutoencoder::op_type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This module's operation-category tag, for <a class="el" href="classpulsatrix_1_1ComputationGraph.html" title="Owns every Node in a computation graph and exposes read access for graph-walking code (autograd&#39;s bac...">ComputationGraph</a> node tagging. </p>
+<dl class="section return"><dt>Returns</dt><dd>This module's OpType (see <a class="el" href="op__type_8hpp.html" title="Closed set of operation categories every graph Node is tagged with.">op_type.hpp</a>'s closed set). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Added in Phase 2 Mission 0 alongside <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6" title="Backward from the reconstruction&#39;s gradient to the input&#39;s, through the decoder, the ReLU and the enc...">backward()</a> &ndash; lets graph-wiring code tag nodes generically through a Module* rather than switching on concrete subclass. </dd></dl>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a3a4406bdbcd5f3886c71a24b8ddbf90e">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a275cf2ff176d969d726373652f7ec946" name="a275cf2ff176d969d726373652f7ec946"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275cf2ff176d969d726373652f7ec946">&#9670;&#160;</a></span>parameters_module()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp; pulsatrix::SparseAutoencoder::parameters_module </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The trainable parameters, for an optimizer's <code>step()</code> and <code>zero_grad()</code>, and for checkpoints. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Featurizer.html#a08b49240a436a5b43cf4e54037161bb8">pulsatrix::Featurizer</a>.</p>
+
+</div>
+</div>
+<a id="a249f00b5ef70003542f58d9b995d1241" name="a249f00b5ef70003542f58d9b995d1241"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a249f00b5ef70003542f58d9b995d1241">&#9670;&#160;</a></span>propagate_relevance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::SparseAutoencoder::propagate_relevance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>relevance_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Each layer's own rule, from the reconstruction back to the input. </p>
+
+<p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a0b8ddb1d24d145f5c55479433847e683">pulsatrix::Module</a>.</p>
 
 </div>
 </div>
@@ -599,9 +1149,99 @@ No new computation: <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd><code>const</code> although <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">Module::forward()</a> is not: the SAE's <em>logical</em> state is its learned parameters, which a forward-only scoring pass cannot change. The modules are <code>mutable</code> purely so forward()'s internal caches (backward()'s working state, not the SAE's observable value) can be written. Flagged as a recurring pattern by <a class="el" href="classpulsatrix_1_1LinearProbe.html" title="A linear probe: LinearModule(activation_dim, 1) + BCEWithLogitsLoss, trained on (activation,...">LinearProbe</a>'s AAR; this is its second instance. </dd>
+<dl class="section note"><dt>Note</dt><dd><code>const</code> although <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">Module::forward()</a> is not: the SAE's <em>logical</em> state is its learned parameters, which a forward-only scoring pass cannot change. The modules are <code>mutable</code> purely so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>'s internal caches (<a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6" title="Backward from the reconstruction&#39;s gradient to the input&#39;s, through the decoder, the ReLU and the enc...">backward()</a>'s working state, not the SAE's observable value) can be written. Flagged as a recurring pattern by <a class="el" href="classpulsatrix_1_1LinearProbe.html" title="A linear probe: LinearModule(activation_dim, 1) + BCEWithLogitsLoss, trained on (activation,...">LinearProbe</a>'s AAR; this is its second instance. </dd>
 <dd>
-Computed in a raw host loop rather than through the member <code>loss_</code>, and deliberately so: <a class="el" href="classpulsatrix_1_1MSELoss.html#a125a265d0b4f1cff484fccbefa74b678" title="Computes the loss value and caches prediction/target for backward().">MSELoss::forward</a> caches its operands to arm a subsequent backward(), and a scoring pass has no business arming a backward it never performs &ndash; doing so would leave the loss primed with a batch the next <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10" title="Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injec...">train_step()</a> did not produce. The loop itself is the established convention (MSELoss/CrossEntropyLoss/LinearProbe::accuracy all read <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly, since <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> has no reduction primitive). </dd></dl>
+Computed in a raw host loop rather than through the member <code>loss_</code>, and deliberately so: <a class="el" href="classpulsatrix_1_1MSELoss.html#a125a265d0b4f1cff484fccbefa74b678" title="Computes the loss value and caches prediction/target for backward().">MSELoss::forward</a> caches its operands to arm a subsequent <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6" title="Backward from the reconstruction&#39;s gradient to the input&#39;s, through the decoder, the ReLU and the enc...">backward()</a>, and a scoring pass has no business arming a backward it never performs &ndash; doing so would leave the loss primed with a batch the next <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10" title="Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injec...">train_step()</a> did not produce. The loop itself is the established convention (MSELoss/CrossEntropyLoss/LinearProbe::accuracy all read <a class="el" href="classpulsatrix_1_1Tensor.html#aaf6f21face4356899a7b0f723e11cbf3" title="Raw buffer access (mutable). nullptr iff numel() == 0.">Tensor::data()</a> directly, since <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> has no reduction primitive). </dd></dl>
+
+</div>
+</div>
+<a id="a4e1dfb3917389be437209de007df00cd" name="a4e1dfb3917389be437209de007df00cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e1dfb3917389be437209de007df00cd">&#9670;&#160;</a></span>release_activations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SparseAutoencoder::release_activations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Frees the tensors <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> kept for <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6" title="Backward from the reconstruction&#39;s gradient to the input&#39;s, through the decoder, the ReLU and the enc...">backward()</a> and the relevance passes; containers release their children too. Inference that only needs the output calls it after each forward, so a deep model holds one layer's activations at a time (a 1024-token ESM-2 650M pass otherwise keeps over 10 GB of them). </p>
+<dl class="section note"><dt>Note</dt><dd>Until the next <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>, <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6" title="Backward from the reconstruction&#39;s gradient to the input&#39;s, through the decoder, the ReLU and the enc...">backward()</a> and relevance calls are invalid. The default has nothing to free. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#afac98fa4d23d97300c5a6d5bc68412e5">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a1213f2af5d06115e2e0e1668a30129af" name="a1213f2af5d06115e2e0e1668a30129af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1213f2af5d06115e2e0e1668a30129af">&#9670;&#160;</a></span>set_training()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SparseAutoencoder::set_training </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>training</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets this module's training/eval mode. Defaults to training (matches every mainstream framework's <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a> default). </p>
+<dl class="section note"><dt>Note</dt><dd>Virtual since Phase 6 Mission 6 (<a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a>) &ndash; Mission 5 originally shipped this as plain non-virtual state ("no composite container exists yet to
+      cascade through"); <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> overrides this to cascade to every contained layer, and needs virtual dispatch to do so correctly even when accessed through a Module* base pointer, not just its own concrete type. </dd>
+<dd>
+<a class="el" href="classpulsatrix_1_1BatchNormModule.html" title="y_{n,c,h,w} = gamma_c * (x_{n,c,h,w} - mu_c)/std_c + beta_c, mu_c/std_c computed per channel c over e...">BatchNormModule</a> keeps running statistics in training mode and normalizes with them in eval mode; <a class="el" href="classpulsatrix_1_1DropoutModule.html" title="y = (mask_i ? x_i / (1 - p) : 0) at training time (inverted dropout – scaling happens at training tim...">DropoutModule</a> is the identity in eval mode. Call set_training(false) before explaining a model that has either, so a sample's explanation doesn't depend on the rest of its batch. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="afef6355977b30977cfc7e8cdc2665ced" name="afef6355977b30977cfc7e8cdc2665ced"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afef6355977b30977cfc7e8cdc2665ced">&#9670;&#160;</a></span>set_unit_norm_decoder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::SparseAutoencoder::set_unit_norm_decoder </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>on</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -662,11 +1302,38 @@ template&lt;typename OptimizerT &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Zeroes gradients before accumulating, for the exact reason <a class="el" href="classpulsatrix_1_1XorNetwork.html" title="A tiny MLP (Linear(2,4) -&gt; ReLU -&gt; Linear(4,1)) trained on XOR – the canonical not-linearly-separable...">XorNetwork</a>:: train_step documents: this codebase's modules accumulate parameter gradients across backward() calls until something resets them, so without this every step would silently sum onto every previous step's gradient. </dd>
+<dl class="section note"><dt>Note</dt><dd>Zeroes gradients before accumulating, for the exact reason <a class="el" href="classpulsatrix_1_1XorNetwork.html" title="A tiny MLP (Linear(2,4) -&gt; ReLU -&gt; Linear(4,1)) trained on XOR – the canonical not-linearly-separable...">XorNetwork</a>:: train_step documents: this codebase's modules accumulate parameter gradients across <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#acab371f7463a0fcff2d7787c90bdf6a6" title="Backward from the reconstruction&#39;s gradient to the input&#39;s, through the decoder, the ReLU and the enc...">backward()</a> calls until something resets them, so without this every step would silently sum onto every previous step's gradient. </dd>
 <dd>
 The L1 penalty is <code>(l1_lambda / N) * sum_over(batch, hidden) h_ij</code> &ndash; a per-example sum of hidden activations, averaged over the batch. <code>abs()</code> is unnecessary: h is the output of a ReLU and therefore already &gt;= 0. Its gradient w.r.t. every hidden element is the constant <code>l1_lambda / N</code>, which is why a uniform fill()+accumulate() onto the incoming hidden gradient is exactly correct and not an approximation. Adding it <em>before</em> relu_.backward() is also what makes it correct for the clamped-off units: ReLU's own backward zeroes the contribution wherever the pre-activation was &lt;= 0, which is precisely where the penalty has no gradient to give (an already-inactive unit is not pushed further down). </dd>
 <dd>
 The penalty gradient is built and accumulated unconditionally, with no <code>l1_lambda &gt; 0</code> fast path. At lambda = 0 it is a tensor of zeros and accumulating it is a no-op, so the no-penalty configuration exercises exactly the same instructions the penalized one does &ndash; which is what makes the mission's paired control a controlled comparison rather than a comparison of two code paths. </dd></dl>
+
+</div>
+</div>
+<a id="aa364a1cfcd19ddf57467d747696406d2" name="aa364a1cfcd19ddf57467d747696406d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa364a1cfcd19ddf57467d747696406d2">&#9670;&#160;</a></span>unit_norm_decoder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool pulsatrix::SparseAutoencoder::unit_norm_decoder </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether <a class="el" href="classpulsatrix_1_1SparseAutoencoder.html#ad998baf773ce0b6e05bfbb0ee75fdd10" title="Runs one training step: forward, MSE reconstruction loss, backward with the L1 penalty gradient injec...">train_step()</a> keeps decoder directions at unit norm (the default). </p>
 
 </div>
 </div>

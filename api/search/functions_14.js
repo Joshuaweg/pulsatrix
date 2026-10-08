@@ -6,10 +6,11 @@ var searchData=
   ['uniformcrossover_3',['UniformCrossover',['../namespacepulsatrix.html#a10dd7a145810da84ac169f97e49fcd33',1,'pulsatrix']]],
   ['uniformcrossoverbymask_4',['UniformCrossoverByMask',['../namespacepulsatrix.html#a75813b858836280a5ecb4bb0a7269ed9',1,'pulsatrix']]],
   ['uniformframesampletransform_5',['UniformFrameSampleTransform',['../classpulsatrix_1_1UniformFrameSampleTransform.html#ae329dbcea37365a7d8b5a4f0674af604',1,'pulsatrix::UniformFrameSampleTransform']]],
-  ['unitcubetoconfiguration_6',['UnitCubeToConfiguration',['../namespacepulsatrix.html#a8eb8e19a5d9ca776142a658c4e5adbb5',1,'pulsatrix']]],
-  ['up_5fproj_7',['up_proj',['../classpulsatrix_1_1SwiGLUModule.html#a219452cb9a7a6ae1f453ba04aa50f5e8',1,'pulsatrix::SwiGLUModule']]],
-  ['upperconfidencebound_8',['UpperConfidenceBound',['../namespacepulsatrix.html#a3de09b80f2b9d5933d7f452615305b59',1,'pulsatrix']]],
-  ['uses_5fbias_9',['uses_bias',['../classpulsatrix_1_1LinearModule.html#aba7e0538dca132407f25f4c6b4aed86f',1,'pulsatrix::LinearModule']]],
-  ['uses_5fqk_5fnorm_10',['uses_qk_norm',['../classpulsatrix_1_1MultiHeadAttentionModule.html#aa401137110ef1ce787af71a61654b484',1,'pulsatrix::MultiHeadAttentionModule']]],
-  ['uses_5frope_11',['uses_rope',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a84eaff4be5e5453e6d5fdeff04f98371',1,'pulsatrix::MultiHeadAttentionModule']]]
+  ['unit_5fnorm_5fdecoder_6',['unit_norm_decoder',['../classpulsatrix_1_1SparseAutoencoder.html#aa364a1cfcd19ddf57467d747696406d2',1,'pulsatrix::SparseAutoencoder']]],
+  ['unitcubetoconfiguration_7',['UnitCubeToConfiguration',['../namespacepulsatrix.html#a8eb8e19a5d9ca776142a658c4e5adbb5',1,'pulsatrix']]],
+  ['up_5fproj_8',['up_proj',['../classpulsatrix_1_1SwiGLUModule.html#a219452cb9a7a6ae1f453ba04aa50f5e8',1,'pulsatrix::SwiGLUModule']]],
+  ['upperconfidencebound_9',['UpperConfidenceBound',['../namespacepulsatrix.html#a3de09b80f2b9d5933d7f452615305b59',1,'pulsatrix']]],
+  ['uses_5fbias_10',['uses_bias',['../classpulsatrix_1_1LinearModule.html#aba7e0538dca132407f25f4c6b4aed86f',1,'pulsatrix::LinearModule']]],
+  ['uses_5fqk_5fnorm_11',['uses_qk_norm',['../classpulsatrix_1_1MultiHeadAttentionModule.html#aa401137110ef1ce787af71a61654b484',1,'pulsatrix::MultiHeadAttentionModule']]],
+  ['uses_5frope_12',['uses_rope',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a84eaff4be5e5453e6d5fdeff04f98371',1,'pulsatrix::MultiHeadAttentionModule']]]
 ];
