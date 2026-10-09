@@ -204,7 +204,7 @@ Larger changes that touch every module or backend.
 - Strided views and broadcasting (KS-10)
 - Op-level autograd (KS-12)
 - WMMA, HIP graphs and FlashAttention for training only (HIP-12)
-- Attribution graphs (FEAT-10); parameter decomposition (FEAT-9) is done
+- Attribution graphs (FEAT-10) and parameter decomposition (FEAT-9) are done
 - ARCH items at P1 and P2
 - ONNX, GGUF and QLoRA (IO-8, IO-9, TRN-14)
 - Python wheels and a vcpkg port (KS-11)
@@ -811,7 +811,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S | Done, [#109](https://github.com/Joshuaweg/pulsatrix/pull/109) (see below) |
 | FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — | Done, [#112](https://github.com/Joshuaweg/pulsatrix/pull/112) (see below) |
 | FEAT-9 | Parameter decomposition (SPD and VPD) | Interpretability in weight space; few libraries have it | FND-4 | P2 | L–XL | Done, [#113](https://github.com/Joshuaweg/pulsatrix/pull/113) (see below) |
-| FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first. VIZ-4's AttnLRP graph (residual-stream nodes) and Neuronpedia export are the starting point: transcoder features would replace the nodes | FEAT-5 | P2 | XL |
+| FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first. VIZ-4's AttnLRP graph (residual-stream nodes) and Neuronpedia export are the starting point: transcoder features would replace the nodes | FEAT-5 | P2 | XL | Done (see below) |
 
 FEAT-6 propagates relevance through a block top-k by treating the selection as a fixed gate (see below).
 
@@ -978,6 +978,22 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
   - **Not done:** VPD's transformer causal-importance function, and swapping LinearModules inside
     `CausalLM` blocks, which language-model decomposition needs
     ([guide](../mechanistic-interpretability/index.md#decomposing-parameters)).
+- **FEAT-10** adds `circuit_tracing.hpp`: `CrossLayerTranscoder` (cross-layer and per-layer
+  transcoders, JumpReLU, skip), `LoadTranscoders` (circuit-tracer's two layouts), `TraceCircuit`
+  (the frozen replacement model and every edge), `ScoreCircuit` and `ToAttributionGraph`
+  (circuit-tracer's pruning, written for its viewer). `pulsatrix_explain_text --transcoders`
+  writes the graph.
+  - **No autograd needed.** The frozen model is linear, so a batched backward pass written for it
+    (attention along the value path, norms as fixed scales) gives every edge. A PyTorch golden
+    that takes the edges from autograd on the tiny Llama and Gemma 3 agrees to 2e-6.
+  - **On Gemma 3 270M** with Gemma Scope 2's per-layer transcoders, a graph takes 14 s on the
+    GPU. " Paris" in "The Eiffel Tower is located in the city of" comes from a few late features
+    at the last position. Replacement is 0.67 and completeness 0.92.
+  - **Fixed along the way:** `--viewer-dir` read freed memory when adding a second graph to an
+    existing index (VIZ-4).
+  - **Not done:** training transcoders, circuit-tracer's `max_feature_nodes`, and pre-norm
+    inputs for the Llama CLT
+    ([guide](../mechanistic-interpretability/index.md#attribution-graphs-with-transcoders)).
 
 ## ARCH: New architectures
 
