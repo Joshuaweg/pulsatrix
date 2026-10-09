@@ -160,6 +160,7 @@ add_executable(pulsatrix_tests
     crosscoder_test.cpp
     parameter_decomposition_test.cpp
     circuit_tracing_test.cpp
+    safetensors_converter_test.cpp
     protein_concepts_test.cpp
     fitness_metrics_test.cpp
     benchmark_test.cpp

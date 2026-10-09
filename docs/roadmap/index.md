@@ -146,12 +146,12 @@ The plumbing everything else needs, plus the checks that keep explanations hones
 
 Load SmolLM2-135M and ResNet18, run them, and match the reference implementations.
 
-- IO-3 to IO-6: the pickle converter, name mapping, Hugging Face configs, bf16 upcast
-- LLM-1 to LLM-7: attention upgrade, tied LM head, native tokenizers, generation, KV cache, the
-  golden-logit harness, AttnLRP parity with LXT
+- IO-3 to IO-6 (**done**): the pickle converter, name mapping, Hugging Face configs, bf16 upcast
+- LLM-1 to LLM-7 (**done**): attention upgrade, tied LM head, native tokenizers, generation, KV
+  cache, the golden-logit harness, AttnLRP parity with LXT
 - CFS-1 to CFS-7 (**done**, added and built 2026-10-05): ICE, ALE, local and global
   sensitivity, and counterfactuals, each with its view
-- TOK-1 to TOK-4: the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
+- TOK-1 to TOK-4 (**done**): the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores
 - HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)
 - VIZ-3, VIZ-6a (**done**): Vega-Lite HTML and the token relevance view
@@ -277,7 +277,7 @@ autoencoder dictionaries and a model zoo.
 |---|---|---|---|---|---|---|
 | IO-1 | Native safetensors reader and writer. Check every offset against the file size, reject overlaps and holes, and use overflow-safe size arithmetic | The single file format | — | P0 | S–M | Done, [#43](https://github.com/Joshuaweg/pulsatrix/pull/43) (see below) |
 | IO-2 | Native checkpoint format: safetensors with `format_version` metadata, optimizer state in a sibling file, and a migration table between versions | Save and resume training; the passing test is a bit-identical forward pass and loss curve after reload | IO-1, FND-1 | P0 | M | Done, [#44](https://github.com/Joshuaweg/pulsatrix/pull/44) |
-| IO-3 | An optional converter for legacy pickle files (`.pt`, `.pth`, `.pkl`). It uses `torch.load(weights_only=True)` with torch 2.6 or newer and writes safetensors | Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors | IO-1 | P1 | M | |
+| IO-3 | An optional converter for legacy pickle files (`.pt`, `.pth`, `.pkl`). It uses `torch.load(weights_only=True)` with torch 2.6 or newer and writes safetensors | Pickle is code, so it stays out of C++. Not needed for models that already ship safetensors | IO-1 | P1 | M | Done (see below) |
 | IO-4 | A name-mapping manifest with transforms: transpose (pulsatrix `Linear` stores `(in, out)`, PyTorch stores `(out, in)`), RoPE layout permutation, splitting fused QKV, weight tying. Strict mode fails on unmapped or extra keys | Turns Hugging Face names and layouts into pulsatrix modules | FND-1, IO-1 | P1 | M || Done, [#80](https://github.com/Joshuaweg/pulsatrix/pull/80) (see below) |
 | IO-5 | Read Hugging Face `config.json` and sharded `model.safetensors.index.json` | Every small LLM on the Hub uses these | IO-1 | P1 | S || Done, [#78](https://github.com/Joshuaweg/pulsatrix/pull/78) (see below) |
 | IO-6 | Upcast bf16 and fp16 weights to fp32 on load (exact) | Most published weights are bf16 | IO-1 | P1 | S || Done, [#79](https://github.com/Joshuaweg/pulsatrix/pull/79) |
@@ -311,6 +311,22 @@ autoencoder dictionaries and a model zoo.
   for every shard. A 2.2 GB checkpoint (bge-m3) opened in 1.1 ms with a 4.8 MB peak resident size.
   A sharded index must match its shards exactly, and names only files inside the checkpoint
   directory.
+- **IO-3** is `tools/convert/pickle_to_safetensors.py`. It is the only place pulsatrix reads
+  pickle, with `torch.load(weights_only=True)`.
+  - **Refused:** torch older than 2.6 (CVE-2025-32434); TorchScript archives; any file
+    `weights_only` won't load; sparse, quantized and complex tensors; an existing output without
+    `--force`.
+  - **No unsafe override.** A trusted file that needs more is re-saved as a `state_dict()`
+    elsewhere.
+  - **Training checkpoints are unwrapped** when exactly one of the usual keys (`state_dict`,
+    `model`, `ema`, ...) holds tensors; `--key` picks one otherwise.
+  - **Writing:** tensors are made contiguous with their own bytes, and tied weights are written
+    twice. The source's SHA-256 goes into the metadata, and the output is verified bit for bit.
+  - **Checks:** 13 Python tests, which CI's Python job now runs with CPU torch. A C++ test reads a
+    converted fixture: a non-contiguous, a bf16 and a 0-dim int64 tensor, and tied weights.
+  - **The real torchvision ResNet18** (`resnet18-f37072fd.pth`) converts to 102 tensors, and
+    pulsatrix reads all 11,699,112 values back equal to PyTorch's. Loading it into a network is
+    KS-9.
 
 ### Follow-ups the IO work surfaced
 
