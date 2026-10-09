@@ -90,10 +90,10 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
         const int64_t count = std::min(chunk, N - e0);
         backend_->im2col(input.data() + e0 * in_stride, last_im2col_.data(), static_cast<size_t>(count),
                          static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W), geometry());
-        for (int64_t e = 0; e < count; ++e) {
-            backend_->gemm(kernel_.data(), last_im2col_.data() + e * P * Q,
-                           last_pre_bias_output_.data() + (e0 + e) * out_stride, oc, p, q);
-        }
+        // HIP-6: the kernel against every example's patches in one batched GEMM.
+        backend_->gemm_strided_batched(kernel_.data(), false, 0, last_im2col_.data(), false, p * q,
+                                       last_pre_bias_output_.data() + e0 * out_stride, oc * q, oc, p, q,
+                                       static_cast<size_t>(count));
     }
     if (!cached_cols_) last_im2col_ = Tensor(Shape({0}), backend_, device);  // free it until the next pass
     Tensor output(Shape({N, out_channels_, out_h, out_w}), backend_, device);
@@ -143,9 +143,9 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     const int64_t in_stride = in_channels_ * H * W;
     const int64_t out_stride = out_channels_ * Q;
 
-    // Device-generic (GPU-native-kernels Mission 4). Per example, as before: the kernel and bias
-    // gradients are computed into per-example temporaries and accumulated (the original
-    // association); dY @ col^T and K^T @ dY read their transposed operand in place.
+    // Device-generic (GPU-native-kernels Mission 4): the kernel and bias gradients are computed
+    // per example and accumulated in example order (the original association); dY @ col^T and
+    // K^T @ dY read their transposed operand in place.
     const DeviceType device = kernel_.device();
     const auto p = static_cast<size_t>(P), q = static_cast<size_t>(Q), oc = static_cast<size_t>(out_channels_);
     Tensor ones(Shape({Q, 1}), backend_, device);
@@ -154,28 +154,38 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     const int64_t chunk = chunk_examples(N, P, Q);
     Tensor cols_buffer(cached_cols_ ? Shape({0}) : Shape({chunk, P, Q}), backend_, device);
     Tensor grad_cols(Shape({chunk, P, Q}), backend_, device);
-    Tensor per_example_kernel_grad(kernel_.shape(), backend_, device);
-    Tensor per_example_bias_grad(Shape({out_channels_}), backend_, device);
+    // HIP-6: one batched GEMM per chunk for each product. Per-example parameter gradients go to
+    // part buffers and are added to the gradients in example order, the sums the per-example
+    // accumulation gave. The kernel's parts are bounded by the workspace budget too.
+    const int64_t kernel_numel = out_channels_ * P;
+    const int64_t kernel_chunk = std::clamp<int64_t>(
+        static_cast<int64_t>(max_workspace_bytes_ / (static_cast<size_t>(kernel_numel) * sizeof(float))), 1, chunk);
+    Tensor kernel_parts(kernel_.requires_grad() ? Shape({kernel_chunk, out_channels_, P}) : Shape({0}), backend_, device);
+    Tensor bias_parts(bias_.requires_grad() ? Shape({chunk, out_channels_}) : Shape({0}), backend_, device);
     Tensor grad_input(last_input_.shape(), backend_, device);
     grad_input.fill(0.0f);
     for (int64_t e0 = 0; e0 < N; e0 += chunk) {
         const int64_t count = std::min(chunk, N - e0);
-        const bool need_cols = kernel_.requires_grad();
-        const float* cols = need_cols ? patches(e0, count, cols_buffer) : nullptr;
-        for (int64_t e = 0; e < count; ++e) {
-            const float* grad_out_e = grad_output.data() + (e0 + e) * out_stride;
-            // Frozen parameters (FND-2) skip their gradient GEMMs; the input gradient below doesn't need them.
-            if (need_cols) {
-                backend_->gemm_ex(grad_out_e, false, cols + e * P * Q, true, per_example_kernel_grad.data(), oc, q, p,
-                                  0.0f);
-                kernel_grad_.accumulate(per_example_kernel_grad);
+        const float* grad_out = grad_output.data() + e0 * out_stride;
+        // Frozen parameters (FND-2) skip their gradient GEMMs; the input gradient below doesn't need them.
+        if (kernel_.requires_grad()) {
+            const float* cols = patches(e0, count, cols_buffer);
+            for (int64_t k0 = 0; k0 < count; k0 += kernel_chunk) {
+                const int64_t kc = std::min(kernel_chunk, count - k0);
+                backend_->gemm_strided_batched(grad_out + k0 * out_stride, false, oc * q, cols + k0 * P * Q, true, p * q,
+                                               kernel_parts.data(), static_cast<size_t>(kernel_numel), oc, q, p,
+                                               static_cast<size_t>(kc));
+                backend_->accumulate_parts(kernel_parts.data(), static_cast<size_t>(kc),
+                                           static_cast<size_t>(kernel_numel), kernel_grad_.data());
             }
-            if (bias_.requires_grad()) {
-                backend_->gemm_ex(grad_out_e, false, ones.data(), false, per_example_bias_grad.data(), oc, q, 1, 0.0f);
-                bias_grad_.accumulate(per_example_bias_grad);
-            }
-            backend_->gemm_ex(kernel_.data(), true, grad_out_e, false, grad_cols.data() + e * P * Q, p, oc, q, 0.0f);
         }
+        if (bias_.requires_grad()) {
+            backend_->gemm_strided_batched(grad_out, false, oc * q, ones.data(), false, 0, bias_parts.data(), oc, oc, q, 1,
+                                           static_cast<size_t>(count));
+            backend_->accumulate_parts(bias_parts.data(), static_cast<size_t>(count), oc, bias_grad_.data());
+        }
+        backend_->gemm_strided_batched(kernel_.data(), true, 0, grad_out, false, oc * q, grad_cols.data(), p * q, p, oc, q,
+                                       static_cast<size_t>(count));
         backend_->col2im_add(grad_cols.data(), grad_input.data() + e0 * in_stride, static_cast<size_t>(count),
                              static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W),
                              geometry());
@@ -242,14 +252,10 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
             op.weight_numel = oc * p;
             op.bias_numel = oc;
             op.forward = [=](const float* col, const float* k, float* y) {
-                for (size_t e = 0; e < n; ++e) {
-                    be->gemm(k, col + e * p * q, y + e * oc * q, oc, p, q);
-                }
+                be->gemm_strided_batched(k, false, 0, col, false, p * q, y, oc * q, oc, p, q, n);
             };
             op.backward = [=](const float* g, const float* k, float* gcol) {
-                for (size_t e = 0; e < n; ++e) {
-                    be->gemm_ex(k, true, g + e * oc * q, false, gcol + e * p * q, p, oc, q, 0.0f);
-                }
+                be->gemm_strided_batched(k, true, 0, g, false, oc * q, gcol, p * q, p, oc, q, n);
             };
             op.add_bias = [=](const float* y, const float* b, float* o) { be->add_channel_vector(y, b, o, n, oc, q); };
             // ZBox bounds are images unfolded like the input, so padding taps get a zero bound.

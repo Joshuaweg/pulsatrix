@@ -195,7 +195,14 @@ struct ConvGeometry {
  * - PolyakBlend: in source, destination -> out tau*source + (1 - tau)*destination over rows
  *                elements (out may alias destination; uses tau)
  */
-enum class RlRowOp { DqnLoss, DqnGrad, PgLoss, PgGrad, PpoLoss, PpoGrad, DqnTarget, PolyakBlend };
+/**
+ * @note TokenCeLoss (HIP-6, TokenCrossEntropyLoss::forward): in[0] logits (rows, cols), in[1] the
+ *       raw targets as floats; out[0] probabilities (rows, cols), out[1] per-row statistics
+ *       (rows, 4): the loss term, 1 for a counted token, 1 for a target that isn't a whole number,
+ *       1 for one outside [0, cols) that isn't ignore_index; out[2] the decoded indices and out[3]
+ *       the weights (PgGrad's in[1] and in[2]). A bad or ignored target gets index 0, weight 0.
+ */
+enum class RlRowOp { DqnLoss, DqnGrad, PgLoss, PgGrad, PpoLoss, PpoGrad, DqnTarget, PolyakBlend, TokenCeLoss };
 
 /** @brief Operand pointers and dims for DeviceBackend::rl_rows (passed to kernels by value). */
 struct RlRowArgs {
@@ -208,6 +215,26 @@ struct RlRowArgs {
     float upper = 0.0f;  ///< PPO 1 + clip_epsilon
     float gamma = 0.0f;  ///< discount factor
     float tau = 0.0f;    ///< Polyak blend factor
+    int64_t ignore_index = -100;  ///< TokenCeLoss: the target that marks padding
+};
+
+/**
+ * @brief One parameter tensor's share of DeviceBackend::adam_step_multi (HIP-6): its buffers and
+ *        its own step's scalars.
+ */
+struct AdamTensorStep {
+    float* param = nullptr;
+    const float* grad = nullptr;
+    float* m = nullptr;
+    float* v = nullptr;
+    size_t n = 0;
+    float lr = 0.0f;
+    float bias_correction1 = 1.0f;
+    float bias_correction2 = 1.0f;
+    /** @brief AdamW: param <- decay * param before the step (1 - lr * wd); 1 for none. */
+    float decay = 1.0f;
+    /** @brief L2 weight decay: the step sees l2 * param + grad; 0 for none. */
+    float l2 = 0.0f;
 };
 
 /**
@@ -335,6 +362,37 @@ public:
                          size_t k, size_t n, float beta) = 0;
 
     /**
+     * @brief `batch` independent gemm_ex() products, out_i = op(A_i) op(B_i) (+ beta out_i), with
+     *        A_i = a + i * stride_a and likewise for b and out; a stride of 0 shares one matrix
+     *        (HIP-6: a convolution's kernel against every example's patches).
+     * @note The default makes the batch's calls one by one (gemm() when nothing is transposed and
+     *       beta is 0, as the callers did before), so its results are those calls'. GPU backends
+     *       override it with one strided-batched BLAS call.
+     */
+    virtual void gemm_strided_batched(const float* a, bool transpose_a, size_t stride_a, const float* b,
+                                      bool transpose_b, size_t stride_b, float* out, size_t stride_out, size_t m,
+                                      size_t k, size_t n, size_t batch, float beta = 0.0f) {
+        for (size_t i = 0; i < batch; ++i) {
+            if (!transpose_a && !transpose_b && beta == 0.0f) {
+                gemm(a + i * stride_a, b + i * stride_b, out + i * stride_out, m, k, n);
+            } else {
+                gemm_ex(a + i * stride_a, transpose_a, b + i * stride_b, transpose_b, out + i * stride_out, m, k, n,
+                        beta);
+            }
+        }
+    }
+
+    /**
+     * @brief acc += parts[0], then += parts[1], ... (count blocks of n floats, in order): the sums
+     *        accumulating one gradient per example gave, one add() each (HIP-6).
+     * @note The default is those add() calls; GPU backends do it in one launch, each element adding
+     *       the parts in the same order.
+     */
+    virtual void accumulate_parts(const float* parts, size_t count, size_t n, float* acc) {
+        for (size_t i = 0; i < count; ++i) add(acc, parts + i * n, acc, n);
+    }
+
+    /**
      * @brief Per-column sum of a (rows x cols) row-major matrix: out[j] = beta*out[j] + sum_i in[i][j].
      * @note Rows are summed in increasing i on every backend. out must not alias in.
      */
@@ -345,6 +403,18 @@ public:
      * @note out may alias in.
      */
     virtual void add_row_vector(const float* in, const float* row, float* out, size_t rows, size_t cols) = 0;
+
+    /**
+     * @brief add_row_vector() into z, then ReLU of z into out: a Linear layer's bias and the ReLU
+     *        after it (HIP-6). Both are written, since the ReLU's backward and LRP read z.
+     * @note The default is those two calls; GPU backends do both in one launch with the same
+     *       arithmetic, so the values are identical.
+     */
+    virtual void add_row_vector_relu(const float* in, const float* row, float* z, float* out, size_t rows,
+                                     size_t cols) {
+        add_row_vector(in, row, z, rows, cols);
+        elementwise(ElementwiseOp::Relu, z, out, rows * cols);
+    }
 
     /**
      * @brief Activation backward: grad_in[i] = grad_out[i] * f'(x[i]), f = op, x = the
@@ -372,6 +442,16 @@ public:
      */
     [[nodiscard]] virtual float dot(const float* a, const float* b, size_t n) = 0;
 
+    /**
+     * @brief dot() written to `out`, one float in this backend's memory, instead of returned
+     *        (HIP-6). Same value as dot(). A GPU backend doesn't wait for it, so many dots cost one
+     *        read back instead of one each.
+     */
+    virtual void dot_into(const float* a, const float* b, size_t n, float* out) {
+        const float result = dot(a, b, n);
+        copy(out, &result, sizeof(float), CopyDirection::HostToDevice);
+    }
+
     /** @brief Row-wise softmax of a (rows x cols) matrix, max-subtracted. out may alias in. */
     virtual void softmax_rows(const float* in, float* out, size_t rows, size_t cols) = 0;
 
@@ -393,6 +473,30 @@ public:
      */
     virtual void adam_step(float* param, const float* grad, float* m, float* v, size_t n, float lr, float beta1,
                            float beta2, float eps, float bias_correction1, float bias_correction2) = 0;
+
+    /**
+     * @brief Adam (or AdamW, or Adam with L2 decay) over many parameter tensors at once (HIP-6).
+     *        Each tensor gets exactly what axpby() then adam_step() would do: the decay
+     *        `decay * param` (beta 0), or the step on `l2 * param + 1 * grad`.
+     * @note The default runs those per-tensor calls. GPU backends override it with a single
+     *       launch over every tensor, so an optimizer step costs one kernel and one small upload.
+     */
+    virtual void adam_step_multi(const AdamTensorStep* tensors, size_t count, float beta1, float beta2, float eps) {
+        for (size_t t = 0; t < count; ++t) {
+            const AdamTensorStep& s = tensors[t];
+            if (s.n == 0) continue;
+            if (s.decay != 1.0f) axpby(s.decay, s.param, 0.0f, s.param, s.param, s.n);
+            const float* grad = s.grad;
+            void* decayed = nullptr;
+            if (s.l2 != 0.0f) {
+                decayed = allocate(s.n * sizeof(float));
+                axpby(s.l2, s.param, 1.0f, s.grad, static_cast<float*>(decayed), s.n);
+                grad = static_cast<const float*>(decayed);
+            }
+            adam_step(s.param, grad, s.m, s.v, s.n, s.lr, beta1, beta2, eps, s.bias_correction1, s.bias_correction2);
+            free(decayed);
+        }
+    }
 
     // ---- GPU-native-kernels Mission 1b ---------------------------------------------------
 

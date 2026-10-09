@@ -190,6 +190,23 @@ __global__ void column_sums_kernel(const float* in, float* out, size_t rows, siz
     }
 }
 
+// add_row_vector_kernel's sum and relu_kernel's select in one pass (HIP-6).
+__global__ void add_row_vector_relu_kernel(const float* in, const float* row, float* z, float* out, size_t rows,
+                                           size_t cols) {
+    size_t idx = global_index();
+    if (idx < rows * cols) {
+        const float zi = in[idx] + row[idx % cols];
+        z[idx] = zi;
+        out[idx] = zi > 0.0f ? zi : 0.0f;
+    }
+}
+
+template <typename Stream>
+void launch_add_row_vector_relu(const float* in, const float* row, float* z, float* out, size_t rows, size_t cols,
+                                Stream stream) {
+    add_row_vector_relu_kernel<<<grid_size_for(rows * cols), kBlockSize, 0, stream>>>(in, row, z, out, rows, cols);
+}
+
 __global__ void add_row_vector_kernel(const float* in, const float* row, float* out, size_t rows, size_t cols) {
     size_t idx = global_index();
     if (idx < rows * cols) {
@@ -240,11 +257,15 @@ __global__ void elementwise_backward_kernel(int op, const float* x, const float*
     }
 }
 
+// alpha * x + beta * y as axpby_kernel computes it with beta != 0. Shared with the multi-tensor
+// Adam kernel, which passes beta at run time too, so both compile the same contraction.
+__device__ inline float axpby_element(float alpha, float x, float beta, float y) { return alpha * x + beta * y; }
+
 __global__ void axpby_kernel(float alpha, const float* x, float beta, const float* y, float* out, size_t n) {
     size_t i = global_index();
     if (i < n) {
         // beta == 0 does not read y (uniform branch) -- see DeviceBackend::axpby.
-        out[i] = (beta == 0.0f) ? alpha * x[i] : alpha * x[i] + beta * y[i];
+        out[i] = (beta == 0.0f) ? alpha * x[i] : axpby_element(alpha, x[i], beta, y[i]);
     }
 }
 
@@ -342,18 +363,93 @@ __global__ void logsumexp_rows_kernel(const float* in, float* out, size_t rows, 
     }
 }
 
+// One element of Adam: updates m[i] and v[i] and returns the new parameter. Shared by the
+// single-tensor and multi-tensor kernels so both compile the same arithmetic.
+__device__ inline float adam_element(float p, float g, float* m, float* v, size_t i, float lr, float beta1,
+                                     float beta2, float eps, float bias_correction1, float bias_correction2) {
+    const float mi = beta1 * m[i] + (1.0f - beta1) * g;
+    const float vi = beta2 * v[i] + (1.0f - beta2) * g * g;
+    m[i] = mi;
+    v[i] = vi;
+    const float m_hat = mi / bias_correction1;
+    const float v_hat = vi / bias_correction2;
+    return p - lr * m_hat / (sqrtf(v_hat) + eps);
+}
+
 __global__ void adam_step_kernel(float* param, const float* grad, float* m, float* v, size_t n, float lr, float beta1,
                                  float beta2, float eps, float bias_correction1, float bias_correction2) {
     size_t i = global_index();
     if (i < n) {
-        const float g = grad[i];
-        const float mi = beta1 * m[i] + (1.0f - beta1) * g;
-        const float vi = beta2 * v[i] + (1.0f - beta2) * g * g;
-        m[i] = mi;
-        v[i] = vi;
-        const float m_hat = mi / bias_correction1;
-        const float v_hat = vi / bias_correction2;
-        param[i] -= lr * m_hat / (sqrtf(v_hat) + eps);
+        param[i] = adam_element(param[i], grad[i], m, v, i, lr, beta1, beta2, eps, bias_correction1, bias_correction2);
+    }
+}
+
+// HIP-6: Adam over up to kAdamMultiTensors tensors in one launch. The table travels in the kernel
+// arguments (PyTorch's multi_tensor_apply does the same), so nothing is uploaded first. Thread i
+// finds its tensor by binary search over the element offsets.
+constexpr size_t kAdamMultiTensors = 32;
+struct AdamMultiArgs {
+    AdamTensorStep t[kAdamMultiTensors];
+    size_t offsets[kAdamMultiTensors + 1];
+    size_t count;
+    float beta1, beta2, eps;
+    float one;  ///< 1.0f, as a run-time value (see axpby_element)
+};
+
+__global__ void adam_step_multi_kernel(AdamMultiArgs args) {
+    const size_t i = global_index();
+    if (i >= args.offsets[args.count]) return;
+    size_t lo = 0, hi = args.count;  // the last k with offsets[k] <= i
+    while (hi - lo > 1) {
+        const size_t mid = (lo + hi) / 2;
+        if (args.offsets[mid] <= i) lo = mid; else hi = mid;
+    }
+    const AdamTensorStep& s = args.t[lo];
+    const size_t j = i - args.offsets[lo];
+    // What axpby() then adam_step() compute: decay * param (beta 0), or l2 * param + 1 * grad.
+    float p = s.param[j];
+    if (s.decay != 1.0f) p = s.decay * p;
+    float g = s.grad[j];
+    if (s.l2 != 0.0f) g = axpby_element(s.l2, p, args.one, g);  // args.one == 1, unknown to the compiler
+    s.param[j] = adam_element(p, g, s.m, s.v, j, s.lr, args.beta1, args.beta2, args.eps, s.bias_correction1,
+                              s.bias_correction2);
+}
+
+// acc[i] += parts[0][i], += parts[1][i], ... in order: what count add() calls computed.
+__global__ void accumulate_parts_kernel(const float* parts, size_t count, size_t n, float* acc) {
+    const size_t i = global_index();
+    if (i < n) {
+        float a = acc[i];
+        for (size_t p = 0; p < count; ++p) a = a + parts[p * n + i];
+        acc[i] = a;
+    }
+}
+
+template <typename Stream>
+void launch_accumulate_parts(const float* parts, size_t count, size_t n, float* acc, Stream stream) {
+    accumulate_parts_kernel<<<grid_size_for(n), kBlockSize, 0, stream>>>(parts, count, n, acc);
+}
+
+template <typename Stream>
+void launch_adam_step_multi(const AdamTensorStep* tensors, size_t count, float beta1, float beta2, float eps,
+                            Stream stream) {
+    AdamMultiArgs args{};
+    args.beta1 = beta1;
+    args.beta2 = beta2;
+    args.eps = eps;
+    args.one = 1.0f;
+    for (size_t t = 0; t < count;) {
+        args.count = 0;
+        args.offsets[0] = 0;
+        for (; t < count && args.count < kAdamMultiTensors; ++t) {
+            if (tensors[t].n == 0) continue;
+            args.t[args.count] = tensors[t];
+            args.offsets[args.count + 1] = args.offsets[args.count] + tensors[t].n;
+            ++args.count;
+        }
+        if (args.count > 0) {
+            adam_step_multi_kernel<<<grid_size_for(args.offsets[args.count]), kBlockSize, 0, stream>>>(args);
+        }
     }
 }
 
@@ -379,12 +475,13 @@ void launch_axpby(float alpha, const float* x, float beta, const float* y, float
     axpby_kernel<<<grid_size_for(n), kBlockSize, 0, stream>>>(alpha, x, beta, y, out, n);
 }
 
-// scratch is the backend's kReduceScratchFloats-float device buffer; the result lands in scratch[0].
+// scratch is the backend's kReduceScratchFloats-float device buffer; the result lands in scratch[0],
+// or in `out` when given (HIP-6's dot_into). Launches on one in-order stream may share scratch.
 template <typename Stream>
-void launch_dot(const float* a, const float* b, size_t n, float* scratch, Stream stream) {
+void launch_dot(const float* a, const float* b, size_t n, float* scratch, Stream stream, float* out = nullptr) {
     const size_t blocks = reduce_blocks_for(n);
     dot_partials_kernel<<<static_cast<unsigned>(blocks), kBlockSize, 0, stream>>>(a, b, n, scratch + 1);
-    sum_kernel<<<1, kBlockSize, 0, stream>>>(scratch + 1, blocks, scratch);
+    sum_kernel<<<1, kBlockSize, 0, stream>>>(scratch + 1, blocks, out != nullptr ? out : scratch);
 }
 
 template <typename Stream>

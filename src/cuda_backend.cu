@@ -154,6 +154,16 @@ void CUDABackend::column_sums(const float* in, float* out, size_t rows, size_t c
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
 
+void CUDABackend::add_row_vector_relu(const float* in, const float* row, float* z, float* out, size_t rows,
+                                     size_t cols) {
+    if (rows == 0 || cols == 0) {
+        return;
+    }
+    gpu::launch_add_row_vector_relu(in, row, z, out, rows, cols, stream_);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
 void CUDABackend::add_row_vector(const float* in, const float* row, float* out, size_t rows, size_t cols) {
     if (rows == 0 || cols == 0) {
         return;
@@ -216,6 +226,48 @@ void CUDABackend::logsumexp_rows(const float* in, float* out, size_t rows, size_
         return;
     }
     gpu::launch_logsumexp_rows(in, out, rows, cols, stream_);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::gemm_strided_batched(const float* a, bool transpose_a, size_t stride_a, const float* b,
+                                      bool transpose_b, size_t stride_b, float* out, size_t stride_out, size_t m,
+                                      size_t k, size_t n, size_t batch, float beta) {
+    if (batch <= 1 || m == 0 || n == 0 || k == 0) {
+        DeviceBackend::gemm_strided_batched(a, transpose_a, stride_a, b, transpose_b, stride_b, out, stride_out, m, k, n,
+                                            batch, beta);
+        return;
+    }
+    // gemm_ex()'s column-major trick, once for the whole batch: C_i^T = op(B_i)^T op(A_i)^T.
+    const float alpha = 1.0f;
+    PULSATRIX_CUBLAS_CHECK(cublasSgemmStridedBatched(cublas_handle_, transpose_b ? CUBLAS_OP_T : CUBLAS_OP_N, transpose_a ? CUBLAS_OP_T : CUBLAS_OP_N,
+                                            static_cast<int>(n), static_cast<int>(m), static_cast<int>(k), &alpha, b,
+                                            static_cast<int>(transpose_b ? k : n), static_cast<long long>(stride_b), a,
+                                            static_cast<int>(transpose_a ? m : k), static_cast<long long>(stride_a), &beta,
+                                            out, static_cast<int>(n), static_cast<long long>(stride_out),
+                                            static_cast<int>(batch)));
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::accumulate_parts(const float* parts, size_t count, size_t n, float* acc) {
+    if (count == 0 || n == 0) return;
+    gpu::launch_accumulate_parts(parts, count, n, acc, stream_);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::dot_into(const float* a, const float* b, size_t n, float* out) {
+    if (n == 0) {
+        fill(out, 0.0f, 1);
+        return;
+    }
+    gpu::launch_dot(a, b, n, dot_result_, stream_, out);
+    PULSATRIX_CUDA_CHECK(cudaGetLastError());
+    PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
+}
+
+void CUDABackend::adam_step_multi(const AdamTensorStep* tensors, size_t count, float beta1, float beta2, float eps) {
+    gpu::launch_adam_step_multi(tensors, count, beta1, beta2, eps, stream_);
     PULSATRIX_CUDA_CHECK(cudaGetLastError());
     PULSATRIX_CUDA_CHECK(cudaStreamSynchronize(stream_));
 }
