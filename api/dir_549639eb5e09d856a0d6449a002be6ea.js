@@ -39,6 +39,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "counterfactual.hpp", "counterfactual_8hpp.html", "counterfactual_8hpp" ],
     [ "cpu_backend.hpp", "cpu__backend_8hpp.html", "cpu__backend_8hpp" ],
     [ "cross_entropy_loss.hpp", "cross__entropy__loss_8hpp.html", "cross__entropy__loss_8hpp" ],
+    [ "crosscoder.hpp", "crosscoder_8hpp.html", "crosscoder_8hpp" ],
     [ "crossover.hpp", "crossover_8hpp.html", "crossover_8hpp" ],
     [ "csv_dataset.hpp", "csv__dataset_8hpp.html", "csv__dataset_8hpp" ],
     [ "csv_reader.hpp", "csv__reader_8hpp.html", "csv__reader_8hpp" ],

@@ -384,6 +384,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html">CPUBackend</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CPU-resident <a class="el" href="classpulsatrix_1_1DeviceBackend.html" title="Vendor-agnostic compute/memory backend. CPUBackend, CUDABackend (Phase 1.5), and HIPBackend (Phase 1....">DeviceBackend</a> implementation. Reference implementation every other backend (<a class="el" href="classpulsatrix_1_1CUDABackend.html" title="CUDA-resident DeviceBackend implementation.">CUDABackend</a>, <a class="el" href="classpulsatrix_1_1HIPBackend.html" title="HIP-resident DeviceBackend implementation, targeting AMD GPUs via ROCm.">HIPBackend</a>) is checked for numerical equivalence against.  <a href="classpulsatrix_1_1CPUBackend.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Crosscoder.html">Crosscoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A crosscoder over S sources of the same size d. Its input is the sources side by side, <code>(N, S·d)</code>, source s in columns <code>[s·d, (s+1)·d)</code>: <code>f = ReLU(Σ_s x^s W_enc^s + b_enc)</code>, <code>x̂^s = f W_dec^s + b_dec^s</code>.  <a href="classpulsatrix_1_1Crosscoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CrosscoderLatentStats.html">CrosscoderLatentStats</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One latent across two sources a and b.  <a href="structpulsatrix_1_1CrosscoderLatentStats.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CrosscoderOptions.html">CrosscoderOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CrossEntropyLoss.html">CrossEntropyLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = -log(softmax(logits)[target_class]), combined for numerical stability (subtract the max logit before exponentiating) rather than computing softmax and log separately.  <a href="classpulsatrix_1_1CrossEntropyLoss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -679,6 +687,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LabeledProtein.html">LabeledProtein</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A protein with known contacts, to choose heads with.  <a href="structpulsatrix_1_1LabeledProtein.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1LatentScaling.html">LatentScaling</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latent Scaling (Minder et al., Eq. 4): how much of latent j's b-side decoder direction each source actually needs. For a target Y^m over the inputs where it's computed, <code>β^m = ⟨Y^m d, f⟩ / (|f|² |d|²)</code> with <code>d = d_j^b</code>, the best scale of <code>f d</code> against Y^m.  <a href="structpulsatrix_1_1LatentScaling.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LayerNormModule.html">LayerNormModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">y_{n,i} = gamma_i * (x_{n,i} - mu_n)/std_n + beta_i, mu_n = mean_i(x_{n,i}), std_n = sqrt(var_i(x_{n,i}) + eps), computed independently per batch row n. Batched ((N, num_features)), migrated from the original unbatched (rank-1) scope by campaign_exai_dl_library_batch_dimension_support.  <a href="classpulsatrix_1_1LayerNormModule.html#details">More...</a><br /></td></tr>
@@ -1390,6 +1401,16 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ae7ceb8ee1ca517e2ce811f4f6761d779"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a source tensor becomes a target parameter.  <a href="namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779">More...</a><br /></td></tr>
 <tr class="separator:ae7ceb8ee1ca517e2ce811f4f6761d779"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bdea6033ff2f2ff94e5f71059a33843" id="r_a2bdea6033ff2f2ff94e5f71059a33843"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843">CrosscoderSparsity</a> { <a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a9ec4c0afd450ceac7adb81c3bcfc9732">L1</a>
+, <a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a0c321645fe3e9519e78096c360674da9">BatchTopK</a>
+ }</td></tr>
+<tr class="separator:a2bdea6033ff2f2ff94e5f71059a33843"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab673d269658e3265e7743bcffa908aa8" id="r_ab673d269658e3265e7743bcffa908aa8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8">LatentClass</a> { <a class="el" href="namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8a1fc5889d3bb8f6cad1f13441c1717a48">AOnly</a>
+, <a class="el" href="namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8a98b4c9ac98f26d9259076c651d03b655">BOnly</a>
+, <a class="el" href="namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8aa6156ea9d66fef24e87e841fbabf7cca">Shared</a>
+, <a class="el" href="namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8a6311ae17c1ee52b36e68aaf4ad066387">Other</a>
+ }</td></tr>
+<tr class="separator:ab673d269658e3265e7743bcffa908aa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5480c8cbe462fe3f5a8eb04a8c579e6e" id="r_a5480c8cbe462fe3f5a8eb04a8c579e6e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> { <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e">Cpu</a>
 , <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea8b95dcff7397d0693c03e394af5552aa">Cuda</a>
 , <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6eaafcd5ccb84b5c522c66efa7836e17f92">Hip</a>
@@ -1748,6 +1769,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a1278028152aeba3ba54ea1d9cd30ae00" id="r_a1278028152aeba3ba54ea1d9cd30ae00"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a1278028152aeba3ba54ea1d9cd30ae00">Plausibility</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;counterfactual, const std::vector&lt; <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &gt; &amp;background, const std::vector&lt; float &gt; &amp;scale={}, int k=5)</td></tr>
 <tr class="memdesc:a1278028152aeba3ba54ea1d9cd30ae00"><td class="mdescLeft">&#160;</td><td class="mdescRight">How typical a counterfactual is of real data: its mean scaled L1 distance to its <code>k</code> nearest instances in <code>background</code> (lower is more plausible), the kNN measure of the CARLA benchmark. A counterfactual far from every real instance may be valid but describe nobody.  <br /></td></tr>
 <tr class="separator:a1278028152aeba3ba54ea1d9cd30ae00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad48c3851b554c3bbed5290d49eea043a" id="r_ad48c3851b554c3bbed5290d49eea043a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1CrosscoderLatentStats.html">CrosscoderLatentStats</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ad48c3851b554c3bbed5290d49eea043a">CrosscoderLatents</a> (<a class="el" href="classpulsatrix_1_1Crosscoder.html">Crosscoder</a> &amp;crosscoder, int64_t a=0, int64_t b=1)</td></tr>
+<tr class="memdesc:ad48c3851b554c3bbed5290d49eea043a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every latent's stats for sources <code>a</code> and <code>b</code>.  <br /></td></tr>
+<tr class="separator:ad48c3851b554c3bbed5290d49eea043a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e875d0cc73f959cf7eb96b1c4ed0572" id="r_a2e875d0cc73f959cf7eb96b1c4ed0572"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8">LatentClass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2e875d0cc73f959cf7eb96b1c4ed0572">ClassifyLatent</a> (const <a class="el" href="structpulsatrix_1_1CrosscoderLatentStats.html">CrosscoderLatentStats</a> &amp;stats)</td></tr>
+<tr class="memdesc:a2e875d0cc73f959cf7eb96b1c4ed0572"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minder et al.'s bins on Δnorm.  <br /></td></tr>
+<tr class="separator:a2e875d0cc73f959cf7eb96b1c4ed0572"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45ac85992cf6aa6e2f91ee22fe87c1a5" id="r_a45ac85992cf6aa6e2f91ee22fe87c1a5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1LatentScaling.html">LatentScaling</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a45ac85992cf6aa6e2f91ee22fe87c1a5">MeasureLatentScaling</a> (<a class="el" href="classpulsatrix_1_1Crosscoder.html">Crosscoder</a> &amp;crosscoder, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, const std::vector&lt; int64_t &gt; &amp;latents, int64_t a=0, int64_t b=1, int64_t batch=4096)</td></tr>
+<tr class="memdesc:a45ac85992cf6aa6e2f91ee22fe87c1a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latent Scaling of each of <code>latents</code> on <code>x</code>, <code>(N, S·d)</code>, in batches of <code>batch</code>. β is 0 (and ν 0) for a latent that never fires.  <br /></td></tr>
+<tr class="separator:a45ac85992cf6aa6e2f91ee22fe87c1a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a0969f2c97efd22de37c87faa8c20f3" id="r_a2a0969f2c97efd22de37c87faa8c20f3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a2a0969f2c97efd22de37c87faa8c20f3">ExplainedVarianceBySource</a> (<a class="el" href="classpulsatrix_1_1Crosscoder.html">Crosscoder</a> &amp;crosscoder, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, int64_t batch=4096)</td></tr>
+<tr class="memdesc:a2a0969f2c97efd22de37c87faa8c20f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each source's explained variance on <code>x:</code> <code>1 - Σ|x^s - x̂^s|² / Σ|x^s - mean(x^s)|²</code>.  <br /></td></tr>
+<tr class="separator:a2a0969f2c97efd22de37c87faa8c20f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39f0057413fe272184d9383bf5f4fd8a" id="r_a39f0057413fe272184d9383bf5f4fd8a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a39f0057413fe272184d9383bf5f4fd8a"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; std::vector&lt; T &gt;, std::vector&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a39f0057413fe272184d9383bf5f4fd8a">OnePointCrossoverAtPoint</a> (const std::vector&lt; T &gt; &amp;parent1, const std::vector&lt; T &gt; &amp;parent2, size_t point)</td></tr>
 <tr class="memdesc:a39f0057413fe272184d9383bf5f4fd8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits both parents at point and swaps tails.  <br /></td></tr>
@@ -3246,6 +3279,34 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 
 </div>
 </div>
+<a id="a2bdea6033ff2f2ff94e5f71059a33843" name="a2bdea6033ff2f2ff94e5f71059a33843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bdea6033ff2f2ff94e5f71059a33843">&#9670;&#160;</a></span>CrosscoderSparsity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843">pulsatrix::CrosscoderSparsity</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2bdea6033ff2f2ff94e5f71059a33843a9ec4c0afd450ceac7adb81c3bcfc9732" name="a2bdea6033ff2f2ff94e5f71059a33843a9ec4c0afd450ceac7adb81c3bcfc9732"></a>L1&#160;</td><td class="fielddoc"><p>Lindsey et al.: <code>λ · Σ_i f_i Σ_s |d_i^s|</code>, an L1 penalty on each code weighted by the sum (not the L2 norm) of its decoder norms across sources, so a latent pays for every source it writes to and a source-exclusive latent stays cheap. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2bdea6033ff2f2ff94e5f71059a33843a0c321645fe3e9519e78096c360674da9" name="a2bdea6033ff2f2ff94e5f71059a33843a0c321645fe3e9519e78096c360674da9"></a>BatchTopK&#160;</td><td class="fielddoc"><p>Minder et al.: the batch's <code>N · k</code> largest values of <code>f_i · Σ_s |d_i^s|</code> are kept (the unscaled f_i is the code), with AuxK for dead latents. Inference uses a threshold on the scaled value (threshold()). </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a5480c8cbe462fe3f5a8eb04a8c579e6e" name="a5480c8cbe462fe3f5a8eb04a8c579e6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5480c8cbe462fe3f5a8eb04a8c579e6e">&#9670;&#160;</a></span>DeviceType</h2>
 
@@ -3436,6 +3497,37 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 </td></tr>
 <tr><td class="fieldname"><a id="ad2acaf7e4c4f58cf3a59c360e5f4e1baa70ae6e285cc14c8486e3cf5bec39d1fd" name="ad2acaf7e4c4f58cf3a59c360e5f4e1baa70ae6e285cc14c8486e3cf5bec39d1fd"></a>Derivative&#160;</td><td class="fielddoc"><p>Each curve's slope (d-ICE). </p>
 </td></tr>
+</table>
+
+</div>
+</div>
+<a id="ab673d269658e3265e7743bcffa908aa8" name="ab673d269658e3265e7743bcffa908aa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab673d269658e3265e7743bcffa908aa8">&#9670;&#160;</a></span>LatentClass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8">pulsatrix::LatentClass</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab673d269658e3265e7743bcffa908aa8a1fc5889d3bb8f6cad1f13441c1717a48" name="ab673d269658e3265e7743bcffa908aa8a1fc5889d3bb8f6cad1f13441c1717a48"></a>AOnly&#160;</td><td class="fielddoc"><p>Δnorm below 0.1. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab673d269658e3265e7743bcffa908aa8a98b4c9ac98f26d9259076c651d03b655" name="ab673d269658e3265e7743bcffa908aa8a98b4c9ac98f26d9259076c651d03b655"></a>BOnly&#160;</td><td class="fielddoc"><p>Δnorm above 0.9. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab673d269658e3265e7743bcffa908aa8aa6156ea9d66fef24e87e841fbabf7cca" name="ab673d269658e3265e7743bcffa908aa8aa6156ea9d66fef24e87e841fbabf7cca"></a>Shared&#160;</td><td class="fielddoc"><p>Δnorm in [0.4, 0.6]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab673d269658e3265e7743bcffa908aa8a6311ae17c1ee52b36e68aaf4ad066387" name="ab673d269658e3265e7743bcffa908aa8a6311ae17c1ee52b36e68aaf4ad066387"></a>Other&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -5251,6 +5343,26 @@ template&lt;typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a2e875d0cc73f959cf7eb96b1c4ed0572" name="a2e875d0cc73f959cf7eb96b1c4ed0572"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e875d0cc73f959cf7eb96b1c4ed0572">&#9670;&#160;</a></span>ClassifyLatent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8">LatentClass</a> pulsatrix::ClassifyLatent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CrosscoderLatentStats.html">CrosscoderLatentStats</a> &amp;&#160;</td>
+          <td class="paramname"><em>stats</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Minder et al.'s bins on Δnorm. </p>
+
+</div>
+</div>
 <a id="a46dfb5346e61792a6c94f75b5b4d8105" name="a46dfb5346e61792a6c94f75b5b4d8105"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46dfb5346e61792a6c94f75b5b4d8105">&#9670;&#160;</a></span>ClipGradNorm()</h2>
 
@@ -6737,6 +6849,48 @@ Host boundary (GPU-native-kernels Mission 7): a strictly sequential reverse recu
 
 </div>
 </div>
+<a id="ad48c3851b554c3bbed5290d49eea043a" name="ad48c3851b554c3bbed5290d49eea043a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad48c3851b554c3bbed5290d49eea043a">&#9670;&#160;</a></span>CrosscoderLatents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1CrosscoderLatentStats.html">CrosscoderLatentStats</a> &gt; pulsatrix::CrosscoderLatents </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Crosscoder.html">Crosscoder</a> &amp;&#160;</td>
+          <td class="paramname"><em>crosscoder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>a</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>b</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Every latent's stats for sources <code>a</code> and <code>b</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a source out of range or a == b. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ab71e3bfe62ba2dc7ed7164456db01bb9" name="ab71e3bfe62ba2dc7ed7164456db01bb9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab71e3bfe62ba2dc7ed7164456db01bb9">&#9670;&#160;</a></span>CrowdingDistance()</h2>
 
@@ -7962,6 +8116,42 @@ template&lt;typename Genotype , typename FitnessT , typename FitnessFn &gt; </di
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>If sigma (sqrt(variance)) is ~0 (a point the GP is fully confident about, e.g. exactly an already-observed point), EI is defined as exactly 0 &ndash; no uncertainty means no potential for improvement beyond what standard credit already reflects. </dd></dl>
+
+</div>
+</div>
+<a id="a2a0969f2c97efd22de37c87faa8c20f3" name="a2a0969f2c97efd22de37c87faa8c20f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a0969f2c97efd22de37c87faa8c20f3">&#9670;&#160;</a></span>ExplainedVarianceBySource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; pulsatrix::ExplainedVarianceBySource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Crosscoder.html">Crosscoder</a> &amp;&#160;</td>
+          <td class="paramname"><em>crosscoder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch</em> = <code>4096</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Each source's explained variance on <code>x:</code> <code>1 - Σ|x^s - x̂^s|² / Σ|x^s - mean(x^s)|²</code>. </p>
 
 </div>
 </div>
@@ -10492,6 +10682,66 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for a batch that isn't (N, input_dim) with N &gt;= 2, or a distortion_fraction outside (0, 1). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a45ac85992cf6aa6e2f91ee22fe87c1a5" name="a45ac85992cf6aa6e2f91ee22fe87c1a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45ac85992cf6aa6e2f91ee22fe87c1a5">&#9670;&#160;</a></span>MeasureLatentScaling()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1LatentScaling.html">LatentScaling</a> &gt; pulsatrix::MeasureLatentScaling </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Crosscoder.html">Crosscoder</a> &amp;&#160;</td>
+          <td class="paramname"><em>crosscoder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>latents</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>a</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>b</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch</em> = <code>4096</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Latent Scaling of each of <code>latents</code> on <code>x</code>, <code>(N, S·d)</code>, in batches of <code>batch</code>. β is 0 (and ν 0) for a latent that never fires. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a latent or source out of range, or a == b. </td></tr>
   </table>
   </dd>
 </dl>

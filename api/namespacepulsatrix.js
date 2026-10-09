@@ -98,6 +98,9 @@ var namespacepulsatrix =
     [ "CounterfactualResult", "structpulsatrix_1_1CounterfactualResult.html", "structpulsatrix_1_1CounterfactualResult" ],
     [ "CounterfactualTarget", "structpulsatrix_1_1CounterfactualTarget.html", "structpulsatrix_1_1CounterfactualTarget" ],
     [ "CPUBackend", "classpulsatrix_1_1CPUBackend.html", "classpulsatrix_1_1CPUBackend" ],
+    [ "Crosscoder", "classpulsatrix_1_1Crosscoder.html", "classpulsatrix_1_1Crosscoder" ],
+    [ "CrosscoderLatentStats", "structpulsatrix_1_1CrosscoderLatentStats.html", "structpulsatrix_1_1CrosscoderLatentStats" ],
+    [ "CrosscoderOptions", "structpulsatrix_1_1CrosscoderOptions.html", "structpulsatrix_1_1CrosscoderOptions" ],
     [ "CrossEntropyLoss", "classpulsatrix_1_1CrossEntropyLoss.html", "classpulsatrix_1_1CrossEntropyLoss" ],
     [ "CsvDataset", "classpulsatrix_1_1CsvDataset.html", "classpulsatrix_1_1CsvDataset" ],
     [ "CsvReader", "classpulsatrix_1_1CsvReader.html", null ],
@@ -196,6 +199,7 @@ var namespacepulsatrix =
     [ "KLDivergenceLoss", "classpulsatrix_1_1KLDivergenceLoss.html", "classpulsatrix_1_1KLDivergenceLoss" ],
     [ "KVCache", "classpulsatrix_1_1KVCache.html", "classpulsatrix_1_1KVCache" ],
     [ "LabeledProtein", "structpulsatrix_1_1LabeledProtein.html", "structpulsatrix_1_1LabeledProtein" ],
+    [ "LatentScaling", "structpulsatrix_1_1LatentScaling.html", "structpulsatrix_1_1LatentScaling" ],
     [ "LayerNormModule", "classpulsatrix_1_1LayerNormModule.html", "classpulsatrix_1_1LayerNormModule" ],
     [ "LearnableScalar", "classpulsatrix_1_1LearnableScalar.html", "classpulsatrix_1_1LearnableScalar" ],
     [ "LIME", "classpulsatrix_1_1LIME.html", "classpulsatrix_1_1LIME" ],
@@ -449,6 +453,10 @@ var namespacepulsatrix =
       [ "DeviceToDevice", "namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6bad9ccc4ace3b87f3b327a14e17ed5fc6a", null ],
       [ "HostToHost", "namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6ba297d3681581537b0677cb9f2a3b9e589", null ]
     ] ],
+    [ "CrosscoderSparsity", "namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843", [
+      [ "L1", "namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a9ec4c0afd450ceac7adb81c3bcfc9732", null ],
+      [ "BatchTopK", "namespacepulsatrix.html#a2bdea6033ff2f2ff94e5f71059a33843a0c321645fe3e9519e78096c360674da9", null ]
+    ] ],
     [ "DeviceType", "namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e", [
       [ "Cpu", "namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea54c82ef76ecbbd4c2293e09bae01b54e", null ],
       [ "Cuda", "namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6ea8b95dcff7397d0693c03e394af5552aa", null ],
@@ -481,6 +489,12 @@ var namespacepulsatrix =
       [ "Raw", "namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baa65e65c8ab0d8609ce12fc68a03cb8e00", null ],
       [ "Centered", "namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baadc5ffc2b720501ba00de3be1477b435d", null ],
       [ "Derivative", "namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1baa70ae6e285cc14c8486e3cf5bec39d1fd", null ]
+    ] ],
+    [ "LatentClass", "namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8", [
+      [ "AOnly", "namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8a1fc5889d3bb8f6cad1f13441c1717a48", null ],
+      [ "BOnly", "namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8a98b4c9ac98f26d9259076c651d03b655", null ],
+      [ "Shared", "namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8aa6156ea9d66fef24e87e841fbabf7cca", null ],
+      [ "Other", "namespacepulsatrix.html#ab673d269658e3265e7743bcffa908aa8a6311ae17c1ee52b36e68aaf4ad066387", null ]
     ] ],
     [ "LogFormat", "group__system__monitoring.html#ga36063879210fbfeed97464b5b089b871", [
       [ "JsonLines", "group__system__monitoring.html#gga36063879210fbfeed97464b5b089b871aaaffc9a26d918147e8944a8fd5e231b9", null ],
@@ -665,6 +679,7 @@ var namespacepulsatrix =
     [ "check_deterministic_allowed", "namespacepulsatrix.html#a3aa6f8f77e253906541c671902ea6b23", null ],
     [ "check_optimizer_setting", "namespacepulsatrix.html#a91c49223bc2b354ad8ed7a7c4f2c6ef1", null ],
     [ "CircuitNodeDisplayLabel", "namespacepulsatrix.html#a1753b46ac2c61a1b20581a38bc7d3d1b", null ],
+    [ "ClassifyLatent", "namespacepulsatrix.html#a2e875d0cc73f959cf7eb96b1c4ed0572", null ],
     [ "ClipGradNorm", "namespacepulsatrix.html#a46dfb5346e61792a6c94f75b5b4d8105", null ],
     [ "CombinedFitness", "namespacepulsatrix.html#ad9528e51695652a2d616c9044deae579", null ],
     [ "CompareBenchmarks", "namespacepulsatrix.html#ab117963df9f25d6ace51a78658ca4496", null ],
@@ -696,6 +711,7 @@ var namespacepulsatrix =
     [ "ContactFeatures", "namespacepulsatrix.html#a7ccbd3a48e5c96acac0e21de5b8b2056", null ],
     [ "ContactPrecision", "namespacepulsatrix.html#aa95c438c499597f405850e6b95d5c8a7", null ],
     [ "CountTargetTokens", "namespacepulsatrix.html#aebb422f24fb615d810cc32915daf01ec", null ],
+    [ "CrosscoderLatents", "namespacepulsatrix.html#ad48c3851b554c3bbed5290d49eea043a", null ],
     [ "CrowdingDistance", "namespacepulsatrix.html#ab71e3bfe62ba2dc7ed7164456db01bb9", null ],
     [ "DecodeGenotype", "namespacepulsatrix.html#a87a0367a8a25871e968563e95fe39345", null ],
     [ "DefaultCollate", "namespacepulsatrix.html#a0034be345e6f18cfc824460160d5cdf5", null ],
@@ -724,6 +740,7 @@ var namespacepulsatrix =
     [ "EvaluatePrediction", "namespacepulsatrix.html#ab87f6643ac4e877ac2e2fdbe34633d65", null ],
     [ "EvaluateReconstruction", "namespacepulsatrix.html#afb724b74a8b0dea386aec8265563eca3", null ],
     [ "ExpectedImprovement", "namespacepulsatrix.html#abf980c4f81efaaafcbfd21722b3d7d3e", null ],
+    [ "ExplainedVarianceBySource", "namespacepulsatrix.html#a2a0969f2c97efd22de37c87faa8c20f3", null ],
     [ "ExploreConfiguration", "namespacepulsatrix.html#a15aae4f82a577165290ca698e28d4fd3", null ],
     [ "ExploreConfigurationGivenFactors", "namespacepulsatrix.html#a1ee9611b4c31458db9f3d21589227c39", null ],
     [ "FastNonDominatedSort", "namespacepulsatrix.html#aaa378dea6ffac99ce61ce6a8237be8db", null ],
@@ -786,6 +803,7 @@ var namespacepulsatrix =
     [ "MeanSubstitutionScore", "namespacepulsatrix.html#afca9e26f5552eb9f6779daab739f59a1", null ],
     [ "MeasureBlockGeometry", "namespacepulsatrix.html#a3c327b66f98c42b444d2cd79d260b628", null ],
     [ "MeasureDescriptionLength", "namespacepulsatrix.html#a73f2520d8735527576929fd5740651cb", null ],
+    [ "MeasureLatentScaling", "namespacepulsatrix.html#a45ac85992cf6aa6e2f91ee22fe87c1a5", null ],
     [ "MeasureLossRecovered", "namespacepulsatrix.html#a0f041cc2b4d0f3b20771c2277381febe", null ],
     [ "MeasureMlpLossRecovered", "namespacepulsatrix.html#acda9137d9c27607d584a1293cd1073bf", null ],
     [ "MeasureSteering", "namespacepulsatrix.html#a1cb19516e6b90fded5a89c07c2ef9fc8", null ],
