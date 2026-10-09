@@ -1,5 +1,6 @@
 #include "pulsatrix/conv2d_module.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
 #include "lrp_rules.hpp"
@@ -71,26 +72,50 @@ Tensor Conv2DModule::forward_impl(const Tensor& input) {
     const int64_t in_stride = in_channels_ * H * W;
     const int64_t out_stride = out_channels_ * Q;
 
-    // Device-generic (GPU-native-kernels Mission 4): one im2col over the whole batch, a gemm
-    // per example, then the per-channel bias broadcast.
+    // Device-generic (GPU-native-kernels Mission 4): im2col, a gemm per example, then the
+    // per-channel bias broadcast. HIP-7: the patches go through a buffer of at most
+    // chunk_examples() examples, so their memory is bounded however large the batch is; when the
+    // whole batch fits, they are kept for backward() and LRP instead of being rebuilt.
     const DeviceType device = kernel_.device();
     const auto n = static_cast<size_t>(N), p = static_cast<size_t>(P), q = static_cast<size_t>(Q),
                oc = static_cast<size_t>(out_channels_);
     last_input_ = input;
     last_out_h_ = out_h;
     last_out_w_ = out_w;
-    last_im2col_ = Tensor(Shape({N, P, Q}), backend_, device);
-    backend_->im2col(input.data(), last_im2col_.data(), n, static_cast<size_t>(in_channels_), static_cast<size_t>(H),
-                     static_cast<size_t>(W), geometry());
+    const int64_t chunk = chunk_examples(N, P, Q);
+    cached_cols_ = chunk == N;
+    last_im2col_ = Tensor(Shape({chunk, P, Q}), backend_, device);
     last_pre_bias_output_ = Tensor(Shape({N, out_channels_, out_h, out_w}), backend_, device);
-    for (int64_t e = 0; e < N; ++e) {
-        backend_->gemm(kernel_.data(), last_im2col_.data() + e * P * Q, last_pre_bias_output_.data() + e * out_stride,
-                       oc, p, q);
+    for (int64_t e0 = 0; e0 < N; e0 += chunk) {
+        const int64_t count = std::min(chunk, N - e0);
+        backend_->im2col(input.data() + e0 * in_stride, last_im2col_.data(), static_cast<size_t>(count),
+                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W), geometry());
+        for (int64_t e = 0; e < count; ++e) {
+            backend_->gemm(kernel_.data(), last_im2col_.data() + e * P * Q,
+                           last_pre_bias_output_.data() + (e0 + e) * out_stride, oc, p, q);
+        }
     }
+    if (!cached_cols_) last_im2col_ = Tensor(Shape({0}), backend_, device);  // free it until the next pass
     Tensor output(Shape({N, out_channels_, out_h, out_w}), backend_, device);
     backend_->add_channel_vector(last_pre_bias_output_.data(), bias_.data(), output.data(), n, oc, q);
     has_forwarded_ = true;
     return output;
+}
+
+int64_t Conv2DModule::chunk_examples(int64_t n, int64_t p, int64_t q) const {
+    const auto per_example = static_cast<size_t>(p * q) * sizeof(float);
+    const size_t fit = per_example == 0 ? static_cast<size_t>(n) : max_workspace_bytes_ / per_example;
+    return std::clamp<int64_t>(static_cast<int64_t>(std::min<size_t>(fit, static_cast<size_t>(n))), 1, std::max<int64_t>(n, 1));
+}
+
+const float* Conv2DModule::patches(int64_t e0, int64_t count, Tensor& buffer) const {
+    if (cached_cols_) {
+        return last_im2col_.data() + e0 * in_channels_ * kernel_h_ * kernel_w_ * last_out_h_ * last_out_w_;
+    }
+    const int64_t H = last_input_.shape().dim(2), W = last_input_.shape().dim(3);
+    backend_->im2col(last_input_.data() + e0 * in_channels_ * H * W, buffer.data(), static_cast<size_t>(count),
+                     static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W), geometry());
+    return buffer.data();
 }
 
 Tensor Conv2DModule::backward(const Tensor& grad_output) {
@@ -125,27 +150,36 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     const auto p = static_cast<size_t>(P), q = static_cast<size_t>(Q), oc = static_cast<size_t>(out_channels_);
     Tensor ones(Shape({Q, 1}), backend_, device);
     ones.fill(1.0f);
-    Tensor grad_cols(Shape({N, P, Q}), backend_, device);
+    // HIP-7: in chunks of examples, rebuilding the patches when forward() didn't keep them.
+    const int64_t chunk = chunk_examples(N, P, Q);
+    Tensor cols_buffer(cached_cols_ ? Shape({0}) : Shape({chunk, P, Q}), backend_, device);
+    Tensor grad_cols(Shape({chunk, P, Q}), backend_, device);
     Tensor per_example_kernel_grad(kernel_.shape(), backend_, device);
     Tensor per_example_bias_grad(Shape({out_channels_}), backend_, device);
-    for (int64_t e = 0; e < N; ++e) {
-        const float* grad_out_e = grad_output.data() + e * out_stride;
-        // Frozen parameters (FND-2) skip their gradient GEMMs; the input gradient below doesn't need them.
-        if (kernel_.requires_grad()) {
-            backend_->gemm_ex(grad_out_e, false, last_im2col_.data() + e * P * Q, true,
-                              per_example_kernel_grad.data(), oc, q, p, 0.0f);
-            kernel_grad_.accumulate(per_example_kernel_grad);
-        }
-        if (bias_.requires_grad()) {
-            backend_->gemm_ex(grad_out_e, false, ones.data(), false, per_example_bias_grad.data(), oc, q, 1, 0.0f);
-            bias_grad_.accumulate(per_example_bias_grad);
-        }
-        backend_->gemm_ex(kernel_.data(), true, grad_out_e, false, grad_cols.data() + e * P * Q, p, oc, q, 0.0f);
-    }
     Tensor grad_input(last_input_.shape(), backend_, device);
     grad_input.fill(0.0f);
-    backend_->col2im_add(grad_cols.data(), grad_input.data(), static_cast<size_t>(N),
-                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W), geometry());
+    for (int64_t e0 = 0; e0 < N; e0 += chunk) {
+        const int64_t count = std::min(chunk, N - e0);
+        const bool need_cols = kernel_.requires_grad();
+        const float* cols = need_cols ? patches(e0, count, cols_buffer) : nullptr;
+        for (int64_t e = 0; e < count; ++e) {
+            const float* grad_out_e = grad_output.data() + (e0 + e) * out_stride;
+            // Frozen parameters (FND-2) skip their gradient GEMMs; the input gradient below doesn't need them.
+            if (need_cols) {
+                backend_->gemm_ex(grad_out_e, false, cols + e * P * Q, true, per_example_kernel_grad.data(), oc, q, p,
+                                  0.0f);
+                kernel_grad_.accumulate(per_example_kernel_grad);
+            }
+            if (bias_.requires_grad()) {
+                backend_->gemm_ex(grad_out_e, false, ones.data(), false, per_example_bias_grad.data(), oc, q, 1, 0.0f);
+                bias_grad_.accumulate(per_example_bias_grad);
+            }
+            backend_->gemm_ex(kernel_.data(), true, grad_out_e, false, grad_cols.data() + e * P * Q, p, oc, q, 0.0f);
+        }
+        backend_->col2im_add(grad_cols.data(), grad_input.data() + e0 * in_stride, static_cast<size_t>(count),
+                             static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W),
+                             geometry());
+    }
     return grad_input;
 }
 
@@ -176,54 +210,63 @@ Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPR
 
     lrp_rules::validate(config, "Conv2DModule");
 
-    // Device-generic (GPU-native-kernels Mission 4): the epsilon rule in patch space (one GPU
-    // thread per patch element, output channels summed in the original order), then folded back.
+    // Device-generic (GPU-native-kernels Mission 4): the rule in patch space, then folded back.
+    // HIP-7: in chunks of examples; every rule is per example, so the result doesn't depend on
+    // the chunk size.
     const DeviceType device = kernel_.device();
-    Tensor relevance_cols(Shape({N, P, Q}), backend_, device);
-    if (lrp_rules::is_legacy_epsilon(config)) {
-        backend_->lrp_conv(last_im2col_.data(), kernel_.data(), last_pre_bias_output_.data(), relevance_out.data(),
-                           relevance_cols.data(), static_cast<size_t>(N), static_cast<size_t>(out_channels_),
-                           static_cast<size_t>(P), static_cast<size_t>(Q), config.epsilon);
-    } else {
-        // Zennit-compatible rules (LRP-rules Mission 2) in patch space: per example, the layer is
-        // out_e = K (OC x P) @ col_e (P x Q) + b, so the patches are the rule's input operand.
-        const auto n = static_cast<size_t>(N), p = static_cast<size_t>(P), q = static_cast<size_t>(Q),
-                   oc = static_cast<size_t>(out_channels_);
-        DeviceBackend* be = backend_;
-        lrp_rules::AffineOp op;
-        op.backend = be;
-        op.device = device;
-        op.input_numel = n * p * q;
-        op.output_numel = n * oc * q;
-        op.weight_numel = oc * p;
-        op.bias_numel = oc;
-        op.forward = [=](const float* col, const float* k, float* y) {
-            for (size_t e = 0; e < n; ++e) {
-                be->gemm(k, col + e * p * q, y + e * oc * q, oc, p, q);
-            }
-        };
-        op.backward = [=](const float* g, const float* k, float* gcol) {
-            for (size_t e = 0; e < n; ++e) {
-                be->gemm_ex(k, true, g + e * oc * q, false, gcol + e * p * q, p, oc, q, 0.0f);
-            }
-        };
-        op.add_bias = [=](const float* y, const float* b, float* o) { be->add_channel_vector(y, b, o, n, oc, q); };
-        // ZBox bounds are images unfolded like the input, so padding taps get a zero bound.
-        const Shape input_shape = last_input_.shape();
-        const auto in_c = static_cast<size_t>(in_channels_), h = static_cast<size_t>(H), w = static_cast<size_t>(W);
-        const ConvGeometry g = geometry();
-        op.fill_bound = [=](float value, float* col) {
-            Tensor bound(input_shape, be, device);
-            bound.fill(value);
-            be->im2col(bound.data(), col, n, in_c, h, w, g);
-        };
-        lrp_rules::apply(op, last_im2col_.data(), kernel_.data(), bias_.data(), last_pre_bias_output_.data(),
-                         relevance_out.data(), relevance_cols.data(), config);
-    }
+    const int64_t chunk = chunk_examples(N, P, Q);
+    Tensor cols_buffer(cached_cols_ ? Shape({0}) : Shape({chunk, P, Q}), backend_, device);
+    Tensor relevance_cols(Shape({chunk, P, Q}), backend_, device);
     Tensor relevance_in(last_input_.shape(), backend_, device);
     relevance_in.fill(0.0f);
-    backend_->col2im_add(relevance_cols.data(), relevance_in.data(), static_cast<size_t>(N),
-                         static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W), geometry());
+    for (int64_t e0 = 0; e0 < N; e0 += chunk) {
+        const int64_t count = std::min(chunk, N - e0);
+        const float* cols = patches(e0, count, cols_buffer);
+        const float* pre_bias = last_pre_bias_output_.data() + e0 * out_stride;
+        const float* r_out = relevance_out.data() + e0 * out_stride;
+        if (lrp_rules::is_legacy_epsilon(config)) {
+            backend_->lrp_conv(cols, kernel_.data(), pre_bias, r_out, relevance_cols.data(), static_cast<size_t>(count),
+                               static_cast<size_t>(out_channels_), static_cast<size_t>(P), static_cast<size_t>(Q),
+                               config.epsilon);
+        } else {
+            // Zennit-compatible rules (LRP-rules Mission 2) in patch space: per example, the layer is
+            // out_e = K (OC x P) @ col_e (P x Q) + b, so the patches are the rule's input operand.
+            const auto n = static_cast<size_t>(count), p = static_cast<size_t>(P), q = static_cast<size_t>(Q),
+                       oc = static_cast<size_t>(out_channels_);
+            DeviceBackend* be = backend_;
+            lrp_rules::AffineOp op;
+            op.backend = be;
+            op.device = device;
+            op.input_numel = n * p * q;
+            op.output_numel = n * oc * q;
+            op.weight_numel = oc * p;
+            op.bias_numel = oc;
+            op.forward = [=](const float* col, const float* k, float* y) {
+                for (size_t e = 0; e < n; ++e) {
+                    be->gemm(k, col + e * p * q, y + e * oc * q, oc, p, q);
+                }
+            };
+            op.backward = [=](const float* g, const float* k, float* gcol) {
+                for (size_t e = 0; e < n; ++e) {
+                    be->gemm_ex(k, true, g + e * oc * q, false, gcol + e * p * q, p, oc, q, 0.0f);
+                }
+            };
+            op.add_bias = [=](const float* y, const float* b, float* o) { be->add_channel_vector(y, b, o, n, oc, q); };
+            // ZBox bounds are images unfolded like the input, so padding taps get a zero bound.
+            const Shape bound_shape({count, in_channels_, H, W});
+            const auto in_c = static_cast<size_t>(in_channels_), h = static_cast<size_t>(H), w = static_cast<size_t>(W);
+            const ConvGeometry g = geometry();
+            op.fill_bound = [=](float value, float* col) {
+                Tensor bound(bound_shape, be, device);
+                bound.fill(value);
+                be->im2col(bound.data(), col, n, in_c, h, w, g);
+            };
+            lrp_rules::apply(op, cols, kernel_.data(), bias_.data(), pre_bias, r_out, relevance_cols.data(), config);
+        }
+        backend_->col2im_add(relevance_cols.data(), relevance_in.data() + e0 * in_stride, static_cast<size_t>(count),
+                             static_cast<size_t>(in_channels_), static_cast<size_t>(H), static_cast<size_t>(W),
+                             geometry());
+    }
     return relevance_in;
 }
 

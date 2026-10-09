@@ -154,7 +154,8 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
   sensitivity, and counterfactuals, each with its view
 - TOK-1 to TOK-4 (**done**): the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores
-- HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)
+- HIP-6: fused kernels (HIP-3 landed early, in v1.1)
+- HIP-7 (**done**): bounded-memory Conv2D
 - VIZ-3, VIZ-6a (**done**): Vega-Lite HTML and the token relevance view
 - NB-1, NB-2: native rich display and the `.ipynb`/HTML report writer
 - AGT-1 to AGT-4: the native orchestrator core
@@ -1190,7 +1191,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 | HIP-4 | Remove the 56 per-op `hipStreamSynchronize` calls. Sync only when the host reads a result, and add `PULSATRIX_HIP_SYNC_DEBUG=1` to bring them back for debugging | Launch and sync cost more than the kernels on small models | HIP-3, FND-8 | P0 | S | Done, [#59](https://github.com/Joshuaweg/pulsatrix/pull/59) (see below) |
 | HIP-5 | `dot` and `sum` across many blocks (partials, then a second pass), deterministic | They run on a single block today | — | P0 | S | Done, [#56](https://github.com/Joshuaweg/pulsatrix/pull/56) |
 | HIP-6 | Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs | Fewer launches and less memory traffic | TRN-2 | P1 | — | |
-| HIP-7 | Conv2D that runs im2col and GEMM in batch chunks | The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU | FND-6 | P1 | S | |
+| HIP-7 | Conv2D that runs im2col and GEMM in batch chunks | The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU | FND-6 | P1 | S | Done, [#118](https://github.com/Joshuaweg/pulsatrix/pull/118) (see below) |
 | HIP-8 | A hipBLASLt probe on the pinned container, then bf16 GEMM through `hipblasGemmEx` | Reports conflict on whether hipBLASLt works on gfx1151 in ROCm 7.2.4; measure it | HIP-1 | P1 | — | |
 | HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S || Done, [#65](https://github.com/Joshuaweg/pulsatrix/pull/65) (see below) |
 | HIP-10 | Zero-copy staging buffers on APUs, enabled only when the device reports itself as integrated | Saves a copy on Strix Halo without slowing discrete GPUs | HIP-3 | P2 | — | |
@@ -1230,6 +1231,13 @@ memory bandwidth (about 212 GB/s).
   register `/opt/rocm/lib` with the dynamic loader. "Pin the host kernel" became a check,
   `scripts/check_host_kernel.sh`, that `rocm-build.sh` runs on every call, plus documented
   instructions to hold the package; the repository doesn't change the host.
+- **HIP-7.** The im2col buffer of one layer was the smaller problem: every convolution kept its
+  whole batch's patches for backward and LRP, 5.75 GB of the GPU memory used to explain ResNet18
+  at batch 32. Each layer now keeps them only within a workspace budget (16 MiB by default) and
+  otherwise works in chunks of examples, rebuilding patches when it needs them again. Peak memory
+  fell to 2.40 GB, the explanation got 14% faster, and the results are bit-identical. The chunks
+  are whole examples: one example larger than the budget still takes its full patch buffer
+  (115 MB in VGG16's widest layers).
 
 ### Follow-ups the HIP work surfaced
 
@@ -1243,6 +1251,8 @@ memory bandwidth (about 212 GB/s).
 | Build the benchmark suite on `hip_profile_workloads` and the interleaved A/B method | HIP-1, HIP-3 | KS-2 (done) |
 | CI's compile-only HIP job still uses ROCm 7.2.4: there is no slim 10.0 image, and the full one is 8.2 GB compressed | HIP-9 | KS-8 |
 | ROCm 10's hipBLAS links hipBLASLt; check which path gfx1151 GEMMs take | HIP-9 | HIP-8 |
+| Chunk within an example (by output rows) when one example's patches exceed the budget | HIP-7 | when a model needs it |
+| One GEMM per chunk instead of one per example (a strided-batched GEMM) | HIP-7 | HIP-6 or HIP-8 |
 
 ## AGT: Agents, native C++
 

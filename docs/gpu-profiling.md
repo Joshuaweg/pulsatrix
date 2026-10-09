@@ -141,6 +141,30 @@ The small models are still only about 20% busy. What's left is host-side work in
 reading the loss back, and losses that validate their targets on the host (one copy each step).
 Fused kernels (HIP-6) and keeping targets on the device are the next steps there.
 
+### HIP-7: Conv2D in batch chunks
+
+`Conv2DModule` unfolds its input into patches (im2col) and multiplies them by the kernel. The
+patches take `N x C*kh*kw x out_h*out_w` floats: 7.4 MB per 224x224 image in ResNet18's first
+layer, 115 MB in VGG16's widest. Every convolution used to keep its whole batch's patches from
+`forward()` for `backward()` and LRP, so they added up across the network.
+
+Now a layer keeps them only when they fit its workspace budget,
+`Conv2DModule::set_max_workspace_bytes()` (16 MiB by default). A larger batch runs in chunks of
+examples, and `backward()` and `propagate_relevance()` rebuild each chunk's patches from the
+cached input. The results are bit-identical for every budget; the tests check forward, the three
+gradients and all five LRP rules.
+
+Explaining ResNet18 (EpsilonPlus, batch 32, 224x224), all patches kept against the 16 MiB
+default (on the GPU three runs each, in ABBA order, all within 0.01 s; on the CPU one run each):
+
+| Device | Peak memory before | After | Time before | After |
+|---|---|---|---|---|
+| gfx1151 (HIP allocator, in use) | 5.75 GB | 2.40 GB | 0.70 s | 0.60 s |
+| CPU, Release (peak RSS) | 5.3 GB | 2.3 GB | 14.5 s | 14.5 s |
+
+Rebuilding the patches is cheap next to the GEMMs, and a smaller working set is friendlier to
+the caches, so the chunked layers are no slower.
+
 ## ROCm 10.0.0 evaluation
 
 ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
