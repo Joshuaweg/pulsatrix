@@ -276,10 +276,11 @@ public:
             throw std::invalid_argument("NEATGenome::MutateWeights: mutation_probability must be in [0, 1]");
         }
         std::bernoulli_distribution mask(mutation_probability);
-        std::normal_distribution<double> noise(0.0, sigma);
+        // Scaled standard normal draws: std::normal_distribution requires a positive stddev.
+        std::normal_distribution<double> noise(0.0, 1.0);
         for (auto& c : connections_) {
             if (c.enabled && mask(rng)) {
-                c.weight += noise(rng);
+                c.weight += noise(rng) * sigma;
             }
         }
     }

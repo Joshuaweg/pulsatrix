@@ -96,12 +96,14 @@ std::vector<double> GaussianMutation(const std::vector<double>& genotype, double
         throw std::invalid_argument("GaussianMutation: mutation_probability must be in [0, 1]");
     }
     std::bernoulli_distribution mask_dist(mutation_probability);
-    std::normal_distribution<double> noise_dist(0.0, sigma);
+    // Standard normal draws scaled by sigma: std::normal_distribution requires a positive
+    // stddev, and z * sigma is the same value it would draw for any sigma > 0.
+    std::normal_distribution<double> noise_dist(0.0, 1.0);
     std::vector<bool> mask(genotype.size());
     std::vector<double> noise(genotype.size());
     for (size_t i = 0; i < genotype.size(); ++i) {
         mask[i] = mask_dist(rng);
-        noise[i] = noise_dist(rng);
+        noise[i] = noise_dist(rng) * sigma;
     }
     return GaussianMutationByNoise(genotype, noise, mask);
 }
