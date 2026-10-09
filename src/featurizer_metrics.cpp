@@ -165,7 +165,9 @@ ReconstructionMetrics EvaluatePrediction(Featurizer& f, const Tensor& x, const T
     for (double& v : mean) v /= static_cast<double>(N);
     ReconstructionMetrics out;
     out.inputs = N;
-    std::vector<int64_t> fired(static_cast<size_t>(m), 0);
+    // Activity is per feature: per block for a block-sparse featurizer, whose codes may be negative.
+    const int64_t bs = f.block_size(), features = m / bs;
+    std::vector<int64_t> fired(static_cast<size_t>(features), 0);
     double err = 0, var = 0, cos = 0, ratio = 0, active = 0;
     for (int64_t r0 = 0; r0 < N; r0 += batch) {
         const int64_t n = std::min(batch, N - r0);
@@ -183,8 +185,10 @@ ReconstructionMetrics EvaluatePrediction(Featurizer& f, const Tensor& x, const T
             }
             cos += a2 > 0 && b2 > 0 ? dot / std::sqrt(a2 * b2) : 0.0;
             ratio += a2 > 0 ? std::sqrt(b2 / a2) : 0.0;
-            for (int64_t i = 0; i < m; ++i) {
-                if (c[static_cast<size_t>(r * m + i)] > 0.0f) {
+            for (int64_t i = 0; i < features; ++i) {
+                bool on = false;
+                for (int64_t s = 0; s < bs; ++s) on = on || c[static_cast<size_t>(r * m + i * bs + s)] != 0.0f;
+                if (on) {
                     ++fired[static_cast<size_t>(i)];
                     active += 1;
                 }
@@ -196,16 +200,16 @@ ReconstructionMetrics EvaluatePrediction(Featurizer& f, const Tensor& x, const T
     out.cosine = cos / static_cast<double>(N);
     out.norm_ratio = ratio / static_cast<double>(N);
     out.l0 = active / static_cast<double>(N);
-    out.firing_rates.resize(static_cast<size_t>(m));
+    out.firing_rates.resize(static_cast<size_t>(features));
     int64_t dead = 0, dense = 0;
-    for (int64_t i = 0; i < m; ++i) {
+    for (int64_t i = 0; i < features; ++i) {
         const double rate = static_cast<double>(fired[static_cast<size_t>(i)]) / static_cast<double>(N);
         out.firing_rates[static_cast<size_t>(i)] = rate;
         dead += fired[static_cast<size_t>(i)] == 0 ? 1 : 0;
         dense += rate > dense_rate ? 1 : 0;
     }
-    out.dead_fraction = static_cast<double>(dead) / static_cast<double>(m);
-    out.dense_fraction = static_cast<double>(dense) / static_cast<double>(m);
+    out.dead_fraction = static_cast<double>(dead) / static_cast<double>(features);
+    out.dense_fraction = static_cast<double>(dense) / static_cast<double>(features);
     return out;
 }
 
@@ -312,6 +316,7 @@ LossRecovered MeasureLossRecovered(Featurizer& featurizer, int64_t position, con
 AbsorptionResult FeatureAbsorption(Featurizer& f, const Tensor& x, const std::vector<int>& labels, const AbsorptionOptions& o) {
     CheckBatch(f, x, "FeatureAbsorption");
     if (f.output_dim() != f.input_dim()) throw std::invalid_argument("FeatureAbsorption: needs an autoencoder (output_dim == input_dim)");
+    if (f.block_size() != 1) throw std::invalid_argument("FeatureAbsorption: needs single-direction features (block_size 1)");
     const int64_t N = x.shape().dim(0), d = f.input_dim(), m = f.num_features();
     if (static_cast<int64_t>(labels.size()) != N) throw std::invalid_argument("FeatureAbsorption: labels must have one value per input");
     if (std::any_of(labels.begin(), labels.end(), [](int y) { return y != 0 && y != 1; })) {

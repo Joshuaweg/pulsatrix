@@ -162,7 +162,7 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
 Feature discovery on real models, and agents that can drive the library.
 
-- FEAT-1 (**done**, for PLM-8), FEAT-2 to FEAT-5 and FEAT-7 (**done**), FEAT-6: the featurizer interface, TopK
+- FEAT-1 (**done**, for PLM-8), FEAT-2 to FEAT-7 (**done**): the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
@@ -807,13 +807,13 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-3 | Core SAEBench metrics: explained variance, loss recovered when the reconstruction is spliced back into the model, dead and dense latents, feature absorption. Random-model and probe baselines on by default | Without these, no featurizer result can be trusted | FEAT-1, XAI-6 | P0 | M | Done, [#106](https://github.com/Joshuaweg/pulsatrix/pull/106) (see below) |
 | FEAT-4 | BatchTopK, JumpReLU and Matryoshka SAEs | Fix specific failures of TopK | FEAT-2 | P1 | — | Done, [#107](https://github.com/Joshuaweg/pulsatrix/pull/107) (see below) |
 | FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M | Done, [#108](https://github.com/Joshuaweg/pulsatrix/pull/108) (see below) |
-| FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L |
+| FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L | Done, [#110](https://github.com/Joshuaweg/pulsatrix/pull/110) (see below) |
 | FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S | Done, [#109](https://github.com/Joshuaweg/pulsatrix/pull/109) (see below) |
 | FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — |
 | FEAT-9 | Parameter decomposition (SPD and VPD) | Interpretability in weight space; few libraries have it | FND-4 | P2 | L–XL |
 | FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first. VIZ-4's AttnLRP graph (residual-stream nodes) and Neuronpedia export are the starting point: transcoder features would replace the nodes | FEAT-5 | P2 | XL |
 
-Open: no LRP rule exists yet for propagating relevance through a block top-k. FEAT-6 needs one.
+FEAT-6 propagates relevance through a block top-k by treating the selection as a fixed gate (see below).
 
 ### How the FEAT work departed from the plan
 
@@ -924,6 +924,20 @@ Open: no LRP rule exists yet for propagating relevance through a block top-k. FE
     0.72 vs 0.59 with the layer-4 MLP replaced). Against a residual-stream TopK SAE its concept
     features are mixed: better on 3 of 6 concepts, worse on 2
     ([table](../mechanistic-interpretability/index.md#transcoders)).
+- **FEAT-6** adds `block_sparse_featurizer.hpp`: `BlockSparseFeaturizer` with the Vanilla,
+  Grassmannian and GroupLasso variants, `BlockSelection::Tournament`,
+  `MeasureDescriptionLength` (MDL) and `MeasureBlockGeometry` (stable rank).
+  - **The reference code is followed where it differs from the paper:** a γ per block, and
+    GroupLasso as a block JumpReLU. All three variants match a PyTorch rendering
+    (`tools/golden/make_bsf_golden.py`).
+  - **A feature can now be a block.** `Featurizer::block_size()` makes L0, dead and dense
+    features and the activity tracker count blocks, with signed codes. Absorption refuses blocks.
+  - **Relevance through block selection** treats the selection as a fixed gate, and is conserved
+    without biases.
+  - **On planted planes** a Vanilla BSF recovers all 6 and needs 19.9 bits per input, against
+    32.4 for a TopK SAE. **On ESM-2 8M** it trails the TopK SAE in reconstruction (explained
+    variance 0.66 vs 0.78) and saves only 5% of bits. Blocks use about 1.5 of 4 dimensions
+    ([table](../mechanistic-interpretability/index.md#block-sparse-featurizers)).
 - **FEAT-7** adds `steering.hpp`: `DifferenceOfMeans`, `FeaturizerDirection`, `SteeringHook`
   (a HiddenStateHook) and `MeasureSteering`.
   - **The reliability report follows Tan et al.** Each input's steerability is its slope of
