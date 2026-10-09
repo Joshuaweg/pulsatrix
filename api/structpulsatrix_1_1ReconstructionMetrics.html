@@ -122,7 +122,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:aeb7f5d42d48412c46ea4c98f4f56e567"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mean of <code>|x̂| / |x|</code>: below 1 means codes are shrunk.  <br /></td></tr>
 <tr class="separator:aeb7f5d42d48412c46ea4c98f4f56e567"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a59c7a281afdf2c374841cbf1c6cfe1" id="r_a5a59c7a281afdf2c374841cbf1c6cfe1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReconstructionMetrics.html#a5a59c7a281afdf2c374841cbf1c6cfe1">l0</a> = 0</td></tr>
-<tr class="memdesc:a5a59c7a281afdf2c374841cbf1c6cfe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Active features per input.  <br /></td></tr>
+<tr class="memdesc:a5a59c7a281afdf2c374841cbf1c6cfe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Active features per input: blocks, for a block-sparse featurizer.  <br /></td></tr>
 <tr class="separator:a5a59c7a281afdf2c374841cbf1c6cfe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a5e77bceadb895e0dacd6ff1b539893" id="r_a7a5e77bceadb895e0dacd6ff1b539893"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReconstructionMetrics.html#a7a5e77bceadb895e0dacd6ff1b539893">dead_fraction</a> = 0</td></tr>
 <tr class="memdesc:a7a5e77bceadb895e0dacd6ff1b539893"><td class="mdescLeft">&#160;</td><td class="mdescRight">The share of features that fired on none of these inputs.  <br /></td></tr>
@@ -131,7 +131,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a00d2d2f70ba9bcf8f476fc8caf922fe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The share that fired on more than the dense rate of them.  <br /></td></tr>
 <tr class="separator:a00d2d2f70ba9bcf8f476fc8caf922fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ee136686e6652cfce26190c7d65c7ff" id="r_a3ee136686e6652cfce26190c7d65c7ff"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ReconstructionMetrics.html#a3ee136686e6652cfce26190c7d65c7ff">firing_rates</a></td></tr>
-<tr class="memdesc:a3ee136686e6652cfce26190c7d65c7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each feature's share of inputs it fired on.  <br /></td></tr>
+<tr class="memdesc:a3ee136686e6652cfce26190c7d65c7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each feature's (or block's) share of inputs it fired on.  <br /></td></tr>
 <tr class="separator:a3ee136686e6652cfce26190c7d65c7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -213,7 +213,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Each feature's share of inputs it fired on. </p>
+<p>Each feature's (or block's) share of inputs it fired on. </p>
 
 </div>
 </div>
@@ -243,7 +243,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Active features per input. </p>
+<p>Active features per input: blocks, for a block-sparse featurizer. </p>
 
 </div>
 </div>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['contactatom_0',['ContactAtom',['../namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc',1,'pulsatrix']]],
-  ['copydirection_1',['CopyDirection',['../namespacepulsatrix.html#a5d9adebabff0df0875f22a763d77ad6b',1,'pulsatrix']]]
+  ['blockselection_0',['BlockSelection',['../namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7e',1,'pulsatrix']]],
+  ['bsfvariant_1',['BsfVariant',['../namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9c',1,'pulsatrix']]]
 ];

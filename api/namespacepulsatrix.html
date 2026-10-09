@@ -233,6 +233,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A run of benchmarks: <code>pulsatrix.benchmark.v1</code>.  <a href="structpulsatrix_1_1BenchmarkReport.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BlockGeometry.html">BlockGeometry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each block's code geometry over <code>x</code>, from the covariance of its codes on the inputs where it is active: stable rank <code>‖C‖²_F / ‖C‖²_2</code>, participation ratio <code>(tr C)² / ‖C‖²_F</code> and effective rank (the exponential of the eigenvalues' entropy). The paper finds a block's dimension saturates at the concept's (2 to 4 for DINOv3) however large b is.  <a href="structpulsatrix_1_1BlockGeometry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BlockSparseFeaturizer.html">BlockSparseFeaturizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A block-sparse featurizer: G blocks of b directions in a d-dimensional space. Codes are <code>(N, G·b)</code>, block g's in columns <code>[g·b, (g+1)·b)</code>, signed; the reconstruction is <code>x̂ = z D</code>, D's rows the atoms. A block is active when its codes aren't all zero, and its norm says how strongly; its coordinates say where on the concept's subspace the input is.  <a href="classpulsatrix_1_1BlockSparseFeaturizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1BlockSparseOptions.html">BlockSparseOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1BoundedQueue.html">BoundedQueue</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-capacity thread-safe queue with blocking push/pop &ndash; the bounded buffer between pulsatrix data-pipeline stages (campaign_exai_dl_library_data_pipeline). Not tied to any Dataset/DataLoader type; deliberately generic.  <a href="classpulsatrix_1_1BoundedQueue.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -416,6 +424,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Decoder.html">Decoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns token strings back into text.  <a href="classpulsatrix_1_1Decoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DescriptionLength.html">DescriptionLength</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The paper's minimum description length (Appendix C), in bits per input at distortion <code>δ = distortion_fraction · (mean per-dimension variance of x)</code>:  <a href="structpulsatrix_1_1DescriptionLength.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1DetailedBalanceLoss.html">DetailedBalanceLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lsquo;Δ(s,s&rsquo;) = log F(s) + log P_F(s'|s) − log F(s') − log P_B(s|s')<code>,</code>loss = Δ(s,s')²<code>-- the per-*transition* credit-assignment alternative to</code>TrajectoryBalanceLoss`'s per-trajectory constraint.  <a href="classpulsatrix_1_1DetailedBalanceLoss.html#details">More...</a><br /></td></tr>
@@ -1354,6 +1365,15 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:a056ad7d81b2ee20acdbf7f6f7a1e7a9c" id="r_a056ad7d81b2ee20acdbf7f6f7a1e7a9c"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9c">BsfVariant</a> { <a class="el" href="namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7d3cf600bf044a1aaf9324807bd8d13e">Vanilla</a>
+, <a class="el" href="namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a">Grassmannian</a>
+, <a class="el" href="namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c">GroupLasso</a>
+ }</td></tr>
+<tr class="separator:a056ad7d81b2ee20acdbf7f6f7a1e7a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59c11eb18ff49a144e9f3d6217738f7e" id="r_a59c11eb18ff49a144e9f3d6217738f7e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7e">BlockSelection</a> { <a class="el" href="namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7ea3d93467dda5ad01cbe7ba876f90a1818">TopK</a>
+, <a class="el" href="namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7ea4f4dc29df9d29cbec61a725ff3ce6e72">Tournament</a>
+ }</td></tr>
+<tr class="separator:a59c11eb18ff49a144e9f3d6217738f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6aaf6ae4d4aeddc14425e5de53d6ed2" id="r_ae6aaf6ae4d4aeddc14425e5de53d6ed2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2">SplitBehavior</a> { <br />
 &#160;&#160;<a class="el" href="namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2a93f07b720ebf7d1246512569761a5804">Removed</a>
 , <a class="el" href="namespacepulsatrix.html#ae6aaf6ae4d4aeddc14425e5de53d6ed2ad1f847307d4668ee43043ea87f2a00a6">Isolated</a>
@@ -1673,6 +1693,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ab117963df9f25d6ace51a78658ca4496" id="r_ab117963df9f25d6ace51a78658ca4496"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkComparison.html">BenchmarkComparison</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ab117963df9f25d6ace51a78658ca4496">CompareBenchmarks</a> (const std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &gt; &amp;baseline_runs, const std::vector&lt; <a class="el" href="structpulsatrix_1_1BenchmarkReport.html">BenchmarkReport</a> &gt; &amp;candidate_runs, const <a class="el" href="structpulsatrix_1_1CompareOptions.html">CompareOptions</a> &amp;options={})</td></tr>
 <tr class="memdesc:ab117963df9f25d6ace51a78658ca4496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares a candidate build with a baseline, record by record (matched on name and device). Several reports per side are the rounds of an interleaved A/B run; each side's value is the median over its rounds, so one noisy round doesn't decide, and with three or more rounds per side a time regresses only if its rounds also separate (<a class="el" href="structpulsatrix_1_1CompareOptions.html#a047bba0024a10de84af39bb9f210f513" title="With at least three rounds on each side, a time also needs the candidate&#39;s rounds to be slower than t...">CompareOptions::significance</a>).  <br /></td></tr>
 <tr class="separator:ab117963df9f25d6ace51a78658ca4496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c327b66f98c42b444d2cd79d260b628" id="r_a3c327b66f98c42b444d2cd79d260b628"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1BlockGeometry.html">BlockGeometry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a3c327b66f98c42b444d2cd79d260b628">MeasureBlockGeometry</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, int64_t batch=4096)</td></tr>
+<tr class="separator:a3c327b66f98c42b444d2cd79d260b628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73f2520d8735527576929fd5740651cb" id="r_a73f2520d8735527576929fd5740651cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DescriptionLength.html">DescriptionLength</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73f2520d8735527576929fd5740651cb">MeasureDescriptionLength</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, double distortion_fraction=0.1, int64_t batch=4096)</td></tr>
+<tr class="separator:a73f2520d8735527576929fd5740651cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a576b276dd82c852f80a4e69764137dc0" id="r_a576b276dd82c852f80a4e69764137dc0"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a576b276dd82c852f80a4e69764137dc0">ByteLevelAlphabet</a> ()</td></tr>
 <tr class="memdesc:a576b276dd82c852f80a4e69764137dc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPT-2 byte-to-character table byte-level BPE uses: printable bytes stand for themselves, the rest for U+0100 onward.  <br /></td></tr>
 <tr class="separator:a576b276dd82c852f80a4e69764137dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1873,10 +1897,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:a6bf1b89f72720caba33f5bc2888ae612"><td class="mdescLeft">&#160;</td><td class="mdescRight">ModelParameterRandomizationTest over <code>layers</code>, in the order given: each a prefix of named_parameters() names, such as <code>"layers.11"</code>, randomized cumulatively.  <br /></td></tr>
 <tr class="separator:a6bf1b89f72720caba33f5bc2888ae612"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97609000f48b7f7d190d002af3d09896" id="r_a97609000f48b7f7d190d002af3d09896"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a97609000f48b7f7d190d002af3d09896">MeanL0</a> (const std::vector&lt; float &gt; &amp;codes, int64_t num_features, float threshold=0.0f)</td></tr>
-<tr class="memdesc:a97609000f48b7f7d190d002af3d09896"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mean number of codes above <code>threshold</code> per input (L0), for codes row-major <code>(N, num_features)</code>.  <br /></td></tr>
+<tr class="memdesc:a97609000f48b7f7d190d002af3d09896"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mean number of codes above <code>threshold</code> in magnitude per input (L0), for codes row-major <code>(N, num_features)</code>.  <br /></td></tr>
 <tr class="separator:a97609000f48b7f7d190d002af3d09896"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af94ee0e0bdac318f32ad08185ecaee58" id="r_af94ee0e0bdac318f32ad08185ecaee58"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af94ee0e0bdac318f32ad08185ecaee58">MeanL0</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, float threshold=0.0f)</td></tr>
-<tr class="memdesc:af94ee0e0bdac318f32ad08185ecaee58"><td class="mdescLeft">&#160;</td><td class="mdescRight">MeanL0 of a featurizer's codes for <code>x</code>.  <br /></td></tr>
+<tr class="memdesc:af94ee0e0bdac318f32ad08185ecaee58"><td class="mdescLeft">&#160;</td><td class="mdescRight">MeanL0 of a featurizer's codes for <code>x</code>, in blocks: a block counts once when any of its codes is above <code>threshold</code> in magnitude.  <br /></td></tr>
 <tr class="separator:af94ee0e0bdac318f32ad08185ecaee58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a533843d3b356df74583b5b643566cef9" id="r_a533843d3b356df74583b5b643566cef9"><td class="memTemplParams" colspan="2">template&lt;typename Optimizer &gt; </td></tr>
 <tr class="memitem:a533843d3b356df74583b5b643566cef9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1FeaturizerLoss.html">FeaturizerLoss</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a533843d3b356df74583b5b643566cef9">TrainFeaturizer</a> (<a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;featurizer, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, Optimizer &amp;optimizer, bool unit_norm_decoder=true, <a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html">FeatureActivityTracker</a> *tracker=nullptr)</td></tr>
@@ -3098,6 +3122,64 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192" name="aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192"></a>ExpectedImprovement&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9" name="aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9"></a>ProbabilityOfImprovement&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9" name="aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9"></a>UpperConfidenceBound&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a59c11eb18ff49a144e9f3d6217738f7e" name="a59c11eb18ff49a144e9f3d6217738f7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59c11eb18ff49a144e9f3d6217738f7e">&#9670;&#160;</a></span>BlockSelection</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7e">pulsatrix::BlockSelection</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a59c11eb18ff49a144e9f3d6217738f7ea3d93467dda5ad01cbe7ba876f90a1818" name="a59c11eb18ff49a144e9f3d6217738f7ea3d93467dda5ad01cbe7ba876f90a1818"></a>TopK&#160;</td><td class="fielddoc"><p>Π_k: each input keeps its k blocks of largest norm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a59c11eb18ff49a144e9f3d6217738f7ea4f4dc29df9d29cbec61a725ff3ce6e72" name="a59c11eb18ff49a144e9f3d6217738f7ea4f4dc29df9d29cbec61a725ff3ce6e72"></a>Tournament&#160;</td><td class="fielddoc"><p>Tournament top-k (Jerpelea and Ananthram): blocks are taken by norm, but one that overlaps an already-taken block loses a duel and is skipped; see <a class="el" href="structpulsatrix_1_1BlockSparseOptions.html">BlockSparseOptions</a>. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a056ad7d81b2ee20acdbf7f6f7a1e7a9c" name="a056ad7d81b2ee20acdbf7f6f7a1e7a9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a056ad7d81b2ee20acdbf7f6f7a1e7a9c">&#9670;&#160;</a></span>BsfVariant</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9c">pulsatrix::BsfVariant</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7d3cf600bf044a1aaf9324807bd8d13e" name="a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7d3cf600bf044a1aaf9324807bd8d13e"></a>Vanilla&#160;</td><td class="fielddoc"><p>A free encoder: <code>z = Π_k(x W_enc + b_enc)</code>, decoder atoms of unit norm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a" name="a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a"></a>Grassmannian&#160;</td><td class="fielddoc"><p>Tied, orthonormal frames: <code>z_g = γ_g x D_gᵀ</code> with <code>D_g D_gᵀ = I</code>, then Π_k. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c" name="a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c"></a>GroupLasso&#160;</td><td class="fielddoc"><p>A free encoder and a learned threshold per block: a block fires when its norm is above θ_g, under an L0 penalty whose weight is set by dual ascent to hit target_l0. </p>
+</td></tr>
 </table>
 
 </div>
@@ -10264,7 +10346,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>The mean number of codes above <code>threshold</code> per input (L0), for codes row-major <code>(N, num_features)</code>. </p>
+<p>The mean number of codes above <code>threshold</code> in magnitude per input (L0), for codes row-major <code>(N, num_features)</code>. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for a size that isn't a whole number of rows, or no rows. </td></tr>
@@ -10306,7 +10388,7 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>MeanL0 of a featurizer's codes for <code>x</code>. </p>
+<p>MeanL0 of a featurizer's codes for <code>x</code>, in blocks: a block counts once when any of its codes is above <code>threshold</code> in magnitude. </p>
 
 </div>
 </div>
@@ -10327,6 +10409,92 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 </div><div class="memdoc">
 
 <p>Each residue's mean score over its substitutions (the wild type left out): how much the model minds a change there. NaN where none was scored. </p>
+
+</div>
+</div>
+<a id="a3c327b66f98c42b444d2cd79d260b628" name="a3c327b66f98c42b444d2cd79d260b628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c327b66f98c42b444d2cd79d260b628">&#9670;&#160;</a></span>MeasureBlockGeometry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1BlockGeometry.html">BlockGeometry</a> pulsatrix::MeasureBlockGeometry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch</em> = <code>4096</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a batch that isn't (N, input_dim). Works for any featurizer: a single-direction featurizer's blocks have rank 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a73f2520d8735527576929fd5740651cb" name="a73f2520d8735527576929fd5740651cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73f2520d8735527576929fd5740651cb">&#9670;&#160;</a></span>MeasureDescriptionLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1DescriptionLength.html">DescriptionLength</a> pulsatrix::MeasureDescriptionLength </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Featurizer.html">Featurizer</a> &amp;&#160;</td>
+          <td class="paramname"><em>featurizer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>distortion_fraction</em> = <code>0.1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>batch</em> = <code>4096</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a batch that isn't (N, input_dim) with N &gt;= 2, or a distortion_fraction outside (0, 1). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

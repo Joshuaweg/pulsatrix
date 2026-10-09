@@ -754,6 +754,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#block-sparse-featurizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block-sparse featurizers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#transcoders" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1882,6 +1893,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#block-sparse-featurizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block-sparse featurizers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#transcoders" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2006,6 +2028,10 @@ model's or environment's structure.</p>
 <tr>
 <td>Can a layer's activations be split into sparser, more interpretable directions?</td>
 <td><code>SparseAutoencoder</code>, <code>TopKSparseAutoencoder</code>, <code>JumpReLUSparseAutoencoder</code></td>
+</tr>
+<tr>
+<td>Which concepts are low-dimensional manifolds, not single directions?</td>
+<td><code>BlockSparseFeaturizer</code></td>
 </tr>
 <tr>
 <td>What does an MLP compute, in sparse, interpretable steps?</td>
@@ -2304,6 +2330,181 @@ trains each variant. JumpReLU's L0 isn't set directly: λ = 0.005 gave 12.6, 0.0
   less.</li>
 <li>The random model's absorption is the floor for each figure. For example, Matryoshka's 9% on
   transmembrane is close to its random-model 4%.</li>
+</ul>
+<h4 id="block-sparse-featurizers">Block-sparse featurizers<a class="headerlink" href="#block-sparse-featurizers" title="Permanent link">&para;</a></h4>
+<p>A block-sparse featurizer (BSF; Fel et al., arXiv 2606.25234) makes each feature a small
+subspace, a block of b directions, instead of one direction. A concept that lives on a
+low-dimensional manifold, such as an angle, a position or a lighting direction, becomes one
+feature:
+- the block's norm says how strongly the concept is present;
+- its b coordinates say where on the manifold the input is.</p>
+<p>An SAE has to split such a concept across several latents.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/block_sparse_featurizer.hpp"</span>
+
+<span class="n">BlockSparseOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span>
+<span class="n">o</span><span class="p">.</span><span class="n">variant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BsfVariant</span><span class="o">::</span><span class="n">Vanilla</span><span class="p">;</span><span class="w">   </span><span class="c1">// or Grassmannian, GroupLasso</span>
+<span class="n">o</span><span class="p">.</span><span class="n">block_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">                  </span><span class="c1">// b</span>
+<span class="n">o</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">                           </span><span class="c1">// active blocks per input</span>
+<span class="n">BlockSparseFeaturizer</span><span class="w"> </span><span class="nf">bsf</span><span class="p">(</span><span class="cm">/*dim=*/</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="cm">/*num_blocks=*/</span><span class="mi">640</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+<span class="c1">// Center the activations, and scale them so the mean squared norm is the dimension.</span>
+<span class="n">FeaturizerLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">bsf</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bsf</span><span class="p">.</span><span class="n">block_frame</span><span class="p">(</span><span class="n">g</span><span class="p">);</span><span class="w">                </span><span class="c1">// b x d</span>
+<span class="n">BlockGeometry</span><span class="w"> </span><span class="n">geo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureBlockGeometry</span><span class="p">(</span><span class="n">bsf</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span><span class="w">       </span><span class="c1">// how many of b dimensions are used</span>
+<span class="n">DescriptionLength</span><span class="w"> </span><span class="n">mdl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureDescriptionLength</span><span class="p">(</span><span class="n">bsf</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span><span class="w">  </span><span class="c1">// bits per input</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Encoder</th>
+<th>Selection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vanilla</td>
+<td>Free, <code>x W_enc + b_enc</code></td>
+<td>The k blocks of largest norm</td>
+</tr>
+<tr>
+<td>Grassmannian</td>
+<td>Tied to orthonormal frames: <code>γ_g x D_gᵀ</code></td>
+<td>The k blocks of largest norm</td>
+</tr>
+<tr>
+<td>GroupLasso</td>
+<td>Free</td>
+<td>A learned threshold per block (a block JumpReLU). An L0 penalty is tuned by dual ascent to hold <code>target_l0</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>BlockSelection::Tournament</code> (Jerpelea and Ananthram, arXiv 2608.27515) replaces the top k: a
+block that overlaps one already taken loses a duel and is skipped, which is meant to stop one
+concept splitting across two blocks.</p>
+<ul>
+<li><strong>Following the reference code.</strong> The paper and its code (github.com/goodfire-ai/block-sparse-featurizer)
+  differ, and the code is followed: a γ per block, and GroupLasso as a block JumpReLU, not a
+  soft threshold. The frames' orthonormality is restored by QR after each step, as the paper's
+  Appendix D does. All three match a PyTorch rendering (<code>tools/golden/make_bsf_golden.py</code>),
+  GroupLasso's cold start and dual ascent included.</li>
+<li><strong>Codes are signed, and a feature is a block.</strong> <code>Featurizer::block_size()</code> says so. L0, dead
+  and dense latents and the activity tracker count blocks, active when any code is nonzero.
+  Absorption needs single directions and refuses blocks.</li>
+<li><strong>Relevance through block selection.</strong> The selection acts as a fixed gate: the selected blocks
+  pass relevance through the decoder's and the encoder's rules, and the rest pass none. Without
+  biases (Grassmannian) relevance is conserved; a test checks it.</li>
+<li><strong>The paper's two measures.</strong></li>
+<li><code>MeasureDescriptionLength</code> is its minimum description length: support, code, residual and
+    dictionary bits at a distortion.</li>
+<li><code>MeasureBlockGeometry</code> gives the stable rank, participation ratio and effective rank of each
+    block's codes.</li>
+</ul>
+<p><strong>On planted manifolds</strong> (<code>tests/block_sparse_featurizer_test.cpp</code>): 2 of 6 random planes in
+R³², each input at a random point on a circle in each.
+- A Vanilla BSF with blocks of 2 recovers all 6 planes, with explained variance 1.00, and needs
+  19.9 bits per input. A TopK SAE with the same 4 active dimensions explains 0.87 and needs 32.4.
+- With blocks of 4, a block's codes use 1.4 to 1.8 dimensions by stable rank: they saturate at
+  the concept's dimension, as the paper finds.
+- The Grassmannian variant gets stuck on this data: 1 to 4 planes, explained variance about 0.9,
+  at every learning rate and length tried. Tied frames can't trade a plane between blocks once
+  hard selection has assigned it.</p>
+<p><strong>On ESM-2 8M</strong> (layer 4, the setup below). <code>pulsatrix_probe_esm --featurizer bsf-vanilla</code>
+(or <code>bsf-grassmannian</code>, <code>bsf-lasso</code>) trains 640 blocks of 4 with 4 active blocks. That gives
+the same 2,560 directions and 16 active dimensions as the TopK SAE (k = 16) it's compared with:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Vanilla</th>
+<th>Grassmannian</th>
+<th>GroupLasso</th>
+<th>TopK SAE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0 (blocks or latents)</td>
+<td>4.0</td>
+<td>4.0</td>
+<td>4.1</td>
+<td>16.0</td>
+</tr>
+<tr>
+<td>Explained variance</td>
+<td>0.66</td>
+<td>0.65</td>
+<td>0.54</td>
+<td><strong>0.78</strong></td>
+</tr>
+<tr>
+<td>Loss recovered</td>
+<td>0.91</td>
+<td>0.92</td>
+<td>0.90</td>
+<td><strong>0.96</strong></td>
+</tr>
+<tr>
+<td>Dead features</td>
+<td>11%</td>
+<td>0%</td>
+<td>0%</td>
+<td>2.5%</td>
+</tr>
+<tr>
+<td>Bits per input at 10% distortion (random model)</td>
+<td><strong>669</strong> (427)</td>
+<td>670 (436)</td>
+<td>716 (439)</td>
+<td>704 (510)</td>
+</tr>
+<tr>
+<td>Stable rank of a block's codes (of 4)</td>
+<td>1.46</td>
+<td>1.31</td>
+<td>1.65</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Helix: best feature's F1</td>
+<td>0.40</td>
+<td>0.17</td>
+<td><strong>0.43</strong></td>
+<td>0.33</td>
+</tr>
+<tr>
+<td>Transmembrane: best feature's F1</td>
+<td>0.60</td>
+<td><strong>0.75</strong></td>
+<td>0.47</td>
+<td>0.63</td>
+</tr>
+<tr>
+<td>Signal peptide: best feature's F1</td>
+<td>0.53</td>
+<td><strong>0.74</strong></td>
+<td>0.70</td>
+<td>0.66</td>
+</tr>
+<tr>
+<td>Disulfide bond: best feature's F1</td>
+<td><strong>0.66</strong></td>
+<td>0.65</td>
+<td>0.58</td>
+<td>0.63</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>At the same 16 active dimensions, the TopK SAE reconstructs better.</strong> Every BSF variant
+  explains less variance and recovers less of the loss.</li>
+<li><strong>BSF describes an input in fewer bits, but only slightly.</strong> Naming 4 blocks costs 33 bits
+  against 137 for 16 latents, and that outweighs the larger residual. The margin is 5%, not the
+  paper's factor on images. The random model's activations take fewer bits for every
+  featurizer, so bits compare featurizers on one model, not models.</li>
+<li><strong>Blocks use about 1.5 of their 4 dimensions.</strong> At this layer, few of these concepts look
+  like manifolds of more than one dimension.</li>
+<li><strong>Concept matching is mixed.</strong> The Grassmannian variant's blocks match transmembrane and
+  signal peptides best of the four, but it does worst on helix and strand.</li>
 </ul>
 <h4 id="transcoders">Transcoders<a class="headerlink" href="#transcoders" title="Permanent link">&para;</a></h4>
 <p>An SAE explains what is in an activation. A transcoder (Dunefsky et al., arXiv 2406.11944)

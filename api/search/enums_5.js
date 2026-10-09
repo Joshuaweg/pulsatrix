@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gatedactivation_0',['GatedActivation',['../namespacepulsatrix.html#a988785af20e321b62cf99997047a6985',1,'pulsatrix']]]
+  ['finishreason_0',['FinishReason',['../namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a',1,'pulsatrix']]]
 ];

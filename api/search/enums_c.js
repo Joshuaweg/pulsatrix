@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['optype_0',['OpType',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb',1,'pulsatrix']]]
+  ['normposition_0',['NormPosition',['../namespacepulsatrix.html#af006dd0a5403341bfc3ad106ea4a4077',1,'pulsatrix']]],
+  ['normtype_1',['NormType',['../namespacepulsatrix.html#aa9b603c42e9e2a6f3680d4709c4745cd',1,'pulsatrix']]]
 ];

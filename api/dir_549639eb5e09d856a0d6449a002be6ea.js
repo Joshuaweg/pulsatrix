@@ -20,6 +20,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "batch_norm_module.hpp", "batch__norm__module_8hpp.html", "batch__norm__module_8hpp" ],
     [ "bce_with_logits_loss.hpp", "bce__with__logits__loss_8hpp.html", "bce__with__logits__loss_8hpp" ],
     [ "benchmark.hpp", "benchmark_8hpp.html", "benchmark_8hpp" ],
+    [ "block_sparse_featurizer.hpp", "block__sparse__featurizer_8hpp.html", "block__sparse__featurizer_8hpp" ],
     [ "bounded_queue.hpp", "bounded__queue_8hpp.html", "bounded__queue_8hpp" ],
     [ "byte_level_bpe.hpp", "byte__level__bpe_8hpp.html", "byte__level__bpe_8hpp" ],
     [ "caching_allocator.hpp", "caching__allocator_8hpp.html", "caching__allocator_8hpp" ],
