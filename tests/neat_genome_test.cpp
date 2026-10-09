@@ -247,5 +247,20 @@ TEST(NEATGenomeTest, MutateWeightsProbabilityZeroLeavesWeightsUnchanged) {
     }
 }
 
+TEST(NEATGenomeTest, MutateWeightsZeroSigmaLeavesWeightsUnchanged) {
+    InnovationTracker tracker(2);
+    NEATGenome genome(1, 1, false, tracker);
+    std::mt19937 rng(0);
+    genome.MutateWeights(1.0, 1.0, rng);
+    std::vector<double> before;
+    for (const auto& c : genome.connections()) before.push_back(c.weight);
+    ASSERT_FALSE(before.empty());
+    genome.MutateWeights(0.0, 1.0, rng);
+    ASSERT_EQ(genome.connections().size(), before.size());
+    for (size_t i = 0; i < before.size(); ++i) {
+        EXPECT_DOUBLE_EQ(genome.connections()[i].weight, before[i]);
+    }
+}
+
 }  // namespace
 }  // namespace pulsatrix
