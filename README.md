@@ -142,7 +142,7 @@ starts with which tool answers which question, and reports what each method foun
 |---|---|---|
 | Core | `Tensor`, autograd (`ComputationGraph`), `Module` with `named_parameters()` and freezing, top-k, eigen/QR/SVD, `set_seed` and deterministic mode, CPU/CUDA/HIP backends | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Training | SGD (momentum, Nesterov), Adam, AdamW with parameter groups; learning-rate schedules; gradient clipping; token-accurate gradient accumulation | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
-| Saving and loading | Native safetensors reader and writer; checkpoints with buffers, optimizer state and format versions | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Saving and loading | Native safetensors reader and writer; checkpoints with buffers, optimizer state and format versions; a safe converter for PyTorch `.pt`/`.pth` files (pickle is never read in C++) | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Layers | Linear, Conv2D (stride, padding), BatchNorm with running statistics, eval mode and folding, other normalization, pooling, dropout, embeddings, residual blocks | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Sequence models | RNN/LSTM/GRU, multi-head attention, `TransformerBlock`, encoder layers in ESM-2, BERT or Llama layout (`EncoderBlock`), Mamba, RetNet, RWKV | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Generative blocks | VAE, GAN and diffusion losses and sampling steps | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
