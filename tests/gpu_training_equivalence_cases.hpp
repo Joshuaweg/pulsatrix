@@ -64,6 +64,7 @@
 #include "pulsatrix/jumprelu_sparse_autoencoder.hpp"
 #include "pulsatrix/transcoder.hpp"
 #include "pulsatrix/block_sparse_featurizer.hpp"
+#include "pulsatrix/crosscoder.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/tied_lm_head_module.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -833,6 +834,30 @@ inline void BlockSparseTrainingMatches(DeviceBackend& gpu) {
         for (int step = 0; step < 5; ++step) {
             const FeaturizerLoss cl = TrainFeaturizer(c, cx, co), gl = TrainFeaturizer(g, gx, go);
             EXPECT_NEAR(cl.total, gl.total, 1e-4f) << "variant " << static_cast<int>(v) << " step " << step;
+        }
+        ExpectParametersNear(c, g, 1e-3f);
+        ExpectNear(c.encode(cx), g.encode(gx), 1e-4f);
+    }
+}
+
+// FEAT-8: crosscoders, L1, BatchTopK (with AuxK) and the Delta-Crosscoder.
+inline void CrosscoderTrainingMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::vector<float> x = Random(32 * 10, 412);
+    const Tensor cx(Shape({32, 10}), &cpu, x), gx(Shape({32, 10}), &gpu, x);
+    for (int variant = 0; variant < 3; ++variant) {
+        CrosscoderOptions o;
+        o.sparsity = variant == 0 ? CrosscoderSparsity::L1 : CrosscoderSparsity::BatchTopK;
+        o.l1_coefficient = 0.05f;
+        o.k = 2;
+        o.k_shared = 2;
+        o.delta = variant == 2;
+        o.dead_after = 64;  // dead latents after two steps, so AuxK runs
+        Crosscoder c(2, 5, 12, &cpu, o), g(2, 5, 12, &gpu, o);
+        AdamOptimizer co(0.01f, &cpu), go(0.01f, &gpu);
+        for (int step = 0; step < 5; ++step) {
+            const FeaturizerLoss cl = TrainFeaturizer(c, cx, co, false), gl = TrainFeaturizer(g, gx, go, false);
+            EXPECT_NEAR(cl.total, gl.total, 1e-4f) << "variant " << variant << " step " << step;
         }
         ExpectParametersNear(c, g, 1e-3f);
         ExpectNear(c.encode(cx), g.encode(gx), 1e-4f);
@@ -1723,6 +1748,7 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     TEST_F(FIXTURE, SaeVariantsTrainingMatchCPU) { ::pulsatrix::training_equivalence::SaeVariantsTrainingMatch(MEMBER); } \
     TEST_F(FIXTURE, TranscoderTrainingMatchesCPU) { ::pulsatrix::training_equivalence::TranscoderTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, BlockSparseTrainingMatchesCPU) { ::pulsatrix::training_equivalence::BlockSparseTrainingMatches(MEMBER); } \
+    TEST_F(FIXTURE, CrosscoderTrainingMatchesCPU) { ::pulsatrix::training_equivalence::CrosscoderTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \

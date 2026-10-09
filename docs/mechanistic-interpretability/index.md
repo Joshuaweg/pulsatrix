@@ -19,6 +19,7 @@ model's or environment's structure.
 | Can a layer's activations be split into sparser, more interpretable directions? | `SparseAutoencoder`, `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder` |
 | Which concepts are low-dimensional manifolds, not single directions? | `BlockSparseFeaturizer` |
 | What does an MLP compute, in sparse, interpretable steps? | `Transcoder` |
+| What did fine-tuning change, or which features span several layers? | `Crosscoder`, `MeasureLatentScaling` |
 | Can a direction push the model's behavior, and how reliably? | `SteeringHook`, `MeasureSteering` |
 | Which layers does the output depend on for this input? | `ExplainerContext::build_circuit_graph()` → `CircuitGraph` |
 | What happens to the output if I overwrite one activation? | `ExplainerContext::forward_pass_with_patch()` |
@@ -395,6 +396,97 @@ single feature per concept is:
 
 That is mixed, not the clear win Paulo et al. report for language models. Their measure was
 automated interpretability scores, not concept F1.
+
+
+#### Crosscoders
+
+A crosscoder (Lindsey et al., Transformer Circuits, 2024) is one sparse dictionary over several
+sources at once: the residual stream at several layers, or the same layer in a base model and
+its fine-tune. Each latent has one code and a decoder per source. Its decoder norms say where it
+writes, so model diffing can read off which latents only one model has.
+
+```cpp
+#include "pulsatrix/crosscoder.hpp"
+
+CrosscoderOptions o;                       // BatchTopK by default (Minder et al.)
+o.k = 32;
+Crosscoder c(/*sources=*/2, /*dim=*/576, /*latents=*/4608, &backend, o);
+// x is (N, 2 * 576): the base model's activations, then the fine-tune's, each scaled so its
+// mean squared norm is 576.
+c.initialize_bias(sample);
+FeaturizerLoss loss = TrainFeaturizer(c, batch, opt, /*unit_norm_decoder=*/false);
+
+std::vector<CrosscoderLatentStats> stats = CrosscoderLatents(c);  // norms, Δnorm, cosine
+LatentClass cls = ClassifyLatent(stats[i]);   // AOnly, BOnly, Shared, Other
+std::vector<LatentScaling> ls = MeasureLatentScaling(c, held_out, fine_tune_only);
+```
+
+| Variant | Sparsity | Notes |
+|---|---|---|
+| L1 (Lindsey et al.) | `λ Σ_i f_i Σ_s ‖d_i^s‖` | The penalty is the sum of decoder norms, not their L2 norm, so a one-model latent stays cheap |
+| BatchTopK (Minder et al.) | The batch's `N k` largest `f_i Σ_s ‖d_i^s‖` | No L1 shrinkage. AuxK for dead latents; a threshold at inference |
+| Delta-Crosscoder (Kassem et al.) | Shared and delta partitions, each with its own BatchTopK | The encoder averages the two models. A delta loss makes the delta latents alone predict `x_ft - x_base` |
+
+- **Decoder norms are the result,** so training leaves them free (`unit_norm_decoder = false`),
+  as the references do. Latents start with the same decoder in every source, at norm 0.05 for L1
+  and 1 for BatchTopK (Minder et al.'s values).
+- **Δnorm and the relative norm.** `relative_norm` is `‖d_b‖ / (‖d_a‖ + ‖d_b‖)` (Lindsey et al.,
+  Kassem et al.); `delta_norm` is Minder et al.'s `½ (1 + (‖d_b‖ - ‖d_a‖) / max)`. They agree at
+  0, ½ and 1. `ClassifyLatent` uses Minder et al.'s bins on Δnorm: below 0.1 a-only, above 0.9
+  b-only, 0.4 to 0.6 shared.
+- **Latent Scaling** (Minder et al.) checks a one-model latent against the data. It fits how
+  much of the latent's direction each model actually needs, against what the other latents
+  leave (ν_error) and against the reconstruction (ν_reconstruction). A latent is specific to
+  model b when ν_reconstruction < 0.5 and ν_error < 0.2. It catches two artifacts of decoder
+  norms: **complete shrinkage**, where a latent both models need loses its decoder in one, and
+  **latent decoupling**, where other latents write the same thing to the other model.
+- **Following the papers.** The loss is the mean squared error over every source, plus the
+  penalty, so it sits on the scale of the other featurizers; Lindsey et al. sum it. The
+  Delta-Crosscoder paper has no public code; this follows its equations. It writes no biases, but
+  pulsatrix keeps the encoder's and decoder's, as the standard crosscoder has them. Its λ_s
+  sparsity term is left out, since BatchTopK already fixes the sparsity.
+- **Checked against a PyTorch rendering** (`tools/golden/make_crosscoder_golden.py`): L1 over
+  three sources, BatchTopK with AuxK, and the Delta-Crosscoder, through loss, gradients and two
+  Adam steps.
+
+**On planted features** (`tests/crosscoder_test.cpp`): two "models" in R²⁴ share 16 features,
+and each has 4 of its own.
+- When every feature fires on 8% of inputs, a BatchTopK crosscoder recovers all 24 at decoder
+  cosine above 0.9 and puts each in the right class. An L1 crosscoder recovers 13 of the 16
+  shared ones and all 8 one-model ones.
+- **A narrow fine-tune** adds 4 features that fire on 0.5% of inputs each. The crosscoder learns
+  them, but decoder norms call none of them fine-tune-only (mean Δnorm 0.76): their base
+  decoders keep about half the norm, and training 10 times longer doesn't remove it. Latent
+  Scaling calls all 4 fine-tune-specific, and all 16 shared ones needed by both models.
+- **The Delta-Crosscoder doesn't fix that here.** It puts the 4 in its delta partition, but
+  their Δnorm is 0.79. Its BatchTopK keeps `N k` delta activations per batch even when the
+  fine-tune's features are rarer than that, so its delta latents also fire on other inputs.
+
+**SmolLM2-135M against SmolLM2-135M-Instruct.** `pulsatrix_diff_lm` reads the same chat text
+through both models: 2,379 conversations from SmolLM2-Instruct's own training set, in its ChatML
+template (`tools/explain/fetch_chat_sample.py`), 504K tokens. It trains a crosscoder on the
+residual stream after block 15 of 30, with 4,608 latents for 12 epochs, and reports on the held-out
+tenth (50K tokens):
+
+| | BatchTopK (k = 32) | L1 (λ = 5e-4) | Delta-Crosscoder (k = 32, k_shared = 64) |
+|---|---|---|---|
+| Explained variance, base and Instruct | 0.93, 0.93 | 0.93, 0.93 | 0.96, 0.96 |
+| L0 | 32 | 46 | 96 |
+| One-model latents by Δnorm: base, Instruct | 0, 0 | 9, 2 | 0, 0 |
+| Instruct-specific by Latent Scaling, of the 50 leaning furthest toward Instruct | 8 | 1 | 12 |
+| Their activation mass on chat-template tokens (22% of tokens) | 86% | 99% | 84% |
+
+- **The Instruct-specific latents read the chat template.** Nearly all of their activation falls on
+  the template's tokens: `<|im_start|>`, the role name ("ass" "istant", "user"), and the newlines
+  that close a header. Minder et al. found the same in Gemma 2: chat tuning adds most where the
+  template is.
+- **Decoder norms alone find almost nothing.** Two models this close, on 0.5M tokens, put almost
+  every latent in the shared bin. Latent Scaling, run on the latents leaning furthest toward each
+  model, is what separates the specific ones.
+- **The Delta-Crosscoder finds the most specific latents,** but at three times the L0, which also
+  explains its higher explained variance.
+
+These are small runs: Minder et al. train on 100M tokens.
 
 
 #### Measuring a featurizer

@@ -193,7 +193,7 @@ Its own epic, started 2026-10-07 after VIZ-4. **Complete** (2026-10-08, PRs
 ### Backlog, not yet scheduled
 
 These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, INT-7, INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8, ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, INT-7, INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (**done**), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.
 
 ### v2.0
@@ -809,7 +809,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-5 | Transcoders and skip transcoders | Reported to be more interpretable than SAEs | FEAT-1 | P1 | M | Done, [#108](https://github.com/Joshuaweg/pulsatrix/pull/108) (see below) |
 | FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L | Done, [#110](https://github.com/Joshuaweg/pulsatrix/pull/110) (see below) |
 | FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S | Done, [#109](https://github.com/Joshuaweg/pulsatrix/pull/109) (see below) |
-| FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — |
+| FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — | Done (see below) |
 | FEAT-9 | Parameter decomposition (SPD and VPD) | Interpretability in weight space; few libraries have it | FND-4 | P2 | L–XL |
 | FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first. VIZ-4's AttnLRP graph (residual-stream nodes) and Neuronpedia export are the starting point: transcoder features would replace the nodes | FEAT-5 | P2 | XL |
 
@@ -952,6 +952,20 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
     way for 66% of them, and the SAE feature doesn't steer at all
     ([table](../mechanistic-interpretability/index.md#steering-a-model)).
     `pulsatrix_steer_esm` defaults to ±0.5.
+- **FEAT-8** adds `crosscoder.hpp`: `Crosscoder` over any number of sources (layers or
+  models), with L1 (Lindsey et al.) or BatchTopK (Minder et al.) sparsity and the
+  Delta-Crosscoder (Kassem et al.); `CrosscoderLatents`, `ClassifyLatent`,
+  `MeasureLatentScaling` and `ExplainedVarianceBySource` for model diffing.
+  - **Checked against a PyTorch rendering** (`tools/golden/make_crosscoder_golden.py`) for all
+    three. The Delta-Crosscoder has no public code; it follows the paper's equations.
+  - **On planted features,** BatchTopK recovers every shared and one-model feature. In a narrow
+    fine-tune, whose own features fire on 0.5% of inputs, decoder norms call none of them
+    fine-tune-only, and Latent Scaling calls all of them fine-tune-specific. The Delta-Crosscoder
+    doesn't fix the norms.
+  - **`pulsatrix_diff_lm`** diffs SmolLM2-135M against its Instruct model on chat text. The
+    Instruct-specific latents put 84 to 99% of their activation on chat-template tokens, as
+    Minder et al. found in Gemma 2
+    ([table](../mechanistic-interpretability/index.md#crosscoders)).
 
 ## ARCH: New architectures
 
