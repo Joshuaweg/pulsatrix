@@ -315,6 +315,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CompareOptions.html">CompareOptions</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How CompareBenchmarks decides that a candidate got worse.  <a href="structpulsatrix_1_1CompareOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ComponentAlignment.html">ComponentAlignment</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How well a layer's subcomponents line up with its target weight's rows, the input features (SPD's toy-model measure): for each input feature j, the best cosine over c between subcomponent c's row j, <code>V[j, c] U[c, :]</code>, and the target's row j (MMCS), and that subcomponent's norm over the target row's (ML2R).  <a href="structpulsatrix_1_1ComponentAlignment.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ComponentLinear.html">ComponentLinear</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> split into C rank-one subcomponents: <code>W ≈ V U</code>, V <code>(in, C)</code> reading the input and U <code>(C, out)</code> writing the output, so subcomponent c is <code>V[:, c] U[c, :]</code> and its inner activation is <code>h_c = (x V)_c</code>. The bias is the target's, frozen.  <a href="classpulsatrix_1_1ComponentLinear.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Compose.html">Compose</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eager, ordered list of Transforms applied in sequence &ndash; pulsatrix's analogue of torchvision.transforms.Compose. Deliberately simple: no fusion/graph, matching <a class="el" href="classpulsatrix_1_1Compose.html" title="Eager, ordered list of Transforms applied in sequence – pulsatrix&#39;s analogue of torchvision....">Compose</a>'s own upstream design; unlike Python, there is no GIL here for that simplicity to cost anything.  <a href="classpulsatrix_1_1Compose.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -432,6 +438,10 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Decoder.html">Decoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns token strings back into text.  <a href="classpulsatrix_1_1Decoder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DecompositionLoss.html">DecompositionLoss</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DecompositionOptions.html">DecompositionOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1DescriptionLength.html">DescriptionLength</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The paper's minimum description length (Appendix C), in bits per input at distortion <code>δ = distortion_fraction · (mean per-dimension variance of x)</code>:  <a href="structpulsatrix_1_1DescriptionLength.html#details">More...</a><br /></td></tr>
@@ -653,6 +663,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ImPlotMetricsSink.html">ImPlotMetricsSink</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A concrete <a class="el" href="classpulsatrix_1_1MetricsSink.html" title="Interface the training loop logs scalars/histograms through. Concrete writers (TensorBoard event form...">MetricsSink</a> (<a class="el" href="metrics__sink_8hpp.html" title="Keeps monitoring/visualization tools out of the training core – same OCP/DIP pattern as DeviceBackend...">metrics_sink.hpp</a>'s own doc comment names this the expected extension point: "Concrete writers... implement this") that buffers every logged scalar into a per-tag time series, and keeps the latest histogram snapshot per tag, for live rendering by a training dashboard. Zero core changes needed &ndash; MetricsSink* is already threaded through every training loop in this codebase (<a class="el" href="classpulsatrix_1_1XorNetwork.html#aee7f8d2e4756c13ebe39075b7f4c92cf" title="Runs one training step: forward, loss, backward through every layer, one Adam update per layer&#39;s para...">XorNetwork::train_step</a>, <a class="el" href="classpulsatrix_1_1MnistConvNet.html#a985a7b6504845708e4fe12795f17d3ec" title="Runs one training step: forward, cross-entropy loss, backward through every layer,...">MnistConvNet::train_step</a>).  <a href="classpulsatrix_1_1ImPlotMetricsSink.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ImportanceStats.html">ImportanceStats</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Causal importance statistics of one layer over inputs.  <a href="structpulsatrix_1_1ImportanceStats.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Imputation.html">Imputation</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">How a removed feature is filled in when perturbing an input.  <a href="structpulsatrix_1_1Imputation.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -852,6 +865,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1Offset.html">Offset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A byte range <code>[begin, end)</code> of the text passed to <a class="el" href="classpulsatrix_1_1TextTokenizer.html#a16193653d70e31142d4fa33b335b4569">TextTokenizer::encode()</a>.  <a href="structpulsatrix_1_1Offset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ParameterDecomposition.html">ParameterDecomposition</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trains a decomposition of the <a class="el" href="classpulsatrix_1_1ComponentLinear.html" title="A LinearModule split into C rank-one subcomponents: W ≈ V U, V (in, C) reading the input and U (C,...">ComponentLinear</a> layers inside <code>model</code> against the model itself: the target is the model with every layer in target mode.  <a href="classpulsatrix_1_1ParameterDecomposition.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ParameterSnapshot.html">ParameterSnapshot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves every parameter of a module and restores them exactly when it goes out of scope.  <a href="classpulsatrix_1_1ParameterSnapshot.html#details">More...</a><br /></td></tr>
@@ -1572,6 +1588,15 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a94d9ac6240473b5362d1e8e5c11157bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The op-type tag a Node carries. Charter Part 2 §3: nodes are tagged by a small closed set of op types rather than by concrete layer class, so a query like "find the last conv layer's activations" (Grad-CAM) works by querying op type, not by string-matching a layer name.  <a href="namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bb">More...</a><br /></td></tr>
 <tr class="separator:a94d9ac6240473b5362d1e8e5c11157bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae420d3d48bdbda06f2b10fcab2885bef" id="r_ae420d3d48bdbda06f2b10fcab2885bef"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae420d3d48bdbda06f2b10fcab2885bef">DecompositionMethod</a> { <a class="el" href="namespacepulsatrix.html#ae420d3d48bdbda06f2b10fcab2885befaed504d8761c0f48e13d9d14e94a23627">SPD</a>
+, <a class="el" href="namespacepulsatrix.html#ae420d3d48bdbda06f2b10fcab2885befa786c3b93b7e88fd624c5a8de6b5ec9c8">VPD</a>
+ }</td></tr>
+<tr class="separator:ae420d3d48bdbda06f2b10fcab2885bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a610ac9f626db0e8067e0ab821a25656c" id="r_a610ac9f626db0e8067e0ab821a25656c"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a610ac9f626db0e8067e0ab821a25656c">OutputDivergence</a> { <a class="el" href="namespacepulsatrix.html#a610ac9f626db0e8067e0ab821a25656cac9485718dbb9bad98903eed8bee75deb">MeanSquaredError</a>
+, <a class="el" href="namespacepulsatrix.html#a610ac9f626db0e8067e0ab821a25656ca4ecbff5449d695e985c5a64049a6de67">KlOnLogits</a>
+ }</td></tr>
+<tr class="memdesc:a610ac9f626db0e8067e0ab821a25656c"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the masked model's output is compared with the target's.  <a href="namespacepulsatrix.html#a610ac9f626db0e8067e0ab821a25656c">More...</a><br /></td></tr>
+<tr class="separator:a610ac9f626db0e8067e0ab821a25656c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73a0c4c4eb2de07fef8d33c69e4618cc" id="r_a73a0c4c4eb2de07fef8d33c69e4618cc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc">ContactAtom</a> { <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442">Beta</a>
 , <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca6132295fcf5570fb8b0a944ef322a598">Alpha</a>
 , <a class="el" href="namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca2cb2ce3670408b98b4bcc8e158585e38">VirtualBeta</a>
@@ -2221,6 +2246,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a91c49223bc2b354ad8ed7a7c4f2c6ef1" id="r_a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a91c49223bc2b354ad8ed7a7c4f2c6ef1">check_optimizer_setting</a> (float value, const std::string &amp;what)</td></tr>
 <tr class="memdesc:a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws std::invalid_argument unless <code>value</code> is finite and non-negative.  <br /></td></tr>
 <tr class="separator:a91c49223bc2b354ad8ed7a7c4f2c6ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af80bf8fccadf136ffdd39fb50bc73c54" id="r_af80bf8fccadf136ffdd39fb50bc73c54"><td class="memTemplParams" colspan="2">template&lt;typename Optimizer &gt; </td></tr>
+<tr class="memitem:af80bf8fccadf136ffdd39fb50bc73c54"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1DecompositionLoss.html">DecompositionLoss</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af80bf8fccadf136ffdd39fb50bc73c54">TrainDecomposition</a> (<a class="el" href="classpulsatrix_1_1ParameterDecomposition.html">ParameterDecomposition</a> &amp;d, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x, Optimizer &amp;optimizer)</td></tr>
+<tr class="memdesc:af80bf8fccadf136ffdd39fb50bc73c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">One training step: zero the gradients, loss_and_backward(), one optimizer step.  <br /></td></tr>
+<tr class="separator:af80bf8fccadf136ffdd39fb50bc73c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a0e7fa543c64518febed7924b30f8a8" id="r_a0a0e7fa543c64518febed7924b30f8a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1ComponentAlignment.html">ComponentAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a0a0e7fa543c64518febed7924b30f8a8">AlignComponentsToRows</a> (<a class="el" href="classpulsatrix_1_1ComponentLinear.html">ComponentLinear</a> &amp;layer)</td></tr>
+<tr class="separator:a0a0e7fa543c64518febed7924b30f8a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a079b8968a218c9d388782bce4428add1" id="r_a079b8968a218c9d388782bce4428add1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1ImportanceStats.html">ImportanceStats</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a079b8968a218c9d388782bce4428add1">MeasureImportance</a> (<a class="el" href="classpulsatrix_1_1ParameterDecomposition.html">ParameterDecomposition</a> &amp;d, const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;x)</td></tr>
+<tr class="separator:a079b8968a218c9d388782bce4428add1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ef297c503c00b8d2a318edb5c498bd0" id="r_a4ef297c503c00b8d2a318edb5c498bd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1PBTTruncationGroups.html">PBTTruncationGroups</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a4ef297c503c00b8d2a318edb5c498bd0">ComputeTruncationGroups</a> (const std::vector&lt; double &gt; &amp;metrics, double truncation_fraction)</td></tr>
 <tr class="memdesc:a4ef297c503c00b8d2a318edb5c498bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure core: identifies the bottom and top truncation_fraction of the population by metric (higher is better). Ties are broken by a stable sort on descending metric, so the earlier index among equal values sorts toward "top." At least one individual is always selected on each end, even if floor(size*fraction) would be 0.  <br /></td></tr>
 <tr class="separator:a4ef297c503c00b8d2a318edb5c498bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3307,6 +3340,34 @@ Applied to the <a class="el" href="classpulsatrix_1_1ExplainerContext.html" titl
 
 </div>
 </div>
+<a id="ae420d3d48bdbda06f2b10fcab2885bef" name="ae420d3d48bdbda06f2b10fcab2885bef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae420d3d48bdbda06f2b10fcab2885bef">&#9670;&#160;</a></span>DecompositionMethod</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#ae420d3d48bdbda06f2b10fcab2885bef">pulsatrix::DecompositionMethod</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae420d3d48bdbda06f2b10fcab2885befaed504d8761c0f48e13d9d14e94a23627" name="ae420d3d48bdbda06f2b10fcab2885befaed504d8761c0f48e13d9d14e94a23627"></a>SPD&#160;</td><td class="fielddoc"><p>SPD: masks <code>m = g + (1 - g) r</code>, r uniform; the losses are faithfulness, reconstruction with every layer masked, reconstruction with one layer masked at a time, and importance minimality <code>Σ g^p</code>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae420d3d48bdbda06f2b10fcab2885befa786c3b93b7e88fd624c5a8de6b5ec9c8" name="ae420d3d48bdbda06f2b10fcab2885befa786c3b93b7e88fd624c5a8de6b5ec9c8"></a>VPD&#160;</td><td class="fielddoc"><p>VPD: the Δ weight is part of the forward pass under its own mask; reconstruction routes each input through a random k of the L layers' components (k uniform), and again under adversarial masks (persistent PGD); importance minimality adds a frequency term; the causal importance's lower clamp is straight-through. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a5480c8cbe462fe3f5a8eb04a8c579e6e" name="a5480c8cbe462fe3f5a8eb04a8c579e6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5480c8cbe462fe3f5a8eb04a8c579e6e">&#9670;&#160;</a></span>DeviceType</h2>
 
@@ -3815,6 +3876,36 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <dl class="section note"><dt>Note</dt><dd>Justification for growing the enum here (contrast <a class="el" href="classpulsatrix_1_1RoPEModule.html" title="Rotary Position Embedding (RoPE, Su et al. 2021): a fixed, non-learnable, position-dependent rotation...">RoPEModule</a>, which deliberately reused <code>Elementwise</code>): attention is a genuinely new <em>operation category</em>, not a new spelling of an existing one. It contracts two learned projections against each other (<code>Q @ K^T</code>) and re-mixes a third along the sequence axis &ndash; an input-dependent, content-addressed mixing across positions that no existing category describes. It is not <code>Linear</code> (the mixing weights are computed from the input, not stored), not <code>Composite</code> (<code>Composite</code> means "a container of other
       modules with no math of its own", which <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> is and this is not &ndash; this module owns the two batched matmuls, the scale and the bilinear <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rule), and not <code>Recurrent</code> (no state carried across steps; all positions are attended in parallel). The charter's stated reason for the enum &ndash; "find the last conv
       layer"-style graph queries &ndash; is exactly the use case that needs "find the attention blocks" to be answerable. </dd></dl>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a610ac9f626db0e8067e0ab821a25656c" name="a610ac9f626db0e8067e0ab821a25656c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a610ac9f626db0e8067e0ab821a25656c">&#9670;&#160;</a></span>OutputDivergence</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacepulsatrix.html#a610ac9f626db0e8067e0ab821a25656c">pulsatrix::OutputDivergence</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How the masked model's output is compared with the target's. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a610ac9f626db0e8067e0ab821a25656cac9485718dbb9bad98903eed8bee75deb" name="a610ac9f626db0e8067e0ab821a25656cac9485718dbb9bad98903eed8bee75deb"></a>MeanSquaredError&#160;</td><td class="fielddoc"><p>mean((y - y*)²) over every value. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a610ac9f626db0e8067e0ab821a25656ca4ecbff5449d695e985c5a64049a6de67" name="a610ac9f626db0e8067e0ab821a25656ca4ecbff5449d695e985c5a64049a6de67"></a>KlOnLogits&#160;</td><td class="fielddoc"><p>KL(softmax(y*) ‖ softmax(y)) over the last dimension, averaged over rows: for logits. </p>
 </td></tr>
 </table>
 
@@ -4421,6 +4512,24 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a0a0e7fa543c64518febed7924b30f8a8" name="a0a0e7fa543c64518febed7924b30f8a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a0e7fa543c64518febed7924b30f8a8">&#9670;&#160;</a></span>AlignComponentsToRows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1ComponentAlignment.html">ComponentAlignment</a> pulsatrix::AlignComponentsToRows </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ComponentLinear.html">ComponentLinear</a> &amp;&#160;</td>
+          <td class="paramname"><em>layer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -10685,6 +10794,34 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a079b8968a218c9d388782bce4428add1" name="a079b8968a218c9d388782bce4428add1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a079b8968a218c9d388782bce4428add1">&#9670;&#160;</a></span>MeasureImportance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structpulsatrix_1_1ImportanceStats.html">ImportanceStats</a> &gt; pulsatrix::MeasureImportance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ParameterDecomposition.html">ParameterDecomposition</a> &amp;&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -19378,6 +19515,44 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af80bf8fccadf136ffdd39fb50bc73c54" name="af80bf8fccadf136ffdd39fb50bc73c54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af80bf8fccadf136ffdd39fb50bc73c54">&#9670;&#160;</a></span>TrainDecomposition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Optimizer &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1DecompositionLoss.html">DecompositionLoss</a> pulsatrix::TrainDecomposition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ParameterDecomposition.html">ParameterDecomposition</a> &amp;&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optimizer &amp;&#160;</td>
+          <td class="paramname"><em>optimizer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>One training step: zero the gradients, loss_and_backward(), one optimizer step. </p>
 
 </div>
 </div>

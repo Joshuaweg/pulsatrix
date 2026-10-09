@@ -814,6 +814,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#decomposing-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decomposing parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#building-a-circuit-graph" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1964,6 +1975,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#decomposing-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decomposing parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#building-a-circuit-graph" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2062,6 +2084,10 @@ model's or environment's structure.</p>
 <tr>
 <td>What did fine-tuning change, or which features span several layers?</td>
 <td><code>Crosscoder</code>, <code>MeasureLatentScaling</code></td>
+</tr>
+<tr>
+<td>Which pieces of the weights does each input use?</td>
+<td><code>ComponentLinear</code>, <code>ParameterDecomposition</code> (SPD, VPD)</td>
 </tr>
 <tr>
 <td>Can a direction push the model's behavior, and how reliably?</td>
@@ -3038,6 +3064,133 @@ toward transmembrane residues.
 <li><strong>The point of the report.</strong> A mean effect at one large coefficient would have reported a
   success. The per-input slopes, the anti-steerable share and the random control show there is
   none. A probe that reads a concept doesn't give a direction that writes it.</li>
+</ul>
+<h3 id="decomposing-parameters">Decomposing parameters<a class="headerlink" href="#decomposing-parameters" title="Permanent link">&para;</a></h3>
+<p>Featurizers explain activations. Parameter decomposition explains the weights. Each weight matrix
+is split into rank-one subcomponents, <code>W ≈ V U</code>. Training asks that the subcomponents sum to the
+weights, and that for every input only a few of them are needed to compute the output. A
+subcomponent is then a piece of the mechanism, and its causal importance on an input says whether
+that input uses it.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/parameter_decomposition.hpp"</span>
+
+<span class="c1">// Swap each LinearModule to decompose for a ComponentLinear over it, in any Module built from</span>
+<span class="c1">// non-owned layers (SequentialModule, ResidualModule, ...).</span>
+<span class="n">ComponentLinear</span><span class="w"> </span><span class="nf">c1</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="cm">/*components=*/</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">),</span><span class="w"> </span><span class="n">c2</span><span class="p">(</span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">SequentialModule</span><span class="w"> </span><span class="nf">model</span><span class="p">({</span><span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">c2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu</span><span class="p">});</span>
+
+<span class="n">DecompositionOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span><span class="w">                        </span><span class="c1">// SPD by default; o.method = DecompositionMethod::VPD</span>
+<span class="n">o</span><span class="p">.</span><span class="n">importance_coefficient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3e-3f</span><span class="p">;</span>
+<span class="n">ParameterDecomposition</span><span class="w"> </span><span class="nf">d</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">c2</span><span class="p">},</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+<span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">opt</span><span class="p">(</span><span class="mf">1e-3f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">DecompositionLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainDecomposition</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">ci</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">causal_importances</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w">    </span><span class="c1">// per layer, (N, C)</span>
+<span class="n">ComponentAlignment</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AlignComponentsToRows</span><span class="p">(</span><span class="n">c1</span><span class="p">);</span><span class="w">                </span><span class="c1">// MMCS and ML2R</span>
+</code></pre></div>
+<ul>
+<li><strong><code>ComponentLinear</code></strong> replaces a LinearModule. In target mode it computes <code>x W + b</code>. In
+  components mode it computes <code>((x V) ⊙ m) U + b</code> under per-input masks m. VPD adds back the rest
+  of the weight, <code>Δ = W - V U</code>, under its own mask. Its <code>backward()</code> returns the masks' gradients,
+  so the decomposition runs on the model's own backward pass, with no autograd.</li>
+<li><strong>Causal importance</strong> (SPD): each subcomponent has a small MLP, from its inner activation
+  <code>(x V)_c</code> on the target pass to a score <code>g</code>, clamped to [0, 1] with a small leak. Masks are
+  <code>m = g + (1 - g) r</code>, r uniform: an unimportant subcomponent can be scaled anywhere in [0, 1]
+  without changing the output.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SPD (Bushnaq, Braun and Sharkey, arXiv 2506.20790)</th>
+<th>VPD (Bushnaq et al., Goodfire, 2026)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Faithfulness</td>
+<td><code>Σ_l ‖W - V U‖²</code> over the number of weights</td>
+<td>The same, as the Δ loss</td>
+</tr>
+<tr>
+<td>Reconstruction</td>
+<td>Every layer masked, and one layer masked at a time</td>
+<td>Each input through a random k of the layers, with Δ under its own mask</td>
+</tr>
+<tr>
+<td>Adversarial</td>
+<td>—</td>
+<td>Masks from persistent sources that Adam ascends on the loss (PGD)</td>
+</tr>
+<tr>
+<td>Importance minimality</td>
+<td><code>Σ g^p</code></td>
+<td><code>Σ_c [mean_c + β mean_c log2(1 + sum_c)]</code>, with p annealed (2 to 0.4)</td>
+</tr>
+<tr>
+<td>Lower clamp</td>
+<td>Leaks below 0 in the forward pass too</td>
+<td>Straight-through: leaks only gradients that raise g</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Following the reference code</strong> (github.com/goodfire-ai/param-decomp: tag <code>v1</code> for SPD,
+  <code>nano_param_decomp/run.py</code> for VPD). The gate input isn't detached, the output loss is a mean
+  over every value, one mask sample is drawn per step, and initialization is v1's.
+  <code>OutputDivergence::KlOnLogits</code> compares logits.</li>
+<li><strong>Not here yet.</strong> VPD's causal-importance function for language models, a transformer over
+  every layer's activations; this uses SPD's per-subcomponent MLPs for both. Decomposing
+  <code>CausalLM</code> layers also needs a way to swap a block's LinearModules.</li>
+<li><strong>Checked against a PyTorch rendering</strong> (<code>tools/golden/make_spd_golden.py</code>): SPD's four losses,
+  and VPD's routing, Δ masks, adversarial masks, frequency term and straight-through clamp,
+  through loss, gradients and an Adam step.</li>
+</ul>
+<p><strong>On a toy model of superposition</strong> (<code>pulsatrix_spd_toy</code>): 5 sparse features through 2
+dimensions, <code>x̂ = ReLU(x W Wᵀ + b)</code>, with W and Wᵀ decomposed into 20 subcomponents each. The
+reference schedule is 40,000 steps of 4,096.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SPD</th>
+<th>SPD paper (Table 1)</th>
+<th>VPD (p 2 to 1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MMCS / ML2R</td>
+<td>1.000 / 1.017</td>
+<td>1.000 / 0.993</td>
+<td>0.993 / 0.672</td>
+</tr>
+<tr>
+<td>Alive subcomponents (of 20, per layer)</td>
+<td>5, 5</td>
+<td>5</td>
+<td>4, 5</td>
+</tr>
+<tr>
+<td>Features with one important subcomponent in each layer</td>
+<td>5 of 5</td>
+<td></td>
+<td>5 of 5</td>
+</tr>
+<tr>
+<td>Distinct subcomponents for the 5 features in W</td>
+<td>5</td>
+<td></td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>SPD recovers the features:</strong> one subcomponent per feature in each layer, carrying the
+  feature's row of W.</li>
+<li><strong>VPD, with SPD's toy settings, merges two features into one subcomponent.</strong> The paper reports
+  no toy results; its toy configs use another importance loss, not reproduced here.</li>
+<li><strong>A faster setting.</strong> A learning rate of 1e-2 and importance 1e-2 reach one subcomponent per
+  feature in 3,000 steps of 1,024 (the unit test, Release builds only).</li>
 </ul>
 <h3 id="building-a-circuit-graph">Building a circuit graph<a class="headerlink" href="#building-a-circuit-graph" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>

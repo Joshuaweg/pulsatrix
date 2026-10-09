@@ -3239,7 +3239,7 @@ AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <li>Strided views and broadcasting (KS-10)</li>
 <li>Op-level autograd (KS-12)</li>
 <li>WMMA, HIP graphs and FlashAttention for training only (HIP-12)</li>
-<li>Attribution graphs and parameter decomposition (FEAT-9, FEAT-10)</li>
+<li>Attribution graphs (FEAT-10); parameter decomposition (FEAT-9) is done</li>
 <li>ARCH items at P1 and P2</li>
 <li>ONNX, GGUF and QLoRA (IO-8, IO-9, TRN-14)</li>
 <li>Python wheels and a vcpkg port (KS-11)</li>
@@ -4951,7 +4951,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FND-4</td>
 <td>P2</td>
 <td>L–XL</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/113">#113</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-10</td>
@@ -5130,7 +5130,19 @@ doesn't fix the norms.
   - <strong><code>pulsatrix_diff_lm</code></strong> diffs SmolLM2-135M against its Instruct model on chat text. The
 Instruct-specific latents put 84 to 99% of their activation on chat-template tokens, as
 Minder et al. found in Gemma 2
-(<a href="../mechanistic-interpretability/#crosscoders">table</a>).</p>
+(<a href="../mechanistic-interpretability/#crosscoders">table</a>).
+- <strong>FEAT-9</strong> adds <code>parameter_decomposition.hpp</code>: <code>ComponentLinear</code> (a LinearModule split into
+  rank-one subcomponents, with per-input masks and a Δ path) and <code>ParameterDecomposition</code>, SPD
+  and VPD on the model's own backward pass; <code>AlignComponentsToRows</code> and <code>MeasureImportance</code>.
+  - <strong>VPD is adversarial parameter decomposition</strong> (Goodfire's "Interpreting Language Model
+Parameters", 2026), not variational. Its report and code are in github.com/goodfire-ai/
+param-decomp.
+  - <strong>Checked against a PyTorch rendering</strong> (<code>tools/golden/make_spd_golden.py</code>) for both.
+  - <strong>On a toy model of superposition</strong> SPD matches the paper (MMCS 1.000, ML2R 1.02, 5 alive
+subcomponents per layer). VPD with SPD's settings merges two of the five features.
+  - <strong>Not done:</strong> VPD's transformer causal-importance function, and swapping LinearModules inside
+<code>CausalLM</code> blocks, which language-model decomposition needs
+(<a href="../mechanistic-interpretability/#decomposing-parameters">guide</a>).</p>
 </li>
 </ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>

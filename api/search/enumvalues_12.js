@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['u16_0',['U16',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57baef9ef3ebca4d2b64b6ec83808bafa5f2',1,'pulsatrix']]],
-  ['u32_1',['U32',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57bac8bd5bedff8ef192d39a962afc0e19ee',1,'pulsatrix']]],
-  ['u64_2',['U64',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba31d65cccd6593e4101db93fb878abcaa',1,'pulsatrix']]],
-  ['u8_3',['U8',['../namespacepulsatrix.html#a4635e5585e80a55ee96adcfd4f80b57ba6669348b484e3008dca2bfa8e85e40b5',1,'pulsatrix']]],
-  ['upperconfidencebound_4',['UpperConfidenceBound',['../namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9',1,'pulsatrix']]]
+  ['tanh_0',['Tanh',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503acc132a41cab5676334f353a22a0aa5c5',1,'pulsatrix']]],
+  ['time_1',['Time',['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300aa76d4ef5f3f6a672bbfab2865563e530',1,'pulsatrix::BenchmarkRecord']]],
+  ['topk_2',['TopK',['../namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7ea3d93467dda5ad01cbe7ba876f90a1818',1,'pulsatrix']]],
+  ['tournament_3',['Tournament',['../namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7ea4f4dc29df9d29cbec61a725ff3ce6e72',1,'pulsatrix']]],
+  ['transpose_4',['Transpose',['../namespacepulsatrix.html#ae7ceb8ee1ca517e2ce811f4f6761d779aaf70b1ac863830a4e1ce6268c8399f54',1,'pulsatrix']]]
 ];

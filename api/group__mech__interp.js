@@ -14,6 +14,7 @@ var group__mech__interp =
     [ "learnable_scalar.hpp", "learnable__scalar_8hpp.html", null ],
     [ "linear_probe.hpp", "linear__probe_8hpp.html", null ],
     [ "mlp_hook.hpp", "mlp__hook_8hpp.html", null ],
+    [ "parameter_decomposition.hpp", "parameter__decomposition_8hpp.html", null ],
     [ "relevance_graph.hpp", "relevance__graph_8hpp.html", null ],
     [ "sparse_autoencoder.hpp", "sparse__autoencoder_8hpp.html", null ],
     [ "steering.hpp", "steering_8hpp.html", null ],
