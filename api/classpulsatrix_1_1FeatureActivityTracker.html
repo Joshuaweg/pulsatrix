@@ -110,7 +110,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a186069ec8916a0e69d9f86397e57a91a" id="r_a186069ec8916a0e69d9f86397e57a91a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html#a186069ec8916a0e69d9f86397e57a91a">FeatureActivityTracker</a> (int64_t num_features)</td></tr>
 <tr class="separator:a186069ec8916a0e69d9f86397e57a91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98c455636ded397f4ef851b0ce0be843" id="r_a98c455636ded397f4ef851b0ce0be843"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html#a98c455636ded397f4ef851b0ce0be843">observe</a> (const std::vector&lt; float &gt; &amp;codes, float threshold=0.0f)</td></tr>
-<tr class="memdesc:a98c455636ded397f4ef851b0ce0be843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Records a batch of codes, row-major <code>(N, num_features)</code>; a code above <code>threshold</code> counts as firing.  <br /></td></tr>
+<tr class="memdesc:a98c455636ded397f4ef851b0ce0be843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Records a batch of codes, row-major <code>(N, num_features)</code>; a code above <code>threshold</code> in magnitude counts as firing.  <br /></td></tr>
 <tr class="separator:a98c455636ded397f4ef851b0ce0be843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab8a1b686b79847244f9c8975130fb52" id="r_aab8a1b686b79847244f9c8975130fb52"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1FeatureActivityTracker.html#aab8a1b686b79847244f9c8975130fb52">inputs_seen</a> () const</td></tr>
 <tr class="memdesc:aab8a1b686b79847244f9c8975130fb52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inputs observed so far.  <br /></td></tr>
@@ -299,7 +299,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Records a batch of codes, row-major <code>(N, num_features)</code>; a code above <code>threshold</code> counts as firing. </p>
+<p>Records a batch of codes, row-major <code>(N, num_features)</code>; a code above <code>threshold</code> in magnitude counts as firing. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>for a size that isn't a whole number of rows. </td></tr>

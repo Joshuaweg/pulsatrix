@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kind_0',['kind',['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300',1,'pulsatrix::BenchmarkRecord::Kind'],['../structpulsatrix_1_1CounterfactualTarget.html#a28845e930b59a47419dd94047287fe46',1,'pulsatrix::CounterfactualTarget::Kind'],['../structpulsatrix_1_1Imputation.html#a295743774684f4e01cfa7ead34138deb',1,'pulsatrix::Imputation::Kind'],['../structpulsatrix_1_1EncoderTarget.html#a86c31c5e38672e75042f220cb00d9d58',1,'pulsatrix::EncoderTarget::Kind']]]
+  ['icestyle_0',['IceStyle',['../namespacepulsatrix.html#ad2acaf7e4c4f58cf3a59c360e5f4e1ba',1,'pulsatrix']]]
 ];

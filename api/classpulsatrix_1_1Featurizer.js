@@ -1,6 +1,7 @@
 var classpulsatrix_1_1Featurizer =
 [
     [ "~Featurizer", "classpulsatrix_1_1Featurizer.html#aed204e17f18df79019528675128e9bd1", null ],
+    [ "block_size", "classpulsatrix_1_1Featurizer.html#a86f82a259302c10f837413268e8394be", null ],
     [ "decode", "classpulsatrix_1_1Featurizer.html#a97a7b776076afc8a6944b48dc27c5d5a", null ],
     [ "decoder_direction", "classpulsatrix_1_1Featurizer.html#a7c5fc9fbffd0c1f4c282110987d368bb", null ],
     [ "encode", "classpulsatrix_1_1Featurizer.html#a31f93b9181db7e5fc6f4afab0ffc6947", null ],

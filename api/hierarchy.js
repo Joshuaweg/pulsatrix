@@ -41,6 +41,8 @@ var hierarchy =
     [ "pulsatrix::BenchmarkComparison", "structpulsatrix_1_1BenchmarkComparison.html", null ],
     [ "pulsatrix::BenchmarkRecord", "structpulsatrix_1_1BenchmarkRecord.html", null ],
     [ "pulsatrix::BenchmarkReport", "structpulsatrix_1_1BenchmarkReport.html", null ],
+    [ "pulsatrix::BlockGeometry", "structpulsatrix_1_1BlockGeometry.html", null ],
+    [ "pulsatrix::BlockSparseOptions", "structpulsatrix_1_1BlockSparseOptions.html", null ],
     [ "pulsatrix::datalog::BooleanSemiring", "structpulsatrix_1_1datalog_1_1BooleanSemiring.html", null ],
     [ "pulsatrix::BoundedQueue< T >", "classpulsatrix_1_1BoundedQueue.html", null ],
     [ "pulsatrix::BpeOptions", "structpulsatrix_1_1BpeOptions.html", null ],
@@ -102,6 +104,7 @@ var hierarchy =
       [ "pulsatrix::SequenceDecoder", "classpulsatrix_1_1SequenceDecoder.html", null ],
       [ "pulsatrix::StripDecoder", "classpulsatrix_1_1StripDecoder.html", null ]
     ] ],
+    [ "pulsatrix::DescriptionLength", "structpulsatrix_1_1DescriptionLength.html", null ],
     [ "pulsatrix::DetailedBalanceLoss", "classpulsatrix_1_1DetailedBalanceLoss.html", null ],
     [ "pulsatrix::DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", [
       [ "pulsatrix::CPUBackend", "classpulsatrix_1_1CPUBackend.html", null ],
@@ -143,6 +146,7 @@ var hierarchy =
     [ "pulsatrix::FeatureDashboardDocument", "structpulsatrix_1_1FeatureDashboardDocument.html", null ],
     [ "pulsatrix::FeatureSensitivity", "structpulsatrix_1_1FeatureSensitivity.html", null ],
     [ "pulsatrix::Featurizer", "classpulsatrix_1_1Featurizer.html", [
+      [ "pulsatrix::BlockSparseFeaturizer", "classpulsatrix_1_1BlockSparseFeaturizer.html", null ],
       [ "pulsatrix::JumpReLUSparseAutoencoder", "classpulsatrix_1_1JumpReLUSparseAutoencoder.html", null ],
       [ "pulsatrix::SparseAutoencoder", "classpulsatrix_1_1SparseAutoencoder.html", null ],
       [ "pulsatrix::TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", null ],
@@ -226,6 +230,7 @@ var hierarchy =
       [ "pulsatrix::AggregatorModule", "classpulsatrix_1_1AggregatorModule.html", null ],
       [ "pulsatrix::AvgPool2DModule", "classpulsatrix_1_1AvgPool2DModule.html", null ],
       [ "pulsatrix::BatchNormModule", "classpulsatrix_1_1BatchNormModule.html", null ],
+      [ "pulsatrix::BlockSparseFeaturizer", "classpulsatrix_1_1BlockSparseFeaturizer.html", null ],
       [ "pulsatrix::CausalLM", "classpulsatrix_1_1CausalLM.html", null ],
       [ "pulsatrix::ConjunctionModule", "classpulsatrix_1_1ConjunctionModule.html", null ],
       [ "pulsatrix::Conv2DModule", "classpulsatrix_1_1Conv2DModule.html", null ],

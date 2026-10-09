@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['finishreason_0',['FinishReason',['../namespacepulsatrix.html#ad77127af5416692cbd6eaeaba9ec0e0a',1,'pulsatrix']]]
+  ['elementwiseop_0',['ElementwiseOp',['../namespacepulsatrix.html#afec27fa326532e4ad62b32d54558b503',1,'pulsatrix']]]
 ];

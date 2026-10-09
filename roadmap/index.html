@@ -3201,7 +3201,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
 <p>Feature discovery on real models, and agents that can drive the library.</p>
 <ul>
-<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 to FEAT-5 and FEAT-7 (<strong>done</strong>), FEAT-6: the featurizer interface, TopK
+<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 to FEAT-7 (<strong>done</strong>): the featurizer interface, TopK
   and its family, metrics, transcoders, BSF, steering</li>
 <li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology</li>
@@ -4924,7 +4924,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-2, FND-4</td>
 <td>P1</td>
 <td>L</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/110">#110</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-7</td>
@@ -4964,7 +4964,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 </tr>
 </tbody>
 </table>
-<p>Open: no LRP rule exists yet for propagating relevance through a block top-k. FEAT-6 needs one.</p>
+<p>FEAT-6 propagates relevance through a block top-k by treating the selection as a fixed gate (see below).</p>
 <h3 id="how-the-feat-work-departed-from-the-plan">How the FEAT work departed from the plan<a class="headerlink" href="#how-the-feat-work-departed-from-the-plan" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>FEAT-1</strong> adds the <code>Featurizer</code> interface (<code>featurizer.hpp</code>): <code>encode</code>, <code>decode</code>,
@@ -5089,6 +5089,20 @@ different input and output sizes, the skip connection and AuxK.
 0.72 vs 0.59 with the layer-4 MLP replaced). Against a residual-stream TopK SAE its concept
 features are mixed: better on 3 of 6 concepts, worse on 2
 (<a href="../mechanistic-interpretability/#transcoders">table</a>).
+- <strong>FEAT-6</strong> adds <code>block_sparse_featurizer.hpp</code>: <code>BlockSparseFeaturizer</code> with the Vanilla,
+  Grassmannian and GroupLasso variants, <code>BlockSelection::Tournament</code>,
+  <code>MeasureDescriptionLength</code> (MDL) and <code>MeasureBlockGeometry</code> (stable rank).
+  - <strong>The reference code is followed where it differs from the paper:</strong> a γ per block, and
+GroupLasso as a block JumpReLU. All three variants match a PyTorch rendering
+(<code>tools/golden/make_bsf_golden.py</code>).
+  - <strong>A feature can now be a block.</strong> <code>Featurizer::block_size()</code> makes L0, dead and dense
+features and the activity tracker count blocks, with signed codes. Absorption refuses blocks.
+  - <strong>Relevance through block selection</strong> treats the selection as a fixed gate, and is conserved
+without biases.
+  - <strong>On planted planes</strong> a Vanilla BSF recovers all 6 and needs 19.9 bits per input, against
+32.4 for a TopK SAE. <strong>On ESM-2 8M</strong> it trails the TopK SAE in reconstruction (explained
+variance 0.66 vs 0.78) and saves only 5% of bits. Blocks use about 1.5 of 4 dimensions
+(<a href="../mechanistic-interpretability/#block-sparse-featurizers">table</a>).
 - <strong>FEAT-7</strong> adds <code>steering.hpp</code>: <code>DifferenceOfMeans</code>, <code>FeaturizerDirection</code>, <code>SteeringHook</code>
   (a HiddenStateHook) and <code>MeasureSteering</code>.
   - <strong>The reliability report follows Tan et al.</strong> Each input's steerability is its slope of

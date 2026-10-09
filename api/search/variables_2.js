@@ -15,7 +15,7 @@ var searchData=
   ['clean_12',['clean',['../structpulsatrix_1_1LossRecovered.html#a5d73a1ae930f3e2c8865b16467fd25fa',1,'pulsatrix::LossRecovered']]],
   ['clerp_13',['clerp',['../structpulsatrix_1_1AttributionGraph_1_1Node.html#af3e0fcc33e49645bd50d17acc79c4c0c',1,'pulsatrix::AttributionGraph::Node']]],
   ['cls_14',['cls',['../structpulsatrix_1_1ResidueRelevance.html#a0c8f1e9d3adf6009b5c49d6e259e05ca',1,'pulsatrix::ResidueRelevance']]],
-  ['code_15',['code',['../structpulsatrix_1_1StructureResidue.html#add8205a24f0356c063b26481dcf4ed3f',1,'pulsatrix::StructureResidue']]],
+  ['code_15',['code',['../structpulsatrix_1_1DescriptionLength.html#ac627b8b547a982fa3c9c8f6e1d058d77',1,'pulsatrix::DescriptionLength::code'],['../structpulsatrix_1_1StructureResidue.html#add8205a24f0356c063b26481dcf4ed3f',1,'pulsatrix::StructureResidue::code']]],
   ['coefficients_16',['coefficients',['../structpulsatrix_1_1SteeringOptions.html#a413f3f64758c199819c299d8d38bc0bc',1,'pulsatrix::SteeringOptions::coefficients'],['../structpulsatrix_1_1SteeringReport.html#a3db36df5930752fcea7ef4772c6708e2',1,'pulsatrix::SteeringReport::coefficients']]],
   ['col_5flabels_17',['col_labels',['../structpulsatrix_1_1HeatmapDocument.html#aa7f0bf754c818e36b6894ae90a6ee66b',1,'pulsatrix::HeatmapDocument']]],
   ['collate_5ffn_18',['collate_fn',['../structpulsatrix_1_1DataLoaderOptions.html#a93701dd481b49d9f882d40371478c0f9',1,'pulsatrix::DataLoaderOptions']]],

@@ -47,6 +47,9 @@ var namespacepulsatrix =
     [ "BenchmarkComparison", "structpulsatrix_1_1BenchmarkComparison.html", "structpulsatrix_1_1BenchmarkComparison" ],
     [ "BenchmarkRecord", "structpulsatrix_1_1BenchmarkRecord.html", "structpulsatrix_1_1BenchmarkRecord" ],
     [ "BenchmarkReport", "structpulsatrix_1_1BenchmarkReport.html", "structpulsatrix_1_1BenchmarkReport" ],
+    [ "BlockGeometry", "structpulsatrix_1_1BlockGeometry.html", "structpulsatrix_1_1BlockGeometry" ],
+    [ "BlockSparseFeaturizer", "classpulsatrix_1_1BlockSparseFeaturizer.html", "classpulsatrix_1_1BlockSparseFeaturizer" ],
+    [ "BlockSparseOptions", "structpulsatrix_1_1BlockSparseOptions.html", "structpulsatrix_1_1BlockSparseOptions" ],
     [ "BoundedQueue", "classpulsatrix_1_1BoundedQueue.html", "classpulsatrix_1_1BoundedQueue" ],
     [ "BpeModel", "classpulsatrix_1_1BpeModel.html", "classpulsatrix_1_1BpeModel" ],
     [ "BpeOptions", "structpulsatrix_1_1BpeOptions.html", "structpulsatrix_1_1BpeOptions" ],
@@ -108,6 +111,7 @@ var namespacepulsatrix =
     [ "DatasetValidator", "classpulsatrix_1_1DatasetValidator.html", null ],
     [ "DataThreadPool", "classpulsatrix_1_1DataThreadPool.html", "classpulsatrix_1_1DataThreadPool" ],
     [ "Decoder", "classpulsatrix_1_1Decoder.html", "classpulsatrix_1_1Decoder" ],
+    [ "DescriptionLength", "structpulsatrix_1_1DescriptionLength.html", "structpulsatrix_1_1DescriptionLength" ],
     [ "DetailedBalanceLoss", "classpulsatrix_1_1DetailedBalanceLoss.html", "classpulsatrix_1_1DetailedBalanceLoss" ],
     [ "DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", "classpulsatrix_1_1DeviceBackend" ],
     [ "DigitsPreTokenizer", "classpulsatrix_1_1DigitsPreTokenizer.html", "classpulsatrix_1_1DigitsPreTokenizer" ],
@@ -424,6 +428,15 @@ var namespacepulsatrix =
       [ "ExpectedImprovement", "namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8afb21fd64a5ee15a179930ef54274a192", null ],
       [ "ProbabilityOfImprovement", "namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8aaf919544378ee679da880abe8f7ec8e9", null ],
       [ "UpperConfidenceBound", "namespacepulsatrix.html#aaf838275fc40b42d2c67d2772d64d1b8a371a6f869e3164dc4a6070d647e961c9", null ]
+    ] ],
+    [ "BlockSelection", "namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7e", [
+      [ "TopK", "namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7ea3d93467dda5ad01cbe7ba876f90a1818", null ],
+      [ "Tournament", "namespacepulsatrix.html#a59c11eb18ff49a144e9f3d6217738f7ea4f4dc29df9d29cbec61a725ff3ce6e72", null ]
+    ] ],
+    [ "BsfVariant", "namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9c", [
+      [ "Vanilla", "namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7d3cf600bf044a1aaf9324807bd8d13e", null ],
+      [ "Grassmannian", "namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9ca7865867e192c85f94cb5cbf96923b41a", null ],
+      [ "GroupLasso", "namespacepulsatrix.html#a056ad7d81b2ee20acdbf7f6f7a1e7a9cae3f1dee6b41cf7ad97e79b39791cb10c", null ]
     ] ],
     [ "ContactAtom", "namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cc", [
       [ "Beta", "namespacepulsatrix.html#a73a0c4c4eb2de07fef8d33c69e4618cca0b87d66b88c72957dfea8c9605016442", null ],
@@ -771,6 +784,8 @@ var namespacepulsatrix =
     [ "MeanL0", "namespacepulsatrix.html#a97609000f48b7f7d190d002af3d09896", null ],
     [ "MeanL0", "namespacepulsatrix.html#af94ee0e0bdac318f32ad08185ecaee58", null ],
     [ "MeanSubstitutionScore", "namespacepulsatrix.html#afca9e26f5552eb9f6779daab739f59a1", null ],
+    [ "MeasureBlockGeometry", "namespacepulsatrix.html#a3c327b66f98c42b444d2cd79d260b628", null ],
+    [ "MeasureDescriptionLength", "namespacepulsatrix.html#a73f2520d8735527576929fd5740651cb", null ],
     [ "MeasureLossRecovered", "namespacepulsatrix.html#a0f041cc2b4d0f3b20771c2277381febe", null ],
     [ "MeasureMlpLossRecovered", "namespacepulsatrix.html#acda9137d9c27607d584a1293cd1073bf", null ],
     [ "MeasureSteering", "namespacepulsatrix.html#a1cb19516e6b90fded5a89c07c2ef9fc8", null ],
