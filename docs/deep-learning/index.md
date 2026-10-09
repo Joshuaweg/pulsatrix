@@ -27,6 +27,8 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   to fold an eval-mode BatchNorm into the layer before it); pooling
   (`MaxPool2DModule`/`AvgPool2DModule`/`AdaptiveAvgPool2DModule`). `Conv2DModule` takes an
   optional `stride` and zero `padding`, as in `torch.nn.Conv2d`, and every LRP rule handles both.
+  Its im2col patches use a bounded workspace (`set_max_workspace_bytes()`, 16 MiB by default):
+  large batches run in chunks, with identical results (see [GPU profiling](../gpu-profiling.md#hip-7-conv2d-in-batch-chunks)).
   So does `MaxPool2DModule`, whose windows may overlap (ResNet's `MaxPool2d(3, 2, 1)`).
   `ResidualModule` takes an optional shortcut module, such as ResNet's downsampling convolution.
 - **Vision models**: `TorchvisionResNet` and `TorchvisionVGG` (ResNet18/34 and VGG11 to VGG19)
