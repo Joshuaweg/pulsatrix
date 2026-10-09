@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <vector>
 
 #include "pulsatrix/assert.hpp"
 
@@ -11,6 +12,7 @@ AdamOptimizer::AdamOptimizer(float learning_rate, DeviceBackend* backend, float 
     : learning_rate_(learning_rate), backend_(backend), beta1_(beta1), beta2_(beta2), eps_(eps) {}
 
 void AdamOptimizer::step(Module& module) {
+    std::vector<AdamTensorStep> steps;
     for (const ParamGroupSet::Assignment& a : groups_.resolve(module, learning_rate_, weight_decay_)) {
         const ParamRef p = a.ref;
         if (!p.value->requires_grad()) {
@@ -36,28 +38,28 @@ void AdamOptimizer::step(Module& module) {
 
         // Bias corrections once per parameter per step on the host -- the same float
         // expressions the original per-element host loop evaluated.
-        const float bias_correction1 = 1.0f - std::pow(beta1_, static_cast<float>(s.t));
-        const float bias_correction2 = 1.0f - std::pow(beta2_, static_cast<float>(s.t));
-        const auto n = static_cast<size_t>(p.value->numel());
-        const float* grad = p.grad->data();
-        Tensor decayed(Shape({0}), backend_);
+        AdamTensorStep t;
+        t.param = p.value->data();
+        t.grad = p.grad->data();
+        t.m = s.m.data();
+        t.v = s.v.data();
+        t.n = static_cast<size_t>(p.value->numel());
+        t.lr = a.learning_rate;
+        t.bias_correction1 = 1.0f - std::pow(beta1_, static_cast<float>(s.t));
+        t.bias_correction2 = 1.0f - std::pow(beta2_, static_cast<float>(s.t));
         if (decoupled_weight_decay_) {
             // AdamW (TRN-2): shrink the weights first, w <- (1 - lr*wd) * w; the Adam step then
             // uses the raw gradient. Same order as torch.optim.AdamW.
-            if (a.weight_decay != 0.0f) {
-                backend_->axpby(1.0f - a.learning_rate * a.weight_decay, p.value->data(), 0.0f, p.value->data(),
-                                p.value->data(), n);
-            }
+            if (a.weight_decay != 0.0f) t.decay = 1.0f - a.learning_rate * a.weight_decay;
         } else if (a.weight_decay != 0.0f) {
-            // Weight decay as L2 (TRN-1, PyTorch's Adam): the step sees grad + wd * value. It goes
-            // into a temporary, so the stored gradient is left as backward() wrote it.
-            decayed = Tensor(p.value->shape(), backend_);
-            backend_->axpby(a.weight_decay, p.value->data(), 1.0f, p.grad->data(), decayed.data(), n);
-            grad = decayed.data();
+            // Weight decay as L2 (TRN-1, PyTorch's Adam): the step sees grad + wd * value, and the
+            // stored gradient is left as backward() wrote it.
+            t.l2 = a.weight_decay;
         }
-        backend_->adam_step(p.value->data(), grad, s.m.data(), s.v.data(), n, a.learning_rate, beta1_, beta2_, eps_,
-                            bias_correction1, bias_correction2);
+        steps.push_back(t);
     }
+    // HIP-6: every parameter in one call, so one launch on a GPU.
+    backend_->adam_step_multi(steps.data(), steps.size(), beta1_, beta2_, eps_);
 }
 
 void AdamOptimizer::zero_grad(Module& module) {

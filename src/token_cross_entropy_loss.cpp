@@ -3,6 +3,7 @@
 #include <cmath>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "pulsatrix/device_backend.hpp"
@@ -41,55 +42,58 @@ float TokenCrossEntropyLoss::forward(const Tensor& logits, const Tensor& targets
         throw std::invalid_argument("TokenCrossEntropyLoss::forward: normalizer must be finite and >= 0");
     }
 
-    // Validate on the host, one copy of the targets: ignored tokens get index 0 and weight 0.
-    const std::vector<float> encoded = targets.to_host_vector();
-    std::vector<float> indices(static_cast<size_t>(rows)), weights(static_cast<size_t>(rows));
-    int64_t tokens = 0;
-    for (int64_t r = 0; r < rows; ++r) {
-        const float e = encoded[static_cast<size_t>(r)];
+    // HIP-6: one pass on the targets' device decodes and checks every target and computes the
+    // per-row terms; one read back returns the loss, the token count and the error counts.
+    // Into locals, so a bad target leaves the previous forward()'s state as it was.
+    Tensor probs(Shape({rows, classes}), backend_), indices(Shape({rows, 1}), backend_), weights(Shape({rows, 1}), backend_);
+    Tensor stats(Shape({rows, 4}), backend_);
+    RlRowArgs args;
+    args.in[0] = logits.data();
+    args.in[1] = targets.data();
+    args.out[0] = probs.data();
+    args.out[1] = stats.data();
+    args.out[2] = indices.data();
+    args.out[3] = weights.data();
+    args.rows = rows;
+    args.cols = classes;
+    args.ignore_index = ignore_index_;
+    backend_->rl_rows(RlRowOp::TokenCeLoss, args);
+    // Columns summed over rows in order from 0.0f: the loss terms add up as they did one by one.
+    Tensor sums(Shape({4}), backend_);
+    backend_->column_sums(stats.data(), sums.data(), static_cast<size_t>(rows), 4, 0.0f);
+    const std::vector<float> totals = sums.to_host_vector();
+    if (totals[2] > 0.0f || totals[3] > 0.0f) {
+        ThrowForBadTarget(targets, classes);
+    }
+    const auto tokens = static_cast<int64_t>(totals[1]);
+    probs_ = std::move(probs);
+    indices_ = std::move(indices);
+    weights_ = std::move(weights);
+
+    logits_shape_ = logits.shape();
+    num_tokens_ = tokens;
+    normalizer_ = normalizer > 0.0f ? normalizer : static_cast<float>(tokens);
+    has_forwarded_ = true;
+    if (tokens == 0) {
+        return 0.0f;
+    }
+    return totals[0] / normalizer_;
+}
+
+void TokenCrossEntropyLoss::ThrowForBadTarget(const Tensor& targets, int64_t classes) const {
+    // The slow path, only for an error: find the first bad target on the host, for the message.
+    for (const float e : targets.to_host_vector()) {
         const float rounded = std::round(e);
         if (!(std::fabs(e - rounded) <= kIndexIntegerTolerance)) {
             throw std::invalid_argument("TokenCrossEntropyLoss::forward: targets must be whole numbers");
         }
         const auto index = static_cast<int64_t>(rounded);
-        if (index == ignore_index_) {
-            continue;  // indices/weights stay 0
-        }
-        if (index < 0 || index >= classes) {
+        if (index != ignore_index_ && (index < 0 || index >= classes)) {
             throw std::invalid_argument("TokenCrossEntropyLoss::forward: target " + std::to_string(index) +
                                         " is outside [0, " + std::to_string(classes) + ") and not the ignore index");
         }
-        indices[static_cast<size_t>(r)] = static_cast<float>(index);
-        weights[static_cast<size_t>(r)] = 1.0f;
-        ++tokens;
     }
-
-    probs_ = Tensor(Shape({rows, classes}), backend_);
-    indices_ = Tensor(Shape({rows, 1}), backend_, indices);
-    weights_ = Tensor(Shape({rows, 1}), backend_, weights);
-    logits_shape_ = logits.shape();
-    num_tokens_ = tokens;
-    normalizer_ = normalizer > 0.0f ? normalizer : static_cast<float>(tokens);
-    has_forwarded_ = true;
-
-    // Per-row -log softmax[target] * weight (stabilized, as in PolicyGradientLoss), summed in
-    // row order.
-    Tensor terms(Shape({rows, 1}), backend_);
-    RlRowArgs args;
-    args.in[0] = logits.data();
-    args.in[1] = indices_.data();
-    args.in[2] = weights_.data();
-    args.out[0] = probs_.data();
-    args.out[1] = terms.data();
-    args.rows = rows;
-    args.cols = classes;
-    backend_->rl_rows(RlRowOp::PgLoss, args);
-    if (tokens == 0) {
-        return 0.0f;
-    }
-    Tensor sum(Shape({1}), backend_);
-    backend_->column_sums(terms.data(), sum.data(), static_cast<size_t>(rows), 1, 0.0f);
-    return sum.read_element(0) / normalizer_;
+    throw std::logic_error("TokenCrossEntropyLoss::forward: the device reported a bad target the host can't find");
 }
 
 Tensor TokenCrossEntropyLoss::backward() const {

@@ -79,10 +79,20 @@ public:
                  size_t n, float beta) override;
     void column_sums(const float* in, float* out, size_t rows, size_t cols, float beta) override;
     void add_row_vector(const float* in, const float* row, float* out, size_t rows, size_t cols) override;
+    void add_row_vector_relu(const float* in, const float* row, float* z, float* out, size_t rows,
+                             size_t cols) override;
     void elementwise_backward(ElementwiseOp op, const float* x, const float* grad_out, float* grad_in,
                               size_t n) override;
     void axpby(float alpha, const float* x, float beta, const float* y, float* out, size_t n) override;
     [[nodiscard]] float dot(const float* a, const float* b, size_t n) override;
+    void gemm_strided_batched(const float* a, bool transpose_a, size_t stride_a, const float* b, bool transpose_b,
+                              size_t stride_b, float* out, size_t stride_out, size_t m, size_t k, size_t n, size_t batch,
+                              float beta = 0.0f) override;
+    void accumulate_parts(const float* parts, size_t count, size_t n, float* acc) override;
+    /** @brief No wait: the result stays on the device (HIP-6). */
+    void dot_into(const float* a, const float* b, size_t n, float* out) override;
+    /** @brief One launch per 32 tensors, the table passed as kernel arguments (HIP-6). */
+    void adam_step_multi(const AdamTensorStep* tensors, size_t count, float beta1, float beta2, float eps) override;
     void softmax_rows(const float* in, float* out, size_t rows, size_t cols) override;
     void softmax_rows_backward(const float* y, const float* dy, float* dx, size_t rows, size_t cols) override;
     void logsumexp_rows(const float* in, float* out, size_t rows, size_t cols) override;

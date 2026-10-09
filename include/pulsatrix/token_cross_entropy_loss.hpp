@@ -22,7 +22,8 @@ namespace pulsatrix {
  *       every micro-batch's normalizer; the accumulated gradients then equal one big batch's.
  * @note Device-generic: the per-row softmax and gradient run through DeviceBackend::rl_rows, the
  *       same row kernels as PolicyGradientLoss with a weight of 1 per real token and 0 per ignored
- *       one.
+ *       one. The targets are checked on their own device (HIP-6): forward() reads back four
+ *       numbers, the loss, the token count and two error counts, and nothing else.
  */
 class TokenCrossEntropyLoss {
 public:
@@ -49,6 +50,9 @@ public:
     [[nodiscard]] int64_t num_tokens() const { return num_tokens_; }
 
 private:
+    /** @brief Rereads the targets on the host to throw the right message for the first bad one. */
+    [[noreturn]] void ThrowForBadTarget(const Tensor& targets, int64_t classes) const;
+
     DeviceBackend* backend_;
     int64_t ignore_index_;
     Tensor probs_;
