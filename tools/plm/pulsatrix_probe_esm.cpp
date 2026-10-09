@@ -21,6 +21,9 @@
 //   - batchtopk, matryoshka: BatchTopK, and Matryoshka BatchTopK with prefixes of 1/16 and 1/4
 //     of the latents (FEAT-4), --k;
 //   - jumprelu: a JumpReLUSparseAutoencoder (FEAT-4), --l0 (default 0.05);
+//   - bsf-vanilla, bsf-grassmannian, bsf-lasso: a BlockSparseFeaturizer (FEAT-6) with blocks of
+//     --block-size (default 4) and --features / block-size blocks; --k is the active blocks
+//     (bsf-lasso's target L0). Concepts are matched on block norms, and absorption is skipped;
 //   - transcoder, skip-transcoder: a Transcoder (FEAT-5), --k, trained on the MLP that writes
 //     into layer --sae-layer's output: its input (after the block's LayerNorm) to its output.
 //     Reports prediction quality, loss recovered with the MLP replaced, and concept matching
@@ -32,6 +35,8 @@
 //     the reconstructions spliced in at the layer, against the clean and zero-ablated losses;
 //   - concept matching: every feature against every concept (best F1 over thresholds), beside
 //     single neurons;
+//   - the description length (MDL, bits per input at 10% distortion) and the mean stable rank of
+//     a feature's codes, on up to 20000 held-out residues;
 //   - feature absorption per concept, with its linear-probe baseline; printed only where the
 //     probe's F1 is at least 0.5 (the CSV has every concept).
 //   Writes a feature dashboard per concept's best feature; with --structures DIR holding
@@ -57,6 +62,7 @@
 #include <vector>
 
 #include "pulsatrix/adam_optimizer.hpp"
+#include "pulsatrix/block_sparse_featurizer.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/encoder_lm.hpp"
 #include "pulsatrix/featurizer_metrics.hpp"
@@ -82,7 +88,7 @@ using namespace pulsatrix;
               << "usage: pulsatrix_probe_esm MODEL_DIR --annotations FILE.jsonl --out DIR (--probes | --sae)\n"
               << "       [--layers 0,1,...] [--concepts A,B,...] [--probe-proteins N] [--sae-layer L] [--sae-proteins N]\n"
               << "       [--featurizer l1|topk|batchtopk|matryoshka|jumprelu|transcoder|skip-transcoder] [--features N] [--l1 L]\n"
-              << "       [--k K] [--l0 L]\n"
+              << "       [--k K] [--l0 L] [--block-size B]  (also bsf-vanilla|bsf-grassmannian|bsf-lasso)\n"
               << "       [--sae-epochs N] [--sae-batch N]\n"
               << "       [--loss-proteins N] [--structures DIR] [--seed S] [--device cpu|hip]\n";
     std::exit(2);
@@ -96,7 +102,7 @@ struct Options {
     std::vector<std::string> concepts = {"Binding site", "Active site", "Disulfide bond", "Transmembrane", "Signal", "Zinc finger",
                                          "Coiled coil", "Motif"};
     int64_t probe_proteins = 600, sae_proteins = 2000, sae_layer = -1, features = 0, sae_epochs = 10, sae_batch = 512, k = 32,
-            loss_proteins = 100;
+            loss_proteins = 100, block_size = 4;
     float l1 = 0.003f, l0 = 0.05f;
     uint64_t seed = 0;
 };
@@ -206,7 +212,17 @@ std::unique_ptr<Featurizer> TrainSae(DeviceBackend* backend, const std::vector<f
     const int64_t m = o.features > 0 ? o.features : 8 * hidden;
     const auto N = static_cast<int64_t>(rows.size() / static_cast<size_t>(hidden));
     std::unique_ptr<Featurizer> sae;
-    if (o.featurizer == "jumprelu") {
+    if (o.featurizer.rfind("bsf-", 0) == 0) {
+        BlockSparseOptions b;
+        b.variant = o.featurizer == "bsf-grassmannian" ? BsfVariant::Grassmannian
+                    : o.featurizer == "bsf-lasso"      ? BsfVariant::GroupLasso
+                                                       : BsfVariant::Vanilla;
+        b.block_size = o.block_size;
+        b.k = o.k;
+        b.target_l0 = static_cast<double>(o.k);
+        b.seed = o.seed + 11;
+        sae = std::make_unique<BlockSparseFeaturizer>(hidden, m / o.block_size, backend, b);
+    } else if (o.featurizer == "jumprelu") {
         JumpReLUSaeOptions j;
         j.l0_coefficient = o.l0;
         j.bandwidth = 0.05f;
@@ -332,6 +348,36 @@ std::vector<float> HeldOutRows(const ResidueEmbeddings& e, const std::vector<boo
     std::vector<float> out;
     for (int64_t r = 0; r < e.residues; ++r) {
         if (test[static_cast<size_t>(r)]) out.insert(out.end(), e.row(0, r), e.row(0, r) + e.hidden);
+    }
+    return out;
+}
+
+/** @brief Sparse codes for concept matching: EncodeSparse for single-direction featurizers, and
+ *         each block's norm for a block-sparse one (the paper's "presence"). */
+SparseCodes FeatureCodes(Featurizer& f, const std::vector<float>& rows, DeviceBackend* backend) {
+    if (f.block_size() == 1) return EncodeSparse(f, rows, backend);
+    const int64_t d = f.input_dim(), m = f.num_features(), b = f.block_size(), G = m / b;
+    const auto N = static_cast<int64_t>(rows.size() / static_cast<size_t>(d));
+    SparseCodes out;
+    out.num_features = G;
+    out.max_value.assign(static_cast<size_t>(G), 0.0f);
+    out.row_start.push_back(0);
+    for (int64_t r0 = 0; r0 < N; r0 += 4096) {
+        const int64_t n = std::min<int64_t>(4096, N - r0);
+        const std::vector<float> c =
+            f.encode(Tensor(Shape({n, d}), backend, std::vector<float>(rows.begin() + r0 * d, rows.begin() + (r0 + n) * d), backend->device())).to_host_vector();
+        for (int64_t r = 0; r < n; ++r) {
+            for (int64_t g = 0; g < G; ++g) {
+                double s = 0;
+                for (int64_t t = 0; t < b; ++t) s += static_cast<double>(c[static_cast<size_t>(r * m + g * b + t)]) * c[static_cast<size_t>(r * m + g * b + t)];
+                if (s == 0) continue;
+                const auto v = static_cast<float>(std::sqrt(s));
+                out.feature.push_back(static_cast<int32_t>(g));
+                out.value.push_back(v);
+                out.max_value[static_cast<size_t>(g)] = std::max(out.max_value[static_cast<size_t>(g)], v);
+            }
+            out.row_start.push_back(static_cast<int64_t>(out.feature.size()));
+        }
     }
     return out;
 }
@@ -590,7 +636,7 @@ void RunSae(DeviceBackend* backend, EncoderLM& model, const TextTokenizer& tok, 
     std::unique_ptr<Featurizer> sae = TrainSae(backend, train_rows, trained.hidden, o, "trained-model");
     std::unique_ptr<Featurizer> sae_random = TrainSae(backend, train_rows_random, untrained.hidden, o, "random-model");
 
-    const SparseCodes codes = EncodeSparse(*sae, test_rows, backend), codes_random = EncodeSparse(*sae_random, test_rows_random, backend);
+    const SparseCodes codes = FeatureCodes(*sae, test_rows, backend), codes_random = FeatureCodes(*sae_random, test_rows_random, backend);
     const SparseCodes neurons = NeuronCodes(test_rows, trained.hidden);
     // Reconstruction, on held-out residues (standardized, as trained).
     const auto held_rows = static_cast<int64_t>(test_rows.size() / static_cast<size_t>(trained.hidden));
@@ -603,6 +649,21 @@ void RunSae(DeviceBackend* backend, EncoderLM& model, const TextTokenizer& tok, 
     for (const auto& [label, r] : {std::pair<const char*, const ReconstructionMetrics*>{"trained model", &rec}, {"random model", &rec_random}}) {
         std::printf("  %-14s %8.3f %8.3f %8.3f %8.1f %7.1f%% %7.1f%%\n", label, r->explained_variance, r->cosine, r->norm_ratio, r->l0,
                     100 * r->dead_fraction, 100 * r->dense_fraction);
+    }
+
+    // Description length and code geometry (FEAT-6), on up to 20000 held-out residues.
+    {
+        const int64_t rows = std::min<int64_t>(held_rows, 20000);
+        auto sub = [&](const std::vector<float>& v, int64_t h) {
+            return Tensor(Shape({rows, h}), backend, std::vector<float>(v.begin(), v.begin() + rows * h), backend->device());
+        };
+        const DescriptionLength dl = MeasureDescriptionLength(*sae, sub(test_rows, trained.hidden)),
+                                dlr = MeasureDescriptionLength(*sae_random, sub(test_rows_random, untrained.hidden));
+        const BlockGeometry geo = MeasureBlockGeometry(*sae, sub(test_rows, trained.hidden));
+        std::printf("  bits per input at 10%% distortion: %.1f (support %.1f, code %.1f, residual %.1f, dictionary %.1f); random model %.1f\n",
+                    dl.total, dl.support, dl.code, dl.residual, dl.dictionary, dlr.total);
+        std::printf("  code dimension per feature: stable rank %.2f, participation ratio %.2f (of %ld)\n", geo.mean_stable_rank,
+                    geo.mean_participation_ratio, static_cast<long>(sae->block_size()));
     }
 
     // Loss recovered: the masked-LM loss with the reconstructions spliced in at the layer.
@@ -652,6 +713,7 @@ void RunSae(DeviceBackend* backend, EncoderLM& model, const TextTokenizer& tok, 
         AbsorptionResult a, ar;
         bool absorption = true;
         try {
+            if (sae->block_size() != 1) throw std::invalid_argument("blocks");
             AbsorptionOptions ao;
             ao.seed = o.seed + 17;
             a = FeatureAbsorption(*sae, held_x, labels, ao);
@@ -667,7 +729,7 @@ void RunSae(DeviceBackend* backend, EncoderLM& model, const TextTokenizer& tok, 
         } else if (absorption) {
             std::printf("   %6.3f   (probe too weak for absorption)\n", a.probe_f1);
         } else {
-            std::printf("   (too few positives for absorption)\n");
+            std::printf(sae->block_size() != 1 ? "   (absorption needs single-direction features)\n" : "   (too few positives for absorption)\n");
         }
         csv << '"' << c << "\"," << m.positives << ',' << m.feature << ',' << m.f1 << ',' << m.precision << ',' << m.recall << ','
             << m.features_above_half << ',' << n.f1 << ',' << r.f1 << ',';
@@ -791,6 +853,7 @@ int main(int argc, char** argv) {
         else if (a == "--l1") o.l1 = std::strtof(value().c_str(), nullptr);
         else if (a == "--featurizer") o.featurizer = value();
         else if (a == "--k") o.k = std::atoll(value().c_str());
+        else if (a == "--block-size") o.block_size = std::atoll(value().c_str());
         else if (a == "--l0") o.l0 = std::strtof(value().c_str(), nullptr);
         else if (a == "--loss-proteins") o.loss_proteins = std::atoll(value().c_str());
         else if (a == "--sae-epochs") o.sae_epochs = std::atoll(value().c_str());
@@ -801,9 +864,10 @@ int main(int argc, char** argv) {
     }
     if (o.annotations.empty() || o.out.empty()) Usage("needs --annotations and --out");
     if (!o.probes && !o.sae) Usage("needs --probes, --sae or both");
-    const std::vector<std::string> featurizers = {"l1", "topk", "batchtopk", "matryoshka", "jumprelu", "transcoder", "skip-transcoder"};
+    const std::vector<std::string> featurizers = {"l1",         "topk",       "batchtopk",       "matryoshka", "jumprelu",
+                                                  "transcoder", "skip-transcoder", "bsf-vanilla", "bsf-grassmannian", "bsf-lasso"};
     if (std::find(featurizers.begin(), featurizers.end(), o.featurizer) == featurizers.end()) {
-        Usage("--featurizer must be l1, topk, batchtopk, matryoshka, jumprelu, transcoder or skip-transcoder");
+        Usage("--featurizer must be l1, topk, batchtopk, matryoshka, jumprelu, transcoder, skip-transcoder, bsf-vanilla, bsf-grassmannian or bsf-lasso");
     }
     try {
         if (o.device == "cpu") {
