@@ -301,7 +301,10 @@ below record the reasoning they were built on.
 - **FEAT-9.**
   - APD: arXiv 2501.14926.
   - SPD: Bushnaq, Braun and Sharkey, arXiv 2506.20790.
-  - VPD: Goodfire (2026-05). Its technical report URL returned 404, so the details are unverified.
+  - VPD: adversarial parameter decomposition. Bushnaq et al., "Interpreting Language Model
+    Parameters", Goodfire technical report (2026-05-05), goodfire.ai/research/interpreting-lm-parameters.
+    The report, the SPD and APD papers, and the code (SPD at tag `v1`, a single-file VPD in
+    `nano_param_decomp/run.py`) are in github.com/goodfire-ai/param-decomp (formerly goodfire-ai/spd).
 - **FEAT-10.** Ameisen, Lindsey et al., "Circuit Tracing", Transformer Circuits (2025-03-27). The authors list limits: QK circuits aren't explained, there is reconstruction error, and inactive features are missed.
 - **SAE limits.**
   - Linear probes beat SAE probes out of distribution: DeepMind, "Negative Results for SAEs on Downstream Tasks" (2025-03-26). After this the team deprioritized SAE research.

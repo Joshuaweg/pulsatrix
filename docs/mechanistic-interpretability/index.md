@@ -20,6 +20,7 @@ model's or environment's structure.
 | Which concepts are low-dimensional manifolds, not single directions? | `BlockSparseFeaturizer` |
 | What does an MLP compute, in sparse, interpretable steps? | `Transcoder` |
 | What did fine-tuning change, or which features span several layers? | `Crosscoder`, `MeasureLatentScaling` |
+| Which pieces of the weights does each input use? | `ComponentLinear`, `ParameterDecomposition` (SPD, VPD) |
 | Can a direction push the model's behavior, and how reliably? | `SteeringHook`, `MeasureSteering` |
 | Which layers does the output depend on for this input? | `ExplainerContext::build_circuit_graph()` → `CircuitGraph` |
 | What happens to the output if I overwrite one activation? | `ExplainerContext::forward_pass_with_patch()` |
@@ -641,6 +642,78 @@ toward transmembrane residues.
   success. The per-input slopes, the anti-steerable share and the random control show there is
   none. A probe that reads a concept doesn't give a direction that writes it.
 
+
+### Decomposing parameters
+
+Featurizers explain activations. Parameter decomposition explains the weights. Each weight matrix
+is split into rank-one subcomponents, `W ≈ V U`. Training asks that the subcomponents sum to the
+weights, and that for every input only a few of them are needed to compute the output. A
+subcomponent is then a piece of the mechanism, and its causal importance on an input says whether
+that input uses it.
+
+```cpp
+#include "pulsatrix/parameter_decomposition.hpp"
+
+// Swap each LinearModule to decompose for a ComponentLinear over it, in any Module built from
+// non-owned layers (SequentialModule, ResidualModule, ...).
+ComponentLinear c1(w1, /*components=*/20, &backend), c2(w2, 20, &backend);
+SequentialModule model({&c1, &c2, &relu});
+
+DecompositionOptions o;                        // SPD by default; o.method = DecompositionMethod::VPD
+o.importance_coefficient = 3e-3f;
+ParameterDecomposition d(model, {&c1, &c2}, &backend, o);
+AdamOptimizer opt(1e-3f, &backend);
+DecompositionLoss loss = TrainDecomposition(d, batch, opt);
+
+std::vector<std::vector<float>> ci = d.causal_importances(x);    // per layer, (N, C)
+ComponentAlignment a = AlignComponentsToRows(c1);                // MMCS and ML2R
+```
+
+- **`ComponentLinear`** replaces a LinearModule. In target mode it computes `x W + b`. In
+  components mode it computes `((x V) ⊙ m) U + b` under per-input masks m. VPD adds back the rest
+  of the weight, `Δ = W - V U`, under its own mask. Its `backward()` returns the masks' gradients,
+  so the decomposition runs on the model's own backward pass, with no autograd.
+- **Causal importance** (SPD): each subcomponent has a small MLP, from its inner activation
+  `(x V)_c` on the target pass to a score `g`, clamped to [0, 1] with a small leak. Masks are
+  `m = g + (1 - g) r`, r uniform: an unimportant subcomponent can be scaled anywhere in [0, 1]
+  without changing the output.
+
+| | SPD (Bushnaq, Braun and Sharkey, arXiv 2506.20790) | VPD (Bushnaq et al., Goodfire, 2026) |
+|---|---|---|
+| Faithfulness | `Σ_l ‖W - V U‖²` over the number of weights | The same, as the Δ loss |
+| Reconstruction | Every layer masked, and one layer masked at a time | Each input through a random k of the layers, with Δ under its own mask |
+| Adversarial | — | Masks from persistent sources that Adam ascends on the loss (PGD) |
+| Importance minimality | `Σ g^p` | `Σ_c [mean_c + β mean_c log2(1 + sum_c)]`, with p annealed (2 to 0.4) |
+| Lower clamp | Leaks below 0 in the forward pass too | Straight-through: leaks only gradients that raise g |
+
+- **Following the reference code** (github.com/goodfire-ai/param-decomp: tag `v1` for SPD,
+  `nano_param_decomp/run.py` for VPD). The gate input isn't detached, the output loss is a mean
+  over every value, one mask sample is drawn per step, and initialization is v1's.
+  `OutputDivergence::KlOnLogits` compares logits.
+- **Not here yet.** VPD's causal-importance function for language models, a transformer over
+  every layer's activations; this uses SPD's per-subcomponent MLPs for both. Decomposing
+  `CausalLM` layers also needs a way to swap a block's LinearModules.
+- **Checked against a PyTorch rendering** (`tools/golden/make_spd_golden.py`): SPD's four losses,
+  and VPD's routing, Δ masks, adversarial masks, frequency term and straight-through clamp,
+  through loss, gradients and an Adam step.
+
+**On a toy model of superposition** (`pulsatrix_spd_toy`): 5 sparse features through 2
+dimensions, `x̂ = ReLU(x W Wᵀ + b)`, with W and Wᵀ decomposed into 20 subcomponents each. The
+reference schedule is 40,000 steps of 4,096.
+
+| | SPD | SPD paper (Table 1) | VPD (p 2 to 1) |
+|---|---|---|---|
+| MMCS / ML2R | 1.000 / 1.017 | 1.000 / 0.993 | 0.993 / 0.672 |
+| Alive subcomponents (of 20, per layer) | 5, 5 | 5 | 4, 5 |
+| Features with one important subcomponent in each layer | 5 of 5 | | 5 of 5 |
+| Distinct subcomponents for the 5 features in W | 5 | | 4 |
+
+- **SPD recovers the features:** one subcomponent per feature in each layer, carrying the
+  feature's row of W.
+- **VPD, with SPD's toy settings, merges two features into one subcomponent.** The paper reports
+  no toy results; its toy configs use another importance loss, not reproduced here.
+- **A faster setting.** A learning rate of 1e-2 and importance 1e-2 reach one subcomponent per
+  feature in 3,000 steps of 1,024 (the unit test, Release builds only).
 
 ### Building a circuit graph
 

@@ -158,6 +158,7 @@ add_executable(pulsatrix_tests
     steering_test.cpp
     block_sparse_featurizer_test.cpp
     crosscoder_test.cpp
+    parameter_decomposition_test.cpp
     protein_concepts_test.cpp
     fitness_metrics_test.cpp
     benchmark_test.cpp

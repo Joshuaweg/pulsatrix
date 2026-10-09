@@ -8,7 +8,9 @@
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 #include <random>
+#include <utility>
 #include <vector>
 
 #include "pulsatrix/token_cross_entropy_loss.hpp"
@@ -65,6 +67,7 @@
 #include "pulsatrix/transcoder.hpp"
 #include "pulsatrix/block_sparse_featurizer.hpp"
 #include "pulsatrix/crosscoder.hpp"
+#include "pulsatrix/parameter_decomposition.hpp"
 #include "pulsatrix/transformer_block.hpp"
 #include "pulsatrix/tied_lm_head_module.hpp"
 #include "pulsatrix/kl_divergence_loss.hpp"
@@ -861,6 +864,35 @@ inline void CrosscoderTrainingMatches(DeviceBackend& gpu) {
         }
         ExpectParametersNear(c, g, 1e-3f);
         ExpectNear(c.encode(cx), g.encode(gx), 1e-4f);
+    }
+}
+
+// FEAT-9: parameter decomposition, SPD and VPD, on a two-layer model.
+inline void ParameterDecompositionTrainingMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::vector<float> x = Random(16 * 4, 431), w0 = Random(4 * 6, 432), w1 = Random(6 * 3, 433);
+    for (DecompositionMethod method : {DecompositionMethod::SPD, DecompositionMethod::VPD}) {
+        auto build = [&](DeviceBackend* b, LinearModule& l0, LinearModule& l1) {
+            l0.set_weight(w0);
+            l1.set_weight(w1);
+            return std::make_pair(std::make_unique<ComponentLinear>(l0, 5, b, 4, 1), std::make_unique<ComponentLinear>(l1, 5, b, 4, 2));
+        };
+        LinearModule cl0(4, 6, &cpu), cl1(6, 3, &cpu), gl0(4, 6, &gpu), gl1(6, 3, &gpu);
+        auto [c0, c1] = build(&cpu, cl0, cl1);
+        auto [g0, g1] = build(&gpu, gl0, gl1);
+        ReluModule cr(&cpu), gr(&gpu);
+        SequentialModule cm({c0.get(), &cr, c1.get()}), gm({g0.get(), &gr, g1.get()});
+        DecompositionOptions o;
+        o.method = method;
+        o.importance_coefficient = 1e-2f;
+        ParameterDecomposition cd(cm, {c0.get(), c1.get()}, &cpu, o), gd(gm, {g0.get(), g1.get()}, &gpu, o);
+        AdamOptimizer co(0.01f, &cpu), go(0.01f, &gpu);
+        const Tensor cx(Shape({16, 4}), &cpu, x), gx(Shape({16, 4}), &gpu, x);
+        for (int step = 0; step < 4; ++step) {
+            const DecompositionLoss cl = TrainDecomposition(cd, cx, co), gl = TrainDecomposition(gd, gx, go);
+            EXPECT_NEAR(cl.total, gl.total, 1e-4f) << "method " << static_cast<int>(method) << " step " << step;
+        }
+        ExpectParametersNear(cd.parameters_module(), gd.parameters_module(), 1e-3f);
     }
 }
 
@@ -1749,6 +1781,7 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     TEST_F(FIXTURE, TranscoderTrainingMatchesCPU) { ::pulsatrix::training_equivalence::TranscoderTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, BlockSparseTrainingMatchesCPU) { ::pulsatrix::training_equivalence::BlockSparseTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, CrosscoderTrainingMatchesCPU) { ::pulsatrix::training_equivalence::CrosscoderTrainingMatches(MEMBER); } \
+    TEST_F(FIXTURE, ParameterDecompositionTrainingMatchesCPU) { ::pulsatrix::training_equivalence::ParameterDecompositionTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \

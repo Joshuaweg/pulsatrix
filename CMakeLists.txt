@@ -142,6 +142,7 @@ add_library(pulsatrix_core
     src/steering.cpp
     src/block_sparse_featurizer.cpp
     src/crosscoder.cpp
+    src/parameter_decomposition.cpp
     src/null_model_baseline.cpp
     src/caching_allocator.cpp
     src/rnn_module.cpp
@@ -687,6 +688,10 @@ add_executable(pulsatrix_diff_lm tools/explain/pulsatrix_diff_lm.cpp)
 target_link_libraries(pulsatrix_diff_lm PRIVATE pulsatrix_core)
 target_compile_definitions(pulsatrix_diff_lm PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_GOLDEN_WITH_HIP>)
 
+# pulsatrix_spd_toy: parameter decomposition (SPD, VPD) of a toy model of superposition (FEAT-9).
+add_executable(pulsatrix_spd_toy tools/explain/pulsatrix_spd_toy.cpp)
+target_link_libraries(pulsatrix_spd_toy PRIVATE pulsatrix_core)
+
 # pulsatrix_tokenizer_parity: a tokenizer.json against Hugging Face tokenizers on a corpus (TOK-2).
 add_executable(pulsatrix_tokenizer_parity tools/tokenizers/pulsatrix_tokenizer_parity.cpp)
 target_link_libraries(pulsatrix_tokenizer_parity PRIVATE pulsatrix_core)
@@ -754,7 +759,7 @@ if(PULSATRIX_INSTALL)
         FILES_MATCHING PATTERN "*.hpp"
         ${excluded_headers})
 
-    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym pulsatrix_contacts pulsatrix_protein_views pulsatrix_explain_protein pulsatrix_train_esm pulsatrix_finetune_esm pulsatrix_probe_esm pulsatrix_steer_esm pulsatrix_diff_lm RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(TARGETS pulsatrix_svg pulsatrix_bench pulsatrix_golden pulsatrix_attnlrp pulsatrix_tokenizer_parity pulsatrix_explain_text pulsatrix_proteingym pulsatrix_contacts pulsatrix_protein_views pulsatrix_explain_protein pulsatrix_train_esm pulsatrix_finetune_esm pulsatrix_probe_esm pulsatrix_steer_esm pulsatrix_diff_lm pulsatrix_spd_toy RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(TARGETS pulsatrix_core
         EXPORT pulsatrixTargets
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"

@@ -204,7 +204,7 @@ Larger changes that touch every module or backend.
 - Strided views and broadcasting (KS-10)
 - Op-level autograd (KS-12)
 - WMMA, HIP graphs and FlashAttention for training only (HIP-12)
-- Attribution graphs and parameter decomposition (FEAT-9, FEAT-10)
+- Attribution graphs (FEAT-10); parameter decomposition (FEAT-9) is done
 - ARCH items at P1 and P2
 - ONNX, GGUF and QLoRA (IO-8, IO-9, TRN-14)
 - Python wheels and a vcpkg port (KS-11)
@@ -810,7 +810,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.
 | FEAT-6 | BSF: the vanilla, Grassmannian and group-lasso variants, then tournament top-k, with MDL and stable-rank metrics | The newest member of the family | FEAT-2, FND-4 | P1 | L | Done, [#110](https://github.com/Joshuaweg/pulsatrix/pull/110) (see below) |
 | FEAT-7 | Steering with difference-of-means by default and featurizer directions as an option, with a reliability report | The simple baseline usually wins | FEAT-1 | P1 | S | Done, [#109](https://github.com/Joshuaweg/pulsatrix/pull/109) (see below) |
 | FEAT-8 | Crosscoders, including the Delta-Crosscoder for fine-tuning diffs | Model diffing across layers and models | FEAT-1, IO-2 | P2 | — | Done, [#112](https://github.com/Joshuaweg/pulsatrix/pull/112) (see below) |
-| FEAT-9 | Parameter decomposition (SPD and VPD) | Interpretability in weight space; few libraries have it | FND-4 | P2 | L–XL |
+| FEAT-9 | Parameter decomposition (SPD and VPD) | Interpretability in weight space; few libraries have it | FND-4 | P2 | L–XL | Done (see below) |
 | FEAT-10 | Attribution graphs with cross-layer transcoders | The existing circuit graph plus LRP may cover most of the value first. VIZ-4's AttnLRP graph (residual-stream nodes) and Neuronpedia export are the starting point: transcoder features would replace the nodes | FEAT-5 | P2 | XL |
 
 FEAT-6 propagates relevance through a block top-k by treating the selection as a fixed gate (see below).
@@ -966,6 +966,18 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
     Instruct-specific latents put 84 to 99% of their activation on chat-template tokens, as
     Minder et al. found in Gemma 2
     ([table](../mechanistic-interpretability/index.md#crosscoders)).
+- **FEAT-9** adds `parameter_decomposition.hpp`: `ComponentLinear` (a LinearModule split into
+  rank-one subcomponents, with per-input masks and a Δ path) and `ParameterDecomposition`, SPD
+  and VPD on the model's own backward pass; `AlignComponentsToRows` and `MeasureImportance`.
+  - **VPD is adversarial parameter decomposition** (Goodfire's "Interpreting Language Model
+    Parameters", 2026), not variational. Its report and code are in github.com/goodfire-ai/
+    param-decomp.
+  - **Checked against a PyTorch rendering** (`tools/golden/make_spd_golden.py`) for both.
+  - **On a toy model of superposition** SPD matches the paper (MMCS 1.000, ML2R 1.02, 5 alive
+    subcomponents per layer). VPD with SPD's settings merges two of the five features.
+  - **Not done:** VPD's transformer causal-importance function, and swapping LinearModules inside
+    `CausalLM` blocks, which language-model decomposition needs
+    ([guide](../mechanistic-interpretability/index.md#decomposing-parameters)).
 
 ## ARCH: New architectures
 
