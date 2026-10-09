@@ -140,6 +140,7 @@ add_library(pulsatrix_core
     src/jumprelu_sparse_autoencoder.cpp
     src/transcoder.cpp
     src/steering.cpp
+    src/block_sparse_featurizer.cpp
     src/null_model_baseline.cpp
     src/caching_allocator.cpp
     src/rnn_module.cpp
