@@ -10,6 +10,7 @@
 #include <cmath>
 #include <memory>
 #include <random>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -66,6 +67,8 @@
 #include "pulsatrix/jumprelu_sparse_autoencoder.hpp"
 #include "pulsatrix/transcoder.hpp"
 #include "pulsatrix/block_sparse_featurizer.hpp"
+#include "pulsatrix/circuit_tracing.hpp"
+#include "pulsatrix/hf_model.hpp"
 #include "pulsatrix/crosscoder.hpp"
 #include "pulsatrix/parameter_decomposition.hpp"
 #include "pulsatrix/transformer_block.hpp"
@@ -894,6 +897,34 @@ inline void ParameterDecompositionTrainingMatches(DeviceBackend& gpu) {
         }
         ExpectParametersNear(cd.parameters_module(), gd.parameters_module(), 1e-3f);
     }
+}
+
+// FEAT-10: an attribution graph with a random transcoder on the tiny Gemma 3 (sandwich norms, GQA).
+inline void CircuitTraceMatches(DeviceBackend& gpu) {
+    CPUBackend cpu;
+    const std::string dir = std::string(PULSATRIX_TEST_FIXTURES_DIR) + "/hf_tiny/gemma3";
+    std::unique_ptr<CausalLM> cm = LoadCausalLM(dir, &cpu), gm = LoadCausalLM(dir, &gpu);
+    const int64_t L = cm->num_layers(), d = cm->config().hidden_size, F = 8;
+    auto build = [&](DeviceBackend* b) {
+        CrossLayerTranscoder clt(L, d, b);
+        for (int64_t l = 0; l < L; ++l) {
+            std::vector<Tensor> dec;
+            for (int64_t k = 0; k < std::min<int64_t>(2, L - l); ++k) dec.emplace_back(Shape({F, d}), b, Random(static_cast<size_t>(F * d), static_cast<unsigned>(500 + 10 * l + k)));
+            clt.set_layer(l, Tensor(Shape({F, d}), b, Random(static_cast<size_t>(F * d), static_cast<unsigned>(450 + l))), Random(static_cast<size_t>(F), static_cast<unsigned>(470 + l)), {}, std::move(dec));
+        }
+        clt.set_skip(1, Tensor(Shape({d, d}), b, Random(static_cast<size_t>(d * d), 490)));
+        return clt;
+    };
+    const CrossLayerTranscoder cc = build(&cpu), gc = build(&gpu);
+    const std::vector<int64_t> ids = {1, 7, 3, 12, 30, 5};
+    CircuitTraceOptions o;
+    o.batch = 16;
+    const CircuitTrace ct = TraceCircuit(*cm, cc, ids, o), gt = TraceCircuit(*gm, gc, ids, o);
+    ASSERT_EQ(ct.features.size(), gt.features.size());
+    ASSERT_EQ(ct.adjacency.size(), gt.adjacency.size());
+    double worst = 0;
+    for (size_t i = 0; i < ct.adjacency.size(); ++i) worst = std::max(worst, std::abs(ct.adjacency[i] - gt.adjacency[i]));
+    EXPECT_LT(worst, 1e-3);
 }
 
 inline void TiedLMHeadMatches(DeviceBackend& gpu) {
@@ -1782,6 +1813,7 @@ inline void BatchNormLargePlanesMatch(DeviceBackend& gpu) {
     TEST_F(FIXTURE, BlockSparseTrainingMatchesCPU) { ::pulsatrix::training_equivalence::BlockSparseTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, CrosscoderTrainingMatchesCPU) { ::pulsatrix::training_equivalence::CrosscoderTrainingMatches(MEMBER); } \
     TEST_F(FIXTURE, ParameterDecompositionTrainingMatchesCPU) { ::pulsatrix::training_equivalence::ParameterDecompositionTrainingMatches(MEMBER); } \
+    TEST_F(FIXTURE, CircuitTraceMatchesCPU) { ::pulsatrix::training_equivalence::CircuitTraceMatches(MEMBER); } \
     TEST_F(FIXTURE, TanhGaussianPolicyMatchesCPU) { ::pulsatrix::training_equivalence::TanhGaussianMatches(MEMBER); } \
     TEST_F(FIXTURE, TransformerBlockTrainedWithAdamEndsWithCPUParameters) {                          \
         ::pulsatrix::training_equivalence::TransformerBlockTrainsToSameParameters(MEMBER);           \

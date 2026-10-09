@@ -143,6 +143,7 @@ add_library(pulsatrix_core
     src/block_sparse_featurizer.cpp
     src/crosscoder.cpp
     src/parameter_decomposition.cpp
+    src/circuit_tracing.cpp
     src/null_model_baseline.cpp
     src/caching_allocator.cpp
     src/rnn_module.cpp

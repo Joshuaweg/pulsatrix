@@ -79,6 +79,9 @@ public:
 
     [[nodiscard]] const Tensor& gamma() const { return gamma_; }
     [[nodiscard]] const Tensor& gamma_grad() const { return gamma_grad_; }
+    /** @brief The last forward()'s rms per row, `(N,)` on the module's device (FEAT-10's frozen
+     *         normalization scales). */
+    [[nodiscard]] const Tensor& last_rms() const { return last_rms_; }
 
     /**
      * @brief Identity-rule LRP relevance propagation (AttnLRP, Achtibat et al. 2024).
