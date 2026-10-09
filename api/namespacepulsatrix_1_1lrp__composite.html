@@ -110,14 +110,17 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a9ad4f90bff05e4be3c84157a713e56c7" id="r_a9ad4f90bff05e4be3c84157a713e56c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1lrp__composite.html#a9ad4f90bff05e4be3c84157a713e56c7">epsilon_with_conv</a> (float epsilon, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;conv)</td></tr>
+<tr class="memdesc:a9ad4f90bff05e4be3c84157a713e56c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon for this module, and <code>conv</code> for every Conv2D inside it (residual blocks, sequences): Zennit's by-type mapping carried into nested modules.  <br /></td></tr>
+<tr class="separator:a9ad4f90bff05e4be3c84157a713e56c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3d7be00a691d742d668dae900aac3a5" id="r_af3d7be00a691d742d668dae900aac3a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5">epsilon_plus</a> (float epsilon=1e-6f)</td></tr>
-<tr class="memdesc:af3d7be00a691d742d668dae900aac3a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D.  <br /></td></tr>
+<tr class="memdesc:af3d7be00a691d742d668dae900aac3a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D, including convolutions inside residual blocks and other containers.  <br /></td></tr>
 <tr class="separator:af3d7be00a691d742d668dae900aac3a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4d3ae22297e37abf230fef57b157f39" id="r_ae4d3ae22297e37abf230fef57b157f39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39">epsilon_alpha2_beta1</a> (float epsilon=1e-6f)</td></tr>
-<tr class="memdesc:ae4d3ae22297e37abf230fef57b157f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonAlpha2Beta1: Epsilon for Linear, <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a" title="Alpha-beta rule (Bach et al. 2015) with alpha - beta == 1; alpha 1, beta 0 is ZPlus.">AlphaBeta(2, 1)</a> for Conv2D.  <br /></td></tr>
+<tr class="memdesc:ae4d3ae22297e37abf230fef57b157f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonAlpha2Beta1: Epsilon for Linear, <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a" title="Alpha-beta rule (Bach et al. 2015) with alpha - beta == 1; alpha 1, beta 0 is ZPlus.">AlphaBeta(2, 1)</a> for Conv2D, nested ones included.  <br /></td></tr>
 <tr class="separator:ae4d3ae22297e37abf230fef57b157f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35db92169a6e3bf6eea6fe5a7abe8d76" id="r_a35db92169a6e3bf6eea6fe5a7abe8d76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepulsatrix.html#abc17b0f5a8717d9ef75f08182d273a4d">LRPComposite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix_1_1lrp__composite.html#a35db92169a6e3bf6eea6fe5a7abe8d76">epsilon_gamma_box</a> (float low, float high, float gamma=0.25f, float epsilon=1e-6f)</td></tr>
-<tr class="memdesc:a35db92169a6e3bf6eea6fe5a7abe8d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonGammaBox: <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3">ZBox(low, high)</a> for the first Conv2D layer (lowest index), <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5">Gamma(gamma)</a> for every other Conv2D, Epsilon for every Linear.  <br /></td></tr>
+<tr class="memdesc:a35db92169a6e3bf6eea6fe5a7abe8d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonGammaBox: <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3">ZBox(low, high)</a> for the first Conv2D layer (lowest index), <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5">Gamma(gamma)</a> for every other Conv2D, nested ones included, Epsilon for every Linear.  <br /></td></tr>
 <tr class="separator:a35db92169a6e3bf6eea6fe5a7abe8d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -148,7 +151,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Zennit EpsilonAlpha2Beta1: Epsilon for Linear, <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a" title="Alpha-beta rule (Bach et al. 2015) with alpha - beta == 1; alpha 1, beta 0 is ZPlus.">AlphaBeta(2, 1)</a> for Conv2D. </p>
+<p>Zennit EpsilonAlpha2Beta1: Epsilon for Linear, <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaa061b30180faa38ebe8413bd869311e8a" title="Alpha-beta rule (Bach et al. 2015) with alpha - beta == 1; alpha 1, beta 0 is ZPlus.">AlphaBeta(2, 1)</a> for Conv2D, nested ones included. </p>
 
 </div>
 </div>
@@ -198,8 +201,10 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Zennit EpsilonGammaBox: <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3">ZBox(low, high)</a> for the first Conv2D layer (lowest index), <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5">Gamma(gamma)</a> for every other Conv2D, Epsilon for every Linear. </p>
-<dl class="section note"><dt>Note</dt><dd>As in Zennit 1.0.0, whose first_map holds only Convolution: a Linear is never ZBox'd, even when it is the first layer, so on a Conv2D-free network this preset is Epsilon on every layer (checked against Zennit in tests/lrp_reference_test.cpp). </dd>
+<p>Zennit EpsilonGammaBox: <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaaa55b2059e30dd0307ddbe305b185c7b3">ZBox(low, high)</a> for the first Conv2D layer (lowest index), <a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aaad9cdb0f6e0d556347c10a8695545a4b5">Gamma(gamma)</a> for every other Conv2D, nested ones included, Epsilon for every Linear. </p>
+<dl class="section note"><dt>Note</dt><dd>The first Conv2D must be a top-level module, as it is in ResNet and VGG: one nested in a container before any top-level Conv2D gets Gamma. </dd>
+<dd>
+As in Zennit 1.0.0, whose first_map holds only Convolution: a Linear is never ZBox'd, even when it is the first layer, so on a Conv2D-free network this preset is Epsilon on every layer (checked against Zennit in tests/lrp_reference_test.cpp). </dd>
 <dd>
 Remembers the first Conv2D it has seen since the last index-0 call (see LRPComposite's calling order). </dd></dl>
 
@@ -229,7 +234,45 @@ Remembers the first Conv2D it has seen since the last index-0 call (see LRPCompo
 </table>
 </div><div class="memdoc">
 
-<p>Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D. </p>
+<p>Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D, including convolutions inside residual blocks and other containers. </p>
+
+</div>
+</div>
+<a id="a9ad4f90bff05e4be3c84157a713e56c7" name="a9ad4f90bff05e4be3c84157a713e56c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ad4f90bff05e4be3c84157a713e56c7">&#9670;&#160;</a></span>epsilon_with_conv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> pulsatrix::lrp_composite::epsilon_with_conv </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>epsilon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>conv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Epsilon for this module, and <code>conv</code> for every Conv2D inside it (residual blocks, sequences): Zennit's by-type mapping carried into nested modules. </p>
 
 </div>
 </div>

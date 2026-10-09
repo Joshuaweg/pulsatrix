@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1MaxPool2DModule.html
 </div><!--header-->
 <div class="contents">
 
-<p>Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; deferred until a real use case needs them, same minimal-cut discipline as <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s original stride-1/no-padding scope cut.  
+<p>Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention, as PyTorch's MaxPool2d without dilation: out = (n + 2 padding - kernel) / stride + 1. Windows may overlap (stride &lt; kernel), as in ResNet's stem (3x3, stride 2, padding 1); padded positions never win. No dilation or ceil mode.  
  <a href="classpulsatrix_1_1MaxPool2DModule.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="max__pool2d__module_8hpp_source.html">max_pool2d_module.hpp</a>&gt;</code></p>
@@ -110,7 +110,7 @@ Inheritance diagram for pulsatrix::MaxPool2DModule:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpulsatrix_1_1MaxPool2DModule__inherit__graph.png" border="0" usemap="#apulsatrix_1_1MaxPool2DModule_inherit__map" alt="Inheritance graph"/></div>
 <map name="apulsatrix_1_1MaxPool2DModule_inherit__map" id="apulsatrix_1_1MaxPool2DModule_inherit__map">
-<area shape="rect" title="Max pooling, rank&#45;4 (N, channels, H, W), matching Conv2DModule&#39;s convention. Stride fixed equal to ke..." alt="" coords="5,79,215,104"/>
+<area shape="rect" title="Max pooling, rank&#45;4 (N, channels, H, W), matching Conv2DModule&#39;s convention, as PyTorch&#39;s MaxPool2d w..." alt="" coords="5,79,215,104"/>
 <area shape="rect" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...)." alt="" coords="43,5,177,31"/>
 <area shape="poly" title=" " alt="" coords="113,44,113,79,107,79,107,44"/>
 </map>
@@ -120,7 +120,7 @@ Collaboration diagram for pulsatrix::MaxPool2DModule:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpulsatrix_1_1MaxPool2DModule__coll__graph.png" border="0" usemap="#apulsatrix_1_1MaxPool2DModule_coll__map" alt="Collaboration graph"/></div>
 <map name="apulsatrix_1_1MaxPool2DModule_coll__map" id="apulsatrix_1_1MaxPool2DModule_coll__map">
-<area shape="rect" title="Max pooling, rank&#45;4 (N, channels, H, W), matching Conv2DModule&#39;s convention. Stride fixed equal to ke..." alt="" coords="5,79,215,104"/>
+<area shape="rect" title="Max pooling, rank&#45;4 (N, channels, H, W), matching Conv2DModule&#39;s convention, as PyTorch&#39;s MaxPool2d w..." alt="" coords="5,79,215,104"/>
 <area shape="rect" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...)." alt="" coords="43,5,177,31"/>
 <area shape="poly" title=" " alt="" coords="113,44,113,79,107,79,107,44"/>
 </map>
@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afd87ab72db351e008825fd2ec6e18e88" id="r_afd87ab72db351e008825fd2ec6e18e88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html#afd87ab72db351e008825fd2ec6e18e88">MaxPool2DModule</a> (int64_t kernel_h, int64_t kernel_w, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:afd87ab72db351e008825fd2ec6e18e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a max-pool layer.  <br /></td></tr>
 <tr class="separator:afd87ab72db351e008825fd2ec6e18e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00357157fe01346a1403377a7a2a7ba1" id="r_a00357157fe01346a1403377a7a2a7ba1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html#a00357157fe01346a1403377a7a2a7ba1">MaxPool2DModule</a> (int64_t kernel_h, int64_t kernel_w, int64_t stride_h, int64_t stride_w, int64_t pad_h, int64_t pad_w, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a00357157fe01346a1403377a7a2a7ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A max-pool layer with its own stride and padding (KS-9), as PyTorch's <code>MaxPool2d(kernel, stride, padding)</code>.  <br /></td></tr>
+<tr class="separator:a00357157fe01346a1403377a7a2a7ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42fa958d92b379c5b5ca85629dab067c" id="r_a42fa958d92b379c5b5ca85629dab067c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html#a42fa958d92b379c5b5ca85629dab067c">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a42fa958d92b379c5b5ca85629dab067c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the gradient w.r.t. this module's input &ndash; only the cached argmax position within each window receives grad_output; every other position is 0.  <br /></td></tr>
 <tr class="separator:a42fa958d92b379c5b5ca85629dab067c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,11 +187,11 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a29ec945a56ca5f4ee88c97e40e1eca37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; deferred until a real use case needs them, same minimal-cut discipline as <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s original stride-1/no-padding scope cut. </p>
-<dl class="section note"><dt>Note</dt><dd>propagate_relevance is winner-take-all (Bach et al. 2015's supplementary treatment of max-pooling, the same rule iNNvestigate/zennit ship): all relevance at an output position flows to the single input position that was the argmax in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>; every other position in that window gets zero. Conserves exactly by construction. <a class="el" href="classpulsatrix_1_1MaxPool2DModule.html#a42fa958d92b379c5b5ca85629dab067c" title="Computes the gradient w.r.t. this module&#39;s input – only the cached argmax position within each window...">backward()</a> routes gradient the same way (only the argmax position receives grad_output; standard max-pool gradient semantics). </dd></dl>
+<div class="textblock"><p>Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention, as PyTorch's MaxPool2d without dilation: out = (n + 2 padding - kernel) / stride + 1. Windows may overlap (stride &lt; kernel), as in ResNet's stem (3x3, stride 2, padding 1); padded positions never win. No dilation or ceil mode. </p>
+<dl class="section note"><dt>Note</dt><dd>propagate_relevance is winner-take-all (Bach et al. 2015's supplementary treatment of max-pooling, the same rule iNNvestigate/zennit ship): all relevance at an output position flows to the single input position that was the argmax in <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>; every other position in that window gets zero. An input that wins several overlapping windows receives all of their relevance. Conserves exactly by construction. <a class="el" href="classpulsatrix_1_1MaxPool2DModule.html#a42fa958d92b379c5b5ca85629dab067c" title="Computes the gradient w.r.t. this module&#39;s input – only the cached argmax position within each window...">backward()</a> routes gradient the same way (only the argmax position receives grad_output; standard max-pool gradient semantics). </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afd87ab72db351e008825fd2ec6e18e88" name="afd87ab72db351e008825fd2ec6e18e88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd87ab72db351e008825fd2ec6e18e88">&#9670;&#160;</a></span>MaxPool2DModule()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afd87ab72db351e008825fd2ec6e18e88">&#9670;&#160;</a></span>MaxPool2DModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,6 +234,72 @@ Protected Member Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if kernel_h &lt;= 0 or kernel_w &lt;= 0 &ndash; external boundary (construction arguments can originate from Phase 5's Python bindings with no upstream validation), per cpp_tdd/context_tdd_adversarial_boundary_testing.md. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a00357157fe01346a1403377a7a2a7ba1" name="a00357157fe01346a1403377a7a2a7ba1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00357157fe01346a1403377a7a2a7ba1">&#9670;&#160;</a></span>MaxPool2DModule() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::MaxPool2DModule::MaxPool2DModule </td>
+          <td>(</td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>kernel_h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>kernel_w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>stride_h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>stride_w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>pad_h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>pad_w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A max-pool layer with its own stride and padding (KS-9), as PyTorch's <code>MaxPool2d(kernel, stride, padding)</code>. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a non-positive kernel or stride, a negative padding, or padding above half the kernel (PyTorch's rule: every window must touch the input). </td></tr>
   </table>
   </dd>
 </dl>
@@ -339,7 +408,7 @@ Protected Member Functions</h2></td></tr>
 <p>The actual forward computation &ndash; per-window max, argmax cached per output element for <a class="el" href="classpulsatrix_1_1MaxPool2DModule.html#a42fa958d92b379c5b5ca85629dab067c" title="Computes the gradient w.r.t. this module&#39;s input – only the cached argmax position within each window...">backward()</a>/propagate_relevance() to reuse. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if input isn't rank-4 (N, C, H, W), or the kernel is larger than the input (kernel_h &gt; H or kernel_w &gt; W). </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if input isn't rank-4 (N, C, H, W), or the padded input is smaller than the kernel. </td></tr>
   </table>
   </dd>
 </dl>

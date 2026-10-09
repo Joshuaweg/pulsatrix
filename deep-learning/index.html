@@ -441,6 +441,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#vision-models-resnet-and-vgg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vision models: ResNet and VGG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reproducibility" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1570,6 +1581,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../recipes/interpretability/imagenet_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on ImageNet Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
         
   
@@ -2137,6 +2176,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#vision-models-resnet-and-vgg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vision models: ResNet and VGG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reproducibility" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2284,8 +2334,12 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   <code>SequentialModule</code>, <code>DropoutModule</code>, <code>EmbeddingModule</code>, <code>ResidualModule</code>; normalization
   (<code>LayerNormModule</code>/<code>RMSNormModule</code>/<code>GroupNormModule</code>/<code>BatchNormModule</code>, with <code>BatchNormFold</code>
   to fold an eval-mode BatchNorm into the layer before it); pooling
-  (<code>MaxPool2DModule</code>/<code>AvgPool2DModule</code>). <code>Conv2DModule</code> takes an optional <code>stride</code> and zero
-  <code>padding</code>, as in <code>torch.nn.Conv2d</code>, and every LRP rule handles both.</li>
+  (<code>MaxPool2DModule</code>/<code>AvgPool2DModule</code>/<code>AdaptiveAvgPool2DModule</code>). <code>Conv2DModule</code> takes an
+  optional <code>stride</code> and zero <code>padding</code>, as in <code>torch.nn.Conv2d</code>, and every LRP rule handles both.
+  So does <code>MaxPool2DModule</code>, whose windows may overlap (ResNet's <code>MaxPool2d(3, 2, 1)</code>).
+  <code>ResidualModule</code> takes an optional shortcut module, such as ResNet's downsampling convolution.</li>
+<li><strong>Vision models</strong>: <code>TorchvisionResNet</code> and <code>TorchvisionVGG</code> (ResNet18/34 and VGG11 to VGG19)
+  load torchvision's published ImageNet weights. See <a href="#vision-models-resnet-and-vgg">Vision models</a>.</li>
 <li><strong>Sequence &amp; attention</strong>: <code>RNNModule</code>/<code>LSTMModule</code>/<code>GRUModule</code>, <code>SoftmaxModule</code>,
   <code>RoPEModule</code>, <code>MultiHeadAttentionModule</code>, <code>SwiGLUModule</code>, <code>FeedForwardModule</code>,
   <code>TransformerBlock</code>, <code>EncoderBlock</code>, <code>MambaModule</code>, <code>RWKVModule</code>, <code>RetNetModule</code></li>
@@ -2486,6 +2540,33 @@ python3<span class="w"> </span>tools/convert/pickle_to_safetensors.py<span class
   compared bit for bit.</p>
 <p>The converted torchvision ResNet18 reads back in pulsatrix with every one of its 11.7 million
 values matching PyTorch's.</p>
+<h3 id="vision-models-resnet-and-vgg">Vision models: ResNet and VGG<a class="headerlink" href="#vision-models-resnet-and-vgg" title="Permanent link">&para;</a></h3>
+<p><code>TorchvisionResNet</code> and <code>TorchvisionVGG</code> (<code>vision_models.hpp</code>) rebuild torchvision's ResNet
+(basic blocks: ResNet18 and ResNet34) and VGG (without BatchNorm: VGG11 to VGG19) from pulsatrix
+layers. They use torchvision's parameter names, so the published ImageNet weights load once
+converted:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-LO<span class="w"> </span>https://download.pytorch.org/models/resnet18-f37072fd.pth
+python3<span class="w"> </span>tools/convert/pickle_to_safetensors.py<span class="w"> </span>resnet18-f37072fd.pth<span class="w"> </span>resnet18.safetensors
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/vision_models.hpp"</span>
+
+<span class="n">TorchvisionResNet</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">TorchvisionResNet</span><span class="o">::</span><span class="n">ResNet18</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// or TorchvisionVGG::VGG16()</span>
+<span class="n">LoadTorchvisionWeights</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">"resnet18.safetensors"</span><span class="p">);</span><span class="w">  </span><span class="c1">// Linear weights are transposed for you</span>
+<span class="n">model</span><span class="p">.</span><span class="n">set_training</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">                              </span><span class="c1">// BatchNorm's running statistics</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="n">logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w">  </span><span class="c1">// x: (N, 3, 224, 224), normalized with ImageNet's mean and std</span>
+</code></pre></div>
+<ul>
+<li><strong>The input</strong> is torchvision's: resize the short side to 256, crop the center 224x224, scale
+  to [0, 1], subtract the mean (0.485, 0.456, 0.406) and divide by the standard deviation
+  (0.229, 0.224, 0.225), per channel.</li>
+<li><strong>Smaller variants</strong> come from the config: <code>ResNetConfig{blocks, width, num_classes}</code> and
+  <code>VGGConfig{features, pool_size, hidden, num_classes}</code>. The tests use a ResNet of width 4 and
+  a VGG with 8 channels.</li>
+<li><strong>Matches PyTorch.</strong> On the published weights, the logits agree with torchvision's to 1e-4
+  (relative to the largest), on CPU and GPU.</li>
+</ul>
+<p>To explain one, see <a href="../recipes/interpretability/imagenet_lrp/">LRP on ImageNet models</a>: fold
+the ResNet's BatchNorms, then explain through <code>model.layers()</code>.</p>
 <h3 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h3>
 <p>Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
 <code>set_seed</code> sets one global seed (default 0). Anything built without its own seed, such as a

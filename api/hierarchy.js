@@ -240,6 +240,7 @@ var hierarchy =
     [ "pulsatrix::ModelToken", "structpulsatrix_1_1ModelToken.html", null ],
     [ "pulsatrix::Module", "classpulsatrix_1_1Module.html", [
       [ "pulsatrix::ActivationModule", "classpulsatrix_1_1ActivationModule.html", null ],
+      [ "pulsatrix::AdaptiveAvgPool2DModule", "classpulsatrix_1_1AdaptiveAvgPool2DModule.html", null ],
       [ "pulsatrix::AggregatorModule", "classpulsatrix_1_1AggregatorModule.html", null ],
       [ "pulsatrix::AvgPool2DModule", "classpulsatrix_1_1AvgPool2DModule.html", null ],
       [ "pulsatrix::BatchNormModule", "classpulsatrix_1_1BatchNormModule.html", null ],
@@ -281,6 +282,8 @@ var hierarchy =
       [ "pulsatrix::TiedLMHeadModule", "classpulsatrix_1_1TiedLMHeadModule.html", null ],
       [ "pulsatrix::TinyTagger", "classpulsatrix_1_1TinyTagger.html", null ],
       [ "pulsatrix::TopKSparseAutoencoder", "classpulsatrix_1_1TopKSparseAutoencoder.html", null ],
+      [ "pulsatrix::TorchvisionResNet", "classpulsatrix_1_1TorchvisionResNet.html", null ],
+      [ "pulsatrix::TorchvisionVGG", "classpulsatrix_1_1TorchvisionVGG.html", null ],
       [ "pulsatrix::Transcoder", "classpulsatrix_1_1Transcoder.html", null ],
       [ "pulsatrix::TransformerBlock", "classpulsatrix_1_1TransformerBlock.html", null ]
     ] ],
@@ -374,6 +377,7 @@ var hierarchy =
     [ "pulsatrix::ResidueLogProbs", "structpulsatrix_1_1ResidueLogProbs.html", null ],
     [ "pulsatrix::ResidueRelevance", "structpulsatrix_1_1ResidueRelevance.html", null ],
     [ "pulsatrix::ResidueTracksDocument", "structpulsatrix_1_1ResidueTracksDocument.html", null ],
+    [ "pulsatrix::ResNetConfig", "structpulsatrix_1_1ResNetConfig.html", null ],
     [ "pulsatrix::ResumableTrial", "classpulsatrix_1_1ResumableTrial.html", [
       [ "pulsatrix::PBTResumableTrial", "classpulsatrix_1_1PBTResumableTrial.html", null ]
     ] ],
@@ -446,6 +450,7 @@ var hierarchy =
     [ "pulsatrix::TokenRelevanceView", "classpulsatrix_1_1TokenRelevanceView.html", null ],
     [ "pulsatrix::TopKResult", "structpulsatrix_1_1TopKResult.html", null ],
     [ "pulsatrix::TopKSaeOptions", "structpulsatrix_1_1TopKSaeOptions.html", null ],
+    [ "pulsatrix::TorchvisionLoadReport", "structpulsatrix_1_1TorchvisionLoadReport.html", null ],
     [ "pulsatrix::ToyKnowledgeBase", "classpulsatrix_1_1ToyKnowledgeBase.html", null ],
     [ "pulsatrix::ResidueTracksDocument::Track", "structpulsatrix_1_1ResidueTracksDocument_1_1Track.html", null ],
     [ "pulsatrix::TrainingDashboard", "classpulsatrix_1_1TrainingDashboard.html", null ],
@@ -467,6 +472,7 @@ var hierarchy =
     [ "pulsatrix::ValidationIssue", "structpulsatrix_1_1ValidationIssue.html", null ],
     [ "pulsatrix::VariantScorer", "classpulsatrix_1_1VariantScorer.html", null ],
     [ "pulsatrix::VariantScoringOptions", "structpulsatrix_1_1VariantScoringOptions.html", null ],
+    [ "pulsatrix::VGGConfig", "structpulsatrix_1_1VGGConfig.html", null ],
     [ "pulsatrix::VizFontFile", "structpulsatrix_1_1VizFontFile.html", null ],
     [ "pulsatrix::VizFontOptions", "structpulsatrix_1_1VizFontOptions.html", null ],
     [ "pulsatrix::VizWindow", "classpulsatrix_1_1VizWindow.html", null ],

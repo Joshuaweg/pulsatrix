@@ -2,6 +2,7 @@ var structpulsatrix_1_1LRPRuleConfig =
 [
     [ "alpha", "structpulsatrix_1_1LRPRuleConfig.html#acdf40c00ebb6e7ff9d6372ae9a66d0f3", null ],
     [ "beta", "structpulsatrix_1_1LRPRuleConfig.html#ab2b564702fc0049fe1699a895fd63812", null ],
+    [ "conv_rule", "structpulsatrix_1_1LRPRuleConfig.html#a8a8f0d0066342c69ad18dece78ae6f90", null ],
     [ "epsilon", "structpulsatrix_1_1LRPRuleConfig.html#a41a03360ab748cd978bea186731a1750", null ],
     [ "epsilon_bias_in_denominator", "structpulsatrix_1_1LRPRuleConfig.html#ace420e2114f01fc83687eeed487884fc", null ],
     [ "gamma", "structpulsatrix_1_1LRPRuleConfig.html#a8d65fffbd435bcc131073f7100573ab9", null ],

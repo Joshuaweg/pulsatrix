@@ -1,6 +1,7 @@
 var classpulsatrix_1_1ResidualModule =
 [
     [ "ResidualModule", "classpulsatrix_1_1ResidualModule.html#aff80847126102d8c3e5af7ababb72f8a", null ],
+    [ "ResidualModule", "classpulsatrix_1_1ResidualModule.html#a84d7edf729729546140f2e406178cb16", null ],
     [ "backward", "classpulsatrix_1_1ResidualModule.html#a485aad8b3f0e6cf066df7ced7aad1b3c", null ],
     [ "compute_device", "classpulsatrix_1_1ResidualModule.html#a9522fefce13d3551e5f225693003033d", null ],
     [ "forward_impl", "classpulsatrix_1_1ResidualModule.html#a6428134c28df443528be1e6f841ea1a9", null ],
@@ -9,5 +10,6 @@ var classpulsatrix_1_1ResidualModule =
     [ "named_parameters", "classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff", null ],
     [ "op_type", "classpulsatrix_1_1ResidualModule.html#a428dba9ba879d95d5dafd2e00827e689", null ],
     [ "propagate_relevance", "classpulsatrix_1_1ResidualModule.html#ac6ecb7aacdfdd5a827db5a76432b82a2", null ],
-    [ "set_training", "classpulsatrix_1_1ResidualModule.html#a366cf671459f34f026677d08d6bbc48a", null ]
+    [ "set_training", "classpulsatrix_1_1ResidualModule.html#a366cf671459f34f026677d08d6bbc48a", null ],
+    [ "shortcut", "classpulsatrix_1_1ResidualModule.html#a45553ca0c1e8e8f64de72fe91d27836b", null ]
 ];

@@ -274,12 +274,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae654855306f168b3cb3cc58d3acf295e" id="r_ae654855306f168b3cb3cc58d3acf295e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#ae654855306f168b3cb3cc58d3acf295e">lrp_stabilized_divide</a> (const float *r, const float *denom, const float *gate, float *out, size_t n, float eps, <a class="el" href="namespacepulsatrix.html#aeafb34c87ad858963e6f06a87ee9bbc3">LrpGate</a> gate_mode) override</td></tr>
 <tr class="memdesc:ae654855306f168b3cb3cc58d3acf295e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gated stabilized division, the one non-gemm step of the affine <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> rules: out[i] = passes(gate[i]) ? r[i] / (denom[i] + eps sign(denom[i])) : 0, sign(0) = +1.  <br /></td></tr>
 <tr class="separator:ae654855306f168b3cb3cc58d3acf295e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a201e3f2637dd66de583fbb1d697d2874" id="r_a201e3f2637dd66de583fbb1d697d2874"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a201e3f2637dd66de583fbb1d697d2874">max_pool_forward</a> (const float *in, float *out, float *argmax, size_t planes, size_t h, size_t w, size_t kh, size_t kw) override</td></tr>
-<tr class="memdesc:a201e3f2637dd66de583fbb1d697d2874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-overlapping max pool over planes of (h, w); argmax = flat in-plane index (first max wins).  <br /></td></tr>
-<tr class="separator:a201e3f2637dd66de583fbb1d697d2874"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62a13772a9b4e60e6f24625ac3ad3e6d" id="r_a62a13772a9b4e60e6f24625ac3ad3e6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a62a13772a9b4e60e6f24625ac3ad3e6d">max_unpool</a> (const float *src, const float *argmax, float *dst, size_t planes, size_t h, size_t w, size_t kh, size_t kw) override</td></tr>
-<tr class="memdesc:a62a13772a9b4e60e6f24625ac3ad3e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">dst[plane][argmax] = src for every pooled element; dst must be zeroed by the caller.  <br /></td></tr>
-<tr class="separator:a62a13772a9b4e60e6f24625ac3ad3e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dc58599d288476c6d1a7d5b68c05a68" id="r_a6dc58599d288476c6d1a7d5b68c05a68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a6dc58599d288476c6d1a7d5b68c05a68">max_pool_forward</a> (const float *in, float *out, float *argmax, size_t planes, size_t h, size_t w, size_t kh, size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) override</td></tr>
+<tr class="memdesc:a6dc58599d288476c6d1a7d5b68c05a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max pool over planes of (h, w) with a (kh, kw) window, stride (sh, sw) and padding (ph, pw); padded positions never win. Output (planes, out_h, out_w) with out = (n + 2 pad - k) / stride + 1. argmax = flat in-plane input index (first max wins).  <br /></td></tr>
+<tr class="separator:a6dc58599d288476c6d1a7d5b68c05a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d9e61d81ab0325a63998d08c823fd23" id="r_a4d9e61d81ab0325a63998d08c823fd23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a4d9e61d81ab0325a63998d08c823fd23">max_unpool</a> (const float *src, const float *argmax, float *dst, size_t planes, size_t h, size_t w, size_t kh, size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) override</td></tr>
+<tr class="memdesc:a4d9e61d81ab0325a63998d08c823fd23"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inverse routing: each input position gets the sum of the pooled values whose argmax it is (windows may overlap). dst (planes, h, w) is overwritten.  <br /></td></tr>
+<tr class="separator:a4d9e61d81ab0325a63998d08c823fd23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99c73ff2d9dd2f873f8217139a81aadf" id="r_a99c73ff2d9dd2f873f8217139a81aadf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CPUBackend.html#a99c73ff2d9dd2f873f8217139a81aadf">avg_pool_forward</a> (const float *in, float *out, size_t planes, size_t h, size_t w, size_t kh, size_t kw) override</td></tr>
 <tr class="memdesc:a99c73ff2d9dd2f873f8217139a81aadf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-overlapping average pool over planes of (h, w).  <br /></td></tr>
 <tr class="separator:a99c73ff2d9dd2f873f8217139a81aadf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4002,8 +4002,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a201e3f2637dd66de583fbb1d697d2874" name="a201e3f2637dd66de583fbb1d697d2874"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a201e3f2637dd66de583fbb1d697d2874">&#9670;&#160;</a></span>max_pool_forward()</h2>
+<a id="a6dc58599d288476c6d1a7d5b68c05a68" name="a6dc58599d288476c6d1a7d5b68c05a68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dc58599d288476c6d1a7d5b68c05a68">&#9670;&#160;</a></span>max_pool_forward()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4057,7 +4057,31 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kw</em>&#160;</td>
+          <td class="paramname"><em>kw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>sh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>sw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>ph</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>pw</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -4072,14 +4096,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Non-overlapping max pool over planes of (h, w); argmax = flat in-plane index (first max wins). </p>
+<p>Max pool over planes of (h, w) with a (kh, kw) window, stride (sh, sw) and padding (ph, pw); padded positions never win. Output (planes, out_h, out_w) with out = (n + 2 pad - k) / stride + 1. argmax = flat in-plane input index (first max wins). </p>
 
-<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#aa99107ab4e0a84d64412a972effcb97c">pulsatrix::DeviceBackend</a>.</p>
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#af4a891785752cf51e4a5bf7f825b046b">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>
-<a id="a62a13772a9b4e60e6f24625ac3ad3e6d" name="a62a13772a9b4e60e6f24625ac3ad3e6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62a13772a9b4e60e6f24625ac3ad3e6d">&#9670;&#160;</a></span>max_unpool()</h2>
+<a id="a4d9e61d81ab0325a63998d08c823fd23" name="a4d9e61d81ab0325a63998d08c823fd23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d9e61d81ab0325a63998d08c823fd23">&#9670;&#160;</a></span>max_unpool()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4133,7 +4157,31 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>kw</em>&#160;</td>
+          <td class="paramname"><em>kw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>sh</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>sw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>ph</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>pw</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -4148,9 +4196,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>dst[plane][argmax] = src for every pooled element; dst must be zeroed by the caller. </p>
+<p>The inverse routing: each input position gets the sum of the pooled values whose argmax it is (windows may overlap). dst (planes, h, w) is overwritten. </p>
 
-<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#a5a4d0bd5e7fe34a61dd88e8e5f7e7991">pulsatrix::DeviceBackend</a>.</p>
+<p>Implements <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ae74a0164a90be4d36ab65be404b26f7b">pulsatrix::DeviceBackend</a>.</p>
 
 </div>
 </div>

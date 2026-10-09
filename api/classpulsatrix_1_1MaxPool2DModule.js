@@ -1,6 +1,7 @@
 var classpulsatrix_1_1MaxPool2DModule =
 [
     [ "MaxPool2DModule", "classpulsatrix_1_1MaxPool2DModule.html#afd87ab72db351e008825fd2ec6e18e88", null ],
+    [ "MaxPool2DModule", "classpulsatrix_1_1MaxPool2DModule.html#a00357157fe01346a1403377a7a2a7ba1", null ],
     [ "backward", "classpulsatrix_1_1MaxPool2DModule.html#a42fa958d92b379c5b5ca85629dab067c", null ],
     [ "compute_device", "classpulsatrix_1_1MaxPool2DModule.html#a7bdb77fbc470a9165a9af171c5535bcf", null ],
     [ "forward_impl", "classpulsatrix_1_1MaxPool2DModule.html#a29ec945a56ca5f4ee88c97e40e1eca37", null ],
