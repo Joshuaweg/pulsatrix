@@ -21,6 +21,7 @@ model's or environment's structure.
 | What does an MLP compute, in sparse, interpretable steps? | `Transcoder` |
 | What did fine-tuning change, or which features span several layers? | `Crosscoder`, `MeasureLatentScaling` |
 | Which pieces of the weights does each input use? | `ComponentLinear`, `ParameterDecomposition` (SPD, VPD) |
+| Which features carry a language model's prediction, layer to layer? | `TraceCircuit` with a `CrossLayerTranscoder` |
 | Can a direction push the model's behavior, and how reliably? | `SteeringHook`, `MeasureSteering` |
 | Which layers does the output depend on for this input? | `ExplainerContext::build_circuit_graph()` → `CircuitGraph` |
 | What happens to the output if I overwrite one activation? | `ExplainerContext::forward_pass_with_patch()` |
@@ -714,6 +715,78 @@ reference schedule is 40,000 steps of 4,096.
   no toy results; its toy configs use another importance loss, not reproduced here.
 - **A faster setting.** A learning rate of 1e-2 and importance 1e-2 reach one subcomponent per
   feature in 3,000 steps of 1,024 (the unit test, Release builds only).
+
+### Attribution graphs with transcoders
+
+An attribution graph (Ameisen, Lindsey et al., "Circuit Tracing", Transformer Circuits, 2025)
+explains one prediction as a graph of interpretable features.
+
+- **The replacement model.** Each MLP is replaced by a transcoder's features plus an error node,
+  the MLP output the features miss. Attention patterns and normalization scales are frozen at
+  their values for this prompt. What is left between features is linear, so every edge is an
+  exact attribution. Its weight is the source's output vector, carried through the frozen model,
+  dotted with the target's input vector. A feature's input vector is its encoder row; a logit's
+  is its unembedding minus the mean unembedding.
+- **Nodes:**
+  - active features, by layer and position;
+  - one error node per layer and position;
+  - the token embeddings;
+  - the likely next tokens (up to 10, until their probabilities sum to 0.95).
+
+```cpp
+#include "pulsatrix/circuit_tracing.hpp"
+
+// Per-layer or cross-layer transcoders in circuit-tracer's layouts.
+CrossLayerTranscoder clt = LoadTranscoders(dir, model->num_layers(), &backend);
+CircuitTrace trace = TraceCircuit(*model, clt, ids);   // every edge, unpruned
+CircuitScores scores = ScoreCircuit(trace);            // replacement, completeness
+AttributionGraph graph = ToAttributionGraph(trace, options, logit_labels);  // pruned, for the viewer
+std::string json = ToNeuronpediaJson(graph);
+```
+
+`pulsatrix_explain_text MODEL "prompt" --graph out.json --transcoders DIR` writes the graph for
+Neuronpedia's or circuit-tracer's viewer.
+
+- **Following circuit-tracer** (github.com/decoderesearch/circuit-tracer):
+  - The forward pass is the model's own: reconstruction plus error is the MLP's output, so the
+    logits are unchanged.
+  - The first position's features and errors are left out, which makes BOS's MLP outputs
+    constants.
+  - Pruning keeps the nodes with 80% of the indirect influence on the logits and the edges with
+    98%, then drops nodes left without edges.
+  - The replacement and completeness scores are circuit-tracer's.
+  - Node ids and types match its viewer files.
+- **Transcoders:**
+  - `CrossLayerTranscoder` holds cross-layer transcoders, where features write to several later
+    MLPs, and per-layer ones.
+  - Both use JumpReLU or ReLU and an optional linear skip.
+  - `LoadTranscoders` reads circuit-tracer's two layouts, such as Gemma Scope 2's 270M
+    transcoders (mwhanna/gemma-scope-2-270m-pt) or the Llama 3.2 1B CLT (mntss/clt-llama-3.2-1b-524k).
+  - It is inference only: training a transcoder is not here.
+- **Checked against PyTorch** (`tools/golden/make_circuit_golden.py`). The golden is the tiny
+  Llama and Gemma 3 written out in PyTorch with circuit-tracer's freezes, with each source scaled
+  by a scalar whose gradient is the edge. Every edge matches to 2e-6, across a cross-layer span
+  and a skip, Gemma's sandwich norms, QK-norm and sliding window. CPU and GPU agree.
+
+**On Gemma 3 270M**, with Gemma Scope 2's 16k per-layer transcoders (L0 small), on the GPU:
+
+| Prompt | Top logit | Active features | Graph after pruning | Replacement | Completeness | Time |
+|---|---|---|---|---|---|---|
+| "The Eiffel Tower is located in the city of" | " Paris" (0.86) | 4,532 | 621 nodes, 61,219 links | 0.67 | 0.92 | 14 s |
+| "The capital of the state containing Dallas is" | " a" (0.13) | 3,779 | 634 nodes, 84,485 links | 0.66 | 0.92 | 14 s |
+
+- **" Paris" is carried by a few late features at the last position.** The strongest come from
+  layers 11 to 17, with a weight up to 4.3. Errors and the "Eiffel" token embedding also feed
+  it directly.
+- **The 270M model doesn't know the two-hop fact.** Its likely tokens are " a", " the" and
+  " Dallas", so the Dallas graph shows the method, not a circuit for Austin.
+- **Not here yet:**
+  - Limiting the graph to the most influential features (circuit-tracer's `max_feature_nodes`).
+    Every active feature is a target; on Gemma 3 270M that is 4,500 features and a dense
+    adjacency of 20M entries.
+  - Gemma's final logit softcap, which is outside the linearization.
+  - Reading the residual stream before the norm, as the Llama CLT does. Features read the MLP
+    input after the block's norm.
 
 ### Building a circuit graph
 

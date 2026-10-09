@@ -15,6 +15,10 @@
 // --viewer-dir also adds it to DIR/graph-metadata.json, the index circuit-tracer's local viewer
 // reads. --slug, --scan (the model id; default the directory's name) and --edge-threshold X
 // (keep links holding this share of the relevance; default 0.98) go with it.
+// --transcoders DIR builds the graph from transcoder features instead (FEAT-10, circuit-tracer's
+// method): DIR holds per-layer or cross-layer transcoders (LoadTranscoders), the nodes are their
+// active features, error nodes, token embeddings and the likely logits, and --node-threshold X
+// (default 0.8) prunes nodes by influence on the logits.
 // Options: --words (word view), --split whitespace (words between spaces), --no-special (leave
 // BOS and other inserted tokens out of the token view), --target TEXT (explain that token
 // instead of the most likely one; it must be a single token), --device cpu|hip, --width W.
@@ -31,6 +35,7 @@
 
 #include "pulsatrix/attnlrp_parity.hpp"
 #include "pulsatrix/causal_lm.hpp"
+#include "pulsatrix/circuit_tracing.hpp"
 #include "pulsatrix/cpu_backend.hpp"
 #include "pulsatrix/tokenizer_json.hpp"
 #include "pulsatrix/json.hpp"
@@ -55,8 +60,8 @@ namespace {
 }
 
 struct Options {
-    std::string dir, text, out, target, device = "cpu", graph, viewer_dir, slug, scan;
-    double edge_threshold = 0.98;
+    std::string dir, text, out, target, device = "cpu", graph, viewer_dir, slug, scan, transcoders;
+    double edge_threshold = 0.98, node_threshold = 0.8;
     bool words = false, whitespace = false, special = true;
     int width = 0;
 };
@@ -79,7 +84,27 @@ void WriteGraph(pulsatrix::CausalLM& model, pulsatrix::DeviceBackend* backend, c
     g.prompt = o.text;
     for (int64_t id : e.ids) g.prompt_tokens.push_back(tok.decode({id}));
     g.target_text = target_text;
-    const AttributionGraph graph = BuildRelevanceGraph(model, backend, e.ids, target, g);
+    AttributionGraph graph;
+    if (o.transcoders.empty()) {
+        graph = BuildRelevanceGraph(model, backend, e.ids, target, g);
+    } else {
+        // Transcoder features in place of the MLPs (FEAT-10).
+        const CrossLayerTranscoder clt = LoadTranscoders(o.transcoders, model.num_layers(), backend);
+        CircuitTraceOptions c;
+        c.node_threshold = o.node_threshold;
+        c.edge_threshold = o.edge_threshold;
+        c.slug = g.slug;
+        c.scan = g.scan;
+        c.prompt = g.prompt;
+        c.prompt_tokens = g.prompt_tokens;
+        const CircuitTrace trace = TraceCircuit(model, clt, e.ids, c);
+        std::vector<std::string> labels;
+        for (int64_t id : trace.logit_tokens) labels.push_back(tok.decode({id}));
+        graph = ToAttributionGraph(trace, c, labels);
+        const CircuitScores scores = ScoreCircuit(trace);
+        std::cerr << trace.features.size() << " active features, " << trace.logit_tokens.size() << " logits; replacement score "
+                  << scores.replacement << ", completeness " << scores.completeness << "\n";
+    }
     const std::string json = ToNeuronpediaJson(graph);
     std::ofstream(o.graph, std::ios::binary) << json;
     if (!o.viewer_dir.empty()) {
@@ -89,7 +114,8 @@ void WriteGraph(pulsatrix::CausalLM& model, pulsatrix::DeviceBackend* backend, c
         if (std::ifstream in(index, std::ios::binary); in) {
             std::stringstream ss;
             ss << in.rdbuf();
-            for (const auto& entry : ParseJson(ss.str()).find("graphs")->as_array()) {
+            const JsonValue index_doc = ParseJson(ss.str());  // must outlive the loop over its array
+            for (const auto& entry : index_doc.find("graphs")->as_array()) {
                 const JsonValue* slug = entry.find("slug");
                 if (slug == nullptr || slug->as_string() != graph.slug) graphs.push_back(entry);
             }
@@ -183,6 +209,8 @@ int main(int argc, char** argv) {
         else if (a == "--width") o.width = std::atoi(value().c_str());
         else if (a == "--graph") o.graph = value();
         else if (a == "--viewer-dir") o.viewer_dir = value();
+        else if (a == "--transcoders") o.transcoders = value();
+        else if (a == "--node-threshold") o.node_threshold = std::strtod(value().c_str(), nullptr);
         else if (a == "--slug") o.slug = value();
         else if (a == "--scan") o.scan = value();
         else if (a == "--edge-threshold") o.edge_threshold = std::atof(value().c_str());

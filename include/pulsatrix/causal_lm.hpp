@@ -101,6 +101,9 @@ public:
     [[nodiscard]] TransformerBlock& layer(int64_t i) { return *layers_.at(static_cast<size_t>(i)); }
     [[nodiscard]] int64_t num_layers() const { return static_cast<int64_t>(layers_.size()); }
     [[nodiscard]] RMSNormModule& norm() { return norm_; }
+    /** @brief The untied language-model head, `(hidden_size -> vocab)`; nullptr when tied to the
+     *         embedding. */
+    [[nodiscard]] LinearModule* lm_head() { return lm_head_.get(); }
 
 protected:
     /** @throws std::invalid_argument if input isn't `(N, L)` token ids in the vocabulary. */
