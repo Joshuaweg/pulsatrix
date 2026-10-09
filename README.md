@@ -116,6 +116,26 @@ available rules (Epsilon, Gamma, AlphaBeta/ZPlus, ZBox), per-layer composites, c
 explanations and how the results were validated. For a full worked example, see the
 [MNIST LRP recipe](https://joshuaweg.github.io/pulsatrix/recipes/interpretability/mnist_lrp/).
 
+## Looking inside a language model
+
+The same tool traces an **attribution graph** through a model's transcoder features: which
+interpretable features, at which layer and token, carry the prediction. The graph opens in
+Neuronpedia's or circuit-tracer's viewer.
+
+```bash
+./build/pulsatrix_explain_text models/gemma-3-270m "The Eiffel Tower is located in the city of" \
+    --graph eiffel.json --transcoders transcoders/transcoder_all/width_16k_l0_small
+```
+
+This takes about 30 seconds on a CPU, or 14 with `--device hip` on an AMD GPU. The
+[attribution graphs guide](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/attribution-graphs/)
+shows where to download the model and Gemma Scope 2's transcoders.
+
+Other tools find a layer's features, steer a model, compare a model with its fine-tune, and
+decompose a network's weights. The
+[Mechanistic Interpretability guide](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/)
+starts with which tool answers which question, and reports what each method found on real models.
+
 ## What's included
 
 | Area | Highlights | Docs |
@@ -133,7 +153,7 @@ explanations and how the results were validated. For a full worked example, see 
 | Checking explanations | Deletion/insertion curves with ROAD, the model-parameter randomization test, sparseness, complexity, `NullModelBaseline` | [Interpretability](https://joshuaweg.github.io/pulsatrix/interpretability/) |
 | Data pipeline | `Dataset`/`DataLoader`; CSV, image, text, audio and video-frame datasets; dataset validation; tokenizers loaded from Hugging Face `tokenizer.json` (byte-level BPE, as in SmolLM2, Qwen, Llama 3 and gpt-oss, and SentencePiece-style BPE, as in Gemma 3, Llama 2 and Mistral) with offsets back into the text; merging token scores into word scores | [Data pipeline](https://joshuaweg.github.io/pulsatrix/data-pipeline/) |
 | Reinforcement learning | CartPole environments, DQN, REINFORCE, A2C, PPO, SAC | [RL](https://joshuaweg.github.io/pulsatrix/reinforcement-learning/) |
-| Mechanistic interpretability | Activation caching, linear probes, sparse autoencoders, circuit graphs, GFlowNets | [Mech interp](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/) |
+| Mechanistic interpretability | Hooks and linear probes; sparse autoencoders (TopK, BatchTopK, Matryoshka, JumpReLU), block-sparse featurizers and transcoders, with SAEBench-style metrics and random-model baselines; steering with a reliability report; model diffing with crosscoders; parameter decomposition (SPD, VPD); attribution graphs through transcoder features for Neuronpedia's viewer; GFlowNets | [Mech interp](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/) |
 | Neuro-symbolic | Differentiable fuzzy logic, a Datalog engine, LRP through Datalog derivations | [Neuro-symbolic](https://joshuaweg.github.io/pulsatrix/neuro-symbolic/) |
 | Evolutionary computation | Genetic algorithms, NSGA-II, NEAT, Evolution Strategies, CMA-ES, PBT, E-GAN | [Evolutionary](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/) |
 | Hyperparameter optimization | Grid/random search, Gaussian-process BO, TPE, Successive Halving, Hyperband, ASHA | [HPO](https://joshuaweg.github.io/pulsatrix/hyperparameter-optimization/) |
@@ -153,7 +173,12 @@ trained end to end in its tests and has to reach a fixed score on CartPole.
   feature, with a walkthrough page for each.
 - Command-line tools built with the library:
   - `pulsatrix_explain_text` explains a language model's prediction and draws it, or writes an
-    attribution graph for Neuronpedia's and circuit-tracer's viewers.
+    attribution graph (from AttnLRP or transcoder features) for Neuronpedia's and
+    circuit-tracer's viewers.
+  - `pulsatrix_probe_esm`, `pulsatrix_steer_esm`, `pulsatrix_diff_lm` and `pulsatrix_spd_toy`
+    run the mechanistic-interpretability experiments in the
+    [guide](https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/): features and
+    probes on protein models, steering, model diffing and parameter decomposition.
   - `pulsatrix_svg` turns a saved explanation into an SVG figure or an interactive HTML page.
   - `pulsatrix_bench` runs the [benchmark suite](https://joshuaweg.github.io/pulsatrix/benchmarks/).
   - `pulsatrix_golden`, `pulsatrix_attnlrp` and `pulsatrix_tokenizer_parity` check a model's
@@ -176,9 +201,16 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
 ```
 
 Configure your project with `-DCMAKE_PREFIX_PATH=/path/to/prefix`. The package installs the core
-library, its headers and the command-line tools (`pulsatrix_svg`, `pulsatrix_bench`,
-`pulsatrix_explain_text`, `pulsatrix_golden`, `pulsatrix_attnlrp` and
-`pulsatrix_tokenizer_parity`). A build with the CUDA or HIP backend also installs that backend's
+library, its headers and the command-line tools:
+- **General:** `pulsatrix_svg`, `pulsatrix_bench`, `pulsatrix_explain_text`.
+- **Checking against Hugging Face:** `pulsatrix_golden`, `pulsatrix_attnlrp`,
+  `pulsatrix_tokenizer_parity`.
+- **Protein models:** `pulsatrix_proteingym`, `pulsatrix_contacts`, `pulsatrix_protein_views`,
+  `pulsatrix_explain_protein`, `pulsatrix_train_esm`, `pulsatrix_finetune_esm`.
+- **Mechanistic interpretability:** `pulsatrix_probe_esm`, `pulsatrix_steer_esm`,
+  `pulsatrix_diff_lm`, `pulsatrix_spd_toy`.
+
+A build with the CUDA or HIP backend also installs that backend's
 headers, and `find_package` then looks for the same CUDA or ROCm libraries (ROCm through
 `ROCM_PATH`, as in the build). `pulsatrix_HAS_CUDA` and `pulsatrix_HAS_HIP` say which backends the
 installed build has. The visualization module and the Python bindings aren't installed.
@@ -198,7 +230,7 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
   between minor versions.
 - What's planned next, and why, is in the
   [Roadmap](https://joshuaweg.github.io/pulsatrix/roadmap/).
-- About 2,460 tests on the CPU, and 2,600 with the HIP backend. CI builds and tests every push
+- About 2,650 tests on the CPU, and 2,800 with the HIP backend. CI builds and tests every push
   and pull request on Windows (MSVC) and Linux (GCC), runs the Python binding tests, and
   compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.

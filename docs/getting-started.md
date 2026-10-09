@@ -208,9 +208,16 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
 ```
 
 Configure your project with `-DCMAKE_PREFIX_PATH=/path/to/prefix`. The package installs the core
-library, its headers and the command-line tools (`pulsatrix_svg`, `pulsatrix_bench`,
-`pulsatrix_explain_text`, `pulsatrix_golden`, `pulsatrix_attnlrp` and
-`pulsatrix_tokenizer_parity`). A build with the CUDA or HIP backend also installs that backend's
+library, its headers and the command-line tools:
+- **General:** `pulsatrix_svg`, `pulsatrix_bench`, `pulsatrix_explain_text`.
+- **Checking against Hugging Face:** `pulsatrix_golden`, `pulsatrix_attnlrp`,
+  `pulsatrix_tokenizer_parity`.
+- **Protein models:** `pulsatrix_proteingym`, `pulsatrix_contacts`, `pulsatrix_protein_views`,
+  `pulsatrix_explain_protein`, `pulsatrix_train_esm`, `pulsatrix_finetune_esm`.
+- **Mechanistic interpretability:** `pulsatrix_probe_esm`, `pulsatrix_steer_esm`,
+  `pulsatrix_diff_lm`, `pulsatrix_spd_toy`.
+
+A build with the CUDA or HIP backend also installs that backend's
 headers, and `find_package` then looks for the same CUDA or ROCm libraries (ROCm through
 `ROCM_PATH`, as in the build). `pulsatrix_HAS_CUDA` and `pulsatrix_HAS_HIP` say which backends the
 installed build has. The visualization module and the Python bindings aren't installed.

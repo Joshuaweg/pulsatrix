@@ -15,7 +15,8 @@
 //   randomly initialized model. Uses --probe-proteins proteins (default 600).
 // --sae: trains a featurizer on layer --sae-layer's residues of --sae-proteins proteins (default
 //   2000), each dimension standardized by the training residues, with --features latents (default
-//   8 x hidden), --sae-epochs (default 10) and --sae-batch (default 512). --featurizer picks it:
+//   8 x hidden), --sae-epochs (default 10) and --sae-batch (default 512). --featurizer picks it
+//   (default topk):
 //   - l1: a SparseAutoencoder (FEAT-1), --l1 (default 0.003);
 //   - topk: a TopKSparseAutoencoder (FEAT-2), --k (default 32);
 //   - batchtopk, matryoshka: BatchTopK, and Matryoshka BatchTopK with prefixes of 1/16 and 1/4
@@ -96,7 +97,7 @@ using namespace pulsatrix;
 
 struct Options {
     std::string model, annotations, out, structures;
-    std::string device = "cpu", featurizer = "l1";
+    std::string device = "cpu", featurizer = "topk";
     bool probes = false, sae = false;
     std::vector<int64_t> layers;
     std::vector<std::string> concepts = {"Binding site", "Active site", "Disulfide bond", "Transmembrane", "Signal", "Zinc finger",

@@ -564,7 +564,7 @@ active sites, disulfides, signal peptides, transmembrane spans and more come alo
   Hewitt and Liang's control task, labels fixed per token type, is no control here: with only 20
   amino acids, a linear probe learns it perfectly from any representation.
 - **Features** ask which directions the model uses unprompted, following InterPLM.
-  1. A sparse autoencoder ([featurizer](../mechanistic-interpretability/index.md#featurizers)) is
+  1. A sparse autoencoder ([featurizer](../mechanistic-interpretability/featurizers.md)) is
      trained on one layer's residues, each dimension standardized.
   2. `MatchConcept` scores every feature against every concept, by the best F1 over activation
      thresholds.
@@ -601,8 +601,9 @@ structure is three-state balanced accuracy; the other concepts are ROC AUC.
 - **Possible leakage.** The split separates proteins but doesn't cluster them by sequence, so
   homologs on both sides can flatter the numbers.
 
-**SAE features**, ESM-2 8M layer 4: 2,560 latents trained on 1,600 proteins' residues, held-out
-L0 17, 66% of the variance explained. Best F1 of a single feature against each concept on 400
+**SAE features**, ESM-2 8M layer 4, with an L1 SAE (`--featurizer l1`; the tool defaults to
+TopK): 2,560 latents trained on 1,600 proteins' residues, held-out L0 17, 66% of the
+variance explained. Best F1 of a single feature against each concept on 400
 held-out proteins:
 
 | Concept | SAE feature | Best single neuron | SAE on a random model |
@@ -628,6 +629,10 @@ AlphaFold model colored by the feature.
 - **The random model.** A random model's SAE finds some concepts too: disulfides, since a
   feature for "cysteine" goes a long way, and coiled coils, from their sequence repeats. So a
   feature matching a concept is a lead to check, not proof the model learned it.
+
+These are L1 SAE features. [Evaluating features](../mechanistic-interpretability/evaluating-features.md#comparing-featurizers-on-esm-2)
+compares eight featurizers on the same layer, including TopK and Matryoshka SAEs, which find
+cleaner concept features.
 
 ## Checking against Hugging Face
 

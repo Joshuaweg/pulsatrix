@@ -18,6 +18,9 @@ This page walks through the whole path. The examples run as written on SmolLM2-1
 - **Explain a prediction** with AttnLRP (attention-aware Layer-wise Relevance Propagation). You
   get one relevance score per input token, which can be merged into words and drawn as a figure.
   `pulsatrix_explain_text` does all of this in one command.
+- **Look inside the model**: read or replace its residual stream and MLPs with hooks, find
+  features, diff a model against its fine-tune, steer it, and trace attribution graphs of its
+  predictions (see [Look inside the model](#4-look-inside-the-model)).
 - **Train or fine-tune**: `CausalLM` is an ordinary `Module`, so `backward()`, optimizers and
   checkpoints work on it.
 - **Check your setup** against Hugging Face with three command-line tools (see
@@ -177,6 +180,24 @@ std::string svg = RenderTokenStripSvg(doc);                      // the figure
   is shared between words and the four ways to combine scores (`Sum`, `Mean`, `Max`, `MaxAbs`).
 - **Figures and documents**: the [visualization guide](../visualization/index.md#token-relevance-for-text)
   covers the token and word documents, the SVG strip and the `TokenRelevanceView` window widget.
+
+## 4. Look inside the model
+
+Two hooks give access to the model's internals during `forward()`:
+- **`set_hidden_state_hook`** sees the residual stream at every position (0 the embeddings, i the
+  output of block i).
+- **`layer(i).set_mlp_hook`** sees each MLP's input and output.
+
+Return the tensor unchanged to read it, or return a replacement to change what the model
+computes. The [Mechanistic Interpretability](../mechanistic-interpretability/index.md) section
+builds on them:
+
+| To | Use | Guide |
+|---|---|---|
+| Collect activations, then find the features a layer uses | Hooks, then a TopK sparse autoencoder | [Finding features](../mechanistic-interpretability/featurizers.md) |
+| See what chat tuning changed | `pulsatrix_diff_lm` (a crosscoder between the two models) | [Model diffing](../mechanistic-interpretability/model-diffing.md) |
+| Push the model's behavior along a direction | `SteeringHook`, `MeasureSteering` | [Steering](../mechanistic-interpretability/steering.md) |
+| Trace which features carry a prediction | `pulsatrix_explain_text --graph --transcoders` | [Attribution graphs](../mechanistic-interpretability/attribution-graphs.md) |
 
 ## Checking against Hugging Face
 
