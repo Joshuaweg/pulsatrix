@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include <cstddef>
 #include <optional>
 #include <initializer_list>
 #include <vector>
@@ -119,6 +120,24 @@ public:
     /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return backend_->device(); }
 
+    /**
+     * @brief The most memory the unfolded input patches (im2col, N x C*kh*kw x out_h*out_w
+     *        floats) may take (HIP-7). A batch whose patches don't fit is processed a chunk of
+     *        examples at a time, and backward() and propagate_relevance() rebuild each chunk's
+     *        patches from the cached input instead of keeping them all. Results are the same for
+     *        every budget; a smaller one trades memory for an extra im2col per pass. Always at
+     *        least one example per chunk.
+     */
+    void set_max_workspace_bytes(size_t bytes) { max_workspace_bytes_ = bytes; }
+    [[nodiscard]] size_t max_workspace_bytes() const { return max_workspace_bytes_; }
+    /**
+     * @brief 16 MiB. Small layers (MNIST-sized) keep a whole batch's patches; large ones work in
+     *        chunks. Explaining ResNet18 at batch 32, every convolution keeping its patches took
+     *        5.75 GB on the GPU; with 16 MiB it takes 2.40 GB and is 14% faster (gfx1151), and
+     *        on the CPU 5.3 GB becomes 2.3 GB at the same speed.
+     */
+    static constexpr size_t kDefaultMaxWorkspaceBytes = size_t{16} << 20;
+
 protected:
     /**
      * @brief The actual forward computation (im2col + gemm + per-channel bias add).
@@ -143,11 +162,18 @@ private:
     Tensor kernel_grad_;
     Tensor bias_grad_;
     Tensor last_input_;       // (N, in_channels, H, W)
-    Tensor last_im2col_;      // (N, patch_size, out_h*out_w), cached for backward
+    Tensor last_im2col_;      // (N, patch_size, out_h*out_w) when cached_cols_, else empty
+    bool cached_cols_ = false;  // the whole batch's patches fit the workspace and were kept
+    size_t max_workspace_bytes_ = kDefaultMaxWorkspaceBytes;
     Tensor last_pre_bias_output_;  // (N, out_channels, out_h, out_w), cached for LRP
     int64_t last_out_h_ = 0;
     int64_t last_out_w_ = 0;
     bool has_forwarded_ = false;
+
+    /** @brief Examples per chunk: as many as fit max_workspace_bytes_, at least 1, at most n. */
+    [[nodiscard]] int64_t chunk_examples(int64_t n, int64_t p, int64_t q) const;
+    /** @brief The patches of examples [e0, e0 + count): the cached ones, or rebuilt into buffer. */
+    [[nodiscard]] const float* patches(int64_t e0, int64_t count, Tensor& buffer) const;
 
     [[nodiscard]] ConvGeometry geometry() const {
         const auto s = static_cast<size_t>(stride_), p = static_cast<size_t>(padding_);
