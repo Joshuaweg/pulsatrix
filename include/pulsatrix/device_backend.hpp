@@ -608,13 +608,20 @@ public:
     virtual void lrp_stabilized_divide(const float* r, const float* denom, const float* gate, float* out, size_t n,
                                        float eps, LrpGate gate_mode) = 0;
 
-    /** @brief Non-overlapping max pool over planes of (h, w); argmax = flat in-plane index (first max wins). */
-    virtual void max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w, size_t
-                                  kh, size_t kw) = 0;
+    /**
+     * @brief Max pool over planes of (h, w) with a (kh, kw) window, stride (sh, sw) and padding
+     *        (ph, pw); padded positions never win. Output (planes, out_h, out_w) with
+     *        out = (n + 2 pad - k) / stride + 1. argmax = flat in-plane input index (first max wins).
+     */
+    virtual void max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w,
+                                  size_t kh, size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) = 0;
 
-    /** @brief dst[plane][argmax] = src for every pooled element; dst must be zeroed by the caller. */
-    virtual void max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w, size_t
-                            kh, size_t kw) = 0;
+    /**
+     * @brief The inverse routing: each input position gets the sum of the pooled values whose
+     *        argmax it is (windows may overlap). dst (planes, h, w) is overwritten.
+     */
+    virtual void max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w,
+                            size_t kh, size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) = 0;
 
     /** @brief Non-overlapping average pool over planes of (h, w). */
     virtual void avg_pool_forward(const float* in, float* out, size_t planes, size_t h, size_t w, size_t kh, size_t kw)

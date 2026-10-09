@@ -149,7 +149,9 @@ Tensor Conv2DModule::backward(const Tensor& grad_output) {
     return grad_input;
 }
 
-Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) {
+Tensor Conv2DModule::propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& outer) {
+    // A composite's rule for convolutions wherever they are (KS-9) overrides the module's own.
+    const LRPRuleConfig& config = outer.conv_rule ? *outer.conv_rule : outer;
     require_device(relevance_out, *compute_device(), "Conv2DModule::propagate_relevance");
     // Finding 12: see backward()'s identical guard above.
     if (!has_forwarded_) {

@@ -615,28 +615,26 @@ void HIPBackend::lrp_stabilized_divide(const float* r, const float* denom, const
     debug_sync();
 }
 
-void HIPBackend::max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w, size_t
-                                  kh, size_t kw) {
+void HIPBackend::max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w, size_t kh,
+                                   size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) {
     if (planes == 0) {
         return;
     }
-    const size_t total = planes * ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
+    const size_t total = planes * static_cast<size_t>((static_cast<int64_t>(h + 2 * ph) - static_cast<int64_t>(kh)) / static_cast<int64_t>(sh) + 1) *
+                         static_cast<size_t>((static_cast<int64_t>(w + 2 * pw) - static_cast<int64_t>(kw)) / static_cast<int64_t>(sw) + 1);
     gpu::max_pool_forward_kernel<<<gpu::grid_size_for(total), gpu::kBlockSize, 0, stream_>>>(
-        in, out, argmax, planes, h, w, kh, kw);
+        in, out, argmax, planes, h, w, kh, kw, sh, sw, ph, pw);
     PULSATRIX_HIP_CHECK(hipGetLastError());
-    debug_sync();
 }
 
-void HIPBackend::max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w, size_t
-                            kh, size_t kw) {
+void HIPBackend::max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w, size_t kh,
+                             size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) {
     if (planes == 0) {
         return;
     }
-    const size_t out_plane = ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
-    gpu::max_unpool_kernel<<<gpu::grid_size_for(planes * out_plane), gpu::kBlockSize, 0, stream_>>>(
-        src, argmax, dst, planes, h, w, out_plane);
+    gpu::max_unpool_kernel<<<gpu::grid_size_for(planes * h * w), gpu::kBlockSize, 0, stream_>>>(
+        src, argmax, dst, planes, h, w, kh, kw, sh, sw, ph, pw);
     PULSATRIX_HIP_CHECK(hipGetLastError());
-    debug_sync();
 }
 
 void HIPBackend::avg_pool_forward(const float* in, float* out, size_t planes, size_t h, size_t w, size_t kh, size_t kw)

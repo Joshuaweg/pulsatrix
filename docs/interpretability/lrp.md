@@ -96,7 +96,10 @@ A composite chooses a rule for each layer. Three of Zennit's presets are built i
 | `LRP::epsilon_gamma_box(low, high)` | Epsilon | ZBox on the first Conv2D, Gamma on the rest |
 
 Every other layer gets the epsilon rule. The presets set `epsilon_bias_in_denominator = true`
-so they match Zennit. As in Zennit, `epsilon_gamma_box` never applies ZBox to a `LinearModule`,
+so they match Zennit. Like Zennit, they choose by layer type throughout the network: a
+convolution inside a residual block or a `SequentialModule` gets the convolution rule too
+(through `LRPRuleConfig::conv_rule`). ZBox is the exception: it goes to the first top-level
+Conv2D, which in ResNet and VGG is the first convolution. As in Zennit, `epsilon_gamma_box` never applies ZBox to a `LinearModule`,
 so on a network without convolutions it is epsilon everywhere.
 
 To write your own, pass any function `(size_t layer_index, const Module&) -> LRPRuleConfig`:
@@ -185,6 +188,14 @@ mixed-sign inputs:
 
 **LXT**, using its explicit AttnLRP rules on `MultiHeadAttentionModule` and `TransformerBlock`
 (RoPE and QK-Norm off), each followed by Flatten → Linear.
+
+**Zennit on ResNet and VGG** (KS-9): `tests/vision_models_test.cpp` (and its HIP and CUDA
+counterparts) compares a small torchvision ResNet (BatchNorm with non-trivial statistics, a
+downsampling shortcut) and VGG with Zennit's three presets. The ResNet uses Zennit's
+`ResNetCanonizer`; pulsatrix folds the BatchNorms and splits relevance at each residual sum in
+proportion to the two branches, which is the same thing. The values are written by
+`tools/golden/make_vision_golden.py`. With `PULSATRIX_TORCHVISION_DIR` set, the same tests run on
+the published ResNet18 and VGG16; their heatmaps agree to 2e-3 of the largest value.
 
 The tolerance is `1e-4 · max(1, |ref|)` (float32 vs float32); the largest observed error is
 under 1e-5. Matching needs `epsilon_bias_in_denominator = true` (see [Bias handling](#bias-handling)).

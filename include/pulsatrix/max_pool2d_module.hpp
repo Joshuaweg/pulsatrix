@@ -1,5 +1,5 @@
 /** @file max_pool2d_module.hpp
- *  @brief 2D max pooling, non-overlapping windows (stride == kernel), no padding.
+ *  @brief 2D max pooling with a stride and padding (non-overlapping windows by default).
  *  @ingroup dl_modules
  */
 #pragma once
@@ -12,14 +12,15 @@
 namespace pulsatrix {
 
 /**
- * @brief Max pooling, rank-4 (N, channels, H, W), matching Conv2DModule's convention.
- *        Stride fixed equal to kernel size (non-overlapping windows), no padding, no
- *        dilation -- deferred until a real use case needs them, same minimal-cut
- *        discipline as Conv2DModule's original stride-1/no-padding scope cut.
+ * @brief Max pooling, rank-4 (N, channels, H, W), matching Conv2DModule's convention, as
+ *        PyTorch's MaxPool2d without dilation: out = (n + 2 padding - kernel) / stride + 1.
+ *        Windows may overlap (stride < kernel), as in ResNet's stem (3x3, stride 2, padding 1);
+ *        padded positions never win. No dilation or ceil mode.
  * @note propagate_relevance is winner-take-all (Bach et al. 2015's supplementary
  *       treatment of max-pooling, the same rule iNNvestigate/zennit ship): all relevance
  *       at an output position flows to the single input position that was the argmax in
- *       forward(); every other position in that window gets zero. Conserves exactly by
+ *       forward(); every other position in that window gets zero. An input that wins several
+ *       overlapping windows receives all of their relevance. Conserves exactly by
  *       construction. backward() routes gradient the same way (only the argmax position
  *       receives grad_output; standard max-pool gradient semantics).
  */
@@ -35,6 +36,15 @@ public:
      *         upstream validation), per cpp_tdd/context_tdd_adversarial_boundary_testing.md.
      */
     MaxPool2DModule(int64_t kernel_h, int64_t kernel_w, DeviceBackend* backend);
+
+    /**
+     * @brief A max-pool layer with its own stride and padding (KS-9), as PyTorch's
+     *        `MaxPool2d(kernel, stride, padding)`.
+     * @throws std::invalid_argument for a non-positive kernel or stride, a negative padding, or
+     *         padding above half the kernel (PyTorch's rule: every window must touch the input).
+     */
+    MaxPool2DModule(int64_t kernel_h, int64_t kernel_w, int64_t stride_h, int64_t stride_w, int64_t pad_h, int64_t pad_w,
+                    DeviceBackend* backend);
 
     /**
      * @brief Computes the gradient w.r.t. this module's input -- only the cached argmax
@@ -77,8 +87,8 @@ protected:
     /**
      * @brief The actual forward computation -- per-window max, argmax cached per output
      *        element for backward()/propagate_relevance() to reuse.
-     * @throws std::invalid_argument if input isn't rank-4 (N, C, H, W), or the kernel is
-     *         larger than the input (kernel_h &gt; H or kernel_w &gt; W).
+     * @throws std::invalid_argument if input isn't rank-4 (N, C, H, W), or the padded input is
+     *         smaller than the kernel.
      * @note Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
      */
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;
@@ -86,6 +96,10 @@ protected:
 private:
     int64_t kernel_h_;
     int64_t kernel_w_;
+    int64_t stride_h_;
+    int64_t stride_w_;
+    int64_t pad_h_ = 0;
+    int64_t pad_w_ = 0;
     DeviceBackend* backend_;
     Shape last_input_shape_ = Shape({0});
     int64_t last_out_h_ = 0;

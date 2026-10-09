@@ -98,6 +98,7 @@ add_library(pulsatrix_core
     src/group_norm_module.cpp
     src/batch_norm_module.cpp
     src/max_pool2d_module.cpp
+    src/adaptive_avg_pool2d_module.cpp
     src/avg_pool2d_module.cpp
     src/embedding_module.cpp
     src/tied_lm_head_module.cpp
@@ -117,6 +118,7 @@ add_library(pulsatrix_core
     src/protein_structure.cpp
     src/protein_training.cpp
     src/variant_scoring.cpp
+    src/vision_models.cpp
     src/fitness_metrics.cpp
     src/proteingym.cpp
     src/golden_logits.cpp
@@ -613,6 +615,10 @@ if(PULSATRIX_BUILD_EXAMPLES)
     add_executable(protein_tem1_recipe examples/recipes/protein_tem1.cpp)
     target_link_libraries(protein_tem1_recipe PRIVATE pulsatrix_core)
     target_compile_definitions(protein_tem1_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
+
+    add_executable(imagenet_lrp_recipe examples/recipes/imagenet_lrp.cpp)
+    target_link_libraries(imagenet_lrp_recipe PRIVATE pulsatrix_core)
+    target_compile_definitions(imagenet_lrp_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
 endif()
 
 if(PULSATRIX_BUILD_TESTS)
