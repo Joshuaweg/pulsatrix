@@ -799,9 +799,20 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/" class="md-nav__link">
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -815,7 +826,247 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2144,9 +2395,15 @@ cmake<span class="w"> </span>--install<span class="w"> </span>build<span class="
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">pulsatrix::core</span><span class="p">)</span>
 </code></pre></div>
 <p>Configure your project with <code>-DCMAKE_PREFIX_PATH=/path/to/prefix</code>. The package installs the core
-library, its headers and the command-line tools (<code>pulsatrix_svg</code>, <code>pulsatrix_bench</code>,
-<code>pulsatrix_explain_text</code>, <code>pulsatrix_golden</code>, <code>pulsatrix_attnlrp</code> and
-<code>pulsatrix_tokenizer_parity</code>). A build with the CUDA or HIP backend also installs that backend's
+library, its headers and the command-line tools:
+- <strong>General:</strong> <code>pulsatrix_svg</code>, <code>pulsatrix_bench</code>, <code>pulsatrix_explain_text</code>.
+- <strong>Checking against Hugging Face:</strong> <code>pulsatrix_golden</code>, <code>pulsatrix_attnlrp</code>,
+  <code>pulsatrix_tokenizer_parity</code>.
+- <strong>Protein models:</strong> <code>pulsatrix_proteingym</code>, <code>pulsatrix_contacts</code>, <code>pulsatrix_protein_views</code>,
+  <code>pulsatrix_explain_protein</code>, <code>pulsatrix_train_esm</code>, <code>pulsatrix_finetune_esm</code>.
+- <strong>Mechanistic interpretability:</strong> <code>pulsatrix_probe_esm</code>, <code>pulsatrix_steer_esm</code>,
+  <code>pulsatrix_diff_lm</code>, <code>pulsatrix_spd_toy</code>.</p>
+<p>A build with the CUDA or HIP backend also installs that backend's
 headers, and <code>find_package</code> then looks for the same CUDA or ROCm libraries (ROCm through
 <code>ROCM_PATH</code>, as in the build). <code>pulsatrix_HAS_CUDA</code> and <code>pulsatrix_HAS_HIP</code> say which backends the
 installed build has. The visualization module and the Python bindings aren't installed.</p>

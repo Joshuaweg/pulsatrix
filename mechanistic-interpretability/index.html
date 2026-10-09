@@ -16,7 +16,7 @@
         <link rel="prev" href="../reinforcement-learning/">
       
       
-        <link rel="next" href="../neuro-symbolic/">
+        <link rel="next" href="featurizers/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Mechanistic Interpretability - Pulsatrix</title>
+        <title>Overview - Pulsatrix</title>
       
     
     
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mechanistic Interpretability
+              Overview
             
           </span>
         </div>
@@ -616,6 +616,55 @@
   
   
   
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mechanistic Interpretability
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -631,7 +680,7 @@
   <span class="md-ellipsis">
     
   
-    Mechanistic Interpretability
+    Overview
   
 
     
@@ -649,7 +698,7 @@
   <span class="md-ellipsis">
     
   
-    Mechanistic Interpretability
+    Overview
   
 
     
@@ -686,10 +735,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-inside" class="md-nav__link">
+  <a href="#a-typical-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's inside
+        A typical workflow
       
     </span>
   </a>
@@ -697,22 +746,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-implement" class="md-nav__link">
+  <a href="#building-blocks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to implement
+        Building blocks
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="How to implement">
+    <nav class="md-nav" aria-label="Building blocks">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#probing-for-a-linearly-decodable-concept" class="md-nav__link">
+  <a href="#reading-and-changing-activations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Probing for a linearly decodable concept
+        Reading and changing activations
       
     </span>
   </a>
@@ -720,22 +769,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#featurizers" class="md-nav__link">
+  <a href="#probing-a-layer-for-a-concept" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Featurizers
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Featurizers">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#topk-sparse-autoencoders" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TopK sparse autoencoders
+        Probing a layer for a concept
       
     </span>
   </a>
@@ -743,54 +780,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#batchtopk-matryoshka-and-jumprelu" class="md-nav__link">
+  <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BatchTopK, Matryoshka and JumpReLU
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#block-sparse-featurizers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Block-sparse featurizers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#transcoders" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Transcoders
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#crosscoders" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Crosscoders
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#measuring-a-featurizer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Measuring a featurizer
+        Baselines
       
     </span>
   </a>
@@ -801,64 +794,15 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#steering-a-model" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#command-line-tools" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Steering a model
+        Command-line tools
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#decomposing-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Decomposing parameters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#attribution-graphs-with-transcoders" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Attribution graphs with transcoders
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#building-a-circuit-graph" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Building a circuit graph
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sampling-a-gflownet-trajectory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sampling a GFlowNet trajectory
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -876,6 +820,210 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -1858,10 +2006,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#whats-inside" class="md-nav__link">
+  <a href="#a-typical-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's inside
+        A typical workflow
       
     </span>
   </a>
@@ -1869,22 +2017,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-implement" class="md-nav__link">
+  <a href="#building-blocks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to implement
+        Building blocks
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="How to implement">
+    <nav class="md-nav" aria-label="Building blocks">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#probing-for-a-linearly-decodable-concept" class="md-nav__link">
+  <a href="#reading-and-changing-activations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Probing for a linearly decodable concept
+        Reading and changing activations
       
     </span>
   </a>
@@ -1892,22 +2040,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#featurizers" class="md-nav__link">
+  <a href="#probing-a-layer-for-a-concept" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Featurizers
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Featurizers">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#topk-sparse-autoencoders" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TopK sparse autoencoders
+        Probing a layer for a concept
       
     </span>
   </a>
@@ -1915,54 +2051,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#batchtopk-matryoshka-and-jumprelu" class="md-nav__link">
+  <a href="#baselines" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BatchTopK, Matryoshka and JumpReLU
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#block-sparse-featurizers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Block-sparse featurizers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#transcoders" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Transcoders
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#crosscoders" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Crosscoders
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#measuring-a-featurizer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Measuring a featurizer
+        Baselines
       
     </span>
   </a>
@@ -1973,64 +2065,15 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#steering-a-model" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#command-line-tools" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Steering a model
+        Command-line tools
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#decomposing-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Decomposing parameters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#attribution-graphs-with-transcoders" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Attribution graphs with transcoders
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#building-a-circuit-graph" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Building a circuit graph
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sampling-a-gflownet-trajectory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sampling a GFlowNet trajectory
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2066,1317 +2109,231 @@
 
 
 <h1 id="mechanistic-interpretability">Mechanistic Interpretability<a class="headerlink" href="#mechanistic-interpretability" title="Permanent link">&para;</a></h1>
-<p>Use this section when you want to see <em>how</em> a model computes its answer, not just which
-inputs mattered. <a href="../interpretability/">Interpretability</a> explains
-input-output behavior. The tools here open the network up: they cache its internal
-activations, test what those activations encode, and measure which layers the output depends
-on.</p>
-<p>The section also hosts GFlowNets, a training method that learns to <em>sample</em> outcomes in
-proportion to their reward instead of maximizing it. That makes them a tool for exploring a
-model's or environment's structure.</p>
+<p><a href="../interpretability/">Interpretability</a> tells you which parts of an <em>input</em> mattered
+for a prediction. Mechanistic interpretability asks how the <em>network</em> computes it:</p>
+<ul>
+<li>what its layers represent;</li>
+<li>which directions in its activations stand for concepts;</li>
+<li>which of its weights do the work;</li>
+<li>how information flows from the prompt to the answer.</li>
+</ul>
+<p>This section covers the tools pulsatrix has for that, from reading activations to full
+attribution graphs of a language model's prediction.</p>
 <h2 id="which-tool-should-i-use">Which tool should I use?<a class="headerlink" href="#which-tool-should-i-use" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Question</th>
+<th>Your question</th>
 <th>Tool</th>
+<th>Page</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>What did each layer output for this input?</td>
-<td><code>ExplainerContext::activation_snapshot()</code> → <code>ActivationSnapshot</code></td>
-</tr>
 <tr>
 <td>Is concept X linearly readable from layer L?</td>
 <td><code>LinearProbe</code></td>
+<td><a href="#probing-a-layer-for-a-concept">Below</a></td>
 </tr>
 <tr>
-<td>Can a layer's activations be split into sparser, more interpretable directions?</td>
-<td><code>SparseAutoencoder</code>, <code>TopKSparseAutoencoder</code>, <code>JumpReLUSparseAutoencoder</code></td>
+<td>Which directions in a layer stand for concepts, found without labels?</td>
+<td>Sparse autoencoders: <code>TopKSparseAutoencoder</code>, <code>JumpReLUSparseAutoencoder</code>, <code>SparseAutoencoder</code></td>
+<td><a href="featurizers/">Finding features</a></td>
 </tr>
 <tr>
-<td>Which concepts are low-dimensional manifolds, not single directions?</td>
+<td>Which concepts take more than one dimension, such as an angle or a position?</td>
 <td><code>BlockSparseFeaturizer</code></td>
+<td><a href="featurizers/#block-sparse-featurizers">Finding features</a></td>
 </tr>
 <tr>
-<td>What does an MLP compute, in sparse, interpretable steps?</td>
+<td>What does an MLP compute, step by step?</td>
 <td><code>Transcoder</code></td>
+<td><a href="featurizers/#transcoders">Finding features</a></td>
 </tr>
 <tr>
-<td>What did fine-tuning change, or which features span several layers?</td>
-<td><code>Crosscoder</code>, <code>MeasureLatentScaling</code></td>
+<td>Are my features any good?</td>
+<td><code>EvaluateReconstruction</code>, <code>MeasureLossRecovered</code>, <code>FeatureAbsorption</code>, with baselines</td>
+<td><a href="evaluating-features/">Evaluating features</a></td>
+</tr>
+<tr>
+<td>Can a direction push the model's behavior, and on how many inputs does it work?</td>
+<td><code>SteeringHook</code>, <code>MeasureSteering</code></td>
+<td><a href="steering/">Steering</a></td>
+</tr>
+<tr>
+<td>What did fine-tuning change in a model?</td>
+<td><code>Crosscoder</code>, <code>MeasureLatentScaling</code>, <code>pulsatrix_diff_lm</code></td>
+<td><a href="model-diffing/">Model diffing</a></td>
 </tr>
 <tr>
 <td>Which pieces of the weights does each input use?</td>
-<td><code>ComponentLinear</code>, <code>ParameterDecomposition</code> (SPD, VPD)</td>
+<td><code>ParameterDecomposition</code> (SPD, VPD)</td>
+<td><a href="parameter-decomposition/">Parameter decomposition</a></td>
 </tr>
 <tr>
 <td>Which features carry a language model's prediction, layer to layer?</td>
-<td><code>TraceCircuit</code> with a <code>CrossLayerTranscoder</code></td>
+<td><code>TraceCircuit</code>, <code>pulsatrix_explain_text --transcoders</code></td>
+<td><a href="attribution-graphs/">Attribution graphs</a></td>
 </tr>
 <tr>
-<td>Can a direction push the model's behavior, and how reliably?</td>
-<td><code>SteeringHook</code>, <code>MeasureSteering</code></td>
+<td>Which layers does a small network's output depend on?</td>
+<td><code>ExplainerContext::build_circuit_graph()</code></td>
+<td><a href="attribution-graphs/#ablation-circuit-graphs-for-small-networks">Attribution graphs</a></td>
 </tr>
 <tr>
-<td>Which layers does the output depend on for this input?</td>
-<td><code>ExplainerContext::build_circuit_graph()</code> → <code>CircuitGraph</code></td>
-</tr>
-<tr>
-<td>What happens to the output if I overwrite one activation?</td>
+<td>What happens if I overwrite one activation?</td>
 <td><code>ExplainerContext::forward_pass_with_patch()</code></td>
+<td><a href="#reading-and-changing-activations">Below</a></td>
 </tr>
 <tr>
-<td>What would the model predict if layer L were the last layer?</td>
+<td>What would the model predict if layer L were its last?</td>
 <td><code>ExplainerContext::logit_lens()</code></td>
-</tr>
-<tr>
-<td>Where does an attention layer look?</td>
-<td><code>ExplainerContext::attention_weights()</code></td>
+<td><a href="#reading-and-changing-activations">Below</a></td>
 </tr>
 <tr>
 <td>How do I sample outcomes in proportion to a reward?</td>
-<td>GFlowNet types below</td>
+<td>GFlowNets</td>
+<td><a href="gflownets/">GFlowNets</a></td>
 </tr>
 </tbody>
 </table>
-<h2 id="whats-inside">What's inside<a class="headerlink" href="#whats-inside" title="Permanent link">&para;</a></h2>
+<h2 id="a-typical-workflow">A typical workflow<a class="headerlink" href="#a-typical-workflow" title="Permanent link">&para;</a></h2>
+<p>For a researcher starting on a model, the pieces fit together like this:</p>
+<ol>
+<li><strong>Collect activations</strong> from the layer you care about, with a hook (below).</li>
+<li><strong>Probe</strong> for the concepts you already have labels for. A probe tells you whether the
+   information is there.</li>
+<li><strong>Train a featurizer</strong> (a TopK or BatchTopK SAE is a good default) to find the directions the
+   model uses without being told what to look for.</li>
+<li><strong>Evaluate it against baselines</strong>: the same featurizer on a randomly initialized copy of the
+   model, and a linear probe. A feature that also shows up in a random model says nothing about
+   what the trained one learned.</li>
+<li><strong>Test causally.</strong></li>
+<li>Splice the reconstructions back in and see how much of the loss you keep (loss
+     recovered).</li>
+<li>Steer along a direction, with a random-direction control.</li>
+<li>For one prediction, trace an attribution graph.</li>
+</ol>
+<p>Each page reports what these steps found on real models (ESM-2 protein models, SmolLM2,
+Gemma 3), including results that didn't work out. Read those before relying on a method.</p>
+<h2 id="building-blocks">Building blocks<a class="headerlink" href="#building-blocks" title="Permanent link">&para;</a></h2>
+<h3 id="reading-and-changing-activations">Reading and changing activations<a class="headerlink" href="#reading-and-changing-activations" title="Permanent link">&para;</a></h3>
+<p>Language models expose two hooks, used throughout this section:</p>
 <ul>
-<li><strong>Activation access</strong> (all on <code>ExplainerContext</code>): <code>activation_snapshot()</code> returns an
-  <code>ActivationSnapshot</code>, a self-contained copy of one forward pass's activations that stays
-  valid after later passes. <code>forward_pass_with_patch()</code> (activation patching), <code>logit_lens()</code>,
-  and <code>attention_weights()</code> cover the rest of the table above.</li>
-<li><strong>Probing</strong>: <code>LinearProbe</code> trains a linear classifier to test whether a binary concept is
-  linearly decodable from a layer's activations.</li>
-<li><strong>Decomposition</strong>: <code>SparseAutoencoder</code> reconstructs activations through a wider hidden layer
-  with an L1 penalty, so each example uses only a few hidden units. It is the first
-  <a href="#featurizers">featurizer</a>. <code>CircuitGraph</code> scores
-  every node by how much zeroing it changes the output.</li>
-<li><strong>Baselines</strong>: compare a probe's accuracy or a sparse autoencoder's statistics against a
-  randomly re-initialized copy of the model with <code>NullModelBaseline</code>
-  (<a href="../interpretability/#the-null-model-baseline">Interpretability</a>). A result that also
-  shows up on the random model says nothing about what the trained one learned. A feature's
-  statistics and top examples can be saved as a <code>pulsatrix.feature_dashboard.v1</code> document.</li>
-<li><strong>GFlowNet</strong>: <code>HyperGridEnv</code>, <code>GFlowNetForwardPolicy</code>, <code>sample_gflownet_trajectory</code>
-  (returns a <code>GFlowNetTrajectory</code>), <code>TrajectoryBalanceLoss</code>, <code>DetailedBalanceLoss</code>, and
-  <code>SubTBLoss</code>. For SubTB(λ), you pass each sub-trajectory pair's λ-weight to <code>forward()</code>.
-  <code>LearnableScalar</code> is the single trainable <code>log Z</code> value Trajectory Balance needs. It is not a
-  <code>Module</code>.</li>
+<li><strong><code>HiddenStateHook</code></strong> on <code>CausalLM</code> and <code>EncoderLM</code>. It is called with each residual-stream
+  position during <code>forward()</code>: 0 for the embeddings, i for the output of block i. It returns the
+  tensor the model continues with. Return it unchanged to only read.</li>
+<li><strong><code>MlpHook</code></strong> on each <code>TransformerBlock</code> and <code>EncoderBlock</code>. It sees an MLP's input (after the
+  block's norm) and its output, and returns what is added to the residual stream.</li>
 </ul>
-<p>Full API reference: <a href="../api/group__mech__interp.html">Doxygen: Mechanistic Interpretability</a></p>
-<h2 id="how-to-implement">How to implement<a class="headerlink" href="#how-to-implement" title="Permanent link">&para;</a></h2>
-<h3 id="probing-for-a-linearly-decodable-concept">Probing for a linearly decodable concept<a class="headerlink" href="#probing-for-a-linearly-decodable-concept" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/adam_optimizer.hpp"</span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/causal_lm.hpp"</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explainer_context.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/linear_module.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/linear_probe.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/relu_module.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/tokenizer_json.hpp"</span>
 
 <span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
 
 <span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="c1">// hidden -&gt; relu -&gt; head: your trained network</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">hidden</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">ReluModule</span><span class="w"> </span><span class="nf">relu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">head</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">ExplainerContext</span><span class="w"> </span><span class="nf">ctx</span><span class="p">({</span><span class="o">&amp;</span><span class="n">hidden</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">head</span><span class="p">});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CausalLM</span><span class="o">&gt;</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadCausalLM</span><span class="p">(</span><span class="s">"models/SmolLM2-135M"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">TextTokenizer</span><span class="w"> </span><span class="n">tok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTokenizerJson</span><span class="p">(</span><span class="s">"models/SmolLM2-135M/tokenizer.json"</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">config</span><span class="p">().</span><span class="n">hidden_size</span><span class="p">;</span>
 
-<span class="c1">// 1. Cache activations for a batch of N inputs. Node 0 is the input; node i+1 is module i's output.</span>
-<span class="n">ctx</span><span class="p">.</span><span class="n">forward_pass</span><span class="p">(</span><span class="n">inputs</span><span class="p">);</span><span class="w">                                         </span><span class="c1">// inputs: shape (N, 8)</span>
-<span class="n">ActivationSnapshot</span><span class="w"> </span><span class="n">snapshot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">activation_snapshot</span><span class="p">();</span>
-<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">activation_batch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">snapshot</span><span class="p">.</span><span class="n">activation</span><span class="p">(</span><span class="cm">/*relu output=*/</span><span class="mi">2</span><span class="p">);</span><span class="w">  </span><span class="c1">// shape (N, 64)</span>
+<span class="c1">// corpus: your texts, a std::vector&lt;std::string&gt;.</span>
+<span class="c1">// Collect the residual stream after block 6, one row per token.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span>
+<span class="n">model</span><span class="o">-&gt;</span><span class="n">set_hidden_state_hook</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">position</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">.</span><span class="n">to_host_vector</span><span class="p">();</span><span class="w">   </span><span class="c1">// (1, tokens, d)</span>
+<span class="w">        </span><span class="n">rows</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">rows</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">h</span><span class="p">;</span><span class="w">                                              </span><span class="c1">// unchanged: only read</span>
+<span class="p">});</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">corpus</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tok</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="n">text</span><span class="p">).</span><span class="n">ids</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ids_f</span><span class="p">(</span><span class="n">ids</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">ids</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">model</span><span class="o">-&gt;</span><span class="n">forward</span><span class="p">(</span><span class="n">Tensor</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ids</span><span class="p">.</span><span class="n">size</span><span class="p">())}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">ids_f</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="n">model</span><span class="o">-&gt;</span><span class="n">set_hidden_state_hook</span><span class="p">({});</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">activations</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rows</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">rows</span><span class="p">);</span>
+</code></pre></div>
+<p>For small networks built from layers, <code>ExplainerContext</code> caches every layer's output and offers
+the classic tools:
+- <code>activation_snapshot()</code>: a copy of one forward pass's activations that stays valid after
+  later passes.
+- <code>forward_pass_with_patch()</code>: activation patching, overwriting one activation.
+- <code>logit_lens()</code>: what the model would predict if a given layer were the last.
+- <code>attention_weights()</code>.</p>
+<h3 id="probing-a-layer-for-a-concept">Probing a layer for a concept<a class="headerlink" href="#probing-a-layer-for-a-concept" title="Permanent link">&para;</a></h3>
+<p>A linear probe tests whether a concept can be read out of a layer linearly. <code>LinearProbe</code> is a
+<code>LinearModule(activation_dim, 1)</code> trained with <code>BCEWithLogitsLoss</code> on <code>(activation, label)</code>
+pairs.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/adam_optimizer.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/linear_probe.hpp"</span>
 
-<span class="c1">// 2. Train a probe on those activations. label_batch: shape (N, 1), values in {0, 1}.</span>
+<span class="c1">// activation_batch: (N, 64) activations; label_batch: (N, 1), values in {0, 1}.</span>
 <span class="n">LinearProbe</span><span class="w"> </span><span class="nf">probe</span><span class="p">(</span><span class="cm">/*activation_dim=*/</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
 <span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">optimizer</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">step</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">probe</span><span class="p">.</span><span class="n">train_step</span><span class="p">(</span><span class="n">activation_batch</span><span class="p">,</span><span class="w"> </span><span class="n">label_batch</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">probe</span><span class="p">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">activation_batch</span><span class="p">,</span><span class="w"> </span><span class="n">label_batch</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">step</span><span class="p">)</span><span class="w"> </span><span class="n">probe</span><span class="p">.</span><span class="n">train_step</span><span class="p">(</span><span class="n">activation_batch</span><span class="p">,</span><span class="w"> </span><span class="n">label_batch</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">accuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">probe</span><span class="p">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">held_out_activations</span><span class="p">,</span><span class="w"> </span><span class="n">held_out_labels</span><span class="p">);</span>
 </code></pre></div>
-<p><strong>What's happening:</strong> a <code>LinearProbe</code> is a <code>LinearModule(activation_dim, 1)</code> trained with
-<code>BCEWithLogitsLoss</code> on <code>(activation, concept label)</code> pairs. High accuracy means the concept is
-linearly decodable from that layer. Chance-level accuracy means it is not, at least not
-linearly. The probe accepts any <code>(N, activation_dim)</code> batch, so you can also test it on
-synthetic data first as a sanity check.</p>
+<ul>
+<li><strong>High held-out accuracy</strong> means the concept is linearly readable.</li>
+<li><strong>Chance accuracy</strong> means it isn't, at least not linearly.</li>
+<li><strong>A probe reads; it doesn't show the model <em>uses</em> the information.</strong> Compare against a probe
+  on a randomly initialized model, and on the raw input. The
+  <a href="../protein-models/">Protein language models guide</a> shows why: some protein concepts
+  are as easy to probe from local sequence alone.</li>
+</ul>
 <p>Recipe: <a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/">Sparse autoencoder + linear probe</a>.</p>
-<h3 id="featurizers">Featurizers<a class="headerlink" href="#featurizers" title="Permanent link">&para;</a></h3>
-<p>A featurizer rewrites activations <code>x</code> as sparse codes <code>f = encode(x)</code> over learned directions
-and reconstructs <code>x ≈ decode(f)</code>: feature i writes along its decoder direction. Sparse
-autoencoders, and the TopK, JumpReLU and block-sparse variants planned in the FEAT epic, share
-one interface (<code>featurizer.hpp</code>), so training and metrics work for all of them:</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/featurizer.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/sparse_autoencoder.hpp"</span>
-
-<span class="n">SparseAutoencoder</span><span class="w"> </span><span class="nf">sae</span><span class="p">(</span><span class="cm">/*dim=*/</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="cm">/*hidden_dim=*/</span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="cm">/*l1_lambda=*/</span><span class="mf">1e-3f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">opt</span><span class="p">(</span><span class="mf">1e-3f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">FeatureActivityTracker</span><span class="w"> </span><span class="nf">activity</span><span class="p">(</span><span class="n">sae</span><span class="p">.</span><span class="n">num_features</span><span class="p">());</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">batches</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">FeaturizerLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">,</span><span class="w"> </span><span class="cm">/*unit_norm_decoder=*/</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">activity</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="kt">double</span><span class="w"> </span><span class="n">l0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeanL0</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span><span class="w">                      </span><span class="c1">// active features per input</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">activity</span><span class="p">.</span><span class="n">dead</span><span class="p">(</span><span class="mi">1'000'000</span><span class="p">);</span><span class="w">   </span><span class="c1">// silent for the last million inputs</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dense</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">activity</span><span class="p">.</span><span class="n">dense</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span><span class="w">       </span><span class="c1">// firing on more than 10% of inputs</span>
-</code></pre></div>
-<ul>
-<li><strong>Unit-norm decoders.</strong> After every step each decoder direction is rescaled to unit length.
-  The scale moves into the encoder, which a ReLU passes through unchanged, so reconstructions
-  don't move.</li>
-</ul>
-<p>Without it, an L1 penalty is largely paid by shrinking every code and growing the decoder.
-  On the control data in <code>tests/sparse_autoencoder_test.cpp</code>, a penalty of 0.05 with free
-  decoders cuts the mean activation to 0.19 of the unpenalized run's but L0 only to 0.58. With
-  unit-norm decoders it cuts L0 to 0.21. Judge sparsity by L0, not the mean activation.
-- <strong>Dead and dense latents.</strong> <code>FeatureActivityTracker</code> counts how often each feature fires and
-  when it last did.
-  - Dead features never fire, so they never learn.
-  - Dense ones fire on most inputs and usually encode a bias, not a concept.</p>
-<p>Both waste capacity; report them with every featurizer.
-- <strong>The SAE is a Module.</strong> It maps input to reconstruction, with <code>backward()</code>, LRP and
-  parameters named <code>encoder.*</code> and <code>decoder.*</code>, so checkpoints and optimizers work as for any
-  model.</p>
-<h4 id="topk-sparse-autoencoders">TopK sparse autoencoders<a class="headerlink" href="#topk-sparse-autoencoders" title="Permanent link">&para;</a></h4>
-<p><code>TopKSparseAutoencoder</code> (Gao et al., arXiv 2406.04093) keeps each input's k largest latents
-and zeroes the rest, so L0 is k by construction and there is no L1 penalty:</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/topk_sparse_autoencoder.hpp"</span>
-
-<span class="n">TopKSaeOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
-<span class="n">options</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w">                     </span><span class="c1">// active latents per input</span>
-<span class="n">options</span><span class="p">.</span><span class="n">dead_after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1'000'000</span><span class="p">;</span><span class="w">     </span><span class="c1">// inputs without firing before a latent counts as dead</span>
-<span class="n">TopKSparseAutoencoder</span><span class="w"> </span><span class="nf">sae</span><span class="p">(</span><span class="cm">/*dim=*/</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="cm">/*num_features=*/</span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
-<span class="n">sae</span><span class="p">.</span><span class="n">initialize_bias</span><span class="p">(</span><span class="n">first_batch</span><span class="p">);</span><span class="w">   </span><span class="c1">// b_dec starts at the data's mean</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">batches</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">FeaturizerLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span><span class="w">  </span><span class="c1">// loss.sparsity is the AuxK term</span>
-<span class="p">}</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sae</span><span class="p">.</span><span class="n">dead_latents</span><span class="p">();</span>
-</code></pre></div>
-<ul>
-<li><strong>No shrinkage.</strong> An L1 penalty pulls every code toward zero. On sums of 3 of 12 known
-  directions (<code>tests/topk_sparse_autoencoder_test.cpp</code>), an L1 SAE's reconstructions have 0.88
-  of the data's norm; TopK's have 1.00, and it recovers at least 11 of the 12 directions.</li>
-<li><strong>Dead latents and AuxK.</strong> A latent outside every input's top k gets no gradient. The
-  auxiliary loss has the k_aux largest dead latents (default: half the input dimension)
-  reconstruct the main reconstruction's error, weighted by 1/32. It only reaches latents whose
-  pre-activation is positive, since TopK's ReLU still applies. In the test, 30 of 64 latents are
-  dead after training with it and 48 without.</li>
-<li><strong>Decoder directions</strong> are unit vectors after every step, and the decoder's gradient loses
-  its component along each one. Unlike <code>SparseAutoencoder</code>, the scale isn't moved into the
-  encoder: that would change which latents win the top k.</li>
-<li><strong>Checked against PyTorch.</strong> The loss, every gradient and two Adam steps match a PyTorch
-  rendering of the method (<code>tools/golden/make_topk_sae_golden.py</code>) to 1e-5.</li>
-<li><strong>Resuming training.</strong> Checkpoints hold the parameters. Save <code>inputs_since_fired()</code> too, and
-  restore it with <code>set_inputs_since_fired()</code>, or every latent starts out alive again.</li>
-</ul>
-<h4 id="batchtopk-matryoshka-and-jumprelu">BatchTopK, Matryoshka and JumpReLU<a class="headerlink" href="#batchtopk-matryoshka-and-jumprelu" title="Permanent link">&para;</a></h4>
-<p>Three variants fix specific failures of TopK:</p>
+<h3 id="baselines">Baselines<a class="headerlink" href="#baselines" title="Permanent link">&para;</a></h3>
+<p><code>NullModelBaseline</code> re-initializes a model randomly, so the same probe, featurizer or
+explanation can run on it (<a href="../interpretability/#the-null-model-baseline">Interpretability</a>).
+It is the single most useful check in this section. In the ESM-2 results on the following
+pages, a random model's SAE explains <em>more</em> variance than the trained model's, and some
+"concept features" appear in it too.</p>
+<h2 id="command-line-tools">Command-line tools<a class="headerlink" href="#command-line-tools" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Variant</th>
-<th>Fixes</th>
-<th>How</th>
+<th>Tool</th>
+<th>What it does</th>
+<th>Page</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>BatchTopK (Bussmann et al., arXiv 2412.06410): <code>TopKSaeOptions::batch_topk</code></td>
-<td>Every input gets exactly k latents, however much it contains</td>
-<td>Training keeps the batch's <code>N * k</code> largest activations wherever they fall. Inference uses a threshold learned from training (<code>threshold()</code>, saved in checkpoints)</td>
+<td><code>pulsatrix_probe_esm</code></td>
+<td>Probes, SAEs, transcoders and block-sparse featurizers on an ESM-2 layer, with concept matching, absorption, loss recovered and random-model baselines</td>
+<td><a href="featurizers/#on-a-protein-model-pulsatrix_probe_esm">Finding features</a>, <a href="../protein-models/">Protein language models</a></td>
 </tr>
 <tr>
-<td>Matryoshka (Bussmann et al., arXiv 2503.17547): <code>matryoshka_prefixes</code></td>
-<td>Absorption, and features split as the dictionary grows</td>
-<td>The loss sums the reconstruction errors of nested prefixes, <code>[0, m/16)</code>, <code>[0, m/4)</code> and all <code>m</code>, so the first latents must work alone and learn general features</td>
+<td><code>pulsatrix_steer_esm</code></td>
+<td>A steering vector on ESM-2, with the reliability report</td>
+<td><a href="steering/">Steering</a></td>
 </tr>
 <tr>
-<td>JumpReLU (Rajamanoharan et al., arXiv 2407.14435): <code>JumpReLUSparseAutoencoder</code></td>
-<td>L0 fixed by hand instead of learned</td>
-<td>Each latent learns a threshold θ, and the loss penalizes L0 directly (λ). The step's gradient comes from straight-through estimators with a rectangle kernel</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span><code><span class="n">TopKSaeOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span>
-<span class="n">o</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
-<span class="n">o</span><span class="p">.</span><span class="n">batch_topk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="n">o</span><span class="p">.</span><span class="n">matryoshka_prefixes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">256</span><span class="p">,</span><span class="w"> </span><span class="mi">1024</span><span class="p">};</span><span class="w">         </span><span class="c1">// 4096 is added</span>
-<span class="n">TopKSparseAutoencoder</span><span class="w"> </span><span class="nf">matryoshka</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
-
-<span class="n">JumpReLUSaeOptions</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
-<span class="n">j</span><span class="p">.</span><span class="n">l0_coefficient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.01f</span><span class="p">;</span><span class="w">                    </span><span class="c1">// λ: higher means sparser</span>
-<span class="n">JumpReLUSparseAutoencoder</span><span class="w"> </span><span class="nf">jump</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">);</span>
-</code></pre></div>
-<p>On synthetic data (<code>tests/sae_variants_test.cpp</code>):
-- <strong>BatchTopK spends latents where inputs need them.</strong> It uses 1.1 latents on one-direction
-  inputs and 4.6 on five-direction inputs, at an average of k = 3.
-- <strong>Matryoshka stops absorption.</strong> The data is Chanin et al.'s toy hierarchy: a parent feature
-  with ten rare children. The parent is absorbed into its children in 6.6% to 12.6% of inputs
-  with plain BatchTopK (four data seeds), and in none with Matryoshka.
-- <strong>JumpReLU's λ trades L0 for reconstruction.</strong> At λ = 0.005, L0 is 6.3 and 2 of 12 true
-  directions are recovered. At λ = 0.05, L0 is 2.6 and all 12 are. Too little penalty spreads
-  features across latents.</p>
-<p>All three match PyTorch renderings of their papers (<code>tools/golden/make_sae_variants_golden.py</code>)
-in loss, gradients and two Adam steps.</p>
-<p><strong>On ESM-2 8M</strong> (layer 4, 2,560 latents, the setup below). <code>pulsatrix_probe_esm --featurizer</code>
-trains each variant. JumpReLU's L0 isn't set directly: λ = 0.005 gave 12.6, 0.01 gave 7.6 and
-0.02 gave 4.9.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>L1</th>
-<th>TopK</th>
-<th>BatchTopK</th>
-<th>Matryoshka</th>
-<th>JumpReLU (λ 0.005)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>L0</td>
-<td>17.0</td>
-<td>16.0</td>
-<td>16.5</td>
-<td>16.5</td>
-<td>12.6</td>
+<td><code>pulsatrix_diff_lm</code></td>
+<td>A crosscoder between a base language model and its fine-tune, with Latent Scaling</td>
+<td><a href="model-diffing/">Model diffing</a></td>
 </tr>
 <tr>
-<td>Explained variance</td>
-<td>0.66</td>
-<td>0.78</td>
-<td>0.78</td>
-<td>0.77</td>
-<td>0.75</td>
+<td><code>pulsatrix_spd_toy</code></td>
+<td>Parameter decomposition (SPD, VPD) of a toy model of superposition</td>
+<td><a href="parameter-decomposition/">Parameter decomposition</a></td>
 </tr>
 <tr>
-<td>Loss recovered</td>
-<td>0.90</td>
-<td>0.96</td>
-<td>0.95</td>
-<td>0.90</td>
-<td>0.95</td>
-</tr>
-<tr>
-<td>Helix: best feature's F1</td>
-<td>0.16</td>
-<td>0.33</td>
-<td>0.33</td>
-<td><strong>0.48</strong></td>
-<td>0.37</td>
-</tr>
-<tr>
-<td>Transmembrane: best feature's F1</td>
-<td>0.52</td>
-<td>0.63</td>
-<td>0.69</td>
-<td><strong>0.78</strong></td>
-<td>0.73</td>
-</tr>
-<tr>
-<td>Absorbed: helix (random model)</td>
-<td>42% (10%)</td>
-<td>25% (15%)</td>
-<td>27% (5%)</td>
-<td><strong>22%</strong> (15%)</td>
-<td>29% (8%)</td>
-</tr>
-<tr>
-<td>Absorbed: strand (random model)</td>
-<td>57% (1%)</td>
-<td>50% (8%)</td>
-<td>38% (16%)</td>
-<td><strong>35%</strong> (10%)</td>
-<td>38% (8%)</td>
-</tr>
-<tr>
-<td>Absorbed: transmembrane (random model)</td>
-<td>34% (21%)</td>
-<td>30% (17%)</td>
-<td>19% (2%)</td>
-<td><strong>9%</strong> (4%)</td>
-<td>34% (11%)</td>
+<td><code>pulsatrix_explain_text --graph</code></td>
+<td>An attribution graph for a prompt, from AttnLRP or (with <code>--transcoders</code>) transcoder features, for Neuronpedia's viewer</td>
+<td><a href="attribution-graphs/">Attribution graphs</a></td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li><strong>Matryoshka finds the cleanest concept features.</strong> It absorbs least, and its best single
-  features match helix and transmembrane residues best. As Bussmann et al. report, it pays in
-  reconstruction: it recovers 0.90 of the loss to TopK's 0.96.</li>
-<li><strong>BatchTopK matches TopK</strong> in reconstruction and absorbs less.</li>
-<li><strong>JumpReLU matches TopK's loss recovered with 12.6 latents</strong> instead of 16. It absorbs no
-  less.</li>
-<li>The random model's absorption is the floor for each figure. For example, Matryoshka's 9% on
-  transmembrane is close to its random-model 4%.</li>
-</ul>
-<h4 id="block-sparse-featurizers">Block-sparse featurizers<a class="headerlink" href="#block-sparse-featurizers" title="Permanent link">&para;</a></h4>
-<p>A block-sparse featurizer (BSF; Fel et al., arXiv 2606.25234) makes each feature a small
-subspace, a block of b directions, instead of one direction. A concept that lives on a
-low-dimensional manifold, such as an angle, a position or a lighting direction, becomes one
-feature:
-- the block's norm says how strongly the concept is present;
-- its b coordinates say where on the manifold the input is.</p>
-<p>An SAE has to split such a concept across several latents.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/block_sparse_featurizer.hpp"</span>
-
-<span class="n">BlockSparseOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span>
-<span class="n">o</span><span class="p">.</span><span class="n">variant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BsfVariant</span><span class="o">::</span><span class="n">Vanilla</span><span class="p">;</span><span class="w">   </span><span class="c1">// or Grassmannian, GroupLasso</span>
-<span class="n">o</span><span class="p">.</span><span class="n">block_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">                  </span><span class="c1">// b</span>
-<span class="n">o</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">                           </span><span class="c1">// active blocks per input</span>
-<span class="n">BlockSparseFeaturizer</span><span class="w"> </span><span class="nf">bsf</span><span class="p">(</span><span class="cm">/*dim=*/</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="cm">/*num_blocks=*/</span><span class="mi">640</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
-<span class="c1">// Center the activations, and scale them so the mean squared norm is the dimension.</span>
-<span class="n">FeaturizerLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">bsf</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bsf</span><span class="p">.</span><span class="n">block_frame</span><span class="p">(</span><span class="n">g</span><span class="p">);</span><span class="w">                </span><span class="c1">// b x d</span>
-<span class="n">BlockGeometry</span><span class="w"> </span><span class="n">geo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureBlockGeometry</span><span class="p">(</span><span class="n">bsf</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span><span class="w">       </span><span class="c1">// how many of b dimensions are used</span>
-<span class="n">DescriptionLength</span><span class="w"> </span><span class="n">mdl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureDescriptionLength</span><span class="p">(</span><span class="n">bsf</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span><span class="w">  </span><span class="c1">// bits per input</span>
-</code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Variant</th>
-<th>Encoder</th>
-<th>Selection</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Vanilla</td>
-<td>Free, <code>x W_enc + b_enc</code></td>
-<td>The k blocks of largest norm</td>
-</tr>
-<tr>
-<td>Grassmannian</td>
-<td>Tied to orthonormal frames: <code>γ_g x D_gᵀ</code></td>
-<td>The k blocks of largest norm</td>
-</tr>
-<tr>
-<td>GroupLasso</td>
-<td>Free</td>
-<td>A learned threshold per block (a block JumpReLU). An L0 penalty is tuned by dual ascent to hold <code>target_l0</code></td>
-</tr>
-</tbody>
-</table>
-<p><code>BlockSelection::Tournament</code> (Jerpelea and Ananthram, arXiv 2608.27515) replaces the top k: a
-block that overlaps one already taken loses a duel and is skipped, which is meant to stop one
-concept splitting across two blocks.</p>
-<ul>
-<li><strong>Following the reference code.</strong> The paper and its code (github.com/goodfire-ai/block-sparse-featurizer)
-  differ, and the code is followed: a γ per block, and GroupLasso as a block JumpReLU, not a
-  soft threshold. The frames' orthonormality is restored by QR after each step, as the paper's
-  Appendix D does. All three match a PyTorch rendering (<code>tools/golden/make_bsf_golden.py</code>),
-  GroupLasso's cold start and dual ascent included.</li>
-<li><strong>Codes are signed, and a feature is a block.</strong> <code>Featurizer::block_size()</code> says so. L0, dead
-  and dense latents and the activity tracker count blocks, active when any code is nonzero.
-  Absorption needs single directions and refuses blocks.</li>
-<li><strong>Relevance through block selection.</strong> The selection acts as a fixed gate: the selected blocks
-  pass relevance through the decoder's and the encoder's rules, and the rest pass none. Without
-  biases (Grassmannian) relevance is conserved; a test checks it.</li>
-<li><strong>The paper's two measures.</strong></li>
-<li><code>MeasureDescriptionLength</code> is its minimum description length: support, code, residual and
-    dictionary bits at a distortion.</li>
-<li><code>MeasureBlockGeometry</code> gives the stable rank, participation ratio and effective rank of each
-    block's codes.</li>
-</ul>
-<p><strong>On planted manifolds</strong> (<code>tests/block_sparse_featurizer_test.cpp</code>): 2 of 6 random planes in
-R³², each input at a random point on a circle in each.
-- A Vanilla BSF with blocks of 2 recovers all 6 planes, with explained variance 1.00, and needs
-  19.9 bits per input. A TopK SAE with the same 4 active dimensions explains 0.87 and needs 32.4.
-- With blocks of 4, a block's codes use 1.4 to 1.8 dimensions by stable rank: they saturate at
-  the concept's dimension, as the paper finds.
-- The Grassmannian variant gets stuck on this data: 1 to 4 planes, explained variance about 0.9,
-  at every learning rate and length tried. Tied frames can't trade a plane between blocks once
-  hard selection has assigned it.</p>
-<p><strong>On ESM-2 8M</strong> (layer 4, the setup below). <code>pulsatrix_probe_esm --featurizer bsf-vanilla</code>
-(or <code>bsf-grassmannian</code>, <code>bsf-lasso</code>) trains 640 blocks of 4 with 4 active blocks. That gives
-the same 2,560 directions and 16 active dimensions as the TopK SAE (k = 16) it's compared with:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Vanilla</th>
-<th>Grassmannian</th>
-<th>GroupLasso</th>
-<th>TopK SAE</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>L0 (blocks or latents)</td>
-<td>4.0</td>
-<td>4.0</td>
-<td>4.1</td>
-<td>16.0</td>
-</tr>
-<tr>
-<td>Explained variance</td>
-<td>0.66</td>
-<td>0.65</td>
-<td>0.54</td>
-<td><strong>0.78</strong></td>
-</tr>
-<tr>
-<td>Loss recovered</td>
-<td>0.91</td>
-<td>0.92</td>
-<td>0.90</td>
-<td><strong>0.96</strong></td>
-</tr>
-<tr>
-<td>Dead features</td>
-<td>11%</td>
-<td>0%</td>
-<td>0%</td>
-<td>2.5%</td>
-</tr>
-<tr>
-<td>Bits per input at 10% distortion (random model)</td>
-<td><strong>669</strong> (427)</td>
-<td>670 (436)</td>
-<td>716 (439)</td>
-<td>704 (510)</td>
-</tr>
-<tr>
-<td>Stable rank of a block's codes (of 4)</td>
-<td>1.46</td>
-<td>1.31</td>
-<td>1.65</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Helix: best feature's F1</td>
-<td>0.40</td>
-<td>0.17</td>
-<td><strong>0.43</strong></td>
-<td>0.33</td>
-</tr>
-<tr>
-<td>Transmembrane: best feature's F1</td>
-<td>0.60</td>
-<td><strong>0.75</strong></td>
-<td>0.47</td>
-<td>0.63</td>
-</tr>
-<tr>
-<td>Signal peptide: best feature's F1</td>
-<td>0.53</td>
-<td><strong>0.74</strong></td>
-<td>0.70</td>
-<td>0.66</td>
-</tr>
-<tr>
-<td>Disulfide bond: best feature's F1</td>
-<td><strong>0.66</strong></td>
-<td>0.65</td>
-<td>0.58</td>
-<td>0.63</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>At the same 16 active dimensions, the TopK SAE reconstructs better.</strong> Every BSF variant
-  explains less variance and recovers less of the loss.</li>
-<li><strong>BSF describes an input in fewer bits, but only slightly.</strong> Naming 4 blocks costs 33 bits
-  against 137 for 16 latents, and that outweighs the larger residual. The margin is 5%, not the
-  paper's factor on images. The random model's activations take fewer bits for every
-  featurizer, so bits compare featurizers on one model, not models.</li>
-<li><strong>Blocks use about 1.5 of their 4 dimensions.</strong> At this layer, few of these concepts look
-  like manifolds of more than one dimension.</li>
-<li><strong>Concept matching is mixed.</strong> The Grassmannian variant's blocks match transmembrane and
-  signal peptides best of the four, but it does worst on helix and strand.</li>
-</ul>
-<h4 id="transcoders">Transcoders<a class="headerlink" href="#transcoders" title="Permanent link">&para;</a></h4>
-<p>An SAE explains what is in an activation. A transcoder (Dunefsky et al., arXiv 2406.11944)
-explains a computation: it predicts an MLP's output from the MLP's input through sparse latents,
-so each latent reads from the input and writes to the output. A skip transcoder (Paulo et al.,
-arXiv 2501.18823) adds a linear map from input to output. That map takes the MLP's linear part,
-and the latents only explain what's left.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/transcoder.hpp"</span>
-
-<span class="n">TranscoderOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span>
-<span class="n">o</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
-<span class="n">o</span><span class="p">.</span><span class="n">skip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="n">Transcoder</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="cm">/*input_dim=*/</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="cm">/*output_dim=*/</span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="cm">/*num_features=*/</span><span class="mi">2560</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
-
-<span class="c1">// Training pairs: read the MLP's input and output with the block's hook.</span>
-<span class="n">model</span><span class="p">.</span><span class="n">layer</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="n">set_mlp_hook</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">in</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Collect</span><span class="p">(</span><span class="n">in</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">out</span><span class="p">;</span><span class="w">               </span><span class="c1">// returning the output unchanged only reads it</span>
-<span class="p">});</span>
-<span class="p">...</span>
-<span class="n">t</span><span class="p">.</span><span class="n">initialize_bias</span><span class="p">(</span><span class="n">targets</span><span class="p">);</span>
-<span class="n">FeaturizerLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">targets</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span>
-
-<span class="c1">// Quality: how well it predicts the MLP, and the loss with it in the MLP's place.</span>
-<span class="n">ReconstructionMetrics</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EvaluatePrediction</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">held_in</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span>
-<span class="n">LossRecovered</span><span class="w"> </span><span class="n">lr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureMlpLossRecovered</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">MlpHook</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hook</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">layer</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="n">set_mlp_hook</span><span class="p">(</span><span class="n">hook</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HeldOutLoss</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
-<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">layer</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="n">set_mlp_hook</span><span class="p">({});</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">loss</span><span class="p">;</span>
-<span class="p">});</span>
-</code></pre></div>
-<ul>
-<li><strong>The MLP hook.</strong> <code>EncoderBlock::set_mlp_hook()</code> and <code>TransformerBlock::set_mlp_hook()</code> see
-  the MLP's input (after the block's norm) and its output, and whatever the hook returns is
-  added to the residual stream. <code>MlpSpliceHook</code> and <code>MlpAblationHook</code> build the replacements.</li>
-<li><strong><code>predict()</code> vs <code>decode()</code>.</strong> <code>predict(x)</code> is the transcoder's full output, skip connection
-  included. <code>decode(codes)</code> is the latents' part alone. Every <code>Featurizer</code> now has <code>predict()</code>
-  and <code>output_dim()</code>, and <code>EvaluatePrediction</code> measures prediction against a target.</li>
-<li><strong>Absorption doesn't apply.</strong> It compares decoder directions with a probe in the input space,
-  and a transcoder writes to another space. Compare its latents with concepts by F1 instead.</li>
-<li><strong>Checked against PyTorch</strong> (<code>tools/golden/make_transcoder_golden.py</code>), skip connection and
-  AuxK included. On a synthetic MLP with a large linear part, at k = 3, the skip connection
-  cuts the unexplained variance from 10.9% to 1.5%.</li>
-</ul>
-<p><strong>On ESM-2 8M.</strong> <code>pulsatrix_probe_esm --featurizer transcoder</code> (or <code>skip-transcoder</code>) trains
-on the MLP that writes into layer 4, at k = 16 with 2,560 latents. Each result is shown against
-the same transcoder trained on a randomly initialized model:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Transcoder</th>
-<th>Skip transcoder</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Explained variance of the MLP's output (random model)</td>
-<td>0.67 (0.96)</td>
-<td>0.81 (0.997)</td>
-</tr>
-<tr>
-<td>Dead latents</td>
-<td>25%</td>
-<td>8%</td>
-</tr>
-<tr>
-<td>Masked-LM loss with the MLP replaced: clean 2.37, MLP zeroed 2.61</td>
-<td>2.47</td>
-<td>2.44</td>
-</tr>
-<tr>
-<td>Loss recovered</td>
-<td>0.59</td>
-<td>0.72</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>The skip connection helps everywhere.</strong> It predicts the MLP better, recovers more of the
-  loss, and leaves fewer latents dead.</li>
-<li><strong>Loss recovered is harder here than for an SAE.</strong> Zeroing this MLP costs only 0.24 nats, so
-  splicing has a small gap to close. It isn't comparable with an SAE's loss recovered at the
-  residual stream.</li>
-<li><strong>A random model's MLP is almost linear,</strong> so its transcoders explain nearly all of it.
-  Explained variance alone means nothing here either.</li>
-</ul>
-<p>Against the TopK SAE on layer 4's residual stream (same k and width), the skip transcoder's best
-single feature per concept is:
-- better for helix (0.40 vs 0.33), disulfide bonds (0.70 vs 0.63) and signal peptides (0.72 vs
-  0.66);
-- equal for zinc fingers (0.40);
-- worse for strands (0.25 vs 0.33) and transmembrane (0.60 vs 0.63).</p>
-<p>That is mixed, not the clear win Paulo et al. report for language models. Their measure was
-automated interpretability scores, not concept F1.</p>
-<h4 id="crosscoders">Crosscoders<a class="headerlink" href="#crosscoders" title="Permanent link">&para;</a></h4>
-<p>A crosscoder (Lindsey et al., Transformer Circuits, 2024) is one sparse dictionary over several
-sources at once: the residual stream at several layers, or the same layer in a base model and
-its fine-tune. Each latent has one code and a decoder per source. Its decoder norms say where it
-writes, so model diffing can read off which latents only one model has.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/crosscoder.hpp"</span>
-
-<span class="n">CrosscoderOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span><span class="w">                       </span><span class="c1">// BatchTopK by default (Minder et al.)</span>
-<span class="n">o</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span>
-<span class="n">Crosscoder</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="cm">/*sources=*/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/*dim=*/</span><span class="mi">576</span><span class="p">,</span><span class="w"> </span><span class="cm">/*latents=*/</span><span class="mi">4608</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
-<span class="c1">// x is (N, 2 * 576): the base model's activations, then the fine-tune's, each scaled so its</span>
-<span class="c1">// mean squared norm is 576.</span>
-<span class="n">c</span><span class="p">.</span><span class="n">initialize_bias</span><span class="p">(</span><span class="n">sample</span><span class="p">);</span>
-<span class="n">FeaturizerLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">,</span><span class="w"> </span><span class="cm">/*unit_norm_decoder=*/</span><span class="nb">false</span><span class="p">);</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">CrosscoderLatentStats</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CrosscoderLatents</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w">  </span><span class="c1">// norms, Δnorm, cosine</span>
-<span class="n">LatentClass</span><span class="w"> </span><span class="n">cls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassifyLatent</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w">   </span><span class="c1">// AOnly, BOnly, Shared, Other</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">LatentScaling</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureLatentScaling</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">,</span><span class="w"> </span><span class="n">fine_tune_only</span><span class="p">);</span>
-</code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Variant</th>
-<th>Sparsity</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>L1 (Lindsey et al.)</td>
-<td><code>λ Σ_i f_i Σ_s ‖d_i^s‖</code></td>
-<td>The penalty is the sum of decoder norms, not their L2 norm, so a one-model latent stays cheap</td>
-</tr>
-<tr>
-<td>BatchTopK (Minder et al.)</td>
-<td>The batch's <code>N k</code> largest <code>f_i Σ_s ‖d_i^s‖</code></td>
-<td>No L1 shrinkage. AuxK for dead latents; a threshold at inference</td>
-</tr>
-<tr>
-<td>Delta-Crosscoder (Kassem et al.)</td>
-<td>Shared and delta partitions, each with its own BatchTopK</td>
-<td>The encoder averages the two models. A delta loss makes the delta latents alone predict <code>x_ft - x_base</code></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>Decoder norms are the result,</strong> so training leaves them free (<code>unit_norm_decoder = false</code>),
-  as the references do. Latents start with the same decoder in every source, at norm 0.05 for L1
-  and 1 for BatchTopK (Minder et al.'s values).</li>
-<li><strong>Δnorm and the relative norm.</strong> <code>relative_norm</code> is <code>‖d_b‖ / (‖d_a‖ + ‖d_b‖)</code> (Lindsey et al.,
-  Kassem et al.); <code>delta_norm</code> is Minder et al.'s <code>½ (1 + (‖d_b‖ - ‖d_a‖) / max)</code>. They agree at
-  0, ½ and 1. <code>ClassifyLatent</code> uses Minder et al.'s bins on Δnorm: below 0.1 a-only, above 0.9
-  b-only, 0.4 to 0.6 shared.</li>
-<li><strong>Latent Scaling</strong> (Minder et al.) checks a one-model latent against the data. It fits how
-  much of the latent's direction each model actually needs, against what the other latents
-  leave (ν_error) and against the reconstruction (ν_reconstruction). A latent is specific to
-  model b when ν_reconstruction &lt; 0.5 and ν_error &lt; 0.2. It catches two artifacts of decoder
-  norms: <strong>complete shrinkage</strong>, where a latent both models need loses its decoder in one, and
-  <strong>latent decoupling</strong>, where other latents write the same thing to the other model.</li>
-<li><strong>Following the papers.</strong> The loss is the mean squared error over every source, plus the
-  penalty, so it sits on the scale of the other featurizers; Lindsey et al. sum it. The
-  Delta-Crosscoder paper has no public code; this follows its equations. It writes no biases, but
-  pulsatrix keeps the encoder's and decoder's, as the standard crosscoder has them. Its λ_s
-  sparsity term is left out, since BatchTopK already fixes the sparsity.</li>
-<li><strong>Checked against a PyTorch rendering</strong> (<code>tools/golden/make_crosscoder_golden.py</code>): L1 over
-  three sources, BatchTopK with AuxK, and the Delta-Crosscoder, through loss, gradients and two
-  Adam steps.</li>
-</ul>
-<p><strong>On planted features</strong> (<code>tests/crosscoder_test.cpp</code>): two "models" in R²⁴ share 16 features,
-and each has 4 of its own.
-- When every feature fires on 8% of inputs, a BatchTopK crosscoder recovers all 24 at decoder
-  cosine above 0.9 and puts each in the right class. An L1 crosscoder recovers 13 of the 16
-  shared ones and all 8 one-model ones.
-- <strong>A narrow fine-tune</strong> adds 4 features that fire on 0.5% of inputs each. The crosscoder learns
-  them, but decoder norms call none of them fine-tune-only (mean Δnorm 0.76): their base
-  decoders keep about half the norm, and training 10 times longer doesn't remove it. Latent
-  Scaling calls all 4 fine-tune-specific, and all 16 shared ones needed by both models.
-- <strong>The Delta-Crosscoder doesn't fix that here.</strong> It puts the 4 in its delta partition, but
-  their Δnorm is 0.79. Its BatchTopK keeps <code>N k</code> delta activations per batch even when the
-  fine-tune's features are rarer than that, so its delta latents also fire on other inputs.</p>
-<p><strong>SmolLM2-135M against SmolLM2-135M-Instruct.</strong> <code>pulsatrix_diff_lm</code> reads the same chat text
-through both models: 2,379 conversations from SmolLM2-Instruct's own training set, in its ChatML
-template (<code>tools/explain/fetch_chat_sample.py</code>), 504K tokens. It trains a crosscoder on the
-residual stream after block 15 of 30, with 4,608 latents for 12 epochs, and reports on the held-out
-tenth (50K tokens):</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>BatchTopK (k = 32)</th>
-<th>L1 (λ = 5e-4)</th>
-<th>Delta-Crosscoder (k = 32, k_shared = 64)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Explained variance, base and Instruct</td>
-<td>0.93, 0.93</td>
-<td>0.93, 0.93</td>
-<td>0.96, 0.96</td>
-</tr>
-<tr>
-<td>L0</td>
-<td>32</td>
-<td>46</td>
-<td>96</td>
-</tr>
-<tr>
-<td>One-model latents by Δnorm: base, Instruct</td>
-<td>0, 0</td>
-<td>9, 2</td>
-<td>0, 0</td>
-</tr>
-<tr>
-<td>Instruct-specific by Latent Scaling, of the 50 leaning furthest toward Instruct</td>
-<td>8</td>
-<td>1</td>
-<td>12</td>
-</tr>
-<tr>
-<td>Their activation mass on chat-template tokens (22% of tokens)</td>
-<td>86%</td>
-<td>99%</td>
-<td>84%</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>The Instruct-specific latents read the chat template.</strong> Nearly all of their activation falls on
-  the template's tokens: <code>&lt;|im_start|&gt;</code>, the role name ("ass" "istant", "user"), and the newlines
-  that close a header. Minder et al. found the same in Gemma 2: chat tuning adds most where the
-  template is.</li>
-<li><strong>Decoder norms alone find almost nothing.</strong> Two models this close, on 0.5M tokens, put almost
-  every latent in the shared bin. Latent Scaling, run on the latents leaning furthest toward each
-  model, is what separates the specific ones.</li>
-<li><strong>The Delta-Crosscoder finds the most specific latents,</strong> but at three times the L0, which also
-  explains its higher explained variance.</li>
-</ul>
-<p>These are small runs: Minder et al. train on 100M tokens.</p>
-<h4 id="measuring-a-featurizer">Measuring a featurizer<a class="headerlink" href="#measuring-a-featurizer" title="Permanent link">&para;</a></h4>
-<p><code>featurizer_metrics.hpp</code> holds SAEBench's core measures (Karvonen et al., arXiv 2503.09532).
-None of them says a featurizer is useful, and its authors find that they don't reliably predict
-usefulness. Each needs a baseline: the same featurizer trained on a randomly initialized model's
-activations (<code>NullModelBaseline</code>), and, for a concept, a linear probe.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/featurizer_metrics.hpp"</span>
-
-<span class="c1">// Reconstruction on held-out activations.</span>
-<span class="n">ReconstructionMetrics</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EvaluateReconstruction</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span>
-<span class="c1">// r.explained_variance, r.cosine, r.norm_ratio (below 1: shrunk codes), r.l0,</span>
-<span class="c1">// r.dead_fraction (never fired), r.dense_fraction (fired on more than 10% of inputs)</span>
-
-<span class="c1">// Loss recovered: splice the reconstructions back in at a position (0 is the embeddings,</span>
-<span class="c1">// i is layer i's output) and compare the model's loss with the clean and zero-ablated ones.</span>
-<span class="n">LossRecovered</span><span class="w"> </span><span class="n">lr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureLossRecovered</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="cm">/*position=*/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">HiddenStateHook</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hook</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">set_hidden_state_hook</span><span class="p">(</span><span class="n">hook</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HeldOutLoss</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
-<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">set_hidden_state_hook</span><span class="p">({});</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">loss</span><span class="p">;</span>
-<span class="p">});</span>
-<span class="c1">// lr.recovered = (ablated - spliced) / (ablated - clean)</span>
-
-<span class="c1">// Feature absorption for one concept (labels 0/1 per input), with a linear-probe baseline.</span>
-<span class="n">AbsorptionResult</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FeatureAbsorption</span><span class="p">(</span><span class="n">sae</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">,</span><span class="w"> </span><span class="n">labels</span><span class="p">);</span>
-<span class="c1">// a.probe_f1, a.main_features, a.main_f1, a.absorption_rate, a.absorbing_features</span>
-</code></pre></div>
-<ul>
-<li><strong>Splicing.</strong> <code>CausalLM</code> and <code>EncoderLM</code> call a <code>HiddenStateHook</code> at every position during
-  <code>forward()</code>, and continue with whatever it returns. <code>SpliceHook</code> and <code>AblationHook</code> build the
-  two replacements. A <code>rows</code> mask limits them to the rows the featurizer was trained on, for
-  example residues but not <code>&lt;cls&gt;</code> and <code>&lt;eos&gt;</code>.</li>
-<li><strong>Absorption</strong> (Chanin et al., arXiv 2409.14507). A feature that stands for a concept stays
-  silent where a more specific feature fires instead and carries the concept's direction: a
-  "starts with S" feature that skips "short". The steps:</li>
-<li>A logistic probe finds the concept's direction.</li>
-<li>The main features are those that each raise F1 by at least 0.03.</li>
-<li>A held-out positive the probe finds counts as absorbed when no main feature fires on it,
-     and other features aligned with the probe (cosine at least 0.025) carry at least 40% of
-     its projection onto the probe.</li>
-</ul>
-<p>The test plants a parent concept with ten rare children and finds every absorbed input.</p>
-<p><strong>On ESM-2 8M.</strong> <code>pulsatrix_probe_esm --sae</code> reports all of these for an SAE on layer 4's
-residues (2,000 Swiss-Prot proteins, 2,560 latents), beside the same SAE trained on a randomly
-initialized ESM-2:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>L1 SAE</th>
-<th>TopK SAE (k = 16)</th>
-<th>L1, random model</th>
-<th>TopK, random model</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>L0</td>
-<td>17.0</td>
-<td>16.0</td>
-<td>7.4</td>
-<td>16.0</td>
-</tr>
-<tr>
-<td>Explained variance</td>
-<td>0.66</td>
-<td>0.78</td>
-<td>0.74</td>
-<td>0.95</td>
-</tr>
-<tr>
-<td>Norm ratio <code>\|x̂\|/\|x\|</code></td>
-<td>0.80</td>
-<td>0.87</td>
-<td>0.87</td>
-<td>0.98</td>
-</tr>
-<tr>
-<td>Dead latents</td>
-<td>0%</td>
-<td>2.5%</td>
-<td>53%</td>
-<td>85%</td>
-</tr>
-<tr>
-<td>Masked-LM loss: clean 2.37, zero-ablated 3.91</td>
-<td>2.52 spliced</td>
-<td>2.44 spliced</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Loss recovered</td>
-<td>0.90</td>
-<td>0.96</td>
-<td>none</td>
-<td>none</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>TopK beats L1 at the same L0</strong> on every measure, and its codes are shrunk less.</li>
-<li><strong>Read the baseline before the score.</strong> The random model's SAEs explain <em>more</em> variance, with
-  most latents dead: a random network's representations are easy to compress. Explained variance
-  alone says nothing about whether the model learned anything.</li>
-<li><strong>Loss recovered needs a position that matters.</strong> Zeroing layer 4 of the random model doesn't
-  raise its loss (3.55 vs 3.57 clean), so there is nothing to recover, and <code>recovered</code> is NaN.</li>
-</ul>
-<p>Absorption, where the probe finds the concept (F1 at least 0.5; below that the random model
-"absorbs" as much, and the rate means nothing):</p>
-<table>
-<thead>
-<tr>
-<th>Concept</th>
-<th>Probe F1</th>
-<th>L1: absorbed (random model)</th>
-<th>TopK: absorbed (random model)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Helix</td>
-<td>0.69</td>
-<td>42% (10%)</td>
-<td>25% (15%)</td>
-</tr>
-<tr>
-<td>Beta strand</td>
-<td>0.55</td>
-<td>57% (1%)</td>
-<td>50% (8%)</td>
-</tr>
-<tr>
-<td>Transmembrane</td>
-<td>0.79</td>
-<td>34% (21%)</td>
-<td>30% (17%)</td>
-</tr>
-<tr>
-<td>Signal peptide</td>
-<td>0.90</td>
-<td>19% (26%)</td>
-<td>12% (37%)</td>
-</tr>
-<tr>
-<td>Zinc finger</td>
-<td>0.62</td>
-<td>30% (13%)</td>
-<td>12% (71%)</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>The baseline decides here too.</strong> Helix, strand and transmembrane residues missed by the
-  concept's main features are carried by other aligned features well above the random model's
-  rate: absorption, as Chanin et al. describe it. For signal peptides and zinc fingers the
-  random model scores as high or higher, so those rates aren't evidence of anything.</li>
-<li><strong>TopK absorbs less than L1</strong> for every concept here.</li>
-</ul>
-<p>A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
-whether its directions mean anything. Compare features with probes and with a randomly
-initialized model's.</p>
-<h3 id="steering-a-model">Steering a model<a class="headerlink" href="#steering-a-model" title="Permanent link">&para;</a></h3>
-<p>Steering adds a direction to the residual stream to push a model's behavior one way
-(<code>steering.hpp</code>). Use the difference of means between activations with and without the concept
-by default. A featurizer's decoder direction is the option, and on AxBench (Wu et al., arXiv
-2501.17148) it usually steers worse.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/steering.hpp"</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DifferenceOfMeans</span><span class="p">(</span><span class="n">with_concept</span><span class="p">,</span><span class="w"> </span><span class="n">without_concept</span><span class="p">,</span><span class="w"> </span><span class="n">hidden</span><span class="p">);</span><span class="w">  </span><span class="c1">// (N, d) each</span>
-<span class="n">model</span><span class="p">.</span><span class="n">set_hidden_state_hook</span><span class="p">(</span><span class="n">SteeringHook</span><span class="p">(</span><span class="cm">/*position=*/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="cm">/*coefficient=*/</span><span class="mf">1.0f</span><span class="p">));</span>
-
-<span class="c1">// How reliably it works: each input's slope of behavior against the coefficient, beside random</span>
-<span class="c1">// directions of the same norm.</span>
-<span class="n">SteeringReport</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureSteering</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">HiddenStateHook</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hook</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">set_hidden_state_hook</span><span class="p">(</span><span class="n">hook</span><span class="p">);</span>
-<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Behavior</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w">  </span><span class="c1">// a logit difference, a log-probability, ...</span>
-<span class="w">    </span><span class="n">model</span><span class="p">.</span><span class="n">set_hidden_state_hook</span><span class="p">({});</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
-<span class="p">},</span><span class="w"> </span><span class="n">inputs</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="cm">/*position=*/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">);</span>
-<span class="c1">// r.mean_steerability, r.steerability_sd, r.anti_steerable_fraction, r.over_random</span>
-</code></pre></div>
-<p>An average effect hides a lot. Tan et al. (NeurIPS 2024) find that steering vectors often fail
-on many individual inputs, move some the wrong way, and misgeneralize out of distribution. So
-the report gives:
-- <strong>each input's steerability,</strong> the least-squares slope of its behavior against the
-  coefficient, with the mean and spread over inputs;
-- <strong>the anti-steerable share,</strong> the inputs with a negative slope;
-- <strong>random directions of the same norm</strong> as the control. <code>over_random</code> is the mean
-  steerability divided by the largest random mean; below about 1 the direction does no better
-  than noise.</p>
-<p><strong>On ESM-2 8M: a steering vector that fails its checks.</strong> <code>pulsatrix_steer_esm</code> steers layer 4
-toward transmembrane residues.
-- <strong>The direction</strong> is the difference of means between transmembrane residues and the rest, over
-  800 proteins (norm 9.1, against a mean residual norm of 29). The alternative is the TopK SAE
-  feature that best matches transmembrane residues (F1 0.64), scaled to the same norm.
-- <strong>The behavior</strong> should rise: the log-probability of a hydrophobic residue minus a polar one,
-  at masked positions.
-- <strong>The inputs</strong> are 100 held-out soluble proteins.</p>
-<table>
-<thead>
-<tr>
-<th>Coefficients</th>
-<th>Direction</th>
-<th>Mean steerability</th>
-<th>Spread</th>
-<th>Anti-steerable</th>
-<th>Largest random</th>
-<th><code>over_random</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>±2</td>
-<td>Difference of means</td>
-<td>+0.087</td>
-<td>0.092</td>
-<td>18%</td>
-<td>0.296</td>
-<td>0.29</td>
-</tr>
-<tr>
-<td>±2</td>
-<td>SAE feature</td>
-<td>+0.023</td>
-<td>0.091</td>
-<td>32%</td>
-<td>0.296</td>
-<td>0.08</td>
-</tr>
-<tr>
-<td>±0.5</td>
-<td>Difference of means</td>
-<td><strong>−0.139</strong></td>
-<td>0.257</td>
-<td><strong>66%</strong></td>
-<td>0.099</td>
-<td>−1.41</td>
-</tr>
-<tr>
-<td>±0.5</td>
-<td>SAE feature</td>
-<td>+0.002</td>
-<td>0.198</td>
-<td>46%</td>
-<td>0.099</td>
-<td>0.02</td>
-</tr>
-<tr>
-<td>±0.25</td>
-<td>Difference of means</td>
-<td><strong>−0.208</strong></td>
-<td>0.264</td>
-<td><strong>78%</strong></td>
-<td>0.106</td>
-<td>−1.96</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>At large coefficients the average looks right, and it isn't steering.</strong> At ±2 the added
-  vector has norm 18, and any such perturbation disrupts the model. Random directions of the
-  same norm move the behavior more than the difference of means does. The behavior also rises
-  at both −1 and +1, which a linear direction can't explain.</li>
-<li><strong>In the linear regime the difference of means steers the wrong way.</strong> At small coefficients,
-  adding "transmembrane minus other" makes soluble proteins' masked positions <em>less</em>
-  hydrophobic, for about three proteins in four. The representation of an observed
-  transmembrane residue is evidently not what makes later layers predict hydrophobic ones. On
-  held-out transmembrane proteins the slope is about zero, with half of them anti-steerable.</li>
-<li><strong>The SAE feature doesn't steer at all,</strong> at any scale: <code>over_random</code> near 0.</li>
-<li><strong>The point of the report.</strong> A mean effect at one large coefficient would have reported a
-  success. The per-input slopes, the anti-steerable share and the random control show there is
-  none. A probe that reads a concept doesn't give a direction that writes it.</li>
-</ul>
-<h3 id="decomposing-parameters">Decomposing parameters<a class="headerlink" href="#decomposing-parameters" title="Permanent link">&para;</a></h3>
-<p>Featurizers explain activations. Parameter decomposition explains the weights. Each weight matrix
-is split into rank-one subcomponents, <code>W ≈ V U</code>. Training asks that the subcomponents sum to the
-weights, and that for every input only a few of them are needed to compute the output. A
-subcomponent is then a piece of the mechanism, and its causal importance on an input says whether
-that input uses it.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/parameter_decomposition.hpp"</span>
-
-<span class="c1">// Swap each LinearModule to decompose for a ComponentLinear over it, in any Module built from</span>
-<span class="c1">// non-owned layers (SequentialModule, ResidualModule, ...).</span>
-<span class="n">ComponentLinear</span><span class="w"> </span><span class="nf">c1</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="cm">/*components=*/</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">),</span><span class="w"> </span><span class="n">c2</span><span class="p">(</span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">SequentialModule</span><span class="w"> </span><span class="nf">model</span><span class="p">({</span><span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">c2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu</span><span class="p">});</span>
-
-<span class="n">DecompositionOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span><span class="w">                        </span><span class="c1">// SPD by default; o.method = DecompositionMethod::VPD</span>
-<span class="n">o</span><span class="p">.</span><span class="n">importance_coefficient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3e-3f</span><span class="p">;</span>
-<span class="n">ParameterDecomposition</span><span class="w"> </span><span class="nf">d</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">c2</span><span class="p">},</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
-<span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">opt</span><span class="p">(</span><span class="mf">1e-3f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">DecompositionLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainDecomposition</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">ci</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">causal_importances</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w">    </span><span class="c1">// per layer, (N, C)</span>
-<span class="n">ComponentAlignment</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AlignComponentsToRows</span><span class="p">(</span><span class="n">c1</span><span class="p">);</span><span class="w">                </span><span class="c1">// MMCS and ML2R</span>
-</code></pre></div>
-<ul>
-<li><strong><code>ComponentLinear</code></strong> replaces a LinearModule. In target mode it computes <code>x W + b</code>. In
-  components mode it computes <code>((x V) ⊙ m) U + b</code> under per-input masks m. VPD adds back the rest
-  of the weight, <code>Δ = W - V U</code>, under its own mask. Its <code>backward()</code> returns the masks' gradients,
-  so the decomposition runs on the model's own backward pass, with no autograd.</li>
-<li><strong>Causal importance</strong> (SPD): each subcomponent has a small MLP, from its inner activation
-  <code>(x V)_c</code> on the target pass to a score <code>g</code>, clamped to [0, 1] with a small leak. Masks are
-  <code>m = g + (1 - g) r</code>, r uniform: an unimportant subcomponent can be scaled anywhere in [0, 1]
-  without changing the output.</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>SPD (Bushnaq, Braun and Sharkey, arXiv 2506.20790)</th>
-<th>VPD (Bushnaq et al., Goodfire, 2026)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Faithfulness</td>
-<td><code>Σ_l ‖W - V U‖²</code> over the number of weights</td>
-<td>The same, as the Δ loss</td>
-</tr>
-<tr>
-<td>Reconstruction</td>
-<td>Every layer masked, and one layer masked at a time</td>
-<td>Each input through a random k of the layers, with Δ under its own mask</td>
-</tr>
-<tr>
-<td>Adversarial</td>
-<td>—</td>
-<td>Masks from persistent sources that Adam ascends on the loss (PGD)</td>
-</tr>
-<tr>
-<td>Importance minimality</td>
-<td><code>Σ g^p</code></td>
-<td><code>Σ_c [mean_c + β mean_c log2(1 + sum_c)]</code>, with p annealed (2 to 0.4)</td>
-</tr>
-<tr>
-<td>Lower clamp</td>
-<td>Leaks below 0 in the forward pass too</td>
-<td>Straight-through: leaks only gradients that raise g</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>Following the reference code</strong> (github.com/goodfire-ai/param-decomp: tag <code>v1</code> for SPD,
-  <code>nano_param_decomp/run.py</code> for VPD). The gate input isn't detached, the output loss is a mean
-  over every value, one mask sample is drawn per step, and initialization is v1's.
-  <code>OutputDivergence::KlOnLogits</code> compares logits.</li>
-<li><strong>Not here yet.</strong> VPD's causal-importance function for language models, a transformer over
-  every layer's activations; this uses SPD's per-subcomponent MLPs for both. Decomposing
-  <code>CausalLM</code> layers also needs a way to swap a block's LinearModules.</li>
-<li><strong>Checked against a PyTorch rendering</strong> (<code>tools/golden/make_spd_golden.py</code>): SPD's four losses,
-  and VPD's routing, Δ masks, adversarial masks, frequency term and straight-through clamp,
-  through loss, gradients and an Adam step.</li>
-</ul>
-<p><strong>On a toy model of superposition</strong> (<code>pulsatrix_spd_toy</code>): 5 sparse features through 2
-dimensions, <code>x̂ = ReLU(x W Wᵀ + b)</code>, with W and Wᵀ decomposed into 20 subcomponents each. The
-reference schedule is 40,000 steps of 4,096.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>SPD</th>
-<th>SPD paper (Table 1)</th>
-<th>VPD (p 2 to 1)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MMCS / ML2R</td>
-<td>1.000 / 1.017</td>
-<td>1.000 / 0.993</td>
-<td>0.993 / 0.672</td>
-</tr>
-<tr>
-<td>Alive subcomponents (of 20, per layer)</td>
-<td>5, 5</td>
-<td>5</td>
-<td>4, 5</td>
-</tr>
-<tr>
-<td>Features with one important subcomponent in each layer</td>
-<td>5 of 5</td>
-<td></td>
-<td>5 of 5</td>
-</tr>
-<tr>
-<td>Distinct subcomponents for the 5 features in W</td>
-<td>5</td>
-<td></td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>SPD recovers the features:</strong> one subcomponent per feature in each layer, carrying the
-  feature's row of W.</li>
-<li><strong>VPD, with SPD's toy settings, merges two features into one subcomponent.</strong> The paper reports
-  no toy results; its toy configs use another importance loss, not reproduced here.</li>
-<li><strong>A faster setting.</strong> A learning rate of 1e-2 and importance 1e-2 reach one subcomponent per
-  feature in 3,000 steps of 1,024 (the unit test, Release builds only).</li>
-</ul>
-<h3 id="attribution-graphs-with-transcoders">Attribution graphs with transcoders<a class="headerlink" href="#attribution-graphs-with-transcoders" title="Permanent link">&para;</a></h3>
-<p>An attribution graph (Ameisen, Lindsey et al., "Circuit Tracing", Transformer Circuits, 2025)
-explains one prediction as a graph of interpretable features.</p>
-<ul>
-<li><strong>The replacement model.</strong> Each MLP is replaced by a transcoder's features plus an error node,
-  the MLP output the features miss. Attention patterns and normalization scales are frozen at
-  their values for this prompt. What is left between features is linear, so every edge is an
-  exact attribution. Its weight is the source's output vector, carried through the frozen model,
-  dotted with the target's input vector. A feature's input vector is its encoder row; a logit's
-  is its unembedding minus the mean unembedding.</li>
-<li><strong>Nodes:</strong></li>
-<li>active features, by layer and position;</li>
-<li>one error node per layer and position;</li>
-<li>the token embeddings;</li>
-<li>the likely next tokens (up to 10, until their probabilities sum to 0.95).</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/circuit_tracing.hpp"</span>
-
-<span class="c1">// Per-layer or cross-layer transcoders in circuit-tracer's layouts.</span>
-<span class="n">CrossLayerTranscoder</span><span class="w"> </span><span class="n">clt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTranscoders</span><span class="p">(</span><span class="n">dir</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">num_layers</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">CircuitTrace</span><span class="w"> </span><span class="n">trace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TraceCircuit</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">clt</span><span class="p">,</span><span class="w"> </span><span class="n">ids</span><span class="p">);</span><span class="w">   </span><span class="c1">// every edge, unpruned</span>
-<span class="n">CircuitScores</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScoreCircuit</span><span class="p">(</span><span class="n">trace</span><span class="p">);</span><span class="w">            </span><span class="c1">// replacement, completeness</span>
-<span class="n">AttributionGraph</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToAttributionGraph</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="n">logit_labels</span><span class="p">);</span><span class="w">  </span><span class="c1">// pruned, for the viewer</span>
-<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToNeuronpediaJson</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
-</code></pre></div>
-<p><code>pulsatrix_explain_text MODEL "prompt" --graph out.json --transcoders DIR</code> writes the graph for
-Neuronpedia's or circuit-tracer's viewer.</p>
-<ul>
-<li><strong>Following circuit-tracer</strong> (github.com/decoderesearch/circuit-tracer):</li>
-<li>The forward pass is the model's own: reconstruction plus error is the MLP's output, so the
-    logits are unchanged.</li>
-<li>The first position's features and errors are left out, which makes BOS's MLP outputs
-    constants.</li>
-<li>Pruning keeps the nodes with 80% of the indirect influence on the logits and the edges with
-    98%, then drops nodes left without edges.</li>
-<li>The replacement and completeness scores are circuit-tracer's.</li>
-<li>Node ids and types match its viewer files.</li>
-<li><strong>Transcoders:</strong></li>
-<li><code>CrossLayerTranscoder</code> holds cross-layer transcoders, where features write to several later
-    MLPs, and per-layer ones.</li>
-<li>Both use JumpReLU or ReLU and an optional linear skip.</li>
-<li><code>LoadTranscoders</code> reads circuit-tracer's two layouts, such as Gemma Scope 2's 270M
-    transcoders (mwhanna/gemma-scope-2-270m-pt) or the Llama 3.2 1B CLT (mntss/clt-llama-3.2-1b-524k).</li>
-<li>It is inference only: training a transcoder is not here.</li>
-<li><strong>Checked against PyTorch</strong> (<code>tools/golden/make_circuit_golden.py</code>). The golden is the tiny
-  Llama and Gemma 3 written out in PyTorch with circuit-tracer's freezes, with each source scaled
-  by a scalar whose gradient is the edge. Every edge matches to 2e-6, across a cross-layer span
-  and a skip, Gemma's sandwich norms, QK-norm and sliding window. CPU and GPU agree.</li>
-</ul>
-<p><strong>On Gemma 3 270M</strong>, with Gemma Scope 2's 16k per-layer transcoders (L0 small), on the GPU:</p>
-<table>
-<thead>
-<tr>
-<th>Prompt</th>
-<th>Top logit</th>
-<th>Active features</th>
-<th>Graph after pruning</th>
-<th>Replacement</th>
-<th>Completeness</th>
-<th>Time</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>"The Eiffel Tower is located in the city of"</td>
-<td>" Paris" (0.86)</td>
-<td>4,532</td>
-<td>621 nodes, 61,219 links</td>
-<td>0.67</td>
-<td>0.92</td>
-<td>14 s</td>
-</tr>
-<tr>
-<td>"The capital of the state containing Dallas is"</td>
-<td>" a" (0.13)</td>
-<td>3,779</td>
-<td>634 nodes, 84,485 links</td>
-<td>0.66</td>
-<td>0.92</td>
-<td>14 s</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>" Paris" is carried by a few late features at the last position.</strong> The strongest come from
-  layers 11 to 17, with a weight up to 4.3. Errors and the "Eiffel" token embedding also feed
-  it directly.</li>
-<li><strong>The 270M model doesn't know the two-hop fact.</strong> Its likely tokens are " a", " the" and
-  " Dallas", so the Dallas graph shows the method, not a circuit for Austin.</li>
-<li><strong>Not here yet:</strong></li>
-<li>Limiting the graph to the most influential features (circuit-tracer's <code>max_feature_nodes</code>).
-    Every active feature is a target; on Gemma 3 270M that is 4,500 features and a dense
-    adjacency of 20M entries.</li>
-<li>Gemma's final logit softcap, which is outside the linearization.</li>
-<li>Reading the residual stream before the norm, as the Llama CLT does. Features read the MLP
-    input after the block's norm.</li>
-</ul>
-<h3 id="building-a-circuit-graph">Building a circuit graph<a class="headerlink" href="#building-a-circuit-graph" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explainer_context.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/linear_module.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/relu_module.hpp"</span>
-
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
-
-<span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="c1">// hidden -&gt; relu -&gt; head: your trained network</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">hidden</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">ReluModule</span><span class="w"> </span><span class="nf">relu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">head</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">ExplainerContext</span><span class="w"> </span><span class="nf">ctx</span><span class="p">({</span><span class="o">&amp;</span><span class="n">hidden</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">head</span><span class="p">});</span>
-
-<span class="n">Tensor</span><span class="w"> </span><span class="nf">input</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.2f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.9f</span><span class="p">});</span>
-<span class="n">CircuitGraph</span><span class="w"> </span><span class="n">circuit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">build_circuit_graph</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CircuitNode</span><span class="o">&amp;</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">circuit</span><span class="p">.</span><span class="n">nodes</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// node.ablation_effect: how far the output moves when this node is zeroed</span>
-<span class="p">}</span>
-</code></pre></div>
-<p><strong>What's happening:</strong> for each node, <code>build_circuit_graph()</code> reruns the forward pass with
-that node's activation replaced by zeros. It records the L2 distance between the patched
-output and the normal output as <code>ablation_effect</code>. A larger value means the output depends
-more on that node for this input. The output node scores 0 by convention. Edges connect each
-node to the next and carry the source node's score. <code>CircuitGraph</code> holds data only. To draw it,
-use <code>CircuitGraphView</code> from <a href="../visualization/">Visualization</a>, which also accepts the
-saved form. To save it, <code>ToJson(ToCircuitGraphDocument(circuit))</code> writes a
-<code>pulsatrix.circuit_graph.v1</code> document, and <code>ParseCircuitGraphDocument()</code> with <code>ToCircuitGraph()</code>
-reads it back.</p>
-<h3 id="sampling-a-gflownet-trajectory">Sampling a GFlowNet trajectory<a class="headerlink" href="#sampling-a-gflownet-trajectory" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/gflownet_forward_policy.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/gflownet_trajectory.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/hypergrid_env.hpp"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/linear_module.hpp"</span>
-
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
-
-<span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
-<span class="n">HyperGridEnv</span><span class="w"> </span><span class="nf">env</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="cm">/*ndim=*/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/*side_length=*/</span><span class="mi">5</span><span class="p">);</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">policy_net</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">     </span><span class="c1">// 2-dim state -&gt; 3 actions (+x, +y, stop)</span>
-<span class="n">GFlowNetForwardPolicy</span><span class="w"> </span><span class="nf">policy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">policy_net</span><span class="p">,</span><span class="w"> </span><span class="cm">/*action_dim=*/</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-
-<span class="n">GFlowNetTrajectory</span><span class="w"> </span><span class="n">traj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_gflownet_trajectory</span><span class="p">(</span><span class="n">env</span><span class="p">,</span><span class="w"> </span><span class="n">policy</span><span class="p">);</span>
-<span class="c1">// traj.states / traj.actions: every decision point and the action taken there</span>
-<span class="c1">// traj.sum_log_pf, traj.sum_log_pb: the log-probability sums Trajectory Balance needs</span>
-<span class="c1">// traj.terminal_reward: R(x) at the final state</span>
-</code></pre></div>
-<p><strong>What's happening:</strong> <code>sample_gflownet_trajectory</code> resets <code>env</code>. It then samples actions from
-the policy, skipping invalid ones, and steps <code>env</code> until the episode ends. An episode ends on
-an explicit <code>stop</code> action or at the environment's step cap. Along the way it sums the forward
-and backward log-probabilities (<code>Σ log P_F</code>, <code>Σ log P_B</code>).</p>
-<p>Feed the trajectory to <code>TrajectoryBalanceLoss</code>, <code>DetailedBalanceLoss</code>, or <code>SubTBLoss</code>. They
-train the policy to sample each outcome <code>x</code> with probability proportional to <code>R(x)</code>, rather
-than always picking the best one.</p>
-<p>Recipe: <a href="../recipes/mechanistic-interpretability/gflownet_hypergrid/">GFlowNet on HyperGrid</a>.</p>
+<p>Each prints its usage with <code>--help</code>. Each source file (in <code>tools/</code>) starts with a comment that
+explains every option.</p>
 <h2 id="recipes">Recipes<a class="headerlink" href="#recipes" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/">Sparse autoencoder + linear probe</a></li>
 <li><a href="../recipes/mechanistic-interpretability/gflownet_hypergrid/">GFlowNet on HyperGrid</a></li>
 </ul>
+<p>Full API reference: <a href="../api/group__mech__interp.html">Doxygen: Mechanistic Interpretability</a></p>
 
 
 

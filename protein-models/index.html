@@ -911,9 +911,20 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/" class="md-nav__link">
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -927,7 +938,247 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -3013,7 +3264,7 @@ active sites, disulfides, signal peptides, transmembrane spans and more come alo
 <p>Hewitt and Liang's control task, labels fixed per token type, is no control here: with only 20
   amino acids, a linear probe learns it perfectly from any representation.
 - <strong>Features</strong> ask which directions the model uses unprompted, following InterPLM.
-  1. A sparse autoencoder (<a href="../mechanistic-interpretability/#featurizers">featurizer</a>) is
+  1. A sparse autoencoder (<a href="../mechanistic-interpretability/featurizers/">featurizer</a>) is
      trained on one layer's residues, each dimension standardized.
   2. <code>MatchConcept</code> scores every feature against every concept, by the best F1 over activation
      thresholds.
@@ -3088,8 +3339,9 @@ structure is three-state balanced accuracy; the other concepts are ROC AUC.</p>
 <li><strong>Possible leakage.</strong> The split separates proteins but doesn't cluster them by sequence, so
   homologs on both sides can flatter the numbers.</li>
 </ul>
-<p><strong>SAE features</strong>, ESM-2 8M layer 4: 2,560 latents trained on 1,600 proteins' residues, held-out
-L0 17, 66% of the variance explained. Best F1 of a single feature against each concept on 400
+<p><strong>SAE features</strong>, ESM-2 8M layer 4, with an L1 SAE (<code>--featurizer l1</code>; the tool defaults to
+TopK): 2,560 latents trained on 1,600 proteins' residues, held-out L0 17, 66% of the
+variance explained. Best F1 of a single feature against each concept on 400
 held-out proteins:</p>
 <table>
 <thead>
@@ -3169,6 +3421,9 @@ AlphaFold model colored by the feature.</p>
   feature for "cysteine" goes a long way, and coiled coils, from their sequence repeats. So a
   feature matching a concept is a lead to check, not proof the model learned it.</li>
 </ul>
+<p>These are L1 SAE features. <a href="../mechanistic-interpretability/evaluating-features/#comparing-featurizers-on-esm-2">Evaluating features</a>
+compares eight featurizers on the same layer, including TopK and Matryoshka SAEs, which find
+cleaner concept features.</p>
 <h2 id="checking-against-hugging-face">Checking against Hugging Face<a class="headerlink" href="#checking-against-hugging-face" title="Permanent link">&para;</a></h2>
 <p><code>tools/golden/make_esm_golden.py</code> records transformers' outputs for a model:
 - logits;
