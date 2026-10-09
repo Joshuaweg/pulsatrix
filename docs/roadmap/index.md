@@ -14,6 +14,8 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
 [milestone](#v11-foundations-and-trust) is done.
 **The PLM epic, protein language models, is complete** (2026-10-08): every item in
 [PLM](#plm-protein-language-models) is done.
+**The FEAT epic, featurizers and feature-level interpretability, is complete** (2026-10-09):
+every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is done.
 
 - **Strong.** LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -49,6 +51,18 @@ v1.0 is strong on explainability and thin on the foundations that larger models 
   - probes and SAE features matched to Swiss-Prot annotations, through the new featurizer
     interface ([FEAT-1](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf));
   - an end-to-end recipe on TEM-1 β-lactamase.
+- **Feature-level interpretability** ([FEAT-1 to FEAT-10](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf)).
+  - **Featurizers behind one interface:** TopK, BatchTopK, Matryoshka and JumpReLU sparse
+    autoencoders, block-sparse featurizers and transcoders.
+  - **Evaluation and steering:** SAEBench's core metrics with random-model and probe baselines,
+    and steering with a per-input reliability report.
+  - **Model diffing and parameter decomposition:** crosscoders with Latent Scaling, and SPD and
+    VPD.
+  - **Attribution graphs** through pretrained transcoders, for Neuronpedia's viewer.
+  - **Checked against PyTorch:** every method matches a PyTorch rendering of its paper.
+  - **Tested on real models:** ESM-2, SmolLM2 and Gemma 3. Negative results are reported too:
+    a steering vector that fails its checks, block-sparse featurizers that don't pay off on
+    ESM-2, and decoder norms that miss rare fine-tune features.
 - **HIP backend.** It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   `dot` and `sum`, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Its container runs ROCm 10.0.0, the
@@ -162,8 +176,8 @@ Fine-tune the models from v1.2 and explain what the fine-tuning changed.
 
 Feature discovery on real models, and agents that can drive the library.
 
-- FEAT-1 (**done**, for PLM-8), FEAT-2 to FEAT-7 (**done**): the featurizer interface, TopK
-  and its family, metrics, transcoders, BSF, steering
+- FEAT-1 to FEAT-7 (**done**): the featurizer interface, TopK and its family, metrics,
+  transcoders, BSF, steering
 - TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology
 - VIZ-4 (**done**), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector
@@ -250,7 +264,7 @@ These unblock most of the other epics. **All eight are done** (2026-10-04, PRs
 | `std::normal_distribution` and friends differ between libstdc++ and MSVC, so seeded runs match on one platform only | FND-7 | KS-1, or its own item |
 | `named_parameters()` and `set_requires_grad()` in the Python bindings | FND-1, FND-2 | NB-3 |
 | A device top-k for large k (radix or bitonic select); the current kernel is O(cols·k) per row | FND-3 | FEAT-2 if k grows |
-| `GaussianMutationTest.ZeroSigma…` aborts in Debug: `std::normal_distribution` rejects σ = 0 under libstdc++ assertions | found while testing | a bug fix |
+| `GaussianMutationTest.ZeroSigma…` aborts in Debug: `std::normal_distribution` rejects σ = 0 under libstdc++ assertions | found while testing | Fixed in [#111](https://github.com/Joshuaweg/pulsatrix/pull/111) |
 
 ## IO: Serialization and model import
 
@@ -791,10 +805,15 @@ weight variance.
 
 ## FEAT: Featurizers, sparse autoencoders and Goodfire BSF
 
+**Complete** (2026-10-09, PRs [#102](https://github.com/Joshuaweg/pulsatrix/pull/102) and
+[#105](https://github.com/Joshuaweg/pulsatrix/pull/105) to
+[#114](https://github.com/Joshuaweg/pulsatrix/pull/114)). The user guide is the
+[Mechanistic Interpretability](../mechanistic-interpretability/index.md) section.
+
 Goodfire's **Block-Sparse Featurizers** (BSF, June 2026) are like sparse autoencoders, except
 the unit of sparsity is a small block of 2–4 dimensions rather than one direction. That lets one
-feature be a curve or a circle instead of a line. BSF is the newest member of a family pulsatrix
-can't represent yet, so the plan builds the family first, behind one interface.
+feature be a curve or a circle instead of a line. BSF was the newest member of a family pulsatrix
+couldn't represent, so the plan built the family first, behind one interface.
 
 Sparse autoencoders have real limits: they lose to linear probes out of distribution, steering
 with their features loses to simple difference-of-means vectors, and BSF still splits features.
@@ -877,7 +896,7 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
 
     So `recovered` is NaN unless ablation raises the loss, and the tool prints absorption only
     where the probe's F1 is at least 0.5. The numbers are in the
-    [mechanistic-interpretability guide](../mechanistic-interpretability/index.md#measuring-a-featurizer).
+    [mechanistic-interpretability guide](../mechanistic-interpretability/evaluating-features.md).
   - **`pulsatrix_probe_esm --featurizer topk`.** At the same L0, a TopK SAE beats PLM-8's L1
     SAE on every measure: explained variance 0.78 vs 0.66, loss recovered 0.96 vs 0.90.
 - **FEAT-4** adds BatchTopK and Matryoshka as options of `TopKSparseAutoencoder`
@@ -901,7 +920,7 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
   - **On ESM-2 8M** Matryoshka absorbs least and finds the best single features for helix and
     transmembrane, at 0.90 loss recovered to TopK's 0.96. JumpReLU matches TopK's loss
     recovered with 12.6 latents instead of 16
-    ([table](../mechanistic-interpretability/index.md#batchtopk-matryoshka-and-jumprelu)).
+    ([table](../mechanistic-interpretability/evaluating-features.md#comparing-featurizers-on-esm-2)).
 - **FEAT-5** adds `Transcoder` (`transcoder.hpp`), with an optional skip connection, and an MLP
   hook on `EncoderBlock` and `TransformerBlock`.
   - **TopK activation and AuxK,** as Paulo et al. train them, rather than Dunefsky et al.'s L1
@@ -923,7 +942,7 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
   - **On ESM-2 8M** the skip transcoder beats the plain one on every measure (loss recovered
     0.72 vs 0.59 with the layer-4 MLP replaced). Against a residual-stream TopK SAE its concept
     features are mixed: better on 3 of 6 concepts, worse on 2
-    ([table](../mechanistic-interpretability/index.md#transcoders)).
+    ([table](../mechanistic-interpretability/evaluating-features.md#transcoders-on-esm-2)).
 - **FEAT-6** adds `block_sparse_featurizer.hpp`: `BlockSparseFeaturizer` with the Vanilla,
   Grassmannian and GroupLasso variants, `BlockSelection::Tournament`,
   `MeasureDescriptionLength` (MDL) and `MeasureBlockGeometry` (stable rank).
@@ -937,7 +956,7 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
   - **On planted planes** a Vanilla BSF recovers all 6 and needs 19.9 bits per input, against
     32.4 for a TopK SAE. **On ESM-2 8M** it trails the TopK SAE in reconstruction (explained
     variance 0.66 vs 0.78) and saves only 5% of bits. Blocks use about 1.5 of 4 dimensions
-    ([table](../mechanistic-interpretability/index.md#block-sparse-featurizers)).
+    ([table](../mechanistic-interpretability/evaluating-features.md#comparing-featurizers-on-esm-2)).
 - **FEAT-7** adds `steering.hpp`: `DifferenceOfMeans`, `FeaturizerDirection`, `SteeringHook`
   (a HiddenStateHook) and `MeasureSteering`.
   - **The reliability report follows Tan et al.** Each input's steerability is its slope of
@@ -950,7 +969,7 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
     residues looks right on average at coefficient ±2, but random directions do more, and the
     response isn't linear. At ±0.5 the difference of means steers soluble proteins the wrong
     way for 66% of them, and the SAE feature doesn't steer at all
-    ([table](../mechanistic-interpretability/index.md#steering-a-model)).
+    ([table](../mechanistic-interpretability/steering.md#a-worked-example-a-steering-vector-that-fails-its-checks)).
     `pulsatrix_steer_esm` defaults to ±0.5.
 - **FEAT-8** adds `crosscoder.hpp`: `Crosscoder` over any number of sources (layers or
   models), with L1 (Lindsey et al.) or BatchTopK (Minder et al.) sparsity and the
@@ -965,7 +984,7 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
   - **`pulsatrix_diff_lm`** diffs SmolLM2-135M against its Instruct model on chat text. The
     Instruct-specific latents put 84 to 99% of their activation on chat-template tokens, as
     Minder et al. found in Gemma 2
-    ([table](../mechanistic-interpretability/index.md#crosscoders)).
+    ([table](../mechanistic-interpretability/model-diffing.md#what-we-found)).
 - **FEAT-9** adds `parameter_decomposition.hpp`: `ComponentLinear` (a LinearModule split into
   rank-one subcomponents, with per-input masks and a Δ path) and `ParameterDecomposition`, SPD
   and VPD on the model's own backward pass; `AlignComponentsToRows` and `MeasureImportance`.
@@ -977,7 +996,7 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
     subcomponents per layer). VPD with SPD's settings merges two of the five features.
   - **Not done:** VPD's transformer causal-importance function, and swapping LinearModules inside
     `CausalLM` blocks, which language-model decomposition needs
-    ([guide](../mechanistic-interpretability/index.md#decomposing-parameters)).
+    ([guide](../mechanistic-interpretability/parameter-decomposition.md)).
 - **FEAT-10** adds `circuit_tracing.hpp`: `CrossLayerTranscoder` (cross-layer and per-layer
   transcoders, JumpReLU, skip), `LoadTranscoders` (circuit-tracer's two layouts), `TraceCircuit`
   (the frozen replacement model and every edge), `ScoreCircuit` and `ToAttributionGraph`
@@ -993,7 +1012,21 @@ FEAT-6 propagates relevance through a block top-k by treating the selection as a
     existing index (VIZ-4).
   - **Not done:** training transcoders, circuit-tracer's `max_feature_nodes`, and pre-norm
     inputs for the Llama CLT
-    ([guide](../mechanistic-interpretability/index.md#attribution-graphs-with-transcoders)).
+    ([guide](../mechanistic-interpretability/attribution-graphs.md)).
+
+### Follow-ups the FEAT work surfaced
+
+| Follow-up | Found in | Belongs with |
+|---|---|---|
+| Training cross-layer transcoders, so attribution graphs don't need pretrained ones | FEAT-10 | A FEAT follow-up |
+| Circuit-tracer's `max_feature_nodes`, to keep graphs of larger models tractable | FEAT-10 | A FEAT follow-up |
+| Transcoders that read the residual stream before the norm (the Llama 3.2 1B CLT) | FEAT-10 | A FEAT follow-up |
+| Decomposing `CausalLM` layers (swappable LinearModules in a block), and VPD's transformer causal-importance function | FEAT-9 | A FEAT follow-up |
+| SPD's gates run on the host; the toy-model test is Release-only because 3,000 steps take minutes at -O0 | FEAT-9 | A FEAT follow-up |
+| Model diffing at scale: Minder et al. use 100M tokens, and the chat data here is 0.5M | FEAT-8 | Research |
+| A Delta-Crosscoder with a fractional delta budget: its top-k forces `N·k` delta activations per batch even when the fine-tune's features are rarer | FEAT-8 | Research |
+| A builder for feature dashboards of language-model features (top tokens, contexts); today `FeatureDashboardDocument` is filled by hand outside the protein tools | FEAT-1 | VIZ-6b |
+| Block-sparse featurizers on an image model, where the paper's gains are | FEAT-6 | ARCH (vision models) |
 
 ## ARCH: New architectures
 

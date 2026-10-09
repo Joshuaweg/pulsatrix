@@ -60,4 +60,4 @@ each trajectory `τ`. Unlike a reward-maximizing objective, this pushes the poli
 proportion to `R(x)` rather than hunting for the single best cell. The far-corner rate roughly
 doubles after training. The integration test asserts the same shift with stricter thresholds.
 
-See also: [Mechanistic Interpretability](../../mechanistic-interpretability/index.md#sampling-a-gflownet-trajectory).
+See also: [Mechanistic Interpretability](../../mechanistic-interpretability/gflownets.md).
