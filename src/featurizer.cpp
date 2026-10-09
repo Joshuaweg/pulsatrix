@@ -1,6 +1,7 @@
 #include "pulsatrix/featurizer.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <stdexcept>
 
 namespace pulsatrix {
@@ -20,7 +21,7 @@ void FeatureActivityTracker::observe(const std::vector<float>& codes, float thre
     if (codes.size() % m != 0) throw std::invalid_argument("FeatureActivityTracker::observe: codes must be whole rows of num_features");
     for (size_t row = 0; row < codes.size() / m; ++row) {
         for (size_t i = 0; i < m; ++i) {
-            if (codes[row * m + i] > threshold) {
+            if (std::abs(codes[row * m + i]) > threshold) {
                 ++fired_[i];
                 last_fired_[i] = inputs_;
             }
@@ -70,12 +71,21 @@ double MeanL0(const std::vector<float>& codes, int64_t num_features, float thres
         throw std::invalid_argument("MeanL0: codes must be one or more whole rows of num_features");
     }
     int64_t active = 0;
-    for (float c : codes) active += c > threshold ? 1 : 0;
+    for (float c : codes) active += std::abs(c) > threshold ? 1 : 0;
     return static_cast<double>(active) / static_cast<double>(codes.size() / static_cast<size_t>(num_features));
 }
 
 double MeanL0(Featurizer& featurizer, const Tensor& x, float threshold) {
-    return MeanL0(featurizer.encode(x).to_host_vector(), featurizer.num_features(), threshold);
+    const std::vector<float> codes = featurizer.encode(x).to_host_vector();
+    const int64_t b = featurizer.block_size();
+    if (b == 1) return MeanL0(codes, featurizer.num_features(), threshold);
+    int64_t active = 0;
+    for (size_t g = 0; g < codes.size(); g += static_cast<size_t>(b)) {
+        bool on = false;
+        for (int64_t s = 0; s < b; ++s) on = on || std::abs(codes[g + static_cast<size_t>(s)]) > threshold;
+        active += on ? 1 : 0;
+    }
+    return static_cast<double>(active) / static_cast<double>(x.shape().dim(0));
 }
 
 }  // namespace pulsatrix

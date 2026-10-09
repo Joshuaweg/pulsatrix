@@ -50,6 +50,12 @@ public:
     [[nodiscard]] virtual int64_t num_features() const = 0;
     /** @brief What decode() produces: input_dim() for an autoencoder. */
     [[nodiscard]] virtual int64_t output_dim() const { return input_dim(); }
+    /**
+     * @brief Codes come in blocks of this many (FEAT-6): a block-sparse featurizer's feature is a
+     *        block, active when any of its codes is nonzero, and its codes may be negative. 1 (the
+     *        default) for featurizers whose features are single directions.
+     */
+    [[nodiscard]] virtual int64_t block_size() const { return 1; }
 
     /** @brief The codes for a batch, `(N, num_features)`. */
     [[nodiscard]] virtual Tensor encode(const Tensor& x) = 0;
@@ -99,7 +105,7 @@ public:
     explicit FeatureActivityTracker(int64_t num_features);
 
     /** @brief Records a batch of codes, row-major `(N, num_features)`; a code above
-     *         @p threshold counts as firing. @throws std::invalid_argument for a size that isn't
+     *         @p threshold in magnitude counts as firing. @throws std::invalid_argument for a size that isn't
      *         a whole number of rows. */
     void observe(const std::vector<float>& codes, float threshold = 0.0f);
 
@@ -123,11 +129,12 @@ private:
     std::vector<int64_t> last_fired_;  ///< the input count when it last fired, or -1
 };
 
-/** @brief The mean number of codes above @p threshold per input (L0), for codes row-major
+/** @brief The mean number of codes above @p threshold in magnitude per input (L0), for codes row-major
  *         `(N, num_features)`. @throws std::invalid_argument for a size that isn't a whole
  *         number of rows, or no rows. */
 [[nodiscard]] double MeanL0(const std::vector<float>& codes, int64_t num_features, float threshold = 0.0f);
-/** @brief MeanL0 of a featurizer's codes for @p x. */
+/** @brief MeanL0 of a featurizer's codes for @p x, in blocks: a block counts once when any of its
+ *         codes is above @p threshold in magnitude. */
 [[nodiscard]] double MeanL0(Featurizer& featurizer, const Tensor& x, float threshold = 0.0f);
 
 /**

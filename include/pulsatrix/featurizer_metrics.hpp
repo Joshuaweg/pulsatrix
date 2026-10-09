@@ -35,13 +35,13 @@ struct ReconstructionMetrics {
     double cosine = 0;
     /** @brief The mean of `|x̂| / |x|`: below 1 means codes are shrunk. */
     double norm_ratio = 0;
-    /** @brief Active features per input. */
+    /** @brief Active features per input: blocks, for a block-sparse featurizer. */
     double l0 = 0;
     /** @brief The share of features that fired on none of these inputs. */
     double dead_fraction = 0;
     /** @brief The share that fired on more than the dense rate of them. */
     double dense_fraction = 0;
-    /** @brief Each feature's share of inputs it fired on. */
+    /** @brief Each feature's (or block's) share of inputs it fired on. */
     std::vector<double> firing_rates;
 };
 
