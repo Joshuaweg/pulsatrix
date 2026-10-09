@@ -34,15 +34,24 @@ ResidualModule::ResidualModule(Module* inner, DeviceBackend* backend)
     }
 }
 
+ResidualModule::ResidualModule(Module* inner, Module* shortcut, DeviceBackend* backend) : ResidualModule(inner, backend) {
+    if (shortcut == nullptr) throw std::invalid_argument("ResidualModule: shortcut must not be null");
+    shortcut_ = shortcut;
+}
+
 Tensor ResidualModule::forward_impl(const Tensor& input) {
     // Device-generic: the inner forward plus a DeviceBackend::add, no host dereference. Runs
     // on a GPU tensor whenever inner_ does (GPU-native-kernels Mission 0 O5).
     Tensor f_x = inner_->forward(input);
+    const Tensor s = shortcut_ != nullptr ? shortcut_->forward(input) : input;
+    if (s.shape() != f_x.shape()) {
+        throw std::invalid_argument("ResidualModule::forward: the shortcut's and inner's outputs must have the same shape");
+    }
 
-    Tensor y(input.shape(), backend_);
-    backend_->add(input.data(), f_x.data(), y.data(), static_cast<size_t>(y.numel()));
+    Tensor y(f_x.shape(), backend_);
+    backend_->add(s.data(), f_x.data(), y.data(), static_cast<size_t>(y.numel()));
 
-    last_x_ = input;
+    last_x_ = s;
     last_f_x_ = f_x;
     has_forwarded_ = true;
 
@@ -59,9 +68,10 @@ Tensor ResidualModule::backward(const Tensor& grad_output) {
     }
     // Device-generic: inner backward plus DeviceBackend::add (GPU-native-kernels Mission 1).
     Tensor grad_from_inner = inner_->backward(grad_output);
+    const Tensor grad_from_shortcut = shortcut_ != nullptr ? shortcut_->backward(grad_output) : grad_output;
 
-    Tensor grad_x(grad_output.shape(), backend_);
-    backend_->add(grad_output.data(), grad_from_inner.data(), grad_x.data(), static_cast<size_t>(grad_x.numel()));
+    Tensor grad_x(grad_from_inner.shape(), backend_);
+    backend_->add(grad_from_shortcut.data(), grad_from_inner.data(), grad_x.data(), static_cast<size_t>(grad_x.numel()));
 
     return grad_x;
 }
@@ -82,8 +92,9 @@ Tensor ResidualModule::propagate_relevance(const Tensor& relevance_out, const LR
     residual_split(last_x_, last_f_x_, relevance_out, config.epsilon, r_x_direct, r_f_x, backend_);
 
     Tensor r_x_from_inner = inner_->propagate_relevance(r_f_x, config);
+    if (shortcut_ != nullptr) r_x_direct = shortcut_->propagate_relevance(r_x_direct, config);
 
-    Tensor r_x(relevance_out.shape(), backend_);
+    Tensor r_x(r_x_from_inner.shape(), backend_);
     backend_->add(r_x_direct.data(), r_x_from_inner.data(), r_x.data(), static_cast<size_t>(r_x.numel()));
 
     return r_x;
@@ -92,18 +103,21 @@ Tensor ResidualModule::propagate_relevance(const Tensor& relevance_out, const LR
 std::vector<NamedBufferRef> ResidualModule::named_buffers() {
     std::vector<NamedBufferRef> result;
     append_named_buffers(result, "inner", *inner_);
+    if (shortcut_ != nullptr) append_named_buffers(result, "shortcut", *shortcut_);
     return result;
 }
 
 std::vector<NamedParamRef> ResidualModule::named_parameters() {
     std::vector<NamedParamRef> params;
     append_named_parameters(params, "inner", *inner_);
+    if (shortcut_ != nullptr) append_named_parameters(params, "shortcut", *shortcut_);
     return params;
 }
 
 void ResidualModule::set_training(bool training) {
     Module::set_training(training);
     inner_->set_training(training);
+    if (shortcut_ != nullptr) shortcut_->set_training(training);
 }
 
 }  // namespace pulsatrix

@@ -41,6 +41,7 @@ Recipes link to the related full demo where one exists.
 - [Saliency and Integrated Gradients](interpretability/saliency_and_integrated_gradients.md)
 - [Grad-CAM walkthrough](interpretability/grad_cam_walkthrough.md)
 - [LRP on a trained MNIST classifier](interpretability/mnist_lrp.md)
+- [LRP on ImageNet models (ResNet18, VGG16)](interpretability/imagenet_lrp.md)
 
 ## Reinforcement Learning
 
