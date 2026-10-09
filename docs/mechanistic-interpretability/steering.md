@@ -40,9 +40,9 @@ SteeringReport r = MeasureSteering(
 - **The behavior** is any number steering should raise: a logit difference, a log-probability,
   a probe's score. `MeasureSteering` calls it once per input and coefficient.
 - **Options** (`SteeringOptions`):
-  - the coefficients to try. The default is −2, −1, 0, 1, 2, with 0 as the unsteered baseline.
-    **Check that these are small for your model:** in the example below, ±2 was large enough to
-    disrupt ESM-2 and fake a success. Choose a range well below the residual stream's norm.
+  - the coefficients to try. The default is −0.5, −0.25, 0, 0.25, 0.5, with 0 as the unsteered
+    baseline. Keep the range well below the residual stream's norm: in the example below, ±2 was
+    large enough to disrupt ESM-2 and fake a success.
   - how many random directions to use as the control (default 3);
   - a seed.
 - `SteeringHook` takes an optional row mask, to steer only some positions.

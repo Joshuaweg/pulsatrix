@@ -42,8 +42,10 @@ namespace pulsatrix {
 [[nodiscard]] HiddenStateHook SteeringHook(int64_t position, std::vector<float> direction, float coefficient, std::vector<bool> rows = {});
 
 struct SteeringOptions {
-    /** @brief The coefficients the direction is scaled by, 0 included as the unsteered baseline. */
-    std::vector<double> coefficients = {-2.0, -1.0, 0.0, 1.0, 2.0};
+    /** @brief The coefficients the direction is scaled by, 0 included as the unsteered baseline.
+     *         Small by default: the slopes assume a linear response, and on ESM-2 8M a range of
+     *         ±2 disrupted the model in any direction, random ones included. */
+    std::vector<double> coefficients = {-0.5, -0.25, 0.0, 0.25, 0.5};
     /** @brief Random directions of the same norm, the control. */
     int64_t random_directions = 3;
     uint64_t seed = 0;

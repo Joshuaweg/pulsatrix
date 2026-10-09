@@ -601,8 +601,9 @@ structure is three-state balanced accuracy; the other concepts are ROC AUC.
 - **Possible leakage.** The split separates proteins but doesn't cluster them by sequence, so
   homologs on both sides can flatter the numbers.
 
-**SAE features**, ESM-2 8M layer 4: 2,560 latents trained on 1,600 proteins' residues, held-out
-L0 17, 66% of the variance explained. Best F1 of a single feature against each concept on 400
+**SAE features**, ESM-2 8M layer 4, with an L1 SAE (`--featurizer l1`; the tool defaults to
+TopK): 2,560 latents trained on 1,600 proteins' residues, held-out L0 17, 66% of the
+variance explained. Best F1 of a single feature against each concept on 400
 held-out proteins:
 
 | Concept | SAE feature | Best single neuron | SAE on a random model |

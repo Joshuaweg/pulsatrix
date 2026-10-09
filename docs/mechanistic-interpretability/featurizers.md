@@ -274,12 +274,12 @@ for f in config.json model.safetensors vocab.txt; do
   curl -fsSL https://huggingface.co/facebook/esm2_t6_8M_UR50D/resolve/main/$f -o models/esm2_t6_8M_UR50D/$f
 done
 pulsatrix_probe_esm models/esm2_t6_8M_UR50D --annotations data/swissprot/annotated.jsonl \
-    --sae --sae-layer 4 --featurizer topk --k 16 --out sae/
+    --sae --sae-layer 4 --k 16 --out sae/
 ```
 
 | Option | Default | Meaning |
 |---|---|---|
-| `--featurizer` | `l1` | `l1`, `topk`, `batchtopk`, `matryoshka`, `jumprelu`, `bsf-vanilla`, `bsf-grassmannian`, `bsf-lasso`, `transcoder`, `skip-transcoder`. **Pass `topk`**: `l1`, the default, is the setup of the [protein guide](../protein-models/index.md)'s first SAE results |
+| `--featurizer` | `topk` | `topk`, `batchtopk`, `matryoshka`, `jumprelu`, `l1`, `bsf-vanilla`, `bsf-grassmannian`, `bsf-lasso`, `transcoder`, `skip-transcoder`. The [protein guide](../protein-models/index.md)'s first SAE results used `l1` |
 | `--sae-layer` | two-thirds up | The layer whose residues are featurized (layer 4 of ESM-2 8M) |
 | `--features`, `--k` | 8 × hidden, 32 | Dictionary size, and active features per residue (or blocks, for BSF) |
 | `--l0`, `--l1`, `--block-size` | 0.05, 0.003, 4 | JumpReLU's λ, the L1 penalty, BSF's block size |

@@ -91,7 +91,8 @@ TEST(Steering, TheReportMeasuresPerInputSteerabilityAgainstRandomDirections) {
     for (int i = 0; i < 10; ++i) var += (w[static_cast<size_t>(i)][0] - mean) * (w[static_cast<size_t>(i)][0] - mean) / 10.0;
     EXPECT_NEAR(r.steerability_sd, std::sqrt(var), 1e-6);
     // The mean behavior is linear in the coefficient with slope mean_steerability.
-    EXPECT_NEAR(r.mean_behavior[4] - r.mean_behavior[2], 2 * mean, 1e-5);
+    EXPECT_EQ(r.coefficients, (std::vector<double>{-0.5, -0.25, 0.0, 0.25, 0.5}));  // the default
+    EXPECT_NEAR(r.mean_behavior[4] - r.mean_behavior[2], (r.coefficients[4] - r.coefficients[2]) * mean, 1e-5);
     EXPECT_GT(r.random_max_abs_steerability, 0.0);
     EXPECT_NEAR(r.over_random, r.mean_steerability / r.random_max_abs_steerability, 1e-12);
     EXPECT_GT(r.over_random, 1.0);  // v lines up with the readouts; random directions mostly don't
