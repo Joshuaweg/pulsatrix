@@ -156,6 +156,7 @@ var dir_549639eb5e09d856a0d6449a002be6ea =
     [ "null_model_baseline.hpp", "null__model__baseline_8hpp.html", "null__model__baseline_8hpp" ],
     [ "op_type.hpp", "op__type_8hpp.html", "op__type_8hpp" ],
     [ "param_groups.hpp", "param__groups_8hpp.html", "param__groups_8hpp" ],
+    [ "parameter_decomposition.hpp", "parameter__decomposition_8hpp.html", "parameter__decomposition_8hpp" ],
     [ "pbt.hpp", "pbt_8hpp.html", "pbt_8hpp" ],
     [ "pbt_trial.hpp", "pbt__trial_8hpp.html", "pbt__trial_8hpp" ],
     [ "pdp.hpp", "pdp_8hpp.html", "pdp_8hpp" ],

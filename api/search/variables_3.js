@@ -19,13 +19,14 @@ var searchData=
   ['device_5fdir_16',['device_dir',['../structpulsatrix_1_1detail_1_1AmdGpuDevice.html#aa4b6b893dc8753be123ae6866b6ccde2',1,'pulsatrix::detail::AmdGpuDevice']]],
   ['dictionary_17',['dictionary',['../structpulsatrix_1_1DescriptionLength.html#a5e27f7f0b225e1ab73dd636269bc408e',1,'pulsatrix::DescriptionLength']]],
   ['distance_18',['distance',['../structpulsatrix_1_1CounterfactualResult.html#a4f5095a38c4a6fa79a6647c23ca6f2ab',1,'pulsatrix::CounterfactualResult']]],
-  ['diversity_19',['diversity',['../structpulsatrix_1_1DiverseCounterfactualResult.html#a36cdef341f5587cadac29f560feb2eac',1,'pulsatrix::DiverseCounterfactualResult']]],
-  ['diversity_5fweight_20',['diversity_weight',['../structpulsatrix_1_1DiverseCounterfactualOptions.html#afdd9ff503d61f87dbe1985eda0af247a',1,'pulsatrix::DiverseCounterfactualOptions']]],
-  ['do_5fsample_21',['do_sample',['../structpulsatrix_1_1GenerationConfig.html#a1e3b2155b73628868953c3e9608885f4',1,'pulsatrix::GenerationConfig']]],
-  ['done_22',['done',['../structpulsatrix_1_1StepResult.html#ae5bd2a2383e982da508334bc3bcf34b8',1,'pulsatrix::StepResult']]],
-  ['dones_23',['dones',['../structpulsatrix_1_1ReplayBatch.html#adc6893d49007b0a84c4a4a1b623ae7fb',1,'pulsatrix::ReplayBatch']]],
-  ['drop_5flast_24',['drop_last',['../structpulsatrix_1_1DataLoaderOptions.html#ac6f057701bbb19bed04ca1a441731483',1,'pulsatrix::DataLoaderOptions']]],
-  ['dtype_25',['dtype',['../structpulsatrix_1_1EncoderLMConfig.html#add2bbdefc077186a93a598a0d303fae1',1,'pulsatrix::EncoderLMConfig::dtype'],['../structpulsatrix_1_1HfModelConfig.html#a49e927554f73d9ce86001f594231f5f7',1,'pulsatrix::HfModelConfig::dtype'],['../structpulsatrix_1_1SafetensorsTensorInfo.html#af007cc048c5787b6acdb538eae80fbd4',1,'pulsatrix::SafetensorsTensorInfo::dtype']]],
-  ['dual_5flr_26',['dual_lr',['../structpulsatrix_1_1BlockSparseOptions.html#a532170be7f5d1208091146b6eba1bf1d',1,'pulsatrix::BlockSparseOptions']]],
-  ['duel_5foverlap_27',['duel_overlap',['../structpulsatrix_1_1BlockSparseOptions.html#a713179bfbce8d6bb2dd764cc80f2be30',1,'pulsatrix::BlockSparseOptions']]]
+  ['divergence_19',['divergence',['../structpulsatrix_1_1DecompositionOptions.html#a14d8fc06818832726c0f079e465d21af',1,'pulsatrix::DecompositionOptions']]],
+  ['diversity_20',['diversity',['../structpulsatrix_1_1DiverseCounterfactualResult.html#a36cdef341f5587cadac29f560feb2eac',1,'pulsatrix::DiverseCounterfactualResult']]],
+  ['diversity_5fweight_21',['diversity_weight',['../structpulsatrix_1_1DiverseCounterfactualOptions.html#afdd9ff503d61f87dbe1985eda0af247a',1,'pulsatrix::DiverseCounterfactualOptions']]],
+  ['do_5fsample_22',['do_sample',['../structpulsatrix_1_1GenerationConfig.html#a1e3b2155b73628868953c3e9608885f4',1,'pulsatrix::GenerationConfig']]],
+  ['done_23',['done',['../structpulsatrix_1_1StepResult.html#ae5bd2a2383e982da508334bc3bcf34b8',1,'pulsatrix::StepResult']]],
+  ['dones_24',['dones',['../structpulsatrix_1_1ReplayBatch.html#adc6893d49007b0a84c4a4a1b623ae7fb',1,'pulsatrix::ReplayBatch']]],
+  ['drop_5flast_25',['drop_last',['../structpulsatrix_1_1DataLoaderOptions.html#ac6f057701bbb19bed04ca1a441731483',1,'pulsatrix::DataLoaderOptions']]],
+  ['dtype_26',['dtype',['../structpulsatrix_1_1EncoderLMConfig.html#add2bbdefc077186a93a598a0d303fae1',1,'pulsatrix::EncoderLMConfig::dtype'],['../structpulsatrix_1_1HfModelConfig.html#a49e927554f73d9ce86001f594231f5f7',1,'pulsatrix::HfModelConfig::dtype'],['../structpulsatrix_1_1SafetensorsTensorInfo.html#af007cc048c5787b6acdb538eae80fbd4',1,'pulsatrix::SafetensorsTensorInfo::dtype']]],
+  ['dual_5flr_27',['dual_lr',['../structpulsatrix_1_1BlockSparseOptions.html#a532170be7f5d1208091146b6eba1bf1d',1,'pulsatrix::BlockSparseOptions']]],
+  ['duel_5foverlap_28',['duel_overlap',['../structpulsatrix_1_1BlockSparseOptions.html#a713179bfbce8d6bb2dd764cc80f2be30',1,'pulsatrix::BlockSparseOptions']]]
 ];
