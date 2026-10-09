@@ -39,7 +39,8 @@ every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is 
   against Hugging Face's Llama, Qwen2 and Qwen3 attention. A language-model head that shares the
   embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5). Hugging
   Face configs, sharded checkpoints and bf16 weights load into a `CausalLM` (IO-4 to IO-6): the
-  real SmolLM2-135M runs and matches transformers.
+  real SmolLM2-135M runs and matches transformers. torchvision's ResNet18 and VGG16 load from
+  their published weights, and their LRP heatmaps match Zennit's (KS-9).
 - **Protein language models** ([PLM-1 to PLM-9](#plm-protein-language-models)). ESM-2 8M to
   650M load from Hugging Face and match transformers to float precision. On top of that:
   - zero-shot variant scoring that reproduces ProteinGym's published numbers;
@@ -157,7 +158,9 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - VIZ-3, VIZ-6a (**done**): Vega-Lite HTML and the token relevance view
 - NB-1, NB-2: native rich display and the `.ipynb`/HTML report writer
 - AGT-1 to AGT-4: the native orchestrator core
-- KS-8, KS-9: GPU CI on gfx1151 and a model zoo (ResNet18, SmolLM2)
+- KS-8: GPU CI on gfx1151
+- KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
+  (SmolLM2's against LXT came with LLM-7)
 
 ### v1.3 "Tune and explain"
 
@@ -258,7 +261,7 @@ These unblock most of the other epics. **All eight are done** (2026-10-04, PRs
 
 | Follow-up | Found in | Belongs with |
 |---|---|---|
-| Overlapping and padded `MaxPool2DModule`, and an adaptive average pool: the ResNet stem uses `MaxPool2d(3, stride 2, padding 1)` | FND-6 | KS-9 (model zoo) |
+| Overlapping and padded `MaxPool2DModule`, and an adaptive average pool: the ResNet stem uses `MaxPool2d(3, stride 2, padding 1)` | FND-6 | KS-9 (model zoo): done |
 | A `named_buffers()` so checkpoints can save BatchNorm running statistics, which aren't parameters | FND-5 | IO-2 |
 | `BatchNormModule` initializes gamma to 0; PyTorch uses 1 | FND-5 | IO-5 (configs) or a separate fix |
 | `std::normal_distribution` and friends differ between libstdc++ and MSVC, so seeded runs match on one platform only | FND-7 | KS-1, or its own item |
@@ -1298,7 +1301,7 @@ AGT-5 has to follow these security rules:
 | KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
 | KS-7 | Wire the existing thread pool into `DataLoader`'s `num_workers` | Built but not connected | — | P2 | M | |
 | KS-8 | GPU CI on a self-hosted gfx1151 runner | The HIP backend is only tested by hand today | HIP-9 | P1 | M | |
-| KS-9 | A model zoo: ResNet18, VGG16 and SmolLM2 with reference heatmaps | Reproducible examples on real models | IO-4, FND-6 | P1 | M | |
+| KS-9 | A model zoo: ResNet18, VGG16 and SmolLM2 with reference heatmaps | Reproducible examples on real models | IO-4, FND-6 | P1 | M | Done (see below) |
 | KS-10 | Strided views and broadcasting | Removes copies everywhere; touches every kernel | — | P2 | L | |
 | KS-11 | Python wheels and a vcpkg port | Easier installation | KS-1 | P2 | — | |
 | KS-12 | EK-FAC influence functions, quantization, op-level autograd, distributed training | Large or low priority for an explainability library | — | P3 / v2 | — | |
@@ -1319,6 +1322,26 @@ AGT-5 has to follow these security rules:
   three training benchmarks at p = 0.014. The conservation gate is 10⁻³, the per-layer tolerance
   the Conv2D LRP tests accept, and runs in CI on the CPU.
 
+- **KS-9** builds torchvision's ResNet (basic blocks) and VGG from pulsatrix layers, under
+  torchvision's parameter names, and loads the published weights through IO-3's converter
+  (`TorchvisionResNet`, `TorchvisionVGG`, `LoadTorchvisionWeights`). It needed four library
+  changes:
+  - `MaxPool2DModule` takes a stride and padding. Its backward and LRP gather from every window
+    holding a position, so overlapping windows need no atomics and stay deterministic.
+  - `AdaptiveAvgPool2DModule`, for sizes that divide evenly (7 to 1 and 7 to 7 in torchvision).
+  - `ResidualModule` takes a shortcut module, ResNet's downsampling 1x1 convolution.
+  - Composites reach convolutions nested in blocks (`LRPRuleConfig::conv_rule`). Zennit maps
+    rules by layer type through the whole network; before this, a ResNet block's convolutions
+    got the block's epsilon rule.
+
+  Small torchvision models (a downsampling ResNet with BatchNorm statistics, a VGG) are checked
+  in every test run against torchvision's logits and Zennit 1.0.0's EpsilonPlus,
+  EpsilonAlpha2Beta1 and EpsilonGammaBox heatmaps, on CPU and HIP. The published ResNet18 and
+  VGG16 pass the same checks when their weights are present: logits to 1e-4, heatmaps to 2e-3 of
+  the largest value. Fixtures stay small; the weights aren't committed ("ship converters, not
+  converted weights"). SmolLM2's reference heatmaps are LLM-7's LXT parity.
+  `imagenet_lrp_recipe` explains a photo with either model.
+
 ### Follow-ups the KS work surfaced
 
 | Follow-up | Found in | Belongs with |
@@ -1327,6 +1350,9 @@ AGT-5 has to follow these security rules:
 | Run `pulsatrix_bench` and its A/B comparison on the GPU in CI | KS-2 | KS-8 |
 | The CUDA path of `pulsatrix_bench` has never run; there is no NVIDIA GPU here | KS-2 | KS-8 |
 | Benchmarks on real models (ResNet18, SmolLM2) next to the fixed small ones | KS-2 | KS-9 |
+| Bottleneck ResNets (ResNet50 and up) and VGG with BatchNorm, on the same builders | KS-9 | a later model-zoo item |
+| `AdaptiveAvgPool2DModule` for sizes that don't divide evenly (PyTorch's overlapping windows) | KS-9 | when a model needs it |
+| Python bindings for `TorchvisionResNet` and `TorchvisionVGG` | KS-9 | NB-3 |
 
 ## PLM: Protein language models
 

@@ -687,26 +687,36 @@ void CPUBackend::lrp_stabilized_divide(const float* r, const float* denom, const
 }
 
 void CPUBackend::max_pool_forward(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w,
-                                  size_t kh, size_t kw) {
-    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+                                  size_t kh, size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) {
+    const auto H = static_cast<int64_t>(h), W = static_cast<int64_t>(w);
+    const int64_t out_h = cnn::pool_out_size(H, static_cast<int64_t>(kh), static_cast<int64_t>(sh), static_cast<int64_t>(ph));
+    const int64_t out_w = cnn::pool_out_size(W, static_cast<int64_t>(kw), static_cast<int64_t>(sw), static_cast<int64_t>(pw));
     for (size_t pl = 0; pl < planes; ++pl) {
-        for (size_t oh = 0; oh < out_h; ++oh) {
-            for (size_t ow = 0; ow < out_w; ++ow) {
-                const size_t o = (pl * out_h + oh) * out_w + ow;
-                cnn::max_pool_window(in + pl * h * w, static_cast<int64_t>(w), static_cast<int64_t>(kh),
-                                     static_cast<int64_t>(kw), static_cast<int64_t>(oh), static_cast<int64_t>(ow),
-                                     out + o, argmax + o);
+        for (int64_t oh = 0; oh < out_h; ++oh) {
+            for (int64_t ow = 0; ow < out_w; ++ow) {
+                const size_t o = (pl * static_cast<size_t>(out_h) + static_cast<size_t>(oh)) * static_cast<size_t>(out_w) + static_cast<size_t>(ow);
+                cnn::max_pool_window(in + pl * h * w, H, W, static_cast<int64_t>(kh), static_cast<int64_t>(kw),
+                                     static_cast<int64_t>(sh), static_cast<int64_t>(sw), static_cast<int64_t>(ph),
+                                     static_cast<int64_t>(pw), oh, ow, out + o, argmax + o);
             }
         }
     }
 }
 
 void CPUBackend::max_unpool(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w,
-                            size_t kh, size_t kw) {
-    const size_t out_plane = ((h - kh) / kh + 1) * ((w - kw) / kw + 1);
+                            size_t kh, size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) {
+    const auto H = static_cast<int64_t>(h), W = static_cast<int64_t>(w);
+    const int64_t out_h = cnn::pool_out_size(H, static_cast<int64_t>(kh), static_cast<int64_t>(sh), static_cast<int64_t>(ph));
+    const int64_t out_w = cnn::pool_out_size(W, static_cast<int64_t>(kw), static_cast<int64_t>(sw), static_cast<int64_t>(pw));
+    const size_t out_plane = static_cast<size_t>(out_h * out_w);
     for (size_t pl = 0; pl < planes; ++pl) {
-        for (size_t q = 0; q < out_plane; ++q) {
-            dst[pl * h * w + static_cast<size_t>(argmax[pl * out_plane + q])] = src[pl * out_plane + q];
+        for (int64_t y = 0; y < H; ++y) {
+            for (int64_t x = 0; x < W; ++x) {
+                dst[pl * h * w + static_cast<size_t>(y * W + x)] = cnn::max_unpool_gather(
+                    src + pl * out_plane, argmax + pl * out_plane, W, out_h, out_w, static_cast<int64_t>(kh),
+                    static_cast<int64_t>(kw), static_cast<int64_t>(sh), static_cast<int64_t>(sw), static_cast<int64_t>(ph),
+                    static_cast<int64_t>(pw), y, x);
+            }
         }
     }
 }

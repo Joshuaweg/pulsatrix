@@ -84,23 +84,37 @@ inline LRPRuleConfig alpha_beta(float alpha, float beta, float epsilon) {
 }
 }  // namespace detail
 
-/** @brief Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D. */
+/** @brief Epsilon for this module, and @p conv for every Conv2D inside it (residual blocks,
+ *         sequences): Zennit's by-type mapping carried into nested modules. */
+inline LRPRuleConfig epsilon_with_conv(float epsilon, const LRPRuleConfig& conv) {
+    LRPRuleConfig config = detail::zennit_epsilon(epsilon);
+    config.conv_rule = std::make_shared<const LRPRuleConfig>(conv);
+    return config;
+}
+
+/** @brief Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D, including
+ *         convolutions inside residual blocks and other containers. */
 inline LRPComposite epsilon_plus(float epsilon = 1e-6f) {
     return [epsilon](size_t, const Module& module) {
-        return detail::is_conv(module) ? detail::alpha_beta(1.0f, 0.0f, epsilon) : detail::zennit_epsilon(epsilon);
+        const LRPRuleConfig zplus = detail::alpha_beta(1.0f, 0.0f, epsilon);
+        return detail::is_conv(module) ? zplus : epsilon_with_conv(epsilon, zplus);
     };
 }
 
-/** @brief Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D. */
+/** @brief Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D, nested
+ *         ones included. */
 inline LRPComposite epsilon_alpha2_beta1(float epsilon = 1e-6f) {
     return [epsilon](size_t, const Module& module) {
-        return detail::is_conv(module) ? detail::alpha_beta(2.0f, 1.0f, epsilon) : detail::zennit_epsilon(epsilon);
+        const LRPRuleConfig ab = detail::alpha_beta(2.0f, 1.0f, epsilon);
+        return detail::is_conv(module) ? ab : epsilon_with_conv(epsilon, ab);
     };
 }
 
 /**
  * @brief Zennit EpsilonGammaBox: ZBox(low, high) for the first Conv2D layer (lowest index),
- *        Gamma(gamma) for every other Conv2D, Epsilon for every Linear.
+ *        Gamma(gamma) for every other Conv2D, nested ones included, Epsilon for every Linear.
+ * @note The first Conv2D must be a top-level module, as it is in ResNet and VGG: one nested
+ *       in a container before any top-level Conv2D gets Gamma.
  * @note As in Zennit 1.0.0, whose first_map holds only Convolution: a Linear is never ZBox'd,
  *       even when it is the first layer, so on a Conv2D-free network this preset is Epsilon on
  *       every layer (checked against Zennit in tests/lrp_reference_test.cpp).
@@ -114,7 +128,10 @@ inline LRPComposite epsilon_gamma_box(float low, float high, float gamma = 0.25f
             *first_conv_seen = false;
         }
         if (!detail::is_conv(module)) {
-            return detail::zennit_epsilon(epsilon);
+            LRPRuleConfig gamma_rule{epsilon};
+            gamma_rule.rule = LRPRule::Gamma;
+            gamma_rule.gamma = gamma;
+            return epsilon_with_conv(epsilon, gamma_rule);
         }
         LRPRuleConfig config{epsilon};
         if (!*first_conv_seen) {

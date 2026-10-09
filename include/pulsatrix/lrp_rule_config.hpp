@@ -7,6 +7,8 @@
  */
 #pragma once
 
+#include <memory>
+
 #include <string>
 
 namespace pulsatrix {
@@ -84,6 +86,15 @@ struct LRPRuleConfig {
      *        bias. LxtAttnLrpConfig() sets it.
      */
     bool layer_norm_detach_std = false;
+    /**
+     * @brief The rule every Conv2DModule applies, wherever it sits, in place of this config
+     *        (KS-9). Zennit maps rules by layer type through the whole network, and a residual
+     *        block is one module here that passes a single config to the convolutions inside it,
+     *        so a composite such as EpsilonPlus sets it ("Epsilon, and ZPlus for convolutions")
+     *        instead of relying on each convolution being a top-level module. Empty: convolutions
+     *        use this config.
+     */
+    std::shared_ptr<const LRPRuleConfig> conv_rule;
 };
 
 }  // namespace pulsatrix

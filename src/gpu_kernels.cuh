@@ -798,26 +798,34 @@ __global__ void lrp_stabilized_divide_kernel(const float* r, const float* denom,
 }
 
 __global__ void max_pool_forward_kernel(const float* in, float* out, float* argmax, size_t planes, size_t h, size_t w,
-                                        size_t kh, size_t kw) {
-    const size_t out_h = (h - kh) / kh + 1, out_w = (w - kw) / kw + 1;
+                                        size_t kh, size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) {
+    const int64_t out_h = cnn::pool_out_size(static_cast<int64_t>(h), static_cast<int64_t>(kh), static_cast<int64_t>(sh), static_cast<int64_t>(ph));
+    const int64_t out_w = cnn::pool_out_size(static_cast<int64_t>(w), static_cast<int64_t>(kw), static_cast<int64_t>(sw), static_cast<int64_t>(pw));
     size_t o = global_index();
-    if (o < planes * out_h * out_w) {
-        const size_t pl = o / (out_h * out_w);
-        const size_t oh = (o / out_w) % out_h;
-        const size_t ow = o % out_w;
-        cnn::max_pool_window(in + pl * h * w, static_cast<int64_t>(w), static_cast<int64_t>(kh),
-                             static_cast<int64_t>(kw), static_cast<int64_t>(oh), static_cast<int64_t>(ow), out + o,
-                             argmax + o);
+    if (o < planes * static_cast<size_t>(out_h * out_w)) {
+        const size_t pl = o / static_cast<size_t>(out_h * out_w);
+        const int64_t oh = static_cast<int64_t>((o / static_cast<size_t>(out_w)) % static_cast<size_t>(out_h));
+        const int64_t ow = static_cast<int64_t>(o % static_cast<size_t>(out_w));
+        cnn::max_pool_window(in + pl * h * w, static_cast<int64_t>(h), static_cast<int64_t>(w), static_cast<int64_t>(kh),
+                             static_cast<int64_t>(kw), static_cast<int64_t>(sh), static_cast<int64_t>(sw),
+                             static_cast<int64_t>(ph), static_cast<int64_t>(pw), oh, ow, out + o, argmax + o);
     }
 }
 
-// Windows never overlap (stride == kernel), so each destination is written by at most one thread.
-__global__ void max_unpool_kernel(const float* src, const float* argmax, float* dst, size_t planes, size_t h,
-                                  size_t w, size_t out_plane) {
-    size_t o = global_index();
-    if (o < planes * out_plane) {
-        const size_t pl = o / out_plane;
-        dst[pl * h * w + static_cast<size_t>(argmax[o])] = src[o];
+// One thread per input position, gathering from every window that contains it: overlapping
+// windows need no atomics, and the sum order is fixed.
+__global__ void max_unpool_kernel(const float* src, const float* argmax, float* dst, size_t planes, size_t h, size_t w,
+                                  size_t kh, size_t kw, size_t sh, size_t sw, size_t ph, size_t pw) {
+    const int64_t out_h = cnn::pool_out_size(static_cast<int64_t>(h), static_cast<int64_t>(kh), static_cast<int64_t>(sh), static_cast<int64_t>(ph));
+    const int64_t out_w = cnn::pool_out_size(static_cast<int64_t>(w), static_cast<int64_t>(kw), static_cast<int64_t>(sw), static_cast<int64_t>(pw));
+    size_t i = global_index();
+    if (i < planes * h * w) {
+        const size_t pl = i / (h * w);
+        const auto y = static_cast<int64_t>((i / w) % h), x = static_cast<int64_t>(i % w);
+        const size_t out_plane = static_cast<size_t>(out_h * out_w);
+        dst[i] = cnn::max_unpool_gather(src + pl * out_plane, argmax + pl * out_plane, static_cast<int64_t>(w), out_h, out_w,
+                                        static_cast<int64_t>(kh), static_cast<int64_t>(kw), static_cast<int64_t>(sh),
+                                        static_cast<int64_t>(sw), static_cast<int64_t>(ph), static_cast<int64_t>(pw), y, x);
     }
 }
 

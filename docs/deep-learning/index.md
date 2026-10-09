@@ -25,8 +25,12 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   `SequentialModule`, `DropoutModule`, `EmbeddingModule`, `ResidualModule`; normalization
   (`LayerNormModule`/`RMSNormModule`/`GroupNormModule`/`BatchNormModule`, with `BatchNormFold`
   to fold an eval-mode BatchNorm into the layer before it); pooling
-  (`MaxPool2DModule`/`AvgPool2DModule`). `Conv2DModule` takes an optional `stride` and zero
-  `padding`, as in `torch.nn.Conv2d`, and every LRP rule handles both.
+  (`MaxPool2DModule`/`AvgPool2DModule`/`AdaptiveAvgPool2DModule`). `Conv2DModule` takes an
+  optional `stride` and zero `padding`, as in `torch.nn.Conv2d`, and every LRP rule handles both.
+  So does `MaxPool2DModule`, whose windows may overlap (ResNet's `MaxPool2d(3, 2, 1)`).
+  `ResidualModule` takes an optional shortcut module, such as ResNet's downsampling convolution.
+- **Vision models**: `TorchvisionResNet` and `TorchvisionVGG` (ResNet18/34 and VGG11 to VGG19)
+  load torchvision's published ImageNet weights. See [Vision models](#vision-models-resnet-and-vgg).
 - **Sequence & attention**: `RNNModule`/`LSTMModule`/`GRUModule`, `SoftmaxModule`,
   `RoPEModule`, `MultiHeadAttentionModule`, `SwiGLUModule`, `FeedForwardModule`,
   `TransformerBlock`, `EncoderBlock`, `MambaModule`, `RWKVModule`, `RetNetModule`
@@ -255,6 +259,39 @@ The output loads like any safetensors file (`SafetensorsFile::Map`, `LoadWeights
 
 The converted torchvision ResNet18 reads back in pulsatrix with every one of its 11.7 million
 values matching PyTorch's.
+
+### Vision models: ResNet and VGG
+
+`TorchvisionResNet` and `TorchvisionVGG` (`vision_models.hpp`) rebuild torchvision's ResNet
+(basic blocks: ResNet18 and ResNet34) and VGG (without BatchNorm: VGG11 to VGG19) from pulsatrix
+layers. They use torchvision's parameter names, so the published ImageNet weights load once
+converted:
+
+```bash
+curl -LO https://download.pytorch.org/models/resnet18-f37072fd.pth
+python3 tools/convert/pickle_to_safetensors.py resnet18-f37072fd.pth resnet18.safetensors
+```
+
+```cpp
+#include "pulsatrix/vision_models.hpp"
+
+TorchvisionResNet model(TorchvisionResNet::ResNet18(), &backend);  // or TorchvisionVGG::VGG16()
+LoadTorchvisionWeights(model, "resnet18.safetensors");  // Linear weights are transposed for you
+model.set_training(false);                              // BatchNorm's running statistics
+Tensor logits = model.forward(x);  // x: (N, 3, 224, 224), normalized with ImageNet's mean and std
+```
+
+- **The input** is torchvision's: resize the short side to 256, crop the center 224x224, scale
+  to [0, 1], subtract the mean (0.485, 0.456, 0.406) and divide by the standard deviation
+  (0.229, 0.224, 0.225), per channel.
+- **Smaller variants** come from the config: `ResNetConfig{blocks, width, num_classes}` and
+  `VGGConfig{features, pool_size, hidden, num_classes}`. The tests use a ResNet of width 4 and
+  a VGG with 8 channels.
+- **Matches PyTorch.** On the published weights, the logits agree with torchvision's to 1e-4
+  (relative to the largest), on CPU and GPU.
+
+To explain one, see [LRP on ImageNet models](../recipes/interpretability/imagenet_lrp.md): fold
+the ResNet's BatchNorms, then explain through `model.layers()`.
 
 ### Reproducibility
 
