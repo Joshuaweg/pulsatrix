@@ -430,6 +430,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pytorch-checkpoints-pt-pth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PyTorch checkpoints (.pt, .pth)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reproducibility" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2115,6 +2126,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pytorch-checkpoints-pt-pth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PyTorch checkpoints (.pt, .pth)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#reproducibility" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2428,6 +2450,42 @@ with these models end to end, see the <a href="../language-models/">Language Mod
 pulsatrix can't run yet is refused, and every parameter must be loaded and every checkpoint
 tensor used. <code>LoadWeights</code> with a <code>WeightMapping</code> manifest (source name, target name, a transpose,
 an optional row slice for fused tensors) loads other layouts the same way.</p>
+<h3 id="pytorch-checkpoints-pt-pth">PyTorch checkpoints (.pt, .pth)<a class="headerlink" href="#pytorch-checkpoints-pt-pth" title="Permanent link">&para;</a></h3>
+<p>pulsatrix never reads a PyTorch pickle file in C++. A <code>.pt</code>, <code>.pth</code> or <code>.pkl</code> file is a small
+program, and loading one can run arbitrary code; malware has been found in published models, and
+scanners that look for it get bypassed. Instead, convert the file to safetensors once, in Python,
+with PyTorch's restricted loader:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"torch&gt;=2.6"</span><span class="w"> </span>safetensors
+python3<span class="w"> </span>tools/convert/pickle_to_safetensors.py<span class="w"> </span>resnet18-f37072fd.pth<span class="w"> </span>resnet18.safetensors
+<span class="c1"># wrote resnet18.safetensors: 102 tensors, 11,699,112 values, dtypes float32, verified</span>
+</code></pre></div>
+<p>The output loads like any safetensors file (<code>SafetensorsFile::Map</code>, <code>LoadWeights</code>,
+<code>LoadCheckpoint</code>). What the converter does:
+- <strong>Loads safely.</strong> It uses <code>torch.load(weights_only=True)</code>, which only rebuilds tensors and
+  plain containers. It refuses torch older than 2.6, where <code>weights_only</code> could still run code
+  (CVE-2025-32434).
+- <strong>Refuses what it can't load safely</strong>, with the reason:
+  - TorchScript archives;
+  - files that need any other Python object;
+  - sparse, quantized and complex tensors.</p>
+<p>There is deliberately no unsafe mode. If a file you trust needs more, load it in a separate
+  environment and re-save <code>model.state_dict()</code> with <code>torch.save</code>.
+- <strong>Finds the weights.</strong> A training checkpoint such as <code>{"epoch": ..., "state_dict": {...},
+  "optimizer": ...}</code> is unwrapped automatically, if exactly one of <code>state_dict</code>, <code>model</code>,
+  <code>model_state_dict</code>, <code>module</code>, <code>net</code> or <code>ema</code> holds tensors. Otherwise pass <code>--key</code> with a
+  dotted path. Nested dicts and lists become dotted names; numbers and strings are skipped and
+  listed.
+- <strong>Options:</strong>
+  - <code>--strip-prefix module.</code> removes DataParallel's prefix.
+  - <code>--float32</code> casts floating-point tensors to float32.
+  - <code>--force</code> allows overwriting the output; without it, an existing file is left alone.
+- <strong>Writes clean tensors.</strong> Each tensor is made contiguous and gets its own bytes: tied weights
+  are written twice. Its dtype is kept: pulsatrix reads bf16 and fp16 by upcasting, and integer
+  buffers such as <code>num_batches_tracked</code> as raw bytes.
+- <strong>Verifies.</strong> The source file's SHA-256 goes into the metadata, and the output is read back and
+  compared bit for bit.</p>
+<p>The converted torchvision ResNet18 reads back in pulsatrix with every one of its 11.7 million
+values matching PyTorch's.</p>
 <h3 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h3>
 <p>Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
 <code>set_seed</code> sets one global seed (default 0). Anything built without its own seed, such as a
