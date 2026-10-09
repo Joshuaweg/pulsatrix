@@ -1,8 +1,12 @@
 var NAVTREEINDEX17 =
 {
+"classpulsatrix_1_1detail_1_1LinuxSources.html#ae7278d139dd9aa888987b2b87304112d":[4,0,0,1,3,2],
+"classpulsatrix_1_1detail_1_1LinuxSources.html#aecc1ea2598e29c0861726e04761496e0":[4,0,0,1,3,0],
+"classpulsatrix_1_1detail_1_1LinuxSources.html#aecc1ea2598e29c0861726e04761496e0":[3,0,0,1,3,0],
+"classpulsatrix_1_1detail_1_1PlatformSources.html":[3,0,0,1,4],
 "classpulsatrix_1_1detail_1_1PlatformSources.html":[4,0,0,1,4],
-"classpulsatrix_1_1detail_1_1PlatformSources.html#a121bf764792b041fc6b417ca5a9ef488":[3,0,0,1,4,0],
 "classpulsatrix_1_1detail_1_1PlatformSources.html#a121bf764792b041fc6b417ca5a9ef488":[4,0,0,1,4,0],
+"classpulsatrix_1_1detail_1_1PlatformSources.html#a121bf764792b041fc6b417ca5a9ef488":[3,0,0,1,4,0],
 "classpulsatrix_1_1detail_1_1PlatformSources.html#ac350742d733587cf72f40d405e81bdc1":[4,0,0,1,4,2],
 "classpulsatrix_1_1detail_1_1PlatformSources.html#ac350742d733587cf72f40d405e81bdc1":[3,0,0,1,4,2],
 "classpulsatrix_1_1detail_1_1PlatformSources.html#ade9dfdb7940a4596b1bc95d532004901":[4,0,0,1,4,1],
@@ -239,15 +243,11 @@ var NAVTREEINDEX17 =
 "mse__loss_8hpp.html":[2,0,51],
 "multihead__attention__module_8hpp.html":[2,0,52],
 "mutation_8hpp.html":[2,6,10],
-"namespacemembers.html":[3,1,0],
 "namespacemembers.html":[3,1,0,0],
+"namespacemembers.html":[3,1,0],
 "namespacemembers_b.html":[3,1,0,1],
 "namespacemembers_c.html":[3,1,0,2],
 "namespacemembers_d.html":[3,1,0,3],
 "namespacemembers_e.html":[3,1,0,4],
-"namespacemembers_enum.html":[3,1,4],
-"namespacemembers_f.html":[3,1,0,5],
-"namespacemembers_func.html":[3,1,1],
-"namespacemembers_func.html":[3,1,1,0],
-"namespacemembers_func_b.html":[3,1,1,1]
+"namespacemembers_enum.html":[3,1,4]
 };
