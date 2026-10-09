@@ -174,89 +174,91 @@ $(document).ready(function(){initNavTree('mutation_8hpp_source.html',''); initRe
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;GaussianMutation: mutation_probability must be in [0, 1]&quot;</span>);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    std::bernoulli_distribution mask_dist(mutation_probability);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    std::normal_distribution&lt;double&gt; noise_dist(0.0, sigma);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    std::vector&lt;bool&gt; mask(genotype.size());</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    std::vector&lt;double&gt; noise(genotype.size());</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; genotype.size(); ++i) {</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        mask[i] = mask_dist(rng);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        noise[i] = noise_dist(rng);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacepulsatrix.html#a39f4305db741695aecae5cf5f02a1a8c">GaussianMutationByNoise</a>(genotype, noise, mask);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="comment">// Standard normal draws scaled by sigma: std::normal_distribution requires a positive</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="comment">// stddev, and z * sigma is the same value it would draw for any sigma &gt; 0.</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    std::normal_distribution&lt;double&gt; noise_dist(0.0, 1.0);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    std::vector&lt;bool&gt; mask(genotype.size());</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    std::vector&lt;double&gt; noise(genotype.size());</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; genotype.size(); ++i) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        mask[i] = mask_dist(rng);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        noise[i] = noise_dist(rng) * sigma;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacepulsatrix.html#a39f4305db741695aecae5cf5f02a1a8c">GaussianMutationByNoise</a>(genotype, noise, mask);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>}</div>
 </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">// --- Polynomial mutation (Deb &amp; Goyal 1996; DEAP&#39;s mutPolynomialBounded) ---</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="foldopen" id="foldopen00127" data-start="{" data-end="}">
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9">  127</a></span><span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code hl_function" href="namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9">PolynomialMutationByDraw</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> lower, <span class="keywordtype">double</span> upper, <span class="keywordtype">double</span> eta,</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                                        <span class="keywordtype">double</span> u) {</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">if</span> (!(lower &lt; upper)) {</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutationByDraw: lower must be &lt; upper&quot;</span>);</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">if</span> (x &lt; lower || x &gt; upper) {</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutationByDraw: x must be in [lower, upper]&quot;</span>);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    }</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordflow">if</span> (eta &lt; 0.0) {</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutationByDraw: eta must be non-negative&quot;</span>);</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">if</span> (u &lt; 0.0 || u &gt; 1.0) {</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutationByDraw: u must be in [0, 1]&quot;</span>);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    }</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> range = upper - lower;</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> delta1 = (x - lower) / range;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> delta2 = (upper - x) / range;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> mut_pow = 1.0 / (eta + 1.0);</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordtype">double</span> delta_q;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordflow">if</span> (u &lt;= 0.5) {</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="keywordtype">double</span> xy = 1.0 - delta1;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        <span class="keywordtype">double</span> val = 2.0 * u + (1.0 - 2.0 * u) * std::pow(xy, eta + 1.0);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        delta_q = std::pow(val, mut_pow) - 1.0;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordtype">double</span> xy = 1.0 - delta2;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordtype">double</span> val = 2.0 * (1.0 - u) + 2.0 * (u - 0.5) * std::pow(xy, eta + 1.0);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        delta_q = 1.0 - std::pow(val, mut_pow);</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    }</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordtype">double</span> result = x + delta_q * range;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordflow">return</span> std::min(std::max(result, lower), upper);</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">// --- Polynomial mutation (Deb &amp; Goyal 1996; DEAP&#39;s mutPolynomialBounded) ---</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9">  129</a></span><span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code hl_function" href="namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9">PolynomialMutationByDraw</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> lower, <span class="keywordtype">double</span> upper, <span class="keywordtype">double</span> eta,</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                                        <span class="keywordtype">double</span> u) {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">if</span> (!(lower &lt; upper)) {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutationByDraw: lower must be &lt; upper&quot;</span>);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">if</span> (x &lt; lower || x &gt; upper) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutationByDraw: x must be in [lower, upper]&quot;</span>);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">if</span> (eta &lt; 0.0) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutationByDraw: eta must be non-negative&quot;</span>);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    }</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">if</span> (u &lt; 0.0 || u &gt; 1.0) {</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutationByDraw: u must be in [0, 1]&quot;</span>);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    }</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> range = upper - lower;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> delta1 = (x - lower) / range;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> delta2 = (upper - x) / range;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> mut_pow = 1.0 / (eta + 1.0);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordtype">double</span> delta_q;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keywordflow">if</span> (u &lt;= 0.5) {</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        <span class="keywordtype">double</span> xy = 1.0 - delta1;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordtype">double</span> val = 2.0 * u + (1.0 - 2.0 * u) * std::pow(xy, eta + 1.0);</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        delta_q = std::pow(val, mut_pow) - 1.0;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <span class="keywordtype">double</span> xy = 1.0 - delta2;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <span class="keywordtype">double</span> val = 2.0 * (1.0 - u) + 2.0 * (u - 0.5) * std::pow(xy, eta + 1.0);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        delta_q = 1.0 - std::pow(val, mut_pow);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordtype">double</span> result = x + delta_q * range;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordflow">return</span> std::min(std::max(result, lower), upper);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>}</div>
 </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> RNG&gt;</div>
-<div class="foldopen" id="foldopen00168" data-start="{" data-end="}">
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0">  168</a></span>std::vector&lt;double&gt; <a class="code hl_function" href="namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0">PolynomialMutation</a>(<span class="keyword">const</span> std::vector&lt;double&gt;&amp; genotype,</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                                        <span class="keyword">const</span> std::vector&lt;double&gt;&amp; lower_bounds,</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                                        <span class="keyword">const</span> std::vector&lt;double&gt;&amp; upper_bounds, <span class="keywordtype">double</span> eta,</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                                        <span class="keywordtype">double</span> mutation_probability, RNG&amp; rng) {</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordflow">if</span> (genotype.size() != lower_bounds.size() || genotype.size() != upper_bounds.size()) {</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutation: sizes must all match&quot;</span>);</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    }</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">if</span> (mutation_probability &lt; 0.0 || mutation_probability &gt; 1.0) {</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutation: mutation_probability must be in [0, 1]&quot;</span>);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    std::bernoulli_distribution mask_dist(mutation_probability);</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    std::uniform_real_distribution&lt;double&gt; draw_dist(0.0, 1.0);</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    std::vector&lt;double&gt; result(genotype.size());</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; genotype.size(); ++i) {</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <span class="keywordflow">if</span> (mask_dist(rng)) {</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            result[i] = <a class="code hl_function" href="namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9">PolynomialMutationByDraw</a>(genotype[i], lower_bounds[i], upper_bounds[i],</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                                                  eta, draw_dist(rng));</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>            result[i] = genotype[i];</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        }</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    }</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> RNG&gt;</div>
+<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0">  170</a></span>std::vector&lt;double&gt; <a class="code hl_function" href="namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0">PolynomialMutation</a>(<span class="keyword">const</span> std::vector&lt;double&gt;&amp; genotype,</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                                        <span class="keyword">const</span> std::vector&lt;double&gt;&amp; lower_bounds,</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                                        <span class="keyword">const</span> std::vector&lt;double&gt;&amp; upper_bounds, <span class="keywordtype">double</span> eta,</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                                        <span class="keywordtype">double</span> mutation_probability, RNG&amp; rng) {</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keywordflow">if</span> (genotype.size() != lower_bounds.size() || genotype.size() != upper_bounds.size()) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutation: sizes must all match&quot;</span>);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keywordflow">if</span> (mutation_probability &lt; 0.0 || mutation_probability &gt; 1.0) {</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;PolynomialMutation: mutation_probability must be in [0, 1]&quot;</span>);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    std::bernoulli_distribution mask_dist(mutation_probability);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    std::uniform_real_distribution&lt;double&gt; draw_dist(0.0, 1.0);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    std::vector&lt;double&gt; result(genotype.size());</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; genotype.size(); ++i) {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        <span class="keywordflow">if</span> (mask_dist(rng)) {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>            result[i] = <a class="code hl_function" href="namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9">PolynomialMutationByDraw</a>(genotype[i], lower_bounds[i], upper_bounds[i],</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                                                  eta, draw_dist(rng));</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            result[i] = genotype[i];</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        }</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    }</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>}</div>
 </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>}  <span class="comment">// namespace pulsatrix</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>}  <span class="comment">// namespace pulsatrix</span></div>
 <div class="ttc" id="anamespacepulsatrix_html"><div class="ttname"><a href="namespacepulsatrix.html">pulsatrix</a></div><div class="ttdef"><b>Definition</b> acquisition_functions.hpp:16</div></div>
-<div class="ttc" id="anamespacepulsatrix_html_a2e12bcdcf64736fba8a462183a8cefc9"><div class="ttname"><a href="namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9">pulsatrix::PolynomialMutationByDraw</a></div><div class="ttdeci">double PolynomialMutationByDraw(double x, double lower, double upper, double eta, double u)</div><div class="ttdoc">Polynomial-mutates a single bounded gene given an explicit draw.</div><div class="ttdef"><b>Definition</b> mutation.hpp:127</div></div>
+<div class="ttc" id="anamespacepulsatrix_html_a2e12bcdcf64736fba8a462183a8cefc9"><div class="ttname"><a href="namespacepulsatrix.html#a2e12bcdcf64736fba8a462183a8cefc9">pulsatrix::PolynomialMutationByDraw</a></div><div class="ttdeci">double PolynomialMutationByDraw(double x, double lower, double upper, double eta, double u)</div><div class="ttdoc">Polynomial-mutates a single bounded gene given an explicit draw.</div><div class="ttdef"><b>Definition</b> mutation.hpp:129</div></div>
 <div class="ttc" id="anamespacepulsatrix_html_a39f4305db741695aecae5cf5f02a1a8c"><div class="ttname"><a href="namespacepulsatrix.html#a39f4305db741695aecae5cf5f02a1a8c">pulsatrix::GaussianMutationByNoise</a></div><div class="ttdeci">std::vector&lt; double &gt; GaussianMutationByNoise(const std::vector&lt; double &gt; &amp;genotype, const std::vector&lt; double &gt; &amp;noise, const std::vector&lt; bool &gt; &amp;apply_mask)</div><div class="ttdoc">Adds noise[i] to genotype[i] wherever apply_mask[i] is true, leaves the rest unchanged.</div><div class="ttdef"><b>Definition</b> mutation.hpp:66</div></div>
 <div class="ttc" id="anamespacepulsatrix_html_a583c867d2a7a1bcf70ed10994d2290e9"><div class="ttname"><a href="namespacepulsatrix.html#a583c867d2a7a1bcf70ed10994d2290e9">pulsatrix::BitFlipMutation</a></div><div class="ttdeci">std::vector&lt; bool &gt; BitFlipMutation(const std::vector&lt; bool &gt; &amp;genotype, double mutation_probability, RNG &amp;rng)</div><div class="ttdoc">RNG-driven wrapper: each gene flips independently with probability mutation_probability.</div><div class="ttdef"><b>Definition</b> mutation.hpp:46</div></div>
 <div class="ttc" id="anamespacepulsatrix_html_a88c88a8898d6848d8a6a21e268ef4035"><div class="ttname"><a href="namespacepulsatrix.html#a88c88a8898d6848d8a6a21e268ef4035">pulsatrix::BitFlipMutationByMask</a></div><div class="ttdeci">std::vector&lt; bool &gt; BitFlipMutationByMask(const std::vector&lt; bool &gt; &amp;genotype, const std::vector&lt; bool &gt; &amp;flip_mask)</div><div class="ttdoc">Flips each gene where flip_mask is true, leaves the rest unchanged.</div><div class="ttdef"><b>Definition</b> mutation.hpp:25</div></div>
 <div class="ttc" id="anamespacepulsatrix_html_ab4c2230dcac5c55349d824fd7e7bf797"><div class="ttname"><a href="namespacepulsatrix.html#ab4c2230dcac5c55349d824fd7e7bf797">pulsatrix::GaussianMutation</a></div><div class="ttdeci">std::vector&lt; double &gt; GaussianMutation(const std::vector&lt; double &gt; &amp;genotype, double sigma, double mutation_probability, RNG &amp;rng)</div><div class="ttdoc">RNG-driven wrapper: each gene independently receives N(0, sigma^2) noise with probability mutation_pr...</div><div class="ttdef"><b>Definition</b> mutation.hpp:90</div></div>
-<div class="ttc" id="anamespacepulsatrix_html_ab5faa119bd4e92d60678ede26e52edf0"><div class="ttname"><a href="namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0">pulsatrix::PolynomialMutation</a></div><div class="ttdeci">std::vector&lt; double &gt; PolynomialMutation(const std::vector&lt; double &gt; &amp;genotype, const std::vector&lt; double &gt; &amp;lower_bounds, const std::vector&lt; double &gt; &amp;upper_bounds, double eta, double mutation_probability, RNG &amp;rng)</div><div class="ttdoc">RNG-driven wrapper: each gene independently mutates (via PolynomialMutationByDraw) with probability m...</div><div class="ttdef"><b>Definition</b> mutation.hpp:168</div></div>
+<div class="ttc" id="anamespacepulsatrix_html_ab5faa119bd4e92d60678ede26e52edf0"><div class="ttname"><a href="namespacepulsatrix.html#ab5faa119bd4e92d60678ede26e52edf0">pulsatrix::PolynomialMutation</a></div><div class="ttdeci">std::vector&lt; double &gt; PolynomialMutation(const std::vector&lt; double &gt; &amp;genotype, const std::vector&lt; double &gt; &amp;lower_bounds, const std::vector&lt; double &gt; &amp;upper_bounds, double eta, double mutation_probability, RNG &amp;rng)</div><div class="ttdoc">RNG-driven wrapper: each gene independently mutates (via PolynomialMutationByDraw) with probability m...</div><div class="ttdef"><b>Definition</b> mutation.hpp:170</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -316,54 +316,55 @@ $(document).ready(function(){initNavTree('neat__genome_8hpp_source.html',''); in
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;NEATGenome::MutateWeights: mutation_probability must be in [0, 1]&quot;</span>);</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        }</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        std::bernoulli_distribution mask(mutation_probability);</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        std::normal_distribution&lt;double&gt; noise(0.0, sigma);</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; c : connections_) {</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            <span class="keywordflow">if</span> (c.enabled &amp;&amp; mask(rng)) {</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                c.weight += noise(rng);</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>            }</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        }</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    }</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="comment">// Scaled standard normal draws: std::normal_distribution requires a positive stddev.</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        std::normal_distribution&lt;double&gt; noise(0.0, 1.0);</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; c : connections_) {</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>            <span class="keywordflow">if</span> (c.enabled &amp;&amp; mask(rng)) {</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                c.weight += noise(rng) * sigma;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>            }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    }</div>
 </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    [[nodiscard]] <span class="keywordtype">bool</span> HasNode(<span class="keywordtype">int</span> <span class="keywordtype">id</span>)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        <span class="keywordflow">return</span> std::any_of(nodes_.begin(), nodes_.end(), [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structpulsatrix_1_1NodeGene.html">NodeGene</a>&amp; n) { return n.id == id; });</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    }</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    [[nodiscard]] <span class="keywordtype">bool</span> ConnectionExists(<span class="keywordtype">int</span> in_node, <span class="keywordtype">int</span> out_node)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        <span class="keywordflow">return</span> std::any_of(connections_.begin(), connections_.end(), [&amp;](<span class="keyword">const</span> ConnectionGene&amp; c) {</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            return c.in_node == in_node &amp;&amp; c.out_node == out_node;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>        });</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    }</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    [[nodiscard]] <span class="keywordtype">bool</span> CanReach(<span class="keywordtype">int</span> from_node, <span class="keywordtype">int</span> out_node)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        std::vector&lt;int&gt; stack{from_node};</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        std::vector&lt;int&gt; visited;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        <span class="keywordflow">while</span> (!stack.empty()) {</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>            <span class="keywordtype">int</span> current = stack.back();</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>            stack.pop_back();</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>            <span class="keywordflow">if</span> (current == out_node) {</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>            }</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>            <span class="keywordflow">if</span> (std::find(visited.begin(), visited.end(), current) != visited.end()) {</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>            }</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>            visited.push_back(current);</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; c : connections_) {</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                <span class="keywordflow">if</span> (c.enabled &amp;&amp; c.in_node == current) {</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                    stack.push_back(c.out_node);</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                }</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>            }</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>        }</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    }</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    std::vector&lt;NodeGene&gt; nodes_;</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    std::vector&lt;ConnectionGene&gt; connections_;</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>};</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    [[nodiscard]] <span class="keywordtype">bool</span> HasNode(<span class="keywordtype">int</span> <span class="keywordtype">id</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <span class="keywordflow">return</span> std::any_of(nodes_.begin(), nodes_.end(), [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structpulsatrix_1_1NodeGene.html">NodeGene</a>&amp; n) { return n.id == id; });</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    }</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    [[nodiscard]] <span class="keywordtype">bool</span> ConnectionExists(<span class="keywordtype">int</span> in_node, <span class="keywordtype">int</span> out_node)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keywordflow">return</span> std::any_of(connections_.begin(), connections_.end(), [&amp;](<span class="keyword">const</span> ConnectionGene&amp; c) {</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>            return c.in_node == in_node &amp;&amp; c.out_node == out_node;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        });</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    }</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    [[nodiscard]] <span class="keywordtype">bool</span> CanReach(<span class="keywordtype">int</span> from_node, <span class="keywordtype">int</span> out_node)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        std::vector&lt;int&gt; stack{from_node};</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        std::vector&lt;int&gt; visited;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        <span class="keywordflow">while</span> (!stack.empty()) {</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>            <span class="keywordtype">int</span> current = stack.back();</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>            stack.pop_back();</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>            <span class="keywordflow">if</span> (current == out_node) {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>            }</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>            <span class="keywordflow">if</span> (std::find(visited.begin(), visited.end(), current) != visited.end()) {</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>            }</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>            visited.push_back(current);</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; c : connections_) {</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                <span class="keywordflow">if</span> (c.enabled &amp;&amp; c.in_node == current) {</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                    stack.push_back(c.out_node);</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                }</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>            }</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>        }</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    }</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    std::vector&lt;NodeGene&gt; nodes_;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    std::vector&lt;ConnectionGene&gt; connections_;</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>};</div>
 </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>}  <span class="comment">// namespace pulsatrix</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>}  <span class="comment">// namespace pulsatrix</span></div>
 <div class="ttc" id="aclasspulsatrix_1_1InnovationTracker_html"><div class="ttname"><a href="classpulsatrix_1_1InnovationTracker.html">pulsatrix::InnovationTracker</a></div><div class="ttdoc">The global historical-marking registry: the same structural mutation (an identical new connection,...</div><div class="ttdef"><b>Definition</b> neat_genome.hpp:55</div></div>
 <div class="ttc" id="aclasspulsatrix_1_1InnovationTracker_html_a33dc673626ea4d9739ecd45384b391a7"><div class="ttname"><a href="classpulsatrix_1_1InnovationTracker.html#a33dc673626ea4d9739ecd45384b391a7">pulsatrix::InnovationTracker::InnovationTracker</a></div><div class="ttdeci">InnovationTracker(int next_node_id)</div><div class="ttdef"><b>Definition</b> neat_genome.hpp:57</div></div>
 <div class="ttc" id="aclasspulsatrix_1_1InnovationTracker_html_a731384e6c7ed43ba0f55719f19d6433d"><div class="ttname"><a href="classpulsatrix_1_1InnovationTracker.html#a731384e6c7ed43ba0f55719f19d6433d">pulsatrix::InnovationTracker::GetNodeIdForSplit</a></div><div class="ttdeci">int GetNodeIdForSplit(int split_connection_innovation)</div><div class="ttdoc">The new node ID created by splitting the connection identified by split_connection_innovation – reuse...</div><div class="ttdef"><b>Definition</b> neat_genome.hpp:76</div></div>
