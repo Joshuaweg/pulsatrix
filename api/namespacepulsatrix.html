@@ -303,6 +303,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitNode.html">CircuitNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One node of a <a class="el" href="classpulsatrix_1_1CircuitGraph.html" title="A copyable, self-contained circuit graph: every node of one forward pass with an ablation importance ...">CircuitGraph</a>: a computation-graph node plus its importance score.  <a href="structpulsatrix_1_1CircuitNode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitScores.html">CircuitScores</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Circuit-tracer's scores of a graph.  <a href="structpulsatrix_1_1CircuitScores.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitTrace.html">CircuitTrace</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An attribution graph before pruning: every active feature, error and token, the explained logits, and the full adjacency.  <a href="structpulsatrix_1_1CircuitTrace.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1CircuitTraceOptions.html">CircuitTraceOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ClusterSampler.html">ClusterSampler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cluster-weighted sampling, as ESM-2 drew UniRef50: a cluster uniformly, then one of its members uniformly, so large families don't dominate. With every sequence its own cluster, it is uniform sampling with replacement.  <a href="classpulsatrix_1_1ClusterSampler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -400,6 +408,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CrossEntropyLoss.html">CrossEntropyLoss</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">loss = -log(softmax(logits)[target_class]), combined for numerical stability (subtract the max logit before exponentiating) rather than computing softmax and log separately.  <a href="classpulsatrix_1_1CrossEntropyLoss.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CrossLayerTranscoder.html">CrossLayerTranscoder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cross-layer transcoder (CLT) over a model's L MLPs, or a set of per-layer transcoders (PLTs, a CLT whose features only write to their own layer).  <a href="classpulsatrix_1_1CrossLayerTranscoder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1CsvDataset.html">CsvDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a CSV file's numeric columns: N named feature columns -&gt; one (1, num_features) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per row, plus one named label column -&gt; one (1,) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a>. Requires a header row (feature/label columns are resolved by name).  <a href="classpulsatrix_1_1CsvDataset.html#details">More...</a><br /></td></tr>
@@ -1770,6 +1781,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a862a61bf00880ccd8d58cdbb43eaae15" id="r_a862a61bf00880ccd8d58cdbb43eaae15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a862a61bf00880ccd8d58cdbb43eaae15">LoadCheckpoint</a> (const std::string &amp;path, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, <a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a> &amp;optimizer, <a class="el" href="structpulsatrix_1_1CheckpointLoadOptions.html">CheckpointLoadOptions</a> options={})</td></tr>
 <tr class="memdesc:a862a61bf00880ccd8d58cdbb43eaae15"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepulsatrix.html#abd2d723852104374608e931b7e4bb326" title="Loads parameters and buffers saved by SaveCheckpoint() (or any safetensors file whose names match) in...">LoadCheckpoint()</a>, plus <code>optimizer</code>'s state from OptimizerStatePath(path), so training resumes exactly where it stopped.  <br /></td></tr>
 <tr class="separator:a862a61bf00880ccd8d58cdbb43eaae15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81d2d7ac3b573ecad3dff525f6b75dbe" id="r_a81d2d7ac3b573ecad3dff525f6b75dbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1CrossLayerTranscoder.html">CrossLayerTranscoder</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a81d2d7ac3b573ecad3dff525f6b75dbe">LoadTranscoders</a> (const std::string &amp;directory, int64_t num_layers, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a81d2d7ac3b573ecad3dff525f6b75dbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads transcoders from a directory in one of the layouts circuit-tracer reads, with bf16/fp16 weights upcast:  <br /></td></tr>
+<tr class="separator:a81d2d7ac3b573ecad3dff525f6b75dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5db02d3b1d4c456d28537ebb76ec639" id="r_ae5db02d3b1d4c456d28537ebb76ec639"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CircuitTrace.html">CircuitTrace</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#ae5db02d3b1d4c456d28537ebb76ec639">TraceCircuit</a> (<a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;model, const <a class="el" href="classpulsatrix_1_1CrossLayerTranscoder.html">CrossLayerTranscoder</a> &amp;transcoder, const std::vector&lt; int64_t &gt; &amp;ids, const <a class="el" href="structpulsatrix_1_1CircuitTraceOptions.html">CircuitTraceOptions</a> &amp;options={})</td></tr>
+<tr class="memdesc:ae5db02d3b1d4c456d28537ebb76ec639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the model on <code>ids</code> (one sequence) with <code>transcoder</code> in place of its MLPs, and attributes the salient logits and every active feature through the frozen model.  <br /></td></tr>
+<tr class="separator:ae5db02d3b1d4c456d28537ebb76ec639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63fa0005a2016a25956cf15bc50a1e2b" id="r_a63fa0005a2016a25956cf15bc50a1e2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1CircuitScores.html">CircuitScores</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a63fa0005a2016a25956cf15bc50a1e2b">ScoreCircuit</a> (const <a class="el" href="structpulsatrix_1_1CircuitTrace.html">CircuitTrace</a> &amp;trace)</td></tr>
+<tr class="memdesc:a63fa0005a2016a25956cf15bc50a1e2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Circuit-tracer's replacement and completeness scores (graph.py).  <br /></td></tr>
+<tr class="separator:a63fa0005a2016a25956cf15bc50a1e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99a1ba8526a2951031118f4b0e546591" id="r_a99a1ba8526a2951031118f4b0e546591"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1AttributionGraph.html">AttributionGraph</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a99a1ba8526a2951031118f4b0e546591">ToAttributionGraph</a> (const <a class="el" href="structpulsatrix_1_1CircuitTrace.html">CircuitTrace</a> &amp;trace, const <a class="el" href="structpulsatrix_1_1CircuitTraceOptions.html">CircuitTraceOptions</a> &amp;options, const std::vector&lt; std::string &gt; &amp;logit_labels={})</td></tr>
+<tr class="memdesc:a99a1ba8526a2951031118f4b0e546591"><td class="mdescLeft">&#160;</td><td class="mdescRight">The graph for Neuronpedia's or circuit-tracer's viewer, pruned as circuit-tracer prunes: nodes by indirect influence on the logits (node_threshold), then edges by influence-weighted score (edge_threshold), then nodes left without edges. <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> ids, types and labels follow circuit-tracer (<code>"&lt;layer&gt;_&lt;feature&gt;_&lt;position&gt;"</code>, <code>"cross layer transcoder"</code>, <code>"mlp reconstruction error"</code>, <code>"E_&lt;token&gt;_&lt;position&gt;"</code>, <code>"&lt;L+1&gt;_&lt;token&gt;_&lt;position&gt;"</code> for logits).  <br /></td></tr>
+<tr class="separator:a99a1ba8526a2951031118f4b0e546591"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a314a4a59c2e126269885c0c51ffbd6bc" id="r_a314a4a59c2e126269885c0c51ffbd6bc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a314a4a59c2e126269885c0c51ffbd6bc">AskGivenSamples</a> (const <a class="el" href="structpulsatrix_1_1CMAESState.html">CMAESState</a> &amp;state, const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;z_samples)</td></tr>
 <tr class="memdesc:a314a4a59c2e126269885c0c51ffbd6bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure core: decodes an explicit set of standard-normal sample vectors into offspring points, x_i = mean + sigma * sqrt(variances) (elementwise) * z_i.  <br /></td></tr>
 <tr class="separator:a314a4a59c2e126269885c0c51ffbd6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -9785,6 +9808,58 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 
 </div>
 </div>
+<a id="a81d2d7ac3b573ecad3dff525f6b75dbe" name="a81d2d7ac3b573ecad3dff525f6b75dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81d2d7ac3b573ecad3dff525f6b75dbe">&#9670;&#160;</a></span>LoadTranscoders()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1CrossLayerTranscoder.html">CrossLayerTranscoder</a> pulsatrix::LoadTranscoders </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>directory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int64_t&#160;</td>
+          <td class="paramname"><em>num_layers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads transcoders from a directory in one of the layouts circuit-tracer reads, with bf16/fp16 weights upcast: </p>
+<ul>
+<li><b>Per-layer</b> (<code>model_kind: transcoder_set</code>, as in mwhanna/gemma-scope-2-270m-pt): <code>layer_&lt;i&gt;.safetensors</code> holding <code>W_enc</code> <code>(F, d)</code>, <code>W_dec</code> <code>(F, d)</code>, <code>b_enc</code>, <code>b_dec</code>, optionally <code>activation_function.threshold</code> (or <code>threshold</code>) and <code>W_skip</code>.</li>
+<li><b>Cross-layer, circuit-tracer's lazy format</b>: <code>W_enc_&lt;i&gt;.safetensors</code> holding <code>W_enc_&lt;i&gt;</code>, <code>b_enc_&lt;i&gt;</code>, <code>b_dec_&lt;i&gt;</code>, optionally <code>threshold_&lt;i&gt;</code> and <code>W_skip_&lt;i&gt;</code>, and <code>W_dec_&lt;i&gt;.safetensors</code> holding <code>W_dec_&lt;i&gt;</code> <code>(F, L − i, d)</code>. <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">num_layers</td><td>The model's layers; files are read for 0 .. num_layers − 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a missing file or tensor, or shapes that don't agree. </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
+
+</div>
+</div>
 <a id="a25e5f83ee46d7d4320d6e7e0a7fdd9bb" name="a25e5f83ee46d7d4320d6e7e0a7fdd9bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a25e5f83ee46d7d4320d6e7e0a7fdd9bb">&#9670;&#160;</a></span>LoadVizFonts()</h2>
 
@@ -16620,6 +16695,26 @@ template&lt;typename ObjectiveFn , typename RNG &gt; </div>
 
 </div>
 </div>
+<a id="a63fa0005a2016a25956cf15bc50a1e2b" name="a63fa0005a2016a25956cf15bc50a1e2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63fa0005a2016a25956cf15bc50a1e2b">&#9670;&#160;</a></span>ScoreCircuit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CircuitScores.html">CircuitScores</a> pulsatrix::ScoreCircuit </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitTrace.html">CircuitTrace</a> &amp;&#160;</td>
+          <td class="paramname"><em>trace</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Circuit-tracer's replacement and completeness scores (graph.py). </p>
+
+</div>
+</div>
 <a id="ae7bdeb2d964dcd43f083e990cfea9e3b" name="ae7bdeb2d964dcd43f083e990cfea9e3b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7bdeb2d964dcd43f083e990cfea9e3b">&#9670;&#160;</a></span>ScoringPassBytes()</h2>
 
@@ -17875,6 +17970,42 @@ Device-generic (GPU-native-kernels Mission 7): each parameter is one buffer copy
 </div><div class="memdoc">
 
 <p>Copies <code>attr</code> into a document, reading its values to the host. </p>
+
+</div>
+</div>
+<a id="a99a1ba8526a2951031118f4b0e546591" name="a99a1ba8526a2951031118f4b0e546591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99a1ba8526a2951031118f4b0e546591">&#9670;&#160;</a></span>ToAttributionGraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1AttributionGraph.html">AttributionGraph</a> pulsatrix::ToAttributionGraph </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitTrace.html">CircuitTrace</a> &amp;&#160;</td>
+          <td class="paramname"><em>trace</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitTraceOptions.html">CircuitTraceOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>logit_labels</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The graph for Neuronpedia's or circuit-tracer's viewer, pruned as circuit-tracer prunes: nodes by indirect influence on the logits (node_threshold), then edges by influence-weighted score (edge_threshold), then nodes left without edges. <a class="el" href="classpulsatrix_1_1Node.html" title="A single computation graph node. Owned exclusively by its ComputationGraph (see computation_graph....">Node</a> ids, types and labels follow circuit-tracer (<code>"&lt;layer&gt;_&lt;feature&gt;_&lt;position&gt;"</code>, <code>"cross layer transcoder"</code>, <code>"mlp reconstruction error"</code>, <code>"E_&lt;token&gt;_&lt;position&gt;"</code>, <code>"&lt;L+1&gt;_&lt;token&gt;_&lt;position&gt;"</code> for logits). </p>
 
 </div>
 </div>
@@ -19515,6 +19646,60 @@ template&lt;typename Genotype , typename FitnessT , typename RNG &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ae5db02d3b1d4c456d28537ebb76ec639" name="ae5db02d3b1d4c456d28537ebb76ec639"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5db02d3b1d4c456d28537ebb76ec639">&#9670;&#160;</a></span>TraceCircuit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1CircuitTrace.html">CircuitTrace</a> pulsatrix::TraceCircuit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1CausalLM.html">CausalLM</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1CrossLayerTranscoder.html">CrossLayerTranscoder</a> &amp;&#160;</td>
+          <td class="paramname"><em>transcoder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int64_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ids</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structpulsatrix_1_1CircuitTraceOptions.html">CircuitTraceOptions</a> &amp;&#160;</td>
+          <td class="paramname"><em>options</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Runs the model on <code>ids</code> (one sequence) with <code>transcoder</code> in place of its MLPs, and attributes the salient logits and every active feature through the frozen model. </p>
+<ul>
+<li>The forward pass is the model's own: reconstruction plus error is the MLP's output, so the logits are unchanged.</li>
+<li>Frozen: attention patterns, every RMSNorm's scale (pre- and post-norms, the final norm). Gradients don't pass through the MLPs; with a skip they pass through it.</li>
+<li>Edges come from batched backward passes from each target's input vector, contracted at every layer's MLP output with the sources' output vectors (<code>a_s</code> times decoders, errors) and at the embeddings with the scaled token embeddings. <dl class="section note"><dt>Note</dt><dd>Gemma's final logit softcap is outside the linearization. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the transcoder's layers or width don't match the model, or the prompt is empty. </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
 
 </div>
 </div>

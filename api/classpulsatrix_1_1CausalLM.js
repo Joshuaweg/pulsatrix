@@ -7,6 +7,7 @@ var classpulsatrix_1_1CausalLM =
     [ "embed_tokens", "classpulsatrix_1_1CausalLM.html#afd56ae0478d49c9fe14323a83d8de17c", null ],
     [ "forward_impl", "classpulsatrix_1_1CausalLM.html#abf0b56f0bbec7741133bff0b23f57860", null ],
     [ "layer", "classpulsatrix_1_1CausalLM.html#a146c289c429c1bf98cd36169f6249850", null ],
+    [ "lm_head", "classpulsatrix_1_1CausalLM.html#a7a04d91fc2f2179d49b1af7082964b95", null ],
     [ "named_buffers", "classpulsatrix_1_1CausalLM.html#a4a50100e51aaf0c37def6e393bcb3fe9", null ],
     [ "named_parameters", "classpulsatrix_1_1CausalLM.html#a3f05f65d21f65a6d2448da9b600396c2", null ],
     [ "next_token_logits", "classpulsatrix_1_1CausalLM.html#ae51ea44ac86b795d537c158aaff5921f", null ],

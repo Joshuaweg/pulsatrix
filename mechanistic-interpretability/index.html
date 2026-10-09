@@ -825,6 +825,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#attribution-graphs-with-transcoders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attribution graphs with transcoders
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#building-a-circuit-graph" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1986,6 +1997,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#attribution-graphs-with-transcoders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attribution graphs with transcoders
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#building-a-circuit-graph" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2088,6 +2110,10 @@ model's or environment's structure.</p>
 <tr>
 <td>Which pieces of the weights does each input use?</td>
 <td><code>ComponentLinear</code>, <code>ParameterDecomposition</code> (SPD, VPD)</td>
+</tr>
+<tr>
+<td>Which features carry a language model's prediction, layer to layer?</td>
+<td><code>TraceCircuit</code> with a <code>CrossLayerTranscoder</code></td>
 </tr>
 <tr>
 <td>Can a direction push the model's behavior, and how reliably?</td>
@@ -3191,6 +3217,103 @@ reference schedule is 40,000 steps of 4,096.</p>
   no toy results; its toy configs use another importance loss, not reproduced here.</li>
 <li><strong>A faster setting.</strong> A learning rate of 1e-2 and importance 1e-2 reach one subcomponent per
   feature in 3,000 steps of 1,024 (the unit test, Release builds only).</li>
+</ul>
+<h3 id="attribution-graphs-with-transcoders">Attribution graphs with transcoders<a class="headerlink" href="#attribution-graphs-with-transcoders" title="Permanent link">&para;</a></h3>
+<p>An attribution graph (Ameisen, Lindsey et al., "Circuit Tracing", Transformer Circuits, 2025)
+explains one prediction as a graph of interpretable features.</p>
+<ul>
+<li><strong>The replacement model.</strong> Each MLP is replaced by a transcoder's features plus an error node,
+  the MLP output the features miss. Attention patterns and normalization scales are frozen at
+  their values for this prompt. What is left between features is linear, so every edge is an
+  exact attribution. Its weight is the source's output vector, carried through the frozen model,
+  dotted with the target's input vector. A feature's input vector is its encoder row; a logit's
+  is its unembedding minus the mean unembedding.</li>
+<li><strong>Nodes:</strong></li>
+<li>active features, by layer and position;</li>
+<li>one error node per layer and position;</li>
+<li>the token embeddings;</li>
+<li>the likely next tokens (up to 10, until their probabilities sum to 0.95).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/circuit_tracing.hpp"</span>
+
+<span class="c1">// Per-layer or cross-layer transcoders in circuit-tracer's layouts.</span>
+<span class="n">CrossLayerTranscoder</span><span class="w"> </span><span class="n">clt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTranscoders</span><span class="p">(</span><span class="n">dir</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">num_layers</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">CircuitTrace</span><span class="w"> </span><span class="n">trace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TraceCircuit</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">clt</span><span class="p">,</span><span class="w"> </span><span class="n">ids</span><span class="p">);</span><span class="w">   </span><span class="c1">// every edge, unpruned</span>
+<span class="n">CircuitScores</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScoreCircuit</span><span class="p">(</span><span class="n">trace</span><span class="p">);</span><span class="w">            </span><span class="c1">// replacement, completeness</span>
+<span class="n">AttributionGraph</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToAttributionGraph</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="n">logit_labels</span><span class="p">);</span><span class="w">  </span><span class="c1">// pruned, for the viewer</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToNeuronpediaJson</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+</code></pre></div>
+<p><code>pulsatrix_explain_text MODEL "prompt" --graph out.json --transcoders DIR</code> writes the graph for
+Neuronpedia's or circuit-tracer's viewer.</p>
+<ul>
+<li><strong>Following circuit-tracer</strong> (github.com/decoderesearch/circuit-tracer):</li>
+<li>The forward pass is the model's own: reconstruction plus error is the MLP's output, so the
+    logits are unchanged.</li>
+<li>The first position's features and errors are left out, which makes BOS's MLP outputs
+    constants.</li>
+<li>Pruning keeps the nodes with 80% of the indirect influence on the logits and the edges with
+    98%, then drops nodes left without edges.</li>
+<li>The replacement and completeness scores are circuit-tracer's.</li>
+<li>Node ids and types match its viewer files.</li>
+<li><strong>Transcoders:</strong></li>
+<li><code>CrossLayerTranscoder</code> holds cross-layer transcoders, where features write to several later
+    MLPs, and per-layer ones.</li>
+<li>Both use JumpReLU or ReLU and an optional linear skip.</li>
+<li><code>LoadTranscoders</code> reads circuit-tracer's two layouts, such as Gemma Scope 2's 270M
+    transcoders (mwhanna/gemma-scope-2-270m-pt) or the Llama 3.2 1B CLT (mntss/clt-llama-3.2-1b-524k).</li>
+<li>It is inference only: training a transcoder is not here.</li>
+<li><strong>Checked against PyTorch</strong> (<code>tools/golden/make_circuit_golden.py</code>). The golden is the tiny
+  Llama and Gemma 3 written out in PyTorch with circuit-tracer's freezes, with each source scaled
+  by a scalar whose gradient is the edge. Every edge matches to 2e-6, across a cross-layer span
+  and a skip, Gemma's sandwich norms, QK-norm and sliding window. CPU and GPU agree.</li>
+</ul>
+<p><strong>On Gemma 3 270M</strong>, with Gemma Scope 2's 16k per-layer transcoders (L0 small), on the GPU:</p>
+<table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th>Top logit</th>
+<th>Active features</th>
+<th>Graph after pruning</th>
+<th>Replacement</th>
+<th>Completeness</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"The Eiffel Tower is located in the city of"</td>
+<td>" Paris" (0.86)</td>
+<td>4,532</td>
+<td>621 nodes, 61,219 links</td>
+<td>0.67</td>
+<td>0.92</td>
+<td>14 s</td>
+</tr>
+<tr>
+<td>"The capital of the state containing Dallas is"</td>
+<td>" a" (0.13)</td>
+<td>3,779</td>
+<td>634 nodes, 84,485 links</td>
+<td>0.66</td>
+<td>0.92</td>
+<td>14 s</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>" Paris" is carried by a few late features at the last position.</strong> The strongest come from
+  layers 11 to 17, with a weight up to 4.3. Errors and the "Eiffel" token embedding also feed
+  it directly.</li>
+<li><strong>The 270M model doesn't know the two-hop fact.</strong> Its likely tokens are " a", " the" and
+  " Dallas", so the Dallas graph shows the method, not a circuit for Austin.</li>
+<li><strong>Not here yet:</strong></li>
+<li>Limiting the graph to the most influential features (circuit-tracer's <code>max_feature_nodes</code>).
+    Every active feature is a target; on Gemma 3 270M that is 4,500 features and a dense
+    adjacency of 20M entries.</li>
+<li>Gemma's final logit softcap, which is outside the linearization.</li>
+<li>Reading the residual stream before the norm, as the Llama CLT does. Features read the MLP
+    input after the block's norm.</li>
 </ul>
 <h3 id="building-a-circuit-graph">Building a circuit graph<a class="headerlink" href="#building-a-circuit-graph" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
