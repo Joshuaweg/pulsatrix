@@ -3230,7 +3230,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 </ul>
 <h3 id="backlog-not-yet-scheduled">Backlog, not yet scheduled<a class="headerlink" href="#backlog-not-yet-scheduled" title="Permanent link">&para;</a></h3>
 <p>These P2 and P3 items wait until a milestone needs them or someone asks: TRN-12, TRN-13, IO-10,
-IO-11, INT-7, INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8, ARCH-4 to ARCH-10, VIZ-7, HIP-10,
+IO-11, INT-7, INT-8, TDA-13 to TDA-19, KD-3, KD-4, FEAT-8 (<strong>done</strong>), ARCH-4 to ARCH-10, VIZ-7, HIP-10,
 AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <h3 id="v20">v2.0<a class="headerlink" href="#v20" title="Permanent link">&para;</a></h3>
 <p>Larger changes that touch every module or backend.</p>
@@ -4942,7 +4942,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-1, IO-2</td>
 <td>P2</td>
 <td>—</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/112">#112</a> (see below)</td>
 </tr>
 <tr>
 <td>FEAT-9</td>
@@ -5116,7 +5116,21 @@ residues looks right on average at coefficient ±2, but random directions do mor
 response isn't linear. At ±0.5 the difference of means steers soluble proteins the wrong
 way for 66% of them, and the SAE feature doesn't steer at all
 (<a href="../mechanistic-interpretability/#steering-a-model">table</a>).
-<code>pulsatrix_steer_esm</code> defaults to ±0.5.</p>
+<code>pulsatrix_steer_esm</code> defaults to ±0.5.
+- <strong>FEAT-8</strong> adds <code>crosscoder.hpp</code>: <code>Crosscoder</code> over any number of sources (layers or
+  models), with L1 (Lindsey et al.) or BatchTopK (Minder et al.) sparsity and the
+  Delta-Crosscoder (Kassem et al.); <code>CrosscoderLatents</code>, <code>ClassifyLatent</code>,
+  <code>MeasureLatentScaling</code> and <code>ExplainedVarianceBySource</code> for model diffing.
+  - <strong>Checked against a PyTorch rendering</strong> (<code>tools/golden/make_crosscoder_golden.py</code>) for all
+three. The Delta-Crosscoder has no public code; it follows the paper's equations.
+  - <strong>On planted features,</strong> BatchTopK recovers every shared and one-model feature. In a narrow
+fine-tune, whose own features fire on 0.5% of inputs, decoder norms call none of them
+fine-tune-only, and Latent Scaling calls all of them fine-tune-specific. The Delta-Crosscoder
+doesn't fix the norms.
+  - <strong><code>pulsatrix_diff_lm</code></strong> diffs SmolLM2-135M against its Instruct model on chat text. The
+Instruct-specific latents put 84 to 99% of their activation on chat-template tokens, as
+Minder et al. found in Gemma 2
+(<a href="../mechanistic-interpretability/#crosscoders">table</a>).</p>
 </li>
 </ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>

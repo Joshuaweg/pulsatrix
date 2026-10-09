@@ -41,9 +41,12 @@ var searchData=
   ['counterfactualtarget_38',['CounterfactualTarget',['../structpulsatrix_1_1CounterfactualTarget.html',1,'pulsatrix']]],
   ['cpubackend_39',['CPUBackend',['../classpulsatrix_1_1CPUBackend.html',1,'pulsatrix']]],
   ['cputimes_40',['CpuTimes',['../structpulsatrix_1_1detail_1_1CpuTimes.html',1,'pulsatrix::detail']]],
-  ['crossentropyloss_41',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
-  ['csvdataset_42',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
-  ['csvreader_43',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
-  ['csvtable_44',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
-  ['cudabackend_45',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
+  ['crosscoder_41',['Crosscoder',['../classpulsatrix_1_1Crosscoder.html',1,'pulsatrix']]],
+  ['crosscoderlatentstats_42',['CrosscoderLatentStats',['../structpulsatrix_1_1CrosscoderLatentStats.html',1,'pulsatrix']]],
+  ['crosscoderoptions_43',['CrosscoderOptions',['../structpulsatrix_1_1CrosscoderOptions.html',1,'pulsatrix']]],
+  ['crossentropyloss_44',['CrossEntropyLoss',['../classpulsatrix_1_1CrossEntropyLoss.html',1,'pulsatrix']]],
+  ['csvdataset_45',['CsvDataset',['../classpulsatrix_1_1CsvDataset.html',1,'pulsatrix']]],
+  ['csvreader_46',['CsvReader',['../classpulsatrix_1_1CsvReader.html',1,'pulsatrix']]],
+  ['csvtable_47',['CsvTable',['../structpulsatrix_1_1CsvTable.html',1,'pulsatrix']]],
+  ['cudabackend_48',['CUDABackend',['../classpulsatrix_1_1CUDABackend.html',1,'pulsatrix']]]
 ];
