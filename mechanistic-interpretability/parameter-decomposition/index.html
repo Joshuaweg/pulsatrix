@@ -10,25 +10,31 @@
       
       
       
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/parameter-decomposition/">
       
+      
+        <link rel="prev" href="../model-diffing/">
+      
+      
+        <link rel="next" href="../attribution-graphs/">
       
       
         
       
       
-      <link rel="icon" href="/pulsatrix/assets/pulsatrix_icon.png">
+      <link rel="icon" href="../../assets/pulsatrix_icon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Pulsatrix</title>
+        <title>Parameter Decomposition - Pulsatrix</title>
       
     
     
-      <link rel="stylesheet" href="/pulsatrix/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/pulsatrix/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="/pulsatrix/stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("/pulsatrix/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -73,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#parameter-decomposition" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -85,9 +96,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/pulsatrix/." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+    <a href="../.." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
       
-  <img src="/pulsatrix/assets/pulsatrix_icon.png" alt="logo">
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -104,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Parameter Decomposition
             
           </span>
         </div>
@@ -220,9 +231,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/pulsatrix/." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+    <a href="../.." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
       
-  <img src="/pulsatrix/assets/pulsatrix_icon.png" alt="logo">
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
 
     </a>
     Pulsatrix
@@ -249,7 +260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -276,7 +287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   
@@ -303,7 +314,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/deep-learning/" class="md-nav__link">
+      <a href="../../deep-learning/" class="md-nav__link">
         
   
   
@@ -330,7 +341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/data-pipeline/" class="md-nav__link">
+      <a href="../../data-pipeline/" class="md-nav__link">
         
   
   
@@ -357,7 +368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/language-models/" class="md-nav__link">
+      <a href="../../language-models/" class="md-nav__link">
         
   
   
@@ -384,7 +395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/protein-models/" class="md-nav__link">
+      <a href="../../protein-models/" class="md-nav__link">
         
   
   
@@ -458,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/interpretability/" class="md-nav__link">
+      <a href="../../interpretability/" class="md-nav__link">
         
   
   
@@ -486,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/interpretability/lrp/" class="md-nav__link">
+      <a href="../../interpretability/lrp/" class="md-nav__link">
         
   
   
@@ -514,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/interpretability/model-agnostic/" class="md-nav__link">
+      <a href="../../interpretability/model-agnostic/" class="md-nav__link">
         
   
   
@@ -542,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/interpretability/deep-learning-approaches/" class="md-nav__link">
+      <a href="../../interpretability/deep-learning-approaches/" class="md-nav__link">
         
   
   
@@ -577,7 +588,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/reinforcement-learning/" class="md-nav__link">
+      <a href="../../reinforcement-learning/" class="md-nav__link">
         
   
   
@@ -601,18 +612,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
@@ -633,7 +646,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
@@ -651,7 +664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/mechanistic-interpretability/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -679,7 +692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/mechanistic-interpretability/featurizers/" class="md-nav__link">
+      <a href="../featurizers/" class="md-nav__link">
         
   
   
@@ -707,7 +720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+      <a href="../evaluating-features/" class="md-nav__link">
         
   
   
@@ -735,7 +748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/mechanistic-interpretability/steering/" class="md-nav__link">
+      <a href="../steering/" class="md-nav__link">
         
   
   
@@ -763,7 +776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/mechanistic-interpretability/model-diffing/" class="md-nav__link">
+      <a href="../model-diffing/" class="md-nav__link">
         
   
   
@@ -788,10 +801,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/pulsatrix/mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -807,6 +847,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-idea-in-three-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The idea in three terms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spd-and-vpd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SPD and VPD
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-we-found-a-toy-model-of-superposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we found: a toy model of superposition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-its-checked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it's checked
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -819,7 +956,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+      <a href="../attribution-graphs/" class="md-nav__link">
         
   
   
@@ -847,7 +984,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/mechanistic-interpretability/gflownets/" class="md-nav__link">
+      <a href="../gflownets/" class="md-nav__link">
         
   
   
@@ -882,7 +1019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/neuro-symbolic/" class="md-nav__link">
+      <a href="../../neuro-symbolic/" class="md-nav__link">
         
   
   
@@ -909,7 +1046,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/evolutionary-computation/" class="md-nav__link">
+      <a href="../../evolutionary-computation/" class="md-nav__link">
         
   
   
@@ -936,7 +1073,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/hyperparameter-optimization/" class="md-nav__link">
+      <a href="../../hyperparameter-optimization/" class="md-nav__link">
         
   
   
@@ -963,7 +1100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/visualization/" class="md-nav__link">
+      <a href="../../visualization/" class="md-nav__link">
         
   
   
@@ -990,7 +1127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/system-monitoring/" class="md-nav__link">
+      <a href="../../system-monitoring/" class="md-nav__link">
         
   
   
@@ -1017,7 +1154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/gpu-profiling/" class="md-nav__link">
+      <a href="../../gpu-profiling/" class="md-nav__link">
         
   
   
@@ -1044,7 +1181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/benchmarks/" class="md-nav__link">
+      <a href="../../benchmarks/" class="md-nav__link">
         
   
   
@@ -1071,7 +1208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/customization/" class="md-nav__link">
+      <a href="../../customization/" class="md-nav__link">
         
   
   
@@ -1145,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/" class="md-nav__link">
+      <a href="../../recipes/" class="md-nav__link">
         
   
   
@@ -1173,7 +1310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/deep-learning/xor_training/" class="md-nav__link">
+      <a href="../../recipes/deep-learning/xor_training/" class="md-nav__link">
         
   
   
@@ -1201,7 +1338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+      <a href="../../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
         
   
   
@@ -1229,7 +1366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
+      <a href="../../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
         
   
   
@@ -1257,7 +1394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/deep-learning/tagger_finetune/" class="md-nav__link">
+      <a href="../../recipes/deep-learning/tagger_finetune/" class="md-nav__link">
         
   
   
@@ -1285,7 +1422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
+      <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
         
   
   
@@ -1313,7 +1450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/interpretability/mnist_lrp/" class="md-nav__link">
+      <a href="../../recipes/interpretability/mnist_lrp/" class="md-nav__link">
         
   
   
@@ -1341,7 +1478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+      <a href="../../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
         
   
   
@@ -1369,7 +1506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
+      <a href="../../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
         
   
   
@@ -1397,7 +1534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
+      <a href="../../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
         
   
   
@@ -1425,7 +1562,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/interpretability/lime_basics/" class="md-nav__link">
+      <a href="../../recipes/interpretability/lime_basics/" class="md-nav__link">
         
   
   
@@ -1453,7 +1590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/rl/dqn_cartpole/" class="md-nav__link">
+      <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
         
   
   
@@ -1481,7 +1618,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
+      <a href="../../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
         
   
   
@@ -1509,7 +1646,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+      <a href="../../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
         
   
   
@@ -1537,7 +1674,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+      <a href="../../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
         
   
   
@@ -1565,7 +1702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+      <a href="../../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
         
   
   
@@ -1593,7 +1730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/protein-models/protein_tem1/" class="md-nav__link">
+      <a href="../../recipes/protein-models/protein_tem1/" class="md-nav__link">
         
   
   
@@ -1621,7 +1758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/recipes/visualization/training_dashboard/" class="md-nav__link">
+      <a href="../../recipes/visualization/training_dashboard/" class="md-nav__link">
         
   
   
@@ -1703,7 +1840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/roadmap/" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -1731,7 +1868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/roadmap/research-notes/" class="md-nav__link">
+      <a href="../../roadmap/research-notes/" class="md-nav__link">
         
   
   
@@ -1759,7 +1896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/roadmap/protein-language-models/" class="md-nav__link">
+      <a href="../../roadmap/protein-language-models/" class="md-nav__link">
         
   
   
@@ -1794,7 +1931,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/pulsatrix/api/index.html" class="md-nav__link">
+      <a href="../../api/index.html" class="md-nav__link">
         
   
   
@@ -1831,6 +1968,93 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-idea-in-three-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The idea in three terms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spd-and-vpd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SPD and VPD
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-we-found-a-toy-model-of-superposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we found: a toy model of superposition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-its-checked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it's checked
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1843,8 +2067,199 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+  
+
+
+<h1 id="parameter-decomposition">Parameter Decomposition<a class="headerlink" href="#parameter-decomposition" title="Permanent link">&para;</a></h1>
+<p>Featurizers explain a network's <strong>activations</strong>. Parameter decomposition explains its
+<strong>weights</strong>. The idea: a weight matrix does several separate jobs at once. Split it into pieces
+so that every input needs only a few pieces to get the same output. Each piece is then one part
+of the network's mechanism, and you can ask which inputs use which pieces.</p>
+<p>pulsatrix implements two methods from Goodfire's line of work:
+- <strong>SPD</strong>, stochastic parameter decomposition (Bushnaq, Braun and Sharkey);
+- <strong>VPD</strong>, adversarial parameter decomposition (Bushnaq et al., 2026), its successor. Goodfire
+  names it "VPD" for ad<strong>V</strong>ersarial <strong>P</strong>arameter <strong>D</strong>ecomposition. It isn't a variational
+  method.</p>
+<h2 id="the-idea-in-three-terms">The idea in three terms<a class="headerlink" href="#the-idea-in-three-terms" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Subcomponents.</strong> Each weight matrix W is written as a sum of C rank-one pieces:
+  <code>W ≈ Σ_c V[:, c] U[c, :]</code>, or <code>W ≈ V U</code>. Training asks the pieces to add back up to W, a
+  loss called <strong>faithfulness</strong>.</li>
+<li><strong>Causal importance.</strong> A small network gives each subcomponent a score <code>g</code> in [0, 1] for each
+  input: how much that input needs it.</li>
+<li><strong>Stochastic masks.</strong> Training scales each subcomponent by a random mask <code>m = g + (1 − g) r</code>,
+  with r uniform in [0, 1]. An important subcomponent (g near 1) is kept whole. An unimportant
+  one is scaled randomly, and the output must not change. So <code>g</code> can only stay low for
+  subcomponents an input really doesn't use.</li>
+</ul>
+<p>A penalty on <code>g</code> (<strong>importance minimality</strong>) pushes each input to use as few subcomponents as
+possible. After training, a subcomponent is a mechanism, and <code>g</code> says which inputs use it.</p>
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<p>Wrap each <code>LinearModule</code> you want to decompose in a <code>ComponentLinear</code>, and build the model from
+the wrappers. This works for models assembled from layers you hold yourself, in containers like
+<code>SequentialModule</code> and <code>ResidualModule</code> that keep pointers to them.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/adam_optimizer.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/parameter_decomposition.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/relu_module.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/sequential_module.hpp"</span>
+
+<span class="c1">// The trained target: w1 (5 → 2), w2 (2 → 5), then a ReLU.</span>
+<span class="n">ComponentLinear</span><span class="w"> </span><span class="nf">c1</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="cm">/*components=*/</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">),</span><span class="w"> </span><span class="n">c2</span><span class="p">(</span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">SequentialModule</span><span class="w"> </span><span class="nf">model</span><span class="p">({</span><span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">c2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu</span><span class="p">});</span>
+
+<span class="n">DecompositionOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span><span class="w">                        </span><span class="c1">// SPD by default</span>
+<span class="n">o</span><span class="p">.</span><span class="n">importance_coefficient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3e-3f</span><span class="p">;</span>
+<span class="n">o</span><span class="p">.</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span>
+<span class="n">ParameterDecomposition</span><span class="w"> </span><span class="nf">d</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="o">&amp;</span><span class="n">c1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">c2</span><span class="p">},</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+<span class="n">AdamOptimizer</span><span class="w"> </span><span class="nf">opt</span><span class="p">(</span><span class="mf">1e-3f</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">steps</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">step</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">DecompositionLoss</span><span class="w"> </span><span class="n">loss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TrainDecomposition</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">NextBatch</span><span class="p">(),</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">ci</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">causal_importances</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w">   </span><span class="c1">// per layer, (N, C)</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ImportanceStats</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureImportance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w">   </span><span class="c1">// alive subcomponents, L0</span>
+<span class="n">ComponentAlignment</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AlignComponentsToRows</span><span class="p">(</span><span class="n">c1</span><span class="p">);</span><span class="w">               </span><span class="c1">// MMCS and ML2R, for toy models</span>
+</code></pre></div>
+<ul>
+<li><strong>The target model is the model itself</strong> with every <code>ComponentLinear</code> in target mode, so you
+  don't pass it separately.</li>
+<li><strong>The output loss</strong> compares the masked model's output with the target's: mean squared error,
+  or <code>OutputDivergence::KlOnLogits</code> for logits.</li>
+<li><strong>Training takes long.</strong> The reference toy runs use 40,000 steps of 4,096 inputs, with a
+  learning rate decaying to zero (<code>set_learning_rate</code> on the optimizer).</li>
+<li><strong>No autograd needed.</strong> <code>ComponentLinear::backward()</code> returns the masks' gradients, so the
+  decomposition runs on the model's own backward pass.</li>
+</ul>
+<h2 id="spd-and-vpd">SPD and VPD<a class="headerlink" href="#spd-and-vpd" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SPD</th>
+<th>VPD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Faithfulness</td>
+<td><code>Σ_l ‖W − V U‖²</code> over the number of weights</td>
+<td>The same, as the loss on the left-over weight Δ = W − V U</td>
+</tr>
+<tr>
+<td>Reconstruction</td>
+<td>Every layer masked; then one layer masked at a time</td>
+<td>For each input, a random number k of the layers use their subcomponents and the rest their original weights. The left-over weight Δ gets its own random mask</td>
+</tr>
+<tr>
+<td>Adversarial masks</td>
+<td>—</td>
+<td>Masks from persistent sources that ascend the loss (PGD), so the decomposition must hold for the worst masks, not only random ones</td>
+</tr>
+<tr>
+<td>Importance minimality</td>
+<td><code>Σ g^p</code></td>
+<td>Adds a term that rewards subcomponents used on few inputs. The paper anneals p from 2 to 0.4 during training (<code>set_p</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Choose with <code>o.method = DecompositionMethod::SPD</code> or <code>VPD</code>.</p>
+<p><strong>Reading the results:</strong>
+- <strong>Alive subcomponents</strong> (<code>ImportanceStats::alive</code>): those important (g &gt; 0.1) on some input.
+  Ideally there is one per real mechanism, and the rest die.
+- <strong>L0 of causal importance:</strong> how many subcomponents an input uses on average.
+- <strong>MMCS and ML2R</strong> (toy models). For each input feature, the best cosine between a subcomponent
+  and the target weight's row, and that subcomponent's norm relative to the row. 1.0 and 1.0
+  mean the feature has a subcomponent that carries its whole row. An ML2R slightly above 1, as
+  in the results below, means the subcomponent overshoots a little and others cancel the excess.</p>
+<h2 id="what-we-found-a-toy-model-of-superposition">What we found: a toy model of superposition<a class="headerlink" href="#what-we-found-a-toy-model-of-superposition" title="Permanent link">&para;</a></h2>
+<p><code>pulsatrix_spd_toy</code> trains the paper's first test case, then decomposes it: 5 sparse features
+squeezed through 2 dimensions, <code>x̂ = ReLU(x W Wᵀ + b)</code>, with W and Wᵀ decomposed into 20
+subcomponents each.</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_spd_toy<span class="w"> </span>--method<span class="w"> </span>spd<span class="w"> </span>--steps<span class="w"> </span><span class="m">40000</span><span class="w"> </span>--batch<span class="w"> </span><span class="m">4096</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SPD</th>
+<th>SPD paper</th>
+<th>VPD (p annealed from 2 to 1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MMCS / ML2R</td>
+<td>1.000 / 1.017</td>
+<td>1.000 / 0.993</td>
+<td>0.993 / 0.672</td>
+</tr>
+<tr>
+<td>Alive subcomponents per layer (of 20)</td>
+<td>5, 5</td>
+<td>5</td>
+<td>4, 5</td>
+</tr>
+<tr>
+<td>Features with exactly one important subcomponent per layer</td>
+<td>5 of 5</td>
+<td></td>
+<td>5 of 5</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>SPD reproduces the paper.</strong> Each feature gets one subcomponent per layer, carrying its whole
+  weight row.</li>
+<li><strong>VPD, run with SPD's toy settings, merges two of the five features.</strong> The VPD report has no
+  toy results to tune against.</li>
+<li><strong>Faster settings for experiments.</strong> A learning rate of 1e-2 and an importance coefficient of
+  1e-2 reach one subcomponent per feature in 3,000 steps of 1,024.</li>
+</ul>
+<p><code>PULSATRIX_SPD_DUMP=1</code> makes the tool print every subcomponent's part of each feature's weight
+row, with its causal importance. That makes problems visible. In development, the first toy
+target had dropped one of its five features, so that feature's weight row was almost zero.
+Measures relative to that row were then meaningless.</p>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Language models can't be decomposed.</strong> <code>ComponentLinear</code> must be swapped in for a
+  <code>LinearModule</code>, and <code>CausalLM</code>'s blocks own theirs.</li>
+<li><strong>VPD's causal-importance network for language models</strong> isn't here. VPD there uses one
+  transformer over every layer's activations; pulsatrix uses SPD's small per-subcomponent
+  networks for both methods.</li>
+</ul>
+<h2 id="how-its-checked">How it's checked<a class="headerlink" href="#how-its-checked" title="Permanent link">&para;</a></h2>
+<p>A PyTorch rendering (<code>tools/golden/make_spd_golden.py</code>) matches both methods through the loss,
+every gradient and an Adam step:
+- SPD's four losses;
+- VPD's routing, Δ masks, adversarial masks, frequency term and straight-through clamp.</p>
+<p><code>ComponentLinear</code> matches finite differences. The implementations follow Goodfire's reference
+code, github.com/goodfire-ai/param-decomp: tag <code>v1</code> for SPD, and <code>nano_param_decomp/run.py</code> for
+VPD.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Bushnaq, Braun and Sharkey, "Stochastic Parameter Decomposition", arXiv 2506.20790.</li>
+<li>Bushnaq et al., "Interpreting Language Model Parameters", Goodfire, 2026
+  (goodfire.ai/research/interpreting-lm-parameters).</li>
+<li>Braun et al., "Interpretability in Parameter Space" (APD), arXiv 2501.14926.</li>
+<li>Elhage et al., "Toy Models of Superposition", Transformer Circuits, 2022.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1887,10 +2302,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/pulsatrix/", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "/pulsatrix/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/pulsatrix/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

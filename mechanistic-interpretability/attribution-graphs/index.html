@@ -10,11 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/roadmap/protein-language-models/">
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/attribution-graphs/">
       
       
-        <link rel="prev" href="../research-notes/">
+        <link rel="prev" href="../parameter-decomposition/">
       
+      
+        <link rel="next" href="../gflownets/">
       
       
         
@@ -25,7 +27,7 @@
     
     
       
-        <title>Protein Language Models - Pulsatrix</title>
+        <title>Attribution Graphs - Pulsatrix</title>
       
     
     
@@ -78,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#protein-language-models-research-and-plan" class="md-skip">
+        <a href="#attribution-graphs" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Protein Language Models
+              Attribution Graphs
             
           </span>
         </div>
@@ -610,18 +612,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
@@ -642,7 +646,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
@@ -660,7 +664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -688,7 +692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/featurizers/" class="md-nav__link">
+      <a href="../featurizers/" class="md-nav__link">
         
   
   
@@ -716,7 +720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+      <a href="../evaluating-features/" class="md-nav__link">
         
   
   
@@ -744,7 +748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/steering/" class="md-nav__link">
+      <a href="../steering/" class="md-nav__link">
         
   
   
@@ -772,7 +776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+      <a href="../model-diffing/" class="md-nav__link">
         
   
   
@@ -800,7 +804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+      <a href="../parameter-decomposition/" class="md-nav__link">
         
   
   
@@ -825,10 +829,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -844,6 +875,153 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#transcoder-attribution-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transcoder attribution graphs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transcoder attribution graphs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-transcoders-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which transcoders work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-a-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a graph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-we-found-on-gemma-3-270m" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we found on Gemma 3 270M
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-its-checked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it's checked
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attnlrp-relevance-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AttnLRP relevance graphs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ablation-circuit-graphs-for-small-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ablation circuit graphs for small networks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-a-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing a graph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -856,7 +1034,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/gflownets/" class="md-nav__link">
+      <a href="../gflownets/" class="md-nav__link">
         
   
   
@@ -1662,20 +1840,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
           <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
@@ -1696,7 +1872,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1714,7 +1890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -1742,7 +1918,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../research-notes/" class="md-nav__link">
+      <a href="../../roadmap/research-notes/" class="md-nav__link">
         
   
   
@@ -1767,37 +1943,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Protein Language Models
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../roadmap/protein-language-models/" class="md-nav__link">
         
   
   
@@ -1813,125 +1962,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-a-protein-language-model-is" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What a protein language model is
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-theyre-trained" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How they're trained
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-results-are-validated" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How results are validated
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-explains-a-plm-best" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What explains a pLM best
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-pulsatrix-already-has" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What pulsatrix already has
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#proposed-epic-plm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Proposed epic: PLM
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-and-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data and tools
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decisions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Decisions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sources
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1998,10 +2028,93 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-a-protein-language-model-is" class="md-nav__link">
+  <a href="#transcoder-attribution-graphs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What a protein language model is
+        Transcoder attribution graphs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transcoder attribution graphs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-transcoders-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which transcoders work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-a-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a graph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-we-found-on-gemma-3-270m" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we found on Gemma 3 270M
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-its-checked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it's checked
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attnlrp-relevance-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AttnLRP relevance graphs
       
     </span>
   </a>
@@ -2009,10 +2122,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-theyre-trained" class="md-nav__link">
+  <a href="#ablation-circuit-graphs-for-small-networks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How they're trained
+        Ablation circuit graphs for small networks
       
     </span>
   </a>
@@ -2020,10 +2133,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-results-are-validated" class="md-nav__link">
+  <a href="#viewing-a-graph" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How results are validated
+        Viewing a graph
       
     </span>
   </a>
@@ -2031,65 +2144,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-explains-a-plm-best" class="md-nav__link">
+  <a href="#references" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What explains a pLM best
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-pulsatrix-already-has" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What pulsatrix already has
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#proposed-epic-plm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Proposed epic: PLM
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-and-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data and tools
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decisions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Decisions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sources
+        References
       
     </span>
   </a>
@@ -2116,344 +2174,269 @@
   
 
 
-<h1 id="protein-language-models-research-and-plan">Protein language models: research and plan<a class="headerlink" href="#protein-language-models-research-and-plan" title="Permanent link">&para;</a></h1>
-<p>Status: <strong>complete</strong> (2026-10-08). Accepted as its own epic (PLM in the <a href="../#plm-protein-language-models">roadmap</a>) and researched on 2026-10-07. What was built, and where it departed from this plan, is in the roadmap's PLM section and the <a href="../../protein-models/">Protein language models</a> guide.</p>
-<h2 id="what-a-protein-language-model-is">What a protein language model is<a class="headerlink" href="#what-a-protein-language-model-is" title="Permanent link">&para;</a></h2>
-<p>A protein language model (pLM) is a transformer trained on amino-acid sequences the way a text
-model is trained on words. Nobody labels anything: the model learns by filling in hidden
-residues. In doing so it picks up evolution's constraints. It learns which positions tolerate
-change, which residues touch in the folded structure, and which motifs mark a binding or active
-site. Those can then be read out without further training, or used as features for small
-supervised models.</p>
+<h1 id="attribution-graphs">Attribution Graphs<a class="headerlink" href="#attribution-graphs" title="Permanent link">&para;</a></h1>
+<p>An attribution graph explains <strong>one prediction</strong> as a graph: nodes for the pieces of the
+computation, and weighted edges for how much each piece contributed to the next. pulsatrix
+builds three kinds. They answer different questions:</p>
 <table>
 <thead>
 <tr>
-<th>Family</th>
-<th>Examples</th>
-<th>Objective</th>
-<th>Typical use</th>
+<th>Graph</th>
+<th>Nodes</th>
+<th>Edges</th>
+<th>Use it for</th>
+<th>Cost</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Encoder, masked LM</td>
-<td>ESM-2 (8M to 15B), ESM C (300M, 600M, 6B), AMPLIFY, ProtBert, SaProt (adds structure tokens)</td>
-<td>Fill in 15% hidden residues</td>
-<td>Embeddings, variant effects, contacts, interpretability</td>
+<td><strong>Transcoder attribution graph</strong> (circuit tracing)</td>
+<td>Interpretable features at each layer and token, plus error nodes</td>
+<td>Exact attributions through a frozen, linearized model</td>
+<td><em>Which concepts</em> carry a language model's prediction, and how they build on each other</td>
+<td>Pretrained transcoders for the model; seconds on a GPU</td>
 </tr>
 <tr>
-<td>Encoder-decoder</td>
-<td>ProtT5-XL (3B), Ankh</td>
-<td>Span denoising</td>
-<td>Per-residue embeddings</td>
+<td><strong>AttnLRP relevance graph</strong></td>
+<td>The residual stream at each layer and token</td>
+<td>AttnLRP relevance passed between them</td>
+<td><em>Where</em> information flows: which tokens, through which layers</td>
+<td>Any supported language model; no extra weights</td>
 </tr>
 <tr>
-<td>Autoregressive</td>
-<td>ProGen2, ProtGPT2</td>
-<td>Next residue</td>
-<td>Generating sequences</td>
-</tr>
-<tr>
-<td>Retrieval or MSA-conditioned</td>
-<td>MSA Transformer, PoET-2, MSA Pairformer</td>
-<td>Conditioned on homologs</td>
-<td>Best variant-effect scores</td>
-</tr>
-<tr>
-<td>Multimodal or diffusion</td>
-<td>ESM3 (sequence, structure, function tracks), DPLM-2</td>
-<td>Masked or diffusion over several tracks</td>
-<td>Design</td>
+<td><strong>Ablation circuit graph</strong></td>
+<td>Each layer of a small network</td>
+<td>How much zeroing a layer moves the output</td>
+<td><em>Which layers</em> a small network's output depends on</td>
+<td>One forward pass per node</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Recommendation: build for ESM-2 first.</strong>
-- It is MIT-licensed and the most cited and most studied pLM.
-- The interpretability literature, including InterPLM's sparse autoencoders and the contact-from-attention work, uses it.
-- Its sizes run from 8M to 650M parameters, which fits this machine in fp32.
-- Its architecture is a standard BERT-style encoder: rotary position embeddings, pre-LayerNorm and a GELU MLP. Most of that pulsatrix already has.</p>
-<p>ESM C and AMPLIFY are architectural cousins (AMPLIFY uses SwiGLU and RMSNorm, which pulsatrix has). They can follow by adding a weight mapping. ESM C's license tiers need checking per size.</p>
-<h2 id="how-theyre-trained">How they're trained<a class="headerlink" href="#how-theyre-trained" title="Permanent link">&para;</a></h2>
-<p>ESM-2's recipe (Lin et al., <em>Science</em> 2023, and NVIDIA BioNeMo's reproduction):</p>
-<ul>
-<li><strong>Data.</strong> UniRef50 clusters (about 65M), each sampled uniformly, with a random UniRef90 member drawn per cluster. That is about 190M sequences.</li>
-<li>Sampling clusters, not sequences, keeps over-studied families from dominating.</li>
-<li>Newer models add metagenomic data (MGnify, JGI). Pure UniRef shows overfitting in masked-LM training and diminishing returns for causal training (Cheng et al., ICML 2024). A 2025 study of yearly UniRef snapshots found no saturation yet.</li>
-<li><strong>Objective.</strong> Pick 15% of residues; replace 80% of those with <code>&lt;mask&gt;</code>, 10% with a random residue, and leave 10% unchanged. Cross-entropy is computed on the picked positions only.</li>
-<li>ESM-2's "token dropout" zeros masked embeddings and rescales the rest by the observed mask ratio. Inference has to reproduce that scaling.</li>
-<li><strong>Shape.</strong> Crop sequences to 1,024 residues. <code>&lt;cls&gt;</code> and <code>&lt;eos&gt;</code> mark the ends. The vocabulary is 33 tokens: the 20 amino acids, the rare and ambiguous ones (X B U Z O), and gap and special tokens.</li>
-<li><strong>Scale.</strong> The 650M model took on the order of 10²¹ FLOPs, with up to 3.2M tokens per batch. That is far beyond one workstation.</li>
-</ul>
-<p><strong>What that means here.</strong>
-- Pretraining a useful pLM from scratch isn't realistic on gfx1151 in fp32. bf16 training (HIP-11) isn't done, and even with it a 650M model would take months.
-- Small models (8M–35M parameters on a UniRef50 sample) are trainable. They're for learning, ablations and checking the training code against published curves.
-- The realistic path is to load the published ESM-2 checkpoints, explain and evaluate them, and fine-tune small heads on top.</p>
-<h2 id="how-results-are-validated">How results are validated<a class="headerlink" href="#how-results-are-validated" title="Permanent link">&para;</a></h2>
-<p>The field's main checks, and the ones pulsatrix should reproduce numerically before claiming
-support:</p>
+<p>The first two are written in the JSON format that
+<a href="https://www.neuronpedia.org/graph/validator">Neuronpedia's graph viewer</a> and Anthropic's
+<a href="https://github.com/decoderesearch/circuit-tracer">circuit-tracer</a> read. You get an interactive
+viewer with no extra code (<a href="#viewing-a-graph">Viewing a graph</a>).</p>
+<h2 id="transcoder-attribution-graphs">Transcoder attribution graphs<a class="headerlink" href="#transcoder-attribution-graphs" title="Permanent link">&para;</a></h2>
+<p>Following Ameisen, Lindsey et al. ("Circuit Tracing", 2025) and circuit-tracer:</p>
 <ol>
-<li><strong>Parity with the reference implementation.</strong> Masked-LM logits, hidden states and attention maps should match Hugging Face <code>transformers</code> (<code>EsmForMaskedLM</code>) to float precision. This is the same harness as LLM-6 and LLM-7.</li>
-<li><strong>Zero-shot variant effects (ProteinGym).</strong> 217 deep-mutational-scanning assays, about 2.5M variants.</li>
-<li>A variant is scored by the masked-marginal log-odds, log p(mutant) − log p(wild type), at the masked position.</li>
-<li>Results are reported as Spearman correlation per assay, plus NDCG and top-10% recall.</li>
-<li>Published ESM-2 numbers give exact targets. The best methods reach about 0.45–0.48 Spearman (MSA Pairformer, VespaG); ESM-2 650M is lower.</li>
-<li><strong>Unsupervised contact prediction.</strong> Attention maps from all layers and heads are made symmetric, corrected with APC, and combined by a logistic regression (ESM's contact head). The score is precision@L, L/2 and L/5 for long-range contacts (|i−j| ≥ 24) against residues within 8 Å in a PDB or AlphaFold structure.</li>
-<li>A 2026 paper (arXiv 2606.21876) shows that averaging the top-K contact heads, chosen with 10 labeled proteins, matches the Categorical Jacobian in a single forward pass.</li>
-<li>It also warns that leakage-clean test sets score 30–36 points lower than in-distribution ones.</li>
-<li><strong>Probing.</strong> A linear probe per layer for secondary structure (DSSP 3- and 8-state), solvent accessibility and binding sites. Control tasks and a randomized-model baseline are needed to show the probe reads the model and isn't learning the task itself.</li>
-<li><strong>Explanation sanity checks.</strong> A 2026 study found that residue attributions from a well-performing allergen classifier did not match known epitopes. Protein-level accuracy doesn't make attributions meaningful. Every residue-level explanation should therefore be checked against:</li>
-<li>a randomized-weights model (Adebayo-style sanity check);</li>
-<li>deletion and insertion curves;</li>
-<li>an independent signal: DMS per-position sensitivity, conservation from an MSA, or annotated sites.</li>
-<li><strong>Data-leakage-aware splits.</strong> A naive split overstated performance by about 11% relative to a split aware of ESM's pretraining data. Hold out by sequence identity or by date.</li>
+<li><strong>Replace each MLP with transcoder features.</strong> A transcoder reads an MLP's input and predicts
+   its output through sparse, interpretable features. Whatever it misses becomes an <strong>error
+   node</strong>, so the model's output is unchanged.</li>
+<li><strong>Freeze the rest.</strong> Attention patterns and normalization scales are fixed at their values
+   for this prompt. What is left between features is linear.</li>
+<li><strong>Attribute.</strong> Because it is linear, the contribution of every node to every later node is
+   exact: the source's output, carried through the frozen model, dotted with the target's input
+   direction.</li>
+<li><strong>Prune</strong> to the nodes and edges that matter most for the prediction.</li>
 </ol>
-<h2 id="what-explains-a-plm-best">What explains a pLM best<a class="headerlink" href="#what-explains-a-plm-best" title="Permanent link">&para;</a></h2>
-<p>Proteins have three natural axes: the sequence, the 3D structure and evolution. Good views show
-model output on all three, not as a text strip.</p>
+<p>The nodes are:
+- active features, by layer and token;
+- one error node per layer and token;
+- the token embeddings;
+- the likely next tokens (up to 10, until their probabilities sum to 0.95).</p>
+<h3 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h3>
+<p>You need transcoders trained for your model. For Gemma 3 270M, Google's Gemma Scope 2 has
+per-layer transcoders in the layout circuit-tracer reads. (<code>google/gemma-3-270m</code> asks you to
+accept a license; the <code>unsloth</code> copy downloads without a token.)</p>
+<div class="highlight"><pre><span></span><code>hf<span class="w"> </span>download<span class="w"> </span>mwhanna/gemma-scope-2-270m-pt<span class="w"> </span>--include<span class="w"> </span><span class="s2">"transcoder_all/width_16k_l0_small/*"</span><span class="w"> </span>--local-dir<span class="w"> </span>transcoders/
+hf<span class="w"> </span>download<span class="w"> </span>unsloth/gemma-3-270m<span class="w"> </span>--include<span class="w"> </span><span class="s2">"*.json"</span><span class="w"> </span>--include<span class="w"> </span><span class="s2">"*.safetensors"</span><span class="w"> </span>--local-dir<span class="w"> </span>models/gemma-3-270m
+
+pulsatrix_explain_text<span class="w"> </span>models/gemma-3-270m<span class="w"> </span><span class="s2">"The Eiffel Tower is located in the city of"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--graph<span class="w"> </span>eiffel.json<span class="w"> </span>--viewer-dir<span class="w"> </span>graphs/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--transcoders<span class="w"> </span>transcoders/transcoder_all/width_16k_l0_small<span class="w"> </span>--scan<span class="w"> </span>gemma-3-270m<span class="w"> </span>--device<span class="w"> </span>hip
+</code></pre></div>
+<p>The tool prints:
+- how many features were active;
+- the graph's <strong>replacement</strong> and <strong>completeness</strong> scores (below);
+- the pruned graph's size.</p>
+<p><code>--node-threshold</code> (default 0.8) and <code>--edge-threshold</code> (default 0.98) set how much is pruned.</p>
+<p>In C++:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/circuit_tracing.hpp"</span>
+
+<span class="c1">// ids: the prompt's token ids (tokenizer.encode(text).ids).</span>
+<span class="n">CrossLayerTranscoder</span><span class="w"> </span><span class="n">clt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTranscoders</span><span class="p">(</span><span class="n">dir</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">num_layers</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
+<span class="n">CircuitTraceOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span><span class="w">     </span><span class="c1">// which logits to explain, pruning thresholds, the viewer's labels</span>
+<span class="n">CircuitTrace</span><span class="w"> </span><span class="n">trace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TraceCircuit</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">clt</span><span class="p">,</span><span class="w"> </span><span class="n">ids</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span><span class="w">   </span><span class="c1">// every node and edge, unpruned</span>
+<span class="n">CircuitScores</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScoreCircuit</span><span class="p">(</span><span class="n">trace</span><span class="p">);</span><span class="w">                     </span><span class="c1">// replacement, completeness</span>
+
+<span class="c1">// logit_labels: the explained tokens as text, for the viewer (tokenizer.decode({id})).</span>
+<span class="n">AttributionGraph</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToAttributionGraph</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="n">logit_labels</span><span class="p">);</span><span class="w">   </span><span class="c1">// pruned</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ToNeuronpediaJson</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+</code></pre></div>
+<p><code>CircuitTrace</code> holds the full adjacency matrix (<code>adjacency[target · n + source]</code>), the active
+features with their activations, and each target's value, if you want to analyze the graph
+yourself.</p>
+<h3 id="which-transcoders-work">Which transcoders work<a class="headerlink" href="#which-transcoders-work" title="Permanent link">&para;</a></h3>
+<p><code>LoadTranscoders</code> reads circuit-tracer's two layouts:
+- <strong>per-layer transcoders</strong>, a set of <code>layer_&lt;i&gt;.safetensors</code>;
+- <strong>cross-layer transcoders</strong> (CLTs), whose features write to every later MLP, as
+  <code>W_enc_&lt;i&gt;</code> and <code>W_dec_&lt;i&gt;</code> files.</p>
+<p>Both may use JumpReLU or ReLU, and a linear skip.</p>
 <table>
 <thead>
 <tr>
-<th>View</th>
-<th>What it answers</th>
-<th>pulsatrix today</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Mutational landscape</strong>: position × 20 amino acids, colored by log-odds</td>
-<td>Which substitutions does the model think are tolerated? This is the DMS-style map biologists read.</td>
-<td>The heatmap document and renderers exist; it needs amino-acid labels, the wild-type marked, and position ticks</td>
-</tr>
-<tr>
-<td><strong>Sequence logo</strong> of the predicted distribution at each position</td>
-<td>What does the model expect here? Matches the familiar MSA logo</td>
-<td>Missing: stacked letter glyphs (SVG and HTML)</td>
-</tr>
-<tr>
-<td><strong>Contact map</strong>, predicted vs. true, in triangles of one matrix</td>
-<td>Has the model learned the fold? Where does it miss?</td>
-<td>The heatmap exists; it needs a two-triangle overlay and top-L markers</td>
-</tr>
-<tr>
-<td><strong>3D structure colored by a per-residue score</strong>: relevance, log-odds, SAE feature activation, pLDDT</td>
-<td>Where in the fold does the signal sit? Active sites, interfaces</td>
-<td>Missing: an HTML view with Mol* or 3Dmol.js from a CDN (VIZ-3's CDN and inline pattern), structure embedded from PDB/mmCIF</td>
-</tr>
-<tr>
-<td><strong>Residue tracks</strong>: relevance, entropy, conservation and annotations stacked under the sequence (Nightingale-style)</td>
-<td>Comparing several per-residue signals against domain and site annotations</td>
-<td>Partly: the token relevance strip; tracks are missing</td>
-</tr>
-<tr>
-<td><strong>Attention head grid</strong> with each head's contact precision</td>
-<td>Which heads track structure?</td>
-<td>Missing (VIZ-6d)</td>
-</tr>
-<tr>
-<td><strong>Embedding projector</strong> (UMAP or PCA of per-protein embeddings, colored by family or function)</td>
-<td>Does the model separate families or enzyme classes?</td>
-<td>Missing (VIZ-6c)</td>
-</tr>
-<tr>
-<td><strong>SAE feature dashboard</strong>: top-activating proteins, with activations on sequence and structure</td>
-<td>What concept does a feature encode? Following InterPLM.ai</td>
-<td>Partly: <code>feature_dashboard.v1</code> and the HTML dashboard (VIZ-3); needs a structure panel</td>
-</tr>
-<tr>
-<td><strong>Attribution graph over residues</strong></td>
-<td>How does information flow between residues and layers?</td>
-<td>Works once an encoder exists: VIZ-4's builder is generic over positions</td>
-</tr>
-</tbody>
-</table>
-<h2 id="what-pulsatrix-already-has">What pulsatrix already has<a class="headerlink" href="#what-pulsatrix-already-has" title="Permanent link">&para;</a></h2>
-<p>The codebase survey found most of the stack in place.</p>
-<ul>
-<li><strong>Exists.</strong></li>
-<li>Bidirectional attention (<code>AttentionConfig.causal</code> defaults to false), with padding masks.</li>
-<li>RoPE in both layouts. ESM uses rotate-half.</li>
-<li>Readable attention maps (<code>last_attention_weights</code>, N × heads × L × L).</li>
-<li><code>LayerNormModule</code>.</li>
-<li>AttnLRP through attention and norms, with LXT parity.</li>
-<li>A token cross-entropy loss with ignore-index -100, which is the masked-LM loss.</li>
-<li>AdamW, warmup and cosine schedules, clipping, and safetensors checkpoints.</li>
-<li>Sharded Hugging Face weight loading with mapping tables.</li>
-<li><code>CharModel</code> tokenizers.</li>
-<li>Integrated gradients, saliency, SHAP and LIME.</li>
-<li>A basic sparse autoencoder and linear probes.</li>
-<li>Heatmap, token-relevance and attribution-graph documents, with SVG, HTML and Neuronpedia renderers.</li>
-<li><strong>Missing.</strong></li>
-<li>An encoder block: today's <code>TransformerBlock</code> is fixed to RMSNorm and a gated MLP. ESM needs LayerNorm and a plain Linear → exact GELU (erf) → Linear MLP with biases.</li>
-<li>An encoder model class with ESM's token-dropout scaling, a final LayerNorm and an LM head (dense, GELU, LayerNorm, tied decoder plus bias).</li>
-<li><code>HfModelConfig</code> accepting <code>EsmForMaskedLM</code>, plus the weight mapping.</li>
-<li>A masked-LM masking collator.</li>
-<li>The contact head.</li>
-<li>An ESM <code>vocab.txt</code> tokenizer.</li>
-<li>A FASTA reader.</li>
-<li>A structure (PDB/mmCIF) reader for contacts and 3D views.</li>
-<li>The protein views listed above.</li>
-<li><strong>Gating limits.</strong></li>
-<li>fp32 only: bf16 training is HIP-11.</li>
-<li><code>DataLoader</code> workers aren't wired up.</li>
-<li>Checked 2026-10-07: <code>facebook/esm2_t6_8M_UR50D</code> and <code>esm2_t33_650M_UR50D</code> ship <code>model.safetensors</code>, <code>config.json</code> and <code>vocab.txt</code> under the MIT license, so no pickle conversion is needed.</li>
-</ul>
-<h2 id="proposed-epic-plm">Proposed epic: PLM<a class="headerlink" href="#proposed-epic-plm" title="Permanent link">&para;</a></h2>
-<p>Each item is one PR, in dependency order. Effort: S (days), M (about a week), L (several weeks).</p>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Item</th>
-<th>Why</th>
-<th>Depends on</th>
-<th>P</th>
-<th>Effort</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PLM-1</td>
-<td>Encoder block options: LayerNorm or RMSNorm, a plain or gated MLP, exact erf GELU (with its LRP rule: identity, as AttnLRP treats elementwise nonlinearities), and attention and MLP biases</td>
-<td>Every BERT-style encoder needs it, not just ESM</td>
-<td>—</td>
-<td>P0</td>
-<td>M</td>
-</tr>
-<tr>
-<td>PLM-2</td>
-<td><code>EncoderLM</code> and ESM-2 loading: token-dropout scaling, rotate-half RoPE, final LayerNorm, LM head. Accept <code>EsmForMaskedLM</code> configs and map weights. ESM <code>vocab.txt</code> tokenizer and FASTA reader. Golden parity of logits, hidden states and attentions with <code>transformers</code> on a tiny generated ESM, plus <code>esm2_t6_8M</code> and <code>esm2_t33_650M</code></td>
-<td>The foundation; it must match the reference to float precision before anything else</td>
-<td>PLM-1</td>
-<td>P0</td>
-<td>M</td>
-</tr>
-<tr>
-<td>PLM-3</td>
-<td>Variant scoring: masked-marginal, wild-type-marginal and pseudo-log-likelihood scores, and a full single-mutant scan. A ProteinGym runner (Spearman, NDCG, top-10% recall) that matches published ESM-2 numbers per assay on a subset (for example BLAT_ECOLX, GB1, and a dozen assays)</td>
-<td>The headline use and the strongest numerical check</td>
-<td>PLM-2</td>
-<td>P0</td>
-<td>M</td>
-</tr>
-<tr>
-<td>PLM-4</td>
-<td>Contacts: ESM's contact head (symmetrize, APC, logistic regression) at parity with <code>transformers</code>, the top-K head-average method, a PDB/mmCIF reader (Cα/Cβ distances, 8 Å), and precision@L, L/2, L/5 by sequence separation</td>
-<td>The structural check; also feeds the head grid</td>
-<td>PLM-2</td>
-<td>P1</td>
-<td>M</td>
-</tr>
-<tr>
-<td>PLM-5</td>
-<td>Protein views: <ul><li>mutational landscape (labeled L × 20 heatmap)</li><li>sequence logo (SVG and HTML)</li><li>contact map with predicted and true triangles</li><li>residue tracks</li><li>a 3D structure HTML view (Mol* or 3Dmol.js, CDN or inline, colored by any per-residue score)</li></ul></td>
-<td>The visuals biologists read; reuses VIZ-1 to VIZ-3</td>
-<td>PLM-3, PLM-4</td>
-<td>P1</td>
-<td>L</td>
-</tr>
-<tr>
-<td>PLM-6</td>
-<td>Explaining encoders: <ul><li>AttnLRP for the encoder, targeting a masked position's logit, a mutation's log-odds, or a fine-tuned head</li><li>per-residue relevance documents</li><li>an attribution graph over residues (VIZ-4)</li><li>sanity suite: randomized weights, deletion curves, agreement with DMS per-position sensitivity and with conservation</li></ul></td>
-<td>Faithful, checked residue-level explanations, the gap the 2026 epitope study exposed</td>
-<td>PLM-2, PLM-5</td>
-<td>P1</td>
-<td>M</td>
-</tr>
-<tr>
-<td>PLM-7</td>
-<td>Masked-LM training: masking collator (15%, 80/10/10, token dropout), sequence cropping, cluster-weighted sampling. Train an ESM-2-8M-shaped model on a UniRef50 sample and check the loss and perplexity curve against BioNeMo's. Fine-tuning heads: per-residue (secondary structure) and per-protein (mean-pooled regression)</td>
-<td>Training support and transfer learning; full-scale pretraining waits on HIP-11</td>
-<td>PLM-2</td>
-<td>P1</td>
-<td>M</td>
-</tr>
-<tr>
-<td>PLM-8</td>
-<td>Probing and features: per-layer linear probes (DSSP, accessibility, binding sites) with control tasks; an InterPLM-style SAE on ESM-2-8M with features matched to Swiss-Prot annotations (F1 per concept); a feature dashboard with a structure panel</td>
-<td>Concept-level interpretability; joins the FEAT epic</td>
-<td>PLM-5, FEAT-1</td>
-<td>P2</td>
-<td>L</td>
-</tr>
-<tr>
-<td>PLM-9</td>
-<td>Recipe and tutorial: on one protein (for example TEM-1 β-lactamase), scan all mutations, compare with its DMS, draw the contact map against its PDB structure, and show relevance on the 3D structure</td>
-<td>Shows the whole path end to end</td>
-<td>PLM-3 to PLM-6</td>
-<td>P1</td>
-<td>S</td>
-</tr>
-</tbody>
-</table>
-<p>Later, only if wanted: ESM C and AMPLIFY mappings; SaProt structure tokens; autoregressive pLMs
-(ProGen2, which uses the existing CausalLM path); MSA-conditioned models; ESMFold. ESMFold is
-large and a separate structure-model effort.</p>
-<h2 id="data-and-tools">Data and tools<a class="headerlink" href="#data-and-tools" title="Permanent link">&para;</a></h2>
-<p>All downloads are scripted, cached under <code>~/.cache/pulsatrix</code>, never committed and never needed
-to build. CI uses tiny generated fixtures, the same way LLM-6 does.</p>
-<table>
-<thead>
-<tr>
-<th>Need</th>
-<th>Source</th>
+<th>Model</th>
+<th>Transcoders</th>
+<th>Kind</th>
 <th>Size</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Checkpoints</td>
-<td>Hugging Face <code>facebook/esm2_t6_8M_UR50D</code> to <code>esm2_t33_650M_UR50D</code> (MIT)</td>
-<td>30 MB to 2.5 GB</td>
+<td>Gemma 3 270M</td>
+<td><code>mwhanna/gemma-scope-2-270m-pt</code>, <code>transcoder_all/width_16k_l0_small</code></td>
+<td>Per-layer</td>
+<td>1.5 GB</td>
 </tr>
 <tr>
-<td>Reference outputs</td>
-<td><code>transformers</code> in a container (<code>tools/golden/</code>)</td>
-<td>small</td>
+<td>Gemma 3 270M</td>
+<td><code>google/gemma-scope-2-270m-pt</code>, <code>clt/...</code></td>
+<td>Cross-layer</td>
+<td>~13 GB</td>
 </tr>
 <tr>
-<td>Variant effects</td>
-<td>ProteinGym DMS substitution CSVs and published model scores</td>
-<td>about 1 GB (start with a subset)</td>
+<td>Llama 3.2 1B</td>
+<td><code>mntss/clt-llama-3.2-1b-524k</code></td>
+<td>Cross-layer</td>
+<td>25 GB</td>
 </tr>
 <tr>
-<td>Structures</td>
-<td>RCSB PDB or AlphaFold DB, mmCIF per protein</td>
-<td>KB per protein</td>
-</tr>
-<tr>
-<td>Probing labels</td>
-<td>DSSP from structures; TAPE/PEER secondary-structure sets</td>
-<td>small</td>
-</tr>
-<tr>
-<td>Annotations (SAEs)</td>
-<td>UniProt Swiss-Prot features</td>
-<td>about 1 GB</td>
-</tr>
-<tr>
-<td>Training sample</td>
-<td>UniRef50 FASTA (subsample)</td>
-<td>full file is about 10 GB; use a 1–5% sample</td>
+<td>Qwen3 0.6B</td>
+<td><code>mwhanna/qwen3-0.6b-transcoders-lowl0</code></td>
+<td>Per-layer</td>
+<td>~19 GB</td>
 </tr>
 </tbody>
 </table>
-<h2 id="decisions">Decisions<a class="headerlink" href="#decisions" title="Permanent link">&para;</a></h2>
+<p>Only the first was run end to end. Features read the MLP's input <em>after</em> the block's norm, where
+Gemma's and Qwen3's transcoders read. The Llama 3.2 CLT reads the residual stream <em>before</em> the
+norm, which isn't supported yet.</p>
+<h3 id="reading-a-graph">Reading a graph<a class="headerlink" href="#reading-a-graph" title="Permanent link">&para;</a></h3>
 <ul>
-<li>PLM is its own epic, started after VIZ-4.</li>
-<li>PLM-1 (the encoder block) comes first, then PLM-2.</li>
-<li>Downloading ProteinGym and UniProt data to <code>~/.cache/pulsatrix</code> is fine.</li>
+<li><strong>Edges</strong> are signed. A positive edge raised the target, a negative one lowered it. Edges into
+  a feature measure its pre-activation; edges into a logit measure the logit minus the mean
+  logit.</li>
+<li><strong>Error nodes</strong> are where the transcoders fall short. Large edges from error nodes mean part of
+  the computation isn't explained by features.</li>
+<li><strong>Influence.</strong> A node's influence is how much it affects the predicted tokens through every
+  path, direct or through other nodes. Edges are normalized so each node's incoming weights sum
+  to 1; influence then adds up the paths, weighted by the tokens' probabilities.</li>
+<li><strong>Replacement score:</strong> the share of the prompt tokens' influence on the output that flows
+  through features rather than errors.</li>
+<li><strong>Completeness score:</strong> the influence-weighted share of every node's inputs that come from
+  features and tokens rather than errors.</li>
+<li><strong>What's typical.</strong> Both are 1 for a perfect transcoder. The Gemma 3 graphs below score about
+  0.67 and 0.92: most of the computation is explained by features, but a third of the tokens'
+  influence still passes through error nodes.</li>
+<li><strong>Pruning</strong> keeps the nodes holding 80% of the influence on the predicted tokens, and the edges
+  holding 98%. It then drops nodes left without edges, as circuit-tracer does.</li>
+<li><strong>The first token</strong> (BOS) gets no features or errors; its MLP outputs count as constants.</li>
 </ul>
-<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">&para;</a></h2>
+<h3 id="what-we-found-on-gemma-3-270m">What we found on Gemma 3 270M<a class="headerlink" href="#what-we-found-on-gemma-3-270m" title="Permanent link">&para;</a></h3>
+<p>With Gemma Scope 2's 16k per-layer transcoders, on the GPU:</p>
+<table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th>Top prediction</th>
+<th>Active features</th>
+<th>After pruning</th>
+<th>Replacement</th>
+<th>Completeness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"The Eiffel Tower is located in the city of"</td>
+<td>" Paris" (0.86)</td>
+<td>4,532</td>
+<td>621 nodes, 61,219 edges</td>
+<td>0.67</td>
+<td>0.92</td>
+</tr>
+<tr>
+<td>"The capital of the state containing Dallas is"</td>
+<td>" a" (0.13)</td>
+<td>3,779</td>
+<td>634 nodes, 84,485 edges</td>
+<td>0.66</td>
+<td>0.92</td>
+</tr>
+</tbody>
+</table>
+<p>Each graph takes about 14 s on a Radeon 8060S GPU, or 31 s on a 16-core CPU with a peak of 5.7 GB
+of memory, and the two give the same graph.</p>
 <ul>
-<li>Lin et al., <em>Science</em> 2023 (ESM-2, ESMFold); <a href="https://huggingface.co/docs/transformers/en/model_doc/esm">Hugging Face ESM docs</a>; <a href="https://docs.nvidia.com/bionemo-recipes/latest/models/ESM-2/">NVIDIA BioNeMo ESM-2 recipe</a></li>
-<li><a href="https://rewirebio.io/blog/protein-language-models-in-2026/">Protein Language Models in 2026</a>: model landscape, licensing, evaluation pitfalls</li>
-<li><a href="https://arxiv.org/abs/2507.22210">Scaling and data saturation in pLMs</a>; <a href="https://icml.cc/virtual/2024/35912">Training compute-optimal pLMs</a></li>
-<li><a href="https://www.biorxiv.org/content/biorxiv/early/2023/12/08/2023.12.07.570727.full.pdf">ProteinGym</a>; <a href="https://www.sciencedirect.com/science/article/pii/S009286742600749X">MSA Pairformer</a>; <a href="https://academic.oup.com/bioinformatics/article/40/11/btae621/7907184">VespaG</a></li>
-<li><a href="https://arxiv.org/abs/2606.21876">Contacts from attention in one forward pass</a></li>
-<li><a href="https://www.nature.com/articles/s41592-025-02836-7">InterPLM, <em>Nature Methods</em></a> (<a href="https://github.com/ElanaPearl/interPLM">code</a>)</li>
-<li><a href="https://arxiv.org/abs/2606.22181">Residue-level attributions don't recover allergen epitopes</a>; <a href="https://arxiv.org/abs/2506.19532">Toward the explainability of pLMs</a></li>
-<li><a href="https://huggingface.co/blog/AmelieSchreiber/mutation-scoring">ESM-2 mutation scoring walkthrough</a>; <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-023-05610-8">MutAmore</a></li>
-<li><a href="https://arxiv.org/pdf/2505.16896">Structure-aligned pLM</a>; <a href="https://www.sciencedirect.com/science/article/pii/S1323893025000875">Predictive and therapeutic applications of pLMs</a></li>
+<li><strong>" Paris" comes from a handful of late features at the last token,</strong> in layers 11 to 17.
+  Error nodes and the " Eiffel" token embedding also feed it directly.</li>
+<li><strong>The 270M model doesn't know the two-hop fact</strong> in circuit-tracer's demo prompt. It
+  predicts " a", " the" or " Dallas", so that graph shows the method, not a circuit for
+  "Austin". Use a larger model for multi-hop reasoning.</li>
+</ul>
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pretrained transcoders only.</strong> Training a transcoder for attribution graphs isn't
+  implemented. The <code>Transcoder</code> featurizer trains one per layer, but its features are TopK, and
+  attribution graphs need JumpReLU or ReLU features.</li>
+<li><strong>No <code>max_feature_nodes</code>.</strong> Every active feature becomes a node. At 270M that is about 4,500
+  features and a dense adjacency of 20M entries, which is fine; larger models would need
+  circuit-tracer's cap.</li>
+<li><strong>Gemma's final logit softcap</strong> is outside the linearization.</li>
+<li><strong>Attention is frozen, not explained.</strong> As in the paper, the graph doesn't say why attention
+  looked where it did.</li>
+</ul>
+<h3 id="how-its-checked">How it's checked<a class="headerlink" href="#how-its-checked" title="Permanent link">&para;</a></h3>
+<p>A PyTorch golden (<code>tools/golden/make_circuit_golden.py</code>) writes the tiny Llama and Gemma 3 test
+models in PyTorch with circuit-tracer's freezes. It scales every source by a scalar and takes
+the edges from autograd. <strong>Every edge matches to 2e-6.</strong> That covers:
+- a cross-layer span and a skip;
+- Gemma's sandwich norms, QK-norm and sliding window.</p>
+<p>The CPU and GPU results agree.</p>
+<h2 id="attnlrp-relevance-graphs">AttnLRP relevance graphs<a class="headerlink" href="#attnlrp-relevance-graphs" title="Permanent link">&para;</a></h2>
+<p>Without transcoders, <code>pulsatrix_explain_text --graph</code> builds a graph from
+<a href="../../interpretability/lrp/">AttnLRP</a>: one node per token for the residual stream after each
+layer, and edges for the relevance each block passes back. It shows where information flows,
+but its nodes aren't interpretable features. Details:
+<a href="../../visualization/#attribution-graphs-neuronpedia-and-circuit-tracer">Visualization: attribution graphs</a>.</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_explain_text<span class="w"> </span>MODEL_DIR<span class="w"> </span><span class="s2">"The Eiffel Tower is located in the city of"</span><span class="w"> </span>--graph<span class="w"> </span>eiffel.json<span class="w"> </span>--viewer-dir<span class="w"> </span>graphs/
+</code></pre></div>
+<h2 id="ablation-circuit-graphs-for-small-networks">Ablation circuit graphs for small networks<a class="headerlink" href="#ablation-circuit-graphs-for-small-networks" title="Permanent link">&para;</a></h2>
+<p>For a network built from layers, <code>ExplainerContext::build_circuit_graph()</code> reruns the forward
+pass with each layer's activation zeroed in turn. It records how far the output moves (the L2
+distance) as that node's <code>ablation_effect</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/explainer_context.hpp"</span>
+
+<span class="n">ExplainerContext</span><span class="w"> </span><span class="nf">ctx</span><span class="p">({</span><span class="o">&amp;</span><span class="n">hidden</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">head</span><span class="p">});</span>
+<span class="n">Tensor</span><span class="w"> </span><span class="nf">input</span><span class="p">(</span><span class="n">Shape</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">}),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mf">0.2f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.9f</span><span class="p">});</span>
+<span class="n">CircuitGraph</span><span class="w"> </span><span class="n">circuit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">build_circuit_graph</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CircuitNode</span><span class="o">&amp;</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">circuit</span><span class="p">.</span><span class="n">nodes</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// node.ablation_effect: how far the output moves when this node is zeroed</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Drawing it.</strong> <code>CircuitGraphView</code> draws it (<a href="../../visualization/">Visualization</a>).</li>
+<li><strong>Saving it.</strong> <code>ToJson(ToCircuitGraphDocument(circuit))</code> saves it.</li>
+<li><strong>Opening it in the viewer.</strong> <code>pulsatrix_svg circuit.json --neuronpedia</code> converts it to the
+  viewer's format.</li>
+</ul>
+<h2 id="viewing-a-graph">Viewing a graph<a class="headerlink" href="#viewing-a-graph" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Locally, with circuit-tracer.</strong></li>
+<li><code>--viewer-dir DIR</code> adds each graph to <code>DIR/graph-metadata.json</code>, the index circuit-tracer's
+     viewer reads.</li>
+<li>Start the viewer there: <code>circuit-tracer start-server --graph_file_dir DIR</code>.</li>
+<li>Open <code>http://127.0.0.1:8041/index.html?slug=SLUG</code>. Use <code>127.0.0.1</code>: on <code>localhost</code> the
+     viewer loads Anthropic's hosted examples instead.</li>
+<li><strong>On Neuronpedia.</strong> Upload the file at
+  <a href="https://www.neuronpedia.org/graph/validator">neuronpedia.org/graph/validator</a>. Neuronpedia
+  uses <code>--scan</code> as its model id.</li>
+</ul>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Ameisen, Lindsey et al., "Circuit Tracing: Revealing Computational Graphs in Language
+  Models", Transformer Circuits, 2025.</li>
+<li>circuit-tracer: github.com/decoderesearch/circuit-tracer.</li>
+<li>Achtibat et al., "AttnLRP", ICML 2024.</li>
 </ul>
 
 

@@ -10,31 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/gpu-profiling/">
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/model-diffing/">
       
       
-        <link rel="prev" href="../system-monitoring/">
+        <link rel="prev" href="../steering/">
       
       
-        <link rel="next" href="../benchmarks/">
+        <link rel="next" href="../parameter-decomposition/">
       
       
         
       
       
-      <link rel="icon" href="../assets/pulsatrix_icon.png">
+      <link rel="icon" href="../../assets/pulsatrix_icon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>GPU Profiling (HIP) - Pulsatrix</title>
+        <title>Model Diffing - Pulsatrix</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#gpu-profiling-hip" class="md-skip">
+        <a href="#model-diffing-with-crosscoders" class="md-skip">
           Skip to content
         </a>
       
@@ -96,9 +96,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+    <a href="../.." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
       
-  <img src="../assets/pulsatrix_icon.png" alt="logo">
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GPU Profiling (HIP)
+              Model Diffing
             
           </span>
         </div>
@@ -231,9 +231,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+    <a href="../.." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
       
-  <img src="../assets/pulsatrix_icon.png" alt="logo">
+  <img src="../../assets/pulsatrix_icon.png" alt="logo">
 
     </a>
     Pulsatrix
@@ -260,7 +260,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -287,7 +287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   
@@ -314,7 +314,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deep-learning/" class="md-nav__link">
+      <a href="../../deep-learning/" class="md-nav__link">
         
   
   
@@ -341,7 +341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data-pipeline/" class="md-nav__link">
+      <a href="../../data-pipeline/" class="md-nav__link">
         
   
   
@@ -368,7 +368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../language-models/" class="md-nav__link">
+      <a href="../../language-models/" class="md-nav__link">
         
   
   
@@ -395,7 +395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../protein-models/" class="md-nav__link">
+      <a href="../../protein-models/" class="md-nav__link">
         
   
   
@@ -469,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interpretability/" class="md-nav__link">
+      <a href="../../interpretability/" class="md-nav__link">
         
   
   
@@ -497,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interpretability/lrp/" class="md-nav__link">
+      <a href="../../interpretability/lrp/" class="md-nav__link">
         
   
   
@@ -525,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interpretability/model-agnostic/" class="md-nav__link">
+      <a href="../../interpretability/model-agnostic/" class="md-nav__link">
         
   
   
@@ -553,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interpretability/deep-learning-approaches/" class="md-nav__link">
+      <a href="../../interpretability/deep-learning-approaches/" class="md-nav__link">
         
   
   
@@ -588,7 +588,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reinforcement-learning/" class="md-nav__link">
+      <a href="../../reinforcement-learning/" class="md-nav__link">
         
   
   
@@ -612,18 +612,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
@@ -644,7 +646,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
@@ -662,7 +664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -690,7 +692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/featurizers/" class="md-nav__link">
+      <a href="../featurizers/" class="md-nav__link">
         
   
   
@@ -718,7 +720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+      <a href="../evaluating-features/" class="md-nav__link">
         
   
   
@@ -746,7 +748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/steering/" class="md-nav__link">
+      <a href="../steering/" class="md-nav__link">
         
   
   
@@ -771,10 +773,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -790,6 +819,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start-diff-a-base-model-and-its-chat-fine-tune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick start: diff a base model and its chat fine-tune
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In C++
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-the-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-we-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we found
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-its-checked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it's checked
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -802,7 +928,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+      <a href="../parameter-decomposition/" class="md-nav__link">
         
   
   
@@ -830,7 +956,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+      <a href="../attribution-graphs/" class="md-nav__link">
         
   
   
@@ -858,7 +984,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/gflownets/" class="md-nav__link">
+      <a href="../gflownets/" class="md-nav__link">
         
   
   
@@ -893,7 +1019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../neuro-symbolic/" class="md-nav__link">
+      <a href="../../neuro-symbolic/" class="md-nav__link">
         
   
   
@@ -920,7 +1046,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../evolutionary-computation/" class="md-nav__link">
+      <a href="../../evolutionary-computation/" class="md-nav__link">
         
   
   
@@ -947,7 +1073,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../hyperparameter-optimization/" class="md-nav__link">
+      <a href="../../hyperparameter-optimization/" class="md-nav__link">
         
   
   
@@ -974,7 +1100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../visualization/" class="md-nav__link">
+      <a href="../../visualization/" class="md-nav__link">
         
   
   
@@ -1001,7 +1127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../system-monitoring/" class="md-nav__link">
+      <a href="../../system-monitoring/" class="md-nav__link">
         
   
   
@@ -1025,37 +1151,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    GPU Profiling (HIP)
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../gpu-profiling/" class="md-nav__link">
         
   
   
@@ -1071,120 +1170,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#running-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Running it
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#baseline-gfx1151-rocm-724-20-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Baseline (gfx1151, ROCm 7.2.4, 20 steps)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#results" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Results
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Results">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#hip-5-dot-and-sum-across-many-blocks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HIP-5: dot and sum across many blocks
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hip-2-batchnorm-as-parallel-per-channel-reductions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HIP-2: BatchNorm as parallel per-channel reductions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hip-3-a-caching-allocator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HIP-3: a caching allocator
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hip-4-no-per-op-synchronization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HIP-4: no per-op synchronization
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rocm-1000-evaluation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ROCm 10.0.0 evaluation
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1196,7 +1181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../benchmarks/" class="md-nav__link">
+      <a href="../../benchmarks/" class="md-nav__link">
         
   
   
@@ -1223,7 +1208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../customization/" class="md-nav__link">
+      <a href="../../customization/" class="md-nav__link">
         
   
   
@@ -1297,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/" class="md-nav__link">
+      <a href="../../recipes/" class="md-nav__link">
         
   
   
@@ -1325,7 +1310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/deep-learning/xor_training/" class="md-nav__link">
+      <a href="../../recipes/deep-learning/xor_training/" class="md-nav__link">
         
   
   
@@ -1353,7 +1338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+      <a href="../../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
         
   
   
@@ -1381,7 +1366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
+      <a href="../../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
         
   
   
@@ -1409,7 +1394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/deep-learning/tagger_finetune/" class="md-nav__link">
+      <a href="../../recipes/deep-learning/tagger_finetune/" class="md-nav__link">
         
   
   
@@ -1437,7 +1422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
+      <a href="../../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
         
   
   
@@ -1465,7 +1450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/interpretability/mnist_lrp/" class="md-nav__link">
+      <a href="../../recipes/interpretability/mnist_lrp/" class="md-nav__link">
         
   
   
@@ -1493,7 +1478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
+      <a href="../../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
         
   
   
@@ -1521,7 +1506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
+      <a href="../../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
         
   
   
@@ -1549,7 +1534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
+      <a href="../../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
         
   
   
@@ -1577,7 +1562,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/interpretability/lime_basics/" class="md-nav__link">
+      <a href="../../recipes/interpretability/lime_basics/" class="md-nav__link">
         
   
   
@@ -1605,7 +1590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/rl/dqn_cartpole/" class="md-nav__link">
+      <a href="../../recipes/rl/dqn_cartpole/" class="md-nav__link">
         
   
   
@@ -1633,7 +1618,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
+      <a href="../../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
         
   
   
@@ -1661,7 +1646,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+      <a href="../../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
         
   
   
@@ -1689,7 +1674,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+      <a href="../../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
         
   
   
@@ -1717,7 +1702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+      <a href="../../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
         
   
   
@@ -1745,7 +1730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/protein-models/protein_tem1/" class="md-nav__link">
+      <a href="../../recipes/protein-models/protein_tem1/" class="md-nav__link">
         
   
   
@@ -1773,7 +1758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recipes/visualization/training_dashboard/" class="md-nav__link">
+      <a href="../../recipes/visualization/training_dashboard/" class="md-nav__link">
         
   
   
@@ -1855,7 +1840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../roadmap/" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -1883,7 +1868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../roadmap/research-notes/" class="md-nav__link">
+      <a href="../../roadmap/research-notes/" class="md-nav__link">
         
   
   
@@ -1911,7 +1896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../roadmap/protein-language-models/" class="md-nav__link">
+      <a href="../../roadmap/protein-language-models/" class="md-nav__link">
         
   
   
@@ -1946,7 +1931,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/index.html" class="md-nav__link">
+      <a href="../../api/index.html" class="md-nav__link">
         
   
   
@@ -1993,10 +1978,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#running-it" class="md-nav__link">
+  <a href="#quick-start-diff-a-base-model-and-its-chat-fine-tune" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Running it
+        Quick start: diff a base model and its chat fine-tune
       
     </span>
   </a>
@@ -2004,10 +1989,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#baseline-gfx1151-rocm-724-20-steps" class="md-nav__link">
+  <a href="#in-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Baseline (gfx1151, ROCm 7.2.4, 20 steps)
+        In C++
       
     </span>
   </a>
@@ -2015,71 +2000,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#results" class="md-nav__link">
+  <a href="#reading-the-results" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Results
+        Reading the results
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Results">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#hip-5-dot-and-sum-across-many-blocks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HIP-5: dot and sum across many blocks
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hip-2-batchnorm-as-parallel-per-channel-reductions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HIP-2: BatchNorm as parallel per-channel reductions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hip-3-a-caching-allocator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HIP-3: a caching allocator
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hip-4-no-per-op-synchronization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HIP-4: no per-op synchronization
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#rocm-1000-evaluation" class="md-nav__link">
+  <a href="#variants" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ROCm 10.0.0 evaluation
+        Variants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-we-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What we found
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-its-checked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it's checked
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
       
     </span>
   </a>
@@ -2106,342 +2074,251 @@
   
 
 
-<h1 id="gpu-profiling-hip">GPU Profiling (HIP)<a class="headerlink" href="#gpu-profiling-hip" title="Permanent link">&para;</a></h1>
-<p><code>scripts/profile_hip.sh</code> runs a command under rocprofv3, groups its GPU kernels by op type and
-writes a CSV of where the time went. It also reports the GPU's <strong>busy time</strong> over the run's wall
-span. When that is low, the GPU is waiting on launches and synchronization, not computing.
-Measure before optimizing: every HIP performance item on the <a href="../roadmap/#hip-training-efficiency-on-amd-gpus">roadmap</a>
-is judged against these numbers. To measure whether a change made training or explanations
-faster or slower, and to compare two builds, use the <a href="../benchmarks/">benchmark suite</a>.</p>
-<h2 id="running-it">Running it<a class="headerlink" href="#running-it" title="Permanent link">&para;</a></h2>
-<p>rocprofv3 is in the ROCm container, so run the script there:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># build the fixed training workloads once</span>
-scripts/rocm-build.sh<span class="w"> </span><span class="s1">'cmake -S . -B build-hip-release -DCMAKE_BUILD_TYPE=Release -DPULSATRIX_ENABLE_HIP=ON \</span>
-<span class="s1">    &amp;&amp; cmake --build build-hip-release -j"$(nproc)" --target hip_profile_workloads'</span>
+<h1 id="model-diffing-with-crosscoders">Model Diffing with Crosscoders<a class="headerlink" href="#model-diffing-with-crosscoders" title="Permanent link">&para;</a></h1>
+<p><strong>What did fine-tuning change?</strong> Comparing two models' weights directly says little, because
+the change is spread over every parameter. <strong>Model diffing</strong> compares what the two models
+<em>represent</em>. Train one dictionary of features on both models' activations at once, then ask
+which features belong to only one of them.</p>
+<p>The tool for that is a <strong>crosscoder</strong> (Lindsey et al.): one sparse dictionary read from and
+written to several <strong>sources</strong> at once, such as the same layer in a base model and its
+fine-tune, or several layers of one model. Each feature has a single code, and its own decoder
+direction in each source. The decoders' norms say where a feature writes:
+- about equal norms: a feature both models share;
+- a near-zero norm in one model: a feature only the other model has.</p>
+<h2 id="quick-start-diff-a-base-model-and-its-chat-fine-tune">Quick start: diff a base model and its chat fine-tune<a class="headerlink" href="#quick-start-diff-a-base-model-and-its-chat-fine-tune" title="Permanent link">&para;</a></h2>
+<p><code>pulsatrix_diff_lm</code> does the whole thing:
+1. reads the same text through both models;
+2. trains a crosscoder on their residual streams at one layer;
+3. reports which features are specific to one model, and what they fire on.</p>
+<div class="highlight"><pre><span></span><code>hf<span class="w"> </span>download<span class="w"> </span>HuggingFaceTB/SmolLM2-135M<span class="w"> </span>--include<span class="w"> </span><span class="s2">"*.json"</span><span class="w"> </span>--include<span class="w"> </span><span class="s2">"*.safetensors"</span><span class="w"> </span>--local-dir<span class="w"> </span>models/SmolLM2-135M
+hf<span class="w"> </span>download<span class="w"> </span>HuggingFaceTB/SmolLM2-135M-Instruct<span class="w"> </span>--include<span class="w"> </span><span class="s2">"*.json"</span><span class="w"> </span>--include<span class="w"> </span><span class="s2">"*.safetensors"</span><span class="w"> </span>--local-dir<span class="w"> </span>models/SmolLM2-135M-Instruct
+python3<span class="w"> </span>tools/explain/fetch_chat_sample.py<span class="w"> </span>data/chat<span class="w">      </span><span class="c1"># 2,379 chat conversations in ChatML</span>
 
-<span class="c1"># profile one: &lt;ops.csv&gt; -- &lt;command&gt;</span>
-scripts/rocm-build.sh<span class="w"> </span><span class="s1">'scripts/profile_hip.sh profile/cnn.csv -- ./build-hip-release/hip_profile_workloads cnn 20'</span>
+pulsatrix_diff_lm<span class="w"> </span>models/SmolLM2-135M<span class="w"> </span>models/SmolLM2-135M-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--text<span class="w"> </span>data/chat/conversations.jsonl<span class="w"> </span>--out<span class="w"> </span>diff/<span class="w"> </span>--layer<span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--crosscoder<span class="w"> </span>btk<span class="w"> </span>--epochs<span class="w"> </span><span class="m">12</span><span class="w"> </span>--lr<span class="w"> </span>1e-3<span class="w"> </span>--device<span class="w"> </span>hip
 </code></pre></div>
-<p>Any command works in place of <code>hip_profile_workloads</code>, such as your own training program. The
-CSV has one row per op: <code>op, calls, total_us, mean_us, percent</code>. Op names come from the kernel
-name (<code>batch_norm_forward_kernel</code> becomes <code>batch_norm_forward</code>). All of hipBLAS's GEMM kernels
-are grouped as <code>gemm (hipBLAS)</code>, and HIP runtime helpers such as copies appear as <code>runtime: ...</code>.</p>
-<p><code>hip_profile_workloads</code> has three fixed training workloads, each a full training step (forward,
-loss, backward, AdamW), and one reduction microbenchmark:</p>
-<ul>
-<li><strong><code>mlp</code>:</strong> <code>Linear(256→512) → ReLU → Linear(512→512) → ReLU → Linear(512→10)</code>, batch 64.</li>
-<li><strong><code>cnn</code>:</strong> <code>Conv2D(3→16) → BatchNorm → ReLU → Conv2D(16→32, stride 2) → BatchNorm → ReLU →
-  Flatten → Linear</code>, on 32 images of 3×32×32.</li>
-<li><strong><code>tagger</code>:</strong> the transformer tagger from the
-  <a href="../recipes/deep-learning/tagger_finetune/">full fine-tuning recipe</a>.</li>
-<li><strong><code>reduce</code>:</strong> <code>DeviceBackend::dot</code> and <code>sum</code> over 16M floats, a microbenchmark for HIP-5.</li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Other programs on the GPU skew timings</p>
-<p>Step times and kernel times shift when other programs use the GPU; a local LLM server is
-enough to triple them. Compare two builds by interleaving their runs (old, new, old, new...)
-and taking medians, so both see the same load. The allocator counters
-(<code>hip_profile_workloads</code> prints them) don't depend on load.</p>
-</div>
-<h2 id="baseline-gfx1151-rocm-724-20-steps">Baseline (gfx1151, ROCm 7.2.4, 20 steps)<a class="headerlink" href="#baseline-gfx1151-rocm-724-20-steps" title="Permanent link">&para;</a></h2>
-<p>Measured 2026-10-04 on the Radeon 8060S (Strix Halo), Release build, before any of the HIP
-performance work.</p>
 <table>
 <thead>
 <tr>
-<th>Workload</th>
-<th>Step time</th>
-<th>GPU busy</th>
-<th>Biggest costs (share of kernel time)</th>
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>mlp</code></td>
-<td>about 1.0 ms</td>
-<td>12.9%</td>
-<td>hipBLAS GEMM 56%, <code>fill</code> 11%, <code>column_sums</code> 8%, copies 7%</td>
+<td><code>--layer L</code></td>
+<td>the middle</td>
+<td>Residual-stream position: 0 the embeddings, i the output of block i</td>
 </tr>
 <tr>
-<td><code>cnn</code></td>
-<td>about 27 ms</td>
-<td>78.3%</td>
-<td><code>batch_norm_forward</code> 34%, <code>batch_norm_backward</code> 31%, hipBLAS GEMM 18%, <code>batch_norm_update_running</code> 14%</td>
+<td><code>--crosscoder</code></td>
+<td><code>btk</code></td>
+<td><code>btk</code> (BatchTopK), <code>l1</code>, or <code>delta</code> (Delta-Crosscoder)</td>
 </tr>
 <tr>
-<td><code>tagger</code></td>
-<td>7.8 ms</td>
-<td>11.6%</td>
-<td>hipBLAS GEMM 38%, copies 15%, <code>fill</code> 14%, <code>column_sums</code> 12%</td>
+<td><code>--features N</code></td>
+<td>8 × hidden</td>
+<td>Dictionary size</td>
+</tr>
+<tr>
+<td><code>--k K</code></td>
+<td>32</td>
+<td>Active features per token (BatchTopK)</td>
+</tr>
+<tr>
+<td><code>--l1 λ</code></td>
+<td>1e-3</td>
+<td>Sparsity penalty (L1)</td>
+</tr>
+<tr>
+<td><code>--epochs</code>, <code>--batch</code>, <code>--lr</code></td>
+<td>4, 1024, 3e-4</td>
+<td>Training</td>
+</tr>
+<tr>
+<td><code>--max-length N</code></td>
+<td>256</td>
+<td>Tokens kept per text</td>
+</tr>
+<tr>
+<td><code>--lean N</code></td>
+<td>50</td>
+<td>How many of the features leaning furthest toward each model get Latent Scaling</td>
 </tr>
 </tbody>
 </table>
-<p>What it shows:</p>
-<ul>
-<li><strong>The small models are bound by launch and sync overhead.</strong> The <code>mlp</code> and <code>tagger</code> GPUs are busy
-  only 12–13% of the time. The <code>tagger</code> launches 14,457 kernels in 20 steps, and every op waits
-  for the stream to finish (HIP-4).</li>
-<li><strong>BatchNorm dominates the CNN.</strong> Its three kernels take 79% of the kernel time, because each runs
-  one thread per channel: 16 or 32 threads for 16,384 or 4,096 elements per channel (HIP-2).</li>
-<li><strong>Fills and copies are a large share.</strong> Many of them are temporaries a caching allocator and
-  fused kernels would avoid (HIP-3, HIP-6).</li>
-</ul>
-<h2 id="results">Results<a class="headerlink" href="#results" title="Permanent link">&para;</a></h2>
-<h3 id="hip-5-dot-and-sum-across-many-blocks">HIP-5: <code>dot</code> and <code>sum</code> across many blocks<a class="headerlink" href="#hip-5-dot-and-sum-across-many-blocks" title="Permanent link">&para;</a></h3>
-<p>They used to run on a single 256-thread block. Now a first pass of up to 1024 blocks writes
-per-block partial sums, and one block adds those in a fixed order: still deterministic, no
-atomics. On the <code>reduce</code> workload (16M floats):</p>
+<p><strong>It prints</strong>, on the held-out tenth of the texts:
+- each model's explained variance;
+- how many features fall in each class: base-only, fine-tune-only, shared;
+- how many pass Latent Scaling's test for being specific to one model;
+- how each group's activations split over chat-template tokens and the system, user and
+  assistant turns;
+- the top tokens of the most fine-tune-specific features.</p>
+<p><code>diff/latents.csv</code> has every feature's decoder norms, Δnorm, cosine and, where measured, ν
+(defined below). A run of 12 epochs over 504K tokens took about 16 minutes on a Radeon 8060S.</p>
+<h2 id="in-c">In C++<a class="headerlink" href="#in-c" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/crosscoder.hpp"</span>
+
+<span class="n">CrosscoderOptions</span><span class="w"> </span><span class="n">o</span><span class="p">;</span><span class="w">                       </span><span class="c1">// BatchTopK by default</span>
+<span class="n">o</span><span class="p">.</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span>
+<span class="n">Crosscoder</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="cm">/*sources=*/</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/*dim=*/</span><span class="mi">576</span><span class="p">,</span><span class="w"> </span><span class="cm">/*features=*/</span><span class="mi">4608</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+<span class="c1">// x is (N, 2 × 576): the base model's activations (source 0, "a"), then the fine-tune's</span>
+<span class="c1">// (source 1, "b"), for the same tokens. Scale each model's activations so their mean squared</span>
+<span class="c1">// norm is the dimension. sample: a few thousand such rows.</span>
+<span class="n">c</span><span class="p">.</span><span class="n">initialize_bias</span><span class="p">(</span><span class="n">sample</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="o">&amp;</span><span class="w"> </span><span class="n">batch</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">batches</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">TrainFeaturizer</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">batch</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">,</span><span class="w"> </span><span class="cm">/*unit_norm_decoder=*/</span><span class="nb">false</span><span class="p">);</span><span class="w">   </span><span class="c1">// decoder norms carry the result</span>
+<span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">CrosscoderLatentStats</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CrosscoderLatents</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w">   </span><span class="c1">// per feature: norms, Δnorm, cosine</span>
+<span class="n">LatentClass</span><span class="w"> </span><span class="n">cls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassifyLatent</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w">                        </span><span class="c1">// AOnly, BOnly, Shared, Other</span>
+<span class="c1">// candidates: the feature indices to test, for example those with Δnorm above 0.9.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">LatentScaling</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureLatentScaling</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">,</span><span class="w"> </span><span class="n">candidates</span><span class="p">);</span><span class="w">   </span><span class="c1">// ν per feature</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExplainedVarianceBySource</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">held_out</span><span class="p">);</span>
+</code></pre></div>
+<p>With <code>sources</code> &gt; 2 and one model's layers side by side, the same class finds features that span
+several layers.</p>
+<h2 id="reading-the-results">Reading the results<a class="headerlink" href="#reading-the-results" title="Permanent link">&para;</a></h2>
+<p>The API calls features <strong>latents</strong>, as the papers do. Source <strong>a</strong> is source 0 (the base model)
+and <strong>b</strong> is source 1 (the fine-tune); swap the source arguments to ask the other way round.</p>
+<p><strong>Decoder norms.</strong>
+- <strong>Δnorm</strong> (Minder et al.) is <code>½ (1 + (‖d_b‖ − ‖d_a‖) / max(‖d_a‖, ‖d_b‖))</code>. It is 0 for a
+  feature only in model a, 1 for one only in model b, and ½ for an even split.
+  <code>relative_norm</code>, <code>‖d_b‖ / (‖d_a‖ + ‖d_b‖)</code>, agrees at those three points.
+- <code>ClassifyLatent</code> uses Minder et al.'s bins: below 0.1 <strong>a-only</strong>, above 0.9 <strong>b-only</strong>, 0.4 to
+  0.6 <strong>shared</strong>, and <strong>other</strong> in between (0.1 to 0.4, 0.6 to 0.9).
+- <strong>The cosine</strong> between a shared feature's two decoders says whether both models write it in the
+  same direction.</p>
+<p><strong>Latent Scaling.</strong> Decoder norms can mislead: a feature can look one-model when it isn't, and
+the other way round. Latent Scaling (Minder et al.) checks each candidate against the data. For
+each model it fits a scale β: how much of the feature's b-side direction, times its code, best
+explains that model's activations. <strong>ν = β_a / β_b</strong> is then how much model a uses the feature,
+relative to model b. Near 0 means model a doesn't need it; near 1 means both do.</p>
+<p>It is fitted against two targets:
+- <strong>ν_error</strong>: against what the <em>other</em> features leave unexplained in each model. A high value
+  means <strong>complete shrinkage</strong>: model a needs the feature too, but its a-side decoder was
+  shrunk to almost nothing.
+- <strong>ν_reconstruction</strong>: against the crosscoder's reconstruction. A high value means <strong>latent
+  decoupling</strong>: other features write the same thing into model a.</p>
+<p>A feature is <strong>specific to model b</strong> when ν_reconstruction &lt; 0.5 and ν_error &lt; 0.2.</p>
+<p><strong>Run Latent Scaling, not only the bins.</strong> In both experiments below, the bins missed what
+Latent Scaling found.</p>
+<h2 id="variants">Variants<a class="headerlink" href="#variants" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Op</th>
-<th>Before</th>
-<th>After</th>
-<th>Effective bandwidth after</th>
+<th>Variant</th>
+<th>Option</th>
+<th>How it differs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>dot</code> (reads 128 MB)</td>
-<td>17.7 ms</td>
-<td>0.61 ms (29×)</td>
-<td>211 GB/s</td>
+<td>L1 (Lindsey et al.)</td>
+<td><code>o.sparsity = CrosscoderSparsity::L1</code></td>
+<td>Penalty <code>λ Σ_i f_i Σ_s ‖d_i^s‖</code>: a sum of decoder norms, so a one-model feature stays cheap</td>
 </tr>
 <tr>
-<td><code>sum</code> (reads 64 MB)</td>
-<td>17.2 ms</td>
-<td>0.30 ms (58×)</td>
-<td>216 GB/s</td>
+<td>BatchTopK (Minder et al.)</td>
+<td>the default</td>
+<td>The batch's <code>N·k</code> largest <code>f_i Σ_s ‖d_i^s‖</code> are kept; codes aren't shrunk; a threshold at inference</td>
+</tr>
+<tr>
+<td>Delta-Crosscoder (Kassem et al.)</td>
+<td><code>o.delta = true</code></td>
+<td>Separate shared and "delta" feature sets, each with its own top-k; a loss that makes the delta features alone predict <code>x_fine-tune − x_base</code>. Meant for narrow fine-tunes</td>
 </tr>
 </tbody>
 </table>
-<p>Both now run at the measured memory bandwidth of the gfx1151 (about 212 GB/s), so there is
-nothing left to gain on these two ops.</p>
-<h3 id="hip-2-batchnorm-as-parallel-per-channel-reductions">HIP-2: BatchNorm as parallel per-channel reductions<a class="headerlink" href="#hip-2-batchnorm-as-parallel-per-channel-reductions" title="Permanent link">&para;</a></h3>
-<p>BatchNorm ran one thread per channel over every element of that channel. Now each per-channel
-sum is a deterministic two-stage reduction: several blocks per channel produce partials, which one
-thread per channel then adds in order. Normalization and the input gradient run one thread per
-element. On the <code>cnn</code> workload:</p>
+<h2 id="what-we-found">What we found<a class="headerlink" href="#what-we-found" title="Permanent link">&para;</a></h2>
+<p><strong>Planted features</strong> (<code>tests/crosscoder_test.cpp</code>). Two synthetic "models" share 16 features,
+and each has 4 of its own.
+- <strong>When every feature is common</strong> (8% of inputs), BatchTopK recovers all 24 and puts each in the
+  right class.
+- <strong>In a narrow fine-tune</strong>, the fine-tune adds 4 rare features (0.5% of inputs each).
+  - The crosscoder learns them, but the bins call none of them fine-tune-only (mean Δnorm 0.76).
+    Their base-model decoders keep about half their norm, even after 10 times more training.
+  - <strong>Latent Scaling calls all 4 fine-tune-specific</strong>, and all 16 shared ones needed by both
+    models.
+  - The Delta-Crosscoder doesn't fix the norms. Its top-k must keep <code>N·k</code> delta activations per
+    batch even when the fine-tune's features are rarer than that.</p>
+<p><strong>SmolLM2-135M against SmolLM2-135M-Instruct</strong>, with the command above (<code>--crosscoder btk</code>,
+<code>l1 --l1 5e-4</code> or <code>delta</code>; 12 epochs at a learning rate of 1e-3 each): 504K tokens, layer 15 of
+30, 4,608 features, scored on 50K held-out tokens. The Delta-Crosscoder used its defaults, 32
+active delta features and 64 shared.</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>Before</th>
-<th>After</th>
+<th>BatchTopK (k = 32)</th>
+<th>L1 (λ = 5e-4)</th>
+<th>Delta-Crosscoder</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Step time</td>
-<td>about 27 ms</td>
-<td>about 10 ms (2.7×)</td>
+<td>Explained variance (both models)</td>
+<td>0.93</td>
+<td>0.93</td>
+<td>0.96</td>
 </tr>
 <tr>
-<td>BatchNorm kernels (20 steps)</td>
-<td>342 ms, 79% of kernel time</td>
-<td>about 3 ms</td>
+<td>L0</td>
+<td>32</td>
+<td>46</td>
+<td>96</td>
 </tr>
 <tr>
-<td>GPU busy</td>
-<td>78.3%</td>
-<td>45.8%</td>
+<td>One-model features by the bins</td>
+<td>0</td>
+<td>11</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Instruct-specific by Latent Scaling, of the 50 leaning furthest</td>
+<td>8</td>
+<td>1</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Share of those features' activation on chat-template tokens (which are 22% of all tokens)</td>
+<td>86%</td>
+<td>99%</td>
+<td>84%</td>
 </tr>
 </tbody>
 </table>
-<p>GEMM is now 84% of the CNN's kernel time. The drop in GPU busy time means launch and sync
-overhead is now the larger cost, which is HIP-4's target.</p>
-<p>Results now differ from the CPU in the last bits. The GPU adds each channel's values by a tree,
-while the CPU adds them one at a time. Both are deterministic. Softmax, layer and RMS norms, and
-column sums keep their kernels: at current shapes each call takes about 5 µs, which is launch
-overhead rather than missing parallelism (the roadmap's falsifier for HIP-2).</p>
-<h3 id="hip-3-a-caching-allocator">HIP-3: a caching allocator<a class="headerlink" href="#hip-3-a-caching-allocator" title="Permanent link">&para;</a></h3>
-<p>Every tensor used to be a fresh <code>hipMalloc</code>, and every free a <code>hipFree</code>, which waits for the GPU
-to finish. Now <code>HIPBackend</code> keeps freed blocks and reuses them for the same size class (512-byte
-steps below 1 MiB, then steps of an eighth of a power of two). Over 20 steps:</p>
-<table>
-<thead>
-<tr>
-<th>Workload</th>
-<th>Allocations</th>
-<th><code>hipMalloc</code> calls now</th>
-<th>Median step time, interleaved A/B</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>mlp</code></td>
-<td>618</td>
-<td>48</td>
-<td>4% faster</td>
-</tr>
-<tr>
-<td><code>cnn</code></td>
-<td>1,124</td>
-<td>86</td>
-<td>12% faster</td>
-</tr>
-<tr>
-<td><code>tagger</code></td>
-<td>5,359</td>
-<td>156</td>
-<td>7% faster</td>
-</tr>
-</tbody>
-</table>
-<p>The gains are modest because every op still synchronizes the stream. Removing those syncs is
-HIP-4. Cap the memory a backend holds with <code>set_memory_budget()</code> or
-<code>PULSATRIX_HIP_MEMORY_BUDGET_MB</code>, and return cached blocks with <code>empty_cache()</code>.</p>
-<h3 id="hip-4-no-per-op-synchronization">HIP-4: no per-op synchronization<a class="headerlink" href="#hip-4-no-per-op-synchronization" title="Permanent link">&para;</a></h3>
-<p>Every HIP op used to wait for the GPU to finish before returning: 59 synchronizations, one per
-kernel or hipBLAS call. Now ops are queued on the backend's stream, and the host waits only
-where it must:</p>
 <ul>
-<li><strong>Copies to the host</strong>, because the caller reads the result next. This includes <code>dot</code>, <code>sum</code>
-  and reading a loss value.</li>
-<li><strong>Copies from the host</strong>, because the source is often a temporary buffer.</li>
-<li><strong>Releasing memory</strong> to the driver.</li>
+<li><strong>What chat tuning added is about the chat template.</strong> The Instruct-specific features fire on
+  <code>&lt;|im_start|&gt;</code>, the role name, and the newline that closes a turn's header. Minder et al. found
+  the same in Gemma 2.</li>
+<li><strong>The bins alone find almost nothing</strong> for two models this close. Latent Scaling is what
+  separates the specific features.</li>
+<li><strong>The Delta-Crosscoder finds the most,</strong> but at three times the L0, which also explains its
+  higher explained variance.</li>
 </ul>
-<p>Interleaved A/B against HIP-3:</p>
-<table>
-<thead>
-<tr>
-<th>Workload</th>
-<th>Before</th>
-<th>After</th>
-<th>Speedup</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>mlp</code></td>
-<td>0.70 ms/step</td>
-<td>0.35 ms/step</td>
-<td>2.0×</td>
-</tr>
-<tr>
-<td><code>tagger</code></td>
-<td>5.35 ms/step</td>
-<td>2.84 ms/step</td>
-<td>1.9×</td>
-</tr>
-<tr>
-<td><code>cnn</code></td>
-<td>7.28 ms/step</td>
-<td>5.24 ms/step</td>
-<td>1.4×</td>
-</tr>
-</tbody>
-</table>
-<p>Set <code>PULSATRIX_HIP_SYNC_DEBUG=1</code> before creating the backend to restore the per-op waits. A
-failing kernel otherwise reports its error at the next wait, not at the op that caused it.</p>
-<p>The small models are still only about 20% busy. What's left is host-side work inside each step:
-reading the loss back, and losses that validate their targets on the host (one copy each step).
-Fused kernels (HIP-6) and keeping targets on the device are the next steps there.</p>
-<h2 id="rocm-1000-evaluation">ROCm 10.0.0 evaluation<a class="headerlink" href="#rocm-1000-evaluation" title="Permanent link">&para;</a></h2>
-<p>ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
-evaluation is roadmap HIP-9. The image is <code>docker/Dockerfile.rocm</code> built on
-<code>rocm/dev-ubuntu-24.04:10.0.0-full</code>. It ships
-HIP 7.15 and AMD clang 23, against 7.2.4's HIP 7.2 and clang 22.</p>
-<p>Measured 2026-10-04 on the Radeon 8060S, host kernel 7.0.0, same commit for both versions:</p>
-<table>
-<thead>
-<tr>
-<th>Check</th>
-<th>ROCm 7.2.4</th>
-<th>ROCm 10.0.0</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>HIP Debug tests</td>
-<td>2402/2402</td>
-<td>2402/2402, also with <code>PULSATRIX_HIP_SYNC_DEBUG=1</code></td>
-</tr>
-<tr>
-<td><code>scripts/profile_hip.sh</code> (rocprofv3)</td>
-<td>works</td>
-<td>works (rocprofv3 1.3.5)</td>
-</tr>
-<tr>
-<td>Benchmark suite, 6 ABBA rounds</td>
-<td>baseline</td>
-<td>no regressions; every time within ±2%</td>
-</tr>
-<tr>
-<td>LRP conservation and IG completeness</td>
-<td>baseline</td>
-<td>bit-identical</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>Benchmark (<code>pulsatrix_bench</code>, HIP)</th>
-<th>7.2.4</th>
-<th>10.0.0</th>
-<th>Change</th>
-<th>p</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>train.mlp</code></td>
-<td>0.366 ms</td>
-<td>0.371 ms</td>
-<td>+1.6%</td>
-<td>0.066</td>
-</tr>
-<tr>
-<td><code>train.cnn</code></td>
-<td>5.248 ms</td>
-<td>5.290 ms</td>
-<td>+0.8%</td>
-<td>0.242</td>
-</tr>
-<tr>
-<td><code>train.tagger</code></td>
-<td>2.229 ms</td>
-<td>2.268 ms</td>
-<td>+1.8%</td>
-<td>0.013</td>
-</tr>
-<tr>
-<td><code>explain.lrp_epsilon.mlp</code></td>
-<td>0.290 ms</td>
-<td>0.288 ms</td>
-<td>-0.5%</td>
-<td>0.409</td>
-</tr>
-<tr>
-<td><code>explain.lrp_epsilon_plus.convnet</code></td>
-<td>0.690 ms</td>
-<td>0.690 ms</td>
-<td>0.0%</td>
-<td>0.758</td>
-</tr>
-<tr>
-<td><code>explain.integrated_gradients.mlp</code></td>
-<td>7.306 ms</td>
-<td>7.222 ms</td>
-<td>-1.2%</td>
-<td>0.934</td>
-</tr>
-</tbody>
-</table>
-<p>Two differences from 7.2.4 matter for building against it:</p>
+<p>These are small runs: Minder et al. train on 100M tokens.</p>
+<h2 id="how-its-checked">How it's checked<a class="headerlink" href="#how-its-checked" title="Permanent link">&para;</a></h2>
+<p>All three variants match a PyTorch rendering (<code>tools/golden/make_crosscoder_golden.py</code>) through
+the loss, every gradient and two Adam steps.</p>
+<p><strong>Conventions:</strong>
+- The loss is the mean squared error over every source plus the penalty, on the same scale as
+  the other featurizers; Lindsey et al. sum it.
+- Every feature starts with the same decoder in every source, at norm 0.05 for L1 and 1 for
+  BatchTopK (Minder et al.'s values).
+- The Delta-Crosscoder paper has no public code, so it follows the paper's equations. Its
+  separate sparsity term is left out, since the top-k already fixes the sparsity.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Library path.</strong> ROCm 10's image keeps its libraries under <code>/opt/rocm/core-10.0/lib</code>, reached
-  through <code>/opt/rocm/lib</code>, and doesn't register that directory with the dynamic loader.
-  Programs then fail to start with <code>libhipblas.so.3: cannot open shared object file</code>. The
-  Dockerfile registers it. Outside the container, add <code>/opt/rocm/lib</code> to <code>/etc/ld.so.conf.d/</code>
-  or <code>LD_LIBRARY_PATH</code>.</li>
-<li><strong>hipBLASLt.</strong> ROCm 10's hipBLAS links hipBLASLt. Whether GEMMs go through it on gfx1151 is
-  HIP-8's question.</li>
+<li>Lindsey et al., "Sparse Crosscoders for Cross-Layer Features and Model Diffing",
+  Transformer Circuits, 2024.</li>
+<li>Minder, Dumas et al., "Overcoming Sparsity Artifacts in Crosscoders to Interpret
+  Chat-Tuning", arXiv 2504.02922.</li>
+<li>Kassem et al., "Delta-Crosscoder: Robust Crosscoder Model Diffing in Narrow Fine-Tuning
+  Regimes", arXiv 2603.04426.</li>
 </ul>
-<p>After this evaluation, ROCm 10.0.0 became the default container; <code>PULSATRIX_ROCM_VERSION=7.2.4</code>
-still selects the previous one. The HIP results above were measured on 7.2.4, before the
-switch.</p>
 
 
 
@@ -2497,10 +2374,10 @@ switch.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

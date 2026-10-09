@@ -104,8 +104,8 @@ $(document).ready(function(){initNavTree('structpulsatrix_1_1SteeringOptions.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a413f3f64758c199819c299d8d38bc0bc" id="r_a413f3f64758c199819c299d8d38bc0bc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SteeringOptions.html#a413f3f64758c199819c299d8d38bc0bc">coefficients</a> = {-2.0, -1.0, 0.0, 1.0, 2.0}</td></tr>
-<tr class="memdesc:a413f3f64758c199819c299d8d38bc0bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The coefficients the direction is scaled by, 0 included as the unsteered baseline.  <br /></td></tr>
+<tr class="memitem:a413f3f64758c199819c299d8d38bc0bc" id="r_a413f3f64758c199819c299d8d38bc0bc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SteeringOptions.html#a413f3f64758c199819c299d8d38bc0bc">coefficients</a> = {-0.5, -0.25, 0.0, 0.25, 0.5}</td></tr>
+<tr class="memdesc:a413f3f64758c199819c299d8d38bc0bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The coefficients the direction is scaled by, 0 included as the unsteered baseline. Small by default: the slopes assume a linear response, and on ESM-2 8M a range of ±2 disrupted the model in any direction, random ones included.  <br /></td></tr>
 <tr class="separator:a413f3f64758c199819c299d8d38bc0bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c657b05f8a2d6ac730a8615e4d5faf1" id="r_a8c657b05f8a2d6ac730a8615e4d5faf1"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1SteeringOptions.html#a8c657b05f8a2d6ac730a8615e4d5faf1">random_directions</a> = 3</td></tr>
 <tr class="memdesc:a8c657b05f8a2d6ac730a8615e4d5faf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Random directions of the same norm, the control.  <br /></td></tr>
@@ -121,12 +121,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;double&gt; pulsatrix::SteeringOptions::coefficients = {-2.0, -1.0, 0.0, 1.0, 2.0}</td>
+          <td class="memname">std::vector&lt;double&gt; pulsatrix::SteeringOptions::coefficients = {-0.5, -0.25, 0.0, 0.25, 0.5}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The coefficients the direction is scaled by, 0 included as the unsteered baseline. </p>
+<p>The coefficients the direction is scaled by, 0 included as the unsteered baseline. Small by default: the slopes assume a linear response, and on ESM-2 8M a range of ±2 disrupted the model in any direction, random ones included. </p>
 
 </div>
 </div>

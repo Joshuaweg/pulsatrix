@@ -483,6 +483,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#4-look-inside-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Look inside the model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#checking-against-hugging-face" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -760,9 +771,20 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/" class="md-nav__link">
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -776,7 +798,247 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1802,6 +2064,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#4-look-inside-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Look inside the model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#checking-against-hugging-face" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1882,6 +2155,9 @@ explanations.</p>
 <li><strong>Explain a prediction</strong> with AttnLRP (attention-aware Layer-wise Relevance Propagation). You
   get one relevance score per input token, which can be merged into words and drawn as a figure.
   <code>pulsatrix_explain_text</code> does all of this in one command.</li>
+<li><strong>Look inside the model</strong>: read or replace its residual stream and MLPs with hooks, find
+  features, diff a model against its fine-tune, steer it, and trace attribution graphs of its
+  predictions (see <a href="#4-look-inside-the-model">Look inside the model</a>).</li>
 <li><strong>Train or fine-tune</strong>: <code>CausalLM</code> is an ordinary <code>Module</code>, so <code>backward()</code>, optimizers and
   checkpoints work on it.</li>
 <li><strong>Check your setup</strong> against Hugging Face with three command-line tools (see
@@ -2078,6 +2354,45 @@ all of its relevance sits on "iffel". Other options:</p>
 <li><strong>Figures and documents</strong>: the <a href="../visualization/#token-relevance-for-text">visualization guide</a>
   covers the token and word documents, the SVG strip and the <code>TokenRelevanceView</code> window widget.</li>
 </ul>
+<h2 id="4-look-inside-the-model">4. Look inside the model<a class="headerlink" href="#4-look-inside-the-model" title="Permanent link">&para;</a></h2>
+<p>Two hooks give access to the model's internals during <code>forward()</code>:
+- <strong><code>set_hidden_state_hook</code></strong> sees the residual stream at every position (0 the embeddings, i the
+  output of block i).
+- <strong><code>layer(i).set_mlp_hook</code></strong> sees each MLP's input and output.</p>
+<p>Return the tensor unchanged to read it, or return a replacement to change what the model
+computes. The <a href="../mechanistic-interpretability/">Mechanistic Interpretability</a> section
+builds on them:</p>
+<table>
+<thead>
+<tr>
+<th>To</th>
+<th>Use</th>
+<th>Guide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Collect activations, then find the features a layer uses</td>
+<td>Hooks, then a TopK sparse autoencoder</td>
+<td><a href="../mechanistic-interpretability/featurizers/">Finding features</a></td>
+</tr>
+<tr>
+<td>See what chat tuning changed</td>
+<td><code>pulsatrix_diff_lm</code> (a crosscoder between the two models)</td>
+<td><a href="../mechanistic-interpretability/model-diffing/">Model diffing</a></td>
+</tr>
+<tr>
+<td>Push the model's behavior along a direction</td>
+<td><code>SteeringHook</code>, <code>MeasureSteering</code></td>
+<td><a href="../mechanistic-interpretability/steering/">Steering</a></td>
+</tr>
+<tr>
+<td>Trace which features carry a prediction</td>
+<td><code>pulsatrix_explain_text --graph --transcoders</code></td>
+<td><a href="../mechanistic-interpretability/attribution-graphs/">Attribution graphs</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="checking-against-hugging-face">Checking against Hugging Face<a class="headerlink" href="#checking-against-hugging-face" title="Permanent link">&para;</a></h2>
 <p>Three tools compare pulsatrix with the reference libraries on your own machine. They need
 reference files that small Python scripts write once, with <code>torch</code>, <code>transformers</code>, <code>tokenizers</code>

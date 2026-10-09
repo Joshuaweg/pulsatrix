@@ -614,9 +614,20 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../mechanistic-interpretability/" class="md-nav__link">
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -630,7 +641,247 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mechanistic-interpretability/gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1991,6 +2242,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-feat-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the FEAT work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2788,6 +3050,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#follow-ups-the-feat-work-surfaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Follow-ups the FEAT work surfaced
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3024,7 +3297,9 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
 <strong>v1.1, "Foundations and trust", is complete</strong> (2026-10-04): every item in its
 <a href="#v11-foundations-and-trust">milestone</a> is done.
 <strong>The PLM epic, protein language models, is complete</strong> (2026-10-08): every item in
-<a href="#plm-protein-language-models">PLM</a> is done.</p>
+<a href="#plm-protein-language-models">PLM</a> is done.
+<strong>The FEAT epic, featurizers and feature-level interpretability, is complete</strong> (2026-10-09):
+every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT</a> is done.</p>
 <ul>
 <li><strong>Strong.</strong> LRP covers every layer and is checked against Zennit and LXT. Saliency, Integrated
   Gradients and Grad-CAM are checked against Captum. LIME, KernelSHAP, PDP, logit lens,
@@ -3060,6 +3335,18 @@ mistake, and how it is known to fail, lives in <a href="research-notes/">Researc
 <li>probes and SAE features matched to Swiss-Prot annotations, through the new featurizer
     interface (<a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT-1</a>);</li>
 <li>an end-to-end recipe on TEM-1 β-lactamase.</li>
+<li><strong>Feature-level interpretability</strong> (<a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT-1 to FEAT-10</a>).</li>
+<li><strong>Featurizers behind one interface:</strong> TopK, BatchTopK, Matryoshka and JumpReLU sparse
+    autoencoders, block-sparse featurizers and transcoders.</li>
+<li><strong>Evaluation and steering:</strong> SAEBench's core metrics with random-model and probe baselines,
+    and steering with a per-input reliability report.</li>
+<li><strong>Model diffing and parameter decomposition:</strong> crosscoders with Latent Scaling, and SPD and
+    VPD.</li>
+<li><strong>Attribution graphs</strong> through pretrained transcoders, for Neuronpedia's viewer.</li>
+<li><strong>Checked against PyTorch:</strong> every method matches a PyTorch rendering of its paper.</li>
+<li><strong>Tested on real models:</strong> ESM-2, SmolLM2 and Gemma 3. Negative results are reported too:
+    a steering vector that fails its checks, block-sparse featurizers that don't pay off on
+    ESM-2, and decoder norms that miss rare fine-tune features.</li>
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Its container runs ROCm 10.0.0, the
@@ -3201,8 +3488,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <h3 id="v14-features-and-agents">v1.4 "Features and agents"<a class="headerlink" href="#v14-features-and-agents" title="Permanent link">&para;</a></h3>
 <p>Feature discovery on real models, and agents that can drive the library.</p>
 <ul>
-<li>FEAT-1 (<strong>done</strong>, for PLM-8), FEAT-2 to FEAT-7 (<strong>done</strong>): the featurizer interface, TopK
-  and its family, metrics, transcoders, BSF, steering</li>
+<li>FEAT-1 to FEAT-7 (<strong>done</strong>): the featurizer interface, TopK and its family, metrics,
+  transcoders, BSF, steering</li>
 <li>TDA-9, TDA-10, TDA-12: topology views, the manifold verifier for featurizers, layer-wise
   topology</li>
 <li>VIZ-4 (<strong>done</strong>), VIZ-6b, VIZ-6c: Neuronpedia export, feature dashboards, the embedding projector</li>
@@ -3400,7 +3687,7 @@ AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <tr>
 <td><code>GaussianMutationTest.ZeroSigma…</code> aborts in Debug: <code>std::normal_distribution</code> rejects σ = 0 under libstdc++ assertions</td>
 <td>found while testing</td>
-<td>a bug fix</td>
+<td>Fixed in <a href="https://github.com/Joshuaweg/pulsatrix/pull/111">#111</a></td>
 </tr>
 </tbody>
 </table>
@@ -4852,10 +5139,14 @@ weight variance.</p>
 </tbody>
 </table>
 <h2 id="feat-featurizers-sparse-autoencoders-and-goodfire-bsf">FEAT: Featurizers, sparse autoencoders and Goodfire BSF<a class="headerlink" href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf" title="Permanent link">&para;</a></h2>
+<p><strong>Complete</strong> (2026-10-09, PRs <a href="https://github.com/Joshuaweg/pulsatrix/pull/102">#102</a> and
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/105">#105</a> to
+<a href="https://github.com/Joshuaweg/pulsatrix/pull/114">#114</a>). The user guide is the
+<a href="../mechanistic-interpretability/">Mechanistic Interpretability</a> section.</p>
 <p>Goodfire's <strong>Block-Sparse Featurizers</strong> (BSF, June 2026) are like sparse autoencoders, except
 the unit of sparsity is a small block of 2–4 dimensions rather than one direction. That lets one
-feature be a curve or a circle instead of a line. BSF is the newest member of a family pulsatrix
-can't represent yet, so the plan builds the family first, behind one interface.</p>
+feature be a curve or a circle instead of a line. BSF was the newest member of a family pulsatrix
+couldn't represent, so the plan built the family first, behind one interface.</p>
 <p>Sparse autoencoders have real limits: they lose to linear probes out of distribution, steering
 with their features loses to simple difference-of-means vectors, and BSF still splits features.
 They ship here as discovery tools with metrics and baselines, not as detectors.</p>
@@ -5042,7 +5333,7 @@ reports every metric for both. On ESM-2 8M it changed the reading of three resul
 - for weakly probed concepts it "absorbs" as much as the trained one.</p>
 <p>So <code>recovered</code> is NaN unless ablation raises the loss, and the tool prints absorption only
 where the probe's F1 is at least 0.5. The numbers are in the
-<a href="../mechanistic-interpretability/#measuring-a-featurizer">mechanistic-interpretability guide</a>.
+<a href="../mechanistic-interpretability/evaluating-features/">mechanistic-interpretability guide</a>.
   - <strong><code>pulsatrix_probe_esm --featurizer topk</code>.</strong> At the same L0, a TopK SAE beats PLM-8's L1
 SAE on every measure: explained variance 0.78 vs 0.66, loss recovered 0.96 vs 0.90.
 - <strong>FEAT-4</strong> adds BatchTopK and Matryoshka as options of <code>TopKSparseAutoencoder</code>
@@ -5066,7 +5357,7 @@ none.
   - <strong>On ESM-2 8M</strong> Matryoshka absorbs least and finds the best single features for helix and
 transmembrane, at 0.90 loss recovered to TopK's 0.96. JumpReLU matches TopK's loss
 recovered with 12.6 latents instead of 16
-(<a href="../mechanistic-interpretability/#batchtopk-matryoshka-and-jumprelu">table</a>).
+(<a href="../mechanistic-interpretability/evaluating-features/#comparing-featurizers-on-esm-2">table</a>).
 - <strong>FEAT-5</strong> adds <code>Transcoder</code> (<code>transcoder.hpp</code>), with an optional skip connection, and an MLP
   hook on <code>EncoderBlock</code> and <code>TransformerBlock</code>.
   - <strong>TopK activation and AuxK,</strong> as Paulo et al. train them, rather than Dunefsky et al.'s L1
@@ -5088,7 +5379,7 @@ different input and output sizes, the skip connection and AuxK.
   - <strong>On ESM-2 8M</strong> the skip transcoder beats the plain one on every measure (loss recovered
 0.72 vs 0.59 with the layer-4 MLP replaced). Against a residual-stream TopK SAE its concept
 features are mixed: better on 3 of 6 concepts, worse on 2
-(<a href="../mechanistic-interpretability/#transcoders">table</a>).
+(<a href="../mechanistic-interpretability/evaluating-features/#transcoders-on-esm-2">table</a>).
 - <strong>FEAT-6</strong> adds <code>block_sparse_featurizer.hpp</code>: <code>BlockSparseFeaturizer</code> with the Vanilla,
   Grassmannian and GroupLasso variants, <code>BlockSelection::Tournament</code>,
   <code>MeasureDescriptionLength</code> (MDL) and <code>MeasureBlockGeometry</code> (stable rank).
@@ -5102,7 +5393,7 @@ without biases.
   - <strong>On planted planes</strong> a Vanilla BSF recovers all 6 and needs 19.9 bits per input, against
 32.4 for a TopK SAE. <strong>On ESM-2 8M</strong> it trails the TopK SAE in reconstruction (explained
 variance 0.66 vs 0.78) and saves only 5% of bits. Blocks use about 1.5 of 4 dimensions
-(<a href="../mechanistic-interpretability/#block-sparse-featurizers">table</a>).
+(<a href="../mechanistic-interpretability/evaluating-features/#comparing-featurizers-on-esm-2">table</a>).
 - <strong>FEAT-7</strong> adds <code>steering.hpp</code>: <code>DifferenceOfMeans</code>, <code>FeaturizerDirection</code>, <code>SteeringHook</code>
   (a HiddenStateHook) and <code>MeasureSteering</code>.
   - <strong>The reliability report follows Tan et al.</strong> Each input's steerability is its slope of
@@ -5115,7 +5406,7 @@ a probe's score.
 residues looks right on average at coefficient ±2, but random directions do more, and the
 response isn't linear. At ±0.5 the difference of means steers soluble proteins the wrong
 way for 66% of them, and the SAE feature doesn't steer at all
-(<a href="../mechanistic-interpretability/#steering-a-model">table</a>).
+(<a href="../mechanistic-interpretability/steering/#a-worked-example-a-steering-vector-that-fails-its-checks">table</a>).
 <code>pulsatrix_steer_esm</code> defaults to ±0.5.
 - <strong>FEAT-8</strong> adds <code>crosscoder.hpp</code>: <code>Crosscoder</code> over any number of sources (layers or
   models), with L1 (Lindsey et al.) or BatchTopK (Minder et al.) sparsity and the
@@ -5130,7 +5421,7 @@ doesn't fix the norms.
   - <strong><code>pulsatrix_diff_lm</code></strong> diffs SmolLM2-135M against its Instruct model on chat text. The
 Instruct-specific latents put 84 to 99% of their activation on chat-template tokens, as
 Minder et al. found in Gemma 2
-(<a href="../mechanistic-interpretability/#crosscoders">table</a>).
+(<a href="../mechanistic-interpretability/model-diffing/#what-we-found">table</a>).
 - <strong>FEAT-9</strong> adds <code>parameter_decomposition.hpp</code>: <code>ComponentLinear</code> (a LinearModule split into
   rank-one subcomponents, with per-input masks and a Δ path) and <code>ParameterDecomposition</code>, SPD
   and VPD on the model's own backward pass; <code>AlignComponentsToRows</code> and <code>MeasureImportance</code>.
@@ -5142,7 +5433,7 @@ param-decomp.
 subcomponents per layer). VPD with SPD's settings merges two of the five features.
   - <strong>Not done:</strong> VPD's transformer causal-importance function, and swapping LinearModules inside
 <code>CausalLM</code> blocks, which language-model decomposition needs
-(<a href="../mechanistic-interpretability/#decomposing-parameters">guide</a>).
+(<a href="../mechanistic-interpretability/parameter-decomposition/">guide</a>).
 - <strong>FEAT-10</strong> adds <code>circuit_tracing.hpp</code>: <code>CrossLayerTranscoder</code> (cross-layer and per-layer
   transcoders, JumpReLU, skip), <code>LoadTranscoders</code> (circuit-tracer's two layouts), <code>TraceCircuit</code>
   (the frozen replacement model and every edge), <code>ScoreCircuit</code> and <code>ToAttributionGraph</code>
@@ -5158,9 +5449,66 @@ at the last position. Replacement is 0.67 and completeness 0.92.
 existing index (VIZ-4).
   - <strong>Not done:</strong> training transcoders, circuit-tracer's <code>max_feature_nodes</code>, and pre-norm
 inputs for the Llama CLT
-(<a href="../mechanistic-interpretability/#attribution-graphs-with-transcoders">guide</a>).</p>
+(<a href="../mechanistic-interpretability/attribution-graphs/">guide</a>).</p>
 </li>
 </ul>
+<h3 id="follow-ups-the-feat-work-surfaced">Follow-ups the FEAT work surfaced<a class="headerlink" href="#follow-ups-the-feat-work-surfaced" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Follow-up</th>
+<th>Found in</th>
+<th>Belongs with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training cross-layer transcoders, so attribution graphs don't need pretrained ones</td>
+<td>FEAT-10</td>
+<td>A FEAT follow-up</td>
+</tr>
+<tr>
+<td>Circuit-tracer's <code>max_feature_nodes</code>, to keep graphs of larger models tractable</td>
+<td>FEAT-10</td>
+<td>A FEAT follow-up</td>
+</tr>
+<tr>
+<td>Transcoders that read the residual stream before the norm (the Llama 3.2 1B CLT)</td>
+<td>FEAT-10</td>
+<td>A FEAT follow-up</td>
+</tr>
+<tr>
+<td>Decomposing <code>CausalLM</code> layers (swappable LinearModules in a block), and VPD's transformer causal-importance function</td>
+<td>FEAT-9</td>
+<td>A FEAT follow-up</td>
+</tr>
+<tr>
+<td>SPD's gates run on the host; the toy-model test is Release-only because 3,000 steps take minutes at -O0</td>
+<td>FEAT-9</td>
+<td>A FEAT follow-up</td>
+</tr>
+<tr>
+<td>Model diffing at scale: Minder et al. use 100M tokens, and the chat data here is 0.5M</td>
+<td>FEAT-8</td>
+<td>Research</td>
+</tr>
+<tr>
+<td>A Delta-Crosscoder with a fractional delta budget: its top-k forces <code>N·k</code> delta activations per batch even when the fine-tune's features are rarer</td>
+<td>FEAT-8</td>
+<td>Research</td>
+</tr>
+<tr>
+<td>A builder for feature dashboards of language-model features (top tokens, contexts); today <code>FeatureDashboardDocument</code> is filled by hand outside the protein tools</td>
+<td>FEAT-1</td>
+<td>VIZ-6b</td>
+</tr>
+<tr>
+<td>Block-sparse featurizers on an image model, where the paper's gains are</td>
+<td>FEAT-6</td>
+<td>ARCH (vision models)</td>
+</tr>
+</tbody>
+</table>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>
 <p>These are ranked by how well they fit an explainability-first library.</p>
 <table>

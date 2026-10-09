@@ -681,9 +681,20 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="mechanistic-interpretability/" class="md-nav__link">
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -697,7 +708,247 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mechanistic Interpretability
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/featurizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finding Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/steering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Steering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/model-diffing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Diffing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameter Decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graphs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mechanistic-interpretability/gflownets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GFlowNets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1758,8 +2009,18 @@ structures, and explain their predictions.</p>
 rollout buffers, and DQN, REINFORCE, A2C, PPO and SAC. Each algorithm's tests train it to a
 fixed score on CartPole.</p>
 <p><strong><a href="mechanistic-interpretability/">Mechanistic Interpretability</a></strong>: look inside a
-network with activation caching, linear probes, sparse autoencoders and circuit graphs. This
-section also covers GFlowNets.</p>
+network.
+- <strong>Read and probe activations</strong> with hooks and linear probes.
+- <strong>Find features</strong> with sparse autoencoders (TopK, BatchTopK, Matryoshka, JumpReLU),
+  block-sparse featurizers and transcoders, and <strong>evaluate</strong> them against random-model
+  baselines.
+- <strong>Steer</strong> a model, with a report that shows whether the steering is real.
+- <strong>Diff a model against its fine-tune</strong> with crosscoders.
+- <strong>Decompose a network's weights</strong> into mechanisms (SPD, VPD).
+- <strong>Trace attribution graphs</strong> of a language model's prediction through transcoder features,
+  for Neuronpedia's viewer.</p>
+<p>Each method reports what it found on real models, including what didn't work. The section also
+covers GFlowNets.</p>
 <p><strong><a href="neuro-symbolic/">Neuro-Symbolic Reasoning</a></strong>: differentiable fuzzy logic you can
 train with gradient descent, and a Datalog engine that traces relevance from a logical
 conclusion back into a neural network.</p>
@@ -1782,7 +2043,7 @@ LRP conservation, with an A/B comparison between two builds.</p>
 <p><strong>Python bindings</strong>: <code>Tensor</code>, the core layers, LRP and the other explainers, and seeding from
 Python. See <a href="getting-started/#python-bindings">Getting Started</a>.</p>
 <p>Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,460 CPU tests (2,600 with the HIP backend) that run in CI on Windows and Linux.</p>
+2,650 CPU tests (2,800 with the HIP backend) that run in CI on Windows and Linux.</p>
 <h2 id="more-resources">More resources<a class="headerlink" href="#more-resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="getting-started/#using-pulsatrix-in-your-own-project">Using pulsatrix in your project</a></strong>:
