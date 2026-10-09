@@ -8,11 +8,20 @@
 namespace pulsatrix {
 
 MaxPool2DModule::MaxPool2DModule(int64_t kernel_h, int64_t kernel_w, DeviceBackend* backend)
-    : kernel_h_(kernel_h), kernel_w_(kernel_w), backend_(backend) {
+    : MaxPool2DModule(kernel_h, kernel_w, kernel_h, kernel_w, 0, 0, backend) {}
+
+MaxPool2DModule::MaxPool2DModule(int64_t kernel_h, int64_t kernel_w, int64_t stride_h, int64_t stride_w, int64_t pad_h,
+                                 int64_t pad_w, DeviceBackend* backend)
+    : kernel_h_(kernel_h), kernel_w_(kernel_w), stride_h_(stride_h), stride_w_(stride_w), pad_h_(pad_h), pad_w_(pad_w),
+      backend_(backend) {
     // External boundary (construction arguments can originate from Phase 5's Python
     // bindings with no upstream validation).
     if (kernel_h <= 0 || kernel_w <= 0) {
         throw std::invalid_argument("MaxPool2DModule: kernel_h and kernel_w must be positive");
+    }
+    if (stride_h <= 0 || stride_w <= 0) throw std::invalid_argument("MaxPool2DModule: the stride must be positive");
+    if (pad_h < 0 || pad_w < 0 || 2 * pad_h > kernel_h || 2 * pad_w > kernel_w) {
+        throw std::invalid_argument("MaxPool2DModule: padding must be between 0 and half the kernel");
     }
 }
 
@@ -27,13 +36,11 @@ Tensor MaxPool2DModule::forward_impl(const Tensor& input) {
     const int64_t C = input.shape().dim(1);
     const int64_t H = input.shape().dim(2);
     const int64_t W = input.shape().dim(3);
-    if (kernel_h_ > H || kernel_w_ > W) {
-        throw std::invalid_argument("MaxPool2DModule::forward: kernel is larger than the input");
+    if (kernel_h_ > H + 2 * pad_h_ || kernel_w_ > W + 2 * pad_w_) {
+        throw std::invalid_argument("MaxPool2DModule::forward: kernel is larger than the padded input");
     }
-    const int64_t out_h = (H - kernel_h_) / kernel_h_ + 1;
-    const int64_t out_w = (W - kernel_w_) / kernel_w_ + 1;
-    const int64_t in_plane = H * W;
-    const int64_t out_plane = out_h * out_w;
+    const int64_t out_h = (H + 2 * pad_h_ - kernel_h_) / stride_h_ + 1;
+    const int64_t out_w = (W + 2 * pad_w_ - kernel_w_) / stride_w_ + 1;
 
     last_input_shape_ = input.shape();
     last_out_h_ = out_h;
@@ -43,7 +50,9 @@ Tensor MaxPool2DModule::forward_impl(const Tensor& input) {
     argmax_flat_index_ = Tensor(Shape({N, C, out_h, out_w}), backend_, input.device());
     Tensor output(Shape({N, C, out_h, out_w}), backend_, input.device());
     backend_->max_pool_forward(input.data(), output.data(), argmax_flat_index_.data(), planes, static_cast<size_t>(H),
-                               static_cast<size_t>(W), static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_));
+                               static_cast<size_t>(W), static_cast<size_t>(kernel_h_), static_cast<size_t>(kernel_w_),
+                               static_cast<size_t>(stride_h_), static_cast<size_t>(stride_w_), static_cast<size_t>(pad_h_),
+                               static_cast<size_t>(pad_w_));
     has_forwarded_ = true;
     return output;
 }
@@ -64,15 +73,13 @@ Tensor MaxPool2DModule::backward(const Tensor& grad_output) {
 
     const int64_t H = last_input_shape_.dim(2);
     const int64_t W = last_input_shape_.dim(3);
-    const int64_t in_plane = H * W;
-    const int64_t out_plane = last_out_h_ * last_out_w_;
 
-    // Everything to the window's argmax, nothing elsewhere (windows never overlap).
+    // Everything to each window's argmax, nothing elsewhere; overlapping wins add up.
     Tensor grad_input(last_input_shape_, backend_, grad_output.device());
-    grad_input.fill(0.0f);
     backend_->max_unpool(grad_output.data(), argmax_flat_index_.data(), grad_input.data(), static_cast<size_t>(N * C),
                          static_cast<size_t>(H), static_cast<size_t>(W), static_cast<size_t>(kernel_h_),
-                         static_cast<size_t>(kernel_w_));
+                         static_cast<size_t>(kernel_w_), static_cast<size_t>(stride_h_), static_cast<size_t>(stride_w_),
+                         static_cast<size_t>(pad_h_), static_cast<size_t>(pad_w_));
     return grad_input;
 }
 
@@ -92,15 +99,13 @@ Tensor MaxPool2DModule::propagate_relevance(const Tensor& relevance_out, const L
 
     const int64_t H = last_input_shape_.dim(2);
     const int64_t W = last_input_shape_.dim(3);
-    const int64_t in_plane = H * W;
-    const int64_t out_plane = last_out_h_ * last_out_w_;
 
-    // Everything to the window's argmax, nothing elsewhere (windows never overlap).
+    // Everything to each window's argmax, nothing elsewhere; overlapping wins add up.
     Tensor relevance_in(last_input_shape_, backend_, relevance_out.device());
-    relevance_in.fill(0.0f);
     backend_->max_unpool(relevance_out.data(), argmax_flat_index_.data(), relevance_in.data(), static_cast<size_t>(N * C),
                          static_cast<size_t>(H), static_cast<size_t>(W), static_cast<size_t>(kernel_h_),
-                         static_cast<size_t>(kernel_w_));
+                         static_cast<size_t>(kernel_w_), static_cast<size_t>(stride_h_), static_cast<size_t>(stride_w_),
+                         static_cast<size_t>(pad_h_), static_cast<size_t>(pad_w_));
     return relevance_in;
 }
 

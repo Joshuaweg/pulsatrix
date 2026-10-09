@@ -99,6 +99,8 @@ public:
      *       LinearModule formulas (Zennit 1.0.0) applied in patch space, where each output
      *       position is K @ patch + b, then folded back with col2im. Epsilon with
      *       config.epsilon_bias_in_denominator uses z = K @ patch + b (Zennit's Epsilon).
+     * @note When config.conv_rule is set, it is the rule applied (a composite's rule for every
+     *       convolution, however deeply nested).
      * @throws std::logic_error if forward() has never been called -- see
      *         campaign_exai_dl_library_adversarial_hardening.md, finding 12.
      * @throws std::invalid_argument if config's rule parameters are invalid (AlphaBeta needs

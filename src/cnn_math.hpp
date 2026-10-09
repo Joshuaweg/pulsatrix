@@ -87,22 +87,62 @@ PULSATRIX_HOST_DEVICE inline float conv_lrp_col(const float* col, const float* k
 // One (H, W) plane; output element (oh, ow) covers rows oh*kh .. +kh, columns ow*kw .. +kw.
 
 // Strict > keeps the first maximum in row-major window order. argmax is the flat in-plane index.
-PULSATRIX_HOST_DEVICE inline void max_pool_window(const float* plane, int64_t W, int64_t kh, int64_t kw, int64_t oh,
-                                                  int64_t ow, float* out, float* argmax) {
+/// Output size of a pooling window along one axis: (n + 2 pad - k) / stride + 1.
+PULSATRIX_HOST_DEVICE inline int64_t pool_out_size(int64_t n, int64_t k, int64_t stride, int64_t pad) {
+    return (n + 2 * pad - k) / stride + 1;
+}
+
+/// Max over one window of a padded plane (H, W): rows oh*sh - ph .. + kh, columns likewise.
+/// Positions in the padding never win (PyTorch pads max pooling with -inf). argmax is the flat
+/// in-plane index y * W + x of the first maximum.
+PULSATRIX_HOST_DEVICE inline void max_pool_window(const float* plane, int64_t H, int64_t W, int64_t kh, int64_t kw,
+                                                  int64_t sh, int64_t sw, int64_t ph, int64_t pw, int64_t oh, int64_t ow,
+                                                  float* out, float* argmax) {
     float best = -INFINITY;
-    int64_t best_flat = 0;
+    int64_t best_flat = -1;
     for (int64_t i = 0; i < kh; ++i) {
+        const int64_t y = oh * sh - ph + i;
+        if (y < 0 || y >= H) continue;
         for (int64_t j = 0; j < kw; ++j) {
-            const int64_t flat = (oh * kh + i) * W + (ow * kw + j);
+            const int64_t x = ow * sw - pw + j;
+            if (x < 0 || x >= W) continue;
+            const int64_t flat = y * W + x;
             const float v = plane[flat];
-            if (v > best) {
+            if (best_flat < 0 || v > best) {
                 best = v;
                 best_flat = flat;
             }
         }
     }
     *out = best;
-    *argmax = static_cast<float>(best_flat);
+    *argmax = static_cast<float>(best_flat < 0 ? 0 : best_flat);
+}
+
+/// The gradient (or relevance) reaching input position (y, x) of one plane: the sum of the
+/// pooled values whose window's argmax is that position. Overlapping windows can each pick it,
+/// so it gathers over every window that contains (y, x) rather than scattering, which needs no
+/// atomics and is deterministic.
+PULSATRIX_HOST_DEVICE inline float max_unpool_gather(const float* src, const float* argmax, int64_t W, int64_t out_h,
+                                                     int64_t out_w, int64_t kh, int64_t kw, int64_t sh, int64_t sw,
+                                                     int64_t ph, int64_t pw, int64_t y, int64_t x) {
+    const float flat = static_cast<float>(y * W + x);
+    // Windows oh with oh*sh - ph <= y < oh*sh - ph + kh.
+    int64_t oh0 = y + ph - kh + 1;
+    oh0 = oh0 <= 0 ? 0 : (oh0 + sh - 1) / sh;
+    int64_t oh1 = (y + ph) / sh;
+    if (oh1 > out_h - 1) oh1 = out_h - 1;
+    int64_t ow0 = x + pw - kw + 1;
+    ow0 = ow0 <= 0 ? 0 : (ow0 + sw - 1) / sw;
+    int64_t ow1 = (x + pw) / sw;
+    if (ow1 > out_w - 1) ow1 = out_w - 1;
+    float sum = 0.0f;
+    for (int64_t oh = oh0; oh <= oh1; ++oh) {
+        for (int64_t ow = ow0; ow <= ow1; ++ow) {
+            const int64_t o = oh * out_w + ow;
+            if (argmax[o] == flat) sum += src[o];
+        }
+    }
+    return sum;
 }
 
 PULSATRIX_HOST_DEVICE inline float avg_pool_window(const float* plane, int64_t W, int64_t kh, int64_t kw, int64_t oh,

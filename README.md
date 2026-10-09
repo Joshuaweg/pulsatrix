@@ -16,8 +16,9 @@ network you build can explain its own predictions without a separate tool.
   `Module`. A layer can't be added without saying how relevance flows through it.
 - **Checked against the reference libraries.** `LRP::explain()` matches
   [Zennit](https://github.com/chr5tphr/zennit) and [LXT](https://github.com/rachtibat/LRP-eXplains-Transformers)
-  to float32 precision on MLPs, CNNs and attention blocks, and AttnLRP matches LXT on real
-  language models (SmolLM2, Qwen2.5, Qwen3, Llama 3.2, Gemma 3).
+  to float32 precision on MLPs, CNNs and attention blocks. Zennit's heatmaps of torchvision's
+  ResNet18 and VGG16 are matched too, and AttnLRP matches LXT on real language models (SmolLM2,
+  Qwen2.5, Qwen3, Llama 3.2, Gemma 3).
 - **Real language models.** Load a model from the Hugging Face Hub, tokenize with its own
   `tokenizer.json`, generate text, and see which words drove each prediction, all in C++. The
   logits, token ids and explanations match `transformers`, `tokenizers` and LXT.
@@ -143,7 +144,8 @@ starts with which tool answers which question, and reports what each method foun
 | Core | `Tensor`, autograd (`ComputationGraph`), `Module` with `named_parameters()` and freezing, top-k, eigen/QR/SVD, `set_seed` and deterministic mode, CPU/CUDA/HIP backends | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Training | SGD (momentum, Nesterov), Adam, AdamW with parameter groups; learning-rate schedules; gradient clipping; token-accurate gradient accumulation | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Saving and loading | Native safetensors reader and writer; checkpoints with buffers, optimizer state and format versions; a safe converter for PyTorch `.pt`/`.pth` files (pickle is never read in C++) | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
-| Layers | Linear, Conv2D (stride, padding), BatchNorm with running statistics, eval mode and folding, other normalization, pooling, dropout, embeddings, residual blocks | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Layers | Linear, Conv2D (stride, padding), BatchNorm with running statistics, eval mode and folding, other normalization, pooling (overlapping and adaptive too), dropout, embeddings, residual blocks | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
+| Vision models | torchvision's ResNet18/34 and VGG11 to VGG19, loaded from the published ImageNet weights and matching PyTorch's logits | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/#vision-models-resnet-and-vgg) |
 | Sequence models | RNN/LSTM/GRU, multi-head attention, `TransformerBlock`, encoder layers in ESM-2, BERT or Llama layout (`EncoderBlock`), Mamba, RetNet, RWKV | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Generative blocks | VAE, GAN and diffusion losses and sampling steps | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Language models | Load Llama, SmolLM2, Qwen2/2.5, Qwen3 and Gemma 3 checkpoints from the Hugging Face Hub; generate with greedy or sampled decoding and a KV cache; explain predictions per token or per word with AttnLRP | [Language models](https://joshuaweg.github.io/pulsatrix/language-models/) |

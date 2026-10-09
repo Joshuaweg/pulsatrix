@@ -53,6 +53,15 @@ public:
     ResidualModule(Module* inner, DeviceBackend* backend);
 
     /**
+     * @brief `y = shortcut(x) + inner(x)`: a residual block whose shortcut is a module, such as
+     *        ResNet's downsampling `1x1 conv + BatchNorm` (KS-9). Relevance is split between the
+     *        two branches in proportion to their contributions, then each passes its share back.
+     * @param shortcut Not owned; must outlive this object. Its output must match inner's.
+     * @throws std::invalid_argument if inner or shortcut is null.
+     */
+    ResidualModule(Module* inner, Module* shortcut, DeviceBackend* backend);
+
+    /**
      * @brief Gradient w.r.t. this module's input: both paths receive grad_output unchanged
      *        (real gradient of a plain sum), then inner_'s own backward() adds its
      *        contribution.
@@ -80,7 +89,8 @@ public:
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
 
-    /** @brief inner_'s own named_parameters(), prefixed `inner.` -- this module owns none of its own. */
+    /** @brief inner_'s own named_parameters(), prefixed `inner.`, then the shortcut's, prefixed
+     *         `shortcut.` -- this module owns none of its own. */
     [[nodiscard]] std::vector<NamedParamRef> named_parameters() override;
 
     /** @brief Every layer's named_buffers(), prefixed the same way as named_parameters(). */
@@ -90,6 +100,8 @@ public:
     void set_training(bool training) override;
 
     [[nodiscard]] Module& inner() { return *inner_; }
+    /** @brief The shortcut module, or nullptr for the identity. */
+    [[nodiscard]] Module* shortcut() { return shortcut_; }
 
 
     /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
@@ -105,9 +117,10 @@ protected:
 
 private:
     Module* inner_;
+    Module* shortcut_ = nullptr;
     DeviceBackend* backend_;
 
-    Tensor last_x_;    ///< Cached input.
+    Tensor last_x_;    ///< The shortcut's output: the cached input for the identity.
     Tensor last_f_x_;  ///< inner_->forward(x)'s output.
     bool has_forwarded_ = false;
 };
