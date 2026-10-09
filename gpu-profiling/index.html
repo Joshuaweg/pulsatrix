@@ -1165,6 +1165,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-7-conv2d-in-batch-chunks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-7: Conv2D in batch chunks
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2098,6 +2109,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-7-conv2d-in-batch-chunks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-7: Conv2D in batch chunks
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2365,6 +2387,47 @@ failing kernel otherwise reports its error at the next wait, not at the op that 
 <p>The small models are still only about 20% busy. What's left is host-side work inside each step:
 reading the loss back, and losses that validate their targets on the host (one copy each step).
 Fused kernels (HIP-6) and keeping targets on the device are the next steps there.</p>
+<h3 id="hip-7-conv2d-in-batch-chunks">HIP-7: Conv2D in batch chunks<a class="headerlink" href="#hip-7-conv2d-in-batch-chunks" title="Permanent link">&para;</a></h3>
+<p><code>Conv2DModule</code> unfolds its input into patches (im2col) and multiplies them by the kernel. The
+patches take <code>N x C*kh*kw x out_h*out_w</code> floats: 7.4 MB per 224x224 image in ResNet18's first
+layer, 115 MB in VGG16's widest. Every convolution used to keep its whole batch's patches from
+<code>forward()</code> for <code>backward()</code> and LRP, so they added up across the network.</p>
+<p>Now a layer keeps them only when they fit its workspace budget,
+<code>Conv2DModule::set_max_workspace_bytes()</code> (16 MiB by default). A larger batch runs in chunks of
+examples, and <code>backward()</code> and <code>propagate_relevance()</code> rebuild each chunk's patches from the
+cached input. The results are bit-identical for every budget; the tests check forward, the three
+gradients and all five LRP rules.</p>
+<p>Explaining ResNet18 (EpsilonPlus, batch 32, 224x224), all patches kept against the 16 MiB
+default (on the GPU three runs each, in ABBA order, all within 0.01 s; on the CPU one run each):</p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Peak memory before</th>
+<th>After</th>
+<th>Time before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gfx1151 (HIP allocator, in use)</td>
+<td>5.75 GB</td>
+<td>2.40 GB</td>
+<td>0.70 s</td>
+<td>0.60 s</td>
+</tr>
+<tr>
+<td>CPU, Release (peak RSS)</td>
+<td>5.3 GB</td>
+<td>2.3 GB</td>
+<td>14.5 s</td>
+<td>14.5 s</td>
+</tr>
+</tbody>
+</table>
+<p>Rebuilding the patches is cheap next to the GEMMs, and a smaller working set is friendlier to
+the caches, so the chunked layers are no slower.</p>
 <h2 id="rocm-1000-evaluation">ROCm 10.0.0 evaluation<a class="headerlink" href="#rocm-1000-evaluation" title="Permanent link">&para;</a></h2>
 <p>ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
 evaluation is roadmap HIP-9. The image is <code>docker/Dockerfile.rocm</code> built on

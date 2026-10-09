@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['v_0',['v',['../classpulsatrix_1_1ComponentLinear.html#a61d5fb4ed31d98617e2d2a91b838e458',1,'pulsatrix::ComponentLinear::V()'],['../structpulsatrix_1_1SVDResult.html#a73425b68b02a2f412ba547297fd64104',1,'pulsatrix::SVDResult::v'],['../structpulsatrix_1_1AdamOptimizer_1_1AdamState.html#a19f69e9bf38af0dadbc9f3a272747092',1,'pulsatrix::AdamOptimizer::AdamState::v']]],
+  ['v_0',['v',['../structpulsatrix_1_1SVDResult.html#a73425b68b02a2f412ba547297fd64104',1,'pulsatrix::SVDResult::v'],['../structpulsatrix_1_1AdamOptimizer_1_1AdamState.html#a19f69e9bf38af0dadbc9f3a272747092',1,'pulsatrix::AdamOptimizer::AdamState::v'],['../classpulsatrix_1_1ComponentLinear.html#a61d5fb4ed31d98617e2d2a91b838e458',1,'pulsatrix::ComponentLinear::V()']]],
   ['v_5fproj_1',['v_proj',['../classpulsatrix_1_1MultiHeadAttentionModule.html#a8a0bc7addff5c5002331b4251794e5aa',1,'pulsatrix::MultiHeadAttentionModule']]],
   ['valid_2',['valid',['../structpulsatrix_1_1CounterfactualDocument.html#a69c0b63390fa9371a2b94a3554ad6ad1',1,'pulsatrix::CounterfactualDocument::valid'],['../structpulsatrix_1_1CounterfactualResult.html#a6736ab07bd0a4f48b29f1aeacdfbf6d3',1,'pulsatrix::CounterfactualResult::valid']]],
   ['valid_5factions_5fmask_3',['valid_actions_mask',['../classpulsatrix_1_1HyperGridEnv.html#a2b57c2915f085f7603bd58c4758c0761',1,'pulsatrix::HyperGridEnv']]],

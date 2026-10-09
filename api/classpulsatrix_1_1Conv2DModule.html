@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1Conv2DModule.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classpulsatrix_1_1Conv2DModule-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pulsatrix::Conv2DModule Class Reference</div></div>
@@ -175,6 +176,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a066997b678e8379252a0f6618ee505db" id="r_a066997b678e8379252a0f6618ee505db"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Conv2DModule.html#a066997b678e8379252a0f6618ee505db">compute_device</a> () const override</td></tr>
 <tr class="memdesc:a066997b678e8379252a0f6618ee505db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
 <tr class="separator:a066997b678e8379252a0f6618ee505db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af95e33190d1adc1b57ae64f133802ebd" id="r_af95e33190d1adc1b57ae64f133802ebd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Conv2DModule.html#af95e33190d1adc1b57ae64f133802ebd">set_max_workspace_bytes</a> (size_t bytes)</td></tr>
+<tr class="memdesc:af95e33190d1adc1b57ae64f133802ebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The most memory the unfolded input patches (im2col, N x C*kh*kw x out_h*out_w floats) may take (HIP-7). A batch whose patches don't fit is processed a chunk of examples at a time, and <a class="el" href="classpulsatrix_1_1Conv2DModule.html#a164d1f43ad74e4129a1f1483907f4471" title="Computes gradients w.r.t. input, kernel, and bias.">backward()</a> and <a class="el" href="classpulsatrix_1_1Conv2DModule.html#a41522f320ef28037d27888d42160801c" title="Epsilon-rule LRP relevance propagation.">propagate_relevance()</a> rebuild each chunk's patches from the cached input instead of keeping them all. Results are the same for every budget; a smaller one trades memory for an extra im2col per pass. Always at least one example per chunk.  <br /></td></tr>
+<tr class="separator:af95e33190d1adc1b57ae64f133802ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db6efcd474345686042dc644fba0a47" id="r_a8db6efcd474345686042dc644fba0a47"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Conv2DModule.html#a8db6efcd474345686042dc644fba0a47">max_workspace_bytes</a> () const</td></tr>
+<tr class="separator:a8db6efcd474345686042dc644fba0a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpulsatrix_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpulsatrix_1_1Module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpulsatrix_1_1Module.html">pulsatrix::Module</a></td></tr>
 <tr class="memitem:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module" id="r_aea40021c77c73b7fd45b2cbec8bb7809"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#aea40021c77c73b7fd45b2cbec8bb7809">~Module</a> ()=default</td></tr>
 <tr class="separator:aea40021c77c73b7fd45b2cbec8bb7809 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +208,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afac98fa4d23d97300c5a6d5bc68412e5 inherit pub_methods_classpulsatrix_1_1Module" id="r_afac98fa4d23d97300c5a6d5bc68412e5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Module.html#afac98fa4d23d97300c5a6d5bc68412e5">release_activations</a> ()</td></tr>
 <tr class="memdesc:afac98fa4d23d97300c5a6d5bc68412e5 inherit pub_methods_classpulsatrix_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the tensors <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> kept for <a class="el" href="classpulsatrix_1_1Module.html#ac6f8219e36c1822dbdd24e0c98e78b8a" title="Computes the gradient w.r.t. this module&#39;s input, given the gradient w.r.t. its output....">backward()</a> and the relevance passes; containers release their children too. Inference that only needs the output calls it after each forward, so a deep model holds one layer's activations at a time (a 1024-token ESM-2 650M pass otherwise keeps over 10 GB of them).  <br /></td></tr>
 <tr class="separator:afac98fa4d23d97300c5a6d5bc68412e5 inherit pub_methods_classpulsatrix_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:aa5b7996dd9bc6d20739c047577596b49" id="r_aa5b7996dd9bc6d20739c047577596b49"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1Conv2DModule.html#aa5b7996dd9bc6d20739c047577596b49">kDefaultMaxWorkspaceBytes</a> = size_t{16} &lt;&lt; 20</td></tr>
+<tr class="memdesc:aa5b7996dd9bc6d20739c047577596b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">16 MiB. Small layers (MNIST-sized) keep a whole batch's patches; large ones work in chunks. Explaining ResNet18 at batch 32, every convolution keeping its patches took 5.75 GB on the GPU; with 16 MiB it takes 2.40 GB and is 14% faster (gfx1151), and on the CPU 5.3 GB becomes 2.3 GB at the same speed.  <br /></td></tr>
+<tr class="separator:aa5b7996dd9bc6d20739c047577596b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -506,6 +518,31 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
 
 </div>
 </div>
+<a id="a8db6efcd474345686042dc644fba0a47" name="a8db6efcd474345686042dc644fba0a47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8db6efcd474345686042dc644fba0a47">&#9670;&#160;</a></span>max_workspace_bytes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t pulsatrix::Conv2DModule::max_workspace_bytes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a1d551f302f993c0d64897ab3b39f754a" name="a1d551f302f993c0d64897ab3b39f754a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1d551f302f993c0d64897ab3b39f754a">&#9670;&#160;</a></span>named_parameters()</h2>
 
@@ -735,6 +772,34 @@ When config.conv_rule is set, it is the rule applied (a composite's rule for eve
 
 </div>
 </div>
+<a id="af95e33190d1adc1b57ae64f133802ebd" name="af95e33190d1adc1b57ae64f133802ebd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af95e33190d1adc1b57ae64f133802ebd">&#9670;&#160;</a></span>set_max_workspace_bytes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void pulsatrix::Conv2DModule::set_max_workspace_bytes </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>bytes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The most memory the unfolded input patches (im2col, N x C*kh*kw x out_h*out_w floats) may take (HIP-7). A batch whose patches don't fit is processed a chunk of examples at a time, and <a class="el" href="classpulsatrix_1_1Conv2DModule.html#a164d1f43ad74e4129a1f1483907f4471" title="Computes gradients w.r.t. input, kernel, and bias.">backward()</a> and <a class="el" href="classpulsatrix_1_1Conv2DModule.html#a41522f320ef28037d27888d42160801c" title="Epsilon-rule LRP relevance propagation.">propagate_relevance()</a> rebuild each chunk's patches from the cached input instead of keeping them all. Results are the same for every budget; a smaller one trades memory for an extra im2col per pass. Always at least one example per chunk. </p>
+
+</div>
+</div>
 <a id="a6617390d2321b00d3f3edc043a16d17a" name="a6617390d2321b00d3f3edc043a16d17a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6617390d2321b00d3f3edc043a16d17a">&#9670;&#160;</a></span>stride()</h2>
 
@@ -789,6 +854,31 @@ When config.conv_rule is set, it is the rule applied (a composite's rule for eve
 <p>Implements every LRPRule. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#acad2aa6565d456d5a57be421c05537b6">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa5b7996dd9bc6d20739c047577596b49" name="aa5b7996dd9bc6d20739c047577596b49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5b7996dd9bc6d20739c047577596b49">&#9670;&#160;</a></span>kDefaultMaxWorkspaceBytes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t pulsatrix::Conv2DModule::kDefaultMaxWorkspaceBytes = size_t{16} &lt;&lt; 20</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>16 MiB. Small layers (MNIST-sized) keep a whole batch's patches; large ones work in chunks. Explaining ResNet18 at batch 32, every convolution keeping its patches took 5.75 GB on the GPU; with 16 MiB it takes 2.40 GB and is 14% faster (gfx1151), and on the CPU 5.3 GB becomes 2.3 GB at the same speed. </p>
 
 </div>
 </div>

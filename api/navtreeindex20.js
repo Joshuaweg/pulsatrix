@@ -1,5 +1,9 @@
 var NAVTREEINDEX20 =
 {
+"namespacepulsatrix.html#aba113e4a47a13ae03ade3411dc53a115":[3,0,0,776],
+"namespacepulsatrix.html#aba1de7f66574e1aba32fb47ab356b252":[3,0,0,707],
+"namespacepulsatrix.html#aba26bb47a841c985070a3d37cff2a423":[3,0,0,483],
+"namespacepulsatrix.html#aba99c25698e39330189ccaf49b9cd27a":[3,0,0,760],
 "namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eec":[3,0,0,464],
 "namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca397ae2f1915691d54607441f899e100c":[3,0,0,464,3],
 "namespacepulsatrix.html#abb575cb311c04812afe7f12350d86eeca47b37c2621e5c41ed665857cebbed045":[3,0,0,464,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX20 =
 "polyak__update_8hpp.html":[2,2,10],
 "ppo__clipped__loss_8hpp.html":[2,2,11],
 "protein__concepts_8hpp.html":[2,1,4],
-"protein__contacts_8hpp.html":[2,1,5],
-"protein__documents_8hpp.html":[2,7,16],
-"protein__explanations_8hpp.html":[2,1,6],
-"protein__sequences_8hpp.html":[2,5,17],
-"protein__structure_8hpp.html":[2,5,18]
+"protein__contacts_8hpp.html":[2,1,5]
 };

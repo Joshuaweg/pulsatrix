@@ -3496,7 +3496,8 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
   sensitivity, and counterfactuals, each with its view</li>
 <li>TOK-1 to TOK-4 (<strong>done</strong>): the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores</li>
-<li>HIP-6, HIP-7: fused kernels, bounded-memory Conv2D (HIP-3 landed early, in v1.1)</li>
+<li>HIP-6: fused kernels (HIP-3 landed early, in v1.1)</li>
+<li>HIP-7 (<strong>done</strong>): bounded-memory Conv2D</li>
 <li>VIZ-3, VIZ-6a (<strong>done</strong>): Vega-Lite HTML and the token relevance view</li>
 <li>NB-1, NB-2: native rich display and the <code>.ipynb</code>/HTML report writer</li>
 <li>AGT-1 to AGT-4: the native orchestrator core</li>
@@ -5969,7 +5970,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>FND-6</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/118">#118</a> (see below)</td>
 </tr>
 <tr>
 <td>HIP-8</td>
@@ -6077,6 +6078,13 @@ memory bandwidth (about 212 GB/s).</p>
   register <code>/opt/rocm/lib</code> with the dynamic loader. "Pin the host kernel" became a check,
   <code>scripts/check_host_kernel.sh</code>, that <code>rocm-build.sh</code> runs on every call, plus documented
   instructions to hold the package; the repository doesn't change the host.</li>
+<li><strong>HIP-7.</strong> The im2col buffer of one layer was the smaller problem: every convolution kept its
+  whole batch's patches for backward and LRP, 5.75 GB of the GPU memory used to explain ResNet18
+  at batch 32. Each layer now keeps them only within a workspace budget (16 MiB by default) and
+  otherwise works in chunks of examples, rebuilding patches when it needs them again. Peak memory
+  fell to 2.40 GB, the explanation got 14% faster, and the results are bit-identical. The chunks
+  are whole examples: one example larger than the budget still takes its full patch buffer
+  (115 MB in VGG16's widest layers).</li>
 </ul>
 <h3 id="follow-ups-the-hip-work-surfaced">Follow-ups the HIP work surfaced<a class="headerlink" href="#follow-ups-the-hip-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
@@ -6127,6 +6135,16 @@ memory bandwidth (about 212 GB/s).</p>
 <td>ROCm 10's hipBLAS links hipBLASLt; check which path gfx1151 GEMMs take</td>
 <td>HIP-9</td>
 <td>HIP-8</td>
+</tr>
+<tr>
+<td>Chunk within an example (by output rows) when one example's patches exceed the budget</td>
+<td>HIP-7</td>
+<td>when a model needs it</td>
+</tr>
+<tr>
+<td>One GEMM per chunk instead of one per example (a strided-batched GEMM)</td>
+<td>HIP-7</td>
+<td>HIP-6 or HIP-8</td>
 </tr>
 </tbody>
 </table>
