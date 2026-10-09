@@ -55,7 +55,8 @@ namespace {
     std::cerr << "pulsatrix_explain_text: " << problem << "\n"
               << "usage: pulsatrix_explain_text MODEL_DIR TEXT [-o OUT.svg|OUT.html|OUT.json] [--words] [--split whitespace]\n"
               << "       [--no-special] [--target TEXT] [--device cpu|hip] [--width W]\n"
-              << "       [--graph OUT.json [--viewer-dir DIR] [--slug S] [--scan MODEL_ID] [--edge-threshold X]]\n";
+              << "       [--graph OUT.json [--viewer-dir DIR] [--slug S] [--scan MODEL_ID] [--edge-threshold X]\n"
+              << "        [--transcoders DIR [--node-threshold X]]]\n";
     std::exit(2);
 }
 

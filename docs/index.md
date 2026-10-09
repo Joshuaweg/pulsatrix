@@ -57,8 +57,19 @@ rollout buffers, and DQN, REINFORCE, A2C, PPO and SAC. Each algorithm's tests tr
 fixed score on CartPole.
 
 **[Mechanistic Interpretability](mechanistic-interpretability/index.md)**: look inside a
-network with activation caching, linear probes, sparse autoencoders and circuit graphs. This
-section also covers GFlowNets.
+network.
+- **Read and probe activations** with hooks and linear probes.
+- **Find features** with sparse autoencoders (TopK, BatchTopK, Matryoshka, JumpReLU),
+  block-sparse featurizers and transcoders, and **evaluate** them against random-model
+  baselines.
+- **Steer** a model, with a report that shows whether the steering is real.
+- **Diff a model against its fine-tune** with crosscoders.
+- **Decompose a network's weights** into mechanisms (SPD, VPD).
+- **Trace attribution graphs** of a language model's prediction through transcoder features,
+  for Neuronpedia's viewer.
+
+Each method reports what it found on real models, including what didn't work. The section also
+covers GFlowNets.
 
 **[Neuro-Symbolic Reasoning](neuro-symbolic/index.md)**: differentiable fuzzy logic you can
 train with gradient descent, and a Datalog engine that traces relevance from a logical
@@ -89,7 +100,7 @@ LRP conservation, with an A/B comparison between two builds.
 Python. See [Getting Started](getting-started.md#python-bindings).
 
 Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,460 CPU tests (2,600 with the HIP backend) that run in CI on Windows and Linux.
+2,650 CPU tests (2,800 with the HIP backend) that run in CI on Windows and Linux.
 
 ## More resources
 

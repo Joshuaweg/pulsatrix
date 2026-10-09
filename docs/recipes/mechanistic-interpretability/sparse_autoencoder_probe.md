@@ -56,7 +56,8 @@ The `SparseAutoencoder` is `LinearModule(4,12) -> ReLU -> LinearModule(12,4)`. I
 is overcomplete: 3x wider than the input. It is trained with MSE to reconstruct its own input.
 An L1 penalty on the hidden ReLU activations keeps them sparse. Each feature's decoder direction
 is kept at unit length, so the penalty can't be met by shrinking the activations and growing the
-decoder instead (see [Featurizers](../../mechanistic-interpretability/index.md#featurizers)).
+decoder instead. This recipe keeps to the simplest SAE; for real activations, start with a TopK
+or BatchTopK SAE ([Finding features](../../mechanistic-interpretability/featurizers.md)).
 
 The `LinearProbe` is a separate, simpler model: `LinearModule(4,1)` trained with
 `BCEWithLogitsLoss` on the *same* activations against a binary label. The data is built so the
@@ -70,4 +71,4 @@ activations. A negative control, with labels independent of every feature, would
 chance. `tests/linear_probe_test.cpp` runs that paired comparison. The control is what shows the
 probe isn't just fitting noise.
 
-See also: [Mechanistic Interpretability](../../mechanistic-interpretability/index.md#probing-for-a-linearly-decodable-concept).
+See also: [Mechanistic Interpretability](../../mechanistic-interpretability/index.md#probing-a-layer-for-a-concept).
