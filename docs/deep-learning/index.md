@@ -213,6 +213,49 @@ pulsatrix can't run yet is refused, and every parameter must be loaded and every
 tensor used. `LoadWeights` with a `WeightMapping` manifest (source name, target name, a transpose,
 an optional row slice for fused tensors) loads other layouts the same way.
 
+### PyTorch checkpoints (.pt, .pth)
+
+pulsatrix never reads a PyTorch pickle file in C++. A `.pt`, `.pth` or `.pkl` file is a small
+program, and loading one can run arbitrary code; malware has been found in published models, and
+scanners that look for it get bypassed. Instead, convert the file to safetensors once, in Python,
+with PyTorch's restricted loader:
+
+```bash
+pip install "torch>=2.6" safetensors
+python3 tools/convert/pickle_to_safetensors.py resnet18-f37072fd.pth resnet18.safetensors
+# wrote resnet18.safetensors: 102 tensors, 11,699,112 values, dtypes float32, verified
+```
+
+The output loads like any safetensors file (`SafetensorsFile::Map`, `LoadWeights`,
+`LoadCheckpoint`). What the converter does:
+- **Loads safely.** It uses `torch.load(weights_only=True)`, which only rebuilds tensors and
+  plain containers. It refuses torch older than 2.6, where `weights_only` could still run code
+  (CVE-2025-32434).
+- **Refuses what it can't load safely**, with the reason:
+  - TorchScript archives;
+  - files that need any other Python object;
+  - sparse, quantized and complex tensors.
+
+  There is deliberately no unsafe mode. If a file you trust needs more, load it in a separate
+  environment and re-save `model.state_dict()` with `torch.save`.
+- **Finds the weights.** A training checkpoint such as `{"epoch": ..., "state_dict": {...},
+  "optimizer": ...}` is unwrapped automatically, if exactly one of `state_dict`, `model`,
+  `model_state_dict`, `module`, `net` or `ema` holds tensors. Otherwise pass `--key` with a
+  dotted path. Nested dicts and lists become dotted names; numbers and strings are skipped and
+  listed.
+- **Options:**
+  - `--strip-prefix module.` removes DataParallel's prefix.
+  - `--float32` casts floating-point tensors to float32.
+  - `--force` allows overwriting the output; without it, an existing file is left alone.
+- **Writes clean tensors.** Each tensor is made contiguous and gets its own bytes: tied weights
+  are written twice. Its dtype is kept: pulsatrix reads bf16 and fp16 by upcasting, and integer
+  buffers such as `num_batches_tracked` as raw bytes.
+- **Verifies.** The source file's SHA-256 goes into the metadata, and the output is read back and
+  compared bit for bit.
+
+The converted torchvision ResNet18 reads back in pulsatrix with every one of its 11.7 million
+values matching PyTorch's.
+
 ### Reproducibility
 
 Every random choice in pulsatrix comes from a seed, and nothing is seeded from the clock.
