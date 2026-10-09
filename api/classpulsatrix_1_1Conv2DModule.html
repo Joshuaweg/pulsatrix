@@ -640,7 +640,9 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4).
 <dd>
 Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 4). </dd>
 <dd>
-config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox: the <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> formulas (Zennit 1.0.0) applied in patch space, where each output position is K @ patch + b, then folded back with col2im. Epsilon with config.epsilon_bias_in_denominator uses z = K @ patch + b (Zennit's Epsilon). </dd></dl>
+config.rule selects Epsilon (default, as above), Gamma, AlphaBeta or ZBox: the <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> formulas (Zennit 1.0.0) applied in patch space, where each output position is K @ patch + b, then folded back with col2im. Epsilon with config.epsilon_bias_in_denominator uses z = K @ patch + b (Zennit's Epsilon). </dd>
+<dd>
+When config.conv_rule is set, it is the rule applied (a composite's rule for every convolution, however deeply nested). </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::logic_error</td><td>if <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> has never been called &ndash; see campaign_exai_dl_library_adversarial_hardening.md, finding 12. </td></tr>

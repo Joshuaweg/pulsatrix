@@ -1495,6 +1495,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../recipes/interpretability/imagenet_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on ImageNet Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
         
   
@@ -2230,7 +2258,10 @@ relevance.</p>
 </tbody>
 </table>
 <p>Every other layer gets the epsilon rule. The presets set <code>epsilon_bias_in_denominator = true</code>
-so they match Zennit. As in Zennit, <code>epsilon_gamma_box</code> never applies ZBox to a <code>LinearModule</code>,
+so they match Zennit. Like Zennit, they choose by layer type throughout the network: a
+convolution inside a residual block or a <code>SequentialModule</code> gets the convolution rule too
+(through <code>LRPRuleConfig::conv_rule</code>). ZBox is the exception: it goes to the first top-level
+Conv2D, which in ResNet and VGG is the first convolution. As in Zennit, <code>epsilon_gamma_box</code> never applies ZBox to a <code>LinearModule</code>,
 so on a network without convolutions it is epsilon everywhere.</p>
 <p>To write your own, pass any function <code>(size_t layer_index, const Module&amp;) -&gt; LRPRuleConfig</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">LRP</span><span class="w"> </span><span class="nf">custom</span><span class="p">([](</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Module</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2327,6 +2358,13 @@ mixed-sign inputs:</p>
 </ul>
 <p><strong>LXT</strong>, using its explicit AttnLRP rules on <code>MultiHeadAttentionModule</code> and <code>TransformerBlock</code>
 (RoPE and QK-Norm off), each followed by Flatten → Linear.</p>
+<p><strong>Zennit on ResNet and VGG</strong> (KS-9): <code>tests/vision_models_test.cpp</code> (and its HIP and CUDA
+counterparts) compares a small torchvision ResNet (BatchNorm with non-trivial statistics, a
+downsampling shortcut) and VGG with Zennit's three presets. The ResNet uses Zennit's
+<code>ResNetCanonizer</code>; pulsatrix folds the BatchNorms and splits relevance at each residual sum in
+proportion to the two branches, which is the same thing. The values are written by
+<code>tools/golden/make_vision_golden.py</code>. With <code>PULSATRIX_TORCHVISION_DIR</code> set, the same tests run on
+the published ResNet18 and VGG16; their heatmaps agree to 2e-3 of the largest value.</p>
 <p>The tolerance is <code>1e-4 · max(1, |ref|)</code> (float32 vs float32); the largest observed error is
 under 1e-5. Matching needs <code>epsilon_bias_in_denominator = true</code> (see <a href="#bias-handling">Bias handling</a>).</p>
 <p><strong>LXT on whole language models</strong> (LLM-7): <code>CompareToAttnLrp</code> (<code>attnlrp_parity.hpp</code>) and

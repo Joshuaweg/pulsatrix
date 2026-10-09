@@ -110,6 +110,9 @@ Files</h2></td></tr>
 <tr class="memitem:adam__optimizer_8hpp" id="r_adam__optimizer_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adam__optimizer_8hpp.html">adam_optimizer.hpp</a></td></tr>
 <tr class="memdesc:adam__optimizer_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adam optimizer &ndash; operates uniformly across any Module's parameters(). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaptive__avg__pool2d__module_8hpp" id="r_adaptive__avg__pool2d__module_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adaptive__avg__pool2d__module_8hpp.html">adaptive_avg_pool2d_module.hpp</a></td></tr>
+<tr class="memdesc:adaptive__avg__pool2d__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Average pooling to a fixed output size, as PyTorch's AdaptiveAvgPool2d (KS-9). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:assert_8hpp" id="r_assert_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assert_8hpp.html">assert.hpp</a></td></tr>
 <tr class="memdesc:assert_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">PULSATRIX_ASSERT &ndash; debug-only invariant check for programmer errors, distinct from throw (used for caller-facing contract violations). See cpp_style_guide/context_style_project_conventions.md's assert-vs-throw table. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,7 +243,7 @@ Files</h2></td></tr>
 <tr class="memdesc:mamba__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mamba/S6 selective-state-space recurrence with the MambaLRP relevance rule. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:max__pool2d__module_8hpp" id="r_max__pool2d__module_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="max__pool2d__module_8hpp.html">max_pool2d_module.hpp</a></td></tr>
-<tr class="memdesc:max__pool2d__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D max pooling, non-overlapping windows (stride == kernel), no padding. <br /></td></tr>
+<tr class="memdesc:max__pool2d__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D max pooling with a stride and padding (non-overlapping windows by default). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:metrics__sink_8hpp" id="r_metrics__sink_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="metrics__sink_8hpp.html">metrics_sink.hpp</a></td></tr>
 <tr class="memdesc:metrics__sink_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps monitoring/visualization tools out of the training core &ndash; same OCP/DIP pattern as DeviceBackend/ExplainerContext. <br /></td></tr>
@@ -337,6 +340,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:transformer__block_8hpp" id="r_transformer__block_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="transformer__block_8hpp.html">transformer_block.hpp</a></td></tr>
 <tr class="memdesc:transformer__block_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre-LN transformer block &ndash; Phase 3's literal exit-gate deliverable, third and last composition mission (RMSNorm x2, MultiHeadAttentionModule, SwiGLUModule, plus the resolved residual-split LRP rule). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:vision__models_8hpp" id="r_vision__models_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vision__models_8hpp.html">vision_models.hpp</a></td></tr>
+<tr class="memdesc:vision__models_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">torchvision's ResNet and VGG, built from pulsatrix layers with torchvision's parameter names, so their published ImageNet weights load once converted to safetensors (KS-9). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:xor__training__example_8hpp" id="r_xor__training__example_8hpp"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xor__training__example_8hpp.html">xor_training_example.hpp</a></td></tr>
 <tr class="memdesc:xor__training__example_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Phase 1's training-loop proof: Linear(2,4)-&gt;ReLU-&gt;Linear(4,1) learning XOR. <br /></td></tr>

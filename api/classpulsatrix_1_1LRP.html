@@ -130,13 +130,13 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a6370aa4cd308e67af1ddc9817c4e1466" id="r_a6370aa4cd308e67af1ddc9817c4e1466"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a6370aa4cd308e67af1ddc9817c4e1466">epsilon_plus</a> (float epsilon=1e-6f)</td></tr>
-<tr class="memdesc:a6370aa4cd308e67af1ddc9817c4e1466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonPlus preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5" title="Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D.">lrp_composite::epsilon_plus</a>).  <br /></td></tr>
+<tr class="memdesc:a6370aa4cd308e67af1ddc9817c4e1466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonPlus preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5" title="Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D, including convolutions ins...">lrp_composite::epsilon_plus</a>).  <br /></td></tr>
 <tr class="separator:a6370aa4cd308e67af1ddc9817c4e1466"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ed6b03b955a4098f12a7cb0dbc5f484" id="r_a6ed6b03b955a4098f12a7cb0dbc5f484"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a6ed6b03b955a4098f12a7cb0dbc5f484">epsilon_gamma_box</a> (float low, float high, float gamma=0.25f, float epsilon=1e-6f)</td></tr>
 <tr class="memdesc:a6ed6b03b955a4098f12a7cb0dbc5f484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonGammaBox preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#a35db92169a6e3bf6eea6fe5a7abe8d76" title="Zennit EpsilonGammaBox: ZBox(low, high) for the first Conv2D layer (lowest index),...">lrp_composite::epsilon_gamma_box</a>).  <br /></td></tr>
 <tr class="separator:a6ed6b03b955a4098f12a7cb0dbc5f484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27d15989de1278df96628ae232992c35" id="r_a27d15989de1278df96628ae232992c35"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classpulsatrix_1_1LRP.html">LRP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LRP.html#a27d15989de1278df96628ae232992c35">epsilon_alpha2_beta1</a> (float epsilon=1e-6f)</td></tr>
-<tr class="memdesc:a27d15989de1278df96628ae232992c35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonAlpha2Beta1 preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39" title="Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D.">lrp_composite::epsilon_alpha2_beta1</a>).  <br /></td></tr>
+<tr class="memdesc:a27d15989de1278df96628ae232992c35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zennit EpsilonAlpha2Beta1 preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39" title="Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D, nested ones included.">lrp_composite::epsilon_alpha2_beta1</a>).  <br /></td></tr>
 <tr class="separator:a27d15989de1278df96628ae232992c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -296,7 +296,7 @@ Device-generic: the seed is assembled on the host (one device-&gt;host copy of t
 </table>
 </div><div class="memdoc">
 
-<p>Zennit EpsilonAlpha2Beta1 preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39" title="Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D.">lrp_composite::epsilon_alpha2_beta1</a>). </p>
+<p>Zennit EpsilonAlpha2Beta1 preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39" title="Zennit EpsilonAlpha2Beta1: Epsilon for Linear, AlphaBeta(2, 1) for Conv2D, nested ones included.">lrp_composite::epsilon_alpha2_beta1</a>). </p>
 
 </div>
 </div>
@@ -374,7 +374,7 @@ Device-generic: the seed is assembled on the host (one device-&gt;host copy of t
 </table>
 </div><div class="memdoc">
 
-<p>Zennit EpsilonPlus preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5" title="Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D.">lrp_composite::epsilon_plus</a>). </p>
+<p>Zennit EpsilonPlus preset (<a class="el" href="namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5" title="Zennit EpsilonPlus: Epsilon for Linear, ZPlus (AlphaBeta 1, 0) for Conv2D, including convolutions ins...">lrp_composite::epsilon_plus</a>). </p>
 
 </div>
 </div>

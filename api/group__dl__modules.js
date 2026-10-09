@@ -2,6 +2,7 @@ var group__dl__modules =
 [
     [ "activation_module.hpp", "activation__module_8hpp.html", null ],
     [ "adam_optimizer.hpp", "adam__optimizer_8hpp.html", null ],
+    [ "adaptive_avg_pool2d_module.hpp", "adaptive__avg__pool2d__module_8hpp.html", null ],
     [ "assert.hpp", "assert_8hpp.html", null ],
     [ "attnlrp_parity.hpp", "attnlrp__parity_8hpp.html", null ],
     [ "autograd.hpp", "autograd_8hpp.html", null ],
@@ -78,5 +79,6 @@ var group__dl__modules =
     [ "token_cross_entropy_loss.hpp", "token__cross__entropy__loss_8hpp.html", null ],
     [ "top_k.hpp", "top__k_8hpp.html", null ],
     [ "transformer_block.hpp", "transformer__block_8hpp.html", null ],
+    [ "vision_models.hpp", "vision__models_8hpp.html", null ],
     [ "xor_training_example.hpp", "xor__training__example_8hpp.html", null ]
 ];

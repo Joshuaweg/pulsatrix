@@ -1352,6 +1352,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../recipes/interpretability/imagenet_lrp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LRP on ImageNet Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
         
   
@@ -3323,7 +3351,8 @@ every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">F
   against Hugging Face's Llama, Qwen2 and Qwen3 attention. A language-model head that shares the
   embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5). Hugging
   Face configs, sharded checkpoints and bf16 weights load into a <code>CausalLM</code> (IO-4 to IO-6): the
-  real SmolLM2-135M runs and matches transformers.</li>
+  real SmolLM2-135M runs and matches transformers. torchvision's ResNet18 and VGG16 load from
+  their published weights, and their LRP heatmaps match Zennit's (KS-9).</li>
 <li><strong>Protein language models</strong> (<a href="#plm-protein-language-models">PLM-1 to PLM-9</a>). ESM-2 8M to
   650M load from Hugging Face and match transformers to float precision. On top of that:</li>
 <li>zero-shot variant scoring that reproduces ProteinGym's published numbers;</li>
@@ -3471,7 +3500,9 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>VIZ-3, VIZ-6a (<strong>done</strong>): Vega-Lite HTML and the token relevance view</li>
 <li>NB-1, NB-2: native rich display and the <code>.ipynb</code>/HTML report writer</li>
 <li>AGT-1 to AGT-4: the native orchestrator core</li>
-<li>KS-8, KS-9: GPU CI on gfx1151 and a model zoo (ResNet18, SmolLM2)</li>
+<li>KS-8: GPU CI on gfx1151</li>
+<li>KS-9 (<strong>done</strong>): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
+  (SmolLM2's against LXT came with LLM-7)</li>
 </ul>
 <h3 id="v13-tune-and-explain">v1.3 "Tune and explain"<a class="headerlink" href="#v13-tune-and-explain" title="Permanent link">&para;</a></h3>
 <p>Fine-tune the models from v1.2 and explain what the fine-tuning changed.</p>
@@ -3657,7 +3688,7 @@ AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <tr>
 <td>Overlapping and padded <code>MaxPool2DModule</code>, and an adaptive average pool: the ResNet stem uses <code>MaxPool2d(3, stride 2, padding 1)</code></td>
 <td>FND-6</td>
-<td>KS-9 (model zoo)</td>
+<td>KS-9 (model zoo): done</td>
 </tr>
 <tr>
 <td>A <code>named_buffers()</code> so checkpoints can save BatchNorm running statistics, which aren't parameters</td>
@@ -6309,7 +6340,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>IO-4, FND-6</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/117">#117</a> (see below)</td>
 </tr>
 <tr>
 <td>KS-10</td>
@@ -6348,14 +6379,36 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
   number, 1.0.0. A test installs the build and compiles every installed header from a separate
   project; on HIP it caught hip's package config overwriting the one variable pulsatrix's config
   needed.</li>
-<li><strong>KS-2.</strong> Comparing a build with itself flagged sub-millisecond CPU benchmarks 14 to 20%
+<li>
+<p><strong>KS-2.</strong> Comparing a build with itself flagged sub-millisecond CPU benchmarks 14 to 20%
   slower: separate processes of one binary land at one of two speeds on this machine, even
   pinned to a core. So a time regresses only when its median slows past 10% <em>and</em> a one-sided
   Mann-Whitney U test over at least three rounds per side says the rounds separate.
   <code>scripts/bench_ab.sh</code> runs the builds in ABBA order. Restoring HIP-4's syncs was flagged on all
   three training benchmarks at p = 0.014. The conservation gate is 10⁻³, the per-layer tolerance
-  the Conv2D LRP tests accept, and runs in CI on the CPU.</li>
+  the Conv2D LRP tests accept, and runs in CI on the CPU.</p>
+</li>
+<li>
+<p><strong>KS-9</strong> builds torchvision's ResNet (basic blocks) and VGG from pulsatrix layers, under
+  torchvision's parameter names, and loads the published weights through IO-3's converter
+  (<code>TorchvisionResNet</code>, <code>TorchvisionVGG</code>, <code>LoadTorchvisionWeights</code>). It needed four library
+  changes:</p>
+</li>
+<li><code>MaxPool2DModule</code> takes a stride and padding. Its backward and LRP gather from every window
+    holding a position, so overlapping windows need no atomics and stay deterministic.</li>
+<li><code>AdaptiveAvgPool2DModule</code>, for sizes that divide evenly (7 to 1 and 7 to 7 in torchvision).</li>
+<li><code>ResidualModule</code> takes a shortcut module, ResNet's downsampling 1x1 convolution.</li>
+<li>Composites reach convolutions nested in blocks (<code>LRPRuleConfig::conv_rule</code>). Zennit maps
+    rules by layer type through the whole network; before this, a ResNet block's convolutions
+    got the block's epsilon rule.</li>
 </ul>
+<p>Small torchvision models (a downsampling ResNet with BatchNorm statistics, a VGG) are checked
+  in every test run against torchvision's logits and Zennit 1.0.0's EpsilonPlus,
+  EpsilonAlpha2Beta1 and EpsilonGammaBox heatmaps, on CPU and HIP. The published ResNet18 and
+  VGG16 pass the same checks when their weights are present: logits to 1e-4, heatmaps to 2e-3 of
+  the largest value. Fixtures stay small; the weights aren't committed ("ship converters, not
+  converted weights"). SmolLM2's reference heatmaps are LLM-7's LXT parity.
+  <code>imagenet_lrp_recipe</code> explains a photo with either model.</p>
 <h3 id="follow-ups-the-ks-work-surfaced">Follow-ups the KS work surfaced<a class="headerlink" href="#follow-ups-the-ks-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -6385,6 +6438,21 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>Benchmarks on real models (ResNet18, SmolLM2) next to the fixed small ones</td>
 <td>KS-2</td>
 <td>KS-9</td>
+</tr>
+<tr>
+<td>Bottleneck ResNets (ResNet50 and up) and VGG with BatchNorm, on the same builders</td>
+<td>KS-9</td>
+<td>a later model-zoo item</td>
+</tr>
+<tr>
+<td><code>AdaptiveAvgPool2DModule</code> for sizes that don't divide evenly (PyTorch's overlapping windows)</td>
+<td>KS-9</td>
+<td>when a model needs it</td>
+</tr>
+<tr>
+<td>Python bindings for <code>TorchvisionResNet</code> and <code>TorchvisionVGG</code></td>
+<td>KS-9</td>
+<td>NB-3</td>
 </tr>
 </tbody>
 </table>

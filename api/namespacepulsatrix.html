@@ -139,6 +139,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamWOptimizer.html">AdamWOptimizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdamW (Loshchilov &amp; Hutter, "Decoupled Weight Decay Regularization", arXiv 1711.05101): Adam whose weight decay shrinks the weights directly, w &lt;- (1 - lr * wd) * w, before the Adam step, instead of adding wd * w to the gradient (roadmap TRN-2).  <a href="classpulsatrix_1_1AdamWOptimizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdaptiveAvgPool2DModule.html">AdaptiveAvgPool2DModule</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pools a rank-4 (N, C, H, W) input to (N, C, out_h, out_w), as <code>AdaptiveAvgPool2d((out_h,
+       out_w))</code>: ResNet's global pooling is (1, 1), VGG's is (7, 7).  <a href="classpulsatrix_1_1AdaptiveAvgPool2DModule.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AddedToken.html">AddedToken</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A token matched in the raw input before anything else runs, such as <code>&lt;|im_start|&gt;</code>.  <a href="structpulsatrix_1_1AddedToken.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -773,7 +777,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ESM-2's masking (Lin et al. 2023; BERT's 80/10/10).  <a href="structpulsatrix_1_1MaskedLMOptions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MaxPool2DModule.html">MaxPool2DModule</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention. Stride fixed equal to kernel size (non-overlapping windows), no padding, no dilation &ndash; deferred until a real use case needs them, same minimal-cut discipline as <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s original stride-1/no-padding scope cut.  <a href="classpulsatrix_1_1MaxPool2DModule.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max pooling, rank-4 (N, channels, H, W), matching <a class="el" href="classpulsatrix_1_1Conv2DModule.html" title="2D convolution, batched (input/output are rank-4: N x channels x H x W) – migrated from the original ...">Conv2DModule</a>'s convention, as PyTorch's MaxPool2d without dilation: out = (n + 2 padding - kernel) / stride + 1. Windows may overlap (stride &lt; kernel), as in ResNet's stem (3x3, stride 2, padding 1); padded positions never win. No dilation or ceil mode.  <a href="classpulsatrix_1_1MaxPool2DModule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1MetaspaceDecoder.html">MetaspaceDecoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The replacement character back to spaces (Hugging Face's Metaspace decoder). Unless the scheme is Never, every replacement in the first token is dropped, as Hugging Face does, not only the one the pre-tokenizer put in front.  <a href="classpulsatrix_1_1MetaspaceDecoder.html#details">More...</a><br /></td></tr>
@@ -1020,6 +1024,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResizeTransform.html">ResizeTransform</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every transform in this file operates on sample.fields[0], assumed to be an image <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> of shape (1, channels, height, width) &ndash; the convention <a class="el" href="classpulsatrix_1_1MnistDatasetAdapter.html" title="Adapts a pre-loaded MnistDataset (MnistIdxLoader::Load&#39;s output) onto the generic Dataset interface –...">MnistDatasetAdapter</a>, <a class="el" href="classpulsatrix_1_1CsvDataset.html" title="Dataset over a CSV file&#39;s numeric columns: N named feature columns -&gt; one (1, num_features) Tensor pe...">CsvDataset</a>, and <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a> all already share (image/features first, label last).  <a href="classpulsatrix_1_1ResizeTransform.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1ResNetConfig.html">ResNetConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A torchvision ResNet with basic blocks (ResNet18 and ResNet34).  <a href="structpulsatrix_1_1ResNetConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResumableTrial.html">ResumableTrial</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single hyperparameter configuration's live, resumable training state &ndash; own whatever network/optimizer/dataset a concrete trial needs, and train it incrementally across multiple calls rather than all at once.  <a href="classpulsatrix_1_1ResumableTrial.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1259,6 +1266,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TopKSparseAutoencoder.html">TopKSparseAutoencoder</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A TopK sparse autoencoder: <code>z = ReLU(TopK_k(W_enc (x - b_dec) + b_enc))</code>, <code>x̂ = z W_dec + b_dec</code>.  <a href="classpulsatrix_1_1TopKSparseAutoencoder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1TorchvisionLoadReport.html">TorchvisionLoadReport</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">What <a class="el" href="namespacepulsatrix.html#a09777a00a8ca3e91bd8ea211261b743f" title="Loads a torchvision state dict converted to safetensors (tools/convert/pickle_to_safetensors....">LoadTorchvisionWeights()</a> did.  <a href="structpulsatrix_1_1TorchvisionLoadReport.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TorchvisionResNet.html">TorchvisionResNet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">torchvision's <code>ResNet(BasicBlock, ...)</code>: a 7x7 stride-2 convolution, BatchNorm, ReLU and 3x3 stride-2 max pooling; four stages of basic blocks (two 3x3 convolutions with BatchNorm, and a 1x1 convolution with BatchNorm on the shortcut where the shape changes); global average pooling and a linear classifier. Input (N, 3, H, W), output (N, classes).  <a href="classpulsatrix_1_1TorchvisionResNet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1TorchvisionVGG.html">TorchvisionVGG</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">torchvision's <code>VGG</code>: 3x3 convolutions with bias and ReLU, 2x2 max pooling, adaptive average pooling to (pool_size, pool_size), then Linear, ReLU, Dropout, Linear, ReLU, Dropout, Linear. Parameter names are torchvision's (<code>features.0.weight</code>, <code>classifier.6.bias</code>, ...). Every layer is top-level in <a class="el" href="classpulsatrix_1_1TorchvisionVGG.html#a417cb52d8aef2c84140127f486a7d8ad">layers()</a>, so the first convolution can take ZBox in an EpsilonGammaBox composite.  <a href="classpulsatrix_1_1TorchvisionVGG.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ToyKnowledgeBase.html">ToyKnowledgeBase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A small, hand-traceable knowledge base: two neural predicates <code>A(x)</code>/<code>B(x)</code> (each a sigmoid-squashed <code>LinearModule(1,1)</code>, producing a fuzzy truth degree in <code>(0,1)</code>), one logical rule <code>A(x) -&gt; not(B(x))</code>, expressed via De Morgan (<code>not(A(x)) or not(B(x))</code>, Product t-conorm/t-negation) using only <code><a class="el" href="classpulsatrix_1_1NegationModule.html" title="y = 1 - x, elementwise. No parameters, no parameter gradients.">NegationModule</a></code>/<code><a class="el" href="classpulsatrix_1_1DisjunctionModule.html" title="y = a S b for a selected t-conorm S, over two independent fuzzy-truth-valued operand tensors (values ...">DisjunctionModule</a></code> (Mission 0) &ndash; no dedicated <code>Implication</code> <code><a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a></code> &ndash; aggregated across synthetic groundings into one scalar via <code><a class="el" href="classpulsatrix_1_1SatisfactionLoss.html" title="loss = 1 - agg_p(truth_values) – the standard LTN &quot;Real Logic&quot; training objective (research_2026_neur...">SatisfactionLoss</a></code> (Mission 1).  <a href="classpulsatrix_1_1ToyKnowledgeBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1304,6 +1320,9 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scores variants with a masked language model and its tokenizer, the way ProteinGym scores ESM models. A higher score means the model finds the variant more plausible.  <a href="classpulsatrix_1_1VariantScorer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1VariantScoringOptions.html">VariantScoringOptions</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1VGGConfig.html">VGGConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A torchvision VGG without BatchNorm (VGG11 to VGG19).  <a href="structpulsatrix_1_1VGGConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1VideoFrameDirectoryDataset.html">VideoFrameDirectoryDataset</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1Dataset.html" title="Random-access dataset abstraction – pulsatrix&#39;s analogue of PyTorch&#39;s torch.utils....">Dataset</a> over a directory tree of the form root_dir/&lt;class_name&gt;/&lt;clip_name&gt;/&lt;sequentially-named-frame-image&gt;, decoding each clip's frames (via <a class="el" href="classpulsatrix_1_1ImageDecoder.html" title="Decodes an image file into a Tensor – pulsatrix&#39;s generalization beyond MnistIdxLoader&#39;s IDX-format-o...">ImageDecoder</a>) into one (T, C, H, W) <a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a> per sample.  <a href="classpulsatrix_1_1VideoFrameDirectoryDataset.html#details">More...</a><br /></td></tr>
@@ -2573,6 +2592,9 @@ Functions</h2></td></tr>
 <tr class="memitem:af1395be9b0abfd58b2d643d89ba4200a" id="r_af1395be9b0abfd58b2d643d89ba4200a"><td class="memItemLeft" align="right" valign="top">std::pair&lt; int64_t, int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#af1395be9b0abfd58b2d643d89ba4200a">OptimalWindow</a> (int64_t position, int64_t length, int64_t window)</td></tr>
 <tr class="memdesc:af1395be9b0abfd58b2d643d89ba4200a"><td class="mdescLeft">&#160;</td><td class="mdescRight">ProteinGym's <code>get_optimal_window</code>: the token range <code>[begin, end)</code> around <code>position</code> in a sequence of <code>length</code> tokens, for a model that sees <code>window</code> tokens.  <br /></td></tr>
 <tr class="separator:af1395be9b0abfd58b2d643d89ba4200a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09777a00a8ca3e91bd8ea211261b743f" id="r_a09777a00a8ca3e91bd8ea211261b743f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpulsatrix_1_1TorchvisionLoadReport.html">TorchvisionLoadReport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a09777a00a8ca3e91bd8ea211261b743f">LoadTorchvisionWeights</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;model, const std::string &amp;safetensors_path)</td></tr>
+<tr class="memdesc:a09777a00a8ca3e91bd8ea211261b743f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a torchvision state dict converted to safetensors (tools/convert/pickle_to_safetensors.py) into <code>model</code> by name: every parameter and buffer of the model is looked up under the same name. Linear weights (every rank-2 parameter), stored (out, in) by PyTorch, are transposed; <code>num_batches_tracked</code> counters are ignored.  <br /></td></tr>
+<tr class="separator:a09777a00a8ca3e91bd8ea211261b743f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a581f2cf70ed5529bc7a208a4218a7762" id="r_a581f2cf70ed5529bc7a208a4218a7762"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepulsatrix.html#a581f2cf70ed5529bc7a208a4218a7762">ToNeuronpediaJson</a> (const <a class="el" href="structpulsatrix_1_1AttributionGraph.html">AttributionGraph</a> &amp;graph)</td></tr>
 <tr class="memdesc:a581f2cf70ed5529bc7a208a4218a7762"><td class="mdescLeft">&#160;</td><td class="mdescRight">The graph as Neuronpedia/circuit-tracer JSON, including circuit-tracer's optional node fields (<code>token_prob</code>, <code>is_target_logit</code>) and an empty <code>qParams</code>.  <br /></td></tr>
 <tr class="separator:a581f2cf70ed5529bc7a208a4218a7762"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -9802,6 +9824,42 @@ template&lt;typename Genotype , typename FitnessT &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::runtime_error</td><td>if it can't be read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a09777a00a8ca3e91bd8ea211261b743f" name="a09777a00a8ca3e91bd8ea211261b743f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09777a00a8ca3e91bd8ea211261b743f">&#9670;&#160;</a></span>LoadTorchvisionWeights()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpulsatrix_1_1TorchvisionLoadReport.html">TorchvisionLoadReport</a> pulsatrix::LoadTorchvisionWeights </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>safetensors_path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads a torchvision state dict converted to safetensors (tools/convert/pickle_to_safetensors.py) into <code>model</code> by name: every parameter and buffer of the model is looked up under the same name. Linear weights (every rank-2 parameter), stored (out, in) by PyTorch, are transposed; <code>num_batches_tracked</code> counters are ignored. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>for a tensor the model doesn't have, a shape that doesn't fit, or a missing parameter other than a convolution bias. </td></tr>
   </table>
   </dd>
 </dl>

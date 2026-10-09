@@ -129,6 +129,9 @@ Files</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="adam__optimizer_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adam__optimizer_8hpp.html">adam_optimizer.hpp</a></td></tr>
 <tr class="memdesc:adam__optimizer_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adam optimizer &ndash; operates uniformly across any Module's parameters(). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="adaptive__avg__pool2d__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adaptive__avg__pool2d__module_8hpp.html">adaptive_avg_pool2d_module.hpp</a></td></tr>
+<tr class="memdesc:adaptive__avg__pool2d__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Average pooling to a fixed output size, as PyTorch's AdaptiveAvgPool2d (KS-9). <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="agent_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="agent_8hpp.html">agent.hpp</a></td></tr>
 <tr class="memdesc:agent_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract RL agent interface &ndash; the inference-time policy contract, act() only. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -526,7 +529,7 @@ Files</h2></td></tr>
 <tr class="memdesc:matrix__decompositions_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Small dense decompositions on the host: symmetric eigensolver, power iteration, QR and SVD (roadmap FND-4). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="max__pool2d__module_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="max__pool2d__module_8hpp.html">max_pool2d_module.hpp</a></td></tr>
-<tr class="memdesc:max__pool2d__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D max pooling, non-overlapping windows (stride == kernel), no padding. <br /></td></tr>
+<tr class="memdesc:max__pool2d__module_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">2D max pooling with a stride and padding (non-overlapping windows by default). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="metrics__sink_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="metrics__sink_8hpp.html">metrics_sink.hpp</a></td></tr>
 <tr class="memdesc:metrics__sink_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps monitoring/visualization tools out of the training core &ndash; same OCP/DIP pattern as DeviceBackend/ExplainerContext. <br /></td></tr>
@@ -813,6 +816,9 @@ Files</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="video__transforms_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="video__transforms_8hpp.html">video_transforms.hpp</a></td></tr>
 <tr class="memdesc:video__transforms_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame-sampling Transform &ndash; selects a fixed number of evenly-spaced frames. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="vision__models_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vision__models_8hpp.html">vision_models.hpp</a></td></tr>
+<tr class="memdesc:vision__models_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">torchvision's ResNet and VGG, built from pulsatrix layers with torchvision's parameter names, so their published ImageNet weights load once converted to safetensors (KS-9). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top"><a href="vocabulary_8hpp_source.html"><span class="icondoc"></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vocabulary_8hpp.html">vocabulary.hpp</a></td></tr>
 <tr class="memdesc:vocabulary_8hpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Token&lt;-&gt;index lookup with a reserved &lt;unk&gt; fallback, plus a frequency-ranked builder. <br /></td></tr>

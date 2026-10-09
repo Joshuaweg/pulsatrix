@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aff80847126102d8c3e5af7ababb72f8a" id="r_aff80847126102d8c3e5af7ababb72f8a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#aff80847126102d8c3e5af7ababb72f8a">ResidualModule</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> *<a class="el" href="classpulsatrix_1_1ResidualModule.html#a5176ee3876dc7f536e1c785a42574328">inner</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
 <tr class="memdesc:aff80847126102d8c3e5af7ababb72f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a residual wrapper around an existing <a class="el" href="classpulsatrix_1_1Module.html" title="Base class for every layer type (LinearModule, Conv2DModule, activations, ...).">Module</a>.  <br /></td></tr>
 <tr class="separator:aff80847126102d8c3e5af7ababb72f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84d7edf729729546140f2e406178cb16" id="r_a84d7edf729729546140f2e406178cb16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a84d7edf729729546140f2e406178cb16">ResidualModule</a> (<a class="el" href="classpulsatrix_1_1Module.html">Module</a> *<a class="el" href="classpulsatrix_1_1ResidualModule.html#a5176ee3876dc7f536e1c785a42574328">inner</a>, <a class="el" href="classpulsatrix_1_1Module.html">Module</a> *<a class="el" href="classpulsatrix_1_1ResidualModule.html#a45553ca0c1e8e8f64de72fe91d27836b">shortcut</a>, <a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *backend)</td></tr>
+<tr class="memdesc:a84d7edf729729546140f2e406178cb16"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>y = shortcut(x) + inner(x)</code>: a residual block whose shortcut is a module, such as ResNet's downsampling <code>1x1 conv + BatchNorm</code> (KS-9). Relevance is split between the two branches in proportion to their contributions, then each passes its share back.  <br /></td></tr>
+<tr class="separator:a84d7edf729729546140f2e406178cb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a485aad8b3f0e6cf066df7ced7aad1b3c" id="r_a485aad8b3f0e6cf066df7ced7aad1b3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a485aad8b3f0e6cf066df7ced7aad1b3c">backward</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;grad_output) override</td></tr>
 <tr class="memdesc:a485aad8b3f0e6cf066df7ced7aad1b3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient w.r.t. this module's input: both paths receive grad_output unchanged (real gradient of a plain sum), then inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a485aad8b3f0e6cf066df7ced7aad1b3c" title="Gradient w.r.t. this module&#39;s input: both paths receive grad_output unchanged (real gradient of a pla...">backward()</a> adds its contribution.  <br /></td></tr>
 <tr class="separator:a485aad8b3f0e6cf066df7ced7aad1b3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,16 +145,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ac6ecb7aacdfdd5a827db5a76432b82a2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation: the residual epsilon/z-rule split between x and inner_-&gt;forward(x), then inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#ac6ecb7aacdfdd5a827db5a76432b82a2" title="LRP relevance propagation: the residual epsilon/z-rule split between x and inner_-&gt;forward(x),...">propagate_relevance()</a> for its share.  <br /></td></tr>
 <tr class="separator:ac6ecb7aacdfdd5a827db5a76432b82a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19cce6fac532283f2dfe2bbb9006afff" id="r_a19cce6fac532283f2dfe2bbb9006afff"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedParamRef.html">NamedParamRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff">named_parameters</a> () override</td></tr>
-<tr class="memdesc:a19cce6fac532283f2dfe2bbb9006afff"><td class="mdescLeft">&#160;</td><td class="mdescRight">inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>, prefixed <code>inner.</code> &ndash; this module owns none of its own.  <br /></td></tr>
+<tr class="memdesc:a19cce6fac532283f2dfe2bbb9006afff"><td class="mdescLeft">&#160;</td><td class="mdescRight">inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner., then the shortcut&#39;s, prefixed shortcut....">named_parameters()</a>, prefixed <code>inner.</code>, then the shortcut's, prefixed <code>shortcut.</code> &ndash; this module owns none of its own.  <br /></td></tr>
 <tr class="separator:a19cce6fac532283f2dfe2bbb9006afff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02919377ea0e561e90fd35eaf5c69665" id="r_a02919377ea0e561e90fd35eaf5c69665"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structpulsatrix_1_1NamedBufferRef.html">NamedBufferRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665">named_buffers</a> () override</td></tr>
-<tr class="memdesc:a02919377ea0e561e90fd35eaf5c69665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every layer's <a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>.  <br /></td></tr>
+<tr class="memdesc:a02919377ea0e561e90fd35eaf5c69665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every layer's <a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner., then the shortcut&#39;s, prefixed shortcut....">named_parameters()</a>.  <br /></td></tr>
 <tr class="separator:a02919377ea0e561e90fd35eaf5c69665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a366cf671459f34f026677d08d6bbc48a" id="r_a366cf671459f34f026677d08d6bbc48a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a366cf671459f34f026677d08d6bbc48a">set_training</a> (bool training) override</td></tr>
 <tr class="memdesc:a366cf671459f34f026677d08d6bbc48a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cascades to inner_, the same way SequentialModule/MultiHeadAttentionModule do.  <br /></td></tr>
 <tr class="separator:a366cf671459f34f026677d08d6bbc48a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5176ee3876dc7f536e1c785a42574328" id="r_a5176ee3876dc7f536e1c785a42574328"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a5176ee3876dc7f536e1c785a42574328">inner</a> ()</td></tr>
 <tr class="separator:a5176ee3876dc7f536e1c785a42574328"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45553ca0c1e8e8f64de72fe91d27836b" id="r_a45553ca0c1e8e8f64de72fe91d27836b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a45553ca0c1e8e8f64de72fe91d27836b">shortcut</a> ()</td></tr>
+<tr class="memdesc:a45553ca0c1e8e8f64de72fe91d27836b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The shortcut module, or nullptr for the identity.  <br /></td></tr>
+<tr class="separator:a45553ca0c1e8e8f64de72fe91d27836b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9522fefce13d3551e5f225693003033d" id="r_a9522fefce13d3551e5f225693003033d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacepulsatrix.html#a5480c8cbe462fe3f5a8eb04a8c579e6e">DeviceType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1ResidualModule.html#a9522fefce13d3551e5f225693003033d">compute_device</a> () const override</td></tr>
 <tr class="memdesc:a9522fefce13d3551e5f225693003033d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Where this layer computes, so <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> rejects an input on another device (FND-8).  <br /></td></tr>
 <tr class="separator:a9522fefce13d3551e5f225693003033d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -197,7 +203,7 @@ Protected Member Functions</h2></td></tr>
 <code>inner_-&gt;forward(x)</code> must return the same shape as <code>x</code> &ndash; this module cannot validate that structurally in advance (it does not know <code>inner_</code>'s internals); a mismatch surfaces as <code><a class="el" href="classpulsatrix_1_1Tensor.html" title="N-dimensional tensor. Owns its data buffer exclusively; a DeviceBackend* is injected (not owned) – th...">Tensor</a></code>'s own shape-mismatch error at the add or at the relevance split. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aff80847126102d8c3e5af7ababb72f8a" name="aff80847126102d8c3e5af7ababb72f8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff80847126102d8c3e5af7ababb72f8a">&#9670;&#160;</a></span>ResidualModule()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aff80847126102d8c3e5af7ababb72f8a">&#9670;&#160;</a></span>ResidualModule() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,6 +240,54 @@ Protected Member Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if inner is null &ndash; external boundary, same convention as <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a>'s null-entry check. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a84d7edf729729546140f2e406178cb16" name="a84d7edf729729546140f2e406178cb16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84d7edf729729546140f2e406178cb16">&#9670;&#160;</a></span>ResidualModule() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pulsatrix::ResidualModule::ResidualModule </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> *&#160;</td>
+          <td class="paramname"><em>inner</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> *&#160;</td>
+          <td class="paramname"><em>shortcut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1DeviceBackend.html">DeviceBackend</a> *&#160;</td>
+          <td class="paramname"><em>backend</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>y = shortcut(x) + inner(x)</code>: a residual block whose shortcut is a module, such as ResNet's downsampling <code>1x1 conv + BatchNorm</code> (KS-9). Relevance is split between the two branches in proportion to their contributions, then each passes its share back. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shortcut</td><td>Not owned; must outlive this object. Its output must match inner's. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if inner or shortcut is null. </td></tr>
   </table>
   </dd>
 </dl>
@@ -400,7 +454,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Every layer's <a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>. </p>
+<p>Every layer's <a class="el" href="classpulsatrix_1_1ResidualModule.html#a02919377ea0e561e90fd35eaf5c69665" title="Every layer&#39;s named_buffers(), prefixed the same way as named_parameters().">named_buffers()</a>, prefixed the same way as <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner., then the shortcut&#39;s, prefixed shortcut....">named_parameters()</a>. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a05e4c9483d5577e3da94df3ee55e7699">pulsatrix::Module</a>.</p>
 
@@ -429,7 +483,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner. – this module owns none of its own.">named_parameters()</a>, prefixed <code>inner.</code> &ndash; this module owns none of its own. </p>
+<p>inner_'s own <a class="el" href="classpulsatrix_1_1ResidualModule.html#a19cce6fac532283f2dfe2bbb9006afff" title="inner_&#39;s own named_parameters(), prefixed inner., then the shortcut&#39;s, prefixed shortcut....">named_parameters()</a>, prefixed <code>inner.</code>, then the shortcut's, prefixed <code>shortcut.</code> &ndash; this module owns none of its own. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a176c8304fb06ac2792bc046204b65a40">pulsatrix::Module</a>.</p>
 
@@ -547,6 +601,33 @@ Protected Member Functions</h2></td></tr>
 <p>Cascades to inner_, the same way SequentialModule/MultiHeadAttentionModule do. </p>
 
 <p>Reimplemented from <a class="el" href="classpulsatrix_1_1Module.html#a55b0040f136cc7898a127791253b46a5">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="a45553ca0c1e8e8f64de72fe91d27836b" name="a45553ca0c1e8e8f64de72fe91d27836b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45553ca0c1e8e8f64de72fe91d27836b">&#9670;&#160;</a></span>shortcut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Module.html">Module</a> * pulsatrix::ResidualModule::shortcut </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The shortcut module, or nullptr for the identity. </p>
 
 </div>
 </div>

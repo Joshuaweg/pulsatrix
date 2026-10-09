@@ -7,5 +7,6 @@ var namespacepulsatrix_1_1lrp__composite =
     ] ],
     [ "epsilon_alpha2_beta1", "namespacepulsatrix_1_1lrp__composite.html#ae4d3ae22297e37abf230fef57b157f39", null ],
     [ "epsilon_gamma_box", "namespacepulsatrix_1_1lrp__composite.html#a35db92169a6e3bf6eea6fe5a7abe8d76", null ],
-    [ "epsilon_plus", "namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5", null ]
+    [ "epsilon_plus", "namespacepulsatrix_1_1lrp__composite.html#af3d7be00a691d742d668dae900aac3a5", null ],
+    [ "epsilon_with_conv", "namespacepulsatrix_1_1lrp__composite.html#a9ad4f90bff05e4be3c84157a713e56c7", null ]
 ];
