@@ -1,861 +1,156 @@
 # Mechanistic Interpretability
 
-Use this section when you want to see *how* a model computes its answer, not just which
-inputs mattered. [Interpretability](../interpretability/index.md) explains
-input-output behavior. The tools here open the network up: they cache its internal
-activations, test what those activations encode, and measure which layers the output depends
-on.
+[Interpretability](../interpretability/index.md) tells you which parts of an *input* mattered
+for a prediction. Mechanistic interpretability asks how the *network* computes it:
 
-The section also hosts GFlowNets, a training method that learns to *sample* outcomes in
-proportion to their reward instead of maximizing it. That makes them a tool for exploring a
-model's or environment's structure.
+- what its layers represent;
+- which directions in its activations stand for concepts;
+- which of its weights do the work;
+- how information flows from the prompt to the answer.
+
+This section covers the tools pulsatrix has for that, from reading activations to full
+attribution graphs of a language model's prediction.
 
 ## Which tool should I use?
 
-| Question | Tool |
-|---|---|
-| What did each layer output for this input? | `ExplainerContext::activation_snapshot()` → `ActivationSnapshot` |
-| Is concept X linearly readable from layer L? | `LinearProbe` |
-| Can a layer's activations be split into sparser, more interpretable directions? | `SparseAutoencoder`, `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder` |
-| Which concepts are low-dimensional manifolds, not single directions? | `BlockSparseFeaturizer` |
-| What does an MLP compute, in sparse, interpretable steps? | `Transcoder` |
-| What did fine-tuning change, or which features span several layers? | `Crosscoder`, `MeasureLatentScaling` |
-| Which pieces of the weights does each input use? | `ComponentLinear`, `ParameterDecomposition` (SPD, VPD) |
-| Which features carry a language model's prediction, layer to layer? | `TraceCircuit` with a `CrossLayerTranscoder` |
-| Can a direction push the model's behavior, and how reliably? | `SteeringHook`, `MeasureSteering` |
-| Which layers does the output depend on for this input? | `ExplainerContext::build_circuit_graph()` → `CircuitGraph` |
-| What happens to the output if I overwrite one activation? | `ExplainerContext::forward_pass_with_patch()` |
-| What would the model predict if layer L were the last layer? | `ExplainerContext::logit_lens()` |
-| Where does an attention layer look? | `ExplainerContext::attention_weights()` |
-| How do I sample outcomes in proportion to a reward? | GFlowNet types below |
+| Your question | Tool | Page |
+|---|---|---|
+| Is concept X linearly readable from layer L? | `LinearProbe` | [Below](#probing-a-layer-for-a-concept) |
+| Which directions in a layer stand for concepts, found without labels? | Sparse autoencoders: `TopKSparseAutoencoder`, `JumpReLUSparseAutoencoder`, `SparseAutoencoder` | [Finding features](featurizers.md) |
+| Which concepts take more than one dimension, such as an angle or a position? | `BlockSparseFeaturizer` | [Finding features](featurizers.md#block-sparse-featurizers) |
+| What does an MLP compute, step by step? | `Transcoder` | [Finding features](featurizers.md#transcoders) |
+| Are my features any good? | `EvaluateReconstruction`, `MeasureLossRecovered`, `FeatureAbsorption`, with baselines | [Evaluating features](evaluating-features.md) |
+| Can a direction push the model's behavior, and on how many inputs does it work? | `SteeringHook`, `MeasureSteering` | [Steering](steering.md) |
+| What did fine-tuning change in a model? | `Crosscoder`, `MeasureLatentScaling`, `pulsatrix_diff_lm` | [Model diffing](model-diffing.md) |
+| Which pieces of the weights does each input use? | `ParameterDecomposition` (SPD, VPD) | [Parameter decomposition](parameter-decomposition.md) |
+| Which features carry a language model's prediction, layer to layer? | `TraceCircuit`, `pulsatrix_explain_text --transcoders` | [Attribution graphs](attribution-graphs.md) |
+| Which layers does a small network's output depend on? | `ExplainerContext::build_circuit_graph()` | [Attribution graphs](attribution-graphs.md#ablation-circuit-graphs-for-small-networks) |
+| What happens if I overwrite one activation? | `ExplainerContext::forward_pass_with_patch()` | [Below](#reading-and-changing-activations) |
+| What would the model predict if layer L were its last? | `ExplainerContext::logit_lens()` | [Below](#reading-and-changing-activations) |
+| How do I sample outcomes in proportion to a reward? | GFlowNets | [GFlowNets](gflownets.md) |
 
-## What's inside
+## A typical workflow
 
-- **Activation access** (all on `ExplainerContext`): `activation_snapshot()` returns an
-  `ActivationSnapshot`, a self-contained copy of one forward pass's activations that stays
-  valid after later passes. `forward_pass_with_patch()` (activation patching), `logit_lens()`,
-  and `attention_weights()` cover the rest of the table above.
-- **Probing**: `LinearProbe` trains a linear classifier to test whether a binary concept is
-  linearly decodable from a layer's activations.
-- **Decomposition**: `SparseAutoencoder` reconstructs activations through a wider hidden layer
-  with an L1 penalty, so each example uses only a few hidden units. It is the first
-  [featurizer](#featurizers). `CircuitGraph` scores
-  every node by how much zeroing it changes the output.
-- **Baselines**: compare a probe's accuracy or a sparse autoencoder's statistics against a
-  randomly re-initialized copy of the model with `NullModelBaseline`
-  ([Interpretability](../interpretability/index.md#the-null-model-baseline)). A result that also
-  shows up on the random model says nothing about what the trained one learned. A feature's
-  statistics and top examples can be saved as a `pulsatrix.feature_dashboard.v1` document.
-- **GFlowNet**: `HyperGridEnv`, `GFlowNetForwardPolicy`, `sample_gflownet_trajectory`
-  (returns a `GFlowNetTrajectory`), `TrajectoryBalanceLoss`, `DetailedBalanceLoss`, and
-  `SubTBLoss`. For SubTB(λ), you pass each sub-trajectory pair's λ-weight to `forward()`.
-  `LearnableScalar` is the single trainable `log Z` value Trajectory Balance needs. It is not a
-  `Module`.
+For a researcher starting on a model, the pieces fit together like this:
 
-Full API reference: [Doxygen: Mechanistic Interpretability](../api/group__mech__interp.html)
+1. **Collect activations** from the layer you care about, with a hook (below).
+2. **Probe** for the concepts you already have labels for. A probe tells you whether the
+   information is there.
+3. **Train a featurizer** (a TopK or BatchTopK SAE is a good default) to find the directions the
+   model uses without being told what to look for.
+4. **Evaluate it against baselines**: the same featurizer on a randomly initialized copy of the
+   model, and a linear probe. A feature that also shows up in a random model says nothing about
+   what the trained one learned.
+5. **Test causally.**
+   - Splice the reconstructions back in and see how much of the loss you keep (loss
+     recovered).
+   - Steer along a direction, with a random-direction control.
+   - For one prediction, trace an attribution graph.
 
-## How to implement
+Each page reports what these steps found on real models (ESM-2 protein models, SmolLM2,
+Gemma 3), including results that didn't work out. Read those before relying on a method.
 
-### Probing for a linearly decodable concept
+## Building blocks
+
+### Reading and changing activations
+
+Language models expose two hooks, used throughout this section:
+
+- **`HiddenStateHook`** on `CausalLM` and `EncoderLM`. It is called with each residual-stream
+  position during `forward()`: 0 for the embeddings, i for the output of block i. It returns the
+  tensor the model continues with. Return it unchanged to only read.
+- **`MlpHook`** on each `TransformerBlock` and `EncoderBlock`. It sees an MLP's input (after the
+  block's norm) and its output, and returns what is added to the residual stream.
+
+```cpp
+#include "pulsatrix/causal_lm.hpp"
+#include "pulsatrix/cpu_backend.hpp"
+#include "pulsatrix/tokenizer_json.hpp"
+
+using namespace pulsatrix;
+
+CPUBackend backend;
+std::unique_ptr<CausalLM> model = LoadCausalLM("models/SmolLM2-135M", &backend);
+const TextTokenizer tok = LoadTokenizerJson("models/SmolLM2-135M/tokenizer.json");
+const int64_t d = model->config().hidden_size;
+
+// corpus: your texts, a std::vector<std::string>.
+// Collect the residual stream after block 6, one row per token.
+std::vector<float> rows;
+model->set_hidden_state_hook([&](int64_t position, const Tensor& h) {
+    if (position == 6) {
+        const std::vector<float> v = h.to_host_vector();   // (1, tokens, d)
+        rows.insert(rows.end(), v.begin(), v.end());
+    }
+    return h;                                              // unchanged: only read
+});
+for (const std::string& text : corpus) {
+    const std::vector<int64_t> ids = tok.encode(text).ids;
+    const std::vector<float> ids_f(ids.begin(), ids.end());
+    (void)model->forward(Tensor(Shape({1, static_cast<int64_t>(ids.size())}), &backend, ids_f));
+}
+model->set_hidden_state_hook({});
+const Tensor activations(Shape({static_cast<int64_t>(rows.size()) / d, d}), &backend, rows);
+```
+
+For small networks built from layers, `ExplainerContext` caches every layer's output and offers
+the classic tools:
+- `activation_snapshot()`: a copy of one forward pass's activations that stays valid after
+  later passes.
+- `forward_pass_with_patch()`: activation patching, overwriting one activation.
+- `logit_lens()`: what the model would predict if a given layer were the last.
+- `attention_weights()`.
+
+### Probing a layer for a concept
+
+A linear probe tests whether a concept can be read out of a layer linearly. `LinearProbe` is a
+`LinearModule(activation_dim, 1)` trained with `BCEWithLogitsLoss` on `(activation, label)`
+pairs.
 
 ```cpp
 #include "pulsatrix/adam_optimizer.hpp"
-#include "pulsatrix/cpu_backend.hpp"
-#include "pulsatrix/explainer_context.hpp"
-#include "pulsatrix/linear_module.hpp"
 #include "pulsatrix/linear_probe.hpp"
-#include "pulsatrix/relu_module.hpp"
 
-using namespace pulsatrix;
-
-CPUBackend backend;
-// hidden -> relu -> head: your trained network
-LinearModule hidden(8, 64, &backend);
-ReluModule relu(&backend);
-LinearModule head(64, 2, &backend);
-ExplainerContext ctx({&hidden, &relu, &head});
-
-// 1. Cache activations for a batch of N inputs. Node 0 is the input; node i+1 is module i's output.
-ctx.forward_pass(inputs);                                         // inputs: shape (N, 8)
-ActivationSnapshot snapshot = ctx.activation_snapshot();
-const Tensor& activation_batch = snapshot.activation(/*relu output=*/2);  // shape (N, 64)
-
-// 2. Train a probe on those activations. label_batch: shape (N, 1), values in {0, 1}.
+// activation_batch: (N, 64) activations; label_batch: (N, 1), values in {0, 1}.
 LinearProbe probe(/*activation_dim=*/64, &backend);
 AdamOptimizer optimizer(0.01f, &backend);
-for (int step = 0; step < 200; ++step) {
-    probe.train_step(activation_batch, label_batch, optimizer);
-}
-float acc = probe.accuracy(activation_batch, label_batch);
+for (int step = 0; step < 200; ++step) probe.train_step(activation_batch, label_batch, optimizer);
+const float accuracy = probe.accuracy(held_out_activations, held_out_labels);
 ```
 
-**What's happening:** a `LinearProbe` is a `LinearModule(activation_dim, 1)` trained with
-`BCEWithLogitsLoss` on `(activation, concept label)` pairs. High accuracy means the concept is
-linearly decodable from that layer. Chance-level accuracy means it is not, at least not
-linearly. The probe accepts any `(N, activation_dim)` batch, so you can also test it on
-synthetic data first as a sanity check.
+- **High held-out accuracy** means the concept is linearly readable.
+- **Chance accuracy** means it isn't, at least not linearly.
+- **A probe reads; it doesn't show the model *uses* the information.** Compare against a probe
+  on a randomly initialized model, and on the raw input. The
+  [Protein language models guide](../protein-models/index.md) shows why: some protein concepts
+  are as easy to probe from local sequence alone.
 
 Recipe: [Sparse autoencoder + linear probe](../recipes/mechanistic-interpretability/sparse_autoencoder_probe.md).
 
-### Featurizers
+### Baselines
 
-A featurizer rewrites activations `x` as sparse codes `f = encode(x)` over learned directions
-and reconstructs `x ≈ decode(f)`: feature i writes along its decoder direction. Sparse
-autoencoders, and the TopK, JumpReLU and block-sparse variants planned in the FEAT epic, share
-one interface (`featurizer.hpp`), so training and metrics work for all of them:
+`NullModelBaseline` re-initializes a model randomly, so the same probe, featurizer or
+explanation can run on it ([Interpretability](../interpretability/index.md#the-null-model-baseline)).
+It is the single most useful check in this section. In the ESM-2 results on the following
+pages, a random model's SAE explains *more* variance than the trained model's, and some
+"concept features" appear in it too.
 
-```cpp
-#include "pulsatrix/featurizer.hpp"
-#include "pulsatrix/sparse_autoencoder.hpp"
+## Command-line tools
 
-SparseAutoencoder sae(/*dim=*/320, /*hidden_dim=*/4096, /*l1_lambda=*/1e-3f, &backend);
-AdamOptimizer opt(1e-3f, &backend);
-FeatureActivityTracker activity(sae.num_features());
-for (const Tensor& batch : batches) {
-    FeaturizerLoss loss = TrainFeaturizer(sae, batch, opt, /*unit_norm_decoder=*/true, &activity);
-}
-double l0 = MeanL0(sae, held_out);                      // active features per input
-std::vector<int64_t> dead = activity.dead(1'000'000);   // silent for the last million inputs
-std::vector<int64_t> dense = activity.dense(0.1);       // firing on more than 10% of inputs
-```
-
-- **Unit-norm decoders.** After every step each decoder direction is rescaled to unit length.
-  The scale moves into the encoder, which a ReLU passes through unchanged, so reconstructions
-  don't move.
-
-  Without it, an L1 penalty is largely paid by shrinking every code and growing the decoder.
-  On the control data in `tests/sparse_autoencoder_test.cpp`, a penalty of 0.05 with free
-  decoders cuts the mean activation to 0.19 of the unpenalized run's but L0 only to 0.58. With
-  unit-norm decoders it cuts L0 to 0.21. Judge sparsity by L0, not the mean activation.
-- **Dead and dense latents.** `FeatureActivityTracker` counts how often each feature fires and
-  when it last did.
-  - Dead features never fire, so they never learn.
-  - Dense ones fire on most inputs and usually encode a bias, not a concept.
-
-  Both waste capacity; report them with every featurizer.
-- **The SAE is a Module.** It maps input to reconstruction, with `backward()`, LRP and
-  parameters named `encoder.*` and `decoder.*`, so checkpoints and optimizers work as for any
-  model.
-
-#### TopK sparse autoencoders
-
-`TopKSparseAutoencoder` (Gao et al., arXiv 2406.04093) keeps each input's k largest latents
-and zeroes the rest, so L0 is k by construction and there is no L1 penalty:
-
-```cpp
-#include "pulsatrix/topk_sparse_autoencoder.hpp"
-
-TopKSaeOptions options;
-options.k = 32;                     // active latents per input
-options.dead_after = 1'000'000;     // inputs without firing before a latent counts as dead
-TopKSparseAutoencoder sae(/*dim=*/320, /*num_features=*/4096, &backend, options);
-sae.initialize_bias(first_batch);   // b_dec starts at the data's mean
-for (const Tensor& batch : batches) {
-    FeaturizerLoss loss = TrainFeaturizer(sae, batch, opt);  // loss.sparsity is the AuxK term
-}
-std::vector<int64_t> dead = sae.dead_latents();
-```
-
-- **No shrinkage.** An L1 penalty pulls every code toward zero. On sums of 3 of 12 known
-  directions (`tests/topk_sparse_autoencoder_test.cpp`), an L1 SAE's reconstructions have 0.88
-  of the data's norm; TopK's have 1.00, and it recovers at least 11 of the 12 directions.
-- **Dead latents and AuxK.** A latent outside every input's top k gets no gradient. The
-  auxiliary loss has the k_aux largest dead latents (default: half the input dimension)
-  reconstruct the main reconstruction's error, weighted by 1/32. It only reaches latents whose
-  pre-activation is positive, since TopK's ReLU still applies. In the test, 30 of 64 latents are
-  dead after training with it and 48 without.
-- **Decoder directions** are unit vectors after every step, and the decoder's gradient loses
-  its component along each one. Unlike `SparseAutoencoder`, the scale isn't moved into the
-  encoder: that would change which latents win the top k.
-- **Checked against PyTorch.** The loss, every gradient and two Adam steps match a PyTorch
-  rendering of the method (`tools/golden/make_topk_sae_golden.py`) to 1e-5.
-- **Resuming training.** Checkpoints hold the parameters. Save `inputs_since_fired()` too, and
-  restore it with `set_inputs_since_fired()`, or every latent starts out alive again.
-
-#### BatchTopK, Matryoshka and JumpReLU
-
-Three variants fix specific failures of TopK:
-
-| Variant | Fixes | How |
+| Tool | What it does | Page |
 |---|---|---|
-| BatchTopK (Bussmann et al., arXiv 2412.06410): `TopKSaeOptions::batch_topk` | Every input gets exactly k latents, however much it contains | Training keeps the batch's `N * k` largest activations wherever they fall. Inference uses a threshold learned from training (`threshold()`, saved in checkpoints) |
-| Matryoshka (Bussmann et al., arXiv 2503.17547): `matryoshka_prefixes` | Absorption, and features split as the dictionary grows | The loss sums the reconstruction errors of nested prefixes, `[0, m/16)`, `[0, m/4)` and all `m`, so the first latents must work alone and learn general features |
-| JumpReLU (Rajamanoharan et al., arXiv 2407.14435): `JumpReLUSparseAutoencoder` | L0 fixed by hand instead of learned | Each latent learns a threshold θ, and the loss penalizes L0 directly (λ). The step's gradient comes from straight-through estimators with a rectangle kernel |
-
-```cpp
-TopKSaeOptions o;
-o.k = 16;
-o.batch_topk = true;
-o.matryoshka_prefixes = {256, 1024};         // 4096 is added
-TopKSparseAutoencoder matryoshka(320, 4096, &backend, o);
-
-JumpReLUSaeOptions j;
-j.l0_coefficient = 0.01f;                    // λ: higher means sparser
-JumpReLUSparseAutoencoder jump(320, 4096, &backend, j);
-```
-
-On synthetic data (`tests/sae_variants_test.cpp`):
-- **BatchTopK spends latents where inputs need them.** It uses 1.1 latents on one-direction
-  inputs and 4.6 on five-direction inputs, at an average of k = 3.
-- **Matryoshka stops absorption.** The data is Chanin et al.'s toy hierarchy: a parent feature
-  with ten rare children. The parent is absorbed into its children in 6.6% to 12.6% of inputs
-  with plain BatchTopK (four data seeds), and in none with Matryoshka.
-- **JumpReLU's λ trades L0 for reconstruction.** At λ = 0.005, L0 is 6.3 and 2 of 12 true
-  directions are recovered. At λ = 0.05, L0 is 2.6 and all 12 are. Too little penalty spreads
-  features across latents.
-
-All three match PyTorch renderings of their papers (`tools/golden/make_sae_variants_golden.py`)
-in loss, gradients and two Adam steps.
-
-**On ESM-2 8M** (layer 4, 2,560 latents, the setup below). `pulsatrix_probe_esm --featurizer`
-trains each variant. JumpReLU's L0 isn't set directly: λ = 0.005 gave 12.6, 0.01 gave 7.6 and
-0.02 gave 4.9.
-
-| | L1 | TopK | BatchTopK | Matryoshka | JumpReLU (λ 0.005) |
-|---|---|---|---|---|---|
-| L0 | 17.0 | 16.0 | 16.5 | 16.5 | 12.6 |
-| Explained variance | 0.66 | 0.78 | 0.78 | 0.77 | 0.75 |
-| Loss recovered | 0.90 | 0.96 | 0.95 | 0.90 | 0.95 |
-| Helix: best feature's F1 | 0.16 | 0.33 | 0.33 | **0.48** | 0.37 |
-| Transmembrane: best feature's F1 | 0.52 | 0.63 | 0.69 | **0.78** | 0.73 |
-| Absorbed: helix (random model) | 42% (10%) | 25% (15%) | 27% (5%) | **22%** (15%) | 29% (8%) |
-| Absorbed: strand (random model) | 57% (1%) | 50% (8%) | 38% (16%) | **35%** (10%) | 38% (8%) |
-| Absorbed: transmembrane (random model) | 34% (21%) | 30% (17%) | 19% (2%) | **9%** (4%) | 34% (11%) |
-
-- **Matryoshka finds the cleanest concept features.** It absorbs least, and its best single
-  features match helix and transmembrane residues best. As Bussmann et al. report, it pays in
-  reconstruction: it recovers 0.90 of the loss to TopK's 0.96.
-- **BatchTopK matches TopK** in reconstruction and absorbs less.
-- **JumpReLU matches TopK's loss recovered with 12.6 latents** instead of 16. It absorbs no
-  less.
-- The random model's absorption is the floor for each figure. For example, Matryoshka's 9% on
-  transmembrane is close to its random-model 4%.
-
-
-#### Block-sparse featurizers
-
-A block-sparse featurizer (BSF; Fel et al., arXiv 2606.25234) makes each feature a small
-subspace, a block of b directions, instead of one direction. A concept that lives on a
-low-dimensional manifold, such as an angle, a position or a lighting direction, becomes one
-feature:
-- the block's norm says how strongly the concept is present;
-- its b coordinates say where on the manifold the input is.
-
-An SAE has to split such a concept across several latents.
-
-```cpp
-#include "pulsatrix/block_sparse_featurizer.hpp"
-
-BlockSparseOptions o;
-o.variant = BsfVariant::Vanilla;   // or Grassmannian, GroupLasso
-o.block_size = 4;                  // b
-o.k = 4;                           // active blocks per input
-BlockSparseFeaturizer bsf(/*dim=*/320, /*num_blocks=*/640, &backend, o);
-// Center the activations, and scale them so the mean squared norm is the dimension.
-FeaturizerLoss loss = TrainFeaturizer(bsf, batch, opt);
-std::vector<float> frame = bsf.block_frame(g);                // b x d
-BlockGeometry geo = MeasureBlockGeometry(bsf, held_out);       // how many of b dimensions are used
-DescriptionLength mdl = MeasureDescriptionLength(bsf, held_out);  // bits per input
-```
-
-| Variant | Encoder | Selection |
-|---|---|---|
-| Vanilla | Free, `x W_enc + b_enc` | The k blocks of largest norm |
-| Grassmannian | Tied to orthonormal frames: `γ_g x D_gᵀ` | The k blocks of largest norm |
-| GroupLasso | Free | A learned threshold per block (a block JumpReLU). An L0 penalty is tuned by dual ascent to hold `target_l0` |
-
-`BlockSelection::Tournament` (Jerpelea and Ananthram, arXiv 2608.27515) replaces the top k: a
-block that overlaps one already taken loses a duel and is skipped, which is meant to stop one
-concept splitting across two blocks.
-
-- **Following the reference code.** The paper and its code (github.com/goodfire-ai/block-sparse-featurizer)
-  differ, and the code is followed: a γ per block, and GroupLasso as a block JumpReLU, not a
-  soft threshold. The frames' orthonormality is restored by QR after each step, as the paper's
-  Appendix D does. All three match a PyTorch rendering (`tools/golden/make_bsf_golden.py`),
-  GroupLasso's cold start and dual ascent included.
-- **Codes are signed, and a feature is a block.** `Featurizer::block_size()` says so. L0, dead
-  and dense latents and the activity tracker count blocks, active when any code is nonzero.
-  Absorption needs single directions and refuses blocks.
-- **Relevance through block selection.** The selection acts as a fixed gate: the selected blocks
-  pass relevance through the decoder's and the encoder's rules, and the rest pass none. Without
-  biases (Grassmannian) relevance is conserved; a test checks it.
-- **The paper's two measures.**
-  - `MeasureDescriptionLength` is its minimum description length: support, code, residual and
-    dictionary bits at a distortion.
-  - `MeasureBlockGeometry` gives the stable rank, participation ratio and effective rank of each
-    block's codes.
-
-**On planted manifolds** (`tests/block_sparse_featurizer_test.cpp`): 2 of 6 random planes in
-R³², each input at a random point on a circle in each.
-- A Vanilla BSF with blocks of 2 recovers all 6 planes, with explained variance 1.00, and needs
-  19.9 bits per input. A TopK SAE with the same 4 active dimensions explains 0.87 and needs 32.4.
-- With blocks of 4, a block's codes use 1.4 to 1.8 dimensions by stable rank: they saturate at
-  the concept's dimension, as the paper finds.
-- The Grassmannian variant gets stuck on this data: 1 to 4 planes, explained variance about 0.9,
-  at every learning rate and length tried. Tied frames can't trade a plane between blocks once
-  hard selection has assigned it.
-
-**On ESM-2 8M** (layer 4, the setup below). `pulsatrix_probe_esm --featurizer bsf-vanilla`
-(or `bsf-grassmannian`, `bsf-lasso`) trains 640 blocks of 4 with 4 active blocks. That gives
-the same 2,560 directions and 16 active dimensions as the TopK SAE (k = 16) it's compared with:
-
-| | Vanilla | Grassmannian | GroupLasso | TopK SAE |
-|---|---|---|---|---|
-| L0 (blocks or latents) | 4.0 | 4.0 | 4.1 | 16.0 |
-| Explained variance | 0.66 | 0.65 | 0.54 | **0.78** |
-| Loss recovered | 0.91 | 0.92 | 0.90 | **0.96** |
-| Dead features | 11% | 0% | 0% | 2.5% |
-| Bits per input at 10% distortion (random model) | **669** (427) | 670 (436) | 716 (439) | 704 (510) |
-| Stable rank of a block's codes (of 4) | 1.46 | 1.31 | 1.65 | 1 |
-| Helix: best feature's F1 | 0.40 | 0.17 | **0.43** | 0.33 |
-| Transmembrane: best feature's F1 | 0.60 | **0.75** | 0.47 | 0.63 |
-| Signal peptide: best feature's F1 | 0.53 | **0.74** | 0.70 | 0.66 |
-| Disulfide bond: best feature's F1 | **0.66** | 0.65 | 0.58 | 0.63 |
-
-- **At the same 16 active dimensions, the TopK SAE reconstructs better.** Every BSF variant
-  explains less variance and recovers less of the loss.
-- **BSF describes an input in fewer bits, but only slightly.** Naming 4 blocks costs 33 bits
-  against 137 for 16 latents, and that outweighs the larger residual. The margin is 5%, not the
-  paper's factor on images. The random model's activations take fewer bits for every
-  featurizer, so bits compare featurizers on one model, not models.
-- **Blocks use about 1.5 of their 4 dimensions.** At this layer, few of these concepts look
-  like manifolds of more than one dimension.
-- **Concept matching is mixed.** The Grassmannian variant's blocks match transmembrane and
-  signal peptides best of the four, but it does worst on helix and strand.
-
-#### Transcoders
-
-An SAE explains what is in an activation. A transcoder (Dunefsky et al., arXiv 2406.11944)
-explains a computation: it predicts an MLP's output from the MLP's input through sparse latents,
-so each latent reads from the input and writes to the output. A skip transcoder (Paulo et al.,
-arXiv 2501.18823) adds a linear map from input to output. That map takes the MLP's linear part,
-and the latents only explain what's left.
-
-```cpp
-#include "pulsatrix/transcoder.hpp"
-
-TranscoderOptions o;
-o.k = 16;
-o.skip = true;
-Transcoder t(/*input_dim=*/320, /*output_dim=*/320, /*num_features=*/2560, &backend, o);
-
-// Training pairs: read the MLP's input and output with the block's hook.
-model.layer(3).set_mlp_hook([&](const Tensor& in, const Tensor& out) {
-    Collect(in, out);
-    return out;               // returning the output unchanged only reads it
-});
-...
-t.initialize_bias(targets);
-FeaturizerLoss loss = TrainFeaturizer(t, inputs, targets, opt);
-
-// Quality: how well it predicts the MLP, and the loss with it in the MLP's place.
-ReconstructionMetrics fit = EvaluatePrediction(t, held_in, held_out);
-LossRecovered lr = MeasureMlpLossRecovered(t, [&](const MlpHook& hook) {
-    model.layer(3).set_mlp_hook(hook);
-    double loss = HeldOutLoss(model);
-    model.layer(3).set_mlp_hook({});
-    return loss;
-});
-```
-
-- **The MLP hook.** `EncoderBlock::set_mlp_hook()` and `TransformerBlock::set_mlp_hook()` see
-  the MLP's input (after the block's norm) and its output, and whatever the hook returns is
-  added to the residual stream. `MlpSpliceHook` and `MlpAblationHook` build the replacements.
-- **`predict()` vs `decode()`.** `predict(x)` is the transcoder's full output, skip connection
-  included. `decode(codes)` is the latents' part alone. Every `Featurizer` now has `predict()`
-  and `output_dim()`, and `EvaluatePrediction` measures prediction against a target.
-- **Absorption doesn't apply.** It compares decoder directions with a probe in the input space,
-  and a transcoder writes to another space. Compare its latents with concepts by F1 instead.
-- **Checked against PyTorch** (`tools/golden/make_transcoder_golden.py`), skip connection and
-  AuxK included. On a synthetic MLP with a large linear part, at k = 3, the skip connection
-  cuts the unexplained variance from 10.9% to 1.5%.
-
-**On ESM-2 8M.** `pulsatrix_probe_esm --featurizer transcoder` (or `skip-transcoder`) trains
-on the MLP that writes into layer 4, at k = 16 with 2,560 latents. Each result is shown against
-the same transcoder trained on a randomly initialized model:
-
-| | Transcoder | Skip transcoder |
-|---|---|---|
-| Explained variance of the MLP's output (random model) | 0.67 (0.96) | 0.81 (0.997) |
-| Dead latents | 25% | 8% |
-| Masked-LM loss with the MLP replaced: clean 2.37, MLP zeroed 2.61 | 2.47 | 2.44 |
-| Loss recovered | 0.59 | 0.72 |
-
-- **The skip connection helps everywhere.** It predicts the MLP better, recovers more of the
-  loss, and leaves fewer latents dead.
-- **Loss recovered is harder here than for an SAE.** Zeroing this MLP costs only 0.24 nats, so
-  splicing has a small gap to close. It isn't comparable with an SAE's loss recovered at the
-  residual stream.
-- **A random model's MLP is almost linear,** so its transcoders explain nearly all of it.
-  Explained variance alone means nothing here either.
-
-Against the TopK SAE on layer 4's residual stream (same k and width), the skip transcoder's best
-single feature per concept is:
-- better for helix (0.40 vs 0.33), disulfide bonds (0.70 vs 0.63) and signal peptides (0.72 vs
-  0.66);
-- equal for zinc fingers (0.40);
-- worse for strands (0.25 vs 0.33) and transmembrane (0.60 vs 0.63).
-
-That is mixed, not the clear win Paulo et al. report for language models. Their measure was
-automated interpretability scores, not concept F1.
-
-
-#### Crosscoders
-
-A crosscoder (Lindsey et al., Transformer Circuits, 2024) is one sparse dictionary over several
-sources at once: the residual stream at several layers, or the same layer in a base model and
-its fine-tune. Each latent has one code and a decoder per source. Its decoder norms say where it
-writes, so model diffing can read off which latents only one model has.
-
-```cpp
-#include "pulsatrix/crosscoder.hpp"
-
-CrosscoderOptions o;                       // BatchTopK by default (Minder et al.)
-o.k = 32;
-Crosscoder c(/*sources=*/2, /*dim=*/576, /*latents=*/4608, &backend, o);
-// x is (N, 2 * 576): the base model's activations, then the fine-tune's, each scaled so its
-// mean squared norm is 576.
-c.initialize_bias(sample);
-FeaturizerLoss loss = TrainFeaturizer(c, batch, opt, /*unit_norm_decoder=*/false);
-
-std::vector<CrosscoderLatentStats> stats = CrosscoderLatents(c);  // norms, Δnorm, cosine
-LatentClass cls = ClassifyLatent(stats[i]);   // AOnly, BOnly, Shared, Other
-std::vector<LatentScaling> ls = MeasureLatentScaling(c, held_out, fine_tune_only);
-```
-
-| Variant | Sparsity | Notes |
-|---|---|---|
-| L1 (Lindsey et al.) | `λ Σ_i f_i Σ_s ‖d_i^s‖` | The penalty is the sum of decoder norms, not their L2 norm, so a one-model latent stays cheap |
-| BatchTopK (Minder et al.) | The batch's `N k` largest `f_i Σ_s ‖d_i^s‖` | No L1 shrinkage. AuxK for dead latents; a threshold at inference |
-| Delta-Crosscoder (Kassem et al.) | Shared and delta partitions, each with its own BatchTopK | The encoder averages the two models. A delta loss makes the delta latents alone predict `x_ft - x_base` |
-
-- **Decoder norms are the result,** so training leaves them free (`unit_norm_decoder = false`),
-  as the references do. Latents start with the same decoder in every source, at norm 0.05 for L1
-  and 1 for BatchTopK (Minder et al.'s values).
-- **Δnorm and the relative norm.** `relative_norm` is `‖d_b‖ / (‖d_a‖ + ‖d_b‖)` (Lindsey et al.,
-  Kassem et al.); `delta_norm` is Minder et al.'s `½ (1 + (‖d_b‖ - ‖d_a‖) / max)`. They agree at
-  0, ½ and 1. `ClassifyLatent` uses Minder et al.'s bins on Δnorm: below 0.1 a-only, above 0.9
-  b-only, 0.4 to 0.6 shared.
-- **Latent Scaling** (Minder et al.) checks a one-model latent against the data. It fits how
-  much of the latent's direction each model actually needs, against what the other latents
-  leave (ν_error) and against the reconstruction (ν_reconstruction). A latent is specific to
-  model b when ν_reconstruction < 0.5 and ν_error < 0.2. It catches two artifacts of decoder
-  norms: **complete shrinkage**, where a latent both models need loses its decoder in one, and
-  **latent decoupling**, where other latents write the same thing to the other model.
-- **Following the papers.** The loss is the mean squared error over every source, plus the
-  penalty, so it sits on the scale of the other featurizers; Lindsey et al. sum it. The
-  Delta-Crosscoder paper has no public code; this follows its equations. It writes no biases, but
-  pulsatrix keeps the encoder's and decoder's, as the standard crosscoder has them. Its λ_s
-  sparsity term is left out, since BatchTopK already fixes the sparsity.
-- **Checked against a PyTorch rendering** (`tools/golden/make_crosscoder_golden.py`): L1 over
-  three sources, BatchTopK with AuxK, and the Delta-Crosscoder, through loss, gradients and two
-  Adam steps.
-
-**On planted features** (`tests/crosscoder_test.cpp`): two "models" in R²⁴ share 16 features,
-and each has 4 of its own.
-- When every feature fires on 8% of inputs, a BatchTopK crosscoder recovers all 24 at decoder
-  cosine above 0.9 and puts each in the right class. An L1 crosscoder recovers 13 of the 16
-  shared ones and all 8 one-model ones.
-- **A narrow fine-tune** adds 4 features that fire on 0.5% of inputs each. The crosscoder learns
-  them, but decoder norms call none of them fine-tune-only (mean Δnorm 0.76): their base
-  decoders keep about half the norm, and training 10 times longer doesn't remove it. Latent
-  Scaling calls all 4 fine-tune-specific, and all 16 shared ones needed by both models.
-- **The Delta-Crosscoder doesn't fix that here.** It puts the 4 in its delta partition, but
-  their Δnorm is 0.79. Its BatchTopK keeps `N k` delta activations per batch even when the
-  fine-tune's features are rarer than that, so its delta latents also fire on other inputs.
-
-**SmolLM2-135M against SmolLM2-135M-Instruct.** `pulsatrix_diff_lm` reads the same chat text
-through both models: 2,379 conversations from SmolLM2-Instruct's own training set, in its ChatML
-template (`tools/explain/fetch_chat_sample.py`), 504K tokens. It trains a crosscoder on the
-residual stream after block 15 of 30, with 4,608 latents for 12 epochs, and reports on the held-out
-tenth (50K tokens):
-
-| | BatchTopK (k = 32) | L1 (λ = 5e-4) | Delta-Crosscoder (k = 32, k_shared = 64) |
-|---|---|---|---|
-| Explained variance, base and Instruct | 0.93, 0.93 | 0.93, 0.93 | 0.96, 0.96 |
-| L0 | 32 | 46 | 96 |
-| One-model latents by Δnorm: base, Instruct | 0, 0 | 9, 2 | 0, 0 |
-| Instruct-specific by Latent Scaling, of the 50 leaning furthest toward Instruct | 8 | 1 | 12 |
-| Their activation mass on chat-template tokens (22% of tokens) | 86% | 99% | 84% |
-
-- **The Instruct-specific latents read the chat template.** Nearly all of their activation falls on
-  the template's tokens: `<|im_start|>`, the role name ("ass" "istant", "user"), and the newlines
-  that close a header. Minder et al. found the same in Gemma 2: chat tuning adds most where the
-  template is.
-- **Decoder norms alone find almost nothing.** Two models this close, on 0.5M tokens, put almost
-  every latent in the shared bin. Latent Scaling, run on the latents leaning furthest toward each
-  model, is what separates the specific ones.
-- **The Delta-Crosscoder finds the most specific latents,** but at three times the L0, which also
-  explains its higher explained variance.
-
-These are small runs: Minder et al. train on 100M tokens.
-
-
-#### Measuring a featurizer
-
-`featurizer_metrics.hpp` holds SAEBench's core measures (Karvonen et al., arXiv 2503.09532).
-None of them says a featurizer is useful, and its authors find that they don't reliably predict
-usefulness. Each needs a baseline: the same featurizer trained on a randomly initialized model's
-activations (`NullModelBaseline`), and, for a concept, a linear probe.
-
-```cpp
-#include "pulsatrix/featurizer_metrics.hpp"
-
-// Reconstruction on held-out activations.
-ReconstructionMetrics r = EvaluateReconstruction(sae, held_out);
-// r.explained_variance, r.cosine, r.norm_ratio (below 1: shrunk codes), r.l0,
-// r.dead_fraction (never fired), r.dense_fraction (fired on more than 10% of inputs)
-
-// Loss recovered: splice the reconstructions back in at a position (0 is the embeddings,
-// i is layer i's output) and compare the model's loss with the clean and zero-ablated ones.
-LossRecovered lr = MeasureLossRecovered(sae, /*position=*/4, [&](const HiddenStateHook& hook) {
-    model.set_hidden_state_hook(hook);
-    double loss = HeldOutLoss(model);
-    model.set_hidden_state_hook({});
-    return loss;
-});
-// lr.recovered = (ablated - spliced) / (ablated - clean)
-
-// Feature absorption for one concept (labels 0/1 per input), with a linear-probe baseline.
-AbsorptionResult a = FeatureAbsorption(sae, held_out, labels);
-// a.probe_f1, a.main_features, a.main_f1, a.absorption_rate, a.absorbing_features
-```
-
-- **Splicing.** `CausalLM` and `EncoderLM` call a `HiddenStateHook` at every position during
-  `forward()`, and continue with whatever it returns. `SpliceHook` and `AblationHook` build the
-  two replacements. A `rows` mask limits them to the rows the featurizer was trained on, for
-  example residues but not `<cls>` and `<eos>`.
-- **Absorption** (Chanin et al., arXiv 2409.14507). A feature that stands for a concept stays
-  silent where a more specific feature fires instead and carries the concept's direction: a
-  "starts with S" feature that skips "short". The steps:
-  1. A logistic probe finds the concept's direction.
-  2. The main features are those that each raise F1 by at least 0.03.
-  3. A held-out positive the probe finds counts as absorbed when no main feature fires on it,
-     and other features aligned with the probe (cosine at least 0.025) carry at least 40% of
-     its projection onto the probe.
-
-  The test plants a parent concept with ten rare children and finds every absorbed input.
-
-**On ESM-2 8M.** `pulsatrix_probe_esm --sae` reports all of these for an SAE on layer 4's
-residues (2,000 Swiss-Prot proteins, 2,560 latents), beside the same SAE trained on a randomly
-initialized ESM-2:
-
-| | L1 SAE | TopK SAE (k = 16) | L1, random model | TopK, random model |
-|---|---|---|---|---|
-| L0 | 17.0 | 16.0 | 7.4 | 16.0 |
-| Explained variance | 0.66 | 0.78 | 0.74 | 0.95 |
-| Norm ratio `\|x̂\|/\|x\|` | 0.80 | 0.87 | 0.87 | 0.98 |
-| Dead latents | 0% | 2.5% | 53% | 85% |
-| Masked-LM loss: clean 2.37, zero-ablated 3.91 | 2.52 spliced | 2.44 spliced | | |
-| Loss recovered | 0.90 | 0.96 | none | none |
-
-- **TopK beats L1 at the same L0** on every measure, and its codes are shrunk less.
-- **Read the baseline before the score.** The random model's SAEs explain *more* variance, with
-  most latents dead: a random network's representations are easy to compress. Explained variance
-  alone says nothing about whether the model learned anything.
-- **Loss recovered needs a position that matters.** Zeroing layer 4 of the random model doesn't
-  raise its loss (3.55 vs 3.57 clean), so there is nothing to recover, and `recovered` is NaN.
-
-Absorption, where the probe finds the concept (F1 at least 0.5; below that the random model
-"absorbs" as much, and the rate means nothing):
-
-| Concept | Probe F1 | L1: absorbed (random model) | TopK: absorbed (random model) |
-|---|---|---|---|
-| Helix | 0.69 | 42% (10%) | 25% (15%) |
-| Beta strand | 0.55 | 57% (1%) | 50% (8%) |
-| Transmembrane | 0.79 | 34% (21%) | 30% (17%) |
-| Signal peptide | 0.90 | 19% (26%) | 12% (37%) |
-| Zinc finger | 0.62 | 30% (13%) | 12% (71%) |
-
-- **The baseline decides here too.** Helix, strand and transmembrane residues missed by the
-  concept's main features are carried by other aligned features well above the random model's
-  rate: absorption, as Chanin et al. describe it. For signal peptides and zinc fingers the
-  random model scores as high or higher, so those rates aren't evidence of anything.
-- **TopK absorbs less than L1** for every concept here.
-
-
-A featurizer is a discovery tool, not a detector: a low reconstruction error says nothing about
-whether its directions mean anything. Compare features with probes and with a randomly
-initialized model's.
-
-### Steering a model
-
-Steering adds a direction to the residual stream to push a model's behavior one way
-(`steering.hpp`). Use the difference of means between activations with and without the concept
-by default. A featurizer's decoder direction is the option, and on AxBench (Wu et al., arXiv
-2501.17148) it usually steers worse.
-
-```cpp
-#include "pulsatrix/steering.hpp"
-
-std::vector<float> v = DifferenceOfMeans(with_concept, without_concept, hidden);  // (N, d) each
-model.set_hidden_state_hook(SteeringHook(/*position=*/4, v, /*coefficient=*/1.0f));
-
-// How reliably it works: each input's slope of behavior against the coefficient, beside random
-// directions of the same norm.
-SteeringReport r = MeasureSteering([&](int64_t i, const HiddenStateHook& hook) {
-    model.set_hidden_state_hook(hook);
-    double b = Behavior(model, inputs[i]);  // a logit difference, a log-probability, ...
-    model.set_hidden_state_hook({});
-    return b;
-}, inputs.size(), /*position=*/4, v);
-// r.mean_steerability, r.steerability_sd, r.anti_steerable_fraction, r.over_random
-```
-
-An average effect hides a lot. Tan et al. (NeurIPS 2024) find that steering vectors often fail
-on many individual inputs, move some the wrong way, and misgeneralize out of distribution. So
-the report gives:
-- **each input's steerability,** the least-squares slope of its behavior against the
-  coefficient, with the mean and spread over inputs;
-- **the anti-steerable share,** the inputs with a negative slope;
-- **random directions of the same norm** as the control. `over_random` is the mean
-  steerability divided by the largest random mean; below about 1 the direction does no better
-  than noise.
-
-**On ESM-2 8M: a steering vector that fails its checks.** `pulsatrix_steer_esm` steers layer 4
-toward transmembrane residues.
-- **The direction** is the difference of means between transmembrane residues and the rest, over
-  800 proteins (norm 9.1, against a mean residual norm of 29). The alternative is the TopK SAE
-  feature that best matches transmembrane residues (F1 0.64), scaled to the same norm.
-- **The behavior** should rise: the log-probability of a hydrophobic residue minus a polar one,
-  at masked positions.
-- **The inputs** are 100 held-out soluble proteins.
-
-| Coefficients | Direction | Mean steerability | Spread | Anti-steerable | Largest random | `over_random` |
-|---|---|---|---|---|---|---|
-| ±2 | Difference of means | +0.087 | 0.092 | 18% | 0.296 | 0.29 |
-| ±2 | SAE feature | +0.023 | 0.091 | 32% | 0.296 | 0.08 |
-| ±0.5 | Difference of means | **−0.139** | 0.257 | **66%** | 0.099 | −1.41 |
-| ±0.5 | SAE feature | +0.002 | 0.198 | 46% | 0.099 | 0.02 |
-| ±0.25 | Difference of means | **−0.208** | 0.264 | **78%** | 0.106 | −1.96 |
-
-- **At large coefficients the average looks right, and it isn't steering.** At ±2 the added
-  vector has norm 18, and any such perturbation disrupts the model. Random directions of the
-  same norm move the behavior more than the difference of means does. The behavior also rises
-  at both −1 and +1, which a linear direction can't explain.
-- **In the linear regime the difference of means steers the wrong way.** At small coefficients,
-  adding "transmembrane minus other" makes soluble proteins' masked positions *less*
-  hydrophobic, for about three proteins in four. The representation of an observed
-  transmembrane residue is evidently not what makes later layers predict hydrophobic ones. On
-  held-out transmembrane proteins the slope is about zero, with half of them anti-steerable.
-- **The SAE feature doesn't steer at all,** at any scale: `over_random` near 0.
-- **The point of the report.** A mean effect at one large coefficient would have reported a
-  success. The per-input slopes, the anti-steerable share and the random control show there is
-  none. A probe that reads a concept doesn't give a direction that writes it.
-
-
-### Decomposing parameters
-
-Featurizers explain activations. Parameter decomposition explains the weights. Each weight matrix
-is split into rank-one subcomponents, `W ≈ V U`. Training asks that the subcomponents sum to the
-weights, and that for every input only a few of them are needed to compute the output. A
-subcomponent is then a piece of the mechanism, and its causal importance on an input says whether
-that input uses it.
-
-```cpp
-#include "pulsatrix/parameter_decomposition.hpp"
-
-// Swap each LinearModule to decompose for a ComponentLinear over it, in any Module built from
-// non-owned layers (SequentialModule, ResidualModule, ...).
-ComponentLinear c1(w1, /*components=*/20, &backend), c2(w2, 20, &backend);
-SequentialModule model({&c1, &c2, &relu});
-
-DecompositionOptions o;                        // SPD by default; o.method = DecompositionMethod::VPD
-o.importance_coefficient = 3e-3f;
-ParameterDecomposition d(model, {&c1, &c2}, &backend, o);
-AdamOptimizer opt(1e-3f, &backend);
-DecompositionLoss loss = TrainDecomposition(d, batch, opt);
-
-std::vector<std::vector<float>> ci = d.causal_importances(x);    // per layer, (N, C)
-ComponentAlignment a = AlignComponentsToRows(c1);                // MMCS and ML2R
-```
-
-- **`ComponentLinear`** replaces a LinearModule. In target mode it computes `x W + b`. In
-  components mode it computes `((x V) ⊙ m) U + b` under per-input masks m. VPD adds back the rest
-  of the weight, `Δ = W - V U`, under its own mask. Its `backward()` returns the masks' gradients,
-  so the decomposition runs on the model's own backward pass, with no autograd.
-- **Causal importance** (SPD): each subcomponent has a small MLP, from its inner activation
-  `(x V)_c` on the target pass to a score `g`, clamped to [0, 1] with a small leak. Masks are
-  `m = g + (1 - g) r`, r uniform: an unimportant subcomponent can be scaled anywhere in [0, 1]
-  without changing the output.
-
-| | SPD (Bushnaq, Braun and Sharkey, arXiv 2506.20790) | VPD (Bushnaq et al., Goodfire, 2026) |
-|---|---|---|
-| Faithfulness | `Σ_l ‖W - V U‖²` over the number of weights | The same, as the Δ loss |
-| Reconstruction | Every layer masked, and one layer masked at a time | Each input through a random k of the layers, with Δ under its own mask |
-| Adversarial | — | Masks from persistent sources that Adam ascends on the loss (PGD) |
-| Importance minimality | `Σ g^p` | `Σ_c [mean_c + β mean_c log2(1 + sum_c)]`, with p annealed (2 to 0.4) |
-| Lower clamp | Leaks below 0 in the forward pass too | Straight-through: leaks only gradients that raise g |
-
-- **Following the reference code** (github.com/goodfire-ai/param-decomp: tag `v1` for SPD,
-  `nano_param_decomp/run.py` for VPD). The gate input isn't detached, the output loss is a mean
-  over every value, one mask sample is drawn per step, and initialization is v1's.
-  `OutputDivergence::KlOnLogits` compares logits.
-- **Not here yet.** VPD's causal-importance function for language models, a transformer over
-  every layer's activations; this uses SPD's per-subcomponent MLPs for both. Decomposing
-  `CausalLM` layers also needs a way to swap a block's LinearModules.
-- **Checked against a PyTorch rendering** (`tools/golden/make_spd_golden.py`): SPD's four losses,
-  and VPD's routing, Δ masks, adversarial masks, frequency term and straight-through clamp,
-  through loss, gradients and an Adam step.
-
-**On a toy model of superposition** (`pulsatrix_spd_toy`): 5 sparse features through 2
-dimensions, `x̂ = ReLU(x W Wᵀ + b)`, with W and Wᵀ decomposed into 20 subcomponents each. The
-reference schedule is 40,000 steps of 4,096.
-
-| | SPD | SPD paper (Table 1) | VPD (p 2 to 1) |
-|---|---|---|---|
-| MMCS / ML2R | 1.000 / 1.017 | 1.000 / 0.993 | 0.993 / 0.672 |
-| Alive subcomponents (of 20, per layer) | 5, 5 | 5 | 4, 5 |
-| Features with one important subcomponent in each layer | 5 of 5 | | 5 of 5 |
-| Distinct subcomponents for the 5 features in W | 5 | | 4 |
-
-- **SPD recovers the features:** one subcomponent per feature in each layer, carrying the
-  feature's row of W.
-- **VPD, with SPD's toy settings, merges two features into one subcomponent.** The paper reports
-  no toy results; its toy configs use another importance loss, not reproduced here.
-- **A faster setting.** A learning rate of 1e-2 and importance 1e-2 reach one subcomponent per
-  feature in 3,000 steps of 1,024 (the unit test, Release builds only).
-
-### Attribution graphs with transcoders
-
-An attribution graph (Ameisen, Lindsey et al., "Circuit Tracing", Transformer Circuits, 2025)
-explains one prediction as a graph of interpretable features.
-
-- **The replacement model.** Each MLP is replaced by a transcoder's features plus an error node,
-  the MLP output the features miss. Attention patterns and normalization scales are frozen at
-  their values for this prompt. What is left between features is linear, so every edge is an
-  exact attribution. Its weight is the source's output vector, carried through the frozen model,
-  dotted with the target's input vector. A feature's input vector is its encoder row; a logit's
-  is its unembedding minus the mean unembedding.
-- **Nodes:**
-  - active features, by layer and position;
-  - one error node per layer and position;
-  - the token embeddings;
-  - the likely next tokens (up to 10, until their probabilities sum to 0.95).
-
-```cpp
-#include "pulsatrix/circuit_tracing.hpp"
-
-// Per-layer or cross-layer transcoders in circuit-tracer's layouts.
-CrossLayerTranscoder clt = LoadTranscoders(dir, model->num_layers(), &backend);
-CircuitTrace trace = TraceCircuit(*model, clt, ids);   // every edge, unpruned
-CircuitScores scores = ScoreCircuit(trace);            // replacement, completeness
-AttributionGraph graph = ToAttributionGraph(trace, options, logit_labels);  // pruned, for the viewer
-std::string json = ToNeuronpediaJson(graph);
-```
-
-`pulsatrix_explain_text MODEL "prompt" --graph out.json --transcoders DIR` writes the graph for
-Neuronpedia's or circuit-tracer's viewer.
-
-- **Following circuit-tracer** (github.com/decoderesearch/circuit-tracer):
-  - The forward pass is the model's own: reconstruction plus error is the MLP's output, so the
-    logits are unchanged.
-  - The first position's features and errors are left out, which makes BOS's MLP outputs
-    constants.
-  - Pruning keeps the nodes with 80% of the indirect influence on the logits and the edges with
-    98%, then drops nodes left without edges.
-  - The replacement and completeness scores are circuit-tracer's.
-  - Node ids and types match its viewer files.
-- **Transcoders:**
-  - `CrossLayerTranscoder` holds cross-layer transcoders, where features write to several later
-    MLPs, and per-layer ones.
-  - Both use JumpReLU or ReLU and an optional linear skip.
-  - `LoadTranscoders` reads circuit-tracer's two layouts, such as Gemma Scope 2's 270M
-    transcoders (mwhanna/gemma-scope-2-270m-pt) or the Llama 3.2 1B CLT (mntss/clt-llama-3.2-1b-524k).
-  - It is inference only: training a transcoder is not here.
-- **Checked against PyTorch** (`tools/golden/make_circuit_golden.py`). The golden is the tiny
-  Llama and Gemma 3 written out in PyTorch with circuit-tracer's freezes, with each source scaled
-  by a scalar whose gradient is the edge. Every edge matches to 2e-6, across a cross-layer span
-  and a skip, Gemma's sandwich norms, QK-norm and sliding window. CPU and GPU agree.
-
-**On Gemma 3 270M**, with Gemma Scope 2's 16k per-layer transcoders (L0 small), on the GPU:
-
-| Prompt | Top logit | Active features | Graph after pruning | Replacement | Completeness | Time |
-|---|---|---|---|---|---|---|
-| "The Eiffel Tower is located in the city of" | " Paris" (0.86) | 4,532 | 621 nodes, 61,219 links | 0.67 | 0.92 | 14 s |
-| "The capital of the state containing Dallas is" | " a" (0.13) | 3,779 | 634 nodes, 84,485 links | 0.66 | 0.92 | 14 s |
-
-- **" Paris" is carried by a few late features at the last position.** The strongest come from
-  layers 11 to 17, with a weight up to 4.3. Errors and the "Eiffel" token embedding also feed
-  it directly.
-- **The 270M model doesn't know the two-hop fact.** Its likely tokens are " a", " the" and
-  " Dallas", so the Dallas graph shows the method, not a circuit for Austin.
-- **Not here yet:**
-  - Limiting the graph to the most influential features (circuit-tracer's `max_feature_nodes`).
-    Every active feature is a target; on Gemma 3 270M that is 4,500 features and a dense
-    adjacency of 20M entries.
-  - Gemma's final logit softcap, which is outside the linearization.
-  - Reading the residual stream before the norm, as the Llama CLT does. Features read the MLP
-    input after the block's norm.
-
-### Building a circuit graph
-
-```cpp
-#include "pulsatrix/cpu_backend.hpp"
-#include "pulsatrix/explainer_context.hpp"
-#include "pulsatrix/linear_module.hpp"
-#include "pulsatrix/relu_module.hpp"
-
-using namespace pulsatrix;
-
-CPUBackend backend;
-// hidden -> relu -> head: your trained network
-LinearModule hidden(4, 16, &backend);
-ReluModule relu(&backend);
-LinearModule head(16, 3, &backend);
-ExplainerContext ctx({&hidden, &relu, &head});
-
-Tensor input(Shape({1, 4}), &backend, {0.2f, -1.0f, 0.5f, 0.9f});
-CircuitGraph circuit = ctx.build_circuit_graph(input);
-for (const CircuitNode& node : circuit.nodes()) {
-    // node.ablation_effect: how far the output moves when this node is zeroed
-}
-```
-
-**What's happening:** for each node, `build_circuit_graph()` reruns the forward pass with
-that node's activation replaced by zeros. It records the L2 distance between the patched
-output and the normal output as `ablation_effect`. A larger value means the output depends
-more on that node for this input. The output node scores 0 by convention. Edges connect each
-node to the next and carry the source node's score. `CircuitGraph` holds data only. To draw it,
-use `CircuitGraphView` from [Visualization](../visualization/index.md), which also accepts the
-saved form. To save it, `ToJson(ToCircuitGraphDocument(circuit))` writes a
-`pulsatrix.circuit_graph.v1` document, and `ParseCircuitGraphDocument()` with `ToCircuitGraph()`
-reads it back.
-
-### Sampling a GFlowNet trajectory
-
-```cpp
-#include "pulsatrix/cpu_backend.hpp"
-#include "pulsatrix/gflownet_forward_policy.hpp"
-#include "pulsatrix/gflownet_trajectory.hpp"
-#include "pulsatrix/hypergrid_env.hpp"
-#include "pulsatrix/linear_module.hpp"
-
-using namespace pulsatrix;
-
-CPUBackend backend;
-HyperGridEnv env(&backend, /*ndim=*/2, /*side_length=*/5);
-LinearModule policy_net(2, 3, &backend);     // 2-dim state -> 3 actions (+x, +y, stop)
-GFlowNetForwardPolicy policy(&policy_net, /*action_dim=*/3, &backend);
-
-GFlowNetTrajectory traj = sample_gflownet_trajectory(env, policy);
-// traj.states / traj.actions: every decision point and the action taken there
-// traj.sum_log_pf, traj.sum_log_pb: the log-probability sums Trajectory Balance needs
-// traj.terminal_reward: R(x) at the final state
-```
-
-**What's happening:** `sample_gflownet_trajectory` resets `env`. It then samples actions from
-the policy, skipping invalid ones, and steps `env` until the episode ends. An episode ends on
-an explicit `stop` action or at the environment's step cap. Along the way it sums the forward
-and backward log-probabilities (`Σ log P_F`, `Σ log P_B`).
-
-Feed the trajectory to `TrajectoryBalanceLoss`, `DetailedBalanceLoss`, or `SubTBLoss`. They
-train the policy to sample each outcome `x` with probability proportional to `R(x)`, rather
-than always picking the best one.
-
-Recipe: [GFlowNet on HyperGrid](../recipes/mechanistic-interpretability/gflownet_hypergrid.md).
+| `pulsatrix_probe_esm` | Probes, SAEs, transcoders and block-sparse featurizers on an ESM-2 layer, with concept matching, absorption, loss recovered and random-model baselines | [Finding features](featurizers.md#on-a-protein-model-pulsatrix_probe_esm), [Protein language models](../protein-models/index.md) |
+| `pulsatrix_steer_esm` | A steering vector on ESM-2, with the reliability report | [Steering](steering.md) |
+| `pulsatrix_diff_lm` | A crosscoder between a base language model and its fine-tune, with Latent Scaling | [Model diffing](model-diffing.md) |
+| `pulsatrix_spd_toy` | Parameter decomposition (SPD, VPD) of a toy model of superposition | [Parameter decomposition](parameter-decomposition.md) |
+| `pulsatrix_explain_text --graph` | An attribution graph for a prompt, from AttnLRP or (with `--transcoders`) transcoder features, for Neuronpedia's viewer | [Attribution graphs](attribution-graphs.md) |
+
+Each prints its usage with `--help`. Each source file (in `tools/`) starts with a comment that
+explains every option.
 
 ## Recipes
 
 - [Sparse autoencoder + linear probe](../recipes/mechanistic-interpretability/sparse_autoencoder_probe.md)
 - [GFlowNet on HyperGrid](../recipes/mechanistic-interpretability/gflownet_hypergrid.md)
+
+Full API reference: [Doxygen: Mechanistic Interpretability](../api/group__mech__interp.html)

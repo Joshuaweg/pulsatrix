@@ -383,9 +383,9 @@ pulsatrix_explain_text MODEL_DIR "The Eiffel Tower is located in the city of" \
   nodes.
 - **Cost.** One block pass per layer and token: about 5 seconds for an 11-token prompt on
   Qwen2.5-0.5B on a CPU. Prompts longer than 256 tokens are refused.
-- **What the nodes are not.** Nodes are residual-stream positions, not interpretable features. A
-  graph built from transcoder features (roadmap FEAT-5 and FEAT-10) would give each node a
-  meaning; this one shows where the information flows.
+- **What the nodes are not.** Nodes are residual-stream positions, not interpretable features;
+  this graph shows where the information flows. For a graph whose nodes are transcoder features,
+  add `--transcoders DIR` ([Attribution graphs](../mechanistic-interpretability/attribution-graphs.md)).
 
 In C++, `BuildRelevanceGraph(model, backend, ids, target, options)` (`relevance_graph.hpp`)
 returns the graph, and `ToNeuronpediaJson` (`viz/attribution_graph.hpp`) writes it.
