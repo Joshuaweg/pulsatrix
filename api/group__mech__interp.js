@@ -3,6 +3,7 @@ var group__mech__interp =
     [ "activation_snapshot.hpp", "activation__snapshot_8hpp.html", null ],
     [ "block_sparse_featurizer.hpp", "block__sparse__featurizer_8hpp.html", null ],
     [ "circuit_graph.hpp", "circuit__graph_8hpp.html", null ],
+    [ "circuit_tracing.hpp", "circuit__tracing_8hpp.html", null ],
     [ "crosscoder.hpp", "crosscoder_8hpp.html", null ],
     [ "detailed_balance_loss.hpp", "detailed__balance__loss_8hpp.html", null ],
     [ "featurizer.hpp", "featurizer_8hpp.html", null ],

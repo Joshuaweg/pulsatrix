@@ -3239,7 +3239,7 @@ AGT-6, AGT-7, AGT-9, NB-4, NB-5, KS-6 and KS-7.</p>
 <li>Strided views and broadcasting (KS-10)</li>
 <li>Op-level autograd (KS-12)</li>
 <li>WMMA, HIP graphs and FlashAttention for training only (HIP-12)</li>
-<li>Attribution graphs (FEAT-10); parameter decomposition (FEAT-9) is done</li>
+<li>Attribution graphs (FEAT-10) and parameter decomposition (FEAT-9) are done</li>
 <li>ARCH items at P1 and P2</li>
 <li>ONNX, GGUF and QLoRA (IO-8, IO-9, TRN-14)</li>
 <li>Python wheels and a vcpkg port (KS-11)</li>
@@ -4960,7 +4960,7 @@ They ship here as discovery tools with metrics and baselines, not as detectors.<
 <td>FEAT-5</td>
 <td>P2</td>
 <td>XL</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/114">#114</a> (see below)</td>
 </tr>
 </tbody>
 </table>
@@ -5142,7 +5142,23 @@ param-decomp.
 subcomponents per layer). VPD with SPD's settings merges two of the five features.
   - <strong>Not done:</strong> VPD's transformer causal-importance function, and swapping LinearModules inside
 <code>CausalLM</code> blocks, which language-model decomposition needs
-(<a href="../mechanistic-interpretability/#decomposing-parameters">guide</a>).</p>
+(<a href="../mechanistic-interpretability/#decomposing-parameters">guide</a>).
+- <strong>FEAT-10</strong> adds <code>circuit_tracing.hpp</code>: <code>CrossLayerTranscoder</code> (cross-layer and per-layer
+  transcoders, JumpReLU, skip), <code>LoadTranscoders</code> (circuit-tracer's two layouts), <code>TraceCircuit</code>
+  (the frozen replacement model and every edge), <code>ScoreCircuit</code> and <code>ToAttributionGraph</code>
+  (circuit-tracer's pruning, written for its viewer). <code>pulsatrix_explain_text --transcoders</code>
+  writes the graph.
+  - <strong>No autograd needed.</strong> The frozen model is linear, so a batched backward pass written for it
+(attention along the value path, norms as fixed scales) gives every edge. A PyTorch golden
+that takes the edges from autograd on the tiny Llama and Gemma 3 agrees to 2e-6.
+  - <strong>On Gemma 3 270M</strong> with Gemma Scope 2's per-layer transcoders, a graph takes 14 s on the
+GPU. " Paris" in "The Eiffel Tower is located in the city of" comes from a few late features
+at the last position. Replacement is 0.67 and completeness 0.92.
+  - <strong>Fixed along the way:</strong> <code>--viewer-dir</code> read freed memory when adding a second graph to an
+existing index (VIZ-4).
+  - <strong>Not done:</strong> training transcoders, circuit-tracer's <code>max_feature_nodes</code>, and pre-norm
+inputs for the Llama CLT
+(<a href="../mechanistic-interpretability/#attribution-graphs-with-transcoders">guide</a>).</p>
 </li>
 </ul>
 <h2 id="arch-new-architectures">ARCH: New architectures<a class="headerlink" href="#arch-new-architectures" title="Permanent link">&para;</a></h2>

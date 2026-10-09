@@ -155,6 +155,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af06d24d862e4b31909945018968fb29b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88db1f2da306fa931b21d8374751ef7" id="r_af88db1f2da306fa931b21d8374751ef7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#af88db1f2da306fa931b21d8374751ef7">gamma_grad</a> () const</td></tr>
 <tr class="separator:af88db1f2da306fa931b21d8374751ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc37e1eff74d3f6e30e9854d86e51255" id="r_acc37e1eff74d3f6e30e9854d86e51255"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#acc37e1eff74d3f6e30e9854d86e51255">last_rms</a> () const</td></tr>
+<tr class="memdesc:acc37e1eff74d3f6e30e9854d86e51255"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>'s rms per row, <code>(N,)</code> on the module's device (FEAT-10's frozen normalization scales).  <br /></td></tr>
+<tr class="separator:acc37e1eff74d3f6e30e9854d86e51255"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a118b29388de9e763cdc090a665e83831" id="r_a118b29388de9e763cdc090a665e83831"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1RMSNormModule.html#a118b29388de9e763cdc090a665e83831">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:a118b29388de9e763cdc090a665e83831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identity-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation (AttnLRP, Achtibat et al. 2024).  <br /></td></tr>
 <tr class="separator:a118b29388de9e763cdc090a665e83831"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -443,6 +446,33 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="acc37e1eff74d3f6e30e9854d86e51255" name="acc37e1eff74d3f6e30e9854d86e51255"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc37e1eff74d3f6e30e9854d86e51255">&#9670;&#160;</a></span>last_rms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp; pulsatrix::RMSNormModule::last_rms </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The last <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a>'s rms per row, <code>(N,)</code> on the module's device (FEAT-10's frozen normalization scales). </p>
 
 </div>
 </div>
