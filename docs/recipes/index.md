@@ -63,4 +63,5 @@ Recipes link to the related full demo where one exists.
 
 ## Visualization
 
+- [A notebook report from C++](visualization/notebook_report.md)
 - [Live training dashboard](visualization/training_dashboard.md)

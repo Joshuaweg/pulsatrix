@@ -92,7 +92,7 @@ configure with `-DPULSATRIX_ENABLE_VIZ=ON`. See the
 | `dataset_preview_demo` | Dataset statistics (histograms, validation issues) and an image thumbnail grid on small synthetic datasets. |
 | `live_inference_demo` | Cycles through the XOR inputs and recomputes Saliency and LRP for each one live. |
 | `token_relevance_demo` | Token relevance documents (from `pulsatrix_explain_text ... -o doc.json`) in the `TokenRelevanceView` widget, several at once on a shared color scale. `--screenshot FILE` saves a PNG and exits. |
-| `mnist_viz_gallery` | Every visualization widget on real MNIST digits: live training, a dataset preview, then Saliency, Integrated Gradients, Grad-CAM, four LRP rule sets, LIME and KernelSHAP on digits you pick. `--screenshot DIR` saves one PNG per page and exits. Needs MNIST data. See the [MNIST gallery](https://joshuaweg.github.io/pulsatrix/visualization/#mnist-gallery). |
+| `mnist_viz_gallery` | Every visualization widget on real MNIST digits: live training, a dataset preview, then Saliency, Integrated Gradients, Grad-CAM, four LRP rule sets, LIME and KernelSHAP on digits you pick. `--screenshot DIR` saves one PNG per page and exits. Needs MNIST data. See the [MNIST gallery](https://joshuaweg.github.io/pulsatrix/visualization/desktop/#mnist-gallery). |
 
 ## Command-line tools
 

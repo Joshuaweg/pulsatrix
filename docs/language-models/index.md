@@ -178,7 +178,7 @@ std::string svg = RenderTokenStripSvg(doc);                      // the figure
 - **Words** come from the text, not the tokenizer, so every model gives the same words. The
   [data pipeline guide](../data-pipeline/index.md#per-word-scores) explains how a token's score
   is shared between words and the four ways to combine scores (`Sum`, `Mean`, `Max`, `MaxAbs`).
-- **Figures and documents**: the [visualization guide](../visualization/index.md#token-relevance-for-text)
+- **Figures and documents**: the [visualization guide](../visualization/documents.md#token-relevance-for-text)
   covers the token and word documents, the SVG strip and the `TokenRelevanceView` window widget.
 
 ## 4. Look inside the model

@@ -164,7 +164,7 @@ Without transcoders, `pulsatrix_explain_text --graph` builds a graph from
 [AttnLRP](../interpretability/lrp.md): one node per token for the residual stream after each
 layer, and edges for the relevance each block passes back. It shows where information flows,
 but its nodes aren't interpretable features. Details:
-[Visualization: attribution graphs](../visualization/index.md#attribution-graphs-neuronpedia-and-circuit-tracer).
+[Visualization: attribution graphs](../visualization/attribution-graphs.md).
 
 ```bash
 pulsatrix_explain_text MODEL_DIR "The Eiffel Tower is located in the city of" --graph eiffel.json --viewer-dir graphs/
