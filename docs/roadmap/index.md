@@ -158,7 +158,7 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - HIP-7 (**done**): bounded-memory Conv2D
 - VIZ-3, VIZ-6a (**done**): Vega-Lite HTML and the token relevance view
 - NB-1 (**done**): native rich display
-- NB-2: the `.ipynb`/HTML report writer
+- NB-2 (**done**): the `.ipynb`/HTML report writer
 - AGT-1 to AGT-4: the native orchestrator core
 - KS-8: GPU CI on gfx1151
 - KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
@@ -1173,7 +1173,7 @@ can't draw inline in a notebook, so it stays the desktop tool and shares the VIZ
 | ID | Item | Why | Depends on | P | Effort | Status |
 |---|---|---|---|---|---|---|
 | NB-1 | `pulsatrix::mime_bundle_repr(const T&)` overloads that return MIME bundles: tensor summaries, attribution heatmaps as SVG, token relevance, circuit graphs and persistence diagrams as Vega-Lite. The C++ Jupyter kernel xeus-cpp finds them automatically, so pulsatrix doesn't depend on it | Rich display in a C++ notebook | VIZ-1, VIZ-2 | P1 | S | Done, [#120](https://github.com/Joshuaweg/pulsatrix/pull/120) (see below) |
-| NB-2 | A C++ `Report` builder that writes `.ipynb` files (nbformat 4.5) and self-contained HTML: markdown, code shown as text, and rich outputs | Notebook-format results with no Python and no kernel; they render on GitHub, in VS Code and in Quarto | NB-1 | P1 | S–M | |
+| NB-2 | A C++ `Report` builder that writes `.ipynb` files (nbformat 4.5) and self-contained HTML: markdown, code shown as text, and rich outputs | Notebook-format results with no Python and no kernel; they render on GitHub, in VS Code and in Quarto | NB-1 | P1 | S–M | Done (see below) |
 | NB-3 | Python `_repr_mimebundle_` on the bound types, delegating to NB-1 so both languages render the same (golden test), then interactive views with anywidget | Notebook users on the Python side | NB-1 | P2 | S → M | |
 | NB-4 | xeus-cpp support: a `pulsatrix_notebook.hpp` header, example notebooks, and a Linux CI smoke test. Windows and GPU code inside notebook cells are marked experimental. Every precondition reachable from a cell throws instead of aborting, because a crash kills the kernel | Run pulsatrix interactively in C++ | NB-1 | P3 | M | |
 | NB-5 | A WebAssembly build of the CPU backend for JupyterLite | Notebooks in the browser with nothing installed | NB-4 | Deferred | XL | |
@@ -1191,6 +1191,13 @@ can't draw inline in a notebook, so it stays the desktop tool and shares the VIZ
     with Vega-Lite 5.23 without warnings.
   - **Circuit graphs** needed a view, so `ToVegaLiteCircuitGraph()` lays them out by depth.
   - **Persistence diagrams** aren't covered: pulsatrix has no persistent-homology type.
+
+- **NB-2** writes reports from NB-1's bundles, so a notebook and an HTML page show the same
+  things. The notebook's falsifier runs in CI: a sample report is compared byte for byte with a
+  committed notebook, which the Python job validates with `nbformat` (now installed there). It
+  also converts with nbconvert. The HTML page renders a markdown subset of its own and escapes raw
+  HTML, so a report built from untrusted text can't inject script; the notebook keeps the full
+  markdown for Jupyter.
 
 ### Follow-ups the NB work surfaced
 
