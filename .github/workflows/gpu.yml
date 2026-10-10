@@ -1,0 +1,102 @@
+name: GPU
+
+# KS-8: the HIP backend tested on real hardware (gfx1151), on a self-hosted runner. Setting the
+# runner up is described in docs/gpu-ci.md.
+#
+# SECURITY. This repository is public, and a self-hosted runner executes whatever a workflow
+# tells it to on the machine it runs on. So:
+# - This workflow never runs on pull_request or pull_request_target, which a fork can trigger.
+#   It runs on pushes to this repository's branches (only collaborators can push) and by hand.
+#   Pull requests from this repository's own branches still get GPU results on their commits.
+# - Each job runs only in this repository, never in a fork that copied the workflow.
+# - The repository setting "Require approval for all external contributors" (Settings > Actions
+#   > General) must stay on: it stops a fork's pull request from running a workflow of its own
+#   on this runner without approval.
+# - The runner is a dedicated user with no sudo; the tests run inside the ROCm container.
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+concurrency:
+  group: gpu-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  hip-tests:
+    if: github.repository == 'Joshuaweg/pulsatrix'
+    runs-on: [self-hosted, linux, x64, gfx1151]
+    timeout-minutes: 120
+    steps:
+      # clean: false keeps build-ci-hip (gitignored) between runs, so builds are incremental.
+      - uses: actions/checkout@v4
+        with:
+          clean: false
+          persist-credentials: false
+
+      - name: Host kernel check
+        run: scripts/check_host_kernel.sh
+
+      - name: Build (ROCm 10.0.0, Debug)
+        run: >-
+          scripts/rocm-build.sh 'cmake -S . -B build-ci-hip -DCMAKE_BUILD_TYPE=Debug -DPULSATRIX_ENABLE_HIP=ON
+          -DPULSATRIX_BUILD_EXAMPLES=OFF && cmake --build build-ci-hip -j"$(nproc)"'
+
+      # PULSATRIX_TORCHVISION_DIR, when the runner sets it (docs/gpu-ci.md), adds the published
+      # ResNet18 and VGG16 checks. It must be a path inside the checkout, relative to it (for example
+      # build-ci-hip/tv): the checkout is the only directory the container sees.
+      - name: Tests
+        # Double quotes: the runner's value is expanded here, since docker doesn't pass the
+        # host's environment into the container.
+        run: >-
+          scripts/rocm-build.sh "PULSATRIX_TORCHVISION_DIR=${PULSATRIX_TORCHVISION_DIR:-}
+          ./build-ci-hip/tests/pulsatrix_tests --gtest_brief=1 --gtest_output=xml:build-ci-hip/gtest.xml"
+
+      # Kernel launches are asynchronous, so a faulting kernel reports its error at the next wait.
+      # Running the GPU tests again with a wait after every op pins a fault on the op that caused it.
+      - name: GPU tests with per-op synchronization
+        run: >-
+          scripts/rocm-build.sh 'PULSATRIX_HIP_SYNC_DEBUG=1 ./build-ci-hip/tests/pulsatrix_tests --gtest_brief=1
+          --gtest_filter="*Hip*:*HIP*"'
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gtest-hip
+          path: build-ci-hip/gtest.xml
+          if-no-files-found: ignore
+
+  hip-bench:
+    needs: hip-tests
+    if: github.repository == 'Joshuaweg/pulsatrix'
+    runs-on: [self-hosted, linux, x64, gfx1151]
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: false
+          persist-credentials: false
+
+      - name: Build the benchmark (ROCm 10.0.0, Release)
+        run: >-
+          scripts/rocm-build.sh 'cmake -S . -B build-ci-hip-release -DCMAKE_BUILD_TYPE=Release -DPULSATRIX_ENABLE_HIP=ON
+          -DPULSATRIX_BUILD_EXAMPLES=OFF -DPULSATRIX_BUILD_TESTS=OFF && cmake --build build-ci-hip-release -j"$(nproc)"
+          --target pulsatrix_bench'
+
+      # --check fails the job if any LRP conservation error on the GPU is above the gate (KS-2).
+      - name: Benchmarks and the conservation gate
+        run: >-
+          scripts/rocm-build.sh './build-ci-hip-release/pulsatrix_bench run --device hip --check
+          --label "${{ github.sha }}" -o build-ci-hip-release/bench-hip.json'
+
+      - name: Upload the benchmark report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bench-hip
+          path: build-ci-hip-release/bench-hip.json
+          if-no-files-found: ignore

@@ -115,7 +115,8 @@ other GPUs.
 
 Configure with `-DPULSATRIX_ENABLE_HIP=ON`. You need an AMD GPU and a ROCm install at
 `/opt/rocm`, or set `ROCM_PATH`. The default target is `gfx1151`; set
-`CMAKE_HIP_ARCHITECTURES` for other GPUs.
+`CMAKE_HIP_ARCHITECTURES` for other GPUs. CI runs the HIP tests on a gfx1151 on every push; see
+[GPU CI](gpu-ci.md).
 
 We recommend building inside the pinned ROCm container. `scripts/rocm-build.sh` runs a
 command in it with your GPU passed through, and builds the image on first use:

@@ -277,7 +277,8 @@ if(PULSATRIX_ENABLE_HIP)
     target_sources(pulsatrix_tests PRIVATE hip_check_test.cpp hip_backend_test.cpp hipblas_check_test.cpp
                                        backend_equivalence_hip_test.cpp forward_pass_equivalence_hip_test.cpp
                                        vision_models_hip_test.cpp conv2d_chunking_hip_test.cpp
-                                       fused_ops_hip_test.cpp)
+                                       fused_ops_hip_test.cpp
+                                       safetensors_hip_test.cpp)
 endif()
 
 # The direct CUDA<->HIP arm of the charter's three-way gate. Compiled only when both vendor
