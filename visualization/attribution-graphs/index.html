@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/mechanistic-interpretability/steering/">
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/visualization/attribution-graphs/">
       
       
-        <link rel="prev" href="../evaluating-features/">
+        <link rel="prev" href="../documents/">
       
       
-        <link rel="next" href="../model-diffing/">
+        <link rel="next" href="../desktop/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Steering - Pulsatrix</title>
+        <title>Attribution Graph Viewers - Pulsatrix</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#steering" class="md-skip">
+        <a href="#attribution-graph-viewers" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Steering
+              Attribution Graph Viewers
             
           </span>
         </div>
@@ -612,20 +612,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
         
           
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
@@ -646,7 +644,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             
@@ -664,7 +662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../mechanistic-interpretability/" class="md-nav__link">
         
   
   
@@ -692,7 +690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../featurizers/" class="md-nav__link">
+      <a href="../../mechanistic-interpretability/featurizers/" class="md-nav__link">
         
   
   
@@ -720,7 +718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../evaluating-features/" class="md-nav__link">
+      <a href="../../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
         
   
   
@@ -745,37 +743,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Steering
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../mechanistic-interpretability/steering/" class="md-nav__link">
         
   
   
@@ -791,70 +762,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick start
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reading-the-report" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reading the report
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#a-worked-example-a-steering-vector-that-fails-its-checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A worked example: a steering vector that fails its checks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        References
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -867,7 +774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../model-diffing/" class="md-nav__link">
+      <a href="../../mechanistic-interpretability/model-diffing/" class="md-nav__link">
         
   
   
@@ -895,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../parameter-decomposition/" class="md-nav__link">
+      <a href="../../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
         
   
   
@@ -923,7 +830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../attribution-graphs/" class="md-nav__link">
+      <a href="../../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
         
   
   
@@ -951,7 +858,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gflownets/" class="md-nav__link">
+      <a href="../../mechanistic-interpretability/gflownets/" class="md-nav__link">
         
   
   
@@ -1064,18 +971,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" checked>
         
           
           <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
@@ -1096,7 +1005,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_13">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1114,7 +1023,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -1142,7 +1051,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/notebooks/" class="md-nav__link">
+      <a href="../notebooks/" class="md-nav__link">
         
   
   
@@ -1170,7 +1079,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/svg/" class="md-nav__link">
+      <a href="../svg/" class="md-nav__link">
         
   
   
@@ -1198,7 +1107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/html/" class="md-nav__link">
+      <a href="../html/" class="md-nav__link">
         
   
   
@@ -1226,7 +1135,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/documents/" class="md-nav__link">
+      <a href="../documents/" class="md-nav__link">
         
   
   
@@ -1251,10 +1160,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../visualization/attribution-graphs/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attribution Graph Viewers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1270,6 +1206,37 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#attribution-graphs-neuronpedia-and-circuit-tracer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attribution graphs (Neuronpedia and circuit-tracer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1282,7 +1249,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/desktop/" class="md-nav__link">
+      <a href="../desktop/" class="md-nav__link">
         
   
   
@@ -2224,43 +2191,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
+  <a href="#attribution-graphs-neuronpedia-and-circuit-tracer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick start
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reading-the-report" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reading the report
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#a-worked-example-a-steering-vector-that-fails-its-checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        A worked example: a steering vector that fails its checks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        References
+        Attribution graphs (Neuronpedia and circuit-tracer)
       
     </span>
   </a>
@@ -2287,170 +2221,60 @@
   
 
 
-<h1 id="steering">Steering<a class="headerlink" href="#steering" title="Permanent link">&para;</a></h1>
-<p><strong>Steering</strong> adds a direction to a model's residual stream during the forward pass, to push its
-behavior one way: more positive sentiment, a different language, a hydrophobic residue. It is
-the causal counterpart of a probe. A probe asks whether a concept can be <em>read</em> from a layer;
-steering asks whether writing a direction <em>changes</em> what the model does.</p>
-<p>It is also easy to fool yourself with. An average effect at one large coefficient can look like
-success when any perturbation of that size would do the same, and many individual inputs may
-move the wrong way. <code>MeasureSteering</code> reports what you need to tell the difference.</p>
-<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/steering.hpp"</span>
-
-<span class="c1">// 1. A direction: the difference of means between activations with and without the concept.</span>
-<span class="c1">//    with_concept, without_concept: row-major (N, d) activations from the same layer.</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DifferenceOfMeans</span><span class="p">(</span><span class="n">with_concept</span><span class="p">,</span><span class="w"> </span><span class="n">without_concept</span><span class="p">,</span><span class="w"> </span><span class="cm">/*d=*/</span><span class="n">hidden</span><span class="p">);</span>
-
-<span class="c1">// 2. Steer: add coefficient × v to the residual stream after block 4.</span>
-<span class="n">model</span><span class="o">-&gt;</span><span class="n">set_hidden_state_hook</span><span class="p">(</span><span class="n">SteeringHook</span><span class="p">(</span><span class="cm">/*position=*/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="cm">/*coefficient=*/</span><span class="mf">1.0f</span><span class="p">));</span>
-<span class="c1">// ... generate or score ...</span>
-<span class="n">model</span><span class="o">-&gt;</span><span class="n">set_hidden_state_hook</span><span class="p">({});</span>
-
-<span class="c1">// 3. Measure how reliably it works.</span>
-<span class="n">SteeringReport</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MeasureSteering</span><span class="p">(</span>
-<span class="w">    </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">HiddenStateHook</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hook</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">set_hidden_state_hook</span><span class="p">(</span><span class="n">hook</span><span class="p">);</span>
-<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Behavior</span><span class="p">(</span><span class="o">*</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w">   </span><span class="c1">// a number steering should raise</span>
-<span class="w">        </span><span class="n">model</span><span class="o">-&gt;</span><span class="n">set_hidden_state_hook</span><span class="p">({});</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">inputs</span><span class="p">.</span><span class="n">size</span><span class="p">()),</span><span class="w"> </span><span class="cm">/*position=*/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">);</span>
+<h1 id="attribution-graph-viewers">Attribution Graph Viewers<a class="headerlink" href="#attribution-graph-viewers" title="Permanent link">&para;</a></h1>
+<h2 id="attribution-graphs-neuronpedia-and-circuit-tracer">Attribution graphs (Neuronpedia and circuit-tracer)<a class="headerlink" href="#attribution-graphs-neuronpedia-and-circuit-tracer" title="Permanent link">&para;</a></h2>
+<p>An attribution graph shows how a prediction is built up through the layers of a network.
+pulsatrix writes graphs in the JSON format that
+<a href="https://www.neuronpedia.org/graph/validator">Neuronpedia's graph viewer</a> and Anthropic's
+<a href="https://github.com/decoderesearch/circuit-tracer">circuit-tracer</a> read, so a large graph gets a
+mature, interactive viewer with no extra code. The viewer lets you click a node to see what
+feeds it and what it feeds, prune weak nodes with a slider, and pin nodes into a subgraph.</p>
+<p><strong>From a language model.</strong> <code>pulsatrix_explain_text --graph</code> explains the next-token prediction
+with AttnLRP, the same as the token view, and records the relevance at every layer:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_explain_text<span class="w"> </span>MODEL_DIR<span class="w"> </span><span class="s2">"The Eiffel Tower is located in the city of"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--graph<span class="w"> </span>eiffel.json<span class="w"> </span>--viewer-dir<span class="w"> </span>graphs/
 </code></pre></div>
+<p><img alt="The Qwen2.5-0.5B graph for &quot; Paris&quot; in circuit-tracer's viewer" src="../figures/attribution_graph_viewer.png" /></p>
 <ul>
-<li><strong>The direction.</strong> The difference of means is the default, and usually the better choice. A
-  featurizer's decoder direction is the alternative (<code>FeaturizerDirection(sae, feature)</code>); on
-  AxBench (Wu et al.) it usually steers worse.</li>
-<li><strong>The behavior</strong> is any number steering should raise: a logit difference, a log-probability,
-  a probe's score. <code>MeasureSteering</code> calls it once per input and coefficient.</li>
-<li><strong>Options</strong> (<code>SteeringOptions</code>):</li>
-<li>the coefficients to try. The default is −0.5, −0.25, 0, 0.25, 0.5, with 0 as the unsteered
-    baseline. Keep the range well below the residual stream's norm: in the example below, ±2 was
-    large enough to disrupt ESM-2 and fake a success.</li>
-<li>how many random directions to use as the control (default 3);</li>
-<li>a seed.</li>
-<li><code>SteeringHook</code> takes an optional row mask, to steer only some positions.</li>
+<li><strong>Nodes.</strong></li>
+<li>One per token at the bottom (the embeddings).</li>
+<li>One per token for the residual stream after each layer.</li>
+<li>The predicted token at the top, with its probability.</li>
 </ul>
-<h2 id="reading-the-report">Reading the report<a class="headerlink" href="#reading-the-report" title="Permanent link">&para;</a></h2>
-<p>Following Tan et al., the report doesn't stop at the mean effect:</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>steerability</code></td>
-<td>Each input's least-squares slope of behavior against the coefficient</td>
-</tr>
-<tr>
-<td><code>mean_steerability</code>, <code>steerability_sd</code></td>
-<td>Their mean and spread over inputs</td>
-</tr>
-<tr>
-<td><code>anti_steerable_fraction</code></td>
-<td>The share of inputs with a negative slope: steering moves them the wrong way</td>
-</tr>
-<tr>
-<td><code>random_mean_steerability</code>, <code>random_max_abs_steerability</code></td>
-<td>The same for random directions of the same norm: their mean, and the largest magnitude</td>
-</tr>
-<tr>
-<td><code>over_random</code></td>
-<td>Mean steerability divided by <code>random_max_abs_steerability</code>. Below about 1, the direction does no better than noise</td>
-</tr>
-</tbody>
-</table>
-<p>A checklist before calling a steering vector successful:
-1. <code>over_random</code> well above 1.
-2. A small anti-steerable share.
-3. Behavior that rises roughly linearly with the coefficient, in both directions. If it rises
-   at both −1 and +1, the perturbation is breaking the model, not steering it.
-4. Small coefficients relative to the residual stream's norm, so you stay where the model is
-   linear.</p>
-<h2 id="a-worked-example-a-steering-vector-that-fails-its-checks">A worked example: a steering vector that fails its checks<a class="headerlink" href="#a-worked-example-a-steering-vector-that-fails-its-checks" title="Permanent link">&para;</a></h2>
-<p><code>pulsatrix_steer_esm</code> steers ESM-2 8M's layer 4 toward transmembrane residues:</p>
-<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>tools/plm/fetch_swissprot_annotations.py<span class="w"> </span>data/swissprot
-pulsatrix_steer_esm<span class="w"> </span>models/esm2_t6_8M_UR50D<span class="w"> </span>--annotations<span class="w"> </span>data/swissprot/annotated.jsonl<span class="w"> </span>--out<span class="w"> </span>steer/<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--layer<span class="w"> </span><span class="m">4</span><span class="w"> </span>--max-coefficient<span class="w"> </span><span class="m">2</span>
+<p>A node's activation is its relevance for the prediction.
+- <strong>Links.</strong> A link from token <em>i</em> in one layer to token <em>j</em> in the next is the share of <em>j</em>'s
+  relevance that the layer passes back to <em>i</em>. Links between different tokens are attention
+  moving information; a token's own vertical path is its residual stream. The links leaving a
+  node add up to that node's relevance, and the bottom row matches the token view exactly.
+- <strong>Pruning.</strong> By default the file keeps the fewest links holding 98% of the relevance
+  (<code>--edge-threshold</code>). Each node's influence lets the viewer's slider hide the least relevant
+  nodes.
+- <strong>Cost.</strong> One block pass per layer and token: about 5 seconds for an 11-token prompt on
+  Qwen2.5-0.5B on a CPU. Prompts longer than 256 tokens are refused.
+- <strong>What the nodes are not.</strong> Nodes are residual-stream positions, not interpretable features;
+  this graph shows where the information flows. For a graph whose nodes are transcoder features,
+  add <code>--transcoders DIR</code> (<a href="../../mechanistic-interpretability/attribution-graphs/">Attribution graphs</a>).</p>
+<p>In C++, <code>BuildRelevanceGraph(model, backend, ids, target, options)</code> (<code>relevance_graph.hpp</code>)
+returns the graph, and <code>ToNeuronpediaJson</code> (<code>viz/attribution_graph.hpp</code>) writes it.</p>
+<p><strong>From a circuit graph.</strong> The ablation-scored <code>circuit_graph.v1</code> documents export too. The input
+is in one column and the operations, in order, are in the next:</p>
+<div class="highlight"><pre><span></span><code>pulsatrix_svg<span class="w"> </span>circuit.json<span class="w"> </span>--neuronpedia<span class="w"> </span>--slug<span class="w"> </span>my-mlp<span class="w"> </span>--scan<span class="w"> </span>my-model<span class="w"> </span>-o<span class="w"> </span>my-mlp.json
 </code></pre></div>
-<p>It writes the per-coefficient means (<code>steering.csv</code>) and each protein's slope
-(<code>steerability.csv</code>). <code>--max-coefficient</code> sets the range, from −C to C; it defaults to 0.5.
-The ESM-2 download is in <a href="../featurizers/#on-a-protein-model-pulsatrix_probe_esm">Finding features</a>.</p>
-<p>The setup:
-- <strong>Direction:</strong> the difference of means between transmembrane residues and the rest, over 800
-  proteins. Its norm is 9.1, against a mean residual norm of 29. The alternative is the TopK SAE
-  feature that best matches transmembrane residues (F1 0.64 in this run's SAE), scaled to the
-  same norm.
-- <strong>Behavior:</strong> the log-probability of a hydrophobic residue minus a polar one, at masked
-  positions. It should rise.
-- <strong>Inputs:</strong> 100 held-out soluble proteins.</p>
-<table>
-<thead>
-<tr>
-<th>Coefficients</th>
-<th>Direction</th>
-<th>Mean steerability</th>
-<th>Anti-steerable</th>
-<th><code>over_random</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>±2</td>
-<td>Difference of means</td>
-<td>+0.087</td>
-<td>18%</td>
-<td>0.29</td>
-</tr>
-<tr>
-<td>±2</td>
-<td>SAE feature</td>
-<td>+0.023</td>
-<td>32%</td>
-<td>0.08</td>
-</tr>
-<tr>
-<td>±0.5</td>
-<td>Difference of means</td>
-<td><strong>−0.139</strong></td>
-<td><strong>66%</strong></td>
-<td>−1.41</td>
-</tr>
-<tr>
-<td>±0.5</td>
-<td>SAE feature</td>
-<td>+0.002</td>
-<td>46%</td>
-<td>0.02</td>
-</tr>
-<tr>
-<td>±0.25</td>
-<td>Difference of means</td>
-<td><strong>−0.208</strong></td>
-<td><strong>78%</strong></td>
-<td>−1.96</td>
-</tr>
-</tbody>
-</table>
+<p><strong>Viewing a graph.</strong></p>
 <ul>
-<li><strong>At ±2 the average looks like success, and it isn't steering.</strong> The added vector has norm 18,
-  and random directions of the same norm move the behavior <em>more</em>. The behavior also rises at
-  both −1 and +1, which no linear direction explains.</li>
-<li><strong>At small coefficients the difference of means steers the wrong way.</strong> It makes soluble
-  proteins' masked positions <em>less</em> hydrophobic, for about three proteins in four.</li>
-<li><strong>The SAE feature doesn't steer at all</strong> at any scale.</li>
+<li><strong>Locally, with circuit-tracer.</strong> <code>--viewer-dir DIR</code> writes the graph's entry into
+  <code>DIR/graph-metadata.json</code>, the index circuit-tracer's local viewer reads. Put the graph files in
+  the same directory and start its server there (<code>circuit-tracer start-server --graph_file_dir DIR</code>).
+  Open <code>http://127.0.0.1:8041/index.html?slug=SLUG</code>. Use <code>127.0.0.1</code> rather than <code>localhost</code>,
+  because on <code>localhost</code> the viewer loads Anthropic's hosted example graphs instead.</li>
+<li><strong>On Neuronpedia.</strong> Upload the file at
+  <a href="https://www.neuronpedia.org/graph/validator">neuronpedia.org/graph/validator</a>. Neuronpedia
+  uses <code>scan</code> as its model id.</li>
 </ul>
-<p>A mean effect at ±2 alone would have reported a success. The per-input slopes, the
-anti-steerable share and the random control show there is none. <strong>A probe that reads a concept
-doesn't give a direction that writes it.</strong> For this reason the tool defaults to ±0.5.</p>
-<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Tan et al., "Analyzing the Generalization and Reliability of Steering Vectors", NeurIPS 2024.</li>
-<li>Wu et al., "AxBench", arXiv 2501.17148.</li>
-</ul>
+<p>Every file is written against Neuronpedia's <code>graph-schema.json</code>. Before writing,
+<code>ToNeuronpediaJson</code> checks that node ids are unique, that links name real nodes, that numbers
+are finite, and that the output node's label carries its probability, which the viewer reads.
+<code>ParseNeuronpediaGraph</code> reads graphs that circuit-tracer or Neuronpedia wrote.</p>
 
 
 
