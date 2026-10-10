@@ -137,9 +137,9 @@ Interleaved A/B against HIP-3:
 Set `PULSATRIX_HIP_SYNC_DEBUG=1` before creating the backend to restore the per-op waits. A
 failing kernel otherwise reports its error at the next wait, not at the op that caused it.
 
-The small models are still only about 20% busy. What's left is host-side work inside each step:
-reading the loss back, and losses that validate their targets on the host (one copy each step).
-Fused kernels (HIP-6) and keeping targets on the device are the next steps there.
+After HIP-4 the small models were still only about 20% busy, because of host-side work inside
+each step: reading the loss back, and losses that validated their targets on the host. HIP-6
+(below) moved the target checks to the device and fused the optimizer step.
 
 ### HIP-7: Conv2D in batch chunks
 
@@ -152,14 +152,19 @@ Now a layer keeps them only when they fit its workspace budget,
 `Conv2DModule::set_max_workspace_bytes()` (16 MiB by default). A larger batch runs in chunks of
 examples, and `backward()` and `propagate_relevance()` rebuild each chunk's patches from the
 cached input. The results are bit-identical for every budget; the tests check forward, the three
-gradients and all five LRP rules.
+gradients and all five LRP rules, on the CPU and the GPU (still after HIP-6's batched GEMMs).
 
-Explaining ResNet18 (EpsilonPlus, batch 32, 224x224), all patches kept against the 16 MiB
-default (on the GPU three runs each, in ABBA order, all within 0.01 s; on the CPU one run each):
+The budget is per layer: call `set_max_workspace_bytes()` on each `Conv2DModule`. Lower it if a
+large batch runs out of memory; `SIZE_MAX` keeps every patch, as before HIP-7.
+
+Explaining ResNet18 (EpsilonPlus, batch 32, 224x224). Before: every layer keeps all its patches.
+After: the 16 MiB default. GPU times are from three runs each in ABBA order (old, new, new, old,
+so drift affects both builds; see [Benchmarks](benchmarks.md)), all within 0.01 s of each other.
+CPU times are single runs.
 
 | Device | Peak memory before | After | Time before | After |
 |---|---|---|---|---|
-| gfx1151 (HIP allocator, in use) | 5.75 GB | 2.40 GB | 0.70 s | 0.60 s |
+| gfx1151 (the HIP allocator's peak memory in use) | 5.75 GB | 2.40 GB | 0.70 s | 0.60 s |
 | CPU, Release (peak RSS) | 5.3 GB | 2.3 GB | 14.5 s | 14.5 s |
 
 Rebuilding the patches is cheap next to the GEMMs, and a smaller working set is friendlier to
@@ -170,9 +175,8 @@ the caches, so the chunked layers are no slower.
 Fewer launches and fewer waits in each training step, with the same numbers:
 
 - **One launch for the optimizer.** `AdamOptimizer` (and AdamW, and Adam with L2 decay) updates
-  every parameter with one `adam_step_multi` call. On the GPU it is one kernel per 32 tensors,
-  the table passed in the kernel's arguments as PyTorch's `multi_tensor_apply` does, so nothing is
-  uploaded first. The weight decay is folded into the same kernel.
+  every parameter with one `adam_step_multi` call: on the GPU, one kernel per 32 parameter
+  tensors, with nothing uploaded first. The weight decay is folded into the same kernel.
 - **One wait for gradient clipping.** `ClipGradNorm` used to read back one `dot` per parameter
   (19 waits per tagger step). The squared norms now go to one device buffer and come back
   together; the host still adds them in double, in the same order.
@@ -186,7 +190,8 @@ Fewer launches and fewer waits in each training step, with the same numbers:
   ReLU output. A test checks that the fused layers give the same outputs, gradients and relevance,
   bit for bit, as the same layers called one by one.
 - **Batched GEMMs in Conv2D** (a HIP-7 follow-up). The kernel against every example's patches is
-  one strided-batched GEMM, in forward, backward and LRP, instead of one GEMM per example. Each
+  one strided-batched GEMM (one call over many equally spaced matrices), in forward, backward and
+  LRP, instead of one GEMM per example. Each
   example's kernel and bias gradients still go to their own buffer and are added in example
   order, so they sum as before.
 
@@ -195,7 +200,8 @@ the GPU (they share the device functions; the tests compare them with `EXPECT_EQ
 GEMM's rounding can differ from one GEMM per example on the GPU, within the CPU-GPU tolerance
 every test already uses.
 
-KS-2's suite against HIP-7, gfx1151, four ABBA rounds:
+The benchmark suite ([Benchmarks](benchmarks.md)) on gfx1151, four ABBA rounds. Before is the
+commit with HIP-7 only:
 
 | Benchmark | Before | After | Change |
 |---|---|---|---|
