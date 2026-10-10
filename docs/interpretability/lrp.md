@@ -64,8 +64,11 @@ Pick a rule with `LRPRuleConfig` and pass it to `LRP(config)` to use it on every
 
 The semantics follow Zennit 1.0.0. `Epsilon` works on every layer. `Gamma`, `AlphaBeta`
 and `ZBox` are defined only for the affine layers, `LinearModule` and `Conv2DModule`.
-Pass-through layers (`ReluModule`, `FlattenModule`, `DropoutModule`, `MaxPool2DModule`) accept
-any rule and pass relevance through unchanged.
+Pass-through layers (`ReluModule`, `FlattenModule`, `DropoutModule`) accept any rule and pass
+relevance through unchanged. `MaxPool2DModule` sends each window's relevance to the input that
+won it (winner-take-all, as Zennit does), and `AvgPool2DModule` and `AdaptiveAvgPool2DModule`
+share it among each window's inputs in proportion to their values (the z-rule, Zennit's Norm
+rule).
 
 If you ask a layer for a rule it doesn't implement, `explain()` throws
 `std::invalid_argument` before propagating anything. It never silently falls back to epsilon.

@@ -26,7 +26,8 @@
 
 namespace pulsatrix {
 
-/** @brief A torchvision ResNet with basic blocks (ResNet18 and ResNet34). */
+/** @brief A torchvision ResNet with basic blocks (ResNet18 and ResNet34; ResNet18 is the one
+ *         tested on the published weights). */
 struct ResNetConfig {
     /** @brief Blocks per stage: {2, 2, 2, 2} is ResNet18, {3, 4, 6, 3} ResNet34. */
     std::vector<int64_t> blocks = {2, 2, 2, 2};
@@ -101,7 +102,8 @@ private:
     std::unique_ptr<SequentialModule> net_;
 };
 
-/** @brief A torchvision VGG without BatchNorm (VGG11 to VGG19). */
+/** @brief A torchvision VGG without BatchNorm (VGG11 to VGG19; VGG16 is the one tested on the
+ *         published weights). */
 struct VGGConfig {
     /** @brief The convolution widths in order, 0 for a 2x2 max pool: torchvision's config "D"
      *         for VGG16. */

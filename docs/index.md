@@ -9,7 +9,8 @@
 **Pulsatrix is a C++17 deep learning library built around explainability.** Every layer
 implements Layer-wise Relevance Propagation (LRP) next to its forward and backward pass, so any
 network you build can explain its own predictions. On the tested MLP, CNN and attention
-models, the LRP results match the Zennit and LXT reference libraries to float32 precision.
+models, the LRP results match the Zennit and LXT reference libraries to float32 precision, and
+the heatmaps of torchvision's pretrained ResNet18 and VGG16 match Zennit's.
 
 New here? Start with **[Getting Started](getting-started.md)** to build the library and run
 your first example, then try a **[recipe](recipes/index.md)**.
@@ -18,11 +19,13 @@ your first example, then try a **[recipe](recipes/index.md)**.
 
 **[Deep Learning Modules and Layers](deep-learning/index.md)**: tensors, autograd and
 optimizers; linear, convolution, normalization and pooling layers; RNN/LSTM/GRU, attention,
-`TransformerBlock`, Mamba, RetNet and RWKV; and VAE, GAN and diffusion building blocks. The
+`TransformerBlock`, Mamba, RetNet and RWKV; VAE, GAN and diffusion building blocks; and
+torchvision's ResNet and VGG, which load the published ImageNet weights. The
 training stack has AdamW with parameter groups, learning-rate schedules, gradient clipping,
 token-accurate gradient accumulation and parameter freezing. Models save and load as
-safetensors or as checkpoints with optimizer state, and `set_seed` makes runs reproducible.
-Runs on CPU, CUDA or HIP/ROCm.
+safetensors or as checkpoints with optimizer state; PyTorch `.pt`/`.pth` files convert to
+safetensors with a safe converter; and `set_seed` makes runs reproducible. Runs on CPU, CUDA or
+HIP/ROCm.
 
 **[Data Loading, Transformation & Validation](data-pipeline/index.md)**: `Dataset` and
 `DataLoader` with readers for CSV, images, text, audio and video frames, plus dataset
@@ -86,8 +89,9 @@ Halving, Hyperband and ASHA.
 heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts
 (including token and word relevance for text), interactive HTML pages with hover, zoom and
 export, attribution graphs for Neuronpedia's and circuit-tracer's viewers, and the
-`pulsatrix_svg` tool; and, optionally,
-native Dear ImGui + ImPlot windows with a live training dashboard and a token relevance view.
+`pulsatrix_svg` tool; rich display in Jupyter notebooks and reports written as `.ipynb` or HTML
+from C++; and, optionally, native Dear ImGui + ImPlot windows with a live training dashboard and a
+token relevance view.
 
 **[System Monitoring](system-monitoring.md)**: log CPU/GPU utilization, memory and
 temperatures while you train.
@@ -100,7 +104,7 @@ LRP conservation, with an A/B comparison between two builds.
 Python. See [Getting Started](getting-started.md#python-bindings).
 
 Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,650 CPU tests (2,800 with the HIP backend) that run in CI on Windows and Linux.
+2,700 CPU tests (2,850 with the HIP backend) that run in CI on Windows and Linux.
 
 ## More resources
 
