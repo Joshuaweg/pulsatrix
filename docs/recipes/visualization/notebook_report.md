@@ -14,9 +14,16 @@ Nothing needs Python, a Jupyter kernel or a download.
 
 CMake target: `notebook_report_recipe` (`examples/recipes/notebook_report.cpp`).
 
+Build it, then run it from the repository root:
+
 ```bash
-./build/notebook_report_recipe out/      # writes out/xor_report.ipynb and out/xor_report.html
+cmake -S . -B build                        # reconfigure, so an older build directory picks up the target
+cmake --build build --target notebook_report_recipe --config Release
+./build/notebook_report_recipe out/        # Linux/macOS: writes out/xor_report.ipynb and out/xor_report.html
+build\Release\notebook_report_recipe.exe out   # Windows (Visual Studio)
 ```
+
+The recipe creates the output directory; without an argument, the files go to the current directory.
 
 Open `xor_report.ipynb` in VS Code, JupyterLab or on GitHub, or `xor_report.html` in a browser.
 JupyterLab asks for the notebook's C++ kernel; choose "No Kernel" and every output still shows.

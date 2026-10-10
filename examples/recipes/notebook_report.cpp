@@ -8,6 +8,7 @@
 // docs/recipes/visualization/notebook_report.md.
 #include <cmath>
 #include <cstdio>
+#include <filesystem>
 #include <random>
 #include <string>
 #include <vector>
@@ -161,6 +162,7 @@ int main(int argc, char** argv) {
     report.markdown("The model's probabilities at those points, as a tensor (columns: class 0, class 1):");
     report.show(Tensor(Shape({4, 2}), &cpu, p_probe));
 
+    std::filesystem::create_directories(out);
     report.save_ipynb(out + "/xor_report.ipynb");
     report.save_html(out + "/xor_report.html");
     std::printf("wrote %s/xor_report.ipynb and %s/xor_report.html (%zu cells)\n", out.c_str(), out.c_str(),
