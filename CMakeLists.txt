@@ -222,6 +222,7 @@ add_library(pulsatrix_core
     src/viz/document.cpp
     src/viz/svg.cpp
     src/viz/mime_bundle.cpp
+    src/viz/report.cpp
     src/viz/text_relevance.cpp
     src/viz/html.cpp
     src/viz/attribution_graph.cpp

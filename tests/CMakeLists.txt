@@ -165,6 +165,7 @@ add_executable(pulsatrix_tests
     conv2d_chunking_test.cpp
     fused_ops_test.cpp
     mime_bundle_test.cpp
+    report_test.cpp
     protein_concepts_test.cpp
     fitness_metrics_test.cpp
     benchmark_test.cpp
