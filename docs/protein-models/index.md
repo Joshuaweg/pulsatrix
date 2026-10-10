@@ -282,7 +282,7 @@ biotite, and distances within 1e-4 Å. CI runs the same checks on the tiny ESM-2
 ## Protein views
 
 `viz/protein_documents.hpp` turns the model's outputs into four
-[viz documents](../visualization/index.md#json-documents), and `viz/protein_views.hpp` draws
+[viz documents](../visualization/documents.md#json-documents), and `viz/protein_views.hpp` draws
 them. Each is an SVG figure (for papers and CI: no fonts, GPU or browser needed) or an HTML page
 holding that figure, whose cells show their values on hover. The pages have no scripts, so they
 work offline.
