@@ -2336,15 +2336,20 @@ whole network, see <a href="../interpretability/lrp/">Layer-wise Relevance Propa
   to fold an eval-mode BatchNorm into the layer before it); pooling
   (<code>MaxPool2DModule</code>/<code>AvgPool2DModule</code>/<code>AdaptiveAvgPool2DModule</code>). <code>Conv2DModule</code> takes an
   optional <code>stride</code> and zero <code>padding</code>, as in <code>torch.nn.Conv2d</code>, and every LRP rule handles both.
-  Its im2col patches use a bounded workspace (<code>set_max_workspace_bytes()</code>, 16 MiB by default):
-  large batches run in chunks, with identical results (see <a href="../gpu-profiling/#hip-7-conv2d-in-batch-chunks">GPU profiling</a>).
-  On a GPU, a training step uses fused kernels where they give the same numbers: one launch for
-  the optimizer, Linear plus ReLU in a <code>SequentialModule</code>, and batched GEMMs in Conv2D
-  (<a href="../gpu-profiling/#hip-6-fused-kernels">HIP-6</a>).
-  So does <code>MaxPool2DModule</code>, whose windows may overlap (ResNet's <code>MaxPool2d(3, 2, 1)</code>).
-  <code>ResidualModule</code> takes an optional shortcut module, such as ResNet's downsampling convolution.</li>
-<li><strong>Vision models</strong>: <code>TorchvisionResNet</code> and <code>TorchvisionVGG</code> (ResNet18/34 and VGG11 to VGG19)
-  load torchvision's published ImageNet weights. See <a href="#vision-models-resnet-and-vgg">Vision models</a>.</li>
+  <code>MaxPool2DModule</code> also takes a stride and padding, so its windows may overlap (ResNet's
+  <code>MaxPool2d(3, 2, 1)</code>). <code>ResidualModule</code> takes an optional shortcut module, such as ResNet's
+  downsampling convolution.</li>
+<li><strong>Performance, with the same results:</strong> <code>Conv2DModule</code> keeps its unfolded input patches
+    (im2col) only up to a workspace budget, <code>set_max_workspace_bytes()</code>, 16 MiB by default.
+    Larger batches run in chunks of examples. Lower the budget if a large batch runs out of
+    memory; the results don't change
+    (<a href="../gpu-profiling/#hip-7-conv2d-in-batch-chunks">HIP-7</a>). On a GPU, fused kernels cut the
+    launches: one for the optimizer, one for Linear plus ReLU inside a <code>SequentialModule</code>, and one
+    batched GEMM per chunk in Conv2D's forward, backward and LRP
+    (<a href="../gpu-profiling/#hip-6-fused-kernels">HIP-6</a>).</li>
+<li><strong>Vision models</strong>: <code>TorchvisionResNet</code> and <code>TorchvisionVGG</code> load torchvision's published
+  ImageNet weights; ResNet18 and VGG16 are checked against PyTorch. See
+  <a href="#vision-models-resnet-and-vgg">Vision models</a>.</li>
 <li><strong>Sequence &amp; attention</strong>: <code>RNNModule</code>/<code>LSTMModule</code>/<code>GRUModule</code>, <code>SoftmaxModule</code>,
   <code>RoPEModule</code>, <code>MultiHeadAttentionModule</code>, <code>SwiGLUModule</code>, <code>FeedForwardModule</code>,
   <code>TransformerBlock</code>, <code>EncoderBlock</code>, <code>MambaModule</code>, <code>RWKVModule</code>, <code>RetNetModule</code></li>
@@ -2518,8 +2523,18 @@ with PyTorch's restricted loader:</p>
 python3<span class="w"> </span>tools/convert/pickle_to_safetensors.py<span class="w"> </span>resnet18-f37072fd.pth<span class="w"> </span>resnet18.safetensors
 <span class="c1"># wrote resnet18.safetensors: 102 tensors, 11,699,112 values, dtypes float32, verified</span>
 </code></pre></div>
-<p>The output loads like any safetensors file (<code>SafetensorsFile::Map</code>, <code>LoadWeights</code>,
-<code>LoadCheckpoint</code>). What the converter does:
+<p>To load the output:</p>
+<ul>
+<li><strong>torchvision's ResNet and VGG:</strong> <code>LoadTorchvisionWeights</code> (see
+  <a href="#vision-models-resnet-and-vgg">Vision models</a>).</li>
+<li><strong>Any other model:</strong> read the tensors with <code>SafetensorsFile::Map</code> and copy them into your
+  layers by name, or put the file in a directory as <code>model.safetensors</code> and use
+  <code>HfCheckpoint::Open</code> with <code>LoadWeights</code> and a <code>WeightMapping</code> (as for
+  <a href="#hugging-face-checkpoints">Hugging Face checkpoints</a>). PyTorch stores a Linear weight as
+  (out, in) and pulsatrix as (in, out), so map each one with <code>WeightTransform::Transpose</code>.</li>
+<li><code>LoadCheckpoint</code> reads only pulsatrix's own checkpoints, and refuses a converted file.</li>
+</ul>
+<p>What the converter does:
 - <strong>Loads safely.</strong> It uses <code>torch.load(weights_only=True)</code>, which only rebuilds tensors and
   plain containers. It refuses torch older than 2.6, where <code>weights_only</code> could still run code
   (CVE-2025-32434).
@@ -2537,36 +2552,49 @@ python3<span class="w"> </span>tools/convert/pickle_to_safetensors.py<span class
 - <strong>Options:</strong>
   - <code>--strip-prefix module.</code> removes DataParallel's prefix.
   - <code>--float32</code> casts floating-point tensors to float32.
-  - <code>--force</code> allows overwriting the output; without it, an existing file is left alone.
+  - <code>--force</code> allows overwriting the output; without it, the converter stops with an error if
+    the output exists.
+  - <code>--no-verify</code> skips reading the output back (see below).
 - <strong>Writes clean tensors.</strong> Each tensor is made contiguous and gets its own bytes: tied weights
   are written twice. Its dtype is kept: pulsatrix reads bf16 and fp16 by upcasting, and integer
   buffers such as <code>num_batches_tracked</code> as raw bytes.
 - <strong>Verifies.</strong> The source file's SHA-256 goes into the metadata, and the output is read back and
   compared bit for bit.</p>
-<p>The converted torchvision ResNet18 reads back in pulsatrix with every one of its 11.7 million
-values matching PyTorch's.</p>
+<p>The converted torchvision ResNet18 reads back in pulsatrix with all 11,699,112 values (its
+parameters and BatchNorm statistics) matching PyTorch's.</p>
 <h3 id="vision-models-resnet-and-vgg">Vision models: ResNet and VGG<a class="headerlink" href="#vision-models-resnet-and-vgg" title="Permanent link">&para;</a></h3>
 <p><code>TorchvisionResNet</code> and <code>TorchvisionVGG</code> (<code>vision_models.hpp</code>) rebuild torchvision's ResNet
-(basic blocks: ResNet18 and ResNet34) and VGG (without BatchNorm: VGG11 to VGG19) from pulsatrix
-layers. They use torchvision's parameter names, so the published ImageNet weights load once
-converted:</p>
+with basic blocks and its VGG without BatchNorm from pulsatrix layers. They use torchvision's
+parameter names, so the published ImageNet weights load once converted.
+<code>TorchvisionResNet::ResNet18()</code> and <code>TorchvisionVGG::VGG16()</code> give those two models, and they are
+the ones checked against PyTorch:</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-LO<span class="w"> </span>https://download.pytorch.org/models/resnet18-f37072fd.pth
 python3<span class="w"> </span>tools/convert/pickle_to_safetensors.py<span class="w"> </span>resnet18-f37072fd.pth<span class="w"> </span>resnet18.safetensors
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/vision_models.hpp"</span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/cpu_backend.hpp"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/vision_models.hpp"</span>
 
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">pulsatrix</span><span class="p">;</span>
+
+<span class="n">CPUBackend</span><span class="w"> </span><span class="n">backend</span><span class="p">;</span>
 <span class="n">TorchvisionResNet</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">TorchvisionResNet</span><span class="o">::</span><span class="n">ResNet18</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// or TorchvisionVGG::VGG16()</span>
 <span class="n">LoadTorchvisionWeights</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">"resnet18.safetensors"</span><span class="p">);</span><span class="w">  </span><span class="c1">// Linear weights are transposed for you</span>
-<span class="n">model</span><span class="p">.</span><span class="n">set_training</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">                              </span><span class="c1">// BatchNorm's running statistics</span>
+<span class="n">model</span><span class="p">.</span><span class="n">set_training</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">  </span><span class="c1">// eval mode: BatchNorm uses its running statistics, Dropout is off</span>
 <span class="n">Tensor</span><span class="w"> </span><span class="n">logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w">  </span><span class="c1">// x: (N, 3, 224, 224), normalized with ImageNet's mean and std</span>
 </code></pre></div>
 <ul>
 <li><strong>The input</strong> is torchvision's: resize the short side to 256, crop the center 224x224, scale
   to [0, 1], subtract the mean (0.485, 0.456, 0.406) and divide by the standard deviation
-  (0.229, 0.224, 0.225), per channel.</li>
-<li><strong>Smaller variants</strong> come from the config: <code>ResNetConfig{blocks, width, num_classes}</code> and
-  <code>VGGConfig{features, pool_size, hidden, num_classes}</code>. The tests use a ResNet of width 4 and
-  a VGG with 8 channels.</li>
+  (0.229, 0.224, 0.225), per channel. <code>ImageDecoder::DecodeFile(path, &amp;backend, 3)</code> reads a
+  PNG or JPEG as (1, 3, H, W) in [0, 1]; pulsatrix has no resize or crop, so the
+  <a href="../recipes/interpretability/imagenet_lrp/">ImageNet recipe</a> does them by hand
+  (<code>ResizeAndCrop</code> in its source).</li>
+<li><strong>Other sizes</strong> come from the config, <code>ResNetConfig{blocks, width, num_classes}</code> and
+  <code>VGGConfig{features, pool_size, hidden, num_classes}</code>. ResNet34 is <code>blocks = {3, 4, 6, 3}</code>;
+  VGG11, VGG13 and VGG19 are torchvision's configurations "A", "B" and "E" written as <code>features</code>
+  (each number a 3x3 convolution's width, 0 a 2x2 max pool). These load their published weights
+  the same way, but only ResNet18 and VGG16 are tested on them. The tests also use a ResNet of
+  width 4 and a VGG with 8 channels.</li>
 <li><strong>Matches PyTorch.</strong> On the published weights, the logits agree with torchvision's to 1e-4
   (relative to the largest), on CPU and GPU.</li>
 </ul>

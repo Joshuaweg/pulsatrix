@@ -2214,8 +2214,11 @@ built from pulsatrix layers can be explained without extra setup.</p>
 </table>
 <p>The semantics follow Zennit 1.0.0. <code>Epsilon</code> works on every layer. <code>Gamma</code>, <code>AlphaBeta</code>
 and <code>ZBox</code> are defined only for the affine layers, <code>LinearModule</code> and <code>Conv2DModule</code>.
-Pass-through layers (<code>ReluModule</code>, <code>FlattenModule</code>, <code>DropoutModule</code>, <code>MaxPool2DModule</code>) accept
-any rule and pass relevance through unchanged.</p>
+Pass-through layers (<code>ReluModule</code>, <code>FlattenModule</code>, <code>DropoutModule</code>) accept any rule and pass
+relevance through unchanged. <code>MaxPool2DModule</code> sends each window's relevance to the input that
+won it (winner-take-all, as Zennit does), and <code>AvgPool2DModule</code> and <code>AdaptiveAvgPool2DModule</code>
+share it among each window's inputs in proportion to their values (the z-rule, Zennit's Norm
+rule).</p>
 <p>If you ask a layer for a rule it doesn't implement, <code>explain()</code> throws
 <code>std::invalid_argument</code> before propagating anything. It never silently falls back to epsilon.</p>
 <div class="highlight"><pre><span></span><code><span class="n">LRPRuleConfig</span><span class="w"> </span><span class="n">config</span><span class="p">;</span>

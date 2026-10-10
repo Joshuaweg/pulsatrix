@@ -2040,11 +2040,18 @@
 <p><strong>What you'll build:</strong> a heatmap of why torchvision's pretrained ResNet18 or VGG16 classifies a
 photo the way it does. The recipe loads the published ImageNet weights, prepares the photo as
 torchvision does, prints the top five classes, and explains the top one with one of Zennit's
-composites. It writes the photo as the model saw it and the heatmap: red for pixels that are
+<a href="../../../interpretability/lrp/#composites-a-different-rule-per-layer">composites</a> (a choice of LRP
+rule for each kind of layer). It writes the photo as the model saw it and the heatmap: red for pixels that are
 evidence for the class, blue for evidence against.</p>
 <p>CMake target: <code>imagenet_lrp_recipe</code> (<code>examples/recipes/imagenet_lrp.cpp</code>).</p>
-<div class="highlight"><pre><span></span><code>./build/imagenet_lrp_recipe<span class="w"> </span>resnet18<span class="w"> </span>resnet18.safetensors<span class="w"> </span>photo.jpg<span class="w"> </span>out/<span class="w"> </span><span class="o">[</span>--composite<span class="w"> </span>epsilon_gamma_box<span class="o">]</span><span class="w"> </span><span class="o">[</span>--device<span class="w"> </span>hip<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>./build/imagenet_lrp_recipe<span class="w"> </span>resnet18<span class="w"> </span>resnet18.safetensors<span class="w"> </span>photo.jpg<span class="w"> </span>out/<span class="w"> </span><span class="o">[</span>--composite<span class="w"> </span>NAME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--device<span class="w"> </span>hip<span class="o">]</span>
 </code></pre></div>
+<ul>
+<li><code>resnet18</code> or <code>vgg16</code>, then the converted weights, any PNG, JPEG or BMP, and an output
+  directory.</li>
+<li><code>--composite</code>: <code>epsilon_plus</code> (the default), <code>epsilon_alpha2_beta1</code> or <code>epsilon_gamma_box</code>.</li>
+<li><code>--device hip</code> runs on an AMD GPU, in a build configured with <code>-DPULSATRIX_ENABLE_HIP=ON</code>.</li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The recipe needs torchvision's weights, converted to safetensors once (see
@@ -2062,24 +2069,30 @@ python3<span class="w"> </span>tools/convert/pickle_to_safetensors.py<span class
 <h2 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="n">TorchvisionResNet</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">TorchvisionResNet</span><span class="o">::</span><span class="n">ResNet18</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span><span class="w">  </span><span class="c1">// or TorchvisionVGG::VGG16()</span>
 <span class="n">LoadTorchvisionWeights</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">"resnet18.safetensors"</span><span class="p">);</span>
-<span class="n">model</span><span class="p">.</span><span class="n">set_training</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="n">model</span><span class="p">.</span><span class="n">set_training</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w">  </span><span class="c1">// eval mode: BatchNorm uses its running statistics</span>
 
-<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span><span class="w">  </span><span class="c1">// (1, 3, 224, 224): resized, cropped, normalized as torchvision does</span>
+<span class="c1">// The photo: ImageDecoder::DecodeFile(path, &amp;cpu, 3) gives (1, 3, H, W) in [0, 1]. pulsatrix has</span>
+<span class="c1">// no resize or crop, so the recipe's ResizeAndCrop() does them, then it normalizes each channel.</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span><span class="w">  </span><span class="c1">// (1, 3, 224, 224)</span>
 <span class="n">Tensor</span><span class="w"> </span><span class="n">logits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">top_class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span><span class="w">  </span><span class="c1">// the argmax of logits (the recipe takes the top five)</span>
 
-<span class="c1">// Fold each BatchNorm into its convolution while explaining (Zennit's canonizer). The folds</span>
-<span class="c1">// undo themselves when the vector goes out of scope.</span>
+<span class="c1">// Fold each BatchNorm into its convolution while explaining. Keep `folds` alive for the whole</span>
+<span class="c1">// explain() call: the folds undo themselves when it goes out of scope.</span>
 <span class="k">auto</span><span class="w"> </span><span class="n">folds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">fold_batch_norms</span><span class="p">();</span><span class="w">  </span><span class="c1">// a ResNet only: VGG16 has no BatchNorm</span>
 <span class="n">ExplainerContext</span><span class="w"> </span><span class="nf">ctx</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">layers</span><span class="p">());</span><span class="w">   </span><span class="c1">// the stem, each residual block, the classifier</span>
 <span class="n">Attribution</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LRP</span><span class="o">::</span><span class="n">epsilon_plus</span><span class="p">().</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">LRPTarget</span><span class="p">{{</span><span class="n">top_class</span><span class="p">},</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="n">LRPSeed</span><span class="o">::</span><span class="n">OneHot</span><span class="p">},</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
 <span class="c1">// a.values: (1, 3, 224, 224). Sum over the colour channels for one value per pixel.</span>
 </code></pre></div>
+<p>For <code>epsilon_gamma_box</code>, the recipe uses one box for all channels: the lowest and highest
+normalized value any channel can take,
+<code>LRP::epsilon_gamma_box(-0.485f / 0.229f, (1.0f - 0.406f) / 0.225f)</code>, about −2.12 to 2.64.</p>
 <p>Full source:
 <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/recipes/imagenet_lrp.cpp"><code>examples/recipes/imagenet_lrp.cpp</code></a>.</p>
 <h2 id="expected-output">Expected output<a class="headerlink" href="#expected-output" title="Permanent link">&para;</a></h2>
 <p>For a photo of an owl, with ResNet18:</p>
 <div class="highlight"><pre><span></span><code>top-5 ImageNet classes (index: logit):  24: 11.77  93: 10.02  21: 9.79  88: 9.57  23: 9.48
-epsilon_plus relevance: total 0.3377 (the explained logit 11.7663)
+epsilon_plus relevance: total 0.3377 of the 1 it was seeded with (logit 11.7663)
 wrote out/input.ppm and out/heatmap.ppm
 </code></pre></div>
 <p>Class 24 is "great grey owl". Class indices follow torchvision's ImageNet order
@@ -2094,20 +2107,25 @@ are binary PPMs, which every image viewer and converter opens. The heatmap is sc
   differ slightly from PyTorch's for the same file. The model itself matches PyTorch on the same
   tensor.</li>
 <li><strong>Folding BatchNorm.</strong> LRP rules are defined for affine layers followed by activations.
-  BatchNorm in eval mode is an affine map, so it is merged into the convolution before it, as
-  Zennit's canonizer does.</li>
+  BatchNorm in eval mode is an affine map, so it is merged into the convolution before it. Zennit
+  does the same with a <em>canonizer</em>, which rewrites a model into an equivalent one that LRP's
+  rules fit. Skipping the fold isn't an error, but BatchNorm then passes relevance through
+  unchanged and the heatmap differs from Zennit's.</li>
 <li><strong>Residual blocks.</strong> At each <code>out = shortcut(x) + main(x)</code>, relevance is split between the two
   branches in proportion to what each contributed. Each branch then passes its share back
   through its own layers. Zennit does the same at the sums its ResNet canonizer inserts.</li>
-<li><strong>Composites choose a rule per layer type.</strong> <code>epsilon_plus</code> applies ZPlus to every
-  convolution, the ones inside the residual blocks included, and epsilon to the classifier.
-  <code>epsilon_gamma_box</code> applies ZBox to the first convolution, with the input's box: the
-  normalized values of black and white pixels. It gives sharper, more local heatmaps.</li>
+<li><strong>Composites choose a rule per layer type.</strong> <code>epsilon_plus</code> applies ZPlus (AlphaBeta with
+  alpha 1 and beta 0: only positive contributions count) to every convolution, the ones inside
+  the residual blocks included, and epsilon to the classifier. <code>epsilon_gamma_box</code> applies ZBox to
+  the first convolution, with the input's box (above), and Gamma to the rest. It gives sharper,
+  more local heatmaps.</li>
 <li><strong>Max pooling</strong> passes relevance to the pixel that won each window. ResNet's stem pools
   overlapping windows, so a pixel that wins several windows gets the relevance of each one.</li>
-<li><strong>Why the total isn't the logit.</strong> The one-hot seed starts the explained class at relevance 1,
-  as Zennit does. Biases and ZPlus's dropped negative contributions absorb more along the way.
-  The heatmap is the <em>distribution</em> of evidence; its scale isn't meaningful.</li>
+<li><strong>Why the total is 0.34.</strong> The
+  <a href="../../../interpretability/lrp/#targets-contrasts-and-seeds">one-hot seed</a> starts the explained
+  class at relevance 1, not at its logit, as Zennit does. Biases and ZPlus's dropped negative
+  contributions absorb about two thirds of it on the way down. The heatmap is the
+  <em>distribution</em> of evidence; its overall scale isn't meaningful.</li>
 </ul>
 <h2 id="checked-against-zennit">Checked against Zennit<a class="headerlink" href="#checked-against-zennit" title="Permanent link">&para;</a></h2>
 <p><code>tests/vision_models_test.cpp</code> compares these models with Zennit 1.0.0 on the same inputs:

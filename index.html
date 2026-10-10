@@ -1997,17 +1997,20 @@
 <p><strong>Pulsatrix is a C++17 deep learning library built around explainability.</strong> Every layer
 implements Layer-wise Relevance Propagation (LRP) next to its forward and backward pass, so any
 network you build can explain its own predictions. On the tested MLP, CNN and attention
-models, the LRP results match the Zennit and LXT reference libraries to float32 precision.</p>
+models, the LRP results match the Zennit and LXT reference libraries to float32 precision, and
+the heatmaps of torchvision's pretrained ResNet18 and VGG16 match Zennit's.</p>
 <p>New here? Start with <strong><a href="getting-started/">Getting Started</a></strong> to build the library and run
 your first example, then try a <strong><a href="recipes/">recipe</a></strong>.</p>
 <h2 id="whats-in-the-library">What's in the library<a class="headerlink" href="#whats-in-the-library" title="Permanent link">&para;</a></h2>
 <p><strong><a href="deep-learning/">Deep Learning Modules and Layers</a></strong>: tensors, autograd and
 optimizers; linear, convolution, normalization and pooling layers; RNN/LSTM/GRU, attention,
-<code>TransformerBlock</code>, Mamba, RetNet and RWKV; and VAE, GAN and diffusion building blocks. The
+<code>TransformerBlock</code>, Mamba, RetNet and RWKV; VAE, GAN and diffusion building blocks; and
+torchvision's ResNet and VGG, which load the published ImageNet weights. The
 training stack has AdamW with parameter groups, learning-rate schedules, gradient clipping,
 token-accurate gradient accumulation and parameter freezing. Models save and load as
-safetensors or as checkpoints with optimizer state, and <code>set_seed</code> makes runs reproducible.
-Runs on CPU, CUDA or HIP/ROCm.</p>
+safetensors or as checkpoints with optimizer state; PyTorch <code>.pt</code>/<code>.pth</code> files convert to
+safetensors with a safe converter; and <code>set_seed</code> makes runs reproducible. Runs on CPU, CUDA or
+HIP/ROCm.</p>
 <p><strong><a href="data-pipeline/">Data Loading, Transformation &amp; Validation</a></strong>: <code>Dataset</code> and
 <code>DataLoader</code> with readers for CSV, images, text, audio and video frames, plus dataset
 statistics and outlier checks. Tokenizers load from a Hugging Face <code>tokenizer.json</code> and return
@@ -2061,8 +2064,9 @@ Halving, Hyperband and ASHA.</p>
 heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts
 (including token and word relevance for text), interactive HTML pages with hover, zoom and
 export, attribution graphs for Neuronpedia's and circuit-tracer's viewers, and the
-<code>pulsatrix_svg</code> tool; and, optionally,
-native Dear ImGui + ImPlot windows with a live training dashboard and a token relevance view.</p>
+<code>pulsatrix_svg</code> tool; rich display in Jupyter notebooks and reports written as <code>.ipynb</code> or HTML
+from C++; and, optionally, native Dear ImGui + ImPlot windows with a live training dashboard and a
+token relevance view.</p>
 <p><strong><a href="system-monitoring/">System Monitoring</a></strong>: log CPU/GPU utilization, memory and
 temperatures while you train.</p>
 <p><strong><a href="gpu-profiling/">GPU Profiling</a></strong> and <strong><a href="benchmarks/">Benchmarks</a></strong>: per-op GPU kernel
@@ -2071,7 +2075,7 @@ LRP conservation, with an A/B comparison between two builds.</p>
 <p><strong>Python bindings</strong>: <code>Tensor</code>, the core layers, LRP and the other explainers, and seeding from
 Python. See <a href="getting-started/#python-bindings">Getting Started</a>.</p>
 <p>Everything is implemented in C++ with no Python dependency at runtime, and covered by about
-2,650 CPU tests (2,800 with the HIP backend) that run in CI on Windows and Linux.</p>
+2,700 CPU tests (2,850 with the HIP backend) that run in CI on Windows and Linux.</p>
 <h2 id="more-resources">More resources<a class="headerlink" href="#more-resources" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><a href="getting-started/#using-pulsatrix-in-your-own-project">Using pulsatrix in your project</a></strong>:

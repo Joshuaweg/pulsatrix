@@ -3408,7 +3408,9 @@ every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">F
   embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5). Hugging
   Face configs, sharded checkpoints and bf16 weights load into a <code>CausalLM</code> (IO-4 to IO-6): the
   real SmolLM2-135M runs and matches transformers. torchvision's ResNet18 and VGG16 load from
-  their published weights, and their LRP heatmaps match Zennit's (KS-9).</li>
+  their published weights, and their LRP heatmaps match Zennit's (KS-9). Fused training kernels
+  and a bounded-memory Conv2D (HIP-6, HIP-7). Rich notebook display and reports written as
+  <code>.ipynb</code> or HTML (NB-1, NB-2).</li>
 <li><strong>Protein language models</strong> (<a href="#plm-protein-language-models">PLM-1 to PLM-9</a>). ESM-2 8M to
   650M load from Hugging Face and match transformers to float precision. On top of that:</li>
 <li>zero-shot variant scoring that reproduces ProteinGym's published numbers;</li>
@@ -3435,8 +3437,8 @@ every item in <a href="#feat-featurizers-sparse-autoencoders-and-goodfire-bsf">F
 <li><strong>HIP backend.</strong> It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   <code>dot</code> and <code>sum</code>, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   (<a href="#hip-training-efficiency-on-amd-gpus">HIP-1 to HIP-5</a>). Its container runs ROCm 10.0.0, the
-  first release that lists gfx1151 officially (HIP-9). Small models are still only about 20%
-  GPU-busy, because of host-side work inside each step.</li>
+  first release that lists gfx1151 officially (HIP-9). In v1.2, fused kernels and batched GEMMs
+  cut training step times by 15 to 73% (HIP-6), and Conv2D's memory is bounded (HIP-7).</li>
 </ul>
 <h2 id="the-goal-that-orders-this-list">The goal that orders this list<a class="headerlink" href="#the-goal-that-orders-this-list" title="Permanent link">&para;</a></h2>
 <p><strong>Explain real pretrained models.</strong> That means you can load a Hugging Face model (a small LLM
@@ -5973,8 +5975,8 @@ can't draw inline in a notebook, so it stays the desktop tool and shares the VIZ
 <li>
 <p><strong>NB-2</strong> writes reports from NB-1's bundles, so a notebook and an HTML page show the same
   things. The notebook's falsifier runs in CI: a sample report is compared byte for byte with a
-  committed notebook, which the Python job validates with <code>nbformat</code> (now installed there). It
-  also converts with nbconvert. The HTML page renders a markdown subset of its own and escapes raw
+  committed notebook, which the Python job validates with <code>nbformat</code> (now installed there).
+  nbconvert also converts that notebook (checked by hand, not in CI). The HTML page renders a markdown subset of its own and escapes raw
   HTML, so a report built from untrusted text can't inject script; the notebook keeps the full
   markdown for Jupyter.</p>
 </li>
@@ -6097,7 +6099,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>—</td>
 <td>P1</td>
 <td>S</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/65">#65</a> (see below)</td>
 </tr>
 <tr>
 <td>HIP-10</td>
@@ -6137,7 +6139,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 </tr>
 </tbody>
 </table>
-<p>The HIP items above are done (2026-10-04). Measurements are in <a href="../gpu-profiling/">GPU Profiling</a>.</p>
+<p>HIP-1 to HIP-5 were done on 2026-10-04, and the table below is their result. Measurements are in <a href="../gpu-profiling/">GPU Profiling</a>.</p>
 <table>
 <thead>
 <tr>
@@ -6187,31 +6189,34 @@ memory bandwidth (about 212 GB/s).</p>
   register <code>/opt/rocm/lib</code> with the dynamic loader. "Pin the host kernel" became a check,
   <code>scripts/check_host_kernel.sh</code>, that <code>rocm-build.sh</code> runs on every call, plus documented
   instructions to hold the package; the repository doesn't change the host.</li>
+<li><strong>HIP-7</strong> landed before HIP-6, which was measured against it. Every convolution kept its whole
+  batch's im2col patches for backward and LRP: 5.75 GB of GPU memory to explain ResNet18 at batch</li>
 <li>
-<p><strong>HIP-7.</strong> The im2col buffer of one layer was the smaller problem: every convolution kept its
-  whole batch's patches for backward and LRP, 5.75 GB of the GPU memory used to explain ResNet18
-  at batch 32. Each layer now keeps them only within a workspace budget (16 MiB by default) and
-  otherwise works in chunks of examples, rebuilding patches when it needs them again. Peak memory
-  fell to 2.40 GB, the explanation got 14% faster, and the results are bit-identical. The chunks
+<p>That, not one layer's buffer, was the problem; the plan's 350 MB for the first layer at
+  batch 64 was an estimate, and the measured figure is 472 MB. Each layer now keeps its patches
+  only within a workspace budget (16 MiB by default) and otherwise works in chunks of examples,
+  rebuilding the patches when it needs them again. Peak memory fell to 2.40 GB, the explanation
+  got 14% faster on gfx1151 (unchanged on the CPU), and the results are bit-identical. The chunks
   are whole examples: one example larger than the budget still takes its full patch buffer
   (115 MB in VGG16's widest layers).</p>
 </li>
 <li>
-<p><strong>HIP-6.</strong> Profiling first showed the small models' step times were mostly one-time startup
-  (<code>hip_profile_workloads</code> spreads about 250 ms of stream and hipBLAS setup over 20 steps), so
-  HIP-6 was measured with KS-2's suite in ABBA order. The three named fusions went in, and two
-  more changes the profile pointed to:</p>
+<p><strong>HIP-6.</strong> Profiling first showed that the small models' step times were mostly one-time
+  startup (<code>hip_profile_workloads</code> spreads about 250 ms of stream and hipBLAS setup over 20
+  steps), so HIP-6 was measured with KS-2's benchmark suite in ABBA order. The three named fusions
+  went in: the optimizer is one call (on the GPU, one kernel per 32 parameter tensors), Linear plus
+  ReLU is one kernel, and softmax plus cross-entropy checks its targets on the device (the HIP-4
+  follow-up). Two more changes came from the profile:</p>
 </li>
 <li>gradient clipping reads every squared norm back at once instead of one per parameter;</li>
-<li><code>TokenCrossEntropyLoss</code> checks its targets on the device (the HIP-4 follow-up);</li>
 <li>the CNN spent 80% of its time in one GEMM per example, so Conv2D uses strided-batched GEMMs
     (the HIP-7 follow-up).</li>
 </ul>
-<p>Training steps got 15% (MLP), 17% (tagger) and 73% (CNN) faster. The fusions are bit-identical
-  to the unfused calls, which settles the research notes' risk that a fused training path drifts
-  from the explain path. Bias plus activation covers Linear followed by ReLU inside a
-  <code>SequentialModule</code>; other activations and layers that aren't in a <code>SequentialModule</code> still run
-  unfused.</p>
+<p>Training step time fell 15% (MLP), 17% (tagger) and 73% (CNN, about 3.7 times as fast). The
+  fusions are bit-identical to the unfused calls, which settles the research notes' risk that a
+  fused training path drifts from the explain path. Bias plus activation covers Linear followed by
+  ReLU inside a <code>SequentialModule</code>; other activations, and layers that aren't in a
+  <code>SequentialModule</code>, still run unfused.</p>
 <h3 id="follow-ups-the-hip-work-surfaced">Follow-ups the HIP work surfaced<a class="headerlink" href="#follow-ups-the-hip-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
