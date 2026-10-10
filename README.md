@@ -145,7 +145,7 @@ starts with which tool answers which question, and reports what each method foun
 | Training | SGD (momentum, Nesterov), Adam, AdamW with parameter groups; learning-rate schedules; gradient clipping; token-accurate gradient accumulation | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Saving and loading | Native safetensors reader and writer; checkpoints with buffers, optimizer state and format versions; a safe converter for PyTorch `.pt`/`.pth` files (pickle is never read in C++) | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Layers | Linear, Conv2D (stride, padding), BatchNorm with running statistics, eval mode and folding, other normalization, pooling (overlapping and adaptive too), dropout, embeddings, residual blocks | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
-| Vision models | torchvision's ResNet18/34 and VGG11 to VGG19, loaded from the published ImageNet weights and matching PyTorch's logits | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/#vision-models-resnet-and-vgg) |
+| Vision models | torchvision's ResNet and VGG, loaded from the published ImageNet weights; ResNet18 and VGG16 are checked against PyTorch's logits and Zennit's heatmaps, and the other sizes build from a config | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/#vision-models-resnet-and-vgg) |
 | Sequence models | RNN/LSTM/GRU, multi-head attention, `TransformerBlock`, encoder layers in ESM-2, BERT or Llama layout (`EncoderBlock`), Mamba, RetNet, RWKV | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Generative blocks | VAE, GAN and diffusion losses and sampling steps | [Deep learning](https://joshuaweg.github.io/pulsatrix/deep-learning/) |
 | Language models | Load Llama, SmolLM2, Qwen2/2.5, Qwen3 and Gemma 3 checkpoints from the Hugging Face Hub; generate with greedy or sampled decoding and a KV cache; explain predictions per token or per word with AttnLRP | [Language models](https://joshuaweg.github.io/pulsatrix/language-models/) |
@@ -159,7 +159,7 @@ starts with which tool answers which question, and reports what each method foun
 | Neuro-symbolic | Differentiable fuzzy logic, a Datalog engine, LRP through Datalog derivations | [Neuro-symbolic](https://joshuaweg.github.io/pulsatrix/neuro-symbolic/) |
 | Evolutionary computation | Genetic algorithms, NSGA-II, NEAT, Evolution Strategies, CMA-ES, PBT, E-GAN | [Evolutionary](https://joshuaweg.github.io/pulsatrix/evolutionary-computation/) |
 | Hyperparameter optimization | Grid/random search, Gaussian-process BO, TPE, Successive Halving, Hyperband, ASHA | [HPO](https://joshuaweg.github.io/pulsatrix/hyperparameter-optimization/) |
-| Visualization | Versioned JSON documents and dependency-free SVG charts (bar, waterfall, heatmap, token and word relevance for text, beeswarm) and interactive Vega-Lite HTML pages (hover, zoom, export) in the core library; rich notebook display (`mime_bundle_repr`, found by the xeus-cpp kernel) and `.ipynb`/HTML reports written from C++; opt-in Dear ImGui + ImPlot windows, a live training dashboard and a token relevance view | [Visualization](https://joshuaweg.github.io/pulsatrix/visualization/) |
+| Visualization | Versioned JSON documents and dependency-free SVG charts (bar, waterfall, heatmap, token and word relevance for text, beeswarm) and interactive Vega-Lite HTML pages (hover, zoom, export) in the core library; `.ipynb` and HTML [reports](https://joshuaweg.github.io/pulsatrix/visualization/#reports-notebooks-and-html-pages) written from C++, and rich display for the xeus-cpp notebook kernel (experimental); opt-in Dear ImGui + ImPlot windows, a live training dashboard and a token relevance view | [Visualization](https://joshuaweg.github.io/pulsatrix/visualization/) |
 | System monitoring | Live CPU/GPU utilization, memory and temperature logging | [System monitoring](https://joshuaweg.github.io/pulsatrix/system-monitoring/) |
 | Python bindings | `Tensor`, core layers, LRP and every explainer, `SystemMonitor`, `set_seed` and deterministic mode | [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#python-bindings) |
 | Performance tools | `pulsatrix_bench` (step time, explanation time, LRP conservation; A/B comparison of builds), `scripts/profile_hip.sh` (per-op GPU kernel time) | [Benchmarks](https://joshuaweg.github.io/pulsatrix/benchmarks/), [GPU profiling](https://joshuaweg.github.io/pulsatrix/gpu-profiling/) |
@@ -232,7 +232,7 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
   between minor versions.
 - What's planned next, and why, is in the
   [Roadmap](https://joshuaweg.github.io/pulsatrix/roadmap/).
-- About 2,650 tests on the CPU, and 2,800 with the HIP backend. CI builds and tests every push
+- About 2,700 tests on the CPU, and 2,850 with the HIP backend. CI builds and tests every push
   and pull request on Windows (MSVC) and Linux (GCC), runs the Python binding tests, and
   compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.

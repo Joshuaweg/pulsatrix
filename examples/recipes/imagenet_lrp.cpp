@@ -136,7 +136,7 @@ int Explain(Model& model, const std::string& weights, const std::string& image, 
     a.values.to(DeviceType::Cpu, &cpu);
     const std::vector<float> relevance = a.values.to_host_vector();
     const double total = std::accumulate(relevance.begin(), relevance.end(), 0.0);
-    std::printf("%s relevance: total %.4f (the explained logit %.4f)\n", composite.c_str(), total, l[order[0]]);
+    std::printf("%s relevance: total %.4f of the 1 it was seeded with (logit %.4f)\n", composite.c_str(), total, l[order[0]]);
 
     // 4. The input as the model saw it, and the heatmap.
     std::filesystem::create_directories(out);
