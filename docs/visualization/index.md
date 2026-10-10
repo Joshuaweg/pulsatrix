@@ -392,6 +392,38 @@ xcpp::display(lrp.explain(ctx, x, target, &backend));  // a heatmap
 `MimeBundle::to_json_value()` returns the bundle as one JSON object, `{"text/plain": ..., ...}`,
 for other front ends.
 
+## Reports: notebooks and HTML pages
+
+`Report` (`viz/report.hpp`) writes results as a Jupyter notebook (nbformat 4.5) or as one HTML
+page, from C++, with no Python and no kernel (NB-2):
+
+```cpp
+#include "pulsatrix/viz/report.hpp"
+
+Report report("LRP on ResNet18");
+report.markdown("We explain the top class with **EpsilonPlus**.")
+      .code("Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &backend);")
+      .show(a);           // anything with a mime_bundle_repr(): the heatmap
+report.text("top class: 24 (great grey owl)");
+report.save_ipynb("resnet18.ipynb");
+report.save_html("resnet18.html");
+```
+
+- **Cells.** `markdown()` adds a markdown cell and `code()` a code cell. The code is shown as
+  text and not run, so it has no execution count. `show()` and `output()` add rich outputs
+  (NB-1's bundles), and `text()` adds plain text. Outputs attach to the code cell before them;
+  one with no code cell before it gets its own cell, with the empty input hidden.
+- **The notebook** keeps its outputs, so it renders as it is on GitHub, in JupyterLab, VS Code and
+  Quarto. Its kernel spec is xeus-cpp's C++17 kernel. Cell ids are numbered, so the same report
+  always writes the same bytes. The tests compare a sample report with a committed notebook, and
+  CI checks that notebook with `nbformat.validate`.
+- **The HTML page** shows each output in its richest format that needs no kernel: Vega-Lite charts
+  (with the page's Vega libraries, from the CDN or inlined with `HtmlScripts::Inline` for offline
+  use), then SVG, PNG, HTML and text. A report without charts has no scripts. The markdown subset
+  it renders covers headings, paragraphs, lists, fenced code, pipe tables, bold, italic, code
+  spans and links. Raw HTML in the markdown is escaped, and links go only to http, https, mailto
+  or relative URLs. Jupyter renders the notebook's markdown in full.
+
 ## Attribution graphs (Neuronpedia and circuit-tracer)
 
 An attribution graph shows how a prediction is built up through the layers of a network.
