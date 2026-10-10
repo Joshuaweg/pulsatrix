@@ -221,6 +221,7 @@ add_library(pulsatrix_core
     src/viz/plot_data.cpp
     src/viz/document.cpp
     src/viz/svg.cpp
+    src/viz/mime_bundle.cpp
     src/viz/text_relevance.cpp
     src/viz/html.cpp
     src/viz/attribution_graph.cpp
@@ -631,6 +632,14 @@ if(PULSATRIX_BUILD_TESTS)
         GIT_TAG v1.15.2
     )
     FetchContent_MakeAvailable(googletest)
+    # nlohmann/json (MIT), for the tests only: the notebook tests convert MIME bundles the way
+    # xeus-cpp does (NB-1). The library itself never includes it.
+    FetchContent_Declare(
+        nlohmann_json
+        URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+        URL_HASH SHA256=42f6e95cad6ec532fd372391373363b62a14af6d771056dbfc86160e6dfff7aa
+    )
+    FetchContent_MakeAvailable(nlohmann_json)
 
     enable_testing()
     add_subdirectory(tests)

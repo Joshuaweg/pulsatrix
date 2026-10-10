@@ -164,6 +164,7 @@ add_executable(pulsatrix_tests
     vision_models_test.cpp
     conv2d_chunking_test.cpp
     fused_ops_test.cpp
+    mime_bundle_test.cpp
     protein_concepts_test.cpp
     fitness_metrics_test.cpp
     benchmark_test.cpp
@@ -286,7 +287,7 @@ if(PULSATRIX_ENABLE_CUDA AND PULSATRIX_ENABLE_HIP)
     target_sources(pulsatrix_tests PRIVATE three_way_equivalence_test.cpp)
 endif()
 
-target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_core GTest::gtest_main GTest::gmock)
+target_link_libraries(pulsatrix_tests PRIVATE pulsatrix_core GTest::gtest_main GTest::gmock nlohmann_json::nlohmann_json)
 # The tokenizer tests hold UTF-8 string literals (Cyrillic, CJK, emoji); MSVC otherwise reads
 # sources in the system code page.
 target_compile_options(pulsatrix_tests PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
