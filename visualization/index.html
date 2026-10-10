@@ -1106,6 +1106,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#notebooks-rich-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notebooks: rich display
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#attribution-graphs-neuronpedia-and-circuit-tracer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2221,6 +2232,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#notebooks-rich-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notebooks: rich display
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#attribution-graphs-neuronpedia-and-circuit-tracer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2912,6 +2934,65 @@ sequences all display correctly, and long text wraps to the window. Hover a piec
 score.</p>
 <p><strong>Safety.</strong> Labels are escaped: a feature called <code>&lt;/script&gt;</code> stays text. The chart's data is
 embedded as JSON, not as code.</p>
+<h2 id="notebooks-rich-display">Notebooks: rich display<a class="headerlink" href="#notebooks-rich-display" title="Permanent link">&para;</a></h2>
+<p><code>mime_bundle_repr()</code> (<code>viz/mime_bundle.hpp</code>) gives each type the formats a Jupyter notebook
+can show (NB-1):</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/mime_bundle.hpp"</span>
+
+<span class="n">MimeBundle</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mime_bundle_repr</span><span class="p">(</span><span class="n">attribution</span><span class="p">);</span>
+<span class="c1">// b.entries: {"application/vnd.vegalite.v5+json", spec}, {"image/svg+xml", svg}, {"text/plain", text}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Shown as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Tensor</code></td>
+<td>A summary as text and an HTML table: shape, device, min, max, mean, standard deviation, non-finite count and the leading values</td>
+</tr>
+<tr>
+<td><code>Attribution</code></td>
+<td>Rank 3 or more: a heatmap of the first example, channels summed. Up to 64 × 64 cells it is Vega-Lite plus SVG; larger maps are a PNG, one pixel per cell. Rank 1 or 2: a bar chart of the first example's largest features</td>
+</tr>
+<tr>
+<td><code>CircuitGraph</code>, <code>CircuitGraphDocument</code></td>
+<td>A Vega-Lite node-link view: columns by depth, nodes colored by ablation effect, edges as thick as their weight</td>
+</tr>
+<tr>
+<td>Documents with a chart (attribution, heatmap, partial dependence, sensitivity, counterfactual, Morris, Sobol)</td>
+<td>Vega-Lite and the SVG figure</td>
+</tr>
+<tr>
+<td><code>TrainingLogDocument</code></td>
+<td>Vega-Lite</td>
+</tr>
+<tr>
+<td><code>TokenRelevanceDocument</code>, the protein views</td>
+<td>The SVG figure</td>
+</tr>
+</tbody>
+</table>
+<p>Every bundle has <code>text/plain</code>, and its richest format comes first. The Vega-Lite specs use only
+Vega-Lite 5 features, so they're sent as <code>application/vnd.vegalite.v5+json</code>, which JupyterLab,
+Notebook 7 and VS Code render natively. They are checked against Vega-Lite 5's schema and render
+with Vega-Lite 5.23 without warnings. The SVG is the fallback for front ends that don't run Vega,
+such as GitHub's notebook preview. The HTML uses inline styles only, so nothing leaks into the
+rest of the notebook.</p>
+<p><strong>In xeus-cpp</strong> (the C++ Jupyter kernel), <code>xcpp::display(x)</code> calls <code>mime_bundle_repr(x)</code>
+unqualified, so it finds these overloads by argument-dependent lookup. xeus converts the result to
+its <code>nlohmann::json</code> through <code>pulsatrix::to_json()</code>, a template written against nlohmann's
+interface. pulsatrix doesn't depend on xeus or on nlohmann; the tests check the conversion with
+nlohmann 3.12 and xeus-cpp 0.10's own lookup.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// in a xeus-cpp notebook cell</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/mime_bundle.hpp"</span>
+<span class="n">xcpp</span><span class="o">::</span><span class="n">display</span><span class="p">(</span><span class="n">lrp</span><span class="p">.</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">));</span><span class="w">  </span><span class="c1">// a heatmap</span>
+</code></pre></div>
+<p><code>MimeBundle::to_json_value()</code> returns the bundle as one JSON object, <code>{"text/plain": ..., ...}</code>,
+for other front ends.</p>
 <h2 id="attribution-graphs-neuronpedia-and-circuit-tracer">Attribution graphs (Neuronpedia and circuit-tracer)<a class="headerlink" href="#attribution-graphs-neuronpedia-and-circuit-tracer" title="Permanent link">&para;</a></h2>
 <p>An attribution graph shows how a prediction is built up through the layers of a network.
 pulsatrix writes graphs in the JSON format that

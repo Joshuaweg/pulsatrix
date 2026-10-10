@@ -14,6 +14,7 @@ var dir_1df8ff9027259fc5f483c2d1b9c2e5ad =
     [ "html.hpp", "html_8hpp.html", "html_8hpp" ],
     [ "image_grid_view.hpp", "image__grid__view_8hpp.html", "image__grid__view_8hpp" ],
     [ "implot_metrics_sink.hpp", "implot__metrics__sink_8hpp.html", "implot__metrics__sink_8hpp" ],
+    [ "mime_bundle.hpp", "mime__bundle_8hpp.html", "mime__bundle_8hpp" ],
     [ "plot_data.hpp", "plot__data_8hpp.html", "plot__data_8hpp" ],
     [ "protein_documents.hpp", "protein__documents_8hpp.html", "protein__documents_8hpp" ],
     [ "protein_views.hpp", "protein__views_8hpp.html", "protein__views_8hpp" ],

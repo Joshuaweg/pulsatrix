@@ -252,6 +252,7 @@ var annotated_dup =
       [ "MetricCapability", "structpulsatrix_1_1MetricCapability.html", "structpulsatrix_1_1MetricCapability" ],
       [ "MetricRecord", "structpulsatrix_1_1MetricRecord.html", "structpulsatrix_1_1MetricRecord" ],
       [ "MetricsSink", "classpulsatrix_1_1MetricsSink.html", "classpulsatrix_1_1MetricsSink" ],
+      [ "MimeBundle", "structpulsatrix_1_1MimeBundle.html", "structpulsatrix_1_1MimeBundle" ],
       [ "MnistConvNet", "classpulsatrix_1_1MnistConvNet.html", "classpulsatrix_1_1MnistConvNet" ],
       [ "MnistDataset", "structpulsatrix_1_1MnistDataset.html", "structpulsatrix_1_1MnistDataset" ],
       [ "MnistDatasetAdapter", "classpulsatrix_1_1MnistDatasetAdapter.html", "classpulsatrix_1_1MnistDatasetAdapter" ],
