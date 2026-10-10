@@ -237,7 +237,8 @@ target_link_libraries(my_app PRIVATE pulsatrix::core)
   and pull request on Windows (MSVC) and Linux (GCC), runs the Python binding tests, and
   compiles the CUDA and HIP backends.
 - macOS with Clang should work but isn't tested in CI.
-- The HIP/ROCm backend is tested on real AMD hardware (gfx1151), not in CI. See
+- The HIP/ROCm backend is tested on real AMD hardware (gfx1151) by a self-hosted CI runner on
+  every push to this repository ([GPU CI](https://joshuaweg.github.io/pulsatrix/gpu-ci/)). See
   [Getting Started](https://joshuaweg.github.io/pulsatrix/getting-started/#gpu-backends) for
   the pinned ROCm container (ROCm 10.0.0; 7.2.4 is still selectable) and the host kernel it
   needs.
