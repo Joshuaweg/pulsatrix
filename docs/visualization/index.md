@@ -69,6 +69,10 @@ ImGui/ImPlot setup. You write a per-frame draw callback and call `window.run(...
 
 Full API reference: [Doxygen: Visualization](../api/group__visualization.html)
 
+**Notebooks and reports** (`viz/mime_bundle.hpp`, `viz/report.hpp`): rich display of pulsatrix
+types in Jupyter, and reports written as `.ipynb` notebooks or HTML pages from C++. See
+[Notebooks](#notebooks-rich-display) and [Reports](#reports-notebooks-and-html-pages).
+
 ## JSON documents
 
 Interactive viewers go stale faster than file formats do, so every view reads from a versioned
@@ -351,11 +355,15 @@ embedded as JSON, not as code.
 
 ## Notebooks: rich display
 
-`mime_bundle_repr()` (`viz/mime_bundle.hpp`) gives each type the formats a Jupyter notebook
-can show (NB-1):
+A *MIME bundle* is one output in several formats (an interactive chart, an SVG image, plain
+text), so that each front end shows the best one it supports. `mime_bundle_repr()`
+(`viz/mime_bundle.hpp`) makes one for each pulsatrix type below. Report files (next section) are
+built from them, and a C++ notebook kernel can display them.
 
 ```cpp
 #include "pulsatrix/viz/mime_bundle.hpp"
+
+using namespace pulsatrix;
 
 MimeBundle b = mime_bundle_repr(attribution);
 // b.entries: {"application/vnd.vegalite.v5+json", spec}, {"image/svg+xml", svg}, {"text/plain", text}
@@ -370,59 +378,79 @@ MimeBundle b = mime_bundle_repr(attribution);
 | `TrainingLogDocument` | Vega-Lite |
 | `TokenRelevanceDocument`, the protein views | The SVG figure |
 
-Every bundle has `text/plain`, and its richest format comes first. The Vega-Lite specs use only
-Vega-Lite 5 features, so they're sent as `application/vnd.vegalite.v5+json`, which JupyterLab,
-Notebook 7 and VS Code render natively. They are checked against Vega-Lite 5's schema and render
-with Vega-Lite 5.23 without warnings. The SVG is the fallback for front ends that don't run Vega,
-such as GitHub's notebook preview. The HTML uses inline styles only, so nothing leaks into the
-rest of the notebook.
+- **Attribution shapes.** The first dimension is the batch: rank 3 is read as (N, H, W) and rank
+  4 as (N, C, H, W). Give a single image's attribution a batch dimension of 1 before displaying
+  it, or a (3, H, W) map is drawn as three examples.
+- **Formats.** Every bundle ends in `text/plain`, and its richest format comes first. The charts
+  are Vega-Lite specifications sent as version 5 (`application/vnd.vegalite.v5+json`), which
+  JupyterLab, Notebook 7 and VS Code draw without anything installed. They are checked against
+  Vega-Lite 5's schema. The SVG is the fallback where Vega doesn't run, such as GitHub's notebook
+  preview. Circuit graphs and training logs have no SVG, so GitHub shows only their text. The
+  HTML uses inline styles only, so nothing leaks into the rest of the notebook.
+- **Other front ends.** `MimeBundle::to_json_value()` returns the bundle as one JSON object,
+  `{"text/plain": ..., ...}`.
 
-**In xeus-cpp** (the C++ Jupyter kernel), `xcpp::display(x)` calls `mime_bundle_repr(x)`
-unqualified, so it finds these overloads by argument-dependent lookup. xeus converts the result to
-its `nlohmann::json` through `pulsatrix::to_json()`, a template written against nlohmann's
-interface. pulsatrix doesn't depend on xeus or on nlohmann; the tests check the conversion with
-nlohmann 3.12 and xeus-cpp 0.10's own lookup.
+!!! warning "C++ notebooks are experimental"
+    [xeus-cpp](https://github.com/compiler-research/xeus-cpp) is a Jupyter kernel that runs C++
+    cells through Clang's interpreter (`conda install -c conda-forge xeus-cpp`). Its
+    `xcpp::display(x)` finds pulsatrix's `mime_bundle_repr` automatically, and pulsatrix doesn't
+    depend on xeus. The tests check that lookup with a copy of xeus-cpp 0.10's display code, but
+    pulsatrix hasn't been run inside a live kernel yet: loading the library into one is a planned
+    roadmap item. Until then, write notebooks with `Report` below.
 
-```cpp
-// in a xeus-cpp notebook cell
-#include "pulsatrix/viz/mime_bundle.hpp"
-xcpp::display(lrp.explain(ctx, x, target, &backend));  // a heatmap
-```
-
-`MimeBundle::to_json_value()` returns the bundle as one JSON object, `{"text/plain": ..., ...}`,
-for other front ends.
+    ```cpp
+    // in a xeus-cpp cell, once the library is loaded
+    #include "pulsatrix/viz/mime_bundle.hpp"
+    xcpp::display(lrp.explain(ctx, x, target, &backend));  // a heatmap
+    ```
 
 ## Reports: notebooks and HTML pages
 
-`Report` (`viz/report.hpp`) writes results as a Jupyter notebook (nbformat 4.5) or as one HTML
-page, from C++, with no Python and no kernel (NB-2):
+`Report` (`viz/report.hpp`) writes results as a Jupyter notebook (an `.ipynb` file, nbformat 4.5)
+or as one HTML page, from C++, with no Python and no kernel:
 
 ```cpp
 #include "pulsatrix/viz/report.hpp"
 
+using namespace pulsatrix;
+
+Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &backend);  // compute as usual
+
 Report report("LRP on ResNet18");
 report.markdown("We explain the top class with **EpsilonPlus**.")
-      .code("Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &backend);")
-      .show(a);           // anything with a mime_bundle_repr(): the heatmap
+      .code("Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &backend);")  // shown, not run
+      .show(a);           // anything with a mime_bundle_repr(): here, the heatmap
 report.text("top class: 24 (great grey owl)");
 report.save_ipynb("resnet18.ipynb");
 report.save_html("resnet18.html");
 ```
 
-- **Cells.** `markdown()` adds a markdown cell and `code()` a code cell. The code is shown as
-  text and not run, so it has no execution count. `show()` and `output()` add rich outputs
-  (NB-1's bundles), and `text()` adds plain text. Outputs attach to the code cell before them;
-  one with no code cell before it gets its own cell, with the empty input hidden.
-- **The notebook** keeps its outputs, so it renders as it is on GitHub, in JupyterLab, VS Code and
-  Quarto. Its kernel spec is xeus-cpp's C++17 kernel. Cell ids are numbered, so the same report
-  always writes the same bytes. The tests compare a sample report with a committed notebook, and
-  CI checks that notebook with `nbformat.validate`.
-- **The HTML page** shows each output in its richest format that needs no kernel: Vega-Lite charts
-  (with the page's Vega libraries, from the CDN or inlined with `HtmlScripts::Inline` for offline
-  use), then SVG, PNG, HTML and text. A report without charts has no scripts. The markdown subset
-  it renders covers headings, paragraphs, lists, fenced code, pipe tables, bold, italic, code
-  spans and links. Raw HTML in the markdown is escaped, and links go only to http, https, mailto
-  or relative URLs. Jupyter renders the notebook's markdown in full.
+- **Cells.** The title becomes a heading at the top. `markdown()` adds a markdown cell and
+  `code()` a code cell. The code is only shown: you compute the values yourself, as above.
+  `show()` and `output()` add rich outputs (the bundles above), and `text()` adds plain text.
+  Outputs attach to the code cell before them; one with no code cell before it gets its own cell,
+  with the empty input hidden.
+- **Opening the notebook.** It keeps its outputs, so it shows as it is on GitHub, in VS Code,
+  JupyterLab and Quarto. Its kernel is set to xeus-cpp's C++17 kernel; JupyterLab without that
+  kernel asks for one, and choosing "No Kernel" still shows every output. The same report always
+  writes the same bytes, and CI checks a sample one with `nbformat.validate`.
+- **Opening the HTML page.** Any browser. Each output shows in its richest format: charts, then
+  SVG, PNG, HTML and text. Charts need the Vega libraries, which the page loads from a CDN by
+  default (small, but needs a network connection) or contains itself (about 830 KB more, works
+  offline and as an email attachment):
+
+  ```cpp
+  HtmlOptions options;
+  options.scripts = HtmlScripts::Inline;
+  options.script_dir = "vega";  // tools/render/fetch_vega.sh downloads the three files
+  report.save_html("resnet18.html", options);
+  ```
+
+  `Report` uses only these two options. A report without charts has no scripts at all.
+- **Markdown in the HTML page** covers headings, paragraphs, lists, fenced code, pipe tables, bold,
+  italic, code spans and links. Raw HTML in the markdown is escaped, and links go only to http,
+  https, mailto or relative URLs, so text from elsewhere can't add scripts to the page. The
+  notebook keeps the markdown as written, for Jupyter to render in full.
 
 ## Attribution graphs (Neuronpedia and circuit-tracer)
 

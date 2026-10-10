@@ -40,7 +40,9 @@ every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is 
   embedding table (LLM-2). Greedy and sampled generation (LLM-4) with a KV cache (LLM-5). Hugging
   Face configs, sharded checkpoints and bf16 weights load into a `CausalLM` (IO-4 to IO-6): the
   real SmolLM2-135M runs and matches transformers. torchvision's ResNet18 and VGG16 load from
-  their published weights, and their LRP heatmaps match Zennit's (KS-9).
+  their published weights, and their LRP heatmaps match Zennit's (KS-9). Fused training kernels
+  and a bounded-memory Conv2D (HIP-6, HIP-7). Rich notebook display and reports written as
+  `.ipynb` or HTML (NB-1, NB-2).
 - **Protein language models** ([PLM-1 to PLM-9](#plm-protein-language-models)). ESM-2 8M to
   650M load from Hugging Face and match transformers to float precision. On top of that:
   - zero-shot variant scoring that reproduces ProteinGym's published numbers;
@@ -67,8 +69,8 @@ every item in [FEAT](#feat-featurizers-sparse-autoencoders-and-goodfire-bsf) is 
 - **HIP backend.** It works on gfx1151 (Strix Halo). Since v1.0 it has a profiler, multi-block
   `dot` and `sum`, parallel BatchNorm, a caching allocator, and no per-op stream syncs
   ([HIP-1 to HIP-5](#hip-training-efficiency-on-amd-gpus)). Its container runs ROCm 10.0.0, the
-  first release that lists gfx1151 officially (HIP-9). Small models are still only about 20%
-  GPU-busy, because of host-side work inside each step.
+  first release that lists gfx1151 officially (HIP-9). In v1.2, fused kernels and batched GEMMs
+  cut training step times by 15 to 73% (HIP-6), and Conv2D's memory is bounded (HIP-7).
 
 ## The goal that orders this list
 
@@ -1194,8 +1196,8 @@ can't draw inline in a notebook, so it stays the desktop tool and shares the VIZ
 
 - **NB-2** writes reports from NB-1's bundles, so a notebook and an HTML page show the same
   things. The notebook's falsifier runs in CI: a sample report is compared byte for byte with a
-  committed notebook, which the Python job validates with `nbformat` (now installed there). It
-  also converts with nbconvert. The HTML page renders a markdown subset of its own and escapes raw
+  committed notebook, which the Python job validates with `nbformat` (now installed there).
+  nbconvert also converts that notebook (checked by hand, not in CI). The HTML page renders a markdown subset of its own and escapes raw
   HTML, so a report built from untrusted text can't inject script; the notebook keeps the full
   markdown for Jupyter.
 
@@ -1222,13 +1224,13 @@ practice they are limited by launch and sync overhead and by too little parallel
 | HIP-6 | Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs | Fewer launches and less memory traffic | TRN-2 | P1 | — | Done, [#119](https://github.com/Joshuaweg/pulsatrix/pull/119) (see below) |
 | HIP-7 | Conv2D that runs im2col and GEMM in batch chunks | The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU | FND-6 | P1 | S | Done, [#118](https://github.com/Joshuaweg/pulsatrix/pull/118) (see below) |
 | HIP-8 | A hipBLASLt probe on the pinned container, then bf16 GEMM through `hipblasGemmEx` | Reports conflict on whether hipBLASLt works on gfx1151 in ROCm 7.2.4; measure it | HIP-1 | P1 | — | |
-| HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S || Done, [#65](https://github.com/Joshuaweg/pulsatrix/pull/65) (see below) |
+| HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S | Done, [#65](https://github.com/Joshuaweg/pulsatrix/pull/65) (see below) |
 | HIP-10 | Zero-copy staging buffers on APUs, enabled only when the device reports itself as integrated | Saves a copy on Strix Halo without slowing discrete GPUs | HIP-3 | P2 | — | |
 | HIP-11 | Full bf16 training | Halves memory traffic and reaches the matrix cores. Needs a dtype in `Tensor` | IO-6 | P2 | XL | |
 | HIP-12 | HIP graphs, WMMA or rocWMMA kernels, FlashAttention for training only, MIOpen | Last: graphs have measured slowdowns on gfx11, and FlashAttention never builds the attention matrix that AttnLRP needs | HIP-4 | P3 | — | |
 | HIP-13 | Long-sequence encoder inference: profile ESM-2 650M at 1024 tokens with `scripts/profile_hip.sh`, then speed up the kernels that dominate (attention's `(N, H, L, L)` matmuls and softmax, the MLP GEMMs). An attention path that never builds the attention matrix is allowed here, for forwards that keep no activations | A 1024-token masked pass takes about 3.7 s on gfx1151, so ProteinGym's BRCA1 assay (1,863 residues) takes about 1 h 55 min | HIP-1 | P1 | L | |
 
-The HIP items above are done (2026-10-04). Measurements are in [GPU Profiling](../gpu-profiling.md).
+HIP-1 to HIP-5 were done on 2026-10-04, and the table below is their result. Measurements are in [GPU Profiling](../gpu-profiling.md).
 
 | Workload (gfx1151, Release) | v1.0 step time | After HIP-1 to HIP-5 |
 |---|---|---|
@@ -1260,28 +1262,31 @@ memory bandwidth (about 212 GB/s).
   register `/opt/rocm/lib` with the dynamic loader. "Pin the host kernel" became a check,
   `scripts/check_host_kernel.sh`, that `rocm-build.sh` runs on every call, plus documented
   instructions to hold the package; the repository doesn't change the host.
-- **HIP-7.** The im2col buffer of one layer was the smaller problem: every convolution kept its
-  whole batch's patches for backward and LRP, 5.75 GB of the GPU memory used to explain ResNet18
-  at batch 32. Each layer now keeps them only within a workspace budget (16 MiB by default) and
-  otherwise works in chunks of examples, rebuilding patches when it needs them again. Peak memory
-  fell to 2.40 GB, the explanation got 14% faster, and the results are bit-identical. The chunks
+- **HIP-7** landed before HIP-6, which was measured against it. Every convolution kept its whole
+  batch's im2col patches for backward and LRP: 5.75 GB of GPU memory to explain ResNet18 at batch
+  32. That, not one layer's buffer, was the problem; the plan's 350 MB for the first layer at
+  batch 64 was an estimate, and the measured figure is 472 MB. Each layer now keeps its patches
+  only within a workspace budget (16 MiB by default) and otherwise works in chunks of examples,
+  rebuilding the patches when it needs them again. Peak memory fell to 2.40 GB, the explanation
+  got 14% faster on gfx1151 (unchanged on the CPU), and the results are bit-identical. The chunks
   are whole examples: one example larger than the budget still takes its full patch buffer
   (115 MB in VGG16's widest layers).
 
-- **HIP-6.** Profiling first showed the small models' step times were mostly one-time startup
-  (`hip_profile_workloads` spreads about 250 ms of stream and hipBLAS setup over 20 steps), so
-  HIP-6 was measured with KS-2's suite in ABBA order. The three named fusions went in, and two
-  more changes the profile pointed to:
+- **HIP-6.** Profiling first showed that the small models' step times were mostly one-time
+  startup (`hip_profile_workloads` spreads about 250 ms of stream and hipBLAS setup over 20
+  steps), so HIP-6 was measured with KS-2's benchmark suite in ABBA order. The three named fusions
+  went in: the optimizer is one call (on the GPU, one kernel per 32 parameter tensors), Linear plus
+  ReLU is one kernel, and softmax plus cross-entropy checks its targets on the device (the HIP-4
+  follow-up). Two more changes came from the profile:
   - gradient clipping reads every squared norm back at once instead of one per parameter;
-  - `TokenCrossEntropyLoss` checks its targets on the device (the HIP-4 follow-up);
   - the CNN spent 80% of its time in one GEMM per example, so Conv2D uses strided-batched GEMMs
     (the HIP-7 follow-up).
 
-  Training steps got 15% (MLP), 17% (tagger) and 73% (CNN) faster. The fusions are bit-identical
-  to the unfused calls, which settles the research notes' risk that a fused training path drifts
-  from the explain path. Bias plus activation covers Linear followed by ReLU inside a
-  `SequentialModule`; other activations and layers that aren't in a `SequentialModule` still run
-  unfused.
+  Training step time fell 15% (MLP), 17% (tagger) and 73% (CNN, about 3.7 times as fast). The
+  fusions are bit-identical to the unfused calls, which settles the research notes' risk that a
+  fused training path drifts from the explain path. Bias plus activation covers Linear followed by
+  ReLU inside a `SequentialModule`; other activations, and layers that aren't in a
+  `SequentialModule`, still run unfused.
 
 ### Follow-ups the HIP work surfaced
 

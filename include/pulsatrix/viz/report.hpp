@@ -17,12 +17,13 @@ namespace pulsatrix {
  * @brief A document of markdown, code and rich outputs, written as a Jupyter notebook
  *        (nbformat 4.5) or as one self-contained HTML page. Neither needs Python or a kernel: the
  *        notebook renders on GitHub, in JupyterLab, VS Code and Quarto with its outputs already
- *        in place.
+ *        in place. The title becomes a heading cell at the top.
  *
  * ```cpp
+ * Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &backend);  // computed as usual
  * Report report("LRP on ResNet18");
  * report.markdown("We explain the top class with **EpsilonPlus**.")
- *       .code("Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &backend);")
+ *       .code("Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &backend);")  // shown only
  *       .show(a);                        // any type with a mime_bundle_repr() (NB-1)
  * report.save_ipynb("resnet18.ipynb");
  * report.save_html("resnet18.html");

@@ -43,17 +43,17 @@ struct MimeBundle {
 /** @name mime_bundle_repr
  *  @brief What a notebook shows for each type. Every bundle has `text/plain`.
  *
- *  xeus-cpp's `xcpp::display(x)` (and a cell ending in `x`) calls `mime_bundle_repr(x)`
+ *  xeus-cpp's `xcpp::display(x)` calls `mime_bundle_repr(x)`
  *  unqualified, so argument-dependent lookup finds these overloads, and the result converts to
  *  xeus's `nlohmann::json` through to_json() below; pulsatrix itself doesn't depend on xeus or on
  *  nlohmann. NB-2's notebook writer and NB-3's Python `_repr_mimebundle_` use the same bundles.
  *
  *  - Tensor: a summary (shape, device, statistics, leading values) as text and an HTML table.
- *  - Attribution: an image-shaped one (rank 2 to 4, channels summed) as a heatmap, PNG when it
- *    has more than 64 x 64 cells and SVG plus Vega-Lite otherwise; any other shape as a bar chart
- *    of its largest features. A batch shows its first example.
- *  - Documents with a Vega-Lite view get Vega-Lite and the SVG figure; token relevance, protein
- *    views and circuit graphs get their SVG (circuit graphs: Vega-Lite only).
+ *  - Attribution: rank 3 or more, read as (N, H, W) or (N, C, H, W), as a heatmap of the first
+ *    example with channels summed: PNG when it has more than 64 x 64 cells, SVG plus Vega-Lite
+ *    otherwise. Rank 1 or 2 as a bar chart of the first example's largest features.
+ *  - Documents with a Vega-Lite view get Vega-Lite and the SVG figure; token relevance and the
+ *    protein views get their SVG; circuit graphs and training logs get Vega-Lite only.
  */
 ///@{
 [[nodiscard]] MimeBundle mime_bundle_repr(const Tensor& tensor);
