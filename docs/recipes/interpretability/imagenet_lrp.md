@@ -10,7 +10,9 @@ evidence for the class, blue for evidence against.
 CMake target: `imagenet_lrp_recipe` (`examples/recipes/imagenet_lrp.cpp`).
 
 ```bash
+cmake --build build --target imagenet_lrp_recipe --config Release
 ./build/imagenet_lrp_recipe resnet18 resnet18.safetensors photo.jpg out/ [--composite NAME] [--device hip]
+build\Release\imagenet_lrp_recipe.exe resnet18 resnet18.safetensors photo.jpg out   # Windows (Visual Studio)
 ```
 
 - `resnet18` or `vgg16`, then the converted weights, any PNG, JPEG or BMP, and an output
