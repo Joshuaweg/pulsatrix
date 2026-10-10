@@ -171,6 +171,12 @@ std::string Scripts(const HtmlOptions& options) {
            tag("vega-embed", kVegaEmbedVersion, "vega-embed.min.js", kVegaEmbedSri);
 }
 
+}  // namespace
+
+std::string html_detail::VegaScripts(const HtmlOptions& options) { return Scripts(options); }
+
+namespace {
+
 /** @brief A legend for a diverging relevance scale, as HTML. */
 std::string DivergingLegend(double max_abs) {
     std::string stops;

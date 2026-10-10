@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "pulsatrix/viz/html.hpp"
+
 namespace pulsatrix {
 namespace html_detail {
 
@@ -13,6 +15,8 @@ std::string ScriptSafe(const std::string& json);
 std::string ReadScript(const std::string& dir, const char* name);
 /** @brief A complete page: the shared style, @p head_extra in <head>, and @p body. */
 std::string Page(const std::string& heading, const std::string& head_extra, const std::string& body);
+/** @brief The <script> tags that load Vega, Vega-Lite and vega-embed as @p options says. */
+std::string VegaScripts(const HtmlOptions& options);
 
 }  // namespace html_detail
 }  // namespace pulsatrix

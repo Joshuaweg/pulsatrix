@@ -81,7 +81,7 @@ jobs:
 
       - name: Install test dependencies
         # torch (CPU wheels) and safetensors run the legacy-pickle converter's tests (IO-3).
-        run: python -m pip install numpy pytest safetensors torch --extra-index-url https://download.pytorch.org/whl/cpu
+        run: python -m pip install nbformat numpy pytest safetensors torch --extra-index-url https://download.pytorch.org/whl/cpu
 
       - name: Build bindings
         run: |
