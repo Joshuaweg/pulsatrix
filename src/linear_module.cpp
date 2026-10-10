@@ -1,9 +1,11 @@
 #include "pulsatrix/linear_module.hpp"
 
 #include <stdexcept>
+#include <utility>
 
 #include "lrp_rules.hpp"
 #include "pulsatrix/assert.hpp"
+#include "pulsatrix/relu_module.hpp"
 
 namespace pulsatrix {
 
@@ -69,21 +71,47 @@ Tensor LinearModule::forward_impl(const Tensor& input) {
     Tensor pre_bias(Shape({N, out_features_}), backend_, weight_.device());
     backend_->gemm(input.data(), weight_.data(), pre_bias.data(), static_cast<size_t>(N),
                     static_cast<size_t>(in_features_), static_cast<size_t>(out_features_));
-    last_pre_bias_output_ = pre_bias;  // cached for propagate_relevance's z_j
 
     // bias_ is (out_features,), broadcast-added per row on the device. (The batch migration
     // originally used a raw host loop here, which silently dereferenced device pointers on a
     // Cuda/Hip module; Mission 0 of GPU-native-kernels routed it through a ones-gemm, now the
     // dedicated add_row_vector primitive.)
+    has_forwarded_ = true;
     if (!use_bias_) {
-        has_forwarded_ = true;
+        last_pre_bias_output_ = pre_bias;  // cached for propagate_relevance's z_j
         return pre_bias;
     }
     Tensor output(pre_bias.shape(), backend_, weight_.device());
     backend_->add_row_vector(pre_bias.data(), bias_.data(), output.data(), static_cast<size_t>(N),
                              static_cast<size_t>(out_features_));
-    has_forwarded_ = true;
+    last_pre_bias_output_ = std::move(pre_bias);  // cached for propagate_relevance's z_j; no copy (HIP-6)
     return output;
+}
+
+Tensor LinearModule::forward_with_relu(const Tensor& input, ReluModule& relu) {
+    if (!use_bias_ || relu.compute_device() != std::optional<DeviceType>(weight_.device())) {
+        return relu.forward(forward(input));
+    }
+    // Module::forward()'s checks on the input, then the gemm as forward_impl() does it.
+    if (input.numel() <= 0) throw std::invalid_argument("Module::forward: input must not be empty");
+    require_device(input, weight_.device(), "Module::forward");
+    if (input.rank() != 2 || input.shape().dim(1) != in_features_) {
+        throw std::invalid_argument("LinearModule::forward: input must be rank-2 (N, in_features)");
+    }
+    const int64_t N = input.shape().dim(0);
+    last_input_ = input;
+    Tensor pre_bias(Shape({N, out_features_}), backend_, weight_.device());
+    backend_->gemm(input.data(), weight_.data(), pre_bias.data(), static_cast<size_t>(N),
+                   static_cast<size_t>(in_features_), static_cast<size_t>(out_features_));
+    // One kernel: this layer's output z (the ReLU's input) and the ReLU's output.
+    Tensor z(pre_bias.shape(), backend_, weight_.device());
+    Tensor out(pre_bias.shape(), backend_, weight_.device());
+    backend_->add_row_vector_relu(pre_bias.data(), bias_.data(), z.data(), out.data(), static_cast<size_t>(N),
+                                  static_cast<size_t>(out_features_));
+    last_pre_bias_output_ = std::move(pre_bias);
+    has_forwarded_ = true;
+    relu.set_fused_forward_input(std::move(z));
+    return out;
 }
 
 Tensor LinearModule::backward(const Tensor& grad_output) {

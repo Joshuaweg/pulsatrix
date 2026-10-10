@@ -1,7 +1,11 @@
 #include "pulsatrix/sequential_module.hpp"
 
 #include <stdexcept>
+#include <typeinfo>
 #include <utility>
+
+#include "pulsatrix/linear_module.hpp"
+#include "pulsatrix/relu_module.hpp"
 
 namespace pulsatrix {
 
@@ -21,9 +25,24 @@ SequentialModule::SequentialModule(std::vector<Module*> layers) : layers_(std::m
 }
 
 Tensor SequentialModule::forward_impl(const Tensor& input) {
-    Tensor current(input);
-    for (Module* layer : layers_) {
-        current = layer->forward(current);
+    // HIP-6: a LinearModule followed by a ReluModule runs as one fused bias-and-ReLU kernel, with
+    // the same values and cached state. The input isn't copied first: each layer reads its own.
+    const auto step = [&](size_t& i, const Tensor& x) {
+        if (i + 1 < layers_.size()) {
+            // Exactly these two types: a subclass may compute something else in forward().
+            if (typeid(*layers_[i]) == typeid(LinearModule) && typeid(*layers_[i + 1]) == typeid(ReluModule)) {
+                auto& linear = static_cast<LinearModule&>(*layers_[i]);
+                auto& relu = static_cast<ReluModule&>(*layers_[i + 1]);
+                ++i;
+                return linear.forward_with_relu(x, relu);
+            }
+        }
+        return layers_[i]->forward(x);
+    };
+    size_t i = 0;
+    Tensor current = step(i, input);
+    for (++i; i < layers_.size(); ++i) {
+        current = step(i, current);
     }
     has_forwarded_ = true;
     return current;

@@ -17,11 +17,25 @@ float ClipGradNorm(Module& module, float max_norm, bool error_if_nonfinite) {
         }
     }
     // Each parameter's squared norm on its own device, summed on the host in double, in
-    // parameters() order.
+    // parameters() order. HIP-6: when they share a backend, the squared norms are written to one
+    // device buffer and read back together, one wait instead of one per parameter.
     double sum_sq = 0.0;
+    DeviceBackend* shared = trainable.empty() ? nullptr : trainable.front().grad->backend();
     for (ParamRef p : trainable) {
-        const auto n = static_cast<size_t>(p.grad->numel());
-        sum_sq += static_cast<double>(p.grad->backend()->dot(p.grad->data(), p.grad->data(), n));
+        if (p.grad->backend() != shared) shared = nullptr;
+    }
+    if (shared != nullptr) {
+        Tensor squares(Shape({static_cast<int64_t>(trainable.size())}), shared, trainable.front().grad->device());
+        for (size_t i = 0; i < trainable.size(); ++i) {
+            const Tensor& g = *trainable[i].grad;
+            shared->dot_into(g.data(), g.data(), static_cast<size_t>(g.numel()), squares.data() + i);
+        }
+        for (const float sq : squares.to_host_vector()) sum_sq += static_cast<double>(sq);
+    } else {
+        for (ParamRef p : trainable) {
+            const auto n = static_cast<size_t>(p.grad->numel());
+            sum_sq += static_cast<double>(p.grad->backend()->dot(p.grad->data(), p.grad->data(), n));
+        }
     }
     const auto norm = static_cast<float>(std::sqrt(sum_sq));
     if (!std::isfinite(norm)) {

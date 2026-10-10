@@ -124,6 +124,38 @@ PULSATRIX_HOST_DEVICE inline void polyak_blend(const RlRowArgs& a, int64_t i) {
     a.out[0][i] = a.tau * a.in[0][i] + (1.0f - a.tau) * a.in[1][i];
 }
 
+// TokenCrossEntropyLoss::forward (HIP-6): decode and check row b's target on the device, then
+// PolicyGradientLoss's row with the decoded index and weight -- the same terms the host-validated
+// path computed. Statistics row: term, counted token, not a whole number, out of range.
+PULSATRIX_HOST_DEVICE inline void token_ce_loss(const RlRowArgs& a, int64_t b) {
+    const float e = a.in[1][b];
+    const float rounded = roundf(e);
+    float index = 0.0f, weight = 0.0f, bad_integer = 0.0f, bad_range = 0.0f;
+    if (!(fabsf(e - rounded) <= 1e-4f)) {  // TokenCrossEntropyLoss's kIndexIntegerTolerance
+        bad_integer = 1.0f;
+    } else {
+        const auto i = static_cast<int64_t>(rounded);
+        if (i != a.ignore_index) {
+            if (i < 0 || i >= a.cols) {
+                bad_range = 1.0f;
+            } else {
+                index = static_cast<float>(i);
+                weight = 1.0f;
+            }
+        }
+    }
+    a.out[2][b] = index;
+    a.out[3][b] = weight;
+    RlRowArgs decoded = a;
+    decoded.in[1] = a.out[2];
+    const float log_softmax_selected = softmax_row(decoded, b, a.out[0]);
+    float* stats = a.out[1] + b * 4;
+    stats[0] = -log_softmax_selected * weight;
+    stats[1] = weight;
+    stats[2] = bad_integer;
+    stats[3] = bad_range;
+}
+
 PULSATRIX_HOST_DEVICE inline void row(RlRowOp op, const RlRowArgs& a, int64_t b) {
     switch (op) {
         case RlRowOp::DqnLoss:
@@ -149,6 +181,9 @@ PULSATRIX_HOST_DEVICE inline void row(RlRowOp op, const RlRowArgs& a, int64_t b)
             break;
         case RlRowOp::PolyakBlend:
             polyak_blend(a, b);
+            break;
+        case RlRowOp::TokenCeLoss:
+            token_ce_loss(a, b);
             break;
     }
 }
