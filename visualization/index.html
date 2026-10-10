@@ -1117,6 +1117,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reports-notebooks-and-html-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reports: notebooks and HTML pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#attribution-graphs-neuronpedia-and-circuit-tracer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2243,6 +2254,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reports-notebooks-and-html-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reports: notebooks and HTML pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#attribution-graphs-neuronpedia-and-circuit-tracer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2993,6 +3015,35 @@ nlohmann 3.12 and xeus-cpp 0.10's own lookup.</p>
 </code></pre></div>
 <p><code>MimeBundle::to_json_value()</code> returns the bundle as one JSON object, <code>{"text/plain": ..., ...}</code>,
 for other front ends.</p>
+<h2 id="reports-notebooks-and-html-pages">Reports: notebooks and HTML pages<a class="headerlink" href="#reports-notebooks-and-html-pages" title="Permanent link">&para;</a></h2>
+<p><code>Report</code> (<code>viz/report.hpp</code>) writes results as a Jupyter notebook (nbformat 4.5) or as one HTML
+page, from C++, with no Python and no kernel (NB-2):</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"pulsatrix/viz/report.hpp"</span>
+
+<span class="n">Report</span><span class="w"> </span><span class="n">report</span><span class="p">(</span><span class="s">"LRP on ResNet18"</span><span class="p">);</span>
+<span class="n">report</span><span class="p">.</span><span class="n">markdown</span><span class="p">(</span><span class="s">"We explain the top class with **EpsilonPlus**."</span><span class="p">)</span>
+<span class="w">      </span><span class="p">.</span><span class="n">code</span><span class="p">(</span><span class="s">"Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &amp;backend);"</span><span class="p">)</span>
+<span class="w">      </span><span class="p">.</span><span class="n">show</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w">           </span><span class="c1">// anything with a mime_bundle_repr(): the heatmap</span>
+<span class="n">report</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="s">"top class: 24 (great grey owl)"</span><span class="p">);</span>
+<span class="n">report</span><span class="p">.</span><span class="n">save_ipynb</span><span class="p">(</span><span class="s">"resnet18.ipynb"</span><span class="p">);</span>
+<span class="n">report</span><span class="p">.</span><span class="n">save_html</span><span class="p">(</span><span class="s">"resnet18.html"</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong>Cells.</strong> <code>markdown()</code> adds a markdown cell and <code>code()</code> a code cell. The code is shown as
+  text and not run, so it has no execution count. <code>show()</code> and <code>output()</code> add rich outputs
+  (NB-1's bundles), and <code>text()</code> adds plain text. Outputs attach to the code cell before them;
+  one with no code cell before it gets its own cell, with the empty input hidden.</li>
+<li><strong>The notebook</strong> keeps its outputs, so it renders as it is on GitHub, in JupyterLab, VS Code and
+  Quarto. Its kernel spec is xeus-cpp's C++17 kernel. Cell ids are numbered, so the same report
+  always writes the same bytes. The tests compare a sample report with a committed notebook, and
+  CI checks that notebook with <code>nbformat.validate</code>.</li>
+<li><strong>The HTML page</strong> shows each output in its richest format that needs no kernel: Vega-Lite charts
+  (with the page's Vega libraries, from the CDN or inlined with <code>HtmlScripts::Inline</code> for offline
+  use), then SVG, PNG, HTML and text. A report without charts has no scripts. The markdown subset
+  it renders covers headings, paragraphs, lists, fenced code, pipe tables, bold, italic, code
+  spans and links. Raw HTML in the markdown is escaped, and links go only to http, https, mailto
+  or relative URLs. Jupyter renders the notebook's markdown in full.</li>
+</ul>
 <h2 id="attribution-graphs-neuronpedia-and-circuit-tracer">Attribution graphs (Neuronpedia and circuit-tracer)<a class="headerlink" href="#attribution-graphs-neuronpedia-and-circuit-tracer" title="Permanent link">&para;</a></h2>
 <p>An attribution graph shows how a prediction is built up through the layers of a network.
 pulsatrix writes graphs in the JSON format that

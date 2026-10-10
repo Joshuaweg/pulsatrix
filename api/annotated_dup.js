@@ -321,6 +321,7 @@ var annotated_dup =
       [ "ReplaceNormalizer", "classpulsatrix_1_1ReplaceNormalizer.html", "classpulsatrix_1_1ReplaceNormalizer" ],
       [ "ReplayBatch", "structpulsatrix_1_1ReplayBatch.html", "structpulsatrix_1_1ReplayBatch" ],
       [ "ReplayBuffer", "classpulsatrix_1_1ReplayBuffer.html", "classpulsatrix_1_1ReplayBuffer" ],
+      [ "Report", "classpulsatrix_1_1Report.html", "classpulsatrix_1_1Report" ],
       [ "ResampleTransform", "classpulsatrix_1_1ResampleTransform.html", "classpulsatrix_1_1ResampleTransform" ],
       [ "ResidualModule", "classpulsatrix_1_1ResidualModule.html", "classpulsatrix_1_1ResidualModule" ],
       [ "ResidueAgreement", "structpulsatrix_1_1ResidueAgreement.html", "structpulsatrix_1_1ResidueAgreement" ],

@@ -129,7 +129,7 @@ var searchData=
   ['at_5fl_126',['at_l',['../structpulsatrix_1_1ContactPrecisions.html#af6c8561d2dad4e8316f2da4e04eef860',1,'pulsatrix::ContactPrecisions']]],
   ['at_5fl2_127',['at_l2',['../structpulsatrix_1_1ContactPrecisions.html#a543d636e6e4e93591d954427f60a5f9b',1,'pulsatrix::ContactPrecisions']]],
   ['at_5fl5_128',['at_l5',['../structpulsatrix_1_1ContactPrecisions.html#a658bcd1d24ad67652df099a063503f7b',1,'pulsatrix::ContactPrecisions']]],
-  ['atom_129',['atom',['../classpulsatrix_1_1datalog_1_1Atom.html',1,'pulsatrix::datalog::Atom'],['../structpulsatrix_1_1StructureResidue.html#a760919a2b2d7e28b8f8fd1c9a6eab71f',1,'pulsatrix::StructureResidue::atom()'],['../classpulsatrix_1_1datalog_1_1Atom.html#a8e6f8fa069e0befa45b3ffdd0abe53bd',1,'pulsatrix::datalog::Atom::Atom()']]],
+  ['atom_129',['atom',['../classpulsatrix_1_1datalog_1_1Atom.html',1,'pulsatrix::datalog::Atom'],['../classpulsatrix_1_1datalog_1_1Atom.html#a8e6f8fa069e0befa45b3ffdd0abe53bd',1,'pulsatrix::datalog::Atom::Atom()'],['../structpulsatrix_1_1StructureResidue.html#a760919a2b2d7e28b8f8fd1c9a6eab71f',1,'pulsatrix::StructureResidue::atom()']]],
   ['atomhash_130',['AtomHash',['../structpulsatrix_1_1datalog_1_1AtomHash.html',1,'pulsatrix::datalog']]],
   ['atoms_131',['atoms',['../structpulsatrix_1_1StructureResidue.html#acf65b822eee59995a80322751813e4b2',1,'pulsatrix::StructureResidue']]],
   ['attention_132',['Attention',['../namespacepulsatrix.html#a94d9ac6240473b5362d1e8e5c11157bba2aa97e44cace7cb882c9dcba32940f8f',1,'pulsatrix']]],
