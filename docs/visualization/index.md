@@ -349,6 +349,49 @@ score.
 **Safety.** Labels are escaped: a feature called `</script>` stays text. The chart's data is
 embedded as JSON, not as code.
 
+## Notebooks: rich display
+
+`mime_bundle_repr()` (`viz/mime_bundle.hpp`) gives each type the formats a Jupyter notebook
+can show (NB-1):
+
+```cpp
+#include "pulsatrix/viz/mime_bundle.hpp"
+
+MimeBundle b = mime_bundle_repr(attribution);
+// b.entries: {"application/vnd.vegalite.v5+json", spec}, {"image/svg+xml", svg}, {"text/plain", text}
+```
+
+| Value | Shown as |
+|---|---|
+| `Tensor` | A summary as text and an HTML table: shape, device, min, max, mean, standard deviation, non-finite count and the leading values |
+| `Attribution` | Rank 3 or more: a heatmap of the first example, channels summed. Up to 64 × 64 cells it is Vega-Lite plus SVG; larger maps are a PNG, one pixel per cell. Rank 1 or 2: a bar chart of the first example's largest features |
+| `CircuitGraph`, `CircuitGraphDocument` | A Vega-Lite node-link view: columns by depth, nodes colored by ablation effect, edges as thick as their weight |
+| Documents with a chart (attribution, heatmap, partial dependence, sensitivity, counterfactual, Morris, Sobol) | Vega-Lite and the SVG figure |
+| `TrainingLogDocument` | Vega-Lite |
+| `TokenRelevanceDocument`, the protein views | The SVG figure |
+
+Every bundle has `text/plain`, and its richest format comes first. The Vega-Lite specs use only
+Vega-Lite 5 features, so they're sent as `application/vnd.vegalite.v5+json`, which JupyterLab,
+Notebook 7 and VS Code render natively. They are checked against Vega-Lite 5's schema and render
+with Vega-Lite 5.23 without warnings. The SVG is the fallback for front ends that don't run Vega,
+such as GitHub's notebook preview. The HTML uses inline styles only, so nothing leaks into the
+rest of the notebook.
+
+**In xeus-cpp** (the C++ Jupyter kernel), `xcpp::display(x)` calls `mime_bundle_repr(x)`
+unqualified, so it finds these overloads by argument-dependent lookup. xeus converts the result to
+its `nlohmann::json` through `pulsatrix::to_json()`, a template written against nlohmann's
+interface. pulsatrix doesn't depend on xeus or on nlohmann; the tests check the conversion with
+nlohmann 3.12 and xeus-cpp 0.10's own lookup.
+
+```cpp
+// in a xeus-cpp notebook cell
+#include "pulsatrix/viz/mime_bundle.hpp"
+xcpp::display(lrp.explain(ctx, x, target, &backend));  // a heatmap
+```
+
+`MimeBundle::to_json_value()` returns the bundle as one JSON object, `{"text/plain": ..., ...}`,
+for other front ends.
+
 ## Attribution graphs (Neuronpedia and circuit-tracer)
 
 An attribution graph shows how a prediction is built up through the layers of a network.
