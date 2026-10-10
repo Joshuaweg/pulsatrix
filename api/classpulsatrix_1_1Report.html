@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classpulsatrix_1_1Report.html',''); in
 </div><!--header-->
 <div class="contents">
 
-<p>A document of markdown, code and rich outputs, written as a Jupyter notebook (nbformat 4.5) or as one self-contained HTML page. Neither needs Python or a kernel: the notebook renders on GitHub, in JupyterLab, VS Code and Quarto with its outputs already in place.  
+<p>A document of markdown, code and rich outputs, written as a Jupyter notebook (nbformat 4.5) or as one self-contained HTML page. Neither needs Python or a kernel: the notebook renders on GitHub, in JupyterLab, VS Code and Quarto with its outputs already in place. The title becomes a heading cell at the top.  
  <a href="classpulsatrix_1_1Report.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="report_8hpp_source.html">report.hpp</a>&gt;</code></p>
@@ -142,14 +142,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a978ab910a0cfcc22b6703970af4f48ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A document of markdown, code and rich outputs, written as a Jupyter notebook (nbformat 4.5) or as one self-contained HTML page. Neither needs Python or a kernel: the notebook renders on GitHub, in JupyterLab, VS Code and Quarto with its outputs already in place. </p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classpulsatrix_1_1Report.html">Report</a> report(<span class="stringliteral">&quot;LRP on ResNet18&quot;</span>);</div>
+<div class="textblock"><p>A document of markdown, code and rich outputs, written as a Jupyter notebook (nbformat 4.5) or as one self-contained HTML page. Neither needs Python or a kernel: the notebook renders on GitHub, in JupyterLab, VS Code and Quarto with its outputs already in place. The title becomes a heading cell at the top. </p>
+<div class="fragment"><div class="line"><a class="code hl_struct" href="structpulsatrix_1_1Attribution.html">Attribution</a> a = <a class="code hl_function" href="classpulsatrix_1_1LRP.html#a6370aa4cd308e67af1ddc9817c4e1466">LRP::epsilon_plus</a>().<a class="code hl_function" href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde">explain</a>(ctx, x, target, &amp;backend);  <span class="comment">// computed as usual</span></div>
+<div class="line"><a class="code hl_class" href="classpulsatrix_1_1Report.html">Report</a> report(<span class="stringliteral">&quot;LRP on ResNet18&quot;</span>);</div>
 <div class="line">report.markdown(<span class="stringliteral">&quot;We explain the top class with **EpsilonPlus**.&quot;</span>)</div>
-<div class="line">      .code(<span class="stringliteral">&quot;Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &amp;backend);&quot;</span>)</div>
+<div class="line">      .code(<span class="stringliteral">&quot;Attribution a = LRP::epsilon_plus().explain(ctx, x, target, &amp;backend);&quot;</span>)  <span class="comment">// shown only</span></div>
 <div class="line">      .show(a);                        <span class="comment">// any type with a mime_bundle_repr() (NB-1)</span></div>
 <div class="line">report.save_ipynb(<span class="stringliteral">&quot;resnet18.ipynb&quot;</span>);</div>
 <div class="line">report.save_html(<span class="stringliteral">&quot;resnet18.html&quot;</span>);</div>
-<div class="ttc" id="aclasspulsatrix_1_1Report_html"><div class="ttname"><a href="classpulsatrix_1_1Report.html">pulsatrix::Report</a></div><div class="ttdoc">A document of markdown, code and rich outputs, written as a Jupyter notebook (nbformat 4....</div><div class="ttdef"><b>Definition</b> report.hpp:40</div></div>
+<div class="ttc" id="aclasspulsatrix_1_1LRP_html_a6370aa4cd308e67af1ddc9817c4e1466"><div class="ttname"><a href="classpulsatrix_1_1LRP.html#a6370aa4cd308e67af1ddc9817c4e1466">pulsatrix::LRP::epsilon_plus</a></div><div class="ttdeci">static LRP epsilon_plus(float epsilon=1e-6f)</div><div class="ttdoc">Zennit EpsilonPlus preset (lrp_composite::epsilon_plus).</div><div class="ttdef"><b>Definition</b> lrp.hpp:184</div></div>
+<div class="ttc" id="aclasspulsatrix_1_1LRP_html_aecd0567125d3e4bb778c71366b681fde"><div class="ttname"><a href="classpulsatrix_1_1LRP.html#aecd0567125d3e4bb778c71366b681fde">pulsatrix::LRP::explain</a></div><div class="ttdeci">Attribution explain(ExplainerContext &amp;ctx, const Tensor &amp;input, int64_t target_index, DeviceBackend *backend) const</div><div class="ttdoc">Explains target_index for every row, OutputValue seed.</div><div class="ttdef"><b>Definition</b> lrp.hpp:197</div></div>
+<div class="ttc" id="aclasspulsatrix_1_1Report_html"><div class="ttname"><a href="classpulsatrix_1_1Report.html">pulsatrix::Report</a></div><div class="ttdoc">A document of markdown, code and rich outputs, written as a Jupyter notebook (nbformat 4....</div><div class="ttdef"><b>Definition</b> report.hpp:41</div></div>
+<div class="ttc" id="astructpulsatrix_1_1Attribution_html"><div class="ttname"><a href="structpulsatrix_1_1Attribution.html">pulsatrix::Attribution</a></div><div class="ttdoc">An explanation result: the raw attribution values, the method that produced them, and any relevant me...</div><div class="ttdef"><b>Definition</b> attribution.hpp:23</div></div>
 </div><!-- fragment --><ul>
 <li><b>Code is shown, not run.</b> A code cell holds its source as text with no execution count.</li>
 <li><b>Outputs</b> attach to the code cell before them. An output with no code cell before it gets a code cell of its own with no source, whose input is hidden in JupyterLab.</li>

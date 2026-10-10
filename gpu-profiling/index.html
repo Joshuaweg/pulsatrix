@@ -2406,9 +2406,9 @@ where it must:</p>
 </table>
 <p>Set <code>PULSATRIX_HIP_SYNC_DEBUG=1</code> before creating the backend to restore the per-op waits. A
 failing kernel otherwise reports its error at the next wait, not at the op that caused it.</p>
-<p>The small models are still only about 20% busy. What's left is host-side work inside each step:
-reading the loss back, and losses that validate their targets on the host (one copy each step).
-Fused kernels (HIP-6) and keeping targets on the device are the next steps there.</p>
+<p>After HIP-4 the small models were still only about 20% busy, because of host-side work inside
+each step: reading the loss back, and losses that validated their targets on the host. HIP-6
+(below) moved the target checks to the device and fused the optimizer step.</p>
 <h3 id="hip-7-conv2d-in-batch-chunks">HIP-7: Conv2D in batch chunks<a class="headerlink" href="#hip-7-conv2d-in-batch-chunks" title="Permanent link">&para;</a></h3>
 <p><code>Conv2DModule</code> unfolds its input into patches (im2col) and multiplies them by the kernel. The
 patches take <code>N x C*kh*kw x out_h*out_w</code> floats: 7.4 MB per 224x224 image in ResNet18's first
@@ -2418,9 +2418,13 @@ layer, 115 MB in VGG16's widest. Every convolution used to keep its whole batch'
 <code>Conv2DModule::set_max_workspace_bytes()</code> (16 MiB by default). A larger batch runs in chunks of
 examples, and <code>backward()</code> and <code>propagate_relevance()</code> rebuild each chunk's patches from the
 cached input. The results are bit-identical for every budget; the tests check forward, the three
-gradients and all five LRP rules.</p>
-<p>Explaining ResNet18 (EpsilonPlus, batch 32, 224x224), all patches kept against the 16 MiB
-default (on the GPU three runs each, in ABBA order, all within 0.01 s; on the CPU one run each):</p>
+gradients and all five LRP rules, on the CPU and the GPU (still after HIP-6's batched GEMMs).</p>
+<p>The budget is per layer: call <code>set_max_workspace_bytes()</code> on each <code>Conv2DModule</code>. Lower it if a
+large batch runs out of memory; <code>SIZE_MAX</code> keeps every patch, as before HIP-7.</p>
+<p>Explaining ResNet18 (EpsilonPlus, batch 32, 224x224). Before: every layer keeps all its patches.
+After: the 16 MiB default. GPU times are from three runs each in ABBA order (old, new, new, old,
+so drift affects both builds; see <a href="../benchmarks/">Benchmarks</a>), all within 0.01 s of each other.
+CPU times are single runs.</p>
 <table>
 <thead>
 <tr>
@@ -2433,7 +2437,7 @@ default (on the GPU three runs each, in ABBA order, all within 0.01 s; on the CP
 </thead>
 <tbody>
 <tr>
-<td>gfx1151 (HIP allocator, in use)</td>
+<td>gfx1151 (the HIP allocator's peak memory in use)</td>
 <td>5.75 GB</td>
 <td>2.40 GB</td>
 <td>0.70 s</td>
@@ -2454,9 +2458,8 @@ the caches, so the chunked layers are no slower.</p>
 <p>Fewer launches and fewer waits in each training step, with the same numbers:</p>
 <ul>
 <li><strong>One launch for the optimizer.</strong> <code>AdamOptimizer</code> (and AdamW, and Adam with L2 decay) updates
-  every parameter with one <code>adam_step_multi</code> call. On the GPU it is one kernel per 32 tensors,
-  the table passed in the kernel's arguments as PyTorch's <code>multi_tensor_apply</code> does, so nothing is
-  uploaded first. The weight decay is folded into the same kernel.</li>
+  every parameter with one <code>adam_step_multi</code> call: on the GPU, one kernel per 32 parameter
+  tensors, with nothing uploaded first. The weight decay is folded into the same kernel.</li>
 <li><strong>One wait for gradient clipping.</strong> <code>ClipGradNorm</code> used to read back one <code>dot</code> per parameter
   (19 waits per tagger step). The squared norms now go to one device buffer and come back
   together; the host still adds them in double, in the same order.</li>
@@ -2470,7 +2473,8 @@ the caches, so the chunked layers are no slower.</p>
   ReLU output. A test checks that the fused layers give the same outputs, gradients and relevance,
   bit for bit, as the same layers called one by one.</li>
 <li><strong>Batched GEMMs in Conv2D</strong> (a HIP-7 follow-up). The kernel against every example's patches is
-  one strided-batched GEMM, in forward, backward and LRP, instead of one GEMM per example. Each
+  one strided-batched GEMM (one call over many equally spaced matrices), in forward, backward and
+  LRP, instead of one GEMM per example. Each
   example's kernel and bias gradients still go to their own buffer and are added in example
   order, so they sum as before.</li>
 </ul>
@@ -2478,7 +2482,8 @@ the caches, so the chunked layers are no slower.</p>
 the GPU (they share the device functions; the tests compare them with <code>EXPECT_EQ</code>). The batched
 GEMM's rounding can differ from one GEMM per example on the GPU, within the CPU-GPU tolerance
 every test already uses.</p>
-<p>KS-2's suite against HIP-7, gfx1151, four ABBA rounds:</p>
+<p>The benchmark suite (<a href="../benchmarks/">Benchmarks</a>) on gfx1151, four ABBA rounds. Before is the
+commit with HIP-7 only:</p>
 <table>
 <thead>
 <tr>
