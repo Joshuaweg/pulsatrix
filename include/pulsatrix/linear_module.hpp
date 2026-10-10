@@ -12,6 +12,8 @@
 
 namespace pulsatrix {
 
+class ReluModule;
+
 /**
  * @brief y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) --
  *        migrated from the original unbatched (rank-1) scope by
@@ -129,6 +131,14 @@ public:
      *         alpha, beta >= 0 and alpha - beta == 1).
      */
     [[nodiscard]] Tensor propagate_relevance(const Tensor& relevance_out, const LRPRuleConfig& config) override;
+
+    /**
+     * @brief `relu.forward(forward(input))` with the bias add and the ReLU in one kernel (HIP-6).
+     *        Both layers end with the cached state the two calls leave, so backward() and LRP
+     *        are unchanged, and the values are identical. SequentialModule uses it for every
+     *        LinearModule followed by a ReluModule.
+     */
+    [[nodiscard]] Tensor forward_with_relu(const Tensor& input, ReluModule& relu);
 
     /** @brief Implements every LRPRule. */
     [[nodiscard]] bool supports_lrp_rule(LRPRule) const override { return true; }

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <optional>
+#include <utility>
 #include "pulsatrix/module.hpp"
 
 namespace pulsatrix {
@@ -61,6 +62,12 @@ public:
 
     /** @brief Where this layer computes, so forward() rejects an input on another device (FND-8). */
     [[nodiscard]] std::optional<DeviceType> compute_device() const override { return device_; }
+
+    /**
+     * @brief Records `input` as this layer's forward input, for backward() and LRP, when a fused
+     *        kernel has computed the ReLU (HIP-6: LinearModule::forward_with_relu()).
+     */
+    void set_fused_forward_input(Tensor input) { last_input_ = std::move(input); }
 
 protected:
     [[nodiscard]] Tensor forward_impl(const Tensor& input) override;

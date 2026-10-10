@@ -154,7 +154,7 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
   sensitivity, and counterfactuals, each with its view
 - TOK-1 to TOK-4 (**done**): the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores
-- HIP-6: fused kernels (HIP-3 landed early, in v1.1)
+- HIP-6 (**done**): fused kernels (HIP-3 landed early, in v1.1)
 - HIP-7 (**done**): bounded-memory Conv2D
 - VIZ-3, VIZ-6a (**done**): Vega-Lite HTML and the token relevance view
 - NB-1, NB-2: native rich display and the `.ipynb`/HTML report writer
@@ -1190,7 +1190,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 | HIP-3 | A caching allocator: size classes, a pool per stream, and a configurable budget instead of `hipMemGetInfo`, which overstates what the APU can allocate. Don't use `hipMallocAsync` (open corruption bugs on RDNA) | Raw `hipMalloc` and `hipFree` on every tensor | — | P0 | M | Done, [#58](https://github.com/Joshuaweg/pulsatrix/pull/58) |
 | HIP-4 | Remove the 56 per-op `hipStreamSynchronize` calls. Sync only when the host reads a result, and add `PULSATRIX_HIP_SYNC_DEBUG=1` to bring them back for debugging | Launch and sync cost more than the kernels on small models | HIP-3, FND-8 | P0 | S | Done, [#59](https://github.com/Joshuaweg/pulsatrix/pull/59) (see below) |
 | HIP-5 | `dot` and `sum` across many blocks (partials, then a second pass), deterministic | They run on a single block today | — | P0 | S | Done, [#56](https://github.com/Joshuaweg/pulsatrix/pull/56) |
-| HIP-6 | Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs | Fewer launches and less memory traffic | TRN-2 | P1 | — | |
+| HIP-6 | Fused kernels: AdamW across all parameters in one launch, bias plus activation, softmax plus cross-entropy. In explain mode they still write the values LRP needs | Fewer launches and less memory traffic | TRN-2 | P1 | — | Done, [#119](https://github.com/Joshuaweg/pulsatrix/pull/119) (see below) |
 | HIP-7 | Conv2D that runs im2col and GEMM in batch chunks | The first layer's im2col buffer at N=64 is about 350 MB, which competes with system RAM on an APU | FND-6 | P1 | S | Done, [#118](https://github.com/Joshuaweg/pulsatrix/pull/118) (see below) |
 | HIP-8 | A hipBLASLt probe on the pinned container, then bf16 GEMM through `hipblasGemmEx` | Reports conflict on whether hipBLASLt works on gfx1151 in ROCm 7.2.4; measure it | HIP-1 | P1 | — | |
 | HIP-9 | A ROCm 10.0 evaluation image, the first release that officially lists gfx1151. Also pin the host kernel version (6.18.4 or newer, or the Ubuntu OEM kernel with the VGPR fix) | Known gfx1151 crashes depend on both | — | P1 | S || Done, [#65](https://github.com/Joshuaweg/pulsatrix/pull/65) (see below) |
@@ -1239,11 +1239,26 @@ memory bandwidth (about 212 GB/s).
   are whole examples: one example larger than the budget still takes its full patch buffer
   (115 MB in VGG16's widest layers).
 
+- **HIP-6.** Profiling first showed the small models' step times were mostly one-time startup
+  (`hip_profile_workloads` spreads about 250 ms of stream and hipBLAS setup over 20 steps), so
+  HIP-6 was measured with KS-2's suite in ABBA order. The three named fusions went in, and two
+  more changes the profile pointed to:
+  - gradient clipping reads every squared norm back at once instead of one per parameter;
+  - `TokenCrossEntropyLoss` checks its targets on the device (the HIP-4 follow-up);
+  - the CNN spent 80% of its time in one GEMM per example, so Conv2D uses strided-batched GEMMs
+    (the HIP-7 follow-up).
+
+  Training steps got 15% (MLP), 17% (tagger) and 73% (CNN) faster. The fusions are bit-identical
+  to the unfused calls, which settles the research notes' risk that a fused training path drifts
+  from the explain path. Bias plus activation covers Linear followed by ReLU inside a
+  `SequentialModule`; other activations and layers that aren't in a `SequentialModule` still run
+  unfused.
+
 ### Follow-ups the HIP work surfaced
 
 | Follow-up | Found in | Belongs with |
 |---|---|---|
-| Host-side work in each step: reading the loss back, and losses that validate targets on the host. Small models are about 20% GPU-busy | HIP-4 | HIP-6 |
+| Host-side work in each step: reading the loss back, and losses that validate targets on the host. Small models are about 20% GPU-busy | HIP-4 | HIP-6: done for `TokenCrossEntropyLoss` and gradient clipping |
 | Softmax, LayerNorm, RMSNorm and `column_sums` still run one thread per row; re-profile at SmolLM2 widths | HIP-2 | after LLM-1 |
 | The CUDA backend still synchronizes after every op (61 calls) and allocates with raw `cudaMalloc` | HIP-3, HIP-4 | its own item |
 | A pool per stream, if a second stream is ever added | HIP-3 | HIP-12 |
@@ -1252,7 +1267,10 @@ memory bandwidth (about 212 GB/s).
 | CI's compile-only HIP job still uses ROCm 7.2.4: there is no slim 10.0 image, and the full one is 8.2 GB compressed | HIP-9 | KS-8 |
 | ROCm 10's hipBLAS links hipBLASLt; check which path gfx1151 GEMMs take | HIP-9 | HIP-8 |
 | Chunk within an example (by output rows) when one example's patches exceed the budget | HIP-7 | when a model needs it |
-| One GEMM per chunk instead of one per example (a strided-batched GEMM) | HIP-7 | HIP-6 or HIP-8 |
+| One GEMM per chunk instead of one per example (a strided-batched GEMM) | HIP-7 | HIP-6: done |
+| Tensors that are overwritten in full still get a zero-fill kernel: 13% of the MLP's and 19% of the tagger's kernel time after HIP-6 | HIP-6 | an uninitialized `Tensor` constructor |
+| Layers cache their inputs by deep copy (`last_input_ = input`), one device copy per layer per forward | HIP-6 | shared, copy-on-write buffers, or caching only in explain mode |
+| Bias plus GELU or SiLU, and Linear and ReLU outside a `SequentialModule` | HIP-6 | when a profile shows it |
 
 ## AGT: Agents, native C++
 

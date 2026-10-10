@@ -29,6 +29,9 @@ whole network, see [Layer-wise Relevance Propagation](../interpretability/lrp.md
   optional `stride` and zero `padding`, as in `torch.nn.Conv2d`, and every LRP rule handles both.
   Its im2col patches use a bounded workspace (`set_max_workspace_bytes()`, 16 MiB by default):
   large batches run in chunks, with identical results (see [GPU profiling](../gpu-profiling.md#hip-7-conv2d-in-batch-chunks)).
+  On a GPU, a training step uses fused kernels where they give the same numbers: one launch for
+  the optimizer, Linear plus ReLU in a `SequentialModule`, and batched GEMMs in Conv2D
+  ([HIP-6](../gpu-profiling.md#hip-6-fused-kernels)).
   So does `MaxPool2DModule`, whose windows may overlap (ResNet's `MaxPool2d(3, 2, 1)`).
   `ResidualModule` takes an optional shortcut module, such as ResNet's downsampling convolution.
 - **Vision models**: `TorchvisionResNet` and `TorchvisionVGG` (ResNet18/34 and VGG11 to VGG19)

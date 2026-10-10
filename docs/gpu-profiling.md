@@ -165,6 +165,53 @@ default (on the GPU three runs each, in ABBA order, all within 0.01 s; on the CP
 Rebuilding the patches is cheap next to the GEMMs, and a smaller working set is friendlier to
 the caches, so the chunked layers are no slower.
 
+### HIP-6: fused kernels
+
+Fewer launches and fewer waits in each training step, with the same numbers:
+
+- **One launch for the optimizer.** `AdamOptimizer` (and AdamW, and Adam with L2 decay) updates
+  every parameter with one `adam_step_multi` call. On the GPU it is one kernel per 32 tensors,
+  the table passed in the kernel's arguments as PyTorch's `multi_tensor_apply` does, so nothing is
+  uploaded first. The weight decay is folded into the same kernel.
+- **One wait for gradient clipping.** `ClipGradNorm` used to read back one `dot` per parameter
+  (19 waits per tagger step). The squared norms now go to one device buffer and come back
+  together; the host still adds them in double, in the same order.
+- **Softmax plus cross-entropy with the targets checked on the device.**
+  `TokenCrossEntropyLoss::forward()` used to copy the targets to the host to validate them, then
+  upload the decoded indices and weights. One row kernel now decodes and checks them, computes
+  the softmax and the loss terms, and counts tokens and bad targets; one read back of four numbers
+  returns the loss. A bad target is reported with the same message as before.
+- **Bias plus ReLU.** `SequentialModule` runs each `LinearModule` followed by a `ReluModule` as
+  one kernel that writes both the Linear output (which the ReLU's backward and LRP read) and the
+  ReLU output. A test checks that the fused layers give the same outputs, gradients and relevance,
+  bit for bit, as the same layers called one by one.
+- **Batched GEMMs in Conv2D** (a HIP-7 follow-up). The kernel against every example's patches is
+  one strided-batched GEMM, in forward, backward and LRP, instead of one GEMM per example. Each
+  example's kernel and bias gradients still go to their own buffer and are added in example
+  order, so they sum as before.
+
+The fused ops are bit-identical to the unfused ones on the CPU (they are the same calls) and on
+the GPU (they share the device functions; the tests compare them with `EXPECT_EQ`). The batched
+GEMM's rounding can differ from one GEMM per example on the GPU, within the CPU-GPU tolerance
+every test already uses.
+
+KS-2's suite against HIP-7, gfx1151, four ABBA rounds:
+
+| Benchmark | Before | After | Change |
+|---|---|---|---|
+| `train.mlp` | 0.356 ms | 0.302 ms | −15% |
+| `train.tagger` | 2.345 ms | 1.952 ms | −17% |
+| `train.cnn` | 5.302 ms | 1.445 ms | −73% |
+| `explain.*` | | | within ±2.5% |
+
+LRP conservation and Integrated Gradients' completeness are unchanged to every printed digit. On
+the CPU, where the new ops run the calls they replace, every benchmark stays within ±2.5%.
+Kernel launches per training step (`hip_profile_workloads`, 20 steps): `mlp` 73 to 53, `tagger`
+754 to 692, `cnn` 531 to 137.
+
+Zero-fills of new tensors are now the largest cost after GEMM (13% of `mlp`'s and 19% of
+`tagger`'s kernel time): most of those tensors are overwritten in full right after.
+
 ## ROCm 10.0.0 evaluation
 
 ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
