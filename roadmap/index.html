@@ -1278,6 +1278,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../gpu-ci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU CI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../benchmarks/" class="md-nav__link">
         
   
@@ -1340,10 +1367,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   
@@ -1361,8 +1388,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1956,10 +1983,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" checked>
         
           
-          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
             
   
   
@@ -1977,8 +2004,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_19">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_20">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3811,7 +3838,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
 <li>NB-1 (<strong>done</strong>): native rich display</li>
 <li>NB-2 (<strong>done</strong>): the <code>.ipynb</code>/HTML report writer</li>
 <li>AGT-1 to AGT-4: the native orchestrator core</li>
-<li>KS-8: GPU CI on gfx1151</li>
+<li>KS-8 (<strong>done</strong>): GPU CI on gfx1151</li>
 <li>KS-9 (<strong>done</strong>): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)</li>
 </ul>
@@ -4216,7 +4243,7 @@ autoencoder dictionaries and a model zoo.</p>
 </tr>
 <tr>
 <td>Running the safetensors writer's GPU path on hardware</td>
-<td>HIP-9 or KS-8</td>
+<td>KS-8: done, <code>safetensors_hip_test.cpp</code></td>
 </tr>
 <tr>
 <td>Gradient buffers are allocated with every parameter, so inference uses twice the memory (SmolLM2-135M peaks at 1.9 GB)</td>
@@ -6501,7 +6528,7 @@ memory bandwidth (about 212 GB/s).</p>
 <tr>
 <td>Run the GPU tests both asynchronously and with <code>PULSATRIX_HIP_SYNC_DEBUG=1</code>, since a kernel fault now surfaces at the next wait</td>
 <td>HIP-4</td>
-<td>KS-8</td>
+<td>KS-8: done</td>
 </tr>
 <tr>
 <td>Build the benchmark suite on <code>hip_profile_workloads</code> and the interleaved A/B method</td>
@@ -6511,7 +6538,7 @@ memory bandwidth (about 212 GB/s).</p>
 <tr>
 <td>CI's compile-only HIP job still uses ROCm 7.2.4: there is no slim 10.0 image, and the full one is 8.2 GB compressed</td>
 <td>HIP-9</td>
-<td>KS-8</td>
+<td>KS-8: the GPU runner builds and tests with 10.0.0; the hosted job keeps compiling with 7.2.4, the older pin</td>
 </tr>
 <tr>
 <td>ROCm 10's hipBLAS links hipBLASLt; check which path gfx1151 GEMMs take</td>
@@ -6746,7 +6773,7 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <td>HIP-9</td>
 <td>P1</td>
 <td>M</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/125">#125</a> (see below)</td>
 </tr>
 <tr>
 <td>KS-9</td>
@@ -6824,6 +6851,17 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
   the largest value. Fixtures stay small; the weights aren't committed ("ship converters, not
   converted weights"). SmolLM2's reference heatmaps are LLM-7's LXT parity.
   <code>imagenet_lrp_recipe</code> explains a photo with either model.</p>
+<ul>
+<li><strong>KS-8</strong> runs the HIP suite on every push to this repository, on a self-hosted runner on the
+  gfx1151 machine (<code>.github/workflows/gpu.yml</code>, <code>docs/gpu-ci.md</code>). The repository is public, so
+  the design starts from security: the workflow never runs on <code>pull_request</code>, which forks can
+  trigger, only on pushes, which only collaborators can make. Workflows from forks need approval
+  in the repository settings, and the runner is a dedicated user without sudo. Each push runs the
+  full Debug suite, then the GPU tests again with a wait after every op, then the benchmarks with
+  the conservation gate on the GPU. <code>scripts/setup_gpu_runner.sh</code> sets the machine up with a
+  pinned, checksum-verified runner. It also closed the IO follow-up of writing safetensors from
+  GPU memory, which had never run on hardware.</li>
+</ul>
 <h3 id="follow-ups-the-ks-work-surfaced">Follow-ups the KS work surfaced<a class="headerlink" href="#follow-ups-the-ks-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -6842,12 +6880,22 @@ that only offers tools is small. The genuinely hard parts are narrow:</p>
 <tr>
 <td>Run <code>pulsatrix_bench</code> and its A/B comparison on the GPU in CI</td>
 <td>KS-2</td>
-<td>KS-8</td>
+<td>KS-8: the benchmarks and the conservation gate run on every push; an A/B against master is still to do</td>
 </tr>
 <tr>
 <td>The CUDA path of <code>pulsatrix_bench</code> has never run; there is no NVIDIA GPU here</td>
 <td>KS-2</td>
+<td>a CUDA runner, when one exists</td>
+</tr>
+<tr>
+<td>A benchmark A/B against master on the GPU runner, so a regression fails the push</td>
 <td>KS-8</td>
+<td>KS-2</td>
+</tr>
+<tr>
+<td>Make the GPU jobs a required check once the runner has been reliable for a while</td>
+<td>KS-8</td>
+<td>—</td>
 </tr>
 <tr>
 <td>Benchmarks on real models (ResNet18, SmolLM2) next to the fixed small ones</td>

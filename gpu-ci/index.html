@@ -10,31 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/recipes/interpretability/grad_cam_walkthrough/">
+        <link rel="canonical" href="https://joshuaweg.github.io/pulsatrix/gpu-ci/">
       
       
-        <link rel="prev" href="../saliency_and_integrated_gradients/">
+        <link rel="prev" href="../gpu-profiling/">
       
       
-        <link rel="next" href="../kernel_shap_basics/">
+        <link rel="next" href="../benchmarks/">
       
       
         
       
       
-      <link rel="icon" href="../../../assets/pulsatrix_icon.png">
+      <link rel="icon" href="../assets/pulsatrix_icon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Grad-CAM - Pulsatrix</title>
+        <title>GPU CI - Pulsatrix</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,9 +53,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#recipe-grad-cam-walkthrough" class="md-skip">
+        <a href="#gpu-ci-self-hosted-runner" class="md-skip">
           Skip to content
         </a>
       
@@ -96,9 +96,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+    <a href=".." title="Pulsatrix" class="md-header__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
       
-  <img src="../../../assets/pulsatrix_icon.png" alt="logo">
+  <img src="../assets/pulsatrix_icon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Grad-CAM
+              GPU CI
             
           </span>
         </div>
@@ -231,9 +231,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
+    <a href=".." title="Pulsatrix" class="md-nav__button md-logo" aria-label="Pulsatrix" data-md-component="logo">
       
-  <img src="../../../assets/pulsatrix_icon.png" alt="logo">
+  <img src="../assets/pulsatrix_icon.png" alt="logo">
 
     </a>
     Pulsatrix
@@ -260,7 +260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -287,7 +287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../getting-started/" class="md-nav__link">
+      <a href="../getting-started/" class="md-nav__link">
         
   
   
@@ -314,7 +314,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../deep-learning/" class="md-nav__link">
+      <a href="../deep-learning/" class="md-nav__link">
         
   
   
@@ -341,7 +341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../data-pipeline/" class="md-nav__link">
+      <a href="../data-pipeline/" class="md-nav__link">
         
   
   
@@ -368,7 +368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../language-models/" class="md-nav__link">
+      <a href="../language-models/" class="md-nav__link">
         
   
   
@@ -395,7 +395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../protein-models/" class="md-nav__link">
+      <a href="../protein-models/" class="md-nav__link">
         
   
   
@@ -469,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../interpretability/" class="md-nav__link">
+      <a href="../interpretability/" class="md-nav__link">
         
   
   
@@ -497,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../interpretability/lrp/" class="md-nav__link">
+      <a href="../interpretability/lrp/" class="md-nav__link">
         
   
   
@@ -525,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../interpretability/model-agnostic/" class="md-nav__link">
+      <a href="../interpretability/model-agnostic/" class="md-nav__link">
         
   
   
@@ -553,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../interpretability/deep-learning-approaches/" class="md-nav__link">
+      <a href="../interpretability/deep-learning-approaches/" class="md-nav__link">
         
   
   
@@ -588,7 +588,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../reinforcement-learning/" class="md-nav__link">
+      <a href="../reinforcement-learning/" class="md-nav__link">
         
   
   
@@ -662,7 +662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mechanistic-interpretability/" class="md-nav__link">
+      <a href="../mechanistic-interpretability/" class="md-nav__link">
         
   
   
@@ -690,7 +690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mechanistic-interpretability/featurizers/" class="md-nav__link">
+      <a href="../mechanistic-interpretability/featurizers/" class="md-nav__link">
         
   
   
@@ -718,7 +718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
+      <a href="../mechanistic-interpretability/evaluating-features/" class="md-nav__link">
         
   
   
@@ -746,7 +746,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mechanistic-interpretability/steering/" class="md-nav__link">
+      <a href="../mechanistic-interpretability/steering/" class="md-nav__link">
         
   
   
@@ -774,7 +774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mechanistic-interpretability/model-diffing/" class="md-nav__link">
+      <a href="../mechanistic-interpretability/model-diffing/" class="md-nav__link">
         
   
   
@@ -802,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
+      <a href="../mechanistic-interpretability/parameter-decomposition/" class="md-nav__link">
         
   
   
@@ -830,7 +830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
+      <a href="../mechanistic-interpretability/attribution-graphs/" class="md-nav__link">
         
   
   
@@ -858,7 +858,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mechanistic-interpretability/gflownets/" class="md-nav__link">
+      <a href="../mechanistic-interpretability/gflownets/" class="md-nav__link">
         
   
   
@@ -893,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../neuro-symbolic/" class="md-nav__link">
+      <a href="../neuro-symbolic/" class="md-nav__link">
         
   
   
@@ -920,7 +920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../evolutionary-computation/" class="md-nav__link">
+      <a href="../evolutionary-computation/" class="md-nav__link">
         
   
   
@@ -947,7 +947,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../hyperparameter-optimization/" class="md-nav__link">
+      <a href="../hyperparameter-optimization/" class="md-nav__link">
         
   
   
@@ -1021,7 +1021,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../visualization/" class="md-nav__link">
+      <a href="../visualization/" class="md-nav__link">
         
   
   
@@ -1049,7 +1049,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../visualization/notebooks/" class="md-nav__link">
+      <a href="../visualization/notebooks/" class="md-nav__link">
         
   
   
@@ -1077,7 +1077,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../visualization/svg/" class="md-nav__link">
+      <a href="../visualization/svg/" class="md-nav__link">
         
   
   
@@ -1105,7 +1105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../visualization/html/" class="md-nav__link">
+      <a href="../visualization/html/" class="md-nav__link">
         
   
   
@@ -1133,7 +1133,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../visualization/documents/" class="md-nav__link">
+      <a href="../visualization/documents/" class="md-nav__link">
         
   
   
@@ -1161,7 +1161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../visualization/attribution-graphs/" class="md-nav__link">
+      <a href="../visualization/attribution-graphs/" class="md-nav__link">
         
   
   
@@ -1189,7 +1189,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../visualization/desktop/" class="md-nav__link">
+      <a href="../visualization/desktop/" class="md-nav__link">
         
   
   
@@ -1224,7 +1224,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../system-monitoring/" class="md-nav__link">
+      <a href="../system-monitoring/" class="md-nav__link">
         
   
   
@@ -1251,7 +1251,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../gpu-profiling/" class="md-nav__link">
+      <a href="../gpu-profiling/" class="md-nav__link">
         
   
   
@@ -1275,10 +1275,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../gpu-ci/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU CI
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1294,6 +1321,76 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-the-runner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setting up the runner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up the runner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-the-published-resnet18-and-vgg16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: the published ResNet18 and VGG16
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-the-runner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing the runner
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1305,7 +1402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../benchmarks/" class="md-nav__link">
+      <a href="../benchmarks/" class="md-nav__link">
         
   
   
@@ -1332,7 +1429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../customization/" class="md-nav__link">
+      <a href="../customization/" class="md-nav__link">
         
   
   
@@ -1356,20 +1453,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
           <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
@@ -1390,7 +1485,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1408,7 +1503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../recipes/" class="md-nav__link">
         
   
   
@@ -1436,7 +1531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../deep-learning/xor_training/" class="md-nav__link">
+      <a href="../recipes/deep-learning/xor_training/" class="md-nav__link">
         
   
   
@@ -1464,7 +1559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
+      <a href="../recipes/deep-learning/sequence_models_rnn_lstm_gru/" class="md-nav__link">
         
   
   
@@ -1492,7 +1587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../deep-learning/residual_and_norm_layers/" class="md-nav__link">
+      <a href="../recipes/deep-learning/residual_and_norm_layers/" class="md-nav__link">
         
   
   
@@ -1520,7 +1615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../deep-learning/tagger_finetune/" class="md-nav__link">
+      <a href="../recipes/deep-learning/tagger_finetune/" class="md-nav__link">
         
   
   
@@ -1548,7 +1643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../data-pipeline/csv_dataloader_training/" class="md-nav__link">
+      <a href="../recipes/data-pipeline/csv_dataloader_training/" class="md-nav__link">
         
   
   
@@ -1576,7 +1671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mnist_lrp/" class="md-nav__link">
+      <a href="../recipes/interpretability/mnist_lrp/" class="md-nav__link">
         
   
   
@@ -1604,7 +1699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../imagenet_lrp/" class="md-nav__link">
+      <a href="../recipes/interpretability/imagenet_lrp/" class="md-nav__link">
         
   
   
@@ -1632,7 +1727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../saliency_and_integrated_gradients/" class="md-nav__link">
+      <a href="../recipes/interpretability/saliency_and_integrated_gradients/" class="md-nav__link">
         
   
   
@@ -1657,37 +1752,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Grad-CAM
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../recipes/interpretability/grad_cam_walkthrough/" class="md-nav__link">
         
   
   
@@ -1703,59 +1771,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#code" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Code
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#expected-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Expected output
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-happening" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's happening
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1768,7 +1783,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../kernel_shap_basics/" class="md-nav__link">
+      <a href="../recipes/interpretability/kernel_shap_basics/" class="md-nav__link">
         
   
   
@@ -1796,7 +1811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../lime_basics/" class="md-nav__link">
+      <a href="../recipes/interpretability/lime_basics/" class="md-nav__link">
         
   
   
@@ -1824,7 +1839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rl/dqn_cartpole/" class="md-nav__link">
+      <a href="../recipes/rl/dqn_cartpole/" class="md-nav__link">
         
   
   
@@ -1852,7 +1867,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rl/gae_and_ppo_clipped/" class="md-nav__link">
+      <a href="../recipes/rl/gae_and_ppo_clipped/" class="md-nav__link">
         
   
   
@@ -1880,7 +1895,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
+      <a href="../recipes/mechanistic-interpretability/sparse_autoencoder_probe/" class="md-nav__link">
         
   
   
@@ -1908,7 +1923,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
+      <a href="../recipes/mechanistic-interpretability/gflownet_hypergrid/" class="md-nav__link">
         
   
   
@@ -1936,7 +1951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
+      <a href="../recipes/neuro-symbolic/datalog_lrp_bridge/" class="md-nav__link">
         
   
   
@@ -1964,7 +1979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../protein-models/protein_tem1/" class="md-nav__link">
+      <a href="../recipes/protein-models/protein_tem1/" class="md-nav__link">
         
   
   
@@ -1992,7 +2007,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/notebook_report/" class="md-nav__link">
+      <a href="../recipes/visualization/notebook_report/" class="md-nav__link">
         
   
   
@@ -2020,7 +2035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/training_dashboard/" class="md-nav__link">
+      <a href="../recipes/visualization/training_dashboard/" class="md-nav__link">
         
   
   
@@ -2102,7 +2117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../roadmap/" class="md-nav__link">
+      <a href="../roadmap/" class="md-nav__link">
         
   
   
@@ -2130,7 +2145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../roadmap/research-notes/" class="md-nav__link">
+      <a href="../roadmap/research-notes/" class="md-nav__link">
         
   
   
@@ -2158,7 +2173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../roadmap/protein-language-models/" class="md-nav__link">
+      <a href="../roadmap/protein-language-models/" class="md-nav__link">
         
   
   
@@ -2193,7 +2208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../api/index.html" class="md-nav__link">
+      <a href="../api/index.html" class="md-nav__link">
         
   
   
@@ -2240,10 +2255,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#code" class="md-nav__link">
+  <a href="#security" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Code
+        Security
       
     </span>
   </a>
@@ -2251,21 +2266,38 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#expected-output" class="md-nav__link">
+  <a href="#setting-up-the-runner" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Expected output
+        Setting up the runner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up the runner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-the-published-resnet18-and-vgg16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: the published ResNet18 and VGG16
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#whats-happening" class="md-nav__link">
+  <a href="#removing-the-runner" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's happening
+        Removing the runner
       
     </span>
   </a>
@@ -2292,68 +2324,82 @@
   
 
 
-<h1 id="recipe-grad-cam-walkthrough">Recipe: Grad-CAM Walkthrough<a class="headerlink" href="#recipe-grad-cam-walkthrough" title="Permanent link">&para;</a></h1>
-<p><strong>What you'll build:</strong> Grad-CAM's pipeline (graph wiring, activation and gradient caching,
-per-channel weighting) on a small <code>Conv2DModule -&gt; ReluModule -&gt; FlattenModule -&gt; LinearModule</code>
-network with a synthetic "filled circle" input.</p>
-<p>CMake target: <code>grad_cam_walkthrough_recipe</code>
-(<code>examples/recipes/grad_cam_walkthrough.cpp</code>).</p>
-<p>Run it: <code>./build/grad_cam_walkthrough_recipe</code> (Windows:
-<code>build\Release\grad_cam_walkthrough_recipe.exe</code>).</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The network is untrained (random weights) and the input is a drawn circle, not a digit. The
-recipe shows how Grad-CAM works, not what a trained model learned. For a trained MNIST
-classifier, see the <a href="../mnist_lrp/">LRP on a trained MNIST classifier</a> recipe or
-<code>examples/mnist_training_demo.cpp</code>.</p>
-</div>
-<h2 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">Conv2DModule</span><span class="w"> </span><span class="nf">conv</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="cm">/*out_channels=*/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="cm">/*kh=*/</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="cm">/*kw=*/</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">ReluModule</span><span class="w"> </span><span class="nf">relu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">FlattenModule</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-<span class="n">LinearModule</span><span class="w"> </span><span class="nf">classifier</span><span class="p">(</span><span class="cm">/*in=*/</span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="cm">/*out=*/</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-
-<span class="n">ExplainerContext</span><span class="w"> </span><span class="nf">ctx</span><span class="p">({</span><span class="o">&amp;</span><span class="n">conv</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">relu</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flatten</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">classifier</span><span class="p">});</span>
-<span class="n">Tensor</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">forward_pass</span><span class="p">(</span><span class="n">input</span><span class="p">);</span><span class="w">  </span><span class="c1">// input: (1, 1, 12, 12) synthetic "digit"</span>
-
-<span class="n">GradCAM</span><span class="w"> </span><span class="n">gradcam</span><span class="p">;</span>
-<span class="n">Attribution</span><span class="w"> </span><span class="n">attr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gradcam</span><span class="p">.</span><span class="n">explain</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">predicted_class</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">backend</span><span class="p">);</span>
-</code></pre></div>
-<p>Full source: <a href="https://github.com/Joshuaweg/pulsatrix/blob/master/examples/recipes/grad_cam_walkthrough.cpp"><code>examples/recipes/grad_cam_walkthrough.cpp</code></a>.</p>
-<h2 id="expected-output">Expected output<a class="headerlink" href="#expected-output" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>Grad-CAM recipe -- Conv(1,4,3,3)-&gt;ReLU-&gt;Flatten-&gt;Linear(400,3), SYNTHETIC/untrained
-
-class 0 score:  -0.1510
-class 1 score:   0.1241
-class 2 score:  -0.0904
-
-predicted class 1 (meaningless on an untrained network)
-
-Grad-CAM heatmap (10x10), ASCII-scaled 0-9:
-0000000000
-0000035100
-0001954210
-0011008721
-0000000880
-0000000080
-0000000240
-0000002000
-0000000000
-0000000000
-...
-</code></pre></div>
-<h2 id="whats-happening">What's happening<a class="headerlink" href="#whats-happening" title="Permanent link">&para;</a></h2>
-<p><code>GradCAM::explain()</code> runs a forward and backward pass, like <code>Saliency</code>. It then:</p>
+<h1 id="gpu-ci-self-hosted-runner">GPU CI (self-hosted runner)<a class="headerlink" href="#gpu-ci-self-hosted-runner" title="Permanent link">&para;</a></h1>
+<p>GitHub's hosted runners have no AMD GPU, so the HIP backend's tests run on a machine with one: a
+self-hosted runner on the maintainer's gfx1151 (Strix Halo). The workflow is
+<code>.github/workflows/gpu.yml</code>. On every push to this repository it runs two jobs on that machine:</p>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>What it runs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hip-tests</code></td>
+<td>The host kernel check, a Debug build in the ROCm 10.0.0 container, the full test suite, then the GPU tests again with a wait after every op (<code>PULSATRIX_HIP_SYNC_DEBUG=1</code>), so a faulting kernel is reported at the op that caused it</td>
+</tr>
+<tr>
+<td><code>hip-bench</code></td>
+<td>A Release build of <code>pulsatrix_bench</code>, the benchmarks on the GPU with the LRP conservation gate (<code>--check</code>), and the report as an artifact</td>
+</tr>
+</tbody>
+</table>
+<p>Builds are incremental: the runner keeps its build directories between runs. A pull request
+from a branch of this repository shows the results on its commits. Pull requests from forks
+don't run on the GPU; see below.</p>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
+<p>The repository is public, and a self-hosted runner executes whatever a workflow tells it to, on
+the machine it runs on. Three things keep other people's code off it:</p>
 <ol>
-<li>finds the <em>last</em> <code>OpType::Conv</code> node in the graph (<code>ctx.graph().nodes_by_op_type(OpType::Conv)</code>),</li>
-<li>reads that node's cached activation <code>A_k</code> and gradient,</li>
-<li>averages the gradient spatially per channel to get per-channel weights <code>alpha_k</code>, and</li>
-<li>computes <code>ReLU(sum_k alpha_k * A_k)</code>.</li>
+<li><strong>The workflow runs only on pushes</strong> to this repository's branches, which only collaborators
+   can make, and by hand (<code>workflow_dispatch</code>). It never runs on <code>pull_request</code> or
+   <code>pull_request_target</code>, which a fork can trigger. Its jobs also check that they run in this
+   repository, not in a fork that copied the workflow.</li>
+<li><strong>Workflows from forks need approval.</strong> A fork's pull request can add a workflow of its own
+   that asks for this runner. In <strong>Settings → Actions → General → Approval for running fork pull
+   request workflows from contributors</strong>, choose <strong>Require approval for all external
+   contributors</strong>, and don't approve a run you haven't read.</li>
+<li><strong>The runner is a dedicated user</strong> (<code>pulsatrix-runner</code>) with no sudo. The tests run inside the
+   ROCm container. The user is in the <code>docker</code> group, which the container needs and which is
+   close to root access on the machine. That is why points 1 and 2 matter.</li>
 </ol>
-<p>In the ASCII heatmap, the activation is concentrated in a region that roughly traces the
-circle's edge. Grad-CAM is showing where the last conv layer's prediction-driving features are,
-even on this untrained network.</p>
-<p>See also: <a href="../../../interpretability/deep-learning-approaches/#grad-cam">Gradient-Based Explainers</a>.</p>
+<h2 id="setting-up-the-runner">Setting up the runner<a class="headerlink" href="#setting-up-the-runner" title="Permanent link">&para;</a></h2>
+<p>Once, on the GPU machine, from a checkout of this repository:</p>
+<ol>
+<li>Check the repository setting in point 2 above.</li>
+<li>Get a registration token: <strong>Settings → Actions → Runners → New self-hosted runner</strong>, Linux,
+   x64. The token is the value after <code>--token</code> on that page, and is valid for one hour.</li>
+<li>
+<p>Run:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>scripts/setup_gpu_runner.sh<span class="w"> </span>TOKEN
+</code></pre></div>
+</li>
+</ol>
+<p>The script checks the host kernel (<code>scripts/check_host_kernel.sh</code>), Docker and the ROCm image.
+It then creates the <code>pulsatrix-runner</code> user and downloads the GitHub Actions runner, at a pinned
+version with its checksum verified. Finally it registers the runner with the <code>gfx1151</code> label and
+installs it as a systemd service, so it starts with the machine. The runner then shows as
+<strong>Idle</strong> under <strong>Settings → Actions → Runners</strong>, and the next push runs on it.</p>
+<p>If the <code>pulsatrix-rocm:10.0.0</code> image hasn't been built on the machine, the first run builds it
+(about 20 minutes). Running the script again re-registers the runner.</p>
+<h3 id="optional-the-published-resnet18-and-vgg16">Optional: the published ResNet18 and VGG16<a class="headerlink" href="#optional-the-published-resnet18-and-vgg16" title="Permanent link">&para;</a></h3>
+<p>The vision tests also check the published torchvision weights when <code>PULSATRIX_TORCHVISION_DIR</code>
+names a directory holding them (see the
+<a href="../recipes/interpretability/imagenet_lrp/#checked-against-zennit">ImageNet recipe</a>). The tests run
+in a container that sees only the checkout, so the directory must be inside the runner's checkout
+(<code>build-ci-hip</code> survives between runs), given relative to it:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>-u<span class="w"> </span>pulsatrix-runner<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~pulsatrix-runner/actions-runner/_work/pulsatrix/pulsatrix/build-ci-hip/tv
+<span class="c1"># copy resnet18.safetensors, vgg16.safetensors and their *_golden.safetensors there, then:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">'PULSATRIX_TORCHVISION_DIR=build-ci-hip/tv'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>-u<span class="w"> </span>pulsatrix-runner<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>~pulsatrix-runner/actions-runner/.env
+sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span><span class="s1">'actions.runner.*'</span>
+</code></pre></div>
+<h2 id="removing-the-runner">Removing the runner<a class="headerlink" href="#removing-the-runner" title="Permanent link">&para;</a></h2>
+<p>Remove it under <strong>Settings → Actions → Runners</strong>, then on the machine:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~pulsatrix-runner/actions-runner<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>./svc.sh<span class="w"> </span>stop<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>./svc.sh<span class="w"> </span>uninstall
+sudo<span class="w"> </span>userdel<span class="w"> </span>-r<span class="w"> </span>pulsatrix-runner
+</code></pre></div>
 
 
 
@@ -2409,10 +2455,10 @@ even on this untrained network.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

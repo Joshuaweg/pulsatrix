@@ -1463,6 +1463,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../gpu-ci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU CI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../benchmarks/" class="md-nav__link">
         
   
@@ -1525,10 +1552,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   
@@ -1546,8 +1573,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2139,10 +2166,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
         
           
-          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
             
   
   
@@ -2160,8 +2187,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_19">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2608,7 +2635,8 @@ other GPUs.</p>
 <h3 id="hip-rocm">HIP / ROCm<a class="headerlink" href="#hip-rocm" title="Permanent link">&para;</a></h3>
 <p>Configure with <code>-DPULSATRIX_ENABLE_HIP=ON</code>. You need an AMD GPU and a ROCm install at
 <code>/opt/rocm</code>, or set <code>ROCM_PATH</code>. The default target is <code>gfx1151</code>; set
-<code>CMAKE_HIP_ARCHITECTURES</code> for other GPUs.</p>
+<code>CMAKE_HIP_ARCHITECTURES</code> for other GPUs. CI runs the HIP tests on a gfx1151 on every push; see
+<a href="../gpu-ci/">GPU CI</a>.</p>
 <p>We recommend building inside the pinned ROCm container. <code>scripts/rocm-build.sh</code> runs a
 command in it with your GPU passed through, and builds the image on first use:</p>
 <div class="highlight"><pre><span></span><code>scripts/rocm-build.sh<span class="w"> </span><span class="s1">'cmake -S . -B build-hip -DCMAKE_BUILD_TYPE=Release -DPULSATRIX_ENABLE_HIP=ON'</span>
