@@ -116,7 +116,8 @@ inline void TinyVGGMatchesTorchvisionAndZennit(DeviceBackend* backend) {
  *         weights and the generator's goldens; skipped otherwise. */
 inline void PublishedModelMatches(const std::string& name, DeviceBackend* backend) {
     const char* dir = std::getenv("PULSATRIX_TORCHVISION_DIR");
-    if (dir == nullptr) GTEST_SKIP() << "set PULSATRIX_TORCHVISION_DIR to run the published " << name;
+    // Unset or empty (as CI passes it when the runner has no weights): skip.
+    if (dir == nullptr || *dir == '\0') GTEST_SKIP() << "set PULSATRIX_TORCHVISION_DIR to run the published " << name;
     const std::string weights = std::string(dir) + "/" + name + ".safetensors", golden = std::string(dir) + "/" + name + "_golden.safetensors";
     CPUBackend cpu;
     const SafetensorsFile ref = SafetensorsFile::Map(golden);

@@ -162,7 +162,7 @@ Load SmolLM2-135M and ResNet18, run them, and match the reference implementation
 - NB-1 (**done**): native rich display
 - NB-2 (**done**): the `.ipynb`/HTML report writer
 - AGT-1 to AGT-4: the native orchestrator core
-- KS-8: GPU CI on gfx1151
+- KS-8 (**done**): GPU CI on gfx1151
 - KS-9 (**done**): a model zoo, ResNet18 and VGG16 with heatmaps checked against Zennit
   (SmolLM2's against LXT came with LLM-7)
 
@@ -342,7 +342,7 @@ autoencoder dictionaries and a model zoo.
 | Memory-mapped reading; files are read whole for now | Done in IO-5 (`SafetensorsFile::Map`) |
 | Checkpointing SGD's momentum buffers (Adam and AdamW are covered) | a small fix |
 | Checkpointing Dropout's mask counter; a resumed run with active dropout draws different masks | a small fix |
-| Running the safetensors writer's GPU path on hardware | HIP-9 or KS-8 |
+| Running the safetensors writer's GPU path on hardware | KS-8: done, `safetensors_hip_test.cpp` |
 | Gradient buffers are allocated with every parameter, so inference uses twice the memory (SmolLM2-135M peaks at 1.9 GB) | allocate on first backward |
 
 ## TRN: Training and fine-tuning
@@ -1296,9 +1296,9 @@ memory bandwidth (about 212 GB/s).
 | Softmax, LayerNorm, RMSNorm and `column_sums` still run one thread per row; re-profile at SmolLM2 widths | HIP-2 | after LLM-1 |
 | The CUDA backend still synchronizes after every op (61 calls) and allocates with raw `cudaMalloc` | HIP-3, HIP-4 | its own item |
 | A pool per stream, if a second stream is ever added | HIP-3 | HIP-12 |
-| Run the GPU tests both asynchronously and with `PULSATRIX_HIP_SYNC_DEBUG=1`, since a kernel fault now surfaces at the next wait | HIP-4 | KS-8 |
+| Run the GPU tests both asynchronously and with `PULSATRIX_HIP_SYNC_DEBUG=1`, since a kernel fault now surfaces at the next wait | HIP-4 | KS-8: done |
 | Build the benchmark suite on `hip_profile_workloads` and the interleaved A/B method | HIP-1, HIP-3 | KS-2 (done) |
-| CI's compile-only HIP job still uses ROCm 7.2.4: there is no slim 10.0 image, and the full one is 8.2 GB compressed | HIP-9 | KS-8 |
+| CI's compile-only HIP job still uses ROCm 7.2.4: there is no slim 10.0 image, and the full one is 8.2 GB compressed | HIP-9 | KS-8: the GPU runner builds and tests with 10.0.0; the hosted job keeps compiling with 7.2.4, the older pin |
 | ROCm 10's hipBLAS links hipBLASLt; check which path gfx1151 GEMMs take | HIP-9 | HIP-8 |
 | Chunk within an example (by output rows) when one example's patches exceed the budget | HIP-7 | when a model needs it |
 | One GEMM per chunk instead of one per example (a strided-batched GEMM) | HIP-7 | HIP-6: done |
@@ -1362,7 +1362,7 @@ AGT-5 has to follow these security rules:
 | KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M | |
 | KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
 | KS-7 | Wire the existing thread pool into `DataLoader`'s `num_workers` | Built but not connected | — | P2 | M | |
-| KS-8 | GPU CI on a self-hosted gfx1151 runner | The HIP backend is only tested by hand today | HIP-9 | P1 | M | |
+| KS-8 | GPU CI on a self-hosted gfx1151 runner | The HIP backend is only tested by hand today | HIP-9 | P1 | M | Done, [#125](https://github.com/Joshuaweg/pulsatrix/pull/125) (see below) |
 | KS-9 | A model zoo: ResNet18, VGG16 and SmolLM2 with reference heatmaps | Reproducible examples on real models | IO-4, FND-6 | P1 | M | Done, [#117](https://github.com/Joshuaweg/pulsatrix/pull/117) (see below) |
 | KS-10 | Strided views and broadcasting | Removes copies everywhere; touches every kernel | — | P2 | L | |
 | KS-11 | Python wheels and a vcpkg port | Easier installation | KS-1 | P2 | — | |
@@ -1404,13 +1404,25 @@ AGT-5 has to follow these security rules:
   converted weights"). SmolLM2's reference heatmaps are LLM-7's LXT parity.
   `imagenet_lrp_recipe` explains a photo with either model.
 
+- **KS-8** runs the HIP suite on every push to this repository, on a self-hosted runner on the
+  gfx1151 machine (`.github/workflows/gpu.yml`, `docs/gpu-ci.md`). The repository is public, so
+  the design starts from security: the workflow never runs on `pull_request`, which forks can
+  trigger, only on pushes, which only collaborators can make. Workflows from forks need approval
+  in the repository settings, and the runner is a dedicated user without sudo. Each push runs the
+  full Debug suite, then the GPU tests again with a wait after every op, then the benchmarks with
+  the conservation gate on the GPU. `scripts/setup_gpu_runner.sh` sets the machine up with a
+  pinned, checksum-verified runner. It also closed the IO follow-up of writing safetensors from
+  GPU memory, which had never run on hardware.
+
 ### Follow-ups the KS work surfaced
 
 | Follow-up | Found in | Belongs with |
 |---|---|---|
 | Install `pulsatrix_viz`, which needs the fetched ImGui, ImPlot and GLFW installed too | KS-1 | NB or KS-11 |
-| Run `pulsatrix_bench` and its A/B comparison on the GPU in CI | KS-2 | KS-8 |
-| The CUDA path of `pulsatrix_bench` has never run; there is no NVIDIA GPU here | KS-2 | KS-8 |
+| Run `pulsatrix_bench` and its A/B comparison on the GPU in CI | KS-2 | KS-8: the benchmarks and the conservation gate run on every push; an A/B against master is still to do |
+| The CUDA path of `pulsatrix_bench` has never run; there is no NVIDIA GPU here | KS-2 | a CUDA runner, when one exists |
+| A benchmark A/B against master on the GPU runner, so a regression fails the push | KS-8 | KS-2 |
+| Make the GPU jobs a required check once the runner has been reliable for a while | KS-8 | — |
 | Benchmarks on real models (ResNet18, SmolLM2) next to the fixed small ones | KS-2 | KS-9 |
 | Bottleneck ResNets (ResNet50 and up) and VGG with BatchNorm, on the same builders | KS-9 | a later model-zoo item |
 | `AdaptiveAvgPool2DModule` for sizes that don't divide evenly (PyTorch's overlapping windows) | KS-9 | when a model needs it |
