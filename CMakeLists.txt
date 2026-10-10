@@ -618,6 +618,9 @@ if(PULSATRIX_BUILD_EXAMPLES)
     target_link_libraries(protein_tem1_recipe PRIVATE pulsatrix_core)
     target_compile_definitions(protein_tem1_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
 
+    add_executable(notebook_report_recipe examples/recipes/notebook_report.cpp)
+    target_link_libraries(notebook_report_recipe PRIVATE pulsatrix_core)
+
     add_executable(imagenet_lrp_recipe examples/recipes/imagenet_lrp.cpp)
     target_link_libraries(imagenet_lrp_recipe PRIVATE pulsatrix_core)
     target_compile_definitions(imagenet_lrp_recipe PRIVATE $<$<BOOL:${PULSATRIX_ENABLE_HIP}>:PULSATRIX_DEMO_WITH_HIP>)
@@ -639,6 +642,7 @@ if(PULSATRIX_BUILD_TESTS)
         nlohmann_json
         URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
         URL_HASH SHA256=42f6e95cad6ec532fd372391373363b62a14af6d771056dbfc86160e6dfff7aa
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
     )
     FetchContent_MakeAvailable(nlohmann_json)
 

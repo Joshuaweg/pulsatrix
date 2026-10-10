@@ -112,5 +112,5 @@ called an 8 is a near tie with 5 (margin 0.65), and its true class isn't even se
 
 See also: [Grad-CAM walkthrough](grad_cam_walkthrough.md) for the same layer types
 (Conv2D → ReLU → Flatten → Linear) explained with gradients on an untrained toy network, and the
-[MNIST gallery](../../visualization/index.md#mnist-gallery) for every explainer on this model
+[MNIST gallery](../../visualization/desktop.md#mnist-gallery) for every explainer on this model
 rendered as heatmaps.
