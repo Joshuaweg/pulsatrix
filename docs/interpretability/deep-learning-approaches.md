@@ -188,7 +188,7 @@ Test reference: `tests/counterfactual_test.cpp`.
 
 - Call `model.set_training(false)` first if the model has BatchNorm or Dropout. Otherwise each
   sample's gradients, and so its explanation, depend on the rest of its batch.
-- To save or plot a result, see [Visualization](../visualization/index.md#json-documents). A
+- To save or plot a result, see [Visualization](../visualization/documents.md#json-documents). A
   Grad-CAM map goes through `ToSaliencyHeatmap()`, then `ToHeatmapDocument()` for JSON or
   `RenderHeatmapSvg()` for an SVG figure.
 

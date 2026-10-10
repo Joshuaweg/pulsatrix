@@ -38,7 +38,7 @@ Full API reference: [Doxygen: Interpretability](../api/group__interpretability.h
 - **Saving and plotting.** `ToAttributionDocument()` turns an `Attribution` into a
   `pulsatrix.attribution.v1` JSON document; `RenderBarChartSvg()` and `RenderWaterfallSvg()`
   draw it as an SVG figure, and the `pulsatrix_svg` tool does both from the command line. See
-  [Visualization](../visualization/index.md#json-documents).
+  [Visualization](../visualization/documents.md#json-documents).
 
 ## Checking an explanation
 

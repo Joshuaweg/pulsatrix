@@ -89,8 +89,8 @@ Halving, Hyperband and ASHA.
 heatmaps, token relevance, circuit graphs and training logs; dependency-free SVG charts
 (including token and word relevance for text), interactive HTML pages with hover, zoom and
 export, attribution graphs for Neuronpedia's and circuit-tracer's viewers, and the
-`pulsatrix_svg` tool; rich display in Jupyter notebooks and reports written as `.ipynb` or HTML
-from C++; and, optionally, native Dear ImGui + ImPlot windows with a live training dashboard and a
+`pulsatrix_svg` tool; [notebooks and reports](visualization/notebooks.md) written as `.ipynb` or
+HTML from C++; and, optionally, native Dear ImGui + ImPlot windows with a live training dashboard and a
 token relevance view.
 
 **[System Monitoring](system-monitoring.md)**: log CPU/GPU utilization, memory and

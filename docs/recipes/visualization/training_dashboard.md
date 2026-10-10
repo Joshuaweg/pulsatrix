@@ -51,4 +51,4 @@ builds and is unit-tested even without `PULSATRIX_ENABLE_VIZ`. Only `TrainingDas
 touches ImPlot. It runs once per frame inside `VizWindow::run()`'s callback and draws the
 buffered series.
 
-See also: [Visualization](../../visualization/index.md#a-live-training-dashboard).
+See also: [Visualization](../../visualization/desktop.md#a-live-training-dashboard).
