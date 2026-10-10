@@ -1362,7 +1362,7 @@ AGT-5 has to follow these security rules:
 | KS-5 | TracIn data attribution | Answers "which training examples caused this" | FND-1 | P2 | M | |
 | KS-6 | Fairness metrics, drift detection and a model-card generator | The Input question, and documentation | — | P2 | S each | |
 | KS-7 | Wire the existing thread pool into `DataLoader`'s `num_workers` | Built but not connected | — | P2 | M | |
-| KS-8 | GPU CI on a self-hosted gfx1151 runner | The HIP backend is only tested by hand today | HIP-9 | P1 | M | Done (see below) |
+| KS-8 | GPU CI on a self-hosted gfx1151 runner | The HIP backend is only tested by hand today | HIP-9 | P1 | M | Done, [#125](https://github.com/Joshuaweg/pulsatrix/pull/125) (see below) |
 | KS-9 | A model zoo: ResNet18, VGG16 and SmolLM2 with reference heatmaps | Reproducible examples on real models | IO-4, FND-6 | P1 | M | Done, [#117](https://github.com/Joshuaweg/pulsatrix/pull/117) (see below) |
 | KS-10 | Strided views and broadcasting | Removes copies everywhere; touches every kernel | — | P2 | L | |
 | KS-11 | Python wheels and a vcpkg port | Easier installation | KS-1 | P2 | — | |
