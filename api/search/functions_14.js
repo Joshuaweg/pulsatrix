@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['u_0',['u',['../classpulsatrix_1_1ComponentLinear.html#a35859f815ac1760eff55d9e9e5686379',1,'pulsatrix::ComponentLinear::U()'],['../classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d',1,'pulsatrix::RWKVModule::u() const']]],
+  ['u_0',['u',['../classpulsatrix_1_1RWKVModule.html#ab7510e7540343bffe75454aef2f8180d',1,'pulsatrix::RWKVModule::u()'],['../classpulsatrix_1_1ComponentLinear.html#a35859f815ac1760eff55d9e9e5686379',1,'pulsatrix::ComponentLinear::U()']]],
   ['u_5fgrad_1',['u_grad',['../classpulsatrix_1_1RWKVModule.html#a73f07e3596bdc63240a5fda83eabc248',1,'pulsatrix::RWKVModule']]],
   ['unicoderegex_2',['unicoderegex',['../classpulsatrix_1_1UnicodeRegex.html#a5ca4c8d0f5bd430415cf50381333d14f',1,'pulsatrix::UnicodeRegex::UnicodeRegex(std::string_view pattern)'],['../classpulsatrix_1_1UnicodeRegex.html#aa50086a5127710343ffd4623526dc9c4',1,'pulsatrix::UnicodeRegex::UnicodeRegex(UnicodeRegex &amp;&amp;) noexcept']]],
   ['uniformcrossover_3',['UniformCrossover',['../namespacepulsatrix.html#a10dd7a145810da84ac169f97e49fcd33',1,'pulsatrix']]],

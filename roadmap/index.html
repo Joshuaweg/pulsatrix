@@ -3496,7 +3496,7 @@ machine, and explain it with the tools pulsatrix already has. Items on that path
   sensitivity, and counterfactuals, each with its view</li>
 <li>TOK-1 to TOK-4 (<strong>done</strong>): the tokenizer interface with offsets, byte-level BPE (SmolLM2, Qwen, Llama),
   SentencePiece-style BPE (Gemma 3), and word-level aggregation of token scores</li>
-<li>HIP-6: fused kernels (HIP-3 landed early, in v1.1)</li>
+<li>HIP-6 (<strong>done</strong>): fused kernels (HIP-3 landed early, in v1.1)</li>
 <li>HIP-7 (<strong>done</strong>): bounded-memory Conv2D</li>
 <li>VIZ-3, VIZ-6a (<strong>done</strong>): Vega-Lite HTML and the token relevance view</li>
 <li>NB-1, NB-2: native rich display and the <code>.ipynb</code>/HTML report writer</li>
@@ -5961,7 +5961,7 @@ practice they are limited by launch and sync overhead and by too little parallel
 <td>TRN-2</td>
 <td>P1</td>
 <td>—</td>
-<td></td>
+<td>Done, <a href="https://github.com/Joshuaweg/pulsatrix/pull/119">#119</a> (see below)</td>
 </tr>
 <tr>
 <td>HIP-7</td>
@@ -6078,14 +6078,31 @@ memory bandwidth (about 212 GB/s).</p>
   register <code>/opt/rocm/lib</code> with the dynamic loader. "Pin the host kernel" became a check,
   <code>scripts/check_host_kernel.sh</code>, that <code>rocm-build.sh</code> runs on every call, plus documented
   instructions to hold the package; the repository doesn't change the host.</li>
-<li><strong>HIP-7.</strong> The im2col buffer of one layer was the smaller problem: every convolution kept its
+<li>
+<p><strong>HIP-7.</strong> The im2col buffer of one layer was the smaller problem: every convolution kept its
   whole batch's patches for backward and LRP, 5.75 GB of the GPU memory used to explain ResNet18
   at batch 32. Each layer now keeps them only within a workspace budget (16 MiB by default) and
   otherwise works in chunks of examples, rebuilding patches when it needs them again. Peak memory
   fell to 2.40 GB, the explanation got 14% faster, and the results are bit-identical. The chunks
   are whole examples: one example larger than the budget still takes its full patch buffer
-  (115 MB in VGG16's widest layers).</li>
+  (115 MB in VGG16's widest layers).</p>
+</li>
+<li>
+<p><strong>HIP-6.</strong> Profiling first showed the small models' step times were mostly one-time startup
+  (<code>hip_profile_workloads</code> spreads about 250 ms of stream and hipBLAS setup over 20 steps), so
+  HIP-6 was measured with KS-2's suite in ABBA order. The three named fusions went in, and two
+  more changes the profile pointed to:</p>
+</li>
+<li>gradient clipping reads every squared norm back at once instead of one per parameter;</li>
+<li><code>TokenCrossEntropyLoss</code> checks its targets on the device (the HIP-4 follow-up);</li>
+<li>the CNN spent 80% of its time in one GEMM per example, so Conv2D uses strided-batched GEMMs
+    (the HIP-7 follow-up).</li>
 </ul>
+<p>Training steps got 15% (MLP), 17% (tagger) and 73% (CNN) faster. The fusions are bit-identical
+  to the unfused calls, which settles the research notes' risk that a fused training path drifts
+  from the explain path. Bias plus activation covers Linear followed by ReLU inside a
+  <code>SequentialModule</code>; other activations and layers that aren't in a <code>SequentialModule</code> still run
+  unfused.</p>
 <h3 id="follow-ups-the-hip-work-surfaced">Follow-ups the HIP work surfaced<a class="headerlink" href="#follow-ups-the-hip-work-surfaced" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -6099,7 +6116,7 @@ memory bandwidth (about 212 GB/s).</p>
 <tr>
 <td>Host-side work in each step: reading the loss back, and losses that validate targets on the host. Small models are about 20% GPU-busy</td>
 <td>HIP-4</td>
-<td>HIP-6</td>
+<td>HIP-6: done for <code>TokenCrossEntropyLoss</code> and gradient clipping</td>
 </tr>
 <tr>
 <td>Softmax, LayerNorm, RMSNorm and <code>column_sums</code> still run one thread per row; re-profile at SmolLM2 widths</td>
@@ -6144,7 +6161,22 @@ memory bandwidth (about 212 GB/s).</p>
 <tr>
 <td>One GEMM per chunk instead of one per example (a strided-batched GEMM)</td>
 <td>HIP-7</td>
-<td>HIP-6 or HIP-8</td>
+<td>HIP-6: done</td>
+</tr>
+<tr>
+<td>Tensors that are overwritten in full still get a zero-fill kernel: 13% of the MLP's and 19% of the tagger's kernel time after HIP-6</td>
+<td>HIP-6</td>
+<td>an uninitialized <code>Tensor</code> constructor</td>
+</tr>
+<tr>
+<td>Layers cache their inputs by deep copy (<code>last_input_ = input</code>), one device copy per layer per forward</td>
+<td>HIP-6</td>
+<td>shared, copy-on-write buffers, or caching only in explain mode</td>
+</tr>
+<tr>
+<td>Bias plus GELU or SiLU, and Linear and ReLU outside a <code>SequentialModule</code></td>
+<td>HIP-6</td>
+<td>when a profile shows it</td>
 </tr>
 </tbody>
 </table>

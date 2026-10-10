@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_0',['m',['../structpulsatrix_1_1AdamOptimizer_1_1AdamState.html#a3b3d9372d554b07ba4bd14c2cefbcc6d',1,'pulsatrix::AdamOptimizer::AdamState']]],
+  ['m_0',['m',['../structpulsatrix_1_1AdamTensorStep.html#a6be53f3ea8e0edac31d66913f12ab299',1,'pulsatrix::AdamTensorStep::m'],['../structpulsatrix_1_1AdamOptimizer_1_1AdamState.html#a3b3d9372d554b07ba4bd14c2cefbcc6d',1,'pulsatrix::AdamOptimizer::AdamState::m']]],
   ['main_5ff1_1',['main_f1',['../structpulsatrix_1_1AbsorptionResult.html#af303aaee39d04b8a0e3c30c5273836cc',1,'pulsatrix::AbsorptionResult']]],
   ['main_5ffeatures_2',['main_features',['../structpulsatrix_1_1AbsorptionResult.html#aaee21efbd1008e5997ffb202a52d6ca7',1,'pulsatrix::AbsorptionResult']]],
   ['mainpage_2edox_3',['mainpage.dox',['../mainpage_8dox.html',1,'']]],
@@ -25,7 +25,7 @@ var searchData=
   ['mambaforward_22',['MambaForward',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4',1,'pulsatrix']]],
   ['mambagradbc_23',['MambaGradBC',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aa4c2ce7fcd5cbf8e07420e447bac3987',1,'pulsatrix']]],
   ['mambalrp_24',['MambaLrp',['../namespacepulsatrix.html#a9ea30dd018ca9a3db2acc46af2880883aaca452419514797385505efded2e0473',1,'pulsatrix']]],
-  ['mambamodule_25',['mambamodule',['../classpulsatrix_1_1MambaModule.html#a768bf98904fe2d2a1b2bf4c2e736f71c',1,'pulsatrix::MambaModule::MambaModule()'],['../classpulsatrix_1_1MambaModule.html',1,'pulsatrix::MambaModule']]],
+  ['mambamodule_25',['mambamodule',['../classpulsatrix_1_1MambaModule.html',1,'pulsatrix::MambaModule'],['../classpulsatrix_1_1MambaModule.html#a768bf98904fe2d2a1b2bf4c2e736f71c',1,'pulsatrix::MambaModule::MambaModule()']]],
   ['map_26',['Map',['../classpulsatrix_1_1SafetensorsFile.html#a26065bb3d21821d8e33de4a3ed56632f',1,'pulsatrix::SafetensorsFile']]],
   ['margin_27',['margin',['../structpulsatrix_1_1CounterfactualTarget.html#a8a3c9e2bf6328e3352e43887a4cb3b2e',1,'pulsatrix::CounterfactualTarget']]],
   ['mark_28',['mark',['../classpulsatrix_1_1SystemMonitor.html#a62ae956743c43cf3edf2100815d6c20d',1,'pulsatrix::SystemMonitor']]],
@@ -114,7 +114,7 @@ var searchData=
   ['metaspacedecoder_111',['metaspacedecoder',['../classpulsatrix_1_1MetaspaceDecoder.html',1,'pulsatrix::MetaspaceDecoder'],['../classpulsatrix_1_1MetaspaceDecoder.html#ad5e9554fc313643b2e5fd6105ccbbb82',1,'pulsatrix::MetaspaceDecoder::MetaspaceDecoder()']]],
   ['metaspacepretokenizer_112',['metaspacepretokenizer',['../classpulsatrix_1_1MetaspacePreTokenizer.html#a7db9e189685515ad8d313fddbfd28018',1,'pulsatrix::MetaspacePreTokenizer::MetaspacePreTokenizer()'],['../classpulsatrix_1_1MetaspacePreTokenizer.html',1,'pulsatrix::MetaspacePreTokenizer']]],
   ['method_113',['method',['../structpulsatrix_1_1ContactMapDocument.html#ad3afe3a13fb54f12a59d2d84d1c6aaf5',1,'pulsatrix::ContactMapDocument::method'],['../structpulsatrix_1_1Attribution.html#a81ab543181d8c0aced1ec620553f6b3a',1,'pulsatrix::Attribution::method'],['../structpulsatrix_1_1DecompositionOptions.html#a09129bc5fd9fdef38192e03c199f48cd',1,'pulsatrix::DecompositionOptions::method'],['../structpulsatrix_1_1AttributionDocument.html#a6e76d8a3e65ac424c31a817258e0f409',1,'pulsatrix::AttributionDocument::method'],['../structpulsatrix_1_1TokenRelevanceDocument.html#a7bb430e917ddb11000d75971b44c2fc2',1,'pulsatrix::TokenRelevanceDocument::method'],['../structpulsatrix_1_1PartialDependenceDocument.html#a5e826f3f7863a76723faab1d08a2075a',1,'pulsatrix::PartialDependenceDocument::method'],['../structpulsatrix_1_1MutationMapDocument.html#af5ae7e91183380547fb205b49c6363cb',1,'pulsatrix::MutationMapDocument::method'],['../structpulsatrix_1_1SequenceLogoDocument.html#ac0113410c630b9ff2a52ada842cdeb20',1,'pulsatrix::SequenceLogoDocument::method']]],
-  ['metric_114',['metric',['../structpulsatrix_1_1MetricCapability.html#ac794ce82195aa8b82cae4ba6ae929a6d',1,'pulsatrix::MetricCapability::metric'],['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a0c3af35e7c7cbacc460336a44ed98a4d',1,'pulsatrix::detail::ASHACandidate::metric'],['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300a216ab40cda5c7c00ff42a4efb1827d89',1,'pulsatrix::BenchmarkRecord::Metric']]],
+  ['metric_114',['metric',['../structpulsatrix_1_1BenchmarkRecord.html#a1531ec2e7875d40e2de46644cbaac300a216ab40cda5c7c00ff42a4efb1827d89',1,'pulsatrix::BenchmarkRecord::Metric'],['../structpulsatrix_1_1MetricCapability.html#ac794ce82195aa8b82cae4ba6ae929a6d',1,'pulsatrix::MetricCapability::metric'],['../structpulsatrix_1_1detail_1_1ASHACandidate.html#a0c3af35e7c7cbacc460336a44ed98a4d',1,'pulsatrix::detail::ASHACandidate::metric']]],
   ['metric_5ftolerance_115',['metric_tolerance',['../structpulsatrix_1_1CompareOptions.html#a87876f0c44e095fab718ea1bf8ed7d10',1,'pulsatrix::CompareOptions']]],
   ['metriccapability_116',['MetricCapability',['../structpulsatrix_1_1MetricCapability.html',1,'pulsatrix']]],
   ['metricrecord_117',['MetricRecord',['../structpulsatrix_1_1MetricRecord.html',1,'pulsatrix']]],

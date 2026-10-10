@@ -1176,6 +1176,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-6-fused-kernels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-6: fused kernels
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2120,6 +2131,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hip-6-fused-kernels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HIP-6: fused kernels
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2428,6 +2450,77 @@ default (on the GPU three runs each, in ABBA order, all within 0.01 s; on the CP
 </table>
 <p>Rebuilding the patches is cheap next to the GEMMs, and a smaller working set is friendlier to
 the caches, so the chunked layers are no slower.</p>
+<h3 id="hip-6-fused-kernels">HIP-6: fused kernels<a class="headerlink" href="#hip-6-fused-kernels" title="Permanent link">&para;</a></h3>
+<p>Fewer launches and fewer waits in each training step, with the same numbers:</p>
+<ul>
+<li><strong>One launch for the optimizer.</strong> <code>AdamOptimizer</code> (and AdamW, and Adam with L2 decay) updates
+  every parameter with one <code>adam_step_multi</code> call. On the GPU it is one kernel per 32 tensors,
+  the table passed in the kernel's arguments as PyTorch's <code>multi_tensor_apply</code> does, so nothing is
+  uploaded first. The weight decay is folded into the same kernel.</li>
+<li><strong>One wait for gradient clipping.</strong> <code>ClipGradNorm</code> used to read back one <code>dot</code> per parameter
+  (19 waits per tagger step). The squared norms now go to one device buffer and come back
+  together; the host still adds them in double, in the same order.</li>
+<li><strong>Softmax plus cross-entropy with the targets checked on the device.</strong>
+  <code>TokenCrossEntropyLoss::forward()</code> used to copy the targets to the host to validate them, then
+  upload the decoded indices and weights. One row kernel now decodes and checks them, computes
+  the softmax and the loss terms, and counts tokens and bad targets; one read back of four numbers
+  returns the loss. A bad target is reported with the same message as before.</li>
+<li><strong>Bias plus ReLU.</strong> <code>SequentialModule</code> runs each <code>LinearModule</code> followed by a <code>ReluModule</code> as
+  one kernel that writes both the Linear output (which the ReLU's backward and LRP read) and the
+  ReLU output. A test checks that the fused layers give the same outputs, gradients and relevance,
+  bit for bit, as the same layers called one by one.</li>
+<li><strong>Batched GEMMs in Conv2D</strong> (a HIP-7 follow-up). The kernel against every example's patches is
+  one strided-batched GEMM, in forward, backward and LRP, instead of one GEMM per example. Each
+  example's kernel and bias gradients still go to their own buffer and are added in example
+  order, so they sum as before.</li>
+</ul>
+<p>The fused ops are bit-identical to the unfused ones on the CPU (they are the same calls) and on
+the GPU (they share the device functions; the tests compare them with <code>EXPECT_EQ</code>). The batched
+GEMM's rounding can differ from one GEMM per example on the GPU, within the CPU-GPU tolerance
+every test already uses.</p>
+<p>KS-2's suite against HIP-7, gfx1151, four ABBA rounds:</p>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>Before</th>
+<th>After</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>train.mlp</code></td>
+<td>0.356 ms</td>
+<td>0.302 ms</td>
+<td>−15%</td>
+</tr>
+<tr>
+<td><code>train.tagger</code></td>
+<td>2.345 ms</td>
+<td>1.952 ms</td>
+<td>−17%</td>
+</tr>
+<tr>
+<td><code>train.cnn</code></td>
+<td>5.302 ms</td>
+<td>1.445 ms</td>
+<td>−73%</td>
+</tr>
+<tr>
+<td><code>explain.*</code></td>
+<td></td>
+<td></td>
+<td>within ±2.5%</td>
+</tr>
+</tbody>
+</table>
+<p>LRP conservation and Integrated Gradients' completeness are unchanged to every printed digit. On
+the CPU, where the new ops run the calls they replace, every benchmark stays within ±2.5%.
+Kernel launches per training step (<code>hip_profile_workloads</code>, 20 steps): <code>mlp</code> 73 to 53, <code>tagger</code>
+754 to 692, <code>cnn</code> 531 to 137.</p>
+<p>Zero-fills of new tensors are now the largest cost after GEMM (13% of <code>mlp</code>'s and 19% of
+<code>tagger</code>'s kernel time): most of those tensors are overwritten in full right after.</p>
 <h2 id="rocm-1000-evaluation">ROCm 10.0.0 evaluation<a class="headerlink" href="#rocm-1000-evaluation" title="Permanent link">&para;</a></h2>
 <p>ROCm 10.0.0 (2026-08-26) is the first release whose notes list gfx1151 (Ryzen AI Max). This
 evaluation is roadmap HIP-9. The image is <code>docker/Dockerfile.rocm</code> built on

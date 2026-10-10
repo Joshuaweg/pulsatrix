@@ -4,6 +4,7 @@ var device__backend_8hpp =
     [ "pulsatrix::SsmPassArgs", "structpulsatrix_1_1SsmPassArgs.html", "structpulsatrix_1_1SsmPassArgs" ],
     [ "pulsatrix::ConvGeometry", "structpulsatrix_1_1ConvGeometry.html", "structpulsatrix_1_1ConvGeometry" ],
     [ "pulsatrix::RlRowArgs", "structpulsatrix_1_1RlRowArgs.html", "structpulsatrix_1_1RlRowArgs" ],
+    [ "pulsatrix::AdamTensorStep", "structpulsatrix_1_1AdamTensorStep.html", "structpulsatrix_1_1AdamTensorStep" ],
     [ "pulsatrix::DeviceBackend", "classpulsatrix_1_1DeviceBackend.html", "classpulsatrix_1_1DeviceBackend" ],
     [ "CopyDirection", "device__backend_8hpp.html#a5d9adebabff0df0875f22a763d77ad6b", [
       [ "HostToDevice", "device__backend_8hpp.html#a5d9adebabff0df0875f22a763d77ad6baa9988afceee3dbd1517b549bbe0f5e92", null ],
@@ -55,7 +56,8 @@ var device__backend_8hpp =
       [ "PpoLoss", "device__backend_8hpp.html#af72bbbb89c154b30ca26561ab2f87930a8bc4fa0f592f03c568063df4971d27f9", null ],
       [ "PpoGrad", "device__backend_8hpp.html#af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536", null ],
       [ "DqnTarget", "device__backend_8hpp.html#af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87", null ],
-      [ "PolyakBlend", "device__backend_8hpp.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9", null ]
+      [ "PolyakBlend", "device__backend_8hpp.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9", null ],
+      [ "TokenCeLoss", "device__backend_8hpp.html#af72bbbb89c154b30ca26561ab2f87930a5ed4507114a78629b19d2e61177555fc", null ]
     ] ],
     [ "SsmPassOp", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883", [
       [ "MambaForward", "device__backend_8hpp.html#a9ea30dd018ca9a3db2acc46af2880883a4b329f1a455bec72ccc36effa291c8a4", null ],

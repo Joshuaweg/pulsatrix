@@ -170,6 +170,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a171e265daec59933d3a066bd5f368316" id="r_a171e265daec59933d3a066bd5f368316"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a171e265daec59933d3a066bd5f368316">propagate_relevance</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;relevance_out, const <a class="el" href="structpulsatrix_1_1LRPRuleConfig.html">LRPRuleConfig</a> &amp;config) override</td></tr>
 <tr class="memdesc:a171e265daec59933d3a066bd5f368316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon-rule <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> relevance propagation (Bach et al. 2015), applied independently per example in the batch.  <br /></td></tr>
 <tr class="separator:a171e265daec59933d3a066bd5f368316"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac693cbea3edc3dba72285ff589da49b4" id="r_ac693cbea3edc3dba72285ff589da49b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#ac693cbea3edc3dba72285ff589da49b4">forward_with_relu</a> (const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;input, <a class="el" href="classpulsatrix_1_1ReluModule.html">ReluModule</a> &amp;relu)</td></tr>
+<tr class="memdesc:ac693cbea3edc3dba72285ff589da49b4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>relu.forward(forward(input))</code> with the bias add and the ReLU in one kernel (HIP-6). Both layers end with the cached state the two calls leave, so <a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates the weight/bias gradients internall...">backward()</a> and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> are unchanged, and the values are identical. <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> uses it for every <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> followed by a <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a>.  <br /></td></tr>
+<tr class="separator:ac693cbea3edc3dba72285ff589da49b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e120c973f4f9ead0b886e490039866a" id="r_a7e120c973f4f9ead0b886e490039866a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1LinearModule.html#a7e120c973f4f9ead0b886e490039866a">supports_lrp_rule</a> (<a class="el" href="namespacepulsatrix.html#aa4c5ed2bc6fef2b50c34076c222872aa">LRPRule</a>) const override</td></tr>
 <tr class="memdesc:a7e120c973f4f9ead0b886e490039866a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements every LRPRule.  <br /></td></tr>
 <tr class="separator:a7e120c973f4f9ead0b886e490039866a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -474,6 +477,36 @@ Device-generic: runs on Cpu, Cuda or Hip tensors (GPU-native-kernels Mission 1).
 <p>The actual forward computation. Called by <a class="el" href="classpulsatrix_1_1Module.html#a5cb3b4aac3d2364c973009413fde6a21" title="Runs this module&#39;s forward computation.">forward()</a> after precondition checks. </p>
 
 <p>Implements <a class="el" href="classpulsatrix_1_1Module.html#a64d2dd3268af1b112aaeb1c8286351a9">pulsatrix::Module</a>.</p>
+
+</div>
+</div>
+<a id="ac693cbea3edc3dba72285ff589da49b4" name="ac693cbea3edc3dba72285ff589da49b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac693cbea3edc3dba72285ff589da49b4">&#9670;&#160;</a></span>forward_with_relu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> pulsatrix::LinearModule::forward_with_relu </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpulsatrix_1_1Tensor.html">Tensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpulsatrix_1_1ReluModule.html">ReluModule</a> &amp;&#160;</td>
+          <td class="paramname"><em>relu</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><code>relu.forward(forward(input))</code> with the bias add and the ReLU in one kernel (HIP-6). Both layers end with the cached state the two calls leave, so <a class="el" href="classpulsatrix_1_1LinearModule.html#a1fb2aae6550d40a6c77313e0f29fce97" title="Computes the gradient w.r.t. this module&#39;s input, and accumulates the weight/bias gradients internall...">backward()</a> and <a class="el" href="classpulsatrix_1_1LRP.html" title="Whole-model LRP: runs the forward pass, seeds relevance at the chosen output(s), and propagates it to...">LRP</a> are unchanged, and the values are identical. <a class="el" href="classpulsatrix_1_1SequentialModule.html" title="Composes layers_[0..n-1] in forward() order; backward()/propagate_relevance() chain layers_[n-1....">SequentialModule</a> uses it for every <a class="el" href="classpulsatrix_1_1LinearModule.html" title="y = x @ W + b, batched (x is (N, in_features), y is (N, out_features)) – migrated from the original u...">LinearModule</a> followed by a <a class="el" href="classpulsatrix_1_1ReluModule.html" title="y = max(x, 0), elementwise. No parameters, no parameter gradients.">ReluModule</a>. </p>
 
 </div>
 </div>

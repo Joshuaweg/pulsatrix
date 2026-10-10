@@ -7,6 +7,7 @@ var classpulsatrix_1_1LinearModule =
     [ "bias_grad", "classpulsatrix_1_1LinearModule.html#adec11485fb93f5c6ae0ff4840747849a", null ],
     [ "compute_device", "classpulsatrix_1_1LinearModule.html#a282449c0454da4a0eff12d56c6e8c905", null ],
     [ "forward_impl", "classpulsatrix_1_1LinearModule.html#adb2f5ff5fde8b7a3a17d443c459ef75e", null ],
+    [ "forward_with_relu", "classpulsatrix_1_1LinearModule.html#ac693cbea3edc3dba72285ff589da49b4", null ],
     [ "in_features", "classpulsatrix_1_1LinearModule.html#acbe57a37da3944e5a8bf8a716e23f72d", null ],
     [ "named_parameters", "classpulsatrix_1_1LinearModule.html#a8372922cd8c2538678e2ce4341f9a53f", null ],
     [ "op_type", "classpulsatrix_1_1LinearModule.html#ab015875efc2e6c2e50f5882af4f8730b", null ],

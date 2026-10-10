@@ -136,6 +136,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamOptimizer.html">AdamOptimizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adam (Kingma &amp; Ba, 2015): per-parameter moving averages of gradient (m) and squared gradient (v), with bias correction.  <a href="classpulsatrix_1_1AdamOptimizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpulsatrix_1_1AdamTensorStep.html">AdamTensorStep</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">One parameter tensor's share of <a class="el" href="classpulsatrix_1_1DeviceBackend.html#ac0949da79b5be2a5ad00a6c6d89b3b5a" title="Adam (or AdamW, or Adam with L2 decay) over many parameter tensors at once (HIP-6)....">DeviceBackend::adam_step_multi</a> (HIP-6): its buffers and its own step's scalars.  <a href="structpulsatrix_1_1AdamTensorStep.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpulsatrix_1_1AdamWOptimizer.html">AdamWOptimizer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">AdamW (Loshchilov &amp; Hutter, "Decoupled Weight Decay Regularization", arXiv 1711.05101): Adam whose weight decay shrinks the weights directly, w &lt;- (1 - lr * wd) * w, before the Adam step, instead of adding wd * w to the gradient (roadmap TRN-2).  <a href="classpulsatrix_1_1AdamWOptimizer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1552,6 +1555,8 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536">PpoGrad</a>
 , <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87">DqnTarget</a>
 , <a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9">PolyakBlend</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930a5ed4507114a78629b19d2e61177555fc">TokenCeLoss</a>
 <br />
  }</td></tr>
 <tr class="memdesc:af72bbbb89c154b30ca26561ab2f87930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fused per-row reinforcement-learning passes, for DeviceBackend::rl_rows. One lane per batch row (per element for PolyakBlend); rows x cols from RlRowArgs. Index slots hold validated whole-number action indices as floats. Slots (in[] -&gt; out[]):  <a href="namespacepulsatrix.html#af72bbbb89c154b30ca26561ab2f87930">More...</a><br /></td></tr>
@@ -4084,7 +4089,8 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <li>PpoLoss: in logits, indices, old_log_probs, advantages -&gt; out probs, per-row loss term, ratio, mask (uses lower, upper)</li>
 <li>PpoGrad: in probs, indices, advantages, ratios, masks -&gt; out grad (dense; uses scale)</li>
 <li>DqnTarget: in q_select, q_eval (both rows x cols), rewards, dones -&gt; out target (uses gamma)</li>
-<li>PolyakBlend: in source, destination -&gt; out tau*source + (1 - tau)*destination over rows elements (out may alias destination; uses tau) </li>
+<li>PolyakBlend: in source, destination -&gt; out tau*source + (1 - tau)*destination over rows elements (out may alias destination; uses tau) <dl class="section note"><dt>Note</dt><dd>TokenCeLoss (HIP-6, <a class="el" href="classpulsatrix_1_1TokenCrossEntropyLoss.html#a2ff92d7560d203ebecc8da1be949501c" title="Computes the loss and caches what backward() needs.">TokenCrossEntropyLoss::forward</a>): in[0] logits (rows, cols), in[1] the raw targets as floats; out[0] probabilities (rows, cols), out[1] per-row statistics (rows, 4): the loss term, 1 for a counted token, 1 for a target that isn't a whole number, 1 for one outside [0, cols) that isn't ignore_index; out[2] the decoded indices and out[3] the weights (PgGrad's in[1] and in[2]). A bad or ignored target gets index 0, weight 0. </dd></dl>
+</li>
 </ul>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a968bf24ac72a6aace6ce47990ee9787f" name="af72bbbb89c154b30ca26561ab2f87930a968bf24ac72a6aace6ce47990ee9787f"></a>DqnLoss&#160;</td><td class="fielddoc"></td></tr>
@@ -4095,6 +4101,7 @@ Every op here computes the <em>forward</em> value only &ndash; no derivative var
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536" name="af72bbbb89c154b30ca26561ab2f87930a2c877e3b6b6c4faf78580a5ec9780536"></a>PpoGrad&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87" name="af72bbbb89c154b30ca26561ab2f87930a97740b358c4a01f16fb9d431dc884b87"></a>DqnTarget&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9" name="af72bbbb89c154b30ca26561ab2f87930a1f0ee8594b99d914e20915ca8f0fa1e9"></a>PolyakBlend&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af72bbbb89c154b30ca26561ab2f87930a5ed4507114a78629b19d2e61177555fc" name="af72bbbb89c154b30ca26561ab2f87930a5ed4507114a78629b19d2e61177555fc"></a>TokenCeLoss&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
